@@ -1,5 +1,5 @@
 import { Subject, Subscription } from 'rxjs';
-import { PartialObserver } from 'rxjs/Observer';
+import { PartialObserver } from 'rxjs';
 
 export class APSubject<T> extends Subject<T> {
 

@@ -100,7 +100,7 @@ let Utils = class Utils extends DatastructureUtils {
 };
 Utils = __decorate([
     Service(UtilsToken),
-    __param(0, Inject(_ => AirportDatabaseToken)),
+    __param(0, Inject(AirportDatabaseToken)),
     __metadata("design:paramtypes", [Object])
 ], Utils);
 export { Utils };

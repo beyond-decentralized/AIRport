@@ -20,6 +20,8 @@ import {
 }                            from "../../../lingo/schema/Schema";
 import {IDatastructureUtils} from "../../../lingo/utils/DatastructureUtils";
 
+export var test = 2;
+
 export class DbSchemaBuilder
 	implements IDbSchemaBuilder {
 

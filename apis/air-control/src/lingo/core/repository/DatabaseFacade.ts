@@ -6,7 +6,7 @@ import {
 	PortableQuery,
 	QueryResultType
 }                            from "@airport/ground-control";
-import {Observable}          from "rxjs/Observable";
+import {Observable}          from "rxjs";
 import {AbstractQuery}       from "../../../impl/query/facade/AbstractQuery";
 import {UpdateCacheType}     from "../../query/api/EntityLookup";
 import {INonEntityFind}      from '../../query/api/NonEntityFind';

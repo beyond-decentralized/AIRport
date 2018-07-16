@@ -1,6 +1,6 @@
 import { Subject } from "rxjs";
-import { PartialObserver } from "rxjs/Observer";
-import { ISubscription, Subscription, TeardownLogic } from "rxjs/Subscription";
+import { PartialObserver } from "rxjs";
+import { ISubscription, Subscription, TeardownLogic } from "rxjs";
 
 export class QuerySubject<E> extends Subject<E> {
 

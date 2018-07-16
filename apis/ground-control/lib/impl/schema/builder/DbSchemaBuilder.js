@@ -1,3 +1,4 @@
+export var test = 2;
 export class DbSchemaBuilder {
     constructor(utils) {
         this.utils = utils;
