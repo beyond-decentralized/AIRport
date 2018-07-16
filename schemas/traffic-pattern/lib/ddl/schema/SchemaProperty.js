@@ -1,0 +1,47 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+let SchemaProperty = class SchemaProperty {
+};
+__decorate([
+    air_control_1.Id(),
+    __metadata("design:type", Number)
+], SchemaProperty.prototype, "index", void 0);
+__decorate([
+    air_control_1.Id(),
+    air_control_1.ManyToOne(),
+    air_control_1.JoinColumns([
+        { name: "SCHEMA_VERSION_ID" },
+        { name: "TABLE_INDEX", referencedColumnName: "INDEX" }
+    ]),
+    __metadata("design:type", Object)
+], SchemaProperty.prototype, "entity", void 0);
+__decorate([
+    air_control_1.Column({ name: "IS_ID" }),
+    __metadata("design:type", Boolean)
+], SchemaProperty.prototype, "isId", void 0);
+__decorate([
+    air_control_1.OneToMany({ cascade: air_control_1.CascadeType.ALL, mappedBy: 'property' }),
+    __metadata("design:type", Array)
+], SchemaProperty.prototype, "propertyColumns", void 0);
+__decorate([
+    air_control_1.OneToMany({ cascade: air_control_1.CascadeType.ALL, mappedBy: 'property' }),
+    __metadata("design:type", Array)
+], SchemaProperty.prototype, "relation", void 0);
+SchemaProperty = __decorate([
+    air_control_1.Entity(),
+    air_control_1.Table({
+        name: "SCHEMA_PROPERTIES"
+    })
+], SchemaProperty);
+exports.SchemaProperty = SchemaProperty;
+//# sourceMappingURL=SchemaProperty.js.map

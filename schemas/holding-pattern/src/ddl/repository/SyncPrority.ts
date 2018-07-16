@@ -1,0 +1,9 @@
+export enum SyncPriority {
+	VITAL,
+	CRITICAL,
+	HIGH,
+	ABOVE_NORMAL,
+	NORMAL,
+	BELOW_NORMAL,
+	LOW
+}

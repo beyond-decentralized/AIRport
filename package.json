@@ -1,0 +1,41 @@
+{
+  "version": "0.0.1",
+  "name": "airport",
+  "description": "Autonomous Interdependent Repository Port",
+  "license": "MIT",
+  "scripts": {
+    "lint": "tslint \"src/**/*.ts\"",
+    "ts-node": "ts-node src/index.ts",
+    "test": "ts-node ./node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=jasmine.json",
+    "test:coverage": "ts-node node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" node_modules/jasmine/bin/jasmine.js -- JASMINE_CONFIG_PATH=jasmine.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/russoturisto/tarmaq.git"
+  },
+  "main": "lib/index.js",
+  "typings": "lib/index",
+  "dependencies": {
+    "@types/sql.js": "^0.0.29",
+    "rxjs": "^5.4.3",
+    "typedi": "^0.7.1"
+  },
+  "keywords": [
+    "distrubuted relational sql database",
+    "distributed web application",
+    "cross application data store"
+  ],
+  "author": "russoturisto <russoturisto@gmail.com> (https://russoturistoo.wordpress.com/blog/)",
+  "devDependencies": {
+    "@types/jasmine": "^2.6.3",
+    "istanbul": "^1.1.0-alpha.1",
+    "jasmine": "^2.7.0",
+    "sql.js": "^0.4.0",
+    "ts-node": "^3.3.0",
+    "typescript": "3.0.0-dev.20180712"
+  },
+  "bugs": {
+    "url": "https://github.com/russoturisto/tarmaq/issues"
+  },
+  "homepage": "https://github.com/russoturisto/tarmaq#readme"
+}

@@ -1,0 +1,27 @@
+1)  Verify that LEFT OUTER JOIN queries can be performed across:
+USER_REPOSITORIES
+REPOSITORY_DATABASES
+DATABASE_REPOSITORIES
+
+2)  Shard splitting
+
+When a shard gets split all of it's databases and related repositories get moved
+to a new shard.  In the original shard databases get marked as moved to the new
+shard.
+
+When a device that belongs to a split shard connects to the original shard one of
+two things can happen:
+
+a)  Original shard responds back saying that the device needs to connect to the
+split shard.  The device then connects to the new shard on the next tick.
+
+b)  Original shard forwards the request to the split shard and the client gets
+the response on the same tick (with a slight delay).
+
+Second approach is preferred though requires a bit more coding.  Servers can
+communicate between each other more efficiently than a client (no wireless link,
+dedicated backbone, possibly in the same data center).  For a client that's been
+offline for a long time and missed a number of shard splits the connection could
+get bounced across multiple shard servers.  Alternatively, when a shard re-split
+happens, the original shards Database record can be update to reflect the final
+shard location for that database.

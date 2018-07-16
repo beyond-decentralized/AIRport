@@ -1,0 +1,22 @@
+import { EntityCandidate } from "../parser/EntityCandidate";
+import { QEntityFileBuilder } from "../builder/entity/QEntityFileBuilder";
+/**
+ * Created by Papa on 4/27/2016.
+ */
+export declare function resolveRelativeEntityPath(from: EntityCandidate, //
+to: EntityCandidate): string;
+/**
+ * Gets the full path to the import in a given file.
+ *
+ * @param {string} relativePath  ../../e/f/importedFileName
+ * @param {string} relativeToPath  /a/b/c/sourceFileName
+ * @returns {string}
+ */
+export declare function getFullPathFromRelativePath(relativePath: string, //
+relativeToPath: string): string;
+export declare function resolveRelativePath(fromPath: string, //
+toPath: string): string;
+export declare function addImportForType(entity: EntityCandidate, type: string, fileBuilder: QEntityFileBuilder): void;
+export declare function normalizePath(path: string): string;
+export declare function canBeInterface(type: string): boolean;
+export declare function getImplNameFromInterfaceName(interfaceName: string): string;

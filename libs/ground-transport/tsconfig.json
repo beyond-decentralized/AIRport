@@ -1,0 +1,28 @@
+{
+  "version": "2.9.2",
+  "compileOnSave": false,
+  "compilerOptions": {
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "outDir": "lib/",
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "ES6"
+  },
+  "exclude": [
+    "definitions",
+    "lib",
+    "node_modules",
+    "test",
+    "typings/main",
+    "typings/main.d.ts"
+  ]
+}

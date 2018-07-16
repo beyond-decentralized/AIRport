@@ -1,0 +1,61 @@
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, QEntity, QRelation } from '@airport/air-control';
+import { IAgtSharingMessage, AgtSharingMessageEId, AgtSharingMessageEOptionalId, AgtSharingMessageESelect, QAgtSharingMessageQId, QAgtSharingMessageQRelation } from './qagtsharingmessage';
+import { IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockEOptionalId, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlockQId, QAgtRepositoryTransactionBlockQRelation } from './qagtrepositorytransactionblock';
+export interface ISyncLog {
+    sharingMessage?: IAgtSharingMessage;
+    repositoryTransactionBlock?: IAgtRepositoryTransactionBlock;
+}
+/**
+ * SELECT - All fields and relations (optional).
+ */
+export interface SyncLogESelect extends IEntitySelectProperties, SyncLogEOptionalId, SyncLogEUpdateProperties {
+    sharingMessage?: AgtSharingMessageESelect;
+    repositoryTransactionBlock?: AgtRepositoryTransactionBlockESelect;
+}
+/**
+ * DELETE - Ids fields and relations only (required).
+ */
+export interface SyncLogEId extends IEntityIdProperties {
+    sharingMessage: AgtSharingMessageEId;
+    repositoryTransactionBlock: AgtRepositoryTransactionBlockEId;
+}
+/**
+ * Ids fields and relations only (optional).
+ */
+export interface SyncLogEOptionalId {
+    sharingMessage?: AgtSharingMessageEOptionalId;
+    repositoryTransactionBlock?: AgtRepositoryTransactionBlockEOptionalId;
+}
+/**
+ * UPDATE - non-id fields and relations (optional).
+ */
+export interface SyncLogEUpdateProperties extends IEntityUpdateProperties {
+}
+/**
+ * UPDATE - non-id columns (optional).
+ */
+export interface SyncLogEUpdateColumns extends IEntityUpdateColumns {
+}
+/**
+ * CREATE - id fields and relations (required) and non-id fields and relations (optional).
+ */
+export interface SyncLogECreateProperties extends SyncLogEId, SyncLogEUpdateProperties {
+}
+/**
+ * CREATE - id columns (required) and non-id columns (optional).
+ */
+export interface SyncLogECreateColumns extends SyncLogEId, SyncLogEUpdateColumns {
+}
+/**
+ * Query Entity Query Definition (used for Q.EntityName).
+ */
+export interface QSyncLog extends QEntity {
+    sharingMessage: QAgtSharingMessageQRelation;
+    repositoryTransactionBlock: QAgtRepositoryTransactionBlockQRelation;
+}
+export interface QSyncLogQId {
+    sharingMessage: QAgtSharingMessageQId;
+    repositoryTransactionBlock: QAgtRepositoryTransactionBlockQId;
+}
+export interface QSyncLogQRelation extends QRelation<QSyncLog>, QSyncLogQId {
+}

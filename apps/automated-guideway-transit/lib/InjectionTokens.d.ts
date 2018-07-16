@@ -1,0 +1,12 @@
+import { ILoggedPackage } from "@airport/approach-lighting-system";
+import { IBlacklist, ISyncConnectionVerifier } from "@airport/arrivals-n-departures";
+import { Token } from "typedi/Token";
+import { ITuningSettings } from "./model/TuningSettings";
+import { IErrorLogger } from "./server/common/ErrorLogger";
+import { ISyncConnectionProcessor } from "./server/sync/SyncConnectionProcessor";
+export declare const TunningSettingsToken: Token<ITuningSettings>;
+export declare const ErrorLoggerToken: Token<IErrorLogger>;
+export declare const SyncConnectionProcessorToken: Token<ISyncConnectionProcessor>;
+export declare const SyncConnectionVerifierToken: Token<ISyncConnectionVerifier>;
+export declare const BlacklistToken: Token<IBlacklist<any>>;
+export declare const AGTLogger: ILoggedPackage;

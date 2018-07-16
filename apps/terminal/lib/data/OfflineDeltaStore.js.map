@@ -1,0 +1,1 @@
+{"version":3,"file":"OfflineDeltaStore.js","sourceRoot":"","sources":["../../src/data/OfflineDeltaStore.ts"],"names":[],"mappings":";;AAOA,wDAAkD;AAwBlD,8BACC,UAAwB;IAExB,QAAQ,UAAU,CAAC,IAAI,EAAE;QACxB,KAAK,wBAAS,CAAC,cAAc,CAAC;QAC9B,KAAK,wBAAS,CAAC,KAAK;YACnB,MAAM,YAAY,CAAC;QACpB,+CAA+C;QAC/C;YACC,MAAM,+BAA+B,UAAU,CAAC,IAAI,EAAE,CAAC;KACxD;AACF,CAAC;AAXD,oDAWC"}

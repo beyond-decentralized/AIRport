@@ -1,0 +1,821 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="81892ffa-dee3-484f-b3ab-a9e335aa787f" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/../territory/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/LogEntryBatch.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/LogEntryBatch.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/LogEntryBatch.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/LogEntryBatch.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/Logged.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/Logged.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/LoggedApplication.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/LoggedApplication.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/LoggedPackage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/LoggedPackage.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/Logger.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/Logger.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/Logger.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/Logger.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/Logger.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/Logger.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/LoggerFactory.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/LoggerFactory.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/LoggerFactory.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/lib/index.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/src/LogEntryBatch.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/src/LogEntryBatch.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/src/Logger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/src/Logger.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../flight-log-archive/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../flight-log-archive/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/common.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/common.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/RecordUpdateStageDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/RecordUpdateStageDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/RecordUpdateStageDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/RecordUpdateStageDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/missingRecord/MissingRecordDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/missingRecord/MissingRecordDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingMessage/SharingMessageDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingMessage/SharingMessageDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingMessage/SharingMessageDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingMessage/SharingMessageDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingMessage/SharingMessageResponseStageDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingMessage/SharingMessageResponseStageDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingMessage/SharingMessageResponseStageDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingMessage/SharingMessageResponseStageDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingNode/SharingNodeDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingNode/SharingNodeDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingNode/SharingNodeDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingNode/SharingNodeDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingNode/SharingNodeDatabaseDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingNode/SharingNodeDatabaseDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingNode/SharingNodeRepositoryDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingNode/SharingNodeRepositoryDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/transactionLog/TransactionLogDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/transactionLog/TransactionLogDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/transactionLog/TransactionLogDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/transactionLog/TransactionLogDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/transactionLog/TransactionLogResponseStageDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/transactionLog/TransactionLogResponseStageDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/transactionLog/TransactionLogResponseStageDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/transactionLog/TransactionLogResponseStageDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/conflict/SynchronizationConflictType.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/conflict/SynchronizationConflictType.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecordStatus.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecordStatus.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/sharingMessage/SharingMessageProcessingStatus.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/sharingMessage/SharingMessageProcessingStatus.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/values/SchemaChangeStatus.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/values/SchemaChangeStatus.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/values/SharingMechanism.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/values/SharingMechanism.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/values/SharingMessageType.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/values/SharingMessageType.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/values/TransmissionStatus.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/values/TransmissionStatus.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/schema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/common.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/LogEntryValue.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/LogEntryValue.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/LogLevel.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/LogLevel.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/baseDaos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDaos.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/baseDaos.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDaos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/baseDaos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDaos.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/baseDmos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDmos.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/baseDmos.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDmos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/baseDmos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDmos.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/generated.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/generated.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/qSchema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/qSchema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/qSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/qSchema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/qSchema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/qSchema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/schema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ddl/LogEntryValue.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/ddl/LogEntryValue.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../territory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../territory/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="LogEntryType.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryType.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="576">
+                  <caret line="32" selection-start-line="32" selection-end-line="32" />
+                  <folding>
+                    <element signature="e#0#141#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LogEntryValue.ts" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryValue.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="114">
+                  <caret line="13" column="49" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="49" />
+                  <folding>
+                    <element signature="e#0#126#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/package.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="115">
+                  <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LogLevel.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/ddl/LogLevel.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="162">
+                  <caret line="9" column="74" selection-start-line="9" selection-start-column="74" selection-end-line="9" selection-end-column="74" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LoggedError.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/ddl/LoggedError.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="414">
+                  <caret line="23" column="1" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
+                  <folding>
+                    <element signature="e#0#114#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LogEntry.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/ddl/LogEntry.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="342">
+                  <caret line="19" column="7" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
+                  <folding>
+                    <element signature="e#0#135#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LoggedErrorStackTrace.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/ddl/LoggedErrorStackTrace.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="342">
+                  <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+                  <folding>
+                    <element signature="e#0#69#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="InjectionTokens.ts" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/InjectionTokens.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="126">
+                  <caret line="7" column="64" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
+                  <folding>
+                    <element signature="e#0#41#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>Library</find>
+      <find>Message</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>Module</replace>
+      <replace>LogEntry</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/MessageValue.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/Message.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/MessageType.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/ddl.ts" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/src/ddl/LogEntry.ts" />
+        <option value="$PROJECT_DIR$/src/dao/dao.ts" />
+        <option value="$PROJECT_DIR$/src/index.ts" />
+        <option value="$PROJECT_DIR$/src/InjectionTokens.ts" />
+        <option value="$PROJECT_DIR$/src/dao/LogEntryDao.ts" />
+        <option value="$PROJECT_DIR$/src/dao/LogEntryTypeDao.ts" />
+        <option value="$PROJECT_DIR$/src/dao/LogEntryValueDao.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/Error.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/LoggedErrorStackTrace.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/LoggedError.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/LogEntryType.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/LogLevel.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/LogEntryValue.ts" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/package.json" />
+    </packageJsonPaths>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="25" />
+    <option name="width" value="1920" />
+    <option name="height" value="1055" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="runway-edge-lighting" type="b2602c69:ProjectViewProjectNode" />
+              <item name="runway-edge-lighting" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="runway-edge-lighting" type="b2602c69:ProjectViewProjectNode" />
+              <item name="runway-edge-lighting" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="runway-edge-lighting" type="b2602c69:ProjectViewProjectNode" />
+              <item name="runway-edge-lighting" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="dao" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="runway-edge-lighting" type="b2602c69:ProjectViewProjectNode" />
+              <item name="runway-edge-lighting" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ddl" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.prettier" value="true" />
+    <property name="node.js.path.for.package.prettier" value="project" />
+    <property name="node.js.selected.package.prettier" value="" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="81892ffa-dee3-484f-b3ab-a9e335aa787f" name="Default" comment="" />
+      <created>1529245524283</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1529245524283</updated>
+      <workItem from="1529245529783" duration="9662000" />
+      <workItem from="1529264427786" duration="1195000" />
+      <workItem from="1529270835102" duration="767000" />
+      <workItem from="1529272495087" duration="8000" />
+      <workItem from="1529325446650" duration="710000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="12342000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="25" width="1920" height="1055" extended-state="6" />
+    <layout>
+      <window_info anchor="bottom" id="TypeScript" order="7" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13073273" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.3286334" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32982087" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/InjectionTokens.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="64" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/LogEntryDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="e#0#84#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/LogEntryTypeDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#88#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/LogEntryValueDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#89#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LoggedErrorStackTrace.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#69#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LoggedError.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="23" column="1" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#114#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntry.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="19" column="7" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#135#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryType.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="e#0#141#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryValue.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="30" column="27" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#126#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogLevel.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="74" selection-start-line="9" selection-start-column="74" selection-end-line="9" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="10" column="25" lean-forward="true" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryType.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="e#0#141#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryValue.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="30" column="27" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#126#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogLevel.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="9" column="74" selection-start-line="9" selection-start-column="74" selection-end-line="9" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LoggedError.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="23" column="1" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#114#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntry.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="19" column="7" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#135#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LoggedErrorStackTrace.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#69#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/InjectionTokens.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="7" column="64" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryType.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="e#0#141#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryValue.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="30" column="27" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#126#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogLevel.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="9" column="74" selection-start-line="9" selection-start-column="74" selection-end-line="9" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LoggedError.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="23" column="1" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#114#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntry.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="19" column="7" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#135#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LoggedErrorStackTrace.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#69#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="10" column="25" lean-forward="true" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/InjectionTokens.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="7" column="64" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryType.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="e#0#141#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryValue.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="30" column="27" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#126#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogLevel.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="74" selection-start-line="9" selection-start-column="74" selection-end-line="9" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LoggedError.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="23" column="1" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#114#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntry.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="19" column="7" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#135#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LoggedErrorStackTrace.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#69#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="33" lean-forward="true" selection-start-line="17" selection-start-column="33" selection-end-line="19" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/InjectionTokens.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="7" column="64" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src.ts" />
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryType.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="25" column="20" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#141#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/ddl.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="3" column="25" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/dao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/index.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="3" column="34" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/InjectionTokens.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="64" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/LogEntryDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/LogEntryTypeDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/LogEntryValueDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LoggedErrorStackTrace.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#69#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LoggedError.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="23" column="1" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#114#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntry.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="7" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#135#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryType.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="e#0#141#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogLevel.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="74" selection-start-line="9" selection-start-column="74" selection-end-line="9" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/LogEntryValue.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="13" column="49" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#126#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

@@ -1,0 +1,33 @@
+{
+  "name": "@airport/check-in",
+  "version": "0.0.10",
+  "description": "Airport Check-in",
+  "license": "Apache-2.0",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/russoturisto/airport.git"
+  },
+  "main": "lib/index.js",
+  "typings": "lib/index",
+  "dependencies": {
+    "@airport/air-control": "0.0.29",
+    "rxjs": "^5.4.3"
+  },
+  "keywords": [
+    "orm",
+    "relational",
+    "mapping",
+    "sql",
+    "query engine",
+    "object relational mapping"
+  ],
+  "author": "russoturisto <russoturisto@gmail.com> (https://russoturistoo.wordpress.com/blog/)",
+  "devDependencies": {
+    "typescript": "^2.7.2"
+  },
+  "bugs": {
+    "url": "https://github.com/russoturisto/airport/issues"
+  },
+  "homepage": "https://github.com/russoturisto/airport#readme"
+}

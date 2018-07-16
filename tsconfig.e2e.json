@@ -1,0 +1,63 @@
+{
+  "version": "2.4.2",
+  "compileOnSave": true,
+  "compilerOptions": {
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "outDir": "lib/",
+    "sourceMap": true,
+    "removeComments": false,
+    "target": "es2017",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@airport/air-control": [
+        "apis/air-control/src"
+      ],
+      "@airport/air-control/*": [
+        "apis/air-control/src/*"
+      ],
+      "@airport/check-in": [
+        "apis/check-in/src"
+      ],
+      "@airport/ground-control": [
+        "apis/ground-control/src"
+      ],
+      "@airport/terminal-map": [
+        "apis/terminal-map/src"
+      ],
+      "@airport/ground-transport": [
+        "libs/ground-transport/src"
+      ],
+      "@airport/hangar": [
+        "libs/hangar/src"
+      ],
+      "@airport/tower": [
+        "libs/tower/src"
+      ],
+      "@airport/guideway": [
+        "schemas/guideway/src"
+      ],
+      "@airport/holding-pattern": [
+        "schemas/holding-pattern/src"
+      ],
+      "@airport/traffic-pattern": [
+        "schemas/traffic-pattern/src"
+      ]
+    }
+  },
+  "exclude": [
+    "lib",
+    "node_modules"
+  ]
+}

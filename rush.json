@@ -1,0 +1,120 @@
+{
+  // NOTE: Comments are allowed in all Rush config files :-)
+  "rushVersion": "4.2.5",
+  "npmVersion": "5.6.0",
+  "nodeSupportedVersionRange": ">=8.9.0 <10.0.0",
+  "projectFolderMinDepth": 1,
+
+  "projects": [
+    // "apis" folder (alphabetical order)
+    {
+      "packageName": "@airport/air-control",
+      "projectFolder": "apis/air-control",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/arrivals-n-departures",
+      "projectFolder": "apis/arrivals-n-departures",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/check-in",
+      "projectFolder": "apis/check-in",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/ground-control",
+      "projectFolder": "apis/ground-control",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/terminal-map",
+      "projectFolder": "apis/terminal-map",
+      "shouldPublish": true
+    },
+    // "apps" folder (alphabetical order)
+    {
+      "packageName": "@airport/automated-guideway-transit",
+      "projectFolder": "apps/automated-guideway-transit",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/tarmaq",
+      "projectFolder": "apps/tarmaq",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/terminal",
+      "projectFolder": "apps/terminal",
+      "shouldPublish": true
+    },
+    // "libs" folder (alphabetical order)
+    {
+      "packageName": "@airport/approach-lighting-system",
+      "projectFolder": "libs/approach-lighting-system",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/ground-transport",
+      "projectFolder": "libs/ground-transport",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/tower",
+      "projectFolder": "libs/tower",
+      "shouldPublish": true
+    },
+    // "generators" folder (alphabetical order)
+    {
+      "packageName": "@airport/runway",
+      "projectFolder": "generators/runway",
+      "shouldPublish": true
+    },
+    // "schemas" folder (alphabetical order),
+    {
+      "packageName": "@airport/airport-code",
+      "projectFolder": "schemas/airport-code",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/guideway",
+      "projectFolder": "schemas/guideway",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/flight-log-archive",
+      "projectFolder": "schemas/flight-log-archive",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/holding-pattern",
+      "projectFolder": "schemas/holding-pattern",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/moving-walkway",
+      "projectFolder": "schemas/moving-walkway",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/point-of-destination",
+      "projectFolder": "schemas/point-of-destination",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/runway-edge-lighting",
+      "projectFolder": "schemas/runway-edge-lighting",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/territory",
+      "projectFolder": "schemas/territory",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/traffic-pattern",
+      "projectFolder": "schemas/traffic-pattern",
+      "shouldPublish": true
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+npm-debug.log
+
+# Ignore NPM package folders
+node_modules
+
+# Ignore test build files
+/lib
+
+# Ignore Rush temporary files
+/common/temp/**
+

@@ -1,0 +1,74 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const pathResolver_1 = require("../resolve/pathResolver");
+class QSchemaBuilder {
+    constructor(pathBuilder) {
+        this.pathBuilder = pathBuilder;
+        this.entityNames = [];
+        this.ddlPathMapByEntityName = {};
+        this.generatedFilePaths = [];
+        this.generatedPathMapByEntityName = {};
+        this.qSchemaFilePath = pathBuilder.fullGeneratedDirPath + '/qSchema.ts';
+    }
+    addFileNameAndPaths(entityName, fullDdlPath, fullGenerationPath) {
+        const ddlRelativePath = pathResolver_1.resolveRelativePath(this.qSchemaFilePath, fullDdlPath)
+            .replace('.ts', '');
+        this.ddlPathMapByEntityName[entityName] = ddlRelativePath;
+        const generatedRelativePath = pathResolver_1.resolveRelativePath(this.qSchemaFilePath, fullGenerationPath)
+            .replace('.ts', '');
+        this.generatedFilePaths.push(generatedRelativePath);
+        this.generatedPathMapByEntityName[entityName]
+            = this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath);
+        this.entityNames.push(entityName);
+    }
+    build() {
+        this.entityNames.sort();
+        this.generatedFilePaths.sort();
+        const qApiDefinitions = this.entityNames.map(entityName => `${entityName}: Q${entityName};`).join('\n\t');
+        const dmoDefinitions = this.entityNames.map(entityName => `${entityName}: IBase${entityName}Dmo;`).join('\n\t\t');
+        const daoDefinitions = this.entityNames.map(entityName => `${entityName}: IBase${entityName}Dao;`).join('\n\t\t');
+        const constructorDefinitions = this.entityNames.map(entityName => `${entityName}: ${entityName}`).join(',\n\t');
+        const qEntityImports = this.entityNames.map(entityName => `import { ${entityName} } from '${this.ddlPathMapByEntityName[entityName]}';
+import { Q${entityName} } from '${this.generatedPathMapByEntityName[entityName]}';`).join('\n');
+        const iDmoImports = this.entityNames.map(entityName => `IBase${entityName}Dmo`).join(',\n\t');
+        const iDaoImports = this.entityNames.map(entityName => `IBase${entityName}Dao`).join(',\n\t');
+        return `import { DbSchema, QSchema as AirportQSchema } from '@airport/air-control';
+${qEntityImports}
+
+import {
+	${iDmoImports}
+} from './baseDmos';
+
+import {
+	${iDaoImports}
+} from './baseDaos';
+
+export interface LocalQSchema extends AirportQSchema {
+
+  db: DbSchema;
+
+	dmo: {
+		${dmoDefinitions}
+	}
+
+	dao: {
+		${daoDefinitions}
+	}
+	
+	${qApiDefinitions}
+
+}
+
+const __constructors__ = {
+	${constructorDefinitions}
+};
+
+export const Q_SCHEMA: LocalQSchema = <any>{
+	__constructors__
+};
+export const Q: LocalQSchema = Q_SCHEMA;
+`;
+    }
+}
+exports.QSchemaBuilder = QSchemaBuilder;
+//# sourceMappingURL=QSchemaBuilder.js.map

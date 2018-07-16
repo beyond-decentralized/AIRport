@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="65ff2585-135c-4a9c-a06e-b69a302e2b91" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/model/SyncInMessageWithContent.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../air-control/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/impl/message/deserializer/MessageFromTMDeserializer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/message/deserializer/MessageFromTMDeserializer.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/impl/message/serializer/MessageFromTMSerializer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/message/serializer/MessageFromTMSerializer.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/impl/message/verifier/MessageFromTMVerifier.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/message/verifier/MessageFromTMVerifier.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/lingo/message/SerializedMessageFromTM.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/lingo/message/SerializedMessageFromTM.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/clientConnection/Blacklist.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/clientConnection/Blacklist.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/archive/write/ArchivedPartitionManagementServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/archive/write/ArchivedPartitionManagementServer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/archive/write/ArchivedPartitionManagementServer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/archive/write/ArchivedPartitionManagementServer.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/archive/write/ArchivingServer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/archive/write/ArchivingServer.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionProcessor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionProcessor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionProcessor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionProcessor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionServer.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionServer.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionServer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionServer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionServer.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionVerifier.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionVerifier.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionVerifier.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionVerifier.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/InjectionTokens.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/SyncNodeManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/SyncNodeManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/connect/SharingNodeEndpoint.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/connect/SharingNodeEndpoint.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/connect/remote/HttpSharingNodeEndpoint.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/connect/remote/HttpSharingNodeEndpoint.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/SyncInUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/SyncInUtils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/SynchronizationInManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/SynchronizationInManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInChecker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInChecker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInDataChecker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInDataChecker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/out/RepositoryTransactionBlockCreator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/out/SyncOutRepositoryTransactionBlockCreator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/out/SynchronizationOutManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/out/SynchronizationOutManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/guideway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/guideway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/guideway/lib/dao/synchronization/AgtRepositoryTransactionBlockDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/guideway/lib/dao/synchronization/AgtRepositoryTransactionBlockDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/holding-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/holding-pattern/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/InjectionTokens.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/InjectionTokens.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/InjectionTokens.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/dao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/dao.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/dao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/dao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/dao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/dao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/repositoryTransactionBlock/RepositoryTransactionBlockDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/repositoryTransactionBlock/RepositoryTransactionBlockDao.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/repositoryTransactionBlock/RepositoryTransactionBlockDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/repositoryTransactionBlock/RepositoryTransactionBlockDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/repositoryTransactionBlock/RepositoryTransactionBlockDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/repositoryTransactionBlock/RepositoryTransactionBlockDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingMessage/SharingMessageDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingMessage/SharingMessageDao.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingMessage/SharingMessageDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingMessage/SharingMessageDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingMessage/SharingMessageDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingMessage/SharingMessageDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingMessage/SharingMessageResponseStageDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/creator/SyncInSharingMessageCreator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingMessage/SharingMessageResponseStageDao.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingMessage/SharingMessageResponseStageDao.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingMessage/SharingMessageSchemasToChangeDao.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingMessage/SharingMessageSchemasToChangeDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingMessage/SharingMessageSchemasToChangeDao.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingMessage/SharingMessageProcessingStatus.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingMessage/SharingMessageProcessingStatus.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingMessage/SharingMessageProcessingStatus.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingMessage/SharingMessageRepoTransBlock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingMessage/SharingMessageRepoTransBlock.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingMessage/SharingMessageResponseStage.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingMessage/SharingMessageResponseStage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingMessage/SharingMessageResponseStage.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingMessage/SharingMessageSchemasToChange.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingMessage/SharingMessageSchemasToChange.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingMessage/SharingMessageSchemasToChange.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/repositoryTransactionBlock/qrepositorytransactionblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/repositoryTransactionBlock/qrepositorytransactionblock.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/sharingMessage/qsharingmessage.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/sharingMessage/qsharingmessage.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/InjectionTokens.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/dao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/dao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/missingRecord/MissingRecordSharingMessageDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/missingRecord/MissingRecordRepoTransBlockDao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/repositoryTransactionBlock/RepositoryTransactionBlockDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/repositoryTransactionBlock/RepositoryTransactionBlockDao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/sharingMessage/SharingMessageDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/sharingMessage/SharingMessageDao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/sharingMessage/SharingMessageSchemasToChangeDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/ddl/sharingMessage/SharingMessageRepoTransBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/ddl/sharingMessage/SharingMessageRepoTransBlock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/generated/repositoryTransactionBlock/qrepositorytransactionblock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/generated/repositoryTransactionBlock/qrepositorytransactionblock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/generated/schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/generated/sharingMessage/qsharingmessage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/generated/sharingMessage/qsharingmessage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/dao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/dao.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/dao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/dao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/dao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/dao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/dao/dao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/dao/dao.ts" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="MessageToTMSerializer.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/impl/message/serializer/MessageToTMSerializer.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="874">
+                  <caret line="59" column="7" selection-start-line="59" selection-start-column="7" selection-end-line="59" selection-end-column="7" />
+                  <folding>
+                    <element signature="e#0#50#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="CoreAgtTypes.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/lingo/CoreAgtTypes.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="190">
+                  <caret line="10" selection-start-line="10" selection-end-line="10" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="MessageToTMDeserializer.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/impl/message/deserializer/MessageToTMDeserializer.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="532">
+                  <caret line="43" column="25" selection-start-line="43" selection-start-column="25" selection-end-line="43" selection-end-column="25" />
+                  <folding>
+                    <element signature="e#0#52#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="MessageFromTMSerializer.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/impl/message/serializer/MessageFromTMSerializer.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="741">
+                  <caret line="48" column="72" selection-start-line="48" selection-start-column="72" selection-end-line="48" selection-end-column="72" />
+                  <folding>
+                    <element signature="e#0#52#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="MessageFromTMVerifier.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/impl/message/verifier/MessageFromTMVerifier.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1140">
+                  <caret line="73" column="39" selection-start-line="73" selection-start-column="39" selection-end-line="73" selection-end-column="39" />
+                  <folding>
+                    <element signature="e#0#53#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="AbstractCommonMessageVerifier.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/impl/message/verifier/AbstractCommonMessageVerifier.ts">
+              <provider selected="true" editor-type-id="text-editor" />
+            </entry>
+          </file>
+          <file leaf-file-name="MessageToTMVerifier.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/impl/message/verifier/MessageToTMVerifier.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1216">
+                  <caret line="77" column="19" selection-start-line="77" selection-start-column="19" selection-end-line="77" selection-end-column="19" />
+                  <folding>
+                    <element signature="e#0#53#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="MessageFromTM.ts" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/lingo/message/MessageFromTM.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="247">
+                  <caret line="13" selection-start-line="13" selection-end-line="13" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="MessageFromTMDeserializer.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/impl/message/deserializer/MessageFromTMDeserializer.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="722">
+                  <caret line="49" column="45" selection-start-line="49" selection-start-column="45" selection-end-line="49" selection-end-column="45" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="SerializedMessageToTM.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/lingo/message/SerializedMessageToTM.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="361">
+                  <caret line="30" column="3" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
+                  <folding>
+                    <element signature="e#0#159#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="SerializedMessageFromTM.ts" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/lingo/message/SerializedMessageFromTM.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="513">
+                  <caret line="30" column="36" selection-start-line="30" selection-start-column="36" selection-end-line="30" selection-end-column="36" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>ground</find>
+      <find>../../../../../ground-control</find>
+      <find>index&quot;</find>
+      <find>src/InjectionTokens</find>
+      <find>../../../../lingo/</find>
+      <find>lingo/sync</find>
+      <find>ground-</find>
+      <find>impl/sync</find>
+      <find>MessageFro</find>
+      <find>RepoTransBlockSyncOutcome</find>
+      <find>RepoTransBlockMessageToTM</find>
+      <find>Db</find>
+      <find>database</find>
+      <find>Database</find>
+      <find>AgtDatabase</find>
+      <find>agtDatabase</find>
+      <find>agtSyncRecordId</find>
+      <find>Sync</find>
+      <find>agtSyncRecord</find>
+      <find>AgtSyncRecord</find>
+      <find>RepositoryTransactionBlockReposit</find>
+      <find>RepositoryTransactionBlockRepositoryTransactionBlock</find>
+      <find>AgtRepositoryTransactionBlock</find>
+      <find>sync</find>
+      <find>SyncAck</find>
+      <find>AddDatetime</find>
+      <find>IBlack</find>
+      <find>AgtReposito</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>../../..</replace>
+      <replace>InjectionTokens</replace>
+      <replace>../../../lingo/</replace>
+      <replace>lingo</replace>
+      <replace>impl</replace>
+      <replace>Terminal</replace>
+      <replace>terminal</replace>
+      <replace>agtRepositoryTransactionBlockId</replace>
+      <replace>agtRepositoryTransactionBlock</replace>
+      <replace>AgtRepositoryTransactionBlock</replace>
+      <replace>RepositoryTransactionBlock</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/src/impl</dir>
+      <dir>$PROJECT_DIR$/src</dir>
+      <dir>C:\Users\Papa\WebstormProjects\airport\apis\arrivals-n-departures\src</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/impl/impl.ts" />
+        <option value="$PROJECT_DIR$/src/index.ts" />
+        <option value="$PROJECT_DIR$/src/lingo/data/verifier/TMDataError.ts" />
+        <option value="$PROJECT_DIR$/src/lingo/data/SerializedTMData.ts" />
+        <option value="$PROJECT_DIR$/src/lingo/data/TMData.ts" />
+        <option value="$PROJECT_DIR$/src/lingo/lingo.ts" />
+        <option value="$PROJECT_DIR$/src/InjectionTokens.ts" />
+        <option value="$PROJECT_DIR$/src/impl/data/TMDataDeserializer.ts" />
+        <option value="$PROJECT_DIR$/src/impl/data/TMDataFormatVerifier.ts" />
+        <option value="$PROJECT_DIR$/src/impl/data/TMDataSerializer.ts" />
+        <option value="$PROJECT_DIR$/src/impl/data/TMDataSchemaVerifier.ts" />
+        <option value="$PROJECT_DIR$/src/lingo/message/MessageTypes.ts" />
+        <option value="$PROJECT_DIR$/src/lingo/message/verifier/MessageToTMError.ts" />
+        <option value="$PROJECT_DIR$/src/lingo/message/verifier/MessageFromTMError.ts" />
+        <option value="$PROJECT_DIR$/src/impl/message/serializer/MessageToTMSerializer.ts" />
+        <option value="$PROJECT_DIR$/src/lingo/CoreAgtTypes.ts" />
+        <option value="$PROJECT_DIR$/src/impl/message/deserializer/MessageToTMDeserializer.ts" />
+        <option value="$PROJECT_DIR$/src/impl/message/verifier/MessageToTMVerifier.ts" />
+        <option value="$PROJECT_DIR$/src/lingo/message/SerializedMessageToTM.ts" />
+        <option value="$PROJECT_DIR$/src/lingo/message/MessageToTM.ts" />
+        <option value="$PROJECT_DIR$/src/lingo/message/MessageFromTM.ts" />
+        <option value="$PROJECT_DIR$/src/lingo/message/SerializedMessageFromTM.ts" />
+        <option value="$PROJECT_DIR$/src/impl/message/deserializer/MessageFromTMDeserializer.ts" />
+        <option value="$PROJECT_DIR$/src/impl/message/serializer/MessageFromTMSerializer.ts" />
+        <option value="$PROJECT_DIR$/src/impl/message/verifier/MessageFromTMVerifier.ts" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/package.json" />
+    </packageJsonPaths>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="25" />
+    <option name="width" value="1920" />
+    <option name="height" value="1055" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+              <item name="deserializer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+              <item name="serializer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+              <item name="verifier" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="lingo" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="lingo" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="lingo" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="verifier" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="lingo" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="arrivals-n-departures" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arrivals-n-departures" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="lingo" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+              <item name="verifier" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.prettier" value="true" />
+    <property name="node.js.path.for.package.prettier" value="project" />
+    <property name="node.js.selected.package.prettier" value="" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Language Defaults" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="65ff2585-135c-4a9c-a06e-b69a302e2b91" name="Default" comment="" />
+      <created>1531142670604</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1531142670604</updated>
+      <workItem from="1531142673127" duration="2255000" />
+      <workItem from="1531145247208" duration="2558000" />
+      <workItem from="1531232368254" duration="356000" />
+      <workItem from="1531232780942" duration="1119000" />
+      <workItem from="1531233940697" duration="3013000" />
+      <workItem from="1531320487633" duration="84000" />
+      <workItem from="1531320604352" duration="2058000" />
+      <workItem from="1531399470503" duration="12512000" />
+      <workItem from="1531576338345" duration="1977000" />
+      <workItem from="1531601511094" duration="1367000" />
+      <workItem from="1531605678914" duration="2501000" />
+      <workItem from="1531615820455" duration="1854000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="31900000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="3840" y="-2" width="1920" height="1082" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info anchor="bottom" id="TypeScript" order="7" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16394307" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32982087" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.33930454" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16385669" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TypeScript" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32982087" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.33926702" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/MessageFromTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/message/deserializer/MessageFromTMDeserializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="836">
+          <caret line="49" column="45" selection-start-line="49" selection-start-column="45" selection-end-line="49" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/SerializedMessageToTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="30" column="3" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/SerializedMessageFromTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="27" column="36" selection-start-line="27" selection-start-column="36" selection-end-line="27" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/data/TMDataSerializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/SerializedMessageToTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/verifier/MessageToTMError.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="30" selection-start-line="6" selection-start-column="30" selection-end-line="9" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/MessageToTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="874">
+          <caret line="46" column="25" lean-forward="true" selection-start-line="46" selection-start-column="25" selection-end-line="46" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/MessageTypes.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/data/TMDataSerializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/SerializedMessageToTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/verifier/MessageToTMError.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="30" selection-start-line="6" selection-start-column="30" selection-end-line="9" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/MessageToTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="551">
+          <caret line="29" column="22" lean-forward="true" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/data/TMDataSerializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/SerializedMessageToTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/verifier/MessageToTMError.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="30" selection-start-line="6" selection-start-column="30" selection-end-line="9" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/MessageToTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="32" column="42" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/data/TMDataSerializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/SerializedMessageToTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/verifier/MessageToTMError.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="30" lean-forward="true" selection-start-line="6" selection-start-column="30" selection-end-line="9" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/MessageToTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="684">
+          <caret line="49" column="44" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/SerializedMessageToTM.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/message/serializer/MessageToTMSerializer.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/message/deserializer/MessageToTMDeserializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="893">
+          <caret line="61" column="43" lean-forward="true" selection-start-line="61" selection-start-column="43" selection-end-line="61" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/InjectionTokens.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="51" selection-start-line="6" selection-start-column="51" selection-end-line="6" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/index.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/data/SerializedTMData.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="33" selection-start-column="33" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/data/TMData.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="26" selection-start-column="26" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/data/verifier/TMDataError.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" column="1" lean-forward="true" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/impl.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="34" selection-start-line="6" selection-start-column="34" selection-end-line="6" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/lingo.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/InjectionTokens.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="23" column="72" selection-start-line="23" selection-start-column="72" selection-end-line="23" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/data/TMDataSerializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/data/TMDataFormatVerifier.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="9" column="36" lean-forward="true" selection-start-line="9" selection-start-column="36" selection-end-line="11" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/data/TMDataSchemaVerifier.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/verifier/MessageToTMError.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/verifier/MessageFromTMError.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/MessageTypes.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="9" column="12" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/data/TMDataDeserializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="11" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/message/deserializer/MessageToTMDeserializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="43" column="25" selection-start-line="43" selection-start-column="25" selection-end-line="43" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/message/verifier/MessageToTMVerifier.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1216">
+          <caret line="77" column="19" selection-start-line="77" selection-start-column="19" selection-end-line="77" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#53#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/MessageToTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="43" column="25" lean-forward="true" selection-start-line="43" selection-start-column="25" selection-end-line="43" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/SerializedMessageToTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="30" column="3" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
+          <folding>
+            <element signature="e#0#159#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/Blacklist.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="17" selection-start-column="17" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/CoreAgtTypes.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/message/serializer/MessageToTMSerializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="874">
+          <caret line="59" column="7" selection-start-line="59" selection-start-column="7" selection-end-line="59" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/MessageFromTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/message/serializer/MessageFromTMSerializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="741">
+          <caret line="48" column="72" selection-start-line="48" selection-start-column="72" selection-end-line="48" selection-end-column="72" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/message/verifier/MessageFromTMVerifier.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1140">
+          <caret line="73" column="39" selection-start-line="73" selection-start-column="39" selection-end-line="73" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#53#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/impl/message/deserializer/MessageFromTMDeserializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="722">
+          <caret line="49" column="45" selection-start-line="49" selection-start-column="45" selection-end-line="49" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/message/SerializedMessageFromTM.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="30" column="36" selection-start-line="30" selection-start-column="36" selection-end-line="30" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

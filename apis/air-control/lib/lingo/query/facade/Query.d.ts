@@ -1,0 +1,27 @@
+import { JSONBaseOperation, JsonQuery } from "@airport/ground-control";
+import { IEntityRelationFrom, IFrom } from '../../core/entity/Entity';
+import { IFieldInOrderBy } from '../../core/field/FieldInOrderBy';
+/**
+ * Query input format, as specified by the user. All queries extend this format.
+ */
+export interface RawQuery {
+    from?: (IFrom | IEntityRelationFrom)[];
+    orderBy?: IFieldInOrderBy<any>[];
+    select: any;
+    where?: JSONBaseOperation;
+}
+export interface RawLimitedQuery {
+    limit: number;
+    offset: number;
+}
+/**
+ * Internal query format. All query implementations extend this.
+ */
+export interface IQuery {
+    toJSON(): JsonQuery;
+}
+export declare const Y: any;
+export declare function convertToY(object: any): void;
+export declare function isY(object: any): boolean;
+export declare const N: any;
+export declare function isN(object: any): boolean;

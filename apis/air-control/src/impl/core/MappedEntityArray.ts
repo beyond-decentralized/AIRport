@@ -1,0 +1,141 @@
+import {DbEntity}          from "@airport/ground-control";
+import {MappedEntityArray} from "../../lingo/query/MappedEntityArray";
+import {IUtils}            from "../../lingo/utils/Utils";
+
+/**
+ * Created by Papa on 10/14/2016.
+ */
+
+export function newMappedEntityArray<E>(
+	utils: IUtils,
+	dbEntity: DbEntity
+): MappedEntityArray<E> {
+
+	let arr     = Array.apply(null, []);
+	arr.dataMap = {};
+
+	arr.clear = function () {
+		this.dataMap = {};
+		this.splice(0, this.length);
+	};
+
+	arr.putAll = function (values: E[]): void {
+		values.forEach((value) => {
+			this.put(value);
+		});
+	};
+
+	arr.put = function (value: E): E {
+		let keyValue = utils.Schema.getIdKey(value, dbEntity);
+		if (utils.Schema.isIdEmpty(keyValue)) {
+			throw `Composite @Id(s) value for entity '${dbEntity.name}' is not defined`;
+		}
+		if (this.dataMap[keyValue]) {
+			if (this.dataMap[keyValue] !== value) {
+				throw `Found two different instances of an object with the same @Id: ${keyValue}`;
+			}
+			return value;
+		}
+		this.dataMap[keyValue] = value;
+		this.push(value);
+
+		return value;
+	};
+
+	function stringifyKey(key) {
+		if (typeof key !== 'string') {
+			key = JSON.stringify(key);
+		}
+		return key;
+	}
+
+	arr.get = function (key: string): E {
+		key = stringifyKey(key);
+		return this.dataMap[key];
+	};
+
+	arr.delete = function (key: string): E {
+		key       = stringifyKey(key);
+		let value = this.dataMap[key];
+		delete this.dataMap[key];
+
+		for (let i = this.length - 1; i >= 0; i--) {
+			let currentValue = this[i];
+			if (currentValue === value) {
+				this.splice(i, 1);
+				break;
+			}
+		}
+
+		return value;
+	};
+
+	arr.toArray = function (): E[] {
+		return this.slice();
+	};
+
+	return arr;
+}
+
+/*
+ export class MappedEntityArrayEs6<E> extends Array {
+
+ dataMap: {[id: string]: E} = {};
+
+ constructor( private keyField: string | number ) {
+ super();
+ }
+
+ clear() {
+ this.dataMap = {};
+ this.splice(0, this.length);
+ }
+
+ putAll( values: E[] ): void {
+ values.forEach(( value ) => {
+ this.put(value);
+ });
+ }
+
+ put( value: E ): E {
+ let keyValue = value[this.keyField];
+ if (MetadataUtils.isIdEmpty(keyValue)) {
+ throw `Key field ${this.keyField} is not defined`;
+ }
+ if (this.dataMap[keyValue]) {
+ if (this.dataMap[keyValue] !== value) {
+ throw `Found two different instances of an object with the same @Id: ${keyValue}`;
+ }
+ return value;
+ }
+ this.dataMap[keyValue] = value;
+ this.push(value);
+
+ return null;
+ }
+
+ get( key: string | number ): E {
+ return this.dataMap[key];
+ }
+
+ delete( key: string | number ): E {
+ let value = this.dataMap[key];
+ delete this.dataMap[key];
+
+ for (let i = this.length - 1; i >= 0; i--) {
+ let currentValue = this[i];
+ if (currentValue === value) {
+ this.splice(i, 1);
+ break;
+ }
+ }
+
+ return value;
+ }
+
+ toArray(): E[] {
+ return this.slice();
+ }
+
+ }
+ */

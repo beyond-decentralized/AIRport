@@ -1,0 +1,47 @@
+import {Entity} from "../../../../air-control/src/impl/core/entity/metadata/EntityDecorators";
+import {ITqTestGoal} from "./TqTestGoal.ts";
+import {dbConst} from "../../config/Constants";
+import {GeneratedValue, Id, ManyToOne, OneToMany} from "../../../../air-control/spec/impl/ColumnDecorators";
+import {
+	ISingleIdRepositoryEntity,
+	SingleIdRepositoryEntity
+} from "../../data/repository/model/SingleIdRepositoryEntity";
+
+export interface ITqTestTask
+ extends ISingleIdRepositoryEntity {
+
+	complete?: boolean;
+	description?: string;
+	goal?: ITqTestGoal;
+	taskId: number;
+	name?: string;
+	nextTask?: ITqTestTask;
+	previousTasks?: ITqTestTask[];
+
+}
+
+@Entity()
+export class TqTestTask
+	extends SingleIdRepositoryEntity
+	implements ITqTestTask {
+
+	complete: boolean;
+
+	description: string;
+
+	@ManyToOne()
+	goal: ITqTestGoal;
+
+	@Id()
+	@GeneratedValue()
+	taskId: number;
+
+	name: string;
+
+	@ManyToOne()
+	nextTask?: ITqTestTask;
+
+	@OneToMany({mappedBy: 'nextTask'})
+	previousTasks?: ITqTestTask[];
+
+}

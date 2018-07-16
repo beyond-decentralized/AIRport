@@ -1,0 +1,15 @@
+import { Token } from "typedi/Token";
+import { IDailyArchiveLogDao } from "./dao/archive/DailyArchiveLogDao";
+import { IRepositoryDao } from "./dao/repository/RepositoryDao";
+import { ISyncLogDao } from "./dao/synchronization/SyncLogDao";
+import { IAgtRepositoryTransactionBlockDao } from "./dao/synchronization/AgtRepositoryTransactionBlockDao";
+import { IAgtSharingMessageDao } from "./dao/synchronization/AgtSharingMessageDao";
+import { ITerminalDao } from "./dao/terminal/TerminalDao";
+import { ITerminalRepositoryDao } from "./dao/terminal/TerminalRepositoryDao";
+export declare const DailyArchiveLogDaoToken: Token<IDailyArchiveLogDao>;
+export declare const TerminalDaoToken: Token<ITerminalDao>;
+export declare const TerminalRepositoryDaoToken: Token<ITerminalRepositoryDao>;
+export declare const RepositoryDaoToken: Token<IRepositoryDao>;
+export declare const SyncLogDaoToken: Token<ISyncLogDao>;
+export declare const AgtSharingMessageDaoToken: Token<IAgtSharingMessageDao>;
+export declare const AgtRepositoryTransactionBlockDaoToken: Token<IAgtRepositoryTransactionBlockDao>;

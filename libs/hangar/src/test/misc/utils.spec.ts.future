@@ -1,0 +1,309 @@
+import {dbConst} from "../../config/Constants";
+import {getTaskCount, getGoalCount} from "./queries.spec.ts.future";
+import {JSONBaseOperation} from "tiql";
+import {ITqTestTask} from "./TqTestTask.ts";
+import {QTqTestTask} from "../../generated/test/misc/qTqTestTask";
+import {QTqTestGoal} from "../../generated/test/misc/qTqTestGoal";
+
+/**
+ * Created by Papa on 12/1/2016.
+ */
+
+export async function wait( timeout ): Promise<void> {
+
+	return new Promise<void>((
+		resolve,
+		reject
+	) => {
+		try {
+			setTimeout(() => {
+				resolve();
+			}, timeout);
+		} catch (error) {
+			reject(error);
+		}
+	});
+}
+
+export async function createEntity(
+	entity: any,
+	QClass: any,
+	done,
+	doneAfterSuccessfulCreate = false,
+	databaseName?: string
+) {
+	await operateOnEntity(entity, QClass, 'create', done, doneAfterSuccessfulCreate, databaseName);
+}
+
+export async function updateEntity(
+	entity: any,
+	QClass: any,
+	done,
+	doneAfterSuccessfulCreate = false
+) {
+	await operateOnEntity(entity, QClass, 'update', done, doneAfterSuccessfulCreate);
+}
+
+export async function deleteEntity(
+	entity: any,
+	QClass: any,
+	done,
+	doneAfterSuccessfulCreate = false
+) {
+	await operateOnEntity(entity, QClass, 'delete', done, doneAfterSuccessfulCreate);
+}
+
+export async function updateWhere(
+	query: any,
+	QClass: any,
+	done,
+	doneAfterSuccessfulCreate = false
+) {
+	await operateOnEntity(query, QClass, 'updateWhere', done, doneAfterSuccessfulCreate);
+}
+
+export async function deleteWhere(
+	query: any,
+	QClass: any,
+	done,
+	doneAfterSuccessfulCreate = false,
+	databaseName?: string
+) {
+	await operateOnEntity(query, QClass, 'deleteWhere', done, doneAfterSuccessfulCreate, databaseName);
+}
+
+
+async function operateOnEntity(
+	entity: any,
+	QClass: any,
+	operation: string,
+	done,
+	doneAfterSuccessfulCreate = false,
+	databaseName: string = dbConst.DEFAULT_DB
+) {
+	let failed = false;
+	try {
+		await QClass[operation](entity, databaseName);
+	} catch (error) {
+		failed = true;
+		console.log(error);
+		done.fail(`Error running ${operation} on ${entity.constructor.name}`);
+	} finally {
+		if (!failed && doneAfterSuccessfulCreate) {
+			done();
+		}
+	}
+}
+
+export enum TestLogLevel {
+	ERROR,
+	WARN,
+	INFO,
+	DEBUG,
+	TRACE
+}
+
+var logLevel = TestLogLevel.INFO;
+
+export function setTestLogLevel( newLogLevel: TestLogLevel ): void {
+	logLevel = newLogLevel;
+}
+
+export function info( message: string ): void {
+	if (logLevel < TestLogLevel.INFO) {
+		return;
+	}
+	console.log(message);
+}
+
+export function tq(
+	message: string,
+	callback: { ( done ): void }
+): void {
+
+	async function test( done ) {
+		try {
+			await callback(done);
+		} catch (error) {
+			console.log(error);
+			done.fail(`Error in: TQ Should ${message}`);
+		} finally {
+			done();
+		}
+	}
+
+	it(`TQ Should ${message}`, ( done ) => {
+		info(`\n\t[TQ Should ${message}]\n`);
+		test(done).then();
+	});
+}
+
+
+export function tqSync(
+	message: string,
+	callback: { ( done ): void }
+): void {
+	it(`TQ Should ${message}`, ( done ) => {
+		info(`\n\t[TQ Should ${message}]\n`);
+		callback(done);
+	});
+}
+
+
+export function entitiesEqual(
+	actual,
+	expected,
+	done,
+	cascade: boolean = true,
+	failTest: boolean = true,
+	entitySet: Set<any> = new Set<any>()
+): boolean {
+
+	let matchedProperties: { [name: string]: boolean } = {};
+	for (let propertyName in actual) {
+		if (!actual.hasOwnProperty(propertyName)) {
+			continue;
+		}
+		let actualValue = actual[propertyName];
+		let expectedValue = expected[propertyName];
+		let actualValueType = typeof actualValue;
+		let expectedValueType = typeof expectedValue;
+		if (actualValueType != expectedValueType) {
+			if (failTest)
+				done.fail(`Unexpected 'typeof ${propertyName}': expecting ${expectedValueType} (value: '${expectedValue}'), got ${actualValueType} (value: '${actualValue}')`);
+			return false;
+		}
+		switch (typeof actualValue) {
+			case 'boolean':
+			case 'number':
+			case 'string':
+			case 'undefined':
+				if (actualValue !== expectedValue) {
+					if (failTest)
+						done.fail(`Unexpected value for property '${propertyName}': expecting '${expectedValue}', got '${actualValue}'`);
+					return false;
+				}
+				break;
+			case 'object':
+				if (expectedValue === null) {
+					if (actualValue !== null) {
+						if (failTest)
+							done.fail(`Unexpected value for property '${propertyName}': expecting '${expectedValue}', got '${actualValue}'`);
+						return false;
+					}
+				}
+				if (expectedValue instanceof Date) {
+					if (!(actualValue instanceof Date)) {
+						if (failTest)
+							done.fail(`Unexpected '${propertyName} instanceof': expecting Date`);
+						return false;
+					}
+				} else if (expectedValue instanceof Array) {
+					if (!(actualValue instanceof Array)) {
+						if (failTest)
+							done.fail(`Unexpected '${propertyName} instanceof': expecting Array`);
+						return false;
+					}
+					if (expectedValue.length !== actualValue.length) {
+						if (failTest)
+							done.fail(`Unexpected length of Array '${propertyName}': expecting ${expectedValue.length}, got ${actualValue.length}`);
+						return false;
+					}
+					if (cascade) {
+						for (let i = 0; i < expectedValue.length; i++) {
+							entitySet.add(actualValue[i]);
+							if (!entitiesEqual(actualValue[i], expectedValue[i], done, cascade, failTest, entitySet)) {
+								return false;
+							}
+						}
+					}
+				} else {
+					if (cascade && !entitySet.has(actualValue)) {
+						entitySet.add(actualValue);
+						if (!entitiesEqual(actualValue, expectedValue, done, cascade, failTest, entitySet)) {
+							return false;
+						}
+					}
+				}
+				break;
+			case 'function':
+				break;
+			default:
+				if (failTest)
+					done.fail(`Unexpected 'typeof ${propertyName}': ${actualValueType}`);
+				return false;
+		}
+		matchedProperties[propertyName] = true;
+	}
+	entitySet.add(actual);
+	for (let propertyName in expected) {
+		if (!expected.hasOwnProperty(propertyName)) {
+			continue;
+		}
+		let expectedValue = expected[propertyName];
+		if (!actual.hasOwnProperty(propertyName)) {
+			if (typeof expectedValue === 'object' && !(expectedValue instanceof Date)) {
+				if (!cascade) {
+					continue;
+				}
+			}
+			throw `Did not find property '${propertyName}', in object`;
+		}
+		if (matchedProperties[propertyName]) {
+			continue;
+		}
+		if (typeof expected[propertyName] === 'function') {
+			continue;
+		}
+		if (failTest)
+			done.fail(`Did not find property: '${propertyName}' in object.`);
+		return false;
+	}
+
+	return true;
+}
+
+export async function assertTaskCount(
+	expectedCount: number,
+	whereClauseCallback?: { ( t: QTqTestTask ): JSONBaseOperation },
+	dbName = dbConst.DEFAULT_DB
+) {
+	let taskCount = await getTaskCount(whereClauseCallback, dbName);
+	expect(taskCount).toBe(expectedCount);
+}
+
+export async function assertGoalCount(
+	expectedCount: number,
+	whereClauseCallback?: { ( g: QTqTestGoal ): JSONBaseOperation },
+	dbName = dbConst.DEFAULT_DB
+) {
+	let goalCount = await getGoalCount(whereClauseCallback, dbName);
+	expect(goalCount).toBe(expectedCount);
+}
+
+export function verifyGeneratedId(
+	returnedObject: object,
+	originalObject: object,
+	idFieldName: string
+): void {
+	expect(returnedObject[idFieldName]).toBeTruthy();
+	originalObject[idFieldName] = returnedObject[idFieldName];
+}
+
+export function shallowCopy<C>( object: C ): C {
+	return null;
+}
+
+export function deepCopy<C>( object: C ): C {
+	return null;
+}
+
+export function sortTasksById(
+	task1: ITqTestTask,
+	task2: ITqTestTask
+) {
+	if (task1.taskId < task2.taskId) {
+		return -1;
+	}
+	return 1;
+}
