@@ -31,7 +31,6 @@ export class Utils
 	Medatada: IQMetadataUtils;
 	Query: IQueryUtils;
 	Schema: ISchemaUtils;
-	testClass: TestClass
 
 	constructor(
 		@Inject(AirportDatabaseToken)

@@ -1,24 +1,13 @@
 {
-  "version": "2.9.2",
-  "compileOnSave": true,
   "compilerOptions": {
-    "declaration": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noImplicitAny": false,
     "outDir": "lib/",
-    "sourceMap": true,
-    "removeComments": false,
-    "target": "es6",
     "typeRoots": [
       "node_modules/@types"
     ]
   },
   "exclude": [
-    "doc",
     "lib",
     "node_modules"
-  ]
+  ],
+  "extends": "../../tsconfig.core.json"
 }

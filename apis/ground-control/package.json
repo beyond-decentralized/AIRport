@@ -1,6 +1,10 @@
 {
-  "main": "../../lib/index.js",
+  "dependencies": {
+    "rxjs": "^6.2.2",
+    "typedi": "^0.8.0"
+  },
+  "main": "lib/index.js",
   "name": "@airport/ground-control",
-  "typings": "../../lib/index",
+  "typings": "lib/index",
   "version": "0.0.1"
 }

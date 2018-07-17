@@ -1,0 +1,219 @@
+{
+  "name": "rush-common",
+  "version": "0.0.0",
+  "lockfileVersion": 1,
+  "requires": true,
+  "dependencies": {
+    "@rush-temp/air-control": {
+      "version": "file:projects/air-control.tgz",
+      "integrity": "sha512-EOE1rT1w4zM+dcvU6ZQQyC23JU609fpZt8hSAgDmAqFLVxNbuaWk5+BOWy3t3fzggOROVL3plW9BDehM7AKLfg==",
+      "requires": {
+        "rxjs": "6.2.2",
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/airport-code": {
+      "version": "file:projects/airport-code.tgz",
+      "integrity": "sha512-96X9q4RilleGh0ZS/cbQa6VuJ4GkV94XQ4BGifWJIVfHh1IQ2WmWtWr9j2LnlM/1yXo7WEuBDWU/esFADxDivQ==",
+      "requires": {
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/approach-lighting-system": {
+      "version": "file:projects/approach-lighting-system.tgz",
+      "integrity": "sha512-4ppJLU6ksTsTKgEeJhof1WDWnYIbMLsiqy31NiBXm7oyOIHAZUFTrLb9IuIS41pvshIgfjNtTmnGebt9X07AZA==",
+      "requires": {
+        "rxjs": "6.2.2",
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/arrivals-n-departures": {
+      "version": "file:projects/arrivals-n-departures.tgz",
+      "integrity": "sha512-EZNfYPv278+0frHpRZHEm88vXPH/dLyYPUljtqmQZMZTBVixvvN/sGQn145uivitVEMSbKZTS7Np9jzW/HNlfw==",
+      "requires": {
+        "rxjs": "6.2.2",
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/automated-guideway-transit": {
+      "version": "file:projects/automated-guideway-transit.tgz",
+      "integrity": "sha512-IAlI88Rf6aSZZXhvaqFgMXyy5N1bKOvKZrcEF8r+vv/or7AOo6+mXHJwqtYmVr6nAJFyfVshMabHFJTKvDCkWA==",
+      "requires": {
+        "@types/node": "8.10.21",
+        "rxjs": "6.2.2",
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/check-in": {
+      "version": "file:projects/check-in.tgz",
+      "integrity": "sha512-zt0mtG/xNj9Haut8sbceb7N3x6eYnCdsdKy901mZJOQ+PKwiRuJdLKY1u9OdFFg3lTekJj+X85WmJy1C2NsggQ==",
+      "requires": {
+        "rxjs": "6.2.2",
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/flight-log-archive": {
+      "version": "file:projects/flight-log-archive.tgz",
+      "integrity": "sha512-glOLp07WqGscRd7TBQc8ul0HwJcRovG/zEjVYlXZELWKZgViuBs7v/zW/ENcsWzZkrRVSEMtlplG5y3boz7V5A==",
+      "requires": {
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/ground-control": {
+      "version": "file:projects/ground-control.tgz",
+      "integrity": "sha512-nx5Cguenll+qEFUyXQHueFVBkcQzJLRcD30WhdKkNWQgLEeljvz4l0E8qsxKDJGVCTXpIdZdyPw/4eK/MRJiUg==",
+      "requires": {
+        "rxjs": "6.2.2",
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/ground-transport": {
+      "version": "file:projects/ground-transport.tgz",
+      "integrity": "sha512-Odh83F0OuKbzOjhRUWTkPegb/0ITYwk+5V662uPRHQKrucfxvhvWITWABoXlD+nIY993miKUPEVPlt6sNcHojQ==",
+      "requires": {
+        "@types/gapi": "0.0.35",
+        "@types/google-drive-realtime-api": "0.0.33",
+        "rxjs": "6.2.2",
+        "typedi": "0.8.0",
+        "zipson": "0.2.9"
+      }
+    },
+    "@rush-temp/guideway": {
+      "version": "file:projects/guideway.tgz",
+      "integrity": "sha512-oTfWaKgZsM3cGt/CVmYGFSXLGE32AGlLDHBE+G9w40lEL5SM5tw31LXZ722e7zII4CKkfquqYksBIhxdqDEsMQ==",
+      "requires": {
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/holding-pattern": {
+      "version": "file:projects/holding-pattern.tgz",
+      "integrity": "sha512-Rk356YhuLu/JRll6gbvU9SDdGY8lfkyqtQ7k7qhNqWTgrieLofVH8nwoaz5HQlTDpu1chwtR38RSILxL74AApg==",
+      "requires": {
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/moving-walkway": {
+      "version": "file:projects/moving-walkway.tgz",
+      "integrity": "sha512-kF0q4Z50HIdO8ie7oz4CphsW+HQDXd0eXEUGzhwWANXhzPHoh+v7fqahV5KbuhJtPIUZQ+Ql0fayArAHxoEGrQ==",
+      "requires": {
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/point-of-destination": {
+      "version": "file:projects/point-of-destination.tgz",
+      "integrity": "sha512-oUmzK+Yrq5Ej8jXPL+HZ8MJbHcnseZzp3hmsyUpqf39AI4agcQJyTPZ3S7MokZ453kXUI/OXREIntTtAbhAJ5w=="
+    },
+    "@rush-temp/runway": {
+      "version": "file:projects/runway.tgz",
+      "integrity": "sha512-3k26REPFZrjwo3SaFjkFDNlrbzl+4xtgeSxOiN70OgEgRfmDBdLsoOMB5peaojXY77YGPFsM8TSE+ljzb8xhnQ==",
+      "requires": {
+        "@types/node": "6.0.114",
+        "typescript": "3.0.0-rc"
+      },
+      "dependencies": {
+        "@types/node": {
+          "version": "6.0.114",
+          "resolved": "https://registry.npmjs.org/@types/node/-/node-6.0.114.tgz",
+          "integrity": "sha512-5ViC9dwf1VIAtrOFTvOuN04lJgw28eKjuy0Vg2Bd/fSlxKP2feCSkIw04ZgOENL2ywdWrtbkthp1XVLEjJmouw=="
+        }
+      }
+    },
+    "@rush-temp/runway-edge-lighting": {
+      "version": "file:projects/runway-edge-lighting.tgz",
+      "integrity": "sha512-RkcAAe+DNyyEetJihyyanyzUo3/Sw7jZNBtW1hoX54zSxGqxCFQoP+B4/dewl51VZ4meGZvLUvppBhtq+wWHCQ==",
+      "requires": {
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/tarmaq": {
+      "version": "file:projects/tarmaq.tgz",
+      "integrity": "sha512-PF3u0KOziyHkrpASiAu/+1cg1qdhqFj3T172XK35F41SN3kxTiSJP6MKY0bJ/CdOxuPaOaF/blBrd/HCbnV4BQ==",
+      "requires": {
+        "rxjs": "6.2.2",
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/terminal": {
+      "version": "file:projects/terminal.tgz",
+      "integrity": "sha512-tXutvLpzknv2xEjIAP413s5aJBGkYG2zI3tAyIezuCR/QLud4F/ij0A4kkuCKXPzC0Sq83b1LXyd8yTtsPVSGQ==",
+      "requires": {
+        "rxjs": "6.2.2",
+        "typedi": "0.8.0",
+        "zipson": "0.2.9"
+      }
+    },
+    "@rush-temp/terminal-map": {
+      "version": "file:projects/terminal-map.tgz",
+      "integrity": "sha512-hsGpL7utcbAFQamjGyhaoXAEBvsGpv09K6DLND6V816fJKW2xvE/PcwbhcydGxOTsbQpa5EYADs5nUE7MBSa0g==",
+      "requires": {
+        "rxjs": "6.2.2",
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/territory": {
+      "version": "file:projects/territory.tgz",
+      "integrity": "sha512-Zcsr49iTNu4Y1/PjRLEAbMb9Ok084wHY7rEjFqy+ZVCub5SZK/d7juawLNID6xSNKCEsHob1YSchsCHDPIz3MQ==",
+      "requires": {
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/tower": {
+      "version": "file:projects/tower.tgz",
+      "integrity": "sha512-w+o7vDVT6FTz/p2pZ02eX1Ipv/dG5NQzzkZ4JSSJsweMYsYdPWOH/mSLa1TXTVUgGOVYpDvRID11rntXWBB13g==",
+      "requires": {
+        "rxjs": "6.2.2",
+        "typedi": "0.8.0"
+      }
+    },
+    "@rush-temp/traffic-pattern": {
+      "version": "file:projects/traffic-pattern.tgz",
+      "integrity": "sha512-UkL/wfCzBi5LZo3AXt+3t+d4W2Rne70ajrn7R9WV/hwwAq11lx4q9o0hlmx4pZ9N8d65dHur5wdyXq3ZCcDcoA==",
+      "requires": {
+        "typedi": "0.8.0"
+      }
+    },
+    "@types/gapi": {
+      "version": "0.0.35",
+      "resolved": "https://registry.npmjs.org/@types/gapi/-/gapi-0.0.35.tgz",
+      "integrity": "sha512-6E+WHil3a2+ZQXxa+2Fg9WMi1SwVx9KXT3P/7VmfTwK9Uqw2F+TQ97Ig2yJ7cOa0fUEk4qgdQNKP4rzKZfNMOQ=="
+    },
+    "@types/google-drive-realtime-api": {
+      "version": "0.0.33",
+      "resolved": "https://registry.npmjs.org/@types/google-drive-realtime-api/-/google-drive-realtime-api-0.0.33.tgz",
+      "integrity": "sha1-GV61bxhGPoQtOvw49GobEDfO77A="
+    },
+    "@types/node": {
+      "version": "8.10.21",
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-8.10.21.tgz",
+      "integrity": "sha512-87XkD9qDXm8fIax+5y7drx84cXsu34ZZqfB7Cial3Q/2lxSoJ/+DRaWckkCbxP41wFSIrrb939VhzaNxj4eY1w=="
+    },
+    "rxjs": {
+      "version": "6.2.2",
+      "resolved": "https://registry.npmjs.org/rxjs/-/rxjs-6.2.2.tgz",
+      "integrity": "sha512-0MI8+mkKAXZUF9vMrEoPnaoHkfzBPP4IGwUYRJhIRJF6/w3uByO1e91bEHn8zd43RdkTMKiooYKmwz7RH6zfOQ==",
+      "requires": {
+        "tslib": "1.9.3"
+      }
+    },
+    "tslib": {
+      "version": "1.9.3",
+      "resolved": "https://registry.npmjs.org/tslib/-/tslib-1.9.3.tgz",
+      "integrity": "sha512-4krF8scpejhaOgqzBEcGM7yDIEfi0/8+8zDRZhNZZ2kjmHJ4hv3zCbQWxoJGz1iw5U0Jl0nma13xzHXcncMavQ=="
+    },
+    "typedi": {
+      "version": "0.8.0",
+      "resolved": "https://registry.npmjs.org/typedi/-/typedi-0.8.0.tgz",
+      "integrity": "sha512-/c7Bxnm6eh5kXx2I+mTuO+2OvoWni5+rXA3PhXwVWCtJRYmz3hMok5s1AKLzoDvNAZqj/Q/acGstN0ri5aQoOA=="
+    },
+    "typescript": {
+      "version": "3.0.0-rc",
+      "resolved": "https://registry.npmjs.org/typescript/-/typescript-3.0.0-rc.tgz",
+      "integrity": "sha512-//6ivFupDRi+rtsivXnYNfXK7URxdvO18hhxgNpbiIVBE611+1NCiiEfgjjx53TU7fjxlhWPuv3RRj5hJF62/w=="
+    },
+    "zipson": {
+      "version": "0.2.9",
+      "resolved": "https://registry.npmjs.org/zipson/-/zipson-0.2.9.tgz",
+      "integrity": "sha512-7DZqOFOnQlXN/l9vMU072gNcVNQyARVW02v1TXwMUcNpQOznXhQv3rDGN+f2x5MhR0283w2pP4189rXX67NUYw=="
+    }
+  }
+}

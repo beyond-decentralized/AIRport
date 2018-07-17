@@ -1,6 +1,10 @@
-import { Subject } from "rxjs";
-import { PartialObserver } from "rxjs";
-import { ISubscription, Subscription, TeardownLogic } from "rxjs";
+import {
+	SubscriptionLike,
+	PartialObserver,
+	Subject,
+	Subscription,
+	TeardownLogic
+} from "rxjs";
 
 export class QuerySubject<E> extends Subject<E> {
 
@@ -23,7 +27,7 @@ export class QuerySubject<E> extends Subject<E> {
 
 }
 
-export class ResultsSubscription implements ISubscription {
+export class ResultsSubscription implements SubscriptionLike {
 
 	constructor(
 		public subscription: Subscription,

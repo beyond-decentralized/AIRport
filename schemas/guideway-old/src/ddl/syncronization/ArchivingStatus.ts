@@ -1,5 +1,0 @@
-export enum ArchivingStatus {
-	NOT_ARCHIVING,
-	ARCHIVING_IN_PROGRESS,
-	ARCHIVING_COMPLETE,
-}

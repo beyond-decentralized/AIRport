@@ -1,40 +1,14 @@
 {
-  "version": "0.0.50",
-  "name": "@airport/tarmaq",
-  "description": "The Tarmac (airport apron) is the area of an airport where aircraft (your application) are parked. TARMAQ stands for Typescript Advanced Relational Mapping And Querying.",
-  "license": "MIT",
-  "scripts": {
-    "lint": "tslint \"src/**/*.ts\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/russoturisto/airport.git"
+  "dependencies": {
+    "@airport/air-control": "0.0.1",
+    "@airport/ground-control": "0.0.1",
+    "@airport/terminal-map": "0.0.1",
+    "@airport/tower": "0.0.1",
+    "rxjs": "^6.2.2",
+    "typedi": "^0.8.0"
   },
   "main": "lib/index.js",
+  "name": "@airport/tarmaq",
   "typings": "lib/index",
-  "dependencies": {
-    "@airport/air-control": "0.0.29",
-    "@airport/ground-control": "0.0.7",
-    "@airport/terminal-map": "0.0.6",
-    "@airport/tower": "0.0.1",
-    "rxjs": "^5.4.3"
-  },
-  "keywords": [
-    "serverless",
-    "orm",
-    "relational",
-    "mapping",
-    "sql",
-    "query engine",
-    "object relational mapping",
-    "nosql"
-  ],
-  "author": "russoturisto <russoturisto@gmail.com> (https://russoturistoo.wordpress.com/blog/)",
-  "devDependencies": {
-    "typescript": "^2.7.2"
-  },
-  "bugs": {
-    "url": "https://github.com/russoturisto/airport/issues"
-  },
-  "homepage": "https://github.com/russoturisto/airport#readme"
+  "version": "0.0.1"
 }

@@ -1,51 +1,22 @@
 {
-  "version": "0.0.1",
-  "name": "@airport/automated-guideway-transit",
-  "description": "Transfers passengers (user data) between parking (local storage) ground transport (could storage) and airplanes (your application).",
-  "license": "MIT",
-  "scripts": {
-    "lint": "tslint \"src/**/*.ts\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/russoturisto/airport.git"
-  },
-  "main": "lib/index.js",
-  "typings": "lib/index",
   "dependencies": {
-    "@airport/air-control": "0.0.29",
+    "@airport/air-control": "0.0.1",
     "@airport/airport-code": "0.0.1",
     "@airport/approach-lighting-system": "0.0.1",
     "@airport/arrivals-n-departures": "0.0.1",
     "@airport/flight-log-archive": "0.0.1",
-    "@airport/ground-control": "0.0.7",
+    "@airport/ground-control": "0.0.1",
     "@airport/guideway": "0.0.1",
     "@airport/point-of-destination": "0.0.1",
     "@airport/runway-edge-lighting": "0.0.1",
-    "@airport/tarmaq": "0.0.50",
+    "@airport/tarmaq": "0.0.1",
     "@airport/tower": "0.0.1",
     "@types/node": "^8.0.53",
-    "typedi": "^0.7.1"
+    "rxjs": "^6.2.2",
+    "typedi": "^0.8.0"
   },
-  "devDependencies": {
-    "typescript": "^2.7.2"
-  },
-  "keywords": [
-    "serverless",
-    "orm",
-    "relational",
-    "mapping",
-    "sql",
-    "query engine",
-    "object relational mapping",
-    "nosql"
-  ],
-  "author": "russoturisto <russoturisto@gmail.com> (https://russoturistoo.wordpress.com/blog/)",
-  "devDependencies": {
-    "typescript": "^2.4.2"
-  },
-  "bugs": {
-    "url": "https://github.com/russoturisto/airport/issues"
-  },
-  "homepage": "https://github.com/russoturisto/airport#readme"
+  "main": "lib/index.js",
+  "name": "@airport/automated-guideway-transit",
+  "typings": "lib/index",
+  "version": "0.0.1"
 }

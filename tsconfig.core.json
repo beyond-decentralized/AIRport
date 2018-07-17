@@ -1,0 +1,19 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "esnext",
+    "lib": [
+      "esnext",
+      "dom"
+    ]
+  },
+  "version": "3.0.0"
+}
