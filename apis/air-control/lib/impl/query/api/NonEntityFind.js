@@ -1,29 +1,32 @@
-import { QueryResultType } from "@airport/ground-control";
-import { FieldQuery } from "../facade/FieldQuery";
-import { SheetQuery } from "../facade/SheetQuery";
-import { TreeQuery } from "../facade/TreeQuery";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const FieldQuery_1 = require("../facade/FieldQuery");
+const SheetQuery_1 = require("../facade/SheetQuery");
+const TreeQuery_1 = require("../facade/TreeQuery");
 /**
  * Created by Papa on 11/12/2016.
  */
-export class NonEntityFind {
+class NonEntityFind {
     constructor(dbFacade, utils) {
         this.dbFacade = dbFacade;
         this.utils = utils;
     }
     async tree(rawTreeQuery) {
-        const treeQuery = new TreeQuery(this.utils.Entity.getQuery(rawTreeQuery), this.utils);
-        return await this.dbFacade.entity.find(null, treeQuery, QueryResultType.TREE);
+        const treeQuery = new TreeQuery_1.TreeQuery(this.utils.Entity.getQuery(rawTreeQuery), this.utils);
+        return await this.dbFacade.entity.find(null, treeQuery, ground_control_1.QueryResultType.TREE);
     }
     async sheet(rawSheetQuery, cursorSize, callback) {
         if (cursorSize || callback) {
             throw `Implement!`;
         }
-        const sheetQuery = new SheetQuery(this.utils.Entity.getQuery(rawSheetQuery), this.utils);
-        return await this.dbFacade.entity.find(null, sheetQuery, QueryResultType.SHEET);
+        const sheetQuery = new SheetQuery_1.SheetQuery(this.utils.Entity.getQuery(rawSheetQuery), this.utils);
+        return await this.dbFacade.entity.find(null, sheetQuery, ground_control_1.QueryResultType.SHEET);
     }
     async field(rawFieldQuery) {
-        const fieldQuery = new FieldQuery(this.utils.Entity.getQuery(rawFieldQuery), this.utils);
-        return await this.dbFacade.entity.find(null, fieldQuery, QueryResultType.FIELD);
+        const fieldQuery = new FieldQuery_1.FieldQuery(this.utils.Entity.getQuery(rawFieldQuery), this.utils);
+        return await this.dbFacade.entity.find(null, fieldQuery, ground_control_1.QueryResultType.FIELD);
     }
 }
+exports.NonEntityFind = NonEntityFind;
 //# sourceMappingURL=NonEntityFind.js.map

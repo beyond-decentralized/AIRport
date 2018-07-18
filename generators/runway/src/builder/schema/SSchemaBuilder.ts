@@ -224,18 +224,18 @@ export class SSchemaBuilder {
 		let foreignKey: DatabaseForeignKey;
 		let manyToOne: DatabaseManyToOneElements = undefined;
 		let oneToMany: DatabaseOneToManyElements = undefined;
-		let repositoryJoin                       = false;
+		// let repositoryJoin                       = false;
 		let addToJoinFunction;
 		let joinFunctionWithOperator             = SqlOperator.AND;
 		let relationType: EntityRelationType;
 		for (const decorator of aProperty.decorators) {
 			switch (decorator.name) {
-				case property.R_JOIN_COLUMN:
-					if (!entity.isRepositoryEntity) {
-						throw `${entity.name}.${aProperty.name} cannot be @RJoinColumn `
-						+ `- ${entity.name} does not extend RepositoryEntity or LocalRepositoryEntity.`;
-					}
-					repositoryJoin = true;
+				// case property.R_JOIN_COLUMN:
+				// 	if (!entity.isRepositoryEntity) {
+				// 		throw `${entity.name}.${aProperty.name} cannot be @RJoinColumn `
+				// 		+ `- ${entity.name} does not extend RepositoryEntity or LocalRepositoryEntity.`;
+				// 	}
+				// 	repositoryJoin = true;
 				case property.JOIN_COLUMN:
 					if (columnsDefined) {
 						throw `Columns are defined more than once for ${entity.name}.${aProperty.name}`;
@@ -244,12 +244,12 @@ export class SSchemaBuilder {
 					foreignKey     = decorator.values[0].foreignKey;
 					columnRelationDefs.push(decorator.values[0]);
 					break;
-				case property.R_JOIN_COLUMNS:
-					if (!entity.isRepositoryEntity) {
-						throw `${entity.name}.${aProperty.name} cannot be @RJoinColumns `
-						+ `- ${entity.name} does not extend RepositoryEntity or LocalRepositoryEntity.`;
-					}
-					repositoryJoin = true;
+				// case property.R_JOIN_COLUMNS:
+				// 	if (!entity.isRepositoryEntity) {
+				// 		throw `${entity.name}.${aProperty.name} cannot be @RJoinColumns `
+				// 		+ `- ${entity.name} does not extend RepositoryEntity or LocalRepositoryEntity.`;
+				// 	}
+				// 	repositoryJoin = true;
 				case property.JOIN_COLUMNS:
 					if (columnsDefined) {
 						throw `Columns are defined more than once for ${entity.name}.${aProperty.name}`;
@@ -405,7 +405,7 @@ export class SSchemaBuilder {
 			relationType,
 			referencedSchemaIndex,
 			relationMustBeSingleIdEntity,
-			repositoryJoin,
+			// repositoryJoin,
 			sRelationColumns
 		};
 

@@ -1,4 +1,4 @@
-import { DbDomain, DomainId, DomainName } from "@airport/air-control";
+import { DbDomain, DomainId, DomainName } from "@airport/ground-control";
 import { Application } from "./Application";
 export declare class Domain implements DbDomain {
     id: DomainId;

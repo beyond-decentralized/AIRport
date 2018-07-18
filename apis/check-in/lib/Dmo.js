@@ -1,10 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 8/26/2017.
  */
 /**
  * Data Manipulation object.
  */
-export class Dmo {
+class Dmo {
     constructor(dbEntity) {
         this.dbEntity = dbEntity;
     }
@@ -39,10 +41,12 @@ export class Dmo {
         throw `Not implemented`;
     }
 }
-export function getAllFieldsSelect(dbEntity) {
+exports.Dmo = Dmo;
+function getAllFieldsSelect(dbEntity) {
     throw `Not implemented`;
 }
-export const DMO = {
+exports.getAllFieldsSelect = getAllFieldsSelect;
+exports.DMO = {
     getAllFieldsSelect: getAllFieldsSelect
 };
 //# sourceMappingURL=Dmo.js.map

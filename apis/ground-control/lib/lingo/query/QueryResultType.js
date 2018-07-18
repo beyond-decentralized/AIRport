@@ -1,4 +1,6 @@
-export var QueryResultType;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var QueryResultType;
 (function (QueryResultType) {
     // Ordered query result with bridging for all MtOs and OtM
     QueryResultType[QueryResultType["ENTITY_GRAPH"] = 0] = "ENTITY_GRAPH";
@@ -16,5 +18,5 @@ export var QueryResultType;
     QueryResultType[QueryResultType["MAPPED_ENTITY_GRAPH"] = 6] = "MAPPED_ENTITY_GRAPH";
     // ENTITY_TREE with all arrays returned as a MappedEntityArray
     QueryResultType[QueryResultType["MAPPED_ENTITY_TREE"] = 7] = "MAPPED_ENTITY_TREE";
-})(QueryResultType || (QueryResultType = {}));
+})(QueryResultType = exports.QueryResultType || (exports.QueryResultType = {}));
 //# sourceMappingURL=QueryResultType.js.map

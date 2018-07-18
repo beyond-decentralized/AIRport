@@ -186,7 +186,7 @@ export class DbSchemaBuilder
 		const dbRelation: DbRelation = {
 			foreignKey: jsonRelation.foreignKey,
 			isId: dbProperty.isId,
-			isRepositoryJoin: jsonRelation.isRepositoryJoin,
+			// isRepositoryJoin: jsonRelation.isRepositoryJoin,
 			manyToOneElems: jsonRelation.manyToOneElems,
 			oneToManyElems: jsonRelation.oneToManyElems,
 			relationType: jsonRelation.relationType,

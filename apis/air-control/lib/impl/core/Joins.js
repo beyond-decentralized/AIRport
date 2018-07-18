@@ -1,9 +1,11 @@
-import { QEntity, QTree } from "./entity/Entity";
-import { QField } from "./field/Field";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Entity_1 = require("./entity/Entity");
+const Field_1 = require("./field/Field");
 /**
  * Created by Papa on 10/25/2016.
  */
-export function tree(query) {
+function tree(query) {
     let queryDefinition;
     if (query instanceof Function) {
         queryDefinition = query();
@@ -11,17 +13,18 @@ export function tree(query) {
     else {
         queryDefinition = query;
     }
-    let view = new QTree([], queryDefinition);
+    let view = new Entity_1.QTree([], queryDefinition);
     let customEntity = queryDefinition.select;
     view = convertMappedEntitySelect(customEntity, queryDefinition, view, view, 'f');
     return view;
 }
+exports.tree = tree;
 function convertMappedEntitySelect(customEntity, queryDefinition, view, selectProxy, fieldPrefix) {
     let fieldIndex = 0;
     for (let property in customEntity) {
         let alias = `${fieldPrefix}${++fieldIndex}`;
         let value = customEntity[property];
-        if (value instanceof QField) {
+        if (value instanceof Field_1.QField) {
             let field = value.getInstance(view);
             field.alias = alias;
             field.q = view;
@@ -43,7 +46,7 @@ function convertMappedEntitySelect(customEntity, queryDefinition, view, selectPr
  * @param query
  * @returns {IQF}
  */
-export function field(query) {
+function field(query) {
     let queryDefinition;
     if (query instanceof Function) {
         queryDefinition = query();
@@ -56,10 +59,11 @@ export function field(query) {
     // Field query cannot be joined to any other query so don't have set the positional fields
     return customField;
 }
-export class JoinFields {
+exports.field = field;
+class JoinFields {
     constructor(joinTo) {
         this.joinTo = joinTo;
-        if (!(this.joinTo instanceof QEntity)) {
+        if (!(this.joinTo instanceof Entity_1.QEntity)) {
             throw `Right value in join must be a View or an Entity`;
         }
     }
@@ -69,4 +73,5 @@ export class JoinFields {
         return this.joinTo;
     }
 }
+exports.JoinFields = JoinFields;
 //# sourceMappingURL=Joins.js.map

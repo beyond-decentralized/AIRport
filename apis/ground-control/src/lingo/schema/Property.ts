@@ -176,8 +176,9 @@ export interface JsonSchemaRelation extends SchemaReferenceByIndex<RelationIndex
 
 	/**
 	 * True if join automatically includes REPOSITORY_ID.
+	 * Not needed - all joins to and from Repository entities are automatically repository joins
 	 */
-	isRepositoryJoin: boolean;
+	// isRepositoryJoin: boolean;
 
 	/**
 	 * True if this relation has @Id() decorator.
@@ -211,7 +212,10 @@ export interface DbRelation extends SchemaReferenceByIndex<RelationIndex> {
 
 	foreignKey: DatabaseForeignKey;
 	isId: boolean;
-	isRepositoryJoin: boolean;
+	/**
+	 * Not needed - all joins to and from Repository entities are automatically repository joins
+	 */
+	// isRepositoryJoin: boolean;
 	manyRelationColumns: DbRelationColumn[];
 	manyToOneElems: DatabaseManyToOneElements;
 	oneRelationColumns?: DbRelationColumn[];

@@ -1,5 +1,9 @@
-import { TableConfiguration } from "@airport/air-control";
-import { SColumn, SProperty, SRelation } from "./SProperty";
+import {DatabaseObjectConfiguration} from "@airport/ground-control";
+import {
+	SColumn,
+	SProperty,
+	SRelation
+}                                    from "./SProperty";
 
 /**
  * An entity in a schema.
@@ -45,7 +49,7 @@ export interface SEntity {
 	/**
 	 * Table configuration object.
 	 */
-	table: TableConfiguration;
+	table: DatabaseObjectConfiguration<any>;
 
 	/**
 	 * Schema specific index of the table represented by the entity.

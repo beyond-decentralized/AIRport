@@ -1,24 +1,26 @@
-import { EntityFind, EntityFindOne, EntitySearch, EntitySearchOne } from "@airport/air-control";
-import { Dmo } from "./Dmo";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const Dmo_1 = require("./Dmo");
 /**
  * Created by Papa on 12/11/2016.
  */
-export class EntityDatabaseFacade {
+class EntityDatabaseFacade {
     constructor(dbEntity, Q, utils) {
         this.dbEntity = dbEntity;
         this.Q = Q;
         this.utils = utils;
-        this.dmo = new Dmo(dbEntity);
+        this.dmo = new Dmo_1.Dmo(dbEntity);
     }
     get from() {
         return this.Q[this.dbEntity.name];
     }
     initialize(databaseFacade) {
         this.common = databaseFacade;
-        this.find = new EntityFind(this.dbEntity, databaseFacade, this.utils);
-        this.findOne = new EntityFindOne(this.dbEntity, databaseFacade, this.utils);
-        this.search = new EntitySearch(this.dbEntity, databaseFacade, this.utils);
-        this.searchOne = new EntitySearchOne(this.dbEntity, databaseFacade, this.utils);
+        this.find = new air_control_1.EntityFind(this.dbEntity, databaseFacade, this.utils);
+        this.findOne = new air_control_1.EntityFindOne(this.dbEntity, databaseFacade, this.utils);
+        this.search = new air_control_1.EntitySearch(this.dbEntity, databaseFacade, this.utils);
+        this.searchOne = new air_control_1.EntitySearchOne(this.dbEntity, databaseFacade, this.utils);
     }
     releaseCachedForUpdate(updateCacheType, ...entities) {
         this.common.releaseCachedForUpdate(updateCacheType, this.dbEntity, ...entities);
@@ -60,4 +62,5 @@ export class EntityDatabaseFacade {
         return await this.common.save(this.dbEntity, entity);
     }
 }
+exports.EntityDatabaseFacade = EntityDatabaseFacade;
 //# sourceMappingURL=EntityDatabaseFacade.js.map

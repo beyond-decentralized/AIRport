@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,23 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { DatastructureUtils } from "@airport/ground-control";
-import { Inject, Service } from "typedi";
-import { AirportDatabaseToken, UtilsToken } from "../InjectionTokens";
-import { EntityUtils } from "./utils/EntityUtils";
-import { FieldUtils } from "./utils/FieldUtils";
-import { QMetadataUtils } from "./utils/QMetadataUtils";
-import { QueryUtils } from "./utils/QueryUtils";
-import { SchemaUtils } from "./utils/SchemaUtils";
-let Utils = class Utils extends DatastructureUtils {
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const typedi_1 = require("typedi");
+const InjectionTokens_1 = require("../InjectionTokens");
+const EntityUtils_1 = require("./utils/EntityUtils");
+const FieldUtils_1 = require("./utils/FieldUtils");
+const QMetadataUtils_1 = require("./utils/QMetadataUtils");
+const QueryUtils_1 = require("./utils/QueryUtils");
+const SchemaUtils_1 = require("./utils/SchemaUtils");
+let Utils = class Utils extends ground_control_1.DatastructureUtils {
     constructor(airportDb) {
         super();
         this.airportDb = airportDb;
-        this.Entity = new EntityUtils(this);
-        this.Field = new FieldUtils(this);
-        this.Medatada = new QMetadataUtils(airportDb, this);
-        this.Query = new QueryUtils(this);
-        this.Schema = new SchemaUtils(airportDb, this);
+        this.Entity = new EntityUtils_1.EntityUtils(this);
+        this.Field = new FieldUtils_1.FieldUtils(this);
+        this.Medatada = new QMetadataUtils_1.QMetadataUtils(airportDb, this);
+        this.Query = new QueryUtils_1.QueryUtils(this);
+        this.Schema = new SchemaUtils_1.SchemaUtils(airportDb, this);
     }
     strsToNums(strings) {
         return strings.map(str => parseInt(str));
@@ -99,9 +101,9 @@ let Utils = class Utils extends DatastructureUtils {
     }
 };
 Utils = __decorate([
-    Service(UtilsToken),
-    __param(0, Inject(AirportDatabaseToken)),
+    typedi_1.Service(InjectionTokens_1.UtilsToken),
+    __param(0, typedi_1.Inject(InjectionTokens_1.AirportDatabaseToken)),
     __metadata("design:paramtypes", [Object])
 ], Utils);
-export { Utils };
+exports.Utils = Utils;
 //# sourceMappingURL=Utils.js.map

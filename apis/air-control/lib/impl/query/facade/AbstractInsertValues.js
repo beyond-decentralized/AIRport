@@ -1,11 +1,13 @@
-import { QField } from "../../core/field/Field";
-import { getPrimitiveValue } from "../../core/field/WrapperFunctions";
-import { AbstractQuery } from "./AbstractQuery";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Field_1 = require("../../core/field/Field");
+const WrapperFunctions_1 = require("../../core/field/WrapperFunctions");
+const AbstractQuery_1 = require("./AbstractQuery");
 /**
  * Created by Papa on 11/17/2016.
  */
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
-export class AbstractInsertValues extends AbstractQuery {
+class AbstractInsertValues extends AbstractQuery_1.AbstractQuery {
     constructor(rawInsertValues, columnIndexes) {
         super();
         this.rawInsertValues = rawInsertValues;
@@ -19,8 +21,8 @@ export class AbstractInsertValues extends AbstractQuery {
                 if (value === undefined) {
                     throw `Cannot use 'undefined' in VALUES clause.`;
                 }
-                if (!(value instanceof QField)) {
-                    this.values.push(getPrimitiveValue(value));
+                if (!(value instanceof Field_1.QField)) {
+                    this.values.push(WrapperFunctions_1.getPrimitiveValue(value));
                     return ++currentValueIndex;
                 }
                 else {
@@ -30,4 +32,5 @@ export class AbstractInsertValues extends AbstractQuery {
         });
     }
 }
+exports.AbstractInsertValues = AbstractInsertValues;
 //# sourceMappingURL=AbstractInsertValues.js.map

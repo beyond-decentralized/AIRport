@@ -1,16 +1,18 @@
-import { QDistinctFunction } from "../../core/field/Functions";
-import { AbstractQuery } from "./AbstractQuery";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Functions_1 = require("../../core/field/Functions");
+const AbstractQuery_1 = require("./AbstractQuery");
 /**
  * Created by Papa on 10/24/2016.
  */
-export const NON_ENTITY_SELECT_ERROR_MESSAGE = `Unsupported entry in Non-Entity SELECT clause, must be a(n): Entity Field | ManyToOne Relation | primitive wrapped by "bool","date","num","str" | query wrapped by "field"`;
-export class DistinguishableQuery extends AbstractQuery {
+exports.NON_ENTITY_SELECT_ERROR_MESSAGE = `Unsupported entry in Non-Entity SELECT clause, must be a(n): Entity Field | ManyToOne Relation | primitive wrapped by "bool","date","num","str" | query wrapped by "field"`;
+class DistinguishableQuery extends AbstractQuery_1.AbstractQuery {
     constructor(entityAliases) {
         super(entityAliases);
         this.isHierarchicalEntityQuery = false;
     }
     selectClauseToJSON(rawSelect) {
-        if (rawSelect instanceof QDistinctFunction) {
+        if (rawSelect instanceof Functions_1.QDistinctFunction) {
             if (this.isHierarchicalEntityQuery) {
                 throw `Distinct cannot be used in SELECT of Hierarchical/Bridged Entity queries.`;
             }
@@ -23,4 +25,5 @@ export class DistinguishableQuery extends AbstractQuery {
         }
     }
 }
+exports.DistinguishableQuery = DistinguishableQuery;
 //# sourceMappingURL=NonEntityQuery.js.map

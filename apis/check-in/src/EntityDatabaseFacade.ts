@@ -1,5 +1,4 @@
 import {
-	DbEntity,
 	EntityFind,
 	EntityFindOne,
 	EntitySearch,
@@ -25,8 +24,9 @@ import {
 	RawInsertValues,
 	RawUpdate,
 	UpdateCacheType
-} from "@airport/air-control";
-import {Dmo} from "./Dmo";
+}                 from "@airport/air-control";
+import {DbEntity} from "@airport/ground-control";
+import {Dmo}      from "./Dmo";
 
 /**
  * Created by Papa on 12/11/2016.
@@ -95,29 +95,29 @@ export class EntityDatabaseFacade<Entity,
 
 	async insertColumnValues<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
-		(...args: any[]): RawInsertColumnValues<IQE>;
-	}): Promise<number> {
+			(...args: any[]): RawInsertColumnValues<IQE>;
+		}): Promise<number> {
 		return await this.common.insertColumnValues(this.dbEntity, rawInsertColumnValues);
 	}
 
 	async insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
-		(...args: any[]): RawInsertValues<IQE>;
-	}): Promise<number> {
+			(...args: any[]): RawInsertValues<IQE>;
+		}): Promise<number> {
 		return await this.common.insertValues(this.dbEntity, rawInsertValues);
 	}
 
 	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
-		(...args: any[]): RawInsertColumnValues<IQE>;
-	}): Promise<number[] | string[]> {
+			(...args: any[]): RawInsertColumnValues<IQE>;
+		}): Promise<number[] | string[]> {
 		return await this.common.insertColumnValuesGenerateIds(this.dbEntity, rawInsertColumnValues);
 	}
 
 	async insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
-		(...args: any[]): RawInsertValues<IQE>;
-	}): Promise<number[] | string[]> {
+			(...args: any[]): RawInsertValues<IQE>;
+		}): Promise<number[] | string[]> {
 		return await this.common.insertValuesGenerateIds(this.dbEntity, rawInsertValues);
 	}
 

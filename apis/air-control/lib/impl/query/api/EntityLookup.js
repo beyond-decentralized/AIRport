@@ -1,8 +1,10 @@
-import { QueryResultType } from "@airport/ground-control";
-import { UpdateCacheType } from "../../../lingo/query/api/EntityLookup";
-export class EntityLookup {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const EntityLookup_1 = require("../../../lingo/query/api/EntityLookup");
+class EntityLookup {
     constructor() {
-        this.saveNextCallInUpdateCache = UpdateCacheType.NONE;
+        this.saveNextCallInUpdateCache = EntityLookup_1.UpdateCacheType.NONE;
         this.isMapped = false;
     }
     get mapped() {
@@ -11,28 +13,29 @@ export class EntityLookup {
     }
     getQueryResultType(baseQueryResultType) {
         switch (baseQueryResultType) {
-            case QueryResultType.ENTITY_GRAPH:
+            case ground_control_1.QueryResultType.ENTITY_GRAPH:
                 if (this.isMapped) {
-                    return QueryResultType.MAPPED_ENTITY_GRAPH;
+                    return ground_control_1.QueryResultType.MAPPED_ENTITY_GRAPH;
                 }
-                return QueryResultType.ENTITY_GRAPH;
-            case QueryResultType.ENTITY_TREE:
+                return ground_control_1.QueryResultType.ENTITY_GRAPH;
+            case ground_control_1.QueryResultType.ENTITY_TREE:
                 if (this.isMapped) {
-                    return QueryResultType.MAPPED_ENTITY_TREE;
+                    return ground_control_1.QueryResultType.MAPPED_ENTITY_TREE;
                 }
-                return QueryResultType.ENTITY_TREE;
+                return ground_control_1.QueryResultType.ENTITY_TREE;
             default:
                 throw `Unexpected Base Query ResultType: '${baseQueryResultType}'.`;
         }
     }
-    andCacheForUpdate(cacheForUpdateState = UpdateCacheType.ROOT_QUERY_ENTITIES) {
+    andCacheForUpdate(cacheForUpdateState = EntityLookup_1.UpdateCacheType.ROOT_QUERY_ENTITIES) {
         this.saveNextCallInUpdateCache = cacheForUpdateState;
         return this;
     }
     cleanNextCallState() {
         const saveCurrentCallInUpdateCache = this.saveNextCallInUpdateCache;
-        this.saveNextCallInUpdateCache = UpdateCacheType.NONE;
+        this.saveNextCallInUpdateCache = EntityLookup_1.UpdateCacheType.NONE;
         return saveCurrentCallInUpdateCache;
     }
 }
+exports.EntityLookup = EntityLookup;
 //# sourceMappingURL=EntityLookup.js.map

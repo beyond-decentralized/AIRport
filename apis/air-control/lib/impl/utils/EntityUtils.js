@@ -1,9 +1,11 @@
-import { QOperableField } from "../core/field/OperableField";
-import { EntityQuery } from "../query/facade/EntityQuery";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const OperableField_1 = require("../core/field/OperableField");
+const EntityQuery_1 = require("../query/facade/EntityQuery");
 /**
  * Created by Papa on 6/14/2016.
  */
-export class EntityUtils {
+class EntityUtils {
     constructor(utils) {
         this.utils = utils;
     }
@@ -47,7 +49,7 @@ export class EntityUtils {
         return this.utils.valuesEqual(value1, value2, checkChildObjects);
     }
     isAppliable(object) {
-        return object instanceof QOperableField;
+        return object instanceof OperableField_1.QOperableField;
     }
     getQuery(query) {
         return this.getRawQuery(query);
@@ -61,7 +63,8 @@ export class EntityUtils {
         }
     }
     getEntityQuery(rawGraphQuery) {
-        return new EntityQuery(this.getRawQuery(rawGraphQuery), this.utils);
+        return new EntityQuery_1.EntityQuery(this.getRawQuery(rawGraphQuery), this.utils);
     }
 }
+exports.EntityUtils = EntityUtils;
 //# sourceMappingURL=EntityUtils.js.map

@@ -1,7 +1,9 @@
+"use strict";
 /**
  * Column keys.
  */
-export var column;
+Object.defineProperty(exports, "__esModule", { value: true });
+var column;
 (function (column) {
     /**
      * Name property of the column.
@@ -19,53 +21,53 @@ export var column;
         type.NUMBER = 'number';
         type.STRING = 'string';
     })(type = column.type || (column.type = {}));
-})(column || (column = {}));
+})(column = exports.column || (exports.column = {}));
 /**
  * File level keys.
  */
-export var file;
+var file;
 (function (file) {
     file.ENTITY = 'Entity';
     file.TABLE = 'Table';
-})(file || (file = {}));
+})(file = exports.file || (exports.file = {}));
 /**
  * Entity configuration keys.
  */
-export var entity;
+var entity;
 (function (entity) {
     entity.DATABASES = 'databases';
-})(entity || (entity = {}));
+})(entity = exports.entity || (exports.entity = {}));
 /**
  * Foreign Key configuration keys.
  */
-export var foreignkey;
+var foreignkey;
 (function (foreignkey) {
     foreignkey.DEFINITION = 'foreignKeyDefinition';
     foreignkey.NAME = 'name';
     foreignkey.VALUE = 'value';
-})(foreignkey || (foreignkey = {}));
+})(foreignkey = exports.foreignkey || (exports.foreignkey = {}));
 /**
  * Index configuration keys.
  */
-export var index;
+var index;
 (function (index) {
     index.COLUMN_LIST = 'columnList';
     index.NAME = 'name';
     index.UNIQUE = 'unique';
-})(index || (index = {}));
+})(index = exports.index || (exports.index = {}));
 /**
  * JoinColumn configuration keys.
  */
-export var joincolumn;
+var joincolumn;
 (function (joincolumn) {
     joincolumn.FOREIGN_KEY = 'foreignKey';
     joincolumn.REFERENCED_COLUMN_NAME = 'referencedColumnName';
     joincolumn.VALUE = 'value';
-})(joincolumn || (joincolumn = {}));
+})(joincolumn = exports.joincolumn || (exports.joincolumn = {}));
 /**
  * Property annotation keys.
  */
-export var property;
+var property;
 (function (property) {
     property.COLUMN = 'Column';
     property.ENUM_TYPE = 'Enum';
@@ -75,34 +77,36 @@ export var property;
     property.JSON_TYPE = 'Json';
     property.MANY_TO_ONE = 'ManyToOne';
     property.ONE_TO_MANY = 'OneToMany';
-    property.R_JOIN_COLUMN = 'RJoinColumn';
-    property.R_JOIN_COLUMNS = 'RJoinColumns';
+    // R_JOIN_COLUMN(s) are not needed since Repository relations are now
+    // standardized - simple (@ManyToOne) and (@OneToMany) suffice.
+    // export const R_JOIN_COLUMN    = 'RJoinColumn';
+    // export const R_JOIN_COLUMNS   = 'RJoinColumns';
     property.SUB_QUERY = 'SubQuery';
     // export const WHERE_JOIN_TABLE = 'WhereJoinTable';
-})(property || (property = {}));
+})(property = exports.property || (exports.property = {}));
 /**
  * OneToMany configuration keys.
  */
-export var onetomany;
+var onetomany;
 (function (onetomany) {
     onetomany.CASCADE = 'cascade';
     onetomany.MAPPED_BY = 'mappedBy';
-})(onetomany || (onetomany = {}));
+})(onetomany = exports.onetomany || (exports.onetomany = {}));
 /**
  * Table configuration keys.
  */
-export var table;
+var table;
 (function (table) {
     table.INDEXES = 'indexes';
     table.NAME = 'name';
     table.PRIMARY_KEY = 'primaryKey';
     table.SCHEMA = 'schema';
-})(table || (table = {}));
+})(table = exports.table || (exports.table = {}));
 /**
  * Name of the RepositoryId column
  * @type {string}
  */
-export var repositoryEntity;
+var repositoryEntity;
 (function (repositoryEntity) {
     repositoryEntity.ENTITY_NAME = 'RepositoryEntity';
     repositoryEntity.FOREIGN_KEY = 'REPOSITORY_ID';
@@ -110,5 +114,5 @@ export var repositoryEntity;
     repositoryEntity.ACTOR_ID = 'ACTOR_ID';
     repositoryEntity.ACTOR_RECORD_ID = 'ACTOR_RECORD_ID';
     repositoryEntity.LOCAL_ENTITY_NAME = 'LocalRepositoryEntity';
-})(repositoryEntity || (repositoryEntity = {}));
+})(repositoryEntity = exports.repositoryEntity || (exports.repositoryEntity = {}));
 //# sourceMappingURL=Dictionary.js.map

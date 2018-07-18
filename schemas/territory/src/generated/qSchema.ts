@@ -1,4 +1,5 @@
-import { DbSchema, QSchema as AirportQSchema } from '@airport/air-control';
+import { QSchema as AirportQSchema } from '@airport/air-control';
+import { DbSchema } from '@airport/ground-control';
 import { Application } from '../ddl/Application';
 import { QApplication } from './qapplication';
 import { ApplicationPackage } from '../ddl/ApplicationPackage';

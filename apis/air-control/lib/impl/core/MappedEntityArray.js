@@ -1,7 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 10/14/2016.
  */
-export function newMappedEntityArray(utils, dbEntity) {
+function newMappedEntityArray(utils, dbEntity) {
     let arr = Array.apply(null, []);
     arr.dataMap = {};
     arr.clear = function () {
@@ -56,6 +58,7 @@ export function newMappedEntityArray(utils, dbEntity) {
     };
     return arr;
 }
+exports.newMappedEntityArray = newMappedEntityArray;
 /*
  export class MappedEntityArrayEs6<E> extends Array {
 

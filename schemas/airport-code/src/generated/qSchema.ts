@@ -1,4 +1,5 @@
-import { DbSchema, QSchema as AirportQSchema } from '@airport/air-control';
+import { QSchema as AirportQSchema } from '@airport/air-control';
+import { DbSchema } from '@airport/ground-control';
 import { Shard } from '../ddl/Shard';
 import { QShard } from './qshard';
 import { ShardedRecord } from '../ddl/ShardedRecord';

@@ -1,0 +1,171 @@
+import {
+	IQEntityInternal,
+	IEntityIdProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IEntitySelectProperties,
+	IEntityDatabaseFacade,
+	IEntityFind,
+	IEntityFindOne,
+	IEntitySearch,
+	IEntitySearchOne,
+	IQBooleanField,
+	IQDateField,
+	IQNumberField,
+	IQOneToManyRelation,
+	IQStringField,
+	IQUntypedField,
+	QEntity,
+	QRelation,
+	RawDelete,
+	RawUpdate,
+} from '@airport/air-control';
+
+
+declare function require(moduleName: string): any;
+
+
+//////////////////////////////
+//     ENTITY INTERFACE     //
+//////////////////////////////
+
+export interface IDailySyncLog {
+	
+	// Id Properties
+	databaseId?: number;
+	date?: number;
+	repositoryId?: number;
+
+	// Id Relations
+
+	// Non-Id Properties
+
+	// Non-Id Relations
+
+	// Transient Properties
+
+	// Public Methods
+	
+}		
+		
+//////////////////////////////
+//  API SPECIFIC INTERFACES //
+//////////////////////////////
+
+/**
+ * SELECT - All fields and relations (optional).
+ */
+export interface DailySyncLogESelect
+    extends IEntitySelectProperties, DailySyncLogEOptionalId, DailySyncLogEUpdateProperties {
+	// Id Relations - full property interfaces
+
+  // Non-Id relations (including OneToMany's)
+
+}
+
+/**
+ * DELETE - Ids fields and relations only (required).
+ */
+export interface DailySyncLogEId
+    extends IEntityIdProperties {
+	// Id Properties
+	databaseId: number | IQNumberField;
+	date: number | IQNumberField;
+	repositoryId: number | IQNumberField;
+
+	// Id Relations - Ids only
+
+}
+
+/**
+ * Ids fields and relations only (optional).
+ */
+export interface DailySyncLogEOptionalId {
+	// Id Properties
+	databaseId?: number | IQNumberField;
+	date?: number | IQNumberField;
+	repositoryId?: number | IQNumberField;
+
+	// Id Relations - Ids only
+
+}
+
+/**
+ * UPDATE - non-id fields and relations (optional).
+ */
+export interface DailySyncLogEUpdateProperties
+	extends IEntityUpdateProperties {
+	// Non-Id Properties
+
+	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * UPDATE - non-id columns (optional).
+ */
+export interface DailySyncLogEUpdateColumns
+	extends IEntityUpdateColumns {
+	// Non-Id Columns
+
+}
+
+/**
+ * CREATE - id fields and relations (required) and non-id fields and relations (optional).
+ */
+export interface DailySyncLogECreateProperties
+extends DailySyncLogEId, DailySyncLogEUpdateProperties {
+}
+
+/**
+ * CREATE - id columns (required) and non-id columns (optional).
+ */
+export interface DailySyncLogECreateColumns
+extends DailySyncLogEId, DailySyncLogEUpdateColumns {
+}
+
+
+
+
+///////////////////////////////////////////////
+//  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
+///////////////////////////////////////////////
+
+/**
+ * Query Entity Query Definition (used for Q.EntityName).
+ */
+export interface QDailySyncLog extends QEntity
+{
+	// Id Fields
+	databaseId: IQNumberField;
+	date: IQNumberField;
+	repositoryId: IQNumberField;
+
+	// Id Relations
+
+	// Non-Id Fields
+
+	// Non-Id Relations
+
+}
+
+
+// Entity Id Interface
+export interface QDailySyncLogQId
+{
+	
+	// Id Fields
+	databaseId: IQNumberField;
+	date: IQNumberField;
+	repositoryId: IQNumberField;
+
+	// Id Relations
+
+
+}
+
+// Entity Relation Interface
+export interface QDailySyncLogQRelation
+	extends QRelation<QDailySyncLog>, QDailySyncLogQId {
+}
+

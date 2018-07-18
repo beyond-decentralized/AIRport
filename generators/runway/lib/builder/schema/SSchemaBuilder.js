@@ -113,18 +113,18 @@ class SSchemaBuilder {
         let foreignKey;
         let manyToOne = undefined;
         let oneToMany = undefined;
-        let repositoryJoin = false;
+        // let repositoryJoin                       = false;
         let addToJoinFunction;
         let joinFunctionWithOperator = ground_control_1.SqlOperator.AND;
         let relationType;
         for (const decorator of aProperty.decorators) {
             switch (decorator.name) {
-                case ground_control_1.property.R_JOIN_COLUMN:
-                    if (!entity.isRepositoryEntity) {
-                        throw `${entity.name}.${aProperty.name} cannot be @RJoinColumn `
-                            + `- ${entity.name} does not extend RepositoryEntity or LocalRepositoryEntity.`;
-                    }
-                    repositoryJoin = true;
+                // case property.R_JOIN_COLUMN:
+                // 	if (!entity.isRepositoryEntity) {
+                // 		throw `${entity.name}.${aProperty.name} cannot be @RJoinColumn `
+                // 		+ `- ${entity.name} does not extend RepositoryEntity or LocalRepositoryEntity.`;
+                // 	}
+                // 	repositoryJoin = true;
                 case ground_control_1.property.JOIN_COLUMN:
                     if (columnsDefined) {
                         throw `Columns are defined more than once for ${entity.name}.${aProperty.name}`;
@@ -133,12 +133,12 @@ class SSchemaBuilder {
                     foreignKey = decorator.values[0].foreignKey;
                     columnRelationDefs.push(decorator.values[0]);
                     break;
-                case ground_control_1.property.R_JOIN_COLUMNS:
-                    if (!entity.isRepositoryEntity) {
-                        throw `${entity.name}.${aProperty.name} cannot be @RJoinColumns `
-                            + `- ${entity.name} does not extend RepositoryEntity or LocalRepositoryEntity.`;
-                    }
-                    repositoryJoin = true;
+                // case property.R_JOIN_COLUMNS:
+                // 	if (!entity.isRepositoryEntity) {
+                // 		throw `${entity.name}.${aProperty.name} cannot be @RJoinColumns `
+                // 		+ `- ${entity.name} does not extend RepositoryEntity or LocalRepositoryEntity.`;
+                // 	}
+                // 	repositoryJoin = true;
                 case ground_control_1.property.JOIN_COLUMNS:
                     if (columnsDefined) {
                         throw `Columns are defined more than once for ${entity.name}.${aProperty.name}`;
@@ -293,7 +293,7 @@ class SSchemaBuilder {
             relationType,
             referencedSchemaIndex,
             relationMustBeSingleIdEntity,
-            repositoryJoin,
+            // repositoryJoin,
             sRelationColumns
         };
         entity.properties.push({

@@ -1,29 +1,32 @@
-import { JSONClauseObjectType, OperationCategory, SqlFunction, SqlOperator } from "@airport/ground-control";
-import { QBooleanField, QBooleanFunction } from "./BooleanField";
-import { QDateField, QDateFunction } from "./DateField";
-import { QNumberField, QNumberFunction } from "./NumberField";
-import { QOperableField } from "./OperableField";
-import { QStringField, QStringFunction } from "./StringField";
-import { bool, date, num, str } from "./WrapperFunctions";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const BooleanField_1 = require("./BooleanField");
+const DateField_1 = require("./DateField");
+const NumberField_1 = require("./NumberField");
+const OperableField_1 = require("./OperableField");
+const StringField_1 = require("./StringField");
+const WrapperFunctions_1 = require("./WrapperFunctions");
 let utils;
-export function setUtilsForFunctions(utilsForFunctions) {
+function setUtilsForFunctions(utilsForFunctions) {
     utils = utilsForFunctions;
 }
+exports.setUtilsForFunctions = setUtilsForFunctions;
 function getSqlFunctionCall(sqlFunction, parameters) {
     if (parameters) {
         parameters = parameters.map((parameter) => {
             switch (typeof parameter) {
                 case "boolean":
-                    return bool(parameter);
+                    return WrapperFunctions_1.bool(parameter);
                 case "number":
-                    return num(parameter);
+                    return WrapperFunctions_1.num(parameter);
                 case "string":
-                    return str(parameter);
+                    return WrapperFunctions_1.str(parameter);
                 case "undefined":
                     throw `'undefined' cannot be used as a function parameter`;
             }
             if (parameter instanceof Date) {
-                return date(parameter);
+                return WrapperFunctions_1.date(parameter);
             }
             return parameter;
         });
@@ -33,169 +36,171 @@ function getSqlFunctionCall(sqlFunction, parameters) {
         p: parameters
     };
 }
-export const abs = function (numeric) {
-    if (numeric instanceof QNumberField) {
-        return numeric.applySqlFunction(getSqlFunctionCall(SqlFunction.AVG));
+exports.abs = function (numeric) {
+    if (numeric instanceof NumberField_1.QNumberField) {
+        return numeric.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.AVG));
     }
     else {
-        return new QNumberFunction(numeric, utils).applySqlFunction(getSqlFunctionCall(SqlFunction.ABS));
+        return new NumberField_1.QNumberFunction(numeric, utils).applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.ABS));
     }
 };
-export const avg = function (numeric) {
-    if (numeric instanceof QNumberField) {
-        return numeric.applySqlFunction(getSqlFunctionCall(SqlFunction.AVG));
+exports.avg = function (numeric) {
+    if (numeric instanceof NumberField_1.QNumberField) {
+        return numeric.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.AVG));
     }
     else {
-        return new QNumberFunction(numeric, utils).applySqlFunction(getSqlFunctionCall(SqlFunction.AVG));
+        return new NumberField_1.QNumberFunction(numeric, utils).applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.AVG));
     }
 };
-export function getFunctionObject(value) {
+function getFunctionObject(value) {
     switch (typeof value) {
         case 'boolean':
-            return new QBooleanFunction(value, utils);
+            return new BooleanField_1.QBooleanFunction(value, utils);
         case 'number':
-            return new QNumberFunction(value, utils);
+            return new NumberField_1.QNumberFunction(value, utils);
         case 'string':
-            return new QStringFunction(value, utils);
+            return new StringField_1.QStringFunction(value, utils);
     }
     if (value instanceof Date) {
-        return new QDateFunction(value, utils);
+        return new DateField_1.QDateFunction(value, utils);
     }
     let selectClause = value.select;
     if (selectClause instanceof QDistinctFunction) {
         selectClause = selectClause.getSelectClause();
     }
-    if (selectClause instanceof QBooleanField) {
-        return new QBooleanFunction(value, utils);
+    if (selectClause instanceof BooleanField_1.QBooleanField) {
+        return new BooleanField_1.QBooleanFunction(value, utils);
     }
-    else if (selectClause instanceof QDateField) {
-        return new QDateFunction(value, utils);
+    else if (selectClause instanceof DateField_1.QDateField) {
+        return new DateField_1.QDateFunction(value, utils);
     }
-    else if (selectClause instanceof QNumberField) {
-        return new QNumberFunction(value, utils);
+    else if (selectClause instanceof NumberField_1.QNumberField) {
+        return new NumberField_1.QNumberFunction(value, utils);
     }
-    else if (selectClause instanceof QStringField) {
-        return new QStringFunction(value, utils);
+    else if (selectClause instanceof StringField_1.QStringField) {
+        return new StringField_1.QStringFunction(value, utils);
     }
     throw `Function rValue must be a primitive, Date, Field or Field query`;
 }
-export const count = function (value) {
-    if (value instanceof QOperableField) {
-        return value.applySqlFunction(getSqlFunctionCall(SqlFunction.COUNT));
+exports.getFunctionObject = getFunctionObject;
+exports.count = function (value) {
+    if (value instanceof OperableField_1.QOperableField) {
+        return value.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.COUNT));
     }
     else {
-        return getFunctionObject(value).applySqlFunction(getSqlFunctionCall(SqlFunction.COUNT));
+        return getFunctionObject(value).applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.COUNT));
     }
 };
-export const max = function (value) {
-    if (value instanceof QOperableField) {
-        return value.applySqlFunction(getSqlFunctionCall(SqlFunction.MAX));
+exports.max = function (value) {
+    if (value instanceof OperableField_1.QOperableField) {
+        return value.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MAX));
     }
     else {
-        return getFunctionObject(value).applySqlFunction(getSqlFunctionCall(SqlFunction.MAX));
+        return getFunctionObject(value).applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MAX));
     }
 };
-export const min = function (value) {
-    if (value instanceof QOperableField) {
-        return value.applySqlFunction(getSqlFunctionCall(SqlFunction.MIN));
+exports.min = function (value) {
+    if (value instanceof OperableField_1.QOperableField) {
+        return value.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MIN));
     }
     else {
-        return getFunctionObject(value).applySqlFunction(getSqlFunctionCall(SqlFunction.MIN));
+        return getFunctionObject(value).applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MIN));
     }
 };
-export const sum = function (numeric) {
-    if (numeric instanceof QNumberField) {
-        return numeric.applySqlFunction(getSqlFunctionCall(SqlFunction.SUM));
+exports.sum = function (numeric) {
+    if (numeric instanceof NumberField_1.QNumberField) {
+        return numeric.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.SUM));
     }
     else {
-        return new QNumberFunction(numeric, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.SUM));
+        return new NumberField_1.QNumberFunction(numeric, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.SUM));
     }
 };
-export const ucase = function (stringValue) {
-    if (stringValue instanceof QStringField) {
-        return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.UCASE));
+exports.ucase = function (stringValue) {
+    if (stringValue instanceof StringField_1.QStringField) {
+        return stringValue.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.UCASE));
     }
     else {
-        return new QStringFunction(stringValue, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.UCASE));
+        return new StringField_1.QStringFunction(stringValue, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.UCASE));
     }
 };
-export const lcase = function (stringValue) {
-    if (stringValue instanceof QStringField) {
-        return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.LCASE));
+exports.lcase = function (stringValue) {
+    if (stringValue instanceof StringField_1.QStringField) {
+        return stringValue.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.LCASE));
     }
     else {
-        return new QStringFunction(stringValue, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.LCASE));
+        return new StringField_1.QStringFunction(stringValue, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.LCASE));
     }
 };
-export const mid = function (stringValue, start, length) {
-    if (stringValue instanceof QStringField) {
-        return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.MID, [start, length]));
+exports.mid = function (stringValue, start, length) {
+    if (stringValue instanceof StringField_1.QStringField) {
+        return stringValue.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MID, [start, length]));
     }
     else {
-        return new QStringFunction(stringValue, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.MID, [start, length]));
+        return new StringField_1.QStringFunction(stringValue, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MID, [start, length]));
     }
 };
-export const len = function (stringValue) {
-    if (stringValue instanceof QStringField) {
-        return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.LEN));
+exports.len = function (stringValue) {
+    if (stringValue instanceof StringField_1.QStringField) {
+        return stringValue.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.LEN));
     }
     else {
-        return new QStringFunction(stringValue, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.LEN));
+        return new StringField_1.QStringFunction(stringValue, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.LEN));
     }
 };
-export const round = function (numeric, digits = 0) {
-    if (numeric instanceof QNumberField) {
-        return numeric.applySqlFunction(getSqlFunctionCall(SqlFunction.ROUND, [digits]));
+exports.round = function (numeric, digits = 0) {
+    if (numeric instanceof NumberField_1.QNumberField) {
+        return numeric.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.ROUND, [digits]));
     }
     else {
-        return new QNumberFunction(numeric, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.ROUND, [digits]));
+        return new NumberField_1.QNumberFunction(numeric, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.ROUND, [digits]));
     }
 };
-export const now = function () {
-    return new QDateFunction(null, utils)
-        .applySqlFunction(getSqlFunctionCall(SqlFunction.NOW));
+exports.now = function () {
+    return new DateField_1.QDateFunction(null, utils)
+        .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.NOW));
 };
-export const format = function (format, ...formatParameters) {
-    if (format instanceof QStringField) {
-        return format.applySqlFunction(getSqlFunctionCall(SqlFunction.FORMAT, formatParameters));
+exports.format = function (format, ...formatParameters) {
+    if (format instanceof StringField_1.QStringField) {
+        return format.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.FORMAT, formatParameters));
     }
     else {
-        return new QStringFunction(format, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.FORMAT, formatParameters));
+        return new StringField_1.QStringFunction(format, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.FORMAT, formatParameters));
     }
 };
-export const replace = function (stringValue, toReplace, replaceWith) {
-    if (stringValue instanceof QStringField) {
-        return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.REPLACE, [toReplace, replaceWith]));
+exports.replace = function (stringValue, toReplace, replaceWith) {
+    if (stringValue instanceof StringField_1.QStringField) {
+        return stringValue.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.REPLACE, [toReplace, replaceWith]));
     }
     else {
-        return new QStringFunction(stringValue, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.REPLACE, [toReplace, replaceWith]));
+        return new StringField_1.QStringFunction(stringValue, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.REPLACE, [toReplace, replaceWith]));
     }
 };
-export const trim = function (stringField) {
-    if (stringField instanceof QStringField) {
-        return stringField.applySqlFunction(getSqlFunctionCall(SqlFunction.TRIM));
+exports.trim = function (stringField) {
+    if (stringField instanceof StringField_1.QStringField) {
+        return stringField.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.TRIM));
     }
     else {
-        return new QStringFunction(stringField, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.TRIM));
+        return new StringField_1.QStringFunction(stringField, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.TRIM));
     }
 };
-export class StandAloneFunction {
+class StandAloneFunction {
 }
-export const distinct = function (selectClause) {
+exports.StandAloneFunction = StandAloneFunction;
+exports.distinct = function (selectClause) {
     let distinctFunction = new QDistinctFunction(selectClause);
-    distinctFunction.applySqlFunction(getSqlFunctionCall(SqlFunction.DISTINCT));
+    distinctFunction.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.DISTINCT));
     return distinctFunction;
 };
-export class QDistinctFunction extends StandAloneFunction {
+class QDistinctFunction extends StandAloneFunction {
     constructor(selectClause) {
         super();
         this.selectClause = selectClause;
@@ -219,34 +224,35 @@ export class QDistinctFunction extends StandAloneFunction {
             throw `SELECT clause is missing in "distinct" function.`;
         }
         let appliedFunctions = [
-            getSqlFunctionCall(SqlFunction.DISTINCT)
+            getSqlFunctionCall(ground_control_1.SqlFunction.DISTINCT)
         ];
         return {
             af: appliedFunctions,
             dt: null,
             fa: null,
-            ot: JSONClauseObjectType.DISTINCT_FUNCTION,
+            ot: ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION,
             v: parsedSelectClause
         };
     }
 }
-export const exists = function (rawQuery) {
+exports.QDistinctFunction = QDistinctFunction;
+exports.exists = function (rawQuery) {
     let selectClause = rawQuery.select;
     if (!selectClause) {
         throw `Sub-Query must have SELECT clause defined to be used in EXITS function`;
     }
     let existsFunction = new QExistsFunction(rawQuery);
-    return existsFunction.applySqlFunction(getSqlFunctionCall(SqlFunction.EXISTS));
+    return existsFunction.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.EXISTS));
 };
-export class QExistsFunction extends StandAloneFunction {
+class QExistsFunction extends StandAloneFunction {
     constructor(subQuery) {
         super();
         this.subQuery = subQuery;
         this.__appliedFunctions__ = [];
-        this.operator = SqlOperator.EXISTS;
-        this.o = SqlOperator.EXISTS;
-        this.category = OperationCategory.FUNCTION;
-        this.c = OperationCategory.FUNCTION;
+        this.operator = ground_control_1.SqlOperator.EXISTS;
+        this.o = ground_control_1.SqlOperator.EXISTS;
+        this.category = ground_control_1.OperationCategory.FUNCTION;
+        this.c = ground_control_1.OperationCategory.FUNCTION;
     }
     applySqlFunction(sqlFunctionCall) {
         this.__appliedFunctions__.push(sqlFunctionCall);
@@ -263,79 +269,80 @@ export class QExistsFunction extends StandAloneFunction {
             throw `Subquery is not defined in "exists" function.`;
         }
         let appliedFunctions = [
-            getSqlFunctionCall(SqlFunction.EXISTS)
+            getSqlFunctionCall(ground_control_1.SqlFunction.EXISTS)
         ];
         return {
             c: this.category,
             ob: {
                 af: appliedFunctions,
                 dt: null,
-                ot: JSONClauseObjectType.EXISTS_FUNCTION,
+                ot: ground_control_1.JSONClauseObjectType.EXISTS_FUNCTION,
                 v: parsedQuery
             },
             o: this.operator
         };
     }
 }
+exports.QExistsFunction = QExistsFunction;
 // Algebra Operators
-export const divide = function (numeric1, numeric2) {
-    if (numeric1 instanceof QNumberField) {
-        return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.DIVIDE, [numeric2]));
+exports.divide = function (numeric1, numeric2) {
+    if (numeric1 instanceof NumberField_1.QNumberField) {
+        return numeric1.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.DIVIDE, [numeric2]));
     }
     else {
-        return new QNumberFunction(numeric1, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.DIVIDE, [numeric2]));
+        return new NumberField_1.QNumberFunction(numeric1, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.DIVIDE, [numeric2]));
     }
 };
-export const subtract = function (numeric1, numeric2) {
-    if (numeric1 instanceof QNumberField) {
-        return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.MINUS, [numeric2]));
+exports.subtract = function (numeric1, numeric2) {
+    if (numeric1 instanceof NumberField_1.QNumberField) {
+        return numeric1.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MINUS, [numeric2]));
     }
     else {
-        return new QNumberFunction(numeric1, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.MINUS, [numeric2]));
+        return new NumberField_1.QNumberFunction(numeric1, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MINUS, [numeric2]));
     }
 };
-export const modulus = function (numeric1, numeric2) {
-    if (numeric1 instanceof QNumberField) {
-        return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.MODULUS, [numeric2]));
+exports.modulus = function (numeric1, numeric2) {
+    if (numeric1 instanceof NumberField_1.QNumberField) {
+        return numeric1.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MODULUS, [numeric2]));
     }
     else {
-        return new QNumberFunction(numeric1, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.MODULUS, [numeric2]));
+        return new NumberField_1.QNumberFunction(numeric1, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MODULUS, [numeric2]));
     }
 };
-export const multiply = function (numeric1, numeric2) {
-    if (numeric1 instanceof QNumberField) {
-        return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.MULTIPLY, [numeric2]));
+exports.multiply = function (numeric1, numeric2) {
+    if (numeric1 instanceof NumberField_1.QNumberField) {
+        return numeric1.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MULTIPLY, [numeric2]));
     }
     else {
-        return new QNumberFunction(numeric1, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.MULTIPLY, [numeric2]));
+        return new NumberField_1.QNumberFunction(numeric1, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MULTIPLY, [numeric2]));
     }
 };
-export const add = function (numeric1, numeric2) {
-    if (numeric1 instanceof QNumberField) {
-        return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, [numeric2]));
+exports.add = function (numeric1, numeric2) {
+    if (numeric1 instanceof NumberField_1.QNumberField) {
+        return numeric1.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, [numeric2]));
     }
     else {
-        return new QNumberFunction(numeric1, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, [numeric2]));
+        return new NumberField_1.QNumberFunction(numeric1, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, [numeric2]));
     }
 };
-export const concat = function (//
+exports.concat = function (//
 ...fragments) {
     if (fragments.length > 2) {
         throw `Less than two operands passed to 'concat' function.`;
     }
     let firstFragment = fragments[0];
     let restOfFragments = fragments.slice(1);
-    if (firstFragment instanceof QStringField) {
-        return firstFragment.applySqlFunction(getSqlFunctionCall(SqlFunction.CONCATENATE, restOfFragments));
+    if (firstFragment instanceof StringField_1.QStringField) {
+        return firstFragment.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.CONCATENATE, restOfFragments));
     }
     else {
-        return new QStringFunction(firstFragment, utils)
-            .applySqlFunction(getSqlFunctionCall(SqlFunction.CONCATENATE, restOfFragments));
+        return new StringField_1.QStringFunction(firstFragment, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.CONCATENATE, restOfFragments));
     }
 };
 /**
@@ -343,7 +350,7 @@ export const concat = function (//
  * UNION
  * B
  */
-export const union = function (...rawQueries) {
+exports.union = function (...rawQueries) {
     throw 'not implemented';
 };
 /**
@@ -351,7 +358,7 @@ export const union = function (...rawQueries) {
  * UNION ALL
  * B
  */
-export const unionAll = function (...rawQueries) {
+exports.unionAll = function (...rawQueries) {
     throw 'not implemented';
 };
 /**
@@ -359,7 +366,7 @@ export const unionAll = function (...rawQueries) {
  * INTERSECT
  * B
  */
-export const intersect = function (...rawQueries) {
+exports.intersect = function (...rawQueries) {
     throw 'not implemented';
 };
 /**
@@ -367,7 +374,7 @@ export const intersect = function (...rawQueries) {
  * MINUS
  * B
  */
-export const except = function (...rawQueries) {
+exports.except = function (...rawQueries) {
     throw 'not implemented';
 };
 /**
@@ -375,5 +382,5 @@ export const except = function (...rawQueries) {
  * MINUS
  * B
  */
-export const minus = except;
+exports.minus = exports.except;
 //# sourceMappingURL=Functions.js.map

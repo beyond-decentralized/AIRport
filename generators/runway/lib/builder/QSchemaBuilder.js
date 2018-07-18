@@ -32,7 +32,8 @@ class QSchemaBuilder {
 import { Q${entityName} } from '${this.generatedPathMapByEntityName[entityName]}';`).join('\n');
         const iDmoImports = this.entityNames.map(entityName => `IBase${entityName}Dmo`).join(',\n\t');
         const iDaoImports = this.entityNames.map(entityName => `IBase${entityName}Dao`).join(',\n\t');
-        return `import { DbSchema, QSchema as AirportQSchema } from '@airport/air-control';
+        return `import { QSchema as AirportQSchema } from '@airport/air-control';
+import { DbSchema } from '@airport/ground-control';
 ${qEntityImports}
 
 import {

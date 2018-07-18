@@ -185,7 +185,7 @@ export class JsonSchemaBuilder {
 					foreignKey: sRelation.foreignKey,
 					index: sRelation.index,
 					isId: sProperty.isId,
-					isRepositoryJoin: sRelation.repositoryJoin,
+					// isRepositoryJoin: sRelation.repositoryJoin,
 					joinFunctionWithOperator: sRelation.joinFunctionWithOperator,
 					manyToOneElems: sRelation.manyToOne,
 					oneToManyElems: this.prepOneToManyElems(sRelation.oneToMany),

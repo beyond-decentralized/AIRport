@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,8 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Inject, Service } from "typedi";
-import { AirportDatabaseToken, QMetadataUtilsToken, UtilsToken } from "../../InjectionTokens";
+Object.defineProperty(exports, "__esModule", { value: true });
+const typedi_1 = require("typedi");
+const InjectionTokens_1 = require("../../InjectionTokens");
 let QMetadataUtils = class QMetadataUtils {
     constructor(airportDb, utils) {
         this.airportDb = airportDb;
@@ -30,10 +32,10 @@ let QMetadataUtils = class QMetadataUtils {
     }
 };
 QMetadataUtils = __decorate([
-    Service(QMetadataUtilsToken),
-    __param(0, Inject(AirportDatabaseToken)),
-    __param(1, Inject(UtilsToken)),
+    typedi_1.Service(InjectionTokens_1.QMetadataUtilsToken),
+    __param(0, typedi_1.Inject(InjectionTokens_1.AirportDatabaseToken)),
+    __param(1, typedi_1.Inject(InjectionTokens_1.UtilsToken)),
     __metadata("design:paramtypes", [Object, Object])
 ], QMetadataUtils);
-export { QMetadataUtils };
+exports.QMetadataUtils = QMetadataUtils;
 //# sourceMappingURL=QMetadataUtils.js.map

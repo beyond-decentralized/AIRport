@@ -1,6 +1,8 @@
-import { wrapPrimitive } from "../../core/field/WrapperFunctions";
-import { AbstractUpdate } from "./AbstractUpdate";
-export class UpdateColumns extends AbstractUpdate {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const WrapperFunctions_1 = require("../../core/field/WrapperFunctions");
+const AbstractUpdate_1 = require("./AbstractUpdate");
+class UpdateColumns extends AbstractUpdate_1.AbstractUpdate {
     constructor(rawUpdate, utils) {
         super(rawUpdate, utils);
     }
@@ -28,7 +30,7 @@ export class UpdateColumns extends AbstractUpdate {
 			(table: '${dbEntity.tableConfig.name}').
 				`);
             }
-            value = wrapPrimitive(value);
+            value = WrapperFunctions_1.wrapPrimitive(value);
             if (!value.toJSON) {
                 throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${this.rawUpdate.update.__driver__.dbEntity.name}`;
             }
@@ -37,4 +39,5 @@ export class UpdateColumns extends AbstractUpdate {
         return setClause;
     }
 }
+exports.UpdateColumns = UpdateColumns;
 //# sourceMappingURL=UpdateColumns.js.map

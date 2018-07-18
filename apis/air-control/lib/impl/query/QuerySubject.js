@@ -1,5 +1,7 @@
-import { Subject } from "rxjs";
-export class QuerySubject extends Subject {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const rxjs_1 = require("rxjs");
+class QuerySubject extends rxjs_1.Subject {
     constructor(unsubscribeCallback) {
         super();
         this.unsubscribeCallback = unsubscribeCallback;
@@ -10,7 +12,8 @@ export class QuerySubject extends Subject {
         return resultsSubscription;
     }
 }
-export class ResultsSubscription {
+exports.QuerySubject = QuerySubject;
+class ResultsSubscription {
     constructor(subscription, onUnsubscribe) {
         this.subscription = subscription;
         this.onUnsubscribe = onUnsubscribe;
@@ -32,4 +35,5 @@ export class ResultsSubscription {
         this.subscription.remove(sub);
     }
 }
+exports.ResultsSubscription = ResultsSubscription;
 //# sourceMappingURL=QuerySubject.js.map

@@ -1,4 +1,6 @@
-export class DatastructureUtils {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class DatastructureUtils {
     ensureChildArray(parentContainer, index) {
         let childArray;
         if (parentContainer instanceof Map) {
@@ -54,4 +56,5 @@ export class DatastructureUtils {
         return childSet;
     }
 }
+exports.DatastructureUtils = DatastructureUtils;
 //# sourceMappingURL=DatastructureUtils.js.map

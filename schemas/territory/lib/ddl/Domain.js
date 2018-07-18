@@ -15,8 +15,13 @@ let Domain = class Domain {
 __decorate([
     air_control_1.Id(),
     air_control_1.GeneratedValue(),
+    air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Domain.prototype, "id", void 0);
+__decorate([
+    air_control_1.DbString(),
+    __metadata("design:type", String)
+], Domain.prototype, "name", void 0);
 __decorate([
     air_control_1.OneToMany({ mappedBy: "domain" }),
     __metadata("design:type", Array)

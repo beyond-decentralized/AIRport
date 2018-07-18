@@ -1,4 +1,5 @@
-import { DbEntity, IDao, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUtils, QSchema, UpdateCacheType } from "@airport/air-control";
+import { IDao, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUtils, QSchema, UpdateCacheType } from "@airport/air-control";
+import { DbEntity } from "@airport/ground-control";
 /**
  * Created by Papa on 8/26/2017.
  */

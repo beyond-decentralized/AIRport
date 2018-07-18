@@ -65,7 +65,8 @@ import { Q${entityName} } from '${this.generatedPathMapByEntityName[entityName]}
 				`IBase${entityName}Dao`
 		).join(',\n\t');
 
-		return `import { DbSchema, QSchema as AirportQSchema } from '@airport/air-control';
+		return `import { QSchema as AirportQSchema } from '@airport/air-control';
+import { DbSchema } from '@airport/ground-control';
 ${qEntityImports}
 
 import {

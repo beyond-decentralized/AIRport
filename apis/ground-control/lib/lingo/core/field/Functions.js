@@ -1,7 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Extracted from http://www.w3schools.com/sql/sql_functions.asp
  */
-export var SqlFunction;
+var SqlFunction;
 (function (SqlFunction) {
     // SQL Aggregate Functions
     // SQL aggregate functions return a single value, calculated from values in a column.
@@ -38,5 +40,5 @@ export var SqlFunction;
     SqlFunction[SqlFunction["PLUS"] = 21] = "PLUS";
     // Concatenate '||' functions
     SqlFunction[SqlFunction["CONCATENATE"] = 22] = "CONCATENATE";
-})(SqlFunction || (SqlFunction = {}));
+})(SqlFunction = exports.SqlFunction || (exports.SqlFunction = {}));
 //# sourceMappingURL=Functions.js.map

@@ -1,4 +1,6 @@
-export class FieldUtils {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class FieldUtils {
     constructor(utils) {
         this.utils = utils;
     }
@@ -10,4 +12,5 @@ export class FieldUtils {
         return subSelectQuery.toJSON();
     }
 }
+exports.FieldUtils = FieldUtils;
 //# sourceMappingURL=FieldUtils.js.map

@@ -1,3 +1,4 @@
+"use strict";
 // export interface AddToDatabaseJoinFunction<QOtm extends IQEntity, QMto extends IQEntity> {
 // 	(
 // 		otm: QOtm, // One-to-Many IQEntity
@@ -6,7 +7,8 @@
 // 		f: FunctionsAndOperators // Reference to all available functions and operators
 // 	): JSONBaseOperation;
 // }
-export var CascadeType;
+Object.defineProperty(exports, "__esModule", { value: true });
+var CascadeType;
 (function (CascadeType) {
     CascadeType[CascadeType["NONE"] = 0] = "NONE";
     CascadeType[CascadeType["ALL"] = 1] = "ALL";
@@ -18,5 +20,5 @@ export var CascadeType;
     // Cascade refresh is not implemented because there is no session
     // REFRESH,
     CascadeType[CascadeType["REMOVE"] = 3] = "REMOVE"; // Cascade on remove operation
-})(CascadeType || (CascadeType = {}));
+})(CascadeType = exports.CascadeType || (exports.CascadeType = {}));
 //# sourceMappingURL=DatabaseRelationConfiguration.js.map

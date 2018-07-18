@@ -1,8 +1,10 @@
-import { AbstractQuery } from "./AbstractQuery";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const AbstractQuery_1 = require("./AbstractQuery");
 /**
  * Created by Papa on 10/2/2016.
  */
-export class Delete extends AbstractQuery {
+class Delete extends AbstractQuery_1.AbstractQuery {
     constructor(rawDelete, utils) {
         super();
         this.rawDelete = rawDelete;
@@ -16,4 +18,5 @@ export class Delete extends AbstractQuery {
         };
     }
 }
+exports.Delete = Delete;
 //# sourceMappingURL=Delete.js.map

@@ -87,8 +87,9 @@ export interface SRelation {
 
 	/**
 	 * Does this join automatically join REPOSITORY_ID?
+	 * Not needed - all joins to and from Repository entities are automatically repository joins
 	 */
-	repositoryJoin: boolean;
+	// repositoryJoin: boolean;
 
 	/**
 	 * Intermediate representation of relation columns

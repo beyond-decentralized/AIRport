@@ -1,11 +1,13 @@
-import { JSONClauseObjectType } from "@airport/ground-control";
-import { QField } from "./Field";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const Field_1 = require("./Field");
 /**
  * Created by Papa on 11/29/2016.
  */
-export class QNullFunction extends QField {
+class QNullFunction extends Field_1.QField {
     constructor(utils) {
-        super(null, null, null, JSONClauseObjectType.FIELD_FUNCTION, utils);
+        super(null, null, null, ground_control_1.JSONClauseObjectType.FIELD_FUNCTION, utils);
         this.value = null;
     }
     getInstance() {
@@ -15,4 +17,5 @@ export class QNullFunction extends QField {
         return this.operableFunctionToJson(this, columnAliases, forSelectClause);
     }
 }
+exports.QNullFunction = QNullFunction;
 //# sourceMappingURL=NullFunction.js.map

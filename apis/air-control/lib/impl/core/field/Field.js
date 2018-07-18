@@ -1,10 +1,12 @@
-import { JSONClauseObjectType, SortOrder } from "@airport/ground-control";
-import { QRelation } from "../entity/Relation";
-import { FieldInOrderBy } from "./FieldInOrderBy";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const Relation_1 = require("../entity/Relation");
+const FieldInOrderBy_1 = require("./FieldInOrderBy");
 /**
  * Created by Papa on 4/21/2016.
  */
-export class QField {
+class QField {
     constructor(dbColumn, dbProperty, q, objectType, utils) {
         this.dbColumn = dbColumn;
         this.dbProperty = dbProperty;
@@ -20,10 +22,10 @@ export class QField {
     }
      */
     asc() {
-        return new FieldInOrderBy(this, SortOrder.ASCENDING);
+        return new FieldInOrderBy_1.FieldInOrderBy(this, ground_control_1.SortOrder.ASCENDING);
     }
     desc() {
-        return new FieldInOrderBy(this, SortOrder.DESCENDING);
+        return new FieldInOrderBy_1.FieldInOrderBy(this, ground_control_1.SortOrder.DESCENDING);
     }
     applySqlFunction(sqlFunctionCall) {
         let appliedField = this.getInstance();
@@ -54,13 +56,13 @@ export class QField {
             fa: alias,
             pi: this.dbProperty.index,
             ci: this.dbColumn.index,
-            ta: QRelation.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
+            ta: Relation_1.QRelation.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
             ot: this.objectType,
             dt: this.dbColumn.type
         };
         if (this.__fieldSubQuery__) {
             jsonField.fsq = this.utils.Field.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases);
-            jsonField.ot = JSONClauseObjectType.FIELD_QUERY;
+            jsonField.ot = ground_control_1.JSONClauseObjectType.FIELD_QUERY;
         }
         return jsonField;
     }
@@ -128,4 +130,5 @@ export class QField {
         return this.utils.Field.getFieldQueryJson(rawFieldQuery, columnAliases.entityAliases);
     }
 }
+exports.QField = QField;
 //# sourceMappingURL=Field.js.map

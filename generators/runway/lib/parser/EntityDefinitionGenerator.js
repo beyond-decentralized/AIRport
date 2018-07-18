@@ -215,11 +215,11 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
             const typeInfo = getType(tsParam.type, 0);
             const name = tsParam.name.escapedText;
             const optional = tsParam.questionToken ? true : false;
-            parameters.push(Object.assign({}, typeInfo, { name, optional }));
+            parameters.push({ ...typeInfo, name, optional });
         }
         const typeInfo = getType(signature.type, 0);
         const optional = signature.questionToken ? true : false;
-        const returnType = Object.assign({}, typeInfo, { name, optional });
+        const returnType = { ...typeInfo, name, optional };
         return {
             name,
             parameters,
@@ -246,16 +246,16 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
                 return typeInfo;
             case ts.SyntaxKind.BooleanKeyword:
                 type = primitive = 'boolean';
-                return Object.assign({}, typeInfo, { primitive, type });
+                return { ...typeInfo, primitive, type };
             case ts.SyntaxKind.NumberKeyword:
                 type = primitive = 'number';
-                return Object.assign({}, typeInfo, { primitive, type });
+                return { ...typeInfo, primitive, type };
             case ts.SyntaxKind.StringKeyword:
                 type = primitive = 'string';
-                return Object.assign({}, typeInfo, { primitive, type });
+                return { ...typeInfo, primitive, type };
             case ts.SyntaxKind.VoidKeyword:
                 type = 'void';
-                return Object.assign({}, typeInfo, { type });
+                return { ...typeInfo, type };
             case ts.SyntaxKind.TypeReference:
                 const typeName = tsType.typeName;
                 const typeArguments = tsType.typeArguments;
@@ -263,7 +263,7 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
                     genericParams = typeArguments.map(genericParam => getType(genericParam, 0));
                 }
                 type = typeName.escapedText;
-                return Object.assign({}, typeInfo, { type, genericParams });
+                return { ...typeInfo, type, genericParams };
             default:
                 throw `Unsupported Syntax kind for method parameter/type: ${tsType.kind}`;
         }

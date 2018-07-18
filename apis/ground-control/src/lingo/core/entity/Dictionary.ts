@@ -79,8 +79,10 @@ export namespace property {
 	export const JSON_TYPE        = 'Json';
 	export const MANY_TO_ONE      = 'ManyToOne';
 	export const ONE_TO_MANY      = 'OneToMany';
-	export const R_JOIN_COLUMN    = 'RJoinColumn';
-	export const R_JOIN_COLUMNS   = 'RJoinColumns';
+	// R_JOIN_COLUMN(s) are not needed since Repository relations are now
+	// standardized - simple (@ManyToOne) and (@OneToMany) suffice.
+	// export const R_JOIN_COLUMN    = 'RJoinColumn';
+	// export const R_JOIN_COLUMNS   = 'RJoinColumns';
 	export const SUB_QUERY        = 'SubQuery';
 	// export const WHERE_JOIN_TABLE = 'WhereJoinTable';
 }

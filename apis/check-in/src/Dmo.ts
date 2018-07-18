@@ -1,12 +1,12 @@
 import {
-	DbEntity,
 	IDmo,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity
-} from "@airport/air-control";
+}                 from "@airport/air-control";
+import {DbEntity} from "@airport/ground-control";
 
 /**
  * Created by Papa on 8/26/2017.

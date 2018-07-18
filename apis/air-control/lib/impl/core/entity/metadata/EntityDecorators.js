@@ -1,17 +1,19 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 8/20/2016.
  */
-export const Entity = function () {
+exports.Entity = function () {
     return function (constructor) {
         // No runtime logic required.
     };
 };
-export const Table = function (tableConfiguration) {
+exports.Table = function (tableConfiguration) {
     return function (constructor) {
         // No runtime logic required.
     };
 };
-export const MappedSuperclass = function () {
+exports.MappedSuperclass = function () {
     return function (constructor) {
     };
 };

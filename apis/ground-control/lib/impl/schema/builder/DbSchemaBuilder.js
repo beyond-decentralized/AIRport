@@ -1,5 +1,7 @@
-export var test = 2;
-export class DbSchemaBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.test = 2;
+class DbSchemaBuilder {
     constructor(utils) {
         this.utils = utils;
     }
@@ -105,7 +107,7 @@ export class DbSchemaBuilder {
         const dbRelation = {
             foreignKey: jsonRelation.foreignKey,
             isId: dbProperty.isId,
-            isRepositoryJoin: jsonRelation.isRepositoryJoin,
+            // isRepositoryJoin: jsonRelation.isRepositoryJoin,
             manyToOneElems: jsonRelation.manyToOneElems,
             oneToManyElems: jsonRelation.oneToManyElems,
             relationType: jsonRelation.relationType,
@@ -345,4 +347,5 @@ export class DbSchemaBuilder {
         }
     }
 }
+exports.DbSchemaBuilder = DbSchemaBuilder;
 //# sourceMappingURL=DbSchemaBuilder.js.map

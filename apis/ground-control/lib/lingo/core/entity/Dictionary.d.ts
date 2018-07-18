@@ -68,8 +68,6 @@ export declare namespace property {
     const JSON_TYPE = "Json";
     const MANY_TO_ONE = "ManyToOne";
     const ONE_TO_MANY = "OneToMany";
-    const R_JOIN_COLUMN = "RJoinColumn";
-    const R_JOIN_COLUMNS = "RJoinColumns";
     const SUB_QUERY = "SubQuery";
 }
 /**

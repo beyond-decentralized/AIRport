@@ -1,4 +1,6 @@
-export var BlockSyncStatus;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var BlockSyncStatus;
 (function (BlockSyncStatus) {
     // Sync request has been sent but no reply has come yet
     BlockSyncStatus[BlockSyncStatus["SYNCHRONIZING"] = 0] = "SYNCHRONIZING";
@@ -13,8 +15,8 @@ export var BlockSyncStatus;
     // RESYNC_SUSPENDED,
     // AGT requested re-sync for this block, send it again
     BlockSyncStatus[BlockSyncStatus["RESYNC_REQUESTED"] = 3] = "RESYNC_REQUESTED";
-})(BlockSyncStatus || (BlockSyncStatus = {}));
-export var RepositorySyncStatus;
+})(BlockSyncStatus = exports.BlockSyncStatus || (exports.BlockSyncStatus = {}));
+var RepositorySyncStatus;
 (function (RepositorySyncStatus) {
     // Actively syncing this repository
     RepositorySyncStatus[RepositorySyncStatus["ACTIVE"] = 0] = "ACTIVE";
@@ -28,12 +30,12 @@ export var RepositorySyncStatus;
     RepositorySyncStatus[RepositorySyncStatus["TEMPORARILY_REROUTED"] = 4] = "TEMPORARILY_REROUTED";
     // AGT (or TM) permanently rerouted syncing of this repository to a different AGT
     RepositorySyncStatus[RepositorySyncStatus["PERMANENTLY_REROUTED"] = 5] = "PERMANENTLY_REROUTED";
-})(RepositorySyncStatus || (RepositorySyncStatus = {}));
-export var DatabaseSyncStatus;
+})(RepositorySyncStatus = exports.RepositorySyncStatus || (exports.RepositorySyncStatus = {}));
+var DatabaseSyncStatus;
 (function (DatabaseSyncStatus) {
     // Database is actively syncing
     DatabaseSyncStatus[DatabaseSyncStatus["ACTIVE"] = 0] = "ACTIVE";
     // Database syncing has been suspended
     DatabaseSyncStatus[DatabaseSyncStatus["SUSPENDED"] = 1] = "SUSPENDED";
-})(DatabaseSyncStatus || (DatabaseSyncStatus = {}));
+})(DatabaseSyncStatus = exports.DatabaseSyncStatus || (exports.DatabaseSyncStatus = {}));
 //# sourceMappingURL=SyncStatus.js.map

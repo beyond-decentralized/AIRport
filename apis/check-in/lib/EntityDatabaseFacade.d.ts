@@ -1,4 +1,5 @@
-import { DbEntity, IDatabaseFacade, IDmo, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUtils, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, UpdateCacheType } from "@airport/air-control";
+import { IDatabaseFacade, IDmo, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUtils, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, UpdateCacheType } from "@airport/air-control";
+import { DbEntity } from "@airport/ground-control";
 /**
  * Created by Papa on 12/11/2016.
  */

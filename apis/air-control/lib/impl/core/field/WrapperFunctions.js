@@ -1,59 +1,63 @@
-import { QBooleanFunction } from "./BooleanField";
-import { QDateFunction } from "./DateField";
-import { QNullFunction } from "./NullFunction";
-import { QNumberFunction } from "./NumberField";
-import { QStringFunction } from "./StringField";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const BooleanField_1 = require("./BooleanField");
+const DateField_1 = require("./DateField");
+const NullFunction_1 = require("./NullFunction");
+const NumberField_1 = require("./NumberField");
+const StringField_1 = require("./StringField");
 /**
  * Created by Papa on 12/31/2016.
  */
 let utils;
-export function setUtilsForWrapperFunctions(utilsForFunctions) {
+function setUtilsForWrapperFunctions(utilsForFunctions) {
     utils = utilsForFunctions;
 }
-export const bool = function (primitive) {
+exports.setUtilsForWrapperFunctions = setUtilsForWrapperFunctions;
+exports.bool = function (primitive) {
     if (typeof primitive !== "boolean") {
         throw `bool() accepts booleans only.`;
     }
-    return new QBooleanFunction(primitive, utils);
+    return new BooleanField_1.QBooleanFunction(primitive, utils);
 };
-export const date = function (primitive) {
+exports.date = function (primitive) {
     if (!(primitive instanceof Date)) {
         throw `date() accepts Dates only.`;
     }
-    return new QDateFunction(primitive, utils);
+    return new DateField_1.QDateFunction(primitive, utils);
 };
-export const num = function (primitive) {
+exports.num = function (primitive) {
     if (typeof primitive !== "number") {
         throw `num() accepts numbers only.`;
     }
-    return new QNumberFunction(primitive, utils);
+    return new NumberField_1.QNumberFunction(primitive, utils);
 };
-export const str = function (primitive) {
+exports.str = function (primitive) {
     if (typeof primitive !== "string") {
         throw `str() accepts strings only.`;
     }
-    return new QStringFunction(primitive, utils);
+    return new StringField_1.QStringFunction(primitive, utils);
 };
-export function wrapPrimitive(value) {
+function wrapPrimitive(value) {
     switch (typeof value) {
         case "boolean":
-            return bool(value);
+            return exports.bool(value);
         case "number":
-            return num(value);
+            return exports.num(value);
         case "string":
-            return str(value);
+            return exports.str(value);
         case "undefined":
             throw `Cannot use an 'undefined' value in an operation.`;
     }
     if (value === null) {
-        return new QNullFunction(utils);
+        return new NullFunction_1.QNullFunction(utils);
     }
     if (value instanceof Date) {
-        return date(value);
+        return exports.date(value);
     }
     return value;
 }
-export function getPrimitiveValue(value, datesToNumbers = true) {
+exports.wrapPrimitive = wrapPrimitive;
+function getPrimitiveValue(value, datesToNumbers = true) {
     switch (typeof value) {
         case "boolean":
         case "number":
@@ -73,4 +77,5 @@ export function getPrimitiveValue(value, datesToNumbers = true) {
             throw `Unexpected object in operation.`;
     }
 }
+exports.getPrimitiveValue = getPrimitiveValue;
 //# sourceMappingURL=WrapperFunctions.js.map

@@ -1,17 +1,20 @@
-import { JSONClauseObjectType, SQLDataType } from "@airport/ground-control";
-import { DateOperation } from "../operation/DateOperation";
-import { QOperableField } from "./OperableField";
-export class QDateField extends QOperableField {
-    constructor(dbColumn, dbProperty, q, utils, objectType = JSONClauseObjectType.FIELD) {
-        super(dbColumn, dbProperty, q, objectType, new DateOperation(), utils);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const DateOperation_1 = require("../operation/DateOperation");
+const OperableField_1 = require("./OperableField");
+class QDateField extends OperableField_1.QOperableField {
+    constructor(dbColumn, dbProperty, q, utils, objectType = ground_control_1.JSONClauseObjectType.FIELD) {
+        super(dbColumn, dbProperty, q, objectType, new DateOperation_1.DateOperation(), utils);
     }
     getInstance(qEntity = this.q) {
         return this.copyFunctions(new QDateField(this.dbColumn, this.dbProperty, qEntity, this.utils, this.objectType));
     }
 }
-export class QDateFunction extends QDateField {
+exports.QDateField = QDateField;
+class QDateFunction extends QDateField {
     constructor(value, utils, isQueryParameter = false) {
-        super({ type: SQLDataType.DATE }, null, null, utils, JSONClauseObjectType.FIELD_FUNCTION);
+        super({ type: ground_control_1.SQLDataType.DATE }, null, null, utils, ground_control_1.JSONClauseObjectType.FIELD_FUNCTION);
         this.value = value;
         this.isQueryParameter = isQueryParameter;
     }
@@ -26,4 +29,5 @@ export class QDateFunction extends QDateField {
         return json;
     }
 }
+exports.QDateFunction = QDateFunction;
 //# sourceMappingURL=DateField.js.map

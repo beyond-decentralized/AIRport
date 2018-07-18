@@ -1,11 +1,13 @@
-import { EntityDatabaseFacade } from "./EntityDatabaseFacade";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const EntityDatabaseFacade_1 = require("./EntityDatabaseFacade");
 /**
  * Created by Papa on 8/26/2017.
  */
-export class Dao {
+class Dao {
     constructor(dbEntity, Q, utils) {
         this.utils = utils;
-        this.db = new EntityDatabaseFacade(dbEntity, Q, utils);
+        this.db = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q, utils);
     }
     get find() {
         return this.db.find;
@@ -88,4 +90,5 @@ export class Dao {
         }
     }
 }
+exports.Dao = Dao;
 //# sourceMappingURL=Dao.js.map

@@ -1,5 +1,4 @@
 import {
-	DbEntity,
 	IDao,
 	IEntityCreateProperties,
 	IEntityDatabaseFacade,
@@ -16,6 +15,7 @@ import {
 	QSchema,
 	UpdateCacheType
 }                             from "@airport/air-control";
+import {DbEntity}             from "@airport/ground-control";
 import {EntityDatabaseFacade} from "./EntityDatabaseFacade";
 
 /**

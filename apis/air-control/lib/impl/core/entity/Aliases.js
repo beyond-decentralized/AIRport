@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 10/18/2016.
  */
@@ -6,7 +8,7 @@ const ALIASES = ['a', 'b', 'c', 'd', 'e',
     'k', 'l', 'm', 'n', 'o',
     'p', 'q', 'r', 's', 't',
     'u', 'v', 'w', 'x', 'y', 'z'];
-export class AliasCache {
+class AliasCache {
     constructor(aliasPrefix = '') {
         this.aliasPrefix = aliasPrefix;
         this.reset();
@@ -31,7 +33,8 @@ export class AliasCache {
         this.lastAlias = [-1, -1, -1];
     }
 }
-export class AliasMap {
+exports.AliasCache = AliasCache;
+class AliasMap {
     constructor(aliasCache) {
         this.aliasCache = aliasCache;
         this.aliasMap = new Map();
@@ -48,7 +51,8 @@ export class AliasMap {
         return this.aliasMap.has(object);
     }
 }
-export class EntityAliases extends AliasMap {
+exports.AliasMap = AliasMap;
+class EntityAliases extends AliasMap {
     constructor(entityAliasCache = new AliasCache('E'), columnAliasCache = new AliasCache('C'), parameterAliasCache = new AliasCache('P')) {
         super(entityAliasCache);
         this.columnAliasCache = columnAliasCache;
@@ -75,7 +79,8 @@ export class EntityAliases extends AliasMap {
         return this.aliasMap.get(this.aliasMap.keys().next().value);
     }
 }
-export class ParameterAliases extends AliasMap {
+exports.EntityAliases = EntityAliases;
+class ParameterAliases extends AliasMap {
     constructor(aliasCache) {
         super(aliasCache);
     }
@@ -106,7 +111,8 @@ export class ParameterAliases extends AliasMap {
         return parameters;
     }
 }
-export class FieldColumnAliases extends AliasMap {
+exports.ParameterAliases = ParameterAliases;
+class FieldColumnAliases extends AliasMap {
     constructor(_entityAliases, aliasCache) {
         super(aliasCache);
         this._entityAliases = _entityAliases;
@@ -123,4 +129,5 @@ export class FieldColumnAliases extends AliasMap {
         return this.aliasMap.get(field);
     }
 }
+exports.FieldColumnAliases = FieldColumnAliases;
 //# sourceMappingURL=Aliases.js.map

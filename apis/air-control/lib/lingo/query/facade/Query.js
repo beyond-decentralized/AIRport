@@ -1,16 +1,21 @@
-export const Y = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Y = {
     airportSelectField: true
 };
-export function convertToY(object) {
+function convertToY(object) {
     object.airportSelectField = true;
 }
-export function isY(object) {
+exports.convertToY = convertToY;
+function isY(object) {
     return object && object.airportSelectField === true;
 }
-export const N = {
+exports.isY = isY;
+exports.N = {
     airportSelectField: false
 };
-export function isN(object) {
+function isN(object) {
     return object && object.airportSelectField === false;
 }
+exports.isN = isN;
 //# sourceMappingURL=Query.js.map

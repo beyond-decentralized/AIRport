@@ -1,7 +1,9 @@
-import { CascadeType, CRUDOperation, EntityRelationType, repositoryEntity } from "@airport/ground-control";
-import { convertToY, isY } from "../../lingo/query/facade/Query";
-import { markAsStub } from "../core/entity/EntityState";
-export class SchemaUtils {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const Query_1 = require("../../lingo/query/facade/Query");
+const EntityState_1 = require("../core/entity/EntityState");
+class SchemaUtils {
     constructor(airportDb, utils) {
         this.airportDb = airportDb;
         this.utils = utils;
@@ -10,10 +12,10 @@ export class SchemaUtils {
         return this.airportDb.schemas[schemaIndex][tableIndex];
     }
     isRepositoryId(columnName) {
-        return columnName === repositoryEntity.REPOSITORY_ID;
+        return columnName === ground_control_1.repositoryEntity.REPOSITORY_ID;
     }
     doCascade(dbRelation, crudOperation) {
-        if (dbRelation.relationType !== EntityRelationType.ONE_TO_MANY) {
+        if (dbRelation.relationType !== ground_control_1.EntityRelationType.ONE_TO_MANY) {
             return false;
         }
         if (!dbRelation.oneToManyElems) {
@@ -21,11 +23,11 @@ export class SchemaUtils {
         }
         const cascade = dbRelation.oneToManyElems.cascade;
         switch (crudOperation) {
-            case CRUDOperation.CREATE:
-            case CRUDOperation.UPDATE:
-                return cascade === CascadeType.ALL || cascade === CascadeType.PERSIST;
-            case CRUDOperation.DELETE:
-                return cascade === CascadeType.ALL || cascade === CascadeType.REMOVE;
+            case ground_control_1.CRUDOperation.CREATE:
+            case ground_control_1.CRUDOperation.UPDATE:
+                return cascade === ground_control_1.CascadeType.ALL || cascade === ground_control_1.CascadeType.PERSIST;
+            case ground_control_1.CRUDOperation.DELETE:
+                return cascade === ground_control_1.CascadeType.ALL || cascade === ground_control_1.CascadeType.REMOVE;
             default:
                 throw `Unsupported CRUDOperation '${crudOperation}' for cascade check.`;
         }
@@ -188,7 +190,7 @@ export class SchemaUtils {
                 let propertyObject = propertySelectClause[propertyNameLink];
                 if (!propertyObject) {
                     propertyObject = {};
-                    markAsStub(propertyObject);
+                    EntityState_1.markAsStub(propertyObject);
                     propertySelectClause[propertyNameLink] = propertyObject;
                 }
                 else {
@@ -205,7 +207,7 @@ export class SchemaUtils {
                         }
                     }
                     else {
-                        if (!allowDefaults && !isY(propertyObject)) {
+                        if (!allowDefaults && !Query_1.isY(propertyObject)) {
                             const reason = dbRelation.property.isId
                                 ? `'${dbRelation.property.entity.name}.${dbRelation.property.name}' is an @Id property`
                                 : `'${dbRelation.property.entity.name}' has no @Id - all properties are treated as @Ids`;
@@ -223,7 +225,7 @@ export class SchemaUtils {
                 propertySelectClause = propertyObject;
             });
             if (convertTo) {
-                convertToY(propertySelectClause);
+                Query_1.convertToY(propertySelectClause);
             }
         });
     }
@@ -332,4 +334,5 @@ export class SchemaUtils {
         return false;
     }
 }
+exports.SchemaUtils = SchemaUtils;
 //# sourceMappingURL=SchemaUtils.js.map
