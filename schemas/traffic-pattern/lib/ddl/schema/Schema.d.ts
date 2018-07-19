@@ -1,4 +1,4 @@
-import { SchemaIndex } from "@airport/air-control";
+import { SchemaIndex } from "@airport/ground-control";
 import { Domain } from "@airport/territory";
 import { ISchema } from "../../generated/schema/qschema";
 import { SchemaStatus } from "./SchemaStatus";

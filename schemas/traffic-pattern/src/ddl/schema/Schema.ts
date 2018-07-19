@@ -1,7 +1,6 @@
 import {
 	Column,
 	DbNumber,
-	DbSchema,
 	DbString,
 	Entity,
 	GeneratedValue,
@@ -9,9 +8,12 @@ import {
 	JoinColumn,
 	ManyToOne,
 	OneToMany,
-	SchemaIndex,
 	Table
 } from "@airport/air-control";
+import {
+	DbSchema,
+	SchemaIndex
+} from "@airport/ground-control";
 import {Domain}        from "@airport/territory";
 import {ISchema}       from "../../generated/schema/qschema";
 import {SchemaStatus}  from "./SchemaStatus";

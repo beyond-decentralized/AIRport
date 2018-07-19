@@ -1,4 +1,4 @@
-import {DbColumn}                      from "@airport/air-control";
+import {DbColumn}                      from "@airport/ground-control";
 import {Service}                       from "typedi";
 import {RecordHistoryOldValue}         from "../../ddl/ddl";
 import {

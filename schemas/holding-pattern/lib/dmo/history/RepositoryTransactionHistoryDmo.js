@@ -34,7 +34,7 @@ let RepositoryTransactionHistoryDmo = class RepositoryTransactionHistoryDmo exte
         if (!data) {
             return null;
         }
-        return Object.assign({}, data);
+        return { ...data };
     }
     sortRepoTransHistories(repoTransHistories, actorMapById) {
         repoTransHistories.sort((repoTransHistory1, repoTransHistory2) => {
@@ -88,7 +88,7 @@ let RepositoryTransactionHistoryDmo = class RepositoryTransactionHistoryDmo exte
 };
 RepositoryTransactionHistoryDmo = __decorate([
     typedi_1.Service(InjectionTokens_1.RepositoryTransactionHistoryDmoToken),
-    __param(0, typedi_1.Inject(_ => InjectionTokens_1.OperationHistoryDmoToken)),
+    __param(0, typedi_1.Inject(InjectionTokens_1.OperationHistoryDmoToken)),
     __metadata("design:paramtypes", [Object])
 ], RepositoryTransactionHistoryDmo);
 exports.RepositoryTransactionHistoryDmo = RepositoryTransactionHistoryDmo;

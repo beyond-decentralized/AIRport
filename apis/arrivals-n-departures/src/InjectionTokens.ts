@@ -1,0 +1,24 @@
+import {Token}                      from "typedi";
+import {ITMDataDeserializer}        from "./impl/data/TMDataDeserializer";
+import {ITMDataFormatVerifier}      from "./impl/data/TMDataFormatVerifier";
+import {ITMDataSchemaVerifier}      from "./impl/data/TMDataSchemaVerifier";
+import {ITMDataSerializer}          from "./impl/data/TMDataSerializer";
+import {IMessageFromTMDeserializer} from "./impl/message/deserializer/MessageFromTMDeserializer";
+import {IMessageToTMDeserializer}   from "./impl/message/deserializer/MessageToTMDeserializer";
+import {IMessageFromTMSerializer}   from "./impl/message/serializer/MessageFromTMSerializer";
+import {IMessageToTMSerializer}     from "./impl/message/serializer/MessageToTMSerializer";
+import {IMessageFromTMVerifier}     from "./impl/message/verifier/MessageFromTMVerifier";
+import {IMessageToTMVerifier}       from "./impl/message/verifier/MessageToTMVerifier";
+import {ISyncConnectionServer}      from "./lingo/SyncConnectionServer";
+
+export const MessageFromTMDeserializerToken = new Token<IMessageFromTMDeserializer>();
+export const MessageFromTMSerializerToken = new Token<IMessageFromTMSerializer>();
+export const MessageFromTMVerifierToken = new Token<IMessageFromTMVerifier>();
+export const MessageToTMDeserializerToken = new Token<IMessageToTMDeserializer>();
+export const MessageToTMSerializerToken = new Token<IMessageToTMSerializer>();
+export const MessageToTMVerifierToken = new Token<IMessageToTMVerifier>();
+export const SyncConnectionServerToken = new Token<ISyncConnectionServer<any, any, any, any>>();
+export const TMDataSerializerToken = new Token<ITMDataSerializer>();
+export const TMDataDeserializerToken = new Token<ITMDataDeserializer>();
+export const TMDataFormatVerifierToken = new Token<ITMDataFormatVerifier>();
+export const TMDataSchemaVerifierToken = new Token<ITMDataSchemaVerifier>();

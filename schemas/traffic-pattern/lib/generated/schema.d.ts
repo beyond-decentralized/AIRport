@@ -56,21 +56,6 @@ export declare const SCHEMA: {
             "relations": ({
                 "index": number;
                 "isId": boolean;
-                "isRepositoryJoin": boolean;
-                "joinFunctionWithOperator": number;
-                "relationType": number;
-                "propertyRef": {
-                    "index": number;
-                };
-                "relationTableIndex": number;
-                "addToJoinFunction"?: undefined;
-                "oneToManyElems"?: undefined;
-            } | {
-                "addToJoinFunction": string;
-                "index": number;
-                "isId": boolean;
-                "isRepositoryJoin": boolean;
-                "joinFunctionWithOperator": number;
                 "relationType": number;
                 "propertyRef": {
                     "index": number;
@@ -80,88 +65,6 @@ export declare const SCHEMA: {
             } | {
                 "index": number;
                 "isId": boolean;
-                "isRepositoryJoin": boolean;
-                "joinFunctionWithOperator": number;
-                "oneToManyElems": {
-                    "cascade": number;
-                    "mappedBy": string;
-                };
-                "relationType": number;
-                "propertyRef": {
-                    "index": number;
-                };
-                "relationTableIndex": number;
-                "addToJoinFunction"?: undefined;
-            })[];
-            "tableConfig": {
-                "name": string;
-            };
-        } | {
-            "columns": ({
-                "index": number;
-                "isGenerated": boolean;
-                "manyRelationColumnRefs": any[];
-                "name": string;
-                "propertyRefs": {
-                    "index": number;
-                }[];
-                "type": number;
-            } | {
-                "index": number;
-                "manyRelationColumnRefs": {
-                    "manyRelationIndex": number;
-                    "oneSchemaIndex": any;
-                    "oneTableIndex": number;
-                    "oneRelationIndex": number;
-                    "oneColumnIndex": number;
-                }[];
-                "name": string;
-                "propertyRefs": {
-                    "index": number;
-                }[];
-                "type": number;
-                "isGenerated"?: undefined;
-            })[];
-            "idColumnRefs": {
-                "index": number;
-            }[];
-            "index": number;
-            "isLocal": boolean;
-            "isRepositoryEntity": boolean;
-            "name": string;
-            "properties": ({
-                "columnRef": {
-                    "index": number;
-                };
-                "index": number;
-                "isId": boolean;
-                "name": string;
-                "relationRef"?: undefined;
-            } | {
-                "index": number;
-                "isId": boolean;
-                "name": string;
-                "relationRef": {
-                    "index": number;
-                };
-                "columnRef"?: undefined;
-            })[];
-            "relations": ({
-                "index": number;
-                "isId": boolean;
-                "isRepositoryJoin": boolean;
-                "joinFunctionWithOperator": number;
-                "relationType": number;
-                "propertyRef": {
-                    "index": number;
-                };
-                "relationTableIndex": number;
-                "oneToManyElems"?: undefined;
-            } | {
-                "index": number;
-                "isId": boolean;
-                "isRepositoryJoin": boolean;
-                "joinFunctionWithOperator": number;
                 "oneToManyElems": {
                     "mappedBy": string;
                 };
@@ -226,8 +129,6 @@ export declare const SCHEMA: {
             "relations": ({
                 "index": number;
                 "isId": boolean;
-                "isRepositoryJoin": boolean;
-                "joinFunctionWithOperator": number;
                 "relationType": number;
                 "propertyRef": {
                     "index": number;
@@ -238,8 +139,6 @@ export declare const SCHEMA: {
             } | {
                 "index": number;
                 "isId": boolean;
-                "isRepositoryJoin": boolean;
-                "joinFunctionWithOperator": number;
                 "oneToManyElems": {
                     "mappedBy": string;
                 };
@@ -252,8 +151,6 @@ export declare const SCHEMA: {
             } | {
                 "index": number;
                 "isId": boolean;
-                "isRepositoryJoin": boolean;
-                "joinFunctionWithOperator": number;
                 "relationType": number;
                 "propertyRef": {
                     "index": number;
@@ -261,6 +158,81 @@ export declare const SCHEMA: {
                 "relationTableIndex": number;
                 "relationTableSchemaIndex"?: undefined;
                 "oneToManyElems"?: undefined;
+            })[];
+            "tableConfig": {
+                "name": string;
+            };
+        } | {
+            "columns": ({
+                "index": number;
+                "isGenerated": boolean;
+                "manyRelationColumnRefs": any[];
+                "name": string;
+                "propertyRefs": {
+                    "index": number;
+                }[];
+                "type": number;
+            } | {
+                "index": number;
+                "manyRelationColumnRefs": {
+                    "manyRelationIndex": number;
+                    "oneSchemaIndex": any;
+                    "oneTableIndex": number;
+                    "oneRelationIndex": number;
+                    "oneColumnIndex": number;
+                }[];
+                "name": string;
+                "propertyRefs": {
+                    "index": number;
+                }[];
+                "type": number;
+                "isGenerated"?: undefined;
+            })[];
+            "idColumnRefs": {
+                "index": number;
+            }[];
+            "index": number;
+            "isLocal": boolean;
+            "isRepositoryEntity": boolean;
+            "name": string;
+            "properties": ({
+                "columnRef": {
+                    "index": number;
+                };
+                "index": number;
+                "isId": boolean;
+                "name": string;
+                "relationRef"?: undefined;
+            } | {
+                "index": number;
+                "isId": boolean;
+                "name": string;
+                "relationRef": {
+                    "index": number;
+                };
+                "columnRef"?: undefined;
+            })[];
+            "relations": ({
+                "index": number;
+                "isId": boolean;
+                "relationType": number;
+                "propertyRef": {
+                    "index": number;
+                };
+                "relationTableIndex": number;
+                "oneToManyElems"?: undefined;
+            } | {
+                "index": number;
+                "isId": boolean;
+                "oneToManyElems": {
+                    "cascade": number;
+                    "mappedBy": string;
+                };
+                "relationType": number;
+                "propertyRef": {
+                    "index": number;
+                };
+                "relationTableIndex": number;
             })[];
             "tableConfig": {
                 "name": string;

@@ -25,13 +25,13 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 9,
+									"oneTableIndex": 17,
 									"oneColumnIndex": 0
 								},
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 10,
+									"oneTableIndex": 18,
 									"oneColumnIndex": 2
 								}
 							],
@@ -44,7 +44,7 @@ export const SCHEMA = {
 									"index": 1
 								}
 							],
-							"type": 5
+							"type": 4
 						},
 						{
 							"index": 2,
@@ -52,7 +52,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 10,
+									"oneTableIndex": 18,
 									"oneColumnIndex": 0
 								}
 							],
@@ -107,25 +107,21 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": true,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 0
 							},
-							"relationTableIndex": 9,
+							"relationTableIndex": 17,
 							"relationTableSchemaIndex": 0
 						},
 						{
 							"index": 1,
 							"isId": true,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 10,
+							"relationTableIndex": 18,
 							"relationTableSchemaIndex": 0
 						}
 					],

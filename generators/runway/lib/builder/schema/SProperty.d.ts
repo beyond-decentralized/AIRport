@@ -71,8 +71,8 @@ export interface SRelation {
     sRelationColumns: SRelationColumn[];
     /**
      * Serialized function to add to the join
+     * Not currently needed
      */
-    addToJoinFunction?: string;
     joinFunctionWithOperator?: number;
 }
 /**

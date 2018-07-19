@@ -44,8 +44,8 @@ let RecordHistoryDmo = class RecordHistoryDmo extends generated_1.BaseRecordHist
 };
 RecordHistoryDmo = __decorate([
     typedi_1.Service(InjectionTokens_1.RecordHistoryDmoToken),
-    __param(0, typedi_1.Inject(_ => InjectionTokens_1.RecordHistoryNewValueDmoToken)),
-    __param(1, typedi_1.Inject(_ => InjectionTokens_1.RecordHistoryOldValueDmoToken)),
+    __param(0, typedi_1.Inject(InjectionTokens_1.RecordHistoryNewValueDmoToken)),
+    __param(1, typedi_1.Inject(InjectionTokens_1.RecordHistoryOldValueDmoToken)),
     __metadata("design:paramtypes", [Object, Object])
 ], RecordHistoryDmo);
 exports.RecordHistoryDmo = RecordHistoryDmo;

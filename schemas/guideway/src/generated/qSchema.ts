@@ -1,4 +1,5 @@
-import { DbSchema, QSchema as AirportQSchema } from '@airport/air-control';
+import { QSchema as AirportQSchema } from '@airport/air-control';
+import { DbSchema } from '@airport/ground-control';
 import { AgtRepositoryTransactionBlock } from '../ddl/synchronization/AgtRepositoryTransactionBlock';
 import { QAgtRepositoryTransactionBlock } from './synchronization/qagtrepositorytransactionblock';
 import { AgtSharingMessage } from '../ddl/synchronization/AgtSharingMessage';

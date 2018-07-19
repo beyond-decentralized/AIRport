@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const LogicalOperation_1 = require("@airport/air-control/lib/impl/core/operation/LogicalOperation");
 const InjectionTokens_1 = require("@airport/air-control/lib/InjectionTokens");
@@ -30,27 +22,23 @@ let DatabaseDao = class DatabaseDao extends generated_1.BaseDatabaseDao {
     constructor(utils) {
         super(utils);
     }
-    findMapByIds(ownerIds, names, secondIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const databaseMap = new Map();
-            const databases = yield this.findByIds(ownerIds, names, secondIds);
-            for (const database of databases) {
-                this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(databaseMap, database.owner.id), database.name)
-                    .set(database.secondId, database);
-            }
-            return databaseMap;
-        });
+    async findMapByIds(ownerIds, names, secondIds) {
+        const databaseMap = new Map();
+        const databases = await this.findByIds(ownerIds, names, secondIds);
+        for (const database of databases) {
+            this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(databaseMap, database.owner.id), database.name)
+                .set(database.secondId, database);
+        }
+        return databaseMap;
     }
-    findByIds(ownerIds, names, secondIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let d;
-            return yield this.db.find.tree({
-                select: {},
-                from: [
-                    d = generated_1.Q.Database
-                ],
-                where: LogicalOperation_1.and(d.owner.id.in(ownerIds), d.name.in(names), d.secondId.in(secondIds))
-            });
+    async findByIds(ownerIds, names, secondIds) {
+        let d;
+        return await this.db.find.tree({
+            select: {},
+            from: [
+                d = generated_1.Q.Database
+            ],
+            where: LogicalOperation_1.and(d.owner.id.in(ownerIds), d.name.in(names), d.secondId.in(secondIds))
         });
     }
 };

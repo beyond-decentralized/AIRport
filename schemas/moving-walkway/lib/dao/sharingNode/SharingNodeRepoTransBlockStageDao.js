@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const InjectionTokens_1 = require("@airport/air-control/lib/InjectionTokens");
 const Inject_1 = require("typedi/decorators/Inject");
@@ -30,28 +22,24 @@ let SharingNodeRepoTransBlockStageDao = class SharingNodeRepoTransBlockStageDao 
         super(utils);
         this.airportDb = airportDb;
     }
-    insertValues(values) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlockStage;
-            let snrtbs;
-            return yield this.airportDb.db.insertValues(dbEntity, {
-                insertInto: snrtbs = generated_1.Q.SharingNodeRepoTransBlockStage,
-                columns: [
-                    snrtbs.sharingNodeId,
-                    snrtbs.repositoryTransactionBlockId,
-                    // snrtbs.syncStatus,
-                    snrtbs.syncOutcomeType
-                ],
-                values
-            });
+    async insertValues(values) {
+        const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlockStage;
+        let snrtbs;
+        return await this.airportDb.db.insertValues(dbEntity, {
+            insertInto: snrtbs = generated_1.Q.SharingNodeRepoTransBlockStage,
+            columns: [
+                snrtbs.sharingNodeId,
+                snrtbs.repositoryTransactionBlockId,
+                // snrtbs.syncStatus,
+                snrtbs.syncOutcomeType
+            ],
+            values
         });
     }
-    delete( //
+    async delete( //
     ) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.db.deleteWhere({
-                deleteFrom: generated_1.Q.SharingNodeRepoTransBlockStage
-            });
+        return await this.db.deleteWhere({
+            deleteFrom: generated_1.Q.SharingNodeRepoTransBlockStage
         });
     }
 };

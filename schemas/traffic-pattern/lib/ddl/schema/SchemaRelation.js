@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
+const ground_control_2 = require("@airport/ground-control");
 let SchemaRelation = class SchemaRelation {
 };
 __decorate([
@@ -72,11 +73,11 @@ __decorate([
     __metadata("design:type", Object)
 ], SchemaRelation.prototype, "relationEntity", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: air_control_1.CascadeType.ALL, mappedBy: "manyRelation" }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: "manyRelation" }),
     __metadata("design:type", Array)
 ], SchemaRelation.prototype, "manyRelationColumns", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: air_control_1.CascadeType.ALL, mappedBy: "oneRelation" }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: "oneRelation" }),
     __metadata("design:type", Array)
 ], SchemaRelation.prototype, "oneRelationColumns", void 0);
 SchemaRelation = __decorate([

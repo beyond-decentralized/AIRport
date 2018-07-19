@@ -39,7 +39,7 @@ let TransactionHistoryDmo = class TransactionHistoryDmo extends generated_1.Base
 };
 TransactionHistoryDmo = __decorate([
     typedi_1.Service(InjectionTokens_1.TransactionHistoryDmoToken),
-    __param(0, typedi_1.Inject(_ => InjectionTokens_1.RepositoryTransactionHistoryDmoToken)),
+    __param(0, typedi_1.Inject(InjectionTokens_1.RepositoryTransactionHistoryDmoToken)),
     __metadata("design:paramtypes", [Object])
 ], TransactionHistoryDmo);
 exports.TransactionHistoryDmo = TransactionHistoryDmo;

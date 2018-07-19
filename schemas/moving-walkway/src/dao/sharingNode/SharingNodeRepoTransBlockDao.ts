@@ -7,7 +7,7 @@ import {
 	RepoTransBlockSyncOutcomeType,
 	TmRepositoryTransactionBlockId
 } from "@airport/arrivals-n-departures";
-import {BlockSyncStatus} from "@airport/terminal-map";
+import {BlockSyncStatus} from "@airport/ground-control";
 import {Inject} from "typedi/decorators/Inject";
 import {Service} from "typedi/decorators/Service";
 import {SharingNodeId} from "../../ddl/ddl";

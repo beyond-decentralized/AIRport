@@ -1,4 +1,5 @@
-import { DbSchema, QSchema as AirportQSchema } from '@airport/air-control';
+import { QSchema as AirportQSchema } from '@airport/air-control';
+import { DbSchema } from '@airport/ground-control';
 import { QAbstractRepositoryEntity } from './repository/qabstractrepositoryentity';
 import { QActor } from './infrastructure/qactor';
 import { QActorApplication } from './infrastructure/qactorapplication';

@@ -1,4 +1,5 @@
-import { IUtils, SchemaIndex, SchemaVersionMajor, SchemaVersionMinor, SchemaVersionPatch } from "@airport/air-control";
+import { SchemaIndex, SchemaVersionMajor, SchemaVersionMinor, SchemaVersionPatch } from "@airport/ground-control";
+import { IUtils } from "@airport/air-control";
 import { IAirportDatabase } from "@airport/air-control/lib/lingo/AirportDatabase";
 import { SchemaDomainName, SchemaName } from "../ddl/schema/Schema";
 import { BaseSchemaVersionDao, IBaseSchemaVersionDao } from "../generated/generated";

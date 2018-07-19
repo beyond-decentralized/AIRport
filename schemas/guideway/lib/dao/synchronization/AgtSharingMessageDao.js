@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const InjectionTokens_1 = require("@airport/air-control/lib/InjectionTokens");
@@ -31,87 +23,79 @@ let AgtSharingMessageDao = class AgtSharingMessageDao extends generated_1.BaseAg
         super(utils);
         this.airportDb = airportDb;
     }
-    insertValues(values) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const sharingMessageIdsByTerminalId = new Map();
-            const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.AgtSharingMessage;
-            let asm;
-            const sharingMessageIds = yield this.airportDb.db.insertValuesGenerateIds(dbEntity, {
-                insertInto: asm = generated_1.Q.AgtSharingMessage,
-                columns: [
-                    asm.terminal.id,
-                    asm.tmSharingMessageId,
-                    asm.acknowledged,
-                ],
-                values
-            });
-            for (let i = 0; i < sharingMessageIds.length; i++) {
-                const insertedRecord = values[i];
-                sharingMessageIdsByTerminalId.set(insertedRecord[0], sharingMessageIds[i]);
+    async insertValues(values) {
+        const sharingMessageIdsByTerminalId = new Map();
+        const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.AgtSharingMessage;
+        let asm;
+        const sharingMessageIds = await this.airportDb.db.insertValuesGenerateIds(dbEntity, {
+            insertInto: asm = generated_1.Q.AgtSharingMessage,
+            columns: [
+                asm.terminal.id,
+                asm.tmSharingMessageId,
+                asm.acknowledged,
+            ],
+            values
+        });
+        for (let i = 0; i < sharingMessageIds.length; i++) {
+            const insertedRecord = values[i];
+            sharingMessageIdsByTerminalId.set(insertedRecord[0], sharingMessageIds[i]);
+        }
+        return sharingMessageIdsByTerminalId;
+    }
+    async findNotSyncedByIdIn(agtSharingMessageIds) {
+        const resultMapByTerminalId = new Map();
+        let asm;
+        const dbSyncLogs = await this.airportDb.db.find.sheet({
+            from: [
+                asm = generated_1.Q.AgtSharingMessage
+            ],
+            select: [
+                asm.terminal.id,
+                asm.id
+            ],
+            where: air_control_1.and(asm.id.in(agtSharingMessageIds), asm.acknowledged.equals(ddl_1.AgtSharingMessageAcknowledged.NOT_ACKNOWLEDGED))
+        });
+        for (const dbSyncLog of dbSyncLogs) {
+            const terminalId = dbSyncLog[0];
+            let syncLogMapForTerminal = resultMapByTerminalId.get(terminalId);
+            if (!syncLogMapForTerminal) {
+                syncLogMapForTerminal = new Set();
+                resultMapByTerminalId.set(terminalId, syncLogMapForTerminal);
             }
-            return sharingMessageIdsByTerminalId;
+            syncLogMapForTerminal.add(dbSyncLog[1]);
+        }
+        return resultMapByTerminalId;
+    }
+    async updateToAcked(agtSharingMessageIds) {
+        let asm;
+        // TODO: verify the query works as required
+        await this.db.updateWhere({
+            update: asm = generated_1.Q.AgtSharingMessage,
+            set: {
+                acknowledged: ddl_1.AgtSharingMessageAcknowledged.ACKNOWLEDGED
+            },
+            where: asm.id.in(agtSharingMessageIds)
         });
     }
-    findNotSyncedByIdIn(agtSharingMessageIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const resultMapByTerminalId = new Map();
-            let asm;
-            const dbSyncLogs = yield this.airportDb.db.find.sheet({
-                from: [
-                    asm = generated_1.Q.AgtSharingMessage
-                ],
-                select: [
-                    asm.terminal.id,
-                    asm.id
-                ],
-                where: air_control_1.and(asm.id.in(agtSharingMessageIds), asm.acknowledged.equals(ddl_1.AgtSharingMessageAcknowledged.NOT_ACKNOWLEDGED))
-            });
-            for (const dbSyncLog of dbSyncLogs) {
-                const terminalId = dbSyncLog[0];
-                let syncLogMapForTerminal = resultMapByTerminalId.get(terminalId);
-                if (!syncLogMapForTerminal) {
-                    syncLogMapForTerminal = new Set();
-                    resultMapByTerminalId.set(terminalId, syncLogMapForTerminal);
-                }
-                syncLogMapForTerminal.add(dbSyncLog[1]);
-            }
-            return resultMapByTerminalId;
+    async findIdMapByTerminalIdAndTmSharingMessageId(terminalIds, tmSharingMessageIds) {
+        const idMapByTerminalIdAndTmSharingMessageId = new Map();
+        let asm;
+        const sharingMessages = await this.airportDb.db.find.sheet({
+            from: [
+                asm = generated_1.Q.AgtSharingMessage
+            ],
+            select: [
+                asm.terminal.id,
+                asm.tmSharingMessageId,
+                asm.id,
+            ],
+            where: air_control_1.and(asm.terminal.id.in(terminalIds), asm.tmSharingMessageId.in(tmSharingMessageIds))
         });
-    }
-    updateToAcked(agtSharingMessageIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let asm;
-            // TODO: verify the query works as required
-            yield this.db.updateWhere({
-                update: asm = generated_1.Q.AgtSharingMessage,
-                set: {
-                    acknowledged: ddl_1.AgtSharingMessageAcknowledged.ACKNOWLEDGED
-                },
-                where: asm.id.in(agtSharingMessageIds)
-            });
-        });
-    }
-    findIdMapByTerminalIdAndTmSharingMessageId(terminalIds, tmSharingMessageIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const idMapByTerminalIdAndTmSharingMessageId = new Map();
-            let asm;
-            const sharingMessages = yield this.airportDb.db.find.sheet({
-                from: [
-                    asm = generated_1.Q.AgtSharingMessage
-                ],
-                select: [
-                    asm.terminal.id,
-                    asm.tmSharingMessageId,
-                    asm.id,
-                ],
-                where: air_control_1.and(asm.terminal.id.in(terminalIds), asm.tmSharingMessageId.in(tmSharingMessageIds))
-            });
-            for (const sharingMessage of sharingMessages) {
-                this.utils.ensureChildJsMap(idMapByTerminalIdAndTmSharingMessageId, sharingMessage[0])
-                    .set(sharingMessage[1], sharingMessage[2]);
-            }
-            return idMapByTerminalIdAndTmSharingMessageId;
-        });
+        for (const sharingMessage of sharingMessages) {
+            this.utils.ensureChildJsMap(idMapByTerminalIdAndTmSharingMessageId, sharingMessage[0])
+                .set(sharingMessage[1], sharingMessage[2]);
+        }
+        return idMapByTerminalIdAndTmSharingMessageId;
     }
     /**
      * AgtSharingMessage records are eventually aggregated into DailyAgtSharingMessage records,
@@ -143,9 +127,7 @@ let AgtSharingMessageDao = class AgtSharingMessageDao extends generated_1.BaseAg
      * TODO: inspect query plan
      *
      */
-    deleteForAgtRepositoryIdsOnDate(fromDateInclusive, toDateExclusive, terminalIds, repositoryIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-        });
+    async deleteForAgtRepositoryIdsOnDate(fromDateInclusive, toDateExclusive, terminalIds, repositoryIds) {
     }
 };
 AgtSharingMessageDao = __decorate([

@@ -9,7 +9,7 @@ import {
 }                                      from "@airport/air-control";
 import {DbNumber}                      from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
 import {RepoTransBlockSyncOutcomeType} from "@airport/arrivals-n-departures";
-import {BlockSyncStatus}               from "@airport/terminal-map";
+import {BlockSyncStatus}               from "@airport/ground-control";
 import {RepositoryTransactionBlock}    from "../repositoryTransactionBlock/RepositoryTransactionBlock";
 import {SharingMessageSyncTimestamp}   from "../sharingMessage/SharingMessage";
 import {DataOrigin}                    from "../values/DataOrigin";

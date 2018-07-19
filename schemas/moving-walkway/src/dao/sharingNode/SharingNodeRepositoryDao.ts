@@ -8,7 +8,7 @@ import {
 	UtilsToken,
 	Y
 }                                      from "@airport/air-control";
-import {QMetadataUtils}                from "@airport/air-control/lib/impl/utils/QMetadataUtils";
+import {QMetadataUtilsToken}                from "@airport/air-control";
 import {AgtRepositoryId}               from "@airport/arrivals-n-departures";
 import {
 	IRecordHistory,
@@ -66,7 +66,7 @@ export class SharingNodeRepositoryDao
 	constructor(
 		@Inject(AirportDatabaseToken)
 		private airportDb: IAirportDatabase,
-		@Inject(QMetadataUtils)
+		@Inject(QMetadataUtilsToken)
 		private qMetadataUtils: IQMetadataUtils,
 		@Inject(RepositoryTransactionHistoryDaoToken)
 		private repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao,

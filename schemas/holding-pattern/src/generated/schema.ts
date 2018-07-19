@@ -68,13 +68,13 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 7,
+									"oneTableIndex": 0,
 									"oneColumnIndex": 0
 								},
 								{
 									"manyRelationIndex": 2,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 1,
+									"oneTableIndex": 3,
 									"oneColumnIndex": 5
 								}
 							],
@@ -95,7 +95,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 2,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 1,
+									"oneTableIndex": 3,
 									"oneColumnIndex": 0
 								}
 							],
@@ -182,8 +182,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": true,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1
@@ -193,32 +191,26 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 4
 							},
-							"relationTableIndex": 7,
+							"relationTableIndex": 0,
 							"relationTableSchemaIndex": 0
 						},
 						{
 							"index": 2,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 5
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 3,
 							"relationTableSchemaIndex": 0
 						},
 						{
 							"index": 3,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"cascade": 1,
 								"mappedBy": "operationHistory"
@@ -361,8 +353,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1
@@ -372,8 +362,6 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 3
@@ -383,8 +371,6 @@ export const SCHEMA = {
 						{
 							"index": 2,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"cascade": 1,
 								"mappedBy": "recordHistory"
@@ -398,8 +384,6 @@ export const SCHEMA = {
 						{
 							"index": 3,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"cascade": 1,
 								"mappedBy": "recordHistory"
@@ -512,8 +496,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": true,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 0
@@ -617,8 +599,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": true,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 0
@@ -771,8 +751,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1
@@ -782,8 +760,6 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 2
@@ -793,8 +769,6 @@ export const SCHEMA = {
 						{
 							"index": 2,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 3
@@ -1020,8 +994,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 2
@@ -1031,8 +1003,6 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 3
@@ -1042,8 +1012,6 @@ export const SCHEMA = {
 						{
 							"index": 2,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"mappedBy": "repositoryTransactionHistory"
 							},
@@ -1056,8 +1024,6 @@ export const SCHEMA = {
 						{
 							"index": 3,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 5
@@ -1067,8 +1033,6 @@ export const SCHEMA = {
 						{
 							"index": 4,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"cascade": 1,
 								"mappedBy": "repositoryTransactionHistory"
@@ -1150,8 +1114,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"mappedBy": "repoTransHistory"
 							},
@@ -1292,8 +1254,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1
@@ -1303,8 +1263,6 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 2
@@ -1314,8 +1272,6 @@ export const SCHEMA = {
 						{
 							"index": 2,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"cascade": 1,
 								"mappedBy": "actor"
@@ -1329,8 +1285,6 @@ export const SCHEMA = {
 						{
 							"index": 3,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"cascade": 1,
 								"mappedBy": "ACTOR_ID"
@@ -1437,8 +1391,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"cascade": 1,
 								"mappedBy": "application"
@@ -1452,8 +1404,6 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"cascade": 1,
 								"mappedBy": "application"
@@ -1590,8 +1540,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 3
@@ -1802,52 +1750,28 @@ export const SCHEMA = {
 							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "DISTRIBUTION_STRATEGY",
+							"name": "PLATFORM_CONFIG",
 							"propertyRefs": [
 								{
 									"index": 6
 								}
 							],
-							"type": 4
+							"type": 5
 						},
 						{
 							"index": 6,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "REPOSITORY_PLATFORM",
+							"name": "SYNC_PRIORITY",
 							"propertyRefs": [
 								{
-									"index": 7
+									"index": 10
 								}
 							],
 							"type": 4
 						},
 						{
 							"index": 7,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "PLATFORM_CONFIG",
-							"propertyRefs": [
-								{
-									"index": 8
-								}
-							],
-							"type": 5
-						},
-						{
-							"index": 8,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "SYNC_PRIORITY",
-							"propertyRefs": [
-								{
-									"index": 12
-								}
-							],
-							"type": 4
-						},
-						{
-							"index": 9,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
@@ -1929,26 +1853,10 @@ export const SCHEMA = {
 							},
 							"index": 6,
 							"isId": false,
-							"name": "distributionStrategy"
-						},
-						{
-							"columnRef": {
-								"index": 6
-							},
-							"index": 7,
-							"isId": false,
-							"name": "platform"
-						},
-						{
-							"columnRef": {
-								"index": 7
-							},
-							"index": 8,
-							"isId": false,
 							"name": "platformConfig"
 						},
 						{
-							"index": 9,
+							"index": 7,
 							"isId": false,
 							"name": "repositoryActors",
 							"relationRef": {
@@ -1956,7 +1864,7 @@ export const SCHEMA = {
 							}
 						},
 						{
-							"index": 10,
+							"index": 8,
 							"isId": false,
 							"name": "repositoryApplications",
 							"relationRef": {
@@ -1964,7 +1872,7 @@ export const SCHEMA = {
 							}
 						},
 						{
-							"index": 11,
+							"index": 9,
 							"isId": false,
 							"name": "repositoryTransactionHistory",
 							"relationRef": {
@@ -1973,9 +1881,9 @@ export const SCHEMA = {
 						},
 						{
 							"columnRef": {
-								"index": 8
+								"index": 6
 							},
-							"index": 12,
+							"index": 10,
 							"isId": false,
 							"name": "syncPriority"
 						}
@@ -1984,8 +1892,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1
@@ -1995,8 +1901,32 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
+							"oneToManyElems": {
+								"cascade": 1,
+								"mappedBy": "repository"
+							},
+							"relationType": 0,
+							"propertyRef": {
+								"index": 7
+							},
+							"relationTableIndex": 12
+						},
+						{
+							"index": 2,
+							"isId": false,
+							"oneToManyElems": {
+								"cascade": 1,
+								"mappedBy": "repository"
+							},
+							"relationType": 0,
+							"propertyRef": {
+								"index": 8
+							},
+							"relationTableIndex": 15
+						},
+						{
+							"index": 3,
+							"isId": false,
 							"oneToManyElems": {
 								"cascade": 1,
 								"mappedBy": "repository"
@@ -2004,36 +1934,6 @@ export const SCHEMA = {
 							"relationType": 0,
 							"propertyRef": {
 								"index": 9
-							},
-							"relationTableIndex": 12
-						},
-						{
-							"index": 2,
-							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
-							"oneToManyElems": {
-								"cascade": 1,
-								"mappedBy": "repository"
-							},
-							"relationType": 0,
-							"propertyRef": {
-								"index": 10
-							},
-							"relationTableIndex": 15
-						},
-						{
-							"index": 3,
-							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
-							"oneToManyElems": {
-								"cascade": 1,
-								"mappedBy": "repository"
-							},
-							"relationType": 0,
-							"propertyRef": {
-								"index": 11
 							},
 							"relationTableIndex": 5
 						}
@@ -2137,8 +2037,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": true,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 2
@@ -2148,8 +2046,6 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1
@@ -2248,8 +2144,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": true,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1
@@ -2356,8 +2250,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": true,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1
@@ -2367,8 +2259,6 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 2
@@ -2475,8 +2365,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": true,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 2
@@ -2486,8 +2374,6 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1

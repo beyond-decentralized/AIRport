@@ -11,7 +11,6 @@ export interface ISchemaEntity {
     name?: string;
     tableConfig?: TableConfiguration;
     columns?: ISchemaColumn[];
-    idColumns?: ISchemaColumn[];
     properties?: ISchemaProperty[];
     relations?: ISchemaRelation[];
 }
@@ -21,7 +20,6 @@ export interface ISchemaEntity {
 export interface SchemaEntityESelect extends IEntitySelectProperties, SchemaEntityEOptionalId, SchemaEntityEUpdateProperties {
     schemaVersion?: SchemaVersionESelect;
     columns?: SchemaColumnESelect;
-    idColumns?: SchemaColumnESelect;
     properties?: SchemaPropertyESelect;
     relations?: SchemaRelationESelect;
 }
@@ -78,7 +76,6 @@ export interface QSchemaEntity extends QEntity {
     name: IQStringField;
     tableConfig: IQStringField;
     columns: IQOneToManyRelation<QSchemaColumn>;
-    idColumns: IQOneToManyRelation<QSchemaColumn>;
     properties: IQOneToManyRelation<QSchemaProperty>;
     relations: IQOneToManyRelation<QSchemaRelation>;
 }

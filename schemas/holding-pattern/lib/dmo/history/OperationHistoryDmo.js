@@ -51,7 +51,7 @@ let OperationHistoryDmo = class OperationHistoryDmo extends generated_1.BaseOper
 };
 OperationHistoryDmo = __decorate([
     typedi_1.Service(InjectionTokens_1.OperationHistoryDmoToken),
-    __param(0, typedi_1.Inject(_ => InjectionTokens_1.RecordHistoryDmoToken)),
+    __param(0, typedi_1.Inject(InjectionTokens_1.RecordHistoryDmoToken)),
     __metadata("design:paramtypes", [Object])
 ], OperationHistoryDmo);
 exports.OperationHistoryDmo = OperationHistoryDmo;

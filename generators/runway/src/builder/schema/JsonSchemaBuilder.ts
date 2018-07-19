@@ -181,12 +181,12 @@ export class JsonSchemaBuilder {
 					relationSchemaIndex, relationTableIndex, columns);
 
 				const relation: JsonSchemaRelation = {
-					addToJoinFunction: sRelation.addToJoinFunction,
+					// addToJoinFunction: sRelation.addToJoinFunction,
 					foreignKey: sRelation.foreignKey,
 					index: sRelation.index,
 					isId: sProperty.isId,
 					// isRepositoryJoin: sRelation.repositoryJoin,
-					joinFunctionWithOperator: sRelation.joinFunctionWithOperator,
+					// joinFunctionWithOperator: sRelation.joinFunctionWithOperator,
 					manyToOneElems: sRelation.manyToOne,
 					oneToManyElems: this.prepOneToManyElems(sRelation.oneToMany),
 					relationType: sRelation.relationType,

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
 let Actor = class Actor {
     constructor() {
         this.actorApplications = [];
@@ -37,11 +38,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Actor.prototype, "randomId", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: air_control_1.CascadeType.ALL, mappedBy: 'actor' }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'actor' }),
     __metadata("design:type", Array)
 ], Actor.prototype, "actorApplications", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: air_control_1.CascadeType.ALL, mappedBy: "ACTOR_ID" }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: "ACTOR_ID" }),
     __metadata("design:type", Array)
 ], Actor.prototype, "repositoryActor", void 0);
 Actor = __decorate([

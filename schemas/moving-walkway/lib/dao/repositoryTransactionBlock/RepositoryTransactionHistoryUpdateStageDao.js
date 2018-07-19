@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const InjectionTokens_1 = require("@airport/air-control/lib/InjectionTokens");
@@ -30,47 +22,41 @@ let RepositoryTransactionHistoryUpdateStageDao = class RepositoryTransactionHist
         super(utils);
         this.airportDb = airportDb;
     }
-    insertValues(values) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.RepositoryTransactionHistoryUpdateStage;
-            let rthus;
-            return yield this.airportDb.db.insertValues(dbEntity, {
-                insertInto: rthus = generated_1.Q.RepositoryTransactionHistoryUpdateStage,
-                columns: [
-                    rthus.repositoryTransactionHistoryId,
-                    rthus.blockId
-                ],
-                values
-            });
+    async insertValues(values) {
+        const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.RepositoryTransactionHistoryUpdateStage;
+        let rthus;
+        return await this.airportDb.db.insertValues(dbEntity, {
+            insertInto: rthus = generated_1.Q.RepositoryTransactionHistoryUpdateStage,
+            columns: [
+                rthus.repositoryTransactionHistoryId,
+                rthus.blockId
+            ],
+            values
         });
     }
-    updateRepositoryTransactionHistory() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const schemaName = '@airport/holding-pattern';
-            const dbEntity = this.airportDb.schemaMapByName[schemaName]
-                .currentVersion.entityMapByName['RepositoryTransactionHistory'];
-            const rth = this.airportDb.qSchemaMapByName[schemaName].RepositoryTransactionHistory;
-            let rthus;
-            return yield this.airportDb.db.updateWhere(dbEntity, {
-                update: rth,
-                set: {
-                    blockId: air_control_1.field({
-                        from: [
-                            rthus = generated_1.Q.RepositoryTransactionHistoryUpdateStage
-                        ],
-                        select: rthus.blockId,
-                        where: rthus.repositoryTransactionHistoryId.equals(rth.id)
-                    })
-                }
-            });
+    async updateRepositoryTransactionHistory() {
+        const schemaName = '@airport/holding-pattern';
+        const dbEntity = this.airportDb.schemaMapByName[schemaName]
+            .currentVersion.entityMapByName['RepositoryTransactionHistory'];
+        const rth = this.airportDb.qSchemaMapByName[schemaName].RepositoryTransactionHistory;
+        let rthus;
+        return await this.airportDb.db.updateWhere(dbEntity, {
+            update: rth,
+            set: {
+                blockId: air_control_1.field({
+                    from: [
+                        rthus = generated_1.Q.RepositoryTransactionHistoryUpdateStage
+                    ],
+                    select: rthus.blockId,
+                    where: rthus.repositoryTransactionHistoryId.equals(rth.id)
+                })
+            }
         });
     }
-    delete( //
+    async delete( //
     ) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.db.deleteWhere({
-                deleteFrom: generated_1.Q.RepositoryTransactionHistoryUpdateStage
-            });
+        return await this.db.deleteWhere({
+            deleteFrom: generated_1.Q.RepositoryTransactionHistoryUpdateStage
         });
     }
 };

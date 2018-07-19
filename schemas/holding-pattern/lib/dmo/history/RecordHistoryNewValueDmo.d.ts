@@ -1,4 +1,4 @@
-import { DbColumn } from "@airport/air-control";
+import { DbColumn } from "@airport/ground-control";
 import { BaseRecordHistoryNewValueDmo, IRecordHistory, IRecordHistoryNewValue } from "../../generated/generated";
 export interface IRecordHistoryNewValueDmo {
     getNewRecord(recordHistory: IRecordHistory, dbColumn: DbColumn, newValue: any): IRecordHistoryNewValue;

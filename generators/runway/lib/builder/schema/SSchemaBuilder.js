@@ -113,12 +113,16 @@ class SSchemaBuilder {
         let foreignKey;
         let manyToOne = undefined;
         let oneToMany = undefined;
+        let isId = false;
         // let repositoryJoin                       = false;
-        let addToJoinFunction;
+        // let addToJoinFunction;
         let joinFunctionWithOperator = ground_control_1.SqlOperator.AND;
         let relationType;
         for (const decorator of aProperty.decorators) {
             switch (decorator.name) {
+                case ground_control_1.property.ID:
+                    isId = true;
+                    break;
                 // case property.R_JOIN_COLUMN:
                 // 	if (!entity.isRepositoryEntity) {
                 // 		throw `${entity.name}.${aProperty.name} cannot be @RJoinColumn `
@@ -163,6 +167,9 @@ class SSchemaBuilder {
                     relationType = ground_control_1.EntityRelationType.MANY_TO_ONE;
                     break;
                 case ground_control_1.property.ONE_TO_MANY:
+                    if (isId) {
+                        throw `A property cannot be be both @OneToMany and @Id`;
+                    }
                     if (relationType) {
                         throw `Cardinality (@ManyToOne,@OneToMany) is defined more than once for ${entity.name}.${aProperty.name}`;
                     }
@@ -283,7 +290,7 @@ class SSchemaBuilder {
             entityName = aProperty.entity.type;
         }
         let relation = {
-            addToJoinFunction,
+            // addToJoinFunction,
             entityName,
             foreignKey,
             index: entity.numRelations++,

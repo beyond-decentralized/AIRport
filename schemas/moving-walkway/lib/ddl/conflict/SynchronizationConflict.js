@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
 const SynchronizationConflictType_1 = require("./SynchronizationConflictType");
 let SynchronizationConflict = class SynchronizationConflict {
 };
@@ -35,7 +36,7 @@ __decorate([
     __metadata("design:type", Object)
 ], SynchronizationConflict.prototype, "overwritingRecordHistory", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: air_control_1.CascadeType.ALL, mappedBy: "SYNCHRONIZATION_CONFLICT_ID" }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: "SYNCHRONIZATION_CONFLICT_ID" }),
     __metadata("design:type", Array)
 ], SynchronizationConflict.prototype, "values", void 0);
 __decorate([

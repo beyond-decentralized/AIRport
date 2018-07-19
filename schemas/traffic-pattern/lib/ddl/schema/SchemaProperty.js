@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
 let SchemaProperty = class SchemaProperty {
 };
 __decorate([
@@ -30,11 +31,11 @@ __decorate([
     __metadata("design:type", Boolean)
 ], SchemaProperty.prototype, "isId", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: air_control_1.CascadeType.ALL, mappedBy: 'property' }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'property' }),
     __metadata("design:type", Array)
 ], SchemaProperty.prototype, "propertyColumns", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: air_control_1.CascadeType.ALL, mappedBy: 'property' }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'property' }),
     __metadata("design:type", Array)
 ], SchemaProperty.prototype, "relation", void 0);
 SchemaProperty = __decorate([

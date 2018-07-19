@@ -1,4 +1,4 @@
-import {DbEntity}             from "@airport/air-control";
+import {DbEntity}             from "@airport/ground-control";
 import {ChangeType}           from "@airport/ground-control";
 import {
 	Inject,
@@ -51,8 +51,7 @@ export class RepositoryTransactionHistoryDmo
 	implements IRepositoryTransactionHistoryDmo {
 
 	constructor(
-		@Inject(
-			_ => OperationHistoryDmoToken)
+		@Inject(OperationHistoryDmoToken)
 		private operationHistoryDmo: IOperationHistoryDmo
 	) {
 		super();

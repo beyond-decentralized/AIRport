@@ -1,4 +1,4 @@
-import { DbEntity } from "@airport/air-control";
+import { DbEntity } from "@airport/ground-control";
 import { ChangeType } from "@airport/ground-control";
 import { IBaseOperationHistoryDmo } from "../../";
 import { RepositoryEntityActorRecordId } from "../../ddl/ddl";

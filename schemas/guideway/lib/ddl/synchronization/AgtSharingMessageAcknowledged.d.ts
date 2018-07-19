@@ -4,5 +4,5 @@
  */
 export declare enum AgtSharingMessageAcknowledged {
     NOT_ACKNOWLEDGED = 0,
-    ACKNOWLEDGED = 1,
+    ACKNOWLEDGED = 1
 }

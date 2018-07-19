@@ -1,4 +1,4 @@
-import { SchemaIndex, SchemaVersionId } from "@airport/air-control";
+import { SchemaIndex, SchemaVersionId } from "@airport/ground-control";
 import { IAirportDatabase } from "@airport/air-control/lib/lingo/AirportDatabase";
 import { IUtils } from "@airport/air-control/lib/lingo/utils/Utils";
 import { SchemaDomainName, SchemaName } from "..";

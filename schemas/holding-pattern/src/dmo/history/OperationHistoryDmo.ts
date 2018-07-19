@@ -1,4 +1,4 @@
-import {DbEntity}                 from "@airport/air-control";
+import {DbEntity}                 from "@airport/ground-control";
 import {ChangeType}               from "@airport/ground-control";
 import {
 	Inject,
@@ -48,8 +48,7 @@ export class OperationHistoryDmo
 	implements IOperationHistoryDmo {
 
 	constructor(
-		@Inject(
-			_ => RecordHistoryDmoToken)
+		@Inject(RecordHistoryDmoToken)
 		private recordHistoryDmo: IRecordHistoryDmo
 	) {
 		super();

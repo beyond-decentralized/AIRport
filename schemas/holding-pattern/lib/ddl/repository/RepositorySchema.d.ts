@@ -1,4 +1,4 @@
-import { SchemaIndex } from "@airport/air-control";
+import { SchemaIndex } from "@airport/ground-control";
 import { IRepository } from "../../generated/repository/qrepository";
 import { IRepositorySchema } from "../../generated/repository/qrepositoryschema";
 export declare type RepositorySchemaId = number;

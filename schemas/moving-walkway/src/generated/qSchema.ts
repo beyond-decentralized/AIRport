@@ -1,4 +1,5 @@
-import { DbSchema, QSchema as AirportQSchema } from '@airport/air-control';
+import { QSchema as AirportQSchema } from '@airport/air-control';
+import { DbSchema } from '@airport/ground-control';
 import { MissingRecord } from '../ddl/missingRecord/MissingRecord';
 import { QMissingRecord } from './missingRecord/qmissingrecord';
 import { MissingRecordRepoTransBlock } from '../ddl/missingRecord/MissingRecordRepoTransBlock';

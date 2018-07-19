@@ -1,9 +1,11 @@
 import {
-	IUtils,
 	SchemaIndex,
 	SchemaVersionMajor,
 	SchemaVersionMinor,
-	SchemaVersionPatch,
+	SchemaVersionPatch
+}                              from "@airport/ground-control";
+import {
+	IUtils,
 	UtilsToken
 }                              from "@airport/air-control";
 import {max}                   from "@airport/air-control/lib/impl/core/field/Functions";

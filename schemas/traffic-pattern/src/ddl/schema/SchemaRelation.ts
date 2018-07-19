@@ -1,5 +1,4 @@
 import {
-	CascadeType,
 	Column,
 	DbNumber,
 	Entity,
@@ -13,6 +12,9 @@ import {
 	OneToManyElements,
 	Table
 }                              from '@airport/air-control';
+import {
+	CascadeType,
+}                              from '@airport/ground-control';
 import {EntityRelationType}    from "@airport/ground-control";
 import {ISchemaEntity}         from "../../generated/schema/qschemaentity";
 import {ISchemaProperty}       from "../../generated/schema/qschemaproperty";

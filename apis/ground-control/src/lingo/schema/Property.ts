@@ -197,14 +197,15 @@ export interface JsonSchemaRelation extends SchemaReferenceByIndex<RelationIndex
 
 	/**
 	 * Serialized function to add to the join.
+	 * Not needed - add back when @WhereJoinTable is supported
 	 */
-	addToJoinFunction?: string;
+	// addToJoinFunction?: string;
 
 	/**
 	 * How to add the function to the join (AND | OR)
+	 * Not needed - add back when @WhereJoinTable is supported
 	 */
-
-	joinFunctionWithOperator?: number;
+	// joinFunctionWithOperator?: number;
 
 }
 

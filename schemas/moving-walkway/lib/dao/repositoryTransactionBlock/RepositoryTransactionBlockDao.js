@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const typedi_1 = require("typedi");
@@ -29,57 +21,51 @@ let RepositoryTransactionBlockDao = class RepositoryTransactionBlockDao extends 
         super(utils);
         this.dmo = dmo;
     }
-    updateFromResponseStage( //
+    async updateFromResponseStage( //
     ) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let rtb;
-            // let rtbrs1: QRepoTransBlockResponseStage;
-            let rtbrs2;
-            return yield this.db.updateWhere({
-                update: rtb = generated_1.Q.RepositoryTransactionBlock,
-                set: {
-                    // agtSyncRecordId: field({
-                    // 	from: [
-                    // 		rtbrs1 = Q.RepoTransBlockResponseStage
-                    // 	],
-                    // 	select: rtbrs1.agtSyncRecordId,
-                    // 	where: rtbrs1.id.equals(rtb.id)
-                    // }),
-                    syncOutcomeType: air_control_1.field({
-                        from: [
-                            rtbrs2 = generated_1.Q.RepoTransBlockResponseStage
-                        ],
-                        select: rtbrs2.syncOutcomeType,
-                        where: rtbrs2.id.equals(rtb.id)
-                    })
-                }
-            });
+        let rtb;
+        // let rtbrs1: QRepoTransBlockResponseStage;
+        let rtbrs2;
+        return await this.db.updateWhere({
+            update: rtb = generated_1.Q.RepositoryTransactionBlock,
+            set: {
+                // agtSyncRecordId: field({
+                // 	from: [
+                // 		rtbrs1 = Q.RepoTransBlockResponseStage
+                // 	],
+                // 	select: rtbrs1.agtSyncRecordId,
+                // 	where: rtbrs1.id.equals(rtb.id)
+                // }),
+                syncOutcomeType: air_control_1.field({
+                    from: [
+                        rtbrs2 = generated_1.Q.RepoTransBlockResponseStage
+                    ],
+                    select: rtbrs2.syncOutcomeType,
+                    where: rtbrs2.id.equals(rtb.id)
+                })
+            }
         });
     }
-    findWithMissingRecordIdsAndNoMissingRecordsWithStatus(missingRecordIds, status) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let rtb, mrrtb, mr;
-            return yield this.db.find.tree({
-                select: air_control_1.distinct({}),
-                from: [
-                    rtb = generated_1.Q.RepositoryTransactionBlock,
-                    mrrtb = rtb.missingRecordRepoTransBlocks.innerJoin(),
-                    mr = mrrtb.missingRecord.innerJoin()
-                ],
-                where: air_control_1.and(mr.id.in(missingRecordIds), air_control_1.not(mr.status.equals(status)))
-            });
+    async findWithMissingRecordIdsAndNoMissingRecordsWithStatus(missingRecordIds, status) {
+        let rtb, mrrtb, mr;
+        return await this.db.find.tree({
+            select: air_control_1.distinct({}),
+            from: [
+                rtb = generated_1.Q.RepositoryTransactionBlock,
+                mrrtb = rtb.missingRecordRepoTransBlocks.innerJoin(),
+                mr = mrrtb.missingRecord.innerJoin()
+            ],
+            where: air_control_1.and(mr.id.in(missingRecordIds), air_control_1.not(mr.status.equals(status)))
         });
     }
-    clearContentsWhereIdsIn(repositoryTransactionBlockIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const rtb = generated_1.Q.QRepositoryTransactionBlock;
-            yield this.db.updateWhere({
-                update: rtb,
-                set: {
-                    contents: null
-                },
-                where: rtb.id.in(repositoryTransactionBlockIds)
-            });
+    async clearContentsWhereIdsIn(repositoryTransactionBlockIds) {
+        const rtb = generated_1.Q.QRepositoryTransactionBlock;
+        await this.db.updateWhere({
+            update: rtb,
+            set: {
+                contents: null
+            },
+            where: rtb.id.in(repositoryTransactionBlockIds)
         });
     }
 };

@@ -3,7 +3,7 @@ import {
 	ISharingNode,
 	SharingNodeSyncFrequency
 }                           from "@airport/moving-walkway";
-import {BehaviorSubject}    from "rxjs/BehaviorSubject";
+import {BehaviorSubject}    from "rxjs";
 import {Service}            from "typedi";
 import {TerminalStoreToken} from "../InjectionTokens";
 

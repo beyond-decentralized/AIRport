@@ -1,0 +1,10 @@
+export type TerminalPassword = string;
+export type TerminalId = number;
+export type AgtSharingMessageId = number;
+export type AgtRepositoryId = number;
+export type RepositoryTransactionBlockContents = string;
+// export type AgtRepositoryTransactionBlockId = number;
+// export type AgtRepositoryTransactionBlockAddDatetime = number;
+export type RepositoryTransactionBlockData = string;
+export type TmRepositoryTransactionBlockId = number;
+export type TmSharingMessageId = number;

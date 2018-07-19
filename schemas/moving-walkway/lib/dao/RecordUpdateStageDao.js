@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const typedi_1 = require("typedi");
@@ -29,67 +21,61 @@ let RecordUpdateStageDao = class RecordUpdateStageDao extends generated_1.BaseRe
         super(utils);
         this.airportDb = airportDb;
     }
-    insertValues(values) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const rus = generated_1.Q.RecordUpdateStage;
-            const columns = [
-                rus.schema.index,
-                rus.entity.index,
-                rus.repository.id,
-                rus.actor.id,
-                rus.actorRecordId,
-                rus.column.index,
-                rus.updatedValue
-            ];
-            for (let i = 1; i <= 50; i++) {
-                columns.push(rus[`updatedColumn${i}Value`]);
-            }
-            return yield this.db.insertValues({
-                insertInto: rus,
-                columns,
-                values
-            });
+    async insertValues(values) {
+        const rus = generated_1.Q.RecordUpdateStage;
+        const columns = [
+            rus.schema.index,
+            rus.entity.index,
+            rus.repository.id,
+            rus.actor.id,
+            rus.actorRecordId,
+            rus.column.index,
+            rus.updatedValue
+        ];
+        for (let i = 1; i <= 50; i++) {
+            columns.push(rus[`updatedColumn${i}Value`]);
+        }
+        return await this.db.insertValues({
+            insertInto: rus,
+            columns,
+            values
         });
     }
-    updateEntityWhereIds(schemaIndex, tableIndex, idMap, updatedColumnIndexes) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const dbEntity = this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
-            const qEntity = this.airportDb.qSchemas[schemaIndex][dbEntity.name];
-            const repositoryEquals = [];
-            for (const [repositoryId, idsForRepository] of idMap) {
-                const actorEquals = [];
-                for (const [actorId, idsForActor] of idsForRepository) {
-                    actorEquals.push(air_control_1.and(qEntity['actor'].id.equals(actorId), qEntity['actorRecordId'].in(Array.from(idsForActor))));
-                }
-                repositoryEquals.push(air_control_1.and(qEntity['repository'].id.equals(repositoryId), air_control_1.or(...actorEquals)));
+    async updateEntityWhereIds(schemaIndex, tableIndex, idMap, updatedColumnIndexes) {
+        const dbEntity = this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
+        const qEntity = this.airportDb.qSchemas[schemaIndex][dbEntity.name];
+        const repositoryEquals = [];
+        for (const [repositoryId, idsForRepository] of idMap) {
+            const actorEquals = [];
+            for (const [actorId, idsForActor] of idsForRepository) {
+                actorEquals.push(air_control_1.and(qEntity['actor'].id.equals(actorId), qEntity['actorRecordId'].in(Array.from(idsForActor))));
             }
-            const setClause = {};
-            for (const columnIndex of updatedColumnIndexes) {
-                let columnRus = generated_1.Q.RecordUpdateStage;
-                let columnSetClause = air_control_1.field({
-                    from: [
-                        columnRus
-                    ],
-                    select: columnRus.updatedValue,
-                    where: air_control_1.and(columnRus.schema.index.equals(schemaIndex), columnRus.entity.index.equals(tableIndex), columnRus.repository.id.equals(qEntity.repository.id), columnRus.actor.id.equals(qEntity.actor.id), columnRus.actorRecordId.equals(qEntity.actorRecordId), columnRus.column.index.equals(columnIndex))
-                });
-                const propertyName = dbEntity.columns[columnIndex]
-                    .propertyColumns[0].property.name;
-                setClause[propertyName] = columnSetClause;
-            }
-            yield this.db.updateColumnsWhere({
-                update: qEntity,
-                set: setClause,
-                where: air_control_1.or(...repositoryEquals)
+            repositoryEquals.push(air_control_1.and(qEntity['repository'].id.equals(repositoryId), air_control_1.or(...actorEquals)));
+        }
+        const setClause = {};
+        for (const columnIndex of updatedColumnIndexes) {
+            let columnRus = generated_1.Q.RecordUpdateStage;
+            let columnSetClause = air_control_1.field({
+                from: [
+                    columnRus
+                ],
+                select: columnRus.updatedValue,
+                where: air_control_1.and(columnRus.schema.index.equals(schemaIndex), columnRus.entity.index.equals(tableIndex), columnRus.repository.id.equals(qEntity.repository.id), columnRus.actor.id.equals(qEntity.actor.id), columnRus.actorRecordId.equals(qEntity.actorRecordId), columnRus.column.index.equals(columnIndex))
             });
+            const propertyName = dbEntity.columns[columnIndex]
+                .propertyColumns[0].property.name;
+            setClause[propertyName] = columnSetClause;
+        }
+        await this.db.updateColumnsWhere({
+            update: qEntity,
+            set: setClause,
+            where: air_control_1.or(...repositoryEquals)
         });
     }
-    delete( //
+    async delete( //
     ) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.db.deleteWhere({
-                deleteFrom: generated_1.Q.RecordUpdateStage
-            });
+        return await this.db.deleteWhere({
+            deleteFrom: generated_1.Q.RecordUpdateStage
         });
     }
 };

@@ -1,5 +1,4 @@
 import {
-	CascadeType,
 	Column,
 	DbNumber,
 	Entity,
@@ -11,7 +10,10 @@ import {
 	OneToMany,
 	Table
 }                                      from "@airport/air-control";
-import {ChangeType}                    from "@airport/ground-control";
+import {
+	CascadeType,
+	ChangeType
+}                    from "@airport/ground-control";
 import {
 	ISchemaEntity,
 	ISchemaVersion

@@ -10,6 +10,9 @@ import {
 	OneToMany,
 	Table
 }                                      from "@airport/air-control";
+import {
+	CascadeType
+}                                      from "@airport/ground-control";
 import {IRepositoryTransactionHistory} from "../../generated/history/qrepositorytransactionhistory";
 import {IActor,}                       from "../../generated/infrastructure/qactor";
 import {IRepository,}                  from "../../generated/repository/qrepository";

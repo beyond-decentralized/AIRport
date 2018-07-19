@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
@@ -76,26 +68,24 @@ let SharingMessageDao = class SharingMessageDao extends generated_1.BaseSharingM
                 }
             });
         }*/
-    findAllSyncedSharingMessageIdsForSharingNodes(sharingNodeIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const sharingMessageIdsBySharingNodeId = new Map();
-            let sm;
-            const data = yield this.airportDb.find.sheet({
-                from: [
-                    sm = generated_1.Q.SharingMessage
-                ],
-                select: [
-                    sm.sharingNode.id,
-                    sm.id
-                ],
-                where: sm.sharingNode.id.in(sharingNodeIds)
-            });
-            for (const record of data) {
-                this.utils.ensureChildArray(sharingMessageIdsBySharingNodeId, record[0])
-                    .push(record[1]);
-            }
-            return sharingMessageIdsBySharingNodeId;
+    async findAllSyncedSharingMessageIdsForSharingNodes(sharingNodeIds) {
+        const sharingMessageIdsBySharingNodeId = new Map();
+        let sm;
+        const data = await this.airportDb.find.sheet({
+            from: [
+                sm = generated_1.Q.SharingMessage
+            ],
+            select: [
+                sm.sharingNode.id,
+                sm.id
+            ],
+            where: sm.sharingNode.id.in(sharingNodeIds)
         });
+        for (const record of data) {
+            this.utils.ensureChildArray(sharingMessageIdsBySharingNodeId, record[0])
+                .push(record[1]);
+        }
+        return sharingMessageIdsBySharingNodeId;
     }
 };
 SharingMessageDao = __decorate([

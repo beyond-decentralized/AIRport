@@ -9,7 +9,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const air_control_1 = require("@airport/air-control");
 let RepositorySchema = class RepositorySchema {
 };
@@ -29,7 +28,7 @@ __decorate([
 __decorate([
     air_control_1.Column({ name: "SCHEMA_INDEX" }),
     air_control_1.DbNumber(),
-    __metadata("design:type", typeof (_a = typeof air_control_1.SchemaIndex !== "undefined" && air_control_1.SchemaIndex) === "function" && _a || Object)
+    __metadata("design:type", Number)
 ], RepositorySchema.prototype, "schemaIndex", void 0);
 RepositorySchema = __decorate([
     air_control_1.Entity(),

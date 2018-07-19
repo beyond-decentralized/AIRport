@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const LogicalOperation_1 = require("@airport/air-control/lib/impl/core/operation/LogicalOperation");
@@ -32,99 +24,89 @@ let SharingNodeRepoTransBlockDao = class SharingNodeRepoTransBlockDao extends ge
         super(utils);
         this.airportDb = airportDb;
     }
-    findMapBySharingNodeIdWhereSharingNodeIdInAndRepoTransBlockIdIn(sharingNodeIds, repoTransBlockIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const mapBySharingNodeId = new Map();
-            let snrtb;
-            const records = yield this.db.find.tree({
-                select: {},
-                from: [
-                    snrtb = generated_1.Q.SharingNodeRepoTransBlock
-                ],
-                where: LogicalOperation_1.and(snrtb.sharingNode.id.in(sharingNodeIds), snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds))
-            });
-            for (const record of records) {
-                this.utils.ensureChildJsMap(mapBySharingNodeId, record.sharingNode.id)
-                    .set(record.repositoryTransactionBlock.id, record);
-            }
-            return mapBySharingNodeId;
+    async findMapBySharingNodeIdWhereSharingNodeIdInAndRepoTransBlockIdIn(sharingNodeIds, repoTransBlockIds) {
+        const mapBySharingNodeId = new Map();
+        let snrtb;
+        const records = await this.db.find.tree({
+            select: {},
+            from: [
+                snrtb = generated_1.Q.SharingNodeRepoTransBlock
+            ],
+            where: LogicalOperation_1.and(snrtb.sharingNode.id.in(sharingNodeIds), snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds))
         });
+        for (const record of records) {
+            this.utils.ensureChildJsMap(mapBySharingNodeId, record.sharingNode.id)
+                .set(record.repositoryTransactionBlock.id, record);
+        }
+        return mapBySharingNodeId;
     }
-    updateFromResponseStage( //
+    async updateFromResponseStage( //
     ) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let snrtb;
-            let snrtbs;
-            return yield this.db.updateWhere({
-                update: snrtb = generated_1.Q.SharingNodeRepoTransBlock,
-                set: {
-                    syncOutcomeType: air_control_1.field({
-                        from: [
-                            snrtbs = generated_1.Q.SharingNodeRepoTransBlockStage
-                        ],
-                        select: snrtbs.syncOutcomeType,
-                        where: LogicalOperation_1.and(snrtbs.sharingNodeId.equals(snrtb.sharingNode.id), snrtbs.repositoryTransactionBlockId.equals(snrtb.repositoryTransactionBlock.id))
-                    })
-                }
-            });
-        });
-    }
-    updateBlockSyncStatus(sharingNodeIds, repoTransBlockIds, existingBlockSyncStatus, newBlockSyncStatus) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let snrtb;
-            yield this.db.updateWhere({
-                update: snrtb = generated_1.Q.SharingNodeRepoTransBlock,
-                set: {
-                    blockSyncStatus: newBlockSyncStatus
-                },
-                where: LogicalOperation_1.and(snrtb.blockSyncStatus.equals(existingBlockSyncStatus), snrtb.sharingNode.id.in(sharingNodeIds), snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds))
-            });
-        });
-    }
-    insertValues(values) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock;
-            let snrtb;
-            return yield this.airportDb.db.insertValues(dbEntity, {
-                insertInto: snrtb = generated_1.Q.SharingNodeRepoTransBlock,
-                columns: [
-                    snrtb.sharingNode.id,
-                    snrtb.repositoryTransactionBlock.id,
-                    snrtb.syncTimestamp,
-                    snrtb.syncOutcomeType,
-                    snrtb.origin,
-                    snrtb.blockSyncStatus
-                ],
-                values
-            });
-        });
-    }
-    getForSharingNodeIdsAndBlockStatus(sharingNodeIds, blockSyncStatus) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const repoTransBlocksBySharingNodeId = new Map();
-            const repositoryTransactionBlockIds = new Set();
-            let snrtb;
-            const records = yield this.airportDb.find.sheet({
-                from: [
-                    snrtb = generated_1.Q.SharingNodeRepoTransBlock,
-                ],
-                select: [
-                    snrtb.sharingNode.id,
-                    snrtb.repositoryTransactionBlock.id
-                ],
-                where: LogicalOperation_1.and(snrtb.blockSyncStatus.equals(blockSyncStatus), snrtb.sharingNode.id.in(sharingNodeIds))
-            });
-            for (const record of records) {
-                const sharingNodeRepoTransBlockId = record[1];
-                this.utils.ensureChildArray(repoTransBlocksBySharingNodeId, record[0])
-                    .push(sharingNodeRepoTransBlockId);
-                repositoryTransactionBlockIds.add(sharingNodeRepoTransBlockId);
+        let snrtb;
+        let snrtbs;
+        return await this.db.updateWhere({
+            update: snrtb = generated_1.Q.SharingNodeRepoTransBlock,
+            set: {
+                syncOutcomeType: air_control_1.field({
+                    from: [
+                        snrtbs = generated_1.Q.SharingNodeRepoTransBlockStage
+                    ],
+                    select: snrtbs.syncOutcomeType,
+                    where: LogicalOperation_1.and(snrtbs.sharingNodeId.equals(snrtb.sharingNode.id), snrtbs.repositoryTransactionBlockId.equals(snrtb.repositoryTransactionBlock.id))
+                })
             }
-            return {
-                repositoryTransactionBlockIds,
-                repoTransBlocksBySharingNodeId
-            };
         });
+    }
+    async updateBlockSyncStatus(sharingNodeIds, repoTransBlockIds, existingBlockSyncStatus, newBlockSyncStatus) {
+        let snrtb;
+        await this.db.updateWhere({
+            update: snrtb = generated_1.Q.SharingNodeRepoTransBlock,
+            set: {
+                blockSyncStatus: newBlockSyncStatus
+            },
+            where: LogicalOperation_1.and(snrtb.blockSyncStatus.equals(existingBlockSyncStatus), snrtb.sharingNode.id.in(sharingNodeIds), snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds))
+        });
+    }
+    async insertValues(values) {
+        const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock;
+        let snrtb;
+        return await this.airportDb.db.insertValues(dbEntity, {
+            insertInto: snrtb = generated_1.Q.SharingNodeRepoTransBlock,
+            columns: [
+                snrtb.sharingNode.id,
+                snrtb.repositoryTransactionBlock.id,
+                snrtb.syncTimestamp,
+                snrtb.syncOutcomeType,
+                snrtb.origin,
+                snrtb.blockSyncStatus
+            ],
+            values
+        });
+    }
+    async getForSharingNodeIdsAndBlockStatus(sharingNodeIds, blockSyncStatus) {
+        const repoTransBlocksBySharingNodeId = new Map();
+        const repositoryTransactionBlockIds = new Set();
+        let snrtb;
+        const records = await this.airportDb.find.sheet({
+            from: [
+                snrtb = generated_1.Q.SharingNodeRepoTransBlock,
+            ],
+            select: [
+                snrtb.sharingNode.id,
+                snrtb.repositoryTransactionBlock.id
+            ],
+            where: LogicalOperation_1.and(snrtb.blockSyncStatus.equals(blockSyncStatus), snrtb.sharingNode.id.in(sharingNodeIds))
+        });
+        for (const record of records) {
+            const sharingNodeRepoTransBlockId = record[1];
+            this.utils.ensureChildArray(repoTransBlocksBySharingNodeId, record[0])
+                .push(sharingNodeRepoTransBlockId);
+            repositoryTransactionBlockIds.add(sharingNodeRepoTransBlockId);
+        }
+        return {
+            repositoryTransactionBlockIds,
+            repoTransBlocksBySharingNodeId
+        };
     }
 };
 SharingNodeRepoTransBlockDao = __decorate([

@@ -1,4 +1,5 @@
-import { IAirportDatabase, IUtils, SchemaIndex, TableIndex } from "@airport/air-control";
+import { IAirportDatabase, IUtils } from "@airport/air-control";
+import { SchemaIndex, TableIndex } from "@airport/ground-control";
 import { ActorId, RepositoryEntityActorRecordId, RepositoryId } from "@airport/holding-pattern";
 import { MissingRecordId, MissingRecordStatus } from "../../ddl/ddl";
 import { BaseMissingRecordDao, IBaseMissingRecordDao } from "../../generated/generated";

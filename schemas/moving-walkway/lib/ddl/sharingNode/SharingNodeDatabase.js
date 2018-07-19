@@ -9,10 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const ColumnDecorators_1 = require("@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators");
 const EntityDecorators_1 = require("@airport/air-control/lib/impl/core/entity/metadata/EntityDecorators");
-const terminal_map_1 = require("@airport/terminal-map");
+const ground_control_1 = require("@airport/ground-control");
 const SharingNode_1 = require("./SharingNode");
 let SharingNodeDatabase = class SharingNodeDatabase {
 };
@@ -43,7 +42,7 @@ __decorate([
 __decorate([
     ColumnDecorators_1.DbNumber(),
     ColumnDecorators_1.Column({ name: "DATABASE_SYNC_STATUS" }),
-    __metadata("design:type", typeof (_a = typeof terminal_map_1.DatabaseSyncStatus !== "undefined" && terminal_map_1.DatabaseSyncStatus) === "function" && _a || Object)
+    __metadata("design:type", Number)
 ], SharingNodeDatabase.prototype, "databaseSyncStatus", void 0);
 SharingNodeDatabase = __decorate([
     EntityDecorators_1.Entity(),

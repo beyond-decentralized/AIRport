@@ -6,5 +6,5 @@ export interface IMessageToTMDeserializer {
 export declare class MessageToTMDeserializer implements IMessageToTMDeserializer {
     deserialize(serializedBatchedMessagesToTM: SerializedBatchedMessagesToTM): BatchedMessagesToTM;
     deserializeAMessage(serializedMessageToTM: SerializedMessageToTM): MessageToTM;
-    private deserializeSyncOutcomes(serializedRepoTransBlockSyncOutcome);
+    private deserializeSyncOutcomes;
 }

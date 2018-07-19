@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
 const RepositoryTransactionType_1 = require("./RepositoryTransactionType");
 let RepositoryTransactionHistory = class RepositoryTransactionHistory {
     constructor(data) {
@@ -68,7 +69,7 @@ __decorate([
     __metadata("design:type", Number)
 ], RepositoryTransactionHistory.prototype, "blockId", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: air_control_1.CascadeType.ALL, mappedBy: 'repositoryTransactionHistory' }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repositoryTransactionHistory' }),
     __metadata("design:type", Array)
 ], RepositoryTransactionHistory.prototype, "operationHistory", void 0);
 RepositoryTransactionHistory = __decorate([

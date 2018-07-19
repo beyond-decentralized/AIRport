@@ -98,8 +98,9 @@ export interface SRelation {
 
 	/**
 	 * Serialized function to add to the join
+	 * Not currently needed
 	 */
-	addToJoinFunction?: string;
+	// addToJoinFunction?: string;
 	/*
 	 * How to add the function to the join
 	 */

@@ -195,8 +195,8 @@ export class DbSchemaBuilder
 			manyRelationColumns: [],
 			oneRelationColumns: [],
 			relationEntity: null,
-			addToJoinFunction: jsonRelation.addToJoinFunction,
-			joinFunctionWithOperator: jsonRelation.joinFunctionWithOperator,
+			// addToJoinFunction: jsonRelation.addToJoinFunction,
+			// joinFunctionWithOperator: jsonRelation.joinFunctionWithOperator,
 		};
 		// if (dbRelation.addToJoinFunction) {
 		// 	dbRelation.whereJoinTable = {

@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const typedi_1 = require("typedi");
@@ -28,47 +20,39 @@ let ActorDao = class ActorDao extends generated_1.BaseActorDao {
     constructor(utils) {
         super(utils);
     }
-    findWithDetailsAndGlobalIdsByIds(actorIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.findWithDetailsAndGlobalIdsByWhereClause((a) => a.id.in(actorIds));
-        });
+    async findWithDetailsAndGlobalIdsByIds(actorIds) {
+        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a.id.in(actorIds));
     }
-    findMapsWithDetailsByGlobalIds(randomIds, userIds, databaseIds, actorMap, actorMapById) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const actors = yield this.findWithDetailsByGlobalIds(randomIds, userIds, databaseIds);
-            for (const actor of actors) {
-                this.utils.ensureChildJsMap(actorMap, actor.user.id)
-                    .set(actor.database.id, actor);
-                actorMapById.set(actor.id, actor);
-            }
-        });
+    async findMapsWithDetailsByGlobalIds(randomIds, userIds, databaseIds, actorMap, actorMapById) {
+        const actors = await this.findWithDetailsByGlobalIds(randomIds, userIds, databaseIds);
+        for (const actor of actors) {
+            this.utils.ensureChildJsMap(actorMap, actor.user.id)
+                .set(actor.database.id, actor);
+            actorMapById.set(actor.id, actor);
+        }
     }
-    findWithDetailsByGlobalIds(randomIds, userIds, databaseIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.findWithDetailsAndGlobalIdsByWhereClause((a) => air_control_1.and(a.randomId.in(randomIds), a.database.id.in(databaseIds), a.user.id.in(userIds)));
-        });
+    async findWithDetailsByGlobalIds(randomIds, userIds, databaseIds) {
+        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => air_control_1.and(a.randomId.in(randomIds), a.database.id.in(databaseIds), a.user.id.in(userIds)));
     }
-    findWithDetailsAndGlobalIdsByWhereClause(getWhereClause) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let a;
-            let u;
-            const id = air_control_1.Y;
-            return yield this.db.find.tree({
-                select: {
+    async findWithDetailsAndGlobalIdsByWhereClause(getWhereClause) {
+        let a;
+        let u;
+        const id = air_control_1.Y;
+        return await this.db.find.tree({
+            select: {
+                id,
+                randomId: air_control_1.Y,
+                user: {
                     id,
-                    randomId: air_control_1.Y,
-                    user: {
-                        id,
-                    },
-                    database: {
-                        id
-                    }
                 },
-                from: [
-                    a = generated_1.Q.Actor
-                ],
-                where: getWhereClause(a)
-            });
+                database: {
+                    id
+                }
+            },
+            from: [
+                a = generated_1.Q.Actor
+            ],
+            where: getWhereClause(a)
         });
     }
 };

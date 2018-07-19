@@ -1,4 +1,4 @@
-import {DbColumn}                  from "@airport/air-control";
+import {DbColumn}                  from "@airport/ground-control";
 import {
 	Inject,
 	Service
@@ -50,11 +50,9 @@ export abstract class RecordHistoryDmo
 	implements IRecordHistoryDmo {
 
 	constructor(
-		@Inject(
-			_ => RecordHistoryNewValueDmoToken)
+		@Inject(RecordHistoryNewValueDmoToken)
 		private recordHistoryNewValueDmo: IRecordHistoryNewValueDmo,
-		@Inject(
-			_ => RecordHistoryOldValueDmoToken)
+		@Inject(RecordHistoryOldValueDmoToken)
 		private recordHistoryOldValueDmo: IRecordHistoryOldValueDmo
 	) {
 		super();

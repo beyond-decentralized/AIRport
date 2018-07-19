@@ -32,7 +32,7 @@ import {
 } from './qrepositorytransactionhistory';
 import {
 	SyncSchemaMap,
-} from '@airport/terminal-map';
+} from '@airport/ground-control';
 import {
 	IOperationHistory,
 } from './qoperationhistory';

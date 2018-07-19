@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const InjectionTokens_1 = require("@airport/air-control/lib/InjectionTokens");
@@ -31,32 +23,28 @@ let SyncLogDao = class SyncLogDao extends generated_1.BaseSyncLogDao {
         super(utils);
         this.airportDb = airportDb;
     }
-    insertValues(values) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
-            let sl;
-            yield this.airportDb.db.insertValues(dbEntity, {
-                insertInto: sl = generated_1.Q.SyncLog,
-                columns: [
-                    sl.repositoryTransactionBlock.id,
-                    // sl.repositoryTransactionBlockAddDatetime,
-                    sl.sharingMessage.id,
-                ],
-                values
-            });
+    async insertValues(values) {
+        const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
+        let sl;
+        await this.airportDb.db.insertValues(dbEntity, {
+            insertInto: sl = generated_1.Q.SyncLog,
+            columns: [
+                sl.repositoryTransactionBlock.id,
+                // sl.repositoryTransactionBlockAddDatetime,
+                sl.sharingMessage.id,
+            ],
+            values
         });
     }
-    selectSyncedTerminalRepositories(fromDateInclusive, toDateExlusive, repositoryIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const syncedTerminalRepositories = [];
-            const dbSyncStatuses = yield this.selectTmSyncStatusForAgtRepositoryIds(fromDateInclusive, toDateExlusive, repositoryIds);
-            for (const dbSyncStatus of dbSyncStatuses) {
-                if (dbSyncStatus[2] === ddl_1.AgtSharingMessageAcknowledged.ACKNOWLEDGED) {
-                    syncedTerminalRepositories.push([dbSyncStatus[0], dbSyncStatus[1]]);
-                }
+    async selectSyncedTerminalRepositories(fromDateInclusive, toDateExlusive, repositoryIds) {
+        const syncedTerminalRepositories = [];
+        const dbSyncStatuses = await this.selectTmSyncStatusForAgtRepositoryIds(fromDateInclusive, toDateExlusive, repositoryIds);
+        for (const dbSyncStatus of dbSyncStatuses) {
+            if (dbSyncStatus[2] === ddl_1.AgtSharingMessageAcknowledged.ACKNOWLEDGED) {
+                syncedTerminalRepositories.push([dbSyncStatus[0], dbSyncStatus[1]]);
             }
-            return syncedTerminalRepositories;
-        });
+        }
+        return syncedTerminalRepositories;
     }
     /**
      * This query is input into insert of DailySyncLog records.
@@ -70,50 +58,48 @@ let SyncLogDao = class SyncLogDao extends generated_1.BaseSyncLogDao {
      * @param {AgtRepositoryId[]} repositoryIds
      * @returns {Promise<TerminalSyncStatus[]>}
      */
-    selectTmSyncStatusForAgtRepositoryIds(fromDateInclusive, toDateExlusive, repositoryIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let sl, sm, rtb;
-            // AgtRepositoryTransactionBlock Sub-Query
-            const smrtb = air_control_1.tree({
-                from: [
-                    sl = generated_1.Q.SyncLog,
-                    sm = sl.sharingMessage.innerJoin(),
-                    rtb = sl.repositoryTransactionBlock.innerJoin()
-                ],
-                select: {
-                    repositoryTransactionBlockId: rtb.id,
-                    terminalId: sm.terminal.id,
-                    repositoryId: rtb.repository.id,
-                    maxAcked: air_control_1.max(sm.acknowledged),
-                },
-                where: air_control_1.and(
-                // sl.repositoryTransactionBlockAddDatetime.greaterThanOrEquals(fromDateInclusive),
-                // sl.repositoryTransactionBlockAddDatetime.lessThan(toDateExlusive),
-                rtb.addDatetime.greaterThanOrEquals(fromDateInclusive), rtb.addDatetime.lessThan(toDateExlusive), rtb.repository.id.in(repositoryIds)),
-                groupBy: [
-                    rtb.id,
-                    sm.terminal.id,
-                    rtb.repository.id
-                ],
-                orderBy: [
-                    rtb.repository.id.asc(),
-                    sm.terminal.id.asc(),
-                ]
-            });
-            return yield this.airportDb.find.sheet({
-                from: [
-                    smrtb
-                ],
-                select: [
-                    smrtb.terminalId,
-                    smrtb.repositoryId,
-                    air_control_1.min(smrtb.maxAcked)
-                ],
-                groupBy: [
-                    smrtb.terminalId,
-                    smrtb.repositoryId
-                ]
-            });
+    async selectTmSyncStatusForAgtRepositoryIds(fromDateInclusive, toDateExlusive, repositoryIds) {
+        let sl, sm, rtb;
+        // AgtRepositoryTransactionBlock Sub-Query
+        const smrtb = air_control_1.tree({
+            from: [
+                sl = generated_1.Q.SyncLog,
+                sm = sl.sharingMessage.innerJoin(),
+                rtb = sl.repositoryTransactionBlock.innerJoin()
+            ],
+            select: {
+                repositoryTransactionBlockId: rtb.id,
+                terminalId: sm.terminal.id,
+                repositoryId: rtb.repository.id,
+                maxAcked: air_control_1.max(sm.acknowledged),
+            },
+            where: air_control_1.and(
+            // sl.repositoryTransactionBlockAddDatetime.greaterThanOrEquals(fromDateInclusive),
+            // sl.repositoryTransactionBlockAddDatetime.lessThan(toDateExlusive),
+            rtb.addDatetime.greaterThanOrEquals(fromDateInclusive), rtb.addDatetime.lessThan(toDateExlusive), rtb.repository.id.in(repositoryIds)),
+            groupBy: [
+                rtb.id,
+                sm.terminal.id,
+                rtb.repository.id
+            ],
+            orderBy: [
+                rtb.repository.id.asc(),
+                sm.terminal.id.asc(),
+            ]
+        });
+        return await this.airportDb.find.sheet({
+            from: [
+                smrtb
+            ],
+            select: [
+                smrtb.terminalId,
+                smrtb.repositoryId,
+                air_control_1.min(smrtb.maxAcked)
+            ],
+            groupBy: [
+                smrtb.terminalId,
+                smrtb.repositoryId
+            ]
         });
     }
 };

@@ -4,11 +4,13 @@ import {
 	IAirportDatabase,
 	IUtils,
 	or,
-	SchemaIndex,
-	TableIndex,
 	UtilsToken
 }                              from "@airport/air-control";
-import {JSONBaseOperation}     from "@airport/ground-control";
+import {
+	SchemaIndex,
+	TableIndex,
+	JSONBaseOperation
+}     from "@airport/ground-control";
 import {
 	ActorId,
 	RepositoryEntityActorRecordId,

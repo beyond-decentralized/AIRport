@@ -9,7 +9,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const air_control_1 = require("@airport/air-control");
 const territory_1 = require("@airport/territory");
 const SchemaStatus_1 = require("./SchemaStatus");
@@ -20,7 +19,7 @@ __decorate([
     air_control_1.Id(),
     air_control_1.GeneratedValue(),
     air_control_1.DbNumber(),
-    __metadata("design:type", typeof (_a = typeof air_control_1.SchemaIndex !== "undefined" && air_control_1.SchemaIndex) === "function" && _a || Object)
+    __metadata("design:type", Number)
 ], Schema.prototype, "index", void 0);
 __decorate([
     air_control_1.ManyToOne(),

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
 const SyncPrority_1 = require("./SyncPrority");
 let Repository = class Repository {
     constructor() {
@@ -64,15 +65,15 @@ __decorate([
     __metadata("design:type", String)
 ], Repository.prototype, "platformConfig", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: CascadeType.ALL, mappedBy: 'repository' }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repository' }),
     __metadata("design:type", Array)
 ], Repository.prototype, "repositoryActors", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: CascadeType.ALL, mappedBy: 'repository' }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repository' }),
     __metadata("design:type", Array)
 ], Repository.prototype, "repositoryApplications", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: CascadeType.ALL, mappedBy: 'repository' }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repository' }),
     __metadata("design:type", Array)
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
 __decorate([

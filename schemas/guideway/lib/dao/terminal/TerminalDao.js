@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const InjectionTokens_1 = require("@airport/air-control/lib/InjectionTokens");
@@ -31,96 +23,86 @@ let TerminalDao = class TerminalDao extends baseDaos_1.BaseTerminalDao {
         super(utils);
         this.airportDb = airportDb;
     }
-    findTerminalVerificationRecords(terminalIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const resultMapByTerminalId = new Map();
-            let t;
-            const results = yield this.airportDb.find.sheet({
-                from: [
-                    t = qSchema_1.Q.Terminal
-                ],
-                select: [
-                    t.password,
-                    t.lastPollConnectionDatetime,
-                    t.id,
-                ],
-                where: t.id.in(terminalIds)
-            });
-            for (const result of results) {
-                resultMapByTerminalId.set(result[2], result);
-            }
-            return resultMapByTerminalId;
+    async findTerminalVerificationRecords(terminalIds) {
+        const resultMapByTerminalId = new Map();
+        let t;
+        const results = await this.airportDb.find.sheet({
+            from: [
+                t = qSchema_1.Q.Terminal
+            ],
+            select: [
+                t.password,
+                t.lastPollConnectionDatetime,
+                t.id,
+            ],
+            where: t.id.in(terminalIds)
         });
+        for (const result of results) {
+            resultMapByTerminalId.set(result[2], result);
+        }
+        return resultMapByTerminalId;
     }
-    findTerminalRepositoryVerificationRecords(terminalIds, 
+    async findTerminalRepositoryVerificationRecords(terminalIds, 
     // Superset of all of repository ids received for all of the above terminals
     repositoryIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const resultMapByTerminalId = new Map();
-            let tr;
-            const results = yield this.airportDb.find.sheet({
-                from: [
-                    tr = qSchema_1.Q.TerminalRepository,
-                ],
-                select: [
-                    tr.terminal.id,
-                    tr.repository.id
-                ],
-                where: air_control_1.and(tr.terminal.id.in(terminalIds), 
-                // Joining on the superset of the repositories should return
-                // all needed records and possibly additional ones
-                tr.repository.id.in(repositoryIds))
-            });
-            for (const result of results) {
-                resultMapByTerminalId.set(result[0], result[1]);
-            }
-            return resultMapByTerminalId;
+        const resultMapByTerminalId = new Map();
+        let tr;
+        const results = await this.airportDb.find.sheet({
+            from: [
+                tr = qSchema_1.Q.TerminalRepository,
+            ],
+            select: [
+                tr.terminal.id,
+                tr.repository.id
+            ],
+            where: air_control_1.and(tr.terminal.id.in(terminalIds), 
+            // Joining on the superset of the repositories should return
+            // all needed records and possibly additional ones
+            tr.repository.id.in(repositoryIds))
+        });
+        for (const result of results) {
+            resultMapByTerminalId.set(result[0], result[1]);
+        }
+        return resultMapByTerminalId;
+    }
+    async findSseLoginVerificationRecords(terminalPasswords) {
+        const resultMapByPassword = new Map();
+        let t, tr;
+        const id = air_control_1.Y, password = air_control_1.Y, lastConnectionDatetime = air_control_1.Y;
+        const results = await this.db.find.tree({
+            select: {
+                id,
+                password,
+                lastConnectionDatetime
+            },
+            from: [
+                t = qSchema_1.Q.Terminal,
+            ],
+            where: t.password.in(terminalPasswords),
+        });
+        for (const result of results) {
+            resultMapByPassword.set(result.password, result);
+        }
+        return resultMapByPassword;
+    }
+    async updateLastPollConnectionDatetime(terminalIds, lastPollConnectionDatetime) {
+        let t;
+        await this.db.updateWhere({
+            update: t = qSchema_1.Q.Terminal,
+            set: {
+                lastPollConnectionDatetime
+            },
+            where: t.id.in(terminalIds)
         });
     }
-    findSseLoginVerificationRecords(terminalPasswords) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const resultMapByPassword = new Map();
-            let t, tr;
-            const id = air_control_1.Y, password = air_control_1.Y, lastConnectionDatetime = air_control_1.Y;
-            const results = yield this.db.find.tree({
-                select: {
-                    id,
-                    password,
-                    lastConnectionDatetime
-                },
-                from: [
-                    t = qSchema_1.Q.Terminal,
-                ],
-                where: t.password.in(terminalPasswords),
-            });
-            for (const result of results) {
-                resultMapByPassword.set(result.password, result);
-            }
-            return resultMapByPassword;
-        });
-    }
-    updateLastPollConnectionDatetime(terminalIds, lastPollConnectionDatetime) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let t;
-            yield this.db.updateWhere({
-                update: t = qSchema_1.Q.Terminal,
-                set: {
-                    lastPollConnectionDatetime
-                },
-                where: t.id.in(terminalIds)
-            });
-        });
-    }
-    updateLastSseConnectionDatetime(terminalPasswords) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let t;
-            yield this.db.updateWhere({
-                update: t = qSchema_1.Q.Terminal,
-                set: {
-                    lastSseConnectionDatetime: new Date().getTime()
-                },
-                where: t.password.in(terminalPasswords)
-            });
+    async updateLastSseConnectionDatetime(terminalPasswords) {
+        let t;
+        await this.db.updateWhere({
+            update: t = qSchema_1.Q.Terminal,
+            set: {
+                lastSseConnectionDatetime: new Date().getTime()
+            },
+            where: t.password.in(terminalPasswords)
         });
     }
 };

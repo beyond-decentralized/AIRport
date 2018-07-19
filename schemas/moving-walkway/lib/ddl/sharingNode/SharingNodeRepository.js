@@ -9,11 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const air_control_1 = require("@airport/air-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const SyncPrority_1 = require("@airport/holding-pattern/lib/ddl/repository/SyncPrority");
-const terminal_map_1 = require("@airport/terminal-map");
+const ground_control_1 = require("@airport/ground-control");
 const SharingNode_1 = require("./SharingNode");
 let SharingNodeRepository = class SharingNodeRepository {
 };
@@ -46,7 +45,7 @@ __decorate([
 __decorate([
     air_control_1.DbNumber(),
     air_control_1.Column({ name: "REPOSITORY_SYNC_STATUS" }),
-    __metadata("design:type", typeof (_a = typeof terminal_map_1.RepositorySyncStatus !== "undefined" && terminal_map_1.RepositorySyncStatus) === "function" && _a || Object)
+    __metadata("design:type", Number)
 ], SharingNodeRepository.prototype, "repositorySyncStatus", void 0);
 SharingNodeRepository = __decorate([
     air_control_1.Entity(),

@@ -82,8 +82,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 0
@@ -93,8 +91,6 @@ exports.SCHEMA = {
                         {
                             "index": 1,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 1
@@ -322,8 +318,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 1
@@ -333,8 +327,6 @@ exports.SCHEMA = {
                         {
                             "index": 1,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 0,
                             "propertyRef": {
                                 "index": 2
@@ -344,8 +336,6 @@ exports.SCHEMA = {
                         {
                             "index": 2,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 3
@@ -355,8 +345,6 @@ exports.SCHEMA = {
                         {
                             "index": 3,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 4
@@ -366,8 +354,6 @@ exports.SCHEMA = {
                         {
                             "index": 4,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 0,
                             "propertyRef": {
                                 "index": 9
@@ -552,8 +538,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 0
@@ -563,8 +547,6 @@ exports.SCHEMA = {
                         {
                             "index": 1,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 1
@@ -684,8 +666,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 0
@@ -832,8 +812,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 0
@@ -843,8 +821,6 @@ exports.SCHEMA = {
                         {
                             "index": 1,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 1
@@ -922,8 +898,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 0
@@ -933,8 +907,6 @@ exports.SCHEMA = {
                         {
                             "index": 1,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 1
@@ -1040,8 +1012,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 0
@@ -1051,8 +1021,6 @@ exports.SCHEMA = {
                         {
                             "index": 1,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 1
@@ -1194,8 +1162,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 0,
                             "propertyRef": {
                                 "index": 4
@@ -1205,8 +1171,6 @@ exports.SCHEMA = {
                         {
                             "index": 1,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 0,
                             "propertyRef": {
                                 "index": 5
@@ -1216,8 +1180,6 @@ exports.SCHEMA = {
                         {
                             "index": 2,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 0,
                             "propertyRef": {
                                 "index": 6
@@ -1227,8 +1189,6 @@ exports.SCHEMA = {
                         {
                             "index": 3,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 0,
                             "propertyRef": {
                                 "index": 7
@@ -1393,8 +1353,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 0
@@ -1404,8 +1362,6 @@ exports.SCHEMA = {
                         {
                             "index": 1,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 1
@@ -1602,8 +1558,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 1
@@ -1681,8 +1635,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 0,
                             "propertyRef": {
                                 "index": 2
@@ -1912,8 +1864,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 1
@@ -1923,8 +1873,6 @@ exports.SCHEMA = {
                         {
                             "index": 1,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 0,
                             "propertyRef": {
                                 "index": 3
@@ -2077,8 +2025,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 4
@@ -2088,8 +2034,6 @@ exports.SCHEMA = {
                         {
                             "index": 1,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 0,
                             "propertyRef": {
                                 "index": 5
@@ -2099,8 +2043,6 @@ exports.SCHEMA = {
                         {
                             "index": 2,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 0,
                             "propertyRef": {
                                 "index": 6
@@ -2207,8 +2149,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 0
@@ -2218,8 +2158,6 @@ exports.SCHEMA = {
                         {
                             "index": 1,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 1
@@ -2345,8 +2283,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 0,
                             "propertyRef": {
                                 "index": 4
@@ -2356,8 +2292,6 @@ exports.SCHEMA = {
                         {
                             "index": 1,
                             "isId": false,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 0,
                             "propertyRef": {
                                 "index": 5
@@ -2456,8 +2390,6 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isId": true,
-                            "isRepositoryJoin": false,
-                            "joinFunctionWithOperator": 0,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 0

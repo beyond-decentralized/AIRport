@@ -17,7 +17,6 @@
     "@airport/arrivals-n-departures": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/ground-control": "0.0.1",
-    "@airport/terminal-map": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
     "@airport/traffic-pattern": "0.0.1",
     "typedi": "^0.8.0"

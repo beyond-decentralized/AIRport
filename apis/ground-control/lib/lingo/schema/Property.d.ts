@@ -141,14 +141,6 @@ export interface JsonSchemaRelation extends SchemaReferenceByIndex<RelationIndex
      * Related table index.
      */
     relationTableIndex: TableIndex;
-    /**
-     * Serialized function to add to the join.
-     */
-    addToJoinFunction?: string;
-    /**
-     * How to add the function to the join (AND | OR)
-     */
-    joinFunctionWithOperator?: number;
 }
 export interface DbRelation extends SchemaReferenceByIndex<RelationIndex> {
     foreignKey: DatabaseForeignKey;

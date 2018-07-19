@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const typedi_1 = require("typedi");
@@ -28,13 +20,11 @@ let MissingRecordRepoTransBlockDao = class MissingRecordRepoTransBlockDao extend
     constructor(utils) {
         super(utils);
     }
-    deleteWhereMissingRecordIdsIn(missingRecordIds) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let mrrtb;
-            yield this.db.deleteWhere({
-                deleteFrom: mrrtb = generated_1.Q.MissingRecordSharingMessage,
-                where: mrrtb.missingRecord.id.in(missingRecordIds)
-            });
+    async deleteWhereMissingRecordIdsIn(missingRecordIds) {
+        let mrrtb;
+        await this.db.deleteWhere({
+            deleteFrom: mrrtb = generated_1.Q.MissingRecordSharingMessage,
+            where: mrrtb.missingRecord.id.in(missingRecordIds)
         });
     }
 };

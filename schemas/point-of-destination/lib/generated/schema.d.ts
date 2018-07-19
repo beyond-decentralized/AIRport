@@ -26,7 +26,7 @@ export declare const SCHEMA: {
                     "index": number;
                 }[];
                 "type": number;
-                isGenerated?: undefined;
+                "isGenerated"?: undefined;
             })[];
             "idColumnRefs": {
                 "index": number;
@@ -42,7 +42,7 @@ export declare const SCHEMA: {
                 "relationRef": {
                     "index": number;
                 };
-                columnRef?: undefined;
+                "columnRef"?: undefined;
             } | {
                 "columnRef": {
                     "index": number;
@@ -50,13 +50,11 @@ export declare const SCHEMA: {
                 "index": number;
                 "isId": boolean;
                 "name": string;
-                relationRef?: undefined;
+                "relationRef"?: undefined;
             })[];
             "relations": {
                 "index": number;
                 "isId": boolean;
-                "isRepositoryJoin": boolean;
-                "joinFunctionWithOperator": number;
                 "relationType": number;
                 "propertyRef": {
                     "index": number;

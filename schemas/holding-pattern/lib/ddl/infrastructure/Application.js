@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
 let Application = class Application {
     constructor() {
         this.actorApplications = [];
@@ -31,11 +32,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Application.prototype, "port", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: air_control_1.CascadeType.ALL, mappedBy: 'application' }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'application' }),
     __metadata("design:type", Array)
 ], Application.prototype, "actorApplications", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: air_control_1.CascadeType.ALL, mappedBy: 'application' }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'application' }),
     __metadata("design:type", Array)
 ], Application.prototype, "repositoryApplications", void 0);
 Application = __decorate([

@@ -1,5 +1,4 @@
 import {
-	CascadeType,
 	DbNumber,
 	DbString,
 	Entity,
@@ -7,6 +6,9 @@ import {
 	Id,
 	OneToMany
 }                               from "@airport/air-control";
+import {
+	CascadeType
+}                               from "@airport/ground-control";
 import {IActorApplication,}     from "../../generated/infrastructure/qactorapplication";
 import {IRepositoryApplication} from "../../generated/repository/qrepositoryapplication";
 

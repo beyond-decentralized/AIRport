@@ -6,7 +6,7 @@ import {
 import {IAirportDatabase}       from "@airport/air-control/lib/lingo/AirportDatabase";
 import {Inject}                 from "typedi/decorators/Inject";
 import {Service}                from "typedi/decorators/Service";
-import {DailyArchiveLogValues,} from "../../ddl/ddl";
+import {DailyArchiveLogValues}  from "../../ddl/ddl";
 import {
 	BaseDailyArchiveLogDao,
 	Q,

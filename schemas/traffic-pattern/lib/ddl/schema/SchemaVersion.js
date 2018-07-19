@@ -9,7 +9,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b, _c, _d, _e;
 const air_control_1 = require("@airport/air-control");
 let SchemaVersion = class SchemaVersion {
 };
@@ -17,26 +16,26 @@ __decorate([
     air_control_1.Id(),
     air_control_1.GeneratedValue(),
     air_control_1.DbNumber(),
-    __metadata("design:type", typeof (_a = typeof air_control_1.SchemaVersionId !== "undefined" && air_control_1.SchemaVersionId) === "function" && _a || Object)
+    __metadata("design:type", Number)
 ], SchemaVersion.prototype, "id", void 0);
 __decorate([
     air_control_1.Column({ name: "VERSION_STRING" }),
-    __metadata("design:type", typeof (_b = typeof air_control_1.SchemaVersionString !== "undefined" && air_control_1.SchemaVersionString) === "function" && _b || Object)
+    __metadata("design:type", String)
 ], SchemaVersion.prototype, "versionString", void 0);
 __decorate([
     air_control_1.Column({ name: "MAJOR_VERSION" }),
     air_control_1.DbNumber(),
-    __metadata("design:type", typeof (_c = typeof air_control_1.SchemaVersionMajor !== "undefined" && air_control_1.SchemaVersionMajor) === "function" && _c || Object)
+    __metadata("design:type", Number)
 ], SchemaVersion.prototype, "majorVersion", void 0);
 __decorate([
     air_control_1.Column({ name: "MINOR_VERSION" }),
     air_control_1.DbNumber(),
-    __metadata("design:type", typeof (_d = typeof air_control_1.SchemaVersionMinor !== "undefined" && air_control_1.SchemaVersionMinor) === "function" && _d || Object)
+    __metadata("design:type", Number)
 ], SchemaVersion.prototype, "minorVersion", void 0);
 __decorate([
     air_control_1.Column({ name: "PATCH_VERSION" }),
     air_control_1.DbNumber(),
-    __metadata("design:type", typeof (_e = typeof air_control_1.SchemaVersionPatch !== "undefined" && air_control_1.SchemaVersionPatch) === "function" && _e || Object)
+    __metadata("design:type", Number)
 ], SchemaVersion.prototype, "patchVersion", void 0);
 __decorate([
     air_control_1.ManyToOne(),

@@ -1,4 +1,4 @@
-import { SchemaVersionId, SchemaVersionMajor, SchemaVersionMinor, SchemaVersionPatch, SchemaVersionString } from "@airport/air-control";
+import { SchemaVersionId, SchemaVersionMajor, SchemaVersionMinor, SchemaVersionPatch, SchemaVersionString } from "@airport/ground-control";
 import { ISchema } from "../../generated/schema/qschema";
 import { ISchemaEntity } from "../../generated/schema/qschemaentity";
 import { ISchemaReference } from "../../generated/schema/qschemareference";

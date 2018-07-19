@@ -43,8 +43,8 @@ export class SSchemaBuilder {
 		schemaMapByProjectName: { [projectName: string]: DbSchema }
 	): SIndexedSchema {
 		const referencedSchemasByProjectName: { [projectName: string]: SSchemaReference } = {};
-		const referencedSchemas: SSchemaReference[]                                       = [];
-		let schemaReferenceIndex                                                          = 0;
+		const referencedSchemas: SSchemaReference[] = [];
+		let schemaReferenceIndex = 0;
 		for (let projectName in schemaMapByProjectName) {
 			const sSchemaReference = {
 				index: schemaReferenceIndex,
@@ -65,8 +65,8 @@ export class SSchemaBuilder {
 		const iEntityMapByName: { [name: string]: SEntity } = {};
 		for (const entityName in this.entityMapByName) {
 			const entityCandidate: EntityCandidate = this.entityMapByName[entityName];
-			const tableIndex                       = schema.entities.length;
-			const entity                           = this.buildEntity(entityCandidate, tableIndex, referencedSchemasByProjectName);
+			const tableIndex = schema.entities.length;
+			const entity = this.buildEntity(entityCandidate, tableIndex, referencedSchemasByProjectName);
 			if (entity) {
 				schema.entities.push(entity);
 				iEntityMapByName[entityName] = entity;
@@ -102,7 +102,7 @@ export class SSchemaBuilder {
 		}
 
 		const [isRepositoryEntity, isLocal]
-			      = this.entityExtendsRepositoryEntity(entityCandidate);
+			= this.entityExtendsRepositoryEntity(entityCandidate);
 
 		let entity: SEntity = {
 			isLocal,
@@ -117,7 +117,7 @@ export class SSchemaBuilder {
 		};
 
 		const primitiveColumnMapByName: { [columnName: string]: SColumn } = {};
-		const relationColumnMapByName: { [columnName: string]: SColumn }  = {};
+		const relationColumnMapByName: { [columnName: string]: SColumn } = {};
 
 		this.buildColumnsWithParentEntities(
 			entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName,
@@ -146,7 +146,7 @@ export class SSchemaBuilder {
 		relationColumnMapByName: { [columnName: string]: SColumn },
 		referencedSchemasByProjectName: { [projectName: string]: SSchemaReference },
 	) {
-		let parentEntity        = entityCandidate.parentEntity;
+		let parentEntity = entityCandidate.parentEntity;
 		let numParentProperties = 0;
 		if (parentEntity) {
 			numParentProperties = this.buildColumnsWithParentEntities(
@@ -166,12 +166,12 @@ export class SSchemaBuilder {
 		numParentProperties: number,
 		referencedSchemasByProjectName: { [projectName: string]: SSchemaReference },
 	): number {
-		const idProperties          = entityCandidate.getIdProperties();
+		const idProperties = entityCandidate.getIdProperties();
 		const primitiveIdProperties = idProperties.filter(
 			aProperty => aProperty.primitive);
 		this.processPrimitiveColumns(primitiveIdProperties, true, entity, primitiveColumnMapByName, numParentProperties);
 
-		const nonIdProperties          = entityCandidate.getNonIdProperties();
+		const nonIdProperties = entityCandidate.getNonIdProperties();
 		const primitiveNonIdProperties = nonIdProperties.filter(
 			aProperty => aProperty.primitive);
 		this.processPrimitiveColumns(primitiveNonIdProperties, false, entity, primitiveColumnMapByName, numParentProperties);
@@ -219,17 +219,21 @@ export class SSchemaBuilder {
 		numParentProperties: number,
 		referencedSchemasByProjectName: { [projectName: string]: SSchemaReference },
 	): void {
-		let columnRelationDefs                   = [];
-		let columnsDefined                       = false;
+		let columnRelationDefs = [];
+		let columnsDefined = false;
 		let foreignKey: DatabaseForeignKey;
 		let manyToOne: DatabaseManyToOneElements = undefined;
 		let oneToMany: DatabaseOneToManyElements = undefined;
+		let isId = false;
 		// let repositoryJoin                       = false;
-		let addToJoinFunction;
-		let joinFunctionWithOperator             = SqlOperator.AND;
+		// let addToJoinFunction;
+		let joinFunctionWithOperator = SqlOperator.AND;
 		let relationType: EntityRelationType;
 		for (const decorator of aProperty.decorators) {
 			switch (decorator.name) {
+				case property.ID:
+					isId = true;
+					break;
 				// case property.R_JOIN_COLUMN:
 				// 	if (!entity.isRepositoryEntity) {
 				// 		throw `${entity.name}.${aProperty.name} cannot be @RJoinColumn `
@@ -241,7 +245,7 @@ export class SSchemaBuilder {
 						throw `Columns are defined more than once for ${entity.name}.${aProperty.name}`;
 					}
 					columnsDefined = true;
-					foreignKey     = decorator.values[0].foreignKey;
+					foreignKey = decorator.values[0].foreignKey;
 					columnRelationDefs.push(decorator.values[0]);
 					break;
 				// case property.R_JOIN_COLUMNS:
@@ -269,14 +273,17 @@ export class SSchemaBuilder {
 					if (relationType) {
 						throw `Cardinality (@ManyToOne,@OneToMany) is defined more than once for ${entity.name}.${aProperty.name}`;
 					}
-					manyToOne    = decorator.values[0];
+					manyToOne = decorator.values[0];
 					relationType = EntityRelationType.MANY_TO_ONE;
 					break;
 				case property.ONE_TO_MANY:
+					if (isId) {
+						throw `A property cannot be be both @OneToMany and @Id`;
+					}
 					if (relationType) {
 						throw `Cardinality (@ManyToOne,@OneToMany) is defined more than once for ${entity.name}.${aProperty.name}`;
 					}
-					oneToMany    = decorator.values[0];
+					oneToMany = decorator.values[0];
 					relationType = EntityRelationType.ONE_TO_MANY;
 					break;
 				// case property.WHERE_JOIN_TABLE:
@@ -299,10 +306,10 @@ export class SSchemaBuilder {
 		if (!relationType && relationType !== 0) {
 			throw `Cardinality (@ManyToOne,@OneToMany) is not defined for ${entity.name}.${aProperty.name}`;
 		}
-		const columns: SColumn[]                  = [];
+		const columns: SColumn[] = [];
 		const sRelationColumns: SRelationColumn[] = [];
-		let relationMustBeSingleIdEntity          = false;
-		const propertyIndex                       = aProperty.index + numParentProperties;
+		let relationMustBeSingleIdEntity = false;
+		const propertyIndex = aProperty.index + numParentProperties;
 		if (columnsDefined) {
 			for (const columnRelationDef of columnRelationDefs) {
 				let name = columnRelationDef.name;
@@ -322,12 +329,12 @@ export class SSchemaBuilder {
 				let isManyToOne = false;
 				switch (relationType) {
 					case EntityRelationType.MANY_TO_ONE:
-						ownColumnReference      = name;
+						ownColumnReference = name;
 						relationColumnReference = referencedColumnName;
-						isManyToOne             = true;
+						isManyToOne = true;
 						break;
 					case EntityRelationType.ONE_TO_MANY:
-						ownColumnReference      = referencedColumnName;
+						ownColumnReference = referencedColumnName;
 						relationColumnReference = name;
 						break;
 					default:
@@ -345,7 +352,7 @@ export class SSchemaBuilder {
 		} else {
 			switch (relationType) {
 				case EntityRelationType.MANY_TO_ONE:
-					relationMustBeSingleIdEntity     = true;
+					relationMustBeSingleIdEntity = true;
 					const [sRelationColumn, sColumn] = this.processRelationColumn(
 						aProperty.name.toUpperCase(), 'IdColumnIndex.ONE', true,
 						isIdProperty, propertyIndex, entity,
@@ -372,12 +379,12 @@ export class SSchemaBuilder {
 				throw `Could not find related project '${aProperty.fromProject}' for ${entity.name}.${aProperty.name}`;
 			}
 			referencedSchemaIndex = schemaReference.index;
-			const propertyType    = aProperty.nonArrayType;
-			let relatedEntity     = schemaReference.dbSchema.currentVersion.entityMapByName[propertyType];
+			const propertyType = aProperty.nonArrayType;
+			let relatedEntity = schemaReference.dbSchema.currentVersion.entityMapByName[propertyType];
 			if (!relatedEntity) {
 				if (canBeInterface(propertyType)) {
 					const entityType = getImplNameFromInterfaceName(propertyType);
-					relatedEntity    = schemaReference.dbSchema.currentVersion.entityMapByName[entityType];
+					relatedEntity = schemaReference.dbSchema.currentVersion.entityMapByName[entityType];
 					if (!relatedEntity) {
 						throw `Could not find related entity '${entityType}' 
 						(from interface ${propertyType}) 
@@ -395,7 +402,7 @@ export class SSchemaBuilder {
 			entityName = aProperty.entity.type;
 		}
 		let relation: SRelation = {
-			addToJoinFunction,
+			// addToJoinFunction,
 			entityName,
 			foreignKey,
 			index: entity.numRelations++,
@@ -496,7 +503,7 @@ export class SSchemaBuilder {
 			throw `Column '${columnName}' defined in "${entity.name}" is a @GeneratedValue()
 			but isn't of type "number" or "string"`;
 		}
-		const column: SColumn                = {
+		const column: SColumn = {
 			columnDefinition: aProperty.columnDefinition,
 			idIndex: isIdProperty ? entity.numIdColumns++ : undefined,
 			index: entity.numColumns++,
@@ -539,8 +546,8 @@ export class SSchemaBuilder {
 		primitiveColumnMapByName: { [columnName: string]: SColumn },
 		entityCannotReferenceOtherColumns: boolean = false
 	): [SRelationColumn, SColumn] {
-		const ownColumnIdIndex                 = this.getIdColumnIndex(ownColumnReference);
-		const relationColumnIdIndex            = this.getIdColumnIndex(relationColumnReference);
+		const ownColumnIdIndex = this.getIdColumnIndex(ownColumnReference);
+		const relationColumnIdIndex = this.getIdColumnIndex(relationColumnReference);
 		const sRelationColumn: SRelationColumn = {
 			manyToOne,
 			oneSideRelationIndex: null,
@@ -587,7 +594,7 @@ export class SSchemaBuilder {
 			];
 		}
 
-		const column                                = {
+		const column = {
 			idIndex: isIdProperty ? entity.numIdColumns++ : undefined,
 			index: entity.numColumns++,
 			name: ownColumnReference,

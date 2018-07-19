@@ -1,6 +1,6 @@
 import { IDatabase } from "@airport/holding-pattern";
 import { ISharingNode, SharingNodeSyncFrequency } from "@airport/moving-walkway";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { BehaviorSubject } from "rxjs";
 export interface ITerminalStore {
     database: BehaviorSubject<IDatabase>;
     nodesBySyncFrequency: BehaviorSubject<Map<SharingNodeSyncFrequency, ISharingNode[]>>;

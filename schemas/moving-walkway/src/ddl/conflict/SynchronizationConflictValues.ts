@@ -1,5 +1,4 @@
 import {
-	ColumnIndex,
 	DbNumber,
 	Entity,
 	Id,
@@ -7,6 +6,9 @@ import {
 	ManyToOne,
 	Table
 }                                 from "@airport/air-control";
+import {
+	ColumnIndex
+}                                 from "@airport/ground-control";
 import {ISynchronizationConflict} from "../../generated/conflict/qsynchronizationconflict";
 
 @Entity()

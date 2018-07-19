@@ -22,7 +22,7 @@ import {
 } from '@airport/air-control';
 import {
 	SyncColumnMap,
-} from '@airport/terminal-map';
+} from '@airport/ground-control';
 import {
 	IActor,
 	ActorEId,
