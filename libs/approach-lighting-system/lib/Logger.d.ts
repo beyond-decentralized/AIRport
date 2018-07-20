@@ -38,7 +38,7 @@ export declare class Logger extends Logged implements ILogger {
     debug(message: LogEntryTypeText, ...values: LogEntryValueValue[]): string;
     trace(callback: () => LogEntryTypeText | [LogEntryTypeText, LogEntryValueValue | LogEntryValueValue[]]): string;
     trace(message: LogEntryTypeText, ...values: LogEntryValueValue[]): string;
-    private debugOrTrace(atLevel, callbackOrMessage, values);
-    private log(level, message, ...values);
-    private getLevelInfo(level);
+    private debugOrTrace;
+    private log;
+    private getLevelInfo;
 }

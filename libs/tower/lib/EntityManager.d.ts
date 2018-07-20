@@ -1,4 +1,5 @@
-import { DbEntity, IAirportDatabase, IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, IQueryFacade, IUtils, MappedEntityArray, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, UpdateCacheType, UpdateRecord } from "@airport/air-control";
+import { IAirportDatabase, IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, IQueryFacade, IUtils, MappedEntityArray, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, UpdateCacheType, UpdateRecord } from "@airport/air-control";
+import { DbEntity } from "@airport/ground-control";
 import { DistributionStrategy, PlatformType } from "@airport/terminal-map";
 import { IInternalTransactionalConnector } from "./core/data/IInternalTransactionalConnector";
 import { IUpdateCache } from "./core/data/UpdateCache";

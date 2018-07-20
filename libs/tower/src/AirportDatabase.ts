@@ -1,7 +1,6 @@
 import {
 	AirportDatabaseToken,
 	dbConst,
-	DbSchema,
 	FunctionsAndOperators,
 	IAirportDatabase,
 	IDatabaseFacade,
@@ -9,9 +8,12 @@ import {
 	INonEntityFindOne,
 	INonEntitySearch,
 	INonEntitySearchOne,
-	JsonSchema,
 	QSchema
 }                from "@airport/air-control";
+import {
+	DbSchema,
+	JsonSchema
+}                from "@airport/ground-control";
 import {Service} from 'typedi';
 
 @Service(AirportDatabaseToken)

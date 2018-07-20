@@ -1,10 +1,5 @@
 import {
 	and,
-	CascadeType,
-	DbColumn,
-	DbEntity,
-	DbProperty,
-	DbRelation,
 	Delete,
 	EntityIdData,
 	IAirportDatabase,
@@ -26,7 +21,12 @@ import {
 	UpdateRecord
 }                                        from "@airport/air-control";
 import {
+	CascadeType,
 	CRUDOperation,
+	DbColumn,
+	DbEntity,
+	DbProperty,
+	DbRelation,
 	EntityRelationType,
 	JSONBaseOperation,
 	JSONValueOperation,

@@ -1,4 +1,5 @@
-import { DbEntity, IUtils, UpdateCacheType } from "@airport/air-control";
+import { IUtils, UpdateCacheType } from "@airport/air-control";
+import { DbEntity } from "@airport/ground-control";
 /**
  * Created by Papa on 9/8/2016.
  */

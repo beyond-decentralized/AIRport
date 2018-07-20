@@ -11,14 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
@@ -28,23 +20,19 @@ let QueryFacade = class QueryFacade {
     constructor(connector) {
         this.connector = connector;
     }
-    find(dbEntity, query, queryResultType, cacheForUpdate = air_control_1.UpdateCacheType.NONE) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = yield this.connector.find(this.getPortableQuery(dbEntity, query, queryResultType));
-            if (cacheForUpdate !== air_control_1.UpdateCacheType.NONE) {
-                this.databaseFacade.cacheForUpdate(cacheForUpdate, dbEntity, ...result);
-            }
-            return result;
-        });
+    async find(dbEntity, query, queryResultType, cacheForUpdate = air_control_1.UpdateCacheType.NONE) {
+        const result = await this.connector.find(this.getPortableQuery(dbEntity, query, queryResultType));
+        if (cacheForUpdate !== air_control_1.UpdateCacheType.NONE) {
+            this.databaseFacade.cacheForUpdate(cacheForUpdate, dbEntity, ...result);
+        }
+        return result;
     }
-    findOne(dbEntity, query, queryResultType, cacheForUpdate = air_control_1.UpdateCacheType.NONE) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = yield this.connector.findOne(this.getPortableQuery(dbEntity, query, queryResultType));
-            if (cacheForUpdate !== air_control_1.UpdateCacheType.NONE) {
-                this.databaseFacade.cacheForUpdate(cacheForUpdate, dbEntity, result);
-            }
-            return result;
-        });
+    async findOne(dbEntity, query, queryResultType, cacheForUpdate = air_control_1.UpdateCacheType.NONE) {
+        const result = await this.connector.findOne(this.getPortableQuery(dbEntity, query, queryResultType));
+        if (cacheForUpdate !== air_control_1.UpdateCacheType.NONE) {
+            this.databaseFacade.cacheForUpdate(cacheForUpdate, dbEntity, result);
+        }
+        return result;
     }
     search(dbEntity, query, queryResultType, cacheForUpdate = air_control_1.UpdateCacheType.NONE) {
         return this.connector.search(this.getPortableQuery(dbEntity, query, queryResultType));
@@ -65,7 +53,7 @@ let QueryFacade = class QueryFacade {
 };
 QueryFacade = __decorate([
     typedi_1.Service(InjectionTokens_1.QueryFacadeToken),
-    __param(0, typedi_1.Inject(_ => ground_control_1.TransactionalConnectorToken)),
+    __param(0, typedi_1.Inject(ground_control_1.TransactionalConnectorToken)),
     __metadata("design:paramtypes", [Object])
 ], QueryFacade);
 exports.QueryFacade = QueryFacade;

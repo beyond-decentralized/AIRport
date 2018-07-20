@@ -1,5 +1,10 @@
-import { CascadeType, DbRelation, repositoryEntity } from "@airport/air-control";
-import { CRUDOperation, EntityRelationType } from "@airport/ground-control";
+import {
+	CascadeType,
+	CRUDOperation,
+	DbRelation,
+	EntityRelationType,
+	repositoryEntity
+} from "@airport/ground-control";
 
 /**
  * Created by Papa on 9/2/2016.

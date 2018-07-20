@@ -1,0 +1,86 @@
+IN GENERAL:  all scalability related questions must be recorded, should be thought out
+but don't need to solved.  The should be solved once at least some of that scale has
+been realized.
+
+1)  Globally unique primary keys - guarantee
+
+According to CRDB documentation if a given node generates more than 100K unique ids
+per second then there could be conflicts in UUIDs.  So if a user modifies 5 repositories
+in 5 minutes and 1K users are batched into a single request then 5K writes won't be
+a problem.  However if a user modifies 20 repositories per minute then we are in the
+range where problems could arise.  So, probably we want to disallow syncing of many
+repository updates at any given point in time.  This might require throttling on the
+client side and we might also want to disallow large cross repository updates.
+So, maybe cap repository updates to 100 per connection.
+
+Perhaps a better approach would be to throttle creates at sync time into batches of 50K
+or less.  But, if large cross-repository client-side updates are allowed sooner or later
+there may be a perfect storm that could overwhelm server infrastructure.  So some
+client side throttling may be required.
+
+Ultimately, number of inserts per node per second will depend on the actual load, so,
+it's a matter of adding enough nodes to handle worst case scenario.
+
+References:
+
+https://www.cockroachlabs.com/docs/stable/sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb
+
+2)  Number of servers required
+
+Assuming max throughput capacity of NodeJS app server at 1K connections/sec, it could
+serve up to 300K users.  That would be a max spike capacity and it probably would run @
+100K users per server.
+
+3)  It is possible that some batch optimizations could actually slow down the database.
+For example, if UPDATE WHERE id IN (...) has too many ids in it and database can't
+correctly find the shards that have those ids.  TODO: research if and when needed.
+
+3) Archiving records:
+
+Currently there is no plan to store records past one day.  There is also no plan to group
+records into monthly batches, primarily because it would require 30 times more storage
+for the actual data.
+
+Instead records will be written to cloud storage every day.  Of course, long term this
+leads to up to 30 times more sync log records and more importantly up to 30 times more
+database sync records which would outnumber sync records by the average number of
+databases per repository.
+
+So, sync log and db sync log records will be grouped into monthly records that will
+contain byte arrays for individual days.  Once a given month completes all of it's sync
+and db sync records will be grouped into monthly records.  That's 30 time reduction in
+storage at a cost of extra 6 bytes per monthly record (5 for bitmap and one for "overall
+synced flag".  Same can be done on yearly level where a ~5.5 time reduction of storage
+requirements would be accomplished.
+
+For Daily Db Sync Logs the easiest thing to do is to store one sync log per database.  At
+ the time of archival of SyncRecords into Daily Archive Logs it doesn't make sense to
+ archive individual Sync Logs. Instead Database Sync Logs can be archived directly.
+ DDSLs should only be created if there is there is a DSL for evey Sync Record.  DDSLs can
+  be joined to DALs by RepositoryId and Date.
+
+For daily, monthly and yearly Archive and Db Sync Logs the entire timestamp does not have
+to be stored.  Instead the number of the day/month/year (Jan 1 2019 being #1
+day/month/year) can be stored as a number.  Long term that could save up to 7 bytes per
+yearly db sync record.
+
+Monthly Archive Logs contain an additional a 5 byte string that maps individual days.  So
+ Monthly Database Sync Logs should also contain same size byte string.  MDSLs are created
+  if there is at least one DDSL for the previous month.  The bit values in the byte
+  string correspond to the boolean acked state.
+
+3a) Archiving failures
+
+The could server specified by the users could be unavailable for any number of reasons.
+Also could be unavailable for any period of time.  But, that should not be the norm. The
+simplest thing to do is to first disallow any further syncing into a repository that is
+backed by an unavailable cloud account (until that account is back up or is replaced).
+In the meantime the sync records that could not be archived could be kept for a
+particular period of time (a month for example - to cover users who might be on vacation
+and are not syncing their devices.
+If at the end of that period the cloud repository is not back up the repository
+would be closed for further writes.
+
+3b) Migrating data between clouds.  Currently that is not supported.  Ultimately archive
+recoveries could be done from the devices themselves, since a device stores that
+repository in its database.

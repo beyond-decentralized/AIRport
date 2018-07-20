@@ -1,18 +1,18 @@
 import {
 	AbstractQuery,
-	DbEntity,
 	IDatabaseFacade,
 	IQueryFacade,
 	UpdateCacheType
 }                         from "@airport/air-control";
 import {
+	DbEntity,
 	ITransactionalConnector,
 	JsonQuery,
 	PortableQuery,
 	QueryResultType,
 	TransactionalConnectorToken
 }                         from "@airport/ground-control";
-import {Observable}       from "rxjs/Observable";
+import {Observable}       from "rxjs";
 import {
 	Inject,
 	Service
@@ -26,8 +26,7 @@ export class QueryFacade
 	public databaseFacade: IDatabaseFacade;
 
 	constructor(
-		@Inject(
-			_ => TransactionalConnectorToken)
+		@Inject(TransactionalConnectorToken)
 		private connector: ITransactionalConnector,
 	) {
 	}

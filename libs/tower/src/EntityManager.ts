@@ -1,6 +1,5 @@
 import {
 	AirportDatabaseToken,
-	DbEntity,
 	Delete,
 	EntityQuery,
 	IAirportDatabase,
@@ -29,6 +28,7 @@ import {
 	UtilsToken
 }                                        from "@airport/air-control";
 import {
+	DbEntity,
 	QueryResultType,
 	TransactionalConnectorToken
 }                                        from "@airport/ground-control";

@@ -1,0 +1,207 @@
+import {
+	assertGoalCount,
+	assertTaskCount,
+	createEntity,
+	deleteWhere,
+	entitiesEqual,
+	tq,
+	tqSync
+} from "../misc/utils.spec";
+import {initializeTQ} from "../misc/setup.spec";
+import {PlatformType} from "delta-store";
+import {Subscription} from "rxjs";
+import {IRepository} from "../../data/repository/model/Repository";
+import {QTqTestGoal} from "../../generated/test/misc/qTqTestGoal";
+import {ITqTestGoal, TqTestGoal} from "../misc/TqTestGoal";
+import {QTqTestTask} from "../../generated/test/misc/qTqTestTask";
+/**
+ * Created by Papa on 12/10/2016.
+ */
+
+const DB_A = 'syncTest-DB_A';
+const DB_B = 'syncTest-DB_B';
+let dbARepo: IRepository;
+let dbBRepo: IRepository;
+
+describe('App-Central-Store sync: End-to-End:', () => {
+		tq('Initialize', async (done) => {
+			await initializeTQ(done, [DB_A, DB_B]);
+			dbARepo = await TQ.db(DB_A).addRepository('test', null, PlatformType.IN_MEMORY, null, null);
+			dbBRepo = await TQ.db(DB_B).addRepository('test', null, PlatformType.IN_MEMORY, null, null);
+		});
+
+		let syncDataOutGoal: ITqTestGoal = {
+			accomplished: false,
+			description: 'Sync insert data A-to-B',
+			goalId: 1,
+			name: 'Insert Sync A-to-B',
+			dueDate: new Date(),
+			repository: dbARepo,
+			tasks: [{
+				complete: false,
+				description: 'Insert data in A',
+				goal: {
+					goalId: 1
+				},
+				taskId: 1,
+				name: 'Insert in A',
+				repository: dbARepo
+			}, {
+				complete: false,
+				description: 'Sync insert data to B',
+				goal: <ITqTestGoal>{
+					goalId: 1
+				},
+				taskId: 2,
+				name: 'Sync A-to-B',
+				repository: dbARepo
+			}]
+		};
+
+		async function assertEntityCounts(
+			numDbAGoals: number,
+			numDbBGoals: number,
+			numDbATasks: number,
+			numDbBTasks: number
+		) {
+			await assertGoalCount(numDbAGoals, null, DB_A);
+			await assertGoalCount(numDbBGoals, null, DB_B);
+			await assertTaskCount(numDbATasks, null, DB_A);
+			await assertTaskCount(numDbBTasks, null, DB_B);
+		}
+
+		tq('Sync insert A -> B', async (done) => {
+			await assertEntityCounts(0, 0, 0, 0);
+			await createEntity(syncDataOutGoal, QTqTestGoal, done, false, DB_A);
+
+			let syncedGoal = await QTqTestGoal.db(DB_B).findOne.tree({
+				select: {
+					'*': null,
+					tasks: {}
+				}
+			});
+			entitiesEqual(syncedGoal, syncDataOutGoal, done);
+			await assertEntityCounts(1, 1, 2, 2);
+		});
+
+		tq('Sync update A -> B', async (done) => {
+			TQ.db(DB_A).startUpdateContext();
+			let goalFromA = await QTqTestGoal.db(DB_A).findOne.graph((
+				g: QTqTestGoal
+			) => ({
+				select: {}
+			}));
+			let aDueDate = new Date();
+			goalFromA.dueDate = aDueDate;
+			await QTqTestGoal.db(DB_A).update(goalFromA);
+			TQ.db(DB_A).endUpdateContext();
+
+			let goalFromB = await QTqTestGoal.db(DB_B).findOne.graph((
+				g: QTqTestGoal
+			) => ({
+				select: {}
+			}));
+			expect(goalFromB.dueDate.getTime()).toBe(aDueDate.getTime());
+		});
+
+		tqSync('Pick up changes B -> A in right order w/ offline B', (done) => {
+			testRightOrder(DB_B, done);
+		});
+
+		tqSync('Pick up changes B -> A in right order w/ offline A', (done) => {
+			testRightOrder(DB_A, done);
+		});
+
+		function testRightOrder(
+			offlineDb: string,
+			done
+		) {
+			TQ.db(offlineDb).entityManager.goOffline();
+			TQ.db(DB_B).startUpdateContext();
+			let timesCalledB = 0;
+			let subscriptionB = QTqTestGoal.db(DB_B).searchOne.graph((
+				g: QTqTestGoal
+			) => ({
+				select: {}
+			})).subscribe(
+				goal => {
+					if (getTimesCalled() < 2) {
+						doTestRightOrder(goal, offlineDb, subscriptionB, done).then();
+					}
+				});
+		}
+
+		let timesCalled = 0;
+
+		function getTimesCalled() {
+			return ++timesCalled;
+		}
+
+		async function doTestRightOrder(
+			goalB: TqTestGoal,
+			offlineDb: string,
+			subscriptionB: Subscription,
+			done
+		) {
+			try {
+				let dbBDate = new Date();
+				goalB.dueDate = dbBDate;
+				await QTqTestGoal.db(DB_B).update(goalB);
+				TQ.db(DB_B).endUpdateContext();
+
+				TQ.db(DB_A).startUpdateContext();
+				let goalA = await QTqTestGoal.db(DB_A).findOne.graph((
+					g: QTqTestGoal
+				) => ({
+					select: {}
+				}));
+				let dbADate = new Date();
+
+				let dateDiff = dbADate.getTime() - dbBDate.getTime();
+				expect(dateDiff).toBeGreaterThan(0);
+
+				goalA.dueDate = dbADate;
+				await QTqTestGoal.db(DB_A).update(goalA);
+				TQ.db(DB_A).endUpdateContext();
+
+				await TQ.db(offlineDb).entityManager.goOnline();
+
+				let goalBv2 = await QTqTestGoal.db(DB_B).findOne.graph((
+					g: QTqTestGoal
+				) => ({
+					select: {}
+				}));
+				// Change that is later chronologically overwrites
+				expect(goalBv2.dueDate.getTime()).toBe(dbADate.getTime());
+				let goalAv2 = await QTqTestGoal.db(DB_A).findOne.graph((
+					g: QTqTestGoal
+				) => ({
+					select: {}
+				}));
+				expect(goalAv2.dueDate.getTime()).toBe(dbADate.getTime());
+				done();
+			} catch (error) {
+				done.fail(error);
+			} finally {
+				subscriptionB.unsubscribe();
+				timesCalled = 0;
+			}
+		}
+
+		tq('Clean up DBs B -> A', async (done) => {
+			await deleteWhere((
+				t: QTqTestTask
+			) => ({
+				deleteFrom: t = QTqTestTask.db(DB_B).from
+			}), QTqTestTask, done, false, DB_B);
+			await deleteWhere((
+				g: QTqTestGoal
+			) => ({
+				deleteFrom: g = QTqTestGoal.db(DB_B).from
+			}), QTqTestGoal, done, false, DB_B);
+			await assertEntityCounts(0, 0, 0, 0);
+
+		});
+
+	}
+);

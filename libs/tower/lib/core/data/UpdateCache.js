@@ -209,7 +209,7 @@ let UpdateCache = class UpdateCache {
 };
 UpdateCache = __decorate([
     typedi_1.Service(InjectionTokens_1.UpdateCacheToken),
-    __param(0, typedi_1.Inject(_ => air_control_1.UtilsToken)),
+    __param(0, typedi_1.Inject(air_control_1.UtilsToken)),
     __metadata("design:paramtypes", [Object])
 ], UpdateCache);
 exports.UpdateCache = UpdateCache;

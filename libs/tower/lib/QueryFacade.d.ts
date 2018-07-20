@@ -1,6 +1,6 @@
-import { AbstractQuery, DbEntity, IDatabaseFacade, IQueryFacade, UpdateCacheType } from "@airport/air-control";
-import { ITransactionalConnector, PortableQuery, QueryResultType } from "@airport/ground-control";
-import { Observable } from "rxjs/Observable";
+import { AbstractQuery, IDatabaseFacade, IQueryFacade, UpdateCacheType } from "@airport/air-control";
+import { DbEntity, ITransactionalConnector, PortableQuery, QueryResultType } from "@airport/ground-control";
+import { Observable } from "rxjs";
 export declare class QueryFacade implements IQueryFacade {
     private connector;
     databaseFacade: IDatabaseFacade;

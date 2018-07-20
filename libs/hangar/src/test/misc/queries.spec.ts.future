@@ -1,0 +1,40 @@
+import {TQ} from "../../config/TQ";
+import {dbConst} from "../../config/Constants";
+import {count} from "../../../../air-control/src/impl/core/field/Functions";
+import {QNumberField} from "../../../../air-control/src/impl/core/field/NumberField";
+import {JSONBaseOperation, RawFieldQuery} from "tiql";
+import {QTqTestTask} from "../../generated/test/misc/qTqTestTask";
+import {QTqTestGoal} from "../../generated/test/misc/qTqTestGoal";
+/**
+ * Created by Papa on 12/24/2016.
+ */
+
+export async function getTaskCount(
+	whereClauseCallback?: { (t:QTqTestTask) : JSONBaseOperation },
+	dbName = dbConst.DEFAULT_DB
+):Promise<number> {
+		let t = QTqTestTask.db(dbName).from;
+		let query:RawFieldQuery<QNumberField> = {
+			from: [t = QTqTestTask.db(dbName).from],
+			select: count(t.taskId)
+		};
+		if(whereClauseCallback) {
+			query.where = whereClauseCallback(t);
+		}
+		return await TQ.db(dbName).findOne.field(query);
+}
+
+export async function getGoalCount(
+	whereClauseCallback: { (g:QTqTestGoal) : JSONBaseOperation },
+	dbName = dbConst.DEFAULT_DB
+):Promise<number> {
+	let g = QTqTestGoal.db(dbName).from;
+	let query:RawFieldQuery<QNumberField> = {
+		from: [g = QTqTestGoal.db(dbName).from],
+		select: count(g.goalId)
+	};
+	if(whereClauseCallback) {
+		query.where = whereClauseCallback(g);
+	}
+	return await TQ.db(dbName).findOne.field(query);
+}

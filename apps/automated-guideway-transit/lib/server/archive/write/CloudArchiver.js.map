@@ -1,1 +1,1 @@
-{"version":3,"file":"CloudArchiver.js","sourceRoot":"","sources":["../../../../src/server/archive/write/CloudArchiver.ts"],"names":[],"mappings":";;AAgBA;IAGC,sEAAsE;IACtE,KAAK,CAAC,OAAO,CACZ,gBAAsC,EACtC,qBAA8C,EAC9C,MAAgD;QAEhD,MAAM,iBAAiB,CAAC;IACzB,CAAC;CAGD;AAbD,sCAaC"}
+{"version":3,"file":"CloudArchiver.js","sourceRoot":"","sources":["../../../../src/server/archive/write/CloudArchiver.ts"],"names":[],"mappings":";;AAgBA,MAAa,aAAa;IAGzB,sEAAsE;IACtE,KAAK,CAAC,OAAO,CACZ,gBAAsC,EACtC,qBAA8C,EAC9C,MAAgD;QAEhD,MAAM,iBAAiB,CAAC;IACzB,CAAC;CAGD;AAbD,sCAaC"}
