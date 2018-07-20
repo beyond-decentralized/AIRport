@@ -3,7 +3,7 @@ import {IRecordHistoryNewValueDao}        from "./dao/history/RecordHistoryNewVa
 import {IRecordHistoryOldValueDao}        from "./dao/history/RecordHistoryOldValueDao";
 import {IRepositoryTransactionHistoryDao} from "./dao/history/RepositoryTransactionHistoryDao";
 import {IActorDao}                        from "./dao/infrastructure/ActorDao";
-import {IDatabaseDao}                     from "./dao/infrastructure/DatabaseDao";
+import {ITerminalDao}                     from "./dao/infrastructure/TerminalDao";
 import {IUserDao}                         from "./dao/infrastructure/UserDao";
 import {IRepositoryActorDao}              from "./dao/repository/RepositoryActorDao";
 import {IRepositoryDao}                   from "./dao/repository/RepositoryDao";
@@ -16,7 +16,6 @@ import {ITransactionHistoryDmo}           from "./dmo/history/TransactionHistory
 
 
 export const ActorDaoToken = new Token<IActorDao>();
-export const DatabaseDaoToken = new Token<IDatabaseDao>();
 export const OperationHistoryDmoToken = new Token<IOperationHistoryDmo>();
 export const RecordHistoryDmoToken = new Token<IRecordHistoryDmo>();
 export const RecordHistoryNewValueDaoToken = new Token<IRecordHistoryNewValueDao>();
@@ -27,5 +26,6 @@ export const RepositoryActorDaoToken = new Token<IRepositoryActorDao>();
 export const RepositoryDaoToken = new Token<IRepositoryDao>();
 export const RepositoryTransactionHistoryDaoToken = new Token<IRepositoryTransactionHistoryDao>();
 export const RepositoryTransactionHistoryDmoToken = new Token<IRepositoryTransactionHistoryDmo>();
+export const TerminalDaoToken = new Token<ITerminalDao>();
 export const TransactionHistoryDmoToken = new Token<ITransactionHistoryDmo>();
 export const UserDaoToken = new Token<IUserDao>();

@@ -52,8 +52,8 @@ __decorate([
 ], RepositoryTransactionBlock.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "SOURCE_DATABASE_ID", referencedColumnName: "ID" }),
-    __metadata("design:type", holding_pattern_1.Database)
+    air_control_1.JoinColumn({ name: "SOURCE_TERMINAL_ID", referencedColumnName: "ID" }),
+    __metadata("design:type", holding_pattern_1.Terminal)
 ], RepositoryTransactionBlock.prototype, "source", void 0);
 __decorate([
     air_control_1.ManyToOne(),

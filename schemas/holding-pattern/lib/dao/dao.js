@@ -7,7 +7,7 @@ __export(require("./history/RecordHistoryNewValueDao"));
 __export(require("./history/RecordHistoryOldValueDao"));
 __export(require("./history/RepositoryTransactionHistoryDao"));
 __export(require("./infrastructure/ActorDao"));
-__export(require("./infrastructure/DatabaseDao"));
+__export(require("./infrastructure/TerminalDao"));
 __export(require("./infrastructure/UserDao"));
 __export(require("./repository/RepositoryActorDao"));
 __export(require("./repository/RepositoryDao"));

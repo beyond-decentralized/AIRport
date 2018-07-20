@@ -102,16 +102,6 @@ import {
 	QSharingNode
 } from './sharingNode/qsharingnode';
 import {
-	ISharingNodeDatabase,
-	SharingNodeDatabaseESelect,
-	SharingNodeDatabaseECreateColumns,
-	SharingNodeDatabaseECreateProperties,
-	SharingNodeDatabaseEUpdateColumns,
-	SharingNodeDatabaseEUpdateProperties,
-	SharingNodeDatabaseEId,
-	QSharingNodeDatabase
-} from './sharingNode/qsharingnodedatabase';
-import {
 	ISharingNodeRepoTransBlock,
 	SharingNodeRepoTransBlockESelect,
 	SharingNodeRepoTransBlockECreateColumns,
@@ -141,6 +131,16 @@ import {
 	SharingNodeRepositoryEId,
 	QSharingNodeRepository
 } from './sharingNode/qsharingnoderepository';
+import {
+	ISharingNodeTerminal,
+	SharingNodeTerminalESelect,
+	SharingNodeTerminalECreateColumns,
+	SharingNodeTerminalECreateProperties,
+	SharingNodeTerminalEUpdateColumns,
+	SharingNodeTerminalEUpdateProperties,
+	SharingNodeTerminalEId,
+	QSharingNodeTerminal
+} from './sharingNode/qsharingnodeterminal';
 import {
 	ISynchronizationConflict,
 	SynchronizationConflictESelect,
@@ -303,19 +303,6 @@ export class BaseSharingNodeDmo
 }
 
 
-export interface IBaseSharingNodeDatabaseDmo
-  extends IDmo<ISharingNodeDatabase, SharingNodeDatabaseESelect, SharingNodeDatabaseECreateProperties, SharingNodeDatabaseEUpdateProperties, SharingNodeDatabaseEId, QSharingNodeDatabase> {
-}
-
-export class BaseSharingNodeDatabaseDmo
-  extends Dmo<ISharingNodeDatabase, SharingNodeDatabaseESelect, SharingNodeDatabaseECreateProperties, SharingNodeDatabaseEUpdateProperties, SharingNodeDatabaseEId, QSharingNodeDatabase>
-	implements IBaseSharingNodeDatabaseDmo {
-	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SharingNodeDatabase']);
-	}
-}
-
-
 export interface IBaseSharingNodeRepoTransBlockDmo
   extends IDmo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock> {
 }
@@ -351,6 +338,19 @@ export class BaseSharingNodeRepositoryDmo
 	implements IBaseSharingNodeRepositoryDmo {
 	constructor() {
 		super(Q.db.currentVersion.entityMapByName['SharingNodeRepository']);
+	}
+}
+
+
+export interface IBaseSharingNodeTerminalDmo
+  extends IDmo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal> {
+}
+
+export class BaseSharingNodeTerminalDmo
+  extends Dmo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal>
+	implements IBaseSharingNodeTerminalDmo {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SharingNodeTerminal']);
 	}
 }
 

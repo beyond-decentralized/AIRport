@@ -4,23 +4,23 @@ import {
 	ActorDaoToken,
 	ActorId,
 	ActorRandomId,
-	DatabaseDaoToken,
-	DatabaseId,
-	DatabaseName,
-	DatabaseSecondId,
+	TerminalDaoToken,
+	TerminalId,
+	TerminalName,
+	TerminalSecondId,
 	IActor,
 	IActorDao,
-	IDatabaseDao,
+	ITerminalDao,
 	UserUniqueId
 }                                 from "@airport/holding-pattern";
 import {IDataToTM, RemoteActorId} from "../SyncInUtils";
 import {IUtils, UtilsToken}       from "@airport/air-control";
 import {UserCheckResults}         from "./SyncInUserChecker";
-import {DatabaseCheckResults}     from "./SyncInDatabaseChecker";
+import {TerminalCheckResults}     from "./SyncInTerminalChecker";
 
 export interface ActorCheckResults {
 	actorMap: Map<ActorRandomId, Map<UserUniqueId,
-		Map<DatabaseName, Map<DatabaseSecondId, Map<UserUniqueId, IActor>>>>>;
+		Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>;
 	actorMapById: Map<ActorId, IActor>;
 	consistentMessages: IDataToTM[];
 	inconsistentMessages: IDataToTM[];
@@ -30,11 +30,11 @@ export interface ISyncInActorChecker {
 
 	ensureActorsAndGetAsMaps(
 		dataMessages: IDataToTM[],
-		actorMap: Map<UserUniqueId, Map<DatabaseName,
-			Map<DatabaseSecondId, Map<UserUniqueId, IActor>>>>,
+		actorMap: Map<UserUniqueId, Map<TerminalName,
+			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>,
 		actorMapById: Map<ActorId, IActor>,
 		userCheckResults: UserCheckResults,
-		databaseCheckResults: DatabaseCheckResults
+		terminalCheckResults: TerminalCheckResults
 	): Promise<ActorCheckResults>;
 
 }
@@ -46,8 +46,8 @@ export class SyncInActorChecker
 	constructor(
 		@Inject(ActorDaoToken)
 		private actorDao: IActorDao,
-		@Inject(DatabaseDaoToken)
-		private databaseDao: IDatabaseDao,
+		@Inject(TerminalDaoToken)
+		private terminalDao: ITerminalDao,
 		@Inject(UtilsToken)
 		private utils: IUtils,
 	) {
@@ -55,16 +55,16 @@ export class SyncInActorChecker
 
 	async ensureActorsAndGetAsMaps(
 		dataMessages: IDataToTM[],
-		actorMap: Map<UserUniqueId, Map<DatabaseName,
-			Map<DatabaseSecondId, Map<UserUniqueId, IActor>>>>,
+		actorMap: Map<UserUniqueId, Map<TerminalName,
+			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>,
 		actorMapById: Map<ActorId, IActor>,
 		userCheckResults: UserCheckResults,
-		databaseCheckResults: DatabaseCheckResults
+		terminalCheckResults: TerminalCheckResults
 	): Promise<ActorCheckResults> {
 		const actorRandomIdSet: Set<ActorRandomId> = new Set();
 		const userUniqueIdsSet: Set<UserUniqueId> = new Set();
-		const databaseNameSet: Set<DatabaseName> = new Set();
-		const databaseSecondIdSet: Set<DatabaseSecondId> = new Set();
+		const terminalNameSet: Set<TerminalName> = new Set();
+		const terminalSecondIdSet: Set<TerminalSecondId> = new Set();
 		const ownerUniqueIdSet: Set<UserUniqueId> = new Set();
 
 		const consistentMessages: IDataToTM[] = [];
@@ -76,9 +76,9 @@ export class SyncInActorChecker
 				continue;
 			}
 			const data = message.data;
-			databaseNameSet.add(data.database.name);
-			databaseSecondIdSet.add(data.database.secondId);
-			ownerUniqueIdSet.add(data.database.owner.uniqueId);
+			terminalNameSet.add(data.terminal.name);
+			terminalSecondIdSet.add(data.terminal.secondId);
+			ownerUniqueIdSet.add(data.terminal.owner.uniqueId);
 
 			consistentMessages.push(message);
 
@@ -88,29 +88,29 @@ export class SyncInActorChecker
 			}
 		}
 
-		const databaseMapByGlobalIds = await this.databaseDao.findMapByGlobalIds(
+		const terminalMapByGlobalIds = await this.terminalDao.findMapByGlobalIds(
 			Array.from(ownerUniqueIdSet),
-			Array.from(databaseNameSet),
-			Array.from(databaseSecondIdSet)
+			Array.from(terminalNameSet),
+			Array.from(terminalSecondIdSet)
 		);
 
 
-		const databaseIdSet: Set<DatabaseId> = new Set();
+		const terminalIdSet: Set<TerminalId> = new Set();
 		for (const message of dataMessages) {
-			const database = message.data.database;
-			const databaseId = databaseMapByGlobalIds
-				.get(database.owner.uniqueId)
-				.get(database.name).get(database.secondId).id;
-			databaseIdSet.add(databaseId);
+			const terminal = message.data.terminal;
+			const terminalId = terminalMapByGlobalIds
+				.get(terminal.owner.uniqueId)
+				.get(terminal.name).get(terminal.secondId).id;
+			terminalIdSet.add(terminalId);
 		}
 
-		// NOTE: remote actors should not contain database info, it should be populated here
-		// this is because a given RTB is always generated in one and only one database
+		// NOTE: remote actors should not contain terminal info, it should be populated here
+		// this is because a given RTB is always generated in one and only one terminal
 
 		await this.actorDao.findMapsWithDetailsByGlobalIds(
 			Array.from(actorRandomIdSet),
 			Array.from(userUniqueIdsSet),
-			Array.from(databaseIdSet),
+			Array.from(terminalIdSet),
 			actorMap,
 			actorMapById);
 
@@ -163,7 +163,7 @@ export class SyncInActorChecker
 
 	private updateActorIdsInMessages(
 		actorMap: Map<ActorRandomId, Map<UserUniqueId,
-			Map<DatabaseName, Map<DatabaseSecondId, Map<UserUniqueId, IActor>>>>>,
+			Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>,
 		dataMessages: IDataToTM[]
 	): void {
 		for (const message of dataMessages) {
@@ -173,9 +173,9 @@ export class SyncInActorChecker
 				const localActor: IActor = actorMap
 					.get(actor.randomId)
 					.get(actor.user.uniqueId)
-					.get(actor.database.name)
-					.get(actor.database.secondId)
-					.get(actor.database.owner.uniqueId);
+					.get(actor.terminal.name)
+					.get(actor.terminal.secondId)
+					.get(actor.terminal.owner.uniqueId);
 				updatedActors.push(localActor);
 				messageActorMapByRemoteId.set(actor.id, localActor);
 			}
@@ -198,11 +198,11 @@ export class SyncInActorChecker
 
 	private getNewActors(
 		dataMessages: IDataToTM[],
-		actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<DatabaseName,
-			Map<DatabaseSecondId, Map<UserUniqueId, ActorId>>>>>
+		actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName,
+			Map<TerminalSecondId, Map<UserUniqueId, ActorId>>>>>
 	): IActor[] {
-		const newActorMap: Map<ActorRandomId, Map<UserUniqueId, Map<DatabaseName,
-			Map<DatabaseSecondId, Map<UserUniqueId, IActor>>>>> = new Map();
+		const newActorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName,
+			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>> = new Map();
 
 		// split messages by repository
 		for (const message of dataMessages) {
@@ -223,20 +223,20 @@ export class SyncInActorChecker
 					this.addActorToMap(actor, actorMap);
 					break;
 				}
-				const actorsForDatabaseName = actorsForUserUniqueId.get(actor.database.name);
-				if (!actorsForDatabaseName) {
+				const actorsForTerminalName = actorsForUserUniqueId.get(actor.terminal.name);
+				if (!actorsForTerminalName) {
 					this.addActorToMap(actor, newActorMap);
 					this.addActorToMap(actor, actorMap);
 					break;
 				}
-				const actorsForDatabaseSecondId
-					= actorsForDatabaseName.get(actor.database.secondId);
-				if (!actorsForDatabaseSecondId) {
+				const actorsForTerminalSecondId
+					= actorsForTerminalName.get(actor.terminal.secondId);
+				if (!actorsForTerminalSecondId) {
 					this.addActorToMap(actor, newActorMap);
 					this.addActorToMap(actor, actorMap);
 					break;
 				}
-				const existingActor = actorsForDatabaseSecondId.get(actor.database.owner.uniqueId);
+				const existingActor = actorsForTerminalSecondId.get(actor.terminal.owner.uniqueId);
 				if (!existingActor) {
 					this.addActorToMap(actor, newActorMap);
 					this.addActorToMap(actor, actorMap);
@@ -248,10 +248,10 @@ export class SyncInActorChecker
 		const newActors: IActor[] = [];
 		for (const [actorRandomId, actorsForRandomId] of newActorMap) {
 			for (const [userUniqueId, actorsForUserUniqueId] of actorsForRandomId) {
-				for (const [databaseName, actorsForDatabaseName] of actorsForUserUniqueId) {
-					for (const [databaseSecondId, actorsForDatabaseSecondId]
-						of actorsForDatabaseName) {
-						for (const [databaseOwnerUniqueId, actor] of actorsForDatabaseSecondId) {
+				for (const [terminalName, actorsForTerminalName] of actorsForUserUniqueId) {
+					for (const [terminalSecondId, actorsForTerminalSecondId]
+						of actorsForTerminalName) {
+						for (const [terminalOwnerUniqueId, actor] of actorsForTerminalSecondId) {
 							newActors.push(actor);
 						}
 					}
@@ -264,16 +264,16 @@ export class SyncInActorChecker
 
 	private addActorToMap(
 		actor: IActor,
-		actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<DatabaseName,
-			Map<DatabaseSecondId, Map<UserUniqueId, IActor>>>>>
+		actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName,
+			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>
 	): void {
 		this.utils.ensureChildJsMap(
 			this.utils.ensureChildJsMap(
 				this.utils.ensureChildJsMap(
 					this.utils.ensureChildJsMap(actorMap, actor.randomId),
 					actor.user.uniqueId),
-				actor.database.name),
-			actor.database.secondId).set(actor.database.owner.uniqueId, actor);
+				actor.terminal.name),
+			actor.terminal.secondId).set(actor.terminal.owner.uniqueId, actor);
 	}
 
 }

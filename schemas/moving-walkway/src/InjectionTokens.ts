@@ -10,15 +10,15 @@ import {IRepositoryTransactionHistoryUpdateStageDao}    from "./dao/repositoryTr
 import {IRepoTransBlockResponseStageDao}                from "./dao/repositoryTransactionBlock/RepoTransBlockResponseStageDao";
 // import {ISharingMessageResponseStageDao}                from
 // "./dao/sharingMessage/SharingMessageResponseStageDao";
-import {IRepoTransBlockSchemasToChangeDao}              from "./dao/repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao";
-import {ISharingMessageDao}                             from "./dao/sharingMessage/SharingMessageDao";
-import {ISharingMessageRepoTransBlockDao}               from "./dao/sharingMessage/SharingMessageRepoTransBlockDao";
-import {ISharingNodeDao}                                from "./dao/sharingNode/SharingNodeDao";
-import {ISharingNodeDatabaseDao}                        from "./dao/sharingNode/SharingNodeDatabaseDao";
-import {ISharingNodeRepositoryDao}                      from "./dao/sharingNode/SharingNodeRepositoryDao";
-import {ISharingNodeRepoTransBlockDao}                  from "./dao/sharingNode/SharingNodeRepoTransBlockDao";
-import {ISharingNodeRepoTransBlockStageDao}             from "./dao/sharingNode/SharingNodeRepoTransBlockStageDao";
-import {IRepositoryTransactionBlockDmo}                 from "./dmo/repositoryTransactionBlock/RepositoryTransactionBlockDmo";
+import {IRepoTransBlockSchemasToChangeDao}  from "./dao/repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao";
+import {ISharingMessageDao}                 from "./dao/sharingMessage/SharingMessageDao";
+import {ISharingMessageRepoTransBlockDao}   from "./dao/sharingMessage/SharingMessageRepoTransBlockDao";
+import {ISharingNodeDao}                    from "./dao/sharingNode/SharingNodeDao";
+import {ISharingNodeTerminalDao}            from "./dao/sharingNode/SharingNodeTerminalDao";
+import {ISharingNodeRepositoryDao}          from "./dao/sharingNode/SharingNodeRepositoryDao";
+import {ISharingNodeRepoTransBlockDao}      from "./dao/sharingNode/SharingNodeRepoTransBlockDao";
+import {ISharingNodeRepoTransBlockStageDao} from "./dao/sharingNode/SharingNodeRepoTransBlockStageDao";
+import {IRepositoryTransactionBlockDmo}     from "./dmo/repositoryTransactionBlock/RepositoryTransactionBlockDmo";
 
 export const MissingRecordDaoToken = new Token<IMissingRecordDao>();
 export const MissingRecordRepoTransBlockDaoToken
@@ -39,7 +39,7 @@ export const SharingMessageRepoTransBlockDaoToken = new Token<ISharingMessageRep
 export const RepoTransBlockSchemasToChangeDaoToken
 	= new Token<IRepoTransBlockSchemasToChangeDao>();
 export const SharingNodeDaoToken = new Token<ISharingNodeDao>();
-export const SharingNodeDatabaseDaoToken = new Token<ISharingNodeDatabaseDao>();
+export const SharingNodeTerminalDaoToken = new Token<ISharingNodeTerminalDao>();
 export const SharingNodeRepositoryDaoToken = new Token<ISharingNodeRepositoryDao>();
 export const SharingNodeRepoTransBlockDaoToken = new Token<ISharingNodeRepoTransBlockDao>();
 export const SharingNodeRepoTransBlockStageDaoToken

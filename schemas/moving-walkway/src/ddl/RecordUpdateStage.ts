@@ -21,7 +21,7 @@ import {
 
 /**
  * Used to temporarily store updates during application remotely synced updates
- * to the local database.  Values are deleted right after the remote sync updates
+ * to the local terminal.  Values are deleted right after the remote sync updates
  * are applied.
  */
 @Entity()

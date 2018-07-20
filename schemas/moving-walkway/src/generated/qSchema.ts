@@ -20,14 +20,14 @@ import { SharingMessageRepoTransBlock } from '../ddl/sharingMessage/SharingMessa
 import { QSharingMessageRepoTransBlock } from './sharingMessage/qsharingmessagerepotransblock';
 import { SharingNode } from '../ddl/sharingNode/SharingNode';
 import { QSharingNode } from './sharingNode/qsharingnode';
-import { SharingNodeDatabase } from '../ddl/sharingNode/SharingNodeDatabase';
-import { QSharingNodeDatabase } from './sharingNode/qsharingnodedatabase';
 import { SharingNodeRepoTransBlock } from '../ddl/sharingNode/SharingNodeRepoTransBlock';
 import { QSharingNodeRepoTransBlock } from './sharingNode/qsharingnoderepotransblock';
 import { SharingNodeRepoTransBlockStage } from '../ddl/sharingNode/SharingNodeRepoTransBlockStage';
 import { QSharingNodeRepoTransBlockStage } from './sharingNode/qsharingnoderepotransblockstage';
 import { SharingNodeRepository } from '../ddl/sharingNode/SharingNodeRepository';
 import { QSharingNodeRepository } from './sharingNode/qsharingnoderepository';
+import { SharingNodeTerminal } from '../ddl/sharingNode/SharingNodeTerminal';
+import { QSharingNodeTerminal } from './sharingNode/qsharingnodeterminal';
 import { SynchronizationConflict } from '../ddl/conflict/SynchronizationConflict';
 import { QSynchronizationConflict } from './conflict/qsynchronizationconflict';
 import { SynchronizationConflictPendingNotification } from '../ddl/conflict/SynchronizationConflictPendingNotification';
@@ -46,10 +46,10 @@ import {
 	IBaseSharingMessageDmo,
 	IBaseSharingMessageRepoTransBlockDmo,
 	IBaseSharingNodeDmo,
-	IBaseSharingNodeDatabaseDmo,
 	IBaseSharingNodeRepoTransBlockDmo,
 	IBaseSharingNodeRepoTransBlockStageDmo,
 	IBaseSharingNodeRepositoryDmo,
+	IBaseSharingNodeTerminalDmo,
 	IBaseSynchronizationConflictDmo,
 	IBaseSynchronizationConflictPendingNotificationDmo,
 	IBaseSynchronizationConflictValuesDmo
@@ -66,10 +66,10 @@ import {
 	IBaseSharingMessageDao,
 	IBaseSharingMessageRepoTransBlockDao,
 	IBaseSharingNodeDao,
-	IBaseSharingNodeDatabaseDao,
 	IBaseSharingNodeRepoTransBlockDao,
 	IBaseSharingNodeRepoTransBlockStageDao,
 	IBaseSharingNodeRepositoryDao,
+	IBaseSharingNodeTerminalDao,
 	IBaseSynchronizationConflictDao,
 	IBaseSynchronizationConflictPendingNotificationDao,
 	IBaseSynchronizationConflictValuesDao
@@ -90,10 +90,10 @@ export interface LocalQSchema extends AirportQSchema {
 		SharingMessage: IBaseSharingMessageDmo;
 		SharingMessageRepoTransBlock: IBaseSharingMessageRepoTransBlockDmo;
 		SharingNode: IBaseSharingNodeDmo;
-		SharingNodeDatabase: IBaseSharingNodeDatabaseDmo;
 		SharingNodeRepoTransBlock: IBaseSharingNodeRepoTransBlockDmo;
 		SharingNodeRepoTransBlockStage: IBaseSharingNodeRepoTransBlockStageDmo;
 		SharingNodeRepository: IBaseSharingNodeRepositoryDmo;
+		SharingNodeTerminal: IBaseSharingNodeTerminalDmo;
 		SynchronizationConflict: IBaseSynchronizationConflictDmo;
 		SynchronizationConflictPendingNotification: IBaseSynchronizationConflictPendingNotificationDmo;
 		SynchronizationConflictValues: IBaseSynchronizationConflictValuesDmo;
@@ -110,10 +110,10 @@ export interface LocalQSchema extends AirportQSchema {
 		SharingMessage: IBaseSharingMessageDao;
 		SharingMessageRepoTransBlock: IBaseSharingMessageRepoTransBlockDao;
 		SharingNode: IBaseSharingNodeDao;
-		SharingNodeDatabase: IBaseSharingNodeDatabaseDao;
 		SharingNodeRepoTransBlock: IBaseSharingNodeRepoTransBlockDao;
 		SharingNodeRepoTransBlockStage: IBaseSharingNodeRepoTransBlockStageDao;
 		SharingNodeRepository: IBaseSharingNodeRepositoryDao;
+		SharingNodeTerminal: IBaseSharingNodeTerminalDao;
 		SynchronizationConflict: IBaseSynchronizationConflictDao;
 		SynchronizationConflictPendingNotification: IBaseSynchronizationConflictPendingNotificationDao;
 		SynchronizationConflictValues: IBaseSynchronizationConflictValuesDao;
@@ -129,10 +129,10 @@ export interface LocalQSchema extends AirportQSchema {
 	SharingMessage: QSharingMessage;
 	SharingMessageRepoTransBlock: QSharingMessageRepoTransBlock;
 	SharingNode: QSharingNode;
-	SharingNodeDatabase: QSharingNodeDatabase;
 	SharingNodeRepoTransBlock: QSharingNodeRepoTransBlock;
 	SharingNodeRepoTransBlockStage: QSharingNodeRepoTransBlockStage;
 	SharingNodeRepository: QSharingNodeRepository;
+	SharingNodeTerminal: QSharingNodeTerminal;
 	SynchronizationConflict: QSynchronizationConflict;
 	SynchronizationConflictPendingNotification: QSynchronizationConflictPendingNotification;
 	SynchronizationConflictValues: QSynchronizationConflictValues;
@@ -150,10 +150,10 @@ const __constructors__ = {
 	SharingMessage: SharingMessage,
 	SharingMessageRepoTransBlock: SharingMessageRepoTransBlock,
 	SharingNode: SharingNode,
-	SharingNodeDatabase: SharingNodeDatabase,
 	SharingNodeRepoTransBlock: SharingNodeRepoTransBlock,
 	SharingNodeRepoTransBlockStage: SharingNodeRepoTransBlockStage,
 	SharingNodeRepository: SharingNodeRepository,
+	SharingNodeTerminal: SharingNodeTerminal,
 	SynchronizationConflict: SynchronizationConflict,
 	SynchronizationConflictPendingNotification: SynchronizationConflictPendingNotification,
 	SynchronizationConflictValues: SynchronizationConflictValues

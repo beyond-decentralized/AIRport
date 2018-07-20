@@ -53,7 +53,9 @@ let IdGenerator = class IdGenerator {
         if (!entity) {
             return newId;
         }
-        const recordWithId = Object.assign({}, entity);
+        const recordWithId = {
+            ...entity,
+        };
         let columnName = dbEntity.idColumns[0].name;
         recordWithId[columnName] = newId;
         return recordWithId;

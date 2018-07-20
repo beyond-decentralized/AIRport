@@ -26,12 +26,6 @@ class BaseApplicationDmo extends check_in_1.Dmo {
     }
 }
 exports.BaseApplicationDmo = BaseApplicationDmo;
-class BaseDatabaseDmo extends check_in_1.Dmo {
-    constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Database']);
-    }
-}
-exports.BaseDatabaseDmo = BaseDatabaseDmo;
 class BaseOperationHistoryDmo extends check_in_1.Dmo {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['OperationHistory']);
@@ -92,6 +86,12 @@ class BaseRepositoryTransactionHistoryDmo extends check_in_1.Dmo {
     }
 }
 exports.BaseRepositoryTransactionHistoryDmo = BaseRepositoryTransactionHistoryDmo;
+class BaseTerminalDmo extends check_in_1.Dmo {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['Terminal']);
+    }
+}
+exports.BaseTerminalDmo = BaseTerminalDmo;
 class BaseTransactionHistoryDmo extends check_in_1.Dmo {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['TransactionHistory']);

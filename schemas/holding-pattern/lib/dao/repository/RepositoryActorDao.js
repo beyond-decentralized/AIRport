@@ -37,7 +37,7 @@ let RepositoryActorDao = class RepositoryActorDao extends generated_1.BaseReposi
             from: [
                 ra = __1.Q.RepositoryActor,
                 a = ra.actor.innerJoin(),
-                d = a.database.innerJoin()
+                d = a.terminal.innerJoin()
             ],
             where: air_control_1.and(ra.repository.id.in(repositoryIds), d.isLocal.equals(true))
         });

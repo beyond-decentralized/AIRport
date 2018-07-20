@@ -62,12 +62,6 @@ class BaseSharingNodeDmo extends check_in_1.Dmo {
     }
 }
 exports.BaseSharingNodeDmo = BaseSharingNodeDmo;
-class BaseSharingNodeDatabaseDmo extends check_in_1.Dmo {
-    constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingNodeDatabase']);
-    }
-}
-exports.BaseSharingNodeDatabaseDmo = BaseSharingNodeDatabaseDmo;
 class BaseSharingNodeRepoTransBlockDmo extends check_in_1.Dmo {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingNodeRepoTransBlock']);
@@ -86,6 +80,12 @@ class BaseSharingNodeRepositoryDmo extends check_in_1.Dmo {
     }
 }
 exports.BaseSharingNodeRepositoryDmo = BaseSharingNodeRepositoryDmo;
+class BaseSharingNodeTerminalDmo extends check_in_1.Dmo {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingNodeTerminal']);
+    }
+}
+exports.BaseSharingNodeTerminalDmo = BaseSharingNodeTerminalDmo;
 class BaseSynchronizationConflictDmo extends check_in_1.Dmo {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['SynchronizationConflict']);

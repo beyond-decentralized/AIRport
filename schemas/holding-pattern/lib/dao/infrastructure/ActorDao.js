@@ -23,16 +23,16 @@ let ActorDao = class ActorDao extends generated_1.BaseActorDao {
     async findWithDetailsAndGlobalIdsByIds(actorIds) {
         return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a.id.in(actorIds));
     }
-    async findMapsWithDetailsByGlobalIds(randomIds, userIds, databaseIds, actorMap, actorMapById) {
-        const actors = await this.findWithDetailsByGlobalIds(randomIds, userIds, databaseIds);
+    async findMapsWithDetailsByGlobalIds(randomIds, userIds, terminalIds, actorMap, actorMapById) {
+        const actors = await this.findWithDetailsByGlobalIds(randomIds, userIds, terminalIds);
         for (const actor of actors) {
             this.utils.ensureChildJsMap(actorMap, actor.user.id)
-                .set(actor.database.id, actor);
+                .set(actor.terminal.id, actor);
             actorMapById.set(actor.id, actor);
         }
     }
-    async findWithDetailsByGlobalIds(randomIds, userIds, databaseIds) {
-        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => air_control_1.and(a.randomId.in(randomIds), a.database.id.in(databaseIds), a.user.id.in(userIds)));
+    async findWithDetailsByGlobalIds(randomIds, userIds, terminalIds) {
+        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => air_control_1.and(a.randomId.in(randomIds), a.terminal.id.in(terminalIds), a.user.id.in(userIds)));
     }
     async findWithDetailsAndGlobalIdsByWhereClause(getWhereClause) {
         let a;
@@ -45,7 +45,7 @@ let ActorDao = class ActorDao extends generated_1.BaseActorDao {
                 user: {
                     id,
                 },
-                database: {
+                terminal: {
                     id
                 }
             },

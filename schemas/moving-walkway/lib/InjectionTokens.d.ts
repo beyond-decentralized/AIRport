@@ -12,7 +12,7 @@ import { IRepoTransBlockSchemasToChangeDao } from "./dao/repositoryTransactionBl
 import { ISharingMessageDao } from "./dao/sharingMessage/SharingMessageDao";
 import { ISharingMessageRepoTransBlockDao } from "./dao/sharingMessage/SharingMessageRepoTransBlockDao";
 import { ISharingNodeDao } from "./dao/sharingNode/SharingNodeDao";
-import { ISharingNodeDatabaseDao } from "./dao/sharingNode/SharingNodeDatabaseDao";
+import { ISharingNodeTerminalDao } from "./dao/sharingNode/SharingNodeTerminalDao";
 import { ISharingNodeRepositoryDao } from "./dao/sharingNode/SharingNodeRepositoryDao";
 import { ISharingNodeRepoTransBlockDao } from "./dao/sharingNode/SharingNodeRepoTransBlockDao";
 import { ISharingNodeRepoTransBlockStageDao } from "./dao/sharingNode/SharingNodeRepoTransBlockStageDao";
@@ -28,7 +28,7 @@ export declare const SharingMessageDaoToken: Token<ISharingMessageDao>;
 export declare const SharingMessageRepoTransBlockDaoToken: Token<ISharingMessageRepoTransBlockDao>;
 export declare const RepoTransBlockSchemasToChangeDaoToken: Token<IRepoTransBlockSchemasToChangeDao>;
 export declare const SharingNodeDaoToken: Token<ISharingNodeDao>;
-export declare const SharingNodeDatabaseDaoToken: Token<ISharingNodeDatabaseDao>;
+export declare const SharingNodeTerminalDaoToken: Token<ISharingNodeTerminalDao>;
 export declare const SharingNodeRepositoryDaoToken: Token<ISharingNodeRepositoryDao>;
 export declare const SharingNodeRepoTransBlockDaoToken: Token<ISharingNodeRepoTransBlockDao>;
 export declare const SharingNodeRepoTransBlockStageDaoToken: Token<ISharingNodeRepoTransBlockStageDao>;

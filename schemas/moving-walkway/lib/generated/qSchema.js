@@ -10,10 +10,10 @@ const RepositoryTransactionHistoryUpdateStage_1 = require("../ddl/repositoryTran
 const SharingMessage_1 = require("../ddl/sharingMessage/SharingMessage");
 const SharingMessageRepoTransBlock_1 = require("../ddl/sharingMessage/SharingMessageRepoTransBlock");
 const SharingNode_1 = require("../ddl/sharingNode/SharingNode");
-const SharingNodeDatabase_1 = require("../ddl/sharingNode/SharingNodeDatabase");
 const SharingNodeRepoTransBlock_1 = require("../ddl/sharingNode/SharingNodeRepoTransBlock");
 const SharingNodeRepoTransBlockStage_1 = require("../ddl/sharingNode/SharingNodeRepoTransBlockStage");
 const SharingNodeRepository_1 = require("../ddl/sharingNode/SharingNodeRepository");
+const SharingNodeTerminal_1 = require("../ddl/sharingNode/SharingNodeTerminal");
 const SynchronizationConflict_1 = require("../ddl/conflict/SynchronizationConflict");
 const SynchronizationConflictPendingNotification_1 = require("../ddl/conflict/SynchronizationConflictPendingNotification");
 const SynchronizationConflictValues_1 = require("../ddl/conflict/SynchronizationConflictValues");
@@ -28,10 +28,10 @@ const __constructors__ = {
     SharingMessage: SharingMessage_1.SharingMessage,
     SharingMessageRepoTransBlock: SharingMessageRepoTransBlock_1.SharingMessageRepoTransBlock,
     SharingNode: SharingNode_1.SharingNode,
-    SharingNodeDatabase: SharingNodeDatabase_1.SharingNodeDatabase,
     SharingNodeRepoTransBlock: SharingNodeRepoTransBlock_1.SharingNodeRepoTransBlock,
     SharingNodeRepoTransBlockStage: SharingNodeRepoTransBlockStage_1.SharingNodeRepoTransBlockStage,
     SharingNodeRepository: SharingNodeRepository_1.SharingNodeRepository,
+    SharingNodeTerminal: SharingNodeTerminal_1.SharingNodeTerminal,
     SynchronizationConflict: SynchronizationConflict_1.SynchronizationConflict,
     SynchronizationConflictPendingNotification: SynchronizationConflictPendingNotification_1.SynchronizationConflictPendingNotification,
     SynchronizationConflictValues: SynchronizationConflictValues_1.SynchronizationConflictValues

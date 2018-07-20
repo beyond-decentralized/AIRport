@@ -8,8 +8,6 @@ import { ActorApplication } from '../ddl/infrastructure/ActorApplication';
 import { QActorApplication } from './infrastructure/qactorapplication';
 import { Application } from '../ddl/infrastructure/Application';
 import { QApplication } from './infrastructure/qapplication';
-import { Database } from '../ddl/infrastructure/Database';
-import { QDatabase } from './infrastructure/qdatabase';
 import { OperationHistory } from '../ddl/history/OperationHistory';
 import { QOperationHistory } from './history/qoperationhistory';
 import { RecordHistory } from '../ddl/history/RecordHistory';
@@ -30,6 +28,8 @@ import { RepositorySchema } from '../ddl/repository/RepositorySchema';
 import { QRepositorySchema } from './repository/qrepositoryschema';
 import { RepositoryTransactionHistory } from '../ddl/history/RepositoryTransactionHistory';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
+import { Terminal } from '../ddl/infrastructure/Terminal';
+import { QTerminal } from './infrastructure/qterminal';
 import { TransactionHistory } from '../ddl/history/TransactionHistory';
 import { QTransactionHistory } from './history/qtransactionhistory';
 import { User } from '../ddl/infrastructure/User';
@@ -40,7 +40,6 @@ import {
 	IBaseActorDmo,
 	IBaseActorApplicationDmo,
 	IBaseApplicationDmo,
-	IBaseDatabaseDmo,
 	IBaseOperationHistoryDmo,
 	IBaseRecordHistoryDmo,
 	IBaseRecordHistoryNewValueDmo,
@@ -51,6 +50,7 @@ import {
 	IBaseRepositoryApplicationDmo,
 	IBaseRepositorySchemaDmo,
 	IBaseRepositoryTransactionHistoryDmo,
+	IBaseTerminalDmo,
 	IBaseTransactionHistoryDmo,
 	IBaseUserDmo
 } from './baseDmos';
@@ -60,7 +60,6 @@ import {
 	IBaseActorDao,
 	IBaseActorApplicationDao,
 	IBaseApplicationDao,
-	IBaseDatabaseDao,
 	IBaseOperationHistoryDao,
 	IBaseRecordHistoryDao,
 	IBaseRecordHistoryNewValueDao,
@@ -71,6 +70,7 @@ import {
 	IBaseRepositoryApplicationDao,
 	IBaseRepositorySchemaDao,
 	IBaseRepositoryTransactionHistoryDao,
+	IBaseTerminalDao,
 	IBaseTransactionHistoryDao,
 	IBaseUserDao
 } from './baseDaos';
@@ -84,7 +84,6 @@ export interface LocalQSchema extends AirportQSchema {
 		Actor: IBaseActorDmo;
 		ActorApplication: IBaseActorApplicationDmo;
 		Application: IBaseApplicationDmo;
-		Database: IBaseDatabaseDmo;
 		OperationHistory: IBaseOperationHistoryDmo;
 		RecordHistory: IBaseRecordHistoryDmo;
 		RecordHistoryNewValue: IBaseRecordHistoryNewValueDmo;
@@ -95,6 +94,7 @@ export interface LocalQSchema extends AirportQSchema {
 		RepositoryApplication: IBaseRepositoryApplicationDmo;
 		RepositorySchema: IBaseRepositorySchemaDmo;
 		RepositoryTransactionHistory: IBaseRepositoryTransactionHistoryDmo;
+		Terminal: IBaseTerminalDmo;
 		TransactionHistory: IBaseTransactionHistoryDmo;
 		User: IBaseUserDmo;
 	}
@@ -104,7 +104,6 @@ export interface LocalQSchema extends AirportQSchema {
 		Actor: IBaseActorDao;
 		ActorApplication: IBaseActorApplicationDao;
 		Application: IBaseApplicationDao;
-		Database: IBaseDatabaseDao;
 		OperationHistory: IBaseOperationHistoryDao;
 		RecordHistory: IBaseRecordHistoryDao;
 		RecordHistoryNewValue: IBaseRecordHistoryNewValueDao;
@@ -115,6 +114,7 @@ export interface LocalQSchema extends AirportQSchema {
 		RepositoryApplication: IBaseRepositoryApplicationDao;
 		RepositorySchema: IBaseRepositorySchemaDao;
 		RepositoryTransactionHistory: IBaseRepositoryTransactionHistoryDao;
+		Terminal: IBaseTerminalDao;
 		TransactionHistory: IBaseTransactionHistoryDao;
 		User: IBaseUserDao;
 	}
@@ -123,7 +123,6 @@ export interface LocalQSchema extends AirportQSchema {
 	Actor: QActor;
 	ActorApplication: QActorApplication;
 	Application: QApplication;
-	Database: QDatabase;
 	OperationHistory: QOperationHistory;
 	RecordHistory: QRecordHistory;
 	RecordHistoryNewValue: QRecordHistoryNewValue;
@@ -134,6 +133,7 @@ export interface LocalQSchema extends AirportQSchema {
 	RepositoryApplication: QRepositoryApplication;
 	RepositorySchema: QRepositorySchema;
 	RepositoryTransactionHistory: QRepositoryTransactionHistory;
+	Terminal: QTerminal;
 	TransactionHistory: QTransactionHistory;
 	User: QUser;
 
@@ -144,7 +144,6 @@ const __constructors__ = {
 	Actor: Actor,
 	ActorApplication: ActorApplication,
 	Application: Application,
-	Database: Database,
 	OperationHistory: OperationHistory,
 	RecordHistory: RecordHistory,
 	RecordHistoryNewValue: RecordHistoryNewValue,
@@ -155,6 +154,7 @@ const __constructors__ = {
 	RepositoryApplication: RepositoryApplication,
 	RepositorySchema: RepositorySchema,
 	RepositoryTransactionHistory: RepositoryTransactionHistory,
+	Terminal: Terminal,
 	TransactionHistory: TransactionHistory,
 	User: User
 };

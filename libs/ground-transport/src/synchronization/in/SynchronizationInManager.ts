@@ -1,5 +1,4 @@
 import {
-	AgtSyncRecordAddDatetime,
 	BatchedMessagesToTM,
 	MessageToTM,
 	MessageToTMContentType,
@@ -9,9 +8,12 @@ import {
 	TmSharingMessageId
 }                                       from "@airport/arrivals-n-departures";
 import {
+	DataOrigin,
 	ISharingMessage,
+	ISharingMessageDao,
 	ISharingNode,
-	RepositoryTransactionBlockData
+	RepositoryTransactionBlockData,
+	SharingMessageDaoToken
 }                                       from "@airport/moving-walkway";
 import {Transactional}                  from "@airport/tower";
 import {Inject}                         from "typedi/decorators/Inject";
@@ -34,10 +36,10 @@ import {ITwoStageSyncedInDataProcessor} from "./TwoStageSyncedInDataProcessor";
  * Synchronization Log part of the Message from AGT to Terminal (TM)
  */
 export interface ISyncLogToTM {
-	// agtDatabaseSyncLogId: AgtDatabaseSyncLogId;
+	// agtTerminalSyncLogId: AgtTerminalSyncLogId;
 	outcomes: RepoTransBlockSyncOutcome[];
 	sharingNode: ISharingNode;
-	syncDatetime: AgtSyncRecordAddDatetime;
+	// syncDatetime: AgtSyncRecordAddDatetime;
 	tmSharingMessageId: TmSharingMessageId;
 }
 
@@ -70,6 +72,8 @@ export class SynchronizationInManager
 	implements ISynchronizationInManager {
 
 	constructor(
+		@Inject(SharingMessageDaoToken)
+		private sharingMessageDao: ISharingMessageDao,
 		@Inject(SyncInCheckerToken)
 		private syncInChecker: ISyncInChecker,
 		@Inject(SyncLogMessageProcessorToken)
@@ -93,40 +97,48 @@ export class SynchronizationInManager
 		sharingNodes: ISharingNode[],
 		incomingMessages: BatchedMessagesToTM[]
 	): Promise<void> {
-		const receptionTimeMillis = new Date().getTime();
+		const syncTimestamp = new Date();
 		const allSyncLogMessages: ISyncLogToTM[] = [];
 		const allDataMessages: IDataToTM[] = [];
 
 		const messagesToContent: SyncInMessageWithContent[] = [];
+		const sharingMessages: ISharingMessage[] = [];
 
 		// Split up messages by type
 		for (let i = 0; i < incomingMessages.length; i++) {
-			const syncLogMessages: ISyncLogToTM[] = [];
-			const dataMessages: IDataToTM[] = [];
-			const messagesToContent
-		.
-			push({
-				sharingMessage:
-			})
 			const sharingNode = sharingNodes[i];
-			const messagesFromSharingNode = incomingMessages[i];
-			for (const incomingMessage of messagesFromSharingNode) {
+			const batchedMessagesToTM = incomingMessages[i];
+			const sharingMessage: ISharingMessage = {
+				origin: DataOrigin.REMOTE,
+				agtSharingMessageId: batchedMessagesToTM.agtSharingMessageId,
+				sharingNode,
+				syncTimestamp
+			};
+			sharingMessages.push(sharingMessage);
+			const messageWithContent: SyncInMessageWithContent = {
+				sharingMessage,
+				dataMessages: [],
+				syncLogMessages: []
+			};
+			messagesToContent.push(messageWithContent);
+			for (const incomingMessage of batchedMessagesToTM.messages) {
 				switch (incomingMessage.contentType) {
-					// Database sync log messages are responses from AGT on which messages coming form this
+					// Terminal sync log messages are responses from AGT on which messages coming form this
 					// TM have been synced (or not)
 					case MessageToTMContentType.SYNC_NOTIFICATION: {
 						const syncNotificationMessage = <SyncNotificationMessageToTM>incomingMessage;
 						const syncLogMessageToClient: ISyncLogToTM = {
-							// agtDatabaseSyncLogId: syncNotificationMessage.agtDatabaseSyncLogId,
+							// agtTerminalSyncLogId: syncNotificationMessage.agtTerminalSyncLogId,
 							outcomes: syncNotificationMessage.syncOutcomes,
 							sharingNode: sharingNode,
-							syncDatetime: receptionTimeMillis, // syncNotificationMessage.agtSyncRecordAddDatetime,
+							// syncDatetime: syncTimestamp, // syncNotificationMessage.agtSyncRecordAddDatetime,
 							tmSharingMessageId: syncNotificationMessage.tmSharingMessageId
 						};
-						if (!this.isValidLastChangeTime(receptionTimeMillis,
-							syncLogMessageToClient.syncDatetime, incomingMessage)) {
-							break;
-						}
+						// if (!this.isValidLastChangeTime(syncTimestamp,
+						// 	syncLogMessageToClient.syncDatetime, incomingMessage)) {
+						// 	break;
+						// }
+						messageWithContent.syncLogMessages.push(syncLogMessageToClient);
 						allSyncLogMessages.push(syncLogMessageToClient);
 						break;
 					}
@@ -139,19 +151,20 @@ export class SynchronizationInManager
 						const lastChangeTimeMillis = this.getLastChangeMillisFromRepoTransBlock(
 							data);
 
-						if (!this.isValidLastChangeTime(receptionTimeMillis, lastChangeTimeMillis,
-							incomingMessage)) {
+						if (!this.isValidLastChangeTime(syncTimestamp, lastChangeTimeMillis)) {
 							break;
 						}
-						allDataMessages.push({
-							// sourceAgtDatabaseId: repoTransBlockMessage.sourceAgtDatabaseId,
+						const dataMessage: IDataToTM = {
+							// sourceAgtTerminalId: repoTransBlockMessage.sourceAgtTerminalId,
 							// agtRepositoryId: repoTransBlockMessage.agtRepositoryId,
 							// agtSyncRecordId: repoTransBlockMessage.agtSyncRecordId,
 							data,
 							serializedData,
-							sharingNode: sharingNode,
-							syncDatetime: receptionTimeMillis,
-						});
+							sharingNode,
+							// syncDatetime: syncTimestamp,
+						};
+						messageWithContent.dataMessages.push(dataMessage);
+						allDataMessages.push(dataMessage);
 						break;
 					}
 					case MessageToTMContentType.ALIVE_ACK:
@@ -162,6 +175,8 @@ export class SynchronizationInManager
 				}
 			}
 		}
+
+		await this.sharingMessageDao.bulkCreate(sharingMessages, false, false);
 
 
 		// These messages are responses to already sent messages
@@ -177,46 +192,47 @@ export class SynchronizationInManager
 	}
 
 	private isValidLastChangeTime(
-		receptionTimeMillis: number,
+		syncTimestamp: Date,
 		lastChangeTimeMillis: LastRemoteChangeMillis,
-		messageToTM: MessageToTM
+		// messageToTM: MessageToTM
 	): boolean {
+		const receptionTimeMillis = syncTimestamp.getTime();
 		if (receptionTimeMillis < lastChangeTimeMillis) {
-			switch (messageToTM.contentType) {
-				case MessageToTMContentType.SYNC_NOTIFICATION: {
-					log.error(`MessageToTMContentType.SYNC_NOTIFICATION
-			Message reception time is less than last Change Time in received message:
-				Reception Time:            {1}
-				Last Received Change Time: {2}
-				TmSharingMessageId:        {3}
-				AgtSyncRecordAddDatetime:  {4}
-			`, receptionTimeMillis,
-						lastChangeTimeMillis,
-						(<SyncNotificationMessageToTM>messageToTM).tmSharingMessageId,
-						(<SyncNotificationMessageToTM>messageToTM).agtSyncRecordAddDatetime);
-					// AgtDatabaseSyncLogId:      {4}
-					// (<SyncNotificationMessageToTM>messageToTM).agtDatabaseSyncLogId,
-					break;
-				}
-				case MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK: {
-					// SourceAgtDatabaseId:            {3}
-					// AgtRepositoryId:                {4}
-					// TmRepositoryTransactionBlockId: {5}
-					log.error(`MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK
+			// switch (messageToTM.contentType) {
+			// 	case MessageToTMContentType.SYNC_NOTIFICATION: {
+			// 		log.error(`MessageToTMContentType.SYNC_NOTIFICATION
+			// Message reception time is less than last Change Time in received message:
+			// 	Reception Time:            {1}
+			// 	Last Received Change Time: {2}
+			// 	TmSharingMessageId:        {3}
+			// 	AgtSyncRecordAddDatetime:  {4}
+			// `, receptionTimeMillis,
+			// 			lastChangeTimeMillis,
+			// 			(<SyncNotificationMessageToTM>messageToTM).tmSharingMessageId,
+			// 			(<SyncNotificationMessageToTM>messageToTM).agtSyncRecordAddDatetime);
+			// 		// AgtTerminalSyncLogId:      {4}
+			// 		// (<SyncNotificationMessageToTM>messageToTM).agtTerminalSyncLogId,
+			// 		break;
+			// 	}
+			// 	case MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK: {
+			// SourceAgtTerminalId:            {3}
+			// AgtRepositoryId:                {4}
+			// TmRepositoryTransactionBlockId: {5}
+			log.error(`MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK
 			Message reception time is less than last Change Time in received message:
 				Reception Time:                 {1}
 				Last Received Change Time:      {2}
 			`, receptionTimeMillis,
-						lastChangeTimeMillis);
-					break;
-				}
-				case MessageToTMContentType.ALIVE_ACK: {
-					// FIXME: implement
-					throw new Error('Not implemented');
-				}
-				default:
-					log.throw(`Unsupported MessageToTMContentType: {1}`, (<any>messageToTM).contentType);
-			}
+				lastChangeTimeMillis);
+			// 		break;
+			// 	}
+			// 	case MessageToTMContentType.ALIVE_ACK: {
+			// 		// FIXME: implement
+			// 		throw new Error('Not implemented');
+			// 	}
+			// 	default:
+			// 		log.throw(`Unsupported MessageToTMContentType: {1}`, (<any>messageToTM).contentType);
+			// }
 			return false;
 		}
 

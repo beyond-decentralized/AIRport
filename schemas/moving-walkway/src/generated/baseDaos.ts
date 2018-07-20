@@ -105,16 +105,6 @@ import {
 	QSharingNode
 } from './sharingNode/qsharingnode';
 import {
-	ISharingNodeDatabase,
-	SharingNodeDatabaseESelect,
-	SharingNodeDatabaseECreateColumns,
-	SharingNodeDatabaseECreateProperties,
-	SharingNodeDatabaseEUpdateColumns,
-	SharingNodeDatabaseEUpdateProperties,
-	SharingNodeDatabaseEId,
-	QSharingNodeDatabase
-} from './sharingNode/qsharingnodedatabase';
-import {
 	ISharingNodeRepoTransBlock,
 	SharingNodeRepoTransBlockESelect,
 	SharingNodeRepoTransBlockECreateColumns,
@@ -144,6 +134,16 @@ import {
 	SharingNodeRepositoryEId,
 	QSharingNodeRepository
 } from './sharingNode/qsharingnoderepository';
+import {
+	ISharingNodeTerminal,
+	SharingNodeTerminalESelect,
+	SharingNodeTerminalECreateColumns,
+	SharingNodeTerminalECreateProperties,
+	SharingNodeTerminalEUpdateColumns,
+	SharingNodeTerminalEUpdateProperties,
+	SharingNodeTerminalEId,
+	QSharingNodeTerminal
+} from './sharingNode/qsharingnodeterminal';
 import {
 	ISynchronizationConflict,
 	SynchronizationConflictESelect,
@@ -326,21 +326,6 @@ export class BaseSharingNodeDao
 }
 
 
-export interface IBaseSharingNodeDatabaseDao
-  extends IDao<ISharingNodeDatabase, SharingNodeDatabaseESelect, SharingNodeDatabaseECreateProperties, SharingNodeDatabaseEUpdateColumns, SharingNodeDatabaseEUpdateProperties, SharingNodeDatabaseEId, QSharingNodeDatabase> {
-}
-
-export class BaseSharingNodeDatabaseDao
-  extends Dao<ISharingNodeDatabase, SharingNodeDatabaseESelect, SharingNodeDatabaseECreateProperties, SharingNodeDatabaseEUpdateColumns, SharingNodeDatabaseEUpdateProperties, SharingNodeDatabaseEId, QSharingNodeDatabase>
-	implements IBaseSharingNodeDatabaseDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SharingNodeDatabase'], Q, utils);
-	}
-}
-
-
 export interface IBaseSharingNodeRepoTransBlockDao
   extends IDao<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateColumns, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock> {
 }
@@ -382,6 +367,21 @@ export class BaseSharingNodeRepositoryDao
 		utils: IUtils
 	) {
 		super(Q.db.currentVersion.entityMapByName['SharingNodeRepository'], Q, utils);
+	}
+}
+
+
+export interface IBaseSharingNodeTerminalDao
+  extends IDao<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateColumns, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal> {
+}
+
+export class BaseSharingNodeTerminalDao
+  extends Dao<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateColumns, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal>
+	implements IBaseSharingNodeTerminalDao {
+	constructor(
+		utils: IUtils
+	) {
+		super(Q.db.currentVersion.entityMapByName['SharingNodeTerminal'], Q, utils);
 	}
 }
 

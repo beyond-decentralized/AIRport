@@ -15,7 +15,7 @@ import {
 	TmRepositoryTransactionBlockId
 }                                      from "@airport/arrivals-n-departures";
 import {
-	Database,
+	Terminal,
 	Repository,
 	RepositoryTransactionHistory
 }                                      from "@airport/holding-pattern";
@@ -70,8 +70,8 @@ export class RepositoryTransactionBlock {
 	hash: RepositoryTransactionBlockHash;
 
 	@ManyToOne()
-	@JoinColumn({name: "SOURCE_DATABASE_ID", referencedColumnName: "ID"})
-	source: Database;
+	@JoinColumn({name: "SOURCE_TERMINAL_ID", referencedColumnName: "ID"})
+	source: Terminal;
 
 	@ManyToOne()
 	@JoinColumn({

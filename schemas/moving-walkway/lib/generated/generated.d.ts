@@ -15,7 +15,7 @@ export * from './repositoryTransactionBlock/qrepotransblockschematochange';
 export * from './sharingMessage/qsharingmessage';
 export * from './sharingMessage/qsharingmessagerepotransblock';
 export * from './sharingNode/qsharingnode';
-export * from './sharingNode/qsharingnodedatabase';
 export * from './sharingNode/qsharingnoderepository';
 export * from './sharingNode/qsharingnoderepotransblock';
 export * from './sharingNode/qsharingnoderepotransblockstage';
+export * from './sharingNode/qsharingnodeterminal';

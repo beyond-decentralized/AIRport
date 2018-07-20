@@ -10,15 +10,15 @@ import { QRepositoryTransactionHistoryUpdateStage } from './repositoryTransactio
 import { QSharingMessage } from './sharingMessage/qsharingmessage';
 import { QSharingMessageRepoTransBlock } from './sharingMessage/qsharingmessagerepotransblock';
 import { QSharingNode } from './sharingNode/qsharingnode';
-import { QSharingNodeDatabase } from './sharingNode/qsharingnodedatabase';
 import { QSharingNodeRepoTransBlock } from './sharingNode/qsharingnoderepotransblock';
 import { QSharingNodeRepoTransBlockStage } from './sharingNode/qsharingnoderepotransblockstage';
 import { QSharingNodeRepository } from './sharingNode/qsharingnoderepository';
+import { QSharingNodeTerminal } from './sharingNode/qsharingnodeterminal';
 import { QSynchronizationConflict } from './conflict/qsynchronizationconflict';
 import { QSynchronizationConflictPendingNotification } from './conflict/qsynchronizationconflictpendingnotification';
 import { QSynchronizationConflictValues } from './conflict/qsynchronizationconflictvalues';
-import { IBaseMissingRecordDmo, IBaseMissingRecordRepoTransBlockDmo, IBaseRecordUpdateStageDmo, IBaseRepoTransBlockResponseStageDmo, IBaseRepoTransBlockSchemasToChangeDmo, IBaseRepositoryTransactionBlockDmo, IBaseRepositoryTransactionHistoryUpdateStageDmo, IBaseSharingMessageDmo, IBaseSharingMessageRepoTransBlockDmo, IBaseSharingNodeDmo, IBaseSharingNodeDatabaseDmo, IBaseSharingNodeRepoTransBlockDmo, IBaseSharingNodeRepoTransBlockStageDmo, IBaseSharingNodeRepositoryDmo, IBaseSynchronizationConflictDmo, IBaseSynchronizationConflictPendingNotificationDmo, IBaseSynchronizationConflictValuesDmo } from './baseDmos';
-import { IBaseMissingRecordDao, IBaseMissingRecordRepoTransBlockDao, IBaseRecordUpdateStageDao, IBaseRepoTransBlockResponseStageDao, IBaseRepoTransBlockSchemasToChangeDao, IBaseRepositoryTransactionBlockDao, IBaseRepositoryTransactionHistoryUpdateStageDao, IBaseSharingMessageDao, IBaseSharingMessageRepoTransBlockDao, IBaseSharingNodeDao, IBaseSharingNodeDatabaseDao, IBaseSharingNodeRepoTransBlockDao, IBaseSharingNodeRepoTransBlockStageDao, IBaseSharingNodeRepositoryDao, IBaseSynchronizationConflictDao, IBaseSynchronizationConflictPendingNotificationDao, IBaseSynchronizationConflictValuesDao } from './baseDaos';
+import { IBaseMissingRecordDmo, IBaseMissingRecordRepoTransBlockDmo, IBaseRecordUpdateStageDmo, IBaseRepoTransBlockResponseStageDmo, IBaseRepoTransBlockSchemasToChangeDmo, IBaseRepositoryTransactionBlockDmo, IBaseRepositoryTransactionHistoryUpdateStageDmo, IBaseSharingMessageDmo, IBaseSharingMessageRepoTransBlockDmo, IBaseSharingNodeDmo, IBaseSharingNodeRepoTransBlockDmo, IBaseSharingNodeRepoTransBlockStageDmo, IBaseSharingNodeRepositoryDmo, IBaseSharingNodeTerminalDmo, IBaseSynchronizationConflictDmo, IBaseSynchronizationConflictPendingNotificationDmo, IBaseSynchronizationConflictValuesDmo } from './baseDmos';
+import { IBaseMissingRecordDao, IBaseMissingRecordRepoTransBlockDao, IBaseRecordUpdateStageDao, IBaseRepoTransBlockResponseStageDao, IBaseRepoTransBlockSchemasToChangeDao, IBaseRepositoryTransactionBlockDao, IBaseRepositoryTransactionHistoryUpdateStageDao, IBaseSharingMessageDao, IBaseSharingMessageRepoTransBlockDao, IBaseSharingNodeDao, IBaseSharingNodeRepoTransBlockDao, IBaseSharingNodeRepoTransBlockStageDao, IBaseSharingNodeRepositoryDao, IBaseSharingNodeTerminalDao, IBaseSynchronizationConflictDao, IBaseSynchronizationConflictPendingNotificationDao, IBaseSynchronizationConflictValuesDao } from './baseDaos';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
     dmo: {
@@ -32,10 +32,10 @@ export interface LocalQSchema extends AirportQSchema {
         SharingMessage: IBaseSharingMessageDmo;
         SharingMessageRepoTransBlock: IBaseSharingMessageRepoTransBlockDmo;
         SharingNode: IBaseSharingNodeDmo;
-        SharingNodeDatabase: IBaseSharingNodeDatabaseDmo;
         SharingNodeRepoTransBlock: IBaseSharingNodeRepoTransBlockDmo;
         SharingNodeRepoTransBlockStage: IBaseSharingNodeRepoTransBlockStageDmo;
         SharingNodeRepository: IBaseSharingNodeRepositoryDmo;
+        SharingNodeTerminal: IBaseSharingNodeTerminalDmo;
         SynchronizationConflict: IBaseSynchronizationConflictDmo;
         SynchronizationConflictPendingNotification: IBaseSynchronizationConflictPendingNotificationDmo;
         SynchronizationConflictValues: IBaseSynchronizationConflictValuesDmo;
@@ -51,10 +51,10 @@ export interface LocalQSchema extends AirportQSchema {
         SharingMessage: IBaseSharingMessageDao;
         SharingMessageRepoTransBlock: IBaseSharingMessageRepoTransBlockDao;
         SharingNode: IBaseSharingNodeDao;
-        SharingNodeDatabase: IBaseSharingNodeDatabaseDao;
         SharingNodeRepoTransBlock: IBaseSharingNodeRepoTransBlockDao;
         SharingNodeRepoTransBlockStage: IBaseSharingNodeRepoTransBlockStageDao;
         SharingNodeRepository: IBaseSharingNodeRepositoryDao;
+        SharingNodeTerminal: IBaseSharingNodeTerminalDao;
         SynchronizationConflict: IBaseSynchronizationConflictDao;
         SynchronizationConflictPendingNotification: IBaseSynchronizationConflictPendingNotificationDao;
         SynchronizationConflictValues: IBaseSynchronizationConflictValuesDao;
@@ -69,10 +69,10 @@ export interface LocalQSchema extends AirportQSchema {
     SharingMessage: QSharingMessage;
     SharingMessageRepoTransBlock: QSharingMessageRepoTransBlock;
     SharingNode: QSharingNode;
-    SharingNodeDatabase: QSharingNodeDatabase;
     SharingNodeRepoTransBlock: QSharingNodeRepoTransBlock;
     SharingNodeRepoTransBlockStage: QSharingNodeRepoTransBlockStage;
     SharingNodeRepository: QSharingNodeRepository;
+    SharingNodeTerminal: QSharingNodeTerminal;
     SynchronizationConflict: QSynchronizationConflict;
     SynchronizationConflictPendingNotification: QSynchronizationConflictPendingNotification;
     SynchronizationConflictValues: QSynchronizationConflictValues;

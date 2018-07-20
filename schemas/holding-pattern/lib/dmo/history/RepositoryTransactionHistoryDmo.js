@@ -48,15 +48,15 @@ let RepositoryTransactionHistoryDmo = class RepositoryTransactionHistoryDmo exte
             if (userIdComparison) {
                 return userIdComparison;
             }
-            const databaseNameComparison = actor1.database.name.localeCompare(actor2.database.name);
+            const databaseNameComparison = actor1.terminal.name.localeCompare(actor2.terminal.name);
             if (databaseNameComparison) {
                 return databaseNameComparison;
             }
-            const databaseSecondIdComparison = this.compareNumbers(actor1.database.secondId, actor2.database.secondId);
+            const databaseSecondIdComparison = this.compareNumbers(actor1.terminal.secondId, actor2.terminal.secondId);
             if (databaseSecondIdComparison) {
                 return databaseSecondIdComparison;
             }
-            const databaseOwnerComparison = actor1.database.owner.uniqueId.localeCompare(actor2.database.owner.uniqueId);
+            const databaseOwnerComparison = actor1.terminal.owner.uniqueId.localeCompare(actor2.terminal.owner.uniqueId);
             if (databaseOwnerComparison) {
                 return databaseOwnerComparison;
             }

@@ -1,4 +1,4 @@
-import {IDatabase}          from "@airport/holding-pattern";
+import {ITerminal}          from "@airport/holding-pattern";
 import {
 	ISharingNode,
 	SharingNodeSyncFrequency
@@ -9,7 +9,7 @@ import {TerminalStoreToken} from "../InjectionTokens";
 
 export interface ITerminalStore {
 
-	database: BehaviorSubject<IDatabase>;
+	terminal: BehaviorSubject<ITerminal>;
 
 	nodesBySyncFrequency: BehaviorSubject<Map<SharingNodeSyncFrequency, ISharingNode[]>>;
 
@@ -21,7 +21,7 @@ export interface ITerminalStore {
 export class TerminalStore
 	implements ITerminalStore {
 
-	database = new BehaviorSubject<IDatabase>(null);
+	terminal = new BehaviorSubject<ITerminal>(null);
 
 	nodesBySyncFrequency
 		= new BehaviorSubject<Map<SharingNodeSyncFrequency, ISharingNode[]>>(new Map());

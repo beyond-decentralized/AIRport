@@ -1,5 +1,5 @@
 NOTE: Building large query trees bloats result sets,
-	best approach - custom database query engine that
+	best approach - custom terminal query engine that
 	returns just the needed data
 
 	Reapplying changes coming from remote sync nodes:
@@ -53,11 +53,11 @@ NOTE: Building large query trees bloats result sets,
 
 	^ order between transactions matters
 	we need to always know which change to apply first and which to apply last
-	for that we can add the Database Info of the database where the transaction
+	for that we can add the Terminal Info of the terminal where the transaction
 	happened.  Changes are always sorted by:
 	syncTimestamp,
 	saveTimestamp,
-	databaseId
+	terminalId
 
 	for local changes that haven't been synced "syncRequestTimestamp" can be used
 	instead of syncTimestamp

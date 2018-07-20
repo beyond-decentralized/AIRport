@@ -124,7 +124,7 @@ export class SyncInRepositoryChecker
 				= await this.sharingNodeRepositoryDao.findBySharingNodeAndAgtRepositoryIds(
 				Array.from(sharingNodeIds), Array.from(agtRepositoryIds));
 
-			// FIXME: handle repositories that need to be added to this database
+			// FIXME: handle repositories that need to be added to this terminal
 
 			// Filter out all messages for missing (probably removed) repositories
 			let dataMessages: IDataToTM[] = [];
@@ -138,7 +138,7 @@ export class SyncInRepositoryChecker
 				for (const [agtRepositoryId, messagesForAgtRepositoryId]
 					of messageMapByAgtRepositoryId) {
 					const repositoryId: RepositoryId = repositoryIdMapByAgtRepositoryId.get(agtRepositoryId);
-					// If did not find the repository in local database
+					// If did not find the repository in local terminal
 					if (!repositoryId) {
 						// Do not process the message
 						// TODO: record the fact that the message was not processed

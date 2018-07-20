@@ -11,7 +11,7 @@ const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
 let TerminalStore = class TerminalStore {
     constructor() {
-        this.database = new rxjs_1.BehaviorSubject(null);
+        this.terminal = new rxjs_1.BehaviorSubject(null);
         this.nodesBySyncFrequency = new rxjs_1.BehaviorSubject(new Map());
     }
     tearDown() {

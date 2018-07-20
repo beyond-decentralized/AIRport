@@ -1,13 +1,13 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, QEntity, QRelation } from '@airport/air-control';
 import { IUser, UserEOptionalId, UserESelect, QUserQRelation } from './quser';
-import { IDatabase, DatabaseEOptionalId, DatabaseESelect, QDatabaseQRelation } from './qdatabase';
+import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from './qterminal';
 import { IActorApplication, ActorApplicationESelect, QActorApplication } from './qactorapplication';
 import { IRepositoryActor, RepositoryActorESelect, QRepositoryActor } from '../repository/qrepositoryactor';
 export interface IActor {
     id?: number;
     randomId?: number;
     user?: IUser;
-    database?: IDatabase;
+    terminal?: ITerminal;
     actorApplications?: IActorApplication[];
     repositoryActor?: IRepositoryActor[];
 }
@@ -16,7 +16,7 @@ export interface IActor {
  */
 export interface ActorESelect extends IEntitySelectProperties, ActorEOptionalId, ActorEUpdateProperties {
     user?: UserESelect;
-    database?: DatabaseESelect;
+    terminal?: TerminalESelect;
     actorApplications?: ActorApplicationESelect;
     repositoryActor?: RepositoryActorESelect;
 }
@@ -38,7 +38,7 @@ export interface ActorEOptionalId {
 export interface ActorEUpdateProperties extends IEntityUpdateProperties {
     randomId?: number | IQNumberField;
     user?: UserEOptionalId;
-    database?: DatabaseEOptionalId;
+    terminal?: TerminalEOptionalId;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -46,7 +46,7 @@ export interface ActorEUpdateProperties extends IEntityUpdateProperties {
 export interface ActorEUpdateColumns extends IEntityUpdateColumns {
     RANDOM_ID?: number | IQNumberField;
     USER_ID?: number | IQNumberField;
-    DATABASE_ID?: number | IQNumberField;
+    TERMINAL_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -65,7 +65,7 @@ export interface QActor extends QEntity {
     id: IQNumberField;
     randomId: IQNumberField;
     user: QUserQRelation;
-    database: QDatabaseQRelation;
+    terminal: QTerminalQRelation;
     actorApplications: IQOneToManyRelation<QActorApplication>;
     repositoryActor: IQOneToManyRelation<QRepositoryActor>;
 }

@@ -12,7 +12,7 @@ import {
 import {
 	ActorId,
 	ActorRandomId,
-	DatabaseId,
+	TerminalId,
 	UserId
 }                          from "../../ddl/ddl";
 import {
@@ -34,14 +34,14 @@ export interface IActorDao extends IBaseActorDao {
 	findWithDetailsByGlobalIds(
 		randomIds: ActorRandomId[],
 		userIds: UserId[],
-		databaseIds: DatabaseId[]
+		terminalIds: TerminalId[]
 	): Promise<IActor[]>;
 
 	findMapsWithDetailsByGlobalIds(
 		randomIds: ActorRandomId[],
 		userIds: UserId[],
-		databaseIds: DatabaseId[],
-		actorMap: Map<UserId, Map<DatabaseId, IActor>>,
+		terminalIds: TerminalId[],
+		actorMap: Map<UserId, Map<TerminalId, IActor>>,
 		actorMapById: Map<ActorId, IActor>
 	): Promise<void>;
 
@@ -70,19 +70,19 @@ export class ActorDao
 	async findMapsWithDetailsByGlobalIds(
 		randomIds: ActorRandomId[],
 		userIds: UserId[],
-		databaseIds: DatabaseId[],
-		actorMap: Map<UserId, Map<DatabaseId, IActor>>,
+		terminalIds: TerminalId[],
+		actorMap: Map<UserId, Map<TerminalId, IActor>>,
 		actorMapById: Map<ActorId, IActor>
 	): Promise<void> {
 		const actors = await this.findWithDetailsByGlobalIds(
 			randomIds,
 			userIds,
-			databaseIds
+			terminalIds
 		);
 
 		for (const actor of actors) {
 			this.utils.ensureChildJsMap(actorMap, actor.user.id)
-				.set(actor.database.id, actor);
+				.set(actor.terminal.id, actor);
 			actorMapById.set(actor.id, actor);
 		}
 	}
@@ -90,13 +90,13 @@ export class ActorDao
 	async findWithDetailsByGlobalIds(
 		randomIds: ActorRandomId[],
 		userIds: UserId[],
-		databaseIds: DatabaseId[]
+		terminalIds: TerminalId[]
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor
 		) => and(
 			a.randomId.in(randomIds),
-			a.database.id.in(databaseIds),
+			a.terminal.id.in(terminalIds),
 			a.user.id.in(userIds)
 		));
 	}
@@ -116,7 +116,7 @@ export class ActorDao
 				user: {
 					id,
 				},
-				database: {
+				terminal: {
 					id
 				}
 			},

@@ -16,7 +16,7 @@ __export(require("./repositoryTransactionBlock/RepoTransBlockResponseStage"));
 __export(require("./sharingMessage/SharingMessage"));
 __export(require("./sharingMessage/SharingMessageRepoTransBlock"));
 __export(require("./sharingNode/SharingNode"));
-__export(require("./sharingNode/SharingNodeDatabase"));
+__export(require("./sharingNode/SharingNodeTerminal"));
 __export(require("./sharingNode/SharingNodeRepository"));
 __export(require("./sharingNode/SharingNodeRepoTransBlock"));
 __export(require("./sharingNode/SharingNodeRepoTransBlockStage"));

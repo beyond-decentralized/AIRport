@@ -84,7 +84,7 @@ export class SyncInUserChecker
 				return false;
 			}
 		}
-		if (!userIdSet.has(data.database.owner.id)) {
+		if (!userIdSet.has(data.terminal.owner.id)) {
 			return false;
 		}
 		for (const actor of data.actors) {

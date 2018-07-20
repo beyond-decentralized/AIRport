@@ -62,12 +62,6 @@ class BaseSharingNodeDao extends check_in_1.Dao {
     }
 }
 exports.BaseSharingNodeDao = BaseSharingNodeDao;
-class BaseSharingNodeDatabaseDao extends check_in_1.Dao {
-    constructor(utils) {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingNodeDatabase'], qSchema_1.Q, utils);
-    }
-}
-exports.BaseSharingNodeDatabaseDao = BaseSharingNodeDatabaseDao;
 class BaseSharingNodeRepoTransBlockDao extends check_in_1.Dao {
     constructor(utils) {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingNodeRepoTransBlock'], qSchema_1.Q, utils);
@@ -86,6 +80,12 @@ class BaseSharingNodeRepositoryDao extends check_in_1.Dao {
     }
 }
 exports.BaseSharingNodeRepositoryDao = BaseSharingNodeRepositoryDao;
+class BaseSharingNodeTerminalDao extends check_in_1.Dao {
+    constructor(utils) {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingNodeTerminal'], qSchema_1.Q, utils);
+    }
+}
+exports.BaseSharingNodeTerminalDao = BaseSharingNodeTerminalDao;
 class BaseSynchronizationConflictDao extends check_in_1.Dao {
     constructor(utils) {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['SynchronizationConflict'], qSchema_1.Q, utils);

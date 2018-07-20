@@ -10,7 +10,7 @@ export * from './sharingMessage/SharingMessageDao';
 export * from './sharingMessage/SharingMessageRepoTransBlockDao';
 export * from './repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao';
 export * from './sharingNode/SharingNodeDao';
-export * from './sharingNode/SharingNodeDatabaseDao';
+export * from './sharingNode/SharingNodeTerminalDao';
 export * from './sharingNode/SharingNodeRepositoryDao';
 export * from './sharingNode/SharingNodeRepoTransBlockDao';
 export * from './sharingNode/SharingNodeRepoTransBlockStageDao';

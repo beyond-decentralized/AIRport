@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
+const Terminal_1 = require("./Terminal");
 let Actor = class Actor {
     constructor() {
         this.actorApplications = [];
@@ -29,9 +30,9 @@ __decorate([
 ], Actor.prototype, "user", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "DATABASE_ID", referencedColumnName: "ID" }),
-    __metadata("design:type", Object)
-], Actor.prototype, "database", void 0);
+    air_control_1.JoinColumn({ name: "TERMINAL_ID", referencedColumnName: "ID" }),
+    __metadata("design:type", Terminal_1.Terminal)
+], Actor.prototype, "terminal", void 0);
 __decorate([
     air_control_1.Column({ name: "RANDOM_ID" }),
     air_control_1.DbNumber(),

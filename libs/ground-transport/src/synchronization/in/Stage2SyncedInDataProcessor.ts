@@ -1,10 +1,10 @@
 import {Service} from "typedi";
 import {Stage2SyncedInDataProcessorToken} from "../../../../apps/terminal/src/InjectionTokens";
 import {
-	AirportDatabaseToken,
+	AirportTerminalToken,
 	and,
 	ColumnIndex,
-	IAirportDatabase,
+	IAirportTerminal,
 	IUtils,
 	or,
 	SchemaIndex,
@@ -23,7 +23,7 @@ import {RecordUpdate, Stage1SyncedInDataProcessingResult} from "./SyncInUtils";
 
 /**
  * Stage 2 data processor is used to optimize to optimize the number of required
- * I/O operations to do applyChangesToDb the database I/O (Creates, Updates, Deletes)
+ * I/O operations to do applyChangesToDb the terminal I/O (Creates, Updates, Deletes)
  */
 export interface IStage2SyncedInDataProcessor {
 
@@ -52,8 +52,8 @@ export class Stage2SyncedInDataProcessor
 	implements IStage2SyncedInDataProcessor {
 
 	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
+		@Inject(AirportTerminalToken)
+		private airportDb: IAirportTerminal,
 		@Inject(RecordUpdateStageDaoToken)
 		private recordUpdateStageDao: IRecordUpdateStageDao,
 		@Inject(UtilsToken)

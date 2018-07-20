@@ -12,7 +12,7 @@ export declare enum RepositorySyncStatus {
     TEMPORARILY_REROUTED = 4,
     PERMANENTLY_REROUTED = 5
 }
-export declare enum DatabaseSyncStatus {
+export declare enum TerminalSyncStatus {
     ACTIVE = 0,
     SUSPENDED = 1
 }

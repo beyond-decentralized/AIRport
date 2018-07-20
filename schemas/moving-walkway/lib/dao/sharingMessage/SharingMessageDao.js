@@ -29,7 +29,7 @@ let SharingMessageDao = class SharingMessageDao extends generated_1.BaseSharingM
     /*
     async updateSyncStatusByAgtSharingMessageIds(
         messageSyncStatus: MessageSyncStatus,
-        agtDatabaseSyncLogIds: AgtSharingMessageId[]
+        agtTerminalSyncLogIds: AgtSharingMessageId[]
     ): Promise<void> {
         let sm: QSharingMessage;
         await this.db.updateWhere({
@@ -37,7 +37,7 @@ let SharingMessageDao = class SharingMessageDao extends generated_1.BaseSharingM
             set: {
                 messageSyncStatus
             },
-            where: sm.agtDatabaseSyncLogId.in(agtDatabaseSyncLogIds)
+            where: sm.agtTerminalSyncLogId.in(agtTerminalSyncLogIds)
         });
     }
 */
@@ -50,11 +50,11 @@ let SharingMessageDao = class SharingMessageDao extends generated_1.BaseSharingM
             return await this.db.updateWhere({
                 update: sm = Q.SharingMessage,
                 set: {
-                    agtDatabaseSyncLogId: field({
+                    agtTerminalSyncLogId: field({
                         from: [
                             smrs1 = Q.SharingMessageResponseStage
                         ],
-                        select: smrs1.agtDatabaseSyncLogId,
+                        select: smrs1.agtTerminalSyncLogId,
                         where: smrs1.id.equals(sm.id)
                     }),
                     syncStatus: SyncStatus.SYNCHRONIZED,

@@ -21,14 +21,14 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IDatabase,
-	DatabaseEId,
-	DatabaseEOptionalId,
-	DatabaseEUpdateProperties,
-	DatabaseESelect,
-	QDatabase,
-	QDatabaseQId,
-	QDatabaseQRelation,
+	ITerminal,
+	TerminalEId,
+	TerminalEOptionalId,
+	TerminalEUpdateProperties,
+	TerminalESelect,
+	QTerminal,
+	QTerminalQId,
+	QTerminalQRelation,
 	IRepository,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -108,7 +108,7 @@ export interface IRepositoryTransactionBlock {
 	contents?: string;
 
 	// Non-Id Relations
-	source?: IDatabase;
+	source?: ITerminal;
 	repository?: IRepository;
 	repositoryTransactionHistory?: IRepositoryTransactionHistory;
 	sharingNodeRepoTransBlocks?: ISharingNodeRepoTransBlock[];
@@ -134,7 +134,7 @@ export interface RepositoryTransactionBlockESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	source?: DatabaseESelect;
+	source?: TerminalESelect;
 	repository?: RepositoryESelect;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 	sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockESelect;
@@ -178,7 +178,7 @@ export interface RepositoryTransactionBlockEUpdateProperties
 	contents?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	source?: DatabaseEOptionalId;
+	source?: TerminalEOptionalId;
 	repository?: RepositoryEOptionalId;
 
 }
@@ -192,7 +192,7 @@ export interface RepositoryTransactionBlockEUpdateColumns
 	HASH?: string | IQStringField;
 	SYNC_OUTCOME_TYPE?: number | IQNumberField;
 	CONTENTS?: string | IQStringField;
-	SOURCE_DATABASE_ID?: number | IQNumberField;
+	SOURCE_TERMINAL_ID?: number | IQNumberField;
 	REPOSITORY_ID?: number | IQNumberField;
 
 }
@@ -234,7 +234,7 @@ export interface QRepositoryTransactionBlock extends QEntity
 	contents: IQStringField;
 
 	// Non-Id Relations
-	source: QDatabaseQRelation;
+	source: QTerminalQRelation;
 	repository: QRepositoryQRelation;
 	repositoryTransactionHistory: IQOneToManyRelation<QRepositoryTransactionHistory>;
 	sharingNodeRepoTransBlocks: IQOneToManyRelation<QSharingNodeRepoTransBlock>;

@@ -14,7 +14,7 @@ import {
 import {StoreType} from "@airport/ground-control";
 import {
 	IActor,
-	IDatabase,
+	ITerminal,
 	IRepository,
 	IRepositoryDao,
 	IRepositoryTransactionHistory,

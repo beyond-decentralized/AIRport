@@ -4,7 +4,6 @@ const AbstractRepositoryEntity_1 = require("../ddl/repository/AbstractRepository
 const Actor_1 = require("../ddl/infrastructure/Actor");
 const ActorApplication_1 = require("../ddl/infrastructure/ActorApplication");
 const Application_1 = require("../ddl/infrastructure/Application");
-const Database_1 = require("../ddl/infrastructure/Database");
 const OperationHistory_1 = require("../ddl/history/OperationHistory");
 const RecordHistory_1 = require("../ddl/history/RecordHistory");
 const RecordHistoryNewValue_1 = require("../ddl/history/RecordHistoryNewValue");
@@ -15,6 +14,7 @@ const RepositoryActor_1 = require("../ddl/repository/RepositoryActor");
 const RepositoryApplication_1 = require("../ddl/repository/RepositoryApplication");
 const RepositorySchema_1 = require("../ddl/repository/RepositorySchema");
 const RepositoryTransactionHistory_1 = require("../ddl/history/RepositoryTransactionHistory");
+const Terminal_1 = require("../ddl/infrastructure/Terminal");
 const TransactionHistory_1 = require("../ddl/history/TransactionHistory");
 const User_1 = require("../ddl/infrastructure/User");
 const __constructors__ = {
@@ -22,7 +22,6 @@ const __constructors__ = {
     Actor: Actor_1.Actor,
     ActorApplication: ActorApplication_1.ActorApplication,
     Application: Application_1.Application,
-    Database: Database_1.Database,
     OperationHistory: OperationHistory_1.OperationHistory,
     RecordHistory: RecordHistory_1.RecordHistory,
     RecordHistoryNewValue: RecordHistoryNewValue_1.RecordHistoryNewValue,
@@ -33,6 +32,7 @@ const __constructors__ = {
     RepositoryApplication: RepositoryApplication_1.RepositoryApplication,
     RepositorySchema: RepositorySchema_1.RepositorySchema,
     RepositoryTransactionHistory: RepositoryTransactionHistory_1.RepositoryTransactionHistory,
+    Terminal: Terminal_1.Terminal,
     TransactionHistory: TransactionHistory_1.TransactionHistory,
     User: User_1.User
 };

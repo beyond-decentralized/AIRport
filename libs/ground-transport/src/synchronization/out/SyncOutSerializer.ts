@@ -6,12 +6,12 @@ import {
 	ISharingMessage,
 	ISharingMessageRepoTransBlock,
 	ISharingNode,
-	ISharingNodeDatabase,
+	ISharingNodeTerminal,
 	RepositoryTransactionBlockData,
 	SharingNodeId
 } from "@airport/moving-walkway";
 import {
-	IDatabase,
+	ITerminal,
 	IRepository,
 	RepositoryId,
 	RepositoryTransactionHistoryId
@@ -19,7 +19,7 @@ import {
 import {Transactional} from "@airport/tower";
 import {
 	AgtRepositoryId,
-	DatabaseInfo,
+	TerminalCredentials,
 	MessageFromClient,
 	MessageFromClientOperation,
 	RepositoryUpdateRequest
@@ -29,13 +29,13 @@ import {SyncStatus} from "@airport/terminal-map";
 export interface ISyncOutSerializer {
 
 	serializeMessages(
-		sharingNodeDbMap: Map<SharingNodeId, ISharingNodeDatabase>,
+		sharingNodeDbMap: Map<SharingNodeId, ISharingNodeTerminal>,
 		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
 		repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<RepositoryId,
 			[IRepository, AgtRepositoryId]>>,
 		repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>,
 		repoTransHistoryIds: Set<RepositoryTransactionHistoryId>,
-		database: IDatabase
+		terminal: ITerminal
 	): Promise<Map<SharingNodeId, MessageFromClient>>;
 
 }
@@ -46,13 +46,13 @@ export class SyncOutSerializer
 
 	@Transactional()
 	async serializeMessages(
-		sharingNodeDbMap: Map<SharingNodeId, ISharingNodeDatabase>,
+		sharingNodeDbMap: Map<SharingNodeId, ISharingNodeTerminal>,
 		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
 		repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<RepositoryId,
 			[IRepository, AgtRepositoryId]>>,
 		repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>,
 		repoTransHistoryIds: Set<RepositoryTransactionHistoryId>,
-		database: IDatabase
+		terminal: ITerminal
 	): Promise<Map<SharingNodeId, MessageFromClient>> {
 		const messageMap: Map<SharingNodeId, MessageFromClient> = new Map();
 
@@ -72,10 +72,10 @@ export class SyncOutSerializer
 					id: repositoryId
 				},
 				source: {
-					name: database.name,
-					secondId: database.secondId,
+					name: terminal.name,
+					secondId: terminal.secondId,
 					owner: {
-						uniqueId: database.owner.uniqueId
+						uniqueId: terminal.owner.uniqueId
 					}
 				},
 				contents: repositoryTransactionBlockContents,
@@ -107,11 +107,11 @@ export class SyncOutSerializer
 		for (const [sharingNodeId, repositoryMapById] of repoMapBySharingNodeAndRepoIds) {
 			const repositoryUpdateRequests: RepositoryUpdateRequest[] = [];
 			const sharingNodeDb = sharingNodeDbMap.get(sharingNodeId);
-			const databaseInfo: DatabaseInfo
-				= [sharingNodeDb.agtDatabaseId, sharingNodeDb.agtDatabaseHash];
+			const terminalCredentials: TerminalCredentials
+				= [sharingNodeDb.agtTerminalId, sharingNodeDb.agtTerminalHash];
 			// FIXME: add sync ACKS
 			const message: MessageFromClient = [
-				MessageFromClientOperation.ADD_DATA, databaseInfo, null, repositoryUpdateRequests, null];
+				MessageFromClientOperation.ADD_DATA, terminalCredentials, null, repositoryUpdateRequests, null];
 			messageMap.set(sharingNodeId, message);
 
 			const sharingMessage: ISharingMessage = {

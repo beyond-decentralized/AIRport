@@ -1,5 +1,5 @@
 import { RepositoryTransactionBlockContents, RepoTransBlockSyncOutcomeType, TmRepositoryTransactionBlockId } from "@airport/arrivals-n-departures";
-import { Database, Repository, RepositoryTransactionHistory } from "@airport/holding-pattern";
+import { Terminal, Repository, RepositoryTransactionHistory } from "@airport/holding-pattern";
 import { MissingRecordRepoTransBlock } from "../missingRecord/MissingRecordRepoTransBlock";
 import { SharingMessageRepoTransBlock } from "../sharingMessage/SharingMessageRepoTransBlock";
 import { SharingNodeRepoTransBlock } from "../sharingNode/SharingNodeRepoTransBlock";
@@ -37,7 +37,7 @@ export declare type RepositoryTransactionBlockHash = string;
 export declare class RepositoryTransactionBlock {
     id: TmRepositoryTransactionBlockId;
     hash: RepositoryTransactionBlockHash;
-    source: Database;
+    source: Terminal;
     repository: Repository;
     syncOutcomeType: RepoTransBlockSyncOutcomeType;
     contents: RepositoryTransactionBlockContents;

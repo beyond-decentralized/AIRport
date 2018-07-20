@@ -73,9 +73,9 @@ __decorate([
     __metadata("design:type", Number)
 ], SharingMessage.prototype, "origin", void 0);
 __decorate([
-    air_control_1.Column({ name: "AGT_DATABASE_SYNC_LOG_ID" }),
+    air_control_1.Column({ name: "AGT_SHARING_MESSAGE_ID" }),
     __metadata("design:type", Number)
-], SharingMessage.prototype, "agtDatabaseSyncLogId", void 0);
+], SharingMessage.prototype, "agtSharingMessageId", void 0);
 __decorate([
     air_control_1.Column({ name: "SYNC_TIMESTAMP" }),
     air_control_1.DbDate(),

@@ -4,7 +4,6 @@ import { QAbstractRepositoryEntity } from './repository/qabstractrepositoryentit
 import { QActor } from './infrastructure/qactor';
 import { QActorApplication } from './infrastructure/qactorapplication';
 import { QApplication } from './infrastructure/qapplication';
-import { QDatabase } from './infrastructure/qdatabase';
 import { QOperationHistory } from './history/qoperationhistory';
 import { QRecordHistory } from './history/qrecordhistory';
 import { QRecordHistoryNewValue } from './history/qrecordhistorynewvalue';
@@ -15,10 +14,11 @@ import { QRepositoryActor } from './repository/qrepositoryactor';
 import { QRepositoryApplication } from './repository/qrepositoryapplication';
 import { QRepositorySchema } from './repository/qrepositoryschema';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
+import { QTerminal } from './infrastructure/qterminal';
 import { QTransactionHistory } from './history/qtransactionhistory';
 import { QUser } from './infrastructure/quser';
-import { IBaseAbstractRepositoryEntityDmo, IBaseActorDmo, IBaseActorApplicationDmo, IBaseApplicationDmo, IBaseDatabaseDmo, IBaseOperationHistoryDmo, IBaseRecordHistoryDmo, IBaseRecordHistoryNewValueDmo, IBaseRecordHistoryOldValueDmo, IBaseRepoTransHistoryChangedRepositoryActorDmo, IBaseRepositoryDmo, IBaseRepositoryActorDmo, IBaseRepositoryApplicationDmo, IBaseRepositorySchemaDmo, IBaseRepositoryTransactionHistoryDmo, IBaseTransactionHistoryDmo, IBaseUserDmo } from './baseDmos';
-import { IBaseAbstractRepositoryEntityDao, IBaseActorDao, IBaseActorApplicationDao, IBaseApplicationDao, IBaseDatabaseDao, IBaseOperationHistoryDao, IBaseRecordHistoryDao, IBaseRecordHistoryNewValueDao, IBaseRecordHistoryOldValueDao, IBaseRepoTransHistoryChangedRepositoryActorDao, IBaseRepositoryDao, IBaseRepositoryActorDao, IBaseRepositoryApplicationDao, IBaseRepositorySchemaDao, IBaseRepositoryTransactionHistoryDao, IBaseTransactionHistoryDao, IBaseUserDao } from './baseDaos';
+import { IBaseAbstractRepositoryEntityDmo, IBaseActorDmo, IBaseActorApplicationDmo, IBaseApplicationDmo, IBaseOperationHistoryDmo, IBaseRecordHistoryDmo, IBaseRecordHistoryNewValueDmo, IBaseRecordHistoryOldValueDmo, IBaseRepoTransHistoryChangedRepositoryActorDmo, IBaseRepositoryDmo, IBaseRepositoryActorDmo, IBaseRepositoryApplicationDmo, IBaseRepositorySchemaDmo, IBaseRepositoryTransactionHistoryDmo, IBaseTerminalDmo, IBaseTransactionHistoryDmo, IBaseUserDmo } from './baseDmos';
+import { IBaseAbstractRepositoryEntityDao, IBaseActorDao, IBaseActorApplicationDao, IBaseApplicationDao, IBaseOperationHistoryDao, IBaseRecordHistoryDao, IBaseRecordHistoryNewValueDao, IBaseRecordHistoryOldValueDao, IBaseRepoTransHistoryChangedRepositoryActorDao, IBaseRepositoryDao, IBaseRepositoryActorDao, IBaseRepositoryApplicationDao, IBaseRepositorySchemaDao, IBaseRepositoryTransactionHistoryDao, IBaseTerminalDao, IBaseTransactionHistoryDao, IBaseUserDao } from './baseDaos';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
     dmo: {
@@ -26,7 +26,6 @@ export interface LocalQSchema extends AirportQSchema {
         Actor: IBaseActorDmo;
         ActorApplication: IBaseActorApplicationDmo;
         Application: IBaseApplicationDmo;
-        Database: IBaseDatabaseDmo;
         OperationHistory: IBaseOperationHistoryDmo;
         RecordHistory: IBaseRecordHistoryDmo;
         RecordHistoryNewValue: IBaseRecordHistoryNewValueDmo;
@@ -37,6 +36,7 @@ export interface LocalQSchema extends AirportQSchema {
         RepositoryApplication: IBaseRepositoryApplicationDmo;
         RepositorySchema: IBaseRepositorySchemaDmo;
         RepositoryTransactionHistory: IBaseRepositoryTransactionHistoryDmo;
+        Terminal: IBaseTerminalDmo;
         TransactionHistory: IBaseTransactionHistoryDmo;
         User: IBaseUserDmo;
     };
@@ -45,7 +45,6 @@ export interface LocalQSchema extends AirportQSchema {
         Actor: IBaseActorDao;
         ActorApplication: IBaseActorApplicationDao;
         Application: IBaseApplicationDao;
-        Database: IBaseDatabaseDao;
         OperationHistory: IBaseOperationHistoryDao;
         RecordHistory: IBaseRecordHistoryDao;
         RecordHistoryNewValue: IBaseRecordHistoryNewValueDao;
@@ -56,6 +55,7 @@ export interface LocalQSchema extends AirportQSchema {
         RepositoryApplication: IBaseRepositoryApplicationDao;
         RepositorySchema: IBaseRepositorySchemaDao;
         RepositoryTransactionHistory: IBaseRepositoryTransactionHistoryDao;
+        Terminal: IBaseTerminalDao;
         TransactionHistory: IBaseTransactionHistoryDao;
         User: IBaseUserDao;
     };
@@ -63,7 +63,6 @@ export interface LocalQSchema extends AirportQSchema {
     Actor: QActor;
     ActorApplication: QActorApplication;
     Application: QApplication;
-    Database: QDatabase;
     OperationHistory: QOperationHistory;
     RecordHistory: QRecordHistory;
     RecordHistoryNewValue: QRecordHistoryNewValue;
@@ -74,6 +73,7 @@ export interface LocalQSchema extends AirportQSchema {
     RepositoryApplication: QRepositoryApplication;
     RepositorySchema: QRepositorySchema;
     RepositoryTransactionHistory: QRepositoryTransactionHistory;
+    Terminal: QTerminal;
     TransactionHistory: QTransactionHistory;
     User: QUser;
 }

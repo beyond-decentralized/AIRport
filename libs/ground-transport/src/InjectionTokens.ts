@@ -30,7 +30,7 @@ import {ISyncOutSerializer}                        from "./synchronization/out/S
 import {ISyncOutMessageSender}                     from "./synchronization/out/SyncOutMessageSender";
 import {ISyncOutRepositoryTransactionBlockCreator} from "./synchronization/out/SyncOutRepositoryTransactionBlockCreator";
 import {ISharingNodeEndpoint}                      from "./synchronization/connect/SharingNodeEndpoint";
-import {ISyncInDatabaseChecker}                    from "./synchronization/in/checker/SyncInDatabaseChecker";
+import {ISyncInTerminalChecker}                    from "./synchronization/in/checker/SyncInTerminalChecker";
 import {ISyncInUserChecker}                        from "./synchronization/in/checker/SyncInUserChecker";
 
 export const DirectSharingNodeEndpointToken = new Token<ISharingNodeEndpoint>();
@@ -42,7 +42,7 @@ export const SyncInActorCheckerToken = new Token<ISyncInActorChecker>();
 export const SyncInCheckerToken = new Token<ISyncInChecker>();
 export const SyncInConsistencyCheckerToken = new Token<ISyncInConsistencyChecker>();
 export const SyncInDataCheckerToken = new Token<ISyncInDataChecker>();
-export const SyncInDatabaseCheckerToken = new Token<ISyncInDatabaseChecker>();
+export const SyncInTerminalCheckerToken = new Token<ISyncInTerminalChecker>();
 export const SyncInRepositoryCheckerToken = new Token<ISyncInRepositoryChecker>();
 export const SyncInRepositoryTransactionBlockCreatorToken
 	= new Token<ISyncInRepositoryTransactionBlockCreator>();

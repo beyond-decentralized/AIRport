@@ -1,17 +1,14 @@
 import {
+	IUtils,
+	UtilsToken
+}                                      from "@airport/air-control";
+import {RepoTransBlockSyncOutcomeType} from "@airport/arrivals-n-departures";
+import {
 	ColumnIndex,
-	TableIndex
-}                   from "@airport/air-control";
-import {UtilsToken} from "@airport/air-control/lib/InjectionTokens";
-import {
 	SchemaIndex,
-	SchemaName
-}                   from "@airport/air-control/lib/lingo/schema/Schema";
-import {IUtils}     from "@airport/air-control/lib/lingo/utils/Utils";
-import {
-	AgtSyncRecordAddDatetime,
-	RepoTransBlockSyncOutcomeType
-}                   from "@airport/arrivals-n-departures";
+	SchemaName,
+	TableIndex
+}                                      from "@airport/ground-control";
 import {
 	ActorId,
 	IOperationHistory,
@@ -21,23 +18,23 @@ import {
 	RecordHistoryId,
 	RepositoryEntityActorRecordId,
 	RepositoryId
-}                   from "@airport/holding-pattern";
+}                                      from "@airport/holding-pattern";
 import {
 	IMissingRecordRepoTransBlock,
 	ISharingMessage,
 	ISharingNode,
 	ISynchronizationConflict,
 	RepositoryTransactionBlockData,
-}                   from "@airport/moving-walkway";
+}                                      from "@airport/moving-walkway";
 import {
 	ISchema,
 	SchemaDomainName
-}                   from "@airport/traffic-pattern";
+}                                      from "@airport/traffic-pattern";
 import {
 	Inject,
 	Service
-}                                 from "typedi";
-import {SyncInUtilsToken}         from "../../InjectionTokens";
+}                                      from "typedi";
+import {SyncInUtilsToken}              from "../../InjectionTokens";
 
 export type RemoteSchemaIndex = SchemaIndex;
 export type RemoteActorId = ActorId;
@@ -47,13 +44,13 @@ export type RemoteActorId = ActorId;
  */
 export interface IDataToTM {
 	// actorIdMap: Map<RemoteActorId, ActorId>;
-	// sourceAgtDatabaseId: AgtDatabaseId;
+	// sourceAgtTerminalId: AgtTerminalId;
 	// agtRepositoryId: AgtRepositoryId;
 	// agtSyncRecordId: AgtSyncRecordId;
 	data: RepositoryTransactionBlockData;
 	serializedData: string;
 	sharingNode: ISharingNode;
-	syncDatetime: AgtSyncRecordAddDatetime;
+	// syncDatetime: AgtSyncRecordAddDatetime;
 }
 
 export interface SchemaCheckResults {
@@ -179,10 +176,10 @@ export class SyncInUtils
 	): ISharingMessage {
 		return {
 			sharingNode: dataMessageToClient.sharingNode,
-			// agtDatabaseSyncLogId: null,
+			// agtTerminalSyncLogId: null,
 			// origin: DataOrigin.REMOTE,
 			// syncStatus: BlockSyncStatus.SYNCHRONIZED,
-			source: null, // FIXME add source database
+			source: null, // FIXME add source terminal
 			processingStatus,
 			syncTimestamp: new Date(dataMessageToClient.syncDatetime),
 			// dataCache: saveData ? stringify(dataMessageToClient.data) : undefined

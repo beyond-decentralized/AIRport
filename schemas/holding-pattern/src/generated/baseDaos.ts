@@ -45,16 +45,6 @@ import {
 	QApplication
 } from './infrastructure/qapplication';
 import {
-	IDatabase,
-	DatabaseESelect,
-	DatabaseECreateColumns,
-	DatabaseECreateProperties,
-	DatabaseEUpdateColumns,
-	DatabaseEUpdateProperties,
-	DatabaseEId,
-	QDatabase
-} from './infrastructure/qdatabase';
-import {
 	IOperationHistory,
 	OperationHistoryESelect,
 	OperationHistoryECreateColumns,
@@ -155,6 +145,16 @@ import {
 	QRepositoryTransactionHistory
 } from './history/qrepositorytransactionhistory';
 import {
+	ITerminal,
+	TerminalESelect,
+	TerminalECreateColumns,
+	TerminalECreateProperties,
+	TerminalEUpdateColumns,
+	TerminalEUpdateProperties,
+	TerminalEId,
+	QTerminal
+} from './infrastructure/qterminal';
+import {
 	ITransactionHistory,
 	TransactionHistoryESelect,
 	TransactionHistoryECreateColumns,
@@ -232,21 +232,6 @@ export class BaseApplicationDao
 		utils: IUtils
 	) {
 		super(Q.db.currentVersion.entityMapByName['Application'], Q, utils);
-	}
-}
-
-
-export interface IBaseDatabaseDao
-  extends IDao<IDatabase, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, QDatabase> {
-}
-
-export class BaseDatabaseDao
-  extends Dao<IDatabase, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, QDatabase>
-	implements IBaseDatabaseDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['Database'], Q, utils);
 	}
 }
 
@@ -397,6 +382,21 @@ export class BaseRepositoryTransactionHistoryDao
 		utils: IUtils
 	) {
 		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionHistory'], Q, utils);
+	}
+}
+
+
+export interface IBaseTerminalDao
+  extends IDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, QTerminal> {
+}
+
+export class BaseTerminalDao
+  extends Dao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, QTerminal>
+	implements IBaseTerminalDao {
+	constructor(
+		utils: IUtils
+	) {
+		super(Q.db.currentVersion.entityMapByName['Terminal'], Q, utils);
 	}
 }
 

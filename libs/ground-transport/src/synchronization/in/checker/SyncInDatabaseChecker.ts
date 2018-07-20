@@ -1,11 +1,11 @@
 import {Inject, Service}            from "typedi";
-import {SyncInDatabaseCheckerToken} from "../../../../../apps/terminal/src/InjectionTokens";
+import {SyncInTerminalCheckerToken} from "../../../../../apps/terminal/src/InjectionTokens";
 import {
-	DatabaseDaoToken,
-	DatabaseName,
-	DatabaseSecondId,
-	IDatabase,
-	IDatabaseDao,
+	TerminalDaoToken,
+	TerminalName,
+	TerminalSecondId,
+	ITerminal,
+	ITerminalDao,
 	IUser,
 	UserId,
 	UserUniqueId
@@ -14,61 +14,61 @@ import {IUtils, UtilsToken}         from "@airport/air-control";
 import {IDataToTM}                  from "../SyncInUtils";
 import {UserCheckResults}           from "./SyncInUserChecker";
 
-export interface DatabaseCheckResults {
-	mapByMessageIndex: IDatabase[];
+export interface TerminalCheckResults {
+	mapByMessageIndex: ITerminal[];
 	consistentMessages: IDataToTM[];
 	inconsistentMessages: IDataToTM[];
 }
 
-export interface ISyncInDatabaseChecker {
+export interface ISyncInTerminalChecker {
 
 }
 
-@Service(SyncInDatabaseCheckerToken)
-export class SyncInDatabaseChecker
-	implements ISyncInDatabaseChecker {
+@Service(SyncInTerminalCheckerToken)
+export class SyncInTerminalChecker
+	implements ISyncInTerminalChecker {
 
 	constructor(
-		@Inject(DatabaseDaoToken)
-		private databaseDao: IDatabaseDao,
+		@Inject(TerminalDaoToken)
+		private terminalDao: ITerminalDao,
 		@Inject(UtilsToken)
 		private utils: IUtils,
 	) {
 	}
 
-	async ensureDatabasesAndGetAsMaps(
+	async ensureTerminalsAndGetAsMaps(
 		dataMessages: IDataToTM[],
-		localDatabase: IDatabase,
+		localTerminal: ITerminal,
 		userCheckResults: UserCheckResults
-	): Promise<DatabaseCheckResults> {
-		const remoteDatabaseMapByUniqueIds: Map<UserUniqueId,
-			Map<DatabaseName, Map<DatabaseSecondId, IDatabase>>> = new Map();
-		const databaseNameSet: Set<DatabaseName> = new Set();
-		const databaseSecondIdSet: Set<DatabaseSecondId> = new Set();
+	): Promise<TerminalCheckResults> {
+		const remoteTerminalMapByUniqueIds: Map<UserUniqueId,
+			Map<TerminalName, Map<TerminalSecondId, ITerminal>>> = new Map();
+		const terminalNameSet: Set<TerminalName> = new Set();
+		const terminalSecondIdSet: Set<TerminalSecondId> = new Set();
 		const ownerIdSet: Set<UserId> = new Set();
-		const mapByMessageIndex: IDatabase[] = [];
+		const mapByMessageIndex: ITerminal[] = [];
 
 		const consistentMessages: IDataToTM[] = [];
 		const inconsistentMessages: IDataToTM[] = [];
-		// record database information
+		// record terminal information
 		dataMessages.forEach((
 			message,
 			index
 		) => {
-			this.recordDatabaseInformation(message, index, userCheckResults,
-				localDatabase, consistentMessages, inconsistentMessages,
-				databaseNameSet, databaseSecondIdSet, ownerIdSet,
-				remoteDatabaseMapByUniqueIds, mapByMessageIndex);
+			this.recordTerminalCredentials(message, index, userCheckResults,
+				localTerminal, consistentMessages, inconsistentMessages,
+				terminalNameSet, terminalSecondIdSet, ownerIdSet,
+				remoteTerminalMapByUniqueIds, mapByMessageIndex);
 		});
 
 
-		const databaseMapByIds = await this.databaseDao.findMapByIds(
+		const terminalMapByIds = await this.terminalDao.findMapByIds(
 			Array.from(ownerIdSet),
-			Array.from(databaseNameSet),
-			Array.from(databaseSecondIdSet)
+			Array.from(terminalNameSet),
+			Array.from(terminalSecondIdSet)
 		);
 
-		await this.addMissingDatabases(remoteDatabaseMapByUniqueIds, databaseMapByIds,
+		await this.addMissingTerminals(remoteTerminalMapByUniqueIds, terminalMapByIds,
 			userCheckResults);
 
 		return {
@@ -78,102 +78,102 @@ export class SyncInDatabaseChecker
 		};
 	}
 
-	private recordDatabaseInformation(
+	private recordTerminalCredentials(
 		message: IDataToTM,
 		index,
 		userCheckResults: UserCheckResults,
-		localDatabase: IDatabase,
+		localTerminal: ITerminal,
 		consistentMessages: IDataToTM[],
 		inconsistentMessages: IDataToTM[],
-		databaseNameSet: Set<DatabaseName>,
-		databaseSecondIdSet: Set<DatabaseSecondId>,
+		terminalNameSet: Set<TerminalName>,
+		terminalSecondIdSet: Set<TerminalSecondId>,
 		ownerIdSet: Set<UserId>,
-		remoteDatabaseMapByUniqueIds: Map<UserUniqueId,
-			Map<DatabaseName, Map<DatabaseSecondId, IDatabase>>>,
-		mapByMessageIndex: IDatabase[]
+		remoteTerminalMapByUniqueIds: Map<UserUniqueId,
+			Map<TerminalName, Map<TerminalSecondId, ITerminal>>>,
+		mapByMessageIndex: ITerminal[]
 	) {
-		let database = message.data.database;
+		let terminal = message.data.terminal;
 		const userMapForMessageByRemoteUserId
 			= userCheckResults.mapByMessageIndexAndRemoteUserId[index];
 
-		const owner = userMapForMessageByRemoteUserId.get(database.owner.id);
-		if (!this.areDatabaseIdsConsistentInMessageData(
-			database, localDatabase, owner)) {
+		const owner = userMapForMessageByRemoteUserId.get(terminal.owner.id);
+		if (!this.areTerminalIdsConsistentInMessageData(
+			terminal, localTerminal, owner)) {
 			inconsistentMessages.push(message);
 			userCheckResults.mapByMessageIndexAndRemoteUserId.splice(index);
 			return;
 		}
-		database = {
-			...database,
+		terminal = {
+			...terminal,
 			owner
 		};
-		databaseNameSet.add(database.name);
-		databaseSecondIdSet.add(database.secondId);
+		terminalNameSet.add(terminal.name);
+		terminalSecondIdSet.add(terminal.secondId);
 		ownerIdSet.add(owner.id);
 
 		this.utils.ensureChildJsMap(
-			this.utils.ensureChildJsMap(remoteDatabaseMapByUniqueIds,
+			this.utils.ensureChildJsMap(remoteTerminalMapByUniqueIds,
 				owner.uniqueId),
-			database.name)
-			.set(database.secondId, database);
+			terminal.name)
+			.set(terminal.secondId, terminal);
 
-		mapByMessageIndex.push(database);
+		mapByMessageIndex.push(terminal);
 		consistentMessages.push(message);
 	}
 
-	private areDatabaseIdsConsistentInMessageData(
-		database: IDatabase,
-		localDatabase: IDatabase,
+	private areTerminalIdsConsistentInMessageData(
+		terminal: ITerminal,
+		localTerminal: ITerminal,
 		ownerUser: IUser
 	): boolean {
-		if (localDatabase.owner.uniqueId === ownerUser.uniqueId
-			&& localDatabase.name === database.name
-			&& localDatabase.secondId === database.secondId) {
-			// Database should never receive messages from itself
+		if (localTerminal.owner.uniqueId === ownerUser.uniqueId
+			&& localTerminal.name === terminal.name
+			&& localTerminal.secondId === terminal.secondId) {
+			// Terminal should never receive messages from itself
 			return false;
 		}
 
 		return true;
 	}
 
-	private async addMissingDatabases(
-		remoteDatabaseMapByUniqueIds: Map<UserUniqueId,
-			Map<DatabaseName, Map<DatabaseSecondId, IDatabase>>>,
-		databaseMapByIds: Map<UserId, Map<DatabaseName, Map<DatabaseSecondId, IDatabase>>>,
+	private async addMissingTerminals(
+		remoteTerminalMapByUniqueIds: Map<UserUniqueId,
+			Map<TerminalName, Map<TerminalSecondId, ITerminal>>>,
+		terminalMapByIds: Map<UserId, Map<TerminalName, Map<TerminalSecondId, ITerminal>>>,
 		userCheckResults: UserCheckResults
 	): Promise<void> {
 		const userMap = userCheckResults.map;
-		const newDatabases: IDatabase[] = [];
-		for (const [userUniqueId, remoteDatabaseMapByDbUniqueIds] of remoteDatabaseMapByUniqueIds) {
+		const newTerminals: ITerminal[] = [];
+		for (const [userUniqueId, remoteTerminalMapByDbUniqueIds] of remoteTerminalMapByUniqueIds) {
 
 			const owner = userMap.get(userUniqueId);
-			const databaseMapByDbUniqueIds = databaseMapByIds.get(owner.id);
+			const terminalMapByDbUniqueIds = terminalMapByIds.get(owner.id);
 
-			for (const [name, remoteDatabaseMapBySecondId] of remoteDatabaseMapByDbUniqueIds) {
-				let databaseMapBySecondId: Map<DatabaseSecondId, IDatabase>;
-				if (databaseMapByDbUniqueIds) {
-					databaseMapBySecondId = databaseMapByDbUniqueIds.get(name);
+			for (const [name, remoteTerminalMapBySecondId] of remoteTerminalMapByDbUniqueIds) {
+				let terminalMapBySecondId: Map<TerminalSecondId, ITerminal>;
+				if (terminalMapByDbUniqueIds) {
+					terminalMapBySecondId = terminalMapByDbUniqueIds.get(name);
 				}
 
-				for (const [secondId, remoteDatabase] of remoteDatabaseMapBySecondId) {
-					let database: IDatabase;
-					if (databaseMapBySecondId) {
-						database = databaseMapBySecondId.get(secondId);
+				for (const [secondId, remoteTerminal] of remoteTerminalMapBySecondId) {
+					let terminal: ITerminal;
+					if (terminalMapBySecondId) {
+						terminal = terminalMapBySecondId.get(secondId);
 					}
 
-					if (!database) {
-						delete remoteDatabase.id;
-						remoteDatabase.isLocal = false;
-						newDatabases.push(remoteDatabase);
+					if (!terminal) {
+						delete remoteTerminal.id;
+						remoteTerminal.isLocal = false;
+						newTerminals.push(remoteTerminal);
 					} else {
-						remoteDatabase.id = database.id;
+						remoteTerminal.id = terminal.id;
 					}
 				}
 			}
 		}
 
-		if (newDatabases.length) {
-			await this.databaseDao.bulkCreate(newDatabases, false, false);
+		if (newTerminals.length) {
+			await this.terminalDao.bulkCreate(newTerminals, false, false);
 		}
 	}
 

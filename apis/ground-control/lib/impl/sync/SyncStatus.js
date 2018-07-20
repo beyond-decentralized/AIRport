@@ -31,11 +31,11 @@ var RepositorySyncStatus;
     // AGT (or TM) permanently rerouted syncing of this repository to a different AGT
     RepositorySyncStatus[RepositorySyncStatus["PERMANENTLY_REROUTED"] = 5] = "PERMANENTLY_REROUTED";
 })(RepositorySyncStatus = exports.RepositorySyncStatus || (exports.RepositorySyncStatus = {}));
-var DatabaseSyncStatus;
-(function (DatabaseSyncStatus) {
-    // Database is actively syncing
-    DatabaseSyncStatus[DatabaseSyncStatus["ACTIVE"] = 0] = "ACTIVE";
-    // Database syncing has been suspended
-    DatabaseSyncStatus[DatabaseSyncStatus["SUSPENDED"] = 1] = "SUSPENDED";
-})(DatabaseSyncStatus = exports.DatabaseSyncStatus || (exports.DatabaseSyncStatus = {}));
+var TerminalSyncStatus;
+(function (TerminalSyncStatus) {
+    // Terminal is actively syncing
+    TerminalSyncStatus[TerminalSyncStatus["ACTIVE"] = 0] = "ACTIVE";
+    // Terminal syncing has been suspended
+    TerminalSyncStatus[TerminalSyncStatus["SUSPENDED"] = 1] = "SUSPENDED";
+})(TerminalSyncStatus = exports.TerminalSyncStatus || (exports.TerminalSyncStatus = {}));
 //# sourceMappingURL=SyncStatus.js.map

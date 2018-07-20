@@ -37,7 +37,7 @@ let RepositoryDao = class RepositoryDao extends generated_1.BaseRepositoryDao {
                     user: {
                         id
                     },
-                    database: {
+                    terminal: {
                         id
                     }
                 },
@@ -47,7 +47,7 @@ let RepositoryDao = class RepositoryDao extends generated_1.BaseRepositoryDao {
                 ra = r.repositoryActors.innerJoin(),
                 a = ra.actor.innerJoin(),
                 u = a.user.innerJoin(),
-                d = a.database.innerJoin()
+                d = a.terminal.innerJoin()
             ],
             where: 
             // and(
@@ -87,7 +87,7 @@ let RepositoryDao = class RepositoryDao extends generated_1.BaseRepositoryDao {
                         user: {
                             id
                         },
-                        database: {
+                        terminal: {
                             id
                         }
                     }
@@ -98,7 +98,7 @@ let RepositoryDao = class RepositoryDao extends generated_1.BaseRepositoryDao {
                 ra = r.repositoryActors.innerJoin(),
                 a = ra.actor.innerJoin(),
                 u = a.user.innerJoin(),
-                d = a.database.innerJoin()
+                d = a.terminal.innerJoin()
             ],
             where: air_control_1.and(r.id.in(repositoryIdsInClause), d.name.equals(dbName), u.uniqueId.equals(userEmail))
         });
@@ -132,7 +132,7 @@ let RepositoryDao = class RepositoryDao extends generated_1.BaseRepositoryDao {
         }
         return repositoryMapById;
     }
-    async findLocalRepoIdsByGlobalIds(orderedIds, randomIds, ownerActorRandomIds, ownerUserUniqueIds, ownerDatabaseNames, ownerDatabaseSecondIds, ownerDatabaseOwnerUserUniqueIds) {
+    async findLocalRepoIdsByGlobalIds(orderedIds, randomIds, ownerActorRandomIds, ownerUserUniqueIds, ownerTerminalNames, ownerTerminalSecondIds, ownerTerminalOwnerUserUniqueIds) {
         const repositoryIdMap = new Map();
         let r;
         let oa;
@@ -144,7 +144,7 @@ let RepositoryDao = class RepositoryDao extends generated_1.BaseRepositoryDao {
                 r = generated_1.Q.Repository,
                 oa = r.ownerActor.innerJoin(),
                 ou = oa.user.innerJoin(),
-                od = oa.database.innerJoin(),
+                od = oa.terminal.innerJoin(),
                 odu = od.owner.innerJoin(),
             ],
             select: [
@@ -157,7 +157,7 @@ let RepositoryDao = class RepositoryDao extends generated_1.BaseRepositoryDao {
                 r.randomId,
                 r.id,
             ],
-            where: air_control_1.and(r.orderedId.in(orderedIds), r.randomId.in(randomIds), oa.randomId.in(ownerActorRandomIds), ou.uniqueId.in(ownerUserUniqueIds), od.name.in(ownerDatabaseNames), od.secondId.in(ownerDatabaseSecondIds), odu.uniqueId.in(ownerDatabaseOwnerUserUniqueIds))
+            where: air_control_1.and(r.orderedId.in(orderedIds), r.randomId.in(randomIds), oa.randomId.in(ownerActorRandomIds), ou.uniqueId.in(ownerUserUniqueIds), od.name.in(ownerTerminalNames), od.secondId.in(ownerTerminalSecondIds), odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds))
         });
         for (const resultRow of resultRows) {
             this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4]), resultRow[5]).set(resultRow[6], resultRow[7]);

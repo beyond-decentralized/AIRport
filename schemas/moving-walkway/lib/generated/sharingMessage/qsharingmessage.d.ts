@@ -5,7 +5,7 @@ export interface ISharingMessage {
     id?: number;
     sharingNode?: ISharingNode;
     origin?: number;
-    agtDatabaseSyncLogId?: number;
+    agtSharingMessageId?: number;
     syncTimestamp?: Date;
     sharingMessageRepoTransBlocks?: ISharingMessageRepoTransBlock[];
 }
@@ -35,7 +35,7 @@ export interface SharingMessageEOptionalId {
  */
 export interface SharingMessageEUpdateProperties extends IEntityUpdateProperties {
     origin?: number | IQNumberField;
-    agtDatabaseSyncLogId?: number | IQNumberField;
+    agtSharingMessageId?: number | IQNumberField;
     syncTimestamp?: Date | IQDateField;
 }
 /**
@@ -43,7 +43,7 @@ export interface SharingMessageEUpdateProperties extends IEntityUpdateProperties
  */
 export interface SharingMessageEUpdateColumns extends IEntityUpdateColumns {
     ORIGIN?: number | IQNumberField;
-    AGT_DATABASE_SYNC_LOG_ID?: number | IQNumberField;
+    AGT_SHARING_MESSAGE_ID?: number | IQNumberField;
     SYNC_TIMESTAMP?: Date | IQDateField;
 }
 /**
@@ -63,7 +63,7 @@ export interface QSharingMessage extends QEntity {
     id: IQNumberField;
     sharingNode: QSharingNodeQRelation;
     origin: IQNumberField;
-    agtDatabaseSyncLogId: IQNumberField;
+    agtSharingMessageId: IQNumberField;
     syncTimestamp: IQDateField;
     sharingMessageRepoTransBlocks: IQOneToManyRelation<QSharingMessageRepoTransBlock>;
 }

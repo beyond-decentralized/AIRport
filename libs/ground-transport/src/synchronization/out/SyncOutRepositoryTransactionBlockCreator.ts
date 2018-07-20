@@ -8,7 +8,7 @@ import {
 	ActorDaoToken,
 	ActorId,
 	IActorDao,
-	IDatabase,
+	ITerminal,
 	IRepository,
 	IRepositoryDao,
 	IRepositoryTransactionHistory,
@@ -44,7 +44,7 @@ export interface ISyncOutRepositoryTransactionBlockCreator {
 
 	createNewBlocks(
 		sharingNodeIds: SharingNodeId[],
-		database: IDatabase
+		terminal: ITerminal
 	): Promise<Map<SharingNodeId, IRepositoryTransactionBlock[]>>;
 
 }
@@ -75,7 +75,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 	// Get new repository transaction histories not yet in RepoTransBlocks
 	async createNewBlocks(
 		sharingNodeIds: SharingNodeId[],
-		database: IDatabase
+		terminal: ITerminal
 	): Promise<Map<SharingNodeId, IRepositoryTransactionBlock[]>> {
 
 		const [sharingNodeIdMapByRepositoryId,
@@ -100,7 +100,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 			actorIdSet, repositoryIdsByActorId);
 
 		const repositoryTransactionBlocks = await this.createNewBlocksAndSetRepoTransHistoryBlockIds(
-			schemaVersionIds, schemaVersionIdSetsByRepository, database, repositoryIdSet,
+			schemaVersionIds, schemaVersionIdSetsByRepository, terminal, repositoryIdSet,
 			actorIdSet, repositoryIdsByActorId, repoTransHistoryMapByRepositoryId);
 
 		return this.groupRepoTransBlocksBySharingNode(
@@ -200,7 +200,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 	private async createNewBlocksAndSetRepoTransHistoryBlockIds(
 		schemaVersionIds: Set<SchemaIndex>,
 		schemaVersionIdSetsByRepository: Map<RepositoryId, Set<SchemaVersionId>>,
-		database: IDatabase,
+		terminal: ITerminal,
 		repositoryIdSet: Set<RepositoryId>,
 		actorIdSet: Set<ActorId>,
 		repositoryIdsByActorId: Map<ActorId, Set<RepositoryId>>,
@@ -230,7 +230,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 			this.createRepositoryTransactionBlockAndStageData(
 				repositoryMapById, actorIdSet, repositoryId, repositoryIdsByActorId,
 				repositoryTransactionHistories, schemasByRepositoryIdMap, repoTransBlockDataByRepoId,
-				database, repositoryTransactionBlocks, repoTransBlocksByRepositoryId,
+				terminal, repositoryTransactionBlocks, repoTransBlocksByRepositoryId,
 				repoTransHistoryUpdateStageValues, repoTransHistoryUpdateStageValuesByBlock);
 		}
 
@@ -277,7 +277,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 		repositoryTransactionHistories: IRepositoryTransactionHistory[],
 		schemasByRepositoryIdMap: Map<RepositoryId, ISchema[]>,
 		repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>,
-		database: IDatabase,
+		terminal: ITerminal,
 		repositoryTransactionBlocks: IRepositoryTransactionBlock[],
 		repoTransBlocksByRepositoryId: Map<RepositoryId, IRepositoryTransactionBlock>,
 		repoTransHistoryUpdateStageValues: RepositoryTransactionHistoryUpdateStageValues[],
@@ -293,12 +293,12 @@ export class SyncOutRepositoryTransactionBlockCreator
 		repositoryIdsForActorId.add(repositoryId);
 
 		const repoTransBlockData: RepositoryTransactionBlockData = {
-			database: {
-				id: database.id,
-				name: database.name,
-				secondId: database.secondId,
+			terminal: {
+				id: terminal.id,
+				name: terminal.name,
+				secondId: terminal.secondId,
 				owner: {
-					uniqueId: database.owner.uniqueId
+					uniqueId: terminal.owner.uniqueId
 				}
 			},
 			actors: [],
@@ -309,7 +309,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 		repoTransBlockDataByRepoId.set(repositoryId, repoTransBlockData);
 
 		const repositoryTransactionBlock: IRepositoryTransactionBlock = {
-			source: database,
+			source: terminal,
 			repository,
 			origin: DataOrigin.LOCAL
 		};

@@ -48,7 +48,7 @@ export declare class SharingMessage {
     id: TmSharingMessageId;
     sharingNode: SharingNode;
     origin: DataOrigin;
-    agtDatabaseSyncLogId: AgtSharingMessageId;
+    agtSharingMessageId: AgtSharingMessageId;
     syncTimestamp: SharingMessageSyncTimestamp;
     sharingMessageRepoTransBlocks: SharingMessageRepoTransBlock[];
 }

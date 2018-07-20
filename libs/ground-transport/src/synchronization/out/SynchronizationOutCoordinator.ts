@@ -1,6 +1,6 @@
 import {withLatestFrom} from "rxjs/operators/withLatestFrom";
 import {ISharingNode, SharingNodeSyncFrequency} from "@airport/moving-walkway";
-import {IDatabase} from "@airport/holding-pattern";
+import {ITerminal} from "@airport/holding-pattern";
 import {
 	SynchronizationOutCoordinatorToken,
 	SynchronizationOutManagerToken,
@@ -44,20 +44,20 @@ export class SynchronizationOutCoordinator
 		await this.syncNodeManager.initialize();
 
 		this.record(this.terminalStore.nodesBySyncFrequency.pipe(
-			withLatestFrom(this.terminalStore.database),
+			withLatestFrom(this.terminalStore.terminal),
 		).subscribe((
-			[nodesBySyncFrequency, database]
+			[nodesBySyncFrequency, terminal]
 		) => {
-			if (!database) {
+			if (!terminal) {
 				return;
 			}
-			this.updateSyncPool(nodesBySyncFrequency, database);
+			this.updateSyncPool(nodesBySyncFrequency, terminal);
 		}));
 	}
 
 	private updateSyncPool(
 		nodesBySyncFrequency: Map<SharingNodeSyncFrequency, ISharingNode[]>,
-		database: IDatabase,
+		terminal: ITerminal,
 	) {
 		const lastNodesBySyncFrequency = this.nodesBySyncFrequency;
 		this.nodesBySyncFrequency = nodesBySyncFrequency;
@@ -65,7 +65,7 @@ export class SynchronizationOutCoordinator
 			// If in the new map there are sync node frequency that weren't in
 			// the old map then kick off syncs for those frequencies
 			if (!lastNodesBySyncFrequency.get(frequency)) {
-				this.scheduleSyncsForFrequency(frequency, sharingNodes, database);
+				this.scheduleSyncsForFrequency(frequency, sharingNodes, terminal);
 			}
 		}
 
@@ -73,23 +73,23 @@ export class SynchronizationOutCoordinator
 
 	private returnToSyncPool(
 		frequency: SharingNodeSyncFrequency,
-		database: IDatabase,
+		terminal: ITerminal,
 	): void {
 		const sharingNodes = this.nodesBySyncFrequency.get(frequency);
 		if (!sharingNodes) {
 			return;
 		}
-		this.scheduleSyncsForFrequency(frequency, sharingNodes, database);
+		this.scheduleSyncsForFrequency(frequency, sharingNodes, terminal);
 	}
 
 	private scheduleSyncsForFrequency(
 		frequency: SharingNodeSyncFrequency,
 		sharingNodes: ISharingNode[],
-		database: IDatabase,
+		terminal: ITerminal,
 	): void {
 		setTimeout(async () => {
-			await this.synchronizationOutManager.synchronize(sharingNodes, database).then();
-			this.returnToSyncPool(frequency, database);
+			await this.synchronizationOutManager.synchronize(sharingNodes, terminal).then();
+			this.returnToSyncPool(frequency, terminal);
 		}, frequency);
 	}
 

@@ -10,7 +10,7 @@ import {IUtils}             from "@airport/air-control/lib/lingo/utils/Utils";
 import {Service}            from "typedi";
 import {Inject}             from "typedi/decorators/Inject";
 import {
-	DatabaseName,
+	TerminalName,
 	RepositoryId,
 	UserUniqueId
 }                           from "../../ddl/ddl";
@@ -18,12 +18,12 @@ import {
 	BaseRepositoryDao,
 	IRepository,
 	Q,
-	QDatabase,
+	QTerminal,
 	QRepository,
 }                           from "../../generated/generated";
 import {
 	ActorRandomId,
-	DatabaseSecondId,
+	TerminalSecondId,
 	QActor,
 	QRepositoryActor,
 	QUser,
@@ -41,7 +41,7 @@ export interface IRepositoryDao {
 			| {
 			(...args: any[]): RawFieldQuery<IQNumberField>
 		},
-		dbName: DatabaseName,
+		dbName: TerminalName,
 		userEmail: UserUniqueId,
 	): Promise<MappedEntityArray<IRepository>>;
 
@@ -50,9 +50,9 @@ export interface IRepositoryDao {
 		randomIds: RepositoryRandomId[],
 		ownerActorRandomIds: ActorRandomId[],
 		ownerUserUniqueIds: UserUniqueId[],
-		ownerDatabaseNames: DatabaseName[],
-		ownerDatabaseSecondIds: DatabaseSecondId[],
-		ownerDatabaseOwnerUserUniqueIds: UserUniqueId[]
+		ownerTerminalNames: TerminalName[],
+		ownerTerminalSecondIds: TerminalSecondId[],
+		ownerTerminalOwnerUserUniqueIds: UserUniqueId[]
 	): Promise<RepositoryIdMap>;
 
 	findReposWithGlobalIds(
@@ -62,7 +62,7 @@ export interface IRepositoryDao {
 }
 
 export type RepositoryIdMap = Map<UserUniqueId,
-	Map<DatabaseName, Map<DatabaseSecondId, Map<UserUniqueId,
+	Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId,
 		Map<ActorRandomId, Map<RepositoryOrderedId,
 			Map<RepositoryRandomId, RepositoryId>>>>>>>;
 
@@ -85,7 +85,7 @@ export class RepositoryDao
 		let ra: QRepositoryActor;
 		let a: QActor;
 		let u: QUser;
-		let d: QDatabase;
+		let d: QTerminal;
 		let id = Y;
 		return await this.db.find.mapped.tree({
 			select: {
@@ -95,7 +95,7 @@ export class RepositoryDao
 					user: {
 						id
 					},
-					database: {
+					terminal: {
 						id
 					}
 				},
@@ -105,7 +105,7 @@ export class RepositoryDao
 				ra = r.repositoryActors.innerJoin(),
 				a = ra.actor.innerJoin(),
 				u = a.user.innerJoin(),
-				d = a.database.innerJoin()
+				d = a.terminal.innerJoin()
 			],
 			where:
 			// and(
@@ -143,14 +143,14 @@ export class RepositoryDao
 			| {
 			(...args: any[]): RawFieldQuery<IQNumberField>
 		},
-		dbName: DatabaseName,
+		dbName: TerminalName,
 		userEmail: UserUniqueId,
 	): Promise<MappedEntityArray<IRepository>> {
 		let r: QRepository;
 		let ra: QRepositoryActor;
 		let a: QActor;
 		let u: QUser;
-		let d: QDatabase;
+		let d: QTerminal;
 		let id = Y;
 		return await this.db.find.mapped.tree({
 				select: {
@@ -160,7 +160,7 @@ export class RepositoryDao
 							user: {
 								id
 							},
-							database: {
+							terminal: {
 								id
 							}
 						}
@@ -171,7 +171,7 @@ export class RepositoryDao
 					ra = r.repositoryActors.innerJoin(),
 					a = ra.actor.innerJoin(),
 					u = a.user.innerJoin(),
-					d = a.database.innerJoin()
+					d = a.terminal.innerJoin()
 				],
 				where: and(
 					r.id.in(repositoryIdsInClause),
@@ -224,15 +224,15 @@ export class RepositoryDao
 		randomIds: RepositoryRandomId[],
 		ownerActorRandomIds: ActorRandomId[],
 		ownerUserUniqueIds: UserUniqueId[],
-		ownerDatabaseNames: DatabaseName[],
-		ownerDatabaseSecondIds: DatabaseSecondId[],
-		ownerDatabaseOwnerUserUniqueIds: UserUniqueId[]
+		ownerTerminalNames: TerminalName[],
+		ownerTerminalSecondIds: TerminalSecondId[],
+		ownerTerminalOwnerUserUniqueIds: UserUniqueId[]
 	): Promise<RepositoryIdMap> {
 		const repositoryIdMap: RepositoryIdMap = new Map();
 
 		let r: QRepository;
 		let oa: QActor;
-		let od: QDatabase;
+		let od: QTerminal;
 		let odu: QUser;
 		let ou: QUser;
 		const resultRows = await
@@ -241,7 +241,7 @@ export class RepositoryDao
 					r = Q.Repository,
 					oa = r.ownerActor.innerJoin(),
 					ou = oa.user.innerJoin(),
-					od = oa.database.innerJoin(),
+					od = oa.terminal.innerJoin(),
 					odu = od.owner.innerJoin(),
 				],
 				select: [
@@ -259,9 +259,9 @@ export class RepositoryDao
 					r.randomId.in(randomIds),
 					oa.randomId.in(ownerActorRandomIds),
 					ou.uniqueId.in(ownerUserUniqueIds),
-					od.name.in(ownerDatabaseNames),
-					od.secondId.in(ownerDatabaseSecondIds),
-					odu.uniqueId.in(ownerDatabaseOwnerUserUniqueIds)
+					od.name.in(ownerTerminalNames),
+					od.secondId.in(ownerTerminalSecondIds),
+					odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds)
 				)
 			});
 

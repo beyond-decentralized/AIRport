@@ -101,7 +101,7 @@ let RepositoryManager = class RepositoryManager {
         };
         if (repository.platformConfig) {
             let platformConfig = JSON.parse(repository.platformConfig);
-            jsonDeltaStoreConfig = Object.assign({}, jsonDeltaStoreConfig, platformConfig);
+            jsonDeltaStoreConfig = { ...jsonDeltaStoreConfig, ...platformConfig };
         }
         let deltaStoreConfig = new terminal_map_1.DeltaStoreConfig(jsonDeltaStoreConfig);
         let deltaStore = new DeltaStore_1.DeltaStore(deltaStoreConfig, sharingAdaptor);

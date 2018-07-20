@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 /**
  * Used to temporarily store updates during application remotely synced updates
- * to the local database.  Values are deleted right after the remote sync updates
+ * to the local terminal.  Values are deleted right after the remote sync updates
  * are applied.
  */
 let RecordUpdateStage = class RecordUpdateStage {

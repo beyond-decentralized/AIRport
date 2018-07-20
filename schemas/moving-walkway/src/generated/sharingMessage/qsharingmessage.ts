@@ -59,7 +59,7 @@ export interface ISharingMessage {
 
 	// Non-Id Properties
 	origin?: number;
-	agtDatabaseSyncLogId?: number;
+	agtSharingMessageId?: number;
 	syncTimestamp?: Date;
 
 	// Non-Id Relations
@@ -120,7 +120,7 @@ export interface SharingMessageEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	origin?: number | IQNumberField;
-	agtDatabaseSyncLogId?: number | IQNumberField;
+	agtSharingMessageId?: number | IQNumberField;
 	syncTimestamp?: Date | IQDateField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -134,7 +134,7 @@ export interface SharingMessageEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	ORIGIN?: number | IQNumberField;
-	AGT_DATABASE_SYNC_LOG_ID?: number | IQNumberField;
+	AGT_SHARING_MESSAGE_ID?: number | IQNumberField;
 	SYNC_TIMESTAMP?: Date | IQDateField;
 
 }
@@ -173,7 +173,7 @@ export interface QSharingMessage extends QEntity
 
 	// Non-Id Fields
 	origin: IQNumberField;
-	agtDatabaseSyncLogId: IQNumberField;
+	agtSharingMessageId: IQNumberField;
 	syncTimestamp: IQDateField;
 
 	// Non-Id Relations

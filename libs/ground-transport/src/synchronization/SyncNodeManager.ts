@@ -1,17 +1,21 @@
-import {MessageFromTM}       from "@airport/arrivals-n-departures";
-import {BatchedMessagesToTM} from "@airport/arrivals-n-departures/lib/lingo/message/MessageToTM";
+import {MessageFromTM}             from "@airport/arrivals-n-departures";
+import {BatchedMessagesToTM}       from "@airport/arrivals-n-departures/lib/lingo/message/MessageToTM";
 import {
 	ISharingNode,
 	ISharingNodeDao,
 	SharingNodeDaoToken,
 	SharingNodeId
-}                            from "@airport/moving-walkway";
-import {Inject, Service}     from "typedi";
+}                                  from "@airport/moving-walkway";
+import {
+	ITerminalStore,
+	TerminalStoreToken
+} from "@airport/terminal-map";
+import {Inject, Service}           from "typedi";
 import {
 	SynchronizationInManagerToken,
 	SyncNodeManagerToken,
-}                            from "../InjectionTokens";
-import {ISharingNodeEndpoint} from "./connect/SharingNodeEndpoint";
+}                                  from "../InjectionTokens";
+import {ISharingNodeEndpoint}      from "./connect/SharingNodeEndpoint";
 import {ISynchronizationInManager} from "./in/SynchronizationInManager";
 
 export interface ISyncNodeManager {

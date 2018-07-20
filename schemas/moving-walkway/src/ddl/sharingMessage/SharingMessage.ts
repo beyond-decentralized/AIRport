@@ -86,8 +86,8 @@ export class SharingMessage {
 	origin: DataOrigin;
 
 	// Needed to ACK back the fact that the message was synced
-	@Column({name: "AGT_DATABASE_SYNC_LOG_ID"})
-	agtDatabaseSyncLogId: AgtSharingMessageId;
+	@Column({name: "AGT_SHARING_MESSAGE_ID"})
+	agtSharingMessageId: AgtSharingMessageId;
 
 	/* Merged with RepoTransBlockSyncOutcomeType
 		@Column({name: "PROCESSING_STATUS"})

@@ -258,7 +258,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 7,
+									"oneTableIndex": 8,
 									"oneColumnIndex": 0
 								}
 							],
@@ -357,7 +357,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 7
+							"relationTableIndex": 8
 						},
 						{
 							"index": 1,
@@ -683,7 +683,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 2,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 7,
+									"oneTableIndex": 8,
 									"oneColumnIndex": 0
 								}
 							],
@@ -773,7 +773,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 3
 							},
-							"relationTableIndex": 7
+							"relationTableIndex": 8
 						}
 					],
 					"tableConfig": {
@@ -886,7 +886,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 3,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 7,
+									"oneTableIndex": 8,
 									"oneColumnIndex": 0
 								}
 							],
@@ -1028,7 +1028,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 5
 							},
-							"relationTableIndex": 7
+							"relationTableIndex": 8
 						},
 						{
 							"index": 4,
@@ -1146,6 +1146,138 @@ export const SCHEMA = {
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
+							"name": "NAME",
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"type": 5
+						},
+						{
+							"index": 2,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "SECOND_ID",
+							"propertyRefs": [
+								{
+									"index": 2
+								}
+							],
+							"type": 4
+						},
+						{
+							"index": 3,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "IS_LOCAL",
+							"propertyRefs": [
+								{
+									"index": 4
+								}
+							],
+							"type": 1
+						},
+						{
+							"index": 4,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 0,
+									"oneSchemaIndex": null,
+									"oneTableIndex": 10,
+									"oneColumnIndex": 0
+								}
+							],
+							"name": "OWNER_USER_ID",
+							"propertyRefs": [
+								{
+									"index": 3
+								}
+							],
+							"type": 4
+						}
+					],
+					"idColumnRefs": [
+						{
+							"index": 0
+						}
+					],
+					"index": 7,
+					"isLocal": true,
+					"isRepositoryEntity": false,
+					"name": "Terminal",
+					"properties": [
+						{
+							"columnRef": {
+								"index": 0
+							},
+							"index": 0,
+							"isId": true,
+							"name": "id"
+						},
+						{
+							"columnRef": {
+								"index": 1
+							},
+							"index": 1,
+							"isId": false,
+							"name": "name"
+						},
+						{
+							"columnRef": {
+								"index": 2
+							},
+							"index": 2,
+							"isId": false,
+							"name": "secondId"
+						},
+						{
+							"index": 3,
+							"isId": false,
+							"name": "owner",
+							"relationRef": {
+								"index": 0
+							}
+						},
+						{
+							"columnRef": {
+								"index": 3
+							},
+							"index": 4,
+							"isId": false,
+							"name": "isLocal"
+						}
+					],
+					"relations": [
+						{
+							"index": 0,
+							"isId": false,
+							"relationType": 1,
+							"propertyRef": {
+								"index": 3
+							},
+							"relationTableIndex": 10
+						}
+					]
+				},
+				{
+					"columns": [
+						{
+							"index": 0,
+							"isGenerated": true,
+							"manyRelationColumnRefs": [],
+							"name": "ID",
+							"propertyRefs": [
+								{
+									"index": 0
+								}
+							],
+							"type": 4
+						},
+						{
+							"index": 1,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
 							"name": "RANDOM_ID",
 							"propertyRefs": [
 								{
@@ -1178,11 +1310,11 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 9,
+									"oneTableIndex": 7,
 									"oneColumnIndex": 0
 								}
 							],
-							"name": "DATABASE_ID",
+							"name": "TERMINAL_ID",
 							"propertyRefs": [
 								{
 									"index": 2
@@ -1196,7 +1328,7 @@ export const SCHEMA = {
 							"index": 0
 						}
 					],
-					"index": 7,
+					"index": 8,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "Actor",
@@ -1220,7 +1352,7 @@ export const SCHEMA = {
 						{
 							"index": 2,
 							"isId": false,
-							"name": "database",
+							"name": "terminal",
 							"relationRef": {
 								"index": 1
 							}
@@ -1267,7 +1399,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 2
 							},
-							"relationTableIndex": 9
+							"relationTableIndex": 7
 						},
 						{
 							"index": 2,
@@ -1341,7 +1473,7 @@ export const SCHEMA = {
 							"index": 0
 						}
 					],
-					"index": 8,
+					"index": 9,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "Application",
@@ -1413,138 +1545,6 @@ export const SCHEMA = {
 								"index": 4
 							},
 							"relationTableIndex": 15
-						}
-					]
-				},
-				{
-					"columns": [
-						{
-							"index": 0,
-							"isGenerated": true,
-							"manyRelationColumnRefs": [],
-							"name": "ID",
-							"propertyRefs": [
-								{
-									"index": 0
-								}
-							],
-							"type": 4
-						},
-						{
-							"index": 1,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "NAME",
-							"propertyRefs": [
-								{
-									"index": 1
-								}
-							],
-							"type": 5
-						},
-						{
-							"index": 2,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "SECOND_ID",
-							"propertyRefs": [
-								{
-									"index": 2
-								}
-							],
-							"type": 4
-						},
-						{
-							"index": 3,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "IS_LOCAL",
-							"propertyRefs": [
-								{
-									"index": 4
-								}
-							],
-							"type": 1
-						},
-						{
-							"index": 4,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
-									"oneTableIndex": 10,
-									"oneColumnIndex": 0
-								}
-							],
-							"name": "OWNER_USER_ID",
-							"propertyRefs": [
-								{
-									"index": 3
-								}
-							],
-							"type": 4
-						}
-					],
-					"idColumnRefs": [
-						{
-							"index": 0
-						}
-					],
-					"index": 9,
-					"isLocal": true,
-					"isRepositoryEntity": false,
-					"name": "Database",
-					"properties": [
-						{
-							"columnRef": {
-								"index": 0
-							},
-							"index": 0,
-							"isId": true,
-							"name": "id"
-						},
-						{
-							"columnRef": {
-								"index": 1
-							},
-							"index": 1,
-							"isId": false,
-							"name": "name"
-						},
-						{
-							"columnRef": {
-								"index": 2
-							},
-							"index": 2,
-							"isId": false,
-							"name": "secondId"
-						},
-						{
-							"index": 3,
-							"isId": false,
-							"name": "owner",
-							"relationRef": {
-								"index": 0
-							}
-						},
-						{
-							"columnRef": {
-								"index": 3
-							},
-							"index": 4,
-							"isId": false,
-							"name": "isLocal"
-						}
-					],
-					"relations": [
-						{
-							"index": 0,
-							"isId": false,
-							"relationType": 1,
-							"propertyRef": {
-								"index": 3
-							},
-							"relationTableIndex": 10
 						}
 					]
 				},
@@ -1776,7 +1776,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 7,
+									"oneTableIndex": 8,
 									"oneColumnIndex": 0
 								}
 							],
@@ -1896,7 +1896,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 7
+							"relationTableIndex": 8
 						},
 						{
 							"index": 1,
@@ -1981,7 +1981,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 7,
+									"oneTableIndex": 8,
 									"oneRelationIndex": 3,
 									"oneColumnIndex": 0
 								}
@@ -2050,7 +2050,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 7
+							"relationTableIndex": 8
 						}
 					],
 					"tableConfig": {
@@ -2175,7 +2175,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 7,
+									"oneTableIndex": 8,
 									"oneRelationIndex": 2,
 									"oneColumnIndex": 0
 								}
@@ -2194,7 +2194,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 8,
+									"oneTableIndex": 9,
 									"oneRelationIndex": 0,
 									"oneColumnIndex": 0
 								}
@@ -2254,7 +2254,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 7
+							"relationTableIndex": 8
 						},
 						{
 							"index": 1,
@@ -2263,7 +2263,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 2
 							},
-							"relationTableIndex": 8
+							"relationTableIndex": 9
 						}
 					],
 					"tableConfig": {
@@ -2309,7 +2309,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 8,
+									"oneTableIndex": 9,
 									"oneRelationIndex": 1,
 									"oneColumnIndex": 0
 								}
@@ -2378,7 +2378,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 8
+							"relationTableIndex": 9
 						}
 					],
 					"tableConfig": {

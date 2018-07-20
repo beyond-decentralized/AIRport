@@ -109,7 +109,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 2,
 									"oneSchemaIndex": 1,
-									"oneTableIndex": 7,
+									"oneTableIndex": 8,
 									"oneColumnIndex": 0
 								}
 							],
@@ -268,7 +268,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 3
 							},
-							"relationTableIndex": 7,
+							"relationTableIndex": 8,
 							"relationTableSchemaIndex": 1
 						},
 						{
@@ -602,7 +602,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": 1,
-									"oneTableIndex": 7,
+									"oneTableIndex": 8,
 									"oneColumnIndex": 0
 								}
 							],
@@ -670,7 +670,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 7,
+							"relationTableIndex": 8,
 							"relationTableSchemaIndex": 1
 						}
 					],
@@ -794,7 +794,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 3,
 									"oneSchemaIndex": 1,
-									"oneTableIndex": 7,
+									"oneTableIndex": 8,
 									"oneColumnIndex": 0
 								}
 							],
@@ -912,7 +912,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 4
 							},
-							"relationTableIndex": 7,
+							"relationTableIndex": 8,
 							"relationTableSchemaIndex": 1
 						}
 					],
@@ -1601,7 +1601,7 @@ export const SCHEMA = {
 							"index": 0,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "AGT_DATABASE_ID",
+							"name": "AGT_TERMINAL_ID",
 							"propertyRefs": [
 								{
 									"index": 2
@@ -1613,7 +1613,7 @@ export const SCHEMA = {
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "AGT_DATABASE_HASH",
+							"name": "TERMINAL_PASSWORD",
 							"propertyRefs": [
 								{
 									"index": 3
@@ -1625,7 +1625,7 @@ export const SCHEMA = {
 							"index": 2,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "DATABASE_SYNC_STATUS",
+							"name": "TERMINAL_SYNC_STATUS",
 							"propertyRefs": [
 								{
 									"index": 4
@@ -1657,11 +1657,11 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": 1,
-									"oneTableIndex": 9,
+									"oneTableIndex": 7,
 									"oneColumnIndex": 0
 								}
 							],
-							"name": "DATABASE_ID",
+							"name": "TERMINAL_ID",
 							"propertyRefs": [
 								{
 									"index": 1
@@ -1681,7 +1681,7 @@ export const SCHEMA = {
 					"index": 11,
 					"isLocal": true,
 					"isRepositoryEntity": false,
-					"name": "SharingNodeDatabase",
+					"name": "SharingNodeTerminal",
 					"properties": [
 						{
 							"index": 0,
@@ -1694,7 +1694,7 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": true,
-							"name": "database",
+							"name": "terminal",
 							"relationRef": {
 								"index": 1
 							}
@@ -1705,7 +1705,7 @@ export const SCHEMA = {
 							},
 							"index": 2,
 							"isId": false,
-							"name": "agtDatabaseId"
+							"name": "agtTerminalId"
 						},
 						{
 							"columnRef": {
@@ -1713,7 +1713,7 @@ export const SCHEMA = {
 							},
 							"index": 3,
 							"isId": false,
-							"name": "agtDatabaseHash"
+							"name": "agtTerminalPassword"
 						},
 						{
 							"columnRef": {
@@ -1721,7 +1721,7 @@ export const SCHEMA = {
 							},
 							"index": 4,
 							"isId": false,
-							"name": "databaseSyncStatus"
+							"name": "terminalSyncStatus"
 						}
 					],
 					"relations": [
@@ -1741,12 +1741,12 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 9,
+							"relationTableIndex": 7,
 							"relationTableSchemaIndex": 1
 						}
 					],
 					"tableConfig": {
-						"name": "SHARING_NODE_DATABASE"
+						"name": "SHARING_NODE_TERMINAL"
 					}
 				},
 				{
@@ -2019,7 +2019,7 @@ export const SCHEMA = {
 							"index": 2,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "AGT_DATABASE_SYNC_LOG_ID",
+							"name": "AGT_SHARING_MESSAGE_ID",
 							"propertyRefs": [
 								{
 									"index": 3
@@ -2102,7 +2102,7 @@ export const SCHEMA = {
 							},
 							"index": 3,
 							"isId": false,
-							"name": "agtDatabaseSyncLogId"
+							"name": "agtSharingMessageId"
 						},
 						{
 							"columnRef": {
@@ -2299,11 +2299,11 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": 1,
-									"oneTableIndex": 9,
+									"oneTableIndex": 7,
 									"oneColumnIndex": 0
 								}
 							],
-							"name": "SOURCE_DATABASE_ID",
+							"name": "SOURCE_TERMINAL_ID",
 							"propertyRefs": [
 								{
 									"index": 2
@@ -2437,7 +2437,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 2
 							},
-							"relationTableIndex": 9,
+							"relationTableIndex": 7,
 							"relationTableSchemaIndex": 1
 						},
 						{

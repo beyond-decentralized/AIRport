@@ -318,7 +318,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             throw `'${dbEntity.name}' Entity SELECT clause ${ofProperty}must be specified as an Object.`;
         }
         else {
-            selectFragment = Object.assign({}, selectClauseFragment);
+            selectFragment = { ...selectClauseFragment };
         }
         const hasIds = !!dbEntity.idColumns.length;
         let retrieveAllOwnFields = true;

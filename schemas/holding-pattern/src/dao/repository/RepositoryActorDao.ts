@@ -11,7 +11,7 @@ import {
 	IRepositoryActor,
 	Q,
 	QActor,
-	QDatabase,
+	QTerminal,
 	QRepositoryActor,
 	RepositoryId
 }                                from "../..";
@@ -51,7 +51,7 @@ export class RepositoryActorDao
 	): Promise<IRepositoryActor[]> {
 		let ra: QRepositoryActor,
 			a: QActor,
-			d: QDatabase;
+			d: QTerminal;
 		const id = Y;
 
 		return await this.db.find.tree({
@@ -66,7 +66,7 @@ export class RepositoryActorDao
 			from: [
 				ra = Q.RepositoryActor,
 				a = ra.actor.innerJoin(),
-				d = a.database.innerJoin()
+				d = a.terminal.innerJoin()
 			],
 			where: and(
 				ra.repository.id.in(repositoryIds),

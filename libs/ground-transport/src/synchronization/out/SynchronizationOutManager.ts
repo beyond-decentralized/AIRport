@@ -1,6 +1,6 @@
 import {IUtils, UtilsToken} from "@airport/air-control";
 import {
-	IDatabase,
+	ITerminal,
 	IRepositoryDao,
 	IRepositoryTransactionHistoryDao,
 	RepositoryDaoToken,
@@ -16,7 +16,7 @@ import {
 	ISharingMessageRepoTransBlockDao,
 	ISharingNode,
 	ISharingNodeDao,
-	ISharingNodeDatabaseDao,
+	ISharingNodeTerminalDao,
 	ISharingNodeRepositoryDao,
 	ISharingNodeRepoTransBlockDao,
 	RepositoryTransactionBlockDaoToken,
@@ -24,7 +24,7 @@ import {
 	SharingMessageProcessingStatus,
 	SharingMessageRepoTransBlockDaoToken,
 	SharingNodeDaoToken,
-	SharingNodeDatabaseDaoToken,
+	SharingNodeTerminalDaoToken,
 	SharingNodeId,
 	SharingNodeRepositoryDaoToken,
 	SharingNodeRepoTransBlockDaoToken
@@ -49,7 +49,7 @@ export interface ISynchronizationOutManager {
 
 	synchronize(
 		sharingNodes: ISharingNode[],
-		database: IDatabase,
+		terminal: ITerminal,
 	): Promise<void>;
 
 }
@@ -60,7 +60,7 @@ const maxAllRepoChangesLength = 10485760;
 const log = TerminalLogger.add('SynchronizationOutManager');
 
 /**
- * Synchronization manager is in charge of maintaining the AIR Database in sync.
+ * Synchronization manager is in charge of maintaining the AIR Terminal in sync.
  *
  * Any number of sync nodes can be configured to communicate
  * over any periods of time.  At any given point in time all pending Repository
@@ -84,8 +84,8 @@ export class SynchronizationOutManager
 		private sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao,
 		@Inject(SharingNodeDaoToken)
 		private sharingNodeDao: ISharingNodeDao,
-		@Inject(SharingNodeDatabaseDaoToken)
-		private sharingNodeDatabaseDao: ISharingNodeDatabaseDao,
+		@Inject(SharingNodeTerminalDaoToken)
+		private sharingNodeTerminalDao: ISharingNodeTerminalDao,
 		@Inject(SharingNodeRepositoryDaoToken)
 		private sharingNodeRepositoryDao: ISharingNodeRepositoryDao,
 		@Inject(SharingNodeRepoTransBlockDaoToken)
@@ -105,7 +105,7 @@ export class SynchronizationOutManager
 
 	async synchronize(
 		sharingNodes: ISharingNode[],
-		database: IDatabase,
+		terminal: ITerminal,
 	): Promise<void> {
 		const sharingNodeMap: Map<SharingNodeId, ISharingNode> = new Map();
 		sharingNodes.forEach(
@@ -165,9 +165,9 @@ export class SynchronizationOutManager
 		if (sharingNodeMap.size) {
 			// Get new repository transaction histories not yet in RepoTransBlocks
 			const newReposTransHistoryBlocksBySharingNodeId = await this.repositoryTransactionBlockCreator
-				.createNewBlocks(Array.from(sharingNodeMap.keys()), database);
+				.createNewBlocks(Array.from(sharingNodeMap.keys()), terminal);
 
-			await this.addNewSharingMessages(newReposTransHistoryBlocksBySharingNodeId, database);
+			await this.addNewSharingMessages(newReposTransHistoryBlocksBySharingNodeId, terminal);
 		}
 
 		const sharingMessageIdsBySharingNodeId = await this.sharingMessageDao
@@ -179,7 +179,7 @@ export class SynchronizationOutManager
 
 		const messagesBySharingNode = await this.syncOutSerializer.serializeMessages(
 			sharingNodeDbMap, sharingNodeMap,
-			repositoriesBySharingNodeIds, repoTransBlockDataByRepoId, repoTransHistoryIds, database);
+			repositoriesBySharingNodeIds, repoTransBlockDataByRepoId, repoTransHistoryIds, terminal);
 
 		await this.syncOutMessageSender.sendMessages(sharingNodeMap, messagesBySharingNode);
 	}
@@ -307,7 +307,7 @@ export class SynchronizationOutManager
 
 	private async addNewSharingMessages(
 		newReposTransHistoryBlocksBySharingNodeId: Map<SharingNodeId, IRepositoryTransactionBlock[]>,
-		source: IDatabase
+		source: ITerminal
 	): Promise<void> {
 		const origin = DataOrigin.LOCAL;
 		const messageSyncStatus = SyncStatus.SYNCHRONIZING;

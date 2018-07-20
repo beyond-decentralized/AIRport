@@ -31,15 +31,15 @@ import {
 	QUserQRelation,
 } from './quser';
 import {
-	IDatabase,
-	DatabaseEId,
-	DatabaseEOptionalId,
-	DatabaseEUpdateProperties,
-	DatabaseESelect,
-	QDatabase,
-	QDatabaseQId,
-	QDatabaseQRelation,
-} from './qdatabase';
+	ITerminal,
+	TerminalEId,
+	TerminalEOptionalId,
+	TerminalEUpdateProperties,
+	TerminalESelect,
+	QTerminal,
+	QTerminalQId,
+	QTerminalQRelation,
+} from './qterminal';
 import {
 	IActorApplication,
 	ActorApplicationEId,
@@ -81,7 +81,7 @@ export interface IActor {
 
 	// Non-Id Relations
 	user?: IUser;
-	database?: IDatabase;
+	terminal?: ITerminal;
 	actorApplications?: IActorApplication[];
 	repositoryActor?: IRepositoryActor[];
 
@@ -104,7 +104,7 @@ export interface ActorESelect
 
   // Non-Id relations (including OneToMany's)
 	user?: UserESelect;
-	database?: DatabaseESelect;
+	terminal?: TerminalESelect;
 	actorApplications?: ActorApplicationESelect;
 	repositoryActor?: RepositoryActorESelect;
 
@@ -143,7 +143,7 @@ export interface ActorEUpdateProperties
 
 	// Non-Id Relations - ids only & no OneToMany's
 	user?: UserEOptionalId;
-	database?: DatabaseEOptionalId;
+	terminal?: TerminalEOptionalId;
 
 }
 
@@ -155,7 +155,7 @@ export interface ActorEUpdateColumns
 	// Non-Id Columns
 	RANDOM_ID?: number | IQNumberField;
 	USER_ID?: number | IQNumberField;
-	DATABASE_ID?: number | IQNumberField;
+	TERMINAL_ID?: number | IQNumberField;
 
 }
 
@@ -195,7 +195,7 @@ export interface QActor extends QEntity
 
 	// Non-Id Relations
 	user: QUserQRelation;
-	database: QDatabaseQRelation;
+	terminal: QTerminalQRelation;
 	actorApplications: IQOneToManyRelation<QActorApplication>;
 	repositoryActor: IQOneToManyRelation<QRepositoryActor>;
 

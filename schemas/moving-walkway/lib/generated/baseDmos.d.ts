@@ -10,10 +10,10 @@ import { IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryU
 import { ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateProperties, SharingMessageEId, QSharingMessage } from './sharingMessage/qsharingmessage';
 import { ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, QSharingMessageRepoTransBlock } from './sharingMessage/qsharingmessagerepotransblock';
 import { ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateProperties, SharingNodeEId, QSharingNode } from './sharingNode/qsharingnode';
-import { ISharingNodeDatabase, SharingNodeDatabaseESelect, SharingNodeDatabaseECreateProperties, SharingNodeDatabaseEUpdateProperties, SharingNodeDatabaseEId, QSharingNodeDatabase } from './sharingNode/qsharingnodedatabase';
 import { ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock } from './sharingNode/qsharingnoderepotransblock';
 import { ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, QSharingNodeRepoTransBlockStage } from './sharingNode/qsharingnoderepotransblockstage';
 import { ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, QSharingNodeRepository } from './sharingNode/qsharingnoderepository';
+import { ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal } from './sharingNode/qsharingnodeterminal';
 import { ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, QSynchronizationConflict } from './conflict/qsynchronizationconflict';
 import { ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, QSynchronizationConflictPendingNotification } from './conflict/qsynchronizationconflictpendingnotification';
 import { ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, QSynchronizationConflictValues } from './conflict/qsynchronizationconflictvalues';
@@ -67,11 +67,6 @@ export interface IBaseSharingNodeDmo extends IDmo<ISharingNode, SharingNodeESele
 export declare class BaseSharingNodeDmo extends Dmo<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateProperties, SharingNodeEId, QSharingNode> implements IBaseSharingNodeDmo {
     constructor();
 }
-export interface IBaseSharingNodeDatabaseDmo extends IDmo<ISharingNodeDatabase, SharingNodeDatabaseESelect, SharingNodeDatabaseECreateProperties, SharingNodeDatabaseEUpdateProperties, SharingNodeDatabaseEId, QSharingNodeDatabase> {
-}
-export declare class BaseSharingNodeDatabaseDmo extends Dmo<ISharingNodeDatabase, SharingNodeDatabaseESelect, SharingNodeDatabaseECreateProperties, SharingNodeDatabaseEUpdateProperties, SharingNodeDatabaseEId, QSharingNodeDatabase> implements IBaseSharingNodeDatabaseDmo {
-    constructor();
-}
 export interface IBaseSharingNodeRepoTransBlockDmo extends IDmo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock> {
 }
 export declare class BaseSharingNodeRepoTransBlockDmo extends Dmo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock> implements IBaseSharingNodeRepoTransBlockDmo {
@@ -85,6 +80,11 @@ export declare class BaseSharingNodeRepoTransBlockStageDmo extends Dmo<ISharingN
 export interface IBaseSharingNodeRepositoryDmo extends IDmo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, QSharingNodeRepository> {
 }
 export declare class BaseSharingNodeRepositoryDmo extends Dmo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, QSharingNodeRepository> implements IBaseSharingNodeRepositoryDmo {
+    constructor();
+}
+export interface IBaseSharingNodeTerminalDmo extends IDmo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal> {
+}
+export declare class BaseSharingNodeTerminalDmo extends Dmo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal> implements IBaseSharingNodeTerminalDmo {
     constructor();
 }
 export interface IBaseSynchronizationConflictDmo extends IDmo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, QSynchronizationConflict> {

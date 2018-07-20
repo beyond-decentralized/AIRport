@@ -15,5 +15,6 @@ __export(require("./metadata/RepositoryEntityType"));
 __export(require("./store/TerminalStore"));
 __export(require("./sync/ArrayChangeRecordIterator"));
 __export(require("./sync/DistributionStrategy"));
+__export(require("./InjectionTokens"));
 __export(require("./SharingAdaptor"));
 //# sourceMappingURL=index.js.map

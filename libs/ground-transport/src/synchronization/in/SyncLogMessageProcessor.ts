@@ -134,7 +134,7 @@ export class SyncLogMessageProcessor
 		for (const syncLogMessage of syncLogMessages) {
 			// sharingMessageResponseStageValues.push([
 			// 	syncLogMessage.tmSharingMessageId,
-			// 	syncLogMessage.agtDatabaseSyncLogId,
+			// 	syncLogMessage.agtTerminalSyncLogId,
 			// 	syncLogMessage.syncDatetime
 			// ]);
 

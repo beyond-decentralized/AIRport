@@ -13,7 +13,7 @@ import {DatabaseManagerToken} from "../InjectionTokens";
 export interface IDatabaseManager {
 
 	ensureInitialized(
-		databaseName: string,
+		terminalName: string,
 		timeout: number
 	): Promise<void>;
 
@@ -22,12 +22,12 @@ export interface IDatabaseManager {
 	): void;
 
 	isInitialized(
-		databaseName: string
+		terminalName: string
 	): boolean;
 
 	init(
 		storeType: StoreType,
-		databaseName: string
+		terminalName: string
 	): Promise<void>;
 
 }
@@ -44,14 +44,14 @@ export class DatabaseManager
 	}
 
 	async ensureInitialized(
-		databaseName: string = dbConst.DEFAULT_DB,
+		terminalName: string = dbConst.DEFAULT_DB,
 		timeout: number = 5000
 	): Promise<void> {
 		return new Promise((
 			resolve,
 			reject
 		) => {
-			this.doEnsureInitialized(databaseName, resolve, reject, timeout);
+			this.doEnsureInitialized(terminalName, resolve, reject, timeout);
 		});
 	}
 
@@ -76,10 +76,10 @@ export class DatabaseManager
 	}
 
 	isInitialized(
-		databaseName: string
+		terminalName: string
 	): boolean {
 		throw `Implement!`;
-		/*		let database = this.databaseMap[databaseName];
+		/*		let database = this.databaseMap[terminalName];
 				if (!database) {
 					return false;
 				}
@@ -88,18 +88,18 @@ export class DatabaseManager
 
 	async init(
 		storeType: StoreType,
-		databaseName: string
+		terminalName: string
 	): Promise<void> {
 		throw `Implement!`;
-		/*		let dbFacade: IDatabaseFacadeInternal = this.databaseMap[databaseName];
+		/*		let dbFacade: IDatabaseFacadeInternal = this.databaseMap[terminalName];
 				if (!dbFacade) {
-					dbFacade = new DatabaseFacade(databaseName);
-					this.databaseMap[databaseName] = dbFacade;
-					this.dbNames.push(databaseName);
-					this.dbNameSet[databaseName] = true;
+					dbFacade = new DatabaseFacade(terminalName);
+					this.databaseMap[terminalName] = dbFacade;
+					this.dbNames.push(terminalName);
+					this.dbNameSet[terminalName] = true;
 				}
-				if (this.isInitialized(databaseName)) {
-					throw `Database '${databaseName}' is already initialized`;
+				if (this.isInitialized(terminalName)) {
+					throw `Database '${terminalName}' is already initialized`;
 				}
 				this.allDbsEntityData.forEach(
 					entityData => {
@@ -115,34 +115,34 @@ export class DatabaseManager
 	/*
 	static async addDataStore(
 		storeType: StoreType,
-		databaseName: string
+		terminalName: string
 	): Promise<void> {
-		if (this.isInitialized(databaseName)) {
-			throw `Database '${databaseName}' is already initialized`;
+		if (this.isInitialized(terminalName)) {
+			throw `Database '${terminalName}' is already initialized`;
 		}
 		const newDataStore = await QDataStore.db(dbConst.DEFAULT_DB).save({
-			name: databaseName,
+			name: terminalName,
 			storeType: storeType
 		});
-		await TQ.init(storeType, databaseName);
+		await TQ.init(storeType, terminalName);
 	}
 	*/
 
 	private doEnsureInitialized(
-		databaseName: string,
+		terminalName: string,
 		resolve,
 		reject,
 		remainingTimeout: number
 	): void {
-		if (this.isInitialized(databaseName)) {
+		if (this.isInitialized(terminalName)) {
 			resolve();
 		}
 		if (remainingTimeout <= 0) {
-			reject(`Timeout out waiting for initialization of DB: [${databaseName}]`);
+			reject(`Timeout out waiting for initialization of DB: [${terminalName}]`);
 		}
 		remainingTimeout -= 100;
 		setTimeout(() => {
-			this.doEnsureInitialized(databaseName, resolve, reject, remainingTimeout);
+			this.doEnsureInitialized(terminalName, resolve, reject, remainingTimeout);
 		}, 100);
 	}
 }

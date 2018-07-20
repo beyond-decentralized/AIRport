@@ -5,8 +5,8 @@ import {
 import {AgtRepositoryId}          from "@airport/arrivals-n-departures";
 import {
 	ActorRandomId,
-	DatabaseName,
-	DatabaseSecondId,
+	TerminalName,
+	TerminalSecondId,
 	IActor,
 	RepositoryId,
 	UserUniqueId
@@ -62,7 +62,7 @@ export interface ISyncInChecker {
 		dataMessages: IDataToTM[],
 		actorMap: Map<ActorRandomId,
 			Map<UserUniqueId,
-				Map<DatabaseName, Map<DatabaseSecondId, Map<UserUniqueId, IActor>>>>>,
+				Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>,
 		sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
 	): Promise<[
 		ISharingMessage[],
@@ -112,7 +112,7 @@ export class SyncInChecker
 		dataMessages: IDataToTM[],
 		actorMap: Map<ActorRandomId,
 			Map<UserUniqueId,
-				Map<DatabaseName, Map<DatabaseSecondId, Map<UserUniqueId, IActor>>>>>,
+				Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>,
 		sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
 	): Promise<[
 		ISharingMessage[],
@@ -219,15 +219,15 @@ export class SyncInChecker
 		dataMessages: IDataToTM[],
 		actorMap: Map<ActorRandomId,
 			Map<UserUniqueId,
-				Map<DatabaseName, Map<DatabaseSecondId, Map<UserUniqueId, IActor>>>>>
+				Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>
 	): void {
 		for (const dataMessage of dataMessages) {
 			const data = dataMessage.data;
 			const actorMapByRemoteActorId: Map<RemoteActorId, IActor> = new Map();
 			const newActors: IActor[] = [];
 			for (const actor of data.actors) {
-				const localActor = actorMap.get(actor.randomId).get(actor.user.uniqueId).get(actor.database.name)
-					.get(actor.database.secondId).get(actor.database.owner.uniqueId);
+				const localActor = actorMap.get(actor.randomId).get(actor.user.uniqueId).get(actor.terminal.name)
+					.get(actor.terminal.secondId).get(actor.terminal.owner.uniqueId);
 				actorMapByRemoteActorId.set(actor.id, localActor);
 				newActors.push(localActor);
 			}

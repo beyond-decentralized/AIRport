@@ -6,7 +6,7 @@ import {
 import {AirportDatabaseToken}                from "@airport/air-control/lib/InjectionTokens";
 import {IAirportDatabase}                    from "@airport/air-control/lib/lingo/AirportDatabase";
 import {
-    AgtDatabaseSyncLogId,
+    AgtTerminalSyncLogId,
     AgtSyncRecordAddDatetime
     TmSharingMessageId
 }                                            from "@airport/arrivals-n-departures";
@@ -21,7 +21,7 @@ import {SharingMessageResponseStageDaoToken} from "../../InjectionTokens";
 
 export type SharingMessageResponseStageValues = [
     TmSharingMessageId,
-    AgtDatabaseSyncLogId,
+    AgtTerminalSyncLogId,
     // SyncStatus,
     AgtSyncRecordAddDatetime
     ];
@@ -62,7 +62,7 @@ export class SharingMessageResponseStageDao
             insertInto: smrs = Q.SharingMessageResponseStage,
             columns: [
                 smrs.id,
-                smrs.agtDatabaseSyncLogId,
+                smrs.agtTerminalSyncLogId,
                 // smrs.syncStatus,
                 smrs.syncTimestamp
             ],

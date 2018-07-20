@@ -8,14 +8,12 @@ import {
 	ManyToOne,
 	OneToMany
 }                           from "@airport/air-control";
-import {
-	CascadeType
-}                           from "@airport/ground-control";
+import {CascadeType}        from "@airport/ground-control";
 import {IActor,}            from "../../generated/infrastructure/qactor";
 import {IActorApplication,} from "../../generated/infrastructure/qactorapplication";
-import {IDatabase,}         from "../../generated/infrastructure/qdatabase";
 import {IUser}              from "../../generated/infrastructure/quser";
 import {IRepositoryActor,}  from "../../generated/repository/qrepositoryactor";
+import {Terminal}           from "./Terminal";
 
 export type ActorId = number;
 export type ActorRandomId = number;
@@ -34,8 +32,8 @@ export class Actor
 	user: IUser;
 
 	@ManyToOne()
-	@JoinColumn({name: "DATABASE_ID", referencedColumnName: "ID"})
-	database: IDatabase;
+	@JoinColumn({name: "TERMINAL_ID", referencedColumnName: "ID"})
+	terminal: Terminal;
 
 	@Column({name: "RANDOM_ID"})
 	@DbNumber()

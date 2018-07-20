@@ -29,9 +29,9 @@ export enum RepositorySyncStatus {
 	PERMANENTLY_REROUTED
 }
 
-export enum DatabaseSyncStatus {
-	// Database is actively syncing
+export enum TerminalSyncStatus {
+	// Terminal is actively syncing
 	ACTIVE,
-	// Database syncing has been suspended
+	// Terminal syncing has been suspended
 	SUSPENDED
 }

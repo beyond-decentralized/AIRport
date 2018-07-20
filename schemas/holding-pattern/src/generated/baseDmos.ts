@@ -42,16 +42,6 @@ import {
 	QApplication
 } from './infrastructure/qapplication';
 import {
-	IDatabase,
-	DatabaseESelect,
-	DatabaseECreateColumns,
-	DatabaseECreateProperties,
-	DatabaseEUpdateColumns,
-	DatabaseEUpdateProperties,
-	DatabaseEId,
-	QDatabase
-} from './infrastructure/qdatabase';
-import {
 	IOperationHistory,
 	OperationHistoryESelect,
 	OperationHistoryECreateColumns,
@@ -152,6 +142,16 @@ import {
 	QRepositoryTransactionHistory
 } from './history/qrepositorytransactionhistory';
 import {
+	ITerminal,
+	TerminalESelect,
+	TerminalECreateColumns,
+	TerminalECreateProperties,
+	TerminalEUpdateColumns,
+	TerminalEUpdateProperties,
+	TerminalEId,
+	QTerminal
+} from './infrastructure/qterminal';
+import {
 	ITransactionHistory,
 	TransactionHistoryESelect,
 	TransactionHistoryECreateColumns,
@@ -221,19 +221,6 @@ export class BaseApplicationDmo
 	implements IBaseApplicationDmo {
 	constructor() {
 		super(Q.db.currentVersion.entityMapByName['Application']);
-	}
-}
-
-
-export interface IBaseDatabaseDmo
-  extends IDmo<IDatabase, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateProperties, DatabaseEId, QDatabase> {
-}
-
-export class BaseDatabaseDmo
-  extends Dmo<IDatabase, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateProperties, DatabaseEId, QDatabase>
-	implements IBaseDatabaseDmo {
-	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Database']);
 	}
 }
 
@@ -364,6 +351,19 @@ export class BaseRepositoryTransactionHistoryDmo
 	implements IBaseRepositoryTransactionHistoryDmo {
 	constructor() {
 		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionHistory']);
+	}
+}
+
+
+export interface IBaseTerminalDmo
+  extends IDmo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, QTerminal> {
+}
+
+export class BaseTerminalDmo
+  extends Dmo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, QTerminal>
+	implements IBaseTerminalDmo {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['Terminal']);
 	}
 }
 
