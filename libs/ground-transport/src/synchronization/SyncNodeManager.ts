@@ -3,14 +3,20 @@ import {BatchedMessagesToTM}       from "@airport/arrivals-n-departures/lib/ling
 import {
 	ISharingNode,
 	ISharingNodeDao,
+	ISharingNodeTerminal,
+	ISharingNodeTerminalDao,
 	SharingNodeDaoToken,
-	SharingNodeId
+	SharingNodeId,
+	SharingNodeTerminalDaoToken
 }                                  from "@airport/moving-walkway";
 import {
 	ITerminalStore,
 	TerminalStoreToken
-} from "@airport/terminal-map";
-import {Inject, Service}           from "typedi";
+}                                  from "@airport/terminal-map";
+import {
+	Inject,
+	Service
+}                                  from "typedi";
 import {
 	SynchronizationInManagerToken,
 	SyncNodeManagerToken,
@@ -40,6 +46,8 @@ export class SyncNodeManager
 	constructor(
 		@Inject(SharingNodeDaoToken)
 		private sharingNodeDao: ISharingNodeDao,
+		@Inject(SharingNodeTerminalDaoToken)
+		private sharingNodeTerminalDao: ISharingNodeTerminalDao,
 		@Inject(SynchronizationInManagerToken)
 		private synchronizationInManager: ISynchronizationInManager,
 		@Inject(TerminalStoreToken)
@@ -56,6 +64,17 @@ export class SyncNodeManager
 		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
 		messagesBySharingNode: Map<SharingNodeId, MessageFromTM>
 	): Promise<void> {
+		let terminal;
+		this.terminalStore.terminal.subscribe((
+			theTerminal
+			) => terminal = theTerminal
+		).unsubscribe();
+		const sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>
+			= await this.sharingNodeTerminalDao
+			.findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(
+				terminal.id, Array.from(sharingNodeMap.keys())
+			);
+
 		const messageDepartures = [];
 		const sharingNodes: ISharingNode[] = [];
 		for (const [sharingNodeId, sharingNode] of sharingNodeMap) {
@@ -66,7 +85,9 @@ export class SyncNodeManager
 
 		const incomingMessages = await Promise.all(messageDepartures);
 
-		await this.synchronizationInManager.receiveMessages(sharingNodes, incomingMessages);
+
+		await this.synchronizationInManager.receiveMessages(
+			sharingNodes, incomingMessages, sharingNodeTerminalMap);
 	}
 
 	async sendMessage(

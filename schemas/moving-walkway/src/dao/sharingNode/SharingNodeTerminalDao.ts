@@ -21,7 +21,7 @@ import {SharingNodeTerminalDaoToken} from "../../InjectionTokens";
 export interface ISharingNodeTerminalDao
 	extends IBaseSharingNodeTerminalDao {
 
-	findBySharingNodeDbMapByTerminalIdAndSharingNodeIds(
+	findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(
 		terminalId: TerminalId,
 		sharingNodeIds: SharingNodeId[]
 	): Promise<Map<SharingNodeId, ISharingNodeTerminal>>;
@@ -40,14 +40,14 @@ export class SharingNodeTerminalDao
 		super(utils);
 	}
 
-	async findBySharingNodeDbMapByTerminalIdAndSharingNodeIds(
+	async findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(
 		terminalId: TerminalId,
 		sharingNodeIds: SharingNodeId[]
 	): Promise<Map<SharingNodeId, ISharingNodeTerminal>> {
-		const sharingNodeDbMapBySharingNodeId: Map<SharingNodeId, ISharingNodeTerminal> = new Map();
+		const sharingNodeTmMapBySharingNodeId: Map<SharingNodeId, ISharingNodeTerminal> = new Map();
 
 		let snd: QSharingNodeTerminal;
-		const sharingNodeDbs = await this.db.find.tree({
+		const sharingNodeTerminals = await this.db.find.tree({
 			select: {},
 			from: [snd = Q.SharingNodeTerminal],
 			where: and(
@@ -56,11 +56,11 @@ export class SharingNodeTerminalDao
 			)
 		});
 
-		for (const sharingNodeDb of sharingNodeDbs) {
-			sharingNodeDbMapBySharingNodeId.set(sharingNodeDb.sharingNode.id, sharingNodeDb);
+		for (const sharingNodeTerminal of sharingNodeTerminals) {
+			sharingNodeTmMapBySharingNodeId.set(sharingNodeTerminal.sharingNode.id, sharingNodeTerminal);
 		}
 
-		return sharingNodeDbMapBySharingNodeId;
+		return sharingNodeTmMapBySharingNodeId;
 	}
 
 }

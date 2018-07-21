@@ -17,8 +17,9 @@ const terminal_map_1 = require("@airport/terminal-map");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
 let SyncNodeManager = class SyncNodeManager {
-    constructor(sharingNodeDao, synchronizationInManager, terminalStore) {
+    constructor(sharingNodeDao, sharingNodeTerminalDao, synchronizationInManager, terminalStore) {
         this.sharingNodeDao = sharingNodeDao;
+        this.sharingNodeTerminalDao = sharingNodeTerminalDao;
         this.synchronizationInManager = synchronizationInManager;
         this.terminalStore = terminalStore;
     }
@@ -27,6 +28,10 @@ let SyncNodeManager = class SyncNodeManager {
         this.terminalStore.nodesBySyncFrequency.next(nodesBySyncFrequency);
     }
     async sendMessages(sharingNodeMap, messagesBySharingNode) {
+        let terminal;
+        this.terminalStore.terminal.subscribe((theTerminal) => terminal = theTerminal).unsubscribe();
+        const sharingNodeTerminalMap = await this.sharingNodeTerminalDao
+            .findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(terminal.id, Array.from(sharingNodeMap.keys()));
         const messageDepartures = [];
         const sharingNodes = [];
         for (const [sharingNodeId, sharingNode] of sharingNodeMap) {
@@ -35,7 +40,7 @@ let SyncNodeManager = class SyncNodeManager {
             messageDepartures.push(this.sendMessage(sharingNode, syncMessage));
         }
         const incomingMessages = await Promise.all(messageDepartures);
-        await this.synchronizationInManager.receiveMessages(sharingNodes, incomingMessages);
+        await this.synchronizationInManager.receiveMessages(sharingNodes, incomingMessages, sharingNodeTerminalMap);
     }
     async sendMessage(sharingNode, message) {
         return await this.sharingNodeEndPoint.communicateWithAGT(sharingNode, message);
@@ -50,9 +55,10 @@ let SyncNodeManager = class SyncNodeManager {
 SyncNodeManager = __decorate([
     typedi_1.Service(InjectionTokens_1.SyncNodeManagerToken),
     __param(0, typedi_1.Inject(moving_walkway_1.SharingNodeDaoToken)),
-    __param(1, typedi_1.Inject(InjectionTokens_1.SynchronizationInManagerToken)),
-    __param(2, typedi_1.Inject(terminal_map_1.TerminalStoreToken)),
-    __metadata("design:paramtypes", [Object, Object, Object])
+    __param(1, typedi_1.Inject(moving_walkway_1.SharingNodeTerminalDaoToken)),
+    __param(2, typedi_1.Inject(InjectionTokens_1.SynchronizationInManagerToken)),
+    __param(3, typedi_1.Inject(terminal_map_1.TerminalStoreToken)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], SyncNodeManager);
 exports.SyncNodeManager = SyncNodeManager;
 /**

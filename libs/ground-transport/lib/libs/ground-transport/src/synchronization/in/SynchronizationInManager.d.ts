@@ -1,5 +1,5 @@
 import { BatchedMessagesToTM, RepoTransBlockSyncOutcome, TmSharingMessageId } from "@airport/arrivals-n-departures";
-import { ISharingMessage, ISharingMessageDao, ISharingNode } from "@airport/moving-walkway";
+import { ISharingMessage, ISharingMessageDao, ISharingNode, ISharingNodeTerminal, SharingNodeId } from "@airport/moving-walkway";
 import { ISyncInChecker } from "./checker/SyncInChecker";
 import { IDataToTM } from "./SyncInUtils";
 import { ISyncLogMessageProcessor } from "./SyncLogMessageProcessor";
@@ -16,7 +16,7 @@ export interface ISyncLogToTM {
  * The manager for synchronizing data coming in the AGT-to-Terminal (TM) direction
  */
 export interface ISynchronizationInManager {
-    receiveMessages(sharingNodes: ISharingNode[], incomingMessages: BatchedMessagesToTM[]): Promise<void>;
+    receiveMessages(sharingNodes: ISharingNode[], incomingMessages: BatchedMessagesToTM[], sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>): Promise<void>;
 }
 export interface ISharingMessageWithData {
     sharingMessage: ISharingMessage;
@@ -41,7 +41,7 @@ export declare class SynchronizationInManager implements ISynchronizationInManag
      *      arrays by sharing node
      * @returns {Promise<void>}   Return when all of the messages have been processed
      */
-    receiveMessages(sharingNodes: ISharingNode[], incomingMessages: BatchedMessagesToTM[]): Promise<void>;
+    receiveMessages(sharingNodes: ISharingNode[], incomingMessages: BatchedMessagesToTM[], sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>): Promise<void>;
     private isValidLastChangeTime;
     private getLastChangeMillisFromRepoTransBlock;
 }

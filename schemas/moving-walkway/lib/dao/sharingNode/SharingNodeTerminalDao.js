@@ -20,18 +20,18 @@ let SharingNodeTerminalDao = class SharingNodeTerminalDao extends generated_1.Ba
     constructor(utils) {
         super(utils);
     }
-    async findBySharingNodeDbMapByTerminalIdAndSharingNodeIds(terminalId, sharingNodeIds) {
-        const sharingNodeDbMapBySharingNodeId = new Map();
+    async findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(terminalId, sharingNodeIds) {
+        const sharingNodeTmMapBySharingNodeId = new Map();
         let snd;
-        const sharingNodeDbs = await this.db.find.tree({
+        const sharingNodeTerminals = await this.db.find.tree({
             select: {},
             from: [snd = generated_1.Q.SharingNodeTerminal],
             where: air_control_1.and(snd.terminal.id.equals(terminalId), snd.sharingNode.id.in(sharingNodeIds))
         });
-        for (const sharingNodeDb of sharingNodeDbs) {
-            sharingNodeDbMapBySharingNodeId.set(sharingNodeDb.sharingNode.id, sharingNodeDb);
+        for (const sharingNodeTerminal of sharingNodeTerminals) {
+            sharingNodeTmMapBySharingNodeId.set(sharingNodeTerminal.sharingNode.id, sharingNodeTerminal);
         }
-        return sharingNodeDbMapBySharingNodeId;
+        return sharingNodeTmMapBySharingNodeId;
     }
 };
 SharingNodeTerminalDao = __decorate([

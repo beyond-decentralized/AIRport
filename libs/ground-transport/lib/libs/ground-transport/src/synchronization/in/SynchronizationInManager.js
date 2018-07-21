@@ -39,7 +39,7 @@ let SynchronizationInManager = class SynchronizationInManager {
      *      arrays by sharing node
      * @returns {Promise<void>}   Return when all of the messages have been processed
      */
-    async receiveMessages(sharingNodes, incomingMessages) {
+    async receiveMessages(sharingNodes, incomingMessages, sharingNodeTerminalMap) {
         const syncTimestamp = new Date();
         const allSyncLogMessages = [];
         const allDataMessages = [];
@@ -48,7 +48,13 @@ let SynchronizationInManager = class SynchronizationInManager {
         // Split up messages by type
         for (let i = 0; i < incomingMessages.length; i++) {
             const sharingNode = sharingNodes[i];
+            const sharingNodeTerminal = sharingNodeTerminalMap.get(sharingNode.id);
             const batchedMessagesToTM = incomingMessages[i];
+            const isMessageForThisTerminal = batchedMessagesToTM.targetAgtTerminalIds.some(agtTerminalId => agtTerminalId === sharingNodeTerminal.agtTerminalId);
+            if (!isMessageForThisTerminal) {
+                // TODO: handle messages for other terminals (?forward them?)
+                continue;
+            }
             const sharingMessage = {
                 origin: moving_walkway_1.DataOrigin.REMOTE,
                 agtSharingMessageId: batchedMessagesToTM.agtSharingMessageId,
@@ -179,7 +185,7 @@ let SynchronizationInManager = class SynchronizationInManager {
 __decorate([
     tower_1.Transactional(),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Array, Array]),
+    __metadata("design:paramtypes", [Array, Array, Map]),
     __metadata("design:returntype", Promise)
 ], SynchronizationInManager.prototype, "receiveMessages", null);
 SynchronizationInManager = __decorate([

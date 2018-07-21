@@ -12,8 +12,10 @@ import {
 	ISharingMessage,
 	ISharingMessageDao,
 	ISharingNode,
+	ISharingNodeTerminal,
 	RepositoryTransactionBlockData,
-	SharingMessageDaoToken
+	SharingMessageDaoToken,
+	SharingNodeId
 }                                       from "@airport/moving-walkway";
 import {Transactional}                  from "@airport/tower";
 import {Inject}                         from "typedi/decorators/Inject";
@@ -50,7 +52,8 @@ export interface ISynchronizationInManager {
 
 	receiveMessages(
 		sharingNodes: ISharingNode[],
-		incomingMessages: BatchedMessagesToTM[]
+		incomingMessages: BatchedMessagesToTM[],
+		sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>
 	): Promise<void>;
 
 }
@@ -95,7 +98,8 @@ export class SynchronizationInManager
 	@Transactional()
 	async receiveMessages(
 		sharingNodes: ISharingNode[],
-		incomingMessages: BatchedMessagesToTM[]
+		incomingMessages: BatchedMessagesToTM[],
+		sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>
 	): Promise<void> {
 		const syncTimestamp = new Date();
 		const allSyncLogMessages: ISyncLogToTM[] = [];
@@ -106,8 +110,21 @@ export class SynchronizationInManager
 
 		// Split up messages by type
 		for (let i = 0; i < incomingMessages.length; i++) {
+
 			const sharingNode = sharingNodes[i];
+			const sharingNodeTerminal: ISharingNodeTerminal
+				= sharingNodeTerminalMap.get(sharingNode.id);
+
 			const batchedMessagesToTM = incomingMessages[i];
+
+			const isMessageForThisTerminal = batchedMessagesToTM.targetAgtTerminalIds.some(
+				agtTerminalId =>
+					agtTerminalId === sharingNodeTerminal.agtTerminalId);
+			if (!isMessageForThisTerminal) {
+				// TODO: handle messages for other terminals (?forward them?)
+				continue;
+			}
+
 			const sharingMessage: ISharingMessage = {
 				origin: DataOrigin.REMOTE,
 				agtSharingMessageId: batchedMessagesToTM.agtSharingMessageId,
