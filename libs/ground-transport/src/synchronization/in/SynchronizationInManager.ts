@@ -193,7 +193,8 @@ export class SynchronizationInManager
 			}
 		}
 
-		await this.sharingMessageDao.bulkCreate(sharingMessages, false, false);
+		await this.sharingMessageDao.bulkCreate(
+			sharingMessages, false, false);
 
 
 		// These messages are responses to already sent messages
