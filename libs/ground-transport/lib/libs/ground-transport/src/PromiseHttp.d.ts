@@ -1,4 +1,3 @@
-import 'rxjs/add/operator/map';
 /**
  * Created by Papa on 1/5/2016.
  */

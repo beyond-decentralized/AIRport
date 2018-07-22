@@ -1,14 +1,17 @@
-import {Container, Service} from "typedi";
-import {ISharingNode} from "@airport/moving-walkway";
 import {
 	ISyncConnectionServer,
 	MessageFromTM,
 	MessageToTM,
 	SyncConnectionServerToken
-} from "@airport/ground-control";
-import {ISharingNodeEndpoint} from "../SharingNodeEndpoint";
-import {DirectResponse} from "./DirectResonse";
-import {DirectSharingNodeEndpointToken} from "../../../../../apps/terminal/src/InjectionTokens";
+}                                       from "@airport/arrivals-n-departures";
+import {ISharingNode}                   from "@airport/moving-walkway";
+import {
+	Container,
+	Service
+}                                       from "typedi";
+import {DirectSharingNodeEndpointToken} from "../../../InjectionTokens";
+import {ISharingNodeEndpoint}           from "../SharingNodeEndpoint";
+import {DirectResponse}                 from "./DirectResonse";
 
 /**
  * P2P endpoint to a built-in AGT

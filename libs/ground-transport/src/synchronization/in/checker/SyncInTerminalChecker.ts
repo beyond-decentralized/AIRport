@@ -1,5 +1,4 @@
 import {Inject, Service}            from "typedi";
-import {SyncInTerminalCheckerToken} from "../../../../../apps/terminal/src/InjectionTokens";
 import {
 	TerminalDaoToken,
 	TerminalName,
@@ -11,6 +10,7 @@ import {
 	UserUniqueId
 }                                   from "@airport/holding-pattern";
 import {IUtils, UtilsToken}         from "@airport/air-control";
+import {SyncInTerminalCheckerToken} from "../../../InjectionTokens";
 import {IDataToTM}                  from "../SyncInUtils";
 import {UserCheckResults}           from "./SyncInUserChecker";
 

@@ -2,10 +2,10 @@
 /**
  * Created by Papa on 1/6/2016.
  */
-import { GoogleDrive } from '../drive/GoogleDrive';
-import { Subject } from 'rxjs/Subject';
-import { DriveResponse } from '../drive/GoogleDriveModel';
 import { ChangeRecord } from "@airport/terminal-map";
+import { Subject } from 'rxjs';
+import { GoogleDrive } from '../drive/GoogleDrive';
+import { DriveResponse } from '../drive/GoogleDriveModel';
 export declare class GoogleRealtime {
     private googleDrive;
     constructor(googleDrive: GoogleDrive);

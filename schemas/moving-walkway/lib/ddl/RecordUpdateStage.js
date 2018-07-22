@@ -20,9 +20,9 @@ let RecordUpdateStage = class RecordUpdateStage {
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "SCHEMA_INDEX", referencedColumnName: "INDEX" }),
+    air_control_1.JoinColumn({ name: "SCHEMA_VERSION_ID", referencedColumnName: "ID" }),
     __metadata("design:type", Object)
-], RecordUpdateStage.prototype, "schema", void 0);
+], RecordUpdateStage.prototype, "schemaVersion", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),

@@ -1,13 +1,12 @@
-import {Service}                                 from "typedi";
-import {SyncInConsistencyCheckerToken, Terminal} from "../../../../../apps/terminal/src/InjectionTokens";
-import {Logger}                                  from "@airport/approach-lighting-system/lib/Logger";
-import {IDataToTM}                               from "../SyncInUtils";
+import {Service}               from "typedi";
+import {GroundTransportLogger} from "../../../InjectionTokens";
+import {IDataToTM}             from "../SyncInUtils";
 
 export interface ISyncInConsistencyChecker {
 
 }
 
-const log = new Logger(Terminal, "SyncInConsistencyChecker");
+const log = GroundTransportLogger.add("SyncInConsistencyChecker");
 
 @Service(SyncInConsistencyCheckerToken)
 export class SyncInConsistencyChecker
@@ -15,15 +14,12 @@ export class SyncInConsistencyChecker
 
 
 	ensureConsistency(
-
 		message: IDataToTM
 	) {
 
 	}
 
-	private isRepositoryConsistent(
-
-	): boolean {
+	private isRepositoryConsistent(): boolean {
 
 	}
 
@@ -33,9 +29,7 @@ export class SyncInConsistencyChecker
 
 	}
 
-	private areSchemasConsistent(
-
-	): boolean {
+	private areSchemasConsistent(): boolean {
 
 	}
 

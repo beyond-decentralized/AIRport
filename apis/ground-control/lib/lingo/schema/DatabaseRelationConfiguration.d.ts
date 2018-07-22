@@ -24,7 +24,7 @@ export declare enum CascadeType {
     NONE = 0,
     ALL = 1,
     PERSIST = 2,
-    REMOVE = 3
+    REMOVE = 3,
 }
 /**
  * One-To-Many relation configuration

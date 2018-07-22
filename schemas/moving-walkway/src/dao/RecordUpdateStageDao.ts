@@ -6,13 +6,14 @@ import {
 	IUtils,
 	or,
 	UtilsToken
-} from "@airport/air-control";
+}                                  from "@airport/air-control";
 import {
 	ColumnIndex,
+	JSONBaseOperation,
 	SchemaIndex,
-	TableIndex,
-	JSONBaseOperation
-}         from "@airport/ground-control";
+	SchemaVersionId,
+	TableIndex
+}                                  from "@airport/ground-control";
 import {
 	ActorId,
 	RecordHistoryActorRecordId,
@@ -35,7 +36,7 @@ import {RecordUpdateStageDaoToken} from "../InjectionTokens";
 export type RecordUpdateStageValue = any;
 
 export type RecordUpdateStageValues = [
-	SchemaIndex,
+	SchemaVersionId,
 	SchemaEntityIndex,
 	RepositoryId,
 	ActorId,
@@ -53,6 +54,7 @@ export interface IRecordUpdateStageDao
 
 	updateEntityWhereIds(
 		schemaIndex: SchemaIndex,
+		schemaVersionId: SchemaVersionId,
 		tableIndex: TableIndex,
 		idMap: Map<RepositoryId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
@@ -75,7 +77,7 @@ export class RecordUpdateStageDao
 		const rus: QRecordUpdateStage = Q.RecordUpdateStage;
 
 		const columns = [
-			rus.schema.index,
+			rus.schemaVersion.id,
 			rus.entity.index,
 			rus.repository.id,
 			rus.actor.id,
@@ -107,6 +109,7 @@ export class RecordUpdateStageDao
 
 	async updateEntityWhereIds(
 		schemaIndex: SchemaIndex,
+		schemaVersionId: SchemaVersionId,
 		tableIndex: TableIndex,
 		idMap: Map<RepositoryId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
@@ -139,7 +142,7 @@ export class RecordUpdateStageDao
 				select: columnRus.updatedValue,
 				where:
 					and(
-						columnRus.schema.index.equals(schemaIndex),
+						columnRus.schemaVersion.id.equals(schemaVersionId),
 						columnRus.entity.index.equals(tableIndex),
 						columnRus.repository.id.equals(qEntity.repository.id),
 						columnRus.actor.id.equals(qEntity.actor.id),

@@ -1,7 +1,7 @@
-import { GoogleDrive } from './GoogleDrive';
+import { GoogleChangeListShareInfo, GoogleSetupInfo } from '@airport/terminal-map';
 import { GoogleApi } from '../GoogleApi';
+import { GoogleDrive } from './GoogleDrive';
 import { DriveResponse } from './GoogleDriveModel';
-import { GoogleSetupInfo, GoogleChangeListShareInfo } from '@airport/terminal-map';
 /**
  * Created by Papa on 1/3/2016.
  */

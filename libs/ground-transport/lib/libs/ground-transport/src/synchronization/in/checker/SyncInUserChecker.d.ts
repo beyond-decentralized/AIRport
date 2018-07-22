@@ -1,5 +1,5 @@
+import { IUtils } from "@airport/air-control";
 import { IUser, IUserDao, UserId, UserUniqueId } from "@airport/holding-pattern";
-import { IUtils } from "@airport/air-control/lib/lingo/utils/Utils";
 import { IDataToTM } from "../SyncInUtils";
 export interface UserCheckResults {
     map: Map<UserUniqueId, IUser>;

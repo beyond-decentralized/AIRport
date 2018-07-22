@@ -3,8 +3,8 @@ import {
 	SchemaIndex,
 	TableIndex,
 	UtilsToken
-}                                                     from "@airport/air-control";
-import {ChangeType}                                   from "@airport/ground-control";
+}                                                 from "@airport/air-control";
+import {ChangeType}                               from "@airport/ground-control";
 import {
 	ActorId,
 	IRecordHistory,
@@ -13,7 +13,7 @@ import {
 	RepositoryEntityActorRecordId,
 	RepositoryId,
 	RepositoryTransactionHistoryDaoToken
-}                                                     from "@airport/holding-pattern";
+}                                                 from "@airport/holding-pattern";
 import {
 	IMissingRecord,
 	IMissingRecordDao,
@@ -28,19 +28,21 @@ import {
 	MissingRecordStatus,
 	SharingMessageDaoToken,
 	SharingMessageProcessingStatus
-}                                                     from "@airport/moving-walkway";
+}                                                 from "@airport/moving-walkway";
 import {
 	Inject,
 	Service
-}                                                     from "typedi";
-import {SyncInUtilsToken}                             from "../../../../../apps/terminal/src/InjectionTokens";
-import {SyncInRepositoryTransactionBlockCreatorToken} from "../../../InjectionTokens";
-import {ISyncInRepositoryTransactionBlockCreator}     from "../creator/SyncInRepositoryTransactionBlockCreator";
+}                                                 from "typedi";
+import {
+	SyncInDataCheckerToken,
+	SyncInRepositoryTransactionBlockCreatorToken
+}                                                 from "../../../InjectionTokens";
+import {ISyncInRepositoryTransactionBlockCreator} from "../creator/SyncInRepositoryTransactionBlockCreator";
 import {
 	DataCheckResults,
 	IDataToTM,
 	ISyncInUtils
-}                                                     from "../SyncInUtils";
+}                                                 from "../SyncInUtils";
 
 export interface ISyncInDataChecker {
 
@@ -51,7 +53,7 @@ export interface ISyncInDataChecker {
 
 }
 
-@Service(SyncInDataChecker)
+@Service(SyncInDataCheckerToken)
 export class SyncInDataChecker
 	implements ISyncInDataChecker {
 

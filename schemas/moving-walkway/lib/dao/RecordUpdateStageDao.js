@@ -24,7 +24,7 @@ let RecordUpdateStageDao = class RecordUpdateStageDao extends generated_1.BaseRe
     async insertValues(values) {
         const rus = generated_1.Q.RecordUpdateStage;
         const columns = [
-            rus.schema.index,
+            rus.schemaVersion.id,
             rus.entity.index,
             rus.repository.id,
             rus.actor.id,
@@ -41,7 +41,7 @@ let RecordUpdateStageDao = class RecordUpdateStageDao extends generated_1.BaseRe
             values
         });
     }
-    async updateEntityWhereIds(schemaIndex, tableIndex, idMap, updatedColumnIndexes) {
+    async updateEntityWhereIds(schemaIndex, schemaVersionId, tableIndex, idMap, updatedColumnIndexes) {
         const dbEntity = this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
         const qEntity = this.airportDb.qSchemas[schemaIndex][dbEntity.name];
         const repositoryEquals = [];
@@ -60,7 +60,7 @@ let RecordUpdateStageDao = class RecordUpdateStageDao extends generated_1.BaseRe
                     columnRus
                 ],
                 select: columnRus.updatedValue,
-                where: air_control_1.and(columnRus.schema.index.equals(schemaIndex), columnRus.entity.index.equals(tableIndex), columnRus.repository.id.equals(qEntity.repository.id), columnRus.actor.id.equals(qEntity.actor.id), columnRus.actorRecordId.equals(qEntity.actorRecordId), columnRus.column.index.equals(columnIndex))
+                where: air_control_1.and(columnRus.schemaVersion.id.equals(schemaVersionId), columnRus.entity.index.equals(tableIndex), columnRus.repository.id.equals(qEntity.repository.id), columnRus.actor.id.equals(qEntity.actor.id), columnRus.actorRecordId.equals(qEntity.actorRecordId), columnRus.column.index.equals(columnIndex))
             });
             const propertyName = dbEntity.columns[columnIndex]
                 .propertyColumns[0].property.name;

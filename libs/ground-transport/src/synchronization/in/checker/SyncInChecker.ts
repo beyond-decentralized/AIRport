@@ -5,10 +5,10 @@ import {
 import {AgtRepositoryId}          from "@airport/arrivals-n-departures";
 import {
 	ActorRandomId,
-	TerminalName,
-	TerminalSecondId,
 	IActor,
 	RepositoryId,
+	TerminalName,
+	TerminalSecondId,
 	UserUniqueId
 }                                 from "@airport/holding-pattern";
 import {
@@ -25,7 +25,7 @@ import {
 	SharingMessageDaoToken,
 	SharingMessageProcessingStatus,
 	SharingNodeId
-} from "@airport/moving-walkway";
+}                                 from "@airport/moving-walkway";
 import {
 	ISchema,
 	SchemaDomainName
@@ -151,7 +151,6 @@ export class SyncInChecker
 			missingRecordRepoTransBlocks,
 			sharingMessagesWithIncompatibleData,
 		} = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas);
-
 
 
 		this.recordAllRepoTransBlocksCompatibleOrNot();

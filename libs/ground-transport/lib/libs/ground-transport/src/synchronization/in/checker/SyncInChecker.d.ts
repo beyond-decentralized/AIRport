@@ -1,6 +1,6 @@
 import { SchemaIndex } from "@airport/air-control";
 import { AgtRepositoryId } from "@airport/arrivals-n-departures";
-import { ActorRandomId, TerminalName, TerminalSecondId, IActor, RepositoryId, UserUniqueId } from "@airport/holding-pattern";
+import { ActorRandomId, IActor, RepositoryId, TerminalName, TerminalSecondId, UserUniqueId } from "@airport/holding-pattern";
 import { IMissingRecordRepoTransBlockDao, IRepositoryTransactionBlock, IRepoTransBlockSchemasToChangeDao, ISharingMessage, ISharingMessageDao, SharingNodeId } from "@airport/moving-walkway";
 import { IDataToTM, ISyncInUtils } from "../SyncInUtils";
 import { ISyncInActorChecker } from "./SyncInActorChecker";

@@ -1,10 +1,10 @@
 import { IUtils } from "@airport/air-control";
-import { ITerminal, IRepositoryDao, IRepositoryTransactionHistoryDao } from "@airport/holding-pattern";
-import { IRepositoryTransactionBlockDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISharingNode, ISharingNodeDao, ISharingNodeTerminalDao, ISharingNodeRepositoryDao, ISharingNodeRepoTransBlockDao } from "@airport/moving-walkway";
+import { IRepositoryDao, IRepositoryTransactionHistoryDao, ITerminal } from "@airport/holding-pattern";
+import { IRepositoryTransactionBlockDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISharingNode, ISharingNodeDao, ISharingNodeRepositoryDao, ISharingNodeRepoTransBlockDao, ISharingNodeTerminalDao } from "@airport/moving-walkway";
 import { ISchemaDao } from "@airport/traffic-pattern";
-import { ISyncOutSerializer } from "./SyncOutSerializer";
 import { ISyncOutMessageSender } from "./SyncOutMessageSender";
 import { ISyncOutRepositoryTransactionBlockCreator } from "./SyncOutRepositoryTransactionBlockCreator";
+import { ISyncOutSerializer } from "./SyncOutSerializer";
 export interface ISynchronizationOutManager {
     synchronize(sharingNodes: ISharingNode[], terminal: ITerminal): Promise<void>;
 }

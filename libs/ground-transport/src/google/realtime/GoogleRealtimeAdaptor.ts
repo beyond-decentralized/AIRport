@@ -1,7 +1,10 @@
-import {GoogleRealtime} from './GoogleRealtime';
-import {Subject} from 'rxjs/Subject';
-import {ChangeRecord, ChangeRecordIterator} from '@airport/terminal-map';
+import {
+	ChangeRecord,
+	ChangeRecordIterator
+}                       from '@airport/terminal-map';
+import {Subject}        from 'rxjs';
 import {DocumentHandle} from './DocumentHandle';
+import {GoogleRealtime} from './GoogleRealtime';
 
 /**
  * Created by Papa on 1/7/2016.
@@ -16,10 +19,10 @@ export enum Operation {
 export class GoogleRealtimeAdaptorException {
 
 	constructor(
-		public message:string,
-		public operation:Operation,
-		public event:gapi.drive.realtime.BaseModelEvent,
-		public exception?:any
+		public message: string,
+		public operation: Operation,
+		public event: gapi.drive.realtime.BaseModelEvent,
+		public exception?: any
 	) {
 	}
 
@@ -27,16 +30,16 @@ export class GoogleRealtimeAdaptorException {
 
 export class GoogleChangeRecordIterator implements ChangeRecordIterator {
 
-	private nextValue:ChangeRecord;
+	private nextValue: ChangeRecord;
 
 	constructor(
-		private changeList:gapi.drive.realtime.CollaborativeList<ChangeRecord>,
-		private event:gapi.drive.realtime.BaseModelEvent,
-		private nextIndex:number = 0
+		private changeList: gapi.drive.realtime.CollaborativeList<ChangeRecord>,
+		private event: gapi.drive.realtime.BaseModelEvent,
+		private nextIndex: number = 0
 	) {
 	}
 
-	next():ChangeRecord {
+	next(): ChangeRecord {
 		if (this.hasNext()) {
 			let nextValue = this.nextValue;
 			this.nextValue = null;
@@ -47,7 +50,7 @@ export class GoogleChangeRecordIterator implements ChangeRecordIterator {
 		throw generateException(message, Operation.GET_NEXT_CHANGE, this.event);
 	}
 
-	hasNext():boolean {
+	hasNext(): boolean {
 		if (this.nextValue) {
 			return true;
 		}
@@ -63,11 +66,11 @@ export class GoogleChangeRecordIterator implements ChangeRecordIterator {
 
 let
 	generateException = function (
-		message:string,
-		operation:Operation,
-		event:gapi.drive.realtime.BaseModelEvent,
-		exception?:any
-	):GoogleRealtimeAdaptorException {
+		message: string,
+		operation: Operation,
+		event: gapi.drive.realtime.BaseModelEvent,
+		exception?: any
+	): GoogleRealtimeAdaptorException {
 		message = message + '.  User ID: ' + event.userId + ', Session ID: ' + event.sessionId;
 
 		return new GoogleRealtimeAdaptorException(
@@ -81,11 +84,11 @@ let
 export class GoogleRealtimeAdaptor {
 
 	constructor(
-		private googleRealtime:GoogleRealtime
+		private googleRealtime: GoogleRealtime
 	) {
 	}
 
-	startTest():DocumentHandle {
+	startTest(): DocumentHandle {
 		let document = this.googleRealtime.createInMemoryDocument();
 		let eventHub = this.createDocumentHandle(document);
 
@@ -93,9 +96,9 @@ export class GoogleRealtimeAdaptor {
 	}
 
 	startNewShare(
-		fileId:string
-	):Promise<DocumentHandle> {
-		return this.googleRealtime.initializeFile(fileId).then(( document ) => {
+		fileId: string
+	): Promise<DocumentHandle> {
+		return this.googleRealtime.initializeFile(fileId).then((document) => {
 			let eventHub = this.createDocumentHandle(document);
 
 			return eventHub;
@@ -103,8 +106,8 @@ export class GoogleRealtimeAdaptor {
 	}
 
 	private createDocumentHandle(
-		document:gapi.drive.realtime.Document
-	):DocumentHandle {
+		document: gapi.drive.realtime.Document
+	): DocumentHandle {
 		let changeList = this.googleRealtime.getChangeList(document);
 		let valuesAddedSubject = this.subscribeToChangesAddedByOthers(document);
 		let valuesArchivedSubject = this.subscribeToCleanupByOwner(document, false);
@@ -114,15 +117,15 @@ export class GoogleRealtimeAdaptor {
 	}
 
 	private subscribeToChangesAddedByOthers(
-		document:gapi.drive.realtime.Document
-	):Subject<GoogleChangeRecordIterator> {
+		document: gapi.drive.realtime.Document
+	): Subject<GoogleChangeRecordIterator> {
 		let valuesAddedSubject = new Subject<gapi.drive.realtime.ValuesAddedEvent<ChangeRecord>>();
 		let changeList = this.googleRealtime.getChangeList(document);
 		this.googleRealtime.subscribeToValuesAdded(changeList, valuesAddedSubject);
 
 		let changesAddedSubject = new Subject<GoogleChangeRecordIterator>();
 
-		valuesAddedSubject.subscribe(( event:gapi.drive.realtime.ValuesAddedEvent<ChangeRecord> ) => {
+		valuesAddedSubject.subscribe((event: gapi.drive.realtime.ValuesAddedEvent<ChangeRecord>) => {
 			console.log('Changes by others.  BaseModelEvent Type: ' + event.type);
 
 			if (event.isLocal) {
@@ -147,16 +150,16 @@ export class GoogleRealtimeAdaptor {
 	}
 
 	private subscribeToCleanupByOwner(
-		document:gapi.drive.realtime.Document,
-		iAmTheOwner:boolean
-	):Subject<GoogleChangeRecordIterator> {
+		document: gapi.drive.realtime.Document,
+		iAmTheOwner: boolean
+	): Subject<GoogleChangeRecordIterator> {
 		let valuesRemovedSubject = new Subject<gapi.drive.realtime.ValuesRemovedEvent<ChangeRecord>>();
 		let changeList = this.googleRealtime.getChangeList(document);
 		this.googleRealtime.subscribeToValuesRemoved(changeList, valuesRemovedSubject);
 
 		let changesRemovedSubject = new Subject<GoogleChangeRecordIterator>();
 
-		valuesRemovedSubject.subscribe(( event:gapi.drive.realtime.ValuesRemovedEvent<ChangeRecord> ) => {
+		valuesRemovedSubject.subscribe((event: gapi.drive.realtime.ValuesRemovedEvent<ChangeRecord>) => {
 			console.log('Clean-up by owner.  BaseModelEvent Type: ' + event.type);
 
 			if (event.isLocal) {
@@ -187,14 +190,14 @@ export class GoogleRealtimeAdaptor {
 	}
 
 	private subscribeToUnexpectedModifications(
-		changeList:gapi.drive.realtime.CollaborativeList<ChangeRecord>,
-		document:gapi.drive.realtime.Document
-	):Subject<GoogleRealtimeAdaptorException> {
+		changeList: gapi.drive.realtime.CollaborativeList<ChangeRecord>,
+		document: gapi.drive.realtime.Document
+	): Subject<GoogleRealtimeAdaptorException> {
 		let valuesRemovedSubject = new Subject<gapi.drive.realtime.ObjectChangedEvent>();
 		this.googleRealtime.subscribeToAnyObjectChanged(document, valuesRemovedSubject);
 
 		let changesRemovedSubject = new Subject<GoogleRealtimeAdaptorException>();
-		valuesRemovedSubject.subscribe(( event ) => {
+		valuesRemovedSubject.subscribe((event) => {
 			let message = 'Unexpected change - ';
 			if (!event.events) {
 				message += ' target events not found';
@@ -221,9 +224,9 @@ export class GoogleRealtimeAdaptor {
 	}
 
 	openShare(
-		fileId:string
-	):Promise<DocumentHandle> {
-		return this.googleRealtime.loadFile(fileId).then(( document ) => {
+		fileId: string
+	): Promise<DocumentHandle> {
+		return this.googleRealtime.loadFile(fileId).then((document) => {
 			let documentHandle = this.createDocumentHandle(document);
 			return documentHandle;
 		});

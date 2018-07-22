@@ -12,11 +12,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../../../../apps/terminal/src/InjectionTokens");
 const air_control_1 = require("@airport/air-control");
-const Inject_1 = require("typedi/decorators/Inject");
 const moving_walkway_1 = require("@airport/moving-walkway");
+const typedi_1 = require("typedi");
+const InjectionTokens_1 = require("../../InjectionTokens");
 let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
     constructor(airportDb, recordUpdateStageDao, utils) {
         this.airportDb = airportDb;
@@ -129,7 +128,8 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
      * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap
      * @returns {RecordKeyMap}
      */
-    getRecordKeyMap(recordUpdateMap, // combination of columns/values being updated
+    getRecordKeyMap(recordUpdateMap, // combination of columns/values being
+    // updated
     finalTableUpdateMap) {
         const updatedColumns = [];
         for (const columnIndex of recordUpdateMap.keys()) {
@@ -206,11 +206,10 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
 };
 Stage2SyncedInDataProcessor = __decorate([
     typedi_1.Service(InjectionTokens_1.Stage2SyncedInDataProcessorToken),
-    __param(0, Inject_1.Inject(air_control_1.AirportTerminalToken)),
-    __param(1, Inject_1.Inject(moving_walkway_1.RecordUpdateStageDaoToken)),
-    __param(2, Inject_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [typeof (_a = typeof air_control_1.IAirportTerminal !== "undefined" && air_control_1.IAirportTerminal) === "function" && _a || Object, Object, Object])
+    __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
+    __param(1, typedi_1.Inject(moving_walkway_1.RecordUpdateStageDaoToken)),
+    __param(2, typedi_1.Inject(air_control_1.UtilsToken)),
+    __metadata("design:paramtypes", [Object, Object, Object])
 ], Stage2SyncedInDataProcessor);
 exports.Stage2SyncedInDataProcessor = Stage2SyncedInDataProcessor;
-var _a;
 //# sourceMappingURL=Stage2SyncedInDataProcessor.js.map

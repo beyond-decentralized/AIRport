@@ -1,7 +1,9 @@
-import {GoogleChangeRecordIterator} from './GoogleRealtimeAdaptor';
-import {GoogleRealtimeAdaptorException} from './GoogleRealtimeAdaptor';
-import {Subject} from 'rxjs/Subject';
 import {ChangeRecord} from '@airport/terminal-map';
+import {Subject}      from 'rxjs';
+import {
+	GoogleChangeRecordIterator,
+	GoogleRealtimeAdaptorException
+}                     from './GoogleRealtimeAdaptor';
 
 /**
  * Created by Papa on 1/10/2016.
@@ -10,17 +12,17 @@ import {ChangeRecord} from '@airport/terminal-map';
 export class DocumentHandle {
 
 	constructor(
-		private document:gapi.drive.realtime.Document,
-		public changeList:gapi.drive.realtime.CollaborativeList<any>,
-		public valuesAddedSubject:Subject<GoogleChangeRecordIterator>,
-		private valuesArchivedSubject:Subject<GoogleChangeRecordIterator>,
-		public otherChangesSubject:Subject<GoogleRealtimeAdaptorException>
+		private document: gapi.drive.realtime.Document,
+		public changeList: gapi.drive.realtime.CollaborativeList<any>,
+		public valuesAddedSubject: Subject<GoogleChangeRecordIterator>,
+		private valuesArchivedSubject: Subject<GoogleChangeRecordIterator>,
+		public otherChangesSubject: Subject<GoogleRealtimeAdaptorException>
 	) {
 	}
 
 	addChangeRecord(
-		changeRecord:ChangeRecord
-	):Promise<any> {
+		changeRecord: ChangeRecord
+	): Promise<any> {
 		return new Promise<any>((
 			resolve,
 			reject
@@ -31,8 +33,8 @@ export class DocumentHandle {
 	}
 
 	addChangeRecords(
-		changeRecords:ChangeRecord[]
-	):Promise<void> {
+		changeRecords: ChangeRecord[]
+	): Promise<void> {
 		return new Promise<any>((
 			resolve,
 			reject

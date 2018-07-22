@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const terminal_map_1 = require("@airport/terminal-map");
-const Subject_1 = require("rxjs/Subject");
+const rxjs_1 = require("rxjs");
 /**
  * Created by Papa on 11/26/2016.
  */
@@ -10,8 +10,8 @@ class InMemoryChangeList {
         this.shareInfo = shareInfo;
         this.platformInfo = platformInfo;
         this.changeStore = changeStore;
-        this._errorSubject = new Subject_1.Subject();
-        this._changesAddedRemotelySubject = new Subject_1.Subject();
+        this._errorSubject = new rxjs_1.Subject();
+        this._changesAddedRemotelySubject = new rxjs_1.Subject();
         changeStore.getChangesAddedSubject(this.shareInfo.name).subscribe((changeRecords) => {
             let remotelyAddedChanges = changeRecords.filter(changeRecord => changeRecord[platformInfo.dbIdField] !== shareInfo.dbId);
             if (remotelyAddedChanges.length) {

@@ -1,13 +1,18 @@
-import {BatchedMessagesToTM, MessageToTM} from "@airport/ground-control";
-
 /**
  * Response handler for a built-in AGT (in P2P setup)
  */
+import {
+	BatchedMessagesToTM,
+	MessageToTM
+} from "@airport/arrivals-n-departures";
+
 export class DirectResponse {
 
 	statusCode: number;
 	private data: BatchedMessagesToTM = {
+		agtSharingMessageId: null,
 		protocolVersion: 0,
+		targetAgtTerminalIds: [],
 		messages: []
 	};
 

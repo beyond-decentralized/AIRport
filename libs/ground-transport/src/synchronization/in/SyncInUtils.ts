@@ -7,6 +7,7 @@ import {
 	ColumnIndex,
 	SchemaIndex,
 	SchemaName,
+	SchemaVersionId,
 	TableIndex
 }                                      from "@airport/ground-control";
 import {
@@ -121,7 +122,8 @@ export interface ISyncInUtils {
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
 		recordMapBySchemaTableAndRepository: Map<SchemaIndex,
-			Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>
+			Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>,
+		schemaMapBySchemaVersionId: Map<SchemaVersionId, ISchema>
 	): Map<CI, V>;
 
 	createSharingMessage(
@@ -159,13 +161,16 @@ export class SyncInUtils
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
 		recordMapBySchemaTableAndRepository: Map<SchemaIndex,
-			Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>
+			Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>,
+		schemaMapBySchemaVersionId: Map<SchemaVersionId, ISchema>
 	): Map<CI, V> {
 		// FIXME: ensure that OperationHistory schemaVersion is correctly set
+		const schema = schemaMapBySchemaVersionId.get(operationHistory.schemaVersion.id);
+
 		return <any>this.utils.ensureChildJsMap(
 			this.utils.ensureChildJsMap(
 				this.utils.ensureChildJsMap(
-					recordMapBySchemaTableAndRepository, operationHistory.schemaVersion.schema.index),
+					recordMapBySchemaTableAndRepository, schema.index),
 				operationHistory.entity.index), repositoryId);
 	}
 

@@ -1,11 +1,19 @@
-import {Inject}                                              from "typedi/decorators/Inject";
-import {SyncInUserCheckerToken}                              from "../../../../../apps/terminal/src/InjectionTokens";
-import {IUser, IUserDao, UserDaoToken, UserId, UserUniqueId} from "@airport/holding-pattern";
-import {UtilsToken}                                          from "@airport/air-control/lib/InjectionTokens";
-import {IUtils}                                              from "@airport/air-control/lib/lingo/utils/Utils";
-import {IDataToTM}                                           from "../SyncInUtils";
-import {RepositoryTransactionBlockData}                      from "@airport/moving-walkway/lib/common";
-import {Y}                                                   from "@airport/air-control/lib/lingo/query/facade/Query";
+import {
+	IUtils,
+	UtilsToken,
+	Y
+}                                       from "@airport/air-control";
+import {
+	IUser,
+	IUserDao,
+	UserDaoToken,
+	UserId,
+	UserUniqueId
+}                                       from "@airport/holding-pattern";
+import {RepositoryTransactionBlockData} from "@airport/moving-walkway";
+import {Inject}                         from "typedi";
+import {SyncInUserCheckerToken}         from "../../../InjectionTokens";
+import {IDataToTM}                      from "../SyncInUtils";
 
 export interface UserCheckResults {
 	map: Map<UserUniqueId, IUser>;

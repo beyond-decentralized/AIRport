@@ -6,5 +6,5 @@ export declare enum QueryResultType {
     FIELD = 4,
     RAW = 5,
     MAPPED_ENTITY_GRAPH = 6,
-    MAPPED_ENTITY_TREE = 7
+    MAPPED_ENTITY_TREE = 7,
 }

@@ -1,52 +1,39 @@
-import {IUtils, UtilsToken} from "@airport/air-control";
-import {IStoreDriver, StoreType} from "@airport/ground-control";
-import {ITransactionHistory, Q} from "@airport/holding-pattern";
-import {ITransactionHistoryDmo} from "@airport/holding-pattern/lib/dmo/history/TransactionHistoryDmo";
-import {TransactionHistoryDmoToken} from "@airport/holding-pattern/lib/InjectionTokens";
-import {SyncSchemaMap} from "@airport/terminal-map";
-import {Transactional} from "@airport/tower";
-import {Inject, Service} from "typedi";
-import {IOfflineDeltaStore} from "../data/OfflineDeltaStore";
+import {
+	IUtils,
+	UtilsToken
+}                                from "@airport/air-control";
+import {
+	IStoreDriver,
+	StoreType,
+	SyncSchemaMap
+}                                from "@airport/ground-control";
+import {
+	ITransactionHistory,
+	ITransactionHistoryDmo,
+	Q,
+	TransactionHistoryDmoToken
+}                                from "@airport/holding-pattern";
+import {
+	ITransactionManager,
+	TransactionManagerToken
+}                                from "@airport/terminal-map";
+import {Transactional}           from "@airport/tower";
+import {
+	Inject,
+	Service
+}                                from "typedi";
+import {IOfflineDeltaStore}      from "../data/OfflineDeltaStore";
 import {
 	ActiveQueriesToken,
 	IdGeneratorToken,
 	OfflineDeltaStoreToken,
 	OnlineManagerToken,
 	StoreDriverToken,
-	TransactionManagerToken
-} from "../InjectionTokens";
-import {IOnlineManager} from "../net/OnlineManager";
-import {ActiveQueries} from "../store/ActiveQueries";
-import {IIdGenerator} from "../store/IdGenerator";
+}                                from "../InjectionTokens";
+import {IOnlineManager}          from "../net/OnlineManager";
+import {ActiveQueries}           from "../store/ActiveQueries";
+import {IIdGenerator}            from "../store/IdGenerator";
 import {AbstractMutationManager} from "./AbstractMutationManager";
-
-export interface ITransactionManager {
-
-	currentTransHistory: ITransactionHistory;
-
-	storeType: StoreType;
-
-	initialize(
-		dbName: string
-	): Promise<void>;
-
-	startTransaction(
-		transactionIndex: number
-	): Promise<void>;
-
-	rollbackTransaction(
-		transactionIndex: number
-	): Promise<void>;
-
-	commitTransaction(
-		transactionIndex: number
-	): Promise<void>;
-
-	// saveRepositoryHistory(
-	// 	transaction: ITransactionHistory
-	// ): Promise<boolean>;
-
-}
 
 @Service(TransactionManagerToken)
 export class TransactionManager
@@ -64,29 +51,22 @@ export class TransactionManager
 	storeType: StoreType;
 
 	constructor(
-		@Inject(
-			_ => UtilsToken)
+		@Inject(UtilsToken)
 			utils: IUtils,
-		@Inject(
-			_ => StoreDriverToken)
+		@Inject(StoreDriverToken)
 			dataStore: IStoreDriver,
-		@Inject(
-			_ => IdGeneratorToken)
+		@Inject(IdGeneratorToken)
 		private idGenerator: IIdGenerator,
-		@Inject(
-			_ => OfflineDeltaStoreToken)
+		@Inject(OfflineDeltaStoreToken)
 		private offlineDeltaStore: IOfflineDeltaStore,
-		@Inject(
-			_ => OnlineManagerToken)
+		@Inject(OnlineManagerToken)
 		private onlineManager: IOnlineManager,
 		// @Inject(
 		// 	_ => RepositoryManagerToken)
 		// private repositoryManager: IRepositoryManager,
-		@Inject(
-			_ => ActiveQueriesToken)
+		@Inject(ActiveQueriesToken)
 		private queries: ActiveQueries,
-		@Inject(
-			_ => TransactionHistoryDmoToken)
+		@Inject(TransactionHistoryDmoToken)
 		private transactionHistoryDmo: ITransactionHistoryDmo
 	) {
 		super(utils, dataStore);

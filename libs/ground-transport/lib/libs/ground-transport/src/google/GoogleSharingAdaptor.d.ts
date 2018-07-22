@@ -1,11 +1,11 @@
 /**
  * Created by Papa on 1/7/2016.
  */
-import { GoogleDriveAdaptor } from './drive/GoogleDriveAdaptor';
-import { GoogleRealtimeAdaptor } from './realtime/GoogleRealtimeAdaptor';
 import { ChangeListShareInfo, GoogleChangeListShareInfo, GoogleSetupInfo, SharedChangeList, SharingAdaptor } from '@airport/terminal-map';
 import { GoogleDrive } from './drive/GoogleDrive';
+import { GoogleDriveAdaptor } from './drive/GoogleDriveAdaptor';
 import { GoogleRealtime } from './realtime/GoogleRealtime';
+import { GoogleRealtimeAdaptor } from './realtime/GoogleRealtimeAdaptor';
 export declare class GoogleSharingAdaptor implements SharingAdaptor {
     private drive;
     private driveAdaptor;

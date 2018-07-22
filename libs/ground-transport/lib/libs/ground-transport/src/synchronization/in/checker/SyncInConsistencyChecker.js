@@ -7,9 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../../../../../apps/terminal/src/InjectionTokens");
-const Logger_1 = require("@airport/approach-lighting-system/lib/Logger");
-const log = new Logger_1.Logger(InjectionTokens_1.Terminal, "SyncInConsistencyChecker");
+const InjectionTokens_1 = require("../../../InjectionTokens");
+const log = InjectionTokens_1.GroundTransportLogger.add("SyncInConsistencyChecker");
 let SyncInConsistencyChecker = class SyncInConsistencyChecker {
     ensureConsistency(message) {
     }
@@ -21,7 +20,7 @@ let SyncInConsistencyChecker = class SyncInConsistencyChecker {
     }
 };
 SyncInConsistencyChecker = __decorate([
-    typedi_1.Service(InjectionTokens_1.SyncInConsistencyCheckerToken)
+    typedi_1.Service(SyncInConsistencyCheckerToken)
 ], SyncInConsistencyChecker);
 exports.SyncInConsistencyChecker = SyncInConsistencyChecker;
 //# sourceMappingURL=SyncInConsistencyChecker.js.map

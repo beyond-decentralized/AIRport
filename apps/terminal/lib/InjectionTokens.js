@@ -14,7 +14,6 @@ exports.OnlineManagerToken = new typedi_1.Token();
 exports.QueryManagerToken = new typedi_1.Token();
 exports.RepositoryManagerToken = new typedi_1.Token();
 exports.StoreDriverToken = new typedi_1.Token();
-exports.TransactionManagerToken = new typedi_1.Token();
 exports.UpdateManagerToken = new typedi_1.Token();
 exports.TerminalLogger = new approach_lighting_system_1.LoggedPackage("terminal", runway_edge_lighting_1.LogLevel.TRACE);
 exports.TerminalAppLogger = new approach_lighting_system_1.LoggedApplication("Airport");

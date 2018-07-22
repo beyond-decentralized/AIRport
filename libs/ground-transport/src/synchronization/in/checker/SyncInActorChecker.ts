@@ -1,22 +1,31 @@
-import {Inject, Service}          from "typedi";
-import {SyncInActorCheckerToken}  from "../../../../../apps/terminal/src/InjectionTokens";
+import {
+	IUtils,
+	UtilsToken
+}                                from "@airport/air-control";
 import {
 	ActorDaoToken,
 	ActorId,
 	ActorRandomId,
+	IActor,
+	IActorDao,
+	ITerminalDao,
 	TerminalDaoToken,
 	TerminalId,
 	TerminalName,
 	TerminalSecondId,
-	IActor,
-	IActorDao,
-	ITerminalDao,
 	UserUniqueId
-}                                 from "@airport/holding-pattern";
-import {IDataToTM, RemoteActorId} from "../SyncInUtils";
-import {IUtils, UtilsToken}       from "@airport/air-control";
-import {UserCheckResults}         from "./SyncInUserChecker";
-import {TerminalCheckResults}     from "./SyncInTerminalChecker";
+}                                from "@airport/holding-pattern";
+import {
+	Inject,
+	Service
+}                                from "typedi";
+import {SyncInActorCheckerToken} from "../../../InjectionTokens";
+import {
+	IDataToTM,
+	RemoteActorId
+}                                from "../SyncInUtils";
+import {TerminalCheckResults}    from "./SyncInTerminalChecker";
+import {UserCheckResults}        from "./SyncInUserChecker";
 
 export interface ActorCheckResults {
 	actorMap: Map<ActorRandomId, Map<UserUniqueId,

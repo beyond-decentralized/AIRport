@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
 const approach_lighting_system_1 = require("@airport/approach-lighting-system");
 const runway_edge_lighting_1 = require("@airport/runway-edge-lighting");
-const LoggedApplication_1 = require("@airport/approach-lighting-system/lib/LoggedApplication");
+const typedi_1 = require("typedi");
 exports.DirectSharingNodeEndpointToken = new typedi_1.Token();
 exports.HttpSharingNodeEndpointToken = new typedi_1.Token();
 exports.Stage1SyncedInDataProcessorToken = new typedi_1.Token();
@@ -29,7 +28,5 @@ exports.SyncOutMessageSenderToken = new typedi_1.Token();
 exports.SyncOutRepositoryTransactionBlockCreatorToken = new typedi_1.Token();
 exports.SyncOutSerializerToken = new typedi_1.Token();
 exports.TwoStageSyncedInDataProcessorToken = new typedi_1.Token();
-exports.TerminalLogger = new approach_lighting_system_1.LoggedPackage("terminal", runway_edge_lighting_1.LogLevel.TRACE);
-exports.TerminalAppLogger = new LoggedApplication_1.LoggedApplication("Airport");
-exports.TerminalAppLogger.addPackage(exports.TerminalLogger);
+exports.GroundTransportLogger = new approach_lighting_system_1.LoggedPackage("ground-transport", runway_edge_lighting_1.LogLevel.TRACE);
 //# sourceMappingURL=InjectionTokens.js.map

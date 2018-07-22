@@ -15,7 +15,6 @@ import {IDeleteManager}      from "./orchestration/DeleteManager";
 import {IHistoryManager}     from "./orchestration/HistoryManager";
 import {IInsertManager}      from "./orchestration/InsertManager";
 import {IQueryManager}       from "./orchestration/QueryManager";
-import {ITransactionManager} from "./orchestration/TransactionManager";
 import {IUpdateManager}      from "./orchestration/UpdateManager";
 import {IActiveQueries}      from "./store/ActiveQueries";
 import {IIdGenerator}        from "./store/IdGenerator";
@@ -31,7 +30,6 @@ export const OnlineManagerToken = new Token<IOnlineManager>();
 export const QueryManagerToken = new Token<IQueryManager>();
 export const RepositoryManagerToken = new Token<IRepositoryManager>();
 export const StoreDriverToken = new Token<IStoreDriver>();
-export const TransactionManagerToken = new Token<ITransactionManager>();
 export const UpdateManagerToken = new Token<IUpdateManager>();
 
 export const TerminalLogger: ILoggedPackage

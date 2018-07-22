@@ -1,7 +1,7 @@
 /// <reference types="google-drive-realtime-api" />
-import { GoogleRealtime } from './GoogleRealtime';
 import { ChangeRecord, ChangeRecordIterator } from '@airport/terminal-map';
 import { DocumentHandle } from './DocumentHandle';
+import { GoogleRealtime } from './GoogleRealtime';
 /**
  * Created by Papa on 1/7/2016.
  */

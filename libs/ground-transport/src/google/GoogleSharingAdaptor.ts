@@ -2,8 +2,6 @@
  * Created by Papa on 1/7/2016.
  */
 
-import { GoogleDriveAdaptor } from './drive/GoogleDriveAdaptor';
-import { GoogleRealtimeAdaptor } from './realtime/GoogleRealtimeAdaptor';
 import {
 	ChangeListShareInfo,
 	GoogleChangeListShareInfo,
@@ -11,12 +9,14 @@ import {
 	PlatformType,
 	SharedChangeList,
 	SharingAdaptor
-} from '@airport/terminal-map';
-import { GoogleDrive } from './drive/GoogleDrive';
-import { GoogleRealtime } from './realtime/GoogleRealtime';
-import { DocumentHandle } from './realtime/DocumentHandle';
-import { GoogleSharedChangeList } from './GoogleSharedChangeList';
-import { DriveResponse } from './drive/GoogleDriveModel';
+}                               from '@airport/terminal-map';
+import {GoogleDrive}            from './drive/GoogleDrive';
+import {GoogleDriveAdaptor}     from './drive/GoogleDriveAdaptor';
+import {DriveResponse}          from './drive/GoogleDriveModel';
+import {GoogleSharedChangeList} from './GoogleSharedChangeList';
+import {DocumentHandle}         from './realtime/DocumentHandle';
+import {GoogleRealtime}         from './realtime/GoogleRealtime';
+import {GoogleRealtimeAdaptor}  from './realtime/GoogleRealtimeAdaptor';
 
 // @Injectable()
 export class GoogleSharingAdaptor implements SharingAdaptor {

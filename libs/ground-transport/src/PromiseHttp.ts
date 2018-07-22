@@ -1,5 +1,4 @@
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import {Observable} from 'rxjs';
 
 /**
  * Created by Papa on 1/5/2016.
@@ -12,36 +11,36 @@ export abstract class PromiseHttp {
 	}
 
 	abstract get(
-		url:string,
-		requestOptionsArgs?:any // RequestOptionsArgs
-	):Promise<any>;
+		url: string,
+		requestOptionsArgs?: any // RequestOptionsArgs
+	): Promise<any>;
+
 // {
-		// let getRequest = this.http.get(url, requestOptionsArgs);
-		// return this.asPromise(getRequest);
+	// let getRequest = this.http.get(url, requestOptionsArgs);
+	// return this.asPromise(getRequest);
 	// }
 
 	abstract post(
-		url:string,
-		data:string,
-		requestOptionsArgs?:any // RequestOptionsArgs
-	):Promise<any>;
+		url: string,
+		data: string,
+		requestOptionsArgs?: any // RequestOptionsArgs
+	): Promise<any>;
+
 	// {
 	// 	let getRequest = this.http.post(url, data, requestOptionsArgs);
 	// 	return this.asPromise(getRequest);
 	// }
 
 	private asPromise<T>(
-		observable:Observable<T>
-	):Promise<any> {
+		observable: Observable<T>
+	): Promise<any> {
 		return new Promise((
 			resolve,
 			reject
 		) => {
-			observable.map(( response ) => {
-				return response;
-			}).subscribe(( response ) => {
+			observable.subscribe((response) => {
 				resolve(response);
-			}, ( error ) => {
+			}, (error) => {
 				reject(error);
 			});
 		});

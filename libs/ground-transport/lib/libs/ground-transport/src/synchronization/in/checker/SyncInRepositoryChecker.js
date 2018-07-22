@@ -12,11 +12,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const InjectionTokens_1 = require("@airport/air-control/lib/InjectionTokens");
-const InjectionTokens_2 = require("@airport/moving-walkway/lib/InjectionTokens");
+const air_control_1 = require("@airport/air-control");
+const moving_walkway_1 = require("@airport/moving-walkway");
 const typedi_1 = require("typedi");
-const Inject_1 = require("typedi/decorators/Inject");
-const InjectionTokens_3 = require("../../../../../apps/terminal/src/InjectionTokens");
+const InjectionTokens_1 = require("../../../InjectionTokens");
 let SyncInRepositoryChecker = class SyncInRepositoryChecker {
     constructor(sharingNodeRepositoryDao, utils) {
         this.sharingNodeRepositoryDao = sharingNodeRepositoryDao;
@@ -75,9 +74,9 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
     }
 };
 SyncInRepositoryChecker = __decorate([
-    typedi_1.Service(InjectionTokens_3.SyncInRepositoryCheckerToken),
-    __param(0, Inject_1.Inject(InjectionTokens_2.SharingNodeRepositoryDaoToken)),
-    __param(1, Inject_1.Inject(InjectionTokens_1.UtilsToken)),
+    typedi_1.Service(InjectionTokens_1.SyncInRepositoryCheckerToken),
+    __param(0, typedi_1.Inject(moving_walkway_1.SharingNodeRepositoryDaoToken)),
+    __param(1, typedi_1.Inject(air_control_1.UtilsToken)),
     __metadata("design:paramtypes", [Object, Object])
 ], SyncInRepositoryChecker);
 exports.SyncInRepositoryChecker = SyncInRepositoryChecker;

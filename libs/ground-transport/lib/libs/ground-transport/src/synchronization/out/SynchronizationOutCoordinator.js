@@ -12,13 +12,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const withLatestFrom_1 = require("rxjs/operators/withLatestFrom");
-const InjectionTokens_1 = require("../../../../apps/terminal/src/InjectionTokens");
-const TerminalStore_1 = require("../../../../apps/terminal/src/+state/TerminalStore");
-const Inject_1 = require("typedi/decorators/Inject");
-const AbstractCompletable_1 = require("../../../../apps/terminal/src/core/AbstractCompletable");
+const terminal_map_1 = require("@airport/terminal-map");
+const rxjs_1 = require("rxjs");
 const typedi_1 = require("typedi");
-let SynchronizationOutCoordinator = class SynchronizationOutCoordinator extends AbstractCompletable_1.AbstractCompletable {
+const Inject_1 = require("typedi/decorators/Inject");
+const InjectionTokens_1 = require("../../InjectionTokens");
+let SynchronizationOutCoordinator = class SynchronizationOutCoordinator extends AbstractCompletable {
     constructor(synchronizationOutManager, syncNodeManager, terminalStore) {
         super();
         this.synchronizationOutManager = synchronizationOutManager;
@@ -28,7 +27,7 @@ let SynchronizationOutCoordinator = class SynchronizationOutCoordinator extends 
     }
     async initialize() {
         await this.syncNodeManager.initialize();
-        this.record(this.terminalStore.nodesBySyncFrequency.pipe(withLatestFrom_1.withLatestFrom(this.terminalStore.terminal)).subscribe(([nodesBySyncFrequency, terminal]) => {
+        this.record(this.terminalStore.nodesBySyncFrequency.pipe(rxjs_1.withLatestFrom(this.terminalStore.terminal)).subscribe(([nodesBySyncFrequency, terminal]) => {
             if (!terminal) {
                 return;
             }
@@ -64,9 +63,8 @@ SynchronizationOutCoordinator = __decorate([
     typedi_1.Service(InjectionTokens_1.SynchronizationOutCoordinatorToken),
     __param(0, Inject_1.Inject(InjectionTokens_1.SynchronizationOutManagerToken)),
     __param(1, Inject_1.Inject(InjectionTokens_1.SyncNodeManagerToken)),
-    __param(2, Inject_1.Inject(InjectionTokens_1.TerminalStoreToken)),
-    __metadata("design:paramtypes", [Object, Object, typeof (_a = typeof TerminalStore_1.ITerminalStore !== "undefined" && TerminalStore_1.ITerminalStore) === "function" && _a || Object])
+    __param(2, Inject_1.Inject(terminal_map_1.TerminalStoreToken)),
+    __metadata("design:paramtypes", [Object, Object, Object])
 ], SynchronizationOutCoordinator);
 exports.SynchronizationOutCoordinator = SynchronizationOutCoordinator;
-var _a;
 //# sourceMappingURL=SynchronizationOutCoordinator.js.map
