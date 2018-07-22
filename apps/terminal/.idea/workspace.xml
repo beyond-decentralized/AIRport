@@ -6,22 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49e253c2-4314-4455-b7f3-da0b7626ee2a" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/SyncNodeManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/SyncNodeManager.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/SyncNodeManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/SyncNodeManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/SyncNodeManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/SyncNodeManager.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/SyncNodeManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/SyncNodeManager.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/SynchronizationInManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/SynchronizationInManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/sharingNode/SharingNodeTerminalDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/sharingNode/SharingNodeTerminalDao.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -375,7 +361,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1920" height="1055" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />

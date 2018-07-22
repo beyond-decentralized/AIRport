@@ -2,22 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e505d429-fcee-401d-86af-c0b532a450ae" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/SyncNodeManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/SyncNodeManager.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/SyncNodeManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/SyncNodeManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/SyncNodeManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/SyncNodeManager.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/synchronization/SyncNodeManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/synchronization/SyncNodeManager.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/synchronization/in/SynchronizationInManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/synchronization/in/SynchronizationInManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/sharingNode/SharingNodeTerminalDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/sharingNode/SharingNodeTerminalDao.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/lib/" />
@@ -37,20 +22,14 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf>
-          <file leaf-file-name="SynchronizationInManager.ts" pinned="false" current-in-tab="false">
+          <file leaf-file-name="SynchronizationInManager.ts" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/synchronization/in/SynchronizationInManager.ts">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="228">
                   <caret line="44" column="33" selection-start-line="44" selection-start-column="33" selection-end-line="44" selection-end-column="33" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="SyncInMessageWithContent.ts" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/synchronization/in/model/SyncInMessageWithContent.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="152">
-                  <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+                  <folding>
+                    <element signature="e#0#254#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -59,14 +38,23 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="SynchronizationInManager.ts" pinned="false" current-in-tab="true">
+          <file leaf-file-name="SynchronizationInManager.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/synchronization/in/SynchronizationInManager.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="602">
-                  <caret line="123" column="55" selection-start-line="123" selection-start-column="55" selection-end-line="123" selection-end-column="55" />
+                <state relative-caret-position="488">
+                  <caret line="201" column="46" lean-forward="true" selection-start-line="201" selection-start-column="46" selection-end-line="201" selection-end-column="46" />
                   <folding>
                     <element signature="e#0#254#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="SyncLogMessageProcessor.ts" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/synchronization/in/SyncLogMessageProcessor.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="76">
+                  <caret line="41" column="2" selection-start-line="41" selection-start-column="2" selection-end-line="41" selection-end-column="2" />
                 </state>
               </provider>
             </entry>
@@ -192,16 +180,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1532093410797</updated>
-      <workItem from="1532093411900" duration="6968000" />
+      <workItem from="1532093411900" duration="7760000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6968000" />
+    <option name="totallyTimeSpent" value="7760000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
@@ -311,13 +298,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/moving-walkway/node_modules/@airport/air-control/lib/lingo/query/Dao.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/synchronization/in/SynchronizationInManager.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="602">
-          <caret line="123" column="55" selection-start-line="123" selection-start-column="55" selection-end-line="123" selection-end-column="55" />
+        <state relative-caret-position="488">
+          <caret line="201" column="46" lean-forward="true" selection-start-line="201" selection-start-column="46" selection-end-line="201" selection-end-column="46" />
           <folding>
             <element signature="e#0#254#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/synchronization/in/SyncLogMessageProcessor.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="41" column="2" selection-start-line="41" selection-start-column="2" selection-end-line="41" selection-end-column="2" />
         </state>
       </provider>
     </entry>
