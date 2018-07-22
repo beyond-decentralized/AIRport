@@ -12,7 +12,7 @@ export declare class SynchronizationOutCoordinator extends AbstractCompletable i
     private nodesBySyncFrequency;
     constructor(synchronizationOutManager: ISynchronizationOutManager, syncNodeManager: ISyncNodeManager, terminalStore: ITerminalStore);
     initialize(): Promise<void>;
-    private updateSyncPool;
-    private returnToSyncPool;
-    private scheduleSyncsForFrequency;
+    private updateSyncPool(nodesBySyncFrequency, terminal);
+    private returnToSyncPool(frequency, terminal);
+    private scheduleSyncsForFrequency(frequency, sharingNodes, terminal);
 }

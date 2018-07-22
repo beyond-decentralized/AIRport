@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var SyncInDataChecker_1;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
@@ -231,4 +230,5 @@ SyncInDataChecker = SyncInDataChecker_1 = __decorate([
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object])
 ], SyncInDataChecker);
 exports.SyncInDataChecker = SyncInDataChecker;
+var SyncInDataChecker_1;
 //# sourceMappingURL=SyncInDataChecker.js.map

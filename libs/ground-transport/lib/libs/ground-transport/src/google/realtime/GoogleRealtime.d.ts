@@ -1,7 +1,7 @@
+/// <reference types="google-drive-realtime-api" />
 /**
  * Created by Papa on 1/6/2016.
  */
-/// <reference types="google-drive-realtime-api" />
 import { GoogleDrive } from '../drive/GoogleDrive';
 import { Subject } from 'rxjs/Subject';
 import { DriveResponse } from '../drive/GoogleDriveModel';
@@ -12,7 +12,7 @@ export declare class GoogleRealtime {
     findOrCreateFileUniqueFile(fileName: string, folderId: string): Promise<DriveResponse>;
     initializeFile(fileId: string): Promise<gapi.drive.realtime.Document>;
     createInMemoryDocument(): gapi.drive.realtime.Document;
-    private initializeModel;
+    private initializeModel(document);
     getChangeList(document: gapi.drive.realtime.Document): gapi.drive.realtime.CollaborativeList<ChangeRecord>;
     loadFile(fileId: string): Promise<gapi.drive.realtime.Document>;
     subscribeToValuesAdded(list: gapi.drive.realtime.CollaborativeList<ChangeRecord>, subject: Subject<gapi.drive.realtime.BaseModelEvent>): void;

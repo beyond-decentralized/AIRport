@@ -40,7 +40,7 @@ export interface DataMessageSchemaGroupings {
 export declare enum SchemaComparisonResult {
     MESSAGE_SCHEMA_VERSION_IS_LOWER = -1,
     MESSAGE_SCHEMA_VERSION_IS_EQUAL = 0,
-    MESSAGE_SCHEMA_VERSION_IS_HIGHER = 1
+    MESSAGE_SCHEMA_VERSION_IS_HIGHER = 1,
 }
 export interface ISyncRepoTransHistory extends IRepositoryTransactionHistory {
     isLocal?: boolean;

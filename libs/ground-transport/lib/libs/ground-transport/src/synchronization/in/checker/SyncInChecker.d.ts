@@ -34,9 +34,9 @@ export declare class SyncInChecker implements ISyncInChecker {
      *      ]
      */
     checkSchemasAndDataAndRecordSharingMessages(dataMessages: IDataToTM[], actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>, sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>): Promise<[ISharingMessage[], IRepositoryTransactionBlock[], IDataToTM[], Set<SchemaIndex>]>;
-    private updateSchemaReferences;
-    private updateActorReferences;
-    private updateRepositoryReferences;
-    private recordSharingMessages;
-    private findMatchingSchema;
+    private updateSchemaReferences(dataMessages, schemaMap);
+    private updateActorReferences(dataMessages, actorMap);
+    private updateRepositoryReferences(dataMessages, sharingNodeRepositoryMap);
+    private recordSharingMessages(dataMessagesWithIncompatibleSchemas, dataMessagesToBeUpgraded, schemasWithChangesMap, dataMessagesWithCompatibleSchemasAndData, sharingMessagesWithIncompatibleData, missingRecordRepoTransBlocks);
+    private findMatchingSchema(schemaMap, schema);
 }

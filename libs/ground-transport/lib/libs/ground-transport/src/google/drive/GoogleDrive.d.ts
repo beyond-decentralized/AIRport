@@ -11,7 +11,7 @@ export declare class GoogleDrive {
     findOrCreateBook(name: string, folderId: string): Promise<DriveResponse>;
     findOrCreateUniqueFolder(fileName: string, folderId?: string): Promise<DriveResponse>;
     findOrCreateUniqueFile(fileName: string, mimeType: string, folderId?: string): Promise<DriveResponse>;
-    private apiFileList;
+    private apiFileList(dirRef?);
     findFile(fileName: string, folderId?: string): Promise<any>;
     listFiles(folderId: string, pageToken?: string, space?: string): Promise<any>;
     searchFiles(space?: string): Promise<any>;

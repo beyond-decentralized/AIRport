@@ -38,14 +38,14 @@ export declare class SynchronizationOutManager implements ISynchronizationOutMan
      * @param {SharingNodeId[]} sharingNodeIds
      * @returns {Promise<void>}
      */
-    private getNotAcknowledgedRTBs;
+    private getNotAcknowledgedRTBs(sharingNodeMap);
     /**
      * Unfinished messages get merged into new messages
      */
-    private updateUnsyncedSharingMessages;
+    private updateUnsyncedSharingMessages();
     /**
      * Once an RTB has beens successfuly synced it's serialied data should be dropped.
      */
-    private clearDataOfSuccessfullySyncedRTBS;
-    private addNewSharingMessages;
+    private clearDataOfSuccessfullySyncedRTBS();
+    private addNewSharingMessages(newReposTransHistoryBlocksBySharingNodeId, source);
 }

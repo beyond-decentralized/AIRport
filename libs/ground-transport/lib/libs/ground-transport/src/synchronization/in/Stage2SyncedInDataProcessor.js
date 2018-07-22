@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../../../../apps/terminal/src/InjectionTokens");
 const air_control_1 = require("@airport/air-control");
@@ -213,4 +212,5 @@ Stage2SyncedInDataProcessor = __decorate([
     __metadata("design:paramtypes", [typeof (_a = typeof air_control_1.IAirportTerminal !== "undefined" && air_control_1.IAirportTerminal) === "function" && _a || Object, Object, Object])
 ], Stage2SyncedInDataProcessor);
 exports.Stage2SyncedInDataProcessor = Stage2SyncedInDataProcessor;
+var _a;
 //# sourceMappingURL=Stage2SyncedInDataProcessor.js.map

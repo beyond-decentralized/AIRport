@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
@@ -176,4 +175,5 @@ TwoStageSyncedInDataProcessor = __decorate([
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, typeof (_a = typeof moving_walkway_1.IRepoTransBlockRepoTransHistoryDao !== "undefined" && moving_walkway_1.IRepoTransBlockRepoTransHistoryDao) === "function" && _a || Object, typeof (_b = typeof TransactionManager_1.ITransactionManager !== "undefined" && TransactionManager_1.ITransactionManager) === "function" && _b || Object, Object])
 ], TwoStageSyncedInDataProcessor);
 exports.TwoStageSyncedInDataProcessor = TwoStageSyncedInDataProcessor;
+var _a, _b;
 //# sourceMappingURL=TwoStageSyncedInDataProcessor.js.map

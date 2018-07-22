@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const withLatestFrom_1 = require("rxjs/operators/withLatestFrom");
 const InjectionTokens_1 = require("../../../../apps/terminal/src/InjectionTokens");
 const TerminalStore_1 = require("../../../../apps/terminal/src/+state/TerminalStore");
@@ -69,4 +68,5 @@ SynchronizationOutCoordinator = __decorate([
     __metadata("design:paramtypes", [Object, Object, typeof (_a = typeof TerminalStore_1.ITerminalStore !== "undefined" && TerminalStore_1.ITerminalStore) === "function" && _a || Object])
 ], SynchronizationOutCoordinator);
 exports.SynchronizationOutCoordinator = SynchronizationOutCoordinator;
+var _a;
 //# sourceMappingURL=SynchronizationOutCoordinator.js.map

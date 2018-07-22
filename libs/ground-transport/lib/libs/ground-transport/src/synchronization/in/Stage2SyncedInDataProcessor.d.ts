@@ -25,7 +25,7 @@ export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataP
      * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap
      * @returns {RecordKeyMap}
      */
-    private getRecordKeyMap;
+    private getRecordKeyMap(recordUpdateMap, finalTableUpdateMap);
     /**
      * Run all updates for a particular table.  One update per updated column combination is run.
      *
@@ -34,6 +34,6 @@ export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataP
      * @param {ColumnUpdateKeyMap} updateKeyMap
      * @returns {Promise<void>}
      */
-    private runUpdatesForTable;
+    private runUpdatesForTable(schemaIndex, tableIndex, updateKeyMap);
     performDeletes(recordDeletions: Map<SchemaIndex, Map<TableIndex, Map<RepositoryId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>): Promise<void>;
 }
