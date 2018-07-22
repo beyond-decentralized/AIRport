@@ -12,15 +12,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var SyncInDataChecker_1;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const moving_walkway_1 = require("@airport/moving-walkway");
 const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../../../../../apps/terminal/src/InjectionTokens");
-const InjectionTokens_2 = require("../../../InjectionTokens");
-let SyncInDataChecker = SyncInDataChecker_1 = class SyncInDataChecker {
+const InjectionTokens_1 = require("../../../InjectionTokens");
+let SyncInDataChecker = class SyncInDataChecker {
     constructor(missingRecordDao, missingRecordRepoTransBlockDao, repositoryTransactionHistoryDao, sharingMessageDao, syncInRepositoryTransactionBlockCreator, syncInUtils, utils) {
         this.missingRecordDao = missingRecordDao;
         this.missingRecordRepoTransBlockDao = missingRecordRepoTransBlockDao;
@@ -219,14 +217,14 @@ let SyncInDataChecker = SyncInDataChecker_1 = class SyncInDataChecker {
         return existingRepoTransBlocksWithCompatibleSchemasAndData;
     }
 };
-SyncInDataChecker = SyncInDataChecker_1 = __decorate([
-    typedi_1.Service(SyncInDataChecker_1),
+SyncInDataChecker = __decorate([
+    typedi_1.Service(InjectionTokens_1.SyncInDataCheckerToken),
     __param(0, typedi_1.Inject(moving_walkway_1.MissingRecordDaoToken)),
     __param(1, typedi_1.Inject(moving_walkway_1.MissingRecordRepoTransBlockDaoToken)),
     __param(2, typedi_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDaoToken)),
     __param(3, typedi_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
-    __param(4, typedi_1.Inject(InjectionTokens_2.SyncInRepositoryTransactionBlockCreatorToken)),
-    __param(5, typedi_1.Inject(InjectionTokens_1.SyncInUtilsToken)),
+    __param(4, typedi_1.Inject(InjectionTokens_1.SyncInRepositoryTransactionBlockCreatorToken)),
+    __param(5, typedi_1.Inject(SyncInUtilsToken)),
     __param(6, typedi_1.Inject(air_control_1.UtilsToken)),
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object])
 ], SyncInDataChecker);

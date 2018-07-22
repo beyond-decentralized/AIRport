@@ -1,11 +1,14 @@
-import {IUtils, UtilsToken} from "@airport/air-control";
 import {
-	ITerminal,
+	IUtils,
+	UtilsToken
+}                                                  from "@airport/air-control";
+import {
 	IRepositoryDao,
 	IRepositoryTransactionHistoryDao,
+	ITerminal,
 	RepositoryDaoToken,
 	RepositoryTransactionHistoryDaoToken
-} from "@airport/holding-pattern";
+}                                                  from "@airport/holding-pattern";
 import {
 	DataOrigin,
 	IRepositoryTransactionBlock,
@@ -16,34 +19,43 @@ import {
 	ISharingMessageRepoTransBlockDao,
 	ISharingNode,
 	ISharingNodeDao,
-	ISharingNodeTerminalDao,
 	ISharingNodeRepositoryDao,
 	ISharingNodeRepoTransBlockDao,
+	ISharingNodeTerminalDao,
 	RepositoryTransactionBlockDaoToken,
 	SharingMessageDaoToken,
 	SharingMessageProcessingStatus,
 	SharingMessageRepoTransBlockDaoToken,
 	SharingNodeDaoToken,
-	SharingNodeTerminalDaoToken,
 	SharingNodeId,
 	SharingNodeRepositoryDaoToken,
-	SharingNodeRepoTransBlockDaoToken
-} from "@airport/moving-walkway";
-import {ISchemaDao, SchemaDaoToken} from "@airport/traffic-pattern";
-import {Service}                            from "typedi/decorators/Service";
+	SharingNodeRepoTransBlockDaoToken,
+	SharingNodeTerminalDaoToken
+}                                                  from "@airport/moving-walkway";
+import {
+	BlockSyncStatus,
+	SyncStatus
+}                                                  from "@airport/terminal-map";
+import {
+	ISchemaDao,
+	SchemaDaoToken
+}                                                  from "@airport/traffic-pattern";
+import {
+	Inject,
+	Service
+}                                                  from "typedi";
 import {stringify}                                 from "zipson";
 import {
+	GroundTransportLogger,
 	RepositoryTransactionBlockCreatorToken,
 	SynchronizationOutManagerToken,
 	SyncOutMessageSenderToken,
 	SyncOutSerializerToken,
 	TerminalLogger,
-}                                                  from "../../../../apps/terminal/src/InjectionTokens";
-import {Inject}                                    from "typedi/decorators/Inject";
-import {ISyncOutSerializer}                        from "./SyncOutSerializer";
+} from "../../InjectionTokens";
 import {ISyncOutMessageSender}                     from "./SyncOutMessageSender";
 import {ISyncOutRepositoryTransactionBlockCreator} from "./SyncOutRepositoryTransactionBlockCreator";
-import {BlockSyncStatus, SyncStatus}               from "@airport/terminal-map";
+import {ISyncOutSerializer}                        from "./SyncOutSerializer";
 
 export interface ISynchronizationOutManager {
 
@@ -57,7 +69,7 @@ export interface ISynchronizationOutManager {
 const maxSingleRepoChangeLength = 1048576;
 const maxAllRepoChangesLength = 10485760;
 
-const log = TerminalLogger.add('SynchronizationOutManager');
+const log = GroundTransportLogger.add('SynchronizationOutManager');
 
 /**
  * Synchronization manager is in charge of maintaining the AIR Terminal in sync.

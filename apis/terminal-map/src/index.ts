@@ -9,6 +9,7 @@ export * from './config/PlatformType';
 export * from './config/RemoveStoreConfig';
 export * from './config/storeInfo';
 export * from './metadata/RepositoryEntityType';
+export * from './orchestration/TransactionManager';
 export * from './store/TerminalStore';
 export * from './sync/ArrayChangeRecordIterator';
 export * from './sync/ChangeModel';

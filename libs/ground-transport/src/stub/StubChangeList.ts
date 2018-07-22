@@ -1,13 +1,13 @@
-import { Subject } from 'rxjs/Subject';
 import {
 	ArrayChangeRecordIterator,
-	ChangeRecordIterator,
 	ChangeError,
-	ChangeRecord,
 	ChangeListShareInfo,
+	ChangeRecord,
+	ChangeRecordIterator,
 	SharedChangeList,
 	SharingPlatformSetupInfo
-} from "@airport/terminal-map";
+}                from "@airport/terminal-map";
+import {Subject} from 'rxjs';
 
 /**
  * Created by Papa on 12/14/2016.

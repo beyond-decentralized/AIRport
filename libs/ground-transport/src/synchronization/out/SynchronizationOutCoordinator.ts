@@ -1,18 +1,22 @@
-import {withLatestFrom} from "rxjs/operators/withLatestFrom";
-import {ISharingNode, SharingNodeSyncFrequency} from "@airport/moving-walkway";
-import {ITerminal} from "@airport/holding-pattern";
+import {ITerminal}                  from "@airport/holding-pattern";
+import {
+	ISharingNode,
+	SharingNodeSyncFrequency
+}                                   from "@airport/moving-walkway";
+import {
+	ITerminalStore,
+	TerminalStoreToken
+} from "@airport/terminal-map";
+import {withLatestFrom}             from "rxjs";
+import {Service}                    from "typedi";
+import {Inject}                     from "typedi/decorators/Inject";
 import {
 	SynchronizationOutCoordinatorToken,
 	SynchronizationOutManagerToken,
-	SyncNodeManagerToken,
-	TerminalStoreToken
-} from "../../../../apps/terminal/src/InjectionTokens";
-import {ISyncNodeManager} from "../SyncNodeManager";
-import {ITerminalStore} from "../../../../apps/terminal/src/+state/TerminalStore";
-import {Inject} from "typedi/decorators/Inject";
-import {AbstractCompletable} from "../../../../apps/terminal/src/core/AbstractCompletable";
+	SyncNodeManagerToken
+}                                   from "../../InjectionTokens";
+import {ISyncNodeManager}           from "../SyncNodeManager";
 import {ISynchronizationOutManager} from "./SynchronizationOutManager";
-import {Service} from "typedi";
 
 export interface ISynchronizationOutCoordinator {
 

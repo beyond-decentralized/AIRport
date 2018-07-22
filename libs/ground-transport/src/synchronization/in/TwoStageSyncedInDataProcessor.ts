@@ -3,28 +3,19 @@ import {
 	UtilsToken
 }                                     from "@airport/air-control";
 import {
-	AgtRepositoryId,
-	RepoTransBlockSyncOutcomeType
-}                                     from "@airport/ground-control";
-import {TmSharingMessageId}           from "@airport/ground-control/lib/lingo/sync/CoreAgtTypes";
-import {
 	ActorId,
 	IActor,
 	IRepositoryActorDao,
 	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDmo,
+	RepositoryActorDaoToken,
 	RepositoryId,
+	RepositoryTransactionHistoryDmoToken,
 	RepositoryTransactionType
 }                                     from "@airport/holding-pattern";
 import {
-	RepositoryActorDaoToken,
-	RepositoryTransactionHistoryDmoToken
-}                                     from "@airport/holding-pattern/lib/InjectionTokens";
-import {
 	IRepositoryTransactionBlock,
 	IRepositoryTransactionBlockDao,
-	IRepoTransBlockRepoTransHistory,
-	IRepoTransBlockRepoTransHistoryDao,
 	ISharingMessage,
 	ISharingMessageDao,
 	ISharingMessageRepoTransBlock,
@@ -35,13 +26,15 @@ import {
 	ISynchronizationConflictPendingNotificationDao,
 	RepositoryTransactionBlockDaoToken,
 	RepositoryTransactionBlockData,
-	RepoTransBlockRepoTransHistoryDaoToken,
 	SharingMessageDaoToken,
 	SharingMessageRepoTransBlockDaoToken,
 	SharingNodeId,
 	SynchronizationConflictPendingNotificationDaoToken
 }                                     from "@airport/moving-walkway";
-import {TransactionType}              from "@airport/terminal-map";
+import {
+	ITransactionManager,
+	TransactionManagerToken
+}                                     from "@airport/terminal-map";
 import {
 	Inject,
 	Service
@@ -51,10 +44,8 @@ import {
 	Stage1SyncedInDataProcessorToken,
 	Stage2SyncedInDataProcessorToken,
 	SyncInCheckerToken,
-	TransactionManagerToken,
 	TwoStageSyncedInDataProcessorToken
-}                                     from "../../../../apps/terminal/src/InjectionTokens";
-import {ITransactionManager}          from "../../../../apps/terminal/src/orchestration/TransactionManager";
+}                                     from "../../InjectionTokens";
 import {ISyncInChecker}               from "./checker/SyncInChecker";
 import {IStage1SyncedInDataProcessor} from "./Stage1SyncedInDataProcessor";
 import {IStage2SyncedInDataProcessor} from "./Stage2SyncedInDataProcessor";
@@ -101,8 +92,8 @@ export class TwoStageSyncedInDataProcessor
 		private syncInChecker: ISyncInChecker,
 		@Inject(RepositoryTransactionBlockDaoToken)
 		private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
-		@Inject(RepoTransBlockRepoTransHistoryDaoToken)
-		private repoTransBlockRepoTransHistoryDao: IRepoTransBlockRepoTransHistoryDao,
+		// @Inject(RepoTransBlockRepoTransHistoryDaoToken)
+		// private repoTransBlockRepoTransHistoryDao: IRepoTransBlockRepoTransHistoryDao,
 		@Inject(TransactionManagerToken)
 		private transactionManager: ITransactionManager,
 		@Inject(UtilsToken)

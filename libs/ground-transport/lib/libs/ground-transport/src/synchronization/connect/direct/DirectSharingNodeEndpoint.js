@@ -9,16 +9,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
 const typedi_1 = require("typedi");
-const ground_control_1 = require("@airport/ground-control");
+const InjectionTokens_1 = require("../../../InjectionTokens");
 const DirectResonse_1 = require("./DirectResonse");
-const InjectionTokens_1 = require("../../../../../apps/terminal/src/InjectionTokens");
 /**
  * P2P endpoint to a built-in AGT
  */
 let DirectSharingNodeEndpoint = class DirectSharingNodeEndpoint {
     constructor() {
-        this.recentConnectionServer = typedi_1.Container.get(ground_control_1.SyncConnectionServerToken);
+        this.recentConnectionServer = typedi_1.Container.get(arrivals_n_departures_1.SyncConnectionServerToken);
     }
     async communicateWithAGT(sharingNode, message) {
         return new Promise((resolve, reject) => {

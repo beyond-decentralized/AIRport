@@ -1,10 +1,10 @@
 import { IUtils } from "@airport/air-control";
-import { ITerminal, IRepositoryDao, IRepositoryTransactionHistoryDao } from "@airport/holding-pattern";
-import { IRepositoryTransactionBlockDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISharingNode, ISharingNodeDao, ISharingNodeTerminalDao, ISharingNodeRepositoryDao, ISharingNodeRepoTransBlockDao } from "@airport/moving-walkway";
+import { IRepositoryDao, IRepositoryTransactionHistoryDao, ITerminal } from "@airport/holding-pattern";
+import { IRepositoryTransactionBlockDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISharingNode, ISharingNodeDao, ISharingNodeRepositoryDao, ISharingNodeRepoTransBlockDao, ISharingNodeTerminalDao } from "@airport/moving-walkway";
 import { ISchemaDao } from "@airport/traffic-pattern";
-import { ISyncOutSerializer } from "./SyncOutSerializer";
 import { ISyncOutMessageSender } from "./SyncOutMessageSender";
 import { ISyncOutRepositoryTransactionBlockCreator } from "./SyncOutRepositoryTransactionBlockCreator";
+import { ISyncOutSerializer } from "./SyncOutSerializer";
 export interface ISynchronizationOutManager {
     synchronize(sharingNodes: ISharingNode[], terminal: ITerminal): Promise<void>;
 }
@@ -38,14 +38,14 @@ export declare class SynchronizationOutManager implements ISynchronizationOutMan
      * @param {SharingNodeId[]} sharingNodeIds
      * @returns {Promise<void>}
      */
-    private getNotAcknowledgedRTBs;
+    private getNotAcknowledgedRTBs(sharingNodeMap);
     /**
      * Unfinished messages get merged into new messages
      */
-    private updateUnsyncedSharingMessages;
+    private updateUnsyncedSharingMessages();
     /**
      * Once an RTB has beens successfuly synced it's serialied data should be dropped.
      */
-    private clearDataOfSuccessfullySyncedRTBS;
-    private addNewSharingMessages;
+    private clearDataOfSuccessfullySyncedRTBS();
+    private addNewSharingMessages(newReposTransHistoryBlocksBySharingNodeId, source);
 }

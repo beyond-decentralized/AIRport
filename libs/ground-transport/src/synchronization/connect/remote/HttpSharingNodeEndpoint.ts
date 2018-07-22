@@ -10,15 +10,17 @@ import {
 	SerializedBatchedMessagesToTM
 }                             from "@airport/arrivals-n-departures";
 import {ISharingNode}         from "@airport/moving-walkway";
-import {Service}              from "typedi";
-import {Inject}               from "typedi/decorators/Inject";
 import {
+	Inject,
+	Service
+}                             from "typedi";
+import {
+	GroundTransportLogger,
 	HttpSharingNodeEndpointToken,
-	TerminalLogger
 }                             from "../../../InjectionTokens";
 import {ISharingNodeEndpoint} from "../SharingNodeEndpoint";
 
-const log = TerminalLogger.add('HttpSharingNodeEndpoint');
+const log = GroundTransportLogger.add('HttpSharingNodeEndpoint');
 
 /**
  * P2P endpoint to a built-in AGT

@@ -13,9 +13,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../../../../../apps/terminal/src/InjectionTokens");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const air_control_1 = require("@airport/air-control");
+const InjectionTokens_1 = require("../../../InjectionTokens");
 let SyncInTerminalChecker = class SyncInTerminalChecker {
     constructor(terminalDao, utils) {
         this.terminalDao = terminalDao;

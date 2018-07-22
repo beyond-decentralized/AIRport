@@ -1,12 +1,12 @@
 import {
-	SharingAdaptor,
-	SharingPlatformSetupInfo,
 	ChangeListShareInfo,
 	PlatformType,
-	SharedChangeList
-} from "@airport/terminal-map";
-import { InMemoryChangeList } from "./InMemoryChangeList";
-import { InMemoryChangeStore } from "./InMemoryChangeStore";
+	SharedChangeList,
+	SharingAdaptor,
+	SharingPlatformSetupInfo
+}                            from "@airport/terminal-map";
+import {InMemoryChangeList}  from "./InMemoryChangeList";
+import {InMemoryChangeStore} from "./InMemoryChangeStore";
 
 /**
  * Created by Papa on 11/26/2016.

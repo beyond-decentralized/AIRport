@@ -1,7 +1,5 @@
 import { IUtils } from "@airport/air-control";
-import { IRepositoryTransactionBlockDao, IRepoTransBlockResponseStageDao, ISharingMessageDao } from "@airport/moving-walkway";
-import { ISharingNodeRepoTransBlockDao } from "@airport/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockDao";
-import { ISharingNodeRepoTransBlockStageDao } from "@airport/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockStageDao";
+import { IRepositoryTransactionBlockDao, IRepoTransBlockResponseStageDao, ISharingMessageDao, ISharingNodeRepoTransBlockDao, ISharingNodeRepoTransBlockStageDao } from "@airport/moving-walkway";
 import { ISyncLogToTM } from "./SynchronizationInManager";
 export interface ISyncLogMessageProcessor {
     recordSyncLogMessages(syncLogMessages: ISyncLogToTM[]): Promise<void>;
@@ -23,7 +21,7 @@ export declare class SyncLogMessageProcessor implements ISyncLogMessageProcessor
      * @returns {Promise<void>}
      */
     recordSyncLogMessages(syncLogMessages: ISyncLogToTM[]): Promise<void>;
-    private generateSyncLogDataStructures;
-    private updateExistingSharingNodeRepoTransBlocks;
-    private insertNewSharingNodeRepoTransBlocks;
+    private generateSyncLogDataStructures(syncLogMessages);
+    private updateExistingSharingNodeRepoTransBlocks(sharingNodeIdSet, repoTransBlockIdSet, repoTransBlockSyncOutcomeMapBySharingNodeId);
+    private insertNewSharingNodeRepoTransBlocks(repoTransBlockSyncOutcomeMapBySharingNodeId);
 }

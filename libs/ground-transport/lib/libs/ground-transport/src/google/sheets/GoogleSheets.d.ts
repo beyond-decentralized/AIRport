@@ -1,4 +1,4 @@
-import { PromiseHttp } from './../../PromiseHttp';
+import { PromiseHttp } from "../../PromiseHttp";
 import { GoogleApi } from '../GoogleApi';
 export declare class GoogleSheets {
     private googleApi;
@@ -8,8 +8,8 @@ export declare class GoogleSheets {
     getSheet(fileId: string): Promise<any>;
     getWorksheets(fileId: string): Promise<any>;
     getRequestOptionsArgs(): any;
-    private getListFeedUrl;
-    private getWorksheetsUrl;
-    private getUrlSuffix;
+    private getListFeedUrl(fileId);
+    private getWorksheetsUrl(fileId);
+    private getUrlSuffix();
     addRow(fileId: string, rowXml: string): Promise<any>;
 }

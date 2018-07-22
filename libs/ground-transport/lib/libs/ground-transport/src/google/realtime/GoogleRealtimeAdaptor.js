@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subject_1 = require("rxjs/Subject");
+const rxjs_1 = require("rxjs");
 const DocumentHandle_1 = require("./DocumentHandle");
 /**
  * Created by Papa on 1/7/2016.
@@ -77,10 +77,10 @@ class GoogleRealtimeAdaptor {
         return new DocumentHandle_1.DocumentHandle(document, changeList, valuesAddedSubject, valuesArchivedSubject, otherChangesSubject);
     }
     subscribeToChangesAddedByOthers(document) {
-        let valuesAddedSubject = new Subject_1.Subject();
+        let valuesAddedSubject = new rxjs_1.Subject();
         let changeList = this.googleRealtime.getChangeList(document);
         this.googleRealtime.subscribeToValuesAdded(changeList, valuesAddedSubject);
-        let changesAddedSubject = new Subject_1.Subject();
+        let changesAddedSubject = new rxjs_1.Subject();
         valuesAddedSubject.subscribe((event) => {
             console.log('Changes by others.  BaseModelEvent Type: ' + event.type);
             if (event.isLocal) {
@@ -99,10 +99,10 @@ class GoogleRealtimeAdaptor {
         return changesAddedSubject;
     }
     subscribeToCleanupByOwner(document, iAmTheOwner) {
-        let valuesRemovedSubject = new Subject_1.Subject();
+        let valuesRemovedSubject = new rxjs_1.Subject();
         let changeList = this.googleRealtime.getChangeList(document);
         this.googleRealtime.subscribeToValuesRemoved(changeList, valuesRemovedSubject);
-        let changesRemovedSubject = new Subject_1.Subject();
+        let changesRemovedSubject = new rxjs_1.Subject();
         valuesRemovedSubject.subscribe((event) => {
             console.log('Clean-up by owner.  BaseModelEvent Type: ' + event.type);
             if (event.isLocal) {
@@ -127,9 +127,9 @@ class GoogleRealtimeAdaptor {
         return changesRemovedSubject;
     }
     subscribeToUnexpectedModifications(changeList, document) {
-        let valuesRemovedSubject = new Subject_1.Subject();
+        let valuesRemovedSubject = new rxjs_1.Subject();
         this.googleRealtime.subscribeToAnyObjectChanged(document, valuesRemovedSubject);
-        let changesRemovedSubject = new Subject_1.Subject();
+        let changesRemovedSubject = new rxjs_1.Subject();
         valuesRemovedSubject.subscribe((event) => {
             let message = 'Unexpected change - ';
             if (!event.events) {

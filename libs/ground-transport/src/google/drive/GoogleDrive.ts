@@ -1,5 +1,9 @@
 import {GoogleApi} from '../GoogleApi';
-import {DriveConstants, DriveResponse, MimeTypes} from './GoogleDriveModel';
+import {
+	DriveConstants,
+	DriveResponse,
+	MimeTypes
+}                  from './GoogleDriveModel';
 
 /**
  * Created by Papa on 1/2/2016.
@@ -7,7 +11,7 @@ import {DriveConstants, DriveResponse, MimeTypes} from './GoogleDriveModel';
 export class GoogleDrive {
 
 	constructor(
-		private googleApi:GoogleApi
+		private googleApi: GoogleApi
 	) {
 		let SCOPES = [
 			'https://www.googleapis.com/auth/drive.appfolder',
@@ -18,19 +22,19 @@ export class GoogleDrive {
 	}
 
 	createFolder(
-		name:string,
-		folderId?:string
-	):Promise<any> {
+		name: string,
+		folderId?: string
+	): Promise<any> {
 		let parents;
 		if (folderId) {
 			parents = [folderId];
 		}
-		let fileMetadata:gapi.client.drive.files.FileMetadata = {
+		let fileMetadata: gapi.client.drive.files.FileMetadata = {
 			name: name,
 			mimeType: MimeTypes.FOLDER,
 			parents: parents
 		};
-		let createDescriptor:gapi.client.drive.files.CreateDescriptor = {
+		let createDescriptor: gapi.client.drive.files.CreateDescriptor = {
 			resource: fileMetadata,
 			fields: 'id'
 		};
@@ -38,11 +42,11 @@ export class GoogleDrive {
 	}
 
 	createFile(
-		name:string,
-		mimeType:string,
-		folderId:string
-	):Promise<DriveResponse> {
-		let fileMetadata:gapi.client.drive.files.FileMetadata = {
+		name: string,
+		mimeType: string,
+		folderId: string
+	): Promise<DriveResponse> {
+		let fileMetadata: gapi.client.drive.files.FileMetadata = {
 			mimeType: mimeType,
 			name: name,
 			parents: [folderId]
@@ -56,18 +60,18 @@ export class GoogleDrive {
 	}
 
 	findOrCreateBook(
-		name:string,
-		folderId:string
-	):Promise<DriveResponse> {
+		name: string,
+		folderId: string
+	): Promise<DriveResponse> {
 		return this.findOrCreateUniqueFile(name, MimeTypes.SPREAD_SHEET_BOOK, folderId);
 	}
 
 	findOrCreateUniqueFolder(
-		fileName:string,
-		folderId?:string
-	):Promise<DriveResponse> {
+		fileName: string,
+		folderId?: string
+	): Promise<DriveResponse> {
 		return this.findFile(fileName, folderId).then((
-			response:DriveResponse
+			response: DriveResponse
 		) => {
 			let files = response.result.files;
 			switch (files.length) {
@@ -86,12 +90,12 @@ export class GoogleDrive {
 	}
 
 	findOrCreateUniqueFile(
-		fileName:string,
-		mimeType:string,
-		folderId?:string
-	):Promise<DriveResponse> {
+		fileName: string,
+		mimeType: string,
+		folderId?: string
+	): Promise<DriveResponse> {
 		return this.findFile(fileName, folderId).then((
-			response:DriveResponse
+			response: DriveResponse
 		) => {
 			let files = response.result.files;
 			switch (files.length) {
@@ -114,8 +118,8 @@ export class GoogleDrive {
 	}
 
 	private apiFileList(
-		dirRef?:gapi.client.drive.files.DirRef
-	):Promise<any> {
+		dirRef?: gapi.client.drive.files.DirRef
+	): Promise<any> {
 		return new Promise((
 			resolve,
 			reject
@@ -127,17 +131,17 @@ export class GoogleDrive {
 	}
 
 	findFile(
-		fileName:string,
-		folderId:string = DriveConstants.DRIVE_FOLDER
-	):Promise<any> {
+		fileName: string,
+		folderId: string = DriveConstants.DRIVE_FOLDER
+	): Promise<any> {
 		let query = `name = '${fileName}' and '${folderId}' in parents and trashed=false`;
 		return this.apiFileList({
 			q: query
-		}).then(( response:DriveResponse ) => {
+		}).then((response: DriveResponse) => {
 			console.log('Found for q:\n\t' + query);
 			console.log(response);
 			return response;
-		}).catch(( error:DriveResponse ) => {
+		}).catch((error: DriveResponse) => {
 			console.log('Did not find for q:\n\t' + query);
 			if (error.status === 404) {
 				return {
@@ -151,10 +155,10 @@ export class GoogleDrive {
 	}
 
 	listFiles(
-		folderId:string,
-		pageToken:string = null,
-		space:string = DriveConstants.DRIVE_SPACE
-	):Promise<any> {
+		folderId: string,
+		pageToken: string = null,
+		space: string = DriveConstants.DRIVE_SPACE
+	): Promise<any> {
 		return this.apiFileList({
 			fields: 'nextPageToken, files(id, mimeType, name)',
 			pageToken: pageToken,
@@ -164,8 +168,8 @@ export class GoogleDrive {
 	}
 
 	searchFiles(
-		space:string = DriveConstants.DRIVE_SPACE
-	):Promise<any> {
+		space: string = DriveConstants.DRIVE_SPACE
+	): Promise<any> {
 		return this.apiFileList({
 			spaces: space,
 			fields: DriveConstants.APP_DATA_LIST_FIELDS,

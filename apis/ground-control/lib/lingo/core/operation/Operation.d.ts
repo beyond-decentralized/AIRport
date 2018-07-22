@@ -10,7 +10,7 @@ export declare enum OperationCategory {
     LOGICAL = 3,
     NUMBER = 4,
     STRING = 5,
-    UNTYPED = 6
+    UNTYPED = 6,
 }
 export declare enum SqlOperator {
     AND = 0,
@@ -27,7 +27,7 @@ export declare enum SqlOperator {
     OR = 11,
     NOT = 12,
     NOT_EQUALS = 13,
-    NOT_IN = 14
+    NOT_IN = 14,
 }
 /**
  * Serialized version of a function call.
@@ -59,5 +59,5 @@ export declare enum CRUDOperation {
     CREATE = 0,
     READ = 1,
     UPDATE = 2,
-    DELETE = 3
+    DELETE = 3,
 }

@@ -7,14 +7,14 @@ export declare enum JoinType {
     FULL_JOIN = 0,
     INNER_JOIN = 1,
     LEFT_JOIN = 2,
-    RIGHT_JOIN = 3
+    RIGHT_JOIN = 3,
 }
 /**
  * Type of Entity Relation
  */
 export declare enum EntityRelationType {
     ONE_TO_MANY = 0,
-    MANY_TO_ONE = 1
+    MANY_TO_ONE = 1,
 }
 /**
  * Serialized relation contentType.
@@ -24,7 +24,7 @@ export declare enum JSONRelationType {
     ENTITY_SCHEMA_RELATION = 1,
     ENTITY_ROOT = 2,
     SUB_QUERY_JOIN_ON = 3,
-    SUB_QUERY_ROOT = 4
+    SUB_QUERY_ROOT = 4,
 }
 /**
  * Serialized relation.

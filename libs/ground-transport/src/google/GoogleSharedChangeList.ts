@@ -9,9 +9,9 @@ import {
 	GoogleChangeListShareInfo,
 	SharedChangeList,
 	SharingPlatformSetupInfo
-} from '@airport/terminal-map';
-import { DocumentHandle } from './realtime/DocumentHandle';
-import { Subject } from 'rxjs';
+}                       from '@airport/terminal-map';
+import {Subject}        from 'rxjs';
+import {DocumentHandle} from './realtime/DocumentHandle';
 
 export class GoogleSharedChangeList implements SharedChangeList {
 

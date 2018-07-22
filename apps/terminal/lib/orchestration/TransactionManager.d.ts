@@ -1,20 +1,12 @@
 import { IUtils } from "@airport/air-control";
 import { IStoreDriver, StoreType } from "@airport/ground-control";
-import { ITransactionHistory } from "@airport/holding-pattern";
-import { ITransactionHistoryDmo } from "@airport/holding-pattern/lib/dmo/history/TransactionHistoryDmo";
+import { ITransactionHistory, ITransactionHistoryDmo } from "@airport/holding-pattern";
+import { ITransactionManager } from "@airport/terminal-map";
 import { IOfflineDeltaStore } from "../data/OfflineDeltaStore";
 import { IOnlineManager } from "../net/OnlineManager";
 import { ActiveQueries } from "../store/ActiveQueries";
 import { IIdGenerator } from "../store/IdGenerator";
 import { AbstractMutationManager } from "./AbstractMutationManager";
-export interface ITransactionManager {
-    currentTransHistory: ITransactionHistory;
-    storeType: StoreType;
-    initialize(dbName: string): Promise<void>;
-    startTransaction(transactionIndex: number): Promise<void>;
-    rollbackTransaction(transactionIndex: number): Promise<void>;
-    commitTransaction(transactionIndex: number): Promise<void>;
-}
 export declare class TransactionManager extends AbstractMutationManager implements ITransactionManager {
     private idGenerator;
     private offlineDeltaStore;

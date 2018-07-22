@@ -1,5 +1,5 @@
+import { IUtils } from "@airport/air-control";
 import { IUser, IUserDao, UserId, UserUniqueId } from "@airport/holding-pattern";
-import { IUtils } from "@airport/air-control/lib/lingo/utils/Utils";
 import { IDataToTM } from "../SyncInUtils";
 export interface UserCheckResults {
     map: Map<UserUniqueId, IUser>;
@@ -16,7 +16,7 @@ export declare class SyncInUserChecker implements ISyncInUserChecker {
     private utils;
     constructor(userDao: IUserDao, utils: IUtils);
     ensureUsersAndGetAsMaps(dataMessages: IDataToTM[]): Promise<UserCheckResults>;
-    private areUserIdsConsistentInMessageData;
-    private gatherUserUniqueIds;
-    private addMissingUsers;
+    private areUserIdsConsistentInMessageData(data);
+    private gatherUserUniqueIds(data, remoteUserMapByUniqueId);
+    private addMissingUsers(remoteUserMapByUniqueId, userMap, userMapById);
 }

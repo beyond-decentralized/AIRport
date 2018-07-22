@@ -1,9 +1,9 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, QEntity, QRelation } from '@airport/air-control';
-import { ISchema, SchemaEId, SchemaEOptionalId, SchemaESelect, QSchemaQId, QSchemaQRelation, ISchemaEntity, SchemaEntityEId, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQId, QSchemaEntityQRelation, ISchemaColumn, SchemaColumnEId, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQId, QSchemaColumnQRelation } from '@airport/traffic-pattern';
+import { ISchemaVersion, SchemaVersionEId, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQId, QSchemaVersionQRelation, ISchemaEntity, SchemaEntityEId, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQId, QSchemaEntityQRelation, ISchemaColumn, SchemaColumnEId, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQId, QSchemaColumnQRelation } from '@airport/traffic-pattern';
 import { IActor, ActorEId, ActorEOptionalId, ActorESelect, QActorQId, QActorQRelation, IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '@airport/holding-pattern';
 export interface IRecordUpdateStage {
     actorRecordId?: number;
-    schema?: ISchema;
+    schemaVersion?: ISchemaVersion;
     entity?: ISchemaEntity;
     actor?: IActor;
     column?: ISchemaColumn;
@@ -14,7 +14,7 @@ export interface IRecordUpdateStage {
  * SELECT - All fields and relations (optional).
  */
 export interface RecordUpdateStageESelect extends IEntitySelectProperties, RecordUpdateStageEOptionalId, RecordUpdateStageEUpdateProperties {
-    schema?: SchemaESelect;
+    schemaVersion?: SchemaVersionESelect;
     entity?: SchemaEntityESelect;
     actor?: ActorESelect;
     column?: SchemaColumnESelect;
@@ -25,7 +25,7 @@ export interface RecordUpdateStageESelect extends IEntitySelectProperties, Recor
  */
 export interface RecordUpdateStageEId extends IEntityIdProperties {
     actorRecordId: number | IQNumberField;
-    schema: SchemaEId;
+    schemaVersion: SchemaVersionEId;
     entity: SchemaEntityEId;
     actor: ActorEId;
     column: SchemaColumnEId;
@@ -35,7 +35,7 @@ export interface RecordUpdateStageEId extends IEntityIdProperties {
  */
 export interface RecordUpdateStageEOptionalId {
     actorRecordId?: number | IQNumberField;
-    schema?: SchemaEOptionalId;
+    schemaVersion?: SchemaVersionEOptionalId;
     entity?: SchemaEntityEOptionalId;
     actor?: ActorEOptionalId;
     column?: SchemaColumnEOptionalId;
@@ -69,7 +69,7 @@ export interface RecordUpdateStageECreateColumns extends RecordUpdateStageEId, R
  */
 export interface QRecordUpdateStage extends QEntity {
     actorRecordId: IQNumberField;
-    schema: QSchemaQRelation;
+    schemaVersion: QSchemaVersionQRelation;
     entity: QSchemaEntityQRelation;
     actor: QActorQRelation;
     column: QSchemaColumnQRelation;
@@ -78,7 +78,7 @@ export interface QRecordUpdateStage extends QEntity {
 }
 export interface QRecordUpdateStageQId {
     actorRecordId: IQNumberField;
-    schema: QSchemaQId;
+    schemaVersion: QSchemaVersionQId;
     entity: QSchemaEntityQId;
     actor: QActorQId;
     column: QSchemaColumnQId;

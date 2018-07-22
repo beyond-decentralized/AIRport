@@ -15,14 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const moving_walkway_1 = require("@airport/moving-walkway");
-const traffic_pattern_1 = require("@airport/traffic-pattern");
-const Service_1 = require("typedi/decorators/Service");
-const InjectionTokens_1 = require("../../../../apps/terminal/src/InjectionTokens");
-const Inject_1 = require("typedi/decorators/Inject");
 const terminal_map_1 = require("@airport/terminal-map");
+const traffic_pattern_1 = require("@airport/traffic-pattern");
+const typedi_1 = require("typedi");
+const InjectionTokens_1 = require("../../InjectionTokens");
 const maxSingleRepoChangeLength = 1048576;
 const maxAllRepoChangesLength = 10485760;
-const log = InjectionTokens_1.TerminalLogger.add('SynchronizationOutManager');
+const log = InjectionTokens_1.GroundTransportLogger.add('SynchronizationOutManager');
 /**
  * Synchronization manager is in charge of maintaining the AIR Terminal in sync.
  *
@@ -239,21 +238,21 @@ let SynchronizationOutManager = class SynchronizationOutManager {
     }
 };
 SynchronizationOutManager = __decorate([
-    Service_1.Service(InjectionTokens_1.SynchronizationOutManagerToken),
-    __param(0, Inject_1.Inject(holding_pattern_1.RepositoryDaoToken)),
-    __param(1, Inject_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDaoToken)),
-    __param(2, Inject_1.Inject(traffic_pattern_1.SchemaDaoToken)),
-    __param(3, Inject_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
-    __param(4, Inject_1.Inject(moving_walkway_1.SharingMessageRepoTransBlockDaoToken)),
-    __param(5, Inject_1.Inject(moving_walkway_1.SharingNodeDaoToken)),
-    __param(6, Inject_1.Inject(moving_walkway_1.SharingNodeTerminalDaoToken)),
-    __param(7, Inject_1.Inject(moving_walkway_1.SharingNodeRepositoryDaoToken)),
-    __param(8, Inject_1.Inject(moving_walkway_1.SharingNodeRepoTransBlockDaoToken)),
-    __param(9, Inject_1.Inject(InjectionTokens_1.RepositoryTransactionBlockCreatorToken)),
-    __param(10, Inject_1.Inject(moving_walkway_1.RepositoryTransactionBlockDaoToken)),
-    __param(11, Inject_1.Inject(InjectionTokens_1.SyncOutMessageSenderToken)),
-    __param(12, Inject_1.Inject(InjectionTokens_1.SyncOutSerializerToken)),
-    __param(13, Inject_1.Inject(air_control_1.UtilsToken)),
+    typedi_1.Service(InjectionTokens_1.SynchronizationOutManagerToken),
+    __param(0, typedi_1.Inject(holding_pattern_1.RepositoryDaoToken)),
+    __param(1, typedi_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDaoToken)),
+    __param(2, typedi_1.Inject(traffic_pattern_1.SchemaDaoToken)),
+    __param(3, typedi_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
+    __param(4, typedi_1.Inject(moving_walkway_1.SharingMessageRepoTransBlockDaoToken)),
+    __param(5, typedi_1.Inject(moving_walkway_1.SharingNodeDaoToken)),
+    __param(6, typedi_1.Inject(moving_walkway_1.SharingNodeTerminalDaoToken)),
+    __param(7, typedi_1.Inject(moving_walkway_1.SharingNodeRepositoryDaoToken)),
+    __param(8, typedi_1.Inject(moving_walkway_1.SharingNodeRepoTransBlockDaoToken)),
+    __param(9, typedi_1.Inject(InjectionTokens_1.RepositoryTransactionBlockCreatorToken)),
+    __param(10, typedi_1.Inject(moving_walkway_1.RepositoryTransactionBlockDaoToken)),
+    __param(11, typedi_1.Inject(InjectionTokens_1.SyncOutMessageSenderToken)),
+    __param(12, typedi_1.Inject(InjectionTokens_1.SyncOutSerializerToken)),
+    __param(13, typedi_1.Inject(air_control_1.UtilsToken)),
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
 ], SynchronizationOutManager);
 exports.SynchronizationOutManager = SynchronizationOutManager;

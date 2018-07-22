@@ -12,13 +12,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
 const air_control_1 = require("@airport/air-control");
-const moving_walkway_1 = require("@airport/moving-walkway");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
-const Inject_1 = require("typedi/decorators/Inject");
-const InjectionTokens_1 = require("../../../../apps/terminal/src/InjectionTokens");
+const moving_walkway_1 = require("@airport/moving-walkway");
+const typedi_1 = require("typedi");
+const InjectionTokens_1 = require("../../InjectionTokens");
 let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
     constructor(actorDao, repositoryTransactionHistoryDao, repositoryTransactionHistoryDmo, syncInUtils, utils) {
         this.actorDao = actorDao;
@@ -58,7 +57,7 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
                 }
                 for (const operationHistory of repoTransHistory.operationHistory) {
                     // Collect the Actor related ids
-                    const idsForEntity = this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(changedRecordsForRepo.ids, operationHistory.schema.index), operationHistory.entity.index);
+                    const idsForEntity = this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(changedRecordsForRepo.ids, operationHistory.schemaVersion.id), operationHistory.entity.index);
                     for (const recordHistory of operationHistory.recordHistory) {
                         // Collect the Actor related ids
                         this.utils.ensureChildJsSet(idsForEntity, recordHistory.actor.id)
@@ -424,10 +423,10 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
 };
 Stage1SyncedInDataProcessor = __decorate([
     typedi_1.Service(InjectionTokens_1.Stage1SyncedInDataProcessorToken),
-    __param(1, Inject_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDaoToken)),
-    __param(2, Inject_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
-    __param(3, Inject_1.Inject(InjectionTokens_1.SyncInUtilsToken)),
-    __param(4, Inject_1.Inject(air_control_1.UtilsToken)),
+    __param(1, typedi_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDaoToken)),
+    __param(2, typedi_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
+    __param(3, typedi_1.Inject(InjectionTokens_1.SyncInUtilsToken)),
+    __param(4, typedi_1.Inject(air_control_1.UtilsToken)),
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
 ], Stage1SyncedInDataProcessor);
 exports.Stage1SyncedInDataProcessor = Stage1SyncedInDataProcessor;

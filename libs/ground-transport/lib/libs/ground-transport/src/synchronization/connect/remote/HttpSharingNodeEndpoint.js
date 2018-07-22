@@ -14,9 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
 const typedi_1 = require("typedi");
-const Inject_1 = require("typedi/decorators/Inject");
 const InjectionTokens_1 = require("../../../InjectionTokens");
-const log = InjectionTokens_1.TerminalLogger.add('HttpSharingNodeEndpoint');
+const log = InjectionTokens_1.GroundTransportLogger.add('HttpSharingNodeEndpoint');
 /**
  * P2P endpoint to a built-in AGT
  */
@@ -62,9 +61,9 @@ let HttpSharingNodeEndpoint = class HttpSharingNodeEndpoint {
 };
 HttpSharingNodeEndpoint = __decorate([
     typedi_1.Service(InjectionTokens_1.HttpSharingNodeEndpointToken),
-    __param(0, Inject_1.Inject(arrivals_n_departures_1.MessageFromTMSerializerToken)),
-    __param(1, Inject_1.Inject(arrivals_n_departures_1.MessageToTMDeserializerToken)),
-    __param(2, Inject_1.Inject(arrivals_n_departures_1.MessageToTMVerifierToken)),
+    __param(0, typedi_1.Inject(arrivals_n_departures_1.MessageFromTMSerializerToken)),
+    __param(1, typedi_1.Inject(arrivals_n_departures_1.MessageToTMDeserializerToken)),
+    __param(2, typedi_1.Inject(arrivals_n_departures_1.MessageToTMVerifierToken)),
     __metadata("design:paramtypes", [Object, Object, Object])
 ], HttpSharingNodeEndpoint);
 exports.HttpSharingNodeEndpoint = HttpSharingNodeEndpoint;

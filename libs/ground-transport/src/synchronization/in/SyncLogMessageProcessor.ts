@@ -1,41 +1,36 @@
 import {
 	IUtils,
 	UtilsToken
-}                                      from "@airport/air-control";
+}                                     from "@airport/air-control";
 import {
 	RepoTransBlockSyncOutcome,
 	TmRepositoryTransactionBlockId
-}                                      from "@airport/arrivals-n-departures";
+}                                     from "@airport/arrivals-n-departures";
+import {BlockSyncStatus}              from "@airport/ground-control";
 import {
+	DataOrigin,
 	IRepositoryTransactionBlockDao,
 	IRepoTransBlockResponseStageDao,
 	ISharingMessageDao,
-	ISharingMessageResponseStageDao,
-	RepoTransBlockResponseStageValues,
-	SharingMessageDaoToken,
-	SharingMessageResponseStageValues,
-	SharingNodeRepoTransBlockDaoToken,
-	SharingNodeRepoTransBlockStageDaoToken,
-	SharingNodeRepoTransBlockValues
-}                                      from "@airport/moving-walkway";
-import {ISharingNodeRepoTransBlockDao} from "@airport/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockDao";
-import {
+	ISharingNodeRepoTransBlockDao,
 	ISharingNodeRepoTransBlockStageDao,
-	SharingNodeRepoTransBlockStageValues
-}                                      from "@airport/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockStageDao";
-import {SharingMessageSyncTimestamp} from "@airport/moving-walkway/lib/ddl/sharingMessage/SharingMessage";
-import {SharingNodeId}                 from "@airport/moving-walkway/lib/ddl/sharingNode/SharingNode";
-import {DataOrigin} from "@airport/moving-walkway/lib/ddl/values/DataOrigin";
-import {
 	RepositoryTransactionBlockDaoToken,
 	RepoTransBlockResponseStageDaoToken,
-	SharingMessageResponseStageDaoToken
-}                                      from "@airport/moving-walkway/lib/InjectionTokens";
-import {BlockSyncStatus} from "@airport/terminal-map/lib/sync/SyncStatus";
-import {Service}                       from "typedi";
-import {Inject}                        from "typedi/decorators/Inject";
-import {SyncLogMessageProcessorToken}  from "../../InjectionTokens";
-import {ISyncLogToTM}                  from "./SynchronizationInManager";
+	RepoTransBlockResponseStageValues,
+	SharingMessageDaoToken,
+	SharingMessageSyncTimestamp,
+	SharingNodeId,
+	SharingNodeRepoTransBlockDaoToken,
+	SharingNodeRepoTransBlockStageDaoToken,
+	SharingNodeRepoTransBlockStageValues,
+	SharingNodeRepoTransBlockValues
+}                                     from "@airport/moving-walkway";
+import {
+	Inject,
+	Service
+}                                     from "typedi";
+import {SyncLogMessageProcessorToken} from "../../InjectionTokens";
+import {ISyncLogToTM}                 from "./SynchronizationInManager";
 
 export interface ISyncLogMessageProcessor {
 

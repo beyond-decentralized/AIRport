@@ -1,7 +1,14 @@
-import {Service} from "typedi";
-import {ColumnIndex, IUtils, SchemaIndex, TableIndex, UtilsToken} from "@airport/air-control";
-import {ISynchronizationConflict, SynchronizationConflictType} from "@airport/moving-walkway";
-import {ChangeType} from "@airport/ground-control";
+import {
+	IUtils,
+	UtilsToken
+}                                      from "@airport/air-control";
+import {
+	ChangeType,
+	ColumnIndex,
+	SchemaIndex,
+	SchemaVersionId,
+	TableIndex
+} from "@airport/ground-control";
 import {
 	ActorId,
 	IActor,
@@ -17,15 +24,27 @@ import {
 	RepositoryId,
 	RepositoryTransactionHistoryDaoToken,
 	RepositoryTransactionHistoryDmoToken
-} from "@airport/holding-pattern";
-import {Inject} from "typedi/decorators/Inject";
-import {Stage1SyncedInDataProcessorToken, SyncInUtilsToken} from "../../../../apps/terminal/src/InjectionTokens";
+}                                      from "@airport/holding-pattern";
+import {IRepositoryTransactionHistory} from "@airport/holding-pattern/lib/generated/generated";
+import {
+	ISynchronizationConflict,
+	SynchronizationConflictType
+}                                      from "@airport/moving-walkway";
+import {ISchema}                       from "@airport/traffic-pattern";
+import {
+	Inject,
+	Service
+}                                      from "typedi";
+import {
+	Stage1SyncedInDataProcessorToken,
+	SyncInUtilsToken
+}                                      from "../../InjectionTokens";
 import {
 	ISyncInUtils,
 	ISyncRepoTransHistory,
 	RecordUpdate,
 	Stage1SyncedInDataProcessingResult
-} from "./SyncInUtils";
+}                                      from "./SyncInUtils";
 
 /**
  * Stage 1 data processor is used to
@@ -99,7 +118,8 @@ export class Stage1SyncedInDataProcessor
 					// Collect the Actor related ids
 					const idsForEntity: Map<ActorId, Set<RecordHistoryActorRecordId>>
 						= this.utils.ensureChildJsMap(
-						this.utils.ensureChildJsMap(changedRecordsForRepo.ids, operationHistory.schema.index),
+						this.utils.ensureChildJsMap(changedRecordsForRepo.ids,
+							operationHistory.schemaVersion.id),
 						operationHistory.entity.index);
 					for (const recordHistory of operationHistory.recordHistory) {
 						// Collect the Actor related ids
@@ -123,7 +143,8 @@ export class Stage1SyncedInDataProcessor
 			allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepositoryId);
 
 		// find local history for the matching repositories and corresponding time period
-		const localRepoTransHistoryMapByRepositoryId: Map<RepositoryId, ISyncRepoTransHistory[]>
+		const localRepoTransHistoryMapByRepositoryId
+			: Map<RepositoryId, IRepositoryTransactionHistory[]>
 			= await this.repositoryTransactionHistoryDao
 			.findAllLocalChangesForRecordIds(changedRecordIds);
 		const allLocalRecordDeletions = this.getDeletedRecordIds(
@@ -210,6 +231,7 @@ export class Stage1SyncedInDataProcessor
 	private getDeletedRecordIds(
 		allRepoTransHistoryMapByRepoId: Map<RepositoryId, ISyncRepoTransHistory[]>,
 		repoTransHistoryMapByRepoId: Map<RepositoryId, ISyncRepoTransHistory[]>,
+		schemaMapBySchemaVersionId: Map<SchemaVersionId, ISchema>,
 		isLocal = false
 	): Map<SchemaIndex, Map<TableIndex, Map<RepositoryId, Map<ActorId,
 		Map<RepositoryEntityActorRecordId, RecordHistoryId>>>>> {

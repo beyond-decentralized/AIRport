@@ -1,5 +1,8 @@
-import { ChangeListShareInfo, ChangeRecord } from "@airport/terminal-map";
-import { Subject } from 'rxjs/Subject';
+import {
+	ChangeListShareInfo,
+	ChangeRecord
+}                from "@airport/terminal-map";
+import {Subject} from 'rxjs';
 
 /**
  * Created by Papa on 12/14/2016.

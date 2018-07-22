@@ -1,8 +1,7 @@
 /// <reference types="google-drive-realtime-api" />
-import { GoogleChangeRecordIterator } from './GoogleRealtimeAdaptor';
-import { GoogleRealtimeAdaptorException } from './GoogleRealtimeAdaptor';
-import { Subject } from 'rxjs/Subject';
 import { ChangeRecord } from '@airport/terminal-map';
+import { Subject } from 'rxjs';
+import { GoogleChangeRecordIterator, GoogleRealtimeAdaptorException } from './GoogleRealtimeAdaptor';
 /**
  * Created by Papa on 1/10/2016.
  */

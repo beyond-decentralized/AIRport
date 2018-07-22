@@ -1,14 +1,14 @@
 import {
 	ArrayChangeRecordIterator,
-	ChangeRecord,
-	ChangeRecordIterator,
 	ChangeError,
 	ChangeListShareInfo,
+	ChangeRecord,
+	ChangeRecordIterator,
 	SharedChangeList,
 	SharingPlatformSetupInfo
-} from "@airport/terminal-map";
-import { Subject } from 'rxjs/Subject';
-import { InMemoryChangeStore } from "./InMemoryChangeStore";
+}                            from "@airport/terminal-map";
+import {Subject}             from 'rxjs';
+import {InMemoryChangeStore} from "./InMemoryChangeStore";
 
 /**
  * Created by Papa on 11/26/2016.

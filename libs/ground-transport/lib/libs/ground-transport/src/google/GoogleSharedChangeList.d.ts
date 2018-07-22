@@ -2,8 +2,8 @@
  * Created by Papa on 1/10/2016.
  */
 import { ChangeError, ChangeRecord, ChangeRecordIterator, GoogleChangeListShareInfo, SharedChangeList, SharingPlatformSetupInfo } from '@airport/terminal-map';
-import { DocumentHandle } from './realtime/DocumentHandle';
 import { Subject } from 'rxjs';
+import { DocumentHandle } from './realtime/DocumentHandle';
 export declare class GoogleSharedChangeList implements SharedChangeList {
     platformInfo: SharingPlatformSetupInfo;
     shareInfo: GoogleChangeListShareInfo;

@@ -37,21 +37,9 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 1,
+									"oneTableIndex": 0,
 									"oneColumnIndex": 0
-								}
-							],
-							"name": "SCHEMA_INDEX",
-							"propertyRefs": [
-								{
-									"index": 0
-								}
-							],
-							"type": 4
-						},
-						{
-							"index": 3,
-							"manyRelationColumnRefs": [
+								},
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": 0,
@@ -68,6 +56,9 @@ export const SCHEMA = {
 							"name": "SCHEMA_VERSION_ID",
 							"propertyRefs": [
 								{
+									"index": 0
+								},
+								{
 									"index": 1
 								},
 								{
@@ -77,7 +68,7 @@ export const SCHEMA = {
 							"type": 4
 						},
 						{
-							"index": 4,
+							"index": 3,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 1,
@@ -104,7 +95,7 @@ export const SCHEMA = {
 							"type": 4
 						},
 						{
-							"index": 5,
+							"index": 4,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 2,
@@ -122,7 +113,7 @@ export const SCHEMA = {
 							"type": 4
 						},
 						{
-							"index": 6,
+							"index": 5,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 3,
@@ -140,7 +131,7 @@ export const SCHEMA = {
 							"type": 4
 						},
 						{
-							"index": 7,
+							"index": 6,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 4,
@@ -173,9 +164,6 @@ export const SCHEMA = {
 						},
 						{
 							"index": 5
-						},
-						{
-							"index": 6
 						}
 					],
 					"index": 0,
@@ -186,7 +174,7 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": true,
-							"name": "schema",
+							"name": "schemaVersion",
 							"relationRef": {
 								"index": 0
 							}
@@ -248,7 +236,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 0
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 0,
 							"relationTableSchemaIndex": 0
 						},
 						{
@@ -1601,160 +1589,6 @@ export const SCHEMA = {
 							"index": 0,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "AGT_TERMINAL_ID",
-							"propertyRefs": [
-								{
-									"index": 2
-								}
-							],
-							"type": 4
-						},
-						{
-							"index": 1,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "TERMINAL_PASSWORD",
-							"propertyRefs": [
-								{
-									"index": 3
-								}
-							],
-							"type": 5
-						},
-						{
-							"index": 2,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "TERMINAL_SYNC_STATUS",
-							"propertyRefs": [
-								{
-									"index": 4
-								}
-							],
-							"type": 4
-						},
-						{
-							"index": 3,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
-									"oneTableIndex": 10,
-									"oneColumnIndex": 0
-								}
-							],
-							"name": "SHARING_NODE_ID",
-							"propertyRefs": [
-								{
-									"index": 0
-								}
-							],
-							"type": 4
-						},
-						{
-							"index": 4,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 1,
-									"oneSchemaIndex": 1,
-									"oneTableIndex": 7,
-									"oneColumnIndex": 0
-								}
-							],
-							"name": "TERMINAL_ID",
-							"propertyRefs": [
-								{
-									"index": 1
-								}
-							],
-							"type": 4
-						}
-					],
-					"idColumnRefs": [
-						{
-							"index": 3
-						},
-						{
-							"index": 4
-						}
-					],
-					"index": 11,
-					"isLocal": true,
-					"isRepositoryEntity": false,
-					"name": "SharingNodeTerminal",
-					"properties": [
-						{
-							"index": 0,
-							"isId": true,
-							"name": "sharingNode",
-							"relationRef": {
-								"index": 0
-							}
-						},
-						{
-							"index": 1,
-							"isId": true,
-							"name": "terminal",
-							"relationRef": {
-								"index": 1
-							}
-						},
-						{
-							"columnRef": {
-								"index": 0
-							},
-							"index": 2,
-							"isId": false,
-							"name": "agtTerminalId"
-						},
-						{
-							"columnRef": {
-								"index": 1
-							},
-							"index": 3,
-							"isId": false,
-							"name": "agtTerminalPassword"
-						},
-						{
-							"columnRef": {
-								"index": 2
-							},
-							"index": 4,
-							"isId": false,
-							"name": "terminalSyncStatus"
-						}
-					],
-					"relations": [
-						{
-							"index": 0,
-							"isId": true,
-							"relationType": 1,
-							"propertyRef": {
-								"index": 0
-							},
-							"relationTableIndex": 10
-						},
-						{
-							"index": 1,
-							"isId": true,
-							"relationType": 1,
-							"propertyRef": {
-								"index": 1
-							},
-							"relationTableIndex": 7,
-							"relationTableSchemaIndex": 1
-						}
-					],
-					"tableConfig": {
-						"name": "SHARING_NODE_TERMINAL"
-					}
-				},
-				{
-					"columns": [
-						{
-							"index": 0,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
 							"name": "SHARING_NODE_ID",
 							"propertyRefs": [
 								{
@@ -1796,7 +1630,7 @@ export const SCHEMA = {
 							"index": 1
 						}
 					],
-					"index": 12,
+					"index": 11,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "SharingNodeRepoTransBlockStage",
@@ -1914,7 +1748,7 @@ export const SCHEMA = {
 							"index": 4
 						}
 					],
-					"index": 13,
+					"index": 12,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "SharingNodeRepository",
@@ -1987,6 +1821,160 @@ export const SCHEMA = {
 							"SHARING_NODE_ID",
 							"REPOSITORY_ID"
 						]
+					}
+				},
+				{
+					"columns": [
+						{
+							"index": 0,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "AGT_TERMINAL_ID",
+							"propertyRefs": [
+								{
+									"index": 2
+								}
+							],
+							"type": 4
+						},
+						{
+							"index": 1,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "TERMINAL_PASSWORD",
+							"propertyRefs": [
+								{
+									"index": 3
+								}
+							],
+							"type": 5
+						},
+						{
+							"index": 2,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "TERMINAL_SYNC_STATUS",
+							"propertyRefs": [
+								{
+									"index": 4
+								}
+							],
+							"type": 4
+						},
+						{
+							"index": 3,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 0,
+									"oneSchemaIndex": null,
+									"oneTableIndex": 10,
+									"oneColumnIndex": 0
+								}
+							],
+							"name": "SHARING_NODE_ID",
+							"propertyRefs": [
+								{
+									"index": 0
+								}
+							],
+							"type": 4
+						},
+						{
+							"index": 4,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 1,
+									"oneSchemaIndex": 1,
+									"oneTableIndex": 7,
+									"oneColumnIndex": 0
+								}
+							],
+							"name": "TERMINAL_ID",
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"type": 4
+						}
+					],
+					"idColumnRefs": [
+						{
+							"index": 3
+						},
+						{
+							"index": 4
+						}
+					],
+					"index": 13,
+					"isLocal": true,
+					"isRepositoryEntity": false,
+					"name": "SharingNodeTerminal",
+					"properties": [
+						{
+							"index": 0,
+							"isId": true,
+							"name": "sharingNode",
+							"relationRef": {
+								"index": 0
+							}
+						},
+						{
+							"index": 1,
+							"isId": true,
+							"name": "terminal",
+							"relationRef": {
+								"index": 1
+							}
+						},
+						{
+							"columnRef": {
+								"index": 0
+							},
+							"index": 2,
+							"isId": false,
+							"name": "agtTerminalId"
+						},
+						{
+							"columnRef": {
+								"index": 1
+							},
+							"index": 3,
+							"isId": false,
+							"name": "agtTerminalPassword"
+						},
+						{
+							"columnRef": {
+								"index": 2
+							},
+							"index": 4,
+							"isId": false,
+							"name": "terminalSyncStatus"
+						}
+					],
+					"relations": [
+						{
+							"index": 0,
+							"isId": true,
+							"relationType": 1,
+							"propertyRef": {
+								"index": 0
+							},
+							"relationTableIndex": 10
+						},
+						{
+							"index": 1,
+							"isId": true,
+							"relationType": 1,
+							"propertyRef": {
+								"index": 1
+							},
+							"relationTableIndex": 7,
+							"relationTableSchemaIndex": 1
+						}
+					],
+					"tableConfig": {
+						"name": "SHARING_NODE_TERMINAL"
 					}
 				},
 				{

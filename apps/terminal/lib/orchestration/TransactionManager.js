@@ -14,11 +14,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
-const InjectionTokens_1 = require("@airport/holding-pattern/lib/InjectionTokens");
 const terminal_map_1 = require("@airport/terminal-map");
 const tower_1 = require("@airport/tower");
 const typedi_1 = require("typedi");
-const InjectionTokens_2 = require("../InjectionTokens");
+const InjectionTokens_1 = require("../InjectionTokens");
 const ActiveQueries_1 = require("../store/ActiveQueries");
 const AbstractMutationManager_1 = require("./AbstractMutationManager");
 let TransactionManager = class TransactionManager extends AbstractMutationManager_1.AbstractMutationManager {
@@ -52,7 +51,7 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
             await this.wait(this.yieldToRunningTransaction);
         }
         this.transactionInProgress = transactionIndex;
-        let fieldMap = new terminal_map_1.SyncSchemaMap();
+        let fieldMap = new SyncSchemaMap();
         this.currentTransHistory = this.transactionHistoryDmo.getNewRecord();
         await this.dataStore.startTransaction();
     }
@@ -179,14 +178,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], TransactionManager.prototype, "initialize", null);
 TransactionManager = __decorate([
-    typedi_1.Service(InjectionTokens_2.TransactionManagerToken),
+    typedi_1.Service(terminal_map_1.TransactionManagerToken),
     __param(0, typedi_1.Inject(_ => air_control_1.UtilsToken)),
-    __param(1, typedi_1.Inject(_ => InjectionTokens_2.StoreDriverToken)),
-    __param(2, typedi_1.Inject(_ => InjectionTokens_2.IdGeneratorToken)),
-    __param(3, typedi_1.Inject(_ => InjectionTokens_2.OfflineDeltaStoreToken)),
-    __param(4, typedi_1.Inject(_ => InjectionTokens_2.OnlineManagerToken)),
-    __param(5, typedi_1.Inject(_ => InjectionTokens_2.ActiveQueriesToken)),
-    __param(6, typedi_1.Inject(_ => InjectionTokens_1.TransactionHistoryDmoToken)),
+    __param(1, typedi_1.Inject(_ => InjectionTokens_1.StoreDriverToken)),
+    __param(2, typedi_1.Inject(_ => InjectionTokens_1.IdGeneratorToken)),
+    __param(3, typedi_1.Inject(_ => InjectionTokens_1.OfflineDeltaStoreToken)),
+    __param(4, typedi_1.Inject(_ => InjectionTokens_1.OnlineManagerToken)),
+    __param(5, typedi_1.Inject(_ => InjectionTokens_1.ActiveQueriesToken)),
+    __param(6, typedi_1.Inject(_ => holding_pattern_1.TransactionHistoryDmoToken)),
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, ActiveQueries_1.ActiveQueries, Object])
 ], TransactionManager);
 exports.TransactionManager = TransactionManager;

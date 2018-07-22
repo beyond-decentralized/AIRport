@@ -9,7 +9,7 @@ export declare enum JSONClauseObjectType {
     FIELD_QUERY = 2,
     DISTINCT_FUNCTION = 3,
     EXISTS_FUNCTION = 4,
-    MANY_TO_ONE_RELATION = 5
+    MANY_TO_ONE_RELATION = 5,
 }
 /**
  * Types of data
@@ -20,7 +20,7 @@ export declare enum SQLDataType {
     DATE = 2,
     JSON = 3,
     NUMBER = 4,
-    STRING = 5
+    STRING = 5,
 }
 export declare function getSqlDataType(type: string): SQLDataType;
 /**

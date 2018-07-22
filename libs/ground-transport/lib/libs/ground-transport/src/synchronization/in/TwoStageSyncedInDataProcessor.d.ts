@@ -1,7 +1,7 @@
 import { IUtils } from "@airport/air-control";
 import { IRepositoryActorDao, IRepositoryTransactionHistoryDmo, RepositoryId } from "@airport/holding-pattern";
-import { IRepositoryTransactionBlockDao, IRepoTransBlockRepoTransHistoryDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISynchronizationConflictDao, ISynchronizationConflictPendingNotificationDao, SharingNodeId } from "@airport/moving-walkway";
-import { ITransactionManager } from "../../../../apps/terminal/src/orchestration/TransactionManager";
+import { IRepositoryTransactionBlockDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISynchronizationConflictDao, ISynchronizationConflictPendingNotificationDao, SharingNodeId } from "@airport/moving-walkway";
+import { ITransactionManager } from "@airport/terminal-map";
 import { ISyncInChecker } from "./checker/SyncInChecker";
 import { IStage1SyncedInDataProcessor } from "./Stage1SyncedInDataProcessor";
 import { IStage2SyncedInDataProcessor } from "./Stage2SyncedInDataProcessor";
@@ -23,10 +23,9 @@ export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInD
     private synchronizationConflictPendingNotificationDao;
     private syncInChecker;
     private repositoryTransactionBlockDao;
-    private repoTransBlockRepoTransHistoryDao;
     private transactionManager;
     private utils;
-    constructor(repositoryActorDao: IRepositoryActorDao, repositoryTransactionHistoryDmo: IRepositoryTransactionHistoryDmo, sharingMessageDao: ISharingMessageDao, sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor: IStage1SyncedInDataProcessor, stage2SyncedInDataProcessor: IStage2SyncedInDataProcessor, synchronizationConflictDao: ISynchronizationConflictDao, synchronizationConflictPendingNotificationDao: ISynchronizationConflictPendingNotificationDao, syncInChecker: ISyncInChecker, repositoryTransactionBlockDao: IRepositoryTransactionBlockDao, repoTransBlockRepoTransHistoryDao: IRepoTransBlockRepoTransHistoryDao, transactionManager: ITransactionManager, utils: IUtils);
+    constructor(repositoryActorDao: IRepositoryActorDao, repositoryTransactionHistoryDmo: IRepositoryTransactionHistoryDmo, sharingMessageDao: ISharingMessageDao, sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor: IStage1SyncedInDataProcessor, stage2SyncedInDataProcessor: IStage2SyncedInDataProcessor, synchronizationConflictDao: ISynchronizationConflictDao, synchronizationConflictPendingNotificationDao: ISynchronizationConflictPendingNotificationDao, syncInChecker: ISyncInChecker, repositoryTransactionBlockDao: IRepositoryTransactionBlockDao, transactionManager: ITransactionManager, utils: IUtils);
     /**
      * Synchronize the data messages coming from AGT (new data for this TM).
      * @param {IDataToTM[]} dataMessages  Incoming data messages.
@@ -35,8 +34,8 @@ export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInD
      * @returns {Promise<void>}
      */
     syncDataMessages(dataMessages: IDataToTM[], sharingNodeRepositoryMap: Map<SharingNodeId, Set<RepositoryId>>): Promise<void>;
-    private recordSharingMessageToHistoryRecords;
-    private getRepoTransHistoryMapByRepoId;
-    private addRepoTransHistoriesToMapFromData;
-    private updateLocalData;
+    private recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById);
+    private getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
+    private addRepoTransHistoriesToMapFromData(repoTransHistoryMapByRepositoryId, data);
+    private updateLocalData(repoTransHistoryMapByRepositoryId, actorMayById);
 }

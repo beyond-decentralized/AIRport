@@ -1,8 +1,8 @@
-import { ActorId, ActorRandomId, TerminalName, TerminalSecondId, IActor, IActorDao, ITerminalDao, UserUniqueId } from "@airport/holding-pattern";
-import { IDataToTM } from "../SyncInUtils";
 import { IUtils } from "@airport/air-control";
-import { UserCheckResults } from "./SyncInUserChecker";
+import { ActorId, ActorRandomId, IActor, IActorDao, ITerminalDao, TerminalName, TerminalSecondId, UserUniqueId } from "@airport/holding-pattern";
+import { IDataToTM } from "../SyncInUtils";
 import { TerminalCheckResults } from "./SyncInTerminalChecker";
+import { UserCheckResults } from "./SyncInUserChecker";
 export interface ActorCheckResults {
     actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>;
     actorMapById: Map<ActorId, IActor>;
@@ -18,8 +18,8 @@ export declare class SyncInActorChecker implements ISyncInActorChecker {
     private utils;
     constructor(actorDao: IActorDao, terminalDao: ITerminalDao, utils: IUtils);
     ensureActorsAndGetAsMaps(dataMessages: IDataToTM[], actorMap: Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>, actorMapById: Map<ActorId, IActor>, userCheckResults: UserCheckResults, terminalCheckResults: TerminalCheckResults): Promise<ActorCheckResults>;
-    private areActorIdsConsistentInMessage;
-    private updateActorIdsInMessages;
-    private getNewActors;
-    private addActorToMap;
+    private areActorIdsConsistentInMessage(message);
+    private updateActorIdsInMessages(actorMap, dataMessages);
+    private getNewActors(dataMessages, actorMap);
+    private addActorToMap(actor, actorMap);
 }

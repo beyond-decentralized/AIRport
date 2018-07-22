@@ -1,9 +1,17 @@
-import { GoogleDrive } from './GoogleDrive';
-import { ApiConstants, GoogleApi } from '../GoogleApi';
-import { DriveResponse } from './GoogleDriveModel';
-import { DriveConstants } from './GoogleDriveModel';
-import { GoogleSetupInfo, GoogleChangeListShareInfo } from '@airport/terminal-map';
-import { MimeTypes } from './GoogleDriveModel';
+import {
+	GoogleChangeListShareInfo,
+	GoogleSetupInfo
+}                    from '@airport/terminal-map';
+import {
+	ApiConstants,
+	GoogleApi
+}                    from '../GoogleApi';
+import {GoogleDrive} from './GoogleDrive';
+import {
+	DriveConstants,
+	DriveResponse,
+	MimeTypes
+}                    from './GoogleDriveModel';
 
 /**
  * Created by Papa on 1/3/2016.

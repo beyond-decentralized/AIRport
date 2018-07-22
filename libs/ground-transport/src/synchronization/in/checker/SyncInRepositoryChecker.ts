@@ -1,16 +1,20 @@
-import {UtilsToken}                    from "@airport/air-control/lib/InjectionTokens";
-import {IUtils}                        from "@airport/air-control/lib/lingo/utils/Utils";
-import {AgtRepositoryId}               from "@airport/ground-control";
-import {RepositoryId}                  from "@airport/holding-pattern/lib/ddl/repository/Repository";
+import {
+	IUtils,
+	UtilsToken
+}                                     from "@airport/air-control";
+import {AgtRepositoryId}              from "@airport/arrivals-n-departures";
+import {RepositoryId}                 from "@airport/holding-pattern";
 import {
 	ISharingNodeRepositoryDao,
-	SharingNodeId
-}                                      from "@airport/moving-walkway";
-import {SharingNodeRepositoryDaoToken} from "@airport/moving-walkway/lib/InjectionTokens";
-import {Service}                       from "typedi";
-import {Inject}                        from "typedi/decorators/Inject";
-import {SyncInRepositoryCheckerToken}  from "../../../../../apps/terminal/src/InjectionTokens";
-import {IDataToTM}                     from "../SyncInUtils";
+	SharingNodeId,
+	SharingNodeRepositoryDaoToken
+}                                     from "@airport/moving-walkway";
+import {
+	Inject,
+	Service
+}                                     from "typedi";
+import {SyncInRepositoryCheckerToken} from "../../../InjectionTokens";
+import {IDataToTM}                    from "../SyncInUtils";
 
 export interface RepositoryCheckResults {
 	consistentMessages: IDataToTM[];

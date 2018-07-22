@@ -1,25 +1,37 @@
-import {Service} from "typedi";
-import {Stage2SyncedInDataProcessorToken} from "../../../../apps/terminal/src/InjectionTokens";
 import {
-	AirportTerminalToken,
+	AirportDatabaseToken,
 	and,
-	ColumnIndex,
-	IAirportTerminal,
+	IAirportDatabase,
 	IUtils,
 	or,
-	SchemaIndex,
-	TableIndex,
 	UtilsToken
-} from "@airport/air-control";
-import {ActorId, RepositoryEntityActorRecordId, RepositoryId} from "@airport/holding-pattern";
-import {Inject} from "typedi/decorators/Inject";
+}                                         from "@airport/air-control";
+import {
+	ColumnIndex,
+	JSONBaseOperation,
+	SchemaIndex,
+	SchemaVersionId,
+	TableIndex
+}                                         from "@airport/ground-control";
+import {
+	ActorId,
+	RepositoryEntityActorRecordId,
+	RepositoryId
+}                                         from "@airport/holding-pattern";
 import {
 	IRecordUpdateStageDao,
 	RecordUpdateStageDaoToken,
 	RecordUpdateStageValues
-} from "@airport/moving-walkway";
-import {JSONBaseOperation} from "@airport/ground-control";
-import {RecordUpdate, Stage1SyncedInDataProcessingResult} from "./SyncInUtils";
+}                                         from "@airport/moving-walkway";
+import {
+	Inject,
+	Service
+}                                         from "typedi";
+import {Stage2SyncedInDataProcessorToken} from "../../InjectionTokens";
+import {
+	RecordUpdate,
+	Stage1SyncedInDataProcessingResult
+}                                         from "./SyncInUtils";
 
 /**
  * Stage 2 data processor is used to optimize to optimize the number of required
@@ -52,8 +64,8 @@ export class Stage2SyncedInDataProcessor
 	implements IStage2SyncedInDataProcessor {
 
 	constructor(
-		@Inject(AirportTerminalToken)
-		private airportDb: IAirportTerminal,
+		@Inject(AirportDatabaseToken)
+		private airportDb: IAirportDatabase,
 		@Inject(RecordUpdateStageDaoToken)
 		private recordUpdateStageDao: IRecordUpdateStageDao,
 		@Inject(UtilsToken)
@@ -70,13 +82,28 @@ export class Stage2SyncedInDataProcessor
 		await this.performDeletes(stage1Result.recordDeletions);
 	}
 
+	/**
+	 * Remote changes come in with SchemaVersionIds not SchemaIndexes, so it makes
+	 * sense to keep this structure.  NOTE: only one version of a given schema is
+	 * processed at one time:
+	 *
+	 *  Changes for a schema version below the one in this Terminal must first be upgraded.
+	 *  Terminal itself must first be upgraded to newer schema versions, before changes
+	 *  for that schema version are processed.
+	 *
+	 *  To tie in a given SchemaVersionId to its SchemaIndex an additional mapping data
+	 *  structure is passed in.
+	 */
+
 	async performCreates(
-		recordCreations: Map<SchemaIndex,
+		recordCreations: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
-				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>
+				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
+		schemasBySchemaVersionIdMap: Map<SchemaVersionId, Schema>
 	): Promise<void> {
-		for (const [schemaIndex, creationInSchemaMap] of recordCreations) {
+		for (const [schemaVersionId, creationInSchemaMap] of recordCreations) {
 			for (const [tableIndex, creationInTableMap] of creationInSchemaMap) {
+				const schemaIndex = schemasBySchemaVersionIdMap[schemaVersionId];
 				const dbEntity = this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
 				const qEntity = this.airportDb.qSchemas[schemaIndex][dbEntity.name];
 				const columns = [
@@ -133,11 +160,11 @@ export class Stage2SyncedInDataProcessor
 		}
 	}
 
-
 	async performUpdates(
 		recordUpdates: Map<SchemaIndex,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
-				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>
+				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
+		schemasBySchemaVersionIdMap: Map<SchemaVersionId, Schema>
 	): Promise<void> {
 		const finalUpdateMap: Map<SchemaIndex, Map<TableIndex, ColumnUpdateKeyMap>> = new Map();
 
@@ -195,7 +222,8 @@ export class Stage2SyncedInDataProcessor
 	 * @returns {RecordKeyMap}
 	 */
 	private getRecordKeyMap(
-		recordUpdateMap: Map<ColumnIndex, RecordUpdate>, // combination of columns/values being updated
+		recordUpdateMap: Map<ColumnIndex, RecordUpdate>, // combination of columns/values being
+	                                                   // updated
 		finalTableUpdateMap: ColumnUpdateKeyMap, // the map of updates for a table
 	): RecordKeyMap {
 		const updatedColumns: ColumnIndex[] = [];

@@ -1,37 +1,33 @@
-import {IStoreDriver}                             from "@airport/ground-control";
-import {Token}                                    from "typedi";
-import {ISyncInRepositoryTransactionBlockCreator} from "./synchronization/in/creator/SyncInRepositoryTransactionBlockCreator";
 import {
-	ISyncInSharingMessageCreator,
-	SyncInSharingMessageCreator
-} from "./synchronization/in/creator/SyncInSharingMessageCreator";
-import {ISynchronizationInManager}                from "./synchronization/in/SynchronizationInManager";
-import {ISynchronizationOutManager}               from "./synchronization/out/SynchronizationOutManager";
-import {ISyncNodeManager}                         from "./synchronization/SyncNodeManager";
-import {IStage1SyncedInDataProcessor}             from "./synchronization/in/Stage1SyncedInDataProcessor";
-import {IStage2SyncedInDataProcessor}             from "./synchronization/in/Stage2SyncedInDataProcessor";
-import {ISyncInUtils}                             from "./synchronization/in/SyncInUtils";
-import {ITwoStageSyncedInDataProcessor} from "./synchronization/in/TwoStageSyncedInDataProcessor";
-import {ISyncInSchemaChecker} from "./synchronization/in/checker/SyncInSchemaChecker";
-import {ISyncInDataChecker} from "./synchronization/in/checker/SyncInDataChecker";
-import {ISyncInChecker} from "./synchronization/in/checker/SyncInChecker";
-import {ISyncInActorChecker} from "./synchronization/in/checker/SyncInActorChecker";
-import {ISyncInRepositoryChecker} from "./synchronization/in/checker/SyncInRepositoryChecker";
-import {ISyncInConsistencyChecker} from "./synchronization/in/checker/SyncInConsistencyChecker";
-import {ILoggedPackage, LoggedPackage} from "@airport/approach-lighting-system";
-import {LogLevel} from "@airport/runway-edge-lighting";
-import {
-	ILoggedApplication,
-	LoggedApplication
-}                                                  from "@airport/approach-lighting-system/lib/LoggedApplication";
-import {ISyncLogMessageProcessor}                  from "./synchronization/in/SyncLogMessageProcessor";
-import {ISynchronizationOutCoordinator}            from "./synchronization/out/SynchronizationOutCoordinator";
-import {ISyncOutSerializer}                        from "./synchronization/out/SyncOutSerializer";
-import {ISyncOutMessageSender}                     from "./synchronization/out/SyncOutMessageSender";
-import {ISyncOutRepositoryTransactionBlockCreator} from "./synchronization/out/SyncOutRepositoryTransactionBlockCreator";
+	ILoggedPackage,
+	LoggedPackage
+}                                                  from "@airport/approach-lighting-system";
+import {IStoreDriver}                              from "@airport/ground-control";
+import {LogLevel}                                  from "@airport/runway-edge-lighting";
+import {Token}                                     from "typedi";
 import {ISharingNodeEndpoint}                      from "./synchronization/connect/SharingNodeEndpoint";
+import {ISyncInActorChecker}                       from "./synchronization/in/checker/SyncInActorChecker";
+import {ISyncInChecker}                            from "./synchronization/in/checker/SyncInChecker";
+import {ISyncInConsistencyChecker}                 from "./synchronization/in/checker/SyncInConsistencyChecker";
+import {ISyncInDataChecker}                        from "./synchronization/in/checker/SyncInDataChecker";
+import {ISyncInRepositoryChecker}                  from "./synchronization/in/checker/SyncInRepositoryChecker";
+import {ISyncInSchemaChecker}                      from "./synchronization/in/checker/SyncInSchemaChecker";
 import {ISyncInTerminalChecker}                    from "./synchronization/in/checker/SyncInTerminalChecker";
 import {ISyncInUserChecker}                        from "./synchronization/in/checker/SyncInUserChecker";
+import {ISyncInRepositoryTransactionBlockCreator}  from "./synchronization/in/creator/SyncInRepositoryTransactionBlockCreator";
+import {ISyncInSharingMessageCreator}              from "./synchronization/in/creator/SyncInSharingMessageCreator";
+import {IStage1SyncedInDataProcessor}              from "./synchronization/in/Stage1SyncedInDataProcessor";
+import {IStage2SyncedInDataProcessor}              from "./synchronization/in/Stage2SyncedInDataProcessor";
+import {ISynchronizationInManager}                 from "./synchronization/in/SynchronizationInManager";
+import {ISyncInUtils}                              from "./synchronization/in/SyncInUtils";
+import {ISyncLogMessageProcessor}                  from "./synchronization/in/SyncLogMessageProcessor";
+import {ITwoStageSyncedInDataProcessor}            from "./synchronization/in/TwoStageSyncedInDataProcessor";
+import {ISynchronizationOutCoordinator}            from "./synchronization/out/SynchronizationOutCoordinator";
+import {ISynchronizationOutManager}                from "./synchronization/out/SynchronizationOutManager";
+import {ISyncOutMessageSender}                     from "./synchronization/out/SyncOutMessageSender";
+import {ISyncOutRepositoryTransactionBlockCreator} from "./synchronization/out/SyncOutRepositoryTransactionBlockCreator";
+import {ISyncOutSerializer}                        from "./synchronization/out/SyncOutSerializer";
+import {ISyncNodeManager}                          from "./synchronization/SyncNodeManager";
 
 export const DirectSharingNodeEndpointToken = new Token<ISharingNodeEndpoint>();
 export const HttpSharingNodeEndpointToken = new Token<ISharingNodeEndpoint>();
@@ -61,10 +57,6 @@ export const SyncOutRepositoryTransactionBlockCreatorToken
 export const SyncOutSerializerToken = new Token<ISyncOutSerializer>();
 export const TwoStageSyncedInDataProcessorToken = new Token<ITwoStageSyncedInDataProcessor>();
 
-export const TerminalLogger: ILoggedPackage
-	= new LoggedPackage("terminal", LogLevel.TRACE);
-
-export const TerminalAppLogger: ILoggedApplication
-	= new LoggedApplication("Airport");
-TerminalAppLogger.addPackage(TerminalLogger);
+export const GroundTransportLogger: ILoggedPackage
+	= new LoggedPackage("ground-transport", LogLevel.TRACE);
 

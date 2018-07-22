@@ -4,8 +4,8 @@ import {
 	SharedChangeList,
 	SharingAdaptor,
 	SharingPlatformSetupInfo,
-} from "@airport/terminal-map";
-import { StubChangeList } from "./StubChangeList";
+}                       from "@airport/terminal-map";
+import {StubChangeList} from "./StubChangeList";
 
 /**
  * Created by Papa on 12/14/2016.

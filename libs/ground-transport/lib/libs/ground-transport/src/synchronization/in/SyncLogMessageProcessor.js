@@ -13,13 +13,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
 const moving_walkway_1 = require("@airport/moving-walkway");
-const DataOrigin_1 = require("@airport/moving-walkway/lib/ddl/values/DataOrigin");
-const InjectionTokens_1 = require("@airport/moving-walkway/lib/InjectionTokens");
-const SyncStatus_1 = require("@airport/terminal-map/lib/sync/SyncStatus");
 const typedi_1 = require("typedi");
-const Inject_1 = require("typedi/decorators/Inject");
-const InjectionTokens_2 = require("../../InjectionTokens");
+const InjectionTokens_1 = require("../../InjectionTokens");
 let SyncLogMessageProcessor = class SyncLogMessageProcessor {
     constructor(sharingMessageDao, 
     // @Inject(SharingMessageResponseStageDaoToken)
@@ -122,8 +119,8 @@ let SyncLogMessageProcessor = class SyncLogMessageProcessor {
                     tmRepositoryTransactionBlockId,
                     sharingMessageSyncTimestamp,
                     repoTransBlockSyncOutcome.syncOutcomeType,
-                    DataOrigin_1.DataOrigin.LOCAL,
-                    SyncStatus_1.BlockSyncStatus.SYNCHRONIZED
+                    moving_walkway_1.DataOrigin.LOCAL,
+                    ground_control_1.BlockSyncStatus.SYNCHRONIZED
                 ]);
             }
         }
@@ -131,13 +128,13 @@ let SyncLogMessageProcessor = class SyncLogMessageProcessor {
     }
 };
 SyncLogMessageProcessor = __decorate([
-    typedi_1.Service(InjectionTokens_2.SyncLogMessageProcessorToken),
-    __param(0, Inject_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
-    __param(1, Inject_1.Inject(moving_walkway_1.SharingNodeRepoTransBlockDaoToken)),
-    __param(2, Inject_1.Inject(moving_walkway_1.SharingNodeRepoTransBlockStageDaoToken)),
-    __param(3, Inject_1.Inject(InjectionTokens_1.RepositoryTransactionBlockDaoToken)),
-    __param(4, Inject_1.Inject(InjectionTokens_1.RepoTransBlockResponseStageDaoToken)),
-    __param(5, Inject_1.Inject(air_control_1.UtilsToken)),
+    typedi_1.Service(InjectionTokens_1.SyncLogMessageProcessorToken),
+    __param(0, typedi_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
+    __param(1, typedi_1.Inject(moving_walkway_1.SharingNodeRepoTransBlockDaoToken)),
+    __param(2, typedi_1.Inject(moving_walkway_1.SharingNodeRepoTransBlockStageDaoToken)),
+    __param(3, typedi_1.Inject(moving_walkway_1.RepositoryTransactionBlockDaoToken)),
+    __param(4, typedi_1.Inject(moving_walkway_1.RepoTransBlockResponseStageDaoToken)),
+    __param(5, typedi_1.Inject(air_control_1.UtilsToken)),
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object])
 ], SyncLogMessageProcessor);
 exports.SyncLogMessageProcessor = SyncLogMessageProcessor;

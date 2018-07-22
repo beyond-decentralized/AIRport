@@ -21,14 +21,14 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISchema,
-	SchemaEId,
-	SchemaEOptionalId,
-	SchemaEUpdateProperties,
-	SchemaESelect,
-	QSchema,
-	QSchemaQId,
-	QSchemaQRelation,
+	ISchemaVersion,
+	SchemaVersionEId,
+	SchemaVersionEOptionalId,
+	SchemaVersionEUpdateProperties,
+	SchemaVersionESelect,
+	QSchemaVersion,
+	QSchemaVersionQId,
+	QSchemaVersionQRelation,
 	ISchemaEntity,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
@@ -79,7 +79,7 @@ export interface IRecordUpdateStage {
 	actorRecordId?: number;
 
 	// Id Relations
-	schema?: ISchema;
+	schemaVersion?: ISchemaVersion;
 	entity?: ISchemaEntity;
 	actor?: IActor;
 	column?: ISchemaColumn;
@@ -106,7 +106,7 @@ export interface IRecordUpdateStage {
 export interface RecordUpdateStageESelect
     extends IEntitySelectProperties, RecordUpdateStageEOptionalId, RecordUpdateStageEUpdateProperties {
 	// Id Relations - full property interfaces
-	schema?: SchemaESelect;
+	schemaVersion?: SchemaVersionESelect;
 	entity?: SchemaEntityESelect;
 	actor?: ActorESelect;
 	column?: SchemaColumnESelect;
@@ -125,7 +125,7 @@ export interface RecordUpdateStageEId
 	actorRecordId: number | IQNumberField;
 
 	// Id Relations - Ids only
-	schema: SchemaEId;
+	schemaVersion: SchemaVersionEId;
 	entity: SchemaEntityEId;
 	actor: ActorEId;
 	column: SchemaColumnEId;
@@ -140,7 +140,7 @@ export interface RecordUpdateStageEOptionalId {
 	actorRecordId?: number | IQNumberField;
 
 	// Id Relations - Ids only
-	schema?: SchemaEOptionalId;
+	schemaVersion?: SchemaVersionEOptionalId;
 	entity?: SchemaEntityEOptionalId;
 	actor?: ActorEOptionalId;
 	column?: SchemaColumnEOptionalId;
@@ -201,7 +201,7 @@ export interface QRecordUpdateStage extends QEntity
 	actorRecordId: IQNumberField;
 
 	// Id Relations
-	schema: QSchemaQRelation;
+	schemaVersion: QSchemaVersionQRelation;
 	entity: QSchemaEntityQRelation;
 	actor: QActorQRelation;
 	column: QSchemaColumnQRelation;
@@ -223,7 +223,7 @@ export interface QRecordUpdateStageQId
 	actorRecordId: IQNumberField;
 
 	// Id Relations
-	schema: QSchemaQId;
+	schemaVersion: QSchemaVersionQId;
 	entity: QSchemaEntityQId;
 	actor: QActorQId;
 	column: QSchemaColumnQId;

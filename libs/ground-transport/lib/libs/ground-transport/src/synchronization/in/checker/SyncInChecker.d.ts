@@ -1,6 +1,6 @@
 import { SchemaIndex } from "@airport/air-control";
 import { AgtRepositoryId } from "@airport/arrivals-n-departures";
-import { ActorRandomId, TerminalName, TerminalSecondId, IActor, RepositoryId, UserUniqueId } from "@airport/holding-pattern";
+import { ActorRandomId, IActor, RepositoryId, TerminalName, TerminalSecondId, UserUniqueId } from "@airport/holding-pattern";
 import { IMissingRecordRepoTransBlockDao, IRepositoryTransactionBlock, IRepoTransBlockSchemasToChangeDao, ISharingMessage, ISharingMessageDao, SharingNodeId } from "@airport/moving-walkway";
 import { IDataToTM, ISyncInUtils } from "../SyncInUtils";
 import { ISyncInActorChecker } from "./SyncInActorChecker";
@@ -34,9 +34,9 @@ export declare class SyncInChecker implements ISyncInChecker {
      *      ]
      */
     checkSchemasAndDataAndRecordSharingMessages(dataMessages: IDataToTM[], actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>, sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>): Promise<[ISharingMessage[], IRepositoryTransactionBlock[], IDataToTM[], Set<SchemaIndex>]>;
-    private updateSchemaReferences;
-    private updateActorReferences;
-    private updateRepositoryReferences;
-    private recordSharingMessages;
-    private findMatchingSchema;
+    private updateSchemaReferences(dataMessages, schemaMap);
+    private updateActorReferences(dataMessages, actorMap);
+    private updateRepositoryReferences(dataMessages, sharingNodeRepositoryMap);
+    private recordSharingMessages(dataMessagesWithIncompatibleSchemas, dataMessagesToBeUpgraded, schemasWithChangesMap, dataMessagesWithCompatibleSchemasAndData, sharingMessagesWithIncompatibleData, missingRecordRepoTransBlocks);
+    private findMatchingSchema(schemaMap, schema);
 }

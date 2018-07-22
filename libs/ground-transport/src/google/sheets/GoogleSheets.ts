@@ -1,5 +1,5 @@
-import {PromiseHttp} from './../../PromiseHttp';
-import {GoogleApi} from '../GoogleApi';
+import {PromiseHttp} from "../../PromiseHttp";
+import {GoogleApi}   from '../GoogleApi';
 
 /**
  * Created by Papa on 1/5/2016.
@@ -20,27 +20,27 @@ class ReturnType {
 
 export class GoogleSheets {
 
-	urlPrefix:string = 'https://spreadsheets.google.com/feeds';
+	urlPrefix: string = 'https://spreadsheets.google.com/feeds';
 
 	constructor(
-		private googleApi:GoogleApi,
-		private promiseHttp:PromiseHttp
+		private googleApi: GoogleApi,
+		private promiseHttp: PromiseHttp
 	) {
 	}
 
 	getSheet(
-		fileId:string
-	):Promise<any> {
+		fileId: string
+	): Promise<any> {
 		return this.promiseHttp.get(this.getListFeedUrl(fileId));
 	}
 
 	getWorksheets(
-		fileId:string
-	):Promise<any> {
+		fileId: string
+	): Promise<any> {
 		return this.googleApi.request(this.getWorksheetsUrl(fileId));
 	}
 
-	getRequestOptionsArgs():any // RequestOptionsArgs
+	getRequestOptionsArgs(): any // RequestOptionsArgs
 	{
 		let headers = {}; //new Headers();
 		// headers.append('Authorization', 'GoogleLogin auth=' + 1);
@@ -51,23 +51,24 @@ export class GoogleSheets {
 
 		return requestOptionsArgs;
 	}
+
 	private getListFeedUrl(
-		fileId:string
-	):string {
+		fileId: string
+	): string {
 		let url = `${this.urlPrefix}/${FeedType.LIST}/key/${fileId}/${this.getUrlSuffix()}`;
 
 		return url;
 	}
 
 	private getWorksheetsUrl(
-		fileId:string
-	):string {
+		fileId: string
+	): string {
 		let url = `${this.urlPrefix}/${FeedType.WORKSHEETS}/${fileId}/${this.getUrlSuffix()}`;
 
 		return url;
 	}
 
-	private getUrlSuffix():string {
+	private getUrlSuffix(): string {
 		let accessToken = gapi.auth.getToken().access_token;
 		let suffix = `/private/full/?access_token=${accessToken}`;
 
@@ -75,9 +76,9 @@ export class GoogleSheets {
 	}
 
 	addRow(
-		fileId:string,
-		rowXml:string
-	):Promise<any> {
+		fileId: string,
+		rowXml: string
+	): Promise<any> {
 		return this.promiseHttp.post(this.getListFeedUrl(fileId), rowXml);
 	}
 }

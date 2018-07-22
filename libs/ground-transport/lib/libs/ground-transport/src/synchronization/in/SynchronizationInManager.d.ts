@@ -42,6 +42,6 @@ export declare class SynchronizationInManager implements ISynchronizationInManag
      * @returns {Promise<void>}   Return when all of the messages have been processed
      */
     receiveMessages(sharingNodes: ISharingNode[], incomingMessages: BatchedMessagesToTM[], sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>): Promise<void>;
-    private isValidLastChangeTime;
-    private getLastChangeMillisFromRepoTransBlock;
+    private isValidLastChangeTime(syncTimestamp, lastChangeTimeMillis);
+    private getLastChangeMillisFromRepoTransBlock(data);
 }

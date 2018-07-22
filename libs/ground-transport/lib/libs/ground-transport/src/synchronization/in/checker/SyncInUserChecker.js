@@ -12,11 +12,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Inject_1 = require("typedi/decorators/Inject");
-const InjectionTokens_1 = require("../../../../../apps/terminal/src/InjectionTokens");
+const air_control_1 = require("@airport/air-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
-const InjectionTokens_2 = require("@airport/air-control/lib/InjectionTokens");
-const Query_1 = require("@airport/air-control/lib/lingo/query/facade/Query");
+const typedi_1 = require("typedi");
+const InjectionTokens_1 = require("../../../InjectionTokens");
 let SyncInUserChecker = class SyncInUserChecker {
     constructor(userDao, utils) {
         this.userDao = userDao;
@@ -39,8 +38,8 @@ let SyncInUserChecker = class SyncInUserChecker {
             mapByMessageIndexAndRemoteUserId.push(mapForMessageByRemoteUserId);
         }
         const map = await this.userDao.findFieldsMapByUniqueId(Array.from(remoteUserMapByUniqueId.keys()), {
-            id: Query_1.Y,
-            uniqueId: Query_1.Y
+            id: air_control_1.Y,
+            uniqueId: air_control_1.Y
         });
         await this.addMissingUsers(remoteUserMapByUniqueId, map, mapById);
         return {
@@ -103,9 +102,9 @@ let SyncInUserChecker = class SyncInUserChecker {
     }
 };
 SyncInUserChecker = __decorate([
-    Inject_1.Inject(InjectionTokens_1.SyncInUserCheckerToken),
-    __param(0, Inject_1.Inject(holding_pattern_1.UserDaoToken)),
-    __param(1, Inject_1.Inject(InjectionTokens_2.UtilsToken)),
+    typedi_1.Inject(InjectionTokens_1.SyncInUserCheckerToken),
+    __param(0, typedi_1.Inject(holding_pattern_1.UserDaoToken)),
+    __param(1, typedi_1.Inject(air_control_1.UtilsToken)),
     __metadata("design:paramtypes", [Object, Object])
 ], SyncInUserChecker);
 exports.SyncInUserChecker = SyncInUserChecker;

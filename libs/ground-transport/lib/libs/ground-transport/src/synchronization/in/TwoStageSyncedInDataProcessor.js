@@ -12,19 +12,18 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b;
 const air_control_1 = require("@airport/air-control");
-const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
-const InjectionTokens_1 = require("@airport/holding-pattern/lib/InjectionTokens");
 const moving_walkway_1 = require("@airport/moving-walkway");
 const terminal_map_1 = require("@airport/terminal-map");
 const typedi_1 = require("typedi");
 const lib_1 = require("zipson/lib");
-const InjectionTokens_2 = require("../../../../apps/terminal/src/InjectionTokens");
-const TransactionManager_1 = require("../../../../apps/terminal/src/orchestration/TransactionManager");
+const InjectionTokens_1 = require("../../InjectionTokens");
 let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
-    constructor(repositoryActorDao, repositoryTransactionHistoryDmo, sharingMessageDao, sharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictPendingNotificationDao, syncInChecker, repositoryTransactionBlockDao, repoTransBlockRepoTransHistoryDao, transactionManager, utils) {
+    constructor(repositoryActorDao, repositoryTransactionHistoryDmo, sharingMessageDao, sharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictPendingNotificationDao, syncInChecker, repositoryTransactionBlockDao, 
+    // @Inject(RepoTransBlockRepoTransHistoryDaoToken)
+    // private repoTransBlockRepoTransHistoryDao: IRepoTransBlockRepoTransHistoryDao,
+    transactionManager, utils) {
         this.repositoryActorDao = repositoryActorDao;
         this.repositoryTransactionHistoryDmo = repositoryTransactionHistoryDmo;
         this.sharingMessageDao = sharingMessageDao;
@@ -35,7 +34,6 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
         this.synchronizationConflictPendingNotificationDao = synchronizationConflictPendingNotificationDao;
         this.syncInChecker = syncInChecker;
         this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
-        this.repoTransBlockRepoTransHistoryDao = repoTransBlockRepoTransHistoryDao;
         this.transactionManager = transactionManager;
         this.utils = utils;
     }
@@ -60,7 +58,7 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
         const sharingMessageRepoTransBlocks = [];
         const repoTransBlockRepoTransHistories = [];
         const transactionHistory = this.transactionManager.currentTransHistory;
-        transactionHistory.transactionType = terminal_map_1.TransactionType.REMOTE_SYNC;
+        transactionHistory.transactionType = TransactionType.REMOTE_SYNC;
         // split messages by repository and record actor information
         for (let i = 0; i < dataMessages.length; i++) {
             const sharingMessage = sharingMessages[i];
@@ -68,7 +66,7 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
             const data = dataMessage.data;
             const repositoryTransactionBlock = {
                 repository: data.repository,
-                syncOutcomeType: ground_control_1.RepoTransBlockSyncOutcomeType.SYNC_SUCCESSFUL
+                syncOutcomeType: RepoTransBlockSyncOutcomeType.SYNC_SUCCESSFUL
             };
             repositoryTransactionBlocks.push(repositoryTransactionBlock);
             sharingMessageRepoTransBlocks.push({
@@ -160,20 +158,19 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
     }
 };
 TwoStageSyncedInDataProcessor = __decorate([
-    typedi_1.Service(InjectionTokens_2.TwoStageSyncedInDataProcessorToken),
-    __param(0, typedi_1.Inject(InjectionTokens_1.RepositoryActorDaoToken)),
-    __param(1, typedi_1.Inject(InjectionTokens_1.RepositoryTransactionHistoryDmoToken)),
+    typedi_1.Service(InjectionTokens_1.TwoStageSyncedInDataProcessorToken),
+    __param(0, typedi_1.Inject(holding_pattern_1.RepositoryActorDaoToken)),
+    __param(1, typedi_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
     __param(2, typedi_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
     __param(3, typedi_1.Inject(moving_walkway_1.SharingMessageRepoTransBlockDaoToken)),
-    __param(4, typedi_1.Inject(InjectionTokens_2.Stage1SyncedInDataProcessorToken)),
-    __param(5, typedi_1.Inject(InjectionTokens_2.Stage2SyncedInDataProcessorToken)),
+    __param(4, typedi_1.Inject(InjectionTokens_1.Stage1SyncedInDataProcessorToken)),
+    __param(5, typedi_1.Inject(InjectionTokens_1.Stage2SyncedInDataProcessorToken)),
     __param(7, typedi_1.Inject(moving_walkway_1.SynchronizationConflictPendingNotificationDaoToken)),
-    __param(8, typedi_1.Inject(InjectionTokens_2.SyncInCheckerToken)),
+    __param(8, typedi_1.Inject(InjectionTokens_1.SyncInCheckerToken)),
     __param(9, typedi_1.Inject(moving_walkway_1.RepositoryTransactionBlockDaoToken)),
-    __param(10, typedi_1.Inject(moving_walkway_1.RepoTransBlockRepoTransHistoryDaoToken)),
-    __param(11, typedi_1.Inject(InjectionTokens_2.TransactionManagerToken)),
-    __param(12, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, typeof (_a = typeof moving_walkway_1.IRepoTransBlockRepoTransHistoryDao !== "undefined" && moving_walkway_1.IRepoTransBlockRepoTransHistoryDao) === "function" && _a || Object, typeof (_b = typeof TransactionManager_1.ITransactionManager !== "undefined" && TransactionManager_1.ITransactionManager) === "function" && _b || Object, Object])
+    __param(10, typedi_1.Inject(terminal_map_1.TransactionManagerToken)),
+    __param(11, typedi_1.Inject(air_control_1.UtilsToken)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
 ], TwoStageSyncedInDataProcessor);
 exports.TwoStageSyncedInDataProcessor = TwoStageSyncedInDataProcessor;
 //# sourceMappingURL=TwoStageSyncedInDataProcessor.js.map

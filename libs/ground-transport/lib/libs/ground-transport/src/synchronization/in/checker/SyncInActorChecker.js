@@ -12,10 +12,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../../../../../apps/terminal/src/InjectionTokens");
-const holding_pattern_1 = require("@airport/holding-pattern");
 const air_control_1 = require("@airport/air-control");
+const holding_pattern_1 = require("@airport/holding-pattern");
+const typedi_1 = require("typedi");
+const InjectionTokens_1 = require("../../../InjectionTokens");
 let SyncInActorChecker = class SyncInActorChecker {
     constructor(actorDao, terminalDao, utils) {
         this.actorDao = actorDao;
