@@ -2,6 +2,7 @@ import {
 	IUtils,
 	UtilsToken
 }                                     from "@airport/air-control";
+import {SchemaVersionId} from "@airport/ground-control";
 import {
 	ActorId,
 	IActor,
@@ -35,6 +36,7 @@ import {
 	ITransactionManager,
 	TransactionManagerToken
 }                                     from "@airport/terminal-map";
+import {ISchema} from "@airport/traffic-pattern";
 import {
 	Inject,
 	Service
@@ -257,7 +259,8 @@ export class TwoStageSyncedInDataProcessor
 
 	private async updateLocalData(
 		repoTransHistoryMapByRepositoryId: Map<RepositoryId, ISyncRepoTransHistory[]>,
-		actorMayById: Map<ActorId, IActor>
+		actorMayById: Map<ActorId, IActor>,
+		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
 	): Promise<void> {
 		const stage1Result
 			= await this.stage1SyncedInDataProcessor.performStage1DataProcessing(
@@ -292,7 +295,7 @@ export class TwoStageSyncedInDataProcessor
 		await this.synchronizationConflictPendingNotificationDao
 			.bulkCreate(syncConflictPendingNotifications, false, false);
 
-		await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result);
+		await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap);
 	}
 
 }

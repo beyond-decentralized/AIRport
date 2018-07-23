@@ -37,5 +37,5 @@ export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInD
     private recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById);
     private getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
     private addRepoTransHistoriesToMapFromData(repoTransHistoryMapByRepositoryId, data);
-    private updateLocalData(repoTransHistoryMapByRepositoryId, actorMayById);
+    private updateLocalData(repoTransHistoryMapByRepositoryId, actorMayById, schemasBySchemaVersionIdMap);
 }

@@ -129,7 +129,7 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
         repoTransHistories = repoTransHistories.concat(data.repoTransHistories);
         repoTransHistoryMapByRepositoryId.set(data.repository.id, repoTransHistories);
     }
-    async updateLocalData(repoTransHistoryMapByRepositoryId, actorMayById) {
+    async updateLocalData(repoTransHistoryMapByRepositoryId, actorMayById, schemasBySchemaVersionIdMap) {
         const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repoTransHistoryMapByRepositoryId, actorMayById);
         const actorIdMapByRepositoryId = await this.repositoryActorDao
             .findActorIdMapByRepositoryIdForLocalActorsWhereRepositoryIdIn(Array.from(stage1Result.syncConflictMapByRepoId.keys()));
@@ -154,7 +154,7 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
             .bulkCreate(allSyncConflicts, false, false);
         await this.synchronizationConflictPendingNotificationDao
             .bulkCreate(syncConflictPendingNotifications, false, false);
-        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result);
+        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap);
     }
 };
 TwoStageSyncedInDataProcessor = __decorate([
@@ -173,5 +173,4 @@ TwoStageSyncedInDataProcessor = __decorate([
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
 ], TwoStageSyncedInDataProcessor);
 exports.TwoStageSyncedInDataProcessor = TwoStageSyncedInDataProcessor;
-var _a, _b;
 //# sourceMappingURL=TwoStageSyncedInDataProcessor.js.map

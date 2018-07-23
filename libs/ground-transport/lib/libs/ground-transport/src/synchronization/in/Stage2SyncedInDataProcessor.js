@@ -22,14 +22,27 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
         this.recordUpdateStageDao = recordUpdateStageDao;
         this.utils = utils;
     }
-    async applyChangesToDb(stage1Result) {
-        await this.performCreates(stage1Result.recordCreations);
-        await this.performUpdates(stage1Result.recordUpdates);
-        await this.performDeletes(stage1Result.recordDeletions);
+    async applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap) {
+        await this.performCreates(stage1Result.recordCreations, schemasBySchemaVersionIdMap);
+        await this.performUpdates(stage1Result.recordUpdates, schemasBySchemaVersionIdMap);
+        await this.performDeletes(stage1Result.recordDeletions, schemasBySchemaVersionIdMap);
     }
-    async performCreates(recordCreations) {
-        for (const [schemaIndex, creationInSchemaMap] of recordCreations) {
+    /**
+     * Remote changes come in with SchemaVersionIds not SchemaIndexes, so it makes
+     * sense to keep this structure.  NOTE: only one version of a given schema is
+     * processed at one time:
+     *
+     *  Changes for a schema version below the one in this Terminal must first be upgraded.
+     *  Terminal itself must first be upgraded to newer schema versions, before changes
+     *  for that schema version are processed.
+     *
+     *  To tie in a given SchemaVersionId to its SchemaIndex an additional mapping data
+     *  structure is passed in.
+     */
+    async performCreates(recordCreations, schemasBySchemaVersionIdMap) {
+        for (const [schemaVersionId, creationInSchemaMap] of recordCreations) {
             for (const [tableIndex, creationInTableMap] of creationInSchemaMap) {
+                const schemaIndex = schemasBySchemaVersionIdMap[schemaVersionId];
                 const dbEntity = this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
                 const qEntity = this.airportDb.qSchemas[schemaIndex][dbEntity.name];
                 const columns = [
@@ -81,12 +94,12 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
             }
         }
     }
-    async performUpdates(recordUpdates) {
+    async performUpdates(recordUpdates, schemasBySchemaVersionIdMap) {
         const finalUpdateMap = new Map();
         const recordUpdateStage = [];
         // Build the final update data structure
-        for (const [schemaIndex, schemaUpdateMap] of recordUpdates) {
-            const finalSchemaUpdateMap = this.utils.ensureChildJsMap(finalUpdateMap, schemaIndex);
+        for (const [schemaVersionId, schemaUpdateMap] of recordUpdates) {
+            const finalSchemaUpdateMap = this.utils.ensureChildJsMap(finalUpdateMap, schemaVersionId);
             for (const [tableIndex, tableUpdateMap] of schemaUpdateMap) {
                 const finalTableUpdateMap = this.utils.ensureChildJsMap(finalSchemaUpdateMap, tableIndex);
                 for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
@@ -97,7 +110,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
                                 .add(actorRecordId);
                             for (const [columnIndex, columnUpdate] of recordUpdateMap) {
                                 recordUpdateStage.push([
-                                    schemaIndex,
+                                    schemaVersionId,
                                     tableIndex,
                                     repositoryId,
                                     actorId,
@@ -113,12 +126,38 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
         }
         await this.recordUpdateStageDao.insertValues(recordUpdateStage);
         // Perform the updates
-        for (const [schemaIndex, updateMapForSchema] of finalUpdateMap) {
+        for (const [schemaVersionId, updateMapForSchema] of finalUpdateMap) {
+            const schema = schemasBySchemaVersionIdMap.get(schemaVersionId);
             for (const [tableIndex, updateMapForTable] of updateMapForSchema) {
-                await this.runUpdatesForTable(schemaIndex, tableIndex, updateMapForTable);
+                await this.runUpdatesForTable(schema.index, schemaVersionId, tableIndex, updateMapForTable);
             }
         }
         await this.recordUpdateStageDao.delete();
+    }
+    async performDeletes(recordDeletions, schemasBySchemaVersionIdMap) {
+        for (const [schemaVersionId, deletionInSchemaMap] of recordDeletions) {
+            const schema = schemasBySchemaVersionIdMap.get(schemaVersionId);
+            for (const [tableIndex, deletionInTableMap] of deletionInSchemaMap) {
+                const dbEntity = this.airportDb.schemas[schema.index].currentVersion.entities[tableIndex];
+                const qEntity = this.airportDb.qSchemas[schema.index][dbEntity.name];
+                let numClauses = 0;
+                let repositoryWhereFragments = [];
+                for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
+                    let actorWhereFragments = [];
+                    for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
+                        numClauses++;
+                        actorWhereFragments.push(air_control_1.and(qEntity.actorRecordId.in(Array.from(actorRecordIdSet)), qEntity.actor.id.equals(actorId)));
+                    }
+                    repositoryWhereFragments.push(air_control_1.and(qEntity.repository.id.equals(repositoryId), air_control_1.or(...actorWhereFragments)));
+                }
+                if (numClauses) {
+                    await this.airportDb.db.deleteWhere(dbEntity, {
+                        deleteFrom: qEntity,
+                        where: air_control_1.or(...repositoryWhereFragments)
+                    });
+                }
+            }
+        }
     }
     /**
      * Get the record key map (RecordKeyMap = RepositoryId -> ActorId
@@ -169,38 +208,14 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
      * @param {ColumnUpdateKeyMap} updateKeyMap
      * @returns {Promise<void>}
      */
-    async runUpdatesForTable(schemaIndex, tableIndex, updateKeyMap) {
+    async runUpdatesForTable(schemaIndex, schemaVersionId, tableIndex, updateKeyMap) {
         for (const columnValueUpdate of updateKeyMap.values()) {
             const updatedColumns = columnValueUpdate.updatedColumns;
             if (updatedColumns) {
-                await this.recordUpdateStageDao.updateEntityWhereIds(schemaIndex, tableIndex, columnValueUpdate.recordKeyMap, updatedColumns);
+                await this.recordUpdateStageDao.updateEntityWhereIds(schemaIndex, schemaVersionId, tableIndex, columnValueUpdate.recordKeyMap, updatedColumns);
             }
             // Traverse down into nested column update combinations
-            await this.runUpdatesForTable(schemaIndex, tableIndex, columnValueUpdate.childColumnUpdateKeyMap);
-        }
-    }
-    async performDeletes(recordDeletions) {
-        for (const [schemaIndex, deletionInSchemaMap] of recordDeletions) {
-            for (const [tableIndex, deletionInTableMap] of deletionInSchemaMap) {
-                const dbEntity = this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
-                const qEntity = this.airportDb.qSchemas[schemaIndex][dbEntity.name];
-                let numClauses = 0;
-                let repositoryWhereFragments = [];
-                for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
-                    let actorWhereFragments = [];
-                    for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
-                        numClauses++;
-                        actorWhereFragments.push(air_control_1.and(qEntity.actorRecordId.in(Array.from(actorRecordIdSet)), qEntity.actor.id.equals(actorId)));
-                    }
-                    repositoryWhereFragments.push(air_control_1.and(qEntity.repository.id.equals(repositoryId), air_control_1.or(...actorWhereFragments)));
-                }
-                if (numClauses) {
-                    await this.airportDb.db.deleteWhere(dbEntity, {
-                        deleteFrom: qEntity,
-                        where: air_control_1.or(...repositoryWhereFragments)
-                    });
-                }
-            }
+            await this.runUpdatesForTable(schemaIndex, schemaVersionId, tableIndex, columnValueUpdate.childColumnUpdateKeyMap);
         }
     }
 };

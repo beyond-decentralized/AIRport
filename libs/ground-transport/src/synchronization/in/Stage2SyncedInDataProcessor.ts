@@ -5,33 +5,24 @@ import {
 	IUtils,
 	or,
 	UtilsToken
-}                                         from "@airport/air-control";
+} from "@airport/air-control";
 import {
 	ColumnIndex,
 	JSONBaseOperation,
 	SchemaIndex,
 	SchemaVersionId,
 	TableIndex
-}                                         from "@airport/ground-control";
-import {
-	ActorId,
-	RepositoryEntityActorRecordId,
-	RepositoryId
-}                                         from "@airport/holding-pattern";
+} from "@airport/ground-control";
+import {ActorId, RepositoryEntityActorRecordId, RepositoryId} from "@airport/holding-pattern";
 import {
 	IRecordUpdateStageDao,
 	RecordUpdateStageDaoToken,
 	RecordUpdateStageValues
-}                                         from "@airport/moving-walkway";
-import {
-	Inject,
-	Service
-}                                         from "typedi";
+} from "@airport/moving-walkway";
+import {ISchema} from "@airport/traffic-pattern";
+import {Inject, Service} from "typedi";
 import {Stage2SyncedInDataProcessorToken} from "../../InjectionTokens";
-import {
-	RecordUpdate,
-	Stage1SyncedInDataProcessingResult
-}                                         from "./SyncInUtils";
+import {RecordUpdate, Stage1SyncedInDataProcessingResult} from "./SyncInUtils";
 
 /**
  * Stage 2 data processor is used to optimize to optimize the number of required
@@ -40,7 +31,8 @@ import {
 export interface IStage2SyncedInDataProcessor {
 
 	applyChangesToDb(
-		stage1Result: Stage1SyncedInDataProcessingResult
+		stage1Result: Stage1SyncedInDataProcessingResult,
+		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
 	): Promise<void>;
 
 }
@@ -74,12 +66,13 @@ export class Stage2SyncedInDataProcessor
 	}
 
 	async applyChangesToDb(
-		stage1Result: Stage1SyncedInDataProcessingResult
+		stage1Result: Stage1SyncedInDataProcessingResult,
+		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
 	): Promise<void> {
 
-		await this.performCreates(stage1Result.recordCreations);
-		await this.performUpdates(stage1Result.recordUpdates);
-		await this.performDeletes(stage1Result.recordDeletions);
+		await this.performCreates(stage1Result.recordCreations, schemasBySchemaVersionIdMap);
+		await this.performUpdates(stage1Result.recordUpdates, schemasBySchemaVersionIdMap);
+		await this.performDeletes(stage1Result.recordDeletions, schemasBySchemaVersionIdMap);
 	}
 
 	/**
@@ -99,7 +92,7 @@ export class Stage2SyncedInDataProcessor
 		recordCreations: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
-		schemasBySchemaVersionIdMap: Map<SchemaVersionId, Schema>
+		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
 	): Promise<void> {
 		for (const [schemaVersionId, creationInSchemaMap] of recordCreations) {
 			for (const [tableIndex, creationInTableMap] of creationInSchemaMap) {
@@ -161,19 +154,19 @@ export class Stage2SyncedInDataProcessor
 	}
 
 	async performUpdates(
-		recordUpdates: Map<SchemaIndex,
+		recordUpdates: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
-		schemasBySchemaVersionIdMap: Map<SchemaVersionId, Schema>
+		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
 	): Promise<void> {
-		const finalUpdateMap: Map<SchemaIndex, Map<TableIndex, ColumnUpdateKeyMap>> = new Map();
+		const finalUpdateMap: Map<SchemaVersionId, Map<TableIndex, ColumnUpdateKeyMap>> = new Map();
 
 		const recordUpdateStage: RecordUpdateStageValues[] = [];
 
 		// Build the final update data structure
-		for (const [schemaIndex, schemaUpdateMap] of recordUpdates) {
+		for (const [schemaVersionId, schemaUpdateMap] of recordUpdates) {
 			const finalSchemaUpdateMap
-				= this.utils.ensureChildJsMap(finalUpdateMap, schemaIndex);
+				= this.utils.ensureChildJsMap(finalUpdateMap, schemaVersionId);
 			for (const [tableIndex, tableUpdateMap] of schemaUpdateMap) {
 				const finalTableUpdateMap = this.utils.ensureChildJsMap(finalSchemaUpdateMap, tableIndex);
 				for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
@@ -186,7 +179,7 @@ export class Stage2SyncedInDataProcessor
 								.add(actorRecordId);
 							for (const [columnIndex, columnUpdate] of recordUpdateMap) {
 								recordUpdateStage.push([
-									schemaIndex,
+									schemaVersionId,
 									tableIndex,
 									repositoryId,
 									actorId,
@@ -204,13 +197,53 @@ export class Stage2SyncedInDataProcessor
 		await this.recordUpdateStageDao.insertValues(recordUpdateStage);
 
 		// Perform the updates
-		for (const [schemaIndex, updateMapForSchema] of finalUpdateMap) {
+		for (const [schemaVersionId, updateMapForSchema] of finalUpdateMap) {
+			const schema = schemasBySchemaVersionIdMap.get(schemaVersionId);
 			for (const [tableIndex, updateMapForTable] of updateMapForSchema) {
-				await this.runUpdatesForTable(schemaIndex, tableIndex, updateMapForTable);
+				await this.runUpdatesForTable(schema.index, schemaVersionId, tableIndex, updateMapForTable);
 			}
 		}
 
 		await this.recordUpdateStageDao.delete();
+	}
+
+	async performDeletes(
+		recordDeletions: Map<SchemaVersionId,
+			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+				Set<RepositoryEntityActorRecordId>>>>>,
+		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
+	): Promise<void> {
+		for (const [schemaVersionId, deletionInSchemaMap] of recordDeletions) {
+			const schema = schemasBySchemaVersionIdMap.get(schemaVersionId);
+			for (const [tableIndex, deletionInTableMap] of deletionInSchemaMap) {
+				const dbEntity = this.airportDb.schemas[schema.index].currentVersion.entities[tableIndex];
+				const qEntity = this.airportDb.qSchemas[schema.index][dbEntity.name];
+
+				let numClauses = 0;
+				let repositoryWhereFragments: JSONBaseOperation[] = [];
+				for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
+					let actorWhereFragments: JSONBaseOperation[] = [];
+					for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
+						numClauses++;
+						actorWhereFragments.push(and(
+							qEntity.actorRecordId.in(Array.from(actorRecordIdSet)),
+							qEntity.actor.id.equals(actorId)
+						));
+					}
+					repositoryWhereFragments.push(and(
+						qEntity.repository.id.equals(repositoryId),
+						or(...actorWhereFragments)
+					));
+				}
+
+				if (numClauses) {
+					await this.airportDb.db.deleteWhere(dbEntity, {
+						deleteFrom: qEntity,
+						where: or(...repositoryWhereFragments)
+					});
+				}
+			}
+		}
 	}
 
 	/**
@@ -223,7 +256,7 @@ export class Stage2SyncedInDataProcessor
 	 */
 	private getRecordKeyMap(
 		recordUpdateMap: Map<ColumnIndex, RecordUpdate>, // combination of columns/values being
-	                                                   // updated
+																										 // updated
 		finalTableUpdateMap: ColumnUpdateKeyMap, // the map of updates for a table
 	): RecordKeyMap {
 		const updatedColumns: ColumnIndex[] = [];
@@ -273,6 +306,7 @@ export class Stage2SyncedInDataProcessor
 	 */
 	private async runUpdatesForTable(
 		schemaIndex: SchemaIndex,
+		schemaVersionId: SchemaVersionId,
 		tableIndex: TableIndex,
 		updateKeyMap: ColumnUpdateKeyMap
 	) {
@@ -281,6 +315,7 @@ export class Stage2SyncedInDataProcessor
 			if (updatedColumns) {
 				await this.recordUpdateStageDao.updateEntityWhereIds(
 					schemaIndex,
+					schemaVersionId,
 					tableIndex,
 					columnValueUpdate.recordKeyMap,
 					updatedColumns
@@ -288,46 +323,9 @@ export class Stage2SyncedInDataProcessor
 			}
 			// Traverse down into nested column update combinations
 			await this.runUpdatesForTable(
-				schemaIndex, tableIndex, columnValueUpdate.childColumnUpdateKeyMap);
+				schemaIndex, schemaVersionId, tableIndex, columnValueUpdate.childColumnUpdateKeyMap);
 		}
 
-	}
-
-	async performDeletes(
-		recordDeletions: Map<SchemaIndex,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
-				Set<RepositoryEntityActorRecordId>>>>>
-	): Promise<void> {
-		for (const [schemaIndex, deletionInSchemaMap] of recordDeletions) {
-			for (const [tableIndex, deletionInTableMap] of deletionInSchemaMap) {
-				const dbEntity = this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
-				const qEntity = this.airportDb.qSchemas[schemaIndex][dbEntity.name];
-
-				let numClauses = 0;
-				let repositoryWhereFragments: JSONBaseOperation[] = [];
-				for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
-					let actorWhereFragments: JSONBaseOperation[] = [];
-					for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
-						numClauses++;
-						actorWhereFragments.push(and(
-							qEntity.actorRecordId.in(Array.from(actorRecordIdSet)),
-							qEntity.actor.id.equals(actorId)
-						));
-					}
-					repositoryWhereFragments.push(and(
-						qEntity.repository.id.equals(repositoryId),
-						or(...actorWhereFragments)
-					));
-				}
-
-				if (numClauses) {
-					await this.airportDb.db.deleteWhere(dbEntity, {
-						deleteFrom: qEntity,
-						where: or(...repositoryWhereFragments)
-					});
-				}
-			}
-		}
 	}
 
 }

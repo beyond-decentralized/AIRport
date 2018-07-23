@@ -1,7 +1,4 @@
-import {
-	IUtils,
-	UtilsToken
-}                                      from "@airport/air-control";
+import {IUtils, UtilsToken} from "@airport/air-control";
 import {
 	ChangeType,
 	ColumnIndex,
@@ -24,27 +21,18 @@ import {
 	RepositoryId,
 	RepositoryTransactionHistoryDaoToken,
 	RepositoryTransactionHistoryDmoToken
-}                                      from "@airport/holding-pattern";
+} from "@airport/holding-pattern";
 import {IRepositoryTransactionHistory} from "@airport/holding-pattern/lib/generated/generated";
-import {
-	ISynchronizationConflict,
-	SynchronizationConflictType
-}                                      from "@airport/moving-walkway";
-import {ISchema}                       from "@airport/traffic-pattern";
-import {
-	Inject,
-	Service
-}                                      from "typedi";
-import {
-	Stage1SyncedInDataProcessorToken,
-	SyncInUtilsToken
-}                                      from "../../InjectionTokens";
+import {ISynchronizationConflict, SynchronizationConflictType} from "@airport/moving-walkway";
+import {ISchema} from "@airport/traffic-pattern";
+import {Inject, Service} from "typedi";
+import {Stage1SyncedInDataProcessorToken, SyncInUtilsToken} from "../../InjectionTokens";
 import {
 	ISyncInUtils,
 	ISyncRepoTransHistory,
 	RecordUpdate,
 	Stage1SyncedInDataProcessingResult
-}                                      from "./SyncInUtils";
+} from "./SyncInUtils";
 
 /**
  * Stage 1 data processor is used to
@@ -144,7 +132,7 @@ export class Stage1SyncedInDataProcessor
 
 		// find local history for the matching repositories and corresponding time period
 		const localRepoTransHistoryMapByRepositoryId
-			: Map<RepositoryId, IRepositoryTransactionHistory[]>
+			: Map<RepositoryId, ISyncRepoTransHistory[]>
 			= await this.repositoryTransactionHistoryDao
 			.findAllLocalChangesForRecordIds(changedRecordIds);
 		const allLocalRecordDeletions = this.getDeletedRecordIds(
@@ -178,13 +166,13 @@ export class Stage1SyncedInDataProcessor
 				.sortRepoTransHistories(repoTransHistoriesForRepository, actorMayById);
 		}
 
-		const recordCreations: Map<SchemaIndex,
+		const recordCreations: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>> = new Map();
-		const recordUpdates: Map<SchemaIndex,
+		const recordUpdates: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>> = new Map();
-		const recordDeletions: Map<SchemaIndex,
+		const recordDeletions: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Set<RepositoryEntityActorRecordId>>>>> = new Map();
 
@@ -228,14 +216,23 @@ export class Stage1SyncedInDataProcessor
 		};
 	}
 
+	ensureRecordHistoryId(
+		recordHistory: IRecordHistory,
+		actorRecordIdSetByActor: Map<ActorId, Map<RepositoryEntityActorRecordId, RecordHistoryId>>,
+		actorRecordId: RepositoryEntityActorRecordId = recordHistory.actorRecordId
+	): void {
+		this.utils.ensureChildJsMap(
+			actorRecordIdSetByActor, recordHistory.actor.id)
+			.set(actorRecordId, recordHistory.id);
+	}
+
 	private getDeletedRecordIds(
 		allRepoTransHistoryMapByRepoId: Map<RepositoryId, ISyncRepoTransHistory[]>,
 		repoTransHistoryMapByRepoId: Map<RepositoryId, ISyncRepoTransHistory[]>,
-		schemaMapBySchemaVersionId: Map<SchemaVersionId, ISchema>,
 		isLocal = false
-	): Map<SchemaIndex, Map<TableIndex, Map<RepositoryId, Map<ActorId,
+	): Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<ActorId,
 		Map<RepositoryEntityActorRecordId, RecordHistoryId>>>>> {
-		const recordDeletions: Map<SchemaIndex, Map<TableIndex, Map<RepositoryId, Map<ActorId,
+		const recordDeletions: Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<ActorId,
 			Map<RepositoryEntityActorRecordId, RecordHistoryId>>>>> = new Map();
 		for (const [repositoryId, repoTransHistories] of repoTransHistoryMapByRepoId) {
 			this.mergeArraysInMap(allRepoTransHistoryMapByRepoId, repositoryId, repoTransHistories);
@@ -271,7 +268,6 @@ export class Stage1SyncedInDataProcessor
 		}
 	}
 
-
 	/*
 	NOTE: local creates are not inputted into this processing.
 	 */
@@ -279,19 +275,19 @@ export class Stage1SyncedInDataProcessor
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
 		isLocal: boolean,
-		recordCreations: Map<SchemaIndex,
+		recordCreations: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
-		recordUpdates: Map<SchemaIndex,
+		recordUpdates: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
-		recordDeletions: Map<SchemaIndex,
+		recordDeletions: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Set<RepositoryEntityActorRecordId>>>>>,
-		allRemoteRecordDeletions: Map<SchemaIndex,
+		allRemoteRecordDeletions: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, RecordHistoryId>>>>>,
-		allLocalRecordDeletions: Map<SchemaIndex,
+		allLocalRecordDeletions: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, RecordHistoryId>>>>>,
 		syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>
@@ -340,7 +336,7 @@ export class Stage1SyncedInDataProcessor
 			}
 
 			const remoteDeleteRecordHistoryId
-				= this.getRecordHistoryId(recordHistory, allRemoteRecordDeletesForRepoInTable)
+				= this.getRecordHistoryId(recordHistory, allRemoteRecordDeletesForRepoInTable);
 			if (remoteDeleteRecordHistoryId) {
 				// remotely created record has been remotely deleted
 				this.addSyncConflict(
@@ -380,16 +376,16 @@ export class Stage1SyncedInDataProcessor
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
 		isLocal: boolean,
-		recordCreations: Map<SchemaIndex,
+		recordCreations: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
-		recordUpdates: Map<SchemaIndex,
+		recordUpdates: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
-		allRemoteRecordDeletions: Map<SchemaIndex,
+		allRemoteRecordDeletions: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, RecordHistoryId>>>>>,
-		allLocalRecordDeletions: Map<SchemaIndex,
+		allLocalRecordDeletions: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, RecordHistoryId>>>>>,
 		syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>
@@ -425,7 +421,7 @@ export class Stage1SyncedInDataProcessor
 				continue;
 			}
 			const remoteDeleteRecordHistoryId
-				= this.getRecordHistoryId(recordHistory, allRemoteRecordDeletesForRepoInTable)
+				= this.getRecordHistoryId(recordHistory, allRemoteRecordDeletesForRepoInTable);
 			if (remoteDeleteRecordHistoryId) {
 				if (isLocal) {
 					// A local update for a record that has been deleted remotely
@@ -516,16 +512,16 @@ export class Stage1SyncedInDataProcessor
 	private processDeletion(
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
-		recordCreations: Map<SchemaIndex,
+		recordCreations: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
-		recordUpdates: Map<SchemaIndex,
+		recordUpdates: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
-		recordDeletions: Map<SchemaIndex,
+		recordDeletions: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Set<RepositoryEntityActorRecordId>>>>>,
-		allLocalRecordDeletions: Map<SchemaIndex,
+		allLocalRecordDeletions: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, RecordHistoryId>>>>>
 	): void {
@@ -579,11 +575,11 @@ export class Stage1SyncedInDataProcessor
 	private getRecordsForRepoInTable<T>(
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
-		recordMapBySchemaTableAndRepository: Map<SchemaIndex,
+		recordMapBySchemaTableAndRepository: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, T>>>
 	): T {
 		const recordMapForSchema = recordMapBySchemaTableAndRepository
-			.get(operationHistory.schema.index);
+			.get(operationHistory.schemaVersion.id);
 		let recordMapForTable: Map<RepositoryId, T>;
 		if (recordMapForSchema) {
 			recordMapForTable = recordMapForSchema.get(operationHistory.entity.index);
@@ -644,23 +640,13 @@ export class Stage1SyncedInDataProcessor
 		return recordsForActor;
 	}
 
-	ensureRecordHistoryId(
-		recordHistory: IRecordHistory,
-		actorRecordIdSetByActor: Map<ActorId, Map<RepositoryEntityActorRecordId, RecordHistoryId>>,
-		actorRecordId: RepositoryEntityActorRecordId = recordHistory.actorRecordId
-	): void {
-		this.utils.ensureChildJsMap(
-			actorRecordIdSetByActor, recordHistory.actor.id)
-			.set(actorRecordId, recordHistory.id);
-	}
-
 	private getRecordInfo(
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
 		recordHistory: IRecordHistory
 	): string {
 		return `
-		Schema Index:     ${operationHistory.schema.index}
+		Schema Version Id:     ${operationHistory.schemaVersion.id}
 		Table Index:      ${operationHistory.entity.index}
 		Repository ID:    ${repositoryId}
 		Actor ID:         ${recordHistory.actor.id}

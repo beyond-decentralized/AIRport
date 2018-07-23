@@ -121,9 +121,8 @@ export interface ISyncInUtils {
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
-		recordMapBySchemaTableAndRepository: Map<SchemaIndex,
-			Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>,
-		schemaMapBySchemaVersionId: Map<SchemaVersionId, ISchema>
+		recordMapBySchemaTableAndRepository: Map<SchemaVersionId,
+			Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>
 	): Map<CI, V>;
 
 	createSharingMessage(
@@ -135,13 +134,13 @@ export interface ISyncInUtils {
 }
 
 export interface Stage1SyncedInDataProcessingResult {
-	recordCreations: Map<SchemaIndex,
+	recordCreations: Map<SchemaVersionId,
 		Map<TableIndex, Map<RepositoryId, Map<ActorId,
 			Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
-	recordDeletions: Map<SchemaIndex,
+	recordDeletions: Map<SchemaVersionId,
 		Map<TableIndex, Map<RepositoryId, Map<ActorId,
 			Set<RepositoryEntityActorRecordId>>>>>,
-	recordUpdates: Map<SchemaIndex,
+	recordUpdates: Map<SchemaVersionId,
 		Map<TableIndex, Map<RepositoryId, Map<ActorId,
 			Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 	syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>
@@ -160,17 +159,14 @@ export class SyncInUtils
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
-		recordMapBySchemaTableAndRepository: Map<SchemaIndex,
-			Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>,
-		schemaMapBySchemaVersionId: Map<SchemaVersionId, ISchema>
+		recordMapBySchemaTableAndRepository: Map<SchemaVersionId,
+			Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>
 	): Map<CI, V> {
 		// FIXME: ensure that OperationHistory schemaVersion is correctly set
-		const schema = schemaMapBySchemaVersionId.get(operationHistory.schemaVersion.id);
-
 		return <any>this.utils.ensureChildJsMap(
 			this.utils.ensureChildJsMap(
 				this.utils.ensureChildJsMap(
-					recordMapBySchemaTableAndRepository, schema.index),
+					recordMapBySchemaTableAndRepository, operationHistory.schemaVersion.id),
 				operationHistory.entity.index), repositoryId);
 	}
 

@@ -33,7 +33,7 @@ let SyncInUtils = class SyncInUtils {
     }
     ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordMapBySchemaTableAndRepository) {
         // FIXME: ensure that OperationHistory schemaVersion is correctly set
-        return this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(recordMapBySchemaTableAndRepository, operationHistory.schemaVersion.schema.index), operationHistory.entity.index), repositoryId);
+        return this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(recordMapBySchemaTableAndRepository, operationHistory.schemaVersion.id), operationHistory.entity.index), repositoryId);
     }
     createSharingMessage(dataMessageToClient, processingStatus, saveData) {
         return {

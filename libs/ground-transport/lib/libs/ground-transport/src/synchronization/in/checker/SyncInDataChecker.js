@@ -229,5 +229,4 @@ SyncInDataChecker = __decorate([
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object])
 ], SyncInDataChecker);
 exports.SyncInDataChecker = SyncInDataChecker;
-var SyncInDataChecker_1;
 //# sourceMappingURL=SyncInDataChecker.js.map

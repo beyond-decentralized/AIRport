@@ -133,6 +133,10 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
             syncConflictMapByRepoId
         };
     }
+    ensureRecordHistoryId(recordHistory, actorRecordIdSetByActor, actorRecordId = recordHistory.actorRecordId) {
+        this.utils.ensureChildJsMap(actorRecordIdSetByActor, recordHistory.actor.id)
+            .set(actorRecordId, recordHistory.id);
+    }
     getDeletedRecordIds(allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepoId, isLocal = false) {
         const recordDeletions = new Map();
         for (const [repositoryId, repoTransHistories] of repoTransHistoryMapByRepoId) {
@@ -347,7 +351,7 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
     }
     getRecordsForRepoInTable(repositoryId, operationHistory, recordMapBySchemaTableAndRepository) {
         const recordMapForSchema = recordMapBySchemaTableAndRepository
-            .get(operationHistory.schema.index);
+            .get(operationHistory.schemaVersion.id);
         let recordMapForTable;
         if (recordMapForSchema) {
             recordMapForTable = recordMapForSchema.get(operationHistory.entity.index);
@@ -386,13 +390,9 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
         }
         return recordsForActor;
     }
-    ensureRecordHistoryId(recordHistory, actorRecordIdSetByActor, actorRecordId = recordHistory.actorRecordId) {
-        this.utils.ensureChildJsMap(actorRecordIdSetByActor, recordHistory.actor.id)
-            .set(actorRecordId, recordHistory.id);
-    }
     getRecordInfo(repositoryId, operationHistory, recordHistory) {
         return `
-		Schema Index:     ${operationHistory.schema.index}
+		Schema Version Id:     ${operationHistory.schemaVersion.id}
 		Table Index:      ${operationHistory.entity.index}
 		Repository ID:    ${repositoryId}
 		Actor ID:         ${recordHistory.actor.id}
