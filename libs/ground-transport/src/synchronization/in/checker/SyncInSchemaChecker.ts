@@ -7,12 +7,14 @@ import {
 import {
 	ISchema,
 	ISchemaDao,
+	ISchemaVersion,
 	ISchemaVersionDao,
 	SchemaDaoToken,
 	SchemaDomainName,
 	SchemaStatus,
 	SchemaVersionDaoToken
 }                                 from "@airport/traffic-pattern";
+import {MaxSchemaVersionView}     from "@airport/traffic-pattern/lib/dao/SchemaVersionDao";
 import {Service}                  from "typedi";
 import {Inject}                   from "typedi/decorators/Inject";
 import {parse}                    from "zipson/lib";
@@ -44,23 +46,28 @@ export class SyncInSchemaChecker
 		@Inject(UtilsToken)
 		private utils: IUtils,
 	) {
-
 	}
 
 	async checkSchemas(
 		dataMessages: IDataToTM[],
 	): Promise<SchemaCheckResults> {
-
 		const schemaNameSet: Set<SchemaName> = new Set();
 		const schemaDomainNameSet: Set<SchemaDomainName> = new Set();
+
+		const dataMessagesWithInvalidSchemas: IDataToTM[] = [];
 
 		// Build schema name and domainName sets
 		for (const message of dataMessages) {
 			message.data = parse(<any>message.data);
 
-			for (const schema of message.data.schemas) {
-				schemaDomainNameSet.add(schema.domainName);
-				schemaNameSet.add(schema.name);
+			if (!this.verifyRTBSchemaConsistency(dataMessage)) {
+				dataMessagesWithInvalidSchemas.push(message);
+				continue;
+			}
+
+			for (const schemaVersion of message.data.schemaVersions) {
+				schemaDomainNameSet.add(schemaVersion.schema.domainName);
+				schemaNameSet.add(schemaVersion.schema.name);
 			}
 		}
 
@@ -70,8 +77,8 @@ export class SyncInSchemaChecker
 			);
 
 		const {
-			dataMessagesWithIncompatibleSchemas,
 			dataMessagesWithCompatibleSchemas,
+			dataMessagesWithIncompatibleSchemas,
 			dataMessagesToBeUpgraded,
 			missingSchemaNameMap,
 			schemasToBeUpgradedMap,
@@ -89,16 +96,18 @@ export class SyncInSchemaChecker
 
 		return {
 			allSchemaMap,
-			dataMessagesWithIncompatibleSchemas,
-			dataMessagesWithCompatibleSchemas,
 			dataMessagesToBeUpgraded,
+			dataMessagesWithCompatibleSchemas,
+			dataMessagesWithIncompatibleSchemas,
+			dataMessagesWithInvalidSchemas,
 			schemasWithChangesMap
 		}
 	}
 
 	private groupMessagesAndSchemasBySchemaState(
 		dataMessages: IDataToTM[],
-		maxVersionedMapBySchemaAndDomainNames: Map<SchemaDomainName, Map<SchemaName, ISchema>>
+		maxVersionedMapBySchemaAndDomainNames: Map<SchemaDomainName,
+			Map<SchemaName, MaxSchemaVersionView>>
 	): DataMessageSchemaGroupings {
 		const dataMessagesWithIncompatibleSchemas: IDataToTM[] = [];
 		const dataMessagesWithCompatibleSchemas: IDataToTM[] = [];
@@ -111,8 +120,10 @@ export class SyncInSchemaChecker
 		for (const message of dataMessages) {
 			let allMessageSchemasAreCompatible = true;
 			let messageBuildWithOutdatedSchemaVersions = false;
+
 			// for every schema (at a given version) used in the message
-			for (const schema of message.data.schemas) {
+			for (const schemaVersion of message.data.schemaVersions) {
+				const schema = schemaVersion.schema;
 				const maxVersionedMapBySchemaName
 					= maxVersionedMapBySchemaAndDomainNames.get(schema.domainName);
 				// If the domain of the message schema is not present in this TM
@@ -123,16 +134,16 @@ export class SyncInSchemaChecker
 					continue;
 				}
 
-				const maxVersionedSchema = maxVersionedMapBySchemaName.get(schema.name);
+				const maxSchemaVersionView = maxVersionedMapBySchemaName.get(schema.name);
 				// If the schema of the message is not present in this TM
-				if (!maxVersionedSchema) {
+				if (!maxSchemaVersionView) {
 					this.utils.ensureChildJsSet(missingSchemaNameMap, schema.domainName)
 						.add(schema.name);
 					allMessageSchemasAreCompatible = false;
 					continue;
 				}
 
-				switch (this.compareSchemaVersions(schema, maxVersionedSchema)) {
+				switch (this.compareSchemaVersions(schemaVersion, maxSchemaVersionView)) {
 					case SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_LOWER:
 						messageBuildWithOutdatedSchemaVersions = true;
 						break;
@@ -161,6 +172,40 @@ export class SyncInSchemaChecker
 			missingSchemaNameMap,
 			schemasToBeUpgradedMap
 		};
+	}
+
+	private verifyRTBSchemaConsistency(
+		dataMessage: IDataToTM
+	): boolean {
+		const data = dataMessage.data;
+
+		const schemaVersionSet: Set<SchemaVersionId> = new Set();
+		const schemaIndexSet: Set<SchemaIndex> = new Set();
+		const schemaMapByNames: Map<SchemaDomainName, Set<SchemaName>> = new Map();
+
+		for (const schemaVersion of data.schemaVersions) {
+			const schemaVersionIdAlreadyDefinedInRTB = schemaVersionMapById.has(schemaVersion.id);
+			if (schemaVersionIdAlreadyDefinedInRTB) {
+				return false;
+			}
+			const schema = schemaVersion.schema;
+			const schemaIndexAlreadyDefinedInRTB = schemaMapByIndex.has(schema.index);
+			if (schemaIndexAlreadyDefinedInRTB) {
+				return false;
+			}
+
+			const schemaMapForDomainName
+				= this.utils.ensureChildJsSet(schemaMapByNames, schema.domainName);
+
+			const schemaNameAlreadyDefinedInRTB = schemaMapForDomainName.has(schema.name);
+			if (schemaNameAlreadyDefinedInRTB) {
+				return false;
+			}
+
+			schemaMapForDomainName.add(schema.name);
+		}
+
+		return true;
 	}
 
 	/**
@@ -237,25 +282,25 @@ export class SyncInSchemaChecker
 	}
 
 	private compareSchemaVersions(
-		messageSchema: ISchema,
-		localSchema: ISchema
+		messageSchemaVersion: ISchemaVersion,
+		maxSchemaVersionView: MaxSchemaVersionView
 	): SchemaComparisonResult {
 		const majorVersionComparison = this.compareGivenSchemaVersionLevel(
-			messageSchema.majorVersion, localSchema.majorVersion
+			messageSchemaVersion.majorVersion, maxSchemaVersionView.majorVersion
 		);
 		if (majorVersionComparison) {
 			return majorVersionComparison;
 		}
 
 		const minorVersionComparison = this.compareGivenSchemaVersionLevel(
-			messageSchema.minorVersion, localSchema.minorVersion
+			messageSchemaVersion.minorVersion, maxSchemaVersionView.minorVersion
 		);
 		if (minorVersionComparison) {
 			return minorVersionComparison;
 		}
 
 		return this.compareGivenSchemaVersionLevel(
-			messageSchema.patchVersion, localSchema.patchVersion
+			messageSchemaVersion.patchVersion, maxSchemaVersionView.patchVersion
 		);
 	}
 

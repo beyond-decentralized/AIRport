@@ -5,25 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eed41dd0-924e-4853-a4f8-bd72af366cb8" name="Default" comment="syncing out code">
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInDataChecker.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInDataChecker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/SyncInUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/SyncInUtils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInChecker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInChecker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/common.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/common.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/src/dao/SchemaVersionDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/src/dao/SchemaVersionDao.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -38,12 +29,12 @@
   <component name="FileEditorManager">
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
-        <leaf>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="RecordUpdateStageDao.ts" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/dao/RecordUpdateStageDao.ts">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="451">
-                  <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+                  <caret line="49" selection-start-line="49" selection-end-line="49" />
                   <folding>
                     <element signature="e#0#154#0" expanded="true" />
                   </folding>
@@ -54,12 +45,24 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
-          <file leaf-file-name="RecordUpdateStage.ts" pinned="false" current-in-tab="true">
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="RecordUpdateStage.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ddl/RecordUpdateStage.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="209">
-                  <caret line="31" column="7" selection-start-line="31" selection-start-column="7" selection-end-line="31" selection-end-column="7" />
+                <state relative-caret-position="171">
+                  <caret line="29" column="19" lean-forward="true" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="common.ts" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/common.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="456">
+                  <caret line="24" column="61" selection-start-line="24" selection-start-column="61" selection-end-line="24" selection-end-column="61" />
+                  <folding>
+                    <element signature="e#0#132#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -191,10 +194,10 @@
         <option value="$PROJECT_DIR$/src/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.ts" />
         <option value="$PROJECT_DIR$/src/ddl/sharingNode/SharingNodeTerminal.ts" />
         <option value="$PROJECT_DIR$/src/InjectionTokens.ts" />
-        <option value="$PROJECT_DIR$/src/common.ts" />
         <option value="$PROJECT_DIR$/src/dao/sharingNode/SharingNodeTerminalDao.ts" />
         <option value="$PROJECT_DIR$/src/ddl/RecordUpdateStage.ts" />
         <option value="$PROJECT_DIR$/src/dao/RecordUpdateStageDao.ts" />
+        <option value="$PROJECT_DIR$/src/common.ts" />
       </list>
     </option>
   </component>
@@ -216,136 +219,16 @@
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
-    <option name="y" value="25" />
+    <option name="y" value="-30" />
     <option name="width" value="1920" />
-    <option name="height" value="1055" />
+    <option name="height" value="1110" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="dao" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="dao" type="462c0819:PsiDirectoryNode" />
-              <item name="sharingNode" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ddl" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ddl" type="462c0819:PsiDirectoryNode" />
-              <item name="conflict" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ddl" type="462c0819:PsiDirectoryNode" />
-              <item name="missingRecord" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ddl" type="462c0819:PsiDirectoryNode" />
-              <item name="repositoryTransactionBlock" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ddl" type="462c0819:PsiDirectoryNode" />
-              <item name="sharingMessage" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ddl" type="462c0819:PsiDirectoryNode" />
-              <item name="sharingNode" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ddl" type="462c0819:PsiDirectoryNode" />
-              <item name="values" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="generated" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="generated" type="462c0819:PsiDirectoryNode" />
-              <item name="conflict" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="generated" type="462c0819:PsiDirectoryNode" />
-              <item name="missingRecord" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="generated" type="462c0819:PsiDirectoryNode" />
-              <item name="repositoryTransactionBlock" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="generated" type="462c0819:PsiDirectoryNode" />
-              <item name="sharingMessage" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moving-walkway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moving-walkway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="generated" type="462c0819:PsiDirectoryNode" />
-              <item name="sharingNode" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="HbShouldOpenHtmlAsHb" value="" />
@@ -357,7 +240,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
-    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2018.1.5\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="ts.external.directory.path" value="/usr/lib/node_modules/typescript/lib" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -448,6 +331,7 @@
       <workItem from="1532184494923" duration="1681000" />
       <workItem from="1532288361011" duration="272000" />
       <workItem from="1532295055297" duration="706000" />
+      <workItem from="1532350031657" duration="2135000" />
     </task>
     <task id="LOCAL-00001" summary="syncing out code">
       <created>1521315148260</created>
@@ -495,10 +379,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="270675000" />
+    <option name="totallyTimeSpent" value="272810000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1080" extended-state="6" />
+    <frame x="0" y="-30" width="1920" height="1110" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TypeScript" order="11" />
@@ -509,7 +393,7 @@
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3037037" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.30296826" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -521,10 +405,10 @@
       <window_info anchor="bottom" id="Find" order="1" weight="0.2483731" />
     </layout>
     <layout-to-restore>
-      <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="0" weight="0.18133895" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -532,12 +416,12 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.24868283" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3329718" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.24868283" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Message" order="0" />
       <window_info id="Favorites" order="2" side_tool="true" />
     </layout-to-restore>
   </component>
@@ -562,11 +446,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ddl/conflict/SynchronizationConflict.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-148" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/conflict/SynchronizationConflictPendingNotification.ts">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -804,13 +683,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/common.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" column="49" selection-start-line="7" selection-start-column="49" selection-end-line="7" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/dao/sharingMessage/SharingMessageResponseStageDao.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
@@ -836,25 +708,39 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="213">
           <caret line="35" column="4" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#161#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/RecordUpdateStage.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="31" column="7" selection-start-line="31" selection-start-column="7" selection-end-line="31" selection-end-column="7" />
+        <state relative-caret-position="171">
+          <caret line="29" column="19" lean-forward="true" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/dao/RecordUpdateStageDao.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="451">
-          <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+          <caret line="49" selection-start-line="49" selection-end-line="49" />
           <folding>
             <element signature="e#0#154#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/traffic-pattern/lib/generated/schema/qschemaversion.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="24" column="61" selection-start-line="24" selection-start-column="61" selection-end-line="24" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#132#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -38,6 +38,7 @@ import {
 import {SyncInUtilsToken}              from "../../InjectionTokens";
 
 export type RemoteSchemaIndex = SchemaIndex;
+export type RemoteSchemaVersionId = SchemaVersionId;
 export type RemoteActorId = ActorId;
 
 /**
@@ -58,6 +59,7 @@ export interface SchemaCheckResults {
 	dataMessagesToBeUpgraded: IDataToTM[];
 	dataMessagesWithCompatibleSchemas: IDataToTM[];
 	dataMessagesWithIncompatibleSchemas: IDataToTM[];
+	dataMessagesWithInvalidSchemas: IDataToTM[];
 	allSchemaMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
 	schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
 }
@@ -73,6 +75,7 @@ export interface DataMessageSchemaGroupings {
 	dataMessagesToBeUpgraded: IDataToTM[];
 	dataMessagesWithCompatibleSchemas: IDataToTM[];
 	dataMessagesWithIncompatibleSchemas: IDataToTM[];
+	dataMessagesWithInvalidSchemas: IDataToTM[];
 	missingSchemaNameMap: Map<SchemaDomainName, Set<SchemaName>>;
 	schemasToBeUpgradedMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
 }

@@ -1,10 +1,4 @@
 import {
-	SchemaIndex,
-	SchemaVersionMajor,
-	SchemaVersionMinor,
-	SchemaVersionPatch
-}                              from "@airport/ground-control";
-import {
 	IUtils,
 	UtilsToken
 }                              from "@airport/air-control";
@@ -13,6 +7,12 @@ import {tree}                  from "@airport/air-control/lib/impl/core/Joins";
 import {and}                   from "@airport/air-control/lib/impl/core/operation/LogicalOperation";
 import {AirportDatabaseToken}  from "@airport/air-control/lib/InjectionTokens";
 import {IAirportDatabase}      from "@airport/air-control/lib/lingo/AirportDatabase";
+import {
+	SchemaIndex,
+	SchemaVersionMajor,
+	SchemaVersionMinor,
+	SchemaVersionPatch
+}                              from "@airport/ground-control";
 import {
 	Inject,
 	Service
@@ -33,6 +33,7 @@ import {SchemaVersionDaoToken} from "../InjectionTokens";
 export interface MaxSchemaVersionView {
 
 	index: SchemaIndex;
+	schemaVersionId: SchemaversionId;
 	domainName: SchemaDomainName;
 	name: SchemaName;
 	majorVersion: SchemaVersionMajor;
@@ -90,6 +91,7 @@ export class SchemaVersionDao
 							],
 							select: {
 								index: s.index,
+								schemaVersionId: sv.id,
 								domainName: s.domainName,
 								name: s.domainName,
 								majorVersion: max(sv.majorVersion),
@@ -110,6 +112,7 @@ export class SchemaVersionDao
 						})],
 					select: {
 						index: sMaV.index,
+						schemaVersionId: sMaV.schemaVersionId,
 						domainName: sMaV.domainName,
 						name: sMaV.name,
 						majorVersion: sMaV.majorVersion,
@@ -126,6 +129,7 @@ export class SchemaVersionDao
 				})],
 			select: {
 				index: sMiV.index,
+				schemaVersionId: sMiV.schemaVersionId,
 				domainName: sMiV.domainName,
 				name: sMiV.name,
 				majorVersion: sMiV.majorVersion,

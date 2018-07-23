@@ -1,5 +1,5 @@
 import { IActor, IRepository, IRepositoryTransactionHistory, ITerminal, IUser } from "@airport/holding-pattern";
-import { ISchema } from "@airport/traffic-pattern";
+import { ISchemaVersion } from "@airport/traffic-pattern";
 export interface RepositoryTransactionBlockData {
     users: IUser[];
     terminal: ITerminal;
@@ -7,5 +7,5 @@ export interface RepositoryTransactionBlockData {
     referencedRepositories: IRepository[];
     repository: IRepository;
     repoTransHistories: IRepositoryTransactionHistory[];
-    schemas: ISchema[];
+    schemaVersions: ISchemaVersion[];
 }

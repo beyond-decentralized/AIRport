@@ -3,6 +3,7 @@ import {
 	SchemaName
 }                                 from "@airport/air-control";
 import {AgtRepositoryId}          from "@airport/arrivals-n-departures";
+import {SchemaVersionId}          from "@airport/ground-control";
 import {
 	ActorRandomId,
 	IActor,
@@ -46,7 +47,8 @@ import {
 	IDataToTM,
 	ISyncInUtils,
 	RemoteActorId,
-	RemoteSchemaIndex
+	RemoteSchemaIndex,
+	RemoteSchemaVersionId
 }                                 from "../SyncInUtils";
 import {ISyncInActorChecker}      from "./SyncInActorChecker";
 import {ISyncInDataChecker}       from "./SyncInDataChecker";
@@ -121,8 +123,6 @@ export class SyncInChecker
 		Set<SchemaIndex>
 		]> {
 
-		this.recordAllValidIncomingSharingMessages();
-
 		const {
 			allSchemaMap,
 			dataMessagesWithIncompatibleSchemas,
@@ -175,6 +175,27 @@ export class SyncInChecker
 		];
 	}
 
+	/**
+	 * Schema references are to be upgraded for 3 groups fo messages. They are,
+	 * messages with
+	 *
+	 * 1) Incompatible schemas:
+	 *
+	 * Missing Schema ids cannot be upgraded
+	 * Schema version ids are not yet be upgraded
+	 *
+	 * FIXME: when missing schemas are retrieved - map schema & schema version ids to local values
+	 * FIXME: when messages/or local schema are upgraded - map schema version ids to local values
+	 *
+	 * 2) Data to be upgraded:
+	 * Schema version ids are not yet be upgraded
+	 * FIXME: when messages are upgraded - map schema version ids to local values
+	 *
+	 *
+	 * 3) Compatible schemas:
+	 * All versions are upgraded
+	 *
+	 */
 	private updateSchemaReferences(
 		dataMessages: IDataToTM[],
 		schemaMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>
@@ -184,17 +205,20 @@ export class SyncInChecker
 		for (const dataMessage of dataMessages) {
 			const data = dataMessage.data;
 			const schemaIndexMapByRemoteSchemaIndex: Map<RemoteSchemaIndex, SchemaIndex> = new Map();
-			const newSchemas: ISchema[] = [];
-			const oldSchemas = data.schemas;
-			for (const schema of oldSchemas) {
+			const schemaVersionIdMapByRemoteSchemaVersionId:
+				Map<RemoteSchemaVersionId, SchemaVersionId> = new Map();
+			const localSchemaVersions: ISchemaVersion[] = [];
+			const remoteSchemaVersions = data.schemaVersions;
+			for (const schemaVersion of remoteSchemaVersions) {
 				// By now schema map is guaranteed to contain the remote schemas
-				const localSchemaIndex = schemaMap.get(schema.domainName).get(schema.name).index;
+				const localSchemaIndex = schemaMap.get(schemaVersion.domainName)
+					.get(schemaVersion.name).index;
 				const remoteSchemaIndex = schema.index;
 				schema.index = localSchemaIndex;
-				newSchemas.push(schema);
+				localSchemaVersions.push(schema);
 				schemaIndexMapByRemoteSchemaIndex.set(remoteSchemaIndex, localSchemaIndex);
 			}
-			data.schemas = newSchemas;
+			data.schemas = localSchemaVersions;
 
 			for (const repoTransHistory of data.repoTransHistories) {
 				delete repoTransHistory.id;
