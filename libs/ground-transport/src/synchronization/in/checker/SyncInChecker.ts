@@ -20,17 +20,20 @@ import {
 	IRepoTransBlockSchemasToChangeDao,
 	ISharingMessage,
 	ISharingMessageDao,
+	MissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockDaoToken,
 	RepoTransBlockSchemasToChangeDaoToken,
 	SchemaChangeStatus,
 	SharingMessageDaoToken,
 	SharingMessageProcessingStatus,
 	SharingNodeId
-}                                 from "@airport/moving-walkway";
+} from "@airport/moving-walkway";
 import {
 	ISchema,
+	ISchemaVersion,
 	SchemaDomainName
 }                                 from "@airport/traffic-pattern";
+import {MaxSchemaVersionView}     from "@airport/traffic-pattern/lib/dao/SchemaVersionDao";
 import {
 	Inject,
 	Service
@@ -120,21 +123,22 @@ export class SyncInChecker
 		ISharingMessage[],
 		IRepositoryTransactionBlock[],
 		IDataToTM[],
-		Set<SchemaIndex>
+		Set<SchemaVersionId>
 		]> {
 
 		const {
-			allSchemaMap,
+			maxVersionedMapBySchemaAndDomainNames,
 			dataMessagesWithIncompatibleSchemas,
 			dataMessagesWithCompatibleSchemas,
 			dataMessagesToBeUpgraded,
 			schemasWithChangesMap
 		} = await this.schemaChecker.checkSchemas(dataMessages);
 
-		this.updateSchemaReferences(dataMessagesWithIncompatibleSchemas, allSchemaMap);
-		this.updateSchemaReferences(dataMessagesToBeUpgraded, allSchemaMap);
-		const usedSchemaIndexSet
-			= this.updateSchemaReferences(dataMessagesWithCompatibleSchemas, allSchemaMap);
+		// this.updateSchemaReferences(dataMessagesWithIncompatibleSchemas, allSchemaMap);
+		// this.updateSchemaReferences(dataMessagesToBeUpgraded, allSchemaMap);
+		const usedSchemaVersionIdSet
+			= this.updateSchemaReferences(dataMessagesWithCompatibleSchemas,
+			maxVersionedMapBySchemaAndDomainNames);
 		this.updateActorReferences(dataMessagesWithIncompatibleSchemas, actorMap);
 		this.updateActorReferences(dataMessagesToBeUpgraded, actorMap);
 		this.updateActorReferences(dataMessagesWithCompatibleSchemas, actorMap);
@@ -153,10 +157,10 @@ export class SyncInChecker
 		} = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas);
 
 
-		this.recordAllRepoTransBlocksCompatibleOrNot();
+		await this.recordAllRepoTransBlocksCompatibleOrNot();
 
-		this.recordAllSharingMessageRepoTransBlocks();
-		this.recordAllSharingNodeRepoTransBlocks();
+		await this.recordAllSharingMessageRepoTransBlocks();
+		await this.recordAllSharingNodeRepoTransBlocks();
 
 		const sharingMessagesWithCompatibleSchemasAndData = await this.recordSharingMessages(
 			dataMessagesWithIncompatibleSchemas,
@@ -171,13 +175,13 @@ export class SyncInChecker
 			sharingMessagesWithCompatibleSchemasAndData,
 			existingRepoTransBlocksWithCompatibleSchemasAndData,
 			dataMessagesWithCompatibleSchemas,
-			usedSchemaIndexSet
+			usedSchemaVersionIdSet
 		];
 	}
 
 	/**
-	 * Schema references are to be upgraded for 3 groups fo messages. They are,
-	 * messages with
+	 * Schema references are to be upgraded for messages with Compatible Schemas only. The remaining
+	 * types of messages are only upgraded when processed
 	 *
 	 * 1) Incompatible schemas:
 	 *
@@ -191,43 +195,49 @@ export class SyncInChecker
 	 * Schema version ids are not yet be upgraded
 	 * FIXME: when messages are upgraded - map schema version ids to local values
 	 *
-	 *
-	 * 3) Compatible schemas:
-	 * All versions are upgraded
-	 *
 	 */
 	private updateSchemaReferences(
 		dataMessages: IDataToTM[],
-		schemaMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>
+		maxVersionedMapBySchemaAndDomainNames:
+			Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>>
 	): Set<SchemaIndex> {
 		const usedSchemaIndexSet: Set<SchemaIndex> = new Set();
 
 		for (const dataMessage of dataMessages) {
 			const data = dataMessage.data;
-			const schemaIndexMapByRemoteSchemaIndex: Map<RemoteSchemaIndex, SchemaIndex> = new Map();
+			// const schemaIndexMapByRemoteSchemaIndex: Map<RemoteSchemaIndex, SchemaIndex> = new Map();
 			const schemaVersionIdMapByRemoteSchemaVersionId:
 				Map<RemoteSchemaVersionId, SchemaVersionId> = new Map();
 			const localSchemaVersions: ISchemaVersion[] = [];
 			const remoteSchemaVersions = data.schemaVersions;
 			for (const schemaVersion of remoteSchemaVersions) {
-				// By now schema map is guaranteed to contain the remote schemas
-				const localSchemaIndex = schemaMap.get(schemaVersion.domainName)
-					.get(schemaVersion.name).index;
-				const remoteSchemaIndex = schema.index;
-				schema.index = localSchemaIndex;
-				localSchemaVersions.push(schema);
-				schemaIndexMapByRemoteSchemaIndex.set(remoteSchemaIndex, localSchemaIndex);
+				const schema = schemaVersion.schema;
+				const localSchemaVersionView: MaxSchemaVersionView = maxVersionedMapBySchemaAndDomainNames
+					.get(schema.domainName).get(schema.name);
+
+				// const localSchemaIndex = localSchemaVersionView.index;
+				// const remoteSchemaIndex = schema.index;
+				// schema.index = localSchemaIndex;
+				schema.index = localSchemaVersionView.index;
+				// schemaIndexMapByRemoteSchemaIndex.set(remoteSchemaIndex, localSchemaIndex);
+
+				const localSchemaVersionId = localSchemaVersionView.schemaVersionId;
+				const remoteSchemaVersionId = schemaVersion.id;
+				schemaVersionIdMapByRemoteSchemaVersionId.set(remoteSchemaVersionId,
+					localSchemaVersionId);
+
+				localSchemaVersions.push(schemaVersion);
 			}
-			data.schemas = localSchemaVersions;
+			data.schemaVersions = localSchemaVersions;
 
 			for (const repoTransHistory of data.repoTransHistories) {
 				delete repoTransHistory.id;
 				for (const operationHistory of repoTransHistory.operationHistory) {
 					delete operationHistory.id;
-					const localSchemaIndex
-						= schemaIndexMapByRemoteSchemaIndex.get(operationHistory.schema.index);
-					usedSchemaIndexSet.add(localSchemaIndex);
-					operationHistory.schema.index = localSchemaIndex;
+					const localSchemaVersionId
+						= schemaVersionIdMapByRemoteSchemaVersionId.get(operationHistory.schemaVersion.id);
+					usedSchemaIndexSet.add(localSchemaVersionId);
+					operationHistory.schemaVersion.id = localSchemaVersionId;
 					for (const recordHistory of operationHistory.recordHistory) {
 						delete recordHistory.id;
 					}
@@ -293,47 +303,49 @@ export class SyncInChecker
 		sharingMessagesWithIncompatibleData: ISharingMessage[],
 		missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[]
 	): Promise<ISharingMessage[]> {
-		const sharingMessagesWithIncompatibleSchemas = dataMessagesWithIncompatibleSchemas.map((
-			dataMessagesWithIncompatibleSchemas
-		) => {
-			/**
-			 * Record the messages (with data, because it cannot yet be processed) for messages
-			 * that require schema changes (new schemas or schema upgrades).
-			 */
-			return this.syncInUtils.createSharingMessage(
-				dataMessagesWithIncompatibleSchemas, SharingMessageProcessingStatus.NEEDS_SCHEMA_CHANGES,
-				true);
-		});
-		const sharingMessagesToBeUpgraded = dataMessagesToBeUpgraded.map((
-			dataMessageToBeUpgraded
-		) => {
-			/**
-			 * Record the messages (with data, because it cannot yet be processed) for messages
-			 * that need to be upgraded to schema versions present on this TM.
-			 *
-			 * Messages cannot yet be processed since messages upgrades are done by the client
-			 * domain code and need to be sent over to those domains for upgrading.
-			 */
-			return this.syncInUtils.createSharingMessage(
-				dataMessageToBeUpgraded, SharingMessageProcessingStatus.NEEDS_DATA_UPGRADES,
-				true);
-		});
-		const sharingMessagesWithCompatibleSchemasAndData = dataMessagesWithCompatibleSchemasAndData.map((
-			sharingMessageWithCompatibleSchemas
-		) => {
-			return this.syncInUtils.createSharingMessage(
-				sharingMessageWithCompatibleSchemas, SharingMessageProcessingStatus.READY_FOR_PROCESSING,
-				false);
-		});
-		const allSharingMessagesToCreate: ISharingMessage[] = [
-			...sharingMessagesWithIncompatibleSchemas,
-			...sharingMessagesToBeUpgraded,
-			...sharingMessagesWithIncompatibleData,
-			...sharingMessagesWithCompatibleSchemasAndData
-		];
+		// const sharingMessagesWithIncompatibleSchemas = dataMessagesWithIncompatibleSchemas.map((
+		// 	dataMessagesWithIncompatibleSchemas
+		// ) => {
+		// 	/**
+		// 	 * Record the messages (with data, because it cannot yet be processed) for messages
+		// 	 * that require schema changes (new schemas or schema upgrades).
+		// 	 */
+		// 	return this.syncInUtils.createSharingMessage(
+		// 		dataMessagesWithIncompatibleSchemas, SharingMessageProcessingStatus.NEEDS_SCHEMA_CHANGES,
+		// 		true);
+		// });
+		// const sharingMessagesToBeUpgraded = dataMessagesToBeUpgraded.map((
+		// 	dataMessageToBeUpgraded
+		// ) => {
+		// 	/**
+		// 	 * Record the messages (with data, because it cannot yet be processed) for messages
+		// 	 * that need to be upgraded to schema versions present on this TM.
+		// 	 *
+		// 	 * Messages cannot yet be processed since messages upgrades are done by the client
+		// 	 * domain code and need to be sent over to those domains for upgrading.
+		// 	 */
+		// 	return this.syncInUtils.createSharingMessage(
+		// 		dataMessageToBeUpgraded, SharingMessageProcessingStatus.NEEDS_DATA_UPGRADES,
+		// 		true);
+		// });
+		// const sharingMessagesWithCompatibleSchemasAndData = dataMessagesWithCompatibleSchemasAndData.map((
+		// 	sharingMessageWithCompatibleSchemas
+		// ) => {
+		// 	return this.syncInUtils.createSharingMessage(
+		// 		sharingMessageWithCompatibleSchemas, SharingMessageProcessingStatus.READY_FOR_PROCESSING,
+		// 		false);
+		// });
+		// const allSharingMessagesToCreate: ISharingMessage[] = [
+		// 	...sharingMessagesWithIncompatibleSchemas,
+		// 	...sharingMessagesToBeUpgraded,
+		// 	...sharingMessagesWithIncompatibleData,
+		// 	...sharingMessagesWithCompatibleSchemasAndData
+		// ];
+		//
+		// await this.sharingMessageDao.bulkCreate(
+		// 	allSharingMessagesToCreate, false, false);
 
-		await this.sharingMessageDao.bulkCreate(
-			allSharingMessagesToCreate, false, false);
+		const m: MissingRecordRepoTransBlock;
 
 		if (missingRecordRepoTransBlocks.length) {
 			await this.missingRecordRepoTransBlockDao.bulkCreate(

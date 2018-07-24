@@ -15,5 +15,5 @@ export declare class SyncInRepositoryChecker implements ISyncInRepositoryChecker
     private utils;
     constructor(sharingNodeRepositoryDao: ISharingNodeRepositoryDao, utils: IUtils);
     ensureRepositories(incomingMessages: IDataToTM[]): Promise<RepositoryCheckResults>;
-    private areRepositoryIdsConsistentInMessage(message);
+    private areRepositoryIdsConsistentInMessage;
 }

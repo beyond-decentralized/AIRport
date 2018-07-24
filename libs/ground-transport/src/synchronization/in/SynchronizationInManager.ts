@@ -177,7 +177,7 @@ export class SynchronizationInManager
 							// agtSyncRecordId: repoTransBlockMessage.agtSyncRecordId,
 							data,
 							serializedData,
-							sharingNode,
+							sharingMessage,
 							// syncDatetime: syncTimestamp,
 						};
 						messageWithContent.dataMessages.push(dataMessage);

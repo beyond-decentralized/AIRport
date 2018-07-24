@@ -51,6 +51,7 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
                                 ],
                                 select: {
                                     index: s.index,
+                                    schemaVersionId: sv.id,
                                     domainName: s.domainName,
                                     name: s.domainName,
                                     majorVersion: Functions_1.max(sv.majorVersion),
@@ -69,6 +70,7 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
                         ],
                         select: {
                             index: sMaV.index,
+                            schemaVersionId: sMaV.schemaVersionId,
                             domainName: sMaV.domainName,
                             name: sMaV.name,
                             majorVersion: sMaV.majorVersion,
@@ -86,6 +88,7 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
                 ],
                 select: {
                     index: sMiV.index,
+                    schemaVersionId: sMiV.schemaVersionId,
                     domainName: sMiV.domainName,
                     name: sMiV.name,
                     majorVersion: sMiV.majorVersion,

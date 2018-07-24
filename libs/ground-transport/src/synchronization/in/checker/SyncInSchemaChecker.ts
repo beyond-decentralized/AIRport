@@ -71,7 +71,8 @@ export class SyncInSchemaChecker
 			}
 		}
 
-		const maxVersionedMapBySchemaAndDomainNames =
+		const maxVersionedMapBySchemaAndDomainNames:
+			Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>> =
 			await this.schemaVersionDao.findMaxVersionedMapBySchemaAndDomainNames(
 				Array.from(schemaDomainNameSet), Array.from(schemaNameSet)
 			);
@@ -89,17 +90,17 @@ export class SyncInSchemaChecker
 		const missingSchemaMap: Map<SchemaDomainName, Map<SchemaName, ISchema>> =
 			await this.recordSchemasToBeAddedAndUpgraded(schemasToBeUpgradedMap, missingSchemaNameMap);
 
-		const schemasWithChangesMap
-			= this.mergeSchemaMaps(missingSchemaMap, schemasToBeUpgradedMap);
-		const allSchemaMap
-			= this.mergeSchemaMaps(maxVersionedMapBySchemaAndDomainNames, schemasWithChangesMap);
+		// const schemasWithChangesMap
+		// 	= this.mergeSchemaMaps(missingSchemaMap, schemasToBeUpgradedMap);
+		// const allSchemaMap
+		// 	= this.mergeSchemaMaps(maxVersionedMapBySchemaAndDomainNames, schemasWithChangesMap);
 
 		return {
-			allSchemaMap,
 			dataMessagesToBeUpgraded,
 			dataMessagesWithCompatibleSchemas,
 			dataMessagesWithIncompatibleSchemas,
 			dataMessagesWithInvalidSchemas,
+			maxVersionedMapBySchemaAndDomainNames,
 			schemasWithChangesMap
 		}
 	}

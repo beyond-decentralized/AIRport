@@ -104,7 +104,7 @@ let SynchronizationInManager = class SynchronizationInManager {
                             // agtSyncRecordId: repoTransBlockMessage.agtSyncRecordId,
                             data,
                             serializedData,
-                            sharingNode,
+                            sharingMessage,
                         };
                         messageWithContent.dataMessages.push(dataMessage);
                         allDataMessages.push(dataMessage);

@@ -19,6 +19,11 @@ export declare class SyncNodeManager implements ISyncNodeManager {
     initialize(): Promise<void>;
     sendMessages(sharingNodeMap: Map<SharingNodeId, ISharingNode>, messagesBySharingNode: Map<SharingNodeId, MessageFromTM>): Promise<void>;
     sendMessage(sharingNode: ISharingNode, message: MessageFromTM): Promise<BatchedMessagesToTM>;
-    private serializeMessageDates();
-    private deserializeMessageDates();
+    private serializeMessageDates;
+    private deserializeMessageDates;
 }
+/**
+ * NEED: a state container that can handle effects AND notifies only when
+ * a given memorized selector changes value.  Notification should be an observable
+ *
+ */ 

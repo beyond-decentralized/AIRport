@@ -28,24 +28,32 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
     async checkSchemas(dataMessages) {
         const schemaNameSet = new Set();
         const schemaDomainNameSet = new Set();
+        const dataMessagesWithInvalidSchemas = [];
         // Build schema name and domainName sets
         for (const message of dataMessages) {
             message.data = lib_1.parse(message.data);
-            for (const schema of message.data.schemas) {
-                schemaDomainNameSet.add(schema.domainName);
-                schemaNameSet.add(schema.name);
+            if (!this.verifyRTBSchemaConsistency(dataMessage)) {
+                dataMessagesWithInvalidSchemas.push(message);
+                continue;
+            }
+            for (const schemaVersion of message.data.schemaVersions) {
+                schemaDomainNameSet.add(schemaVersion.schema.domainName);
+                schemaNameSet.add(schemaVersion.schema.name);
             }
         }
         const maxVersionedMapBySchemaAndDomainNames = await this.schemaVersionDao.findMaxVersionedMapBySchemaAndDomainNames(Array.from(schemaDomainNameSet), Array.from(schemaNameSet));
-        const { dataMessagesWithIncompatibleSchemas, dataMessagesWithCompatibleSchemas, dataMessagesToBeUpgraded, missingSchemaNameMap, schemasToBeUpgradedMap, } = this.groupMessagesAndSchemasBySchemaState(dataMessages, maxVersionedMapBySchemaAndDomainNames);
+        const { dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleSchemas, dataMessagesToBeUpgraded, missingSchemaNameMap, schemasToBeUpgradedMap, } = this.groupMessagesAndSchemasBySchemaState(dataMessages, maxVersionedMapBySchemaAndDomainNames);
         const missingSchemaMap = await this.recordSchemasToBeAddedAndUpgraded(schemasToBeUpgradedMap, missingSchemaNameMap);
-        const schemasWithChangesMap = this.mergeSchemaMaps(missingSchemaMap, schemasToBeUpgradedMap);
-        const allSchemaMap = this.mergeSchemaMaps(maxVersionedMapBySchemaAndDomainNames, schemasWithChangesMap);
+        // const schemasWithChangesMap
+        // 	= this.mergeSchemaMaps(missingSchemaMap, schemasToBeUpgradedMap);
+        // const allSchemaMap
+        // 	= this.mergeSchemaMaps(maxVersionedMapBySchemaAndDomainNames, schemasWithChangesMap);
         return {
-            allSchemaMap,
-            dataMessagesWithIncompatibleSchemas,
-            dataMessagesWithCompatibleSchemas,
             dataMessagesToBeUpgraded,
+            dataMessagesWithCompatibleSchemas,
+            dataMessagesWithIncompatibleSchemas,
+            dataMessagesWithInvalidSchemas,
+            maxVersionedMapBySchemaAndDomainNames,
             schemasWithChangesMap
         };
     }
@@ -60,7 +68,8 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
             let allMessageSchemasAreCompatible = true;
             let messageBuildWithOutdatedSchemaVersions = false;
             // for every schema (at a given version) used in the message
-            for (const schema of message.data.schemas) {
+            for (const schemaVersion of message.data.schemaVersions) {
+                const schema = schemaVersion.schema;
                 const maxVersionedMapBySchemaName = maxVersionedMapBySchemaAndDomainNames.get(schema.domainName);
                 // If the domain of the message schema is not present in this TM
                 if (!maxVersionedMapBySchemaName) {
@@ -69,15 +78,15 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
                     allMessageSchemasAreCompatible = false;
                     continue;
                 }
-                const maxVersionedSchema = maxVersionedMapBySchemaName.get(schema.name);
+                const maxSchemaVersionView = maxVersionedMapBySchemaName.get(schema.name);
                 // If the schema of the message is not present in this TM
-                if (!maxVersionedSchema) {
+                if (!maxSchemaVersionView) {
                     this.utils.ensureChildJsSet(missingSchemaNameMap, schema.domainName)
                         .add(schema.name);
                     allMessageSchemasAreCompatible = false;
                     continue;
                 }
-                switch (this.compareSchemaVersions(schema, maxVersionedSchema)) {
+                switch (this.compareSchemaVersions(schemaVersion, maxSchemaVersionView)) {
                     case SyncInUtils_1.SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_LOWER:
                         messageBuildWithOutdatedSchemaVersions = true;
                         break;
@@ -105,6 +114,30 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
             missingSchemaNameMap,
             schemasToBeUpgradedMap
         };
+    }
+    verifyRTBSchemaConsistency(dataMessage) {
+        const data = dataMessage.data;
+        const schemaVersionSet = new Set();
+        const schemaIndexSet = new Set();
+        const schemaMapByNames = new Map();
+        for (const schemaVersion of data.schemaVersions) {
+            const schemaVersionIdAlreadyDefinedInRTB = schemaVersionMapById.has(schemaVersion.id);
+            if (schemaVersionIdAlreadyDefinedInRTB) {
+                return false;
+            }
+            const schema = schemaVersion.schema;
+            const schemaIndexAlreadyDefinedInRTB = schemaMapByIndex.has(schema.index);
+            if (schemaIndexAlreadyDefinedInRTB) {
+                return false;
+            }
+            const schemaMapForDomainName = this.utils.ensureChildJsSet(schemaMapByNames, schema.domainName);
+            const schemaNameAlreadyDefinedInRTB = schemaMapForDomainName.has(schema.name);
+            if (schemaNameAlreadyDefinedInRTB) {
+                return false;
+            }
+            schemaMapForDomainName.add(schema.name);
+        }
+        return true;
     }
     /**
      * Record which schemas will have to be added to this TM or upgraded to a later version.
@@ -157,16 +190,16 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
             }
         }
     }
-    compareSchemaVersions(messageSchema, localSchema) {
-        const majorVersionComparison = this.compareGivenSchemaVersionLevel(messageSchema.majorVersion, localSchema.majorVersion);
+    compareSchemaVersions(messageSchemaVersion, maxSchemaVersionView) {
+        const majorVersionComparison = this.compareGivenSchemaVersionLevel(messageSchemaVersion.majorVersion, maxSchemaVersionView.majorVersion);
         if (majorVersionComparison) {
             return majorVersionComparison;
         }
-        const minorVersionComparison = this.compareGivenSchemaVersionLevel(messageSchema.minorVersion, localSchema.minorVersion);
+        const minorVersionComparison = this.compareGivenSchemaVersionLevel(messageSchemaVersion.minorVersion, maxSchemaVersionView.minorVersion);
         if (minorVersionComparison) {
             return minorVersionComparison;
         }
-        return this.compareGivenSchemaVersionLevel(messageSchema.patchVersion, localSchema.patchVersion);
+        return this.compareGivenSchemaVersionLevel(messageSchemaVersion.patchVersion, maxSchemaVersionView.patchVersion);
     }
     compareGivenSchemaVersionLevel(messageSchemaVersion, localSchemaVersion) {
         if (messageSchemaVersion < localSchemaVersion) {

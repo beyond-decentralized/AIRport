@@ -35,16 +35,28 @@ let SyncInUtils = class SyncInUtils {
         // FIXME: ensure that OperationHistory schemaVersion is correctly set
         return this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(recordMapBySchemaTableAndRepository, operationHistory.schemaVersion.id), operationHistory.entity.index), repositoryId);
     }
-    createSharingMessage(dataMessageToClient, processingStatus, saveData) {
-        return {
-            sharingNode: dataMessageToClient.sharingNode,
-            // agtTerminalSyncLogId: null,
-            // origin: DataOrigin.REMOTE,
-            // syncStatus: BlockSyncStatus.SYNCHRONIZED,
-            source: null,
-            processingStatus,
-            syncTimestamp: new Date(dataMessageToClient.syncDatetime),
-        };
+    // createSharingMessage(
+    // 	dataMessageToClient: IDataToTM,
+    // 	processingStatus: RepoTransBlockSyncOutcomeType,
+    // 	saveData: boolean
+    // ): ISharingMessage {
+    // 	return {
+    // 		sharingNode: dataMessageToClient.sharingNode,
+    // 		// agtTerminalSyncLogId: null,
+    // 		// origin: DataOrigin.REMOTE,
+    // 		// syncStatus: BlockSyncStatus.SYNCHRONIZED,
+    // 		source: null, // FIXME add source terminal
+    // 		processingStatus,
+    // 		syncTimestamp: new Date(dataMessageToClient.syncDatetime),
+    // 		// dataCache: saveData ? stringify(dataMessageToClient.data) : undefined
+    // 	};
+    // }
+    async recordRepoTransBlocks() {
+    }
+    async recordSharingMessageRepoTransBlocks() {
+    }
+    async recordSharingNodeRepoTransBlocks() {
+        let snrtb;
     }
 };
 SyncInUtils = __decorate([

@@ -9,6 +9,7 @@ import {AirportDatabaseToken}  from "@airport/air-control/lib/InjectionTokens";
 import {IAirportDatabase}      from "@airport/air-control/lib/lingo/AirportDatabase";
 import {
 	SchemaIndex,
+	SchemaVersionId,
 	SchemaVersionMajor,
 	SchemaVersionMinor,
 	SchemaVersionPatch
@@ -33,7 +34,7 @@ import {SchemaVersionDaoToken} from "../InjectionTokens";
 export interface MaxSchemaVersionView {
 
 	index: SchemaIndex;
-	schemaVersionId: SchemaversionId;
+	schemaVersionId: SchemaVersionId;
 	domainName: SchemaDomainName;
 	name: SchemaName;
 	majorVersion: SchemaVersionMajor;

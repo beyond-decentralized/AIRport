@@ -126,7 +126,7 @@ export class TwoStageSyncedInDataProcessor
 			sharingMessagesWithCompatibleSchemasAndData,
 			existingRepoTransBlocksWithCompatibleSchemasAndData,
 			messagesWithCompatibleSchemas,
-			usedSchemaIdSet
+			usedSchemaVersionIdSet
 		] = await this.syncInChecker.checkSchemasAndDataAndRecordSharingMessages(
 			consistentMessages, actorMap, sharingNodeRepositoryMap
 		);

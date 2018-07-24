@@ -1,15 +1,14 @@
 import {
 	IUtils,
 	UtilsToken
-}                                      from "@airport/air-control";
-import {RepoTransBlockSyncOutcomeType} from "@airport/arrivals-n-departures";
+}                             from "@airport/air-control";
 import {
 	ColumnIndex,
 	SchemaIndex,
 	SchemaName,
 	SchemaVersionId,
 	TableIndex
-}                                      from "@airport/ground-control";
+}                             from "@airport/ground-control";
 import {
 	ActorId,
 	IOperationHistory,
@@ -19,23 +18,26 @@ import {
 	RecordHistoryId,
 	RepositoryEntityActorRecordId,
 	RepositoryId
-}                                      from "@airport/holding-pattern";
+}                             from "@airport/holding-pattern";
 import {
 	IMissingRecordRepoTransBlock,
 	ISharingMessage,
 	ISharingNode,
+	ISharingNodeRepoTransBlock,
 	ISynchronizationConflict,
 	RepositoryTransactionBlockData,
-}                                      from "@airport/moving-walkway";
+	SharingNodeRepoTransBlock,
+} from "@airport/moving-walkway";
 import {
 	ISchema,
 	SchemaDomainName
-}                                      from "@airport/traffic-pattern";
+}                             from "@airport/traffic-pattern";
+import {MaxSchemaVersionView} from "@airport/traffic-pattern/lib/dao/SchemaVersionDao";
 import {
 	Inject,
 	Service
-}                                      from "typedi";
-import {SyncInUtilsToken}              from "../../InjectionTokens";
+}                             from "typedi";
+import {SyncInUtilsToken}     from "../../InjectionTokens";
 
 export type RemoteSchemaIndex = SchemaIndex;
 export type RemoteSchemaVersionId = SchemaVersionId;
@@ -51,7 +53,7 @@ export interface IDataToTM {
 	// agtSyncRecordId: AgtSyncRecordId;
 	data: RepositoryTransactionBlockData;
 	serializedData: string;
-	sharingNode: ISharingNode;
+	sharingMessage: ISharingMessage;
 	// syncDatetime: AgtSyncRecordAddDatetime;
 }
 
@@ -60,7 +62,8 @@ export interface SchemaCheckResults {
 	dataMessagesWithCompatibleSchemas: IDataToTM[];
 	dataMessagesWithIncompatibleSchemas: IDataToTM[];
 	dataMessagesWithInvalidSchemas: IDataToTM[];
-	allSchemaMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
+	maxVersionedMapBySchemaAndDomainNames:
+		Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>>;
 	schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
 }
 
@@ -128,11 +131,11 @@ export interface ISyncInUtils {
 			Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>
 	): Map<CI, V>;
 
-	createSharingMessage(
-		dataMessageToClient: IDataToTM,
-		processingStatus: RepoTransBlockSyncOutcomeType,
-		saveData: boolean
-	): ISharingMessage;
+	// createSharingMessage(
+	// 	dataMessageToClient: IDataToTM,
+	// 	processingStatus: RepoTransBlockSyncOutcomeType,
+	// 	saveData: boolean
+	// ): ISharingMessage;
 
 }
 
@@ -173,21 +176,34 @@ export class SyncInUtils
 				operationHistory.entity.index), repositoryId);
 	}
 
-	createSharingMessage(
-		dataMessageToClient: IDataToTM,
-		processingStatus: RepoTransBlockSyncOutcomeType,
-		saveData: boolean
-	): ISharingMessage {
-		return {
-			sharingNode: dataMessageToClient.sharingNode,
-			// agtTerminalSyncLogId: null,
-			// origin: DataOrigin.REMOTE,
-			// syncStatus: BlockSyncStatus.SYNCHRONIZED,
-			source: null, // FIXME add source terminal
-			processingStatus,
-			syncTimestamp: new Date(dataMessageToClient.syncDatetime),
-			// dataCache: saveData ? stringify(dataMessageToClient.data) : undefined
-		};
+	// createSharingMessage(
+	// 	dataMessageToClient: IDataToTM,
+	// 	processingStatus: RepoTransBlockSyncOutcomeType,
+	// 	saveData: boolean
+	// ): ISharingMessage {
+	// 	return {
+	// 		sharingNode: dataMessageToClient.sharingNode,
+	// 		// agtTerminalSyncLogId: null,
+	// 		// origin: DataOrigin.REMOTE,
+	// 		// syncStatus: BlockSyncStatus.SYNCHRONIZED,
+	// 		source: null, // FIXME add source terminal
+	// 		processingStatus,
+	// 		syncTimestamp: new Date(dataMessageToClient.syncDatetime),
+	// 		// dataCache: saveData ? stringify(dataMessageToClient.data) : undefined
+	// 	};
+	// }
+
+	private async recordRepoTransBlocks() {
+
+	}
+
+	private async recordSharingMessageRepoTransBlocks() {
+
+	}
+
+	private async recordSharingNodeRepoTransBlocks() {
+
+		let snrtb: SharingNodeRepoTransBlock;
 	}
 
 }
