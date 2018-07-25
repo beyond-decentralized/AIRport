@@ -131,11 +131,12 @@ export class SyncInChecker
 			dataMessagesWithIncompatibleSchemas,
 			dataMessagesWithCompatibleSchemas,
 			dataMessagesToBeUpgraded,
-			schemasWithChangesMap
 		} = await this.schemaChecker.checkSchemas(dataMessages);
 
 		// this.updateSchemaReferences(dataMessagesWithIncompatibleSchemas, allSchemaMap);
 		// this.updateSchemaReferences(dataMessagesToBeUpgraded, allSchemaMap);
+		// Schema references for messages with incompatible schemas are converted
+		// at when the messages are finally processed
 		const usedSchemaVersionIdSet
 			= this.updateSchemaReferences(dataMessagesWithCompatibleSchemas,
 			maxVersionedMapBySchemaAndDomainNames);
@@ -157,7 +158,23 @@ export class SyncInChecker
 		} = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas);
 
 
-		await this.recordAllRepoTransBlocksCompatibleOrNot();
+		await this.recordAllRepoTransBlocksCompatibleOrNot(
+			dataMessagesWithIncompatibleSchemas,
+			dataMessagesToBeUpgraded,
+			// schemasWithChangesMap,
+			dataMessagesWithCompatibleSchemasAndData,
+			sharingMessagesWithIncompatibleData,
+			missingRecordRepoTransBlocks
+		);
+
+		recordRepositoryTransBlocks(
+			dataMessagesWithIncompatibleSchemas: IDataToTM[],
+			dataMessagesWithIncompatibleData: IDataToTM[],
+			dataMessagesToBeUpgraded: IDataToTM[],
+			// schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
+			dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
+			dataMessagesWithInvalidData: IDataToTM[],
+	)
 
 		await this.recordAllSharingMessageRepoTransBlocks();
 		await this.recordAllSharingNodeRepoTransBlocks();

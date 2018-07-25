@@ -47,7 +47,7 @@ let SyncInDataChecker = class SyncInDataChecker {
                 for (const operationHistory of repoTransHistory.operationHistory) {
                     let insertedRecordMapForEntityInRepo;
                     if (insertedRecordMapForRepo) {
-                        const insertedRecordMapForSchemaInRepo = insertedRecordMapForRepo.get(operationHistory.schema.index);
+                        const insertedRecordMapForSchemaInRepo = insertedRecordMapForRepo.get(operationHistory.schemaVersion.id);
                         if (insertedRecordMapForSchemaInRepo) {
                             insertedRecordMapForEntityInRepo
                                 = insertedRecordMapForSchemaInRepo.get(operationHistory.entity.index);
@@ -67,7 +67,7 @@ let SyncInDataChecker = class SyncInDataChecker {
                                     const updatedRecordMapForRepoInTable = this.syncInUtils
                                         .ensureRecordMapForRepoInTable(repositoryId, operationHistory, updatedRecordMap);
                                     this.ensureRecordId(recordHistory, updatedRecordMapForRepoInTable, recordHistory.actorRecordId);
-                                    this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(messageIndexMapByUpdatedRecordIds, repositoryId), operationHistory.schema.index), operationHistory.entity.index), recordHistory.actor.id), recordHistory.actorRecordId)
+                                    this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(messageIndexMapByUpdatedRecordIds, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.index), recordHistory.actor.id), recordHistory.actorRecordId)
                                         .add(i);
                                 }
                             }
@@ -150,7 +150,7 @@ let SyncInDataChecker = class SyncInDataChecker {
                     switch (operationHistory.changeType) {
                         case ground_control_1.ChangeType.INSERT_VALUES:
                             for (const recordHistory of operationHistory.recordHistory) {
-                                this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(insertedRecordMap, repositoryId), operationHistory.schema.index), operationHistory.entity.index), recordHistory.actor.id)
+                                this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(insertedRecordMap, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.index), recordHistory.actor.id)
                                     .add(recordHistory.actorRecordId);
                             }
                             break;

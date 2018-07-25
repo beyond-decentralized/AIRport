@@ -14,7 +14,8 @@ export declare enum RepoTransBlockSyncOutcomeType {
     SYNC_TO_TM_READY_FOR_PROCESSING = 6,
     SYNC_TO_TM_NEEDS_SCHEMA_CHANGES = 7,
     SYNC_TO_TM_NEEDS_ADDITIONAL_DATA = 8,
-    SYNC_TO_TM_NEEDS_DATA_UPGRADES = 9
+    SYNC_TO_TM_INVALID_DATA = 9,
+    SYNC_TO_TM_NEEDS_DATA_UPGRADES = 10
 }
 export declare enum MessageFromTMContentType {
     CONNECTION_REQUEST = 0,

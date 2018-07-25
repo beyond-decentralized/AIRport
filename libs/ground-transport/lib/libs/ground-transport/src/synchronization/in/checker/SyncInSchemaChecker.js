@@ -32,7 +32,7 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
         // Build schema name and domainName sets
         for (const message of dataMessages) {
             message.data = lib_1.parse(message.data);
-            if (!this.verifyRTBSchemaConsistency(dataMessage)) {
+            if (!this.verifyRTBSchemaConsistency(message)) {
                 dataMessagesWithInvalidSchemas.push(message);
                 continue;
             }
@@ -53,8 +53,7 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
             dataMessagesWithCompatibleSchemas,
             dataMessagesWithIncompatibleSchemas,
             dataMessagesWithInvalidSchemas,
-            maxVersionedMapBySchemaAndDomainNames,
-            schemasWithChangesMap
+            maxVersionedMapBySchemaAndDomainNames
         };
     }
     groupMessagesAndSchemasBySchemaState(dataMessages, maxVersionedMapBySchemaAndDomainNames) {

@@ -13,7 +13,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
+const moving_walkway_1 = require("@airport/moving-walkway");
 const typedi_1 = require("typedi");
+const lib_1 = require("zipson/lib");
 const InjectionTokens_1 = require("../../InjectionTokens");
 /**
  * Result of comparing to versions of a given schema.
@@ -28,7 +31,8 @@ var SchemaComparisonResult;
     SchemaComparisonResult[SchemaComparisonResult["MESSAGE_SCHEMA_VERSION_IS_HIGHER"] = 1] = "MESSAGE_SCHEMA_VERSION_IS_HIGHER";
 })(SchemaComparisonResult = exports.SchemaComparisonResult || (exports.SchemaComparisonResult = {}));
 let SyncInUtils = class SyncInUtils {
-    constructor(utils) {
+    constructor(repositoryTransactionBlockDao, utils) {
+        this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
         this.utils = utils;
     }
     ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordMapBySchemaTableAndRepository) {
@@ -51,7 +55,37 @@ let SyncInUtils = class SyncInUtils {
     // 		// dataCache: saveData ? stringify(dataMessageToClient.data) : undefined
     // 	};
     // }
-    async recordRepoTransBlocks() {
+    async recordRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas, dataMessagesWithIncompatibleData, dataMessagesToBeUpgraded, 
+    // schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
+    dataMessagesWithCompatibleSchemasAndData, dataMessagesWithInvalidData) {
+        let allRepositoryTransactionBlocks = [];
+        const repoTransBlocksNeedingSchemaChanges = this.createRepositoryTransactionBlocks(dataMessagesWithIncompatibleSchemas, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_SCHEMA_CHANGES, true);
+        allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksNeedingSchemaChanges);
+        const repoTransBlocksNeedingDataUpgrades = this.createRepositoryTransactionBlocks(dataMessagesToBeUpgraded, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_DATA_UPGRADES, true);
+        allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksNeedingDataUpgrades);
+        const repoTransBlocksNeedingAdditionalData = this.createRepositoryTransactionBlocks(dataMessagesWithIncompatibleData, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_ADDITIONAL_DATA, true);
+        allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksNeedingAdditionalData);
+        const repoTransBlocksWithInvalidData = this.createRepositoryTransactionBlocks(dataMessagesWithInvalidData, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_INVALID_DATA);
+        allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksWithInvalidData);
+        const repoTransBlocksWithValidDataAndSchemas = this.createRepositoryTransactionBlocks(dataMessagesWithCompatibleSchemasAndData, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_SUCCESSFUL);
+        allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksWithValidDataAndSchemas);
+        await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlockDao, false, false);
+    }
+    createRepositoryTransactionBlocks(dataMessages, syncOutcomeType, recordContents = false) {
+        const repositoryTransactionBlocks = [];
+        for (const dataMessage of dataMessages) {
+            const data = dataMessage.data;
+            const repositoryTransactionBlock = {
+                contents: recordContents ? lib_1.stringify(data) : null,
+                hash: null,
+                repository: data.repository,
+                source: data.terminal,
+                syncOutcomeType,
+            };
+            dataMessage.repositoryTransactionBlock = repositoryTransactionBlock;
+            repositoryTransactionBlocks.push(repositoryTransactionBlock);
+        }
+        return repositoryTransactionBlocks;
     }
     async recordSharingMessageRepoTransBlocks() {
     }
@@ -61,8 +95,9 @@ let SyncInUtils = class SyncInUtils {
 };
 SyncInUtils = __decorate([
     typedi_1.Service(InjectionTokens_1.SyncInUtilsToken),
-    __param(0, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object])
+    __param(0, typedi_1.Inject(moving_walkway_1.RepositoryTransactionBlockDaoToken)),
+    __param(1, typedi_1.Inject(air_control_1.UtilsToken)),
+    __metadata("design:paramtypes", [Object, Object])
 ], SyncInUtils);
 exports.SyncInUtils = SyncInUtils;
 //# sourceMappingURL=SyncInUtils.js.map

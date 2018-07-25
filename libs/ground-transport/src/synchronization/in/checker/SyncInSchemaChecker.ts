@@ -60,7 +60,7 @@ export class SyncInSchemaChecker
 		for (const message of dataMessages) {
 			message.data = parse(<any>message.data);
 
-			if (!this.verifyRTBSchemaConsistency(dataMessage)) {
+			if (!this.verifyRTBSchemaConsistency(message)) {
 				dataMessagesWithInvalidSchemas.push(message);
 				continue;
 			}
@@ -100,8 +100,7 @@ export class SyncInSchemaChecker
 			dataMessagesWithCompatibleSchemas,
 			dataMessagesWithIncompatibleSchemas,
 			dataMessagesWithInvalidSchemas,
-			maxVersionedMapBySchemaAndDomainNames,
-			schemasWithChangesMap
+			maxVersionedMapBySchemaAndDomainNames
 		}
 	}
 

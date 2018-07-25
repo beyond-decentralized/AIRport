@@ -3,8 +3,11 @@ import {
 	SchemaIndex,
 	TableIndex,
 	UtilsToken
-}                                                 from "@airport/air-control";
-import {ChangeType}                               from "@airport/ground-control";
+} from "@airport/air-control";
+import {
+	ChangeType,
+	SchemaVersionId
+} from "@airport/ground-control";
 import {
 	ActorId,
 	IRecordHistory,
@@ -13,7 +16,7 @@ import {
 	RepositoryEntityActorRecordId,
 	RepositoryId,
 	RepositoryTransactionHistoryDaoToken
-}                                                 from "@airport/holding-pattern";
+} from "@airport/holding-pattern";
 import {
 	IMissingRecord,
 	IMissingRecordDao,
@@ -28,7 +31,7 @@ import {
 	MissingRecordStatus,
 	SharingMessageDaoToken,
 	SharingMessageProcessingStatus
-}                                                 from "@airport/moving-walkway";
+} from "@airport/moving-walkway";
 import {
 	Inject,
 	Service
@@ -87,14 +90,14 @@ export class SyncInDataChecker
 		dataMessagesWithCompatibleSchemas: IDataToTM[],
 		// actorMapById: Map<ActorId, IActor>
 	): Promise<DataCheckResults> {
-		const insertedRecordMap: Map<RepositoryId, Map<SchemaIndex,
+		const insertedRecordMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 			= this.getInsertedRecordMap(dataMessagesWithCompatibleSchemas);
 
-		const updatedRecordMap: Map<RepositoryId, Map<SchemaIndex,
+		const updatedRecordMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 			= new Map();
-		const messageIndexMapByUpdatedRecordIds: Map<RepositoryId, Map<SchemaIndex,
+		const messageIndexMapByUpdatedRecordIds: Map<RepositoryId, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Map<RepositoryEntityActorRecordId, Set<number>>>>>>
 			= new Map();
 
@@ -108,7 +111,7 @@ export class SyncInDataChecker
 					let insertedRecordMapForEntityInRepo;
 					if (insertedRecordMapForRepo) {
 						const insertedRecordMapForSchemaInRepo
-							= insertedRecordMapForRepo.get(operationHistory.schema.index);
+							= insertedRecordMapForRepo.get(operationHistory.schemaVersion.id);
 						if (insertedRecordMapForSchemaInRepo) {
 							insertedRecordMapForEntityInRepo
 								= insertedRecordMapForSchemaInRepo.get(operationHistory.entity.index);
@@ -137,7 +140,7 @@ export class SyncInDataChecker
 												this.utils.ensureChildJsMap(
 													this.utils.ensureChildJsMap(
 														messageIndexMapByUpdatedRecordIds, repositoryId),
-													operationHistory.schema.index),
+													operationHistory.schemaVersion.id),
 												operationHistory.entity.index),
 											recordHistory.actor.id),
 										recordHistory.actorRecordId)
@@ -150,7 +153,7 @@ export class SyncInDataChecker
 			}
 		}
 
-		const existingRecordIdMap: Map<RepositoryId, Map<SchemaIndex,
+		const existingRecordIdMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 			= await this.repositoryTransactionHistoryDao.findExistingRecordIdMap(updatedRecordMap);
 
@@ -273,9 +276,9 @@ export class SyncInDataChecker
 
 	private getInsertedRecordMap(
 		dataMessages: IDataToTM[]
-	): Map<RepositoryId, Map<SchemaIndex,
+	): Map<RepositoryId, Map<SchemaVersionId,
 		Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>> {
-		const insertedRecordMap: Map<RepositoryId, Map<SchemaIndex,
+		const insertedRecordMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 			= new Map();
 
@@ -292,7 +295,7 @@ export class SyncInDataChecker
 										this.utils.ensureChildJsMap(
 											this.utils.ensureChildJsMap(
 												insertedRecordMap, repositoryId),
-											operationHistory.schema.index),
+											operationHistory.schemaVersion.id),
 										operationHistory.entity.index),
 									recordHistory.actor.id)
 									.add(recordHistory.actorRecordId);

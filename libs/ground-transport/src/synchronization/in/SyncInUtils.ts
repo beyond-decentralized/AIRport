@@ -1,14 +1,15 @@
 import {
 	IUtils,
 	UtilsToken
-}                             from "@airport/air-control";
+}                                      from "@airport/air-control";
+import {RepoTransBlockSyncOutcomeType} from "@airport/arrivals-n-departures";
 import {
 	ColumnIndex,
 	SchemaIndex,
 	SchemaName,
 	SchemaVersionId,
 	TableIndex
-}                             from "@airport/ground-control";
+}                                      from "@airport/ground-control";
 import {
 	ActorId,
 	IOperationHistory,
@@ -18,26 +19,28 @@ import {
 	RecordHistoryId,
 	RepositoryEntityActorRecordId,
 	RepositoryId
-}                             from "@airport/holding-pattern";
+}                                      from "@airport/holding-pattern";
 import {
 	IMissingRecordRepoTransBlock,
+	IRepositoryTransactionBlock,
+	IRepositoryTransactionBlockDao,
 	ISharingMessage,
-	ISharingNode,
-	ISharingNodeRepoTransBlock,
 	ISynchronizationConflict,
+	RepositoryTransactionBlockDaoToken,
 	RepositoryTransactionBlockData,
 	SharingNodeRepoTransBlock,
-} from "@airport/moving-walkway";
+}                                      from "@airport/moving-walkway";
 import {
 	ISchema,
 	SchemaDomainName
-}                             from "@airport/traffic-pattern";
-import {MaxSchemaVersionView} from "@airport/traffic-pattern/lib/dao/SchemaVersionDao";
+}                                      from "@airport/traffic-pattern";
+import {MaxSchemaVersionView}          from "@airport/traffic-pattern/lib/dao/SchemaVersionDao";
 import {
 	Inject,
 	Service
-}                             from "typedi";
-import {SyncInUtilsToken}     from "../../InjectionTokens";
+}                                      from "typedi";
+import {stringify}                     from "zipson/lib";
+import {SyncInUtilsToken}              from "../../InjectionTokens";
 
 export type RemoteSchemaIndex = SchemaIndex;
 export type RemoteSchemaVersionId = SchemaVersionId;
@@ -52,6 +55,7 @@ export interface IDataToTM {
 	// agtRepositoryId: AgtRepositoryId;
 	// agtSyncRecordId: AgtSyncRecordId;
 	data: RepositoryTransactionBlockData;
+	repositoryTransactionBlock?: IRepositoryTransactionBlock;
 	serializedData: string;
 	sharingMessage: ISharingMessage;
 	// syncDatetime: AgtSyncRecordAddDatetime;
@@ -64,7 +68,7 @@ export interface SchemaCheckResults {
 	dataMessagesWithInvalidSchemas: IDataToTM[];
 	maxVersionedMapBySchemaAndDomainNames:
 		Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>>;
-	schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
+	// schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
 }
 
 export interface DataCheckResults {
@@ -78,7 +82,7 @@ export interface DataMessageSchemaGroupings {
 	dataMessagesToBeUpgraded: IDataToTM[];
 	dataMessagesWithCompatibleSchemas: IDataToTM[];
 	dataMessagesWithIncompatibleSchemas: IDataToTM[];
-	dataMessagesWithInvalidSchemas: IDataToTM[];
+	// dataMessagesWithInvalidSchemas: IDataToTM[];
 	missingSchemaNameMap: Map<SchemaDomainName, Set<SchemaName>>;
 	schemasToBeUpgradedMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
 }
@@ -157,6 +161,8 @@ export class SyncInUtils
 	implements ISyncInUtils {
 
 	constructor(
+		@Inject(RepositoryTransactionBlockDaoToken)
+		private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
 		@Inject(UtilsToken)
 		private utils: IUtils
 	) {
@@ -193,8 +199,85 @@ export class SyncInUtils
 	// 	};
 	// }
 
-	private async recordRepoTransBlocks() {
+	private async recordRepositoryTransBlocks(
+		dataMessagesWithIncompatibleSchemas: IDataToTM[],
+		dataMessagesWithIncompatibleData: IDataToTM[],
+		dataMessagesToBeUpgraded: IDataToTM[],
+		// schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
+		dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
+		dataMessagesWithInvalidData: IDataToTM[],
+	): Promise<void> {
+		let allRepositoryTransactionBlocks: IRepositoryTransactionBlock[] = [];
 
+		const repoTransBlocksNeedingSchemaChanges = this.createRepositoryTransactionBlocks(
+			dataMessagesWithIncompatibleSchemas,
+			RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_SCHEMA_CHANGES,
+			true
+		);
+		allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(
+			repoTransBlocksNeedingSchemaChanges
+		);
+
+		const repoTransBlocksNeedingDataUpgrades = this.createRepositoryTransactionBlocks(
+			dataMessagesToBeUpgraded,
+			RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_DATA_UPGRADES,
+			true
+		);
+		allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(
+			repoTransBlocksNeedingDataUpgrades
+		);
+
+		const repoTransBlocksNeedingAdditionalData = this.createRepositoryTransactionBlocks(
+			dataMessagesWithIncompatibleData,
+			RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_ADDITIONAL_DATA,
+			true
+		);
+		allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(
+			repoTransBlocksNeedingAdditionalData
+		);
+
+		const repoTransBlocksWithInvalidData = this.createRepositoryTransactionBlocks(
+			dataMessagesWithInvalidData,
+			RepoTransBlockSyncOutcomeType.SYNC_TO_TM_INVALID_DATA
+		);
+		allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(
+			repoTransBlocksWithInvalidData
+		);
+
+		const repoTransBlocksWithValidDataAndSchemas = this.createRepositoryTransactionBlocks(
+			dataMessagesWithCompatibleSchemasAndData,
+			RepoTransBlockSyncOutcomeType.SYNC_TO_TM_SUCCESSFUL
+		);
+		allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(
+			repoTransBlocksWithValidDataAndSchemas
+		);
+
+		await this.repositoryTransactionBlockDao.bulkCreate(
+			repositoryTransactionBlockDao, false, false);
+
+	}
+
+	private createRepositoryTransactionBlocks(
+		dataMessages: IDataToTM[],
+		syncOutcomeType: RepoTransBlockSyncOutcomeType,
+		recordContents = false
+	): IRepositoryTransactionBlock[] {
+		const repositoryTransactionBlocks: IRepositoryTransactionBlock[] = [];
+
+		for (const dataMessage of dataMessages) {
+			const data = dataMessage.data;
+			const repositoryTransactionBlock: IRepositoryTransactionBlock = {
+				contents: recordContents ? stringify(data) : null,
+				hash: null, // TODO: implement RTB hashing
+				repository: data.repository,
+				source: data.terminal,
+				syncOutcomeType,
+			};
+			dataMessage.repositoryTransactionBlock = repositoryTransactionBlock;
+			repositoryTransactionBlocks.push(repositoryTransactionBlock);
+		}
+
+		return repositoryTransactionBlocks;
 	}
 
 	private async recordSharingMessageRepoTransBlocks() {
