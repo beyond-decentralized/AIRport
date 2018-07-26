@@ -10,6 +10,7 @@ import { ISyncInRepositoryChecker } from "./synchronization/in/checker/SyncInRep
 import { ISyncInSchemaChecker } from "./synchronization/in/checker/SyncInSchemaChecker";
 import { ISyncInTerminalChecker } from "./synchronization/in/checker/SyncInTerminalChecker";
 import { ISyncInUserChecker } from "./synchronization/in/checker/SyncInUserChecker";
+import { IMissingRecordCreator } from "./synchronization/in/creator/MissingRecordCreator";
 import { ISyncInRepositoryTransactionBlockCreator } from "./synchronization/in/creator/SyncInRepositoryTransactionBlockCreator";
 import { ISyncInSharingMessageCreator } from "./synchronization/in/creator/SyncInSharingMessageCreator";
 import { IStage1SyncedInDataProcessor } from "./synchronization/in/Stage1SyncedInDataProcessor";
@@ -26,6 +27,7 @@ import { ISyncOutSerializer } from "./synchronization/out/SyncOutSerializer";
 import { ISyncNodeManager } from "./synchronization/SyncNodeManager";
 export declare const DirectSharingNodeEndpointToken: Token<ISharingNodeEndpoint>;
 export declare const HttpSharingNodeEndpointToken: Token<ISharingNodeEndpoint>;
+export declare const MissingRecordCreatorToken: Token<IMissingRecordCreator>;
 export declare const Stage1SyncedInDataProcessorToken: Token<IStage1SyncedInDataProcessor>;
 export declare const Stage2SyncedInDataProcessorToken: Token<IStage2SyncedInDataProcessor>;
 export declare const StoreDriverToken: Token<IStoreDriver>;

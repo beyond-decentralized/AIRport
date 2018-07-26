@@ -21,14 +21,14 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISchema,
-	SchemaEId,
-	SchemaEOptionalId,
-	SchemaEUpdateProperties,
-	SchemaESelect,
-	QSchema,
-	QSchemaQId,
-	QSchemaQRelation,
+	ISchemaVersion,
+	SchemaVersionEId,
+	SchemaVersionEOptionalId,
+	SchemaVersionEUpdateProperties,
+	SchemaVersionESelect,
+	QSchemaVersion,
+	QSchemaVersionQId,
+	QSchemaVersionQRelation,
 	ISchemaEntity,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
@@ -77,7 +77,7 @@ export interface IMissingRecord {
 	status?: number;
 
 	// Non-Id Relations
-	schema?: ISchema;
+	schemaVersion?: ISchemaVersion;
 	entity?: ISchemaEntity;
 	repository?: IRepository;
 	actor?: IActor;
@@ -100,7 +100,7 @@ export interface MissingRecordESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	schema?: SchemaESelect;
+	schemaVersion?: SchemaVersionESelect;
 	entity?: SchemaEntityESelect;
 	repository?: RepositoryESelect;
 	actor?: ActorESelect;
@@ -140,7 +140,7 @@ export interface MissingRecordEUpdateProperties
 	status?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	schema?: SchemaEOptionalId;
+	schemaVersion?: SchemaVersionEOptionalId;
 	entity?: SchemaEntityEOptionalId;
 	repository?: RepositoryEOptionalId;
 	actor?: ActorEOptionalId;
@@ -155,7 +155,6 @@ export interface MissingRecordEUpdateColumns
 	// Non-Id Columns
 	ACTOR_RECORD_ID?: number | IQNumberField;
 	STATUS?: number | IQNumberField;
-	SCHEMA_INDEX?: number | IQNumberField;
 	SCHEMA_VERSION_ID?: number | IQNumberField;
 	ENTITY_INDEX?: number | IQNumberField;
 	REPOSITORY_ID?: number | IQNumberField;
@@ -199,7 +198,7 @@ export interface QMissingRecord extends QEntity
 	status: IQNumberField;
 
 	// Non-Id Relations
-	schema: QSchemaQRelation;
+	schemaVersion: QSchemaVersionQRelation;
 	entity: QSchemaEntityQRelation;
 	repository: QRepositoryQRelation;
 	actor: QActorQRelation;

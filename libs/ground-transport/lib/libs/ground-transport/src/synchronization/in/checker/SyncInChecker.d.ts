@@ -8,6 +8,13 @@ import { ISyncInActorChecker } from "./SyncInActorChecker";
 import { ISyncInDataChecker } from "./SyncInDataChecker";
 import { ISyncInRepositoryChecker } from "./SyncInRepositoryChecker";
 import { ISyncInSchemaChecker } from "./SyncInSchemaChecker";
+export interface CheckSchemasResult {
+    dataMessagesToBeUpgraded: IDataToTM[];
+    dataMessagesWithCompatibleSchemasAndData: IDataToTM[];
+    dataMessagesWithIncompatibleSchemas: IDataToTM[];
+    dataMessagesWithMissingData: IDataToTM[];
+    usedSchemaVersionIdSet: Set<SchemaIndex>;
+}
 export interface ISyncInChecker {
     actorChecker: ISyncInActorChecker;
     repositoryChecker: ISyncInRepositoryChecker;

@@ -14,8 +14,8 @@ import {
 	RecordHistoryActorRecordId
 }                            from "@airport/holding-pattern";
 import {
-	ISchema,
-	ISchemaEntity
+	ISchemaEntity,
+	ISchemaVersion
 }                            from "@airport/traffic-pattern";
 import {MissingRecordStatus} from "./MissingRecordStatus";
 
@@ -29,8 +29,8 @@ export class MissingRecord {
 	id: MissingRecordId;
 
 	@ManyToOne()
-	@JoinColumn({name: "SCHEMA_INDEX", referencedColumnName: "INDEX"})
-	schema: ISchema;
+	@JoinColumn({name: "SCHEMA_VERSION_ID", referencedColumnName: "ID"})
+	schemaVersion: ISchemaVersion;
 
 	@ManyToOne()
 	@JoinColumns([

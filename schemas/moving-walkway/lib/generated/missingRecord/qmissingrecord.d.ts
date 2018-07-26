@@ -1,11 +1,11 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
-import { ISchema, SchemaEOptionalId, SchemaESelect, QSchemaQRelation, ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
+import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
 import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
 export interface IMissingRecord {
     id?: number;
     actorRecordId?: number;
     status?: number;
-    schema?: ISchema;
+    schemaVersion?: ISchemaVersion;
     entity?: ISchemaEntity;
     repository?: IRepository;
     actor?: IActor;
@@ -14,7 +14,7 @@ export interface IMissingRecord {
  * SELECT - All fields and relations (optional).
  */
 export interface MissingRecordESelect extends IEntitySelectProperties, MissingRecordEOptionalId, MissingRecordEUpdateProperties {
-    schema?: SchemaESelect;
+    schemaVersion?: SchemaVersionESelect;
     entity?: SchemaEntityESelect;
     repository?: RepositoryESelect;
     actor?: ActorESelect;
@@ -37,7 +37,7 @@ export interface MissingRecordEOptionalId {
 export interface MissingRecordEUpdateProperties extends IEntityUpdateProperties {
     actorRecordId?: number | IQNumberField;
     status?: number | IQNumberField;
-    schema?: SchemaEOptionalId;
+    schemaVersion?: SchemaVersionEOptionalId;
     entity?: SchemaEntityEOptionalId;
     repository?: RepositoryEOptionalId;
     actor?: ActorEOptionalId;
@@ -48,7 +48,6 @@ export interface MissingRecordEUpdateProperties extends IEntityUpdateProperties 
 export interface MissingRecordEUpdateColumns extends IEntityUpdateColumns {
     ACTOR_RECORD_ID?: number | IQNumberField;
     STATUS?: number | IQNumberField;
-    SCHEMA_INDEX?: number | IQNumberField;
     SCHEMA_VERSION_ID?: number | IQNumberField;
     ENTITY_INDEX?: number | IQNumberField;
     REPOSITORY_ID?: number | IQNumberField;
@@ -71,7 +70,7 @@ export interface QMissingRecord extends QEntity {
     id: IQNumberField;
     actorRecordId: IQNumberField;
     status: IQNumberField;
-    schema: QSchemaQRelation;
+    schemaVersion: QSchemaVersionQRelation;
     entity: QSchemaEntityQRelation;
     repository: QRepositoryQRelation;
     actor: QActorQRelation;

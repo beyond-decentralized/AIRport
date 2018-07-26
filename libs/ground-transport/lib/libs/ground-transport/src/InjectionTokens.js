@@ -5,6 +5,7 @@ const runway_edge_lighting_1 = require("@airport/runway-edge-lighting");
 const typedi_1 = require("typedi");
 exports.DirectSharingNodeEndpointToken = new typedi_1.Token();
 exports.HttpSharingNodeEndpointToken = new typedi_1.Token();
+exports.MissingRecordCreatorToken = new typedi_1.Token();
 exports.Stage1SyncedInDataProcessorToken = new typedi_1.Token();
 exports.Stage2SyncedInDataProcessorToken = new typedi_1.Token();
 exports.StoreDriverToken = new typedi_1.Token();

@@ -23,9 +23,10 @@ export declare class SyncInDataChecker implements ISyncInDataChecker {
      * @returns {DataCheckResults}
      */
     checkData(dataMessagesWithCompatibleSchemas: IDataToTM[]): Promise<DataCheckResults>;
-    private getInsertedRecordMap;
+    private determineMissingRecords;
+    private getRecordsToInsertMap;
     ensureRecordId(recordHistory: IRecordHistory, actorRecordIdSetByActor: Map<ActorId, Set<RepositoryEntityActorRecordId>>, actorRecordId?: RepositoryEntityActorRecordId): void;
-    private recordMissingRecordAndSharingMessageRelations;
+    private recordMissingRecordAndRepoTransBlockRelations;
     private createMissingRecord;
     private getExistingRepoTransBlocksWithCompatibleSchemasAndData;
 }

@@ -36,38 +36,38 @@ let SyncInDataChecker = class SyncInDataChecker {
      * @returns {DataCheckResults}
      */
     async checkData(dataMessagesWithCompatibleSchemas) {
-        const insertedRecordMap = this.getInsertedRecordMap(dataMessagesWithCompatibleSchemas);
-        const updatedRecordMap = new Map();
-        const messageIndexMapByUpdatedRecordIds = new Map();
+        const recordsToInsert = this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemas);
+        const recordToUpdateMap = new Map();
+        const messageIndexMapByRecordToUpdateIds = new Map();
         for (let i = 0; i < dataMessagesWithCompatibleSchemas.length; i++) {
             const dataMessages = dataMessagesWithCompatibleSchemas[i];
             for (const repoTransHistory of dataMessages.data.repoTransHistories) {
                 const repositoryId = repoTransHistory.repository.id;
-                const insertedRecordMapForRepo = insertedRecordMap.get(repositoryId);
+                const recordToInsertMapForRepo = recordsToInsert.get(repositoryId);
                 for (const operationHistory of repoTransHistory.operationHistory) {
-                    let insertedRecordMapForEntityInRepo;
-                    if (insertedRecordMapForRepo) {
-                        const insertedRecordMapForSchemaInRepo = insertedRecordMapForRepo.get(operationHistory.schemaVersion.id);
-                        if (insertedRecordMapForSchemaInRepo) {
-                            insertedRecordMapForEntityInRepo
-                                = insertedRecordMapForSchemaInRepo.get(operationHistory.entity.index);
+                    let recordToInsertMapForEntityInRepo;
+                    if (recordToInsertMapForRepo) {
+                        const recordToInsertMapForSchemaInRepo = recordToInsertMapForRepo.get(operationHistory.schemaVersion.id);
+                        if (recordToInsertMapForSchemaInRepo) {
+                            recordToInsertMapForEntityInRepo
+                                = recordToInsertMapForSchemaInRepo.get(operationHistory.entity.index);
                         }
                     }
                     switch (operationHistory.changeType) {
                         case ground_control_1.ChangeType.DELETE_ROWS:
                         case ground_control_1.ChangeType.UPDATE_ROWS:
                             for (const recordHistory of operationHistory.recordHistory) {
-                                let insertedRecordSetForActor;
-                                if (insertedRecordMapForEntityInRepo) {
-                                    insertedRecordSetForActor
-                                        = insertedRecordMapForEntityInRepo.get(recordHistory.actor.id);
+                                let recordToInsertSetForActor;
+                                if (recordToInsertMapForEntityInRepo) {
+                                    recordToInsertSetForActor
+                                        = recordToInsertMapForEntityInRepo.get(recordHistory.actor.id);
                                 }
-                                if (!insertedRecordSetForActor
-                                    || !insertedRecordSetForActor.has(recordHistory.actorRecordId)) {
-                                    const updatedRecordMapForRepoInTable = this.syncInUtils
-                                        .ensureRecordMapForRepoInTable(repositoryId, operationHistory, updatedRecordMap);
-                                    this.ensureRecordId(recordHistory, updatedRecordMapForRepoInTable, recordHistory.actorRecordId);
-                                    this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(messageIndexMapByUpdatedRecordIds, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.index), recordHistory.actor.id), recordHistory.actorRecordId)
+                                if (!recordToInsertSetForActor
+                                    || !recordToInsertSetForActor.has(recordHistory.actorRecordId)) {
+                                    const recordToUpdateMapForRepoInTable = this.syncInUtils
+                                        .ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordToUpdateMap);
+                                    this.ensureRecordId(recordHistory, recordToUpdateMapForRepoInTable, recordHistory.actorRecordId);
+                                    this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(messageIndexMapByRecordToUpdateIds, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.index), recordHistory.actor.id), recordHistory.actorRecordId)
                                         .add(i);
                                 }
                             }
@@ -76,15 +76,35 @@ let SyncInDataChecker = class SyncInDataChecker {
                 }
             }
         }
-        const existingRecordIdMap = await this.repositoryTransactionHistoryDao.findExistingRecordIdMap(updatedRecordMap);
+        const existingRecordIdMap = await this.repositoryTransactionHistoryDao.findExistingRecordIdMap(recordToUpdateMap);
         const compatibleDataMessageFlags = dataMessagesWithCompatibleSchemas.map(dataMessage => true);
-        const sharingMessagesWithIncompatibleData = [];
-        const sparseSharingMessagesWithIncompatibleData = [];
+        const dataMessagesWithIncompatibleData = [];
+        const sparseDataMessagesWithIncompatibleData = [];
+        const dataMessagesWithCompatibleSchemasAndData = [];
+        // filter out data messages with records that do no exist
+        for (let i = 0; i < compatibleDataMessageFlags.length; i++) {
+            const dataMessage = dataMessagesWithCompatibleSchemas[i];
+            if (compatibleDataMessageFlags[i]) {
+                dataMessagesWithCompatibleSchemasAndData.push(dataMessage);
+            }
+        }
+        const toBeInsertedRecordMap = this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemasAndData);
+        const foundMissingRecordIds = await this.missingRecordDao.setStatusWhereIdsInAndReturnIds(toBeInsertedRecordMap);
+        // Find repository transaction blocks that now can be processed
+        const existingRepoTransBlocksWithCompatibleSchemasAndData = await this.getExistingRepoTransBlocksWithCompatibleSchemasAndData(foundMissingRecordIds);
+        return {
+            dataMessagesWithCompatibleSchemasAndData,
+            existingRepoTransBlocksWithCompatibleSchemasAndData,
+            missingRecordRepoTransBlocks,
+            dataMessagesWithIncompatibleData
+        };
+    }
+    determineMissingRecords() {
         const missingRecords = [];
-        const missingRecordSharingMessages = [];
-        for (const [repositoryId, updatedRecordMapForRepository] of updatedRecordMap) {
+        const missingRecordRepoTransBlock = [];
+        for (const [repositoryId, updatedRecordMapForRepository] of recordToUpdateMap) {
             const existingRecordMapForRepository = existingRecordIdMap.get(repositoryId);
-            const messageIndexMapForRepository = messageIndexMapByUpdatedRecordIds.get(repositoryId);
+            const messageIndexMapForRepository = messageIndexMapByRecordToUpdateIds.get(repositoryId);
             for (const [schemaIndex, updatedRecordMapForSchemaInRepo] of updatedRecordMapForRepository) {
                 let existingRecordMapForSchemaInRepo;
                 if (existingRecordMapForRepository) {
@@ -106,13 +126,13 @@ let SyncInDataChecker = class SyncInDataChecker {
                         if (existingRecordIdSetForActor) {
                             for (const actorRecordId of actorRecordIds) {
                                 if (!existingRecordIdSetForActor.has(actorRecordId)) {
-                                    this.recordMissingRecordAndSharingMessageRelations(repositoryId, schemaIndex, tableIndex, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, sharingMessagesWithIncompatibleData, sparseSharingMessagesWithIncompatibleData, missingRecordSharingMessages);
+                                    this.recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaIndex, tableIndex, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordRepoTransBlock);
                                 }
                             }
                         }
                         else {
                             for (const actorRecordId of actorRecordIds) {
-                                this.recordMissingRecordAndSharingMessageRelations(repositoryId, schemaIndex, tableIndex, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, sharingMessagesWithIncompatibleData, sparseSharingMessagesWithIncompatibleData, missingRecordSharingMessages);
+                                this.recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaIndex, tableIndex, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordRepoTransBlock);
                             }
                         }
                     }
@@ -122,26 +142,9 @@ let SyncInDataChecker = class SyncInDataChecker {
         if (missingRecords.length) {
             await this.missingRecordDao.bulkCreate(missingRecords, false, false);
         }
-        const dataMessagesWithCompatibleSchemasAndData = [];
-        // filter out data messages with records that do no exist
-        for (let i = 0; i < compatibleDataMessageFlags.length; i++) {
-            const dataMessage = dataMessagesWithCompatibleSchemas[i];
-            if (compatibleDataMessageFlags[i]) {
-                dataMessagesWithCompatibleSchemasAndData.push(dataMessage);
-            }
-        }
-        const toBeInsertedRecordMap = this.getInsertedRecordMap(dataMessagesWithCompatibleSchemasAndData);
-        const foundMissingRecordIds = await this.missingRecordDao.setStatusWhereIdsInAndReturnIds(toBeInsertedRecordMap);
-        const existingRepoTransBlocksWithCompatibleSchemasAndData = await this.getExistingRepoTransBlocksWithCompatibleSchemasAndData(foundMissingRecordIds);
-        return {
-            dataMessagesWithCompatibleSchemasAndData,
-            existingRepoTransBlocksWithCompatibleSchemasAndData,
-            missingRecordSharingMessages,
-            sharingMessagesWithIncompatibleData
-        };
     }
-    getInsertedRecordMap(dataMessages) {
-        const insertedRecordMap = new Map();
+    getRecordsToInsertMap(dataMessages) {
+        const recordsToInsertMap = new Map();
         for (let i = 0; i < dataMessages.length; i++) {
             const dataMessage = dataMessages[i];
             for (const repoTransHistory of dataMessage.data.repoTransHistories) {
@@ -150,7 +153,7 @@ let SyncInDataChecker = class SyncInDataChecker {
                     switch (operationHistory.changeType) {
                         case ground_control_1.ChangeType.INSERT_VALUES:
                             for (const recordHistory of operationHistory.recordHistory) {
-                                this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(insertedRecordMap, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.index), recordHistory.actor.id)
+                                this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(recordsToInsertMap, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.index), recordHistory.actor.id)
                                     .add(recordHistory.actorRecordId);
                             }
                             break;
@@ -158,43 +161,42 @@ let SyncInDataChecker = class SyncInDataChecker {
                 }
             }
         }
-        return insertedRecordMap;
+        return recordsToInsertMap;
     }
     ensureRecordId(recordHistory, actorRecordIdSetByActor, actorRecordId = recordHistory.actorRecordId) {
         this.utils.ensureChildJsSet(actorRecordIdSetByActor, recordHistory.actor.id).add(actorRecordId);
     }
-    recordMissingRecordAndSharingMessageRelations(repositoryId, schemaIndex, tableIndex, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, sharingMessagesWithIncompatibleData, sparseSharingMessagesWithIncompatibleData, missingRecordSharingMessages) {
-        const missingRecord = this.createMissingRecord(repositoryId, schemaIndex, tableIndex, actorId, actorRecordId);
+    recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaVersionId, tableIndex, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordRepoTransBlocks) {
+        const missingRecord = this.createMissingRecord(repositoryId, schemaVersionId, tableIndex, actorId, actorRecordId);
         missingRecords.push(missingRecord);
         for (const messageIndex of messageIndexMapForActor.get(actorRecordId)) {
-            let sharingMessage;
+            let dataMessage;
             if (compatibleDataMessageFlags[messageIndex]) {
                 const dataMessage = dataMessagesWithCompatibleSchemas[messageIndex];
-                sharingMessage = this.syncInUtils.createSharingMessage(dataMessage, moving_walkway_1.SharingMessageProcessingStatus.NEEDS_ADDITIONAL_DATA, true);
-                sparseSharingMessagesWithIncompatibleData[messageIndex]
-                    = sharingMessage;
-                sharingMessagesWithIncompatibleData.push(sharingMessage);
+                sparseDataMessagesWithIncompatibleData[messageIndex]
+                    = dataMessage;
+                dataMessagesWithIncompatibleData.push(dataMessage);
                 compatibleDataMessageFlags[messageIndex] = false;
             }
             else {
-                sharingMessage
-                    = sparseSharingMessagesWithIncompatibleData[messageIndex];
+                dataMessage
+                    = sparseDataMessagesWithIncompatibleData[messageIndex];
             }
-            missingRecordSharingMessages.push({
+            missingRecordRepoTransBlocks.push({
                 missingRecord,
                 sharingMessage
             });
         }
     }
-    createMissingRecord(repositoryId, schemaIndex, tableIndex, actorId, actorRecordId) {
+    createMissingRecord(repositoryId, schemaVersionId, tableIndex, actorId, actorRecordId) {
         return {
-            schema: {
-                index: schemaIndex
+            schemaVersion: {
+                id: schemaVersionId
             },
             entity: {
                 index: tableIndex,
-                schema: {
-                    index: schemaIndex
+                schemaVersion: {
+                    id: schemaVersionId
                 }
             },
             repository: {
@@ -224,7 +226,7 @@ SyncInDataChecker = __decorate([
     __param(2, typedi_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDaoToken)),
     __param(3, typedi_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
     __param(4, typedi_1.Inject(InjectionTokens_1.SyncInRepositoryTransactionBlockCreatorToken)),
-    __param(5, typedi_1.Inject(SyncInUtilsToken)),
+    __param(5, typedi_1.Inject(InjectionTokens_1.SyncInUtilsToken)),
     __param(6, typedi_1.Inject(air_control_1.UtilsToken)),
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object])
 ], SyncInDataChecker);

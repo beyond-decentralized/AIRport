@@ -7,10 +7,10 @@ import {
 	UtilsToken
 }                              from "@airport/air-control";
 import {
-	SchemaIndex,
-	TableIndex,
-	JSONBaseOperation
-}     from "@airport/ground-control";
+	JSONBaseOperation,
+	SchemaVersionId,
+	TableIndex
+}                              from "@airport/ground-control";
 import {
 	ActorId,
 	RepositoryEntityActorRecordId,
@@ -34,13 +34,13 @@ export interface IMissingRecordDao
 	extends IBaseMissingRecordDao {
 
 	setStatusWhereIdsInAndReturnIds(
-		recordIdMap: Map<RepositoryId, Map<SchemaIndex,
+		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>,
 		status: MissingRecordStatus
 	): Promise<MissingRecordId[]>;
 
 	findActualIdsByRecordIds(
-		recordIdMap: Map<RepositoryId, Map<SchemaIndex,
+		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 	): Promise<MissingRecordId[]>;
 
@@ -66,7 +66,7 @@ export class MissingRecordDao
 
 
 	async setStatusWhereIdsInAndReturnIds(
-		recordIdMap: Map<RepositoryId, Map<SchemaIndex,
+		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>,
 		status: MissingRecordStatus
 	): Promise<MissingRecordId[]> {
@@ -90,7 +90,7 @@ export class MissingRecordDao
 	}
 
 	async findActualIdsByRecordIds(
-		recordIdMap: Map<RepositoryId, Map<SchemaIndex,
+		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 	): Promise<MissingRecordId[]> {
 		const mr = Q.MissingRecord;
@@ -100,7 +100,7 @@ export class MissingRecordDao
 		let repositoryWhereFragments: JSONBaseOperation[] = [];
 		for (const [repositoryId, recordIdsForRepository] of recordIdMap) {
 			let schemaWhereFragments: JSONBaseOperation[] = [];
-			for (const [schemaIndex, recordIdsForSchema] of recordIdsForRepository) {
+			for (const [schemaVersionId, recordIdsForSchema] of recordIdsForRepository) {
 				let tableWhereFragments: JSONBaseOperation[] = [];
 				for (const [tableIndex, recordIdsForTable] of recordIdsForSchema) {
 					let actorWhereFragments: JSONBaseOperation[] = [];
@@ -117,7 +117,7 @@ export class MissingRecordDao
 					));
 				}
 				schemaWhereFragments.push(and(
-					mr.schema.index.equals(schemaIndex),
+					mr.schemaVersion.id.equals(schemaVersionId),
 					or(...tableWhereFragments)
 				));
 			}

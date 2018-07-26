@@ -43,7 +43,7 @@ let MissingRecordDao = class MissingRecordDao extends generated_1.BaseMissingRec
         let repositoryWhereFragments = [];
         for (const [repositoryId, recordIdsForRepository] of recordIdMap) {
             let schemaWhereFragments = [];
-            for (const [schemaIndex, recordIdsForSchema] of recordIdsForRepository) {
+            for (const [schemaVersionId, recordIdsForSchema] of recordIdsForRepository) {
                 let tableWhereFragments = [];
                 for (const [tableIndex, recordIdsForTable] of recordIdsForSchema) {
                     let actorWhereFragments = [];
@@ -53,7 +53,7 @@ let MissingRecordDao = class MissingRecordDao extends generated_1.BaseMissingRec
                     }
                     tableWhereFragments.push(air_control_1.and(mr.entity.index.equals(tableIndex), air_control_1.or(...actorWhereFragments)));
                 }
-                schemaWhereFragments.push(air_control_1.and(mr.schema.index.equals(schemaIndex), air_control_1.or(...tableWhereFragments)));
+                schemaWhereFragments.push(air_control_1.and(mr.schemaVersion.id.equals(schemaVersionId), air_control_1.or(...tableWhereFragments)));
             }
             repositoryWhereFragments.push(air_control_1.and(mr.repository.id.equals(repositoryId), air_control_1.or(...schemaWhereFragments)));
         }

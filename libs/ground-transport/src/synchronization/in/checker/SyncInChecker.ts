@@ -27,7 +27,7 @@ import {
 	SharingMessageDaoToken,
 	SharingMessageProcessingStatus,
 	SharingNodeId
-} from "@airport/moving-walkway";
+}                                 from "@airport/moving-walkway";
 import {
 	ISchema,
 	ISchemaVersion,
@@ -50,13 +50,20 @@ import {
 	IDataToTM,
 	ISyncInUtils,
 	RemoteActorId,
-	RemoteSchemaIndex,
 	RemoteSchemaVersionId
 }                                 from "../SyncInUtils";
 import {ISyncInActorChecker}      from "./SyncInActorChecker";
 import {ISyncInDataChecker}       from "./SyncInDataChecker";
 import {ISyncInRepositoryChecker} from "./SyncInRepositoryChecker";
 import {ISyncInSchemaChecker}     from "./SyncInSchemaChecker";
+
+export interface CheckSchemasResult {
+	dataMessagesToBeUpgraded: IDataToTM[];
+	dataMessagesWithCompatibleSchemasAndData: IDataToTM[];
+	dataMessagesWithIncompatibleSchemas: IDataToTM[];
+	dataMessagesWithMissingData: IDataToTM[];
+	usedSchemaVersionIdSet: Set<SchemaIndex>;
+}
 
 export interface ISyncInChecker {
 
@@ -167,14 +174,7 @@ export class SyncInChecker
 			missingRecordRepoTransBlocks
 		);
 
-		recordRepositoryTransBlocks(
-			dataMessagesWithIncompatibleSchemas: IDataToTM[],
-			dataMessagesWithIncompatibleData: IDataToTM[],
-			dataMessagesToBeUpgraded: IDataToTM[],
-			// schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
-			dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
-			dataMessagesWithInvalidData: IDataToTM[],
-	)
+
 
 		await this.recordAllSharingMessageRepoTransBlocks();
 		await this.recordAllSharingNodeRepoTransBlocks();
@@ -328,39 +328,17 @@ export class SyncInChecker
 		// 	 * that require schema changes (new schemas or schema upgrades).
 		// 	 */
 		// 	return this.syncInUtils.createSharingMessage(
-		// 		dataMessagesWithIncompatibleSchemas, SharingMessageProcessingStatus.NEEDS_SCHEMA_CHANGES,
-		// 		true);
-		// });
-		// const sharingMessagesToBeUpgraded = dataMessagesToBeUpgraded.map((
-		// 	dataMessageToBeUpgraded
-		// ) => {
-		// 	/**
-		// 	 * Record the messages (with data, because it cannot yet be processed) for messages
-		// 	 * that need to be upgraded to schema versions present on this TM.
-		// 	 *
-		// 	 * Messages cannot yet be processed since messages upgrades are done by the client
-		// 	 * domain code and need to be sent over to those domains for upgrading.
-		// 	 */
-		// 	return this.syncInUtils.createSharingMessage(
-		// 		dataMessageToBeUpgraded, SharingMessageProcessingStatus.NEEDS_DATA_UPGRADES,
-		// 		true);
-		// });
-		// const sharingMessagesWithCompatibleSchemasAndData = dataMessagesWithCompatibleSchemasAndData.map((
-		// 	sharingMessageWithCompatibleSchemas
-		// ) => {
-		// 	return this.syncInUtils.createSharingMessage(
-		// 		sharingMessageWithCompatibleSchemas, SharingMessageProcessingStatus.READY_FOR_PROCESSING,
-		// 		false);
-		// });
-		// const allSharingMessagesToCreate: ISharingMessage[] = [
-		// 	...sharingMessagesWithIncompatibleSchemas,
-		// 	...sharingMessagesToBeUpgraded,
-		// 	...sharingMessagesWithIncompatibleData,
-		// 	...sharingMessagesWithCompatibleSchemasAndData
-		// ];
-		//
-		// await this.sharingMessageDao.bulkCreate(
-		// 	allSharingMessagesToCreate, false, false);
+		// 		dataMessagesWithIncompatibleSchemas,
+		// SharingMessageProcessingStatus.NEEDS_SCHEMA_CHANGES, true); }); const
+		// sharingMessagesToBeUpgraded = dataMessagesToBeUpgraded.map(( dataMessageToBeUpgraded ) =>
+		// { /** * Record the messages (with data, because it cannot yet be processed) for messages *
+		// that need to be upgraded to schema versions present on this TM. * * Messages cannot yet be
+		// processed since messages upgrades are done by the client * domain code and need to be sent
+		// over to those domains for upgrading. */ return this.syncInUtils.createSharingMessage(
+		// dataMessageToBeUpgraded, SharingMessageProcessingStatus.NEEDS_DATA_UPGRADES, true); });
+		// const sharingMessagesWithCompatibleSchemasAndData =
+		// dataMessagesWithCompatibleSchemasAndData.map(( sharingMessageWithCompatibleSchemas ) => {
+		// return this.syncInUtils.createSharingMessage( sharingMessageWithCompatibleSchemas, SharingMessageProcessingStatus.READY_FOR_PROCESSING, false); }); const allSharingMessagesToCreate: ISharingMessage[] = [ ...sharingMessagesWithIncompatibleSchemas, ...sharingMessagesToBeUpgraded, ...sharingMessagesWithIncompatibleData, ...sharingMessagesWithCompatibleSchemasAndData ];  await this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false, false);
 
 		const m: MissingRecordRepoTransBlock;
 

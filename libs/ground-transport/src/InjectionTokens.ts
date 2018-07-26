@@ -9,16 +9,17 @@ import {ISharingNodeEndpoint}                      from "./synchronization/conne
 import {ISyncInActorChecker}                       from "./synchronization/in/checker/SyncInActorChecker";
 import {ISyncInChecker}                            from "./synchronization/in/checker/SyncInChecker";
 import {ISyncInConsistencyChecker}                 from "./synchronization/in/checker/SyncInConsistencyChecker";
-import {ISyncInDataChecker}                        from "./synchronization/in/checker/SyncInDataChecker";
-import {ISyncInRepositoryChecker}                  from "./synchronization/in/checker/SyncInRepositoryChecker";
-import {ISyncInSchemaChecker}                      from "./synchronization/in/checker/SyncInSchemaChecker";
-import {ISyncInTerminalChecker}                    from "./synchronization/in/checker/SyncInTerminalChecker";
-import {ISyncInUserChecker}                        from "./synchronization/in/checker/SyncInUserChecker";
-import {ISyncInRepositoryTransactionBlockCreator}  from "./synchronization/in/creator/SyncInRepositoryTransactionBlockCreator";
-import {ISyncInSharingMessageCreator}              from "./synchronization/in/creator/SyncInSharingMessageCreator";
-import {IStage1SyncedInDataProcessor}              from "./synchronization/in/Stage1SyncedInDataProcessor";
-import {IStage2SyncedInDataProcessor}              from "./synchronization/in/Stage2SyncedInDataProcessor";
-import {ISynchronizationInManager}                 from "./synchronization/in/SynchronizationInManager";
+import {ISyncInDataChecker}                       from "./synchronization/in/checker/SyncInDataChecker";
+import {ISyncInRepositoryChecker}                 from "./synchronization/in/checker/SyncInRepositoryChecker";
+import {ISyncInSchemaChecker}                     from "./synchronization/in/checker/SyncInSchemaChecker";
+import {ISyncInTerminalChecker}                   from "./synchronization/in/checker/SyncInTerminalChecker";
+import {ISyncInUserChecker}                       from "./synchronization/in/checker/SyncInUserChecker";
+import {IMissingRecordCreator}                    from "./synchronization/in/creator/MissingRecordCreator";
+import {ISyncInRepositoryTransactionBlockCreator} from "./synchronization/in/creator/SyncInRepositoryTransactionBlockCreator";
+import {ISyncInSharingMessageCreator}             from "./synchronization/in/creator/SyncInSharingMessageCreator";
+import {IStage1SyncedInDataProcessor}             from "./synchronization/in/Stage1SyncedInDataProcessor";
+import {IStage2SyncedInDataProcessor}             from "./synchronization/in/Stage2SyncedInDataProcessor";
+import {ISynchronizationInManager}                from "./synchronization/in/SynchronizationInManager";
 import {ISyncInUtils}                              from "./synchronization/in/SyncInUtils";
 import {ISyncLogMessageProcessor}                  from "./synchronization/in/SyncLogMessageProcessor";
 import {ITwoStageSyncedInDataProcessor}            from "./synchronization/in/TwoStageSyncedInDataProcessor";
@@ -31,6 +32,7 @@ import {ISyncNodeManager}                          from "./synchronization/SyncN
 
 export const DirectSharingNodeEndpointToken = new Token<ISharingNodeEndpoint>();
 export const HttpSharingNodeEndpointToken = new Token<ISharingNodeEndpoint>();
+export const MissingRecordCreatorToken = new Token<IMissingRecordCreator>();
 export const Stage1SyncedInDataProcessorToken = new Token<IStage1SyncedInDataProcessor>();
 export const Stage2SyncedInDataProcessorToken = new Token<IStage2SyncedInDataProcessor>();
 export const StoreDriverToken = new Token<IStoreDriver>();
