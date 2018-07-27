@@ -3,6 +3,7 @@ import { AgtRepositoryId } from "@airport/arrivals-n-departures";
 import { SchemaVersionId } from "@airport/ground-control";
 import { ActorRandomId, IActor, RepositoryId, TerminalName, TerminalSecondId, UserUniqueId } from "@airport/holding-pattern";
 import { IMissingRecordRepoTransBlockDao, IRepositoryTransactionBlock, IRepoTransBlockSchemasToChangeDao, ISharingMessage, ISharingMessageDao, SharingNodeId } from "@airport/moving-walkway";
+import { ISyncInRepositoryTransactionBlockCreator } from "../creator/SyncInRepositoryTransactionBlockCreator";
 import { IDataToTM, ISyncInUtils } from "../SyncInUtils";
 import { ISyncInActorChecker } from "./SyncInActorChecker";
 import { ISyncInDataChecker } from "./SyncInDataChecker";
@@ -18,18 +19,19 @@ export interface CheckSchemasResult {
 export interface ISyncInChecker {
     actorChecker: ISyncInActorChecker;
     repositoryChecker: ISyncInRepositoryChecker;
-    checkSchemasAndDataAndRecordSharingMessages(dataMessages: IDataToTM[], actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>, sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>): Promise<[ISharingMessage[], ISharingMessage[], IDataToTM[], Set<SchemaIndex>]>;
+    checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages: IDataToTM[], actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>, sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>, dataMessagesWithInvalidData: IDataToTM[]): Promise<[ISharingMessage[], ISharingMessage[], IDataToTM[], Set<SchemaIndex>]>;
 }
 export declare class SyncInChecker implements ISyncInChecker {
-    private missingRecordRepoTransBlockDao;
-    private sharingMessageDao;
-    private repoTransBlockSchemasToChangeDao;
     actorChecker: ISyncInActorChecker;
     private dataChecker;
+    private missingRecordRepoTransBlockDao;
     repositoryChecker: ISyncInRepositoryChecker;
+    private repoTransBlockSchemasToChangeDao;
     private schemaChecker;
+    private sharingMessageDao;
+    private syncInRepositoryTransactionBlockCreator;
     private syncInUtils;
-    constructor(missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao, sharingMessageDao: ISharingMessageDao, repoTransBlockSchemasToChangeDao: IRepoTransBlockSchemasToChangeDao, actorChecker: ISyncInActorChecker, dataChecker: ISyncInDataChecker, repositoryChecker: ISyncInRepositoryChecker, schemaChecker: ISyncInSchemaChecker, syncInUtils: ISyncInUtils);
+    constructor(actorChecker: ISyncInActorChecker, dataChecker: ISyncInDataChecker, missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao, repositoryChecker: ISyncInRepositoryChecker, repoTransBlockSchemasToChangeDao: IRepoTransBlockSchemasToChangeDao, schemaChecker: ISyncInSchemaChecker, sharingMessageDao: ISharingMessageDao, syncInRepositoryTransactionBlockCreator: ISyncInRepositoryTransactionBlockCreator, syncInUtils: ISyncInUtils);
     /**
      *
      * @param {IDataToTM[]} dataMessages
@@ -41,7 +43,7 @@ export declare class SyncInChecker implements ISyncInChecker {
      *              for message processing
      *      ]
      */
-    checkSchemasAndDataAndRecordSharingMessages(dataMessages: IDataToTM[], actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>, sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>): Promise<[ISharingMessage[], IRepositoryTransactionBlock[], IDataToTM[], Set<SchemaVersionId>]>;
+    checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages: IDataToTM[], actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>, sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>, dataMessagesWithInvalidData: IDataToTM[]): Promise<[ISharingMessage[], IRepositoryTransactionBlock[], IDataToTM[], Set<SchemaVersionId>]>;
     /**
      * Schema references are to be upgraded for messages with Compatible Schemas only. The remaining
      * types of messages are only upgraded when processed

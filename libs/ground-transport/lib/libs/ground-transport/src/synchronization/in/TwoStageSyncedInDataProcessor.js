@@ -48,7 +48,7 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
     // sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
     sharingNodeRepositoryMap) {
         const { actorMap, actorMapById, consistentMessages } = await this.syncInChecker.actorChecker.ensureActorsAndGetAsMaps(dataMessages);
-        const [sharingMessagesWithCompatibleSchemasAndData, existingRepoTransBlocksWithCompatibleSchemasAndData, messagesWithCompatibleSchemas, usedSchemaVersionIdSet] = await this.syncInChecker.checkSchemasAndDataAndRecordSharingMessages(consistentMessages, actorMap, sharingNodeRepositoryMap);
+        const [sharingMessagesWithCompatibleSchemasAndData, existingRepoTransBlocksWithCompatibleSchemasAndData, messagesWithCompatibleSchemas, usedSchemaVersionIdSet] = await this.syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(consistentMessages, actorMap, sharingNodeRepositoryMap);
         const repoTransHistoryMapByRepositoryId = await this.recordSharingMessageToHistoryRecords(sharingMessagesWithCompatibleSchemasAndData, existingRepoTransBlocksWithCompatibleSchemasAndData, messagesWithCompatibleSchemas, actorMapById);
         await this.updateLocalData(repoTransHistoryMapByRepositoryId, actorMapById);
     }

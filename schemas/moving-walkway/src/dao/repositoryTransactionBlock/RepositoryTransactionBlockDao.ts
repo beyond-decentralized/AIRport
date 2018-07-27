@@ -19,13 +19,14 @@ import {IRepositoryTransactionBlockDmo} from "../../dmo/repositoryTransactionBlo
 import {
 	BaseRepositoryTransactionBlockDao,
 	IBaseRepositoryTransactionBlockDao,
+	IRepositoryTransactionBlock,
 	ISharingMessage,
 	Q,
 	QMissingRecord,
 	QMissingRecordRepoTransBlock,
 	QRepositoryTransactionBlock,
 	QRepoTransBlockResponseStage,
-}                                       from "../../generated/generated";
+} from "../../generated/generated";
 import {
 	RepositoryTransactionBlockDaoToken,
 	RepositoryTransactionBlockDmoToken
@@ -40,7 +41,7 @@ export interface IRepositoryTransactionBlockDao
 	findWithMissingRecordIdsAndNoMissingRecordsWithStatus(
 		missingRecordIds: MissingRecordId[],
 		status: MissingRecordStatus
-	): Promise<ISharingMessage[]>;
+	): Promise<IRepositoryTransactionBlock[]>;
 
 	clearContentsWhereIdsIn(
 		repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[]
@@ -91,7 +92,7 @@ export class RepositoryTransactionBlockDao
 	async findWithMissingRecordIdsAndNoMissingRecordsWithStatus(
 		missingRecordIds: MissingRecordId[],
 		status: MissingRecordStatus
-	): Promise<ISharingMessage[]> {
+	): Promise<IRepositoryTransactionBlock[]> {
 		let rtb: QRepositoryTransactionBlock,
 			mrrtb: QMissingRecordRepoTransBlock,
 			mr: QMissingRecord;

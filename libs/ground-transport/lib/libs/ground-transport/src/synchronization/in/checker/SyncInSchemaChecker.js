@@ -49,10 +49,10 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
         // const allSchemaMap
         // 	= this.mergeSchemaMaps(maxVersionedMapBySchemaAndDomainNames, schemasWithChangesMap);
         return {
-            dataMessagesToBeUpgraded,
             dataMessagesWithCompatibleSchemas,
             dataMessagesWithIncompatibleSchemas,
             dataMessagesWithInvalidSchemas,
+            dataMessagesToBeUpgraded,
             maxVersionedMapBySchemaAndDomainNames
         };
     }

@@ -22,7 +22,7 @@ let SyncInActorChecker = class SyncInActorChecker {
         this.terminalDao = terminalDao;
         this.utils = utils;
     }
-    async ensureActorsAndGetAsMaps(dataMessages, actorMap, actorMapById, userCheckResults, terminalCheckResults) {
+    async ensureActorsAndGetAsMaps(dataMessages, actorMap, actorMapById, userCheckResults, terminalCheckResults, dataMessagesWithInvalidData) {
         const actorRandomIdSet = new Set();
         const userUniqueIdsSet = new Set();
         const terminalNameSet = new Set();

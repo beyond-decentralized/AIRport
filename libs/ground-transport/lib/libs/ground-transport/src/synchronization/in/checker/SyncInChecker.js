@@ -16,14 +16,15 @@ const moving_walkway_1 = require("@airport/moving-walkway");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../../../InjectionTokens");
 let SyncInChecker = class SyncInChecker {
-    constructor(missingRecordRepoTransBlockDao, sharingMessageDao, repoTransBlockSchemasToChangeDao, actorChecker, dataChecker, repositoryChecker, schemaChecker, syncInUtils) {
-        this.missingRecordRepoTransBlockDao = missingRecordRepoTransBlockDao;
-        this.sharingMessageDao = sharingMessageDao;
-        this.repoTransBlockSchemasToChangeDao = repoTransBlockSchemasToChangeDao;
+    constructor(actorChecker, dataChecker, missingRecordRepoTransBlockDao, repositoryChecker, repoTransBlockSchemasToChangeDao, schemaChecker, sharingMessageDao, syncInRepositoryTransactionBlockCreator, syncInUtils) {
         this.actorChecker = actorChecker;
         this.dataChecker = dataChecker;
+        this.missingRecordRepoTransBlockDao = missingRecordRepoTransBlockDao;
         this.repositoryChecker = repositoryChecker;
+        this.repoTransBlockSchemasToChangeDao = repoTransBlockSchemasToChangeDao;
         this.schemaChecker = schemaChecker;
+        this.sharingMessageDao = sharingMessageDao;
+        this.syncInRepositoryTransactionBlockCreator = syncInRepositoryTransactionBlockCreator;
         this.syncInUtils = syncInUtils;
     }
     /**
@@ -37,8 +38,10 @@ let SyncInChecker = class SyncInChecker {
      *              for message processing
      *      ]
      */
-    async checkSchemasAndDataAndRecordSharingMessages(dataMessages, actorMap, sharingNodeRepositoryMap) {
-        const { maxVersionedMapBySchemaAndDomainNames, dataMessagesWithIncompatibleSchemas, dataMessagesWithCompatibleSchemas, dataMessagesToBeUpgraded, } = await this.schemaChecker.checkSchemas(dataMessages);
+    async checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages, actorMap, sharingNodeRepositoryMap, dataMessagesWithInvalidData) {
+        const { dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleSchemas, dataMessagesWithInvalidSchemas, dataMessagesToBeUpgraded, maxVersionedMapBySchemaAndDomainNames, } = await this.schemaChecker.checkSchemas(dataMessages);
+        dataMessagesWithInvalidData = dataMessagesWithInvalidData
+            .concat(dataMessagesWithInvalidSchemas);
         // this.updateSchemaReferences(dataMessagesWithIncompatibleSchemas, allSchemaMap);
         // this.updateSchemaReferences(dataMessagesToBeUpgraded, allSchemaMap);
         // Schema references for messages with incompatible schemas are converted
@@ -50,10 +53,11 @@ let SyncInChecker = class SyncInChecker {
         this.updateRepositoryReferences(dataMessagesWithIncompatibleSchemas, sharingNodeRepositoryMap);
         this.updateRepositoryReferences(dataMessagesToBeUpgraded, sharingNodeRepositoryMap);
         this.updateRepositoryReferences(dataMessagesWithCompatibleSchemas, sharingNodeRepositoryMap);
-        const { dataMessagesWithCompatibleSchemasAndData, existingRepoTransBlocksWithCompatibleSchemasAndData, missingRecordRepoTransBlocks, sharingMessagesWithIncompatibleData, } = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas);
-        await this.recordAllRepoTransBlocksCompatibleOrNot(dataMessagesWithIncompatibleSchemas, dataMessagesToBeUpgraded, 
+        const { dataMessagesWithCompatibleSchemasAndData, dataMessagesWithIncompatibleData, existingRepoTransBlocksWithCompatibleSchemasAndData, missingRecordDataToTMs } = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas);
+        await this.syncInRepositoryTransactionBlockCreator
+            .createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas, dataMessagesWithIncompatibleData, dataMessagesToBeUpgraded, 
         // schemasWithChangesMap,
-        dataMessagesWithCompatibleSchemasAndData, sharingMessagesWithIncompatibleData, missingRecordRepoTransBlocks);
+        dataMessagesWithCompatibleSchemasAndData, dataMessagesWithInvalidData);
         await this.recordAllSharingMessageRepoTransBlocks();
         await this.recordAllSharingNodeRepoTransBlocks();
         const sharingMessagesWithCompatibleSchemasAndData = await this.recordSharingMessages(dataMessagesWithIncompatibleSchemas, dataMessagesToBeUpgraded, schemasWithChangesMap, dataMessagesWithCompatibleSchemasAndData, sharingMessagesWithIncompatibleData, missingRecordRepoTransBlocks);
@@ -173,7 +177,12 @@ let SyncInChecker = class SyncInChecker {
         // dataMessageToBeUpgraded, SharingMessageProcessingStatus.NEEDS_DATA_UPGRADES, true); });
         // const sharingMessagesWithCompatibleSchemasAndData =
         // dataMessagesWithCompatibleSchemasAndData.map(( sharingMessageWithCompatibleSchemas ) => {
-        // return this.syncInUtils.createSharingMessage( sharingMessageWithCompatibleSchemas, SharingMessageProcessingStatus.READY_FOR_PROCESSING, false); }); const allSharingMessagesToCreate: ISharingMessage[] = [ ...sharingMessagesWithIncompatibleSchemas, ...sharingMessagesToBeUpgraded, ...sharingMessagesWithIncompatibleData, ...sharingMessagesWithCompatibleSchemasAndData ];  await this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false, false);
+        // return this.syncInUtils.createSharingMessage( sharingMessageWithCompatibleSchemas,
+        // SharingMessageProcessingStatus.READY_FOR_PROCESSING, false); }); const
+        // allSharingMessagesToCreate: ISharingMessage[] = [
+        // ...sharingMessagesWithIncompatibleSchemas, ...sharingMessagesToBeUpgraded,
+        // ...sharingMessagesWithIncompatibleData, ...sharingMessagesWithCompatibleSchemasAndData ];
+        // await this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false, false);
         const m;
         if (missingRecordRepoTransBlocks.length) {
             await this.missingRecordRepoTransBlockDao.bulkCreate(missingRecordRepoTransBlocks, false, false);
@@ -212,15 +221,16 @@ let SyncInChecker = class SyncInChecker {
 };
 SyncInChecker = __decorate([
     typedi_1.Service(InjectionTokens_1.SyncInCheckerToken),
-    __param(0, typedi_1.Inject(moving_walkway_1.MissingRecordRepoTransBlockDaoToken)),
-    __param(1, typedi_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
-    __param(2, typedi_1.Inject(moving_walkway_1.RepoTransBlockSchemasToChangeDaoToken)),
-    __param(3, typedi_1.Inject(InjectionTokens_1.SyncInActorCheckerToken)),
-    __param(4, typedi_1.Inject(InjectionTokens_1.SyncInDataCheckerToken)),
-    __param(5, typedi_1.Inject(InjectionTokens_1.SyncInRepositoryCheckerToken)),
-    __param(6, typedi_1.Inject(InjectionTokens_1.SyncInSchemaCheckerToken)),
-    __param(7, typedi_1.Inject(InjectionTokens_1.SyncInUtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object])
+    __param(0, typedi_1.Inject(InjectionTokens_1.SyncInActorCheckerToken)),
+    __param(1, typedi_1.Inject(InjectionTokens_1.SyncInDataCheckerToken)),
+    __param(2, typedi_1.Inject(moving_walkway_1.MissingRecordRepoTransBlockDaoToken)),
+    __param(3, typedi_1.Inject(InjectionTokens_1.SyncInRepositoryCheckerToken)),
+    __param(4, typedi_1.Inject(moving_walkway_1.RepoTransBlockSchemasToChangeDaoToken)),
+    __param(5, typedi_1.Inject(InjectionTokens_1.SyncInSchemaCheckerToken)),
+    __param(6, typedi_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
+    __param(7, typedi_1.Inject(InjectionTokens_1.SyncInRepositoryTransactionBlockCreatorToken)),
+    __param(8, typedi_1.Inject(InjectionTokens_1.SyncInUtilsToken)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object])
 ], SyncInChecker);
 exports.SyncInChecker = SyncInChecker;
 //# sourceMappingURL=SyncInChecker.js.map

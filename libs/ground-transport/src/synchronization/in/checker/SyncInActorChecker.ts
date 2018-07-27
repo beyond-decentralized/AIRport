@@ -43,7 +43,8 @@ export interface ISyncInActorChecker {
 			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>,
 		actorMapById: Map<ActorId, IActor>,
 		userCheckResults: UserCheckResults,
-		terminalCheckResults: TerminalCheckResults
+		terminalCheckResults: TerminalCheckResults,
+		dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<ActorCheckResults>;
 
 }
@@ -68,7 +69,8 @@ export class SyncInActorChecker
 			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>,
 		actorMapById: Map<ActorId, IActor>,
 		userCheckResults: UserCheckResults,
-		terminalCheckResults: TerminalCheckResults
+		terminalCheckResults: TerminalCheckResults,
+		dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<ActorCheckResults> {
 		const actorRandomIdSet: Set<ActorRandomId> = new Set();
 		const userUniqueIdsSet: Set<UserUniqueId> = new Set();

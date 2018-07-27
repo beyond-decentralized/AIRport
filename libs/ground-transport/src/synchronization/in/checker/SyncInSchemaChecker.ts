@@ -1,20 +1,22 @@
 import {
 	IUtils,
-	SchemaIndex,
-	SchemaName,
 	UtilsToken
 }                                 from "@airport/air-control";
+import {
+	SchemaName,
+	SchemaVersionId
+}                                 from "@airport/ground-control";
 import {
 	ISchema,
 	ISchemaDao,
 	ISchemaVersion,
 	ISchemaVersionDao,
+	MaxSchemaVersionView,
 	SchemaDaoToken,
 	SchemaDomainName,
 	SchemaStatus,
 	SchemaVersionDaoToken
 }                                 from "@airport/traffic-pattern";
-import {MaxSchemaVersionView}     from "@airport/traffic-pattern/lib/dao/SchemaVersionDao";
 import {Service}                  from "typedi";
 import {Inject}                   from "typedi/decorators/Inject";
 import {parse}                    from "zipson/lib";
@@ -22,9 +24,18 @@ import {SyncInSchemaCheckerToken} from "../../../InjectionTokens";
 import {
 	DataMessageSchemaGroupings,
 	IDataToTM,
-	SchemaCheckResults,
 	SchemaComparisonResult
 }                                 from "../SyncInUtils";
+
+export interface SchemaCheckResults {
+	dataMessagesWithCompatibleSchemas: IDataToTM[];
+	dataMessagesWithIncompatibleSchemas: IDataToTM[];
+	dataMessagesWithInvalidSchemas: IDataToTM[];
+	dataMessagesToBeUpgraded: IDataToTM[];
+	maxVersionedMapBySchemaAndDomainNames:
+		Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>>;
+	// schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
+}
 
 export interface ISyncInSchemaChecker {
 
@@ -96,10 +107,10 @@ export class SyncInSchemaChecker
 		// 	= this.mergeSchemaMaps(maxVersionedMapBySchemaAndDomainNames, schemasWithChangesMap);
 
 		return {
-			dataMessagesToBeUpgraded,
 			dataMessagesWithCompatibleSchemas,
 			dataMessagesWithIncompatibleSchemas,
 			dataMessagesWithInvalidSchemas,
+			dataMessagesToBeUpgraded,
 			maxVersionedMapBySchemaAndDomainNames
 		}
 	}

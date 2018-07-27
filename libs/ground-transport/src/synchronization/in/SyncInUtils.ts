@@ -61,23 +61,6 @@ export interface IDataToTM {
 	// syncDatetime: AgtSyncRecordAddDatetime;
 }
 
-export interface SchemaCheckResults {
-	dataMessagesToBeUpgraded: IDataToTM[];
-	dataMessagesWithCompatibleSchemas: IDataToTM[];
-	dataMessagesWithIncompatibleSchemas: IDataToTM[];
-	dataMessagesWithInvalidSchemas: IDataToTM[];
-	maxVersionedMapBySchemaAndDomainNames:
-		Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>>;
-	// schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
-}
-
-export interface DataCheckResults {
-	dataMessagesWithCompatibleSchemasAndData: IDataToTM[];
-	existingRepoTransBlocksWithCompatibleSchemasAndData: ISharingMessage[];
-	missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[];
-	sharingMessagesWithIncompatibleData: ISharingMessage[];
-}
-
 export interface DataMessageSchemaGroupings {
 	dataMessagesToBeUpgraded: IDataToTM[];
 	dataMessagesWithCompatibleSchemas: IDataToTM[];
@@ -161,8 +144,6 @@ export class SyncInUtils
 	implements ISyncInUtils {
 
 	constructor(
-		@Inject(RepositoryTransactionBlockDaoToken)
-		private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
 		@Inject(UtilsToken)
 		private utils: IUtils
 	) {
@@ -198,87 +179,6 @@ export class SyncInUtils
 	// 		// dataCache: saveData ? stringify(dataMessageToClient.data) : undefined
 	// 	};
 	// }
-
-	private async recordRepositoryTransBlocks(
-		dataMessagesWithIncompatibleSchemas: IDataToTM[],
-		dataMessagesWithIncompatibleData: IDataToTM[],
-		dataMessagesToBeUpgraded: IDataToTM[],
-		// schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
-		dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
-		dataMessagesWithInvalidData: IDataToTM[],
-	): Promise<void> {
-		let allRepositoryTransactionBlocks: IRepositoryTransactionBlock[] = [];
-
-		const repoTransBlocksNeedingSchemaChanges = this.createRepositoryTransactionBlocks(
-			dataMessagesWithIncompatibleSchemas,
-			RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_SCHEMA_CHANGES,
-			true
-		);
-		allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(
-			repoTransBlocksNeedingSchemaChanges
-		);
-
-		const repoTransBlocksNeedingDataUpgrades = this.createRepositoryTransactionBlocks(
-			dataMessagesToBeUpgraded,
-			RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_DATA_UPGRADES,
-			true
-		);
-		allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(
-			repoTransBlocksNeedingDataUpgrades
-		);
-
-		const repoTransBlocksNeedingAdditionalData = this.createRepositoryTransactionBlocks(
-			dataMessagesWithIncompatibleData,
-			RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_ADDITIONAL_DATA,
-			true
-		);
-		allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(
-			repoTransBlocksNeedingAdditionalData
-		);
-
-		const repoTransBlocksWithInvalidData = this.createRepositoryTransactionBlocks(
-			dataMessagesWithInvalidData,
-			RepoTransBlockSyncOutcomeType.SYNC_TO_TM_INVALID_DATA
-		);
-		allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(
-			repoTransBlocksWithInvalidData
-		);
-
-		const repoTransBlocksWithValidDataAndSchemas = this.createRepositoryTransactionBlocks(
-			dataMessagesWithCompatibleSchemasAndData,
-			RepoTransBlockSyncOutcomeType.SYNC_TO_TM_SUCCESSFUL
-		);
-		allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(
-			repoTransBlocksWithValidDataAndSchemas
-		);
-
-		await this.repositoryTransactionBlockDao.bulkCreate(
-			repositoryTransactionBlockDao, false, false);
-
-	}
-
-	private createRepositoryTransactionBlocks(
-		dataMessages: IDataToTM[],
-		syncOutcomeType: RepoTransBlockSyncOutcomeType,
-		recordContents = false
-	): IRepositoryTransactionBlock[] {
-		const repositoryTransactionBlocks: IRepositoryTransactionBlock[] = [];
-
-		for (const dataMessage of dataMessages) {
-			const data = dataMessage.data;
-			const repositoryTransactionBlock: IRepositoryTransactionBlock = {
-				contents: recordContents ? stringify(data) : null,
-				hash: null, // TODO: implement RTB hashing
-				repository: data.repository,
-				source: data.terminal,
-				syncOutcomeType,
-			};
-			dataMessage.repositoryTransactionBlock = repositoryTransactionBlock;
-			repositoryTransactionBlocks.push(repositoryTransactionBlock);
-		}
-
-		return repositoryTransactionBlocks;
-	}
 
 	private async recordSharingMessageRepoTransBlocks() {
 
