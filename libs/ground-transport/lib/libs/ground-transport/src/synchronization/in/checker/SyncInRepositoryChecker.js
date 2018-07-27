@@ -21,8 +21,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
         this.sharingNodeRepositoryDao = sharingNodeRepositoryDao;
         this.utils = utils;
     }
-    async ensureRepositories(incomingMessages) {
-        const inconsistentMessages = [];
+    async ensureRepositories(incomingMessages, dataMessagesWithInvalidData) {
         const consistentMessages = [];
         // const dataMessageMapBySharingNodeAndAgtRepositoryId:
         // 	Map<SharingNodeId, Map<AgtRepositoryId, IDataToTM[]>>
@@ -33,7 +32,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
         const sharingNodeRepositoryMap = new Map();
         for (const message of incomingMessages) {
             if (this.areRepositoryIdsConsistentInMessage(message)) {
-                const sharingNodeId = message.sharingNode.id;
+                const sharingNodeId = message.sharingMessage.sharingNode.id;
                 // const agtRepositoryId = message.agtRepositoryId;
                 sharingNodeIds.add(sharingNodeId);
                 // agtRepositoryIds.add(agtRepositoryId);
@@ -49,7 +48,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
                 consistentMessages.push(message);
             }
             else {
-                inconsistentMessages.push(message);
+                dataMessagesWithInvalidData.push(message);
             }
         }
         // const {dataMessages, sharingNodeRepositoryMap}
@@ -58,7 +57,6 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
         return {
             // consistentMessages: dataMessages,
             consistentMessages,
-            inconsistentMessages,
             sharingNodeRepositoryMap
         };
     }

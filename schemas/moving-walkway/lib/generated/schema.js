@@ -2242,40 +2242,52 @@ exports.SCHEMA = {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "HASH",
+                            "name": "SOURCE_ID",
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
-                            "type": 5
+                            "type": 4
                         },
                         {
                             "index": 2,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "SYNC_OUTCOME_TYPE",
+                            "name": "HASH",
                             "propertyRefs": [
                                 {
-                                    "index": 4
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "CONTENTS",
-                            "propertyRefs": [
-                                {
-                                    "index": 5
+                                    "index": 2
                                 }
                             ],
                             "type": 5
                         },
                         {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "SYNC_OUTCOME_TYPE",
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "type": 4
+                        },
+                        {
                             "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "CONTENTS",
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "type": 5
+                        },
+                        {
+                            "index": 5,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -2287,13 +2299,13 @@ exports.SCHEMA = {
                             "name": "SOURCE_TERMINAL_ID",
                             "propertyRefs": [
                                 {
-                                    "index": 2
+                                    "index": 3
                                 }
                             ],
                             "type": 4
                         },
                         {
-                            "index": 5,
+                            "index": 6,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
@@ -2305,7 +2317,7 @@ exports.SCHEMA = {
                             "name": "REPOSITORY_ID",
                             "propertyRefs": [
                                 {
-                                    "index": 3
+                                    "index": 4
                                 }
                             ],
                             "type": 4
@@ -2335,10 +2347,18 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
+                            "name": "sourceId"
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
                             "name": "hash"
                         },
                         {
-                            "index": 2,
+                            "index": 3,
                             "isId": false,
                             "name": "source",
                             "relationRef": {
@@ -2346,7 +2366,7 @@ exports.SCHEMA = {
                             }
                         },
                         {
-                            "index": 3,
+                            "index": 4,
                             "isId": false,
                             "name": "repository",
                             "relationRef": {
@@ -2355,22 +2375,22 @@ exports.SCHEMA = {
                         },
                         {
                             "columnRef": {
-                                "index": 2
+                                "index": 3
                             },
-                            "index": 4,
+                            "index": 5,
                             "isId": false,
                             "name": "syncOutcomeType"
                         },
                         {
                             "columnRef": {
-                                "index": 3
+                                "index": 4
                             },
-                            "index": 5,
+                            "index": 6,
                             "isId": false,
                             "name": "contents"
                         },
                         {
-                            "index": 6,
+                            "index": 7,
                             "isId": false,
                             "name": "repositoryTransactionHistory",
                             "relationRef": {
@@ -2378,7 +2398,7 @@ exports.SCHEMA = {
                             }
                         },
                         {
-                            "index": 7,
+                            "index": 8,
                             "isId": false,
                             "name": "sharingNodeRepoTransBlocks",
                             "relationRef": {
@@ -2386,7 +2406,7 @@ exports.SCHEMA = {
                             }
                         },
                         {
-                            "index": 8,
+                            "index": 9,
                             "isId": false,
                             "name": "sharingMessageRepoTransBlocks",
                             "relationRef": {
@@ -2394,7 +2414,7 @@ exports.SCHEMA = {
                             }
                         },
                         {
-                            "index": 9,
+                            "index": 10,
                             "isId": false,
                             "name": "missingRecordRepoTransBlocks",
                             "relationRef": {
@@ -2402,7 +2422,7 @@ exports.SCHEMA = {
                             }
                         },
                         {
-                            "index": 10,
+                            "index": 11,
                             "isId": false,
                             "name": "repoTransBlockSchemasToChange",
                             "relationRef": {
@@ -2416,7 +2436,7 @@ exports.SCHEMA = {
                             "isId": false,
                             "relationType": 1,
                             "propertyRef": {
-                                "index": 2
+                                "index": 3
                             },
                             "relationTableIndex": 7,
                             "relationTableSchemaIndex": 1
@@ -2426,7 +2446,7 @@ exports.SCHEMA = {
                             "isId": false,
                             "relationType": 1,
                             "propertyRef": {
-                                "index": 3
+                                "index": 4
                             },
                             "relationTableIndex": 11,
                             "relationTableSchemaIndex": 1
@@ -2436,7 +2456,7 @@ exports.SCHEMA = {
                             "isId": false,
                             "relationType": 0,
                             "propertyRef": {
-                                "index": 6
+                                "index": 7
                             },
                             "relationTableIndex": 5,
                             "relationTableSchemaIndex": 1
@@ -2449,7 +2469,7 @@ exports.SCHEMA = {
                             },
                             "relationType": 0,
                             "propertyRef": {
-                                "index": 7
+                                "index": 8
                             },
                             "relationTableIndex": 9
                         },
@@ -2461,7 +2481,7 @@ exports.SCHEMA = {
                             },
                             "relationType": 0,
                             "propertyRef": {
-                                "index": 8
+                                "index": 9
                             },
                             "relationTableIndex": 15
                         },
@@ -2473,7 +2493,7 @@ exports.SCHEMA = {
                             },
                             "relationType": 0,
                             "propertyRef": {
-                                "index": 9
+                                "index": 10
                             },
                             "relationTableIndex": 5
                         },
@@ -2485,7 +2505,7 @@ exports.SCHEMA = {
                             },
                             "relationType": 0,
                             "propertyRef": {
-                                "index": 10
+                                "index": 11
                             },
                             "relationTableIndex": 7
                         }

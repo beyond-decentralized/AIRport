@@ -15,9 +15,9 @@ import {
 	TmRepositoryTransactionBlockId
 }                                      from "@airport/arrivals-n-departures";
 import {
-	Terminal,
 	Repository,
-	RepositoryTransactionHistory
+	RepositoryTransactionHistory,
+	Terminal
 }                                      from "@airport/holding-pattern";
 import {MissingRecordRepoTransBlock}   from "../missingRecord/MissingRecordRepoTransBlock";
 import {SharingMessageRepoTransBlock}  from "../sharingMessage/SharingMessageRepoTransBlock";
@@ -65,6 +65,10 @@ export class RepositoryTransactionBlock {
 	@Id()
 	@DbNumber()
 	id: TmRepositoryTransactionBlockId;
+
+	@Column({name: "SOURCE_ID"})
+	@DbNumber()
+	sourceId: TmRepositoryTransactionBlockId;
 
 	// Needed to determine of the block has already been processed
 	hash: RepositoryTransactionBlockHash;

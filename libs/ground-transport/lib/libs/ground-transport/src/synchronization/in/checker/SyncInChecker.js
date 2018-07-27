@@ -55,9 +55,7 @@ let SyncInChecker = class SyncInChecker {
         this.updateRepositoryReferences(dataMessagesWithCompatibleSchemas, sharingNodeRepositoryMap);
         const { dataMessagesWithCompatibleSchemasAndData, dataMessagesWithIncompatibleData, existingRepoTransBlocksWithCompatibleSchemasAndData, missingRecordDataToTMs } = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas);
         await this.syncInRepositoryTransactionBlockCreator
-            .createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas, dataMessagesWithIncompatibleData, dataMessagesToBeUpgraded, 
-        // schemasWithChangesMap,
-        dataMessagesWithCompatibleSchemasAndData, dataMessagesWithInvalidData);
+            .createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas, dataMessagesWithIncompatibleData, dataMessagesToBeUpgraded, dataMessagesWithCompatibleSchemasAndData, dataMessagesWithInvalidData);
         await this.recordAllSharingMessageRepoTransBlocks();
         await this.recordAllSharingNodeRepoTransBlocks();
         const sharingMessagesWithCompatibleSchemasAndData = await this.recordSharingMessages(dataMessagesWithIncompatibleSchemas, dataMessagesToBeUpgraded, schemasWithChangesMap, dataMessagesWithCompatibleSchemasAndData, sharingMessagesWithIncompatibleData, missingRecordRepoTransBlocks);

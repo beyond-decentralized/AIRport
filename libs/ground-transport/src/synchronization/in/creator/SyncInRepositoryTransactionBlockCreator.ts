@@ -1,4 +1,5 @@
-import {RepoTransBlockSyncOutcomeType}                from "@airport/ground-control";
+import {RepoTransBlockSyncOutcomeType} from "@airport/arrivals-n-departures";
+import {TransactionType}               from "@airport/ground-control";
 import {
 	ActorId,
 	IActor,
@@ -7,20 +8,20 @@ import {
 	RepositoryTransactionType
 }                                                     from "@airport/holding-pattern";
 import {
+	IMissingRecordRepoTransBlock,
 	IRepositoryTransactionBlock,
 	IRepositoryTransactionBlockDao,
-	IRepoTransBlockRepoTransHistory,
 	ISharingMessage,
 	ISharingMessageRepoTransBlock,
 	RepositoryTransactionBlockDaoToken
-}                                                     from "@airport/moving-walkway";
-import {TransactionType}                              from "@airport/terminal-map";
+} from "@airport/moving-walkway";
 import {
 	Inject,
 	Service
 }                                                     from "typedi";
 import {stringify}                                    from "zipson/lib";
 import {SyncInRepositoryTransactionBlockCreatorToken} from "../../../InjectionTokens";
+import {IMissingRecordDataToTM}                       from "../checker/SyncInDataChecker";
 import {IDataToTM}                                    from "../SyncInUtils";
 
 export interface ISyncInRepositoryTransactionBlockCreator {
@@ -42,7 +43,6 @@ export class SyncInRepositoryTransactionBlockCreator
 		dataMessagesWithIncompatibleSchemas: IDataToTM[],
 		dataMessagesWithIncompatibleData: IDataToTM[],
 		dataMessagesToBeUpgraded: IDataToTM[],
-		// schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
 		dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
 		dataMessagesWithInvalidData: IDataToTM[],
 	): Promise<void> {
@@ -92,7 +92,7 @@ export class SyncInRepositoryTransactionBlockCreator
 		);
 
 		await this.repositoryTransactionBlockDao.bulkCreate(
-			repositoryTransactionBlockDao, false, false);
+			allRepositoryTransactionBlocks, false, false);
 
 	}
 
@@ -117,6 +117,13 @@ export class SyncInRepositoryTransactionBlockCreator
 		}
 
 		return repositoryTransactionBlocks;
+	}
+
+	async create missingRecordRepoTransBlocks(
+		missingRecordDataToTMs: IMissingRecordDataToTM[]
+	) {
+		const missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[] =
+
 	}
 
 	private async recordSharingMessageToHistoryRecords(

@@ -19,7 +19,7 @@ const Inject_1 = require("typedi/decorators/Inject");
 const Service_1 = require("typedi/decorators/Service");
 const lib_1 = require("zipson/lib");
 const InjectionTokens_1 = require("../../InjectionTokens");
-const log = InjectionTokens_1.TerminalLogger.add('SynchronizationInManager');
+const log = InjectionTokens_1.GroundTransportLogger.add('SynchronizationInManager');
 /**
  * Synchronization in Manager implementation.
  */
@@ -122,8 +122,9 @@ let SynchronizationInManager = class SynchronizationInManager {
         // These messages are responses to already sent messages
         // no need to check for existence of repositories
         await this.syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages);
-        const { consistentMessages, sharingNodeRepositoryMap } = await this.syncInChecker.repositoryChecker.ensureRepositories(allDataMessages);
-        await this.twoStageSyncedInDataProcessor.syncDataMessages(consistentMessages, sharingNodeRepositoryMap);
+        const dataMessagesWithInvalidData = [];
+        const { consistentMessages, sharingNodeRepositoryMap } = await this.syncInChecker.repositoryChecker.ensureRepositories(allDataMessages, dataMessagesWithInvalidData);
+        await this.twoStageSyncedInDataProcessor.syncDataMessages(consistentMessages, sharingNodeRepositoryMap, dataMessagesWithInvalidData);
     }
     isValidLastChangeTime(syncTimestamp, lastChangeTimeMillis) {
         const receptionTimeMillis = syncTimestamp.getTime();

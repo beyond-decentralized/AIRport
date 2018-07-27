@@ -4,16 +4,15 @@ import { ISharingNodeRepositoryDao, SharingNodeId } from "@airport/moving-walkwa
 import { IDataToTM } from "../SyncInUtils";
 export interface RepositoryCheckResults {
     consistentMessages: IDataToTM[];
-    inconsistentMessages: IDataToTM[];
     sharingNodeRepositoryMap: Map<SharingNodeId, Set<RepositoryId>>;
 }
 export interface ISyncInRepositoryChecker {
-    ensureRepositories(incomingMessages: IDataToTM[]): Promise<RepositoryCheckResults>;
+    ensureRepositories(incomingMessages: IDataToTM[], dataMessagesWithInvalidData: IDataToTM[]): Promise<RepositoryCheckResults>;
 }
 export declare class SyncInRepositoryChecker implements ISyncInRepositoryChecker {
     private sharingNodeRepositoryDao;
     private utils;
     constructor(sharingNodeRepositoryDao: ISharingNodeRepositoryDao, utils: IUtils);
-    ensureRepositories(incomingMessages: IDataToTM[]): Promise<RepositoryCheckResults>;
+    ensureRepositories(incomingMessages: IDataToTM[], dataMessagesWithInvalidData: IDataToTM[]): Promise<RepositoryCheckResults>;
     private areRepositoryIdsConsistentInMessage;
 }

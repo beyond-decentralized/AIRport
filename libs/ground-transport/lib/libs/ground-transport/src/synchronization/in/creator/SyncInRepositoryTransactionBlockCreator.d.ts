@@ -1,4 +1,5 @@
 import { IRepositoryTransactionBlockDao } from "@airport/moving-walkway";
+import { IMissingRecordDataToTM } from "../checker/SyncInDataChecker";
 export interface ISyncInRepositoryTransactionBlockCreator {
 }
 export declare class SyncInRepositoryTransactionBlockCreator implements ISyncInRepositoryTransactionBlockCreator {
@@ -6,5 +7,7 @@ export declare class SyncInRepositoryTransactionBlockCreator implements ISyncInR
     constructor(repositoryTransactionBlockDao: IRepositoryTransactionBlockDao);
     private createRepositoryTransBlocks;
     private createRepositoryTransactionBlocks;
+    create: any;
+    missingRecordRepoTransBlocks(missingRecordDataToTMs: IMissingRecordDataToTM[]): void;
     private recordSharingMessageToHistoryRecords;
 }

@@ -18,8 +18,6 @@ import {IDataToTM}                    from "../SyncInUtils";
 
 export interface RepositoryCheckResults {
 	consistentMessages: IDataToTM[];
-	inconsistentMessages: IDataToTM[];
-	// sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>;
 	sharingNodeRepositoryMap: Map<SharingNodeId, Set<RepositoryId>>;
 }
 
@@ -27,7 +25,8 @@ export interface RepositoryCheckResults {
 export interface ISyncInRepositoryChecker {
 
 	ensureRepositories(
-		incomingMessages: IDataToTM[]
+		incomingMessages: IDataToTM[],
+		dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<RepositoryCheckResults>;
 
 }
@@ -46,9 +45,9 @@ export class SyncInRepositoryChecker
 	}
 
 	async ensureRepositories(
-		incomingMessages: IDataToTM[]
+		incomingMessages: IDataToTM[],
+		dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<RepositoryCheckResults> {
-		const inconsistentMessages: IDataToTM[] = [];
 		const consistentMessages: IDataToTM[] = [];
 
 		// const dataMessageMapBySharingNodeAndAgtRepositoryId:
@@ -65,7 +64,7 @@ export class SyncInRepositoryChecker
 
 		for (const message of incomingMessages) {
 			if (this.areRepositoryIdsConsistentInMessage(message)) {
-				const sharingNodeId = message.sharingNode.id;
+				const sharingNodeId = message.sharingMessage.sharingNode.id;
 				// const agtRepositoryId = message.agtRepositoryId;
 
 				sharingNodeIds.add(sharingNodeId);
@@ -81,7 +80,7 @@ export class SyncInRepositoryChecker
 					.add(message.data.repository.id);
 				consistentMessages.push(message);
 			} else {
-				inconsistentMessages.push(message);
+				dataMessagesWithInvalidData.push(message);
 			}
 		}
 
@@ -92,7 +91,6 @@ export class SyncInRepositoryChecker
 		return {
 			// consistentMessages: dataMessages,
 			consistentMessages,
-			inconsistentMessages,
 			sharingNodeRepositoryMap
 		}
 	}

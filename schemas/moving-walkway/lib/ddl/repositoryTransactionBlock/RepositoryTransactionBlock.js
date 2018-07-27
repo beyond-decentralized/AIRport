@@ -51,6 +51,11 @@ __decorate([
     __metadata("design:type", Number)
 ], RepositoryTransactionBlock.prototype, "id", void 0);
 __decorate([
+    air_control_1.Column({ name: "SOURCE_ID" }),
+    air_control_1.DbNumber(),
+    __metadata("design:type", Number)
+], RepositoryTransactionBlock.prototype, "sourceId", void 0);
+__decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: "SOURCE_TERMINAL_ID", referencedColumnName: "ID" }),
     __metadata("design:type", holding_pattern_1.Terminal)

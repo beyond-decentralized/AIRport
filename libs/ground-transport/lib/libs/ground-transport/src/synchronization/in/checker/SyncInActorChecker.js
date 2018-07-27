@@ -29,11 +29,10 @@ let SyncInActorChecker = class SyncInActorChecker {
         const terminalSecondIdSet = new Set();
         const ownerUniqueIdSet = new Set();
         const consistentMessages = [];
-        const inconsistentMessages = [];
         // split messages by repository and record actor information
         for (const message of dataMessages) {
             if (!this.areActorIdsConsistentInMessage(message)) {
-                inconsistentMessages.push(message);
+                dataMessagesWithInvalidData.push(message);
                 continue;
             }
             const data = message.data;
@@ -67,8 +66,7 @@ let SyncInActorChecker = class SyncInActorChecker {
         return {
             actorMap,
             actorMapById,
-            consistentMessages,
-            inconsistentMessages
+            consistentMessages
         };
     }
     areActorIdsConsistentInMessage(message) {

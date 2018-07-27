@@ -180,7 +180,6 @@ export class SyncInChecker
 				dataMessagesWithIncompatibleSchemas,
 				dataMessagesWithIncompatibleData,
 				dataMessagesToBeUpgraded,
-				// schemasWithChangesMap,
 				dataMessagesWithCompatibleSchemasAndData,
 				dataMessagesWithInvalidData
 			);

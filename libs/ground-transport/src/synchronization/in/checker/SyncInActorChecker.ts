@@ -79,11 +79,10 @@ export class SyncInActorChecker
 		const ownerUniqueIdSet: Set<UserUniqueId> = new Set();
 
 		const consistentMessages: IDataToTM[] = [];
-		const inconsistentMessages: IDataToTM[] = [];
 		// split messages by repository and record actor information
 		for (const message of dataMessages) {
 			if (!this.areActorIdsConsistentInMessage(message)) {
-				inconsistentMessages.push(message);
+				dataMessagesWithInvalidData.push(message);
 				continue;
 			}
 			const data = message.data;
@@ -137,8 +136,7 @@ export class SyncInActorChecker
 		return {
 			actorMap,
 			actorMapById,
-			consistentMessages,
-			inconsistentMessages
+			consistentMessages
 		};
 	}
 

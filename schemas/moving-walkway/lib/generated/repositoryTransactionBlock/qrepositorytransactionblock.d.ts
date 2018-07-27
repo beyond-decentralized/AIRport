@@ -6,6 +6,7 @@ import { IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, QMiss
 import { IRepoTransBlockSchemasToChange, RepoTransBlockSchemasToChangeESelect, QRepoTransBlockSchemasToChange } from './qrepotransblockschematochange';
 export interface IRepositoryTransactionBlock {
     id?: number;
+    sourceId?: number;
     hash?: string;
     syncOutcomeType?: number;
     contents?: string;
@@ -45,6 +46,7 @@ export interface RepositoryTransactionBlockEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RepositoryTransactionBlockEUpdateProperties extends IEntityUpdateProperties {
+    sourceId?: number | IQNumberField;
     hash?: string | IQStringField;
     syncOutcomeType?: number | IQNumberField;
     contents?: string | IQStringField;
@@ -55,6 +57,7 @@ export interface RepositoryTransactionBlockEUpdateProperties extends IEntityUpda
  * UPDATE - non-id columns (optional).
  */
 export interface RepositoryTransactionBlockEUpdateColumns extends IEntityUpdateColumns {
+    SOURCE_ID?: number | IQNumberField;
     HASH?: string | IQStringField;
     SYNC_OUTCOME_TYPE?: number | IQNumberField;
     CONTENTS?: string | IQStringField;
@@ -76,6 +79,7 @@ export interface RepositoryTransactionBlockECreateColumns extends RepositoryTran
  */
 export interface QRepositoryTransactionBlock extends QEntity {
     id: IQNumberField;
+    sourceId: IQNumberField;
     hash: IQStringField;
     syncOutcomeType: IQNumberField;
     contents: IQStringField;

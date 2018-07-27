@@ -12,10 +12,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const moving_walkway_1 = require("@airport/moving-walkway");
-const terminal_map_1 = require("@airport/terminal-map");
 const typedi_1 = require("typedi");
 const lib_1 = require("zipson/lib");
 const InjectionTokens_1 = require("../../../InjectionTokens");
@@ -23,21 +23,19 @@ let SyncInRepositoryTransactionBlockCreator = class SyncInRepositoryTransactionB
     constructor(repositoryTransactionBlockDao) {
         this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
     }
-    async createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas, dataMessagesWithIncompatibleData, dataMessagesToBeUpgraded, 
-    // schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
-    dataMessagesWithCompatibleSchemasAndData, dataMessagesWithInvalidData) {
+    async createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas, dataMessagesWithIncompatibleData, dataMessagesToBeUpgraded, dataMessagesWithCompatibleSchemasAndData, dataMessagesWithInvalidData) {
         let allRepositoryTransactionBlocks = [];
-        const repoTransBlocksNeedingSchemaChanges = this.createRepositoryTransactionBlocks(dataMessagesWithIncompatibleSchemas, ground_control_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_SCHEMA_CHANGES, true);
+        const repoTransBlocksNeedingSchemaChanges = this.createRepositoryTransactionBlocks(dataMessagesWithIncompatibleSchemas, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_SCHEMA_CHANGES, true);
         allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksNeedingSchemaChanges);
-        const repoTransBlocksNeedingDataUpgrades = this.createRepositoryTransactionBlocks(dataMessagesToBeUpgraded, ground_control_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_DATA_UPGRADES, true);
+        const repoTransBlocksNeedingDataUpgrades = this.createRepositoryTransactionBlocks(dataMessagesToBeUpgraded, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_DATA_UPGRADES, true);
         allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksNeedingDataUpgrades);
-        const repoTransBlocksNeedingAdditionalData = this.createRepositoryTransactionBlocks(dataMessagesWithIncompatibleData, ground_control_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_ADDITIONAL_DATA, true);
+        const repoTransBlocksNeedingAdditionalData = this.createRepositoryTransactionBlocks(dataMessagesWithIncompatibleData, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_ADDITIONAL_DATA, true);
         allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksNeedingAdditionalData);
-        const repoTransBlocksWithInvalidData = this.createRepositoryTransactionBlocks(dataMessagesWithInvalidData, ground_control_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_INVALID_DATA);
+        const repoTransBlocksWithInvalidData = this.createRepositoryTransactionBlocks(dataMessagesWithInvalidData, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_INVALID_DATA);
         allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksWithInvalidData);
-        const repoTransBlocksWithValidDataAndSchemas = this.createRepositoryTransactionBlocks(dataMessagesWithCompatibleSchemasAndData, ground_control_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_SUCCESSFUL);
+        const repoTransBlocksWithValidDataAndSchemas = this.createRepositoryTransactionBlocks(dataMessagesWithCompatibleSchemasAndData, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_SUCCESSFUL);
         allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksWithValidDataAndSchemas);
-        await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlockDao, false, false);
+        await this.repositoryTransactionBlockDao.bulkCreate(allRepositoryTransactionBlocks, false, false);
     }
     createRepositoryTransactionBlocks(dataMessages, syncOutcomeType, recordContents = false) {
         const repositoryTransactionBlocks = [];
@@ -55,13 +53,16 @@ let SyncInRepositoryTransactionBlockCreator = class SyncInRepositoryTransactionB
         }
         return repositoryTransactionBlocks;
     }
+    missingRecordRepoTransBlocks(missingRecordDataToTMs) {
+        const missingRecordRepoTransBlocks = ;
+    }
     async recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById) {
         const repoTransHistoryMapByRepositoryId = await this.getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
         const repositoryTransactionBlocks = [];
         const sharingMessageRepoTransBlocks = [];
         const repoTransBlockRepoTransHistories = [];
         const transactionHistory = this.transactionManager.currentTransHistory;
-        transactionHistory.transactionType = terminal_map_1.TransactionType.REMOTE_SYNC;
+        transactionHistory.transactionType = ground_control_1.TransactionType.REMOTE_SYNC;
         // split messages by repository and record actor information
         for (let i = 0; i < dataMessages.length; i++) {
             const sharingMessage = sharingMessages[i];
@@ -69,7 +70,7 @@ let SyncInRepositoryTransactionBlockCreator = class SyncInRepositoryTransactionB
             const data = dataMessage.data;
             const repositoryTransactionBlock = {
                 repository: data.repository,
-                syncOutcomeType: ground_control_1.RepoTransBlockSyncOutcomeType.SYNC_SUCCESSFUL
+                syncOutcomeType: arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_SUCCESSFUL
             };
             repositoryTransactionBlocks.push(repositoryTransactionBlock);
             sharingMessageRepoTransBlocks.push({

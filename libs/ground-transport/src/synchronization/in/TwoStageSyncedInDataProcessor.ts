@@ -1,7 +1,8 @@
 import {
 	IUtils,
 	UtilsToken
-}                                     from "@airport/air-control";
+}                        from "@airport/air-control";
+import {AgtRepositoryId} from "@airport/arrivals-n-departures";
 import {SchemaVersionId} from "@airport/ground-control";
 import {
 	ActorId,
@@ -13,7 +14,7 @@ import {
 	RepositoryId,
 	RepositoryTransactionHistoryDmoToken,
 	RepositoryTransactionType
-}                                     from "@airport/holding-pattern";
+}                        from "@airport/holding-pattern";
 import {
 	IRepositoryTransactionBlock,
 	IRepositoryTransactionBlockDao,
@@ -31,12 +32,12 @@ import {
 	SharingMessageRepoTransBlockDaoToken,
 	SharingNodeId,
 	SynchronizationConflictPendingNotificationDaoToken
-}                                     from "@airport/moving-walkway";
+}                        from "@airport/moving-walkway";
 import {
 	ITransactionManager,
 	TransactionManagerToken
 }                                     from "@airport/terminal-map";
-import {ISchema} from "@airport/traffic-pattern";
+import {ISchema}                      from "@airport/traffic-pattern";
 import {
 	Inject,
 	Service
@@ -49,6 +50,7 @@ import {
 	TwoStageSyncedInDataProcessorToken
 }                                     from "../../InjectionTokens";
 import {ISyncInChecker}               from "./checker/SyncInChecker";
+import {TerminalCheckResults}         from "./checker/SyncInTerminalChecker";
 import {IStage1SyncedInDataProcessor} from "./Stage1SyncedInDataProcessor";
 import {IStage2SyncedInDataProcessor} from "./Stage2SyncedInDataProcessor";
 import {
@@ -64,7 +66,8 @@ export interface ITwoStageSyncedInDataProcessor {
 	syncDataMessages(
 		dataMessages: IDataToTM[],
 		// sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
-		sharingNodeRepositoryMap: Map<SharingNodeId, Set<RepositoryId>>
+		sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
+		dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<void>;
 
 }
@@ -114,13 +117,15 @@ export class TwoStageSyncedInDataProcessor
 	async syncDataMessages(
 		dataMessages: IDataToTM[],
 		// sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
-		sharingNodeRepositoryMap: Map<SharingNodeId, Set<RepositoryId>>
+		sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
+		dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<void> {
 		const {
 			actorMap,
 			actorMapById,
 			consistentMessages
-		} = await this.syncInChecker.actorChecker.ensureActorsAndGetAsMaps(dataMessages);
+		} = await this.syncInChecker.actorChecker.ensureActorsAndGetAsMaps(
+			dataMessages, dataMessagesWithInvalidData);
 
 		const [
 			sharingMessagesWithCompatibleSchemasAndData,
@@ -128,8 +133,8 @@ export class TwoStageSyncedInDataProcessor
 			messagesWithCompatibleSchemas,
 			usedSchemaVersionIdSet
 		] = await this.syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(
-			consistentMessages, actorMap, sharingNodeRepositoryMap
-		);
+			consistentMessages, actorMap, sharingNodeRepositoryMap,
+			dataMessagesWithInvalidData);
 
 		const repoTransHistoryMapByRepositoryId
 			= await this.recordSharingMessageToHistoryRecords(

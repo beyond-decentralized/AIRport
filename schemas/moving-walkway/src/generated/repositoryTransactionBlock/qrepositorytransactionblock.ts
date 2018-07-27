@@ -103,6 +103,7 @@ export interface IRepositoryTransactionBlock {
 	// Id Relations
 
 	// Non-Id Properties
+	sourceId?: number;
 	hash?: string;
 	syncOutcomeType?: number;
 	contents?: string;
@@ -173,6 +174,7 @@ export interface RepositoryTransactionBlockEOptionalId {
 export interface RepositoryTransactionBlockEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
+	sourceId?: number | IQNumberField;
 	hash?: string | IQStringField;
 	syncOutcomeType?: number | IQNumberField;
 	contents?: string | IQStringField;
@@ -189,6 +191,7 @@ export interface RepositoryTransactionBlockEUpdateProperties
 export interface RepositoryTransactionBlockEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
+	SOURCE_ID?: number | IQNumberField;
 	HASH?: string | IQStringField;
 	SYNC_OUTCOME_TYPE?: number | IQNumberField;
 	CONTENTS?: string | IQStringField;
@@ -229,6 +232,7 @@ export interface QRepositoryTransactionBlock extends QEntity
 	// Id Relations
 
 	// Non-Id Fields
+	sourceId: IQNumberField;
 	hash: IQStringField;
 	syncOutcomeType: IQNumberField;
 	contents: IQStringField;

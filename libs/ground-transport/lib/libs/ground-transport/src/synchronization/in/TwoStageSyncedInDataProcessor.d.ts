@@ -1,4 +1,5 @@
 import { IUtils } from "@airport/air-control";
+import { AgtRepositoryId } from "@airport/arrivals-n-departures";
 import { IRepositoryActorDao, IRepositoryTransactionHistoryDmo, RepositoryId } from "@airport/holding-pattern";
 import { IRepositoryTransactionBlockDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISynchronizationConflictDao, ISynchronizationConflictPendingNotificationDao, SharingNodeId } from "@airport/moving-walkway";
 import { ITransactionManager } from "@airport/terminal-map";
@@ -10,7 +11,7 @@ import { IDataToTM } from "./SyncInUtils";
  * Synchronizes incoming data and records message conflicts in two processing stages.
  */
 export interface ITwoStageSyncedInDataProcessor {
-    syncDataMessages(dataMessages: IDataToTM[], sharingNodeRepositoryMap: Map<SharingNodeId, Set<RepositoryId>>): Promise<void>;
+    syncDataMessages(dataMessages: IDataToTM[], sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>, dataMessagesWithInvalidData: IDataToTM[]): Promise<void>;
 }
 export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInDataProcessor {
     private repositoryActorDao;
@@ -33,7 +34,7 @@ export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInD
      *      Local (TM) repository Id Map.
      * @returns {Promise<void>}
      */
-    syncDataMessages(dataMessages: IDataToTM[], sharingNodeRepositoryMap: Map<SharingNodeId, Set<RepositoryId>>): Promise<void>;
+    syncDataMessages(dataMessages: IDataToTM[], sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>, dataMessagesWithInvalidData: IDataToTM[]): Promise<void>;
     private recordSharingMessageToHistoryRecords;
     private getRepoTransHistoryMapByRepoId;
     private addRepoTransHistoriesToMapFromData;

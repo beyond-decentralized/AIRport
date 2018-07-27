@@ -22,12 +22,12 @@ import {Inject}                         from "typedi/decorators/Inject";
 import {Service}                        from "typedi/decorators/Service";
 import {parse}                          from "zipson/lib";
 import {
+	GroundTransportLogger,
 	SynchronizationInManagerToken,
 	SyncInCheckerToken,
 	SyncLogMessageProcessorToken,
-	TerminalLogger,
 	TwoStageSyncedInDataProcessorToken
-}                                       from "../../InjectionTokens";
+} from "../../InjectionTokens";
 import {ISyncInChecker}                 from "./checker/SyncInChecker";
 import {SyncInMessageWithContent}       from "./model/SyncInMessageWithContent";
 import {IDataToTM}                      from "./SyncInUtils";
@@ -65,7 +65,7 @@ export interface ISharingMessageWithData {
 
 export type LastRemoteChangeMillis = number;
 
-const log = TerminalLogger.add('SynchronizationInManager');
+const log = GroundTransportLogger.add('SynchronizationInManager');
 
 /**
  * Synchronization in Manager implementation.
@@ -201,11 +201,14 @@ export class SynchronizationInManager
 		// no need to check for existence of repositories
 		await this.syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages);
 
+		const dataMessagesWithInvalidData: IDataToTM[] = [];
+
 		const {consistentMessages, sharingNodeRepositoryMap}
-			= await this.syncInChecker.repositoryChecker.ensureRepositories(allDataMessages);
+			= await this.syncInChecker.repositoryChecker.ensureRepositories(
+				allDataMessages, dataMessagesWithInvalidData);
 
 		await this.twoStageSyncedInDataProcessor.syncDataMessages(
-			consistentMessages, sharingNodeRepositoryMap);
+			consistentMessages, sharingNodeRepositoryMap, dataMessagesWithInvalidData);
 
 	}
 
