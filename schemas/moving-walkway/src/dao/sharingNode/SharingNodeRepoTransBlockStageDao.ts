@@ -1,25 +1,28 @@
-import {AirportDatabaseToken, UtilsToken} from "@airport/air-control/lib/InjectionTokens";
-import {IAirportDatabase} from "@airport/air-control/lib/lingo/AirportDatabase";
-import {IUtils} from "@airport/air-control/lib/lingo/utils/Utils";
 import {
-	RepoTransBlockSyncOutcomeType,
+	AirportDatabaseToken,
+	UtilsToken
+}                                               from "@airport/air-control/lib/InjectionTokens";
+import {IAirportDatabase}                       from "@airport/air-control/lib/lingo/AirportDatabase";
+import {IUtils}                                 from "@airport/air-control/lib/lingo/utils/Utils";
+import {
+	SharingNodeRepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
-} from "@airport/arrivals-n-departures";
-import {Inject} from "typedi/decorators/Inject";
-import {Service} from "typedi/decorators/Service";
-import {SharingNodeId} from "../../ddl/ddl";
+}                                               from "@airport/arrivals-n-departures";
+import {Inject}                                 from "typedi/decorators/Inject";
+import {Service}                                from "typedi/decorators/Service";
+import {SharingNodeId}                          from "../../ddl/ddl";
 import {
 	BaseSharingNodeRepoTransBlockStageDao,
 	IBaseSharingNodeRepoTransBlockStageDao,
 	Q,
 	QSharingNodeRepoTransBlockStage
-} from "../../generated/generated";
+}                                               from "../../generated/generated";
 import {SharingNodeRepoTransBlockStageDaoToken} from "../../InjectionTokens";
 
 export type SharingNodeRepoTransBlockStageValues = [
 	SharingNodeId,
 	TmRepositoryTransactionBlockId,
-	RepoTransBlockSyncOutcomeType
+	SharingNodeRepoTransBlockSyncStatus
 	];
 
 export interface ISharingNodeRepoTransBlockStageDao
@@ -61,7 +64,7 @@ export class SharingNodeRepoTransBlockStageDao
 				snrtbs.sharingNodeId,
 				snrtbs.repositoryTransactionBlockId,
 				// snrtbs.syncStatus,
-				snrtbs.syncOutcomeType
+				snrtbs.syncStatus
 			],
 			values
 		});

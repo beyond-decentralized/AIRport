@@ -41,7 +41,7 @@ let SyncLogMessageProcessor = class SyncLogMessageProcessor {
         if (!syncLogMessages.length) {
             return;
         }
-        const { repoTransBlockIdSet, repoTransBlockResponseStageValues, repoTransBlockSyncOutcomeMapBySharingNodeId, 
+        const { repoTransBlockIdSet, sharingNodeRepoTransBlockStageValues, repoTransBlockSyncOutcomeMapBySharingNodeId, 
         // sharingMessageResponseStageValues,
         sharingNodeIdSet } = this.generateSyncLogDataStructures(syncLogMessages);
         // All of the SharingNodeRepoTransBlocks should already exist
@@ -54,13 +54,13 @@ let SyncLogMessageProcessor = class SyncLogMessageProcessor {
         // await this.sharingMessageDao.updateFromResponseStage();
         // await this.sharingMessageResponseStageDao.delete();
         // Update RepoTransBlocks with data from AGT
-        await this.repoTransBlockResponseStageDao.insertValues(repoTransBlockResponseStageValues);
-        await this.repositoryTransactionBlockDao.updateFromResponseStage();
-        await this.repoTransBlockResponseStageDao.delete();
+        // await this.repoTransBlockResponseStageDao.insertValues(repoTransBlockResponseStageValues);
+        // await this.repositoryTransactionBlockDao.updateFromResponseStage();
+        // await this.repoTransBlockResponseStageDao.delete();
     }
     generateSyncLogDataStructures(syncLogMessages) {
         // const sharingMessageResponseStageValues: SharingMessageResponseStageValues[] = [];
-        let repoTransBlockResponseStageValues = [];
+        let sharingNodeRepoTransBlockStageValues = [];
         const sharingNodeIdSet = new Set();
         const repoTransBlockIdSet = new Set();
         const repoTransBlockSyncOutcomeMapBySharingNodeId = new Map();
@@ -72,18 +72,24 @@ let SyncLogMessageProcessor = class SyncLogMessageProcessor {
             // ]);
             const sharingNodeId = syncLogMessage.sharingNode.id;
             sharingNodeIdSet.add(sharingNodeId);
+            const messageRepoTransBlockResponseStageValues = [];
             for (const outcome of syncLogMessage.outcomes) {
-                const tmRepositoryTransactionBlockId = outcome[0];
+                const tmRepositoryTransactionBlockId = outcome.tmRepositoryTransactionBlockId;
                 repoTransBlockIdSet.add(tmRepositoryTransactionBlockId);
                 this.utils.ensureChildJsMap(repoTransBlockSyncOutcomeMapBySharingNodeId, sharingNodeId)
                     .set(tmRepositoryTransactionBlockId, outcome);
+                messageRepoTransBlockResponseStageValues.push([
+                    sharingNodeId,
+                    outcome.tmRepositoryTransactionBlockId,
+                    outcome.syncStatus
+                ]);
             }
-            repoTransBlockResponseStageValues
-                = repoTransBlockResponseStageValues.concat(syncLogMessage.outcomes);
+            sharingNodeRepoTransBlockStageValues
+                = sharingNodeRepoTransBlockStageValues.concat(messageRepoTransBlockResponseStageValues);
         }
         return {
             repoTransBlockIdSet,
-            repoTransBlockResponseStageValues,
+            sharingNodeRepoTransBlockStageValues,
             repoTransBlockSyncOutcomeMapBySharingNodeId,
             // sharingMessageResponseStageValues,
             sharingNodeIdSet

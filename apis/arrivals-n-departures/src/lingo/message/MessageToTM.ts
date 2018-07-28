@@ -7,7 +7,7 @@ import {
 } from "../CoreAgtTypes";
 import {
 	MessageToTMContentType,
-	RepoTransBlockSyncOutcomeType,
+	SharingNodeRepoTransBlockSyncStatus,
 	TmToAgtProtocolVersion
 } from "./MessageTypes";
 
@@ -49,10 +49,10 @@ export interface RepoTransBlockMessageToTM
 /**
  * Status of syncing RTB to AGT
  */
-export interface RepoTransBlockSyncOutcome {
+export interface RepoTransBlockSyncStatus {
 	tmRepositoryTransactionBlockId: TmRepositoryTransactionBlockId,
 	// agtRepositoryTransactionBlockId: AgtRepositoryTransactionBlockId,
-	syncOutcomeType: RepoTransBlockSyncOutcomeType
+	syncStatus: SharingNodeRepoTransBlockSyncStatus
 }
 
 /**
@@ -64,13 +64,13 @@ export interface SyncNotificationMessageToTM
 	tmSharingMessageId: TmSharingMessageId;
 	// terminalSyncLogId: AgtSharingMessageId;
 	// agtRepositoryTransactionBlockAddDatetime: AgtRepositoryTransactionBlockAddDatetime;
-	syncOutcomes: RepoTransBlockSyncOutcome[];
+	syncOutcomes: RepoTransBlockSyncStatus[];
 }
 
 // export interface SyncAcknowledgementMessageToTM
 // 	extends AbstractMessageToTM {
 // 	contentType: MessageToTMContentType.SYNC_ACK;
-// 	syncOutcomes: RepoTransBlockSyncOutcome[];
+// 	syncOutcomes: RepoTransBlockSyncStatus[];
 // }
 
 export interface AliveAcknowledgementMessageToTM

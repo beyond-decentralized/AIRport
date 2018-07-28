@@ -1,19 +1,17 @@
 import {
 	Column,
-	DbDate,
 	Entity,
 	Id,
 	JoinColumn,
 	ManyToOne,
 	Table
-}                                      from "@airport/air-control";
-import {DbNumber}                      from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
-import {RepoTransBlockSyncOutcomeType} from "@airport/arrivals-n-departures";
-import {BlockSyncStatus}               from "@airport/ground-control";
-import {RepositoryTransactionBlock}    from "../repositoryTransactionBlock/RepositoryTransactionBlock";
-import {SharingMessageSyncTimestamp}   from "../sharingMessage/SharingMessage";
-import {DataOrigin}                    from "../values/DataOrigin";
-import {SharingNode}                   from "./SharingNode";
+}                                   from "@airport/air-control";
+import {DbNumber}                   from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
+import {
+	SharingNodeRepoTransBlockSyncStatus
+}                                   from "@airport/arrivals-n-departures";
+import {RepositoryTransactionBlock} from "../repositoryTransactionBlock/RepositoryTransactionBlock";
+import {SharingNode}                from "./SharingNode";
 
 /**
  * Every RepositoryTransactionBlock has an Id at every AGT that syncs
@@ -40,19 +38,19 @@ export class SharingNodeRepoTransBlock {
 	// @Column({name: "AGT_SYNC_RECORD_ID"})
 	// agtSyncRecordId: AgtSyncRecordId;
 
-	@Column({name: "SYNC_TIMESTAMP"})
-	@DbDate()
-	syncTimestamp: SharingMessageSyncTimestamp;
+	// @Column({name: "SYNC_TIMESTAMP"})
+	// @DbDate()
+	// syncTimestamp: SharingMessageSyncTimestamp;
+	//
+	// @Column({name: "SYNC_OUTCOME_TYPE"})
+	// @DbNumber()
+	// syncOutcomeType: SharingNodeRepoTransBlockSyncOutcomeType;
 
-	@Column({name: "SYNC_OUTCOME_TYPE"})
-	@DbNumber()
-	syncOutcomeType: RepoTransBlockSyncOutcomeType;
+	// @DbNumber()
+	// origin: DataOrigin;
 
 	@DbNumber()
-	origin: DataOrigin;
-
-	@DbNumber()
-	@Column({name: "BLOCK_SYNC_STATUS"})
-	blockSyncStatus: BlockSyncStatus;
+	@Column({name: "SYNC_STATUS"})
+	syncStatus: SharingNodeRepoTransBlockSyncStatus;
 
 }

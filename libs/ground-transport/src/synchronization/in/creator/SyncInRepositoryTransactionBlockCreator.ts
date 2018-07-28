@@ -1,5 +1,5 @@
-import {RepoTransBlockSyncOutcomeType} from "@airport/arrivals-n-departures";
-import {TransactionType}               from "@airport/ground-control";
+import {RepoTransBlockSyncOutcomeType}                from "@airport/arrivals-n-departures";
+import {TransactionType}                              from "@airport/ground-control";
 import {
 	ActorId,
 	IActor,
@@ -9,12 +9,16 @@ import {
 }                                                     from "@airport/holding-pattern";
 import {
 	IMissingRecordRepoTransBlock,
+	IMissingRecordRepoTransBlockDao,
 	IRepositoryTransactionBlock,
 	IRepositoryTransactionBlockDao,
 	ISharingMessage,
 	ISharingMessageRepoTransBlock,
-	RepositoryTransactionBlockDaoToken
-} from "@airport/moving-walkway";
+	ISharingMessageRepoTransBlockDao,
+	MissingRecordRepoTransBlockDaoToken,
+	RepositoryTransactionBlockDaoToken,
+	SharingMessageRepoTransBlockDaoToken
+}                                                     from "@airport/moving-walkway";
 import {
 	Inject,
 	Service
@@ -26,6 +30,25 @@ import {IDataToTM}                                    from "../SyncInUtils";
 
 export interface ISyncInRepositoryTransactionBlockCreator {
 
+	createRepositoryTransBlocks(
+		dataMessagesWithIncompatibleSchemas: IDataToTM[],
+		dataMessagesWithIncompatibleData: IDataToTM[],
+		dataMessagesToBeUpgraded: IDataToTM[],
+		dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
+		dataMessagesWithInvalidData: IDataToTM[]
+	): Promise<void>;
+
+	createMissingRecordRepoTransBlocks(
+		missingRecordDataToTMs: IMissingRecordDataToTM[]
+	): Promise<void>;
+
+	createSharingMessageRepoTransBlocks(
+		allDataToTM: IDataToTM[]
+	): Promise<void>;
+
+	createSharingNodeRepoTransBlocks(
+		allDataToTM: IDataToTM[]
+	): Promise<void>;
 }
 
 @Service(SyncInRepositoryTransactionBlockCreatorToken)
@@ -34,18 +57,22 @@ export class SyncInRepositoryTransactionBlockCreator
 
 	constructor(
 		@Inject(RepositoryTransactionBlockDaoToken)
-		private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao
+		private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
+		@Inject(MissingRecordRepoTransBlockDaoToken)
+		private missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao,
+		@Inject(SharingMessageRepoTransBlockDaoToken)
+		private sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao
 	) {
 	}
 
 
-	private async createRepositoryTransBlocks(
+	async createRepositoryTransBlocks(
 		dataMessagesWithIncompatibleSchemas: IDataToTM[],
 		dataMessagesWithIncompatibleData: IDataToTM[],
 		dataMessagesToBeUpgraded: IDataToTM[],
 		dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
 		dataMessagesWithInvalidData: IDataToTM[],
-	): Promise<void> {
+	): Promise<IDataToTM[]> {
 		let allRepositoryTransactionBlocks: IRepositoryTransactionBlock[] = [];
 
 		const repoTransBlocksNeedingSchemaChanges = this.createRepositoryTransactionBlocks(
@@ -94,6 +121,15 @@ export class SyncInRepositoryTransactionBlockCreator
 		await this.repositoryTransactionBlockDao.bulkCreate(
 			allRepositoryTransactionBlocks, false, false);
 
+
+		let allDataToTM: IDataToTM[] = [];
+		allDataToTM = allDataToTM.concat(dataMessagesWithIncompatibleSchemas);
+		allDataToTM = allDataToTM.concat(dataMessagesWithIncompatibleData);
+		allDataToTM = allDataToTM.concat(dataMessagesToBeUpgraded);
+		allDataToTM = allDataToTM.concat(dataMessagesWithCompatibleSchemasAndData);
+		allDataToTM = allDataToTM.concat(dataMessagesWithInvalidData);
+
+		return allDataToTM;
 	}
 
 	private createRepositoryTransactionBlocks(
@@ -119,11 +155,31 @@ export class SyncInRepositoryTransactionBlockCreator
 		return repositoryTransactionBlocks;
 	}
 
-	async create missingRecordRepoTransBlocks(
+	async createMissingRecordRepoTransBlocks(
 		missingRecordDataToTMs: IMissingRecordDataToTM[]
-	) {
-		const missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[] =
+	): Promise<void> {
+		const missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[]
+			= missingRecordDataToTMs.map(
+			missingRecordDataToTM => ({
+				missingRecord: missingRecordDataToTM.missingRecord,
+				repositoryTransactionBlock: missingRecordDataToTM
+					.dataMessage.repositoryTransactionBlock
+			}));
+		await this.missingRecordRepoTransBlockDao.bulkCreate(
+			missingRecordRepoTransBlocks, false, false);
+	}
 
+	async createSharingMessageRepoTransBlocks(
+		allDataToTM: IDataToTM[]
+	): Promise<void> {
+		const sharingMessageRepoTransBlocks: ISharingMessageRepoTransBlock[]
+			= allDataToTM.map(
+			dataToTM => ({
+				sharingMessage: dataToTM.sharingMessage,
+				repositoryTransactionBlock: dataToTM.repositoryTransactionBlock
+			}));
+		await this.sharingMessageRepoTransBlockDao.bulkCreate(
+			sharingMessageRepoTransBlocks, false, false);
 	}
 
 	private async recordSharingMessageToHistoryRecords(

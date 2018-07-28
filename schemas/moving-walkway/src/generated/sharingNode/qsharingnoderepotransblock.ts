@@ -58,10 +58,7 @@ export interface ISharingNodeRepoTransBlock {
 	repositoryTransactionBlock?: IRepositoryTransactionBlock;
 
 	// Non-Id Properties
-	syncTimestamp?: Date;
-	syncOutcomeType?: number;
-	origin?: number;
-	blockSyncStatus?: number;
+	syncStatus?: number;
 
 	// Non-Id Relations
 
@@ -119,10 +116,7 @@ export interface SharingNodeRepoTransBlockEOptionalId {
 export interface SharingNodeRepoTransBlockEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	syncTimestamp?: Date | IQDateField;
-	syncOutcomeType?: number | IQNumberField;
-	origin?: number | IQNumberField;
-	blockSyncStatus?: number | IQNumberField;
+	syncStatus?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -134,10 +128,7 @@ export interface SharingNodeRepoTransBlockEUpdateProperties
 export interface SharingNodeRepoTransBlockEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	SYNC_TIMESTAMP?: Date | IQDateField;
-	SYNC_OUTCOME_TYPE?: number | IQNumberField;
-	ORIGIN?: number | IQNumberField;
-	BLOCK_SYNC_STATUS?: number | IQNumberField;
+	SYNC_STATUS?: number | IQNumberField;
 
 }
 
@@ -174,10 +165,7 @@ export interface QSharingNodeRepoTransBlock extends QEntity
 	repositoryTransactionBlock: QRepositoryTransactionBlockQRelation;
 
 	// Non-Id Fields
-	syncTimestamp: IQDateField;
-	syncOutcomeType: IQNumberField;
-	origin: IQNumberField;
-	blockSyncStatus: IQNumberField;
+	syncStatus: IQNumberField;
 
 	// Non-Id Relations
 

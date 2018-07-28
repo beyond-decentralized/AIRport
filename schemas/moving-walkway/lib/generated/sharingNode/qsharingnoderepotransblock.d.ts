@@ -1,13 +1,10 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
 import { ISharingNode, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from './qsharingnode';
 import { IRepositoryTransactionBlock, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from '../repositoryTransactionBlock/qrepositorytransactionblock';
 export interface ISharingNodeRepoTransBlock {
     sharingNode?: ISharingNode;
     repositoryTransactionBlock?: IRepositoryTransactionBlock;
-    syncTimestamp?: Date;
-    syncOutcomeType?: number;
-    origin?: number;
-    blockSyncStatus?: number;
+    syncStatus?: number;
 }
 /**
  * SELECT - All fields and relations (optional).
@@ -34,19 +31,13 @@ export interface SharingNodeRepoTransBlockEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SharingNodeRepoTransBlockEUpdateProperties extends IEntityUpdateProperties {
-    syncTimestamp?: Date | IQDateField;
-    syncOutcomeType?: number | IQNumberField;
-    origin?: number | IQNumberField;
-    blockSyncStatus?: number | IQNumberField;
+    syncStatus?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
 export interface SharingNodeRepoTransBlockEUpdateColumns extends IEntityUpdateColumns {
-    SYNC_TIMESTAMP?: Date | IQDateField;
-    SYNC_OUTCOME_TYPE?: number | IQNumberField;
-    ORIGIN?: number | IQNumberField;
-    BLOCK_SYNC_STATUS?: number | IQNumberField;
+    SYNC_STATUS?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -64,10 +55,7 @@ export interface SharingNodeRepoTransBlockECreateColumns extends SharingNodeRepo
 export interface QSharingNodeRepoTransBlock extends QEntity {
     sharingNode: QSharingNodeQRelation;
     repositoryTransactionBlock: QRepositoryTransactionBlockQRelation;
-    syncTimestamp: IQDateField;
-    syncOutcomeType: IQNumberField;
-    origin: IQNumberField;
-    blockSyncStatus: IQNumberField;
+    syncStatus: IQNumberField;
 }
 export interface QSharingNodeRepoTransBlockQId {
     sharingNode: QSharingNodeQId;

@@ -1,4 +1,4 @@
-import { BatchedMessagesToTM, RepoTransBlockSyncOutcome, TmSharingMessageId } from "@airport/arrivals-n-departures";
+import { BatchedMessagesToTM, RepoTransBlockSyncStatus, TmSharingMessageId } from "@airport/arrivals-n-departures";
 import { ISharingMessage, ISharingMessageDao, ISharingNode, ISharingNodeTerminal, SharingNodeId } from "@airport/moving-walkway";
 import { ISyncInChecker } from "./checker/SyncInChecker";
 import { IDataToTM } from "./SyncInUtils";
@@ -8,7 +8,7 @@ import { ITwoStageSyncedInDataProcessor } from "./TwoStageSyncedInDataProcessor"
  * Synchronization Log part of the Message from AGT to Terminal (TM)
  */
 export interface ISyncLogToTM {
-    outcomes: RepoTransBlockSyncOutcome[];
+    outcomes: RepoTransBlockSyncStatus[];
     sharingNode: ISharingNode;
     tmSharingMessageId: TmSharingMessageId;
 }

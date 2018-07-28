@@ -1,5 +1,5 @@
 import { AgtSharingMessageId, RepositoryTransactionBlockContents, TerminalId, TmRepositoryTransactionBlockId, TmSharingMessageId } from "../CoreAgtTypes";
-import { MessageToTMContentType, RepoTransBlockSyncOutcomeType, TmToAgtProtocolVersion } from "./MessageTypes";
+import { MessageToTMContentType, SharingNodeRepoTransBlockSyncStatus, TmToAgtProtocolVersion } from "./MessageTypes";
 /**
  * AGT always batches messages to TMs
  */
@@ -14,9 +14,9 @@ export declare type SerializedRepoTransBlockMessageToTM = [MessageToTMContentTyp
 /**
  * Status of syncing RTB to AGT
  */
-export declare type SerializedRepoTransBlockSyncOutcome = [TmRepositoryTransactionBlockId, RepoTransBlockSyncOutcomeType];
+export declare type SerializedRepoTransBlockSyncStatus = [TmRepositoryTransactionBlockId, SharingNodeRepoTransBlockSyncStatus];
 /**
  * ACK of data sync from this TM
  */
-export declare type SerializedSyncNotificationMessageToTM = [MessageToTMContentType.SYNC_NOTIFICATION, TmSharingMessageId, SerializedRepoTransBlockSyncOutcome[]];
+export declare type SerializedSyncNotificationMessageToTM = [MessageToTMContentType.SYNC_NOTIFICATION, TmSharingMessageId, SerializedRepoTransBlockSyncStatus[]];
 export declare type SerializedAliveAcknowledgementMessageToTM = [MessageToTMContentType.ALIVE_ACK];

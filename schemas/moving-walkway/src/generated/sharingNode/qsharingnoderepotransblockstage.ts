@@ -38,7 +38,7 @@ export interface ISharingNodeRepoTransBlockStage {
 	// Id Relations
 
 	// Non-Id Properties
-	syncOutcomeType?: number;
+	syncStatus?: number;
 
 	// Non-Id Relations
 
@@ -94,7 +94,7 @@ export interface SharingNodeRepoTransBlockStageEOptionalId {
 export interface SharingNodeRepoTransBlockStageEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	syncOutcomeType?: number | IQNumberField;
+	syncStatus?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -106,7 +106,7 @@ export interface SharingNodeRepoTransBlockStageEUpdateProperties
 export interface SharingNodeRepoTransBlockStageEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	SYNC_OUTCOME_TYPE?: number | IQNumberField;
+	SYNC_STATUS?: number | IQNumberField;
 
 }
 
@@ -143,7 +143,7 @@ export interface QSharingNodeRepoTransBlockStage extends QEntity
 	// Id Relations
 
 	// Non-Id Fields
-	syncOutcomeType: IQNumberField;
+	syncStatus: IQNumberField;
 
 	// Non-Id Relations
 

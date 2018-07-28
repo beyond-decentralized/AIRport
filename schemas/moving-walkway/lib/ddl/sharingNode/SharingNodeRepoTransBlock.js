@@ -12,9 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const ColumnDecorators_1 = require("@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators");
 const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
-const ground_control_1 = require("@airport/ground-control");
 const RepositoryTransactionBlock_1 = require("../repositoryTransactionBlock/RepositoryTransactionBlock");
-const DataOrigin_1 = require("../values/DataOrigin");
 const SharingNode_1 = require("./SharingNode");
 /**
  * Every RepositoryTransactionBlock has an Id at every AGT that syncs
@@ -39,24 +37,10 @@ __decorate([
     __metadata("design:type", RepositoryTransactionBlock_1.RepositoryTransactionBlock)
 ], SharingNodeRepoTransBlock.prototype, "repositoryTransactionBlock", void 0);
 __decorate([
-    air_control_1.Column({ name: "SYNC_TIMESTAMP" }),
-    air_control_1.DbDate(),
-    __metadata("design:type", Object)
-], SharingNodeRepoTransBlock.prototype, "syncTimestamp", void 0);
-__decorate([
-    air_control_1.Column({ name: "SYNC_OUTCOME_TYPE" }),
     ColumnDecorators_1.DbNumber(),
+    air_control_1.Column({ name: "SYNC_STATUS" }),
     __metadata("design:type", Number)
-], SharingNodeRepoTransBlock.prototype, "syncOutcomeType", void 0);
-__decorate([
-    ColumnDecorators_1.DbNumber(),
-    __metadata("design:type", Number)
-], SharingNodeRepoTransBlock.prototype, "origin", void 0);
-__decorate([
-    ColumnDecorators_1.DbNumber(),
-    air_control_1.Column({ name: "BLOCK_SYNC_STATUS" }),
-    __metadata("design:type", Number)
-], SharingNodeRepoTransBlock.prototype, "blockSyncStatus", void 0);
+], SharingNodeRepoTransBlock.prototype, "syncStatus", void 0);
 SharingNodeRepoTransBlock = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({ name: "SHARING_NODE_REPO_TRANS_BLOCKS" })

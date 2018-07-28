@@ -1,12 +1,13 @@
 import {
 	IUtils,
 	UtilsToken
-}                                     from "@airport/air-control";
+}                                            from "@airport/air-control";
 import {
-	RepoTransBlockSyncOutcome,
+	RepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
-}                                     from "@airport/arrivals-n-departures";
-import {BlockSyncStatus}              from "@airport/ground-control";
+}                                            from "@airport/arrivals-n-departures";
+import {SharingNodeRepoTransBlockSyncStatus} from "@airport/arrivals-n-departures/lib/lingo/message/MessageTypes";
+import {BlockSyncStatus}                     from "@airport/ground-control";
 import {
 	DataOrigin,
 	IRepositoryTransactionBlockDao,
@@ -24,13 +25,13 @@ import {
 	SharingNodeRepoTransBlockStageDaoToken,
 	SharingNodeRepoTransBlockStageValues,
 	SharingNodeRepoTransBlockValues
-}                                     from "@airport/moving-walkway";
+}                                            from "@airport/moving-walkway";
 import {
 	Inject,
 	Service
-}                                     from "typedi";
-import {SyncLogMessageProcessorToken} from "../../InjectionTokens";
-import {ISyncLogToTM}                 from "./SynchronizationInManager";
+}                                            from "typedi";
+import {SyncLogMessageProcessorToken}        from "../../InjectionTokens";
+import {ISyncLogToTM}                        from "./SynchronizationInManager";
 
 export interface ISyncLogMessageProcessor {
 
@@ -80,7 +81,7 @@ export class SyncLogMessageProcessor
 
 		const {
 			repoTransBlockIdSet,
-			repoTransBlockResponseStageValues,
+			sharingNodeRepoTransBlockStageValues,
 			repoTransBlockSyncOutcomeMapBySharingNodeId,
 			// sharingMessageResponseStageValues,
 			sharingNodeIdSet
@@ -103,28 +104,28 @@ export class SyncLogMessageProcessor
 		// await this.sharingMessageResponseStageDao.delete();
 
 		// Update RepoTransBlocks with data from AGT
-		await this.repoTransBlockResponseStageDao.insertValues(repoTransBlockResponseStageValues);
-		await this.repositoryTransactionBlockDao.updateFromResponseStage();
-		await this.repoTransBlockResponseStageDao.delete();
+		// await this.repoTransBlockResponseStageDao.insertValues(repoTransBlockResponseStageValues);
+		// await this.repositoryTransactionBlockDao.updateFromResponseStage();
+		// await this.repoTransBlockResponseStageDao.delete();
 	}
 
 	private generateSyncLogDataStructures(
 		syncLogMessages: ISyncLogToTM[]
 	): {
 		repoTransBlockIdSet: Set<TmRepositoryTransactionBlockId>;
-		repoTransBlockResponseStageValues: RepoTransBlockResponseStageValues[];
+		sharingNodeRepoTransBlockStageValues: SharingNodeRepoTransBlockStageValues[];
 		repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNodeId,
-			Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncOutcome>>;
+			Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncStatus>>;
 		// sharingMessageResponseStageValues: SharingMessageResponseStageValues[];
 		sharingNodeIdSet: Set<SharingNodeId>;
 	} {
 		// const sharingMessageResponseStageValues: SharingMessageResponseStageValues[] = [];
-		let repoTransBlockResponseStageValues: RepoTransBlockResponseStageValues[] = [];
+		let sharingNodeRepoTransBlockStageValues: SharingNodeRepoTransBlockStageValues[] = [];
 		const sharingNodeIdSet: Set<SharingNodeId> = new Set();
 		const repoTransBlockIdSet: Set<TmRepositoryTransactionBlockId> = new Set();
 
 		const repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNodeId,
-			Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncOutcome>> = new Map();
+			Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncStatus>> = new Map();
 
 		for (const syncLogMessage of syncLogMessages) {
 			// sharingMessageResponseStageValues.push([
@@ -135,20 +136,26 @@ export class SyncLogMessageProcessor
 
 			const sharingNodeId = syncLogMessage.sharingNode.id;
 			sharingNodeIdSet.add(sharingNodeId);
+			const messageRepoTransBlockResponseStageValues: SharingNodeRepoTransBlockStageValues[] = [];
 			for (const outcome of syncLogMessage.outcomes) {
-				const tmRepositoryTransactionBlockId = outcome[0];
+				const tmRepositoryTransactionBlockId = outcome.tmRepositoryTransactionBlockId;
 				repoTransBlockIdSet.add(tmRepositoryTransactionBlockId);
 				this.utils.ensureChildJsMap(repoTransBlockSyncOutcomeMapBySharingNodeId, sharingNodeId)
 					.set(tmRepositoryTransactionBlockId, outcome);
+				messageRepoTransBlockResponseStageValues.push([
+					sharingNodeId,
+					outcome.tmRepositoryTransactionBlockId,
+					outcome.syncStatus
+				])
 			}
 
-			repoTransBlockResponseStageValues
-				= repoTransBlockResponseStageValues.concat(syncLogMessage.outcomes);
+			sharingNodeRepoTransBlockStageValues
+				= sharingNodeRepoTransBlockStageValues.concat(messageRepoTransBlockResponseStageValues);
 		}
 
 		return {
 			repoTransBlockIdSet,
-			repoTransBlockResponseStageValues,
+			sharingNodeRepoTransBlockStageValues,
 			repoTransBlockSyncOutcomeMapBySharingNodeId,
 			// sharingMessageResponseStageValues,
 			sharingNodeIdSet
@@ -159,7 +166,7 @@ export class SyncLogMessageProcessor
 		sharingNodeIdSet: Set<SharingNodeId>,
 		repoTransBlockIdSet: Set<TmRepositoryTransactionBlockId>,
 		repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNodeId,
-			Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncOutcome>>
+			Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncStatus>>
 	): Promise<void> {
 		const existingSharingNodeRepoTransBlockMap = await this.sharingNodeRepoTransBlockDao
 			.findMapBySharingNodeIdWhereSharingNodeIdInAndRepoTransBlockIdIn(

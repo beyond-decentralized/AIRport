@@ -67,7 +67,7 @@ let MessageToTMSerializer = class MessageToTMSerializer {
         return syncOutcomes.map((syncOutcome) => [
             syncOutcome.tmRepositoryTransactionBlockId,
             // syncOutcome.agtRepositoryTransactionBlockId,
-            syncOutcome.syncOutcomeType
+            syncOutcome.syncStatus
         ]);
     }
 };

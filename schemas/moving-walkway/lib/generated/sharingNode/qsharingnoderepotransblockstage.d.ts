@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 export interface ISharingNodeRepoTransBlockStage {
     sharingNodeId?: number;
     repositoryTransactionBlockId?: number;
-    syncOutcomeType?: number;
+    syncStatus?: number;
 }
 /**
  * SELECT - All fields and relations (optional).
@@ -27,13 +27,13 @@ export interface SharingNodeRepoTransBlockStageEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SharingNodeRepoTransBlockStageEUpdateProperties extends IEntityUpdateProperties {
-    syncOutcomeType?: number | IQNumberField;
+    syncStatus?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
 export interface SharingNodeRepoTransBlockStageEUpdateColumns extends IEntityUpdateColumns {
-    SYNC_OUTCOME_TYPE?: number | IQNumberField;
+    SYNC_STATUS?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -51,7 +51,7 @@ export interface SharingNodeRepoTransBlockStageECreateColumns extends SharingNod
 export interface QSharingNodeRepoTransBlockStage extends QEntity {
     sharingNodeId: IQNumberField;
     repositoryTransactionBlockId: IQNumberField;
-    syncOutcomeType: IQNumberField;
+    syncStatus: IQNumberField;
 }
 export interface QSharingNodeRepoTransBlockStageQId {
     sharingNodeId: IQNumberField;

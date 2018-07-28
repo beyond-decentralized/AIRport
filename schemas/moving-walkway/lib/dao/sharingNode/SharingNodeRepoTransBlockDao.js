@@ -47,24 +47,24 @@ let SharingNodeRepoTransBlockDao = class SharingNodeRepoTransBlockDao extends ge
         return await this.db.updateWhere({
             update: snrtb = generated_1.Q.SharingNodeRepoTransBlock,
             set: {
-                syncOutcomeType: air_control_1.field({
+                syncStatus: air_control_1.field({
                     from: [
                         snrtbs = generated_1.Q.SharingNodeRepoTransBlockStage
                     ],
-                    select: snrtbs.syncOutcomeType,
+                    select: snrtbs.syncStatus,
                     where: LogicalOperation_1.and(snrtbs.sharingNodeId.equals(snrtb.sharingNode.id), snrtbs.repositoryTransactionBlockId.equals(snrtb.repositoryTransactionBlock.id))
                 })
             }
         });
     }
-    async updateBlockSyncStatus(sharingNodeIds, repoTransBlockIds, existingBlockSyncStatus, newBlockSyncStatus) {
+    async updateBlockSyncStatus(sharingNodeIds, repoTransBlockIds, existingSyncStatus, newSyncStatus) {
         let snrtb;
         await this.db.updateWhere({
             update: snrtb = generated_1.Q.SharingNodeRepoTransBlock,
             set: {
-                blockSyncStatus: newBlockSyncStatus
+                syncStatus: newSyncStatus
             },
-            where: LogicalOperation_1.and(snrtb.blockSyncStatus.equals(existingBlockSyncStatus), snrtb.sharingNode.id.in(sharingNodeIds), snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds))
+            where: LogicalOperation_1.and(snrtb.syncStatus.equals(existingSyncStatus), snrtb.sharingNode.id.in(sharingNodeIds), snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds))
         });
     }
     async insertValues(values) {
@@ -75,15 +75,15 @@ let SharingNodeRepoTransBlockDao = class SharingNodeRepoTransBlockDao extends ge
             columns: [
                 snrtb.sharingNode.id,
                 snrtb.repositoryTransactionBlock.id,
-                snrtb.syncTimestamp,
-                snrtb.syncOutcomeType,
-                snrtb.origin,
-                snrtb.blockSyncStatus
+                // snrtb.syncTimestamp,
+                // snrtb.syncOutcomeType,
+                // snrtb.origin,
+                snrtb.syncStatus
             ],
             values
         });
     }
-    async getForSharingNodeIdsAndBlockStatus(sharingNodeIds, blockSyncStatus) {
+    async getForSharingNodeIdsAndBlockStatus(sharingNodeIds, syncStatus) {
         const repoTransBlocksBySharingNodeId = new Map();
         const repositoryTransactionBlockIds = new Set();
         let snrtb;
@@ -95,7 +95,7 @@ let SharingNodeRepoTransBlockDao = class SharingNodeRepoTransBlockDao extends ge
                 snrtb.sharingNode.id,
                 snrtb.repositoryTransactionBlock.id
             ],
-            where: LogicalOperation_1.and(snrtb.blockSyncStatus.equals(blockSyncStatus), snrtb.sharingNode.id.in(sharingNodeIds))
+            where: LogicalOperation_1.and(snrtb.syncStatus.equals(syncStatus), snrtb.sharingNode.id.in(sharingNodeIds))
         });
         for (const record of records) {
             const sharingNodeRepoTransBlockId = record[1];

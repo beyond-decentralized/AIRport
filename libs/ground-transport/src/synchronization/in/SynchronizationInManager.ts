@@ -3,7 +3,7 @@ import {
 	MessageToTM,
 	MessageToTMContentType,
 	RepoTransBlockMessageToTM,
-	RepoTransBlockSyncOutcome,
+	RepoTransBlockSyncStatus,
 	SyncNotificationMessageToTM,
 	TmSharingMessageId
 }                                       from "@airport/arrivals-n-departures";
@@ -39,7 +39,7 @@ import {ITwoStageSyncedInDataProcessor} from "./TwoStageSyncedInDataProcessor";
  */
 export interface ISyncLogToTM {
 	// agtTerminalSyncLogId: AgtTerminalSyncLogId;
-	outcomes: RepoTransBlockSyncOutcome[];
+	outcomes: RepoTransBlockSyncStatus[];
 	sharingNode: ISharingNode;
 	// syncDatetime: AgtSyncRecordAddDatetime;
 	tmSharingMessageId: TmSharingMessageId;

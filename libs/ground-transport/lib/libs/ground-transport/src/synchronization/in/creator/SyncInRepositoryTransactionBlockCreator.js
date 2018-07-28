@@ -20,8 +20,10 @@ const typedi_1 = require("typedi");
 const lib_1 = require("zipson/lib");
 const InjectionTokens_1 = require("../../../InjectionTokens");
 let SyncInRepositoryTransactionBlockCreator = class SyncInRepositoryTransactionBlockCreator {
-    constructor(repositoryTransactionBlockDao) {
+    constructor(repositoryTransactionBlockDao, missingRecordRepoTransBlockDao, sharingMessageRepoTransBlockDao) {
         this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
+        this.missingRecordRepoTransBlockDao = missingRecordRepoTransBlockDao;
+        this.sharingMessageRepoTransBlockDao = sharingMessageRepoTransBlockDao;
     }
     async createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas, dataMessagesWithIncompatibleData, dataMessagesToBeUpgraded, dataMessagesWithCompatibleSchemasAndData, dataMessagesWithInvalidData) {
         let allRepositoryTransactionBlocks = [];
@@ -36,6 +38,13 @@ let SyncInRepositoryTransactionBlockCreator = class SyncInRepositoryTransactionB
         const repoTransBlocksWithValidDataAndSchemas = this.createRepositoryTransactionBlocks(dataMessagesWithCompatibleSchemasAndData, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_SUCCESSFUL);
         allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksWithValidDataAndSchemas);
         await this.repositoryTransactionBlockDao.bulkCreate(allRepositoryTransactionBlocks, false, false);
+        let allDataToTM = [];
+        allDataToTM = allDataToTM.concat(dataMessagesWithIncompatibleSchemas);
+        allDataToTM = allDataToTM.concat(dataMessagesWithIncompatibleData);
+        allDataToTM = allDataToTM.concat(dataMessagesToBeUpgraded);
+        allDataToTM = allDataToTM.concat(dataMessagesWithCompatibleSchemasAndData);
+        allDataToTM = allDataToTM.concat(dataMessagesWithInvalidData);
+        return allDataToTM;
     }
     createRepositoryTransactionBlocks(dataMessages, syncOutcomeType, recordContents = false) {
         const repositoryTransactionBlocks = [];
@@ -53,8 +62,20 @@ let SyncInRepositoryTransactionBlockCreator = class SyncInRepositoryTransactionB
         }
         return repositoryTransactionBlocks;
     }
-    missingRecordRepoTransBlocks(missingRecordDataToTMs) {
-        const missingRecordRepoTransBlocks = ;
+    async createMissingRecordRepoTransBlocks(missingRecordDataToTMs) {
+        const missingRecordRepoTransBlocks = missingRecordDataToTMs.map(missingRecordDataToTM => ({
+            missingRecord: missingRecordDataToTM.missingRecord,
+            repositoryTransactionBlock: missingRecordDataToTM
+                .dataMessage.repositoryTransactionBlock
+        }));
+        await this.missingRecordRepoTransBlockDao.bulkCreate(missingRecordRepoTransBlocks, false, false);
+    }
+    async createSharingMessageRepoTransBlocks(allDataToTM) {
+        const sharingMessageRepoTransBlocks = allDataToTM.map(dataToTM => ({
+            sharingMessage: dataToTM.sharingMessage,
+            repositoryTransactionBlock: dataToTM.repositoryTransactionBlock
+        }));
+        await this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
     }
     async recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById) {
         const repoTransHistoryMapByRepositoryId = await this.getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
@@ -108,7 +129,9 @@ let SyncInRepositoryTransactionBlockCreator = class SyncInRepositoryTransactionB
 SyncInRepositoryTransactionBlockCreator = __decorate([
     typedi_1.Service(InjectionTokens_1.SyncInRepositoryTransactionBlockCreatorToken),
     __param(0, typedi_1.Inject(moving_walkway_1.RepositoryTransactionBlockDaoToken)),
-    __metadata("design:paramtypes", [Object])
+    __param(1, typedi_1.Inject(moving_walkway_1.MissingRecordRepoTransBlockDaoToken)),
+    __param(2, typedi_1.Inject(moving_walkway_1.SharingMessageRepoTransBlockDaoToken)),
+    __metadata("design:paramtypes", [Object, Object, Object])
 ], SyncInRepositoryTransactionBlockCreator);
 exports.SyncInRepositoryTransactionBlockCreator = SyncInRepositoryTransactionBlockCreator;
 //# sourceMappingURL=SyncInRepositoryTransactionBlockCreator.js.map

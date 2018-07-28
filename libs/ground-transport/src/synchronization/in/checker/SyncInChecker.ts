@@ -184,8 +184,13 @@ export class SyncInChecker
 				dataMessagesWithInvalidData
 			);
 
+		const allDataToTM = await this.syncInRepositoryTransactionBlockCreator
+			.createMissingRecordRepoTransBlocks(
+				missingRecordDataToTMs
+			);
 
-		await this.recordAllSharingMessageRepoTransBlocks();
+		await this.syncInRepositoryTransactionBlockCreator
+			.createSharingMessageRepoTransBlocks(allDataToTM);
 		await this.recordAllSharingNodeRepoTransBlocks();
 
 		const sharingMessagesWithCompatibleSchemasAndData = await this.recordSharingMessages(

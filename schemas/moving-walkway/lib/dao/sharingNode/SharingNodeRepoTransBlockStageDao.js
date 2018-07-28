@@ -31,7 +31,7 @@ let SharingNodeRepoTransBlockStageDao = class SharingNodeRepoTransBlockStageDao 
                 snrtbs.sharingNodeId,
                 snrtbs.repositoryTransactionBlockId,
                 // snrtbs.syncStatus,
-                snrtbs.syncOutcomeType
+                snrtbs.syncStatus
             ],
             values
         });

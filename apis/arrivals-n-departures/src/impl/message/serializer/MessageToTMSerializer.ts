@@ -8,10 +8,10 @@ import {
 	SerializedBatchedMessagesToTM,
 	SerializedMessageToTM,
 	SerializedRepoTransBlockMessageToTM,
-	SerializedRepoTransBlockSyncOutcome,
+	SerializedRepoTransBlockSyncStatus,
 	SerializedSyncNotificationMessageToTM
 }                                   from "../../../lingo/lingo";
-import {RepoTransBlockSyncOutcome}  from "../../../lingo/message/MessageToTM";
+import {RepoTransBlockSyncStatus}   from "../../../lingo/message/MessageToTM";
 
 export interface IMessageToTMSerializer {
 
@@ -90,14 +90,14 @@ export class MessageToTMSerializer
 	}
 
 	private serializeSyncOutcomes(
-		syncOutcomes: RepoTransBlockSyncOutcome[]
-	): SerializedRepoTransBlockSyncOutcome[] {
+		syncOutcomes: RepoTransBlockSyncStatus[]
+	): SerializedRepoTransBlockSyncStatus[] {
 		return syncOutcomes.map((
 			syncOutcome
-		) => <SerializedRepoTransBlockSyncOutcome>[
+		) => <SerializedRepoTransBlockSyncStatus>[
 			syncOutcome.tmRepositoryTransactionBlockId,
 			// syncOutcome.agtRepositoryTransactionBlockId,
-			syncOutcome.syncOutcomeType
+			syncOutcome.syncStatus
 		]);
 	}
 

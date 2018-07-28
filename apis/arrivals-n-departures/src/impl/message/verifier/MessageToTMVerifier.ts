@@ -1,15 +1,15 @@
 import {Service}                       from "typedi";
 import {MessageToTMVerifierToken}      from "../../../InjectionTokens";
 import {
-	TerminalId,
 	MessageToTMContentType,
 	MessageToTMError,
-	RepoTransBlockSyncOutcomeType,
 	SerializedBatchedMessagesToTM,
 	SerializedMessageToTM,
 	SerializedRepoTransBlockMessageToTM,
-	SerializedRepoTransBlockSyncOutcome,
-	SerializedSyncNotificationMessageToTM
+	SerializedRepoTransBlockSyncStatus,
+	SerializedSyncNotificationMessageToTM,
+	SharingNodeRepoTransBlockSyncStatus,
+	TerminalId
 }                                      from "../../../lingo/lingo";
 import {AbstractCommonMessageVerifier} from "./AbstractCommonMessageVerifier";
 
@@ -152,7 +152,7 @@ export class MessageToTMVerifier
 		// }
 		let error;
 		message[2].some((
-			syncOutcome: SerializedRepoTransBlockSyncOutcome,
+			syncOutcome: SerializedRepoTransBlockSyncStatus,
 			syncOutcomeIndex
 		) => {
 			if (typeof syncOutcome[0] !== 'number') {
@@ -166,9 +166,11 @@ export class MessageToTMVerifier
 				return true;
 			}
 			switch (syncOutcome[2]) {
-				case RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_ALREADY_SYNCED:
-				case RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_DENIED_NO_WRITE_PERMISSION:
-				case RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_SUCCESSFUL:
+				case SharingNodeRepoTransBlockSyncStatus.AGT_STATUS_RTB_ALREADY_SYNCED:
+				case SharingNodeRepoTransBlockSyncStatus.AGT_STATUS_RTB_SYNC_DENIED_NO_WRITE_PERMISSION:
+				case SharingNodeRepoTransBlockSyncStatus.AGT_STATUS_RTB_SYNC_DENIED_DATABASE_NOT_FOUND:
+				case SharingNodeRepoTransBlockSyncStatus.AGT_STATUS_RTB_SYNC_DENIED_REPOSITORY_NOT_FOUND:
+				case SharingNodeRepoTransBlockSyncStatus.AGT_STATUS_RTB_SYNC_SUCCESSFUL:
 					break;
 				default:
 					error = [MessageToTMError.WRONG_REPO_TRANS_BLOCK_SYNC_OUTCOME_TYPE,

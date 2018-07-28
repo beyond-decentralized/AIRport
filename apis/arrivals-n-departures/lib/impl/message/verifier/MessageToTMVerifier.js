@@ -113,9 +113,11 @@ let MessageToTMVerifier = class MessageToTMVerifier extends AbstractCommonMessag
                 return true;
             }
             switch (syncOutcome[2]) {
-                case lingo_1.RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_ALREADY_SYNCED:
-                case lingo_1.RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_DENIED_NO_WRITE_PERMISSION:
-                case lingo_1.RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_SUCCESSFUL:
+                case lingo_1.SharingNodeRepoTransBlockSyncStatus.AGT_STATUS_RTB_ALREADY_SYNCED:
+                case lingo_1.SharingNodeRepoTransBlockSyncStatus.AGT_STATUS_RTB_SYNC_DENIED_NO_WRITE_PERMISSION:
+                case lingo_1.SharingNodeRepoTransBlockSyncStatus.AGT_STATUS_RTB_SYNC_DENIED_DATABASE_NOT_FOUND:
+                case lingo_1.SharingNodeRepoTransBlockSyncStatus.AGT_STATUS_RTB_SYNC_DENIED_REPOSITORY_NOT_FOUND:
+                case lingo_1.SharingNodeRepoTransBlockSyncStatus.AGT_STATUS_RTB_SYNC_SUCCESSFUL:
                     break;
                 default:
                     error = [lingo_1.MessageToTMError.WRONG_REPO_TRANS_BLOCK_SYNC_OUTCOME_TYPE,

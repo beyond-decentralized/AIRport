@@ -1227,52 +1227,16 @@ exports.SCHEMA = {
                             "index": 0,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "SYNC_TIMESTAMP",
+                            "name": "SYNC_STATUS",
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
-                            "type": 2
+                            "type": 4
                         },
                         {
                             "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "SYNC_OUTCOME_TYPE",
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ORIGIN",
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "BLOCK_SYNC_STATUS",
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 4,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -1291,7 +1255,7 @@ exports.SCHEMA = {
                             "type": 4
                         },
                         {
-                            "index": 5,
+                            "index": 2,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
@@ -1312,10 +1276,10 @@ exports.SCHEMA = {
                     ],
                     "idColumnRefs": [
                         {
-                            "index": 4
+                            "index": 1
                         },
                         {
-                            "index": 5
+                            "index": 2
                         }
                     ],
                     "index": 9,
@@ -1345,31 +1309,7 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "syncTimestamp"
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 3,
-                            "isId": false,
-                            "name": "syncOutcomeType"
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "origin"
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 5,
-                            "isId": false,
-                            "name": "blockSyncStatus"
+                            "name": "syncStatus"
                         }
                     ],
                     "relations": [
@@ -1606,7 +1546,7 @@ exports.SCHEMA = {
                             "index": 2,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "SYNC_OUTCOME_TYPE",
+                            "name": "SYNC_STATUS",
                             "propertyRefs": [
                                 {
                                     "index": 2
@@ -1650,7 +1590,7 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "syncOutcomeType"
+                            "name": "syncStatus"
                         }
                     ],
                     "relations": [],

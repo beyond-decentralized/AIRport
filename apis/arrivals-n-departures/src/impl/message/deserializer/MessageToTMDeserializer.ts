@@ -4,14 +4,14 @@ import {
 	BatchedMessagesToTM,
 	MessageToTM,
 	RepoTransBlockMessageToTM,
-	RepoTransBlockSyncOutcome,
+	RepoTransBlockSyncStatus,
 	SyncNotificationMessageToTM
 }                                     from "../../../lingo/message/MessageToTM";
 import {MessageToTMContentType}       from "../../../lingo/message/MessageTypes";
 import {
 	SerializedBatchedMessagesToTM,
 	SerializedMessageToTM,
-	SerializedRepoTransBlockSyncOutcome,
+	SerializedRepoTransBlockSyncStatus,
 	SerializedSyncNotificationMessageToTM
 }                                     from "../../../lingo/message/SerializedMessageToTM";
 
@@ -62,7 +62,7 @@ export class MessageToTMDeserializer
 				};
 			}
 			case MessageToTMContentType.SYNC_NOTIFICATION: {
-				const syncOutcomes: RepoTransBlockSyncOutcome[] = this.deserializeSyncOutcomes(
+				const syncOutcomes: RepoTransBlockSyncStatus[] = this.deserializeSyncOutcomes(
 					(<SerializedSyncNotificationMessageToTM>serializedMessageToTM)[2]);
 				return <SyncNotificationMessageToTM>{
 					contentType,
@@ -87,14 +87,14 @@ export class MessageToTMDeserializer
 	}
 
 	private deserializeSyncOutcomes(
-		serializedRepoTransBlockSyncOutcome: SerializedRepoTransBlockSyncOutcome[]
-	): RepoTransBlockSyncOutcome[] {
+		serializedRepoTransBlockSyncOutcome: SerializedRepoTransBlockSyncStatus[]
+	): RepoTransBlockSyncStatus[] {
 		return serializedRepoTransBlockSyncOutcome.map((
-			serializedSyncOutcome: SerializedRepoTransBlockSyncOutcome
-		) => (<RepoTransBlockSyncOutcome>{
+			serializedSyncOutcome: SerializedRepoTransBlockSyncStatus
+		) => (<RepoTransBlockSyncStatus>{
 			tmRepositoryTransactionBlockId: serializedSyncOutcome[0],
 			agtRepositoryTransactionBlockId: serializedSyncOutcome[1],
-			syncOutcomeType: serializedSyncOutcome[2],
+			syncStatus: serializedSyncOutcome[2],
 		}));
 	}
 

@@ -26,10 +26,10 @@ __decorate([
     __metadata("design:type", Number)
 ], SharingNodeRepoTransBlockStage.prototype, "repositoryTransactionBlockId", void 0);
 __decorate([
-    ColumnDecorators_1.Column({ name: "SYNC_OUTCOME_TYPE" }),
+    ColumnDecorators_1.Column({ name: "SYNC_STATUS" }),
     ColumnDecorators_1.DbNumber(),
     __metadata("design:type", Number)
-], SharingNodeRepoTransBlockStage.prototype, "syncOutcomeType", void 0);
+], SharingNodeRepoTransBlockStage.prototype, "syncStatus", void 0);
 SharingNodeRepoTransBlockStage = __decorate([
     EntityDecorators_1.Entity(),
     EntityDecorators_1.Table({ name: "SHARING_NODE_REPO_TRANS_BLOCK_STAGE" })

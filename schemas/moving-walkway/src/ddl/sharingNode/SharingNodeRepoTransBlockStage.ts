@@ -2,12 +2,15 @@ import {
 	Column,
 	DbNumber,
 	Id
-} from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
-import {Entity, Table} from "@airport/air-control/lib/impl/core/entity/metadata/EntityDecorators";
+}                      from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
 import {
-	RepoTransBlockSyncOutcomeType,
+	Entity,
+	Table
+}                      from "@airport/air-control/lib/impl/core/entity/metadata/EntityDecorators";
+import {
+	SharingNodeRepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
-} from "@airport/arrivals-n-departures";
+}                      from "@airport/arrivals-n-departures";
 import {SharingNodeId} from "./SharingNode";
 
 @Entity()
@@ -23,8 +26,8 @@ export class SharingNodeRepoTransBlockStage {
 	@DbNumber()
 	repositoryTransactionBlockId: TmRepositoryTransactionBlockId;
 
-	@Column({name: "SYNC_OUTCOME_TYPE"})
+	@Column({name: "SYNC_STATUS"})
 	@DbNumber()
-	syncOutcomeType: RepoTransBlockSyncOutcomeType;
+	syncStatus: SharingNodeRepoTransBlockSyncStatus;
 
 }
