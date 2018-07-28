@@ -2,61 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e505d429-fcee-401d-86af-c0b532a450ae" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/impl/message/deserializer/MessageToTMDeserializer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/impl/message/deserializer/MessageToTMDeserializer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/impl/message/deserializer/MessageToTMDeserializer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/impl/message/deserializer/MessageToTMDeserializer.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/impl/message/serializer/MessageToTMSerializer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/impl/message/serializer/MessageToTMSerializer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/impl/message/serializer/MessageToTMSerializer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/impl/message/serializer/MessageToTMSerializer.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/impl/message/verifier/MessageToTMVerifier.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/impl/message/verifier/MessageToTMVerifier.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/impl/message/verifier/MessageToTMVerifier.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/impl/message/verifier/MessageToTMVerifier.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/message/MessageToTM.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/message/MessageToTM.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/message/MessageTypes.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/message/MessageTypes.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/message/MessageTypes.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/message/MessageTypes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/message/MessageTypes.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/message/MessageTypes.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/message/SerializedMessageToTM.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/message/SerializedMessageToTM.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/impl/message/deserializer/MessageToTMDeserializer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/impl/message/deserializer/MessageToTMDeserializer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/impl/message/serializer/MessageToTMSerializer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/impl/message/serializer/MessageToTMSerializer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/impl/message/verifier/MessageToTMVerifier.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/impl/message/verifier/MessageToTMVerifier.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/message/MessageToTM.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/message/MessageToTM.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/message/MessageTypes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/message/MessageTypes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/message/SerializedMessageToTM.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/message/SerializedMessageToTM.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/SyncLogMessageProcessor.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/SyncLogMessageProcessor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/SyncLogMessageProcessor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/SyncLogMessageProcessor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/checker/SyncInChecker.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/checker/SyncInChecker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/checker/SyncInChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/checker/SyncInChecker.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/synchronization/in/SyncLogMessageProcessor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/synchronization/in/SyncLogMessageProcessor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/synchronization/in/SynchronizationInManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/synchronization/in/SynchronizationInManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/synchronization/in/checker/SyncInChecker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/synchronization/in/checker/SyncInChecker.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockDao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockStageDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockStageDao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockStageDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockStageDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockStageDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/dao/sharingNode/SharingNodeRepoTransBlockStageDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingNode/SharingNodeRepoTransBlock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingNode/SharingNodeRepoTransBlock.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingNode/SharingNodeRepoTransBlock.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingNode/SharingNodeRepoTransBlock.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingNode/SharingNodeRepoTransBlock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingNode/SharingNodeRepoTransBlock.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingNode/SharingNodeRepoTransBlockStage.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingNode/SharingNodeRepoTransBlockStage.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingNode/SharingNodeRepoTransBlockStage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingNode/SharingNodeRepoTransBlockStage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingNode/SharingNodeRepoTransBlockStage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/ddl/sharingNode/SharingNodeRepoTransBlockStage.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/schema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/schema.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/sharingNode/qsharingnoderepotransblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/sharingNode/qsharingnoderepotransblock.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/sharingNode/qsharingnoderepotransblockstage.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/lib/generated/sharingNode/qsharingnoderepotransblockstage.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/sharingNode/SharingNodeRepoTransBlockDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/sharingNode/SharingNodeRepoTransBlockDao.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/sharingNode/SharingNodeRepoTransBlockStageDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/dao/sharingNode/SharingNodeRepoTransBlockStageDao.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/ddl/sharingNode/SharingNodeRepoTransBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/ddl/sharingNode/SharingNodeRepoTransBlock.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/ddl/sharingNode/SharingNodeRepoTransBlockStage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/ddl/sharingNode/SharingNodeRepoTransBlockStage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/generated/schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/generated/sharingNode/qsharingnoderepotransblock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/generated/sharingNode/qsharingnoderepotransblock.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/src/generated/sharingNode/qsharingnoderepotransblockstage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/src/generated/sharingNode/qsharingnoderepotransblockstage.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/lib/" />
@@ -139,25 +86,13 @@
                     </provider>
                   </entry>
                 </file>
-                <file pinned="false" current-in-tab="false">
+                <file pinned="false" current-in-tab="true">
                   <entry file="file://$PROJECT_DIR$/src/synchronization/in/checker/SyncInDataChecker.ts">
                     <provider selected="true" editor-type-id="text-editor">
                       <state relative-caret-position="343">
                         <caret line="159" column="12" selection-start-line="159" selection-start-column="12" selection-end-line="159" selection-end-column="12" />
                         <folding>
                           <element signature="e#0#108#0" expanded="true" />
-                        </folding>
-                      </state>
-                    </provider>
-                  </entry>
-                </file>
-                <file pinned="false" current-in-tab="true">
-                  <entry file="file://$PROJECT_DIR$/src/synchronization/in/SyncLogMessageProcessor.ts">
-                    <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="286">
-                        <caret line="107" column="71" selection-start-line="107" selection-start-column="48" selection-end-line="107" selection-end-column="71" />
-                        <folding>
-                          <element signature="e#0#103#0" expanded="true" />
                         </folding>
                       </state>
                     </provider>
@@ -176,25 +111,13 @@
                     </provider>
                   </entry>
                 </file>
-                <file pinned="false" current-in-tab="false">
+                <file pinned="false" current-in-tab="true">
                   <entry file="file://$PROJECT_DIR$/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.ts">
                     <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="247">
-                        <caret line="60" column="48" selection-start-line="60" selection-start-column="48" selection-end-line="60" selection-end-column="48" />
+                      <state relative-caret-position="152">
+                        <caret line="55" column="29" lean-forward="true" selection-start-line="55" selection-start-column="13" selection-end-line="55" selection-end-column="53" />
                         <folding>
                           <element signature="e#0#92#0" expanded="true" />
-                        </folding>
-                      </state>
-                    </provider>
-                  </entry>
-                </file>
-                <file pinned="false" current-in-tab="true">
-                  <entry file="file://$PROJECT_DIR$/src/synchronization/in/SyncLogMessageProcessor.ts">
-                    <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="628">
-                        <caret line="190" column="35" selection-start-line="190" selection-start-column="10" selection-end-line="190" selection-end-column="35" />
-                        <folding>
-                          <element signature="e#0#103#0" expanded="true" />
                         </folding>
                       </state>
                     </provider>
@@ -224,24 +147,24 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="ts" value="108" />
+          <entry key="ts" value="109" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="TypeScript" value="108" />
+          <entry key="TypeScript" value="109" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="34" />
-          <entry key="ts" value="3402" />
+          <entry key="ts" value="3413" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="34" />
-          <entry key="TypeScript" value="3402" />
+          <entry key="TypeScript" value="3413" />
         </counts>
       </usages-collector>
     </session>
@@ -268,11 +191,20 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/synchronization/in/SynchronizationInManager.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="175">
-                  <caret line="201" column="10" selection-start-line="201" selection-start-column="10" selection-end-line="201" selection-end-column="10" />
+                <state relative-caret-position="327">
+                  <caret line="209" column="61" selection-start-line="209" selection-start-column="45" selection-end-line="209" selection-end-column="61" />
                   <folding>
                     <element signature="e#0#253#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/synchronization/in/checker/SyncInRepositoryChecker.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="190">
+                  <caret line="26" column="2" selection-start-line="26" selection-start-column="2" selection-end-line="26" selection-end-column="2" />
                 </state>
               </provider>
             </entry>
@@ -323,11 +255,11 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/synchronization/in/TwoStageSyncedInDataProcessor.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="195">
-                  <caret line="134" column="53" selection-start-line="134" selection-start-column="53" selection-end-line="134" selection-end-column="53" />
+                <state relative-caret-position="185">
+                  <caret line="116" column="24" selection-start-line="116" selection-start-column="8" selection-end-line="116" selection-end-column="24" />
                   <folding>
                     <element signature="e#0#96#0" expanded="true" />
                   </folding>
@@ -347,22 +279,10 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/synchronization/in/checker/SyncInChecker.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="461">
-                  <caret line="192" column="54" selection-start-line="192" selection-start-column="54" selection-end-line="192" selection-end-column="54" />
+                <state relative-caret-position="252">
+                  <caret line="190" lean-forward="true" selection-start-line="190" selection-end-line="190" />
                   <folding>
                     <element signature="e#0#113#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/synchronization/in/SyncLogMessageProcessor.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="356">
-                  <caret line="94" column="49" lean-forward="true" selection-start-line="94" selection-start-column="49" selection-end-line="94" selection-end-column="49" />
-                  <folding>
-                    <element signature="e#0#103#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -381,9 +301,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>PromiseHttp</find>
-      <find>new Logger</find>
-      <find>IAirportTerminal</find>
       <find>AirportTerminalToken</find>
       <find>rxjs/Su</find>
       <find>.map</find>
@@ -409,8 +326,11 @@
       <find>getExistingRepoTransBlocksWithCompatibleSchemasAndData</find>
       <find>updateBlockSyncStatus</find>
       <find>sharingNodeRepoTransBlockStageDao</find>
-      <find>RepoTransBlockSyncOutcome</find>
+      <find>updateExistingSharingNodeRepoTransBlocks</find>
       <find>updateFromResponseStage</find>
+      <find>generateSyncLogDataStructures</find>
+      <find>RepoTransBlockSyncOutcome</find>
+      <find>syncDataMessages</find>
     </findStrings>
     <replaceStrings>
       <replace>terminalCredentials</replace>
@@ -606,12 +526,12 @@
       <workItem from="1532440982801" duration="53000" />
       <workItem from="1532441065881" duration="3336000" />
       <workItem from="1532523904762" duration="10486000" />
-      <workItem from="1532696856894" duration="12711000" />
+      <workItem from="1532696856894" duration="15417000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53299000" />
+    <option name="totallyTimeSpent" value="56005000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
@@ -909,27 +829,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/synchronization/in/checker/SyncInRepositoryChecker.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="66" column="53" selection-start-line="66" selection-start-column="53" selection-end-line="66" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/synchronization/in/checker/SyncInActorChecker.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
           <caret line="39" column="2" selection-start-line="39" selection-start-column="2" selection-end-line="39" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/synchronization/in/TwoStageSyncedInDataProcessor.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="134" column="53" selection-start-line="134" selection-start-column="53" selection-end-line="134" selection-end-column="53" />
-          <folding>
-            <element signature="e#0#96#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -988,26 +891,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/synchronization/in/checker/SyncInDataChecker.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="159" column="12" selection-start-line="159" selection-start-column="12" selection-end-line="159" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#108#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/synchronization/in/checker/SyncInChecker.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="461">
-          <caret line="192" column="54" selection-start-line="192" selection-start-column="54" selection-end-line="192" selection-end-column="54" />
-          <folding>
-            <element signature="e#0#113#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/@airport/arrivals-n-departures/lib/lingo/message/MessageTypes.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
@@ -1029,6 +912,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/arrivals-n-departures/lib/lingo/message/MessageToTM.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="21" column="1" lean-forward="true" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/synchronization/in/checker/SyncInChecker.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="190" lean-forward="true" selection-start-line="190" selection-end-line="190" />
+          <folding>
+            <element signature="e#0#113#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/synchronization/in/SyncLogMessageProcessor.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="70" column="29" selection-start-line="70" selection-start-column="8" selection-end-line="70" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#96#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/synchronization/in/checker/SyncInDataChecker.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="159" column="12" selection-start-line="159" selection-start-column="12" selection-end-line="159" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#108#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="380">
@@ -1039,29 +959,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/@airport/arrivals-n-departures/lib/lingo/message/MessageToTM.d.ts">
+    <entry file="file://$PROJECT_DIR$/src/synchronization/in/checker/SyncInRepositoryChecker.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="21" column="1" lean-forward="true" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
+        <state relative-caret-position="190">
+          <caret line="26" column="2" selection-start-line="26" selection-start-column="2" selection-end-line="26" selection-end-column="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/synchronization/in/SynchronizationInManager.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="201" column="10" selection-start-line="201" selection-start-column="10" selection-end-line="201" selection-end-column="10" />
+        <state relative-caret-position="327">
+          <caret line="209" column="61" selection-start-line="209" selection-start-column="45" selection-end-line="209" selection-end-column="61" />
           <folding>
             <element signature="e#0#253#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/synchronization/in/SyncLogMessageProcessor.ts">
+    <entry file="file://$PROJECT_DIR$/src/synchronization/in/TwoStageSyncedInDataProcessor.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="356">
-          <caret line="94" column="49" lean-forward="true" selection-start-line="94" selection-start-column="49" selection-end-line="94" selection-end-column="49" />
+        <state relative-caret-position="185">
+          <caret line="116" column="24" selection-start-line="116" selection-start-column="8" selection-end-line="116" selection-end-column="24" />
           <folding>
-            <element signature="e#0#103#0" expanded="true" />
+            <element signature="e#0#96#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -13,7 +13,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const ground_control_1 = require("@airport/ground-control");
 const moving_walkway_1 = require("@airport/moving-walkway");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../../InjectionTokens");
@@ -46,9 +45,18 @@ let SyncLogMessageProcessor = class SyncLogMessageProcessor {
         sharingNodeIdSet } = this.generateSyncLogDataStructures(syncLogMessages);
         // All of the SharingNodeRepoTransBlocks should already exist
         // They were created on the sync out to AGT
-        await this.updateExistingSharingNodeRepoTransBlocks(sharingNodeIdSet, repoTransBlockIdSet, repoTransBlockSyncOutcomeMapBySharingNodeId);
-        // If for some reason they don't insert them
-        await this.insertNewSharingNodeRepoTransBlocks(repoTransBlockSyncOutcomeMapBySharingNodeId);
+        // await this.updateExistingSharingNodeRepoTransBlocks(
+        // 	sharingNodeIdSet,
+        // 	repoTransBlockIdSet,
+        // 	repoTransBlockSyncOutcomeMapBySharingNodeId
+        // );
+        await this.sharingNodeRepoTransBlockStageDao
+            .insertValues(sharingNodeRepoTransBlockStageValues);
+        await this.sharingNodeRepoTransBlockDao.updateFromResponseStage();
+        await this.sharingNodeRepoTransBlockStageDao.delete();
+        // // If for some reason they don't insert them
+        // await this.insertNewSharingNodeRepoTransBlocks(
+        // 	repoTransBlockSyncOutcomeMapBySharingNodeId);
         // Update SharingMessages with data from AGT
         // await this.sharingMessageResponseStageDao.insertValues(sharingMessageResponseStageValues);
         // await this.sharingMessageDao.updateFromResponseStage();
@@ -95,26 +103,41 @@ let SyncLogMessageProcessor = class SyncLogMessageProcessor {
             sharingNodeIdSet
         };
     }
-    async updateExistingSharingNodeRepoTransBlocks(sharingNodeIdSet, repoTransBlockIdSet, repoTransBlockSyncOutcomeMapBySharingNodeId) {
-        const existingSharingNodeRepoTransBlockMap = await this.sharingNodeRepoTransBlockDao
-            .findMapBySharingNodeIdWhereSharingNodeIdInAndRepoTransBlockIdIn(Array.from(sharingNodeIdSet), Array.from(repoTransBlockIdSet));
-        const sharingNodeTransBlockStageValues = [];
-        for (const [sharingNodeId, repoTransBlocksForSharingNodeById] of existingSharingNodeRepoTransBlockMap) {
-            const repoTransBlockSyncOutcomesForSharingNodeId = repoTransBlockSyncOutcomeMapBySharingNodeId.get(sharingNodeId);
-            for (const [tmRepositoryTransactionBlockId, repositoryTransactionBlock] of repoTransBlocksForSharingNodeById) {
-                const repoTransBlockSyncOutcome = repoTransBlockSyncOutcomesForSharingNodeId.get(tmRepositoryTransactionBlockId);
-                repoTransBlockSyncOutcomesForSharingNodeId.delete(tmRepositoryTransactionBlockId);
-                sharingNodeTransBlockStageValues.push([
-                    sharingNodeId,
-                    tmRepositoryTransactionBlockId,
-                    repoTransBlockSyncOutcome.syncOutcomeType
-                ]);
-            }
-        }
-        await this.sharingNodeRepoTransBlockStageDao.insertValues(sharingNodeTransBlockStageValues);
-        await this.sharingNodeRepoTransBlockDao.updateFromResponseStage();
-        await this.sharingNodeRepoTransBlockStageDao.delete();
-    }
+    // private async updateExistingSharingNodeRepoTransBlocks(
+    // 	sharingNodeIdSet: Set<SharingNodeId>,
+    // 	repoTransBlockIdSet: Set<TmRepositoryTransactionBlockId>,
+    // 	repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNodeId,
+    // 		Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncStatus>>
+    // ): Promise<void> {
+    // 	const existingSharingNodeRepoTransBlockMap = await this.sharingNodeRepoTransBlockDao
+    // 		.findMapBySharingNodeIdWhereSharingNodeIdInAndRepoTransBlockIdIn(
+    // 			Array.from(sharingNodeIdSet), Array.from(repoTransBlockIdSet)
+    // 		);
+    //
+    // 	const sharingNodeTransBlockStageValues: SharingNodeRepoTransBlockStageValues[] = [];
+    //
+    // 	for (const [sharingNodeId, repoTransBlocksForSharingNodeById]
+    // 		of existingSharingNodeRepoTransBlockMap) {
+    // 		const repoTransBlockSyncOutcomesForSharingNodeId
+    // 			= repoTransBlockSyncOutcomeMapBySharingNodeId.get(sharingNodeId);
+    // 		for (const [tmRepositoryTransactionBlockId, repositoryTransactionBlock]
+    // 			of repoTransBlocksForSharingNodeById) {
+    // 			const repoTransBlockSyncOutcome
+    // 				= repoTransBlockSyncOutcomesForSharingNodeId.get(tmRepositoryTransactionBlockId);
+    // 			repoTransBlockSyncOutcomesForSharingNodeId.delete(tmRepositoryTransactionBlockId);
+    //
+    // 			sharingNodeTransBlockStageValues.push([
+    // 				sharingNodeId,
+    // 				tmRepositoryTransactionBlockId,
+    // 				repoTransBlockSyncOutcome.syncOutcomeType
+    // 			]);
+    // 		}
+    // 	}
+    //
+    // 	await this.sharingNodeRepoTransBlockStageDao.insertValues(sharingNodeTransBlockStageValues);
+    // 	await this.sharingNodeRepoTransBlockDao.updateFromResponseStage();
+    // 	await this.sharingNodeRepoTransBlockStageDao.delete();
+    // }
     async insertNewSharingNodeRepoTransBlocks(repoTransBlockSyncOutcomeMapBySharingNodeId) {
         const sharingNodeTransBlockValues = [];
         const sharingMessageSyncTimestamp = new Date();
@@ -123,10 +146,8 @@ let SyncLogMessageProcessor = class SyncLogMessageProcessor {
                 sharingNodeTransBlockValues.push([
                     sharingNodeId,
                     tmRepositoryTransactionBlockId,
-                    sharingMessageSyncTimestamp,
-                    repoTransBlockSyncOutcome.syncOutcomeType,
-                    moving_walkway_1.DataOrigin.LOCAL,
-                    ground_control_1.BlockSyncStatus.SYNCHRONIZED
+                    // sharingMessageSyncTimestamp,
+                    repoTransBlockSyncOutcome.syncStatus,
                 ]);
             }
         }
