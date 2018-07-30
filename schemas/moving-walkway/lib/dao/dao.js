@@ -14,7 +14,7 @@ __export(require("./repositoryTransactionBlock/RepoTransBlockResponseStageDao"))
 __export(require("./sharingMessage/SharingMessageDao"));
 __export(require("./sharingMessage/SharingMessageRepoTransBlockDao"));
 // export * from './sharingMessage/SharingMessageResponseStageDao';
-__export(require("./repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao"));
+__export(require("./repositoryTransactionBlock/RepoTransBlockSchemaToChangeDao"));
 __export(require("./sharingNode/SharingNodeDao"));
 __export(require("./sharingNode/SharingNodeTerminalDao"));
 __export(require("./sharingNode/SharingNodeRepositoryDao"));

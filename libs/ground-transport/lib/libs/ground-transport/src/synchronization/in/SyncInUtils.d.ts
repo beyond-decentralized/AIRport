@@ -1,8 +1,7 @@
 import { IUtils } from "@airport/air-control";
-import { ColumnIndex, SchemaIndex, SchemaName, SchemaVersionId, TableIndex } from "@airport/ground-control";
+import { ColumnIndex, SchemaIndex, SchemaVersionId, TableIndex } from "@airport/ground-control";
 import { ActorId, IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRepositoryTransactionHistory, RecordHistoryId, RepositoryEntityActorRecordId, RepositoryId } from "@airport/holding-pattern";
 import { IRepositoryTransactionBlock, ISharingMessage, ISynchronizationConflict, RepositoryTransactionBlockData } from "@airport/moving-walkway";
-import { ISchema, SchemaDomainName } from "@airport/traffic-pattern";
 export declare type RemoteSchemaIndex = SchemaIndex;
 export declare type RemoteSchemaVersionId = SchemaVersionId;
 export declare type RemoteActorId = ActorId;
@@ -14,13 +13,8 @@ export interface IDataToTM {
     repositoryTransactionBlock?: IRepositoryTransactionBlock;
     serializedData: string;
     sharingMessage: ISharingMessage;
-}
-export interface DataMessageSchemaGroupings {
-    dataMessagesToBeUpgraded: IDataToTM[];
-    dataMessagesWithCompatibleSchemas: IDataToTM[];
-    dataMessagesWithIncompatibleSchemas: IDataToTM[];
-    missingSchemaNameMap: Map<SchemaDomainName, Set<SchemaName>>;
-    schemasToBeUpgradedMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
+    missingSchemaMap: any;
+    schemasToBeUpgradedMap: any;
 }
 /**
  * Result of comparing to versions of a given schema.
@@ -28,7 +22,7 @@ export interface DataMessageSchemaGroupings {
 export declare enum SchemaComparisonResult {
     MESSAGE_SCHEMA_VERSION_IS_LOWER = -1,
     MESSAGE_SCHEMA_VERSION_IS_EQUAL = 0,
-    MESSAGE_SCHEMA_VERSION_IS_HIGHER = 1
+    MESSAGE_SCHEMA_VERSION_IS_HIGHER = 1,
 }
 export interface ISyncRepoTransHistory extends IRepositoryTransactionHistory {
     isLocal?: boolean;
@@ -59,6 +53,6 @@ export declare class SyncInUtils implements ISyncInUtils {
     private utils;
     constructor(utils: IUtils);
     ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: RepositoryId, operationHistory: IOperationHistory, recordMapBySchemaTableAndRepository: Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>): Map<CI, V>;
-    private recordSharingMessageRepoTransBlocks;
-    private recordSharingNodeRepoTransBlocks;
+    private recordSharingMessageRepoTransBlocks();
+    private recordSharingNodeRepoTransBlocks();
 }

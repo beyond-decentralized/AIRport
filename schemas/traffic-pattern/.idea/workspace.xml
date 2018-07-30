@@ -2,15 +2,184 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1708d190-699c-44ec-95a7-c55913ef8b36" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/repositoryTransactionBlock/RepoTransBlockSchemaToChangeDao.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/repositoryTransactionBlock/RepoTransBlockSchemaToChangeDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/PromiseHttp.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/PromiseHttp.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/drive/GoogleDrive.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/drive/GoogleDrive.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/GoogleRealtime.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/GoogleRealtime.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/GoogleRealtimeAdaptor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/GoogleRealtimeAdaptor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/sheets/GoogleSheets.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/sheets/GoogleSheets.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/SyncNodeManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/SyncNodeManager.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncLogMessageProcessor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncLogMessageProcessor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInActorChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInActorChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInChecker.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInChecker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInChecker.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInConsistencyChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInConsistencyChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInDataChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInDataChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInRepositoryChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInRepositoryChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInTerminalChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInTerminalChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInUserChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInUserChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInSharingMessageCreator.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInSharingMessageCreator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInSharingMessageCreator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInSharingMessageCreator.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SyncOutRepositoryTransactionBlockCreator.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SyncOutRepositoryTransactionBlockCreator.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SynchronizationOutManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SynchronizationOutManager.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/SyncInUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/SyncInUtils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInChecker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInChecker.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/InjectionTokens.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/InjectionTokens.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/InjectionTokens.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/common.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/common.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/dao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/dao.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/dao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/dao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/dao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/dao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/repositoryTransactionBlock/RepoTransBlockSchemaToChangeDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/RecordUpdateStage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/RecordUpdateStage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/RecordUpdateStage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/RecordUpdateStage.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecord.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecord.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecord.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecord.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecordRepoTransBlock.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecordRepoTransBlock.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecordRepoTransBlock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecordRepoTransBlock.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecordStatus.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecordStatus.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepoTransBlockResponseStage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepoTransBlockResponseStage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepoTransBlockResponseStage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepoTransBlockResponseStage.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/baseDaos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/baseDaos.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/baseDaos.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/baseDaos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/baseDaos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/baseDaos.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/baseDmos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/baseDmos.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/baseDmos.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/baseDmos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/baseDmos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/baseDmos.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/generated.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/generated.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/missingRecord/qmissingrecord.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/missingRecord/qmissingrecord.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/missingRecord/qmissingrecordrepotransblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/missingRecord/qmissingrecordrepotransblock.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/missingRecord/qmissingrecordrepotransblock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/missingRecord/qmissingrecordrepotransblock.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/qSchema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/qSchema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/qSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/qSchema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/qSchema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/qSchema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/qrepositorytransactionblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/qrepositorytransactionblock.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/qrepotransblockresponsestage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/qrepotransblockresponsestage.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/qrepotransblockschematochange.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/qrepotransblockschematochange.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/qsharingmessage.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/qsharingmessage.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/qsharingmessage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/qsharingmessage.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/qsharingmessagerepotransblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/qsharingmessagerepotransblock.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/qsharingmessagerepotransblock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/qsharingmessagerepotransblock.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnode.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnode.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnode.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnode.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnoderepository.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnoderepository.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnoderepotransblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnoderepotransblock.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnoderepotransblock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnoderepotransblock.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnoderepotransblockstage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnoderepotransblockstage.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnodeterminal.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnodeterminal.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/InjectionTokens.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/common.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/dao/dao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/dao/dao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/dao/repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/dao/repositoryTransactionBlock/RepoTransBlockSchemaToChangeDao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/baseDaos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/baseDaos.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/baseDmos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/baseDmos.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/conflict/qsynchronizationconflict.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/conflict/qsynchronizationconflict.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/conflict/qsynchronizationconflictpendingnotification.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/conflict/qsynchronizationconflictpendingnotification.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/conflict/qsynchronizationconflictvalues.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/conflict/qsynchronizationconflictvalues.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/generated.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/generated.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/missingRecord/qmissingrecord.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/missingRecord/qmissingrecord.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/missingRecord/qmissingrecordrepotransblock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/missingRecord/qmissingrecordrepotransblock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/qSchema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/qSchema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/qrecordupdatestage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/qrecordupdatestage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/repositoryTransactionBlock/qrepositorytransactionblock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/repositoryTransactionBlock/qrepositorytransactionblock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/repositoryTransactionBlock/qrepotransblockresponsestage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/repositoryTransactionBlock/qrepotransblockresponsestage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/repositoryTransactionBlock/qrepotransblockschematochange.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/repositoryTransactionBlock/qrepotransblockschematochange.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingMessage/qsharingmessage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingMessage/qsharingmessage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingMessage/qsharingmessagerepotransblock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingMessage/qsharingmessagerepotransblock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingNode/qsharingnode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingNode/qsharingnode.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingNode/qsharingnoderepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingNode/qsharingnoderepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingNode/qsharingnoderepotransblock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingNode/qsharingnoderepotransblock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingNode/qsharingnoderepotransblockstage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingNode/qsharingnoderepotransblockstage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingNode/qsharingnodeterminal.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingNode/qsharingnodeterminal.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../territory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../territory/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../territory/lib/dao/DomainDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../territory/lib/dao/DomainDao.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../territory/lib/dao/DomainDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../territory/lib/dao/DomainDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../territory/lib/dao/DomainDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../territory/lib/dao/DomainDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../territory/src/dao/DomainDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../territory/src/dao/DomainDao.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SchemaDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaDao.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SchemaDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SchemaDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaDao.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/dao/SchemaVersionDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaVersionDao.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/dao/SchemaVersionDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaVersionDao.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/dao/SchemaVersionDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaVersionDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/Schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/Schema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/Schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/Schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/Schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/Schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaColumn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaColumn.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaEntity.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaEntity.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaEntity.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaEntity.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaProperty.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaProperty.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaProperty.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaProperty.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaPropertyColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaPropertyColumn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaPropertyColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaPropertyColumn.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaReference.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaReference.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaReference.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaReference.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaRelation.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaRelation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaRelation.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaRelation.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaRelationColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaRelationColumn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaRelationColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaRelationColumn.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/qSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/qSchema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/schema/qschema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/schema/qschema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dao/SchemaDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/SchemaDao.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao/SchemaVersionDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/SchemaVersionDao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ddl/schema/Schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/ddl/schema/Schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/baseDaos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/baseDaos.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/baseDmos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/baseDmos.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/generated.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/generated.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/qSchema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/qSchema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/schema/qschema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/schema/qschema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/schema/qschemacolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/schema/qschemacolumn.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/schema/qschemaentity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/schema/qschemaentity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/schema/qschemaproperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/schema/qschemaproperty.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/schema/qschemapropertycolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/schema/qschemapropertycolumn.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/schema/qschemareference.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/schema/qschemareference.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/schema/qschemarelation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/schema/qschemarelation.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/schema/qschemarelationcolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/schema/qschemarelationcolumn.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/schema/qschemaversion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/schema/qschemaversion.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -27,7 +196,8 @@
       <file leaf-file-name="Schema.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="462">
+              <caret line="40" column="23" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="23" />
               <folding>
                 <element signature="e#0#145#0" expanded="true" />
               </folding>
@@ -35,10 +205,19 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="SchemaDao.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dao/SchemaDao.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-60">
+              <caret line="194" column="21" selection-start-line="194" selection-start-column="21" selection-end-line="194" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="SchemaVersion.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
+            <state relative-caret-position="462">
               <caret line="42" column="7" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
               <folding>
                 <element signature="e#0#158#0" expanded="true" />
@@ -50,9 +229,10 @@
       <file leaf-file-name="SchemaVersionDao.ts" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/dao/SchemaVersionDao.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="505">
+              <caret line="140" column="19" selection-start-line="140" selection-start-column="19" selection-end-line="140" selection-end-column="19" />
               <folding>
-                <element signature="e#0#89#0" expanded="true" />
+                <element signature="e#0#56#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -66,6 +246,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/src/ddl/schema/Schema.ts" />
+        <option value="$PROJECT_DIR$/src/dao/SchemaDao.ts" />
         <option value="$PROJECT_DIR$/src/dao/SchemaVersionDao.ts" />
       </list>
     </option>
@@ -85,10 +267,9 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="3840" />
-    <option name="y" value="-2" />
+    <option name="y" value="25" />
     <option name="width" value="1920" />
-    <option name="height" value="1082" />
+    <option name="height" value="1055" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -141,7 +322,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../territory" />
     <property name="settings.editor.selected.configurable" value="settings.typescriptcompiler" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
@@ -171,30 +352,35 @@
       <workItem from="1532354157618" duration="890000" />
       <workItem from="1532440697878" duration="179000" />
       <workItem from="1532440987475" duration="6000" />
+      <workItem from="1532865915991" duration="143000" />
+      <workItem from="1532866152861" duration="17000" />
+      <workItem from="1532866527806" duration="670000" />
+      <workItem from="1532867656267" duration="20000" />
+      <workItem from="1532871676204" duration="2048000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1824000" />
+    <option name="totallyTimeSpent" value="4722000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="3840" y="-2" width="1920" height="1082" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16974169" />
+      <window_info anchor="bottom" id="TypeScript" order="7" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16965227" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32982087" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32883817" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="TypeScript" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -207,6 +393,166 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="40" column="23" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#145#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SchemaDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1892">
+          <caret line="118" column="53" selection-start-line="118" selection-start-column="53" selection-end-line="118" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="42" column="7" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#158#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SchemaVersionDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1716">
+          <caret line="110" column="19" selection-start-line="110" selection-start-column="19" selection-end-line="110" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="16" column="39" lean-forward="true" selection-start-line="16" selection-start-column="39" selection-end-line="17" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="880">
+          <caret line="40" column="23" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#145#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SchemaDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1892">
+          <caret line="118" column="53" selection-start-line="118" selection-start-column="53" selection-end-line="118" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="924">
+          <caret line="42" column="7" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#158#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SchemaVersionDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2420">
+          <caret line="110" column="19" selection-start-line="110" selection-start-column="19" selection-end-line="110" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="39" column="12" selection-start-line="39" selection-start-column="12" selection-end-line="39" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#145#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="42" column="7" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#158#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SchemaVersionDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="14" column="20" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="39" column="12" selection-start-line="39" selection-start-column="12" selection-end-line="39" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#145#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="42" column="7" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#158#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SchemaVersionDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="14" column="20" lean-forward="true" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#145#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="42" column="7" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#158#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SchemaVersionDao.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -227,13 +573,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/dao/SchemaVersionDao.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#89#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
       <provider selected="true" editor-type-id="text-editor">
@@ -248,9 +588,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1919">
           <caret line="131" column="37" selection-start-line="131" selection-start-column="37" selection-end-line="131" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#89#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -283,18 +620,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#145#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
+        <state relative-caret-position="462">
           <caret line="42" column="7" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
           <folding>
             <element signature="e#0#158#0" expanded="true" />
@@ -302,11 +630,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/territory/lib/ddl/Domain.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="40" column="23" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#145#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/schema/Schema.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="4" column="20" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="16" column="39" selection-start-line="16" selection-start-column="39" selection-end-line="17" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SchemaDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-60">
+          <caret line="194" column="21" selection-start-line="194" selection-start-column="21" selection-end-line="194" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/generated/schema/qschemaversion.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="61" column="17" selection-start-line="61" selection-start-column="17" selection-end-line="61" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/dao/SchemaVersionDao.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="505">
+          <caret line="140" column="19" selection-start-line="140" selection-start-column="19" selection-end-line="140" selection-end-column="19" />
           <folding>
-            <element signature="e#0#89#0" expanded="true" />
+            <element signature="e#0#56#0" expanded="true" />
           </folding>
         </state>
       </provider>

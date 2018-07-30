@@ -1,38 +1,38 @@
 import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
-import { MissingRecord } from '../ddl/missingRecord/MissingRecord';
-import { QMissingRecord } from './missingRecord/qmissingrecord';
-import { MissingRecordRepoTransBlock } from '../ddl/missingRecord/MissingRecordRepoTransBlock';
-import { QMissingRecordRepoTransBlock } from './missingRecord/qmissingrecordrepotransblock';
-import { RecordUpdateStage } from '../ddl/RecordUpdateStage';
+import { MissingRecord } from '../ddl/missingrecord/missingrecord';
+import { QMissingRecord } from './missingrecord/qmissingrecord';
+import { MissingRecordRepoTransBlock } from '../ddl/missingrecord/missingrecordrepotransblock';
+import { QMissingRecordRepoTransBlock } from './missingrecord/qmissingrecordrepotransblock';
+import { RecordUpdateStage } from '../ddl/recordupdatestage';
 import { QRecordUpdateStage } from './qrecordupdatestage';
-import { RepoTransBlockResponseStage } from '../ddl/repositoryTransactionBlock/RepoTransBlockResponseStage';
-import { QRepoTransBlockResponseStage } from './repositoryTransactionBlock/qrepotransblockresponsestage';
-import { RepoTransBlockSchemasToChange } from '../ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange';
-import { QRepoTransBlockSchemasToChange } from './repositoryTransactionBlock/qrepotransblockschematochange';
-import { RepositoryTransactionBlock } from '../ddl/repositoryTransactionBlock/RepositoryTransactionBlock';
-import { QRepositoryTransactionBlock } from './repositoryTransactionBlock/qrepositorytransactionblock';
-import { RepositoryTransactionHistoryUpdateStage } from '../ddl/repositoryTransactionBlock/RepositoryTransactionHistoryUpdateStage';
-import { QRepositoryTransactionHistoryUpdateStage } from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage';
-import { SharingMessage } from '../ddl/sharingMessage/SharingMessage';
-import { QSharingMessage } from './sharingMessage/qsharingmessage';
-import { SharingMessageRepoTransBlock } from '../ddl/sharingMessage/SharingMessageRepoTransBlock';
-import { QSharingMessageRepoTransBlock } from './sharingMessage/qsharingmessagerepotransblock';
-import { SharingNode } from '../ddl/sharingNode/SharingNode';
-import { QSharingNode } from './sharingNode/qsharingnode';
-import { SharingNodeRepoTransBlock } from '../ddl/sharingNode/SharingNodeRepoTransBlock';
-import { QSharingNodeRepoTransBlock } from './sharingNode/qsharingnoderepotransblock';
-import { SharingNodeRepoTransBlockStage } from '../ddl/sharingNode/SharingNodeRepoTransBlockStage';
-import { QSharingNodeRepoTransBlockStage } from './sharingNode/qsharingnoderepotransblockstage';
-import { SharingNodeRepository } from '../ddl/sharingNode/SharingNodeRepository';
-import { QSharingNodeRepository } from './sharingNode/qsharingnoderepository';
-import { SharingNodeTerminal } from '../ddl/sharingNode/SharingNodeTerminal';
-import { QSharingNodeTerminal } from './sharingNode/qsharingnodeterminal';
-import { SynchronizationConflict } from '../ddl/conflict/SynchronizationConflict';
+import { RepoTransBlockResponseStage } from '../ddl/repositorytransactionblock/repotransblockresponsestage';
+import { QRepoTransBlockResponseStage } from './repositorytransactionblock/qrepotransblockresponsestage';
+import { RepoTransBlockSchemaToChange } from '../ddl/repositorytransactionblock/repotransblockschematochange';
+import { QRepoTransBlockSchemaToChange } from './repositorytransactionblock/qrepotransblockschematochange';
+import { RepositoryTransactionBlock } from '../ddl/repositorytransactionblock/repositorytransactionblock';
+import { QRepositoryTransactionBlock } from './repositorytransactionblock/qrepositorytransactionblock';
+import { RepositoryTransactionHistoryUpdateStage } from '../ddl/repositorytransactionblock/repositorytransactionhistoryupdatestage';
+import { QRepositoryTransactionHistoryUpdateStage } from './repositorytransactionblock/qrepositorytransactionhistoryupdatestage';
+import { SharingMessage } from '../ddl/sharingmessage/sharingmessage';
+import { QSharingMessage } from './sharingmessage/qsharingmessage';
+import { SharingMessageRepoTransBlock } from '../ddl/sharingmessage/sharingmessagerepotransblock';
+import { QSharingMessageRepoTransBlock } from './sharingmessage/qsharingmessagerepotransblock';
+import { SharingNode } from '../ddl/sharingnode/sharingnode';
+import { QSharingNode } from './sharingnode/qsharingnode';
+import { SharingNodeRepoTransBlock } from '../ddl/sharingnode/sharingnoderepotransblock';
+import { QSharingNodeRepoTransBlock } from './sharingnode/qsharingnoderepotransblock';
+import { SharingNodeRepoTransBlockStage } from '../ddl/sharingnode/sharingnoderepotransblockstage';
+import { QSharingNodeRepoTransBlockStage } from './sharingnode/qsharingnoderepotransblockstage';
+import { SharingNodeRepository } from '../ddl/sharingnode/sharingnoderepository';
+import { QSharingNodeRepository } from './sharingnode/qsharingnoderepository';
+import { SharingNodeTerminal } from '../ddl/sharingnode/sharingnodeterminal';
+import { QSharingNodeTerminal } from './sharingnode/qsharingnodeterminal';
+import { SynchronizationConflict } from '../ddl/conflict/synchronizationconflict';
 import { QSynchronizationConflict } from './conflict/qsynchronizationconflict';
-import { SynchronizationConflictPendingNotification } from '../ddl/conflict/SynchronizationConflictPendingNotification';
+import { SynchronizationConflictPendingNotification } from '../ddl/conflict/synchronizationconflictpendingnotification';
 import { QSynchronizationConflictPendingNotification } from './conflict/qsynchronizationconflictpendingnotification';
-import { SynchronizationConflictValues } from '../ddl/conflict/SynchronizationConflictValues';
+import { SynchronizationConflictValues } from '../ddl/conflict/synchronizationconflictvalues';
 import { QSynchronizationConflictValues } from './conflict/qsynchronizationconflictvalues';
 
 import {
@@ -40,7 +40,7 @@ import {
 	IBaseMissingRecordRepoTransBlockDmo,
 	IBaseRecordUpdateStageDmo,
 	IBaseRepoTransBlockResponseStageDmo,
-	IBaseRepoTransBlockSchemasToChangeDmo,
+	IBaseRepoTransBlockSchemaToChangeDmo,
 	IBaseRepositoryTransactionBlockDmo,
 	IBaseRepositoryTransactionHistoryUpdateStageDmo,
 	IBaseSharingMessageDmo,
@@ -60,7 +60,7 @@ import {
 	IBaseMissingRecordRepoTransBlockDao,
 	IBaseRecordUpdateStageDao,
 	IBaseRepoTransBlockResponseStageDao,
-	IBaseRepoTransBlockSchemasToChangeDao,
+	IBaseRepoTransBlockSchemaToChangeDao,
 	IBaseRepositoryTransactionBlockDao,
 	IBaseRepositoryTransactionHistoryUpdateStageDao,
 	IBaseSharingMessageDao,
@@ -84,7 +84,7 @@ export interface LocalQSchema extends AirportQSchema {
 		MissingRecordRepoTransBlock: IBaseMissingRecordRepoTransBlockDmo;
 		RecordUpdateStage: IBaseRecordUpdateStageDmo;
 		RepoTransBlockResponseStage: IBaseRepoTransBlockResponseStageDmo;
-		RepoTransBlockSchemasToChange: IBaseRepoTransBlockSchemasToChangeDmo;
+		RepoTransBlockSchemaToChange: IBaseRepoTransBlockSchemaToChangeDmo;
 		RepositoryTransactionBlock: IBaseRepositoryTransactionBlockDmo;
 		RepositoryTransactionHistoryUpdateStage: IBaseRepositoryTransactionHistoryUpdateStageDmo;
 		SharingMessage: IBaseSharingMessageDmo;
@@ -104,7 +104,7 @@ export interface LocalQSchema extends AirportQSchema {
 		MissingRecordRepoTransBlock: IBaseMissingRecordRepoTransBlockDao;
 		RecordUpdateStage: IBaseRecordUpdateStageDao;
 		RepoTransBlockResponseStage: IBaseRepoTransBlockResponseStageDao;
-		RepoTransBlockSchemasToChange: IBaseRepoTransBlockSchemasToChangeDao;
+		RepoTransBlockSchemaToChange: IBaseRepoTransBlockSchemaToChangeDao;
 		RepositoryTransactionBlock: IBaseRepositoryTransactionBlockDao;
 		RepositoryTransactionHistoryUpdateStage: IBaseRepositoryTransactionHistoryUpdateStageDao;
 		SharingMessage: IBaseSharingMessageDao;
@@ -123,7 +123,7 @@ export interface LocalQSchema extends AirportQSchema {
 	MissingRecordRepoTransBlock: QMissingRecordRepoTransBlock;
 	RecordUpdateStage: QRecordUpdateStage;
 	RepoTransBlockResponseStage: QRepoTransBlockResponseStage;
-	RepoTransBlockSchemasToChange: QRepoTransBlockSchemasToChange;
+	RepoTransBlockSchemaToChange: QRepoTransBlockSchemaToChange;
 	RepositoryTransactionBlock: QRepositoryTransactionBlock;
 	RepositoryTransactionHistoryUpdateStage: QRepositoryTransactionHistoryUpdateStage;
 	SharingMessage: QSharingMessage;
@@ -144,7 +144,7 @@ const __constructors__ = {
 	MissingRecordRepoTransBlock: MissingRecordRepoTransBlock,
 	RecordUpdateStage: RecordUpdateStage,
 	RepoTransBlockResponseStage: RepoTransBlockResponseStage,
-	RepoTransBlockSchemasToChange: RepoTransBlockSchemasToChange,
+	RepoTransBlockSchemaToChange: RepoTransBlockSchemaToChange,
 	RepositoryTransactionBlock: RepositoryTransactionBlock,
 	RepositoryTransactionHistoryUpdateStage: RepositoryTransactionHistoryUpdateStage,
 	SharingMessage: SharingMessage,

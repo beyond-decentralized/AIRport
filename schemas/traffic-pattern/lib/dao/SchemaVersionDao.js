@@ -38,30 +38,34 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
             const maxVersionedMapBySchemaAndDomainNames = new Map();
             let sv;
             let s;
+            let d;
             let sMaV;
             let sMiV;
-            const schemas = yield this.airportDatabase.db.find.tree({
+            const maxSchemaVersions = yield this.airportDatabase.db.find.tree({
                 from: [
                     sMiV = Joins_1.tree({
                         from: [
                             sMaV = Joins_1.tree({
                                 from: [
                                     s = generated_1.Q.Schema,
-                                    sv = s.versions.innerJoin()
+                                    sv = s.versions.innerJoin(),
+                                    d = s.domain.innerJoin()
                                 ],
                                 select: {
                                     index: s.index,
                                     schemaVersionId: sv.id,
-                                    domainName: s.domainName,
-                                    name: s.domainName,
+                                    domainId: d.id,
+                                    domainName: d.name,
+                                    name: s.name,
                                     majorVersion: Functions_1.max(sv.majorVersion),
                                     minorVersion: sv.minorVersion,
                                     patchVersion: sv.patchVersion,
                                 },
-                                where: LogicalOperation_1.and(s.domainName.in(schemaDomainNames), s.name.in(schemaNames)),
+                                where: LogicalOperation_1.and(d.name.in(schemaDomainNames), s.name.in(schemaNames)),
                                 groupBy: [
                                     s.index,
-                                    s.domainName,
+                                    d.id,
+                                    d.name,
                                     s.name,
                                     sv.minorVersion,
                                     sv.patchVersion,
@@ -71,6 +75,7 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
                         select: {
                             index: sMaV.index,
                             schemaVersionId: sMaV.schemaVersionId,
+                            domainId: sMaV.domainId,
                             domainName: sMaV.domainName,
                             name: sMaV.name,
                             majorVersion: sMaV.majorVersion,
@@ -79,6 +84,7 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
                         },
                         groupBy: [
                             sMaV.index,
+                            sMaV.domainId,
                             sMaV.domainName,
                             sMaV.name,
                             sMaV.majorVersion,
@@ -87,25 +93,32 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
                     })
                 ],
                 select: {
-                    index: sMiV.index,
-                    schemaVersionId: sMiV.schemaVersionId,
-                    domainName: sMiV.domainName,
-                    name: sMiV.name,
                     majorVersion: sMiV.majorVersion,
                     minorVersion: sMiV.minorVersion,
                     patchVersion: Functions_1.max(sMiV.patchVersion),
+                    schema: {
+                        index: sMiV.index,
+                        name: sMiV.name,
+                        domain: {
+                            id: sMiV.domainId,
+                            name: sMiV.domainName,
+                        }
+                    },
+                    id: sMiV.schemaVersionId
                 },
                 groupBy: [
                     sMiV.index,
+                    sMiV.domainId,
                     sMiV.domainName,
                     sMiV.name,
                     sMiV.majorVersion,
                     sMiV.minorVersion
                 ]
             });
-            for (const schema of schemas) {
-                this.utils.ensureChildJsMap(maxVersionedMapBySchemaAndDomainNames, schema.domainName)
-                    .set(schema.name, schema);
+            for (const maxSchemaVersion of maxSchemaVersions) {
+                const schema = maxSchemaVersion.schema;
+                this.utils.ensureChildJsMap(maxVersionedMapBySchemaAndDomainNames, schema.domain.name)
+                    .set(schema.name, maxSchemaVersion);
             }
             return maxVersionedMapBySchemaAndDomainNames;
         });

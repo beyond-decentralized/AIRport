@@ -14,7 +14,7 @@ const EntityDecorators_1 = require("@airport/air-control/lib/impl/core/entity/me
 const traffic_pattern_1 = require("@airport/traffic-pattern");
 const SchemaChangeStatus_1 = require("../values/SchemaChangeStatus");
 const RepositoryTransactionBlock_1 = require("./RepositoryTransactionBlock");
-let RepoTransBlockSchemasToChange = class RepoTransBlockSchemasToChange {
+let RepoTransBlockSchemaToChange = class RepoTransBlockSchemaToChange {
 };
 __decorate([
     ColumnDecorators_1.Id(),
@@ -23,11 +23,11 @@ __decorate([
         name: "SHARING_MESSAGE_ID", referencedColumnName: "ID"
     }),
     __metadata("design:type", RepositoryTransactionBlock_1.RepositoryTransactionBlock)
-], RepoTransBlockSchemasToChange.prototype, "repositoryTransactionBlock", void 0);
+], RepoTransBlockSchemaToChange.prototype, "repositoryTransactionBlock", void 0);
 __decorate([
     ColumnDecorators_1.DbNumber(),
     __metadata("design:type", Number)
-], RepoTransBlockSchemasToChange.prototype, "status", void 0);
+], RepoTransBlockSchemaToChange.prototype, "status", void 0);
 __decorate([
     ColumnDecorators_1.Id(),
     ColumnDecorators_1.ManyToOne(),
@@ -35,10 +35,10 @@ __decorate([
         name: "SCHEMA_INDEX", referencedColumnName: "INDEX"
     }),
     __metadata("design:type", traffic_pattern_1.Schema)
-], RepoTransBlockSchemasToChange.prototype, "schema", void 0);
-RepoTransBlockSchemasToChange = __decorate([
+], RepoTransBlockSchemaToChange.prototype, "schema", void 0);
+RepoTransBlockSchemaToChange = __decorate([
     EntityDecorators_1.Entity(),
     EntityDecorators_1.Table({ name: "REPO_TRANS_BLOCK_SCHEMAS_TO_CHANGE" })
-], RepoTransBlockSchemasToChange);
-exports.RepoTransBlockSchemasToChange = RepoTransBlockSchemasToChange;
-//# sourceMappingURL=RepoTransBlockSchemaToChange.js.map
+], RepoTransBlockSchemaToChange);
+exports.RepoTransBlockSchemaToChange = RepoTransBlockSchemaToChange;
+//# sourceMappingURL=repotransblockschematochange.js.map

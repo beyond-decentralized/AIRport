@@ -3,7 +3,7 @@ import { IDomain, DomainEOptionalId, DomainESelect, QDomainQRelation } from '@ai
 import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersion, QSchemaVersionQRelation } from './qschemaversion';
 export interface ISchema {
     index?: number;
-    domainName?: string;
+    scope?: string;
     name?: string;
     status?: number;
     domain?: IDomain;
@@ -34,7 +34,7 @@ export interface SchemaEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SchemaEUpdateProperties extends IEntityUpdateProperties {
-    domainName?: string | IQStringField;
+    scope?: string | IQStringField;
     name?: string | IQStringField;
     status?: number | IQNumberField;
     domain?: DomainEOptionalId;
@@ -44,7 +44,7 @@ export interface SchemaEUpdateProperties extends IEntityUpdateProperties {
  * UPDATE - non-id columns (optional).
  */
 export interface SchemaEUpdateColumns extends IEntityUpdateColumns {
-    DOMAIN_NAME?: string | IQStringField;
+    SCOPE?: string | IQStringField;
     SCHEMA_NAME?: string | IQStringField;
     STATUS?: number | IQNumberField;
     DOMAIN_ID?: number | IQNumberField;
@@ -65,7 +65,7 @@ export interface SchemaECreateColumns extends SchemaEId, SchemaEUpdateColumns {
  */
 export interface QSchema extends QEntity {
     index: IQNumberField;
-    domainName: IQStringField;
+    scope: IQStringField;
     name: IQStringField;
     status: IQNumberField;
     domain: QDomainQRelation;

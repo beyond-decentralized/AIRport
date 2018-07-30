@@ -5,19 +5,19 @@ import {
 import {Inject}                                from "typedi";
 import {Service}                               from "typedi/decorators/Service";
 import {
-	BaseRepoTransBlockSchemasToChangeDao,
-	IBaseRepoTransBlockSchemasToChangeDao
+	BaseRepoTransBlockSchemaToChangeDao,
+	IBaseRepoTransBlockSchemaToChangeDao
 }                                              from "../../generated/generated";
-import {RepoTransBlockSchemasToChangeDaoToken} from "../../InjectionTokens";
+import {RepoTransBlockSchemaToChangeDaoToken} from "../../InjectionTokens";
 
-export interface IRepoTransBlockSchemasToChangeDao
-	extends IBaseRepoTransBlockSchemasToChangeDao {
+export interface IRepoTransBlockSchemaToChangeDao
+	extends IBaseRepoTransBlockSchemaToChangeDao {
 
 }
 
-@Service(RepoTransBlockSchemasToChangeDaoToken)
-export class RepoTransBlockSchemasToChangeDao
-	extends BaseRepoTransBlockSchemasToChangeDao {
+@Service(RepoTransBlockSchemaToChangeDaoToken)
+export class RepoTransBlockSchemaToChangeDao
+	extends BaseRepoTransBlockSchemaToChangeDao {
 
 	constructor(
 		@Inject(UtilsToken)

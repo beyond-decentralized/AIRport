@@ -57,7 +57,7 @@ export interface ISchema {
 	// Id Relations
 
 	// Non-Id Properties
-	domainName?: string;
+	scope?: string;
 	name?: string;
 	status?: number;
 
@@ -119,7 +119,7 @@ export interface SchemaEOptionalId {
 export interface SchemaEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	domainName?: string | IQStringField;
+	scope?: string | IQStringField;
 	name?: string | IQStringField;
 	status?: number | IQNumberField;
 
@@ -135,7 +135,7 @@ export interface SchemaEUpdateProperties
 export interface SchemaEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	DOMAIN_NAME?: string | IQStringField;
+	SCOPE?: string | IQStringField;
 	SCHEMA_NAME?: string | IQStringField;
 	STATUS?: number | IQNumberField;
 	DOMAIN_ID?: number | IQNumberField;
@@ -175,7 +175,7 @@ export interface QSchema extends QEntity
 	// Id Relations
 
 	// Non-Id Fields
-	domainName: IQStringField;
+	scope: IQStringField;
 	name: IQStringField;
 	status: IQNumberField;
 

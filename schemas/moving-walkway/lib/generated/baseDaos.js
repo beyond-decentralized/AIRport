@@ -26,12 +26,12 @@ class BaseRepoTransBlockResponseStageDao extends check_in_1.Dao {
     }
 }
 exports.BaseRepoTransBlockResponseStageDao = BaseRepoTransBlockResponseStageDao;
-class BaseRepoTransBlockSchemasToChangeDao extends check_in_1.Dao {
+class BaseRepoTransBlockSchemaToChangeDao extends check_in_1.Dao {
     constructor(utils) {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepoTransBlockSchemasToChange'], qSchema_1.Q, utils);
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepoTransBlockSchemaToChange'], qSchema_1.Q, utils);
     }
 }
-exports.BaseRepoTransBlockSchemasToChangeDao = BaseRepoTransBlockSchemasToChangeDao;
+exports.BaseRepoTransBlockSchemaToChangeDao = BaseRepoTransBlockSchemaToChangeDao;
 class BaseRepositoryTransactionBlockDao extends check_in_1.Dao {
     constructor(utils) {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositoryTransactionBlock'], qSchema_1.Q, utils);

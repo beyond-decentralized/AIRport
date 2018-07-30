@@ -55,7 +55,6 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
     async recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById) {
         const repoTransHistoryMapByRepositoryId = await this.getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
         const repositoryTransactionBlocks = [];
-        const sharingMessageRepoTransBlocks = [];
         const repoTransBlockRepoTransHistories = [];
         const transactionHistory = this.transactionManager.currentTransHistory;
         transactionHistory.transactionType = TransactionType.REMOTE_SYNC;
@@ -96,7 +95,6 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
             });
         }
         await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
-        await this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
         await this.repoTransBlockRepoTransHistoryDao.bulkCreate(repoTransBlockRepoTransHistories, false, false);
         return repoTransHistoryMapByRepositoryId;
     }

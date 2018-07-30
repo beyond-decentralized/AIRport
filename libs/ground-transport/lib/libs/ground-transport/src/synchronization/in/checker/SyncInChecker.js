@@ -39,7 +39,7 @@ let SyncInChecker = class SyncInChecker {
      *      ]
      */
     async checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages, actorMap, sharingNodeRepositoryMap, dataMessagesWithInvalidData) {
-        const { dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleSchemas, dataMessagesWithInvalidSchemas, dataMessagesToBeUpgraded, maxVersionedMapBySchemaAndDomainNames, } = await this.schemaChecker.checkSchemas(dataMessages);
+        const { dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleSchemas, dataMessagesWithInvalidSchemas, dataMessagesToBeUpgraded, maxVersionedMapBySchemaAndDomainNames, schemasWithChangesMap, } = await this.schemaChecker.checkSchemas(dataMessages);
         dataMessagesWithInvalidData = dataMessagesWithInvalidData
             .concat(dataMessagesWithInvalidSchemas);
         // this.updateSchemaReferences(dataMessagesWithIncompatibleSchemas, allSchemaMap);
@@ -54,14 +54,18 @@ let SyncInChecker = class SyncInChecker {
         this.updateRepositoryReferences(dataMessagesToBeUpgraded, sharingNodeRepositoryMap);
         this.updateRepositoryReferences(dataMessagesWithCompatibleSchemas, sharingNodeRepositoryMap);
         const { dataMessagesWithCompatibleSchemasAndData, dataMessagesWithIncompatibleData, existingRepoTransBlocksWithCompatibleSchemasAndData, missingRecordDataToTMs } = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas);
-        await this.syncInRepositoryTransactionBlockCreator
-            .createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas, dataMessagesWithIncompatibleData, dataMessagesToBeUpgraded, dataMessagesWithCompatibleSchemasAndData, dataMessagesWithInvalidData);
         const allDataToTM = await this.syncInRepositoryTransactionBlockCreator
+            .createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas, dataMessagesWithIncompatibleData, dataMessagesToBeUpgraded, dataMessagesWithCompatibleSchemasAndData, dataMessagesWithInvalidData);
+        await this.syncInRepositoryTransactionBlockCreator
             .createMissingRecordRepoTransBlocks(missingRecordDataToTMs);
         await this.syncInRepositoryTransactionBlockCreator
             .createSharingMessageRepoTransBlocks(allDataToTM);
-        await this.recordAllSharingNodeRepoTransBlocks();
-        const sharingMessagesWithCompatibleSchemasAndData = await this.recordSharingMessages(dataMessagesWithIncompatibleSchemas, dataMessagesToBeUpgraded, schemasWithChangesMap, dataMessagesWithCompatibleSchemasAndData, sharingMessagesWithIncompatibleData, missingRecordRepoTransBlocks);
+        // Currently, SharingNodeRepoTransBlocks are not needed for incoming messages.
+        // Their are used to track the sync status of the outgoing RTBs only
+        // await this.recordAllSharingNodeRepoTransBlocks();
+        const sharingMessagesWithCompatibleSchemasAndData = await this.recordRepoTransBlockSchemasToChange(dataMessagesWithIncompatibleSchemas, 
+        // dataMessagesToBeUpgraded,
+        schemasWithChangesMap);
         return [
             sharingMessagesWithCompatibleSchemasAndData,
             existingRepoTransBlocksWithCompatibleSchemasAndData,
@@ -159,7 +163,9 @@ let SyncInChecker = class SyncInChecker {
             }
         }
     }
-    async recordSharingMessages(dataMessagesWithIncompatibleSchemas, dataMessagesToBeUpgraded, schemasWithChangesMap, dataMessagesWithCompatibleSchemasAndData, sharingMessagesWithIncompatibleData, missingRecordRepoTransBlocks) {
+    async recordRepoTransBlockSchemasToChange(dataMessagesWithIncompatibleSchemas, 
+    // dataMessagesToBeUpgraded: IDataToTM[],
+    schemasWithChangesMap) {
         // const sharingMessagesWithIncompatibleSchemas = dataMessagesWithIncompatibleSchemas.map((
         // 	dataMessagesWithIncompatibleSchemas
         // ) => {
@@ -184,32 +190,33 @@ let SyncInChecker = class SyncInChecker {
         // ...sharingMessagesWithIncompatibleSchemas, ...sharingMessagesToBeUpgraded,
         // ...sharingMessagesWithIncompatibleData, ...sharingMessagesWithCompatibleSchemasAndData ];
         // await this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false, false);
-        const m;
-        if (missingRecordRepoTransBlocks.length) {
-            await this.missingRecordRepoTransBlockDao.bulkCreate(missingRecordRepoTransBlocks, false, false);
-        }
+        // const m: MissingRecordRepoTransBlock;
+        //
+        // if (missingRecordRepoTransBlocks.length) {
+        // 	await this.missingRecordRepoTransBlockDao.bulkCreate(
+        // 		missingRecordRepoTransBlocks, false, false);
+        // }
         // Record all schemas to change per sharing message with incompatible schemas
-        const sharingMessagesSchemasToChange = [];
+        const repoTransBlocksSchemasToChange = [];
         for (let i = 0; i < dataMessagesWithIncompatibleSchemas.length; i++) {
             const message = dataMessagesWithIncompatibleSchemas[i];
-            const sharingMessage = sharingMessagesWithIncompatibleSchemas[i];
             let allMessageSchemasAreCompatible = true;
             let messageBuildWithOutdatedSchemaVersions = false;
             // for every schema (at a given version) used in the message
-            for (const schema of message.data.schemas) {
-                let matchingSchema = this.findMatchingSchema(schemasWithChangesMap, schema);
+            for (const schemaVersion of message.data.schemaVersions) {
+                let matchingSchema = this.findMatchingSchema(schemasWithChangesMap, schemaVersion.schema);
                 if (!matchingSchema) {
                     continue;
                 }
                 // If a there was a schema that needs to be added or upgraded
-                sharingMessagesSchemasToChange.push({
-                    sharingMessage,
+                repoTransBlocksSchemasToChange.push({
+                    repositoryTransactionBlock: message.repositoryTransactionBlock,
                     status: moving_walkway_1.SchemaChangeStatus.CHANGE_NEEDED,
                     schema: matchingSchema
                 });
             }
         }
-        await this.repoTransBlockSchemasToChangeDao.bulkCreate(sharingMessagesSchemasToChange, false, false);
+        await this.repoTransBlockSchemasToChangeDao.bulkCreate(repoTransBlocksSchemasToChange, false, false);
         return sharingMessagesWithCompatibleSchemasAndData;
     }
     findMatchingSchema(schemaMap, schema) {
@@ -231,7 +238,8 @@ SyncInChecker = __decorate([
     __param(6, typedi_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
     __param(7, typedi_1.Inject(InjectionTokens_1.SyncInRepositoryTransactionBlockCreatorToken)),
     __param(8, typedi_1.Inject(InjectionTokens_1.SyncInUtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object])
+    __metadata("design:paramtypes", [Object, Object, Object, Object, typeof (_a = typeof moving_walkway_1.IRepoTransBlockSchemasToChangeDao !== "undefined" && moving_walkway_1.IRepoTransBlockSchemasToChangeDao) === "function" && _a || Object, Object, Object, Object, Object])
 ], SyncInChecker);
 exports.SyncInChecker = SyncInChecker;
+var _a;
 //# sourceMappingURL=SyncInChecker.js.map

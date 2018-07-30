@@ -87,4 +87,4 @@ SchemaRelation = __decorate([
     })
 ], SchemaRelation);
 exports.SchemaRelation = SchemaRelation;
-//# sourceMappingURL=SchemaRelation.js.map
+//# sourceMappingURL=schemarelation.js.map

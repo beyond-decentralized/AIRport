@@ -36,7 +36,7 @@ export interface ISyncInRepositoryTransactionBlockCreator {
 		dataMessagesToBeUpgraded: IDataToTM[],
 		dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
 		dataMessagesWithInvalidData: IDataToTM[]
-	): Promise<void>;
+	): Promise<IDataToTM[]>;
 
 	createMissingRecordRepoTransBlocks(
 		missingRecordDataToTMs: IMissingRecordDataToTM[]
@@ -243,7 +243,8 @@ export class SyncInRepositoryTransactionBlockCreator
 			});
 		}
 
-		await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
+		await this.repositoryTransactionBlockDao.bulkCreate(
+			repositoryTransactionBlocks, false, false);
 		await this.sharingMessageRepoTransBlockDao.bulkCreate(
 			sharingMessageRepoTransBlocks, false, false);
 		await this.repoTransBlockRepoTransHistoryDao.bulkCreate(

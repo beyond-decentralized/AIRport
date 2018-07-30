@@ -1,9 +1,6 @@
-import {
-	SchemaIndex,
-	SchemaName
-}                                                 from "@airport/air-control";
-import {AgtRepositoryId}                          from "@airport/arrivals-n-departures";
-import {SchemaVersionId}                          from "@airport/ground-control";
+import {SchemaIndex, SchemaName} from "@airport/air-control";
+import {AgtRepositoryId} from "@airport/arrivals-n-departures";
+import {SchemaVersionId} from "@airport/ground-control";
 import {
 	ActorRandomId,
 	IActor,
@@ -11,33 +8,24 @@ import {
 	TerminalName,
 	TerminalSecondId,
 	UserUniqueId
-}                                                 from "@airport/holding-pattern";
+} from "@airport/holding-pattern";
 import {
-	IMissingRecordRepoTransBlock,
 	IMissingRecordRepoTransBlockDao,
 	IRepositoryTransactionBlock,
 	IRepoTransBlockSchemasToChange,
 	IRepoTransBlockSchemasToChangeDao,
 	ISharingMessage,
 	ISharingMessageDao,
-	MissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockDaoToken,
 	RepoTransBlockSchemasToChangeDaoToken,
 	SchemaChangeStatus,
 	SharingMessageDaoToken,
 	SharingMessageProcessingStatus,
 	SharingNodeId
-}                                                 from "@airport/moving-walkway";
-import {
-	ISchema,
-	ISchemaVersion,
-	SchemaDomainName
-}                                                 from "@airport/traffic-pattern";
-import {MaxSchemaVersionView}                     from "@airport/traffic-pattern/lib/dao/SchemaVersionDao";
-import {
-	Inject,
-	Service
-}                                                 from "typedi";
+} from "@airport/moving-walkway";
+import {ISchema, ISchemaVersion, SchemaDomainName} from "@airport/traffic-pattern";
+import {MaxSchemaVersionView} from "@airport/traffic-pattern/lib/dao/SchemaVersionDao";
+import {Inject, Service} from "typedi";
 import {
 	SyncInActorCheckerToken,
 	SyncInCheckerToken,
@@ -46,18 +34,13 @@ import {
 	SyncInRepositoryTransactionBlockCreatorToken,
 	SyncInSchemaCheckerToken,
 	SyncInUtilsToken
-}                                                 from "../../../InjectionTokens";
+} from "../../../InjectionTokens";
 import {ISyncInRepositoryTransactionBlockCreator} from "../creator/SyncInRepositoryTransactionBlockCreator";
-import {
-	IDataToTM,
-	ISyncInUtils,
-	RemoteActorId,
-	RemoteSchemaVersionId
-}                                                 from "../SyncInUtils";
-import {ISyncInActorChecker}                      from "./SyncInActorChecker";
-import {ISyncInDataChecker}                       from "./SyncInDataChecker";
-import {ISyncInRepositoryChecker}                 from "./SyncInRepositoryChecker";
-import {ISyncInSchemaChecker}                     from "./SyncInSchemaChecker";
+import {IDataToTM, ISyncInUtils, RemoteActorId, RemoteSchemaVersionId} from "../SyncInUtils";
+import {ISyncInActorChecker} from "./SyncInActorChecker";
+import {ISyncInDataChecker} from "./SyncInDataChecker";
+import {ISyncInRepositoryChecker} from "./SyncInRepositoryChecker";
+import {ISyncInSchemaChecker} from "./SyncInSchemaChecker";
 
 export interface CheckSchemasResult {
 	dataMessagesToBeUpgraded: IDataToTM[];
@@ -145,6 +128,7 @@ export class SyncInChecker
 			dataMessagesWithInvalidSchemas,
 			dataMessagesToBeUpgraded,
 			maxVersionedMapBySchemaAndDomainNames,
+			schemasWithChangesMap,
 		} = await this.schemaChecker.checkSchemas(dataMessages);
 
 		dataMessagesWithInvalidData = dataMessagesWithInvalidData
@@ -174,8 +158,7 @@ export class SyncInChecker
 			missingRecordDataToTMs
 		} = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas);
 
-
-		await this.syncInRepositoryTransactionBlockCreator
+		const allDataToTM = await this.syncInRepositoryTransactionBlockCreator
 			.createRepositoryTransBlocks(
 				dataMessagesWithIncompatibleSchemas,
 				dataMessagesWithIncompatibleData,
@@ -184,22 +167,26 @@ export class SyncInChecker
 				dataMessagesWithInvalidData
 			);
 
-		const allDataToTM = await this.syncInRepositoryTransactionBlockCreator
+		await this.syncInRepositoryTransactionBlockCreator
 			.createMissingRecordRepoTransBlocks(
 				missingRecordDataToTMs
 			);
 
 		await this.syncInRepositoryTransactionBlockCreator
 			.createSharingMessageRepoTransBlocks(allDataToTM);
-		await this.recordAllSharingNodeRepoTransBlocks();
 
-		const sharingMessagesWithCompatibleSchemasAndData = await this.recordSharingMessages(
+		// Currently, SharingNodeRepoTransBlocks are not needed for incoming messages.
+		// Their are used to track the sync status of the outgoing RTBs only
+		// await this.recordAllSharingNodeRepoTransBlocks();
+
+		const sharingMessagesWithCompatibleSchemasAndData
+			= await this.recordRepoTransBlockSchemasToChange(
 			dataMessagesWithIncompatibleSchemas,
-			dataMessagesToBeUpgraded,
+			// dataMessagesToBeUpgraded,
 			schemasWithChangesMap,
-			dataMessagesWithCompatibleSchemasAndData,
-			sharingMessagesWithIncompatibleData,
-			missingRecordRepoTransBlocks
+			// dataMessagesWithCompatibleSchemasAndData,
+			// sharingMessagesWithIncompatibleData,
+			// missingRecordRepoTransBlocks
 		);
 
 		return [
@@ -326,13 +313,13 @@ export class SyncInChecker
 		}
 	}
 
-	private async recordSharingMessages(
+	private async recordRepoTransBlockSchemasToChange(
 		dataMessagesWithIncompatibleSchemas: IDataToTM[],
-		dataMessagesToBeUpgraded: IDataToTM[],
+		// dataMessagesToBeUpgraded: IDataToTM[],
 		schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
-		dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
-		sharingMessagesWithIncompatibleData: ISharingMessage[],
-		missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[]
+		// dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
+		// sharingMessagesWithIncompatibleData: ISharingMessage[],
+		// missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[]
 	): Promise<ISharingMessage[]> {
 		// const sharingMessagesWithIncompatibleSchemas = dataMessagesWithIncompatibleSchemas.map((
 		// 	dataMessagesWithIncompatibleSchemas
@@ -359,39 +346,38 @@ export class SyncInChecker
 		// ...sharingMessagesWithIncompatibleData, ...sharingMessagesWithCompatibleSchemasAndData ];
 		// await this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false, false);
 
-		const m: MissingRecordRepoTransBlock;
-
-		if (missingRecordRepoTransBlocks.length) {
-			await this.missingRecordRepoTransBlockDao.bulkCreate(
-				missingRecordRepoTransBlocks, false, false);
-		}
-
+		// const m: MissingRecordRepoTransBlock;
+		//
+		// if (missingRecordRepoTransBlocks.length) {
+		// 	await this.missingRecordRepoTransBlockDao.bulkCreate(
+		// 		missingRecordRepoTransBlocks, false, false);
+		// }
 
 		// Record all schemas to change per sharing message with incompatible schemas
-		const sharingMessagesSchemasToChange: IRepoTransBlockSchemasToChange[] = [];
+		const repoTransBlocksSchemasToChange: IRepoTransBlockSchemasToChange[] = [];
 		for (let i = 0; i < dataMessagesWithIncompatibleSchemas.length; i++) {
 			const message: IDataToTM = dataMessagesWithIncompatibleSchemas[i];
-			const sharingMessage: ISharingMessage = sharingMessagesWithIncompatibleSchemas[i];
 
 			let allMessageSchemasAreCompatible = true;
 			let messageBuildWithOutdatedSchemaVersions = false;
 			// for every schema (at a given version) used in the message
-			for (const schema of message.data.schemas) {
-				let matchingSchema = this.findMatchingSchema(schemasWithChangesMap, schema);
+			for (const schemaVersion of message.data.schemaVersions) {
+				let matchingSchema = this.findMatchingSchema(
+					schemasWithChangesMap, schemaVersion.schema);
 				if (!matchingSchema) {
 					continue;
 				}
 
 				// If a there was a schema that needs to be added or upgraded
-				sharingMessagesSchemasToChange.push({
-					sharingMessage,
+				repoTransBlocksSchemasToChange.push({
+					repositoryTransactionBlock: message.repositoryTransactionBlock,
 					status: SchemaChangeStatus.CHANGE_NEEDED,
 					schema: matchingSchema
 				});
 			}
 		}
 		await this.repoTransBlockSchemasToChangeDao.bulkCreate(
-			sharingMessagesSchemasToChange, false, false);
+			repoTransBlocksSchemasToChange, false, false);
 
 		return sharingMessagesWithCompatibleSchemasAndData;
 	}

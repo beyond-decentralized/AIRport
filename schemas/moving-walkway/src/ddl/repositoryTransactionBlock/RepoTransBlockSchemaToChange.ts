@@ -15,7 +15,7 @@ import {RepositoryTransactionBlock} from "./RepositoryTransactionBlock";
 
 @Entity()
 @Table({name: "REPO_TRANS_BLOCK_SCHEMAS_TO_CHANGE"})
-export class RepoTransBlockSchemasToChange {
+export class RepoTransBlockSchemaToChange {
 
 	@Id()
 	@ManyToOne()

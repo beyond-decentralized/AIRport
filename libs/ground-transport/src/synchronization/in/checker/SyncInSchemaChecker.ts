@@ -1,11 +1,13 @@
+import {IUtils, UtilsToken} from "@airport/air-control";
 import {
-	IUtils,
-	UtilsToken
-}                                 from "@airport/air-control";
-import {
+	DomainId,
+	DomainName,
+	SchemaIndex,
 	SchemaName,
 	SchemaVersionId
-}                                 from "@airport/ground-control";
+} from "@airport/ground-control";
+import {IRepoTransBlockSchemasToChange} from "@airport/moving-walkway";
+import {DomainDaoToken, IDomain, IDomainDao} from "@airport/territory";
 import {
 	ISchema,
 	ISchemaDao,
@@ -16,16 +18,12 @@ import {
 	SchemaDomainName,
 	SchemaStatus,
 	SchemaVersionDaoToken
-}                                 from "@airport/traffic-pattern";
-import {Service}                  from "typedi";
-import {Inject}                   from "typedi/decorators/Inject";
-import {parse}                    from "zipson/lib";
+} from "@airport/traffic-pattern";
+import {Service} from "typedi";
+import {Inject} from "typedi/decorators/Inject";
+import {parse} from "zipson/lib";
 import {SyncInSchemaCheckerToken} from "../../../InjectionTokens";
-import {
-	DataMessageSchemaGroupings,
-	IDataToTM,
-	SchemaComparisonResult
-}                                 from "../SyncInUtils";
+import {IDataToTM, SchemaComparisonResult} from "../SyncInUtils";
 
 export interface SchemaCheckResults {
 	dataMessagesWithCompatibleSchemas: IDataToTM[];
@@ -34,7 +32,19 @@ export interface SchemaCheckResults {
 	dataMessagesToBeUpgraded: IDataToTM[];
 	maxVersionedMapBySchemaAndDomainNames:
 		Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>>;
-	// schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
+	schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
+}
+
+export interface DataMessageSchemaGroupings {
+	dataMessagesToBeUpgraded: IDataToTM[];
+	dataMessagesWithCompatibleSchemas: IDataToTM[];
+	dataMessagesWithIncompatibleSchemas: IDataToTM[];
+	// dataMessagesWithInvalidSchemas: IDataToTM[];
+	missingDomainMap: Map<SchemaDomainName, IDomain>;
+	missingSchemaMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
+	// repoTransBlockSchemasToChange: IRepoTransBlockSchemasToChange[];
+	// schemasToBeUpgradedMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
+	schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
 }
 
 export interface ISyncInSchemaChecker {
@@ -50,6 +60,8 @@ export class SyncInSchemaChecker
 	implements ISyncInSchemaChecker {
 
 	constructor(
+		@Inject(DomainDaoToken)
+		private domainDao: IDomainDao,
 		@Inject(SchemaDaoToken)
 		private schemaDao: ISchemaDao,
 		@Inject(SchemaVersionDaoToken)
@@ -62,44 +74,54 @@ export class SyncInSchemaChecker
 	async checkSchemas(
 		dataMessages: IDataToTM[],
 	): Promise<SchemaCheckResults> {
-		const schemaNameSet: Set<SchemaName> = new Set();
-		const schemaDomainNameSet: Set<SchemaDomainName> = new Set();
+		const schemaNameSet: Set<SchemaName> = new Set()
+		const schemaDomainNameSet: Set<SchemaDomainName> = new Set()
 
-		const dataMessagesWithInvalidSchemas: IDataToTM[] = [];
+		const dataMessagesWithInvalidSchemas: IDataToTM[] = []
 
 		// Build schema name and domainName sets
 		for (const message of dataMessages) {
-			message.data = parse(<any>message.data);
+			message.data = parse(<any>message.data)
 
 			if (!this.verifyRTBSchemaConsistency(message)) {
-				dataMessagesWithInvalidSchemas.push(message);
+				dataMessagesWithInvalidSchemas.push(message)
 				continue;
 			}
 
 			for (const schemaVersion of message.data.schemaVersions) {
-				schemaDomainNameSet.add(schemaVersion.schema.domainName);
-				schemaNameSet.add(schemaVersion.schema.name);
+				schemaDomainNameSet.add(schemaVersion.schema.domain.name)
+				schemaNameSet.add(schemaVersion.schema.name)
 			}
 		}
 
-		const maxVersionedMapBySchemaAndDomainNames:
-			Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>> =
+		const domainNames = Array.from(schemaDomainNameSet);
+		const domainMapByName = await this.domainDao.findMapByNameWithNames(domainNames)
+		const foundDomainNames = Array.from(domainMapByName.keys())
+
+		let maxVersionedMapBySchemaAndDomainNames:
+			Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>> = new Map()
+		if (foundDomainNames.length) {
 			await this.schemaVersionDao.findMaxVersionedMapBySchemaAndDomainNames(
-				Array.from(schemaDomainNameSet), Array.from(schemaNameSet)
-			);
+				foundDomainNames, Array.from(schemaNameSet)
+			)
+		}
 
 		const {
 			dataMessagesWithCompatibleSchemas,
 			dataMessagesWithIncompatibleSchemas,
 			dataMessagesToBeUpgraded,
-			missingSchemaNameMap,
-			schemasToBeUpgradedMap,
+			missingDomainMap,
+			missingSchemaMap,
+			// repoTransBlockMissingSchemas,
+			// repoTransBlockSchemasToBeUpgraded,
+			// schemasToBeUpgradedMap,
+			schemasWithChangesMap
 		}: DataMessageSchemaGroupings
-			= this.groupMessagesAndSchemasBySchemaState(dataMessages,
-			maxVersionedMapBySchemaAndDomainNames);
+			= this.groupMessagesAndSchemasBySchemaState(dataMessages, domainMapByName,
+			maxVersionedMapBySchemaAndDomainNames)
 
 		const missingSchemaMap: Map<SchemaDomainName, Map<SchemaName, ISchema>> =
-			await this.recordSchemasToBeAddedAndUpgraded(schemasToBeUpgradedMap, missingSchemaNameMap);
+			await this.recordSchemasToBeAddedAndUpgraded(schemasToBeUpgradedMap, missingSchemaMap);
 
 		// const schemasWithChangesMap
 		// 	= this.mergeSchemaMaps(missingSchemaMap, schemasToBeUpgradedMap);
@@ -117,44 +139,60 @@ export class SyncInSchemaChecker
 
 	private groupMessagesAndSchemasBySchemaState(
 		dataMessages: IDataToTM[],
+		domainMapByName: Map<DomainName, IDomain>,
 		maxVersionedMapBySchemaAndDomainNames: Map<SchemaDomainName,
 			Map<SchemaName, MaxSchemaVersionView>>
 	): DataMessageSchemaGroupings {
-		const dataMessagesWithIncompatibleSchemas: IDataToTM[] = [];
-		const dataMessagesWithCompatibleSchemas: IDataToTM[] = [];
+		const dataMessagesWithIncompatibleSchemas: IDataToTM[] = []
+		const dataMessagesWithCompatibleSchemas: IDataToTM[] = []
 		const schemasToBeUpgradedMap:
-			Map<SchemaDomainName, Map<SchemaName, ISchema>> = new Map();
-		const missingSchemaNameMap: Map<SchemaDomainName, Set<SchemaName>> = new Map();
-		const dataMessagesToBeUpgraded: IDataToTM[] = [];
+			Map<SchemaDomainName, Map<SchemaName, ISchema>> = new Map()
+		const missingDomainMap: Map<SchemaDomainName, IDomain> = new Map()
+		const missingSchemaMap: Map<SchemaDomainName, Map<SchemaName, ISchema>> = new Map()
+		const dataMessagesToBeUpgraded: IDataToTM[] = []
 
 		// split messages by the status of the schemas in them
 		for (const message of dataMessages) {
-			let allMessageSchemasAreCompatible = true;
-			let messageBuildWithOutdatedSchemaVersions = false;
+			let allMessageSchemasAreCompatible = true
+			let messageBuildWithOutdatedSchemaVersions = false
 
 			// for every schema (at a given version) used in the message
 			for (const schemaVersion of message.data.schemaVersions) {
-				const schema = schemaVersion.schema;
+				const schema = schemaVersion.schema
+				const domain = schema.domain
+				const existingDomain = domainMapByName.get(domain.name)
 				const maxVersionedMapBySchemaName
-					= maxVersionedMapBySchemaAndDomainNames.get(schema.domainName);
+					= maxVersionedMapBySchemaAndDomainNames.get(domain.name)
 				// If the domain of the message schema is not present in this TM
 				if (!maxVersionedMapBySchemaName) {
-					this.utils.ensureChildJsSet(missingSchemaNameMap, schema.domainName)
-						.add(schema.name);
-					allMessageSchemasAreCompatible = false;
-					continue;
+					const missingDomain: IDomain = {
+						name: domain.name
+					}
+					missingDomainMap.set(domain.name, missingDomain)
+					this.utils.ensureChildJsMap(missingSchemaMap, domain.name)
+						.set(schema.name, {
+							domain: missingDomain,
+							name: schema.name
+						})
+					allMessageSchemasAreCompatible = false
+					continue
 				}
 
-				const maxSchemaVersionView = maxVersionedMapBySchemaName.get(schema.name);
+				const maxSchemaVersion = maxVersionedMapBySchemaName.get(schema.name)
 				// If the schema of the message is not present in this TM
-				if (!maxSchemaVersionView) {
-					this.utils.ensureChildJsSet(missingSchemaNameMap, schema.domainName)
-						.add(schema.name);
+				if (!maxSchemaVersion) {
+					this.utils.ensureChildJsMap(missingSchemaMap, domain.name)
+						.set(schema.name, {
+							domain: domain,
+							name: schema.name
+						})
+					this.utils.ensureChildJsMap(missingSchemaMap, schema.domainName)
+						.set(schema.name);
 					allMessageSchemasAreCompatible = false;
 					continue;
 				}
 
-				switch (this.compareSchemaVersions(schemaVersion, maxSchemaVersionView)) {
+				switch (this.compareSchemaVersions(schemaVersion, maxSchemaVersion)) {
 					case SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_LOWER:
 						messageBuildWithOutdatedSchemaVersions = true;
 						break;
@@ -178,9 +216,9 @@ export class SyncInSchemaChecker
 
 		return {
 			dataMessagesToBeUpgraded,
-			dataMessagesWithCompatibleSchemas,
+			dataMessgesWithCompatibleSchemas,
 			dataMessagesWithIncompatibleSchemas,
-			missingSchemaNameMap,
+			missingSchemaMap: missingSchemaNameMap,
 			schemasToBeUpgradedMap
 		};
 	}
@@ -188,35 +226,52 @@ export class SyncInSchemaChecker
 	private verifyRTBSchemaConsistency(
 		dataMessage: IDataToTM
 	): boolean {
-		const data = dataMessage.data;
+		const data = dataMessage.data
 
-		const schemaVersionSet: Set<SchemaVersionId> = new Set();
-		const schemaIndexSet: Set<SchemaIndex> = new Set();
-		const schemaMapByNames: Map<SchemaDomainName, Set<SchemaName>> = new Map();
+		const domainMapById: Map<DomainId, IDomain> = new Map()
+		const domainMapByName: Map<DomainName, IDomain> = new Map()
 
-		for (const schemaVersion of data.schemaVersions) {
-			const schemaVersionIdAlreadyDefinedInRTB = schemaVersionMapById.has(schemaVersion.id);
-			if (schemaVersionIdAlreadyDefinedInRTB) {
-				return false;
+		for (const domain of data.domains) {
+			if (domainMapById.has(domain.id)) {
+				return false
 			}
-			const schema = schemaVersion.schema;
-			const schemaIndexAlreadyDefinedInRTB = schemaMapByIndex.has(schema.index);
-			if (schemaIndexAlreadyDefinedInRTB) {
-				return false;
+			if (domainMapByName.has(domain.name)) {
+				return false
 			}
-
-			const schemaMapForDomainName
-				= this.utils.ensureChildJsSet(schemaMapByNames, schema.domainName);
-
-			const schemaNameAlreadyDefinedInRTB = schemaMapForDomainName.has(schema.name);
-			if (schemaNameAlreadyDefinedInRTB) {
-				return false;
-			}
-
-			schemaMapForDomainName.add(schema.name);
+			domainMapById.set(domain.id, domain)
+			domainMapByName.set(domain.name, domain)
 		}
 
-		return true;
+		const schemaMapByIndex: Map<SchemaIndex, ISchema> = new Map()
+		for (const schema of data.schemas) {
+			if (schemaMapByIndex.has(schema.index)) {
+				return false
+			}
+			if (!domainMapById.has(schema.domain.id)) {
+				return false
+			}
+			schema.domain = domainMapById.get(schema.domain.id)
+			schemaMapByIndex.set(schema.index, schema)
+		}
+
+		const schemaVersionSet: Set<SchemaVersionId> = new Set()
+		for (const schemaVersion of data.schemaVersions) {
+			const schemaVersionIdAlreadyDefinedInRTB = schemaVersionSet.has(schemaVersion.id)
+			if (schemaVersionIdAlreadyDefinedInRTB) {
+				return false
+			}
+
+			if (!schemaMapByIndex.has(schemaVersion.schema.index)) {
+				return false
+			}
+
+			schemaVersion.schema = schemaMapByIndex.get(schemaVersion.schema.index)
+			const schema = schemaVersion.schema
+
+			schemaVersionSet.add(schemaVersion.id)
+		}
+
+		return true
 	}
 
 	/**
@@ -226,15 +281,13 @@ export class SyncInSchemaChecker
 	 * missing schemas.
 	 *
 	 * @param {Map<SchemaDomainName, Map<SchemaName, ISchema>>} schemasToBeUpgradedMap
-	 * @param {Map<SchemaDomainName, Set<SchemaName>>} missingSchemaNameMap
+	 * @param {Map<SchemaDomainName, Set<SchemaName>>} missingSchemaMap
 	 * @returns {Promise<void>}
 	 */
 	private async recordSchemasToBeAddedAndUpgraded(
 		schemasToBeUpgradedMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
-		missingSchemaNameMap: Map<SchemaDomainName, Set<SchemaName>>,
+		missingSchemaMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
 	): Promise<Map<SchemaDomainName, Map<SchemaName, ISchema>>> {
-
-		const missingSchemaMap: Map<SchemaDomainName, Map<SchemaName, ISchema>> = new Map();
 
 		// All local (TM) indexes of schemas that need to be upgraded
 		const schemaIndexesToUpdateStatusBy: SchemaIndex[] = [];
@@ -249,10 +302,8 @@ export class SyncInSchemaChecker
 		// All schemas needed (that do not yet exist in this TM)
 		const newlyNeededSchemas: ISchema[] = [];
 
-		for (const [domainName, schemaNameSet] of missingSchemaNameMap) {
-			const missingSchemaDomainMap: Map<SchemaName, ISchema>
-				= <Map<SchemaName, ISchema>>this.utils.ensureChildJsMap(missingSchemaMap, domainName);
-			for (const name of schemaNameSet) {
+		for (const [domainName, schemaMapForDomain] of missingSchemaMap) {
+			for (const name of schemaMapForDomain) {
 				const schema: ISchema = {
 					domainName,
 					name,

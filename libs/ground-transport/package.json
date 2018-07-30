@@ -9,6 +9,7 @@
     "@airport/moving-walkway": "0.0.1",
     "@airport/runway-edge-lighting": "0.0.1",
     "@airport/terminal-map": "0.0.1",
+    "@airport/territory": "0.0.1",
     "@airport/tower": "0.0.1",
     "@airport/traffic-pattern": "0.0.1",
     "@types/gapi": "^0.0.35",

@@ -61,9 +61,9 @@ export declare class SyncInChecker implements ISyncInChecker {
      * FIXME: when messages are upgraded - map schema version ids to local values
      *
      */
-    private updateSchemaReferences;
-    private updateActorReferences;
-    private updateRepositoryReferences;
-    private recordSharingMessages;
-    private findMatchingSchema;
+    private updateSchemaReferences(dataMessages, maxVersionedMapBySchemaAndDomainNames);
+    private updateActorReferences(dataMessages, actorMap);
+    private updateRepositoryReferences(dataMessages, sharingNodeRepositoryMap);
+    private recordRepoTransBlockSchemasToChange(dataMessagesWithIncompatibleSchemas, schemasWithChangesMap);
+    private findMatchingSchema(schemaMap, schema);
 }

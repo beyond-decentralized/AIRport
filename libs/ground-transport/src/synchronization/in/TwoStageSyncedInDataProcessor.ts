@@ -158,7 +158,6 @@ export class TwoStageSyncedInDataProcessor
 			existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
 
 		const repositoryTransactionBlocks: IRepositoryTransactionBlock[] = [];
-		const sharingMessageRepoTransBlocks: ISharingMessageRepoTransBlock[] = [];
 		const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = [];
 
 		const transactionHistory = this.transactionManager.currentTransHistory;
@@ -209,8 +208,7 @@ export class TwoStageSyncedInDataProcessor
 		}
 
 		await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
-		await this.sharingMessageRepoTransBlockDao.bulkCreate(
-			sharingMessageRepoTransBlocks, false, false);
+
 		await this.repoTransBlockRepoTransHistoryDao.bulkCreate(
 			repoTransBlockRepoTransHistories, false, false);
 

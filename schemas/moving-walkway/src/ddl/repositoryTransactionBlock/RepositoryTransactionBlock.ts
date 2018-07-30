@@ -22,7 +22,7 @@ import {
 import {MissingRecordRepoTransBlock}   from "../missingRecord/MissingRecordRepoTransBlock";
 import {SharingMessageRepoTransBlock}  from "../sharingMessage/SharingMessageRepoTransBlock";
 import {SharingNodeRepoTransBlock}     from "../sharingNode/SharingNodeRepoTransBlock";
-import {RepoTransBlockSchemasToChange} from "./RepoTransBlockSchemaToChange";
+import {RepoTransBlockSchemaToChange} from "./RepoTransBlockSchemaToChange";
 
 export type RepositoryTransactionBlockHash = string;
 
@@ -106,6 +106,6 @@ export class RepositoryTransactionBlock {
 	missingRecordRepoTransBlocks: MissingRecordRepoTransBlock[];
 
 	@OneToMany({mappedBy: "repositoryTransactionBlock"})
-	repoTransBlockSchemasToChange: RepoTransBlockSchemasToChange[];
+	repoTransBlockSchemasToChange: RepoTransBlockSchemaToChange[];
 
 }

@@ -12,7 +12,7 @@ exports.SharingMessageDaoToken = new Token_1.Token();
 exports.SharingMessageRepoTransBlockDaoToken = new Token_1.Token();
 // export const SharingMessageResponseStageDaoToken
 // 	= new Token<ISharingMessageResponseStageDao>();
-exports.RepoTransBlockSchemasToChangeDaoToken = new Token_1.Token();
+exports.RepoTransBlockSchemaToChangeDaoToken = new Token_1.Token();
 exports.SharingNodeDaoToken = new Token_1.Token();
 exports.SharingNodeTerminalDaoToken = new Token_1.Token();
 exports.SharingNodeRepositoryDaoToken = new Token_1.Token();

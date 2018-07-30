@@ -8,7 +8,7 @@ export * from './repositoryTransactionBlock/RepositoryTransactionHistoryUpdateSt
 export * from './repositoryTransactionBlock/RepoTransBlockResponseStageDao';
 export * from './sharingMessage/SharingMessageDao';
 export * from './sharingMessage/SharingMessageRepoTransBlockDao';
-export * from './repositoryTransactionBlock/RepoTransBlockSchemasToChangeDao';
+export * from './repositoryTransactionBlock/RepoTransBlockSchemaToChangeDao';
 export * from './sharingNode/SharingNodeDao';
 export * from './sharingNode/SharingNodeTerminalDao';
 export * from './sharingNode/SharingNodeRepositoryDao';

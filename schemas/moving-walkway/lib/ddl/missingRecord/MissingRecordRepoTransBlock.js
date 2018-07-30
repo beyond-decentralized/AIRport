@@ -27,4 +27,4 @@ MissingRecordRepoTransBlock = __decorate([
     air_control_1.Table({ name: "MISSING_RECORD_REPO_TRANS_BLOCKS" })
 ], MissingRecordRepoTransBlock);
 exports.MissingRecordRepoTransBlock = MissingRecordRepoTransBlock;
-//# sourceMappingURL=MissingRecordRepoTransBlock.js.map
+//# sourceMappingURL=missingrecordrepotransblock.js.map

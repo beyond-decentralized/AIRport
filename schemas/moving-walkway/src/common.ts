@@ -5,24 +5,28 @@ import {
 	ITerminal,
 	IUser
 } from "@airport/holding-pattern";
+import {IDomain} from "@airport/territory";
 import {
 	ISchema,
 	ISchemaVersion
 } from "@airport/traffic-pattern";
 
 export interface RepositoryTransactionBlockData {
-	users: IUser[];
-	terminal: ITerminal;
 	actors: IActor[];
+	// Domains can be referenced in multiple schemas of RTB
+	domains: IDomain[];
 	referencedRepositories: IRepository[];
 	repository: IRepository;
 	repoTransHistories: IRepositoryTransactionHistory[];
 	/*
-	 A given Repository Transaction Block will always be at a single
-	 version of all involved schemas.  This is because it is committed on a Terminal
-	 with a particular snapshot of schema versions.
+	 A given Repository Transaction Block can have multiple versions of any involved schema.
+	 This is because it may contain RTHs across any number of schema upgrades (over any
+	 period of time).
 
-	 Hence schema's come embedded in the schema version objects
+	 Hence schemas can be referenced in multiple schema versions
 	  */
+	schemas: ISchema[];
 	schemaVersions: ISchemaVersion[];
+	terminal: ITerminal;
+	users: IUser[];
 }

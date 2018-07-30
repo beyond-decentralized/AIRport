@@ -27,10 +27,10 @@ __decorate([
     __metadata("design:type", territory_1.Domain)
 ], Schema.prototype, "domain", void 0);
 __decorate([
-    air_control_1.Column({ name: "DOMAIN_NAME" }),
+    air_control_1.Column({ name: "SCOPE" }),
     air_control_1.DbString(),
     __metadata("design:type", String)
-], Schema.prototype, "domainName", void 0);
+], Schema.prototype, "scope", void 0);
 __decorate([
     air_control_1.Column({ name: "SCHEMA_NAME" }),
     air_control_1.DbString(),

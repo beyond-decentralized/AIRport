@@ -1,9 +1,9 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation } from '@airport/air-control';
 import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation, IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '@airport/holding-pattern';
-import { ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from '../sharingNode/qsharingnoderepotransblock';
-import { ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, QSharingMessageRepoTransBlock } from '../sharingMessage/qsharingmessagerepotransblock';
-import { IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, QMissingRecordRepoTransBlock } from '../missingRecord/qmissingrecordrepotransblock';
-import { IRepoTransBlockSchemasToChange, RepoTransBlockSchemasToChangeESelect, QRepoTransBlockSchemasToChange } from './qrepotransblockschematochange';
+import { ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from '../sharingnode/qsharingnoderepotransblock';
+import { ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, QSharingMessageRepoTransBlock } from '../sharingmessage/qsharingmessagerepotransblock';
+import { IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, QMissingRecordRepoTransBlock } from '../missingrecord/qmissingrecordrepotransblock';
+import { IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, QRepoTransBlockSchemaToChange } from './qrepotransblockschematochange';
 export interface IRepositoryTransactionBlock {
     id?: number;
     sourceId?: number;
@@ -16,7 +16,7 @@ export interface IRepositoryTransactionBlock {
     sharingNodeRepoTransBlocks?: ISharingNodeRepoTransBlock[];
     sharingMessageRepoTransBlocks?: ISharingMessageRepoTransBlock[];
     missingRecordRepoTransBlocks?: IMissingRecordRepoTransBlock[];
-    repoTransBlockSchemasToChange?: IRepoTransBlockSchemasToChange[];
+    repoTransBlockSchemasToChange?: IRepoTransBlockSchemaToChange[];
 }
 /**
  * SELECT - All fields and relations (optional).
@@ -28,7 +28,7 @@ export interface RepositoryTransactionBlockESelect extends IEntitySelectProperti
     sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockESelect;
     sharingMessageRepoTransBlocks?: SharingMessageRepoTransBlockESelect;
     missingRecordRepoTransBlocks?: MissingRecordRepoTransBlockESelect;
-    repoTransBlockSchemasToChange?: RepoTransBlockSchemasToChangeESelect;
+    repoTransBlockSchemasToChange?: RepoTransBlockSchemaToChangeESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -89,7 +89,7 @@ export interface QRepositoryTransactionBlock extends QEntity {
     sharingNodeRepoTransBlocks: IQOneToManyRelation<QSharingNodeRepoTransBlock>;
     sharingMessageRepoTransBlocks: IQOneToManyRelation<QSharingMessageRepoTransBlock>;
     missingRecordRepoTransBlocks: IQOneToManyRelation<QMissingRecordRepoTransBlock>;
-    repoTransBlockSchemasToChange: IQOneToManyRelation<QRepoTransBlockSchemasToChange>;
+    repoTransBlockSchemasToChange: IQOneToManyRelation<QRepoTransBlockSchemaToChange>;
 }
 export interface QRepositoryTransactionBlockQId {
     id: IQNumberField;
