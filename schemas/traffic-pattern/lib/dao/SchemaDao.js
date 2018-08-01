@@ -41,7 +41,10 @@ let SchemaDao = class SchemaDao extends generated_1.BaseSchemaDao {
             const schemas = yield this.db.find.tree({
                 select: {
                     index: air_control_1.Y,
-                    domainName: air_control_1.Y,
+                    domain: {
+                        id: air_control_1.Y,
+                        name: air_control_1.Y
+                    },
                     name: air_control_1.Y,
                     versions: {
                         id: air_control_1.Y,
@@ -80,6 +83,7 @@ let SchemaDao = class SchemaDao extends generated_1.BaseSchemaDao {
             const maxVersionedMapBySchemaAndDomainNames = new Map();
             let sv;
             let s;
+            let d;
             let sMaV;
             let sMiV;
             const schemas = yield this.airportDatabase.db.find.tree({
@@ -89,20 +93,23 @@ let SchemaDao = class SchemaDao extends generated_1.BaseSchemaDao {
                             sMaV = Joins_1.tree({
                                 from: [
                                     s = generated_1.Q.Schema,
-                                    sv = s.versions.innerJoin()
+                                    sv = s.versions.innerJoin(),
+                                    d = s.domain.innerJoin()
                                 ],
                                 select: {
                                     index: s.index,
-                                    domainName: s.domainName,
-                                    name: s.domainName,
+                                    domainId: d.id,
+                                    domainName: d.name,
+                                    name: s.name,
                                     majorVersion: Functions_1.max(sv.majorVersion),
                                     minorVersion: sv.minorVersion,
                                     patchVersion: sv.patchVersion,
                                 },
-                                where: LogicalOperation_1.and(s.domainName.in(schemaDomainNames), s.name.in(schemaNames)),
+                                where: LogicalOperation_1.and(d.name.in(schemaDomainNames), s.name.in(schemaNames)),
                                 groupBy: [
                                     s.index,
-                                    s.domainName,
+                                    d.id,
+                                    d.name,
                                     s.name,
                                     sv.minorVersion,
                                     sv.patchVersion,
@@ -111,6 +118,7 @@ let SchemaDao = class SchemaDao extends generated_1.BaseSchemaDao {
                         ],
                         select: {
                             index: sMaV.index,
+                            domainId: sMaV.domainId,
                             domainName: sMaV.domainName,
                             name: sMaV.name,
                             majorVersion: sMaV.majorVersion,
@@ -119,6 +127,7 @@ let SchemaDao = class SchemaDao extends generated_1.BaseSchemaDao {
                         },
                         groupBy: [
                             sMaV.index,
+                            sMaV.domainId,
                             sMaV.domainName,
                             sMaV.name,
                             sMaV.majorVersion,
@@ -128,7 +137,10 @@ let SchemaDao = class SchemaDao extends generated_1.BaseSchemaDao {
                 ],
                 select: {
                     index: sMiV.index,
-                    domainName: sMiV.domainName,
+                    domain: {
+                        id: sMiV.domainId,
+                        name: sMiV.domainName
+                    },
                     name: sMiV.name,
                     majorVersion: sMiV.majorVersion,
                     minorVersion: sMiV.minorVersion,
@@ -136,6 +148,7 @@ let SchemaDao = class SchemaDao extends generated_1.BaseSchemaDao {
                 },
                 groupBy: [
                     sMiV.index,
+                    sMiV.domainId,
                     sMiV.domainName,
                     sMiV.name,
                     sMiV.majorVersion,
@@ -143,7 +156,7 @@ let SchemaDao = class SchemaDao extends generated_1.BaseSchemaDao {
                 ]
             });
             for (const schema of schemas) {
-                this.utils.ensureChildJsMap(maxVersionedMapBySchemaAndDomainNames, schema.domainName)
+                this.utils.ensureChildJsMap(maxVersionedMapBySchemaAndDomainNames, schema.domain.name)
                     .set(schema.name, schema);
             }
             return maxVersionedMapBySchemaAndDomainNames;

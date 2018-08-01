@@ -10,7 +10,7 @@ import {
 	MissingRecordEUpdateProperties,
 	MissingRecordEId,
 	QMissingRecord
-} from './missingRecord/qmissingrecord';
+} from './missingrecord/qmissingrecord';
 import {
 	IMissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockESelect,
@@ -20,7 +20,7 @@ import {
 	MissingRecordRepoTransBlockEUpdateProperties,
 	MissingRecordRepoTransBlockEId,
 	QMissingRecordRepoTransBlock
-} from './missingRecord/qmissingrecordrepotransblock';
+} from './missingrecord/qmissingrecordrepotransblock';
 import {
 	IRecordUpdateStage,
 	RecordUpdateStageESelect,
@@ -40,17 +40,17 @@ import {
 	RepoTransBlockResponseStageEUpdateProperties,
 	RepoTransBlockResponseStageEId,
 	QRepoTransBlockResponseStage
-} from './repositoryTransactionBlock/qrepotransblockresponsestage';
+} from './repositorytransactionblock/qrepotransblockresponsestage';
 import {
-	IRepoTransBlockSchemasToChange,
-	RepoTransBlockSchemasToChangeESelect,
-	RepoTransBlockSchemasToChangeECreateColumns,
-	RepoTransBlockSchemasToChangeECreateProperties,
-	RepoTransBlockSchemasToChangeEUpdateColumns,
-	RepoTransBlockSchemasToChangeEUpdateProperties,
-	RepoTransBlockSchemasToChangeEId,
-	QRepoTransBlockSchemasToChange
-} from './repositoryTransactionBlock/qrepotransblockschematochange';
+	IRepoTransBlockSchemaToChange,
+	RepoTransBlockSchemaToChangeESelect,
+	RepoTransBlockSchemaToChangeECreateColumns,
+	RepoTransBlockSchemaToChangeECreateProperties,
+	RepoTransBlockSchemaToChangeEUpdateColumns,
+	RepoTransBlockSchemaToChangeEUpdateProperties,
+	RepoTransBlockSchemaToChangeEId,
+	QRepoTransBlockSchemaToChange
+} from './repositorytransactionblock/qrepotransblockschematochange';
 import {
 	IRepositoryTransactionBlock,
 	RepositoryTransactionBlockESelect,
@@ -60,7 +60,7 @@ import {
 	RepositoryTransactionBlockEUpdateProperties,
 	RepositoryTransactionBlockEId,
 	QRepositoryTransactionBlock
-} from './repositoryTransactionBlock/qrepositorytransactionblock';
+} from './repositorytransactionblock/qrepositorytransactionblock';
 import {
 	IRepositoryTransactionHistoryUpdateStage,
 	RepositoryTransactionHistoryUpdateStageESelect,
@@ -70,7 +70,7 @@ import {
 	RepositoryTransactionHistoryUpdateStageEUpdateProperties,
 	RepositoryTransactionHistoryUpdateStageEId,
 	QRepositoryTransactionHistoryUpdateStage
-} from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage';
+} from './repositorytransactionblock/qrepositorytransactionhistoryupdatestage';
 import {
 	ISharingMessage,
 	SharingMessageESelect,
@@ -80,7 +80,7 @@ import {
 	SharingMessageEUpdateProperties,
 	SharingMessageEId,
 	QSharingMessage
-} from './sharingMessage/qsharingmessage';
+} from './sharingmessage/qsharingmessage';
 import {
 	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockESelect,
@@ -90,7 +90,7 @@ import {
 	SharingMessageRepoTransBlockEUpdateProperties,
 	SharingMessageRepoTransBlockEId,
 	QSharingMessageRepoTransBlock
-} from './sharingMessage/qsharingmessagerepotransblock';
+} from './sharingmessage/qsharingmessagerepotransblock';
 import {
 	ISharingNode,
 	SharingNodeESelect,
@@ -100,7 +100,7 @@ import {
 	SharingNodeEUpdateProperties,
 	SharingNodeEId,
 	QSharingNode
-} from './sharingNode/qsharingnode';
+} from './sharingnode/qsharingnode';
 import {
 	ISharingNodeRepoTransBlock,
 	SharingNodeRepoTransBlockESelect,
@@ -110,7 +110,7 @@ import {
 	SharingNodeRepoTransBlockEUpdateProperties,
 	SharingNodeRepoTransBlockEId,
 	QSharingNodeRepoTransBlock
-} from './sharingNode/qsharingnoderepotransblock';
+} from './sharingnode/qsharingnoderepotransblock';
 import {
 	ISharingNodeRepoTransBlockStage,
 	SharingNodeRepoTransBlockStageESelect,
@@ -120,7 +120,7 @@ import {
 	SharingNodeRepoTransBlockStageEUpdateProperties,
 	SharingNodeRepoTransBlockStageEId,
 	QSharingNodeRepoTransBlockStage
-} from './sharingNode/qsharingnoderepotransblockstage';
+} from './sharingnode/qsharingnoderepotransblockstage';
 import {
 	ISharingNodeRepository,
 	SharingNodeRepositoryESelect,
@@ -130,7 +130,7 @@ import {
 	SharingNodeRepositoryEUpdateProperties,
 	SharingNodeRepositoryEId,
 	QSharingNodeRepository
-} from './sharingNode/qsharingnoderepository';
+} from './sharingnode/qsharingnoderepository';
 import {
 	ISharingNodeTerminal,
 	SharingNodeTerminalESelect,
@@ -140,7 +140,7 @@ import {
 	SharingNodeTerminalEUpdateProperties,
 	SharingNodeTerminalEId,
 	QSharingNodeTerminal
-} from './sharingNode/qsharingnodeterminal';
+} from './sharingnode/qsharingnodeterminal';
 import {
 	ISynchronizationConflict,
 	SynchronizationConflictESelect,
@@ -225,15 +225,15 @@ export class BaseRepoTransBlockResponseStageDmo
 }
 
 
-export interface IBaseRepoTransBlockSchemasToChangeDmo
-  extends IDmo<IRepoTransBlockSchemasToChange, RepoTransBlockSchemasToChangeESelect, RepoTransBlockSchemasToChangeECreateProperties, RepoTransBlockSchemasToChangeEUpdateProperties, RepoTransBlockSchemasToChangeEId, QRepoTransBlockSchemasToChange> {
+export interface IBaseRepoTransBlockSchemaToChangeDmo
+  extends IDmo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, QRepoTransBlockSchemaToChange> {
 }
 
-export class BaseRepoTransBlockSchemasToChangeDmo
-  extends Dmo<IRepoTransBlockSchemasToChange, RepoTransBlockSchemasToChangeESelect, RepoTransBlockSchemasToChangeECreateProperties, RepoTransBlockSchemasToChangeEUpdateProperties, RepoTransBlockSchemasToChangeEId, QRepoTransBlockSchemasToChange>
-	implements IBaseRepoTransBlockSchemasToChangeDmo {
+export class BaseRepoTransBlockSchemaToChangeDmo
+  extends Dmo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, QRepoTransBlockSchemaToChange>
+	implements IBaseRepoTransBlockSchemaToChangeDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepoTransBlockSchemasToChange']);
+		super(Q.db.currentVersion.entityMapByName['RepoTransBlockSchemaToChange']);
 	}
 }
 

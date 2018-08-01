@@ -29,7 +29,7 @@ import {
 	QSharingNode,
 	QSharingNodeQId,
 	QSharingNodeQRelation,
-} from '../sharingNode/qsharingnode';
+} from '../sharingnode/qsharingnode';
 import {
 	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockEId,

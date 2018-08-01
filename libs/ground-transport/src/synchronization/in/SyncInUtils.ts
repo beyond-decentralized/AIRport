@@ -58,16 +58,9 @@ export interface IDataToTM {
 	repositoryTransactionBlock?: IRepositoryTransactionBlock;
 	serializedData: string;
 	sharingMessage: ISharingMessage;
+	missingSchemaMap;
+	schemasToBeUpgradedMap;
 	// syncDatetime: AgtSyncRecordAddDatetime;
-}
-
-export interface DataMessageSchemaGroupings {
-	dataMessagesToBeUpgraded: IDataToTM[];
-	dataMessagesWithCompatibleSchemas: IDataToTM[];
-	dataMessagesWithIncompatibleSchemas: IDataToTM[];
-	// dataMessagesWithInvalidSchemas: IDataToTM[];
-	missingSchemaNameMap: Map<SchemaDomainName, Set<SchemaName>>;
-	schemasToBeUpgradedMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
 }
 
 /**

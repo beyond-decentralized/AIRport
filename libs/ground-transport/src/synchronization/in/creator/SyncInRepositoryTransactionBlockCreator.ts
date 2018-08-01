@@ -245,7 +245,8 @@ export class SyncInRepositoryTransactionBlockCreator
 			});
 		}
 
-		await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
+		await this.repositoryTransactionBlockDao.bulkCreate(
+			repositoryTransactionBlocks, false, false);
 		await this.sharingMessageRepoTransBlockDao.bulkCreate(
 			sharingMessageRepoTransBlocks, false, false);
 		await this.repoTransBlockRepoTransHistoryDao.bulkCreate(

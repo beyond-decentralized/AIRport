@@ -1,7 +1,8 @@
 import {
+	DomainName,
 	SchemaIndex,
 	SchemaVersionId
-}                         from "@airport/ground-control";
+} 												from "@airport/ground-control";
 import {
 	Y
 }                         from "@airport/air-control";
@@ -14,11 +15,11 @@ import {
 }                         from "@airport/air-control/lib/InjectionTokens";
 import {IAirportDatabase} from "@airport/air-control/lib/lingo/AirportDatabase";
 import {IUtils}           from "@airport/air-control/lib/lingo/utils/Utils";
+import {QDomain} 					from "@airport/territory";
 import {Inject}           from "typedi/decorators/Inject";
 import {Service}          from "typedi/decorators/Service";
 import {
 	QSchemaVersion,
-	SchemaDomainName,
 	SchemaName
 }                         from "..";
 import {SchemaStatus}     from "../ddl/schema/SchemaStatus";
@@ -40,9 +41,9 @@ export interface ISchemaDao
 	): Promise<Map<SchemaIndex, ISchema>>;
 
 	findMaxVersionedMapBySchemaAndDomainNames(
-		schemaDomainNames: SchemaDomainName[],
+		schemaDomainNames: DomainName[],
 		schemaNames: SchemaName[]
-	): Promise<Map<SchemaDomainName, Map<SchemaName, ISchema>>>;
+	): Promise<Map<DomainName, Map<SchemaName, ISchema>>>;
 
 	setStatusByIndexes(
 		indexes: SchemaIndex[],
@@ -76,7 +77,10 @@ export class SchemaDao
 		const schemas = await this.db.find.tree({
 			select: {
 				index: Y,
-				domainName: Y,
+				domain: {
+					id: Y,
+					name: Y
+				},
 				name: Y,
 				versions: {
 					id: Y,
@@ -112,14 +116,15 @@ export class SchemaDao
 	}
 
 	async findMaxVersionedMapBySchemaAndDomainNames(
-		schemaDomainNames: SchemaDomainName[],
+		schemaDomainNames: DomainName[],
 		schemaNames: SchemaName[]
-	): Promise<Map<SchemaDomainName, Map<SchemaName, ISchema>>> {
-		const maxVersionedMapBySchemaAndDomainNames: Map<SchemaDomainName, Map<SchemaName, ISchema>>
+	): Promise<Map<DomainName, Map<SchemaName, ISchema>>> {
+		const maxVersionedMapBySchemaAndDomainNames: Map<DomainName, Map<SchemaName, ISchema>>
 			= new Map();
 
 		let sv: QSchemaVersion;
 		let s: QSchema;
+		let d: QDomain;
 		let sMaV;
 		let sMiV;
 
@@ -131,23 +136,26 @@ export class SchemaDao
 						sMaV = tree({
 							from: [
 								s = Q.Schema,
-								sv = s.versions.innerJoin()
+								sv = s.versions.innerJoin(),
+								d = s.domain.innerJoin()
 							],
 							select: {
 								index: s.index,
-								domainName: s.domainName,
-								name: s.domainName,
+								domainId: d.id,
+								domainName: d.name,
+								name: s.name,
 								majorVersion: max(sv.majorVersion),
 								minorVersion: sv.minorVersion,
 								patchVersion: sv.patchVersion,
 							},
 							where: and(
-								s.domainName.in(schemaDomainNames),
+								d.name.in(schemaDomainNames),
 								s.name.in(schemaNames)
 							),
 							groupBy: [
 								s.index,
-								s.domainName,
+								d.id,
+								d.name,
 								s.name,
 								sv.minorVersion,
 								sv.patchVersion,
@@ -155,6 +163,7 @@ export class SchemaDao
 						})],
 					select: {
 						index: sMaV.index,
+						domainId: sMaV.domainId,
 						domainName: sMaV.domainName,
 						name: sMaV.name,
 						majorVersion: sMaV.majorVersion,
@@ -163,6 +172,7 @@ export class SchemaDao
 					},
 					groupBy: [
 						sMaV.index,
+						sMaV.domainId,
 						sMaV.domainName,
 						sMaV.name,
 						sMaV.majorVersion,
@@ -171,7 +181,10 @@ export class SchemaDao
 				})],
 			select: {
 				index: sMiV.index,
-				domainName: sMiV.domainName,
+				domain: {
+					id: sMiV.domainId,
+					name: sMiV.domainName
+				},
 				name: sMiV.name,
 				majorVersion: sMiV.majorVersion,
 				minorVersion: sMiV.minorVersion,
@@ -179,6 +192,7 @@ export class SchemaDao
 			},
 			groupBy: [
 				sMiV.index,
+				sMiV.domainId,
 				sMiV.domainName,
 				sMiV.name,
 				sMiV.majorVersion,
@@ -188,7 +202,7 @@ export class SchemaDao
 
 		for (const schema of schemas) {
 			this.utils.ensureChildJsMap(
-				maxVersionedMapBySchemaAndDomainNames, schema.domainName)
+				maxVersionedMapBySchemaAndDomainNames, schema.domain.name)
 				.set(schema.name, schema);
 		}
 

@@ -68,4 +68,4 @@ RecordUpdateStage = __decorate([
     air_control_1.Table({ name: "RECORD_UPDATE_STAGE" })
 ], RecordUpdateStage);
 exports.RecordUpdateStage = RecordUpdateStage;
-//# sourceMappingURL=RecordUpdateStage.js.map
+//# sourceMappingURL=recordupdatestage.js.map

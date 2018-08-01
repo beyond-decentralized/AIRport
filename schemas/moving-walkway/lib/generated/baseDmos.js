@@ -26,12 +26,12 @@ class BaseRepoTransBlockResponseStageDmo extends check_in_1.Dmo {
     }
 }
 exports.BaseRepoTransBlockResponseStageDmo = BaseRepoTransBlockResponseStageDmo;
-class BaseRepoTransBlockSchemasToChangeDmo extends check_in_1.Dmo {
+class BaseRepoTransBlockSchemaToChangeDmo extends check_in_1.Dmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepoTransBlockSchemasToChange']);
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepoTransBlockSchemaToChange']);
     }
 }
-exports.BaseRepoTransBlockSchemasToChangeDmo = BaseRepoTransBlockSchemasToChangeDmo;
+exports.BaseRepoTransBlockSchemaToChangeDmo = BaseRepoTransBlockSchemaToChangeDmo;
 class BaseRepositoryTransactionBlockDmo extends check_in_1.Dmo {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositoryTransactionBlock']);

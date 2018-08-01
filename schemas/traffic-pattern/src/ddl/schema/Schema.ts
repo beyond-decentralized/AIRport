@@ -19,8 +19,7 @@ import {ISchema}       from "../../generated/schema/qschema";
 import {SchemaStatus}  from "./SchemaStatus";
 import {SchemaVersion} from "./SchemaVersion";
 
-export type SchemaDomain = 'private' | 'public' | null;
-export type SchemaDomainName = string;
+export type SchemaScope = 'private' | 'public' | null;
 export type SchemaName = string;
 
 @Entity()
@@ -39,9 +38,9 @@ export class Schema
 		@JoinColumn({name: "DOMAIN_ID", referencedColumnName: "ID"})
 	domain: Domain;
 
-	@Column({name: "DOMAIN_NAME"})
+	@Column({name: "SCOPE"})
 	@DbString()
-	domainName: SchemaDomainName;
+	scope: SchemaScope;
 
 	@Column({name: "SCHEMA_NAME"})
 	@DbString()

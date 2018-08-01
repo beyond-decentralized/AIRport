@@ -49,7 +49,7 @@ declare function require(moduleName: string): any;
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface IRepoTransBlockSchemasToChange {
+export interface IRepoTransBlockSchemaToChange {
 	
 	// Id Properties
 
@@ -75,8 +75,8 @@ export interface IRepoTransBlockSchemasToChange {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepoTransBlockSchemasToChangeESelect
-    extends IEntitySelectProperties, RepoTransBlockSchemasToChangeEOptionalId, RepoTransBlockSchemasToChangeEUpdateProperties {
+export interface RepoTransBlockSchemaToChangeESelect
+    extends IEntitySelectProperties, RepoTransBlockSchemaToChangeEOptionalId, RepoTransBlockSchemaToChangeEUpdateProperties {
 	// Id Relations - full property interfaces
 	repositoryTransactionBlock?: RepositoryTransactionBlockESelect;
 	schema?: SchemaESelect;
@@ -88,7 +88,7 @@ export interface RepoTransBlockSchemasToChangeESelect
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface RepoTransBlockSchemasToChangeEId
+export interface RepoTransBlockSchemaToChangeEId
     extends IEntityIdProperties {
 	// Id Properties
 
@@ -101,7 +101,7 @@ export interface RepoTransBlockSchemasToChangeEId
 /**
  * Ids fields and relations only (optional).
  */
-export interface RepoTransBlockSchemasToChangeEOptionalId {
+export interface RepoTransBlockSchemaToChangeEOptionalId {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -113,7 +113,7 @@ export interface RepoTransBlockSchemasToChangeEOptionalId {
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface RepoTransBlockSchemasToChangeEUpdateProperties
+export interface RepoTransBlockSchemaToChangeEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	status?: number | IQNumberField;
@@ -125,7 +125,7 @@ export interface RepoTransBlockSchemasToChangeEUpdateProperties
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface RepoTransBlockSchemasToChangeEUpdateColumns
+export interface RepoTransBlockSchemaToChangeEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	STATUS?: number | IQNumberField;
@@ -135,15 +135,15 @@ export interface RepoTransBlockSchemasToChangeEUpdateColumns
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface RepoTransBlockSchemasToChangeECreateProperties
-extends RepoTransBlockSchemasToChangeEId, RepoTransBlockSchemasToChangeEUpdateProperties {
+export interface RepoTransBlockSchemaToChangeECreateProperties
+extends RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
-export interface RepoTransBlockSchemasToChangeECreateColumns
-extends RepoTransBlockSchemasToChangeEId, RepoTransBlockSchemasToChangeEUpdateColumns {
+export interface RepoTransBlockSchemaToChangeECreateColumns
+extends RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeEUpdateColumns {
 }
 
 
@@ -156,7 +156,7 @@ extends RepoTransBlockSchemasToChangeEId, RepoTransBlockSchemasToChangeEUpdateCo
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepoTransBlockSchemasToChange extends QEntity
+export interface QRepoTransBlockSchemaToChange extends QEntity
 {
 	// Id Fields
 
@@ -173,7 +173,7 @@ export interface QRepoTransBlockSchemasToChange extends QEntity
 
 
 // Entity Id Interface
-export interface QRepoTransBlockSchemasToChangeQId
+export interface QRepoTransBlockSchemaToChangeQId
 {
 	
 	// Id Fields
@@ -186,7 +186,7 @@ export interface QRepoTransBlockSchemasToChangeQId
 }
 
 // Entity Relation Interface
-export interface QRepoTransBlockSchemasToChangeQRelation
-	extends QRelation<QRepoTransBlockSchemasToChange>, QRepoTransBlockSchemasToChangeQId {
+export interface QRepoTransBlockSchemaToChangeQRelation
+	extends QRelation<QRepoTransBlockSchemaToChange>, QRepoTransBlockSchemaToChangeQId {
 }
 

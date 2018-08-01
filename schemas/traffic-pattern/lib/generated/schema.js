@@ -241,7 +241,7 @@ exports.SCHEMA = {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "DOMAIN_NAME",
+                            "name": "SCOPE",
                             "propertyRefs": [
                                 {
                                     "index": 2
@@ -342,7 +342,7 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "domainName"
+                            "name": "scope"
                         },
                         {
                             "columnRef": {

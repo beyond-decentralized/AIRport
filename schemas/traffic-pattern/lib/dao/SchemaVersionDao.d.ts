@@ -1,22 +1,13 @@
 import { IUtils } from "@airport/air-control";
 import { IAirportDatabase } from "@airport/air-control/lib/lingo/AirportDatabase";
-import { SchemaIndex, SchemaVersionId, SchemaVersionMajor, SchemaVersionMinor, SchemaVersionPatch } from "@airport/ground-control";
-import { SchemaDomainName, SchemaName } from "../ddl/schema/Schema";
-import { BaseSchemaVersionDao, IBaseSchemaVersionDao } from "../generated/generated";
-export interface MaxSchemaVersionView {
-    index: SchemaIndex;
-    schemaVersionId: SchemaVersionId;
-    domainName: SchemaDomainName;
-    name: SchemaName;
-    majorVersion: SchemaVersionMajor;
-    minorVersion: SchemaVersionMinor;
-    patchVersion: SchemaVersionPatch;
-}
+import { DomainName } from "@airport/ground-control";
+import { SchemaName } from "../ddl/schema/Schema";
+import { BaseSchemaVersionDao, IBaseSchemaVersionDao, ISchemaVersion } from "../generated/generated";
 export interface ISchemaVersionDao extends IBaseSchemaVersionDao {
-    findMaxVersionedMapBySchemaAndDomainNames(schemaDomainNames: SchemaDomainName[], schemaNames: SchemaName[]): Promise<Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>>>;
+    findMaxVersionedMapBySchemaAndDomainNames(schemaDomainNames: DomainName[], schemaNames: SchemaName[]): Promise<Map<DomainName, Map<SchemaName, ISchemaVersion>>>;
 }
 export declare class SchemaVersionDao extends BaseSchemaVersionDao implements ISchemaVersionDao {
     private airportDatabase;
     constructor(airportDatabase: IAirportDatabase, utils: IUtils);
-    findMaxVersionedMapBySchemaAndDomainNames(schemaDomainNames: SchemaDomainName[], schemaNames: SchemaName[]): Promise<Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>>>;
+    findMaxVersionedMapBySchemaAndDomainNames(schemaDomainNames: DomainName[], schemaNames: SchemaName[]): Promise<Map<DomainName, Map<SchemaName, ISchemaVersion>>>;
 }

@@ -15,13 +15,13 @@ export declare class SyncOutRepositoryTransactionBlockCreator implements ISyncOu
     private utils;
     constructor(actorDao: IActorDao, repositoryDao: IRepositoryDao, repositoryTransactionBlockDao: IRepositoryTransactionBlockDao, repositoryTransactionHistoryUpdateStageDao: IRepositoryTransactionHistoryUpdateStageDao, schemaDao: ISchemaDao, sharingNodeRepositoryDao: ISharingNodeRepositoryDao, utils: IUtils);
     createNewBlocks(sharingNodeIds: SharingNodeId[], terminal: ITerminal): Promise<Map<SharingNodeId, IRepositoryTransactionBlock[]>>;
-    private gatherIdsForBlockCreation;
-    private gatherHistoryIds;
-    private createNewBlocksAndSetRepoTransHistoryBlockIds;
-    private findSchemasByRepositoryMap;
-    private createRepositoryTransactionBlockAndStageData;
-    private createRepoTransHistoryUpdateStageValuesForBlock;
-    private finishPopulatingRepositoryTransactionBlockData;
-    private setRepositoryTransactionBlockBlockIds;
-    private groupRepoTransBlocksBySharingNode;
+    private gatherIdsForBlockCreation(repoTransHistoriesToSync, repositoryTransactionHistoryIds, repositoryIdSet, repoTransHistoryMapByRepositoryId, schemaVersionIds, schemaVersionIdSetsByRepository, actorIdSet, repositoryIdsByActorId);
+    private gatherHistoryIds(repoTransHistory, schemaVersionIds, schemaVersionIdSetsByRepository, actorIdSet, repositoryIdsByActorId);
+    private createNewBlocksAndSetRepoTransHistoryBlockIds(schemaVersionIds, schemaVersionIdSetsByRepository, terminal, repositoryIdSet, actorIdSet, repositoryIdsByActorId, repoTransHistoryMapByRepositoryId);
+    private findSchemasByRepositoryMap(schemaVersionIds, schemaVersionIdSetsByRepository);
+    private createRepositoryTransactionBlockAndStageData(repositoryMapById, actorIdSet, repositoryId, repositoryIdsByActorId, repositoryTransactionHistories, schemasByRepositoryIdMap, repoTransBlockDataByRepoId, terminal, repositoryTransactionBlocks, repoTransBlocksByRepositoryId, repoTransHistoryUpdateStageValues, repoTransHistoryUpdateStageValuesByBlock);
+    private createRepoTransHistoryUpdateStageValuesForBlock(repositoryTransactionHistories, repoTransHistoryUpdateStageValues, repoTransHistoryUpdateStageValuesByBlock, repositoryTransactionBlock);
+    private finishPopulatingRepositoryTransactionBlockData(actorIdSet, repositoryIdsByActorId, repoTransBlockDataByRepoId, repoTransBlocksByRepositoryId, repositoryTransactionBlocks);
+    private setRepositoryTransactionBlockBlockIds(repoTransHistoryUpdateStageValuesByBlock, repoTransHistoryUpdateStageValues);
+    private groupRepoTransBlocksBySharingNode(repositoryTransactionBlocks, sharingNodeIdMapByRepositoryId);
 }

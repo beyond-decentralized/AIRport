@@ -29,9 +29,7 @@ import {
 import {
 	ISchema,
 	ISchemaVersion,
-	SchemaDomainName
 }                                                 from "@airport/traffic-pattern";
-import {MaxSchemaVersionView}                     from "@airport/traffic-pattern/lib/dao/SchemaVersionDao";
 import {
 	Inject,
 	Service
@@ -143,7 +141,7 @@ export class SyncInChecker
 			dataMessagesWithInvalidSchemas,
 			dataMessagesToBeUpgraded,
 			maxVersionedMapBySchemaAndDomainNames,
-			schemaWithChangesMap
+			schemaWithChangesMap,
 		} = await this.schemaChecker.checkSchemas(dataMessages);
 
 		dataMessagesWithInvalidData = dataMessagesWithInvalidData
@@ -191,10 +189,12 @@ export class SyncInChecker
 		await this.syncInRepositoryTransactionBlockCreator
 			.createSharingMessageRepoTransBlocks(allDataToTM);
 
-		// SharingNodeRepoTransBlocks are only created for outgoing RTBs
+		// Currently, SharingNodeRepoTransBlocks are not needed for incoming messages.
+		// Their are used to track the sync status of the outgoing RTBs only
 		// await this.recordAllSharingNodeRepoTransBlocks();
 
-		const sharingMessagesWithCompatibleSchemasAndData = await this.recordRepoTransBlockSchemasToChange(
+		const sharingMessagesWithCompatibleSchemasAndData
+			= await this.recordRepoTransBlockSchemasToChange(
 			dataMessagesWithIncompatibleSchemas,
 			// dataMessagesToBeUpgraded,
 			schemaWithChangesMap,

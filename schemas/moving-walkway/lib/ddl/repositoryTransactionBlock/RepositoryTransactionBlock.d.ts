@@ -3,7 +3,7 @@ import { Repository, RepositoryTransactionHistory, Terminal } from "@airport/hol
 import { MissingRecordRepoTransBlock } from "../missingRecord/MissingRecordRepoTransBlock";
 import { SharingMessageRepoTransBlock } from "../sharingMessage/SharingMessageRepoTransBlock";
 import { SharingNodeRepoTransBlock } from "../sharingNode/SharingNodeRepoTransBlock";
-import { RepoTransBlockSchemasToChange } from "./RepoTransBlockSchemaToChange";
+import { RepoTransBlockSchemaToChange } from "./RepoTransBlockSchemaToChange";
 export declare type RepositoryTransactionBlockHash = string;
 /**
  * A block of Repository Transaction Histories.  It's unique and hashable, and hence
@@ -46,5 +46,5 @@ export declare class RepositoryTransactionBlock {
     sharingNodeRepoTransBlocks: SharingNodeRepoTransBlock[];
     sharingMessageRepoTransBlocks: SharingMessageRepoTransBlock[];
     missingRecordRepoTransBlocks: MissingRecordRepoTransBlock[];
-    repoTransBlockSchemasToChange: RepoTransBlockSchemasToChange[];
+    repoTransBlockSchemasToChange: RepoTransBlockSchemaToChange[];
 }

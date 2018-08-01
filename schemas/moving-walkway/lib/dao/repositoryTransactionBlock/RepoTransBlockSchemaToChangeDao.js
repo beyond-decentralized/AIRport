@@ -17,15 +17,15 @@ const typedi_1 = require("typedi");
 const Service_1 = require("typedi/decorators/Service");
 const generated_1 = require("../../generated/generated");
 const InjectionTokens_1 = require("../../InjectionTokens");
-let RepoTransBlockSchemasToChangeDao = class RepoTransBlockSchemasToChangeDao extends generated_1.BaseRepoTransBlockSchemasToChangeDao {
+let RepoTransBlockSchemaToChangeDao = class RepoTransBlockSchemaToChangeDao extends generated_1.BaseRepoTransBlockSchemaToChangeDao {
     constructor(utils) {
         super(utils);
     }
 };
-RepoTransBlockSchemasToChangeDao = __decorate([
-    Service_1.Service(InjectionTokens_1.RepoTransBlockSchemasToChangeDaoToken),
+RepoTransBlockSchemaToChangeDao = __decorate([
+    Service_1.Service(InjectionTokens_1.RepoTransBlockSchemaToChangeDaoToken),
     __param(0, typedi_1.Inject(air_control_1.UtilsToken)),
     __metadata("design:paramtypes", [Object])
-], RepoTransBlockSchemasToChangeDao);
-exports.RepoTransBlockSchemasToChangeDao = RepoTransBlockSchemasToChangeDao;
-//# sourceMappingURL=RepoTransBlockSchemasToChangeDao.js.map
+], RepoTransBlockSchemaToChangeDao);
+exports.RepoTransBlockSchemaToChangeDao = RepoTransBlockSchemaToChangeDao;
+//# sourceMappingURL=RepoTransBlockSchemaToChangeDao.js.map

@@ -14,11 +14,25 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const typedi_1 = require("typedi");
+const __1 = require("..");
 const baseDaos_1 = require("../generated/baseDaos");
 const InjectionTokens_1 = require("../InjectionTokens");
 let DomainDao = class DomainDao extends baseDaos_1.BaseDomainDao {
     constructor(utils) {
         super(utils);
+    }
+    async findMapByNameWithNames(domainNames) {
+        let d;
+        const domains = await this.db.find.tree({
+            select: {},
+            from: [d = __1.Q.Domain],
+            where: d.name.in(domainNames)
+        });
+        const domainMapByNameWithNames = new Map();
+        for (const domain of domains) {
+            domainMapByNameWithNames.set(domain.name, domain);
+        }
+        return domainMapByNameWithNames;
     }
 };
 DomainDao = __decorate([
