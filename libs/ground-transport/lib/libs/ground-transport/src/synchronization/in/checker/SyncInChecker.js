@@ -12,6 +12,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const moving_walkway_1 = require("@airport/moving-walkway");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../../../InjectionTokens");
@@ -39,7 +40,7 @@ let SyncInChecker = class SyncInChecker {
      *      ]
      */
     async checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages, actorMap, sharingNodeRepositoryMap, dataMessagesWithInvalidData) {
-        const { dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleSchemas, dataMessagesWithInvalidSchemas, dataMessagesToBeUpgraded, maxVersionedMapBySchemaAndDomainNames, schemaWithChangesMap } = await this.schemaChecker.checkSchemas(dataMessages);
+        const { dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleSchemas, dataMessagesWithInvalidSchemas, dataMessagesToBeUpgraded, maxVersionedMapBySchemaAndDomainNames, schemaWithChangesMap, } = await this.schemaChecker.checkSchemas(dataMessages);
         dataMessagesWithInvalidData = dataMessagesWithInvalidData
             .concat(dataMessagesWithInvalidSchemas);
         // this.updateSchemaReferences(dataMessagesWithIncompatibleSchemas, allSchemaMap);
@@ -60,7 +61,8 @@ let SyncInChecker = class SyncInChecker {
             .createMissingRecordRepoTransBlocks(missingRecordDataToTMs);
         await this.syncInRepositoryTransactionBlockCreator
             .createSharingMessageRepoTransBlocks(allDataToTM);
-        // SharingNodeRepoTransBlocks are only created for outgoing RTBs
+        // Currently, SharingNodeRepoTransBlocks are not needed for incoming messages.
+        // Their are used to track the sync status of the outgoing RTBs only
         // await this.recordAllSharingNodeRepoTransBlocks();
         const sharingMessagesWithCompatibleSchemasAndData = await this.recordRepoTransBlockSchemasToChange(dataMessagesWithIncompatibleSchemas, 
         // dataMessagesToBeUpgraded,
@@ -238,7 +240,7 @@ SyncInChecker = __decorate([
     __param(6, typedi_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
     __param(7, typedi_1.Inject(InjectionTokens_1.SyncInRepositoryTransactionBlockCreatorToken)),
     __param(8, typedi_1.Inject(InjectionTokens_1.SyncInUtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object])
+    __metadata("design:paramtypes", [Object, Object, Object, Object, typeof (_a = typeof moving_walkway_1.IRepoTransBlockSchemasToChangeDao !== "undefined" && moving_walkway_1.IRepoTransBlockSchemasToChangeDao) === "function" && _a || Object, Object, Object, Object, Object])
 ], SyncInChecker);
 exports.SyncInChecker = SyncInChecker;
 //# sourceMappingURL=SyncInChecker.js.map
