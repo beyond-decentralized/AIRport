@@ -4,16 +4,16 @@ import {
 	IRepositoryTransactionHistory,
 	ITerminal,
 	IUser
-} from "@airport/holding-pattern";
+}                from "@airport/holding-pattern";
+import {IDomain} from "@airport/territory";
 import {
 	ISchema,
 	ISchemaVersion
-} from "@airport/traffic-pattern";
+}                from "@airport/traffic-pattern";
 
 export interface RepositoryTransactionBlockData {
-	users: IUser[];
-	terminal: ITerminal;
 	actors: IActor[];
+	domains: IDomain[];
 	referencedRepositories: IRepository[];
 	repository: IRepository;
 	repoTransHistories: IRepositoryTransactionHistory[];
@@ -24,5 +24,8 @@ export interface RepositoryTransactionBlockData {
 
 	 Hence schema's come embedded in the schema version objects
 	  */
+	schemas: ISchema[];
 	schemaVersions: ISchemaVersion[];
+	terminal: ITerminal;
+	users: IUser[];
 }

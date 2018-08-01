@@ -64,6 +64,6 @@ export declare class SyncInChecker implements ISyncInChecker {
     private updateSchemaReferences;
     private updateActorReferences;
     private updateRepositoryReferences;
-    private recordSharingMessages;
+    private recordRepoTransBlockSchemasToChange;
     private findMatchingSchema;
 }

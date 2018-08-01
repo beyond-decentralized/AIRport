@@ -37,12 +37,12 @@ let SyncInDataChecker = class SyncInDataChecker {
      * @returns {DataCheckResults}
      */
     async checkData(dataMessagesWithCompatibleSchemas) {
-        const { messageIndexMapByRecordToUpdateIds, recordsToInsert, recordToUpdateMap } = this.getDataStructuresForChanges(dataMessagesWithCompatibleSchemas);
+        const { messageIndexMapByRecordToUpdateIds, recordToInsertMap, recordToUpdateMap } = this.getDataStructuresForChanges(dataMessagesWithCompatibleSchemas);
         const existingRecordIdMap = await this.repositoryTransactionHistoryDao.findExistingRecordIdMap(recordToUpdateMap);
         const dataMessagesWithIncompatibleData = [];
         const { compatibleDataMessageFlags, missingRecordDataToTMs, } = await this.determineMissingRecords(dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, recordToUpdateMap, existingRecordIdMap, messageIndexMapByRecordToUpdateIds);
         const dataMessagesWithCompatibleSchemasAndData = [];
-        // filter out data messages with records that do no exist
+        // filter out data messages with records that do not exist
         for (let i = 0; i < compatibleDataMessageFlags.length; i++) {
             const dataMessage = dataMessagesWithCompatibleSchemas[i];
             if (compatibleDataMessageFlags[i]) {
@@ -103,7 +103,7 @@ let SyncInDataChecker = class SyncInDataChecker {
         }
         return {
             messageIndexMapByRecordToUpdateIds,
-            recordsToInsert,
+            recordToInsertMap: recordsToInsert,
             recordToUpdateMap
         };
     }

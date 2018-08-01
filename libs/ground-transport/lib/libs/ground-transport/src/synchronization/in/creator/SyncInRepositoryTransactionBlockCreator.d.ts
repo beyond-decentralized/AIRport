@@ -2,7 +2,7 @@ import { IMissingRecordRepoTransBlockDao, IRepositoryTransactionBlockDao, IShari
 import { IMissingRecordDataToTM } from "../checker/SyncInDataChecker";
 import { IDataToTM } from "../SyncInUtils";
 export interface ISyncInRepositoryTransactionBlockCreator {
-    createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas: IDataToTM[], dataMessagesWithIncompatibleData: IDataToTM[], dataMessagesToBeUpgraded: IDataToTM[], dataMessagesWithCompatibleSchemasAndData: IDataToTM[], dataMessagesWithInvalidData: IDataToTM[]): Promise<void>;
+    createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas: IDataToTM[], dataMessagesWithIncompatibleData: IDataToTM[], dataMessagesToBeUpgraded: IDataToTM[], dataMessagesWithCompatibleSchemasAndData: IDataToTM[], dataMessagesWithInvalidData: IDataToTM[]): Promise<IDataToTM[]>;
     createMissingRecordRepoTransBlocks(missingRecordDataToTMs: IMissingRecordDataToTM[]): Promise<void>;
     createSharingMessageRepoTransBlocks(allDataToTM: IDataToTM[]): Promise<void>;
     createSharingNodeRepoTransBlocks(allDataToTM: IDataToTM[]): Promise<void>;

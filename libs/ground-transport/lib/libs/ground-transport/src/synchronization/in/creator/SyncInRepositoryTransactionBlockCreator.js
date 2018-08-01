@@ -68,7 +68,9 @@ let SyncInRepositoryTransactionBlockCreator = class SyncInRepositoryTransactionB
             repositoryTransactionBlock: missingRecordDataToTM
                 .dataMessage.repositoryTransactionBlock
         }));
-        await this.missingRecordRepoTransBlockDao.bulkCreate(missingRecordRepoTransBlocks, false, false);
+        if (missingRecordRepoTransBlocks.length) {
+            await this.missingRecordRepoTransBlockDao.bulkCreate(missingRecordRepoTransBlocks, false, false);
+        }
     }
     async createSharingMessageRepoTransBlocks(allDataToTM) {
         const sharingMessageRepoTransBlocks = allDataToTM.map(dataToTM => ({

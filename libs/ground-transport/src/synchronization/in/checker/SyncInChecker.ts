@@ -13,14 +13,12 @@ import {
 	UserUniqueId
 }                                                 from "@airport/holding-pattern";
 import {
-	IMissingRecordRepoTransBlock,
 	IMissingRecordRepoTransBlockDao,
 	IRepositoryTransactionBlock,
 	IRepoTransBlockSchemasToChange,
 	IRepoTransBlockSchemasToChangeDao,
 	ISharingMessage,
 	ISharingMessageDao,
-	MissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockDaoToken,
 	RepoTransBlockSchemasToChangeDaoToken,
 	SchemaChangeStatus,
@@ -145,6 +143,7 @@ export class SyncInChecker
 			dataMessagesWithInvalidSchemas,
 			dataMessagesToBeUpgraded,
 			maxVersionedMapBySchemaAndDomainNames,
+			schemaWithChangesMap
 		} = await this.schemaChecker.checkSchemas(dataMessages);
 
 		dataMessagesWithInvalidData = dataMessagesWithInvalidData
@@ -175,7 +174,7 @@ export class SyncInChecker
 		} = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas);
 
 
-		await this.syncInRepositoryTransactionBlockCreator
+		const allDataToTM = await this.syncInRepositoryTransactionBlockCreator
 			.createRepositoryTransBlocks(
 				dataMessagesWithIncompatibleSchemas,
 				dataMessagesWithIncompatibleData,
@@ -184,22 +183,24 @@ export class SyncInChecker
 				dataMessagesWithInvalidData
 			);
 
-		const allDataToTM = await this.syncInRepositoryTransactionBlockCreator
+		await this.syncInRepositoryTransactionBlockCreator
 			.createMissingRecordRepoTransBlocks(
 				missingRecordDataToTMs
 			);
 
 		await this.syncInRepositoryTransactionBlockCreator
 			.createSharingMessageRepoTransBlocks(allDataToTM);
-		await this.recordAllSharingNodeRepoTransBlocks();
 
-		const sharingMessagesWithCompatibleSchemasAndData = await this.recordSharingMessages(
+		// SharingNodeRepoTransBlocks are only created for outgoing RTBs
+		// await this.recordAllSharingNodeRepoTransBlocks();
+
+		const sharingMessagesWithCompatibleSchemasAndData = await this.recordRepoTransBlockSchemasToChange(
 			dataMessagesWithIncompatibleSchemas,
-			dataMessagesToBeUpgraded,
-			schemasWithChangesMap,
-			dataMessagesWithCompatibleSchemasAndData,
-			sharingMessagesWithIncompatibleData,
-			missingRecordRepoTransBlocks
+			// dataMessagesToBeUpgraded,
+			schemaWithChangesMap,
+			// dataMessagesWithCompatibleSchemasAndData,
+			// sharingMessagesWithIncompatibleData,
+			// missingRecordRepoTransBlocks
 		);
 
 		return [
@@ -326,13 +327,13 @@ export class SyncInChecker
 		}
 	}
 
-	private async recordSharingMessages(
+	private async recordRepoTransBlockSchemasToChange(
 		dataMessagesWithIncompatibleSchemas: IDataToTM[],
-		dataMessagesToBeUpgraded: IDataToTM[],
-		schemasWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
-		dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
-		sharingMessagesWithIncompatibleData: ISharingMessage[],
-		missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[]
+		// dataMessagesToBeUpgraded: IDataToTM[],
+		schemaWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
+		// dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
+		// sharingMessagesWithIncompatibleData: ISharingMessage[],
+		// missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[]
 	): Promise<ISharingMessage[]> {
 		// const sharingMessagesWithIncompatibleSchemas = dataMessagesWithIncompatibleSchemas.map((
 		// 	dataMessagesWithIncompatibleSchemas
@@ -359,39 +360,40 @@ export class SyncInChecker
 		// ...sharingMessagesWithIncompatibleData, ...sharingMessagesWithCompatibleSchemasAndData ];
 		// await this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false, false);
 
-		const m: MissingRecordRepoTransBlock;
+		// const m: MissingRecordRepoTransBlock;
 
-		if (missingRecordRepoTransBlocks.length) {
-			await this.missingRecordRepoTransBlockDao.bulkCreate(
-				missingRecordRepoTransBlocks, false, false);
-		}
+		// if (missingRecordRepoTransBlocks.length) {
+		// 	await this.missingRecordRepoTransBlockDao.bulkCreate(
+		// 		missingRecordRepoTransBlocks, false, false);
+		// }
 
 
 		// Record all schemas to change per sharing message with incompatible schemas
-		const sharingMessagesSchemasToChange: IRepoTransBlockSchemasToChange[] = [];
+		const repoTransBlockSchemasToChange: IRepoTransBlockSchemasToChange[] = [];
 		for (let i = 0; i < dataMessagesWithIncompatibleSchemas.length; i++) {
 			const message: IDataToTM = dataMessagesWithIncompatibleSchemas[i];
-			const sharingMessage: ISharingMessage = sharingMessagesWithIncompatibleSchemas[i];
+			// const sharingMessage: ISharingMessage = sharingMessagesWithIncompatibleSchemas[i];
 
 			let allMessageSchemasAreCompatible = true;
 			let messageBuildWithOutdatedSchemaVersions = false;
 			// for every schema (at a given version) used in the message
 			for (const schema of message.data.schemas) {
-				let matchingSchema = this.findMatchingSchema(schemasWithChangesMap, schema);
+				let matchingSchema = this.findMatchingSchema(schemaWithChangesMap, schema);
 				if (!matchingSchema) {
 					continue;
 				}
 
 				// If a there was a schema that needs to be added or upgraded
-				sharingMessagesSchemasToChange.push({
-					sharingMessage,
+				repoTransBlockSchemasToChange.push({
+					// sharingMessage,
+					repositoryTransactionBlock: message.repositoryTransactionBlock,
 					status: SchemaChangeStatus.CHANGE_NEEDED,
 					schema: matchingSchema
 				});
 			}
 		}
 		await this.repoTransBlockSchemasToChangeDao.bulkCreate(
-			sharingMessagesSchemasToChange, false, false);
+			repoTransBlockSchemasToChange, false, false);
 
 		return sharingMessagesWithCompatibleSchemasAndData;
 	}

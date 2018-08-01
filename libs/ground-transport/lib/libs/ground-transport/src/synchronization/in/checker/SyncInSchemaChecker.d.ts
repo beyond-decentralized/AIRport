@@ -1,6 +1,6 @@
 import { IUtils } from "@airport/air-control";
 import { SchemaName } from "@airport/ground-control";
-import { ISchemaDao, ISchemaVersionDao, MaxSchemaVersionView, SchemaDomainName } from "@airport/traffic-pattern";
+import { ISchema, ISchemaDao, ISchemaVersionDao, MaxSchemaVersionView, SchemaDomainName } from "@airport/traffic-pattern";
 import { IDataToTM } from "../SyncInUtils";
 export interface SchemaCheckResults {
     dataMessagesWithCompatibleSchemas: IDataToTM[];
@@ -8,6 +8,7 @@ export interface SchemaCheckResults {
     dataMessagesWithInvalidSchemas: IDataToTM[];
     dataMessagesToBeUpgraded: IDataToTM[];
     maxVersionedMapBySchemaAndDomainNames: Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>>;
+    schemaWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
 }
 export interface ISyncInSchemaChecker {
     checkSchemas(dataMessages: IDataToTM[]): Promise<SchemaCheckResults>;

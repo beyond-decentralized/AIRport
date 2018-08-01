@@ -66,7 +66,7 @@ export interface MissingRecordResults {
 export interface DataStructuresForChanges {
 	messageIndexMapByRecordToUpdateIds: Map<RepositoryId, Map<SchemaVersionId,
 		Map<TableIndex, Map<ActorId, Map<RepositoryEntityActorRecordId, Set<number>>>>>>;
-	recordsToInsert: Map<RepositoryId, Map<SchemaVersionId,
+	recordToInsertMap: Map<RepositoryId, Map<SchemaVersionId,
 		Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>;
 	recordToUpdateMap: Map<RepositoryId, Map<SchemaVersionId,
 		Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>;
@@ -119,7 +119,7 @@ export class SyncInDataChecker
 	): Promise<DataCheckResults> {
 		const {
 			messageIndexMapByRecordToUpdateIds,
-			recordsToInsert,
+			recordToInsertMap,
 			recordToUpdateMap
 		} = this.getDataStructuresForChanges(dataMessagesWithCompatibleSchemas);
 
@@ -137,7 +137,7 @@ export class SyncInDataChecker
 
 		const dataMessagesWithCompatibleSchemasAndData: IDataToTM[] = [];
 
-		// filter out data messages with records that do no exist
+		// filter out data messages with records that do not exist
 		for (let i = 0; i < compatibleDataMessageFlags.length; i++) {
 			const dataMessage = dataMessagesWithCompatibleSchemas[i];
 			if (compatibleDataMessageFlags[i]) {
@@ -233,7 +233,7 @@ export class SyncInDataChecker
 
 		return {
 			messageIndexMapByRecordToUpdateIds,
-			recordsToInsert,
+			recordToInsertMap: recordsToInsert,
 			recordToUpdateMap
 		}
 	}

@@ -20,7 +20,7 @@ export interface MissingRecordResults {
 }
 export interface DataStructuresForChanges {
     messageIndexMapByRecordToUpdateIds: Map<RepositoryId, Map<SchemaVersionId, Map<TableIndex, Map<ActorId, Map<RepositoryEntityActorRecordId, Set<number>>>>>>;
-    recordsToInsert: Map<RepositoryId, Map<SchemaVersionId, Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>;
+    recordToInsertMap: Map<RepositoryId, Map<SchemaVersionId, Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>;
     recordToUpdateMap: Map<RepositoryId, Map<SchemaVersionId, Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>;
 }
 export interface ISyncInDataChecker {

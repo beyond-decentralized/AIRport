@@ -43,17 +43,18 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
         }
         const maxVersionedMapBySchemaAndDomainNames = await this.schemaVersionDao.findMaxVersionedMapBySchemaAndDomainNames(Array.from(schemaDomainNameSet), Array.from(schemaNameSet));
         const { dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleSchemas, dataMessagesToBeUpgraded, missingSchemaNameMap, schemasToBeUpgradedMap, } = this.groupMessagesAndSchemasBySchemaState(dataMessages, maxVersionedMapBySchemaAndDomainNames);
-        const missingSchemaMap = await this.recordSchemasToBeAddedAndUpgraded(schemasToBeUpgradedMap, missingSchemaNameMap);
+        const schemaWithChangesMap = await this.recordSchemasToBeAddedAndUpgraded(schemasToBeUpgradedMap, missingSchemaNameMap);
         // const schemasWithChangesMap
         // 	= this.mergeSchemaMaps(missingSchemaMap, schemasToBeUpgradedMap);
         // const allSchemaMap
         // 	= this.mergeSchemaMaps(maxVersionedMapBySchemaAndDomainNames, schemasWithChangesMap);
         return {
+            dataMessagesToBeUpgraded,
             dataMessagesWithCompatibleSchemas,
             dataMessagesWithIncompatibleSchemas,
             dataMessagesWithInvalidSchemas,
-            dataMessagesToBeUpgraded,
-            maxVersionedMapBySchemaAndDomainNames
+            maxVersionedMapBySchemaAndDomainNames,
+            schemaWithChangesMap
         };
     }
     groupMessagesAndSchemasBySchemaState(dataMessages, maxVersionedMapBySchemaAndDomainNames) {
@@ -116,25 +117,58 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
     }
     verifyRTBSchemaConsistency(dataMessage) {
         const data = dataMessage.data;
-        const schemaVersionSet = new Set();
-        const schemaIndexSet = new Set();
-        const schemaMapByNames = new Map();
+        const domainMapByName = new Map();
+        const domainMapById = new Map();
+        for (const domain of data.domains) {
+            if (domainMapByName.has(domain.name)) {
+                return false;
+            }
+            if (domainMapById.has(domain.id)) {
+                return false;
+            }
+            domainMapByName.set(domain.name, domain);
+            domainMapById.set(domain.id, domain);
+        }
+        const schemaMapByIndex = new Map();
+        const schemaMapByDomainIdAndName = new Map();
+        for (const schema of data.schemas) {
+            const domainId = schema.domain.id;
+            const schemaMapForDomainByName = schemaMapByDomainIdAndName.get(domainId);
+            if (schemaMapForDomainByName
+                && schemaMapForDomainByName.has(schema.name)) {
+                return false;
+            }
+            this.utils.ensureChildJsMap(schemaMapByDomainIdAndName, domainId)
+                .set(schema.name, schema);
+            if (schemaMapByIndex.has(schema.index)) {
+                return false;
+            }
+            schemaMapByIndex.set(schema.index, schema);
+            schema.domain = domainMapById.get(domainId);
+        }
+        const schemaVersionMapById = new Map();
+        const schemaVersionMapBySchemaIndexAndVersions = new Map();
         for (const schemaVersion of data.schemaVersions) {
             const schemaVersionIdAlreadyDefinedInRTB = schemaVersionMapById.has(schemaVersion.id);
             if (schemaVersionIdAlreadyDefinedInRTB) {
                 return false;
             }
+            schemaVersionMapById.set(schemaVersion.id, schemaVersion);
             const schema = schemaVersion.schema;
-            const schemaIndexAlreadyDefinedInRTB = schemaMapByIndex.has(schema.index);
-            if (schemaIndexAlreadyDefinedInRTB) {
-                return false;
+            const schemaVersionMapForSchemaIndexByVersions = schemaVersionMapBySchemaIndexAndVersions
+                .get(schema.index);
+            if (schemaVersionMapForSchemaIndexByVersions) {
+                const schemaVersionMapForMajorVersion = schemaVersionMapForSchemaIndexByVersions.get(schemaVersion.majorVersion);
+                if (schemaVersionMapForMajorVersion) {
+                    const schemaVersionMapForMinorVersion = schemaVersionMapForMajorVersion.get(schemaVersion.minorVersion);
+                    if (schemaVersionMapForMinorVersion
+                        && schemaVersionMapForMinorVersion.has(schemaVersion.patchVersion)) {
+                        return false;
+                    }
+                }
             }
-            const schemaMapForDomainName = this.utils.ensureChildJsSet(schemaMapByNames, schema.domainName);
-            const schemaNameAlreadyDefinedInRTB = schemaMapForDomainName.has(schema.name);
-            if (schemaNameAlreadyDefinedInRTB) {
-                return false;
-            }
-            schemaMapForDomainName.add(schema.name);
+            this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(schemaVersionMapBySchemaIndexAndVersions, schema.index), schemaVersion.majorVersion), schemaVersion.minorVersion).set(schemaVersion.patchVersion, schemaVersion);
+            schemaVersion.schema = schemaMapByIndex.get(schema.index);
         }
         return true;
     }
@@ -149,7 +183,7 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
      * @returns {Promise<void>}
      */
     async recordSchemasToBeAddedAndUpgraded(schemasToBeUpgradedMap, missingSchemaNameMap) {
-        const missingSchemaMap = new Map();
+        const schemaWithChangesMap = new Map();
         // All local (TM) indexes of schemas that need to be upgraded
         const schemaIndexesToUpdateStatusBy = [];
         for (const schemaMapByName of schemasToBeUpgradedMap.values()) {
@@ -161,19 +195,19 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
         // All schemas needed (that do not yet exist in this TM)
         const newlyNeededSchemas = [];
         for (const [domainName, schemaNameSet] of missingSchemaNameMap) {
-            const missingSchemaDomainMap = this.utils.ensureChildJsMap(missingSchemaMap, domainName);
+            const schemaDomainWithChangesMap = this.utils.ensureChildJsMap(schemaWithChangesMap, domainName);
             for (const name of schemaNameSet) {
                 const schema = {
                     domainName,
                     name,
                     status: traffic_pattern_1.SchemaStatus.MISSING
                 };
-                missingSchemaDomainMap.set(name, schema);
+                schemaDomainWithChangesMap.set(name, schema);
                 newlyNeededSchemas.push(schema);
             }
         }
         await this.schemaDao.bulkCreate(newlyNeededSchemas, false, false);
-        return missingSchemaMap;
+        return schemaWithChangesMap;
     }
     mergeSchemaMaps(schemaMap1, schemaMap2) {
         const mergedSchemaMap = new Map();
