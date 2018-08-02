@@ -28,4 +28,4 @@ RepoTransBlockResponseStage = __decorate([
     air_control_1.Table({ name: "REPO_TRANS_BLOCK_RESPONSE_STAGE" })
 ], RepoTransBlockResponseStage);
 exports.RepoTransBlockResponseStage = RepoTransBlockResponseStage;
-//# sourceMappingURL=repotransblockresponsestage.js.map
+//# sourceMappingURL=RepoTransBlockResponseStage.js.map

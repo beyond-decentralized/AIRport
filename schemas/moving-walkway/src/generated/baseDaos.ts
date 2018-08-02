@@ -13,7 +13,7 @@ import {
 	MissingRecordEUpdateProperties,
 	MissingRecordEId,
 	QMissingRecord
-} from './missingrecord/qmissingrecord';
+} from './missingRecord/qmissingrecord';
 import {
 	IMissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockESelect,
@@ -23,7 +23,7 @@ import {
 	MissingRecordRepoTransBlockEUpdateProperties,
 	MissingRecordRepoTransBlockEId,
 	QMissingRecordRepoTransBlock
-} from './missingrecord/qmissingrecordrepotransblock';
+} from './missingRecord/qmissingrecordrepotransblock';
 import {
 	IRecordUpdateStage,
 	RecordUpdateStageESelect,
@@ -43,7 +43,7 @@ import {
 	RepoTransBlockResponseStageEUpdateProperties,
 	RepoTransBlockResponseStageEId,
 	QRepoTransBlockResponseStage
-} from './repositorytransactionblock/qrepotransblockresponsestage';
+} from './repositoryTransactionBlock/qrepotransblockresponsestage';
 import {
 	IRepoTransBlockSchemaToChange,
 	RepoTransBlockSchemaToChangeESelect,
@@ -53,7 +53,7 @@ import {
 	RepoTransBlockSchemaToChangeEUpdateProperties,
 	RepoTransBlockSchemaToChangeEId,
 	QRepoTransBlockSchemaToChange
-} from './repositorytransactionblock/qrepotransblockschematochange';
+} from './repositoryTransactionBlock/qrepotransblockschematochange';
 import {
 	IRepositoryTransactionBlock,
 	RepositoryTransactionBlockESelect,
@@ -63,7 +63,7 @@ import {
 	RepositoryTransactionBlockEUpdateProperties,
 	RepositoryTransactionBlockEId,
 	QRepositoryTransactionBlock
-} from './repositorytransactionblock/qrepositorytransactionblock';
+} from './repositoryTransactionBlock/qrepositorytransactionblock';
 import {
 	IRepositoryTransactionHistoryUpdateStage,
 	RepositoryTransactionHistoryUpdateStageESelect,
@@ -73,7 +73,7 @@ import {
 	RepositoryTransactionHistoryUpdateStageEUpdateProperties,
 	RepositoryTransactionHistoryUpdateStageEId,
 	QRepositoryTransactionHistoryUpdateStage
-} from './repositorytransactionblock/qrepositorytransactionhistoryupdatestage';
+} from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage';
 import {
 	ISharingMessage,
 	SharingMessageESelect,
@@ -83,7 +83,7 @@ import {
 	SharingMessageEUpdateProperties,
 	SharingMessageEId,
 	QSharingMessage
-} from './sharingmessage/qsharingmessage';
+} from './sharingMessage/qsharingmessage';
 import {
 	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockESelect,
@@ -93,7 +93,7 @@ import {
 	SharingMessageRepoTransBlockEUpdateProperties,
 	SharingMessageRepoTransBlockEId,
 	QSharingMessageRepoTransBlock
-} from './sharingmessage/qsharingmessagerepotransblock';
+} from './sharingMessage/qsharingmessagerepotransblock';
 import {
 	ISharingNode,
 	SharingNodeESelect,
@@ -103,7 +103,7 @@ import {
 	SharingNodeEUpdateProperties,
 	SharingNodeEId,
 	QSharingNode
-} from './sharingnode/qsharingnode';
+} from './sharingNode/qsharingnode';
 import {
 	ISharingNodeRepoTransBlock,
 	SharingNodeRepoTransBlockESelect,
@@ -113,7 +113,7 @@ import {
 	SharingNodeRepoTransBlockEUpdateProperties,
 	SharingNodeRepoTransBlockEId,
 	QSharingNodeRepoTransBlock
-} from './sharingnode/qsharingnoderepotransblock';
+} from './sharingNode/qsharingnoderepotransblock';
 import {
 	ISharingNodeRepoTransBlockStage,
 	SharingNodeRepoTransBlockStageESelect,
@@ -123,7 +123,7 @@ import {
 	SharingNodeRepoTransBlockStageEUpdateProperties,
 	SharingNodeRepoTransBlockStageEId,
 	QSharingNodeRepoTransBlockStage
-} from './sharingnode/qsharingnoderepotransblockstage';
+} from './sharingNode/qsharingnoderepotransblockstage';
 import {
 	ISharingNodeRepository,
 	SharingNodeRepositoryESelect,
@@ -133,7 +133,7 @@ import {
 	SharingNodeRepositoryEUpdateProperties,
 	SharingNodeRepositoryEId,
 	QSharingNodeRepository
-} from './sharingnode/qsharingnoderepository';
+} from './sharingNode/qsharingnoderepository';
 import {
 	ISharingNodeTerminal,
 	SharingNodeTerminalESelect,
@@ -143,7 +143,7 @@ import {
 	SharingNodeTerminalEUpdateProperties,
 	SharingNodeTerminalEId,
 	QSharingNodeTerminal
-} from './sharingnode/qsharingnodeterminal';
+} from './sharingNode/qsharingnodeterminal';
 import {
 	ISynchronizationConflict,
 	SynchronizationConflictESelect,

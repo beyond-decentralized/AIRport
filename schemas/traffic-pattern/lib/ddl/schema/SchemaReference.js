@@ -32,4 +32,4 @@ SchemaReference = __decorate([
     })
 ], SchemaReference);
 exports.SchemaReference = SchemaReference;
-//# sourceMappingURL=schemareference.js.map
+//# sourceMappingURL=SchemaReference.js.map

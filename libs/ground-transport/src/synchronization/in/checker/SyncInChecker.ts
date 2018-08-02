@@ -1,9 +1,10 @@
-import {
-	SchemaIndex,
-	SchemaName
-}                                                 from "@airport/air-control";
 import {AgtRepositoryId}                          from "@airport/arrivals-n-departures";
-import {SchemaVersionId}                          from "@airport/ground-control";
+import {
+	DomainName,
+	SchemaIndex,
+	SchemaName,
+	SchemaVersionId
+}                                                 from "@airport/ground-control";
 import {
 	ActorRandomId,
 	IActor,
@@ -15,15 +16,14 @@ import {
 import {
 	IMissingRecordRepoTransBlockDao,
 	IRepositoryTransactionBlock,
-	IRepoTransBlockSchemasToChange,
-	IRepoTransBlockSchemasToChangeDao,
+	IRepoTransBlockSchemaToChange,
+	IRepoTransBlockSchemaToChangeDao,
 	ISharingMessage,
 	ISharingMessageDao,
 	MissingRecordRepoTransBlockDaoToken,
-	RepoTransBlockSchemasToChangeDaoToken,
+	RepoTransBlockSchemaToChangeDaoToken,
 	SchemaChangeStatus,
 	SharingMessageDaoToken,
-	SharingMessageProcessingStatus,
 	SharingNodeId
 }                                                 from "@airport/moving-walkway";
 import {
@@ -97,8 +97,8 @@ export class SyncInChecker
 		private missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao,
 		@Inject(SyncInRepositoryCheckerToken)
 		public repositoryChecker: ISyncInRepositoryChecker,
-		@Inject(RepoTransBlockSchemasToChangeDaoToken)
-		private repoTransBlockSchemasToChangeDao: IRepoTransBlockSchemasToChangeDao,
+		@Inject(RepoTransBlockSchemaToChangeDaoToken)
+		private repoTransBlockSchemasToChangeDao: IRepoTransBlockSchemaToChangeDao,
 		@Inject(SyncInSchemaCheckerToken)
 		private schemaChecker: ISyncInSchemaChecker,
 		@Inject(SharingMessageDaoToken)
@@ -194,7 +194,7 @@ export class SyncInChecker
 		// await this.recordAllSharingNodeRepoTransBlocks();
 
 		const sharingMessagesWithCompatibleSchemasAndData
-			= await this.recordRepoTransBlockSchemasToChange(
+			= await this.recordRepoTransBlockSchemaToChange(
 			dataMessagesWithIncompatibleSchemas,
 			// dataMessagesToBeUpgraded,
 			schemaWithChangesMap,
@@ -231,7 +231,7 @@ export class SyncInChecker
 	private updateSchemaReferences(
 		dataMessages: IDataToTM[],
 		maxVersionedMapBySchemaAndDomainNames:
-			Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>>
+			Map<DomainName, Map<SchemaName, MaxSchemaVersionView>>
 	): Set<SchemaIndex> {
 		const usedSchemaIndexSet: Set<SchemaIndex> = new Set();
 
@@ -245,7 +245,7 @@ export class SyncInChecker
 			for (const schemaVersion of remoteSchemaVersions) {
 				const schema = schemaVersion.schema;
 				const localSchemaVersionView: MaxSchemaVersionView = maxVersionedMapBySchemaAndDomainNames
-					.get(schema.domainName).get(schema.name);
+					.get(schema.domain.name).get(schema.name);
 
 				// const localSchemaIndex = localSchemaVersionView.index;
 				// const remoteSchemaIndex = schema.index;
@@ -327,10 +327,10 @@ export class SyncInChecker
 		}
 	}
 
-	private async recordRepoTransBlockSchemasToChange(
+	private async recordRepoTransBlockSchemaToChange(
 		dataMessagesWithIncompatibleSchemas: IDataToTM[],
 		// dataMessagesToBeUpgraded: IDataToTM[],
-		schemaWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
+		schemaWithChangesMap: Map<DomainName, Map<SchemaName, ISchema>>,
 		// dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
 		// sharingMessagesWithIncompatibleData: ISharingMessage[],
 		// missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[]
@@ -369,7 +369,7 @@ export class SyncInChecker
 
 
 		// Record all schemas to change per sharing message with incompatible schemas
-		const repoTransBlockSchemasToChange: IRepoTransBlockSchemasToChange[] = [];
+		const repoTransBlockSchemasToChange: IRepoTransBlockSchemaToChange[] = [];
 		for (let i = 0; i < dataMessagesWithIncompatibleSchemas.length; i++) {
 			const message: IDataToTM = dataMessagesWithIncompatibleSchemas[i];
 			// const sharingMessage: ISharingMessage = sharingMessagesWithIncompatibleSchemas[i];
@@ -400,10 +400,10 @@ export class SyncInChecker
 
 
 	private findMatchingSchema(
-		schemaMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>,
+		schemaMap: Map<DomainName, Map<SchemaName, ISchema>>,
 		schema: ISchema
 	) {
-		const schemasForDomainName = schemaMap.get(schema.domainName);
+		const schemasForDomainName = schemaMap.get(schema.domain.name);
 		if (!schemasForDomainName) {
 			return null;
 		}

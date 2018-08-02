@@ -1,8 +1,7 @@
-import { SchemaIndex } from "@airport/air-control";
 import { AgtRepositoryId } from "@airport/arrivals-n-departures";
-import { SchemaVersionId } from "@airport/ground-control";
+import { SchemaIndex, SchemaVersionId } from "@airport/ground-control";
 import { ActorRandomId, IActor, RepositoryId, TerminalName, TerminalSecondId, UserUniqueId } from "@airport/holding-pattern";
-import { IMissingRecordRepoTransBlockDao, IRepositoryTransactionBlock, IRepoTransBlockSchemasToChangeDao, ISharingMessage, ISharingMessageDao, SharingNodeId } from "@airport/moving-walkway";
+import { IMissingRecordRepoTransBlockDao, IRepositoryTransactionBlock, IRepoTransBlockSchemaToChangeDao, ISharingMessage, ISharingMessageDao, SharingNodeId } from "@airport/moving-walkway";
 import { ISyncInRepositoryTransactionBlockCreator } from "../creator/SyncInRepositoryTransactionBlockCreator";
 import { IDataToTM, ISyncInUtils } from "../SyncInUtils";
 import { ISyncInActorChecker } from "./SyncInActorChecker";
@@ -31,7 +30,7 @@ export declare class SyncInChecker implements ISyncInChecker {
     private sharingMessageDao;
     private syncInRepositoryTransactionBlockCreator;
     private syncInUtils;
-    constructor(actorChecker: ISyncInActorChecker, dataChecker: ISyncInDataChecker, missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao, repositoryChecker: ISyncInRepositoryChecker, repoTransBlockSchemasToChangeDao: IRepoTransBlockSchemasToChangeDao, schemaChecker: ISyncInSchemaChecker, sharingMessageDao: ISharingMessageDao, syncInRepositoryTransactionBlockCreator: ISyncInRepositoryTransactionBlockCreator, syncInUtils: ISyncInUtils);
+    constructor(actorChecker: ISyncInActorChecker, dataChecker: ISyncInDataChecker, missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao, repositoryChecker: ISyncInRepositoryChecker, repoTransBlockSchemasToChangeDao: IRepoTransBlockSchemaToChangeDao, schemaChecker: ISyncInSchemaChecker, sharingMessageDao: ISharingMessageDao, syncInRepositoryTransactionBlockCreator: ISyncInRepositoryTransactionBlockCreator, syncInUtils: ISyncInUtils);
     /**
      *
      * @param {IDataToTM[]} dataMessages
@@ -64,6 +63,6 @@ export declare class SyncInChecker implements ISyncInChecker {
     private updateSchemaReferences;
     private updateActorReferences;
     private updateRepositoryReferences;
-    private recordRepoTransBlockSchemasToChange;
+    private recordRepoTransBlockSchemaToChange;
     private findMatchingSchema;
 }

@@ -1,24 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const schema_1 = require("../ddl/schema/schema");
-const schemacolumn_1 = require("../ddl/schema/schemacolumn");
-const schemaentity_1 = require("../ddl/schema/schemaentity");
-const schemaproperty_1 = require("../ddl/schema/schemaproperty");
-const schemapropertycolumn_1 = require("../ddl/schema/schemapropertycolumn");
-const schemareference_1 = require("../ddl/schema/schemareference");
-const schemarelation_1 = require("../ddl/schema/schemarelation");
-const schemarelationcolumn_1 = require("../ddl/schema/schemarelationcolumn");
-const schemaversion_1 = require("../ddl/schema/schemaversion");
+const Schema_1 = require("../ddl/schema/Schema");
+const SchemaColumn_1 = require("../ddl/schema/SchemaColumn");
+const SchemaEntity_1 = require("../ddl/schema/SchemaEntity");
+const SchemaProperty_1 = require("../ddl/schema/SchemaProperty");
+const SchemaPropertyColumn_1 = require("../ddl/schema/SchemaPropertyColumn");
+const SchemaReference_1 = require("../ddl/schema/SchemaReference");
+const SchemaRelation_1 = require("../ddl/schema/SchemaRelation");
+const SchemaRelationColumn_1 = require("../ddl/schema/SchemaRelationColumn");
+const SchemaVersion_1 = require("../ddl/schema/SchemaVersion");
 const __constructors__ = {
-    Schema: schema_1.Schema,
-    SchemaColumn: schemacolumn_1.SchemaColumn,
-    SchemaEntity: schemaentity_1.SchemaEntity,
-    SchemaProperty: schemaproperty_1.SchemaProperty,
-    SchemaPropertyColumn: schemapropertycolumn_1.SchemaPropertyColumn,
-    SchemaReference: schemareference_1.SchemaReference,
-    SchemaRelation: schemarelation_1.SchemaRelation,
-    SchemaRelationColumn: schemarelationcolumn_1.SchemaRelationColumn,
-    SchemaVersion: schemaversion_1.SchemaVersion
+    Schema: Schema_1.Schema,
+    SchemaColumn: SchemaColumn_1.SchemaColumn,
+    SchemaEntity: SchemaEntity_1.SchemaEntity,
+    SchemaProperty: SchemaProperty_1.SchemaProperty,
+    SchemaPropertyColumn: SchemaPropertyColumn_1.SchemaPropertyColumn,
+    SchemaReference: SchemaReference_1.SchemaReference,
+    SchemaRelation: SchemaRelation_1.SchemaRelation,
+    SchemaRelationColumn: SchemaRelationColumn_1.SchemaRelationColumn,
+    SchemaVersion: SchemaVersion_1.SchemaVersion
 };
 exports.Q_SCHEMA = {
     __constructors__

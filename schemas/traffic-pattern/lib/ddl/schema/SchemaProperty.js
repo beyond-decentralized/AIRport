@@ -45,4 +45,4 @@ SchemaProperty = __decorate([
     })
 ], SchemaProperty);
 exports.SchemaProperty = SchemaProperty;
-//# sourceMappingURL=schemaproperty.js.map
+//# sourceMappingURL=SchemaProperty.js.map

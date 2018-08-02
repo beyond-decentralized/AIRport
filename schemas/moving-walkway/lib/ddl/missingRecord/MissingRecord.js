@@ -56,4 +56,4 @@ MissingRecord = __decorate([
     air_control_1.Table({ name: "MISSING_RECORDS" })
 ], MissingRecord);
 exports.MissingRecord = MissingRecord;
-//# sourceMappingURL=missingrecord.js.map
+//# sourceMappingURL=MissingRecord.js.map

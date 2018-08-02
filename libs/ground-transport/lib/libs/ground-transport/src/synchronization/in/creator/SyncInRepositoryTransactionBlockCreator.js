@@ -83,7 +83,7 @@ let SyncInRepositoryTransactionBlockCreator = class SyncInRepositoryTransactionB
         const repoTransHistoryMapByRepositoryId = await this.getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
         const repositoryTransactionBlocks = [];
         const sharingMessageRepoTransBlocks = [];
-        const repoTransBlockRepoTransHistories = [];
+        // const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = [];
         const transactionHistory = this.transactionManager.currentTransHistory;
         transactionHistory.transactionType = ground_control_1.TransactionType.REMOTE_SYNC;
         // split messages by repository and record actor information
@@ -124,7 +124,8 @@ let SyncInRepositoryTransactionBlockCreator = class SyncInRepositoryTransactionB
         }
         await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
         await this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
-        await this.repoTransBlockRepoTransHistoryDao.bulkCreate(repoTransBlockRepoTransHistories, false, false);
+        // await this.repoTransBlockRepoTransHistoryDao.bulkCreate(
+        // 	repoTransBlockRepoTransHistories, false, false);
         return repoTransHistoryMapByRepositoryId;
     }
 };

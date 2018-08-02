@@ -196,7 +196,7 @@ export class SyncInRepositoryTransactionBlockCreator
 
 		const repositoryTransactionBlocks: IRepositoryTransactionBlock[] = [];
 		const sharingMessageRepoTransBlocks: ISharingMessageRepoTransBlock[] = [];
-		const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = [];
+		// const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = [];
 
 		const transactionHistory = this.transactionManager.currentTransHistory;
 		transactionHistory.transactionType = TransactionType.REMOTE_SYNC;
@@ -249,8 +249,8 @@ export class SyncInRepositoryTransactionBlockCreator
 			repositoryTransactionBlocks, false, false);
 		await this.sharingMessageRepoTransBlockDao.bulkCreate(
 			sharingMessageRepoTransBlocks, false, false);
-		await this.repoTransBlockRepoTransHistoryDao.bulkCreate(
-			repoTransBlockRepoTransHistories, false, false);
+		// await this.repoTransBlockRepoTransHistoryDao.bulkCreate(
+		// 	repoTransBlockRepoTransHistories, false, false);
 
 		return repoTransHistoryMapByRepositoryId;
 	}

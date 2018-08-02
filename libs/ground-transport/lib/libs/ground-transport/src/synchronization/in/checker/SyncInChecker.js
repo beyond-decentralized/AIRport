@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const moving_walkway_1 = require("@airport/moving-walkway");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../../../InjectionTokens");
@@ -64,7 +63,7 @@ let SyncInChecker = class SyncInChecker {
         // Currently, SharingNodeRepoTransBlocks are not needed for incoming messages.
         // Their are used to track the sync status of the outgoing RTBs only
         // await this.recordAllSharingNodeRepoTransBlocks();
-        const sharingMessagesWithCompatibleSchemasAndData = await this.recordRepoTransBlockSchemasToChange(dataMessagesWithIncompatibleSchemas, 
+        const sharingMessagesWithCompatibleSchemasAndData = await this.recordRepoTransBlockSchemaToChange(dataMessagesWithIncompatibleSchemas, 
         // dataMessagesToBeUpgraded,
         schemaWithChangesMap);
         return [
@@ -102,7 +101,7 @@ let SyncInChecker = class SyncInChecker {
             for (const schemaVersion of remoteSchemaVersions) {
                 const schema = schemaVersion.schema;
                 const localSchemaVersionView = maxVersionedMapBySchemaAndDomainNames
-                    .get(schema.domainName).get(schema.name);
+                    .get(schema.domain.name).get(schema.name);
                 // const localSchemaIndex = localSchemaVersionView.index;
                 // const remoteSchemaIndex = schema.index;
                 // schema.index = localSchemaIndex;
@@ -164,7 +163,7 @@ let SyncInChecker = class SyncInChecker {
             }
         }
     }
-    async recordRepoTransBlockSchemasToChange(dataMessagesWithIncompatibleSchemas, 
+    async recordRepoTransBlockSchemaToChange(dataMessagesWithIncompatibleSchemas, 
     // dataMessagesToBeUpgraded: IDataToTM[],
     schemaWithChangesMap) {
         // const sharingMessagesWithIncompatibleSchemas = dataMessagesWithIncompatibleSchemas.map((
@@ -222,7 +221,7 @@ let SyncInChecker = class SyncInChecker {
         return sharingMessagesWithCompatibleSchemasAndData;
     }
     findMatchingSchema(schemaMap, schema) {
-        const schemasForDomainName = schemaMap.get(schema.domainName);
+        const schemasForDomainName = schemaMap.get(schema.domain.name);
         if (!schemasForDomainName) {
             return null;
         }
@@ -235,12 +234,12 @@ SyncInChecker = __decorate([
     __param(1, typedi_1.Inject(InjectionTokens_1.SyncInDataCheckerToken)),
     __param(2, typedi_1.Inject(moving_walkway_1.MissingRecordRepoTransBlockDaoToken)),
     __param(3, typedi_1.Inject(InjectionTokens_1.SyncInRepositoryCheckerToken)),
-    __param(4, typedi_1.Inject(moving_walkway_1.RepoTransBlockSchemasToChangeDaoToken)),
+    __param(4, typedi_1.Inject(moving_walkway_1.RepoTransBlockSchemaToChangeDaoToken)),
     __param(5, typedi_1.Inject(InjectionTokens_1.SyncInSchemaCheckerToken)),
     __param(6, typedi_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
     __param(7, typedi_1.Inject(InjectionTokens_1.SyncInRepositoryTransactionBlockCreatorToken)),
     __param(8, typedi_1.Inject(InjectionTokens_1.SyncInUtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, typeof (_a = typeof moving_walkway_1.IRepoTransBlockSchemasToChangeDao !== "undefined" && moving_walkway_1.IRepoTransBlockSchemasToChangeDao) === "function" && _a || Object, Object, Object, Object, Object])
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object])
 ], SyncInChecker);
 exports.SyncInChecker = SyncInChecker;
 //# sourceMappingURL=SyncInChecker.js.map

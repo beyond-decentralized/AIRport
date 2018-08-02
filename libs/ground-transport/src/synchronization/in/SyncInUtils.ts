@@ -21,7 +21,6 @@ import {
 	RepositoryId
 }                                      from "@airport/holding-pattern";
 import {
-	IMissingRecordRepoTransBlock,
 	IRepositoryTransactionBlock,
 	IRepositoryTransactionBlockDao,
 	ISharingMessage,
@@ -30,11 +29,6 @@ import {
 	RepositoryTransactionBlockData,
 	SharingNodeRepoTransBlock,
 }                                      from "@airport/moving-walkway";
-import {
-	ISchema,
-	SchemaDomainName
-}                                      from "@airport/traffic-pattern";
-import {MaxSchemaVersionView}          from "@airport/traffic-pattern/lib/dao/SchemaVersionDao";
 import {
 	Inject,
 	Service

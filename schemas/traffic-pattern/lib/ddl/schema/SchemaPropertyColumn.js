@@ -42,4 +42,4 @@ SchemaPropertyColumn = __decorate([
     })
 ], SchemaPropertyColumn);
 exports.SchemaPropertyColumn = SchemaPropertyColumn;
-//# sourceMappingURL=schemapropertycolumn.js.map
+//# sourceMappingURL=SchemaPropertyColumn.js.map
