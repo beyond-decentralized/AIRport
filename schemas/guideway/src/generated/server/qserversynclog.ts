@@ -140,7 +140,7 @@ export interface ServerSyncLogEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface ServerSyncLogECreateProperties
-extends ServerSyncLogEId, ServerSyncLogEUpdateProperties {
+extends Partial<ServerSyncLogEId>, ServerSyncLogEUpdateProperties {
 }
 
 /**

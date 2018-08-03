@@ -1,23 +1,35 @@
-import { IUtils } from "@airport/air-control";
-import { SchemaName } from "@airport/ground-control";
-import { ISchema, ISchemaDao, ISchemaVersionDao, MaxSchemaVersionView, SchemaDomainName } from "@airport/traffic-pattern";
-import { IDataToTM } from "../SyncInUtils";
+import { IUtils } from '@airport/air-control';
+import { DomainName, SchemaName, SchemaVersionId } from '@airport/ground-control';
+import { IDomain, IDomainDao } from '@airport/territory';
+import { ISchema, ISchemaDao, ISchemaVersion, ISchemaVersionDao } from '@airport/traffic-pattern';
+import { IDataToTM } from '../SyncInUtils';
 export interface SchemaCheckResults {
     dataMessagesWithCompatibleSchemas: IDataToTM[];
     dataMessagesWithIncompatibleSchemas: IDataToTM[];
     dataMessagesWithInvalidSchemas: IDataToTM[];
     dataMessagesToBeUpgraded: IDataToTM[];
-    maxVersionedMapBySchemaAndDomainNames: Map<SchemaDomainName, Map<SchemaName, MaxSchemaVersionView>>;
-    schemaWithChangesMap: Map<SchemaDomainName, Map<SchemaName, ISchema>>;
+    maxVersionedMapBySchemaAndDomainNames: Map<DomainName, Map<SchemaName, ISchemaVersion>>;
+    requiredSchemaVersionIds: Set<SchemaVersionId>;
+    schemasWithChangesMap: Map<DomainName, Map<SchemaName, ISchema>>;
+}
+export interface DataMessageSchemaGroupings {
+    dataMessagesToBeUpgraded: IDataToTM[];
+    dataMessagesWithCompatibleSchemas: IDataToTM[];
+    dataMessagesWithIncompatibleSchemas: IDataToTM[];
+    missingDomainMap: Map<DomainName, IDomain>;
+    missingSchemaMap: Map<DomainName, Map<SchemaName, ISchema>>;
+    requiredSchemaVersionIds: Set<SchemaVersionId>;
+    schemasToBeUpgradedMap: Map<DomainName, Map<SchemaName, ISchema>>;
 }
 export interface ISyncInSchemaChecker {
     checkSchemas(dataMessages: IDataToTM[]): Promise<SchemaCheckResults>;
 }
 export declare class SyncInSchemaChecker implements ISyncInSchemaChecker {
+    private domainDao;
     private schemaDao;
     private schemaVersionDao;
     private utils;
-    constructor(schemaDao: ISchemaDao, schemaVersionDao: ISchemaVersionDao, utils: IUtils);
+    constructor(domainDao: IDomainDao, schemaDao: ISchemaDao, schemaVersionDao: ISchemaVersionDao, utils: IUtils);
     checkSchemas(dataMessages: IDataToTM[]): Promise<SchemaCheckResults>;
     private groupMessagesAndSchemasBySchemaState;
     private verifyRTBSchemaConsistency;
@@ -32,8 +44,6 @@ export declare class SyncInSchemaChecker implements ISyncInSchemaChecker {
      * @returns {Promise<void>}
      */
     private recordSchemasToBeAddedAndUpgraded;
-    private mergeSchemaMaps;
-    private copySchemaMap;
     private compareSchemaVersions;
     private compareGivenSchemaVersionLevel;
 }

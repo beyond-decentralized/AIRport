@@ -9,6 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const rxjs_1 = require("rxjs");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
+class MemoizedSelector {
+}
+exports.MemoizedSelector = MemoizedSelector;
 let TerminalStore = class TerminalStore {
     constructor() {
         this.terminal = new rxjs_1.BehaviorSubject(null);

@@ -45,7 +45,7 @@ export interface MonthlyTerminalSyncLogEUpdateColumns extends IEntityUpdateColum
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface MonthlyTerminalSyncLogECreateProperties extends MonthlyTerminalSyncLogEId, MonthlyTerminalSyncLogEUpdateProperties {
+export interface MonthlyTerminalSyncLogECreateProperties extends Partial<MonthlyTerminalSyncLogEId>, MonthlyTerminalSyncLogEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

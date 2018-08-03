@@ -133,7 +133,7 @@ export interface RepositoryArchiveEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface RepositoryArchiveECreateProperties
-extends RepositoryArchiveEId, RepositoryArchiveEUpdateProperties {
+extends Partial<RepositoryArchiveEId>, RepositoryArchiveEUpdateProperties {
 }
 
 /**

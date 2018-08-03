@@ -40,7 +40,7 @@ export interface DailyArchiveLogEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface DailyArchiveLogECreateProperties extends DailyArchiveLogEId, DailyArchiveLogEUpdateProperties {
+export interface DailyArchiveLogECreateProperties extends Partial<DailyArchiveLogEId>, DailyArchiveLogEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

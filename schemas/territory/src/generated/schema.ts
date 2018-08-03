@@ -71,8 +71,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"mappedBy": "package"
 							},
@@ -179,8 +177,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1
@@ -190,8 +186,6 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 2
@@ -269,8 +263,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"mappedBy": "domain"
 							},
@@ -378,8 +370,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 2
@@ -389,8 +379,6 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"oneToManyElems": {
 								"mappedBy": "APPLICATION_ID"
 							},
@@ -489,8 +477,6 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"isRepositoryJoin": false,
-							"joinFunctionWithOperator": 0,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 2

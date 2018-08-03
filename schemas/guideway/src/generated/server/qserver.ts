@@ -123,7 +123,7 @@ export interface ServerEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface ServerECreateProperties
-extends ServerEId, ServerEUpdateProperties {
+extends Partial<ServerEId>, ServerEUpdateProperties {
 }
 
 /**

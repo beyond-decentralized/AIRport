@@ -3,7 +3,7 @@
  */
 export declare enum SortOrder {
     ASCENDING = 0,
-    DESCENDING = 1,
+    DESCENDING = 1
 }
 /**
  * A serialized version of a query field as specified in the GROUP BY clause.

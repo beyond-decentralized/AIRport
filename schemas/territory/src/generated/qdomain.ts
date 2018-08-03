@@ -123,7 +123,7 @@ export interface DomainEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface DomainECreateProperties
-extends DomainEId, DomainEUpdateProperties {
+extends Partial<DomainEId>, DomainEUpdateProperties {
 }
 
 /**

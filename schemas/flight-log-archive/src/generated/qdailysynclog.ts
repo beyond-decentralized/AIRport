@@ -114,7 +114,7 @@ export interface DailySyncLogEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface DailySyncLogECreateProperties
-extends DailySyncLogEId, DailySyncLogEUpdateProperties {
+extends Partial<DailySyncLogEId>, DailySyncLogEUpdateProperties {
 }
 
 /**

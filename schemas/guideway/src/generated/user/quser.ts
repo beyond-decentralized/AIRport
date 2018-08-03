@@ -165,7 +165,7 @@ export interface UserEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface UserECreateProperties
-extends UserEId, UserEUpdateProperties {
+extends Partial<UserEId>, UserEUpdateProperties {
 }
 
 /**

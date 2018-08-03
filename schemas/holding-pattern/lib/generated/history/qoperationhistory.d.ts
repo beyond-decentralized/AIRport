@@ -55,7 +55,7 @@ export interface OperationHistoryEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface OperationHistoryECreateProperties extends OperationHistoryEId, OperationHistoryEUpdateProperties {
+export interface OperationHistoryECreateProperties extends Partial<OperationHistoryEId>, OperationHistoryEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

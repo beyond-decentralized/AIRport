@@ -51,7 +51,7 @@ export interface ActorEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface ActorECreateProperties extends ActorEId, ActorEUpdateProperties {
+export interface ActorECreateProperties extends Partial<ActorEId>, ActorEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

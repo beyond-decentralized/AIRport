@@ -1,10 +1,10 @@
-import {AgtRepositoryId}                          from "@airport/arrivals-n-departures";
+import {AgtRepositoryId}                          from '@airport/arrivals-n-departures'
 import {
 	DomainName,
 	SchemaIndex,
 	SchemaName,
 	SchemaVersionId
-}                                                 from "@airport/ground-control";
+}                                                 from '@airport/ground-control'
 import {
 	ActorRandomId,
 	IActor,
@@ -12,7 +12,7 @@ import {
 	TerminalName,
 	TerminalSecondId,
 	UserUniqueId
-}                                                 from "@airport/holding-pattern";
+}                                                 from '@airport/holding-pattern'
 import {
 	IMissingRecordRepoTransBlockDao,
 	IRepositoryTransactionBlock,
@@ -25,15 +25,15 @@ import {
 	SchemaChangeStatus,
 	SharingMessageDaoToken,
 	SharingNodeId
-}                                                 from "@airport/moving-walkway";
+}                                                 from '@airport/moving-walkway'
 import {
 	ISchema,
 	ISchemaVersion,
-}                                                 from "@airport/traffic-pattern";
+}                                                 from '@airport/traffic-pattern'
 import {
 	Inject,
 	Service
-}                                                 from "typedi";
+}                                                 from 'typedi'
 import {
 	SyncInActorCheckerToken,
 	SyncInCheckerToken,
@@ -42,18 +42,18 @@ import {
 	SyncInRepositoryTransactionBlockCreatorToken,
 	SyncInSchemaCheckerToken,
 	SyncInUtilsToken
-}                                                 from "../../../InjectionTokens";
-import {ISyncInRepositoryTransactionBlockCreator} from "../creator/SyncInRepositoryTransactionBlockCreator";
+}                                                 from '../../../InjectionTokens'
+import {ISyncInRepositoryTransactionBlockCreator} from '../creator/SyncInRepositoryTransactionBlockCreator'
 import {
 	IDataToTM,
 	ISyncInUtils,
 	RemoteActorId,
 	RemoteSchemaVersionId
-}                                                 from "../SyncInUtils";
-import {ISyncInActorChecker}                      from "./SyncInActorChecker";
-import {ISyncInDataChecker}                       from "./SyncInDataChecker";
-import {ISyncInRepositoryChecker}                 from "./SyncInRepositoryChecker";
-import {ISyncInSchemaChecker}                     from "./SyncInSchemaChecker";
+}                                                 from '../SyncInUtils'
+import {ISyncInActorChecker}                      from './SyncInActorChecker'
+import {ISyncInDataChecker}                       from './SyncInDataChecker'
+import {ISyncInRepositoryChecker}                 from './SyncInRepositoryChecker'
+import {ISyncInSchemaChecker}                     from './SyncInSchemaChecker'
 
 export interface CheckSchemasResult {
 	dataMessagesToBeUpgraded: IDataToTM[];
@@ -141,11 +141,12 @@ export class SyncInChecker
 			dataMessagesWithInvalidSchemas,
 			dataMessagesToBeUpgraded,
 			maxVersionedMapBySchemaAndDomainNames,
-			schemaWithChangesMap,
-		} = await this.schemaChecker.checkSchemas(dataMessages);
+			requiredSchemaVersionIds,
+			schemasWithChangesMap,
+		} = await this.schemaChecker.checkSchemas(dataMessages)
 
 		dataMessagesWithInvalidData = dataMessagesWithInvalidData
-			.concat(dataMessagesWithInvalidSchemas);
+			.concat(dataMessagesWithInvalidSchemas)
 
 		// this.updateSchemaReferences(dataMessagesWithIncompatibleSchemas, allSchemaMap);
 		// this.updateSchemaReferences(dataMessagesToBeUpgraded, allSchemaMap);
@@ -153,23 +154,23 @@ export class SyncInChecker
 		// at when the messages are finally processed
 		const usedSchemaVersionIdSet
 			= this.updateSchemaReferences(dataMessagesWithCompatibleSchemas,
-			maxVersionedMapBySchemaAndDomainNames);
-		this.updateActorReferences(dataMessagesWithIncompatibleSchemas, actorMap);
-		this.updateActorReferences(dataMessagesToBeUpgraded, actorMap);
-		this.updateActorReferences(dataMessagesWithCompatibleSchemas, actorMap);
+			maxVersionedMapBySchemaAndDomainNames)
+		this.updateActorReferences(dataMessagesWithIncompatibleSchemas, actorMap)
+		this.updateActorReferences(dataMessagesToBeUpgraded, actorMap)
+		this.updateActorReferences(dataMessagesWithCompatibleSchemas, actorMap)
 		this.updateRepositoryReferences(
-			dataMessagesWithIncompatibleSchemas, sharingNodeRepositoryMap);
+			dataMessagesWithIncompatibleSchemas, sharingNodeRepositoryMap)
 		this.updateRepositoryReferences(
-			dataMessagesToBeUpgraded, sharingNodeRepositoryMap);
+			dataMessagesToBeUpgraded, sharingNodeRepositoryMap)
 		this.updateRepositoryReferences(
-			dataMessagesWithCompatibleSchemas, sharingNodeRepositoryMap);
+			dataMessagesWithCompatibleSchemas, sharingNodeRepositoryMap)
 
 		const {
 			dataMessagesWithCompatibleSchemasAndData,
 			dataMessagesWithIncompatibleData,
 			existingRepoTransBlocksWithCompatibleSchemasAndData,
 			missingRecordDataToTMs
-		} = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas);
+		} = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas)
 
 
 		const allDataToTM = await this.syncInRepositoryTransactionBlockCreator
@@ -179,15 +180,15 @@ export class SyncInChecker
 				dataMessagesToBeUpgraded,
 				dataMessagesWithCompatibleSchemasAndData,
 				dataMessagesWithInvalidData
-			);
+			)
 
 		await this.syncInRepositoryTransactionBlockCreator
 			.createMissingRecordRepoTransBlocks(
 				missingRecordDataToTMs
-			);
+			)
 
 		await this.syncInRepositoryTransactionBlockCreator
-			.createSharingMessageRepoTransBlocks(allDataToTM);
+			.createSharingMessageRepoTransBlocks(allDataToTM)
 
 		// Currently, SharingNodeRepoTransBlocks are not needed for incoming messages.
 		// Their are used to track the sync status of the outgoing RTBs only
@@ -197,18 +198,18 @@ export class SyncInChecker
 			= await this.recordRepoTransBlockSchemaToChange(
 			dataMessagesWithIncompatibleSchemas,
 			// dataMessagesToBeUpgraded,
-			schemaWithChangesMap,
+			schemasWithChangesMap,
 			// dataMessagesWithCompatibleSchemasAndData,
 			// sharingMessagesWithIncompatibleData,
 			// missingRecordRepoTransBlocks
-		);
+		)
 
 		return [
 			sharingMessagesWithCompatibleSchemasAndData,
 			existingRepoTransBlocksWithCompatibleSchemasAndData,
 			dataMessagesWithCompatibleSchemas,
 			usedSchemaVersionIdSet
-		];
+		]
 	}
 
 	/**
@@ -231,53 +232,53 @@ export class SyncInChecker
 	private updateSchemaReferences(
 		dataMessages: IDataToTM[],
 		maxVersionedMapBySchemaAndDomainNames:
-			Map<DomainName, Map<SchemaName, MaxSchemaVersionView>>
+			Map<DomainName, Map<SchemaName, ISchemaVersion>>
 	): Set<SchemaIndex> {
-		const usedSchemaIndexSet: Set<SchemaIndex> = new Set();
+		const usedSchemaIndexSet: Set<SchemaIndex> = new Set()
 
 		for (const dataMessage of dataMessages) {
-			const data = dataMessage.data;
+			const data = dataMessage.data
 			// const schemaIndexMapByRemoteSchemaIndex: Map<RemoteSchemaIndex, SchemaIndex> = new Map();
 			const schemaVersionIdMapByRemoteSchemaVersionId:
-				Map<RemoteSchemaVersionId, SchemaVersionId> = new Map();
-			const localSchemaVersions: ISchemaVersion[] = [];
-			const remoteSchemaVersions = data.schemaVersions;
+				Map<RemoteSchemaVersionId, SchemaVersionId> = new Map()
+			const localSchemaVersions: ISchemaVersion[] = []
+			const remoteSchemaVersions = data.schemaVersions
 			for (const schemaVersion of remoteSchemaVersions) {
-				const schema = schemaVersion.schema;
-				const localSchemaVersionView: MaxSchemaVersionView = maxVersionedMapBySchemaAndDomainNames
-					.get(schema.domain.name).get(schema.name);
+				const schema = schemaVersion.schema
+				const localSchemaVersionView: ISchemaVersion = maxVersionedMapBySchemaAndDomainNames
+					.get(schema.domain.name).get(schema.name)
 
 				// const localSchemaIndex = localSchemaVersionView.index;
 				// const remoteSchemaIndex = schema.index;
 				// schema.index = localSchemaIndex;
-				schema.index = localSchemaVersionView.index;
+				schema.index = localSchemaVersionView.schema.index
 				// schemaIndexMapByRemoteSchemaIndex.set(remoteSchemaIndex, localSchemaIndex);
 
-				const localSchemaVersionId = localSchemaVersionView.schemaVersionId;
-				const remoteSchemaVersionId = schemaVersion.id;
+				const localSchemaVersionId = localSchemaVersionView.id
+				const remoteSchemaVersionId = schemaVersion.id
 				schemaVersionIdMapByRemoteSchemaVersionId.set(remoteSchemaVersionId,
-					localSchemaVersionId);
+					localSchemaVersionId)
 
-				localSchemaVersions.push(schemaVersion);
+				localSchemaVersions.push(schemaVersion)
 			}
-			data.schemaVersions = localSchemaVersions;
+			data.schemaVersions = localSchemaVersions
 
 			for (const repoTransHistory of data.repoTransHistories) {
-				delete repoTransHistory.id;
+				delete repoTransHistory.id
 				for (const operationHistory of repoTransHistory.operationHistory) {
-					delete operationHistory.id;
+					delete operationHistory.id
 					const localSchemaVersionId
-						= schemaVersionIdMapByRemoteSchemaVersionId.get(operationHistory.schemaVersion.id);
-					usedSchemaIndexSet.add(localSchemaVersionId);
-					operationHistory.schemaVersion.id = localSchemaVersionId;
+						= schemaVersionIdMapByRemoteSchemaVersionId.get(operationHistory.schemaVersion.id)
+					usedSchemaIndexSet.add(localSchemaVersionId)
+					operationHistory.schemaVersion.id = localSchemaVersionId
 					for (const recordHistory of operationHistory.recordHistory) {
-						delete recordHistory.id;
+						delete recordHistory.id
 					}
 				}
 			}
 		}
 
-		return usedSchemaIndexSet;
+		return usedSchemaIndexSet
 	}
 
 	private updateActorReferences(
@@ -287,22 +288,22 @@ export class SyncInChecker
 				Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>
 	): void {
 		for (const dataMessage of dataMessages) {
-			const data = dataMessage.data;
-			const actorMapByRemoteActorId: Map<RemoteActorId, IActor> = new Map();
-			const newActors: IActor[] = [];
+			const data = dataMessage.data
+			const actorMapByRemoteActorId: Map<RemoteActorId, IActor> = new Map()
+			const newActors: IActor[] = []
 			for (const actor of data.actors) {
 				const localActor = actorMap.get(actor.randomId).get(actor.user.uniqueId).get(actor.terminal.name)
-					.get(actor.terminal.secondId).get(actor.terminal.owner.uniqueId);
-				actorMapByRemoteActorId.set(actor.id, localActor);
-				newActors.push(localActor);
+					.get(actor.terminal.secondId).get(actor.terminal.owner.uniqueId)
+				actorMapByRemoteActorId.set(actor.id, localActor)
+				newActors.push(localActor)
 			}
-			data.actors = newActors;
+			data.actors = newActors
 
 			for (const repoTransHistory of data.repoTransHistories) {
-				repoTransHistory.actor = actorMapByRemoteActorId.get(repoTransHistory.actor.id);
+				repoTransHistory.actor = actorMapByRemoteActorId.get(repoTransHistory.actor.id)
 				for (const operationHistory of repoTransHistory.operationHistory) {
 					for (const recordHistory of operationHistory.recordHistory) {
-						recordHistory.actor = actorMapByRemoteActorId.get(recordHistory.actor.id);
+						recordHistory.actor = actorMapByRemoteActorId.get(recordHistory.actor.id)
 					}
 				}
 			}
@@ -314,14 +315,14 @@ export class SyncInChecker
 		sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
 	): void {
 		for (const dataMessage of dataMessages) {
-			const data = dataMessage.data;
-			const repositoryMap = sharingNodeRepositoryMap.get(dataMessage.sharingNode.id);
-			const repositoryId = repositoryMap.get(dataMessage.agtRepositoryId);
-			data.repository.id = repositoryId;
+			const data = dataMessage.data
+			const repositoryMap = sharingNodeRepositoryMap.get(dataMessage.sharingMessage.sharingNode.id)
+			const repositoryId = repositoryMap.get(dataMessage.agtRepositoryId)
+			data.repository.id = repositoryId
 
 			for (const repoTransHistory of data.repoTransHistories) {
 				if (repoTransHistory.repository) {
-					repoTransHistory.repository.id = repositoryId;
+					repoTransHistory.repository.id = repositoryId
 				}
 			}
 		}
@@ -369,18 +370,18 @@ export class SyncInChecker
 
 
 		// Record all schemas to change per sharing message with incompatible schemas
-		const repoTransBlockSchemasToChange: IRepoTransBlockSchemaToChange[] = [];
+		const repoTransBlockSchemasToChange: IRepoTransBlockSchemaToChange[] = []
 		for (let i = 0; i < dataMessagesWithIncompatibleSchemas.length; i++) {
-			const message: IDataToTM = dataMessagesWithIncompatibleSchemas[i];
+			const message: IDataToTM = dataMessagesWithIncompatibleSchemas[i]
 			// const sharingMessage: ISharingMessage = sharingMessagesWithIncompatibleSchemas[i];
 
-			let allMessageSchemasAreCompatible = true;
-			let messageBuildWithOutdatedSchemaVersions = false;
+			let allMessageSchemasAreCompatible = true
+			let messageBuildWithOutdatedSchemaVersions = false
 			// for every schema (at a given version) used in the message
 			for (const schema of message.data.schemas) {
-				let matchingSchema = this.findMatchingSchema(schemaWithChangesMap, schema);
+				let matchingSchema = this.findMatchingSchema(schemaWithChangesMap, schema)
 				if (!matchingSchema) {
-					continue;
+					continue
 				}
 
 				// If a there was a schema that needs to be added or upgraded
@@ -389,13 +390,13 @@ export class SyncInChecker
 					repositoryTransactionBlock: message.repositoryTransactionBlock,
 					status: SchemaChangeStatus.CHANGE_NEEDED,
 					schema: matchingSchema
-				});
+				})
 			}
 		}
 		await this.repoTransBlockSchemasToChangeDao.bulkCreate(
-			repoTransBlockSchemasToChange, false, false);
+			repoTransBlockSchemasToChange, false, false)
 
-		return sharingMessagesWithCompatibleSchemasAndData;
+		return sharingMessagesWithCompatibleSchemasAndData
 	}
 
 
@@ -403,12 +404,12 @@ export class SyncInChecker
 		schemaMap: Map<DomainName, Map<SchemaName, ISchema>>,
 		schema: ISchema
 	) {
-		const schemasForDomainName = schemaMap.get(schema.domain.name);
+		const schemasForDomainName = schemaMap.get(schema.domain.name)
 		if (!schemasForDomainName) {
-			return null;
+			return null
 		}
 
-		return schemasForDomainName.get(schema.name);
+		return schemasForDomainName.get(schema.name)
 	}
 
 }

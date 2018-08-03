@@ -136,7 +136,7 @@ export interface AbstractRepositoryEntityEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface AbstractRepositoryEntityECreateProperties
-extends AbstractRepositoryEntityEId, AbstractRepositoryEntityEUpdateProperties {
+extends Partial<AbstractRepositoryEntityEId>, AbstractRepositoryEntityEUpdateProperties {
 }
 
 /**

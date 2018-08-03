@@ -57,7 +57,7 @@ export interface RecordUpdateStageEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface RecordUpdateStageECreateProperties extends RecordUpdateStageEId, RecordUpdateStageEUpdateProperties {
+export interface RecordUpdateStageECreateProperties extends Partial<RecordUpdateStageEId>, RecordUpdateStageEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

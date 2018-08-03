@@ -7,9 +7,9 @@ export declare class DbSchemaBuilder implements IDbSchemaBuilder {
     private utils;
     constructor(utils: IDatastructureUtils);
     buildDbSchemaWithoutReferences(jsonSchema: JsonSchema, allSchemas: DbSchema[], dictionary: ILinkingDictionary): DbSchema;
-    private buildDbEntity(jsonSchema, jsonEntity, dictionary, referencedSchemas);
-    private buildDbRelation(jsonRelation, dbProperty);
-    private buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas);
+    private buildDbEntity;
+    private buildDbRelation;
+    private buildDbColumn;
     /**
      * Schema loading process at runtime:
      *

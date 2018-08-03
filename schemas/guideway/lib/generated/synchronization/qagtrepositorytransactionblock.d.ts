@@ -65,7 +65,7 @@ export interface AgtRepositoryTransactionBlockEUpdateColumns extends IEntityUpda
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface AgtRepositoryTransactionBlockECreateProperties extends AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockEUpdateProperties {
+export interface AgtRepositoryTransactionBlockECreateProperties extends Partial<AgtRepositoryTransactionBlockEId>, AgtRepositoryTransactionBlockEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

@@ -37,10 +37,10 @@ let SyncInDataChecker = class SyncInDataChecker {
      * @returns {DataCheckResults}
      */
     async checkData(dataMessagesWithCompatibleSchemas) {
-        const { messageIndexMapByRecordToUpdateIds, recordToInsertMap, recordToUpdateMap } = this.getDataStructuresForChanges(dataMessagesWithCompatibleSchemas);
-        const existingRecordIdMap = await this.repositoryTransactionHistoryDao.findExistingRecordIdMap(recordToUpdateMap);
+        const { messageIndexMapByRecordToUpdateIds, recordsToUpdateMap } = this.getDataStructuresForChanges(dataMessagesWithCompatibleSchemas);
+        const existingRecordIdMap = await this.repositoryTransactionHistoryDao.findExistingRecordIdMap(recordsToUpdateMap);
         const dataMessagesWithIncompatibleData = [];
-        const { compatibleDataMessageFlags, missingRecordDataToTMs, } = await this.determineMissingRecords(dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, recordToUpdateMap, existingRecordIdMap, messageIndexMapByRecordToUpdateIds);
+        const { compatibleDataMessageFlags, missingRecordDataToTMs, } = await this.determineMissingRecords(dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, recordsToUpdateMap, existingRecordIdMap, messageIndexMapByRecordToUpdateIds);
         const dataMessagesWithCompatibleSchemasAndData = [];
         // filter out data messages with records that do not exist
         for (let i = 0; i < compatibleDataMessageFlags.length; i++) {
@@ -61,14 +61,16 @@ let SyncInDataChecker = class SyncInDataChecker {
         };
     }
     getDataStructuresForChanges(dataMessagesWithCompatibleSchemas) {
-        const recordsToInsert = this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemas);
-        const recordToUpdateMap = new Map();
+        const recordsToInsertMap = this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemas);
+        const recordsToUpdateMap = new Map();
         const messageIndexMapByRecordToUpdateIds = new Map();
         for (let i = 0; i < dataMessagesWithCompatibleSchemas.length; i++) {
             const dataMessages = dataMessagesWithCompatibleSchemas[i];
+            dataMessages.data.repoTransHistories.sort((repoTransHistory1, repoTransHistory2) => repoTransHistory1.saveTimestamp.getTime() - repoTransHistory2.saveTimestamp.getTime());
             for (const repoTransHistory of dataMessages.data.repoTransHistories) {
                 const repositoryId = repoTransHistory.repository.id;
-                const recordToInsertMapForRepo = recordsToInsert.get(repositoryId);
+                const recordToInsertMapForRepo = recordsToInsertMap.get(repositoryId);
+                repoTransHistory.operationHistory.sort((operationHistory1, operationHistory2) => operationHistory1.orderNumber - operationHistory2.orderNumber);
                 for (const operationHistory of repoTransHistory.operationHistory) {
                     let recordToInsertMapForEntityInRepo;
                     if (recordToInsertMapForRepo) {
@@ -90,7 +92,7 @@ let SyncInDataChecker = class SyncInDataChecker {
                                 if (!recordToInsertSetForActor
                                     || !recordToInsertSetForActor.has(recordHistory.actorRecordId)) {
                                     const recordToUpdateMapForRepoInTable = this.syncInUtils
-                                        .ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordToUpdateMap);
+                                        .ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordsToUpdateMap);
                                     this.ensureRecordId(recordHistory, recordToUpdateMapForRepoInTable, recordHistory.actorRecordId);
                                     this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(messageIndexMapByRecordToUpdateIds, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.index), recordHistory.actor.id), recordHistory.actorRecordId)
                                         .add(i);
@@ -103,8 +105,7 @@ let SyncInDataChecker = class SyncInDataChecker {
         }
         return {
             messageIndexMapByRecordToUpdateIds,
-            recordToInsertMap: recordsToInsert,
-            recordToUpdateMap
+            recordsToUpdateMap
         };
     }
     async determineMissingRecords(dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, recordToUpdateMap, existingRecordIdMap, messageIndexMapByRecordToUpdateIds) {

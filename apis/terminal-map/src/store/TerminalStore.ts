@@ -1,11 +1,12 @@
-import {ITerminal}          from "@airport/holding-pattern";
+import {ITerminal}          from '@airport/holding-pattern'
 import {
 	ISharingNode,
 	SharingNodeSyncFrequency
-}                           from "@airport/moving-walkway";
-import {BehaviorSubject}    from "rxjs";
-import {Service}            from "typedi";
-import {TerminalStoreToken} from "../InjectionTokens";
+}                           from '@airport/moving-walkway'
+import {IDomain}            from '@airport/territory'
+import {BehaviorSubject}    from 'rxjs'
+import {Service}            from 'typedi'
+import {TerminalStoreToken} from '../InjectionTokens'
 
 export interface ITerminalStore {
 
@@ -13,7 +14,14 @@ export interface ITerminalStore {
 
 	nodesBySyncFrequency: BehaviorSubject<Map<SharingNodeSyncFrequency, ISharingNode[]>>;
 
+	domains: BehaviorSubject<IDomain>
+
 	tearDown();
+
+
+}
+
+export class MemoizedSelector {
 
 }
 
@@ -21,12 +29,12 @@ export interface ITerminalStore {
 export class TerminalStore
 	implements ITerminalStore {
 
-	terminal = new BehaviorSubject<ITerminal>(null);
+	terminal = new BehaviorSubject<ITerminal>(null)
 
 	nodesBySyncFrequency
-		= new BehaviorSubject<Map<SharingNodeSyncFrequency, ISharingNode[]>>(new Map());
+		= new BehaviorSubject<Map<SharingNodeSyncFrequency, ISharingNode[]>>(new Map())
 
 	tearDown() {
-		this.nodesBySyncFrequency.complete();
+		this.nodesBySyncFrequency.complete()
 	}
 }

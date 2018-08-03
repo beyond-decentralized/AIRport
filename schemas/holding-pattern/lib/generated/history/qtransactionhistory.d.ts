@@ -52,7 +52,7 @@ export interface TransactionHistoryEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface TransactionHistoryECreateProperties extends TransactionHistoryEId, TransactionHistoryEUpdateProperties {
+export interface TransactionHistoryECreateProperties extends Partial<TransactionHistoryEId>, TransactionHistoryEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

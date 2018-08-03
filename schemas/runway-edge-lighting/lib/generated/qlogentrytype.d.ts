@@ -50,7 +50,7 @@ export interface LogEntryTypeEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface LogEntryTypeECreateProperties extends LogEntryTypeEId, LogEntryTypeEUpdateProperties {
+export interface LogEntryTypeECreateProperties extends Partial<LogEntryTypeEId>, LogEntryTypeEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

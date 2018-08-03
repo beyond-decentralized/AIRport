@@ -42,7 +42,7 @@ export interface DailyTerminalSyncLogEUpdateColumns extends IEntityUpdateColumns
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface DailyTerminalSyncLogECreateProperties extends DailyTerminalSyncLogEId, DailyTerminalSyncLogEUpdateProperties {
+export interface DailyTerminalSyncLogECreateProperties extends Partial<DailyTerminalSyncLogEId>, DailyTerminalSyncLogEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

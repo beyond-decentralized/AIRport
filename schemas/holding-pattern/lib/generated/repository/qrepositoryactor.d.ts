@@ -42,7 +42,7 @@ export interface RepositoryActorEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface RepositoryActorECreateProperties extends RepositoryActorEId, RepositoryActorEUpdateProperties {
+export interface RepositoryActorECreateProperties extends Partial<RepositoryActorEId>, RepositoryActorEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

@@ -136,7 +136,7 @@ export interface SynchronizationConflictPendingNotificationEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SynchronizationConflictPendingNotificationECreateProperties
-extends SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationEUpdateProperties {
+extends Partial<SynchronizationConflictPendingNotificationEId>, SynchronizationConflictPendingNotificationEUpdateProperties {
 }
 
 /**

@@ -35,7 +35,7 @@ export interface RepoTransBlockResponseStageEUpdateColumns extends IEntityUpdate
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface RepoTransBlockResponseStageECreateProperties extends RepoTransBlockResponseStageEId, RepoTransBlockResponseStageEUpdateProperties {
+export interface RepoTransBlockResponseStageECreateProperties extends Partial<RepoTransBlockResponseStageEId>, RepoTransBlockResponseStageEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

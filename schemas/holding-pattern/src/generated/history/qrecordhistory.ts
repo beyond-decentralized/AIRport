@@ -167,7 +167,7 @@ export interface RecordHistoryEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface RecordHistoryECreateProperties
-extends RecordHistoryEId, RecordHistoryEUpdateProperties {
+extends Partial<RecordHistoryEId>, RecordHistoryEUpdateProperties {
 }
 
 /**

@@ -128,7 +128,7 @@ export interface MonthlyArchiveLogEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface MonthlyArchiveLogECreateProperties
-extends MonthlyArchiveLogEId, MonthlyArchiveLogEUpdateProperties {
+extends Partial<MonthlyArchiveLogEId>, MonthlyArchiveLogEUpdateProperties {
 }
 
 /**

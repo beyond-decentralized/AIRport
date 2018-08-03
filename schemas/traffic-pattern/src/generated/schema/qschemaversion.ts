@@ -160,7 +160,7 @@ export interface SchemaVersionEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SchemaVersionECreateProperties
-extends SchemaVersionEId, SchemaVersionEUpdateProperties {
+extends Partial<SchemaVersionEId>, SchemaVersionEUpdateProperties {
 }
 
 /**

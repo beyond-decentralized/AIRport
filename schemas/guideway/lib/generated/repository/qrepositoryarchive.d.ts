@@ -39,7 +39,7 @@ export interface RepositoryArchiveEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface RepositoryArchiveECreateProperties extends RepositoryArchiveEId, RepositoryArchiveEUpdateProperties {
+export interface RepositoryArchiveECreateProperties extends Partial<RepositoryArchiveEId>, RepositoryArchiveEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

@@ -39,7 +39,7 @@ export interface SchemaPropertyColumnEUpdateColumns extends IEntityUpdateColumns
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface SchemaPropertyColumnECreateProperties extends SchemaPropertyColumnEId, SchemaPropertyColumnEUpdateProperties {
+export interface SchemaPropertyColumnECreateProperties extends Partial<SchemaPropertyColumnEId>, SchemaPropertyColumnEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

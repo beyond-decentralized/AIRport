@@ -136,7 +136,7 @@ export interface RepositoryActorEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface RepositoryActorECreateProperties
-extends RepositoryActorEId, RepositoryActorEUpdateProperties {
+extends Partial<RepositoryActorEId>, RepositoryActorEUpdateProperties {
 }
 
 /**

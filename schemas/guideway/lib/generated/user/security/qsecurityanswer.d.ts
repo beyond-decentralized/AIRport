@@ -42,7 +42,7 @@ export interface SecurityAnswerEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface SecurityAnswerECreateProperties extends SecurityAnswerEId, SecurityAnswerEUpdateProperties {
+export interface SecurityAnswerECreateProperties extends Partial<SecurityAnswerEId>, SecurityAnswerEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

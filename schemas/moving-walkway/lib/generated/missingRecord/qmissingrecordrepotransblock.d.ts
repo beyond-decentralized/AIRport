@@ -39,7 +39,7 @@ export interface MissingRecordRepoTransBlockEUpdateColumns extends IEntityUpdate
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface MissingRecordRepoTransBlockECreateProperties extends MissingRecordRepoTransBlockEId, MissingRecordRepoTransBlockEUpdateProperties {
+export interface MissingRecordRepoTransBlockECreateProperties extends Partial<MissingRecordRepoTransBlockEId>, MissingRecordRepoTransBlockEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

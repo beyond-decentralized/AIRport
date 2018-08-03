@@ -123,7 +123,7 @@ export interface PackageEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface PackageECreateProperties
-extends PackageEId, PackageEUpdateProperties {
+extends Partial<PackageEId>, PackageEUpdateProperties {
 }
 
 /**

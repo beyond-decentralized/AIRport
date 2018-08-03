@@ -143,7 +143,7 @@ export interface SharingMessageEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SharingMessageECreateProperties
-extends SharingMessageEId, SharingMessageEUpdateProperties {
+extends Partial<SharingMessageEId>, SharingMessageEUpdateProperties {
 }
 
 /**

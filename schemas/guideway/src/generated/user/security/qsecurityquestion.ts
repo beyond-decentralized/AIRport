@@ -111,7 +111,7 @@ export interface SecurityQuestionEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SecurityQuestionECreateProperties
-extends SecurityQuestionEId, SecurityQuestionEUpdateProperties {
+extends Partial<SecurityQuestionEId>, SecurityQuestionEUpdateProperties {
 }
 
 /**

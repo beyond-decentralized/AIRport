@@ -38,7 +38,7 @@ export interface PackageEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface PackageECreateProperties extends PackageEId, PackageEUpdateProperties {
+export interface PackageECreateProperties extends Partial<PackageEId>, PackageEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

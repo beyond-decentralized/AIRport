@@ -139,7 +139,7 @@ export interface MonthlyTerminalSyncLogEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface MonthlyTerminalSyncLogECreateProperties
-extends MonthlyTerminalSyncLogEId, MonthlyTerminalSyncLogEUpdateProperties {
+extends Partial<MonthlyTerminalSyncLogEId>, MonthlyTerminalSyncLogEUpdateProperties {
 }
 
 /**

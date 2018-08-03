@@ -147,7 +147,7 @@ export interface SharingNodeEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SharingNodeECreateProperties
-extends SharingNodeEId, SharingNodeEUpdateProperties {
+extends Partial<SharingNodeEId>, SharingNodeEUpdateProperties {
 }
 
 /**

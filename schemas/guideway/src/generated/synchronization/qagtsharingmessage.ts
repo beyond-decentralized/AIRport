@@ -140,7 +140,7 @@ export interface AgtSharingMessageEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface AgtSharingMessageECreateProperties
-extends AgtSharingMessageEId, AgtSharingMessageEUpdateProperties {
+extends Partial<AgtSharingMessageEId>, AgtSharingMessageEUpdateProperties {
 }
 
 /**

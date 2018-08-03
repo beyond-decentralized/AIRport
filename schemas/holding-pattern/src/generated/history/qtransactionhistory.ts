@@ -145,7 +145,7 @@ export interface TransactionHistoryEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface TransactionHistoryECreateProperties
-extends TransactionHistoryEId, TransactionHistoryEUpdateProperties {
+extends Partial<TransactionHistoryEId>, TransactionHistoryEUpdateProperties {
 }
 
 /**

@@ -52,7 +52,7 @@ export interface TerminalEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface TerminalECreateProperties extends TerminalEId, TerminalEUpdateProperties {
+export interface TerminalECreateProperties extends Partial<TerminalEId>, TerminalEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

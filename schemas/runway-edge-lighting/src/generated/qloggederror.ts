@@ -133,7 +133,7 @@ export interface LoggedErrorEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface LoggedErrorECreateProperties
-extends LoggedErrorEId, LoggedErrorEUpdateProperties {
+extends Partial<LoggedErrorEId>, LoggedErrorEUpdateProperties {
 }
 
 /**

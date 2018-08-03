@@ -163,7 +163,7 @@ export interface ActorEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface ActorECreateProperties
-extends ActorEId, ActorEUpdateProperties {
+extends Partial<ActorEId>, ActorEUpdateProperties {
 }
 
 /**

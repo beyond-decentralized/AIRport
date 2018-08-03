@@ -117,7 +117,7 @@ export interface MonthlySyncLogEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface MonthlySyncLogECreateProperties
-extends MonthlySyncLogEId, MonthlySyncLogEUpdateProperties {
+extends Partial<MonthlySyncLogEId>, MonthlySyncLogEUpdateProperties {
 }
 
 /**

@@ -21,6 +21,6 @@ export declare class SyncLogMessageProcessor implements ISyncLogMessageProcessor
      * @returns {Promise<void>}
      */
     recordSyncLogMessages(syncLogMessages: ISyncLogToTM[]): Promise<void>;
-    private generateSyncLogDataStructures(syncLogMessages);
-    private insertNewSharingNodeRepoTransBlocks(repoTransBlockSyncOutcomeMapBySharingNodeId);
+    private generateSyncLogDataStructures;
+    private insertNewSharingNodeRepoTransBlocks;
 }

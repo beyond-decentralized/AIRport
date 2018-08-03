@@ -43,7 +43,7 @@ export interface MonthlyArchiveLogEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface MonthlyArchiveLogECreateProperties extends MonthlyArchiveLogEId, MonthlyArchiveLogEUpdateProperties {
+export interface MonthlyArchiveLogECreateProperties extends Partial<MonthlyArchiveLogEId>, MonthlyArchiveLogEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

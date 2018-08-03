@@ -131,7 +131,7 @@ export interface TerminalEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface TerminalECreateProperties
-extends TerminalEId, TerminalEUpdateProperties {
+extends Partial<TerminalEId>, TerminalEUpdateProperties {
 }
 
 /**

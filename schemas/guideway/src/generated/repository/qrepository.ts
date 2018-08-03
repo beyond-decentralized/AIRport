@@ -141,7 +141,7 @@ export interface RepositoryEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface RepositoryECreateProperties
-extends RepositoryEId, RepositoryEUpdateProperties {
+extends Partial<RepositoryEId>, RepositoryEUpdateProperties {
 }
 
 /**

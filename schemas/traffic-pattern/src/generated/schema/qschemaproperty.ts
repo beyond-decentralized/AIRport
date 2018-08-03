@@ -152,7 +152,7 @@ export interface SchemaPropertyEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SchemaPropertyECreateProperties
-extends SchemaPropertyEId, SchemaPropertyEUpdateProperties {
+extends Partial<SchemaPropertyEId>, SchemaPropertyEUpdateProperties {
 }
 
 /**

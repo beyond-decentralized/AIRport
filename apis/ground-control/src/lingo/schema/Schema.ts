@@ -1,8 +1,8 @@
 import {
 	DbEntity,
 	JsonSchemaEntity
-}                               from "./Entity";
-import {SchemaReferenceByIndex} from "./Property";
+}                               from './Entity'
+import {SchemaReferenceByIndex} from './Property'
 
 export type DatabaseIndex = number;
 export type DomainId = number;
@@ -10,16 +10,20 @@ export type DomainName = string;
 export type SchemaIndex = number;
 export type SchemaName = string;
 export type SchemaVersionId = number;
+export type SchemaVersionInteger = number;
 export type SchemaVersionMajor = number;
 export type SchemaVersionMinor = number;
 export type SchemaVersionPatch = number;
 export type SchemaVersionString = string;
 
 
-
 export interface DbDomain {
 	id: DomainId;
 	name: DomainName;
+	/**
+	 * Schemas by index
+	 */
+	schemas: DbSchema[];
 }
 
 /**
@@ -36,6 +40,9 @@ export interface JsonSchema extends SchemaReferenceByIndex<SchemaIndex> {
 	 * Name of the schema (npm package name).
 	 */
 	name: SchemaName;
+	/**
+	 * Versions by integer version
+	 */
 	versions: JsonSchemaVersion[];
 
 }
@@ -54,11 +61,18 @@ export interface DbSchema extends SchemaReferenceByIndex<SchemaIndex> {
 
 	name: SchemaName;
 
+	/**
+	 * Versions by integer version
+	 */
 	versions: DbSchemaVersion[];
 
 }
 
 export interface JsonSchemaVersion {
+	/**
+	 * Integer version of the schema
+	 */
+	integerVersion: SchemaVersionInteger;
 
 	/**
 	 * Semantic version of the schema.
@@ -115,6 +129,8 @@ export interface DbSchemaVersion {
 	 * Map of all referencing schemas, by name.
 	 */
 	referencedByMapByName?: { [schemaName: string]: DbSchemaReference };
+
+	integerVersion: SchemaVersionInteger;
 
 	versionString: SchemaVersionString;
 

@@ -125,7 +125,7 @@ export interface PackagedUnitEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface PackagedUnitECreateProperties
-extends PackagedUnitEId, PackagedUnitEUpdateProperties {
+extends Partial<PackagedUnitEId>, PackagedUnitEUpdateProperties {
 }
 
 /**

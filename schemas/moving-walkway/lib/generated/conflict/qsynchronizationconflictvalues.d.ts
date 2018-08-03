@@ -37,7 +37,7 @@ export interface SynchronizationConflictValuesEUpdateColumns extends IEntityUpda
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface SynchronizationConflictValuesECreateProperties extends SynchronizationConflictValuesEId, SynchronizationConflictValuesEUpdateProperties {
+export interface SynchronizationConflictValuesECreateProperties extends Partial<SynchronizationConflictValuesEId>, SynchronizationConflictValuesEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

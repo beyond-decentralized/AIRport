@@ -56,8 +56,6 @@ export declare const SCHEMA: {
             "relations": ({
                 "index": number;
                 "isId": boolean;
-                "isRepositoryJoin": boolean;
-                "joinFunctionWithOperator": number;
                 "relationType": number;
                 "propertyRef": {
                     "index": number;
@@ -67,8 +65,6 @@ export declare const SCHEMA: {
             } | {
                 "index": number;
                 "isId": boolean;
-                "isRepositoryJoin": boolean;
-                "joinFunctionWithOperator": number;
                 "oneToManyElems": {
                     "mappedBy": string;
                 };
@@ -133,8 +129,6 @@ export declare const SCHEMA: {
             "relations": {
                 "index": number;
                 "isId": boolean;
-                "isRepositoryJoin": boolean;
-                "joinFunctionWithOperator": number;
                 "relationType": number;
                 "propertyRef": {
                     "index": number;

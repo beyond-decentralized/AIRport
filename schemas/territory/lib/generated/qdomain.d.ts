@@ -38,7 +38,7 @@ export interface DomainEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface DomainECreateProperties extends DomainEId, DomainEUpdateProperties {
+export interface DomainECreateProperties extends Partial<DomainEId>, DomainEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

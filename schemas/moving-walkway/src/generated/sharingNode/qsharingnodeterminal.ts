@@ -142,7 +142,7 @@ export interface SharingNodeTerminalEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SharingNodeTerminalECreateProperties
-extends SharingNodeTerminalEId, SharingNodeTerminalEUpdateProperties {
+extends Partial<SharingNodeTerminalEId>, SharingNodeTerminalEUpdateProperties {
 }
 
 /**

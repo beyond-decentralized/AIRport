@@ -186,7 +186,7 @@ export interface AgtRepositoryTransactionBlockEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface AgtRepositoryTransactionBlockECreateProperties
-extends AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockEUpdateProperties {
+extends Partial<AgtRepositoryTransactionBlockEId>, AgtRepositoryTransactionBlockEUpdateProperties {
 }
 
 /**

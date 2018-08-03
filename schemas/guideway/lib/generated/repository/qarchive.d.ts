@@ -35,7 +35,7 @@ export interface ArchiveEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface ArchiveECreateProperties extends ArchiveEId, ArchiveEUpdateProperties {
+export interface ArchiveECreateProperties extends Partial<ArchiveEId>, ArchiveEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

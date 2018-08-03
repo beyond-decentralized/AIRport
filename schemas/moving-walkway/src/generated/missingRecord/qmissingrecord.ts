@@ -166,7 +166,7 @@ export interface MissingRecordEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface MissingRecordECreateProperties
-extends MissingRecordEId, MissingRecordEUpdateProperties {
+extends Partial<MissingRecordEId>, MissingRecordEUpdateProperties {
 }
 
 /**

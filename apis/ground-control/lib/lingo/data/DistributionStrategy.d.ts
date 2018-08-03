@@ -24,5 +24,5 @@ export declare enum DistributionStrategy {
      * There is no need for a server, all clients are aware of S3
      * and are responsible for pushing their changes to it.
      */
-    S3_DISTIBUTED_PUSH = 1,
+    S3_DISTIBUTED_PUSH = 1
 }

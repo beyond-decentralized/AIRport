@@ -55,7 +55,7 @@ export interface ServerSyncLogEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface ServerSyncLogECreateProperties extends ServerSyncLogEId, ServerSyncLogEUpdateProperties {
+export interface ServerSyncLogECreateProperties extends Partial<ServerSyncLogEId>, ServerSyncLogEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

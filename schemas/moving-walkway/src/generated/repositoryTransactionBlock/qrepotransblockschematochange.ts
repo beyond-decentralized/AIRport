@@ -136,7 +136,7 @@ export interface RepoTransBlockSchemaToChangeEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface RepoTransBlockSchemaToChangeECreateProperties
-extends RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeEUpdateProperties {
+extends Partial<RepoTransBlockSchemaToChangeEId>, RepoTransBlockSchemaToChangeEUpdateProperties {
 }
 
 /**

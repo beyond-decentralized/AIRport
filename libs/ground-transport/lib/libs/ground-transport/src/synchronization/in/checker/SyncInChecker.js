@@ -39,7 +39,7 @@ let SyncInChecker = class SyncInChecker {
      *      ]
      */
     async checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages, actorMap, sharingNodeRepositoryMap, dataMessagesWithInvalidData) {
-        const { dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleSchemas, dataMessagesWithInvalidSchemas, dataMessagesToBeUpgraded, maxVersionedMapBySchemaAndDomainNames, schemaWithChangesMap, } = await this.schemaChecker.checkSchemas(dataMessages);
+        const { dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleSchemas, dataMessagesWithInvalidSchemas, dataMessagesToBeUpgraded, maxVersionedMapBySchemaAndDomainNames, requiredSchemaVersionIds, schemasWithChangesMap, } = await this.schemaChecker.checkSchemas(dataMessages);
         dataMessagesWithInvalidData = dataMessagesWithInvalidData
             .concat(dataMessagesWithInvalidSchemas);
         // this.updateSchemaReferences(dataMessagesWithIncompatibleSchemas, allSchemaMap);
@@ -65,7 +65,7 @@ let SyncInChecker = class SyncInChecker {
         // await this.recordAllSharingNodeRepoTransBlocks();
         const sharingMessagesWithCompatibleSchemasAndData = await this.recordRepoTransBlockSchemaToChange(dataMessagesWithIncompatibleSchemas, 
         // dataMessagesToBeUpgraded,
-        schemaWithChangesMap);
+        schemasWithChangesMap);
         return [
             sharingMessagesWithCompatibleSchemasAndData,
             existingRepoTransBlocksWithCompatibleSchemasAndData,
@@ -105,9 +105,9 @@ let SyncInChecker = class SyncInChecker {
                 // const localSchemaIndex = localSchemaVersionView.index;
                 // const remoteSchemaIndex = schema.index;
                 // schema.index = localSchemaIndex;
-                schema.index = localSchemaVersionView.index;
+                schema.index = localSchemaVersionView.schema.index;
                 // schemaIndexMapByRemoteSchemaIndex.set(remoteSchemaIndex, localSchemaIndex);
-                const localSchemaVersionId = localSchemaVersionView.schemaVersionId;
+                const localSchemaVersionId = localSchemaVersionView.id;
                 const remoteSchemaVersionId = schemaVersion.id;
                 schemaVersionIdMapByRemoteSchemaVersionId.set(remoteSchemaVersionId, localSchemaVersionId);
                 localSchemaVersions.push(schemaVersion);
@@ -153,7 +153,7 @@ let SyncInChecker = class SyncInChecker {
     updateRepositoryReferences(dataMessages, sharingNodeRepositoryMap) {
         for (const dataMessage of dataMessages) {
             const data = dataMessage.data;
-            const repositoryMap = sharingNodeRepositoryMap.get(dataMessage.sharingNode.id);
+            const repositoryMap = sharingNodeRepositoryMap.get(dataMessage.sharingMessage.sharingNode.id);
             const repositoryId = repositoryMap.get(dataMessage.agtRepositoryId);
             data.repository.id = repositoryId;
             for (const repoTransHistory of data.repoTransHistories) {

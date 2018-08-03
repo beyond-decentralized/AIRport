@@ -125,7 +125,7 @@ export interface DailyArchiveLogEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface DailyArchiveLogECreateProperties
-extends DailyArchiveLogEId, DailyArchiveLogEUpdateProperties {
+extends Partial<DailyArchiveLogEId>, DailyArchiveLogEUpdateProperties {
 }
 
 /**

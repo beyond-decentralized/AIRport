@@ -65,7 +65,7 @@ export interface RepositoryTransactionHistoryEUpdateColumns extends IEntityUpdat
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface RepositoryTransactionHistoryECreateProperties extends RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEUpdateProperties {
+export interface RepositoryTransactionHistoryECreateProperties extends Partial<RepositoryTransactionHistoryEId>, RepositoryTransactionHistoryEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

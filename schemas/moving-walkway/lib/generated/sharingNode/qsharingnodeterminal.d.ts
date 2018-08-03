@@ -48,7 +48,7 @@ export interface SharingNodeTerminalEUpdateColumns extends IEntityUpdateColumns 
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface SharingNodeTerminalECreateProperties extends SharingNodeTerminalEId, SharingNodeTerminalEUpdateProperties {
+export interface SharingNodeTerminalECreateProperties extends Partial<SharingNodeTerminalEId>, SharingNodeTerminalEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

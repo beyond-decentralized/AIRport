@@ -111,7 +111,7 @@ export interface RepositoryTransactionHistoryUpdateStageEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface RepositoryTransactionHistoryUpdateStageECreateProperties
-extends RepositoryTransactionHistoryUpdateStageEId, RepositoryTransactionHistoryUpdateStageEUpdateProperties {
+extends Partial<RepositoryTransactionHistoryUpdateStageEId>, RepositoryTransactionHistoryUpdateStageEUpdateProperties {
 }
 
 /**

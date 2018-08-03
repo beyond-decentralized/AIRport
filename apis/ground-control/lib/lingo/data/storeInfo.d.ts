@@ -1,7 +1,7 @@
 export declare enum StoreType {
     SQLITE_CORDOVA = 0,
     SQLJS = 1,
-    REMOTE = 2,
+    REMOTE = 2
 }
 export interface StoreShareInfo {
     name: string;
@@ -12,5 +12,5 @@ export interface StoreSetupInfo {
     idGeneration: IdGeneration;
 }
 export declare enum IdGeneration {
-    ENTITY_CHANGE_ID = 0,
+    ENTITY_CHANGE_ID = 0
 }

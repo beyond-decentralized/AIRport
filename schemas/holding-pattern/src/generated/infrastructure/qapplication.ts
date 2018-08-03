@@ -138,7 +138,7 @@ export interface ApplicationEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface ApplicationECreateProperties
-extends ApplicationEId, ApplicationEUpdateProperties {
+extends Partial<ApplicationEId>, ApplicationEUpdateProperties {
 }
 
 /**

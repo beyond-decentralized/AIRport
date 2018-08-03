@@ -40,7 +40,7 @@ export interface RepositorySchemaEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface RepositorySchemaECreateProperties extends RepositorySchemaEId, RepositorySchemaEUpdateProperties {
+export interface RepositorySchemaECreateProperties extends Partial<RepositorySchemaEId>, RepositorySchemaEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

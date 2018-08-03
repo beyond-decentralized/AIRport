@@ -64,7 +64,7 @@ export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface RepositoryECreateProperties extends RepositoryEId, RepositoryEUpdateProperties {
+export interface RepositoryECreateProperties extends Partial<RepositoryEId>, RepositoryEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

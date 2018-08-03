@@ -136,7 +136,7 @@ export interface DailyTerminalSyncLogEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface DailyTerminalSyncLogECreateProperties
-extends DailyTerminalSyncLogEId, DailyTerminalSyncLogEUpdateProperties {
+extends Partial<DailyTerminalSyncLogEId>, DailyTerminalSyncLogEUpdateProperties {
 }
 
 /**

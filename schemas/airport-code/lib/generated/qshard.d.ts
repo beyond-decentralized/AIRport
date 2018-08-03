@@ -41,7 +41,7 @@ export interface ShardEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface ShardECreateProperties extends ShardEId, ShardEUpdateProperties {
+export interface ShardECreateProperties extends Partial<ShardEId>, ShardEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

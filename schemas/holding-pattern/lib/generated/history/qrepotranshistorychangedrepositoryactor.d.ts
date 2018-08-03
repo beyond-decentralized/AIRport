@@ -50,7 +50,7 @@ export interface RepoTransHistoryChangedRepositoryActorEUpdateColumns extends IE
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface RepoTransHistoryChangedRepositoryActorECreateProperties extends RepoTransHistoryChangedRepositoryActorEId, RepoTransHistoryChangedRepositoryActorEUpdateProperties {
+export interface RepoTransHistoryChangedRepositoryActorECreateProperties extends Partial<RepoTransHistoryChangedRepositoryActorEId>, RepoTransHistoryChangedRepositoryActorEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

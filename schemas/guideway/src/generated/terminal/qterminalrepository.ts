@@ -136,7 +136,7 @@ export interface TerminalRepositoryEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface TerminalRepositoryECreateProperties
-extends TerminalRepositoryEId, TerminalRepositoryEUpdateProperties {
+extends Partial<TerminalRepositoryEId>, TerminalRepositoryEUpdateProperties {
 }
 
 /**

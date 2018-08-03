@@ -136,7 +136,7 @@ export interface ApplicationPackageEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface ApplicationPackageECreateProperties
-extends ApplicationPackageEId, ApplicationPackageEUpdateProperties {
+extends Partial<ApplicationPackageEId>, ApplicationPackageEUpdateProperties {
 }
 
 /**

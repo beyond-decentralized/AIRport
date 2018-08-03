@@ -39,7 +39,7 @@ export interface SyncLogEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface SyncLogECreateProperties extends SyncLogEId, SyncLogEUpdateProperties {
+export interface SyncLogECreateProperties extends Partial<SyncLogEId>, SyncLogEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

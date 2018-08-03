@@ -40,7 +40,7 @@ export interface RecordHistoryNewValueEUpdateColumns extends IEntityUpdateColumn
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface RecordHistoryNewValueECreateProperties extends RecordHistoryNewValueEId, RecordHistoryNewValueEUpdateProperties {
+export interface RecordHistoryNewValueECreateProperties extends Partial<RecordHistoryNewValueEId>, RecordHistoryNewValueEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

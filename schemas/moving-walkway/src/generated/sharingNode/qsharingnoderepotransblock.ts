@@ -136,7 +136,7 @@ export interface SharingNodeRepoTransBlockEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SharingNodeRepoTransBlockECreateProperties
-extends SharingNodeRepoTransBlockEId, SharingNodeRepoTransBlockEUpdateProperties {
+extends Partial<SharingNodeRepoTransBlockEId>, SharingNodeRepoTransBlockEUpdateProperties {
 }
 
 /**

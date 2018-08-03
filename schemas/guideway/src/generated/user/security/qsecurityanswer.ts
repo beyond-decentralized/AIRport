@@ -136,7 +136,7 @@ export interface SecurityAnswerEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SecurityAnswerECreateProperties
-extends SecurityAnswerEId, SecurityAnswerEUpdateProperties {
+extends Partial<SecurityAnswerEId>, SecurityAnswerEUpdateProperties {
 }
 
 /**

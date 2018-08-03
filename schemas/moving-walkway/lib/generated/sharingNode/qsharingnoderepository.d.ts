@@ -48,7 +48,7 @@ export interface SharingNodeRepositoryEUpdateColumns extends IEntityUpdateColumn
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface SharingNodeRepositoryECreateProperties extends SharingNodeRepositoryEId, SharingNodeRepositoryEUpdateProperties {
+export interface SharingNodeRepositoryECreateProperties extends Partial<SharingNodeRepositoryEId>, SharingNodeRepositoryEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

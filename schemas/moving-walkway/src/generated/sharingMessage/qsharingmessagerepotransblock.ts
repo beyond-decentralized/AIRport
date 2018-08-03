@@ -133,7 +133,7 @@ export interface SharingMessageRepoTransBlockEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SharingMessageRepoTransBlockECreateProperties
-extends SharingMessageRepoTransBlockEId, SharingMessageRepoTransBlockEUpdateProperties {
+extends Partial<SharingMessageRepoTransBlockEId>, SharingMessageRepoTransBlockEUpdateProperties {
 }
 
 /**

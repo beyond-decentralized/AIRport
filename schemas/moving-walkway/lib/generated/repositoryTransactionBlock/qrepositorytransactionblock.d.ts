@@ -67,7 +67,7 @@ export interface RepositoryTransactionBlockEUpdateColumns extends IEntityUpdateC
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface RepositoryTransactionBlockECreateProperties extends RepositoryTransactionBlockEId, RepositoryTransactionBlockEUpdateProperties {
+export interface RepositoryTransactionBlockECreateProperties extends Partial<RepositoryTransactionBlockEId>, RepositoryTransactionBlockEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

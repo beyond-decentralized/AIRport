@@ -134,7 +134,7 @@ export interface DailyArchiveEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface DailyArchiveECreateProperties
-extends DailyArchiveEId, DailyArchiveEUpdateProperties {
+extends Partial<DailyArchiveEId>, DailyArchiveEUpdateProperties {
 }
 
 /**

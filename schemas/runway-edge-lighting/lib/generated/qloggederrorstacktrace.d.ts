@@ -38,7 +38,7 @@ export interface LoggedErrorStackTraceEUpdateColumns extends IEntityUpdateColumn
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface LoggedErrorStackTraceECreateProperties extends LoggedErrorStackTraceEId, LoggedErrorStackTraceEUpdateProperties {
+export interface LoggedErrorStackTraceECreateProperties extends Partial<LoggedErrorStackTraceEId>, LoggedErrorStackTraceEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

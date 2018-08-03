@@ -117,7 +117,7 @@ export interface TuningParametersEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface TuningParametersECreateProperties
-extends TuningParametersEId, TuningParametersEUpdateProperties {
+extends Partial<TuningParametersEId>, TuningParametersEUpdateProperties {
 }
 
 /**

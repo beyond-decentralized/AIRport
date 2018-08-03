@@ -29,7 +29,7 @@ export interface LogEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface LogECreateProperties extends LogEId, LogEUpdateProperties {
+export interface LogECreateProperties extends Partial<LogEId>, LogEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

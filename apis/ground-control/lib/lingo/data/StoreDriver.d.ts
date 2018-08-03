@@ -7,7 +7,7 @@ import { StoreType } from "./storeInfo";
 export declare enum QueryType {
     DDL = 0,
     SELECT = 1,
-    MUTATE = 2,
+    MUTATE = 2
 }
 export interface ATransactionHistory {
 }

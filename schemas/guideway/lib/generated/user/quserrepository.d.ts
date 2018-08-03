@@ -42,7 +42,7 @@ export interface UserRepositoryEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface UserRepositoryECreateProperties extends UserRepositoryEId, UserRepositoryEUpdateProperties {
+export interface UserRepositoryECreateProperties extends Partial<UserRepositoryEId>, UserRepositoryEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

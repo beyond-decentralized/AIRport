@@ -38,7 +38,7 @@ export interface ServerEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface ServerECreateProperties extends ServerEId, ServerEUpdateProperties {
+export interface ServerECreateProperties extends Partial<ServerEId>, ServerEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

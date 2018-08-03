@@ -42,7 +42,7 @@ export interface TerminalRepositoryEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface TerminalRepositoryECreateProperties extends TerminalRepositoryEId, TerminalRepositoryEUpdateProperties {
+export interface TerminalRepositoryECreateProperties extends Partial<TerminalRepositoryEId>, TerminalRepositoryEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

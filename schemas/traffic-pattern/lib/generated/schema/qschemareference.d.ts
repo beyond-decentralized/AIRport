@@ -41,7 +41,7 @@ export interface SchemaReferenceEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface SchemaReferenceECreateProperties extends SchemaReferenceEId, SchemaReferenceEUpdateProperties {
+export interface SchemaReferenceECreateProperties extends Partial<SchemaReferenceEId>, SchemaReferenceEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

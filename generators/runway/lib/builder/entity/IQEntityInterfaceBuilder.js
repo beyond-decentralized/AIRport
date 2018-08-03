@@ -191,7 +191,7 @@ ${nonIdEColumns}
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface ${entityName}ECreateProperties
-extends ${entityName}EId, ${entityName}EUpdateProperties {
+extends Partial<${entityName}EId>, ${entityName}EUpdateProperties {
 }
 
 /**

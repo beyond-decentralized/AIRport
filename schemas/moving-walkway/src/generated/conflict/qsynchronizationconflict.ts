@@ -153,7 +153,7 @@ export interface SynchronizationConflictEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SynchronizationConflictECreateProperties
-extends SynchronizationConflictEId, SynchronizationConflictEUpdateProperties {
+extends Partial<SynchronizationConflictEId>, SynchronizationConflictEUpdateProperties {
 }
 
 /**

@@ -46,7 +46,7 @@ export interface AgtSharingMessageEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface AgtSharingMessageECreateProperties extends AgtSharingMessageEId, AgtSharingMessageEUpdateProperties {
+export interface AgtSharingMessageECreateProperties extends Partial<AgtSharingMessageEId>, AgtSharingMessageEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).

@@ -39,7 +39,7 @@ export interface LoggedErrorEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface LoggedErrorECreateProperties extends LoggedErrorEId, LoggedErrorEUpdateProperties {
+export interface LoggedErrorECreateProperties extends Partial<LoggedErrorEId>, LoggedErrorEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).
