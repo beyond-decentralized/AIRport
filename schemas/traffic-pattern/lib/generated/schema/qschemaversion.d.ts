@@ -4,6 +4,7 @@ import { ISchemaEntity, SchemaEntityESelect, QSchemaEntity } from './qschemaenti
 import { ISchemaReference, SchemaReferenceESelect, QSchemaReference } from './qschemareference';
 export interface ISchemaVersion {
     id?: number;
+    integerVersion?: number;
     versionString?: string;
     majorVersion?: number;
     minorVersion?: number;
@@ -38,6 +39,7 @@ export interface SchemaVersionEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SchemaVersionEUpdateProperties extends IEntityUpdateProperties {
+    integerVersion?: number | IQNumberField;
     versionString?: string | IQStringField;
     majorVersion?: number | IQNumberField;
     minorVersion?: number | IQNumberField;
@@ -48,6 +50,7 @@ export interface SchemaVersionEUpdateProperties extends IEntityUpdateProperties 
  * UPDATE - non-id columns (optional).
  */
 export interface SchemaVersionEUpdateColumns extends IEntityUpdateColumns {
+    INTEGER_VERSION?: number | IQNumberField;
     VERSION_STRING?: string | IQStringField;
     MAJOR_VERSION?: number | IQNumberField;
     MINOR_VERSION?: number | IQNumberField;
@@ -69,6 +72,7 @@ export interface SchemaVersionECreateColumns extends SchemaVersionEId, SchemaVer
  */
 export interface QSchemaVersion extends QEntity {
     id: IQNumberField;
+    integerVersion: IQNumberField;
     versionString: IQStringField;
     majorVersion: IQNumberField;
     minorVersion: IQNumberField;

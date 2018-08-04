@@ -31,6 +31,10 @@ import {
 	SharingMessageDaoToken
 }                                                 from '@airport/moving-walkway'
 import {
+	ITerminalStore,
+	TerminalStoreToken
+}                                                 from '@airport/terminal-map'
+import {
 	Inject,
 	Service
 }                                                 from 'typedi'
@@ -97,10 +101,11 @@ export class SyncInDataChecker
 		private syncInRepositoryTransactionBlockCreator: ISyncInRepositoryTransactionBlockCreator,
 		@Inject(SyncInUtilsToken)
 		private syncInUtils: ISyncInUtils,
+		@Inject(TerminalStoreToken)
+		private terminalStore: ITerminalStore,
 		@Inject(UtilsToken)
 		private utils: IUtils,
 	) {
-
 	}
 
 	/**

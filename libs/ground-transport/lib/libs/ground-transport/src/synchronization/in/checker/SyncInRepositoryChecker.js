@@ -63,9 +63,20 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
     areRepositoryIdsConsistentInMessage(message) {
         const data = message.data;
         const repositoryId = data.repository.id;
+        const referencedRepositorySet = new Set();
+        for (const repository of data.referencedRepositories) {
+            if (referencedRepositorySet.has(repositoryId)) {
+                return false;
+            }
+            referencedRepositorySet.add(repository.id);
+        }
         for (const repoTransHistory of data.repoTransHistories) {
             if (repositoryId != repoTransHistory.repository.id) {
                 return false;
+            }
+            for (const operationHistory of repoTransHistory.operationHistory) {
+                operationHistory.
+                ;
             }
         }
         return true;

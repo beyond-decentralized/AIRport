@@ -2,6 +2,7 @@ import { IUtils } from '@airport/air-control';
 import { SchemaVersionId, TableIndex } from '@airport/ground-control';
 import { ActorId, IRecordHistory, IRepositoryTransactionHistoryDao, RepositoryEntityActorRecordId, RepositoryId } from '@airport/holding-pattern';
 import { IMissingRecord, IMissingRecordDao, IMissingRecordRepoTransBlockDao, IRepositoryTransactionBlock, IRepositoryTransactionBlockDao, ISharingMessageDao } from '@airport/moving-walkway';
+import { ITerminalStore } from '@airport/terminal-map';
 import { ISyncInRepositoryTransactionBlockCreator } from '../creator/SyncInRepositoryTransactionBlockCreator';
 import { IDataToTM, ISyncInUtils } from '../SyncInUtils';
 export interface DataCheckResults {
@@ -33,8 +34,9 @@ export declare class SyncInDataChecker implements ISyncInDataChecker {
     private sharingMessageDao;
     private syncInRepositoryTransactionBlockCreator;
     private syncInUtils;
+    private terminalStore;
     private utils;
-    constructor(missingRecordDao: IMissingRecordDao, missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao, repositoryTransactionBlockDao: IRepositoryTransactionBlockDao, repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao, sharingMessageDao: ISharingMessageDao, syncInRepositoryTransactionBlockCreator: ISyncInRepositoryTransactionBlockCreator, syncInUtils: ISyncInUtils, utils: IUtils);
+    constructor(missingRecordDao: IMissingRecordDao, missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao, repositoryTransactionBlockDao: IRepositoryTransactionBlockDao, repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao, sharingMessageDao: ISharingMessageDao, syncInRepositoryTransactionBlockCreator: ISyncInRepositoryTransactionBlockCreator, syncInUtils: ISyncInUtils, terminalStore: ITerminalStore, utils: IUtils);
     /**
      * Every dataMessage.data.repoTransHistories array must be sorted before entering
      * this method.

@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const terminal_map_1 = require("@airport/terminal-map");
 const territory_1 = require("@airport/territory");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
 const typedi_1 = require("typedi");
@@ -21,10 +22,11 @@ const lib_1 = require("zipson/lib");
 const InjectionTokens_1 = require("../../../InjectionTokens");
 const SyncInUtils_1 = require("../SyncInUtils");
 let SyncInSchemaChecker = class SyncInSchemaChecker {
-    constructor(domainDao, schemaDao, schemaVersionDao, utils) {
+    constructor(domainDao, schemaDao, schemaVersionDao, terminalStore, utils) {
         this.domainDao = domainDao;
         this.schemaDao = schemaDao;
         this.schemaVersionDao = schemaVersionDao;
+        this.terminalStore = terminalStore;
         this.utils = utils;
     }
     async checkSchemas(dataMessages) {
@@ -46,12 +48,14 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
         const domainNames = Array.from(schemaDomainNameSet);
         // const domainMapByName = await this.domainDao.findMapByNameWithNames(domainNames);
         // const foundDomainNames = Array.from(domainMapByName.keys());
-        const maxVersionedMapBySchemaAndDomainNames = 
-        // new Map();
-        // if (foundDomainNames.length) {
-        // 	maxVersionedMapBySchemaAndDomainNames =
-        await this.schemaVersionDao.findMaxVersionedMapBySchemaAndDomainNames(Array.from(schemaDomainNameSet), Array.from(schemaNameSet));
-        // }
+        const maxVersionedMapBySchemaAndDomainNames = this.terminalStore.getLatestSchemaVersionMapByNames();
+        // 	// new Map();
+        // 	// if (foundDomainNames.length) {
+        // 	// 	maxVersionedMapBySchemaAndDomainNames =
+        // 	await this.schemaVersionDao.findMaxVersionedMapBySchemaAndDomainNames(
+        // 		Array.from(schemaDomainNameSet), Array.from(schemaNameSet)
+        // 	)
+        // // }
         const { dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleSchemas, dataMessagesToBeUpgraded, missingDomainMap, missingSchemaMap, 
         // repoTransBlockMissingSchemas,
         // repoTransBlockSchemasToBeUpgraded,
@@ -272,15 +276,24 @@ let SyncInSchemaChecker = class SyncInSchemaChecker {
         }
         */
     compareSchemaVersions(messageSchemaVersion, maxSchemaVersion) {
-        const majorVersionComparison = this.compareGivenSchemaVersionLevel(messageSchemaVersion.majorVersion, maxSchemaVersion.majorVersion);
-        if (majorVersionComparison) {
-            return majorVersionComparison;
-        }
-        const minorVersionComparison = this.compareGivenSchemaVersionLevel(messageSchemaVersion.minorVersion, maxSchemaVersion.minorVersion);
-        if (minorVersionComparison) {
-            return minorVersionComparison;
-        }
-        return this.compareGivenSchemaVersionLevel(messageSchemaVersion.patchVersion, maxSchemaVersion.patchVersion);
+        return this.compareGivenSchemaVersionLevel(messageSchemaVersion.integerVersion, maxSchemaVersion.integerVersion);
+        // const majorVersionComparison = this.compareGivenSchemaVersionLevel(
+        // 	messageSchemaVersion.majorVersion, maxSchemaVersion.majorVersion
+        // )
+        // if (majorVersionComparison) {
+        // 	return majorVersionComparison
+        // }
+        //
+        // const minorVersionComparison = this.compareGivenSchemaVersionLevel(
+        // 	messageSchemaVersion.minorVersion, maxSchemaVersion.minorVersion
+        // )
+        // if (minorVersionComparison) {
+        // 	return minorVersionComparison
+        // }
+        //
+        // return this.compareGivenSchemaVersionLevel(
+        // 	messageSchemaVersion.patchVersion, maxSchemaVersion.patchVersion
+        // )
     }
     compareGivenSchemaVersionLevel(messageSchemaVersion, localSchemaVersion) {
         if (messageSchemaVersion < localSchemaVersion) {
@@ -297,8 +310,9 @@ SyncInSchemaChecker = __decorate([
     __param(0, Inject_1.Inject(territory_1.DomainDaoToken)),
     __param(1, Inject_1.Inject(traffic_pattern_1.SchemaDaoToken)),
     __param(2, Inject_1.Inject(traffic_pattern_1.SchemaVersionDaoToken)),
-    __param(3, Inject_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object])
+    __param(3, Inject_1.Inject(terminal_map_1.TerminalStoreToken)),
+    __param(4, Inject_1.Inject(air_control_1.UtilsToken)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
 ], SyncInSchemaChecker);
 exports.SyncInSchemaChecker = SyncInSchemaChecker;
 //# sourceMappingURL=SyncInSchemaChecker.js.map

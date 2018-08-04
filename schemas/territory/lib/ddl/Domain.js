@@ -23,12 +23,16 @@ __decorate([
     __metadata("design:type", String)
 ], Domain.prototype, "name", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "domain" }),
+    air_control_1.OneToMany({ mappedBy: 'domain' }),
     __metadata("design:type", Array)
 ], Domain.prototype, "applications", void 0);
+__decorate([
+    air_control_1.Transient(),
+    __metadata("design:type", Array)
+], Domain.prototype, "schemas", void 0);
 Domain = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: "DOMAINS" })
+    air_control_1.Table({ name: 'DOMAINS' })
 ], Domain);
 exports.Domain = Domain;
 //# sourceMappingURL=Domain.js.map

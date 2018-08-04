@@ -12,6 +12,7 @@ __export(require("./config/PersistenceConfig"));
 __export(require("./config/PlatformType"));
 __export(require("./config/storeInfo"));
 __export(require("./metadata/RepositoryEntityType"));
+__export(require("./store/Selector"));
 __export(require("./store/TerminalStore"));
 __export(require("./sync/ArrayChangeRecordIterator"));
 __export(require("./sync/DistributionStrategy"));

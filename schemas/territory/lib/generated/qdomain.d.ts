@@ -1,9 +1,11 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { DbSchema } from '@airport/ground-control';
 import { IApplication, ApplicationESelect, QApplication } from './qapplication';
 export interface IDomain {
     id?: number;
     name?: string;
     applications?: IApplication[];
+    schemas?: DbSchema[];
 }
 /**
  * SELECT - All fields and relations (optional).

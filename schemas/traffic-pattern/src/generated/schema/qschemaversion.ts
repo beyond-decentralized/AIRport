@@ -67,6 +67,7 @@ export interface ISchemaVersion {
 	// Id Relations
 
 	// Non-Id Properties
+	integerVersion?: number;
 	versionString?: string;
 	majorVersion?: number;
 	minorVersion?: number;
@@ -132,6 +133,7 @@ export interface SchemaVersionEOptionalId {
 export interface SchemaVersionEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
+	integerVersion?: number | IQNumberField;
 	versionString?: string | IQStringField;
 	majorVersion?: number | IQNumberField;
 	minorVersion?: number | IQNumberField;
@@ -148,6 +150,7 @@ export interface SchemaVersionEUpdateProperties
 export interface SchemaVersionEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
+	INTEGER_VERSION?: number | IQNumberField;
 	VERSION_STRING?: string | IQStringField;
 	MAJOR_VERSION?: number | IQNumberField;
 	MINOR_VERSION?: number | IQNumberField;
@@ -188,6 +191,7 @@ export interface QSchemaVersion extends QEntity
 	// Id Relations
 
 	// Non-Id Fields
+	integerVersion: IQNumberField;
 	versionString: IQStringField;
 	majorVersion: IQNumberField;
 	minorVersion: IQNumberField;

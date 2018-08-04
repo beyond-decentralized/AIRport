@@ -16,10 +16,11 @@ const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const moving_walkway_1 = require("@airport/moving-walkway");
+const terminal_map_1 = require("@airport/terminal-map");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../../../InjectionTokens");
 let SyncInDataChecker = class SyncInDataChecker {
-    constructor(missingRecordDao, missingRecordRepoTransBlockDao, repositoryTransactionBlockDao, repositoryTransactionHistoryDao, sharingMessageDao, syncInRepositoryTransactionBlockCreator, syncInUtils, utils) {
+    constructor(missingRecordDao, missingRecordRepoTransBlockDao, repositoryTransactionBlockDao, repositoryTransactionHistoryDao, sharingMessageDao, syncInRepositoryTransactionBlockCreator, syncInUtils, terminalStore, utils) {
         this.missingRecordDao = missingRecordDao;
         this.missingRecordRepoTransBlockDao = missingRecordRepoTransBlockDao;
         this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
@@ -27,6 +28,7 @@ let SyncInDataChecker = class SyncInDataChecker {
         this.sharingMessageDao = sharingMessageDao;
         this.syncInRepositoryTransactionBlockCreator = syncInRepositoryTransactionBlockCreator;
         this.syncInUtils = syncInUtils;
+        this.terminalStore = terminalStore;
         this.utils = utils;
     }
     /**
@@ -243,8 +245,9 @@ SyncInDataChecker = __decorate([
     __param(4, typedi_1.Inject(moving_walkway_1.SharingMessageDaoToken)),
     __param(5, typedi_1.Inject(InjectionTokens_1.SyncInRepositoryTransactionBlockCreatorToken)),
     __param(6, typedi_1.Inject(InjectionTokens_1.SyncInUtilsToken)),
-    __param(7, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object])
+    __param(7, typedi_1.Inject(terminal_map_1.TerminalStoreToken)),
+    __param(8, typedi_1.Inject(air_control_1.UtilsToken)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object])
 ], SyncInDataChecker);
 exports.SyncInDataChecker = SyncInDataChecker;
 //# sourceMappingURL=SyncInDataChecker.js.map

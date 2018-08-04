@@ -13,6 +13,11 @@ import {
 	SchemaVersionPatch
 }                                 from '@airport/ground-control'
 import {
+	ITerminalStore,
+	TerminalStore,
+	TerminalStoreToken
+} from '@airport/terminal-map'
+import {
 	DomainDaoToken,
 	IDomain,
 	IDomainDao
@@ -78,6 +83,8 @@ export class SyncInSchemaChecker
 		private schemaDao: ISchemaDao,
 		@Inject(SchemaVersionDaoToken)
 		private schemaVersionDao: ISchemaVersionDao,
+		@Inject(TerminalStoreToken)
+		private terminalStore: ITerminalStore,
 		@Inject(UtilsToken)
 		private utils: IUtils
 	) {
@@ -112,13 +119,14 @@ export class SyncInSchemaChecker
 
 		const maxVersionedMapBySchemaAndDomainNames:
 			Map<DomainName, Map<SchemaName, ISchemaVersion>> =
-			// new Map();
-			// if (foundDomainNames.length) {
-			// 	maxVersionedMapBySchemaAndDomainNames =
-			await this.schemaVersionDao.findMaxVersionedMapBySchemaAndDomainNames(
-				Array.from(schemaDomainNameSet), Array.from(schemaNameSet)
-			)
-		// }
+			this.terminalStore.getLatestSchemaVersionMapByNames()
+		// 	// new Map();
+		// 	// if (foundDomainNames.length) {
+		// 	// 	maxVersionedMapBySchemaAndDomainNames =
+		// 	await this.schemaVersionDao.findMaxVersionedMapBySchemaAndDomainNames(
+		// 		Array.from(schemaDomainNameSet), Array.from(schemaNameSet)
+		// 	)
+		// // }
 
 		const {
 			dataMessagesWithCompatibleSchemas,
@@ -133,7 +141,8 @@ export class SyncInSchemaChecker
 			schemasToBeUpgradedMap
 		}: DataMessageSchemaGroupings
 			= this.groupMessagesAndSchemasBySchemaState(dataMessages,
-			maxVersionedMapBySchemaAndDomainNames)
+			maxVersionedMapBySchemaAndDomainNames
+		)
 
 		const schemasWithChangesMap: Map<DomainName, Map<SchemaName, ISchema>> =
 			await this.recordSchemasToBeAddedAndUpgraded(
@@ -410,23 +419,26 @@ export class SyncInSchemaChecker
 		messageSchemaVersion: ISchemaVersion,
 		maxSchemaVersion: ISchemaVersion
 	): SchemaComparisonResult {
-		const majorVersionComparison = this.compareGivenSchemaVersionLevel(
-			messageSchemaVersion.majorVersion, maxSchemaVersion.majorVersion
-		)
-		if (majorVersionComparison) {
-			return majorVersionComparison
-		}
-
-		const minorVersionComparison = this.compareGivenSchemaVersionLevel(
-			messageSchemaVersion.minorVersion, maxSchemaVersion.minorVersion
-		)
-		if (minorVersionComparison) {
-			return minorVersionComparison
-		}
-
 		return this.compareGivenSchemaVersionLevel(
-			messageSchemaVersion.patchVersion, maxSchemaVersion.patchVersion
-		)
+			messageSchemaVersion.integerVersion, maxSchemaVersion.integerVersion);
+
+		// const majorVersionComparison = this.compareGivenSchemaVersionLevel(
+		// 	messageSchemaVersion.majorVersion, maxSchemaVersion.majorVersion
+		// )
+		// if (majorVersionComparison) {
+		// 	return majorVersionComparison
+		// }
+		//
+		// const minorVersionComparison = this.compareGivenSchemaVersionLevel(
+		// 	messageSchemaVersion.minorVersion, maxSchemaVersion.minorVersion
+		// )
+		// if (minorVersionComparison) {
+		// 	return minorVersionComparison
+		// }
+		//
+		// return this.compareGivenSchemaVersionLevel(
+		// 	messageSchemaVersion.patchVersion, maxSchemaVersion.patchVersion
+		// )
 	}
 
 	private compareGivenSchemaVersionLevel(

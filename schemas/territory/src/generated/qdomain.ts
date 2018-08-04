@@ -21,6 +21,9 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
+	DbSchema,
+} from '@airport/ground-control';
+import {
 	IApplication,
 	ApplicationEId,
 	ApplicationEOptionalId,
@@ -53,6 +56,7 @@ export interface IDomain {
 	applications?: IApplication[];
 
 	// Transient Properties
+	schemas?: DbSchema[];
 
 	// Public Methods
 	

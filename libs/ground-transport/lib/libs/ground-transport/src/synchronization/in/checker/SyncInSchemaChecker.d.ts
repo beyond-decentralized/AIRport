@@ -1,5 +1,6 @@
 import { IUtils } from '@airport/air-control';
 import { DomainName, SchemaName, SchemaVersionId } from '@airport/ground-control';
+import { ITerminalStore } from '@airport/terminal-map';
 import { IDomain, IDomainDao } from '@airport/territory';
 import { ISchema, ISchemaDao, ISchemaVersion, ISchemaVersionDao } from '@airport/traffic-pattern';
 import { IDataToTM } from '../SyncInUtils';
@@ -28,8 +29,9 @@ export declare class SyncInSchemaChecker implements ISyncInSchemaChecker {
     private domainDao;
     private schemaDao;
     private schemaVersionDao;
+    private terminalStore;
     private utils;
-    constructor(domainDao: IDomainDao, schemaDao: ISchemaDao, schemaVersionDao: ISchemaVersionDao, utils: IUtils);
+    constructor(domainDao: IDomainDao, schemaDao: ISchemaDao, schemaVersionDao: ISchemaVersionDao, terminalStore: ITerminalStore, utils: IUtils);
     checkSchemas(dataMessages: IDataToTM[]): Promise<SchemaCheckResults>;
     private groupMessagesAndSchemasBySchemaState;
     private verifyRTBSchemaConsistency;

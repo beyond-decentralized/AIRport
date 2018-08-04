@@ -5,29 +5,34 @@ import {
 	GeneratedValue,
 	Id,
 	OneToMany,
-	Table
-}                    from "@airport/air-control";
+	Table,
+	Transient
+}                    from '@airport/air-control'
 import {
 	DbDomain,
+	DbSchema,
 	DomainId,
 	DomainName,
-}                    from "@airport/ground-control";
-import {Application} from "./Application";
+}                    from '@airport/ground-control'
+import {Application} from './Application'
 
 @Entity()
-@Table({name: "DOMAINS"})
+@Table({name: 'DOMAINS'})
 export class Domain
 	implements DbDomain {
 
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	id: DomainId;
+	id: DomainId
 
 	@DbString()
-	name: DomainName;
+	name: DomainName
 
-	@OneToMany({mappedBy: "domain"})
-	applications: Application[];
+	@OneToMany({mappedBy: 'domain'})
+	applications: Application[]
+
+	@Transient()
+	schemas: DbSchema[]
 
 }

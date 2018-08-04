@@ -8,56 +8,60 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-}                         from "@airport/air-control";
+}                         from '@airport/air-control'
 import {
 	SchemaVersionId,
+	SchemaVersionInteger,
 	SchemaVersionMajor,
 	SchemaVersionMinor,
 	SchemaVersionPatch,
 	SchemaVersionString
-}                         from "@airport/ground-control";
-import {ISchema}          from "../../generated/schema/qschema";
-import {ISchemaEntity}    from "../../generated/schema/qschemaentity";
-import {ISchemaReference} from "../../generated/schema/qschemareference";
-import {ISchemaVersion}   from "../../generated/schema/qschemaversion";
+}                         from '@airport/ground-control'
+import {ISchema}          from '../../generated/schema/qschema'
+import {ISchemaEntity}    from '../../generated/schema/qschemaentity'
+import {ISchemaReference} from '../../generated/schema/qschemareference'
+import {ISchemaVersion}   from '../../generated/schema/qschemaversion'
 
 
 @Entity()
-@Table({name: "SCHEMA_VERSIONS"})
+@Table({name: 'SCHEMA_VERSIONS'})
 export class SchemaVersion
 	implements ISchemaVersion {
 
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	id: SchemaVersionId;
+	id: SchemaVersionId
 
-	@Column({name: "VERSION_STRING"})
-	versionString: SchemaVersionString;
+	@Column({name: 'INTEGER_VERSION'})
+	integerVersion: SchemaVersionInteger
 
-	@Column({name: "MAJOR_VERSION"})
+	@Column({name: 'VERSION_STRING'})
+	versionString: SchemaVersionString
+
+	@Column({name: 'MAJOR_VERSION'})
 	@DbNumber()
-	majorVersion: SchemaVersionMajor;
+	majorVersion: SchemaVersionMajor
 
-	@Column({name: "MINOR_VERSION"})
+	@Column({name: 'MINOR_VERSION'})
 	@DbNumber()
-	minorVersion: SchemaVersionMinor;
+	minorVersion: SchemaVersionMinor
 
-	@Column({name: "PATCH_VERSION"})
+	@Column({name: 'PATCH_VERSION'})
 	@DbNumber()
-	patchVersion: SchemaVersionPatch;
+	patchVersion: SchemaVersionPatch
 
 	@ManyToOne()
-	@JoinColumn({name: "SCHEMA_INDEX", referencedColumnName: "INDEX"})
-	schema: ISchema;
+	@JoinColumn({name: 'SCHEMA_INDEX', referencedColumnName: 'INDEX'})
+	schema: ISchema
 
 	@OneToMany({mappedBy: 'schemaVersion'})
-	entities: ISchemaEntity[];
+	entities: ISchemaEntity[]
 
 	@OneToMany({mappedBy: 'ownSchemaVersion'})
-	references: ISchemaReference[];
+	references: ISchemaReference[]
 
 	@OneToMany({mappedBy: 'referencedSchemaVersion'})
-	referencedBy: ISchemaReference[];
+	referencedBy: ISchemaReference[]
 
 }
