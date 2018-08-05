@@ -6,7 +6,8 @@
     "node_modulesLinks": {
       "pathToProject": "schemas/holding-pattern",
       "pathsToReferencedSchemas": {
-        "@airport/traffic-pattern": "schemas/traffic-pattern"
+        "@airport/traffic-pattern": "schemas/traffic-pattern",
+        "@airport/id-checkpoint": "schemas/id-checkpoint"
       }
     },
     "tablePrefix": "AP"
@@ -15,6 +16,7 @@
     "@airport/air-control": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/ground-control": "0.0.1",
+    "@airport/id-checkpoint": "0.0.1",
     "@airport/traffic-pattern": "0.0.1",
     "typedi": "^0.8.0"
   },

@@ -6,7 +6,8 @@
     "node_modulesLinks": {
       "pathToProject": "schemas/guideway",
       "pathsToReferencedSchemas": {
-        "@airport/airport-code": "schemas/airport-code"
+        "@airport/airport-code": "schemas/airport-code",
+        "@airport/id-checkpoint": "schemas/id-checkpoint"
       }
     },
     "tablePrefix": "AP"
@@ -16,6 +17,7 @@
     "@airport/arrivals-n-departures": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/ground-control": "0.0.1",
+    "@airport/id-checkpoint": "0.0.1",
     "typedi": "^0.8.0"
   },
   "devDependencies": {
