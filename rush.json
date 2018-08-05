@@ -92,6 +92,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/id-checkpoint",
+      "projectFolder": "schemas/id-checkpoint",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/moving-walkway",
       "projectFolder": "schemas/moving-walkway",
       "shouldPublish": true
