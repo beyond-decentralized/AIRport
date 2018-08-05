@@ -44,12 +44,16 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
      *      Local (TM) repository Id Map.
      * @returns {Promise<void>}
      */
-    async syncDataMessages(dataMessages, 
+    async syncDataMessages(dataMessages //,
     // sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
-    sharingNodeRepositoryMap, dataMessagesWithInvalidData) {
-        const { actorMap, actorMapById, consistentMessages } = await this.syncInChecker.actorChecker.ensureActorsAndGetAsMaps(dataMessages, dataMessagesWithInvalidData);
-        const [sharingMessagesWithCompatibleSchemasAndData, existingRepoTransBlocksWithCompatibleSchemasAndData, messagesWithCompatibleSchemas, usedSchemaVersionIdSet] = await this.syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(consistentMessages, actorMap, sharingNodeRepositoryMap, dataMessagesWithInvalidData);
-        const repoTransHistoryMapByRepositoryId = await this.recordSharingMessageToHistoryRecords(sharingMessagesWithCompatibleSchemasAndData, existingRepoTransBlocksWithCompatibleSchemasAndData, messagesWithCompatibleSchemas, actorMapById);
+    // sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
+    // dataMessagesWithInvalidData: IDataToTM[]
+    ) {
+        const [actorMapById, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessagesWithCompatibleSchemas, sharingMessagesWithCompatibleSchemasAndData,] = await this.syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(
+        // consistentMessages, actorMap, sharingNodeRepositoryMap,
+        // dataMessagesWithInvalidData
+        dataMessages);
+        const repoTransHistoryMapByRepositoryId = await this.recordSharingMessageToHistoryRecords(sharingMessagesWithCompatibleSchemasAndData, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessagesWithCompatibleSchemas, actorMapById);
         await this.updateLocalData(repoTransHistoryMapByRepositoryId, actorMapById);
     }
     async recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById) {

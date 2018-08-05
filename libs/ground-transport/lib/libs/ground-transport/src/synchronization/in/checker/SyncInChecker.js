@@ -38,8 +38,10 @@ let SyncInChecker = class SyncInChecker {
      *              for message processing
      *      ]
      */
-    async checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages, actorMap, sharingNodeRepositoryMap, dataMessagesWithInvalidData) {
+    async checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages) {
         const { dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleSchemas, dataMessagesWithInvalidSchemas, dataMessagesToBeUpgraded, maxVersionedMapBySchemaAndDomainNames, requiredSchemaVersionIds, schemasWithChangesMap, } = await this.schemaChecker.checkSchemas(dataMessages);
+        const { actorMap, actorMapById, consistentMessages } = await this.actorChecker.ensureActorsAndGetAsMaps(dataMessages, dataMessagesWithInvalidData);
+        const { consistentMessages, sharingNodeRepositoryMap } = await this.repositoryChecker.ensureRepositories(allDataMessages, dataMessagesWithInvalidData);
         dataMessagesWithInvalidData = dataMessagesWithInvalidData
             .concat(dataMessagesWithInvalidSchemas);
         // this.updateSchemaReferences(dataMessagesWithIncompatibleSchemas, allSchemaMap);
@@ -47,11 +49,13 @@ let SyncInChecker = class SyncInChecker {
         // Schema references for messages with incompatible schemas are converted
         // at when the messages are finally processed
         const usedSchemaVersionIdSet = this.updateSchemaReferences(dataMessagesWithCompatibleSchemas, maxVersionedMapBySchemaAndDomainNames);
-        this.updateActorReferences(dataMessagesWithIncompatibleSchemas, actorMap);
-        this.updateActorReferences(dataMessagesToBeUpgraded, actorMap);
+        // this.updateActorReferences(dataMessagesWithIncompatibleSchemas, actorMap)
+        // this.updateActorReferences(dataMessagesToBeUpgraded, actorMap)
         this.updateActorReferences(dataMessagesWithCompatibleSchemas, actorMap);
-        this.updateRepositoryReferences(dataMessagesWithIncompatibleSchemas, sharingNodeRepositoryMap);
-        this.updateRepositoryReferences(dataMessagesToBeUpgraded, sharingNodeRepositoryMap);
+        // this.updateRepositoryReferences(
+        // 	dataMessagesWithIncompatibleSchemas, sharingNodeRepositoryMap)
+        // this.updateRepositoryReferences(
+        // 	dataMessagesToBeUpgraded, sharingNodeRepositoryMap)
         this.updateRepositoryReferences(dataMessagesWithCompatibleSchemas, sharingNodeRepositoryMap);
         const { dataMessagesWithCompatibleSchemasAndData, dataMessagesWithIncompatibleData, existingRepoTransBlocksWithCompatibleSchemasAndData, missingRecordDataToTMs } = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas);
         const allDataToTM = await this.syncInRepositoryTransactionBlockCreator

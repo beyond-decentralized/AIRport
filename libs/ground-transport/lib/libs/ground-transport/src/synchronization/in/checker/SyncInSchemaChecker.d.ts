@@ -33,8 +33,8 @@ export declare class SyncInSchemaChecker implements ISyncInSchemaChecker {
     private utils;
     constructor(domainDao: IDomainDao, schemaDao: ISchemaDao, schemaVersionDao: ISchemaVersionDao, terminalStore: ITerminalStore, utils: IUtils);
     checkSchemas(dataMessages: IDataToTM[]): Promise<SchemaCheckResults>;
-    private groupMessagesAndSchemasBySchemaState;
-    private verifyRTBSchemaConsistency;
+    private groupMessagesAndSchemasBySchemaState(dataMessages, maxVersionedMapBySchemaAndDomainNames);
+    private verifyRTBSchemaConsistency(dataMessage);
     /**
      * Record which schemas will have to be added to this TM or upgraded to a later version.
      *
@@ -45,7 +45,7 @@ export declare class SyncInSchemaChecker implements ISyncInSchemaChecker {
      * @param {Map<SchemaDomainName, Set<SchemaName>>} missingSchemaNameMap
      * @returns {Promise<void>}
      */
-    private recordSchemasToBeAddedAndUpgraded;
-    private compareSchemaVersions;
-    private compareGivenSchemaVersionLevel;
+    private recordSchemasToBeAddedAndUpgraded(schemasToBeUpgradedMap, missingDomainMap, missingSchemaMap);
+    private compareSchemaVersions(messageSchemaVersion, maxSchemaVersion);
+    private compareGivenSchemaVersionLevel(messageSchemaVersion, localSchemaVersion);
 }

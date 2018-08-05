@@ -22,7 +22,7 @@ export interface IDataToTM {
 export declare enum SchemaComparisonResult {
     MESSAGE_SCHEMA_VERSION_IS_LOWER = -1,
     MESSAGE_SCHEMA_VERSION_IS_EQUAL = 0,
-    MESSAGE_SCHEMA_VERSION_IS_HIGHER = 1
+    MESSAGE_SCHEMA_VERSION_IS_HIGHER = 1,
 }
 export interface ISyncRepoTransHistory extends IRepositoryTransactionHistory {
     isLocal?: boolean;
@@ -53,6 +53,6 @@ export declare class SyncInUtils implements ISyncInUtils {
     private utils;
     constructor(utils: IUtils);
     ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: RepositoryId, operationHistory: IOperationHistory, recordMapBySchemaTableAndRepository: Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>): Map<CI, V>;
-    private recordSharingMessageRepoTransBlocks;
-    private recordSharingNodeRepoTransBlocks;
+    private recordSharingMessageRepoTransBlocks();
+    private recordSharingNodeRepoTransBlocks();
 }
