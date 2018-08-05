@@ -8,8 +8,8 @@ export declare class GoogleSheets {
     getSheet(fileId: string): Promise<any>;
     getWorksheets(fileId: string): Promise<any>;
     getRequestOptionsArgs(): any;
-    private getListFeedUrl;
-    private getWorksheetsUrl;
-    private getUrlSuffix;
+    private getListFeedUrl(fileId);
+    private getWorksheetsUrl(fileId);
+    private getUrlSuffix();
     addRow(fileId: string, rowXml: string): Promise<any>;
 }

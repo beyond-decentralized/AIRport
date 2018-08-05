@@ -6,7 +6,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var SyncInSharingMessageCreator_1;
 const moving_walkway_1 = require("@airport/moving-walkway");
 const typedi_1 = require("typedi");
 let SyncInSharingMessageCreator = SyncInSharingMessageCreator_1 = class SyncInSharingMessageCreator {
@@ -28,4 +27,5 @@ SyncInSharingMessageCreator = SyncInSharingMessageCreator_1 = __decorate([
     typedi_1.Service(SyncInSharingMessageCreator_1)
 ], SyncInSharingMessageCreator);
 exports.SyncInSharingMessageCreator = SyncInSharingMessageCreator;
+var SyncInSharingMessageCreator_1;
 //# sourceMappingURL=SyncInSharingMessageCreator.js.map

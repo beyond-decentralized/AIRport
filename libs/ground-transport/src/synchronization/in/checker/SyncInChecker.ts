@@ -63,24 +63,27 @@ export interface CheckSchemasResult {
 	usedSchemaVersionIdSet: Set<SchemaIndex>;
 }
 
+export interface CheckResults {
+	sharingMessagesWithCompatibleSchemasAndData: ISharingMessage[]
+	existingRepoTransBlocksWithCompatibleSchemasAndData: IRepositoryTransactionBlock[]
+	dataMessagesWithCompatibleSchemas: IDataToTM[]
+	dataMessagesWithInvalidData: IDataToTM[]
+	// usedSchemaVersionIdSet
+}
+
 export interface ISyncInChecker {
 
 	actorChecker: ISyncInActorChecker;
 	repositoryChecker: ISyncInRepositoryChecker;
 
 	checkSchemasAndDataAndRecordRepoTransBlocks(
-		dataMessages: IDataToTM[],
-		actorMap: Map<ActorRandomId,
-			Map<UserUniqueId,
-				Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>,
-		sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
-		dataMessagesWithInvalidData: IDataToTM[]
-	): Promise<[
-		ISharingMessage[],
-		ISharingMessage[],
-		IDataToTM[],
-		Set<SchemaIndex>
-		]>;
+		dataMessages: IDataToTM[]
+		// actorMap: Map<ActorRandomId,
+		// 	Map<UserUniqueId,
+		// 		Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>,
+		// sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
+		// dataMessagesWithInvalidData: IDataToTM[]
+	): Promise<CheckResults>;
 
 }
 
@@ -122,18 +125,8 @@ export class SyncInChecker
 	 *      ]
 	 */
 	async checkSchemasAndDataAndRecordRepoTransBlocks(
-		dataMessages: IDataToTM[],
-		actorMap: Map<ActorRandomId,
-			Map<UserUniqueId,
-				Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>,
-		sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
-		dataMessagesWithInvalidData: IDataToTM[]
-	): Promise<[
-		ISharingMessage[],
-		IRepositoryTransactionBlock[],
-		IDataToTM[],
-		Set<SchemaVersionId>
-		]> {
+		dataMessages: IDataToTM[]
+	): Promise<CheckResults> {
 
 		const {
 			dataMessagesWithCompatibleSchemas,
@@ -145,6 +138,19 @@ export class SyncInChecker
 			schemasWithChangesMap,
 		} = await this.schemaChecker.checkSchemas(dataMessages)
 
+		const {
+			actorMap,
+			actorMapById,
+			consistentMessages
+		} = await this.actorChecker.ensureActorsAndGetAsMaps(
+			dataMessages, dataMessagesWithInvalidData);
+
+
+
+		const {consistentMessages, sharingNodeRepositoryMap}
+			= await this.repositoryChecker.ensureRepositories(
+			allDataMessages, dataMessagesWithInvalidData);
+
 		dataMessagesWithInvalidData = dataMessagesWithInvalidData
 			.concat(dataMessagesWithInvalidSchemas)
 
@@ -155,13 +161,13 @@ export class SyncInChecker
 		const usedSchemaVersionIdSet
 			= this.updateSchemaReferences(dataMessagesWithCompatibleSchemas,
 			maxVersionedMapBySchemaAndDomainNames)
-		this.updateActorReferences(dataMessagesWithIncompatibleSchemas, actorMap)
-		this.updateActorReferences(dataMessagesToBeUpgraded, actorMap)
+		// this.updateActorReferences(dataMessagesWithIncompatibleSchemas, actorMap)
+		// this.updateActorReferences(dataMessagesToBeUpgraded, actorMap)
 		this.updateActorReferences(dataMessagesWithCompatibleSchemas, actorMap)
-		this.updateRepositoryReferences(
-			dataMessagesWithIncompatibleSchemas, sharingNodeRepositoryMap)
-		this.updateRepositoryReferences(
-			dataMessagesToBeUpgraded, sharingNodeRepositoryMap)
+		// this.updateRepositoryReferences(
+		// 	dataMessagesWithIncompatibleSchemas, sharingNodeRepositoryMap)
+		// this.updateRepositoryReferences(
+		// 	dataMessagesToBeUpgraded, sharingNodeRepositoryMap)
 		this.updateRepositoryReferences(
 			dataMessagesWithCompatibleSchemas, sharingNodeRepositoryMap)
 

@@ -201,14 +201,8 @@ export class SynchronizationInManager
 		// no need to check for existence of repositories
 		await this.syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages);
 
-		const dataMessagesWithInvalidData: IDataToTM[] = [];
 
-		const {consistentMessages, sharingNodeRepositoryMap}
-			= await this.syncInChecker.repositoryChecker.ensureRepositories(
-				allDataMessages, dataMessagesWithInvalidData);
-
-		await this.twoStageSyncedInDataProcessor.syncDataMessages(
-			consistentMessages, sharingNodeRepositoryMap, dataMessagesWithInvalidData);
+		await this.twoStageSyncedInDataProcessor.syncDataMessages(allDataMessages);
 
 	}
 

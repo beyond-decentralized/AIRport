@@ -14,7 +14,7 @@ export declare class SyncInTerminalChecker implements ISyncInTerminalChecker {
     private utils;
     constructor(terminalDao: ITerminalDao, utils: IUtils);
     ensureTerminalsAndGetAsMaps(dataMessages: IDataToTM[], localTerminal: ITerminal, userCheckResults: UserCheckResults): Promise<TerminalCheckResults>;
-    private recordTerminalCredentials;
-    private areTerminalIdsConsistentInMessageData;
-    private addMissingTerminals;
+    private recordTerminalCredentials(message, index, userCheckResults, localTerminal, consistentMessages, inconsistentMessages, terminalNameSet, terminalSecondIdSet, ownerIdSet, remoteTerminalMapByUniqueIds, mapByMessageIndex);
+    private areTerminalIdsConsistentInMessageData(terminal, localTerminal, ownerUser);
+    private addMissingTerminals(remoteTerminalMapByUniqueIds, terminalMapByIds, userCheckResults);
 }

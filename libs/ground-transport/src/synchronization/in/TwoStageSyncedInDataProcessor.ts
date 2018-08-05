@@ -65,9 +65,8 @@ export interface ITwoStageSyncedInDataProcessor {
 
 	syncDataMessages(
 		dataMessages: IDataToTM[],
-		// sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
-		sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
-		dataMessagesWithInvalidData: IDataToTM[]
+		// sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
+		// dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<void>;
 
 }
@@ -115,32 +114,28 @@ export class TwoStageSyncedInDataProcessor
 	 * @returns {Promise<void>}
 	 */
 	async syncDataMessages(
-		dataMessages: IDataToTM[],
+		dataMessages: IDataToTM[] //,
 		// sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
-		sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
-		dataMessagesWithInvalidData: IDataToTM[]
+		// sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
+		// dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<void> {
-		const {
-			actorMap,
-			actorMapById,
-			consistentMessages
-		} = await this.syncInChecker.actorChecker.ensureActorsAndGetAsMaps(
-			dataMessages, dataMessagesWithInvalidData);
-
 		const [
-			sharingMessagesWithCompatibleSchemasAndData,
+			actorMapById,
 			existingRepoTransBlocksWithCompatibleSchemasAndData,
-			messagesWithCompatibleSchemas,
-			usedSchemaVersionIdSet
+			dataMessagesWithCompatibleSchemas,
+			sharingMessagesWithCompatibleSchemasAndData,
+			// usedSchemaVersionIdSet
 		] = await this.syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(
-			consistentMessages, actorMap, sharingNodeRepositoryMap,
-			dataMessagesWithInvalidData);
+			// consistentMessages, actorMap, sharingNodeRepositoryMap,
+			// dataMessagesWithInvalidData
+			dataMessages
+		);
 
 		const repoTransHistoryMapByRepositoryId
 			= await this.recordSharingMessageToHistoryRecords(
 			sharingMessagesWithCompatibleSchemasAndData,
 			existingRepoTransBlocksWithCompatibleSchemasAndData,
-			messagesWithCompatibleSchemas,
+			dataMessagesWithCompatibleSchemas,
 			actorMapById);
 
 

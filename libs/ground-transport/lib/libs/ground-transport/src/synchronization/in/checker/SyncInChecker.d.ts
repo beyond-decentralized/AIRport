@@ -1,7 +1,5 @@
-import { AgtRepositoryId } from '@airport/arrivals-n-departures';
-import { SchemaIndex, SchemaVersionId } from '@airport/ground-control';
-import { ActorRandomId, IActor, RepositoryId, TerminalName, TerminalSecondId, UserUniqueId } from '@airport/holding-pattern';
-import { IMissingRecordRepoTransBlockDao, IRepositoryTransactionBlock, IRepoTransBlockSchemaToChangeDao, ISharingMessage, ISharingMessageDao, SharingNodeId } from '@airport/moving-walkway';
+import { SchemaIndex } from '@airport/ground-control';
+import { IMissingRecordRepoTransBlockDao, IRepositoryTransactionBlock, IRepoTransBlockSchemaToChangeDao, ISharingMessage, ISharingMessageDao } from '@airport/moving-walkway';
 import { ISyncInRepositoryTransactionBlockCreator } from '../creator/SyncInRepositoryTransactionBlockCreator';
 import { IDataToTM, ISyncInUtils } from '../SyncInUtils';
 import { ISyncInActorChecker } from './SyncInActorChecker';
@@ -15,10 +13,16 @@ export interface CheckSchemasResult {
     dataMessagesWithMissingData: IDataToTM[];
     usedSchemaVersionIdSet: Set<SchemaIndex>;
 }
+export interface CheckResults {
+    sharingMessagesWithCompatibleSchemasAndData: ISharingMessage[];
+    existingRepoTransBlocksWithCompatibleSchemasAndData: IRepositoryTransactionBlock[];
+    dataMessagesWithCompatibleSchemas: IDataToTM[];
+    dataMessagesWithInvalidData: IDataToTM[];
+}
 export interface ISyncInChecker {
     actorChecker: ISyncInActorChecker;
     repositoryChecker: ISyncInRepositoryChecker;
-    checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages: IDataToTM[], actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>, sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>, dataMessagesWithInvalidData: IDataToTM[]): Promise<[ISharingMessage[], ISharingMessage[], IDataToTM[], Set<SchemaIndex>]>;
+    checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages: IDataToTM[]): Promise<CheckResults>;
 }
 export declare class SyncInChecker implements ISyncInChecker {
     actorChecker: ISyncInActorChecker;
@@ -42,7 +46,7 @@ export declare class SyncInChecker implements ISyncInChecker {
      *              for message processing
      *      ]
      */
-    checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages: IDataToTM[], actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>, sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>, dataMessagesWithInvalidData: IDataToTM[]): Promise<[ISharingMessage[], IRepositoryTransactionBlock[], IDataToTM[], Set<SchemaVersionId>]>;
+    checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages: IDataToTM[]): Promise<CheckResults>;
     /**
      * Schema references are to be upgraded for messages with Compatible Schemas only. The remaining
      * types of messages are only upgraded when processed
@@ -60,9 +64,9 @@ export declare class SyncInChecker implements ISyncInChecker {
      * FIXME: when messages are upgraded - map schema version ids to local values
      *
      */
-    private updateSchemaReferences;
-    private updateActorReferences;
-    private updateRepositoryReferences;
-    private recordRepoTransBlockSchemaToChange;
-    private findMatchingSchema;
+    private updateSchemaReferences(dataMessages, maxVersionedMapBySchemaAndDomainNames);
+    private updateActorReferences(dataMessages, actorMap);
+    private updateRepositoryReferences(dataMessages, sharingNodeRepositoryMap);
+    private recordRepoTransBlockSchemaToChange(dataMessagesWithIncompatibleSchemas, schemaWithChangesMap);
+    private findMatchingSchema(schemaMap, schema);
 }

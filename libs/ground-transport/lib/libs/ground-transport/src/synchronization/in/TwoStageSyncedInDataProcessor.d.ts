@@ -1,7 +1,6 @@
 import { IUtils } from "@airport/air-control";
-import { AgtRepositoryId } from "@airport/arrivals-n-departures";
-import { IRepositoryActorDao, IRepositoryTransactionHistoryDmo, RepositoryId } from "@airport/holding-pattern";
-import { IRepositoryTransactionBlockDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISynchronizationConflictDao, ISynchronizationConflictPendingNotificationDao, SharingNodeId } from "@airport/moving-walkway";
+import { IRepositoryActorDao, IRepositoryTransactionHistoryDmo } from "@airport/holding-pattern";
+import { IRepositoryTransactionBlockDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISynchronizationConflictDao, ISynchronizationConflictPendingNotificationDao } from "@airport/moving-walkway";
 import { ITransactionManager } from "@airport/terminal-map";
 import { ISyncInChecker } from "./checker/SyncInChecker";
 import { IStage1SyncedInDataProcessor } from "./Stage1SyncedInDataProcessor";
@@ -11,7 +10,7 @@ import { IDataToTM } from "./SyncInUtils";
  * Synchronizes incoming data and records message conflicts in two processing stages.
  */
 export interface ITwoStageSyncedInDataProcessor {
-    syncDataMessages(dataMessages: IDataToTM[], sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>, dataMessagesWithInvalidData: IDataToTM[]): Promise<void>;
+    syncDataMessages(dataMessages: IDataToTM[]): Promise<void>;
 }
 export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInDataProcessor {
     private repositoryActorDao;
@@ -34,9 +33,9 @@ export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInD
      *      Local (TM) repository Id Map.
      * @returns {Promise<void>}
      */
-    syncDataMessages(dataMessages: IDataToTM[], sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>, dataMessagesWithInvalidData: IDataToTM[]): Promise<void>;
-    private recordSharingMessageToHistoryRecords;
-    private getRepoTransHistoryMapByRepoId;
-    private addRepoTransHistoriesToMapFromData;
-    private updateLocalData;
+    syncDataMessages(dataMessages: IDataToTM[]): Promise<void>;
+    private recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById);
+    private getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
+    private addRepoTransHistoriesToMapFromData(repoTransHistoryMapByRepositoryId, data);
+    private updateLocalData(repoTransHistoryMapByRepositoryId, actorMayById, schemasBySchemaVersionIdMap);
 }
