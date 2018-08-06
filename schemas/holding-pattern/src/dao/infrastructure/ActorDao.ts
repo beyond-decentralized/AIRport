@@ -12,7 +12,7 @@ import {
 import {
 	ActorId,
 	ActorRandomId,
-	TerminalId,
+	TmTerminalId,
 	UserId
 }                          from "../../ddl/ddl";
 import {
@@ -34,14 +34,14 @@ export interface IActorDao extends IBaseActorDao {
 	findWithDetailsByGlobalIds(
 		randomIds: ActorRandomId[],
 		userIds: UserId[],
-		terminalIds: TerminalId[]
+		terminalIds: TmTerminalId[]
 	): Promise<IActor[]>;
 
 	findMapsWithDetailsByGlobalIds(
 		randomIds: ActorRandomId[],
 		userIds: UserId[],
-		terminalIds: TerminalId[],
-		actorMap: Map<UserId, Map<TerminalId, IActor>>,
+		terminalIds: TmTerminalId[],
+		actorMap: Map<UserId, Map<TmTerminalId, IActor>>,
 		actorMapById: Map<ActorId, IActor>
 	): Promise<void>;
 
@@ -70,8 +70,8 @@ export class ActorDao
 	async findMapsWithDetailsByGlobalIds(
 		randomIds: ActorRandomId[],
 		userIds: UserId[],
-		terminalIds: TerminalId[],
-		actorMap: Map<UserId, Map<TerminalId, IActor>>,
+		terminalIds: TmTerminalId[],
+		actorMap: Map<UserId, Map<TmTerminalId, IActor>>,
 		actorMapById: Map<ActorId, IActor>
 	): Promise<void> {
 		const actors = await this.findWithDetailsByGlobalIds(
@@ -90,7 +90,7 @@ export class ActorDao
 	async findWithDetailsByGlobalIds(
 		randomIds: ActorRandomId[],
 		userIds: UserId[],
-		terminalIds: TerminalId[]
+		terminalIds: TmTerminalId[]
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor

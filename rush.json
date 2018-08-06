@@ -92,8 +92,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/id-checkpoint",
-      "projectFolder": "schemas/id-checkpoint",
+      "packageName": "@airport/travel-document-checkpoint",
+      "projectFolder": "schemas/travel-document-checkpoint",
       "shouldPublish": true
     },
     {

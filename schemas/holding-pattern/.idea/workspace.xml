@@ -5,137 +5,71 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8eea2d2d-1845-4dd0-be94-e280d49c3831" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../baggage-screening.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../id-checkpoint/.idea/id-checkpoint.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../id-checkpoint/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../id-checkpoint/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../id-checkpoint/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../id-checkpoint/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../id-checkpoint/src/ddl/AbstractUser.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../id-checkpoint/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/SharingAdaptor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/SharingAdaptor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/ChangeListConfig.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/ChangeListConfig.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/DeltaStoreConfig.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/DeltaStoreConfig.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/EntityConfig.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/EntityConfig.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/LocalStoreConfig.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/LocalStoreConfig.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/OfflineDeltaStoreConfig.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/OfflineDeltaStoreConfig.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/PersistenceConfig.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/PersistenceConfig.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/storeInfo.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/storeInfo.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/Selector.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/Selector.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/sync/ArrayChangeRecordIterator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/sync/ArrayChangeRecordIterator.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ddl/infrastructure/Agt.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ddl/infrastructure/TerminalAgt.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../travel-document-checkpoint/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../travel-document-checkpoint/.idea/typescript-compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../travel-document-checkpoint/.idea/webResources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../travel-document-checkpoint/src/ddl/AbstractTerminal.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../travel-document-checkpoint/src/ddl/ddl.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../travel-document-checkpoint/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/CoreAgtTypes.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/CoreAgtTypes.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/CoreAgtTypes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/CoreAgtTypes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/PromiseHttp.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/PromiseHttp.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/GoogleApi.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/GoogleApi.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/GoogleSharedChangeList.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/GoogleSharedChangeList.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/GoogleSharingAdaptor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/GoogleSharingAdaptor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/drive/GoogleDrive.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/drive/GoogleDrive.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/drive/GoogleDriveAdaptor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/drive/GoogleDriveAdaptor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/drive/GoogleDriveModel.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/drive/GoogleDriveModel.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/DocumentHandle.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/DocumentHandle.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/GoogleRealtime.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/GoogleRealtime.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/GoogleRealtimeAdaptor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/GoogleRealtimeAdaptor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/sheets/GoogleSheets.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/sheets/GoogleSheets.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/inMemory/InMemoryChangeList.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/inMemory/InMemoryChangeList.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/inMemory/InMemoryChangeStore.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/inMemory/InMemoryChangeStore.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/inMemory/InMemorySharingAdaptor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/inMemory/InMemorySharingAdaptor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/stub/StubChangeList.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/stub/StubChangeList.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/stub/StubSharingAdaptor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/stub/StubSharingAdaptor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/SyncNodeManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/SyncNodeManager.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/connect/direct/DirectResonse.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/connect/direct/DirectResonse.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/connect/direct/DirectSharingNodeEndpoint.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/connect/direct/DirectSharingNodeEndpoint.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/connect/remote/HttpSharingNodeEndpoint.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/connect/remote/HttpSharingNodeEndpoint.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncLogMessageProcessor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncLogMessageProcessor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SynchronizationInManager.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/TwoStageSyncedInDataProcessor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInActorChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInActorChecker.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInChecker.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInConsistencyChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInConsistencyChecker.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInTerminalChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInTerminalChecker.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInUserChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInUserChecker.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/MissingRecordCreator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/MissingRecordCreator.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInSharingMessageCreator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInSharingMessageCreator.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SyncOutMessageSender.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SyncOutMessageSender.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SyncOutRepositoryTransactionBlockCreator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SyncOutRepositoryTransactionBlockCreator.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SyncOutSerializer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SyncOutSerializer.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SynchronizationOutCoordinator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SynchronizationOutCoordinator.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SynchronizationOutManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SynchronizationOutManager.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/converter/SyncOutDataSerializer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/converter/SyncOutDataSerializer.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/test/Injectables.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/test/Injectables.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/test/RealtimeApiTest.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/test/RealtimeApiTest.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/test/Test.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/test/Test.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/PromiseHttp.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/PromiseHttp.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/drive/GoogleDrive.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/drive/GoogleDrive.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/GoogleRealtime.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/GoogleRealtime.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/GoogleRealtimeAdaptor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/realtime/GoogleRealtimeAdaptor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/sheets/GoogleSheets.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/google/sheets/GoogleSheets.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/SyncNodeManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/SyncNodeManager.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncInUtils.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncLogMessageProcessor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/SyncLogMessageProcessor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInActorChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInActorChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInConsistencyChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInConsistencyChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInDataChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInDataChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInRepositoryChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInRepositoryChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInSchemaChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInTerminalChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInTerminalChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInUserChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/checker/SyncInUserChecker.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInRepositoryTransactionBlockCreator.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInSharingMessageCreator.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/in/creator/SyncInSharingMessageCreator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SyncOutRepositoryTransactionBlockCreator.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SyncOutRepositoryTransactionBlockCreator.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SynchronizationOutManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/libs/ground-transport/src/synchronization/out/SynchronizationOutManager.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../rush.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../rush.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../guideway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/dao/archive/DailyArchiveLogDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/dao/archive/DailyArchiveLogDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/dao/repository/RepositoryDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/dao/repository/RepositoryDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/dao/synchronization/AgtRepositoryTransactionBlockDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/dao/synchronization/AgtRepositoryTransactionBlockDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/dao/synchronization/AgtSharingMessageDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/dao/synchronization/AgtSharingMessageDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/dao/synchronization/SyncLogDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/dao/synchronization/SyncLogDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/dao/terminal/TerminalDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/dao/terminal/TerminalDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/dao/terminal/TerminalRepositoryDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/dao/terminal/TerminalRepositoryDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/archive/DailyArchiveLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/archive/DailyArchiveLog.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/archive/DailyTerminalSyncLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/archive/DailyTerminalSyncLog.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/archive/MonthlyArchiveLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/archive/MonthlyArchiveLog.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/archive/MonthlyTerminalSyncLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/archive/MonthlyTerminalSyncLog.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/repository/Archive.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/repository/Archive.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/repository/Repository.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/repository/Repository.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/repository/RepositoryArchive.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/repository/RepositoryArchive.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/server/Server.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/server/Server.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/server/ServerSyncLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/server/ServerSyncLog.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/synchronization/AgtRepositoryTransactionBlock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/synchronization/AgtRepositoryTransactionBlock.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/synchronization/AgtSharingMessage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/synchronization/AgtSharingMessage.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/synchronization/SyncLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/synchronization/SyncLog.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/terminal/Terminal.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/terminal/Terminal.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/terminal/Terminal.js" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/terminal/Terminal.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/terminal/Terminal.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/terminal/Terminal.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/terminal/TerminalRepository.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/terminal/TerminalRepository.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/tuning/TuningParameters.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/tuning/TuningParameters.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/user/User.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/user/User.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/user/UserRepository.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/user/UserRepository.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/user/security/SecurityAnswer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/user/security/SecurityAnswer.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/ddl/user/security/SecurityQuestion.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/ddl/user/security/SecurityQuestion.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/generated/baseDaos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/generated/baseDaos.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/generated/baseDmos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/generated/baseDmos.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../guideway/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../guideway/src/ddl/terminal/Terminal.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/src/ddl/terminal/Terminal.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dao/history/RecordHistoryNewValueDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/history/RecordHistoryNewValueDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dao/history/RecordHistoryOldValueDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/history/RecordHistoryOldValueDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dao/history/RepositoryTransactionHistoryDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/history/RepositoryTransactionHistoryDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/infrastructure/ActorDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/infrastructure/ActorDao.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/dao/infrastructure/ActorDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/infrastructure/ActorDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/infrastructure/TerminalDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/infrastructure/TerminalDao.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/dao/infrastructure/TerminalDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/infrastructure/TerminalDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dao/infrastructure/UserDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/infrastructure/UserDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dao/repository/RepositoryActorDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/repository/RepositoryActorDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/repository/RepositoryDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/repository/RepositoryDao.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/dao/repository/RepositoryDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/repository/RepositoryDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/history/OperationHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/history/OperationHistory.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/history/RecordHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/history/RecordHistory.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/history/RecordHistoryNewValue.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/history/RecordHistoryNewValue.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/history/RecordHistoryOldValue.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/history/RecordHistoryOldValue.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/history/RepoTransHistoryChangedRepositoryActor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/history/RepoTransHistoryChangedRepositoryActor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/history/RepositoryTransactionHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/history/RepositoryTransactionHistory.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/history/TransactionHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/history/TransactionHistory.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/infrastructure/Actor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/infrastructure/Actor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/infrastructure/ActorApplication.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/infrastructure/ActorApplication.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/infrastructure/Application.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/infrastructure/Application.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/infrastructure/Terminal.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/infrastructure/Terminal.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/infrastructure/Terminal.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/infrastructure/Terminal.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/ddl/infrastructure/Terminal.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/infrastructure/Terminal.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/infrastructure/User.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/infrastructure/User.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/repository/AbstractRepositoryEntity.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/repository/AbstractRepositoryEntity.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/repository/Repository.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/repository/Repository.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/repository/RepositoryActor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/repository/RepositoryActor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/repository/RepositoryApplication.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/repository/RepositoryApplication.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/repository/RepositorySchema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/repository/RepositorySchema.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dmo/history/OperationHistoryDmo.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dmo/history/OperationHistoryDmo.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dmo/history/RecordHistoryDmo.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dmo/history/RecordHistoryDmo.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dmo/history/RecordHistoryNewValueDmo.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dmo/history/RecordHistoryNewValueDmo.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dmo/history/RecordHistoryOldValueDmo.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dmo/history/RecordHistoryOldValueDmo.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dmo/history/RepositoryTransactionHistoryDmo.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dmo/history/RepositoryTransactionHistoryDmo.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dmo/history/TransactionHistoryDmo.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dmo/history/TransactionHistoryDmo.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/baseDaos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDaos.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/baseDmos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDmos.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../territory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../territory/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dao/infrastructure/ActorDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/infrastructure/ActorDao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dao/infrastructure/TerminalDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/infrastructure/TerminalDao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dao/repository/RepositoryDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/repository/RepositoryDao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ddl/infrastructure/Terminal.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/ddl/infrastructure/Terminal.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../id-checkpoint/.idea/id-checkpoint.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../id-checkpoint/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../id-checkpoint/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../id-checkpoint/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../id-checkpoint/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../id-checkpoint/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../id-checkpoint/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../id-checkpoint/src/ddl/AbstractUser.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../id-checkpoint/tsconfig.json" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -188,53 +122,51 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="-1755842819">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="3" />
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.open.time.8" value="1" />
+          <entry key="project.opened" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts">
+        <counts>
+          <entry key="TypeScriptServerServiceImpl" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="json" value="1" />
+          <entry key="ts" value="7" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="JSON" value="1" />
+          <entry key="TypeScript" value="7" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="json" value="25" />
+          <entry key="ts" value="548" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="JSON" value="25" />
+          <entry key="TypeScript" value="548" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
     <splitter split-orientation="horizontal" split-proportion="0.49578312">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/dao/history/RepositoryTransactionHistoryDao.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="475">
-                  <caret line="77" selection-start-line="77" selection-end-line="77" />
-                  <folding>
-                    <element signature="e#0#206#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ddl/history/RecordHistory.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="874">
-                  <caret line="66" column="25" selection-start-line="66" selection-start-column="25" selection-end-line="66" selection-end-column="25" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/generated/history/qrecordhistoryoldvalue.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="190">
-                  <caret line="41" column="17" selection-start-line="41" selection-start-column="17" selection-end-line="41" selection-end-column="17" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ddl/repository/AbstractRepositoryEntity.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="304">
-                  <caret line="32" selection-start-line="32" selection-end-line="32" />
-                  <folding>
-                    <element signature="e#0#107#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ddl/repository/RepositoryActor.ts">
               <provider selected="true" editor-type-id="text-editor">
@@ -246,9 +178,43 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ddl/infrastructure/Actor.ts">
-              <provider selected="true" editor-type-id="text-editor" />
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="286">
+                  <caret line="28" selection-start-line="28" selection-end-line="28" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/package.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="352">
+                  <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="35" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/ddl/infrastructure/Terminal.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="208">
+                  <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/ddl/infrastructure/Agt.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="330">
+                  <caret line="22" column="28" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="28" />
+                  <folding>
+                    <element signature="e#0#107#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
             </entry>
           </file>
         </leaf>
@@ -256,19 +222,10 @@
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/dao/repository/RepositoryDao.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="4066">
-                  <caret line="247" column="19" selection-start-line="247" selection-start-column="19" selection-end-line="247" selection-end-column="19" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ddl/infrastructure/User.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="19">
-                  <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+                <state relative-caret-position="682">
+                  <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
                   <folding>
                     <element signature="e#0#113#0" expanded="true" />
                   </folding>
@@ -276,40 +233,49 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/package.json">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="171">
-                  <caret line="9" column="56" selection-start-line="9" selection-start-column="56" selection-end-line="9" selection-end-column="56" />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ddl/infrastructure/Terminal.ts">
+            <entry file="file://$PROJECT_DIR$/src/ddl/infrastructure/TerminalAgt.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="152">
-                  <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ddl/history/RepoTransHistoryChangedRepositoryActor.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="152">
-                  <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ddl/history/RepositoryTransactionHistory.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="152">
-                  <caret line="28" column="60" selection-start-line="28" selection-start-column="56" selection-end-line="28" selection-end-column="60" />
+                <state relative-caret-position="406">
+                  <caret line="29" selection-start-line="29" selection-end-line="29" />
                   <folding>
-                    <element signature="e#0#181#0" expanded="true" />
+                    <element signature="e#0#95#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/dao/infrastructure/ActorDao.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="219">
+                  <caret line="92" column="19" selection-start-line="92" selection-start-column="19" selection-end-line="92" selection-end-column="19" />
+                  <folding>
+                    <element signature="e#0#95#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/dao/infrastructure/TerminalDao.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-817">
+                  <caret line="27" column="31" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
+                  <folding>
+                    <element signature="e#0#95#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/dao/repository/RepositoryDao.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="497">
+                  <caret line="55" column="44" selection-start-line="55" selection-start-column="44" selection-end-line="55" selection-end-column="44" />
+                  <folding>
+                    <element signature="e#0#94#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -389,8 +355,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/ddl/conflictDetection/ConflictResolution.ts" />
-        <option value="$PROJECT_DIR$/src/ddl/reconciliation/ConflictResolution.ts" />
         <option value="$PROJECT_DIR$/src/ddl/reconciliation/ConflictType.ts" />
         <option value="$PROJECT_DIR$/src/ddl/reconciliation/ValueConflictResolution.ts" />
         <option value="$PROJECT_DIR$/src/ddl/reconciliation/EntityConflictResolution.ts" />
@@ -431,15 +395,17 @@
         <option value="$PROJECT_DIR$/src/ddl/history/TransactionHistory.ts" />
         <option value="$PROJECT_DIR$/src/ddl/repository/Repository.ts" />
         <option value="$PROJECT_DIR$/src/dmo/history/TransactionHistoryDmo.ts" />
-        <option value="$PROJECT_DIR$/src/ddl/infrastructure/Terminal.ts" />
         <option value="$PROJECT_DIR$/src/ddl/infrastructure/Actor.ts" />
-        <option value="$PROJECT_DIR$/src/dao/infrastructure/ActorDao.ts" />
-        <option value="$PROJECT_DIR$/src/dao/infrastructure/TerminalDao.ts" />
         <option value="$PROJECT_DIR$/src/InjectionTokens.ts" />
         <option value="$PROJECT_DIR$/src/dao/repository/RepositoryActorDao.ts" />
-        <option value="$PROJECT_DIR$/src/dao/repository/RepositoryDao.ts" />
         <option value="$PROJECT_DIR$/src/ddl/history/RepositoryTransactionHistory.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/infrastructure/Agt.ts" />
         <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/src/ddl/infrastructure/Terminal.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/infrastructure/TerminalAgt.ts" />
+        <option value="$PROJECT_DIR$/src/dao/infrastructure/TerminalDao.ts" />
+        <option value="$PROJECT_DIR$/src/dao/repository/RepositoryDao.ts" />
+        <option value="$PROJECT_DIR$/src/dao/infrastructure/ActorDao.ts" />
       </list>
     </option>
   </component>
@@ -467,10 +433,10 @@
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="3840" />
-    <option name="y" value="-2" />
-    <option name="width" value="1920" />
-    <option name="height" value="1082" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -516,6 +482,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -559,27 +526,12 @@
               <item name="holding-pattern" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ddl" type="462c0819:PsiDirectoryNode" />
-              <item name="history" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="holding-pattern" type="b2602c69:ProjectViewProjectNode" />
-              <item name="holding-pattern" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ddl" type="462c0819:PsiDirectoryNode" />
               <item name="infrastructure" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="holding-pattern" type="b2602c69:ProjectViewProjectNode" />
-              <item name="holding-pattern" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ddl" type="462c0819:PsiDirectoryNode" />
-              <item name="repository" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -590,8 +542,9 @@
     <property name="node.js.path.for.package.prettier" value="project" />
     <property name="node.js.selected.package.prettier" value="" />
     <property name="nodejs_interpreter_path" value="node" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
-    <property name="ts.external.directory.path" value="/usr/lib/node_modules/typescript/lib" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2018.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="typescript.add.unambiguous.imports.on.the.fly" value="true" />
   </component>
   <component name="RecentsManager">
@@ -704,6 +657,9 @@
       <workItem from="1533305670901" duration="599000" />
       <workItem from="1533505410568" duration="546000" />
       <workItem from="1533505998227" duration="643000" />
+      <workItem from="1533517381102" duration="1598000" />
+      <workItem from="1533519010308" duration="839000" />
+      <workItem from="1533519931561" duration="314000" />
     </task>
     <task id="LOCAL-00001" summary="AIR schema changes">
       <created>1518967641273</created>
@@ -737,13 +693,12 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="255893000" />
+    <option name="totallyTimeSpent" value="258644000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="3840" y="-2" width="1920" height="1082" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16921455" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1691254" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -755,7 +710,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3922187" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.32037815" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.31983384" />
       <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" order="11" weight="0.32912722" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -796,21 +751,17 @@
     <MESSAGE value="AIR schema changes" />
     <option name="LAST_COMMIT_MESSAGE" value="AIR schema changes" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/ddl/infrastructure/TerminalAgt.ts</url>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/node_modules/@airport/air-control/lib/lingo/core/repository/DatabaseFacade.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="26" column="17" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/@airport/air-control/lib/lingo/AirportDatabase.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/repository/RepositorySchema.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
@@ -1000,13 +951,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/dao/infrastructure/TerminalDao.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1250">
-          <caret lean-forward="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/dao/repository/RepositoryActorDao.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="996">
@@ -1015,44 +959,45 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/generated/infrastructure/qdatabase.ts" />
-    <entry file="file://$PROJECT_DIR$/src/dao/infrastructure/ActorDao.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="579">
-          <caret line="118" column="16" selection-start-line="118" selection-start-column="16" selection-end-line="118" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/dao/history/RepositoryTransactionHistoryDao.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
+        <state relative-caret-position="550">
           <caret line="77" selection-start-line="77" selection-end-line="77" />
-          <folding>
-            <element signature="e#0#206#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/history/RecordHistory.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="874">
+        <state relative-caret-position="1012">
           <caret line="66" column="25" selection-start-line="66" selection-start-column="25" selection-end-line="66" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/generated/history/qrecordhistoryoldvalue.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
+        <state relative-caret-position="220">
           <caret line="41" column="17" selection-start-line="41" selection-start-column="17" selection-end-line="41" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/repository/AbstractRepositoryEntity.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
+        <state relative-caret-position="352">
           <caret line="32" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="e#0#107#0" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/history/RepoTransHistoryChangedRepositoryActor.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/history/RepositoryTransactionHistory.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="28" column="60" selection-start-line="28" selection-start-column="56" selection-end-line="28" selection-end-column="60" />
         </state>
       </provider>
     </entry>
@@ -1066,53 +1011,83 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/infrastructure/Actor.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dao/repository/RepositoryDao.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4066">
-          <caret line="247" column="19" selection-start-line="247" selection-start-column="19" selection-end-line="247" selection-end-column="19" />
+        <state relative-caret-position="286">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/infrastructure/Agt.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="28" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#107#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/infrastructure/Terminal.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ddl/history/RepoTransHistoryChangedRepositoryActor.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ddl/history/RepositoryTransactionHistory.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="28" column="60" selection-start-line="28" selection-start-column="56" selection-end-line="28" selection-end-column="60" />
-          <folding>
-            <element signature="e#0#181#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="208">
+          <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/infrastructure/User.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+        <state relative-caret-position="682">
+          <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
           <folding>
             <element signature="e#0#113#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
+    <entry file="file://$PROJECT_DIR$/src/ddl/infrastructure/TerminalAgt.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="9" column="56" selection-start-line="9" selection-start-column="56" selection-end-line="9" selection-end-column="56" />
+        <state relative-caret-position="406">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
+          <folding>
+            <element signature="e#0#95#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/infrastructure/TerminalDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-817">
+          <caret line="27" column="31" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#95#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/repository/RepositoryDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="497">
+          <caret line="55" column="44" selection-start-line="55" selection-start-column="44" selection-end-line="55" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#94#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/infrastructure/ActorDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="92" column="19" selection-start-line="92" selection-start-column="19" selection-end-line="92" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#95#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -1,11 +1,13 @@
 import {and}              from "@airport/air-control/lib/impl/core/operation/LogicalOperation";
 import {UtilsToken}       from "@airport/air-control/lib/InjectionTokens";
 import {IUtils}           from "@airport/air-control/lib/lingo/utils/Utils";
+import {
+	TerminalName,
+	TerminalSecondId
+}                         from '@airport/arrivals-n-departures'
 import {Inject}           from "typedi/decorators/Inject";
 import {Service}          from "typedi/decorators/Service";
 import {
-	TerminalName,
-	TerminalSecondId,
 	UserId
 }                         from "../../ddl/ddl";
 import {

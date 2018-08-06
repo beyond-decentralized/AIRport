@@ -8,13 +8,13 @@ import { GoogleRealtime } from './GoogleRealtime';
 export declare enum Operation {
     CHANGES_ADDED_BY_OTHERS = 0,
     CLEAUP_BY_OWNER = 1,
-    GET_NEXT_CHANGE = 2,
+    GET_NEXT_CHANGE = 2
 }
 export declare class GoogleRealtimeAdaptorException {
     message: string;
     operation: Operation;
     event: gapi.drive.realtime.BaseModelEvent;
-    exception: any;
+    exception?: any;
     constructor(message: string, operation: Operation, event: gapi.drive.realtime.BaseModelEvent, exception?: any);
 }
 export declare class GoogleChangeRecordIterator implements ChangeRecordIterator {
@@ -31,9 +31,9 @@ export declare class GoogleRealtimeAdaptor {
     constructor(googleRealtime: GoogleRealtime);
     startTest(): DocumentHandle;
     startNewShare(fileId: string): Promise<DocumentHandle>;
-    private createDocumentHandle(document);
-    private subscribeToChangesAddedByOthers(document);
-    private subscribeToCleanupByOwner(document, iAmTheOwner);
-    private subscribeToUnexpectedModifications(changeList, document);
+    private createDocumentHandle;
+    private subscribeToChangesAddedByOthers;
+    private subscribeToCleanupByOwner;
+    private subscribeToUnexpectedModifications;
     openShare(fileId: string): Promise<DocumentHandle>;
 }

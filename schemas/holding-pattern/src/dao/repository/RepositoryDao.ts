@@ -2,35 +2,37 @@ import {
 	and,
 	MappedEntityArray,
 	Y
-}                           from "@airport/air-control";
-import {UtilsToken}         from "@airport/air-control/lib/InjectionTokens";
-import {IQNumberField}      from "@airport/air-control/lib/lingo/core/field/NumberField";
-import {RawFieldQuery}      from "@airport/air-control/lib/lingo/query/facade/FieldQuery";
-import {IUtils}             from "@airport/air-control/lib/lingo/utils/Utils";
-import {Service}            from "typedi";
-import {Inject}             from "typedi/decorators/Inject";
+}                      from "@airport/air-control";
+import {UtilsToken}    from "@airport/air-control/lib/InjectionTokens";
+import {IQNumberField} from "@airport/air-control/lib/lingo/core/field/NumberField";
+import {RawFieldQuery} from "@airport/air-control/lib/lingo/query/facade/FieldQuery";
+import {IUtils}        from "@airport/air-control/lib/lingo/utils/Utils";
 import {
 	TerminalName,
+	TerminalSecondId
+}                      from '@airport/arrivals-n-departures'
+import {Service}       from "typedi";
+import {Inject}        from "typedi/decorators/Inject";
+import {
 	RepositoryId,
 	UserUniqueId
-}                           from "../../ddl/ddl";
+}                      from "../../ddl/ddl";
 import {
 	BaseRepositoryDao,
 	IRepository,
 	Q,
 	QTerminal,
 	QRepository,
-}                           from "../../generated/generated";
+}                      from "../../generated/generated";
 import {
 	ActorRandomId,
-	TerminalSecondId,
 	QActor,
 	QRepositoryActor,
 	QUser,
 	RepositoryOrderedId,
 	RepositoryRandomId,
 	RepositoryTransactionHistoryId
-}                           from "../../index";
+}                      from "../../index";
 import {RepositoryDaoToken} from "../../InjectionTokens";
 
 export interface IRepositoryDao {

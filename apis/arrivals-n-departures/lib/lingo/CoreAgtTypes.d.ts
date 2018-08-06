@@ -1,5 +1,7 @@
-export declare type TerminalPassword = string;
 export declare type TerminalId = number;
+export declare type TerminalName = string;
+export declare type TerminalPassword = string;
+export declare type TerminalSecondId = number;
 export declare type AgtSharingMessageId = number;
 export declare type AgtRepositoryId = number;
 export declare type RepositoryTransactionBlockContents = string;

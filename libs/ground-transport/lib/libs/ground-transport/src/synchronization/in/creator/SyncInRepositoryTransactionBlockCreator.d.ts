@@ -13,8 +13,8 @@ export declare class SyncInRepositoryTransactionBlockCreator implements ISyncInR
     private sharingMessageRepoTransBlockDao;
     constructor(repositoryTransactionBlockDao: IRepositoryTransactionBlockDao, missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao, sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao);
     createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas: IDataToTM[], dataMessagesWithIncompatibleData: IDataToTM[], dataMessagesToBeUpgraded: IDataToTM[], dataMessagesWithCompatibleSchemasAndData: IDataToTM[], dataMessagesWithInvalidData: IDataToTM[]): Promise<IDataToTM[]>;
-    private createRepositoryTransactionBlocks(dataMessages, syncOutcomeType, recordContents?);
+    private createRepositoryTransactionBlocks;
     createMissingRecordRepoTransBlocks(missingRecordDataToTMs: IMissingRecordDataToTM[]): Promise<void>;
     createSharingMessageRepoTransBlocks(allDataToTM: IDataToTM[]): Promise<void>;
-    private recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById);
+    private recordSharingMessageToHistoryRecords;
 }

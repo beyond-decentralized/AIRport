@@ -22,24 +22,24 @@ __decorate([
     __metadata("design:type", Number)
 ], Terminal.prototype, "id", void 0);
 __decorate([
-    air_control_1.DbString(),
-    __metadata("design:type", String)
-], Terminal.prototype, "name", void 0);
-__decorate([
-    air_control_1.Column({ name: "SECOND_ID" }),
+    air_control_1.Column({ name: 'SECOND_ID' }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Terminal.prototype, "secondId", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "OWNER_USER_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: 'OWNER_USER_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", Object)
 ], Terminal.prototype, "owner", void 0);
 __decorate([
-    air_control_1.Column({ name: "IS_LOCAL" }),
+    air_control_1.Column({ name: 'IS_LOCAL' }),
     air_control_1.DbBoolean(),
     __metadata("design:type", Boolean)
 ], Terminal.prototype, "isLocal", void 0);
+__decorate([
+    air_control_1.OneToMany({ mappedBy: 'terminal' }),
+    __metadata("design:type", Array)
+], Terminal.prototype, "terminalAgts", void 0);
 Terminal = __decorate([
     air_control_1.Entity()
 ], Terminal);

@@ -25,20 +25,29 @@ __decorate([
 __decorate([
     air_control_1.DbString(),
     __metadata("design:type", String)
+], Terminal.prototype, "name", void 0);
+__decorate([
+    air_control_1.DbNumber(),
+    air_control_1.Column({ name: 'SECOND_ID' }),
+    __metadata("design:type", Number)
+], Terminal.prototype, "secondId", void 0);
+__decorate([
+    air_control_1.DbString(),
+    __metadata("design:type", String)
 ], Terminal.prototype, "password", void 0);
 __decorate([
-    air_control_1.Column({ name: "LAST_RECENT_CONNECTION_DATETIME" }),
+    air_control_1.Column({ name: 'LAST_RECENT_CONNECTION_DATETIME' }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Terminal.prototype, "lastPollConnectionDatetime", void 0);
 __decorate([
-    air_control_1.Column({ name: "LAST_ARCHIVE_CONNECTION_DATETIME" }),
+    air_control_1.Column({ name: 'LAST_ARCHIVE_CONNECTION_DATETIME' }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Terminal.prototype, "lastSseConnectionDatetime", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "USER_ID", referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'USER_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", User_1.User)
 ], Terminal.prototype, "user", void 0);
 __decorate([
@@ -51,7 +60,7 @@ __decorate([
 ], Terminal.prototype, "sharingMessages", void 0);
 Terminal = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: "AGT_TERMINALS" })
+    air_control_1.Table({ name: 'AGT_TERMINALS' })
 ], Terminal);
 exports.Terminal = Terminal;
 //# sourceMappingURL=Terminal.js.map

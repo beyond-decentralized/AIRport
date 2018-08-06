@@ -2,19 +2,22 @@ import {
 	Column,
 	DbBoolean,
 	DbNumber,
-	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
 	JoinColumn,
-	ManyToOne
-}                   from "@airport/air-control";
-import {IUser}      from "../../generated/infrastructure/quser";
+	ManyToOne,
+	OneToMany
+}                    from '@airport/air-control'
+import {IUser}       from '../../generated/infrastructure/quser'
+import {TerminalAgt} from './TerminalAgt'
+import {
+	TerminalName,
+	TerminalSecondId
+}                 from '@airport/arrivals-n-departures'
 
-export type TerminalId = number;
+export type TmTerminalId = number;
 export type TerminalIsLocal = boolean;
-export type TerminalName = string;
-export type TerminalSecondId = number;
 
 @Entity()
 export class Terminal {
@@ -22,20 +25,22 @@ export class Terminal {
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	id: TerminalId;
+	id: TmTerminalId
 
-	@DbString()
-	name: TerminalName;
+	name: TerminalName
 
-	@Column({name: "SECOND_ID"})
+	@Column({name: 'SECOND_ID'})
 	@DbNumber()
-	secondId: TerminalSecondId;
+	secondId: TerminalSecondId
 
 	@ManyToOne()
-	@JoinColumn({name: "OWNER_USER_ID", referencedColumnName: "ID"})
-	owner: IUser;
+	@JoinColumn({name: 'OWNER_USER_ID', referencedColumnName: 'ID'})
+	owner: IUser
 
-	@Column({name: "IS_LOCAL"})
+	@Column({name: 'IS_LOCAL'})
 	@DbBoolean()
-	isLocal: TerminalIsLocal = false;
+	isLocal: TerminalIsLocal = false
+
+	@OneToMany({mappedBy: 'terminal'})
+	terminalAgts: TerminalAgt[]
 }

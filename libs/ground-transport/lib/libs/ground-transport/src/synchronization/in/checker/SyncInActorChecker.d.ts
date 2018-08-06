@@ -18,8 +18,8 @@ export declare class SyncInActorChecker implements ISyncInActorChecker {
     private utils;
     constructor(actorDao: IActorDao, terminalDao: ITerminalDao, utils: IUtils);
     ensureActorsAndGetAsMaps(dataMessages: IDataToTM[], actorMap: Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>, actorMapById: Map<ActorId, IActor>, userCheckResults: UserCheckResults, terminalCheckResults: TerminalCheckResults, dataMessagesWithInvalidData: IDataToTM[]): Promise<ActorCheckResults>;
-    private areActorIdsConsistentInMessage(message);
-    private updateActorIdsInMessages(actorMap, dataMessages);
-    private getNewActors(dataMessages, actorMap);
-    private addActorToMap(actor, actorMap);
+    private areActorIdsConsistentInMessage;
+    private updateActorIdsInMessages;
+    private getNewActors;
+    private addActorToMap;
 }

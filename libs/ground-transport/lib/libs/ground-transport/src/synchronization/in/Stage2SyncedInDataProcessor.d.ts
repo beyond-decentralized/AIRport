@@ -40,7 +40,7 @@ export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataP
      * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap
      * @returns {RecordKeyMap}
      */
-    private getRecordKeyMap(recordUpdateMap, finalTableUpdateMap);
+    private getRecordKeyMap;
     /**
      * Run all updates for a particular table.  One update per updated column combination is run.
      *
@@ -49,5 +49,5 @@ export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataP
      * @param {ColumnUpdateKeyMap} updateKeyMap
      * @returns {Promise<void>}
      */
-    private runUpdatesForTable(schemaIndex, schemaVersionId, tableIndex, updateKeyMap);
+    private runUpdatesForTable;
 }
