@@ -8,13 +8,14 @@ import {
 	JoinColumn,
 	ManyToOne,
 	OneToMany
-}                    from '@airport/air-control'
-import {IUser}       from '../../generated/infrastructure/quser'
-import {TerminalAgt} from './TerminalAgt'
+}                     from '@airport/air-control'
 import {
 	TerminalName,
 	TerminalSecondId
-}                 from '@airport/arrivals-n-departures'
+}                     from '@airport/arrivals-n-departures'
+import {IUser}        from '../../generated/infrastructure/quser'
+import {TerminalAgt}  from './TerminalAgt'
+import {UserTerminal} from './UserTerminal'
 
 export type TmTerminalId = number;
 export type TerminalIsLocal = boolean;
@@ -43,4 +44,7 @@ export class Terminal {
 
 	@OneToMany({mappedBy: 'terminal'})
 	terminalAgts: TerminalAgt[]
+
+	@OneToMany({mappedBy: 'terminal'})
+	userTerminal: UserTerminal[]
 }

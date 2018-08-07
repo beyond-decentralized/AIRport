@@ -4,14 +4,13 @@ import {
 	Id,
 	JoinColumn,
 	ManyToOne,
+	OneToMany,
 	Table
-} from '@airport/air-control'
-import {
-	TerminalId,
-	TerminalPassword
-}                 from '@airport/arrivals-n-departures'
-import {Agt}      from './Agt'
-import {Terminal} from './Terminal'
+}                         from '@airport/air-control'
+import {TerminalPassword} from '@airport/arrivals-n-departures'
+import {Agt}              from './Agt'
+import {Terminal}         from './Terminal'
+import {UserTerminalAgt}  from './UserTerminalAgt'
 
 @Entity()
 @Table({name: 'TERMINAL_AGTS'})
@@ -30,4 +29,6 @@ export class TerminalAgt {
 	@DbString()
 	password: TerminalPassword
 
+	@OneToMany({mappedBy: 'terminalAgt'})
+	userTerminalAgts: UserTerminalAgt[]
 }

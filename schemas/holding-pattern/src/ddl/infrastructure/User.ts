@@ -4,9 +4,13 @@ import {
 	DbString,
 	Entity,
 	GeneratedValue,
-	Id
-}              from "@airport/air-control";
-import {IUser} from "../../generated/infrastructure/quser";
+	Id,
+	OneToMany
+}                         from '@airport/air-control'
+import {TerminalPassword} from '@airport/arrivals-n-departures'
+import {IUser}            from "../../generated/infrastructure/quser";
+import {UserTerminal}     from './UserTerminal'
+import {UserTerminalAgt}  from './UserTerminalAgt'
 
 
 export type UserId = number;
@@ -43,5 +47,11 @@ export class User
 
 	@DbString()
 	phone: UserPhone;
+
+	@OneToMany({mappedBy: 'user'})
+	userTerminal: UserTerminal[]
+
+	@OneToMany({mappedBy: 'user'})
+	userTerminalAgts: UserTerminalAgt[]
 
 }

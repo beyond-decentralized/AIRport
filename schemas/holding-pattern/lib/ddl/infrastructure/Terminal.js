@@ -40,6 +40,10 @@ __decorate([
     air_control_1.OneToMany({ mappedBy: 'terminal' }),
     __metadata("design:type", Array)
 ], Terminal.prototype, "terminalAgts", void 0);
+__decorate([
+    air_control_1.OneToMany({ mappedBy: 'terminal' }),
+    __metadata("design:type", Array)
+], Terminal.prototype, "userTerminal", void 0);
 Terminal = __decorate([
     air_control_1.Entity()
 ], Terminal);

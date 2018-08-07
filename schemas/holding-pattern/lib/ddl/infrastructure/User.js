@@ -42,6 +42,14 @@ __decorate([
     air_control_1.DbString(),
     __metadata("design:type", String)
 ], User.prototype, "phone", void 0);
+__decorate([
+    air_control_1.OneToMany({ mappedBy: 'user' }),
+    __metadata("design:type", Array)
+], User.prototype, "userTerminal", void 0);
+__decorate([
+    air_control_1.OneToMany({ mappedBy: 'user' }),
+    __metadata("design:type", Array)
+], User.prototype, "userTerminalAgts", void 0);
 User = __decorate([
     air_control_1.Entity()
 ], User);

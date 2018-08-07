@@ -1,4 +1,6 @@
 import { IUser } from "../../generated/infrastructure/quser";
+import { UserTerminal } from './UserTerminal';
+import { UserTerminalAgt } from './UserTerminalAgt';
 export declare type UserId = number;
 export declare type UserUniqueId = string;
 export declare type UserFirstName = string;
@@ -12,4 +14,6 @@ export declare class User implements IUser {
     lastName: UserLastName;
     middleName: UserMiddleName;
     phone: UserPhone;
+    userTerminal: UserTerminal[];
+    userTerminalAgts: UserTerminalAgt[];
 }

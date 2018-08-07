@@ -1,6 +1,7 @@
+import { TerminalName, TerminalSecondId } from '@airport/arrivals-n-departures';
 import { IUser } from '../../generated/infrastructure/quser';
 import { TerminalAgt } from './TerminalAgt';
-import { TerminalName, TerminalSecondId } from '@airport/arrivals-n-departures';
+import { UserTerminal } from './UserTerminal';
 export declare type TmTerminalId = number;
 export declare type TerminalIsLocal = boolean;
 export declare class Terminal {
@@ -10,4 +11,5 @@ export declare class Terminal {
     owner: IUser;
     isLocal: TerminalIsLocal;
     terminalAgts: TerminalAgt[];
+    userTerminal: UserTerminal[];
 }
