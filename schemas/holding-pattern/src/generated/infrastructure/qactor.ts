@@ -29,8 +29,6 @@ import {
 	QUser,
 	QUserQId,
 	QUserQRelation,
-} from './quser';
-import {
 	ITerminal,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -39,7 +37,7 @@ import {
 	QTerminal,
 	QTerminalQId,
 	QTerminalQRelation,
-} from './qterminal';
+} from '@airport/travel-document-checkpoint';
 import {
 	IActorApplication,
 	ActorApplicationEId,

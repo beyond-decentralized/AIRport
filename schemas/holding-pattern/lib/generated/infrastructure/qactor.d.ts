@@ -1,6 +1,5 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, QEntity, QRelation } from '@airport/air-control';
-import { IUser, UserEOptionalId, UserESelect, QUserQRelation } from './quser';
-import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from './qterminal';
+import { IUser, UserEOptionalId, UserESelect, QUserQRelation, ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
 import { IActorApplication, ActorApplicationESelect, QActorApplication } from './qactorapplication';
 import { IRepositoryActor, RepositoryActorESelect, QRepositoryActor } from '../repository/qrepositoryactor';
 export interface IActor {

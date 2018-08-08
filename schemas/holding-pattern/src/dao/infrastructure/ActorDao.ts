@@ -3,27 +3,29 @@ import {
 	IUtils,
 	UtilsToken,
 	Y
-}                          from "@airport/air-control";
-import {JSONBaseOperation} from "@airport/ground-control";
+}                          from '@airport/air-control'
+import {JSONBaseOperation} from '@airport/ground-control'
+import {
+	QUser,
+	TmTerminalId,
+	UserId
+} from '@airport/travel-document-checkpoint'
 import {
 	Inject,
 	Service
-}                          from "typedi";
+}                          from 'typedi'
 import {
 	ActorId,
 	ActorRandomId,
-	TmTerminalId,
-	UserId
-}                          from "../../ddl/ddl";
+}                          from '../../ddl/ddl'
 import {
 	BaseActorDao,
 	IActor,
 	IBaseActorDao,
 	Q,
 	QActor,
-	QUser
-}                          from "../../generated/generated";
-import {ActorDaoToken}     from "../../InjectionTokens";
+}                          from '../../generated/generated'
+import {ActorDaoToken}     from '../../InjectionTokens'
 
 export interface IActorDao extends IBaseActorDao {
 
@@ -56,7 +58,7 @@ export class ActorDao
 		@Inject(UtilsToken)
 			utils: IUtils
 	) {
-		super(utils);
+		super(utils)
 	}
 
 	async findWithDetailsAndGlobalIdsByIds(
@@ -64,7 +66,7 @@ export class ActorDao
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor,
-		) => a.id.in(actorIds));
+		) => a.id.in(actorIds))
 	}
 
 	async findMapsWithDetailsByGlobalIds(
@@ -78,12 +80,12 @@ export class ActorDao
 			randomIds,
 			userIds,
 			terminalIds
-		);
+		)
 
 		for (const actor of actors) {
 			this.utils.ensureChildJsMap(actorMap, actor.user.id)
-				.set(actor.terminal.id, actor);
-			actorMapById.set(actor.id, actor);
+				.set(actor.terminal.id, actor)
+			actorMapById.set(actor.id, actor)
 		}
 	}
 
@@ -98,7 +100,7 @@ export class ActorDao
 			a.randomId.in(randomIds),
 			a.terminal.id.in(terminalIds),
 			a.user.id.in(userIds)
-		));
+		))
 	}
 
 	private async findWithDetailsAndGlobalIdsByWhereClause(
@@ -106,9 +108,9 @@ export class ActorDao
 			a: QActor
 		) => JSONBaseOperation
 	): Promise<IActor[]> {
-		let a: QActor;
-		let u: QUser;
-		const id = Y;
+		let a: QActor
+		let u: QUser
+		const id = Y
 		return await this.db.find.tree({
 			select: {
 				id,
@@ -124,6 +126,6 @@ export class ActorDao
 				a = Q.Actor
 			],
 			where: getWhereClause(a)
-		});
+		})
 	}
 }

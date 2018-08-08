@@ -145,16 +145,6 @@ import {
 	QRepositoryTransactionHistory
 } from './history/qrepositorytransactionhistory';
 import {
-	ITerminal,
-	TerminalESelect,
-	TerminalECreateColumns,
-	TerminalECreateProperties,
-	TerminalEUpdateColumns,
-	TerminalEUpdateProperties,
-	TerminalEId,
-	QTerminal
-} from './infrastructure/qterminal';
-import {
 	ITransactionHistory,
 	TransactionHistoryESelect,
 	TransactionHistoryECreateColumns,
@@ -164,16 +154,6 @@ import {
 	TransactionHistoryEId,
 	QTransactionHistory
 } from './history/qtransactionhistory';
-import {
-	IUser,
-	UserESelect,
-	UserECreateColumns,
-	UserECreateProperties,
-	UserEUpdateColumns,
-	UserEUpdateProperties,
-	UserEId,
-	QUser
-} from './infrastructure/quser';
 
 
 export interface IBaseAbstractRepositoryEntityDao
@@ -386,21 +366,6 @@ export class BaseRepositoryTransactionHistoryDao
 }
 
 
-export interface IBaseTerminalDao
-  extends IDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, QTerminal> {
-}
-
-export class BaseTerminalDao
-  extends Dao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, QTerminal>
-	implements IBaseTerminalDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['Terminal'], Q, utils);
-	}
-}
-
-
 export interface IBaseTransactionHistoryDao
   extends IDao<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, QTransactionHistory> {
 }
@@ -412,20 +377,5 @@ export class BaseTransactionHistoryDao
 		utils: IUtils
 	) {
 		super(Q.db.currentVersion.entityMapByName['TransactionHistory'], Q, utils);
-	}
-}
-
-
-export interface IBaseUserDao
-  extends IDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, QUser> {
-}
-
-export class BaseUserDao
-  extends Dao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, QUser>
-	implements IBaseUserDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['User'], Q, utils);
 	}
 }

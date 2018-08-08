@@ -12,8 +12,6 @@ export * from './history/qtransactionhistory';
 export * from './infrastructure/qactor';
 export * from './infrastructure/qactorapplication';
 export * from './infrastructure/qapplication';
-export * from './infrastructure/qterminal';
-export * from './infrastructure/quser';
 export * from './repository/qabstractrepositoryentity';
 export * from './repository/qrepository';
 export * from './repository/qrepositoryactor';

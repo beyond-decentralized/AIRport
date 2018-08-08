@@ -2,38 +2,38 @@ import {
 	and,
 	MappedEntityArray,
 	Y
-}                      from "@airport/air-control";
-import {UtilsToken}    from "@airport/air-control/lib/InjectionTokens";
-import {IQNumberField} from "@airport/air-control/lib/lingo/core/field/NumberField";
-import {RawFieldQuery} from "@airport/air-control/lib/lingo/query/facade/FieldQuery";
-import {IUtils}        from "@airport/air-control/lib/lingo/utils/Utils";
+}                           from '@airport/air-control'
+import {UtilsToken}         from '@airport/air-control/lib/InjectionTokens'
+import {IQNumberField}      from '@airport/air-control/lib/lingo/core/field/NumberField'
+import {RawFieldQuery}      from '@airport/air-control/lib/lingo/query/facade/FieldQuery'
+import {IUtils}             from '@airport/air-control/lib/lingo/utils/Utils'
 import {
 	TerminalName,
 	TerminalSecondId
-}                      from '@airport/arrivals-n-departures'
-import {Service}       from "typedi";
-import {Inject}        from "typedi/decorators/Inject";
+}                           from '@airport/arrivals-n-departures'
 import {
-	RepositoryId,
+	QTerminal,
+	QUser,
 	UserUniqueId
-}                      from "../../ddl/ddl";
+}                           from '@airport/travel-document-checkpoint'
+import {Service}            from 'typedi'
+import {Inject}             from 'typedi/decorators/Inject'
+import {RepositoryId,}      from '../../ddl/ddl'
 import {
 	BaseRepositoryDao,
 	IRepository,
 	Q,
-	QTerminal,
 	QRepository,
-}                      from "../../generated/generated";
+}                           from '../../generated/generated'
 import {
 	ActorRandomId,
 	QActor,
 	QRepositoryActor,
-	QUser,
 	RepositoryOrderedId,
 	RepositoryRandomId,
 	RepositoryTransactionHistoryId
-}                      from "../../index";
-import {RepositoryDaoToken} from "../../InjectionTokens";
+}                           from '../../index'
+import {RepositoryDaoToken} from '../../InjectionTokens'
 
 export interface IRepositoryDao {
 
@@ -77,18 +77,18 @@ export class RepositoryDao
 		@Inject(UtilsToken)
 			utils: IUtils
 	) {
-		super(utils);
+		super(utils)
 	}
 
 	async findReposWithTransactionLogDetailsByIds(
 		repositoryIds: RepositoryId[]
 	): Promise<MappedEntityArray<IRepository>> {
-		let r: QRepository;
-		let ra: QRepositoryActor;
-		let a: QActor;
-		let u: QUser;
-		let d: QTerminal;
-		let id = Y;
+		let r: QRepository
+		let ra: QRepositoryActor
+		let a: QActor
+		let u: QUser
+		let d: QTerminal
+		let id = Y
 		return await this.db.find.mapped.tree({
 			select: {
 				orderedId: Y,
@@ -115,14 +115,14 @@ export class RepositoryDao
 			// d.name.equals(dbName),
 			// u.uniqueId.equals(userEmail)
 			// )
-		});
+		})
 	}
 
 	async findReposWithDetailsAndSyncNodeIds(
 		repositoryIds: RepositoryId[]
 	): Promise<IRepository[]> {
-		let r: QRepository;
-		const id = Y;
+		let r: QRepository
+		const id = Y
 		return await this.db.find.tree({
 			select: {
 				id,
@@ -136,7 +136,7 @@ export class RepositoryDao
 				r = Q.Repository
 			],
 			where: r.id.in(repositoryIds)
-		});
+		})
 	}
 
 	async findReposWithDetailsByIds(
@@ -148,12 +148,12 @@ export class RepositoryDao
 		dbName: TerminalName,
 		userEmail: UserUniqueId,
 	): Promise<MappedEntityArray<IRepository>> {
-		let r: QRepository;
-		let ra: QRepositoryActor;
-		let a: QActor;
-		let u: QUser;
-		let d: QTerminal;
-		let id = Y;
+		let r: QRepository
+		let ra: QRepositoryActor
+		let a: QActor
+		let u: QUser
+		let d: QTerminal
+		let id = Y
 		return await this.db.find.mapped.tree({
 				select: {
 					...this.db.dmo.getAllFieldsSelect(),
@@ -181,18 +181,18 @@ export class RepositoryDao
 					u.uniqueId.equals(userEmail)
 				)
 			}
-		);
+		)
 	}
 
 	async findReposWithGlobalIds(
 		repositoryIds: RepositoryId[]
 	): Promise<Map<RepositoryId, IRepository>> {
 		const repositoryMapById: Map<RepositoryId, IRepository>
-			= new Map();
+			= new Map()
 
-		let r: QRepository;
-		let a: QActor;
-		let u: QUser;
+		let r: QRepository
+		let a: QActor
+		let u: QUser
 		const repositories = await this.db.find.tree({
 			select: {
 				id: Y,
@@ -212,13 +212,13 @@ export class RepositoryDao
 			],
 			where:
 				r.id.in(repositoryIds)
-		});
+		})
 
 		for (const repository of repositories) {
-			repositoryMapById.set(repository.id, repository);
+			repositoryMapById.set(repository.id, repository)
 		}
 
-		return repositoryMapById;
+		return repositoryMapById
 	}
 
 	async findLocalRepoIdsByGlobalIds(
@@ -230,13 +230,13 @@ export class RepositoryDao
 		ownerTerminalSecondIds: TerminalSecondId[],
 		ownerTerminalOwnerUserUniqueIds: UserUniqueId[]
 	): Promise<RepositoryIdMap> {
-		const repositoryIdMap: RepositoryIdMap = new Map();
+		const repositoryIdMap: RepositoryIdMap = new Map()
 
-		let r: QRepository;
-		let oa: QActor;
-		let od: QTerminal;
-		let odu: QUser;
-		let ou: QUser;
+		let r: QRepository
+		let oa: QActor
+		let od: QTerminal
+		let odu: QUser
+		let ou: QUser
 		const resultRows = await
 			this.db.common.find.sheet({
 				from: [
@@ -265,7 +265,7 @@ export class RepositoryDao
 					od.secondId.in(ownerTerminalSecondIds),
 					odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds)
 				)
-			});
+			})
 
 		for (const resultRow of resultRows) {
 			this.utils.ensureChildJsMap(
@@ -278,11 +278,11 @@ export class RepositoryDao
 							resultRow[2]),
 						resultRow[3]),
 					resultRow[4]),
-				resultRow[5]).set(resultRow[6], resultRow[7]);
+				resultRow[5]).set(resultRow[6], resultRow[7])
 		}
 
 
-		return repositoryIdMap;
+		return repositoryIdMap
 	}
 
 }

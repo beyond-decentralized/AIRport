@@ -1,6 +1,6 @@
-import { IUtils } from "@airport/air-control";
-import { ActorId, IRepositoryActor, RepositoryId } from "../..";
-import { BaseRepositoryActorDao, IBaseRepositoryActorDao } from "../../generated/generated";
+import { IUtils } from '@airport/air-control';
+import { ActorId, RepositoryId } from '../../ddl/ddl';
+import { BaseRepositoryActorDao, IBaseRepositoryActorDao, IRepositoryActor } from '../../generated/generated';
 export interface IRepositoryActorDao extends IBaseRepositoryActorDao {
     findAllForLocalActorsWhereRepositoryIdIn(repositoryIds: RepositoryId[]): Promise<IRepositoryActor[]>;
     findActorIdMapByRepositoryIdForLocalActorsWhereRepositoryIdIn(repositoryIds: RepositoryId[]): Promise<Map<RepositoryId, Set<ActorId>>>;

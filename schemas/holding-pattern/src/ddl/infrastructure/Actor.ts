@@ -7,13 +7,15 @@ import {
 	JoinColumn,
 	ManyToOne,
 	OneToMany
-}                           from "@airport/air-control";
-import {CascadeType}        from "@airport/ground-control";
-import {IActor,}            from "../../generated/infrastructure/qactor";
-import {IActorApplication,} from "../../generated/infrastructure/qactorapplication";
-import {IUser}              from "../../generated/infrastructure/quser";
-import {IRepositoryActor,}  from "../../generated/repository/qrepositoryactor";
-import {Terminal}           from "./Terminal";
+}                           from '@airport/air-control'
+import {CascadeType}        from '@airport/ground-control'
+import {
+	Terminal,
+	User
+}                           from '@airport/travel-document-checkpoint'
+import {IActor,}            from '../../generated/infrastructure/qactor'
+import {IActorApplication,} from '../../generated/infrastructure/qactorapplication'
+import {IRepositoryActor,}  from '../../generated/repository/qrepositoryactor'
 
 export type ActorId = number;
 export type ActorRandomId = number;
@@ -25,23 +27,23 @@ export class Actor
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	id: ActorId;
+	id: ActorId
 
 	@ManyToOne()
-	@JoinColumn({name: "USER_ID", referencedColumnName: "ID"})
-	user: IUser;
+	@JoinColumn({name: 'USER_ID', referencedColumnName: 'ID'})
+	user: User
 
 	@ManyToOne()
-	@JoinColumn({name: "TERMINAL_ID", referencedColumnName: "ID"})
-	terminal: Terminal;
+	@JoinColumn({name: 'TERMINAL_ID', referencedColumnName: 'ID'})
+	terminal: Terminal
 
-	@Column({name: "RANDOM_ID"})
+	@Column({name: 'RANDOM_ID'})
 	@DbNumber()
-	randomId: ActorRandomId;
+	randomId: ActorRandomId
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'actor'})
-	actorApplications: IActorApplication[] = [];
+	actorApplications: IActorApplication[] = []
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: "ACTOR_ID"})
-	repositoryActor: IRepositoryActor[];
+	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'ACTOR_ID'})
+	repositoryActor: IRepositoryActor[]
 }

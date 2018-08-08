@@ -14,9 +14,7 @@ const RepositoryActor_1 = require("../ddl/repository/RepositoryActor");
 const RepositoryApplication_1 = require("../ddl/repository/RepositoryApplication");
 const RepositorySchema_1 = require("../ddl/repository/RepositorySchema");
 const RepositoryTransactionHistory_1 = require("../ddl/history/RepositoryTransactionHistory");
-const Terminal_1 = require("../ddl/infrastructure/Terminal");
 const TransactionHistory_1 = require("../ddl/history/TransactionHistory");
-const User_1 = require("../ddl/infrastructure/User");
 const __constructors__ = {
     AbstractRepositoryEntity: AbstractRepositoryEntity_1.AbstractRepositoryEntity,
     Actor: Actor_1.Actor,
@@ -32,9 +30,7 @@ const __constructors__ = {
     RepositoryApplication: RepositoryApplication_1.RepositoryApplication,
     RepositorySchema: RepositorySchema_1.RepositorySchema,
     RepositoryTransactionHistory: RepositoryTransactionHistory_1.RepositoryTransactionHistory,
-    Terminal: Terminal_1.Terminal,
-    TransactionHistory: TransactionHistory_1.TransactionHistory,
-    User: User_1.User
+    TransactionHistory: TransactionHistory_1.TransactionHistory
 };
 exports.Q_SCHEMA = {
     __constructors__

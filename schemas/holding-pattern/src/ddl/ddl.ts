@@ -7,8 +7,6 @@ export * from './history/RepositoryTransactionType';
 export * from './history/TransactionHistory';
 export * from './infrastructure/Actor';
 export * from './infrastructure/Application';
-export * from './infrastructure/Terminal';
-export * from './infrastructure/User';
 export * from './repository/AbstractRepositoryEntity';
 export * from './repository/Repository';
 export * from './repository/RepositoryActor';

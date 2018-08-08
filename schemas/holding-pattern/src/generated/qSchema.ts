@@ -28,12 +28,8 @@ import { RepositorySchema } from '../ddl/repository/RepositorySchema';
 import { QRepositorySchema } from './repository/qrepositoryschema';
 import { RepositoryTransactionHistory } from '../ddl/history/RepositoryTransactionHistory';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
-import { Terminal } from '../ddl/infrastructure/Terminal';
-import { QTerminal } from './infrastructure/qterminal';
 import { TransactionHistory } from '../ddl/history/TransactionHistory';
 import { QTransactionHistory } from './history/qtransactionhistory';
-import { User } from '../ddl/infrastructure/User';
-import { QUser } from './infrastructure/quser';
 
 import {
 	IBaseAbstractRepositoryEntityDmo,
@@ -50,9 +46,7 @@ import {
 	IBaseRepositoryApplicationDmo,
 	IBaseRepositorySchemaDmo,
 	IBaseRepositoryTransactionHistoryDmo,
-	IBaseTerminalDmo,
-	IBaseTransactionHistoryDmo,
-	IBaseUserDmo
+	IBaseTransactionHistoryDmo
 } from './baseDmos';
 
 import {
@@ -70,9 +64,7 @@ import {
 	IBaseRepositoryApplicationDao,
 	IBaseRepositorySchemaDao,
 	IBaseRepositoryTransactionHistoryDao,
-	IBaseTerminalDao,
-	IBaseTransactionHistoryDao,
-	IBaseUserDao
+	IBaseTransactionHistoryDao
 } from './baseDaos';
 
 export interface LocalQSchema extends AirportQSchema {
@@ -94,9 +86,7 @@ export interface LocalQSchema extends AirportQSchema {
 		RepositoryApplication: IBaseRepositoryApplicationDmo;
 		RepositorySchema: IBaseRepositorySchemaDmo;
 		RepositoryTransactionHistory: IBaseRepositoryTransactionHistoryDmo;
-		Terminal: IBaseTerminalDmo;
 		TransactionHistory: IBaseTransactionHistoryDmo;
-		User: IBaseUserDmo;
 	}
 
 	dao: {
@@ -114,9 +104,7 @@ export interface LocalQSchema extends AirportQSchema {
 		RepositoryApplication: IBaseRepositoryApplicationDao;
 		RepositorySchema: IBaseRepositorySchemaDao;
 		RepositoryTransactionHistory: IBaseRepositoryTransactionHistoryDao;
-		Terminal: IBaseTerminalDao;
 		TransactionHistory: IBaseTransactionHistoryDao;
-		User: IBaseUserDao;
 	}
 	
 	AbstractRepositoryEntity: QAbstractRepositoryEntity;
@@ -133,9 +121,7 @@ export interface LocalQSchema extends AirportQSchema {
 	RepositoryApplication: QRepositoryApplication;
 	RepositorySchema: QRepositorySchema;
 	RepositoryTransactionHistory: QRepositoryTransactionHistory;
-	Terminal: QTerminal;
 	TransactionHistory: QTransactionHistory;
-	User: QUser;
 
 }
 
@@ -154,9 +140,7 @@ const __constructors__ = {
 	RepositoryApplication: RepositoryApplication,
 	RepositorySchema: RepositorySchema,
 	RepositoryTransactionHistory: RepositoryTransactionHistory,
-	Terminal: Terminal,
-	TransactionHistory: TransactionHistory,
-	User: User
+	TransactionHistory: TransactionHistory
 };
 
 export const Q_SCHEMA: LocalQSchema = <any>{

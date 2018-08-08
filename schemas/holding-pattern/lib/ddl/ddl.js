@@ -12,8 +12,6 @@ __export(require("./history/RepositoryTransactionType"));
 __export(require("./history/TransactionHistory"));
 __export(require("./infrastructure/Actor"));
 __export(require("./infrastructure/Application"));
-__export(require("./infrastructure/Terminal"));
-__export(require("./infrastructure/User"));
 __export(require("./repository/AbstractRepositoryEntity"));
 __export(require("./repository/Repository"));
 __export(require("./repository/RepositoryActor"));

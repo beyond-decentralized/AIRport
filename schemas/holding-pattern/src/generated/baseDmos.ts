@@ -142,16 +142,6 @@ import {
 	QRepositoryTransactionHistory
 } from './history/qrepositorytransactionhistory';
 import {
-	ITerminal,
-	TerminalESelect,
-	TerminalECreateColumns,
-	TerminalECreateProperties,
-	TerminalEUpdateColumns,
-	TerminalEUpdateProperties,
-	TerminalEId,
-	QTerminal
-} from './infrastructure/qterminal';
-import {
 	ITransactionHistory,
 	TransactionHistoryESelect,
 	TransactionHistoryECreateColumns,
@@ -161,16 +151,6 @@ import {
 	TransactionHistoryEId,
 	QTransactionHistory
 } from './history/qtransactionhistory';
-import {
-	IUser,
-	UserESelect,
-	UserECreateColumns,
-	UserECreateProperties,
-	UserEUpdateColumns,
-	UserEUpdateProperties,
-	UserEId,
-	QUser
-} from './infrastructure/quser';
 
 
 export interface IBaseAbstractRepositoryEntityDmo
@@ -355,19 +335,6 @@ export class BaseRepositoryTransactionHistoryDmo
 }
 
 
-export interface IBaseTerminalDmo
-  extends IDmo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, QTerminal> {
-}
-
-export class BaseTerminalDmo
-  extends Dmo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, QTerminal>
-	implements IBaseTerminalDmo {
-	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Terminal']);
-	}
-}
-
-
 export interface IBaseTransactionHistoryDmo
   extends IDmo<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateProperties, TransactionHistoryEId, QTransactionHistory> {
 }
@@ -377,18 +344,5 @@ export class BaseTransactionHistoryDmo
 	implements IBaseTransactionHistoryDmo {
 	constructor() {
 		super(Q.db.currentVersion.entityMapByName['TransactionHistory']);
-	}
-}
-
-
-export interface IBaseUserDmo
-  extends IDmo<IUser, UserESelect, UserECreateProperties, UserEUpdateProperties, UserEId, QUser> {
-}
-
-export class BaseUserDmo
-  extends Dmo<IUser, UserESelect, UserECreateProperties, UserEUpdateProperties, UserEId, QUser>
-	implements IBaseUserDmo {
-	constructor() {
-		super(Q.db.currentVersion.entityMapByName['User']);
 	}
 }

@@ -382,7 +382,7 @@ export declare const SCHEMA: {
                 "index": number;
                 "manyRelationColumnRefs": {
                     "manyRelationIndex": number;
-                    "oneSchemaIndex": any;
+                    "oneSchemaIndex": number;
                     "oneTableIndex": number;
                     "oneColumnIndex": number;
                 }[];
@@ -425,6 +425,7 @@ export declare const SCHEMA: {
                     "index": number;
                 };
                 "relationTableIndex": number;
+                "relationTableSchemaIndex": number;
                 "oneToManyElems"?: undefined;
             } | {
                 "index": number;
@@ -438,6 +439,7 @@ export declare const SCHEMA: {
                     "index": number;
                 };
                 "relationTableIndex": number;
+                "relationTableSchemaIndex"?: undefined;
             })[];
             "tableConfig"?: undefined;
         })[];

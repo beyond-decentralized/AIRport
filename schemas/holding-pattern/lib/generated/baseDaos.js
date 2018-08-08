@@ -86,22 +86,10 @@ class BaseRepositoryTransactionHistoryDao extends check_in_1.Dao {
     }
 }
 exports.BaseRepositoryTransactionHistoryDao = BaseRepositoryTransactionHistoryDao;
-class BaseTerminalDao extends check_in_1.Dao {
-    constructor(utils) {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Terminal'], qSchema_1.Q, utils);
-    }
-}
-exports.BaseTerminalDao = BaseTerminalDao;
 class BaseTransactionHistoryDao extends check_in_1.Dao {
     constructor(utils) {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['TransactionHistory'], qSchema_1.Q, utils);
     }
 }
 exports.BaseTransactionHistoryDao = BaseTransactionHistoryDao;
-class BaseUserDao extends check_in_1.Dao {
-    constructor(utils) {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['User'], qSchema_1.Q, utils);
-    }
-}
-exports.BaseUserDao = BaseUserDao;
 //# sourceMappingURL=baseDaos.js.map

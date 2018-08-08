@@ -1,6 +1,7 @@
-import { IUtils } from "@airport/air-control";
-import { ActorId, ActorRandomId, TmTerminalId, UserId } from "../../ddl/ddl";
-import { BaseActorDao, IActor, IBaseActorDao } from "../../generated/generated";
+import { IUtils } from '@airport/air-control';
+import { TmTerminalId, UserId } from '@airport/travel-document-checkpoint';
+import { ActorId, ActorRandomId } from '../../ddl/ddl';
+import { BaseActorDao, IActor, IBaseActorDao } from '../../generated/generated';
 export interface IActorDao extends IBaseActorDao {
     findWithDetailsAndGlobalIdsByIds(actorIds: ActorId[]): Promise<IActor[]>;
     findWithDetailsByGlobalIds(randomIds: ActorRandomId[], userIds: UserId[], terminalIds: TmTerminalId[]): Promise<IActor[]>;

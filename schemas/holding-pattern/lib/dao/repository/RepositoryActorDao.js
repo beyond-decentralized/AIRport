@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const typedi_1 = require("typedi");
 const Inject_1 = require("typedi/decorators/Inject");
-const __1 = require("../..");
 const generated_1 = require("../../generated/generated");
 const InjectionTokens_1 = require("../../InjectionTokens");
 let RepositoryActorDao = class RepositoryActorDao extends generated_1.BaseRepositoryActorDao {
@@ -35,7 +34,7 @@ let RepositoryActorDao = class RepositoryActorDao extends generated_1.BaseReposi
                 }
             },
             from: [
-                ra = __1.Q.RepositoryActor,
+                ra = generated_1.Q.RepositoryActor,
                 a = ra.actor.innerJoin(),
                 d = a.terminal.innerJoin()
             ],

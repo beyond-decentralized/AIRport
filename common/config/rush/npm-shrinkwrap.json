@@ -6,7 +6,7 @@
   "dependencies": {
     "@rush-temp/air-control": {
       "version": "file:projects/air-control.tgz",
-      "integrity": "sha512-uNcuRxCREr1ck4HaT8TOJKh/SyVcSy0VqXzCrGjKAWC0nnHPkm1RTpn2dvkR+teF5NDbvkNkY6zDvQib5x0sHA==",
+      "integrity": "sha512-W3cDO0zaUVtArnqLRA4TT7wB7/nfVSIPvx8wIHb7j9vr8sRGcrRDbKP+SAwp6KOPAeymae5Hlvch7Pr/p+p6TA==",
       "requires": {
         "rxjs": "^6.2.2",
         "typedi": "^0.8.0"
@@ -14,14 +14,14 @@
     },
     "@rush-temp/airport-code": {
       "version": "file:projects/airport-code.tgz",
-      "integrity": "sha512-eVHRixQaTmXYFQyI/e5g4XKILz3HKBXNBn4UwM7iO0jZa3EzQi6nYOcN1CVUGTqORM1jPl29BQOQzwxR3/+ozw==",
+      "integrity": "sha512-eUVpUiD2EEH8Pre1hgtVgXiVU2X1+Z3Htk76Uv+hPygCvl9u+h9IfiIoI33b479zrw7T3HxinEYcr3m2bDy1lQ==",
       "requires": {
         "typedi": "^0.8.0"
       }
     },
     "@rush-temp/approach-lighting-system": {
       "version": "file:projects/approach-lighting-system.tgz",
-      "integrity": "sha512-DUOAkncwsLy2O39IIYOdpCOvUFw2Y3PpW4b1jXySWzZxBX+MziyaV1iElgbhF9kHjgSYgCCb2vp8ZFyZy+/xgg==",
+      "integrity": "sha512-k5VMVnCekVxJU7V9NpmAkoIPnTSM7OrdLjGzhRIovC88ujlZcRdsm8xjytfWJWuJeLTvXa2g9oEo1wztiVkFPQ==",
       "requires": {
         "rxjs": "^6.2.2",
         "typedi": "^0.8.0"
@@ -29,14 +29,14 @@
     },
     "@rush-temp/arrivals-n-departures": {
       "version": "file:projects/arrivals-n-departures.tgz",
-      "integrity": "sha512-cyGnTKMwiW6OxoA4G55mH9QUzlit1TJKSSiXUB5GqSCw3YOV9ORTs9IFnokKoiRB6MeR02jagaU3mVVNZCaydw==",
+      "integrity": "sha512-C+JQwuoZeyB9PkMVJw164osn/bstI4AP3aUL4y3CXYb2YHaWGsC3/RwABrJ9w9ylA6rbMYa2nmrVEhssRDd1BQ==",
       "requires": {
         "typedi": "^0.8.0"
       }
     },
     "@rush-temp/automated-guideway-transit": {
       "version": "file:projects/automated-guideway-transit.tgz",
-      "integrity": "sha512-peGhwFPwfhdxkN8NwHkL6aZdQ52SGLnV1Tr4phA5MWuOGLAgwq+GJx8X4+k2OOzndP6TarwNpG/TcfOqRxexeg==",
+      "integrity": "sha512-a8xDQ4hxAJ/bWSN1BQ7zsE+FD8jY8j8NNA5haMvY7M4691HjG4JmcVZS1nSBAlgTlByqHoDXpEpm7IHxCcAgRw==",
       "requires": {
         "@types/node": "^8.0.53",
         "rxjs": "^6.2.2",
@@ -45,7 +45,7 @@
     },
     "@rush-temp/check-in": {
       "version": "file:projects/check-in.tgz",
-      "integrity": "sha512-vh8vaC65X3uCEcf0+djJs3bTo+TAMaLuGLwtvJWH8VeZecQVJu+eqtgvnRf2kEi3fWGTjKx50dhETNIck2gQ6g==",
+      "integrity": "sha512-s14ZxO6fooGCbohH5B9XqDXEnSCfu1b0WmGiO0KZLUlPtyBlOWDfTsA+J8JlzlBe9MtDWjiPEbviiwqacD5YXw==",
       "requires": {
         "rxjs": "^6.2.2",
         "typedi": "^0.8.0"
@@ -53,14 +53,14 @@
     },
     "@rush-temp/flight-log-archive": {
       "version": "file:projects/flight-log-archive.tgz",
-      "integrity": "sha512-5z5PZyQRD4VxQvE+PYiE9d+ygwqrze4Op5BfqNd5zT52nIAetwH1iBDjratpPOY6cycnO+BxY9eN/AXwdGFKgA==",
+      "integrity": "sha512-AbTyFj93RjXj/Ow/XGTXPDL65bV7zNsUlnzViYRhLDQCMyJ18SoBKc03R7vZf1w+7BfqeHwVhEYFtRfx+szWhw==",
       "requires": {
         "typedi": "^0.8.0"
       }
     },
     "@rush-temp/ground-control": {
       "version": "file:projects/ground-control.tgz",
-      "integrity": "sha512-h/LQBTkgtGJtVhbVlbaO9fEbgiUAYOHASl97DzHNui4ZBNVRyh4pj/o36Y7PHBuhJ7kDySma0+OfHPlu2OQLWA==",
+      "integrity": "sha512-o63jEWAOAb34lqMCqNj/8tOAcarpu+i+WSfG8Sb2R+e4HITU3YkAokkNXkwm3jh0C+mL0jram4HpXwZmNVaL9Q==",
       "requires": {
         "rxjs": "^6.2.2",
         "typedi": "^0.8.0"
@@ -68,7 +68,7 @@
     },
     "@rush-temp/ground-transport": {
       "version": "file:projects/ground-transport.tgz",
-      "integrity": "sha512-FXHW8D77TjCuyIHais43tGYCUM7H4GQ2CVYfX+8/zPSpvxrJHMqDfNKya8kFgE5iXTqLt84Db0XK1NR2snlRIQ==",
+      "integrity": "sha512-k5PorbL/asdpoXVf/XPRuzxbtVOjP7WtvG/GgJDRa00qvKxvt7ZnX4g4n6A9wBRMdtbMAj1qd5hXDvtFaHjEcg==",
       "requires": {
         "@types/gapi": "^0.0.35",
         "@types/google-drive-realtime-api": "^0.0.33",
@@ -79,54 +79,54 @@
     },
     "@rush-temp/guideway": {
       "version": "file:projects/guideway.tgz",
-      "integrity": "sha512-TsCA5Ea9s6c1LECSfjXII62XP1FYPPPoQEwYATamJRwY+QELLCR6aoxeLIrUeCSnsrTVjKXChlPT+u2ScPOiSQ==",
+      "integrity": "sha512-bPGa0JSggbUYINfFTaRo4Xu6R0mzy8vellITmIs+QfVbn93443lVUBixb0HZ/pYX/W1SrkdauXHZynO8GUFLpg==",
       "requires": {
         "typedi": "^0.8.0"
       }
     },
     "@rush-temp/holding-pattern": {
       "version": "file:projects/holding-pattern.tgz",
-      "integrity": "sha512-Zga1qIeFlINLiqDYxfbwbwF+fxikqwMEk8FSeVNjwX4VoTYtJQ95XSWpcDPlzuVdFG1sDrvT8Aw7rxrThRePow==",
+      "integrity": "sha512-XDcODaXkU/6vDGlYWs3jgC/MrNWpoOpTyh2Kwv7sscfnpOfteFlb1HviKIJovcIX7OUm2rAUYTUxcmzZ9bVzBA==",
       "requires": {
         "typedi": "^0.8.0"
       }
     },
     "@rush-temp/moving-walkway": {
       "version": "file:projects/moving-walkway.tgz",
-      "integrity": "sha512-Y2mWTuuRpCloJ8daZyf4TvFzNHqiYLwDkz7thGzAeeMiZ48sKF+uY6p3xrtFOf9zQ/V7NIuCrKToCDRwKFYmuw==",
+      "integrity": "sha512-EwQXtrdY5N3b3k1Sm0wHAXuKmp4KpTywPuqeapgqpEg1nDeOGCcMBcvYAOzzY7WKB1mhXa93z0woQnjMnKNL6Q==",
       "requires": {
         "typedi": "^0.8.0"
       }
     },
     "@rush-temp/point-of-destination": {
       "version": "file:projects/point-of-destination.tgz",
-      "integrity": "sha512-OfJgN/1ZPBWwh8GhthwZuGsRwPoMplomVCo+JC71prmCGyytOR84JNG/ejStUz+x/lC8R5fkRVThKOF32c31Eg=="
+      "integrity": "sha512-LxjWYSAHRke8FSQpA1Z76rsdwxVplN4lYX/1g1/FASQbjTs8PivSgnFgpPwJA+DroZgPPljqMszX7ogjDmQFXw=="
     },
     "@rush-temp/runway": {
       "version": "file:projects/runway.tgz",
-      "integrity": "sha512-sgiGltAmdtWxX8m1SgU6U+frfuY2h7i4VWwIIVcMOMagyLKhxpNfQ15BXiXHCGmgsHzEsV4lKzbl61eta4MJeg==",
+      "integrity": "sha512-WbWGAW1fV/5FSCXCJHR3yrrUIg/L2ICP6eBcqdnTCruuEHg99jodSi3AgSkooX1ouQGh/4p6Gv0tYPliUQLk/Q==",
       "requires": {
         "@types/node": "^6.0.85",
         "typescript": "^3.0.0-rc"
       },
       "dependencies": {
         "@types/node": {
-          "version": "6.0.115",
-          "resolved": "http://localhost:4873/@types%2fnode/-/node-6.0.115.tgz",
-          "integrity": "sha512-PWA07jqflLli+PAk7VaJn0MVdTw96egk5B1FxwocV/tcc3RamNGbza1ZgS0OGUsTuAYCFCboL+IlG2bPazV2Nw=="
+          "version": "6.0.116",
+          "resolved": "http://localhost:4873/@types%2fnode/-/node-6.0.116.tgz",
+          "integrity": "sha512-vToa8YEeulfyYg1gSOeHjvvIRqrokng62VMSj2hoZrwZNcYrp2h3AWo6KeBVuymIklQUaY5zgVJvVsC4KiiLkQ=="
         }
       }
     },
     "@rush-temp/runway-edge-lighting": {
       "version": "file:projects/runway-edge-lighting.tgz",
-      "integrity": "sha512-xQbiuHMdDcEJ/3uDCaxVWwaLX0Wb2SwbmsTuvUfb9+ebLqTL83eZ0ZGJcTdRUSvpKpUZriCMsBKMAju1LPavfQ==",
+      "integrity": "sha512-oo3pv78YvFZZgtOSshvswwDUnqBRFfEVKndwfCXCN7HF8js11AkaCx1KivTP+CCtUF/W9S2SUFoxKkv8NOQK0A==",
       "requires": {
         "typedi": "^0.8.0"
       }
     },
     "@rush-temp/tarmaq": {
       "version": "file:projects/tarmaq.tgz",
-      "integrity": "sha512-SrlfluWGYUIXjaN4LVKebmLRETDjxYAyaXWFOqzmv41kWkM5mrvuUnVPqgQXM6i1Fidr7iei5vs3n6I0c/nQuw==",
+      "integrity": "sha512-Uw/nzudenYE+bJLVvOGhqmOAg9NLAI9vjPBK7AFSCdioxdqrwr6/5esKC6pisCRccz+5RoMiuAirbtagb9/QIQ==",
       "requires": {
         "rxjs": "^6.2.2",
         "typedi": "^0.8.0"
@@ -134,7 +134,7 @@
     },
     "@rush-temp/terminal": {
       "version": "file:projects/terminal.tgz",
-      "integrity": "sha512-f7JtZC9COeqQ6QMq6kXqCwkU4KVfjivpxIv1GLsbaWhPb8G3S9SjavkZTFWglJyXQHBxkTnxVy0MIuqqNpAHPw==",
+      "integrity": "sha512-EfHJVNV2YdMazQ5jngiR2KIH48xDAAbAKaEbpT7rknBGRfxh4iFHoOQBRuaosVhH0mAh+WC3MdYsjKxxzaHBnw==",
       "requires": {
         "rxjs": "^6.2.2",
         "typedi": "^0.8.0",
@@ -143,7 +143,7 @@
     },
     "@rush-temp/terminal-map": {
       "version": "file:projects/terminal-map.tgz",
-      "integrity": "sha512-CBb/mnGEBwC12x/S2NseFtX9hWzYlkR95ZoXBECvnTHp3X9NGFlaYekE3TJm2VjSW3w/tofNc1WYsyu9u0wrFw==",
+      "integrity": "sha512-MGvQu+wfCouGqesa2b7MZrBSfCpfbz8eKeVl4P6Y+MOTZQ78nvfBBFLd97Ol+5fLCqXmQRAHhlG7fOjKnaI5eA==",
       "requires": {
         "rxjs": "^6.2.2",
         "typedi": "^0.8.0"
@@ -151,14 +151,14 @@
     },
     "@rush-temp/territory": {
       "version": "file:projects/territory.tgz",
-      "integrity": "sha512-0vlZbal/B6oO8VHoCyl5cAZEnV0piq5o5w8DUhZ5bZ7v9U/20HZGzV02igrMAUOS5euJ7D+M2rr8wn+jiylOSA==",
+      "integrity": "sha512-gL1RVMMZot0LjvOZw7oGesC3gzzeKpFaxPjvM5ZyhalSRvUAdBkOTH89dS9R0uB6F428/DLhyZcS2f+A1aycMA==",
       "requires": {
         "typedi": "^0.8.0"
       }
     },
     "@rush-temp/tower": {
       "version": "file:projects/tower.tgz",
-      "integrity": "sha512-KU1BGUAliqzSDhtMPqpf1FcJipXUxr1ES6D5i+pdOcNI9Wl5IYrycEX+EiiXKbuAYhQLqU8rnO2bOgvp4qWwqw==",
+      "integrity": "sha512-Q6WIYztvfp5OqICtb4yDiba5aCgDhWM+oa9AUUGZba2UPE5YQvQIJDPkTqth06b6X0xr8irP/wFU5UJwVRSqew==",
       "requires": {
         "rxjs": "^6.2.2",
         "typedi": "^0.8.0"
@@ -166,14 +166,14 @@
     },
     "@rush-temp/traffic-pattern": {
       "version": "file:projects/traffic-pattern.tgz",
-      "integrity": "sha512-GBQ4dTbStoUL4RxP/4hlgMN8/6nVSkha7gjWLs5Xl7ooHbGF0yxQfqe+8ksfBiRZWsLWqmQ3lunstx7HnID1TQ==",
+      "integrity": "sha512-gQD+XcA8yUDKnWEMejckwPyKWcbklRXbAh6tF81Qep8jc9z5zumsJQx8qb3VVL5U6qJoO2xezjnpEj0M7dIgZQ==",
       "requires": {
         "typedi": "^0.8.0"
       }
     },
     "@rush-temp/travel-document-checkpoint": {
       "version": "file:projects/travel-document-checkpoint.tgz",
-      "integrity": "sha512-ISpQFfsluD9wUEp2FbIhsGRn5J8ize2RVxRs7BntRqQfjHqbJ9upBhktVbgWxjArdZVZWP5SGIibyeOMvvwPMg==",
+      "integrity": "sha512-bbAv3zy2MOO+0iK5UNbdpxS+zCmvFeDgEZpuNgvctpxfar7hAipMosQJD5CzGUtoocm32pvX4eQG6GcUe19V3A==",
       "requires": {
         "typedi": "^0.8.0"
       }
@@ -189,9 +189,9 @@
       "integrity": "sha1-GV61bxhGPoQtOvw49GobEDfO77A="
     },
     "@types/node": {
-      "version": "8.10.23",
-      "resolved": "http://localhost:4873/@types%2fnode/-/node-8.10.23.tgz",
-      "integrity": "sha512-aEp5ZTLr4mYhR9S85cJ+sEYkcsgFY10N1Si5m49iTAVzanZXOwp/pgw6ibFLKXxpflqm71aSWZCRtnTXXO56gA=="
+      "version": "8.10.24",
+      "resolved": "http://localhost:4873/@types%2fnode/-/node-8.10.24.tgz",
+      "integrity": "sha512-5YaBKa6oFuWy7ptIFMATyftIcpZTZtvgrzPThEbs+kl4Uu41oUxiRunG0k32QZjD6MXMELls//ry/epNxc11aQ=="
     },
     "rxjs": {
       "version": "6.2.2",

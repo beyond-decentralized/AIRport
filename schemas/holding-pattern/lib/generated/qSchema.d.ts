@@ -14,11 +14,9 @@ import { QRepositoryActor } from './repository/qrepositoryactor';
 import { QRepositoryApplication } from './repository/qrepositoryapplication';
 import { QRepositorySchema } from './repository/qrepositoryschema';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
-import { QTerminal } from './infrastructure/qterminal';
 import { QTransactionHistory } from './history/qtransactionhistory';
-import { QUser } from './infrastructure/quser';
-import { IBaseAbstractRepositoryEntityDmo, IBaseActorDmo, IBaseActorApplicationDmo, IBaseApplicationDmo, IBaseOperationHistoryDmo, IBaseRecordHistoryDmo, IBaseRecordHistoryNewValueDmo, IBaseRecordHistoryOldValueDmo, IBaseRepoTransHistoryChangedRepositoryActorDmo, IBaseRepositoryDmo, IBaseRepositoryActorDmo, IBaseRepositoryApplicationDmo, IBaseRepositorySchemaDmo, IBaseRepositoryTransactionHistoryDmo, IBaseTerminalDmo, IBaseTransactionHistoryDmo, IBaseUserDmo } from './baseDmos';
-import { IBaseAbstractRepositoryEntityDao, IBaseActorDao, IBaseActorApplicationDao, IBaseApplicationDao, IBaseOperationHistoryDao, IBaseRecordHistoryDao, IBaseRecordHistoryNewValueDao, IBaseRecordHistoryOldValueDao, IBaseRepoTransHistoryChangedRepositoryActorDao, IBaseRepositoryDao, IBaseRepositoryActorDao, IBaseRepositoryApplicationDao, IBaseRepositorySchemaDao, IBaseRepositoryTransactionHistoryDao, IBaseTerminalDao, IBaseTransactionHistoryDao, IBaseUserDao } from './baseDaos';
+import { IBaseAbstractRepositoryEntityDmo, IBaseActorDmo, IBaseActorApplicationDmo, IBaseApplicationDmo, IBaseOperationHistoryDmo, IBaseRecordHistoryDmo, IBaseRecordHistoryNewValueDmo, IBaseRecordHistoryOldValueDmo, IBaseRepoTransHistoryChangedRepositoryActorDmo, IBaseRepositoryDmo, IBaseRepositoryActorDmo, IBaseRepositoryApplicationDmo, IBaseRepositorySchemaDmo, IBaseRepositoryTransactionHistoryDmo, IBaseTransactionHistoryDmo } from './baseDmos';
+import { IBaseAbstractRepositoryEntityDao, IBaseActorDao, IBaseActorApplicationDao, IBaseApplicationDao, IBaseOperationHistoryDao, IBaseRecordHistoryDao, IBaseRecordHistoryNewValueDao, IBaseRecordHistoryOldValueDao, IBaseRepoTransHistoryChangedRepositoryActorDao, IBaseRepositoryDao, IBaseRepositoryActorDao, IBaseRepositoryApplicationDao, IBaseRepositorySchemaDao, IBaseRepositoryTransactionHistoryDao, IBaseTransactionHistoryDao } from './baseDaos';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
     dmo: {
@@ -36,9 +34,7 @@ export interface LocalQSchema extends AirportQSchema {
         RepositoryApplication: IBaseRepositoryApplicationDmo;
         RepositorySchema: IBaseRepositorySchemaDmo;
         RepositoryTransactionHistory: IBaseRepositoryTransactionHistoryDmo;
-        Terminal: IBaseTerminalDmo;
         TransactionHistory: IBaseTransactionHistoryDmo;
-        User: IBaseUserDmo;
     };
     dao: {
         AbstractRepositoryEntity: IBaseAbstractRepositoryEntityDao;
@@ -55,9 +51,7 @@ export interface LocalQSchema extends AirportQSchema {
         RepositoryApplication: IBaseRepositoryApplicationDao;
         RepositorySchema: IBaseRepositorySchemaDao;
         RepositoryTransactionHistory: IBaseRepositoryTransactionHistoryDao;
-        Terminal: IBaseTerminalDao;
         TransactionHistory: IBaseTransactionHistoryDao;
-        User: IBaseUserDao;
     };
     AbstractRepositoryEntity: QAbstractRepositoryEntity;
     Actor: QActor;
@@ -73,9 +67,7 @@ export interface LocalQSchema extends AirportQSchema {
     RepositoryApplication: QRepositoryApplication;
     RepositorySchema: QRepositorySchema;
     RepositoryTransactionHistory: QRepositoryTransactionHistory;
-    Terminal: QTerminal;
     TransactionHistory: QTransactionHistory;
-    User: QUser;
 }
 export declare const Q_SCHEMA: LocalQSchema;
 export declare const Q: LocalQSchema;
