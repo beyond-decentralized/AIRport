@@ -4,6 +4,10 @@ import {
 	JsonSchemaEntity,
 	SQLDataType
 }                       from '@airport/ground-control'
+import {
+	DataModel,
+	nSQL
+} from 'nano-sql'
 import {ISchemaBuilder} from '../ISchemaBuilder'
 
 export class IndexedDbSchemaBuilder
@@ -29,7 +33,9 @@ nSQL('users') //  "users" is our table name.
 		jsonTable: JsonSchemaEntity
 	): Promise<void> {
 
-		const columnDefinitions = jsonTable.columns.map((
+		const
+
+		const columnDefinitions: DataModel[] = jsonTable.columns.map((
 			column
 		) => ({
 			key: column.name,
@@ -41,12 +47,21 @@ nSQL('users') //  "users" is our table name.
 	}
 
 	getProperties(
+		jsonTable: JsonSchemaEntity,
 		jsonColumn: JsonSchemaColumn
 	): string[] {
-		const properties = [];
-		if(jsonColumn.)
-		if(jsonColumn.isGenerated) {
+		const properties = []
+		if (jsonColumn.isGenerated) {
 			properties.push('ai')
+		}
+
+		for(const index of jsonTable.tableConfig.indexes) {
+			for(const column of index.columnList) {
+				if(column === jsonColumn.name)
+			}
+		}
+		for(const propertyRef of jsonColumn.propertyRefs) {
+
 		}
 	}
 
@@ -55,15 +70,15 @@ nSQL('users') //  "users" is our table name.
 	): string {
 		switch (column.type) {
 			case SQLDataType.ANY:
-				return 'string'
+				return 'any'
 			case SQLDataType.BOOLEAN:
-				return 'int'
+				return 'bool'
 			case SQLDataType.DATE:
-				return 'int'
+				return 'number'
 			case SQLDataType.JSON:
 				return 'string'
 			case SQLDataType.NUMBER:
-				return 'int'
+				return 'number'
 			case SQLDataType.STRING:
 				return 'string'
 		}

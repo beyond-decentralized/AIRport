@@ -1,0 +1,1 @@
+{"version":3,"file":"SqlSchemaBuilder.js","sourceRoot":"","sources":["../../../src/builder/sql/SqlSchemaBuilder.ts"],"names":[],"mappings":";;;;;;;;;;;AACA,mCAGqC;AACrC,2DAGoD;AAKpD,IAAa,gBAAgB,GAA7B,MAAa,gBAAgB;IAG5B;IAEA,CAAC;IAED,KAAK,CAAC,KAAK,CACV,UAAsB;IAGvB,CAAC;CAED,CAAA;AAbY,gBAAgB;IAD5B,gBAAO,CAAC,oCAAkB,CAAC;;GACf,gBAAgB,CAa5B;AAbY,4CAAgB"}
