@@ -22,7 +22,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const Functions_1 = require("@airport/air-control/lib/impl/core/field/Functions");
-const Joins_1 = require("@airport/air-control/lib/impl/core/Joins");
 const LogicalOperation_1 = require("@airport/air-control/lib/impl/core/operation/LogicalOperation");
 const InjectionTokens_1 = require("@airport/air-control/lib/InjectionTokens");
 const typedi_1 = require("typedi");
@@ -43,78 +42,112 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
             let sMiV;
             const maxSchemaVersions = yield this.airportDatabase.db.find.tree({
                 from: [
-                    sMiV = Joins_1.tree({
-                        from: [
-                            sMaV = Joins_1.tree({
-                                from: [
-                                    s = generated_1.Q.Schema,
-                                    sv = s.versions.innerJoin(),
-                                    d = s.domain.innerJoin()
-                                ],
-                                select: {
-                                    index: s.index,
-                                    schemaVersionId: sv.id,
-                                    domainId: d.id,
-                                    domainName: d.name,
-                                    name: s.name,
-                                    majorVersion: Functions_1.max(sv.majorVersion),
-                                    minorVersion: sv.minorVersion,
-                                    patchVersion: sv.patchVersion,
-                                },
-                                where: LogicalOperation_1.and(d.name.in(schemaDomainNames), s.name.in(schemaNames)),
-                                groupBy: [
-                                    s.index,
-                                    d.id,
-                                    d.name,
-                                    s.name,
-                                    sv.minorVersion,
-                                    sv.patchVersion,
-                                ]
-                            })
-                        ],
-                        select: {
-                            index: sMaV.index,
-                            schemaVersionId: sMaV.schemaVersionId,
-                            domainId: sMaV.domainId,
-                            domainName: sMaV.domainName,
-                            name: sMaV.name,
-                            majorVersion: sMaV.majorVersion,
-                            minorVersion: Functions_1.max(sMaV.minorVersion),
-                            patchVersion: sMaV.patchVersion,
-                        },
-                        groupBy: [
-                            sMaV.index,
-                            sMaV.domainId,
-                            sMaV.domainName,
-                            sMaV.name,
-                            sMaV.majorVersion,
-                            sMaV.patchVersion
-                        ]
-                    })
+                    sv = generated_1.Q.SchemaVersion,
+                    s = sv.schema.innerJoin(),
+                    d = s.domain.innerJoin()
                 ],
                 select: {
-                    majorVersion: sMiV.majorVersion,
-                    minorVersion: sMiV.minorVersion,
-                    patchVersion: Functions_1.max(sMiV.patchVersion),
+                    integerVersion: Functions_1.max(sv.integerVersion),
+                    majorVersion: sv.majorVersion,
+                    minorVersion: sv.minorVersion,
+                    patchVersion: sv.patchVersion,
                     schema: {
-                        index: sMiV.index,
-                        name: sMiV.name,
+                        index: s.index,
+                        name: s.name,
                         domain: {
-                            id: sMiV.domainId,
-                            name: sMiV.domainName,
+                            id: d.id,
+                            name: d.name
                         }
                     },
-                    id: sMiV.schemaVersionId
+                    id: sv.id
                 },
+                where: LogicalOperation_1.and(d.name.in(schemaDomainNames), s.name.in(schemaNames)),
                 groupBy: [
-                    sMiV.index,
-                    sMiV.domainId,
-                    sMiV.domainName,
-                    sMiV.name,
-                    sMiV.majorVersion,
-                    sMiV.minorVersion
+                    sv.majorVersion,
+                    sv.minorVersion,
+                    sv.patchVersion,
+                    s.index,
+                    s.name,
+                    d.id,
+                    d.name
                 ]
             });
+            // const maxSchemaVersions: ISchemaVersion[] = await this.airportDatabase.db.find.tree({
+            // 	from: [
+            // 		sMiV = tree({
+            // 			from: [
+            // 				sMaV = tree({
+            // 					from: [
+            // 						s = Q.Schema,
+            // 						sv = s.versions.innerJoin(),
+            // 						d = s.domain.innerJoin()
+            // 					],
+            // 					select: {
+            // 						index: s.index,
+            // 						schemaVersionId: sv.id,
+            // 						domainId: d.id,
+            // 						domainName: d.name,
+            // 						name: s.name,
+            // 						majorVersion: max(sv.majorVersion),
+            // 						minorVersion: sv.minorVersion,
+            // 						patchVersion: sv.patchVersion,
+            // 					},
+            // 					where: and(
+            // 						d.name.in(schemaDomainNames),
+            // 						s.name.in(schemaNames)
+            // 					),
+            // 					groupBy: [
+            // 						s.index,
+            // 						d.id,
+            // 						d.name,
+            // 						s.name,
+            // 						sv.minorVersion,
+            // 						sv.patchVersion,
+            // 					]
+            // 				})],
+            // 			select: {
+            // 				index: sMaV.index,
+            // 				schemaVersionId: sMaV.schemaVersionId,
+            // 				domainId: sMaV.domainId,
+            // 				domainName: sMaV.domainName,
+            // 				name: sMaV.name,
+            // 				majorVersion: sMaV.majorVersion,
+            // 				minorVersion: max(sMaV.minorVersion),
+            // 				patchVersion: sMaV.patchVersion,
+            // 			},
+            // 			groupBy: [
+            // 				sMaV.index,
+            // 				sMaV.domainId,
+            // 				sMaV.domainName,
+            // 				sMaV.name,
+            // 				sMaV.majorVersion,
+            // 				sMaV.patchVersion
+            // 			]
+            // 		})],
+            // 	select: {
+            // 		majorVersion: sMiV.majorVersion,
+            // 		minorVersion: sMiV.minorVersion,
+            // 		patchVersion: max(sMiV.patchVersion),
+            // 		schema: {
+            // 			index: sMiV.index,
+            // 			name: sMiV.name,
+            // 			domain: {
+            // 				id: sMiV.domainId,
+            // 				name: sMiV.domainName,
+            //
+            // 			}
+            // 		},
+            // 		id: sMiV.schemaVersionId
+            // 	},
+            // 	groupBy: [
+            // 		sMiV.index,
+            // 		sMiV.domainId,
+            // 		sMiV.domainName,
+            // 		sMiV.name,
+            // 		sMiV.majorVersion,
+            // 		sMiV.minorVersion
+            // 	]
+            // })
             for (const maxSchemaVersion of maxSchemaVersions) {
                 const schema = maxSchemaVersion.schema;
                 this.utils.ensureChildJsMap(maxVersionedMapBySchemaAndDomainNames, schema.domain.name)

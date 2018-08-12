@@ -70,6 +70,11 @@
       "projectFolder": "generators/runway",
       "shouldPublish": true
     },
+    {
+      "packageName": "@airport/landing",
+      "projectFolder": "generators/landing",
+      "shouldPublish": true
+    },
     // "schemas" folder (alphabetical order),
     {
       "packageName": "@airport/airport-code",
