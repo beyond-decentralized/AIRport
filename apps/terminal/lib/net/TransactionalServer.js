@@ -12,9 +12,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const ground_control_1 = require("@airport/ground-control");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
+const TransactionManager_1 = require("../orchestration/TransactionManager");
 /**
  * Keeps track of transactions, per client and validates that a given
  * transaction belongs to the provided client.  If the connection
@@ -130,7 +132,7 @@ TransactionalServer = __decorate([
     __param(2, typedi_1.Inject(_ => InjectionTokens_1.QueryManagerToken)),
     __param(3, typedi_1.Inject(_ => InjectionTokens_1.TransactionManagerToken)),
     __param(4, typedi_1.Inject(_ => InjectionTokens_1.UpdateManagerToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
+    __metadata("design:paramtypes", [Object, Object, Object, typeof (_a = typeof TransactionManager_1.ITransactionManager !== "undefined" && TransactionManager_1.ITransactionManager) === "function" && _a || Object, Object])
 ], TransactionalServer);
 exports.TransactionalServer = TransactionalServer;
 //# sourceMappingURL=TransactionalServer.js.map

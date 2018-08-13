@@ -12,11 +12,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
+const TransactionManager_1 = require("./TransactionManager");
 let UpdateManager = class UpdateManager {
     constructor(airportDb, utils, dataStore, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager) {
         this.airportDb = airportDb;
@@ -146,7 +148,7 @@ UpdateManager = __decorate([
     __param(10, typedi_1.Inject(_ => InjectionTokens_1.TransactionManagerToken)),
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, holding_pattern_1.OperationHistoryDmo,
         holding_pattern_1.RecordHistoryDmo, Object, holding_pattern_1.RepositoryTransactionHistoryDmo,
-        holding_pattern_1.TransactionHistoryDmo, Object])
+        holding_pattern_1.TransactionHistoryDmo, typeof (_a = typeof TransactionManager_1.ITransactionManager !== "undefined" && TransactionManager_1.ITransactionManager) === "function" && _a || Object])
 ], UpdateManager);
 exports.UpdateManager = UpdateManager;
 //# sourceMappingURL=UpdateManager.js.map
