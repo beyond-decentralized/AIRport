@@ -12,11 +12,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
+const TransactionManager_1 = require("./TransactionManager");
 let DeleteManager = class DeleteManager {
     constructor(airportDb, dataStore, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager, utils) {
         this.airportDb = airportDb;
@@ -222,7 +224,7 @@ DeleteManager = __decorate([
     __param(8, typedi_1.Inject(_ => holding_pattern_1.TransactionHistoryDmoToken)),
     __param(9, typedi_1.Inject(_ => InjectionTokens_1.TransactionManagerToken)),
     __param(10, typedi_1.Inject(_ => air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, typeof (_a = typeof TransactionManager_1.ITransactionManager !== "undefined" && TransactionManager_1.ITransactionManager) === "function" ? _a : Object, Object])
 ], DeleteManager);
 exports.DeleteManager = DeleteManager;
 //# sourceMappingURL=DeleteManager.js.map

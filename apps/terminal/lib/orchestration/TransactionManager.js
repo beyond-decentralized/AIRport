@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const terminal_map_1 = require("@airport/terminal-map");
 const tower_1 = require("@airport/tower");
@@ -51,7 +52,7 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
             await this.wait(this.yieldToRunningTransaction);
         }
         this.transactionInProgress = transactionIndex;
-        let fieldMap = new SyncSchemaMap();
+        let fieldMap = new ground_control_1.SyncSchemaMap();
         this.currentTransHistory = this.transactionHistoryDmo.getNewRecord();
         await this.dataStore.startTransaction();
     }
@@ -179,13 +180,13 @@ __decorate([
 ], TransactionManager.prototype, "initialize", null);
 TransactionManager = __decorate([
     typedi_1.Service(terminal_map_1.TransactionManagerToken),
-    __param(0, typedi_1.Inject(_ => air_control_1.UtilsToken)),
-    __param(1, typedi_1.Inject(_ => InjectionTokens_1.StoreDriverToken)),
-    __param(2, typedi_1.Inject(_ => InjectionTokens_1.IdGeneratorToken)),
-    __param(3, typedi_1.Inject(_ => InjectionTokens_1.OfflineDeltaStoreToken)),
-    __param(4, typedi_1.Inject(_ => InjectionTokens_1.OnlineManagerToken)),
-    __param(5, typedi_1.Inject(_ => InjectionTokens_1.ActiveQueriesToken)),
-    __param(6, typedi_1.Inject(_ => holding_pattern_1.TransactionHistoryDmoToken)),
+    __param(0, typedi_1.Inject(air_control_1.UtilsToken)),
+    __param(1, typedi_1.Inject(InjectionTokens_1.StoreDriverToken)),
+    __param(2, typedi_1.Inject(InjectionTokens_1.IdGeneratorToken)),
+    __param(3, typedi_1.Inject(InjectionTokens_1.OfflineDeltaStoreToken)),
+    __param(4, typedi_1.Inject(InjectionTokens_1.OnlineManagerToken)),
+    __param(5, typedi_1.Inject(InjectionTokens_1.ActiveQueriesToken)),
+    __param(6, typedi_1.Inject(holding_pattern_1.TransactionHistoryDmoToken)),
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, ActiveQueries_1.ActiveQueries, Object])
 ], TransactionManager);
 exports.TransactionManager = TransactionManager;

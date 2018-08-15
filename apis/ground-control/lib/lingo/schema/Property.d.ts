@@ -1,6 +1,6 @@
-import { DatabaseForeignKey, DatabaseManyToOneElements, DatabaseOneToManyElements, EntityRelationType, SQLDataType } from "../../index";
-import { DbEntity, TableIndex } from "./Entity";
-import { SchemaIndex } from "./Schema";
+import { DatabaseForeignKey, DatabaseManyToOneElements, DatabaseOneToManyElements, EntityRelationType, SQLDataType } from '../../index';
+import { DbEntity, TableIndex } from './Entity';
+import { SchemaIndex } from './Schema';
 export declare type ColumnIndex = number;
 export declare type PropertyIndex = number;
 export declare type RelationIndex = number;
@@ -63,7 +63,7 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex> {
     /**
      * Properties that are mapped to this column.
      */
-    propertyRefs: SchemaReferenceByIndex<PropertyIndex>[];
+    propertyRefs: PropertyReference[];
     /**
      * Type of the column.
      */
@@ -101,6 +101,8 @@ export interface SchemaReferenceByIndex<ID extends number> {
      */
     index: ID;
 }
+export interface PropertyReference extends SchemaReferenceByIndex<PropertyIndex> {
+}
 /**
  * A schema relation.
  */
@@ -124,7 +126,7 @@ export interface JsonSchemaRelation extends SchemaReferenceByIndex<RelationIndex
     /**
      * A property that is mapped to this relation.
      */
-    propertyRef: SchemaReferenceByIndex<PropertyIndex>;
+    propertyRef: PropertyReference;
     /**
      * True if join automatically includes REPOSITORY_ID.
      * Not needed - all joins to and from Repository entities are automatically repository joins

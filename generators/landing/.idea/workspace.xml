@@ -2,10 +2,95 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bd751d23-7c92-42a0-9635-9fd6ed37eff5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/builder/websql/WebSqlSchemaBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/ColumnMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/ColumnMap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/SchemaMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/SchemaMap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/TableMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/TableMap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/sync/SyncColumnMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/sync/SyncColumnMap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/sync/SyncSchemaMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/sync/SyncSchemaMap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/sync/SyncTableMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/sync/SyncTableMap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/utils/DatastructureUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/utils/DatastructureUtils.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/core/APSubject.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/core/APSubject.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/core/field/JSONClause.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/core/field/JSONClause.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/impl/schema/builder/DbSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/impl/schema/builder/DbSchemaBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/schema/Property.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/schema/Property.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/core/AbstractCompletable.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/core/AbstractCompletable.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/core/repository/RepositoryManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/core/repository/RepositoryManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/data/DeltaStore.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/data/DeltaStore.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/data/OfflineDeltaStore.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/data/OfflineDeltaStore.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/net/OnlineManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/net/OnlineManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/net/TransactionalServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/net/TransactionalServer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/net/TransactionalServer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/net/TransactionalServer.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/AbstractMutationManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/AbstractMutationManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/DatabaseManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/DatabaseManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/DeleteManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/DeleteManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/DeleteManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/DeleteManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/HistoryManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/HistoryManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/QueryManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/QueryManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/TransactionManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/TransactionManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/TransactionManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/TransactionManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/UpdateManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/UpdateManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/UpdateManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/UpdateManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/OracleQueryAdaptor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/OracleQueryAdaptor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SQLQueryAdaptor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SQLQueryAdaptor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SqLiteQueryAdaptor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SqLiteQueryAdaptor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SqlJsQueryAdaptor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SqlJsQueryAdaptor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/WebSqlQueryAdaptor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/WebSqlQueryAdaptor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/AbstractEntityOrderByParser.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/AbstractEntityOrderByParser.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/EntityOrderByParser.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/EntityOrderByParser.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/ExactOrderByParser.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/ExactOrderByParser.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/MappedOrderByParser.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/MappedOrderByParser.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/FlattenedResultParser.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/FlattenedResultParser.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/PlainResultParser.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/PlainResultParser.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/TreeQueryResultParser.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/TreeQueryResultParser.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/TreeResultParser.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/TreeResultParser.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/EntityGraphResultParser.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/EntityGraphResultParser.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/EntityTreeResultParser.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/EntityTreeResultParser.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/GraphMtoMapper.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/GraphMtoMapper.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/GraphOtmMapper.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/GraphOtmMapper.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/IEntityResultParser.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/IEntityResultParser.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/EntitySQLQuery.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/EntitySQLQuery.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/FieldSQLQuery.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/FieldSQLQuery.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/NonEntitySQLQuery.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/NonEntitySQLQuery.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/SheetSQLQuery.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/SheetSQLQuery.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/SqlFunctionField.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/SqlFunctionField.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/TreeSQLQuery.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/TreeSQLQuery.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLDelete.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLDelete.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLInsertValues.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLInsertValues.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLNoJoinQuery.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLNoJoinQuery.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLQuery.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLQuery.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLUpdate.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLUpdate.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLWhereBase.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLWhereBase.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/shared/DateUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/shared/DateUtils.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/shared/PlatformUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/shared/PlatformUtils.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/shared/logic/DatabaseLogic.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/shared/logic/DatabaseLogic.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/ActiveQueries.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/store/ActiveQueries.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/IdGenerator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/store/IdGenerator.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/RecordState.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/store/RecordState.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/SqlDriver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/store/SqlDriver.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/Store.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/store/Store.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqLite/DDLManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqLite/DDLManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqLite/SqLiteDriver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqLite/SqLiteDriver.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqlJs/SqlJsDriver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqlJs/SqlJsDriver.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/webSql/SqlStorage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/store/webSql/SqlStorage.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/webSql/WebSqlDriver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/store/webSql/WebSqlDriver.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/validation/Validator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/validation/Validator.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builder/indexeddb/IndexedDbSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/builder/indexeddb/IndexedDbSchemaBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/builder/sql/SqlSchemaBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/sql/SqlSchemaBuilder.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/builder/sql/SqlSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/sql/SqlSchemaBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/builder/sql/SqlSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/sql/SqlSchemaBuilder.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builder/indexeddb/IndexedDbSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/builder/SqlSchemaBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builder/sql/SqlSchemaBuilder.ts" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -73,25 +158,25 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="json" value="20" />
-          <entry key="ts" value="188" />
+          <entry key="ts" value="1240" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="20" />
-          <entry key="TypeScript" value="188" />
+          <entry key="TypeScript" value="1240" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="json" value="2" />
-          <entry key="ts" value="7" />
+          <entry key="ts" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JSON" value="2" />
-          <entry key="TypeScript" value="7" />
+          <entry key="TypeScript" value="12" />
         </counts>
       </usages-collector>
     </session>
@@ -101,18 +186,6 @@
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/builder/indexeddb/IndexedDbSchemaBuilder.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="416">
-                  <caret line="45" column="29" selection-start-line="45" selection-start-column="29" selection-end-line="45" selection-end-column="29" />
-                  <folding>
-                    <element signature="e#0#127#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/builder/ISchemaBuilder.ts">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="38">
@@ -121,11 +194,23 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/builder/sql/SqlSchemaBuilder.ts">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/builder/SqlSchemaBuilder.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="133">
-                  <caret line="17" selection-start-line="17" selection-end-line="17" />
+                <state relative-caret-position="802">
+                  <caret line="91" column="12" selection-start-line="91" selection-start-column="12" selection-end-line="91" selection-end-column="12" />
+                  <folding>
+                    <element signature="e#0#137#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/src/lingo/schema/Property.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="289">
+                  <caret line="76" column="28" selection-start-line="76" selection-start-column="20" selection-end-line="76" selection-end-column="28" />
                 </state>
               </provider>
             </entry>
@@ -170,20 +255,23 @@
       </split-first>
       <split-second>
         <leaf>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/node_modules/nano-sql/src/index.ts">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/builder/websql/WebSqlSchemaBuilder.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="660">
-                  <caret line="53" column="9" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
+                <state relative-caret-position="474">
+                  <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
+                  <folding>
+                    <element signature="e#0#118#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/package.json">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/schema/Entity.d.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="95">
-                  <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
+                <state relative-caret-position="307">
+                  <caret line="31" column="4" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
                 </state>
               </provider>
             </entry>
@@ -199,6 +287,11 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>generate</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
@@ -210,10 +303,12 @@
         <option value="$PROJECT_DIR$/src/checker/SchemaChecker.ts" />
         <option value="$PROJECT_DIR$/src/locator/SchemaLocator.ts" />
         <option value="$PROJECT_DIR$/src/InjectionTokens.ts" />
-        <option value="$PROJECT_DIR$/src/builder/sql/SqlSchemaBuilder.ts" />
         <option value="$PROJECT_DIR$/src/SchemaInitializer.ts" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/builder/indexeddb/IndexedDbSchemaBuilder.ts" />
+        <option value="$PROJECT_DIR$/src/builder/sql/SqlSchemaBuilder.ts" />
+        <option value="$PROJECT_DIR$/src/builder/websql/WebSqlSchemaBuilder.ts" />
+        <option value="$PROJECT_DIR$/src/builder/SqlSchemaBuilder.ts" />
       </list>
     </option>
   </component>
@@ -235,7 +330,7 @@
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="3840" />
+    <option name="x" value="1920" />
     <option name="y" value="-2" />
     <option name="width" value="1920" />
     <option name="height" value="1082" />
@@ -270,20 +365,6 @@
               <item name="landing" type="b2602c69:ProjectViewProjectNode" />
               <item name="landing" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="builder" type="462c0819:PsiDirectoryNode" />
-              <item name="indexeddb" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="landing" type="b2602c69:ProjectViewProjectNode" />
-              <item name="landing" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="builder" type="462c0819:PsiDirectoryNode" />
-              <item name="sql" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="landing" type="b2602c69:ProjectViewProjectNode" />
-              <item name="landing" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="checker" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -301,12 +382,17 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../pico-sql" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../apps/terminal" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="settings.typescriptcompiler" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/builder" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -336,15 +422,16 @@
       <workItem from="1533996141601" duration="3496000" />
       <workItem from="1534087374723" duration="700000" />
       <workItem from="1534088442796" duration="888000" />
-      <workItem from="1534089388443" duration="4200000" />
+      <workItem from="1534089388443" duration="8645000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12781000" />
+    <option name="totallyTimeSpent" value="17226000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="3840" y="-2" width="1920" height="1082" extended-state="6" />
+    <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1433843" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -405,15 +492,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/schema/Entity.d.ts" />
-    <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/schema/Property.d.ts" />
-    <entry file="file://$PROJECT_DIR$/src/builder/sql/SqlSchemaBuilder.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/SchemaInitializer.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="703">
@@ -458,13 +536,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/builder/indexeddb/IndexedDbSchemaBuilder.ts">
+    <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="45" column="29" selection-start-line="45" selection-start-column="29" selection-end-line="45" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#127#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="95">
+          <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -475,6 +550,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/builder/indexeddb/IndexedDbSchemaBuilder.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" column="29" lean-forward="true" selection-start-line="13" selection-start-column="29" selection-end-line="84" selection-end-column="3" />
+          <folding>
+            <element signature="e#0#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/nano-sql/src/index.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="660">
@@ -482,10 +567,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/schema/Property.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
+        <state relative-caret-position="299">
+          <caret line="97" column="17" selection-start-line="97" selection-start-column="17" selection-end-line="97" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/schema/Entity.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="31" column="4" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/src/lingo/schema/Property.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="76" column="28" selection-start-line="76" selection-start-column="20" selection-end-line="76" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/builder/websql/WebSqlSchemaBuilder.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="474">
+          <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#118#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/builder/SqlSchemaBuilder.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="802">
+          <caret line="91" column="12" selection-start-line="91" selection-start-column="12" selection-end-line="91" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#137#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -4,12 +4,12 @@ import {
 	DatabaseOneToManyElements,
 	EntityRelationType,
 	SQLDataType
-}                    from "../../index";
+}                    from '../../index'
 import {
 	DbEntity,
 	TableIndex
-}                    from "./Entity";
-import {SchemaIndex} from "./Schema";
+}                    from './Entity'
+import {SchemaIndex} from './Schema'
 
 export type ColumnIndex = number;
 export type PropertyIndex = number;
@@ -56,8 +56,8 @@ export interface DbProperty extends SchemaReferenceByIndex<PropertyIndex> {
 
 export class DbPropertyColumn {
 
-	column: DbColumn;
-	property: DbProperty;
+	column: DbColumn
+	property: DbProperty
 
 }
 
@@ -91,7 +91,7 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex> {
 	/**
 	 * Properties that are mapped to this column.
 	 */
-	propertyRefs: SchemaReferenceByIndex<PropertyIndex>[];
+	propertyRefs: PropertyReference[];
 
 	/**
 	 * Type of the column.
@@ -144,6 +144,11 @@ export interface SchemaReferenceByIndex<ID extends number> {
 
 }
 
+export interface PropertyReference
+	extends SchemaReferenceByIndex<PropertyIndex> {
+
+}
+
 /**
  * A schema relation.
  */
@@ -172,7 +177,7 @@ export interface JsonSchemaRelation extends SchemaReferenceByIndex<RelationIndex
 	/**
 	 * A property that is mapped to this relation.
 	 */
-	propertyRef: SchemaReferenceByIndex<PropertyIndex>;
+	propertyRef: PropertyReference;
 
 	/**
 	 * True if join automatically includes REPOSITORY_ID.

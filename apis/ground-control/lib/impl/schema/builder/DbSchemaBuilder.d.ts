@@ -1,7 +1,7 @@
-import { IDbSchemaBuilder } from "../../../lingo/schema/builder/DbSchemaBuilder";
-import { ILinkingDictionary } from "../../../lingo/schema/builder/LinkingDictionary";
-import { DbSchema, JsonSchema } from "../../../lingo/schema/Schema";
-import { IDatastructureUtils } from "../../../lingo/utils/DatastructureUtils";
+import { IDbSchemaBuilder } from '../../../lingo/schema/builder/DbSchemaBuilder';
+import { ILinkingDictionary } from '../../../lingo/schema/builder/LinkingDictionary';
+import { DbSchema, JsonSchema } from '../../../lingo/schema/Schema';
+import { IDatastructureUtils } from '../../../lingo/utils/DatastructureUtils';
 export declare var test: number;
 export declare class DbSchemaBuilder implements IDbSchemaBuilder {
     private utils;

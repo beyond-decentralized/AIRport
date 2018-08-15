@@ -20,6 +20,7 @@ class DbSchemaBuilder {
             id: null,
             entities,
             entityMapByName,
+            integerVersion: currentJsonSchemaVersion.integerVersion,
             majorVersion: parseInt(versionParts[0]),
             minorVersion: parseInt(versionParts[1]),
             patchVersion: parseInt(versionParts[2]),
@@ -32,7 +33,8 @@ class DbSchemaBuilder {
         };
         const dbDomain = {
             id: undefined,
-            name: jsonSchema.name
+            name: jsonSchema.name,
+            schemas: []
         };
         const dbSchema = {
             currentVersion: dbSchemaVersion,
