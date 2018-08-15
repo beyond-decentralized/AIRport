@@ -16,14 +16,12 @@ import {IHistoryManager}     from "./orchestration/HistoryManager";
 import {IInsertManager}      from "./orchestration/InsertManager";
 import {IQueryManager}       from "./orchestration/QueryManager";
 import {IUpdateManager}      from "./orchestration/UpdateManager";
-import {IActiveQueries}      from "./store/ActiveQueries";
-import {IIdGenerator}        from "./store/IdGenerator";
 
 export const ActiveQueriesToken = new Token<IActiveQueries>();
+export const IdGeneratorToken = new Token<IIdGenerator>();
 export const DatabaseManagerToken = new Token<IDatabaseManager>();
 export const DeleteManagerToken = new Token<IDeleteManager>();
 export const HistoryManagerToken = new Token<IHistoryManager>();
-export const IdGeneratorToken = new Token<IIdGenerator>();
 export const InsertManagerToken = new Token<IInsertManager>();
 export const OfflineDeltaStoreToken = new Token<IOfflineDeltaStore>();
 export const OnlineManagerToken = new Token<IOnlineManager>();

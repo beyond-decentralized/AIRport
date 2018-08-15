@@ -55,6 +55,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/fuel-hydrant-system",
+      "projectFolder": "libs/fuel-hydrant-system",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/ground-transport",
       "projectFolder": "libs/ground-transport",
       "shouldPublish": true

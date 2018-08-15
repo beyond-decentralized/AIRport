@@ -66,38 +66,27 @@ export class DeleteManager
 	implements IDeleteManager {
 
 	constructor(
-		@Inject(
-			_ => AirportDatabaseToken)
+		@Inject(AirportDatabaseToken)
 		private airportDb: IAirportDatabase,
-		@Inject(
-			_ => StoreDriverToken)
+		@Inject(StoreDriverToken)
 		private dataStore: IStoreDriver,
-		@Inject(
-			_ => HistoryManagerToken)
+		@Inject(HistoryManagerToken)
 		private historyManager: IHistoryManager,
-		@Inject(
-			_ => OfflineDeltaStoreToken)
+		@Inject(OfflineDeltaStoreToken)
 		private offlineDataStore: IOfflineDeltaStore,
-		@Inject(
-			_ => OperationHistoryDmoToken)
+		@Inject(OperationHistoryDmoToken)
 		private operationHistoryDmo: IOperationHistoryDmo,
-		@Inject(
-			_ => RecordHistoryDmoToken)
+		@Inject(RecordHistoryDmoToken)
 		private recordHistoryDmo: IRecordHistoryDmo,
-		@Inject(
-			_ => RepositoryManagerToken)
+		@Inject(RepositoryManagerToken)
 		private repositoryManager: IRepositoryManager,
-		@Inject(
-			_ => RepositoryTransactionHistoryDmoToken)
+		@Inject(RepositoryTransactionHistoryDmoToken)
 		private repositoryTransactionHistoryDmo: IRepositoryTransactionHistoryDmo,
-		@Inject(
-			_ => TransactionHistoryDmoToken)
+		@Inject(TransactionHistoryDmoToken)
 		private transactionHistoryDmo: ITransactionHistoryDmo,
-		@Inject(
-			_ => TransactionManagerToken)
+		@Inject(TransactionManagerToken)
 		private transactionManager: ITransactionManager,
-		@Inject(
-			_ => UtilsToken)
+		@Inject(UtilsToken)
 		private utils: IUtils,
 	) {
 	}

@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="94390c1f-b9cb-4662-b329-6aca41d00969" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../../apis/ground-control/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/.idea/typescript-compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/lib/InjectionTokens.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/lib/InjectionTokens.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/lib/InjectionTokens.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/lib/index.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/lib/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/lib/index.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/InjectionTokens.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/query/IndexedDbDriver.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/InjectionTokens.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/adaptor/OracleQueryAdaptor.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/adaptor/SQLQueryAdaptor.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/adaptor/SqLiteQueryAdaptor.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/adaptor/SqlJsQueryAdaptor.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/adaptor/WebSqlQueryAdaptor.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/orderBy/AbstractEntityOrderByParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/orderBy/EntityOrderByParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/orderBy/ExactOrderByParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/orderBy/MappedOrderByParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/result/FlattenedResultParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/result/PlainResultParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/result/TreeResultParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/result/entity/EntityGraphResultParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/result/entity/EntityTreeResultParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/result/entity/GraphMtoMapper.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/result/entity/GraphOtmMapper.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/result/entity/IEntityResultParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/sql/EntitySQLQuery.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/sql/FieldSQLQuery.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/sql/NonEntitySQLQuery.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/sql/SheetSQLQuery.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/sql/SqlFunctionField.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/sql/TreeSQLQuery.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/sql/core/SQLDelete.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/sql/core/SQLInsertValues.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/sql/core/SQLNoJoinQuery.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/sql/core/SQLQuery.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/sql/core/SQLUpdate.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/sql/core/SQLWhereBase.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/store/ActiveQueries.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/store/IdGenerator.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/store/RecordState.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/store/SqlDriver.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/store/Store.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/store/sqLite/SqLiteDriver.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/store/sqlJs/SqlJsDriver.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/store/webSql/WebSqlDriver.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fuel-hydrant-system/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/InjectionTokens.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/result/TreeQueryResultParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/sqLite/DDLManager.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/webSql/SqlStorage.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/.idea/typescript-compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/.idea/typescript-compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/index.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/query/facade/Query.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/query/facade/Query.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/query/facade/Query.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/query/facade/Query.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/query/facade/Query.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/query/facade/Query.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/query/facade/Query.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/query/facade/Query.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/InjectionTokens.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/InjectionTokens.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/InjectionTokens.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/net/TransactionalServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/net/TransactionalServer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/net/TransactionalServer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/net/TransactionalServer.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/DeleteManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/DeleteManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/DeleteManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/DeleteManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/TransactionManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/TransactionManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/TransactionManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/TransactionManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/UpdateManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/UpdateManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/UpdateManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/UpdateManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/OracleQueryAdaptor.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/OracleQueryAdaptor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/OracleQueryAdaptor.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SQLQueryAdaptor.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SQLQueryAdaptor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SQLQueryAdaptor.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SqLiteQueryAdaptor.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SqLiteQueryAdaptor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SqLiteQueryAdaptor.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SqlJsQueryAdaptor.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SqlJsQueryAdaptor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SqlJsQueryAdaptor.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/WebSqlQueryAdaptor.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/WebSqlQueryAdaptor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/WebSqlQueryAdaptor.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/AbstractEntityOrderByParser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/AbstractEntityOrderByParser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/AbstractEntityOrderByParser.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/EntityOrderByParser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/EntityOrderByParser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/EntityOrderByParser.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/ExactOrderByParser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/ExactOrderByParser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/ExactOrderByParser.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/MappedOrderByParser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/MappedOrderByParser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/MappedOrderByParser.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/FlattenedResultParser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/FlattenedResultParser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/FlattenedResultParser.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/PlainResultParser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/PlainResultParser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/PlainResultParser.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/TreeQueryResultParser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/TreeQueryResultParser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/TreeQueryResultParser.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/TreeResultParser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/TreeResultParser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/TreeResultParser.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/EntityGraphResultParser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/EntityGraphResultParser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/EntityGraphResultParser.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/EntityTreeResultParser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/EntityTreeResultParser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/EntityTreeResultParser.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/GraphMtoMapper.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/GraphMtoMapper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/GraphMtoMapper.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/GraphOtmMapper.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/GraphOtmMapper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/GraphOtmMapper.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/IEntityResultParser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/IEntityResultParser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/IEntityResultParser.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/EntitySQLQuery.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/EntitySQLQuery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/EntitySQLQuery.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/FieldSQLQuery.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/FieldSQLQuery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/FieldSQLQuery.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/NonEntitySQLQuery.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/NonEntitySQLQuery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/NonEntitySQLQuery.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/SheetSQLQuery.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/SheetSQLQuery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/SheetSQLQuery.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/SqlFunctionField.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/SqlFunctionField.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/SqlFunctionField.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/TreeSQLQuery.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/TreeSQLQuery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/TreeSQLQuery.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLDelete.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLDelete.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLDelete.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLInsertValues.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLInsertValues.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLInsertValues.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLNoJoinQuery.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLNoJoinQuery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLNoJoinQuery.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLQuery.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLQuery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLQuery.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLUpdate.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLUpdate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLUpdate.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLWhereBase.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLWhereBase.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLWhereBase.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/ActiveQueries.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/ActiveQueries.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/ActiveQueries.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/IdGenerator.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/IdGenerator.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/IdGenerator.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/RecordState.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/RecordState.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/RecordState.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/SqlDriver.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/SqlDriver.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/SqlDriver.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/Store.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/Store.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/Store.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqLite/DDLManager.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqLite/DDLManager.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqLite/DDLManager.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqLite/SqLiteDriver.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqLite/SqLiteDriver.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqLite/SqLiteDriver.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqlJs/SqlJsDriver.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqlJs/SqlJsDriver.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqlJs/SqlJsDriver.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/webSql/SqlStorage.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/webSql/SqlStorage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/webSql/SqlStorage.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/webSql/WebSqlDriver.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/webSql/WebSqlDriver.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/webSql/WebSqlDriver.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/src/InjectionTokens.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/orchestration/DeleteManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/src/orchestration/DeleteManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/adaptor/OracleQueryAdaptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/adaptor/OracleQueryAdaptor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/adaptor/SQLQueryAdaptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/adaptor/SQLQueryAdaptor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/adaptor/SqLiteQueryAdaptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/adaptor/SqLiteQueryAdaptor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/adaptor/SqlJsQueryAdaptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/adaptor/SqlJsQueryAdaptor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/adaptor/WebSqlQueryAdaptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/adaptor/WebSqlQueryAdaptor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/orderBy/AbstractEntityOrderByParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/orderBy/AbstractEntityOrderByParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/orderBy/EntityOrderByParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/orderBy/EntityOrderByParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/orderBy/ExactOrderByParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/orderBy/ExactOrderByParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/orderBy/MappedOrderByParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/orderBy/MappedOrderByParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/result/FlattenedResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/result/FlattenedResultParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/result/PlainResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/result/PlainResultParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/result/TreeQueryResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/result/TreeQueryResultParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/result/TreeResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/result/TreeResultParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/result/entity/EntityGraphResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/result/entity/EntityGraphResultParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/result/entity/EntityTreeResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/result/entity/EntityTreeResultParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/result/entity/GraphMtoMapper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/result/entity/GraphMtoMapper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/result/entity/GraphOtmMapper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/result/entity/GraphOtmMapper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/result/entity/IEntityResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/result/entity/IEntityResultParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/sql/EntitySQLQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/EntitySQLQuery.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/sql/FieldSQLQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/FieldSQLQuery.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/sql/NonEntitySQLQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/NonEntitySQLQuery.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/sql/SheetSQLQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/SheetSQLQuery.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/sql/SqlFunctionField.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/SqlFunctionField.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/sql/TreeSQLQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/TreeSQLQuery.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/sql/core/SQLDelete.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/core/SQLDelete.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/sql/core/SQLInsertValues.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/core/SQLInsertValues.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/sql/core/SQLNoJoinQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/core/SQLNoJoinQuery.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/sql/core/SQLQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/core/SQLQuery.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/sql/core/SQLUpdate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/core/SQLUpdate.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/query/sql/core/SQLWhereBase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/core/SQLWhereBase.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/store/ActiveQueries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/ActiveQueries.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/store/IdGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/IdGenerator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/store/RecordState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/RecordState.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/store/SqlDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/SqlDriver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/store/Store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/Store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/store/sqLite/DDLManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/store/sqLite/DDLManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/store/sqLite/SqLiteDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/sqLite/SqLiteDriver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/store/sqlJs/SqlJsDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/sqlJs/SqlJsDriver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/store/webSql/SqlStorage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../fuel-hydrant-system/src/src/store/webSql/SqlStorage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/store/webSql/WebSqlDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/webSql/WebSqlDriver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/landing/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../rush.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../rush.json" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="465428629">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/package.json" />
+    </packageJsonPaths>
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="25" />
+    <option name="width" value="1920" />
+    <option name="height" value="1055" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="mono-rail" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mono-rail" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="C:/Program Files/nodejs/node" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="94390c1f-b9cb-4662-b329-6aca41d00969" name="Default Changelist" comment="" />
+      <created>1534127030364</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1534127030364</updated>
+      <workItem from="1534127032502" duration="17000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="17000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+</project>

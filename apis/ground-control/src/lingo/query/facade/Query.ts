@@ -1,21 +1,31 @@
-import { JSONRelation } from '../../core/entity/Relation';
-import { JSONBaseOperation } from '../../core/operation/Operation';
-import { JSONFieldInOrderBy } from '../../core/field/FieldInOrderBy';
+import {JSONRelation}       from '../../core/entity/Relation'
+import {JSONFieldInOrderBy} from '../../core/field/FieldInOrderBy'
+import {JSONBaseOperation}  from '../../core/operation/Operation'
+
+export enum JsonStatementType {
+	ENTITY_QUERY,
+	NON_ENTITY_QUERY
+}
 
 /**
  * All JSON Statements extend this object (have an optional where clause)
  */
 export interface JsonStatement {
 	/**
+	 * Type of statement
+	 */
+	T: JsonStatementType
+	/**
 	 * WHERE
 	 */
-	W?: JSONBaseOperation;
+	W?: JSONBaseOperation
 }
 
 /**
  * Internal query format used to serialize queries (in JSON).
  */
-export interface JsonQuery extends JsonStatement {
+export interface JsonQuery
+	extends JsonStatement {
 	/**
 	 * FROM
 	 */
@@ -37,9 +47,9 @@ export interface JsonLimitedQuery {
 	/**
 	 * LIMIT
 	 */
-	L?:number;
+	L?: number;
 	/**
 	 * OFFSET
 	 */
-	O?:number;
+	O?: number;
 }
