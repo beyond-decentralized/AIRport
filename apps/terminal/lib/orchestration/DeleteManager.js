@@ -213,17 +213,17 @@ let DeleteManager = class DeleteManager {
 };
 DeleteManager = __decorate([
     typedi_1.Service(InjectionTokens_1.DeleteManagerToken),
-    __param(0, typedi_1.Inject(_ => air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(_ => InjectionTokens_1.StoreDriverToken)),
-    __param(2, typedi_1.Inject(_ => InjectionTokens_1.HistoryManagerToken)),
-    __param(3, typedi_1.Inject(_ => InjectionTokens_1.OfflineDeltaStoreToken)),
-    __param(4, typedi_1.Inject(_ => holding_pattern_1.OperationHistoryDmoToken)),
-    __param(5, typedi_1.Inject(_ => holding_pattern_1.RecordHistoryDmoToken)),
-    __param(6, typedi_1.Inject(_ => InjectionTokens_1.RepositoryManagerToken)),
-    __param(7, typedi_1.Inject(_ => holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
-    __param(8, typedi_1.Inject(_ => holding_pattern_1.TransactionHistoryDmoToken)),
-    __param(9, typedi_1.Inject(_ => InjectionTokens_1.TransactionManagerToken)),
-    __param(10, typedi_1.Inject(_ => air_control_1.UtilsToken)),
+    __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
+    __param(1, typedi_1.Inject(InjectionTokens_1.StoreDriverToken)),
+    __param(2, typedi_1.Inject(InjectionTokens_1.HistoryManagerToken)),
+    __param(3, typedi_1.Inject(InjectionTokens_1.OfflineDeltaStoreToken)),
+    __param(4, typedi_1.Inject(holding_pattern_1.OperationHistoryDmoToken)),
+    __param(5, typedi_1.Inject(holding_pattern_1.RecordHistoryDmoToken)),
+    __param(6, typedi_1.Inject(InjectionTokens_1.RepositoryManagerToken)),
+    __param(7, typedi_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
+    __param(8, typedi_1.Inject(holding_pattern_1.TransactionHistoryDmoToken)),
+    __param(9, typedi_1.Inject(InjectionTokens_1.TransactionManagerToken)),
+    __param(10, typedi_1.Inject(air_control_1.UtilsToken)),
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, typeof (_a = typeof TransactionManager_1.ITransactionManager !== "undefined" && TransactionManager_1.ITransactionManager) === "function" ? _a : Object, Object])
 ], DeleteManager);
 exports.DeleteManager = DeleteManager;
