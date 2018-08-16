@@ -7,4 +7,6 @@ __export(require("./schema"));
 __export(require("./qSchema"));
 __export(require("./baseDaos"));
 __export(require("./baseDmos"));
+__export(require("./qshard"));
+__export(require("./qshardedrecord"));
 //# sourceMappingURL=generated.js.map

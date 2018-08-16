@@ -1,4 +1,4 @@
-import {IQEntityInternal} from "../../../../lingo/core/entity/Entity";
+import {IQEntityInternal} from '../../../../lingo/core/entity/Entity'
 import {
 	AddToJoinFunction,
 	ColumnConfiguration,
@@ -13,13 +13,10 @@ import {
 	ManyToOneElements,
 	OneToManyDecorator,
 	OneToManyElements,
+	SequenceGeneratorDecorator,
 	SubQueryDecorator,
 	TransientDecorator
-}                         from "../../../../lingo/core/entity/metadata/ColumnDecorators";
-import {
-	andOperator,
-	orOperator
-}                         from "../../../../lingo/core/operation/LogicalOperation";
+}                         from '../../../../lingo/core/entity/metadata/ColumnDecorators'
 
 /**
  * Created by Papa on 8/20/2016.
@@ -32,7 +29,7 @@ export const Id: IdDecorator = function () {
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 
 export const Column: ColumnDecorator = function (columnConfiguration: ColumnConfiguration) {
@@ -42,7 +39,7 @@ export const Column: ColumnDecorator = function (columnConfiguration: ColumnConf
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 export const JoinColumn: JoinColumnDecorator = function (joinColumnConfiguration: JoinColumnConfiguration) {
 	return function (
@@ -51,7 +48,7 @@ export const JoinColumn: JoinColumnDecorator = function (joinColumnConfiguration
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 export const JoinColumns: JoinColumnsDecorator = function (joinColumnConfigurations: CoreJoinColumnConfiguration[]) {
 	return function (
@@ -60,7 +57,7 @@ export const JoinColumns: JoinColumnsDecorator = function (joinColumnConfigurati
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 /**
  * Function used to add a clause to a Join
@@ -72,17 +69,11 @@ export const JoinColumns: JoinColumnsDecorator = function (joinColumnConfigurati
 }
  */
 
-// export const WhereJoinTable: WhereJoinTableDecorator<any, any> = function <QOtm extends IQEntityInternal, QMto extends IQEntityInternal>(
-// 	addToJoinFunction: AddToJoinFunction<QOtm, QMto>, // Function to add to the join
-// 	joinFunctionWithOperator?: andOperator | orOperator // How to add the function to the join
-// ) {
-// 	return function (
-// 		targetObject: any,
-// 		propertyKey: string
-// 	) {
-// 		// No runtime logic required.
-// 	}
-// };
+// export const WhereJoinTable: WhereJoinTableDecorator<any, any> = function <QOtm extends
+// IQEntityInternal, QMto extends IQEntityInternal>( addToJoinFunction: AddToJoinFunction<QOtm,
+// QMto>, // Function to add to the join joinFunctionWithOperator?: andOperator | orOperator //
+// How to add the function to the join ) { return function ( targetObject: any, propertyKey:
+// string ) { // No runtime logic required. } };
 
 export const SubQuery: SubQueryDecorator<any, any> = function <QOtm extends IQEntityInternal, QMto extends IQEntityInternal>(
 	addToJoinFunction: AddToJoinFunction<QOtm, QMto>, // Function to add to the join
@@ -93,7 +84,7 @@ export const SubQuery: SubQueryDecorator<any, any> = function <QOtm extends IQEn
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 
 /**
@@ -113,7 +104,7 @@ export const RJoinColumn: RJoinColumnDecorator = function (rJoinColumnConfigurat
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 export const RJoinColumns: JoinColumnsDecorator = function (joinColumnConfigurations: CoreJoinColumnConfiguration[]) {
 	return function (
@@ -122,7 +113,7 @@ export const RJoinColumns: JoinColumnsDecorator = function (joinColumnConfigurat
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 /**
  * Non-JPA decorator.
@@ -142,7 +133,7 @@ export const Json: JsonDecorator = function () {
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 /**
  * Non-JPA decorator.
@@ -160,7 +151,7 @@ export const DbAny: DbAnyDecorator = function () {
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 /**
  * Non-JPA decorator.
@@ -178,7 +169,7 @@ export const DbBoolean: DbBooleanDecorator = function () {
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 /**
  * Non-JPA decorator.
@@ -196,7 +187,7 @@ export const DbDate: DbDateDecorator = function () {
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 /**
  * Non-JPA decorator.
@@ -214,7 +205,7 @@ export const DbNumber: DbNumberDecorator = function () {
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 /**
  * Non-JPA decorator.
@@ -232,7 +223,7 @@ export const DbString: DbStringDecorator = function () {
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 
 export const Transient: TransientDecorator = function () {
@@ -242,7 +233,7 @@ export const Transient: TransientDecorator = function () {
 	) {
 		// No runtime logic required.
 	}
-};
+}
 
 export const ManyToOne: ManyToOneDecorator = function (elements?: ManyToOneElements) {
 	return function (
@@ -252,7 +243,7 @@ export const ManyToOne: ManyToOneDecorator = function (elements?: ManyToOneEleme
 		// No runtime logic required.
 	}
 
-};
+}
 
 export const OneToMany: OneToManyDecorator = function (elements?: OneToManyElements) {
 	return function (
@@ -262,7 +253,7 @@ export const OneToMany: OneToManyDecorator = function (elements?: OneToManyEleme
 		// No runtime logic required.
 	}
 
-};
+}
 
 export const GeneratedValue: GeneratedValueDecorator = function () {
 	return function (
@@ -271,4 +262,14 @@ export const GeneratedValue: GeneratedValueDecorator = function () {
 	) {
 		// No runtime logic required.
 	}
-};
+}
+
+export const SequenceGenerator: SequenceGeneratorDecorator = function () {
+	return function (
+		targetObject: any,
+		propertyKey: string
+	) {
+		// No runtime logic required.
+	}
+}
+

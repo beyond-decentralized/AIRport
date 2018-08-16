@@ -1,8 +1,8 @@
-import { DatabaseForeignKey, DatabaseOneToManyElements, JSONBaseOperation } from "@airport/ground-control";
-import { IAirportDatabase } from "../../../AirportDatabase";
-import { FunctionsAndOperators } from "../../FunctionsAndOperators";
+import { DatabaseForeignKey, DatabaseOneToManyElements, JSONBaseOperation } from '@airport/ground-control';
+import { IAirportDatabase } from '../../../AirportDatabase';
+import { FunctionsAndOperators } from '../../FunctionsAndOperators';
 import { PropertyDecorator } from '../../metadata/decorators';
-import { IQEntity } from "../Entity";
+import { IQEntity } from '../Entity';
 /**
  * Marks an object property as the ID column in a SQL table.
  */
@@ -97,6 +97,15 @@ export interface OneToManyDecorator {
  */
 export interface GeneratedValueDecorator {
     (): PropertyDecorator;
+}
+export interface SequenceGeneratorElements {
+    allocationSize: number;
+}
+/**
+ * Allows to specify initial allocation size for a sequence.
+ */
+export interface SequenceGeneratorDecorator {
+    (elements: SequenceGeneratorElements): PropertyDecorator;
 }
 /**
  * Function used to add a clause to a Join

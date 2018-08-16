@@ -12,6 +12,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a, _b;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
@@ -20,6 +21,7 @@ const tower_1 = require("@airport/tower");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
 const ActiveQueries_1 = require("../store/ActiveQueries");
+const IdGenerator_1 = require("../store/IdGenerator");
 const AbstractMutationManager_1 = require("./AbstractMutationManager");
 let TransactionManager = class TransactionManager extends AbstractMutationManager_1.AbstractMutationManager {
     constructor(utils, dataStore, idGenerator, offlineDeltaStore, onlineManager, 
@@ -187,7 +189,7 @@ TransactionManager = __decorate([
     __param(4, typedi_1.Inject(InjectionTokens_1.OnlineManagerToken)),
     __param(5, typedi_1.Inject(InjectionTokens_1.ActiveQueriesToken)),
     __param(6, typedi_1.Inject(holding_pattern_1.TransactionHistoryDmoToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, ActiveQueries_1.ActiveQueries, Object])
+    __metadata("design:paramtypes", [Object, Object, typeof (_a = typeof IdGenerator_1.IIdGenerator !== "undefined" && IdGenerator_1.IIdGenerator) === "function" ? _a : Object, Object, Object, typeof (_b = typeof ActiveQueries_1.ActiveQueries !== "undefined" && ActiveQueries_1.ActiveQueries) === "function" ? _b : Object, Object])
 ], TransactionManager);
 exports.TransactionManager = TransactionManager;
 //# sourceMappingURL=TransactionManager.js.map

@@ -12,7 +12,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
+var _a, _b;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
@@ -210,9 +210,9 @@ InsertManager = __decorate([
     __param(8, typedi_1.Inject(_ => holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
     __param(9, typedi_1.Inject(_ => holding_pattern_1.TransactionHistoryDmoToken)),
     __param(10, typedi_1.Inject(_ => InjectionTokens_1.TransactionManagerToken)),
-    __metadata("design:paramtypes", [Object, Object, IdGenerator_1.IdGenerator, Object, Object, holding_pattern_1.OperationHistoryDmo,
+    __metadata("design:paramtypes", [Object, Object, typeof (_a = typeof IdGenerator_1.IdGenerator !== "undefined" && IdGenerator_1.IdGenerator) === "function" ? _a : Object, Object, Object, holding_pattern_1.OperationHistoryDmo,
         holding_pattern_1.RecordHistoryDmo, Object, holding_pattern_1.RepositoryTransactionHistoryDmo,
-        holding_pattern_1.TransactionHistoryDmo, typeof (_a = typeof TransactionManager_1.ITransactionManager !== "undefined" && TransactionManager_1.ITransactionManager) === "function" ? _a : Object])
+        holding_pattern_1.TransactionHistoryDmo, typeof (_b = typeof TransactionManager_1.ITransactionManager !== "undefined" && TransactionManager_1.ITransactionManager) === "function" ? _b : Object])
 ], InsertManager);
 exports.InsertManager = InsertManager;
 //# sourceMappingURL=InsertManager.js.map

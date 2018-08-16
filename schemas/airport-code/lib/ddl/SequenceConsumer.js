@@ -10,20 +10,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const Shard_1 = require("./Shard");
-/**
- * Pretty much every AGT record should be sharded by location and should extend this class.
- */
-let ShardedRecord = class ShardedRecord {
+const territory_1 = require("@airport/territory");
+let SequenceConsumer = class SequenceConsumer {
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "SHARD_ID" }),
-    __metadata("design:type", Shard_1.Shard)
-], ShardedRecord.prototype, "shard", void 0);
-ShardedRecord = __decorate([
-    air_control_1.MappedSuperclass()
-], ShardedRecord);
-exports.ShardedRecord = ShardedRecord;
-//# sourceMappingURL=ShardedRecord.js.map
+    __metadata("design:type", Number)
+], SequenceConsumer.prototype, "id", void 0);
+__decorate([
+    air_control_1.Column({ name: 'CREATE_TIMESTAMP' }),
+    __metadata("design:type", Number)
+], SequenceConsumer.prototype, "createTimestamp", void 0);
+__decorate([
+    air_control_1.Column({ name: 'RANDOM_NUMBER' }),
+    __metadata("design:type", Number)
+], SequenceConsumer.prototype, "randomNumber", void 0);
+__decorate([
+    air_control_1.Column({ name: 'DOMAIN' }),
+    __metadata("design:type", territory_1.Domain)
+], SequenceConsumer.prototype, "domain", void 0);
+SequenceConsumer = __decorate([
+    air_control_1.Entity(),
+    air_control_1.Table({ name: 'SEQUENCE_CONSUMERS' })
+], SequenceConsumer);
+exports.SequenceConsumer = SequenceConsumer;
+//# sourceMappingURL=SequenceConsumer.js.map

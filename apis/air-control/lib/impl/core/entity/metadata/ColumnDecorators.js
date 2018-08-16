@@ -32,17 +32,11 @@ exports.JoinColumns = function (joinColumnConfigurations) {
     ): JSONBaseOperation;
 }
  */
-// export const WhereJoinTable: WhereJoinTableDecorator<any, any> = function <QOtm extends IQEntityInternal, QMto extends IQEntityInternal>(
-// 	addToJoinFunction: AddToJoinFunction<QOtm, QMto>, // Function to add to the join
-// 	joinFunctionWithOperator?: andOperator | orOperator // How to add the function to the join
-// ) {
-// 	return function (
-// 		targetObject: any,
-// 		propertyKey: string
-// 	) {
-// 		// No runtime logic required.
-// 	}
-// };
+// export const WhereJoinTable: WhereJoinTableDecorator<any, any> = function <QOtm extends
+// IQEntityInternal, QMto extends IQEntityInternal>( addToJoinFunction: AddToJoinFunction<QOtm,
+// QMto>, // Function to add to the join joinFunctionWithOperator?: andOperator | orOperator //
+// How to add the function to the join ) { return function ( targetObject: any, propertyKey:
+// string ) { // No runtime logic required. } };
 exports.SubQuery = function (addToJoinFunction) {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
@@ -104,6 +98,11 @@ exports.OneToMany = function (elements) {
     };
 };
 exports.GeneratedValue = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+exports.SequenceGenerator = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };

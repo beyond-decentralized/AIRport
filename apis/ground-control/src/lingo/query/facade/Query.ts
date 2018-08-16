@@ -14,7 +14,7 @@ export interface JsonStatement {
 	/**
 	 * Type of statement
 	 */
-	T: JsonStatementType
+	// T: JsonStatementType
 	/**
 	 * WHERE
 	 */
