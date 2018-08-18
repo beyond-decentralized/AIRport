@@ -16,13 +16,13 @@ function getSqlFunctionCall(sqlFunction, parameters) {
     if (parameters) {
         parameters = parameters.map((parameter) => {
             switch (typeof parameter) {
-                case "boolean":
+                case 'boolean':
                     return WrapperFunctions_1.bool(parameter);
-                case "number":
+                case 'number':
                     return WrapperFunctions_1.num(parameter);
-                case "string":
+                case 'string':
                     return WrapperFunctions_1.str(parameter);
-                case "undefined":
+                case 'undefined':
                     throw `'undefined' cannot be used as a function parameter`;
             }
             if (parameter instanceof Date) {
@@ -88,7 +88,8 @@ exports.count = function (value) {
         return value.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.COUNT));
     }
     else {
-        return getFunctionObject(value).applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.COUNT));
+        return getFunctionObject(value)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.COUNT));
     }
 };
 exports.max = function (value) {
@@ -96,7 +97,8 @@ exports.max = function (value) {
         return value.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MAX));
     }
     else {
-        return getFunctionObject(value).applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MAX));
+        return getFunctionObject(value)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MAX));
     }
 };
 exports.min = function (value) {
@@ -104,7 +106,8 @@ exports.min = function (value) {
         return value.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MIN));
     }
     else {
-        return getFunctionObject(value).applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MIN));
+        return getFunctionObject(value)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MIN));
     }
 };
 exports.sum = function (numeric) {
@@ -114,6 +117,15 @@ exports.sum = function (numeric) {
     else {
         return new NumberField_1.QNumberFunction(numeric, utils)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.SUM));
+    }
+};
+exports.plus = function (numeric1, numeric2) {
+    if (numeric1 instanceof NumberField_1.QNumberField) {
+        return numeric1.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, [numeric2]));
+    }
+    else {
+        return new NumberField_1.QNumberFunction(numeric1, utils)
+            .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, [numeric2]));
     }
 };
 exports.ucase = function (stringValue) {

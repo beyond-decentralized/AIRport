@@ -10,6 +10,11 @@ import {
 	UtilsToken,
 }                         from '@airport/air-control'
 import {
+	ISequenceConsumer,
+	SequenceConsumerDaoToken,
+	SequenceDaoToken
+} from '@airport/airport-code'
+import {
 	DbEntity,
 	Primitive
 }                         from '@airport/ground-control'
@@ -19,11 +24,20 @@ import {
 	RecordHistoryId,
 	RepositoryTransactionHistoryId,
 	TransactionHistoryId
-} from '@airport/holding-pattern'
+}                         from '@airport/holding-pattern'
+import {IDomain}          from '@airport/territory'
 import {
 	Inject,
 	Service
 }                         from 'typedi'
+import {
+	ISequenceConsumerDao,
+	SequenceConsumerDao
+}                         from '../../node_modules/@airport/airport-code/lib/dao/SequenceConsumerDao'
+import {
+	ISequenceDao,
+	SequenceDao
+}                         from '../../node_modules/@airport/airport-code/lib/dao/SequenceDao'
 import {IdGeneratorToken} from '../InjectionTokens'
 
 export type NumRepositoryTransHistories = number
@@ -41,6 +55,10 @@ export interface TransactionHistoryIds {
 }
 
 export interface IIdGenerator {
+
+	init(
+		domain: IDomain
+	): Promise<void>;
 
 	generateTransactionHistoryIds(
 		numRepositoryTransHistories: NumRepositoryTransHistories,
@@ -70,14 +88,34 @@ export interface IIdGenerator {
 export class IdGenerator
 	implements IIdGenerator {
 
-	private lastIds: number[][]
+	private lastIds: number[][][]
+	private lastIds: number[][][]
+
+	private sequenceConsumer: ISequenceConsumer;
 
 	constructor(
 		@Inject(AirportDatabaseToken)
 		private airportDb: IAirportDatabase,
+		@Inject(SequenceConsumerDaoToken)
+		private sequenceConsumerDao: ISequenceConsumerDao,
+		@Inject(SequenceDaoToken)
+		private sequenceDao: ISequenceDao,
 		@Inject(UtilsToken)
 		private utils: IUtils
 	) {
+	}
+
+	async init(
+		domain: IDomain
+	): Promise<void> {
+		this.sequenceConsumer = {
+			createTimestamp: new Date().getTime(),
+			domain,
+			randomNumber: Math.random()
+		};
+
+		await this.sequenceConsumerDao.create(this.sequenceConsumer);
+		const sequences = await this.sequenceDao.findAll();
 	}
 
 	generateTransactionHistoryIds(

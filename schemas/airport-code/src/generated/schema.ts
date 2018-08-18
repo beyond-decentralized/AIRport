@@ -127,7 +127,6 @@ export const SCHEMA = {
 				{
 					"columns": [
 						{
-							"allocationSize": 1000,
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
@@ -244,13 +243,14 @@ export const SCHEMA = {
 				{
 					"columns": [
 						{
+							"allocationSize": 1000,
 							"index": 0,
-							"isGenerated": false,
+							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "SIZE",
+							"name": "ID",
 							"propertyRefs": [
 								{
-									"index": 2
+									"index": 0
 								}
 							],
 							"type": 4
@@ -259,7 +259,7 @@ export const SCHEMA = {
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "LAST_RESERVED_ID",
+							"name": "SIZE",
 							"propertyRefs": [
 								{
 									"index": 3
@@ -271,7 +271,7 @@ export const SCHEMA = {
 							"index": 2,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "RESERVATION_MILLIS",
+							"name": "LAST_RESERVED_ID",
 							"propertyRefs": [
 								{
 									"index": 4
@@ -281,18 +281,12 @@ export const SCHEMA = {
 						},
 						{
 							"index": 3,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
-									"oneTableIndex": 0,
-									"oneColumnIndex": 0
-								}
-							],
-							"name": "SEQUENCE_ID",
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "RESERVATION_MILLIS",
 							"propertyRefs": [
 								{
-									"index": 0
+									"index": 5
 								}
 							],
 							"type": 4
@@ -301,13 +295,31 @@ export const SCHEMA = {
 							"index": 4,
 							"manyRelationColumnRefs": [
 								{
-									"manyRelationIndex": 1,
+									"manyRelationIndex": 0,
 									"oneSchemaIndex": null,
 									"oneTableIndex": 1,
 									"oneColumnIndex": 0
 								}
 							],
 							"name": "CONSUMER_ID",
+							"propertyRefs": [
+								{
+									"index": 2
+								}
+							],
+							"type": 4
+						},
+						{
+							"index": 5,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 1,
+									"oneSchemaIndex": null,
+									"oneTableIndex": 0,
+									"oneColumnIndex": 0
+								}
+							],
+							"name": "SEQUENCE_ID",
 							"propertyRefs": [
 								{
 									"index": 1
@@ -318,7 +330,7 @@ export const SCHEMA = {
 					],
 					"idColumnRefs": [
 						{
-							"index": 3
+							"index": 0
 						},
 						{
 							"index": 4
@@ -330,28 +342,28 @@ export const SCHEMA = {
 					"name": "SequenceBlock",
 					"properties": [
 						{
+							"columnRef": {
+								"index": 0
+							},
 							"index": 0,
 							"isId": true,
-							"name": "sequence",
-							"relationRef": {
-								"index": 0
-							}
+							"name": "id"
 						},
 						{
 							"index": 1,
-							"isId": true,
-							"name": "consumer",
+							"isId": false,
+							"name": "sequence",
 							"relationRef": {
 								"index": 1
 							}
 						},
 						{
-							"columnRef": {
-								"index": 0
-							},
 							"index": 2,
-							"isId": false,
-							"name": "size"
+							"isId": true,
+							"name": "consumer",
+							"relationRef": {
+								"index": 0
+							}
 						},
 						{
 							"columnRef": {
@@ -359,13 +371,21 @@ export const SCHEMA = {
 							},
 							"index": 3,
 							"isId": false,
-							"name": "lastReservedId"
+							"name": "size"
 						},
 						{
 							"columnRef": {
 								"index": 2
 							},
 							"index": 4,
+							"isId": false,
+							"name": "lastReservedId"
+						},
+						{
+							"columnRef": {
+								"index": 3
+							},
+							"index": 5,
 							"isId": false,
 							"name": "reservationMillis"
 						}
@@ -376,18 +396,18 @@ export const SCHEMA = {
 							"isId": true,
 							"relationType": 1,
 							"propertyRef": {
-								"index": 0
+								"index": 2
 							},
-							"relationTableIndex": 0
+							"relationTableIndex": 1
 						},
 						{
 							"index": 1,
-							"isId": true,
+							"isId": false,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 1
+							"relationTableIndex": 0
 						}
 					],
 					"tableConfig": {

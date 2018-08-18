@@ -2,249 +2,61 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="843e89a7-1ff9-4818-8850-8278489b8319" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../../generators/runway/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/angular-settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/fuel-hydrant-system.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/webResources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dao/SequenceBlockDao.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dao/SequenceConsumerDao.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dao/SequenceDao.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/generated/qsequence.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/generated/qsequenceblock.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/generated/qsequenceconsumer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../apis/terminal-map/.idea/webResources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/schema/Property.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/schema/Property.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/core/field/Functions.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/core/field/Functions.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/core/field/Functions.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/core/field/Functions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/core/field/Functions.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/core/field/Functions.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/facade/UpdateProperties.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/facade/UpdateProperties.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/field/Functions.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/field/Functions.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/field/Functions.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/field/Functions.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/impl/core/field/Functions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/impl/core/field/Functions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/lingo/core/field/Functions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/lingo/core/field/Functions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/core/field/Functions.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/core/field/Functions.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/.idea/terminal-map.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/.idea/terminal-map.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/.idea/typescript-compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/.idea/typescript-compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/SharingAdaptor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/SharingAdaptor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/ChangeListConfig.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/ChangeListConfig.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/DeltaStoreConfig.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/DeltaStoreConfig.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/EntityConfig.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/EntityConfig.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/LocalStoreConfig.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/LocalStoreConfig.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/OfflineDeltaStoreConfig.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/OfflineDeltaStoreConfig.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/PersistenceConfig.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/PersistenceConfig.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/storeInfo.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/config/storeInfo.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/Selector.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/Selector.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalState.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalState.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/sync/ArrayChangeRecordIterator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/sync/ArrayChangeRecordIterator.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalState.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/+state/TerminalStore.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/+state/TerminalStore.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/+state/TerminalStore.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/+store/Store.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/+store/Store.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/+store/Store.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/InjectionTokens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/InjectionTokens.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/OracleQueryAdaptor.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SQLQueryAdaptor.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SqLiteQueryAdaptor.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/SqlJsQueryAdaptor.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/adaptor/WebSqlQueryAdaptor.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/AbstractEntityOrderByParser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/EntityOrderByParser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/ExactOrderByParser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/orderBy/MappedOrderByParser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/FlattenedResultParser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/PlainResultParser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/TreeQueryResultParser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/TreeResultParser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/EntityGraphResultParser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/EntityTreeResultParser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/GraphMtoMapper.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/GraphOtmMapper.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/result/entity/IEntityResultParser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/EntitySQLQuery.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/FieldSQLQuery.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/NonEntitySQLQuery.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/SheetSQLQuery.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/SqlFunctionField.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/TreeSQLQuery.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLDelete.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLInsertValues.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLNoJoinQuery.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLQuery.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLUpdate.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/query/sql/core/SQLWhereBase.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/ActiveQueries.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/IdGenerator.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/RecordState.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/SqlDriver.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/Store.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqLite/DDLManager.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqLite/SqLiteDriver.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/sqlJs/SqlJsDriver.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/webSql/SqlStorage.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/store/webSql/WebSqlDriver.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/validation/Validator.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/validation/Validator.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/validation/Validator.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/orchestration/InsertManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/src/orchestration/InsertManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/validation/Validator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/validation/Validator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/Selector.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/Selector.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/SqlSchemaBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/SqlSchemaBuilder.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/SqlSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/SqlSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/SqlSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/SqlSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/websql/WebSqlSchemaBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/websql/WebSqlSchemaBuilder.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/websql/WebSqlSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/websql/WebSqlSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/websql/WebSqlSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/websql/WebSqlSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/src/builder/SqlSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/builder/SqlSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/src/builder/websql/WebSqlSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/builder/websql/WebSqlSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/.idea/typescript-compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/.idea/typescript-compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/JsonSchemaBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/JsonSchemaBuilder.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/JsonSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/JsonSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/JsonSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/JsonSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/SProperty.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/SProperty.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/SSchemaBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/SSchemaBuilder.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/SSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/SSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/SSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/builder/schema/SSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/parser/DocEntry.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/parser/DocEntry.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/parser/EntityDefinitionGenerator.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/parser/EntityDefinitionGenerator.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/parser/EntityDefinitionGenerator.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/parser/EntityDefinitionGenerator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/parser/EntityDefinitionGenerator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/parser/EntityDefinitionGenerator.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/src/builder/schema/JsonSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/src/builder/schema/JsonSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/src/builder/schema/SProperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/src/builder/schema/SProperty.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/src/builder/schema/SSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/src/builder/schema/SSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/src/parser/DocEntry.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/src/parser/DocEntry.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/src/parser/EntityDefinitionGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/src/parser/EntityDefinitionGenerator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/typescript-compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/typescript-compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/InjectionTokens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/InjectionTokens.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/index.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/orderBy/EntityOrderByParser.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/orderBy/EntityOrderByParser.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/store/IdGenerator.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/store/IdGenerator.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/store/IdGenerator.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/store/IdGenerator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/store/IdGenerator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/store/IdGenerator.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/query/IndexedDbDriver.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/InjectionTokens.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/adaptor/OracleQueryAdaptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/adaptor/OracleQueryAdaptor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/adaptor/SQLQueryAdaptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/adaptor/SQLQueryAdaptor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/adaptor/SqLiteQueryAdaptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/adaptor/SqLiteQueryAdaptor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/adaptor/SqlJsQueryAdaptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/adaptor/SqlJsQueryAdaptor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/adaptor/WebSqlQueryAdaptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/adaptor/WebSqlQueryAdaptor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/orderBy/AbstractEntityOrderByParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/orderBy/AbstractEntityOrderByParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/orderBy/EntityOrderByParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/orderBy/EntityOrderByParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/orderBy/ExactOrderByParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/orderBy/ExactOrderByParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/orderBy/MappedOrderByParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/orderBy/MappedOrderByParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/result/FlattenedResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/result/FlattenedResultParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/result/PlainResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/result/PlainResultParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/result/TreeQueryResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/result/TreeQueryResultParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/result/TreeResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/result/TreeResultParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/result/entity/EntityGraphResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/result/entity/EntityGraphResultParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/result/entity/EntityTreeResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/result/entity/EntityTreeResultParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/result/entity/GraphMtoMapper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/result/entity/GraphMtoMapper.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/result/entity/GraphOtmMapper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/result/entity/GraphOtmMapper.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/result/entity/IEntityResultParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/result/entity/IEntityResultParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/sql/EntitySQLQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/sql/EntitySQLQuery.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/sql/FieldSQLQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/sql/FieldSQLQuery.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/sql/NonEntitySQLQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/sql/NonEntitySQLQuery.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/sql/SheetSQLQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/sql/SheetSQLQuery.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/sql/SqlFunctionField.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/sql/SqlFunctionField.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/sql/TreeSQLQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/sql/TreeSQLQuery.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/sql/core/SQLDelete.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/sql/core/SQLDelete.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/sql/core/SQLInsertValues.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/sql/core/SQLInsertValues.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/sql/core/SQLNoJoinQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/sql/core/SQLNoJoinQuery.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/sql/core/SQLQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/sql/core/SQLQuery.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/sql/core/SQLUpdate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/sql/core/SQLUpdate.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/sql/core/SQLWhereBase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/sql/core/SQLWhereBase.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/store/ActiveQueries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/ActiveQueries.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/store/IdGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/IdGenerator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/store/RecordState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/RecordState.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/store/SqlDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/SqlDriver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/store/Store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/Store.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/store/sqLite/DDLManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/sqLite/DDLManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/store/sqLite/SqLiteDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/sqLite/SqLiteDriver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/store/sqlJs/SqlJsDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/sqlJs/SqlJsDriver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/store/webSql/SqlStorage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/webSql/SqlStorage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/src/store/webSql/WebSqlDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/webSql/WebSqlDriver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/IdGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/IdGenerator.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/Sequence.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/Sequence.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SequenceBlockDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SequenceBlockDao.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SequenceBlockDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SequenceBlockDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SequenceBlockDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SequenceBlockDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/dao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/dao.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/dao.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/dao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/dao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/dao.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/ddl/SequenceBlock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/SequenceBlock.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/ddl/SequenceBlock.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/SequenceBlock.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/ddl/SequenceBlock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/SequenceBlock.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/ddl/SequenceConsumer.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/SequenceConsumer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/ddl/SequenceConsumer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/SequenceConsumer.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/ddl.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/ddl.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/ddl.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/ddl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ddl/ddl.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/ddl.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/baseDaos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDaos.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/baseDaos.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDaos.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/baseDaos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDaos.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/baseDmos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDmos.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/baseDmos.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDmos.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/baseDmos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/baseDmos.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/generated.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/generated.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/generated.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/generated.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/generated.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/generated.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/qSchema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/qSchema.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/generated/qSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/qSchema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/qSchema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/qSchema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/generated/qsequenceblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/qsequenceblock.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/generated/schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/schema.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/schema.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/schema.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/index.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ddl/Sequence.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/ddl/Sequence.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dao/SequenceBlockDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/SequenceBlockDao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dao/dao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/dao.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ddl/SequenceBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/ddl/SequenceBlock.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ddl/SequenceConsumer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/ddl/SequenceConsumer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ddl/ddl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/ddl/ddl.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/generated/baseDaos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/baseDaos.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/generated/baseDmos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/baseDmos.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/generated/generated.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/generated.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/generated/qSchema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/qSchema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/qsequence.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/qsequence.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/qsequenceblock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/qsequenceblock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/generated/qsequenceconsumer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/qsequenceconsumer.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/generated/schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/TransactionHistory.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/TransactionHistory.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/TransactionHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/TransactionHistory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/TransactionHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/TransactionHistory.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/src/ddl/history/TransactionHistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/src/ddl/history/TransactionHistory.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/common.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/common.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingNode/SharingNodeTerminalDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/sharingNode/SharingNodeTerminal.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/sharingNode/SharingNodeTerminal.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/sharingNode/SharingNodeTerminal.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/sharingNode/SharingNodeTerminal.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/qrepositorytransactionblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/qrepositorytransactionblock.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/schema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/schema.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnodeterminal.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnodeterminal.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/common.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/dao/sharingNode/SharingNodeTerminalDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/dao/sharingNode/SharingNodeTerminalDao.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/ddl/repositoryTransactionBlock/RepositoryTransactionBlock.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/ddl/sharingNode/SharingNodeTerminal.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/ddl/sharingNode/SharingNodeTerminal.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/repositoryTransactionBlock/qrepositorytransactionblock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/repositoryTransactionBlock/qrepositorytransactionblock.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingNode/qsharingnodeterminal.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/generated/sharingNode/qsharingnodeterminal.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../territory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../territory/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/lib/" />
@@ -299,6 +111,43 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="-86986560">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="3" />
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.18" value="1" />
+          <entry key="project.open.time.8" value="1" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts">
+        <counts>
+          <entry key="TypeScriptServerServiceImpl" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="ts" value="829" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="TypeScript" value="829" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="ts" value="8" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="TypeScript" value="8" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
     <splitter split-orientation="horizontal" split-proportion="0.5">
@@ -307,7 +156,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/dao/SequenceConsumerDao.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="437">
+                <state relative-caret-position="242">
                   <caret line="23" selection-start-line="23" selection-end-line="23" />
                   <folding>
                     <element signature="e#0#91#0" expanded="true" />
@@ -319,10 +168,10 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/dao/SequenceBlockDao.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="498">
-                  <caret line="54" column="31" lean-forward="true" selection-start-line="54" selection-start-column="31" selection-end-line="54" selection-end-column="31" />
+                <state relative-caret-position="-56">
+                  <caret line="50" column="32" selection-start-line="50" selection-start-column="32" selection-end-line="50" selection-end-column="32" />
                   <folding>
-                    <element signature="e#0#88#0" expanded="true" />
+                    <element signature="e#0#198#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -331,7 +180,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/dao/SequenceDao.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="57">
+                <state relative-caret-position="66">
                   <caret line="15" selection-start-line="15" selection-end-line="15" />
                   <folding>
                     <element signature="e#0#83#0" expanded="true" />
@@ -343,8 +192,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/package.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="152">
-                  <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
+                <state relative-caret-position="308">
+                  <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
                 </state>
               </provider>
             </entry>
@@ -352,12 +201,12 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ddl/Sequence.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="475">
-                  <caret line="25" selection-start-line="25" selection-end-line="25" />
+                <state relative-caret-position="308">
+                  <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
                   <folding>
                     <element signature="e#0#110#0" expanded="true" />
                   </folding>
@@ -365,20 +214,23 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ddl/SequenceBlock.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="418">
-                  <caret line="31" selection-start-line="31" selection-end-line="31" />
+                <state relative-caret-position="22">
+                  <caret line="12" selection-start-line="12" selection-end-line="12" />
+                  <folding>
+                    <element signature="e#0#154#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/ddl/SequenceConsumer.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="608">
-                  <caret line="32" column="59" selection-start-line="32" selection-start-column="59" selection-end-line="32" selection-end-column="59" />
+                <state relative-caret-position="462">
+                  <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
                   <folding>
                     <element signature="e#0#144#0" expanded="true" />
                   </folding>
@@ -416,13 +268,15 @@
         <option value="$PROJECT_DIR$/src/ddl/SequenceSetting.ts" />
         <option value="$PROJECT_DIR$/src/ddl/Sequence.ts" />
         <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/src/ddl/SequenceBlock.ts" />
-        <option value="$PROJECT_DIR$/src/ddl/SequenceConsumer.ts" />
         <option value="$PROJECT_DIR$/src/ddl/ddl.ts" />
         <option value="$PROJECT_DIR$/src/InjectionTokens.ts" />
         <option value="$PROJECT_DIR$/src/dao/SequenceDao.ts" />
         <option value="$PROJECT_DIR$/src/dao/SequenceConsumerDao.ts" />
         <option value="$PROJECT_DIR$/src/index.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/SequenceConsumerSequence.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/SequenceConsumer.ts" />
+        <option value="$PROJECT_DIR$/src/ddl/SequenceBlock.ts" />
+        <option value="$PROJECT_DIR$/src/dao/dao.ts" />
         <option value="$PROJECT_DIR$/src/dao/SequenceBlockDao.ts" />
       </list>
     </option>
@@ -487,7 +341,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../apis/terminal-map" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.TypeScript" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
@@ -523,17 +377,21 @@
       <workItem from="1534560738794" duration="184000" />
       <workItem from="1534560961911" duration="599000" />
       <workItem from="1534603289969" duration="3428000" />
+      <workItem from="1534609658804" duration="2628000" />
+      <workItem from="1534612421483" duration="38000" />
+      <workItem from="1534612520088" duration="1965000" />
+      <workItem from="1534617002388" duration="1042000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11789000" />
+    <option name="totallyTimeSpent" value="17462000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="25" width="1920" height="1055" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14918292" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.14910433" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -544,7 +402,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.33945945" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.33852544" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
@@ -575,84 +433,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ddl/ddl.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/InjectionTokens.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="6" column="70" selection-start-line="6" selection-start-column="70" selection-end-line="6" selection-end-column="70" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" column="32" selection-start-line="3" selection-start-column="32" selection-end-line="3" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dao/SequenceConsumerDao.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="e#0#91#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dao/SequenceDao.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-          <folding>
-            <element signature="e#0#83#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ddl/Sequence.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-          <folding>
-            <element signature="e#0#110#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ddl/SequenceConsumer.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="32" column="59" selection-start-line="32" selection-start-column="59" selection-end-line="32" selection-end-column="59" />
-          <folding>
-            <element signature="e#0#144#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ddl/SequenceBlock.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="31" selection-start-line="31" selection-end-line="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/@airport/check-in/node_modules/@airport/air-control/lib/lingo/core/repository/EntityDatabaseFacade.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="290">
@@ -667,12 +447,119 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/air-control/lib/lingo/query/facade/FieldQuery.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/air-control/lib/lingo/core/field/Functions.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="311">
+          <caret line="37" column="4" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/air-control/lib/lingo/query/api/NonEntityFind.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="23" column="4" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/SequenceConsumerSequence.ts" />
+    <entry file="file://$PROJECT_DIR$/src/InjectionTokens.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="6" column="70" selection-start-line="6" selection-start-column="70" selection-end-line="6" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/index.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="3" column="32" selection-start-line="3" selection-start-column="32" selection-end-line="3" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/ddl.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/dao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SequenceConsumerDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="e#0#91#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SequenceDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#0#83#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/Sequence.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#110#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/SequenceBlock.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#0#154#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/SequenceConsumer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#144#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/dao/SequenceBlockDao.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="54" column="31" lean-forward="true" selection-start-line="54" selection-start-column="31" selection-end-line="54" selection-end-column="31" />
+        <state relative-caret-position="-56">
+          <caret line="50" column="32" selection-start-line="50" selection-start-column="32" selection-end-line="50" selection-end-column="32" />
           <folding>
-            <element signature="e#0#88#0" expanded="true" />
+            <element signature="e#0#198#0" expanded="true" />
           </folding>
         </state>
       </provider>

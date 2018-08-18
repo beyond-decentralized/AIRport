@@ -1,6 +1,9 @@
 import { IAirportDatabase, IUtils } from '@airport/air-control';
 import { DbEntity } from '@airport/ground-control';
 import { OperationHistoryId, RecordHistoryId, RepositoryTransactionHistoryId, TransactionHistoryId } from '@airport/holding-pattern';
+import { IDomain } from '@airport/territory';
+import { ISequenceConsumerDao } from '../../node_modules/@airport/airport-code/lib/dao/SequenceConsumerDao';
+import { ISequenceDao } from '../../node_modules/@airport/airport-code/lib/dao/SequenceDao';
 export declare type NumRepositoryTransHistories = number;
 export declare type NumOperationTransHistories = number;
 export declare type NumRecordHistories = number;
@@ -11,6 +14,7 @@ export interface TransactionHistoryIds {
     transactionHistoryId: TransactionHistoryId;
 }
 export interface IIdGenerator {
+    init(domain: IDomain): Promise<void>;
     generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): TransactionHistoryIds;
     generateHoldingPatternEntityId(holdingPatternEntityName: string): number;
     generateEntityId(dbEntity: DbEntity, entity: any): number;
@@ -21,9 +25,14 @@ export interface IIdGenerator {
  */
 export declare class IdGenerator implements IIdGenerator {
     private airportDb;
+    private sequenceConsumerDao;
+    private sequenceDao;
     private utils;
     private lastIds;
-    constructor(airportDb: IAirportDatabase, utils: IUtils);
+    private lastIds;
+    private sequenceConsumer;
+    constructor(airportDb: IAirportDatabase, sequenceConsumerDao: ISequenceConsumerDao, sequenceDao: ISequenceDao, utils: IUtils);
+    init(domain: IDomain): Promise<void>;
     generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): TransactionHistoryIds;
     generateTransHistoryId(): number;
     generateRepoTransHistoryId(): number;

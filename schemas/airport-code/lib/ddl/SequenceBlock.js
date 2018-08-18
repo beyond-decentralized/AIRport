@@ -16,6 +16,11 @@ let SequenceBlock = class SequenceBlock {
 };
 __decorate([
     air_control_1.Id(),
+    air_control_1.GeneratedValue(),
+    air_control_1.SequenceGenerator({ allocationSize: 1000 }),
+    __metadata("design:type", Number)
+], SequenceBlock.prototype, "id", void 0);
+__decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: 'SEQUENCE_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", Sequence_1.Sequence)

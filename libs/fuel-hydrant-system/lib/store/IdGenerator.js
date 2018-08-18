@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const airport_code_1 = require("@airport/airport-code");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
@@ -20,9 +21,20 @@ const InjectionTokens_1 = require("../InjectionTokens");
  * Created by Papa on 9/2/2016.
  */
 let IdGenerator = class IdGenerator {
-    constructor(airportDb, utils) {
+    constructor(airportDb, sequenceConsumerDao, sequenceDao, utils) {
         this.airportDb = airportDb;
+        this.sequenceConsumerDao = sequenceConsumerDao;
+        this.sequenceDao = sequenceDao;
         this.utils = utils;
+    }
+    async init(domain) {
+        this.sequenceConsumer = {
+            createTimestamp: new Date().getTime(),
+            domain,
+            randomNumber: Math.random()
+        };
+        await this.sequenceConsumerDao.create(this.sequenceConsumer);
+        const sequences = await this.sequenceDao.findAll();
     }
     generateTransactionHistoryIds(numRepositoryTransHistories, numOperationTransHistories, numRecordHistories) {
     }
@@ -117,8 +129,10 @@ let IdGenerator = class IdGenerator {
 IdGenerator = __decorate([
     typedi_1.Service(InjectionTokens_1.IdGeneratorToken),
     __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object])
+    __param(1, typedi_1.Inject(airport_code_1.SequenceConsumerDaoToken)),
+    __param(2, typedi_1.Inject(airport_code_1.SequenceDaoToken)),
+    __param(3, typedi_1.Inject(air_control_1.UtilsToken)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], IdGenerator);
 exports.IdGenerator = IdGenerator;
 //# sourceMappingURL=IdGenerator.js.map

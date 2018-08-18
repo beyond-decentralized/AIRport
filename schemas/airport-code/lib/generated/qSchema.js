@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Sequence_1 = require("../ddl/Sequence");
-const SequenceBlock_1 = require("../ddl/SequenceBlock");
-const SequenceConsumer_1 = require("../ddl/SequenceConsumer");
+const sequence_1 = require("../ddl/sequence");
+const sequenceblock_1 = require("../ddl/sequenceblock");
+const sequenceconsumer_1 = require("../ddl/sequenceconsumer");
 const __constructors__ = {
-    Sequence: Sequence_1.Sequence,
-    SequenceBlock: SequenceBlock_1.SequenceBlock,
-    SequenceConsumer: SequenceConsumer_1.SequenceConsumer
+    Sequence: sequence_1.Sequence,
+    SequenceBlock: sequenceblock_1.SequenceBlock,
+    SequenceConsumer: sequenceconsumer_1.SequenceConsumer
 };
 exports.Q_SCHEMA = {
     __constructors__

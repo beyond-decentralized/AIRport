@@ -49,6 +49,9 @@ export interface minFunction {
 export interface sumFunction {
     (numeric: IQNumberField | number | RawFieldQuery<IQNumberField>): IQNumberField;
 }
+export interface plusFunction {
+    (numeric1: IQNumberField | number | RawFieldQuery<IQNumberField>, numeric2: IQNumberField | number | RawFieldQuery<IQNumberField>): IQNumberField;
+}
 /**
  * UCASE('')
  */

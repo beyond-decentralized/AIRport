@@ -20,7 +20,6 @@ export class SequenceConsumer {
 
 	@Id()
 	@GeneratedValue()
-	@SequenceGenerator({allocationSize: 1000})
 	id: SequenceConsumerId
 
 	@Column({name: 'CREATE_TIMESTAMP'})

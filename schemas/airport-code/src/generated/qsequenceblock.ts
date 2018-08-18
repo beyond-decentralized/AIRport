@@ -21,16 +21,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISequence,
-	SequenceEId,
-	SequenceEOptionalId,
-	SequenceEUpdateProperties,
-	SequenceESelect,
-	QSequence,
-	QSequenceQId,
-	QSequenceQRelation,
-} from './qsequence';
-import {
 	ISequenceConsumer,
 	SequenceConsumerEId,
 	SequenceConsumerEOptionalId,
@@ -40,6 +30,16 @@ import {
 	QSequenceConsumerQId,
 	QSequenceConsumerQRelation,
 } from './qsequenceconsumer';
+import {
+	ISequence,
+	SequenceEId,
+	SequenceEOptionalId,
+	SequenceEUpdateProperties,
+	SequenceESelect,
+	QSequence,
+	QSequenceQId,
+	QSequenceQRelation,
+} from './qsequence';
 
 
 declare function require(moduleName: string): any;
@@ -52,9 +52,9 @@ declare function require(moduleName: string): any;
 export interface ISequenceBlock {
 	
 	// Id Properties
+	id?: number;
 
 	// Id Relations
-	sequence?: ISequence;
 	consumer?: ISequenceConsumer;
 
 	// Non-Id Properties
@@ -63,6 +63,7 @@ export interface ISequenceBlock {
 	reservationMillis?: number;
 
 	// Non-Id Relations
+	sequence?: ISequence;
 
 	// Transient Properties
 
@@ -80,10 +81,10 @@ export interface ISequenceBlock {
 export interface SequenceBlockESelect
     extends IEntitySelectProperties, SequenceBlockEOptionalId, SequenceBlockEUpdateProperties {
 	// Id Relations - full property interfaces
-	sequence?: SequenceESelect;
 	consumer?: SequenceConsumerESelect;
 
   // Non-Id relations (including OneToMany's)
+	sequence?: SequenceESelect;
 
 }
 
@@ -93,9 +94,9 @@ export interface SequenceBlockESelect
 export interface SequenceBlockEId
     extends IEntityIdProperties {
 	// Id Properties
+	id: number | IQNumberField;
 
 	// Id Relations - Ids only
-	sequence: SequenceEId;
 	consumer: SequenceConsumerEId;
 
 }
@@ -105,9 +106,9 @@ export interface SequenceBlockEId
  */
 export interface SequenceBlockEOptionalId {
 	// Id Properties
+	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
-	sequence?: SequenceEOptionalId;
 	consumer?: SequenceConsumerEOptionalId;
 
 }
@@ -123,6 +124,7 @@ export interface SequenceBlockEUpdateProperties
 	reservationMillis?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+	sequence?: SequenceEOptionalId;
 
 }
 
@@ -135,6 +137,7 @@ export interface SequenceBlockEUpdateColumns
 	SIZE?: number | IQNumberField;
 	LAST_RESERVED_ID?: number | IQNumberField;
 	RESERVATION_MILLIS?: number | IQNumberField;
+	SEQUENCE_ID?: number | IQNumberField;
 
 }
 
@@ -165,9 +168,9 @@ extends SequenceBlockEId, SequenceBlockEUpdateColumns {
 export interface QSequenceBlock extends QEntity
 {
 	// Id Fields
+	id: IQNumberField;
 
 	// Id Relations
-	sequence: QSequenceQRelation;
 	consumer: QSequenceConsumerQRelation;
 
 	// Non-Id Fields
@@ -176,6 +179,7 @@ export interface QSequenceBlock extends QEntity
 	reservationMillis: IQNumberField;
 
 	// Non-Id Relations
+	sequence: QSequenceQRelation;
 
 }
 
@@ -185,9 +189,9 @@ export interface QSequenceBlockQId
 {
 	
 	// Id Fields
+	id: IQNumberField;
 
 	// Id Relations
-	sequence: QSequenceQId;
 	consumer: QSequenceConsumerQId;
 
 

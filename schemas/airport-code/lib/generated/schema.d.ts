@@ -5,7 +5,6 @@ export declare const SCHEMA: {
     "versions": {
         "entities": ({
             "columns": ({
-                "allocationSize": number;
                 "index": number;
                 "isGenerated": boolean;
                 "manyRelationColumnRefs": any[];
@@ -14,16 +13,6 @@ export declare const SCHEMA: {
                     "index": number;
                 }[];
                 "type": number;
-            } | {
-                "index": number;
-                "isGenerated": boolean;
-                "manyRelationColumnRefs": any[];
-                "name": string;
-                "propertyRefs": {
-                    "index": number;
-                }[];
-                "type": number;
-                "allocationSize"?: undefined;
             } | {
                 "index": number;
                 "manyRelationColumnRefs": {
@@ -37,7 +26,6 @@ export declare const SCHEMA: {
                     "index": number;
                 }[];
                 "type": number;
-                "allocationSize"?: undefined;
                 "isGenerated"?: undefined;
             })[];
             "idColumnRefs": {
@@ -79,6 +67,7 @@ export declare const SCHEMA: {
             };
         } | {
             "columns": ({
+                "allocationSize": number;
                 "index": number;
                 "isGenerated": boolean;
                 "manyRelationColumnRefs": any[];
@@ -87,6 +76,16 @@ export declare const SCHEMA: {
                     "index": number;
                 }[];
                 "type": number;
+            } | {
+                "index": number;
+                "isGenerated": boolean;
+                "manyRelationColumnRefs": any[];
+                "name": string;
+                "propertyRefs": {
+                    "index": number;
+                }[];
+                "type": number;
+                "allocationSize"?: undefined;
             } | {
                 "index": number;
                 "manyRelationColumnRefs": {
@@ -100,6 +99,7 @@ export declare const SCHEMA: {
                     "index": number;
                 }[];
                 "type": number;
+                "allocationSize"?: undefined;
                 "isGenerated"?: undefined;
             })[];
             "idColumnRefs": {
@@ -110,14 +110,6 @@ export declare const SCHEMA: {
             "isRepositoryEntity": boolean;
             "name": string;
             "properties": ({
-                "index": number;
-                "isId": boolean;
-                "name": string;
-                "relationRef": {
-                    "index": number;
-                };
-                "columnRef"?: undefined;
-            } | {
                 "columnRef": {
                     "index": number;
                 };
@@ -125,6 +117,14 @@ export declare const SCHEMA: {
                 "isId": boolean;
                 "name": string;
                 "relationRef"?: undefined;
+            } | {
+                "index": number;
+                "isId": boolean;
+                "name": string;
+                "relationRef": {
+                    "index": number;
+                };
+                "columnRef"?: undefined;
             })[];
             "relations": {
                 "index": number;
