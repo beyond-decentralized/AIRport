@@ -1,1 +1,0 @@
-{"version":3,"file":"WebSqlQueryAdaptor.js","sourceRoot":"","sources":["../../../src/query/adaptor/WebSqlQueryAdaptor.ts"],"names":[],"mappings":";;AAAA,6DAAwD;AAExD;;GAEG;AAEH,MAAa,kBAAmB,SAAQ,uCAAkB;IAEzD,qBAAqB,CACpB,SAAc,EACd,UAAkB,EAClB,KAAa,EACb,QAAqB,EACrB,YAAiB;QAEjB,OAAO,SAAS,CAAC,UAAU,CAAC,CAAC;IAC9B,CAAC;CAED;AAZD,gDAYC"}

@@ -1,5 +1,4 @@
-import { ColumnIndex, DatabaseForeignKey, DatabaseManyToOneElements, DatabaseOneToManyElements, PropertyIndex, SchemaReferenceByIndex } from "@airport/ground-control";
-import { EntityRelationType } from "@airport/ground-control";
+import { ColumnIndex, DatabaseForeignKey, DatabaseManyToOneElements, DatabaseOneToManyElements, EntityRelationType, PropertyIndex, SchemaReferenceByIndex } from '@airport/ground-control';
 /**
  * A property of an object in a schema.
  */
@@ -79,6 +78,10 @@ export interface SRelation {
  * A column in a schema table.
  */
 export interface SColumn extends SchemaReferenceByIndex<ColumnIndex> {
+    /**
+     * How many ids to allocate for a sequence at a time.
+     */
+    allocationSize?: number;
     /**
      * Verbatim DDL for the column (after the name of the column)
      */

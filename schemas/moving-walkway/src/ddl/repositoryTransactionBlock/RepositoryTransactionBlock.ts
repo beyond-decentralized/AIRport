@@ -8,20 +8,20 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-}                                      from "@airport/air-control";
+}                                     from "@airport/air-control";
 import {
 	RepositoryTransactionBlockContents,
 	RepoTransBlockSyncOutcomeType,
 	TmRepositoryTransactionBlockId
-}                                      from "@airport/arrivals-n-departures";
+}                                     from "@airport/arrivals-n-departures";
 import {
 	Repository,
 	RepositoryTransactionHistory,
-	Terminal
-}                                      from "@airport/holding-pattern";
-import {MissingRecordRepoTransBlock}   from "../missingRecord/MissingRecordRepoTransBlock";
-import {SharingMessageRepoTransBlock}  from "../sharingMessage/SharingMessageRepoTransBlock";
-import {SharingNodeRepoTransBlock}     from "../sharingNode/SharingNodeRepoTransBlock";
+}                                     from "@airport/holding-pattern";
+import {Terminal}                     from '@airport/travel-document-checkpoint'
+import {MissingRecordRepoTransBlock}  from "../missingRecord/MissingRecordRepoTransBlock";
+import {SharingMessageRepoTransBlock} from "../sharingMessage/SharingMessageRepoTransBlock";
+import {SharingNodeRepoTransBlock}    from "../sharingNode/SharingNodeRepoTransBlock";
 import {RepoTransBlockSchemaToChange} from "./RepoTransBlockSchemaToChange";
 
 export type RepositoryTransactionBlockHash = string;

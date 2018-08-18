@@ -10,8 +10,6 @@ import { IHistoryManager } from "./orchestration/HistoryManager";
 import { IInsertManager } from "./orchestration/InsertManager";
 import { IQueryManager } from "./orchestration/QueryManager";
 import { IUpdateManager } from "./orchestration/UpdateManager";
-export declare const ActiveQueriesToken: Token<any>;
-export declare const IdGeneratorToken: Token<any>;
 export declare const DatabaseManagerToken: Token<IDatabaseManager>;
 export declare const DeleteManagerToken: Token<IDeleteManager>;
 export declare const HistoryManagerToken: Token<IHistoryManager>;

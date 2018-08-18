@@ -2,7 +2,5 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const typedi_1 = require("typedi");
 exports.TransactionalConnectorToken = new typedi_1.Token();
-class TestClass {
-}
-exports.TestClass = TestClass;
+exports.StoreDriverToken = new typedi_1.Token();
 //# sourceMappingURL=InjectionTokens.js.map

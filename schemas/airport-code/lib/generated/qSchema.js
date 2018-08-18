@@ -1,10 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Shard_1 = require("../ddl/Shard");
-const ShardedRecord_1 = require("../ddl/ShardedRecord");
+const Sequence_1 = require("../ddl/Sequence");
+const SequenceBlock_1 = require("../ddl/SequenceBlock");
+const SequenceConsumer_1 = require("../ddl/SequenceConsumer");
 const __constructors__ = {
-    Shard: Shard_1.Shard,
-    ShardedRecord: ShardedRecord_1.ShardedRecord
+    Sequence: Sequence_1.Sequence,
+    SequenceBlock: SequenceBlock_1.SequenceBlock,
+    SequenceConsumer: SequenceConsumer_1.SequenceConsumer
 };
 exports.Q_SCHEMA = {
     __constructors__

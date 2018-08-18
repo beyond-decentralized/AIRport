@@ -3,8 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const approach_lighting_system_1 = require("@airport/approach-lighting-system");
 const runway_edge_lighting_1 = require("@airport/runway-edge-lighting");
 const typedi_1 = require("typedi");
-exports.ActiveQueriesToken = new typedi_1.Token();
-exports.IdGeneratorToken = new typedi_1.Token();
 exports.DatabaseManagerToken = new typedi_1.Token();
 exports.DeleteManagerToken = new typedi_1.Token();
 exports.HistoryManagerToken = new typedi_1.Token();

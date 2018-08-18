@@ -3,8 +3,9 @@ export declare const SCHEMA: {
     "index": any;
     "name": string;
     "versions": {
-        "entities": {
-            "columns": {
+        "entities": ({
+            "columns": ({
+                "allocationSize": number;
                 "index": number;
                 "isGenerated": boolean;
                 "manyRelationColumnRefs": any[];
@@ -13,7 +14,32 @@ export declare const SCHEMA: {
                     "index": number;
                 }[];
                 "type": number;
-            }[];
+            } | {
+                "index": number;
+                "isGenerated": boolean;
+                "manyRelationColumnRefs": any[];
+                "name": string;
+                "propertyRefs": {
+                    "index": number;
+                }[];
+                "type": number;
+                "allocationSize"?: undefined;
+            } | {
+                "index": number;
+                "manyRelationColumnRefs": {
+                    "manyRelationIndex": number;
+                    "oneSchemaIndex": number;
+                    "oneTableIndex": number;
+                    "oneColumnIndex": number;
+                }[];
+                "name": string;
+                "propertyRefs": {
+                    "index": number;
+                }[];
+                "type": number;
+                "allocationSize"?: undefined;
+                "isGenerated"?: undefined;
+            })[];
             "idColumnRefs": {
                 "index": number;
             }[];
@@ -21,16 +47,99 @@ export declare const SCHEMA: {
             "isLocal": boolean;
             "isRepositoryEntity": boolean;
             "name": string;
-            "properties": {
+            "properties": ({
                 "columnRef": {
                     "index": number;
                 };
                 "index": number;
                 "isId": boolean;
                 "name": string;
+                "relationRef"?: undefined;
+            } | {
+                "index": number;
+                "isId": boolean;
+                "name": string;
+                "relationRef": {
+                    "index": number;
+                };
+                "columnRef"?: undefined;
+            })[];
+            "relations": {
+                "index": number;
+                "isId": boolean;
+                "relationType": number;
+                "propertyRef": {
+                    "index": number;
+                };
+                "relationTableIndex": number;
+                "relationTableSchemaIndex": number;
             }[];
-            "relations": any[];
-        }[];
+            "tableConfig": {
+                "name": string;
+            };
+        } | {
+            "columns": ({
+                "index": number;
+                "isGenerated": boolean;
+                "manyRelationColumnRefs": any[];
+                "name": string;
+                "propertyRefs": {
+                    "index": number;
+                }[];
+                "type": number;
+            } | {
+                "index": number;
+                "manyRelationColumnRefs": {
+                    "manyRelationIndex": number;
+                    "oneSchemaIndex": any;
+                    "oneTableIndex": number;
+                    "oneColumnIndex": number;
+                }[];
+                "name": string;
+                "propertyRefs": {
+                    "index": number;
+                }[];
+                "type": number;
+                "isGenerated"?: undefined;
+            })[];
+            "idColumnRefs": {
+                "index": number;
+            }[];
+            "index": number;
+            "isLocal": boolean;
+            "isRepositoryEntity": boolean;
+            "name": string;
+            "properties": ({
+                "index": number;
+                "isId": boolean;
+                "name": string;
+                "relationRef": {
+                    "index": number;
+                };
+                "columnRef"?: undefined;
+            } | {
+                "columnRef": {
+                    "index": number;
+                };
+                "index": number;
+                "isId": boolean;
+                "name": string;
+                "relationRef"?: undefined;
+            })[];
+            "relations": {
+                "index": number;
+                "isId": boolean;
+                "relationType": number;
+                "propertyRef": {
+                    "index": number;
+                };
+                "relationTableIndex": number;
+            }[];
+            "tableConfig": {
+                "name": string;
+            };
+        })[];
+        "integerVersion": number;
         "referencedSchemas": any[];
         "versionString": string;
     }[];

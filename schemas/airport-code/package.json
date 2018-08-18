@@ -4,7 +4,10 @@
     "ddlDir": "src/ddl",
     "generatedDir": "src/generated",
     "node_modulesLinks": {
-      "pathToProject": "schemas/airport-code"
+      "pathToProject": "schemas/airport-code",
+      "pathsToReferencedSchemas": {
+        "@airport/territory": "schemas/territory"
+      }
     },
     "tablePrefix": "AP"
   },

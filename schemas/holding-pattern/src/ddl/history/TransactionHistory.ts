@@ -7,18 +7,18 @@ import {
 	OneToMany,
 	Table,
 	Transient
-}                                       from "@airport/air-control";
+}                                       from '@airport/air-control'
 import {
 	ATransactionHistory,
 	SyncSchemaMap,
 	TransactionType
-} from "@airport/ground-control";
-import {IOperationHistory,}             from "../../generated/history/qoperationhistory";
-import {IRecordHistory,}                from "../../generated/history/qrecordhistory";
-import {IRecordHistoryNewValue}         from "../../generated/history/qrecordhistorynewvalue";
-import {IRecordHistoryOldValue,}        from "../../generated/history/qrecordhistoryoldvalue";
-import {IRepositoryTransactionHistory,} from "../../generated/history/qrepositorytransactionhistory";
-import {ITransactionHistory}            from "../../generated/history/qtransactionhistory";
+}                                       from '@airport/ground-control'
+import {IOperationHistory,}             from '../../generated/history/qoperationhistory'
+import {IRecordHistory,}                from '../../generated/history/qrecordhistory'
+import {IRecordHistoryNewValue}         from '../../generated/history/qrecordhistorynewvalue'
+import {IRecordHistoryOldValue,}        from '../../generated/history/qrecordhistoryoldvalue'
+import {IRepositoryTransactionHistory,} from '../../generated/history/qrepositorytransactionhistory'
+import {ITransactionHistory}            from '../../generated/history/qtransactionhistory'
 
 export type TransactionHistoryNumberOfOperations = number;
 
@@ -26,41 +26,44 @@ export type TransactionHistoryNumberOfOperations = number;
  * Created by Papa on 5/1/2017.
  */
 
+export type TransactionHistoryId = number
+
 @Entity()
-@Table({name: "TRANSACTION_HISTORY"})
+@Table({name: 'TRANSACTION_HISTORY'})
 export class TransactionHistory
-	implements ITransactionHistory, ATransactionHistory {
+	implements ITransactionHistory,
+	           ATransactionHistory {
 
 	@GeneratedValue()
 	@Id()
-	id: number;
+	id: TransactionHistoryId
 
 	@Column({name: 'TRANSACTION_TYPE'})
 	@DbNumber()
-	transactionType: TransactionType;
+	transactionType: TransactionType
 
-	@OneToMany({mappedBy: "repoTransHistory"})
-	repositoryTransactionHistories: IRepositoryTransactionHistory[] = [];
-
-	@Transient()
-	repoTransHistoryMap: { [repositoryId: number]: IRepositoryTransactionHistory } = {};
+	@OneToMany({mappedBy: 'repoTransHistory'})
+	repositoryTransactionHistories: IRepositoryTransactionHistory[] = []
 
 	@Transient()
-	schemaMap: SyncSchemaMap = new SyncSchemaMap();
+	repoTransHistoryMap: { [repositoryId: number]: IRepositoryTransactionHistory } = {}
 
 	@Transient()
-	allOperationHistory: IOperationHistory[] = [];
+	schemaMap: SyncSchemaMap = new SyncSchemaMap()
 
 	@Transient()
-	allRecordHistory: IRecordHistory[] = [];
+	allOperationHistory: IOperationHistory[] = []
 
 	@Transient()
-	allRecordHistoryNewValues: IRecordHistoryNewValue[] = [];
+	allRecordHistory: IRecordHistory[] = []
 
 	@Transient()
-	allRecordHistoryOldValues: IRecordHistoryOldValue[] = [];
+	allRecordHistoryNewValues: IRecordHistoryNewValue[] = []
 
 	@Transient()
-	numberOfOperations: TransactionHistoryNumberOfOperations = 0;
+	allRecordHistoryOldValues: IRecordHistoryOldValue[] = []
+
+	@Transient()
+	numberOfOperations: TransactionHistoryNumberOfOperations = 0
 
 }

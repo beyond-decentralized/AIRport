@@ -27,10 +27,6 @@ __decorate([
     __metadata("design:type", SequenceConsumer_1.SequenceConsumer)
 ], SequenceBlock.prototype, "consumer", void 0);
 __decorate([
-    air_control_1.Column({ name: 'FIRST_RESERVED_ID' }),
-    __metadata("design:type", Number)
-], SequenceBlock.prototype, "firstReservedId", void 0);
-__decorate([
     air_control_1.Column({ name: 'LAST_RESERVED_ID' }),
     __metadata("design:type", Number)
 ], SequenceBlock.prototype, "lastReservedId", void 0);

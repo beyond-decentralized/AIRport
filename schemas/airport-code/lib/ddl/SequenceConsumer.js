@@ -15,6 +15,8 @@ let SequenceConsumer = class SequenceConsumer {
 };
 __decorate([
     air_control_1.Id(),
+    air_control_1.GeneratedValue(),
+    air_control_1.SequenceGenerator({ allocationSize: 1000 }),
     __metadata("design:type", Number)
 ], SequenceConsumer.prototype, "id", void 0);
 __decorate([
@@ -26,7 +28,8 @@ __decorate([
     __metadata("design:type", Number)
 ], SequenceConsumer.prototype, "randomNumber", void 0);
 __decorate([
-    air_control_1.Column({ name: 'DOMAIN' }),
+    air_control_1.ManyToOne(),
+    air_control_1.JoinColumn({ name: 'DOMAIN_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", territory_1.Domain)
 ], SequenceConsumer.prototype, "domain", void 0);
 SequenceConsumer = __decorate([

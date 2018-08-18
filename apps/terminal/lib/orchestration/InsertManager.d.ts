@@ -1,12 +1,11 @@
-import { IAirportDatabase } from "@airport/air-control";
-import { IStoreDriver, PortableQuery } from "@airport/ground-control";
-import { IActor, ITransactionHistory, OperationHistoryDmo, RecordHistoryDmo, RepositoryTransactionHistoryDmo, TransactionHistoryDmo } from "@airport/holding-pattern";
-import { DistributionStrategy, PlatformType } from "@airport/terminal-map";
-import { IRepositoryManager } from "../core/repository/RepositoryManager";
-import { IOfflineDeltaStore } from "../data/OfflineDeltaStore";
-import { IdGenerator } from "../store/IdGenerator";
-import { IHistoryManager } from "./HistoryManager";
-import { ITransactionManager } from "./TransactionManager";
+import { IAirportDatabase } from '@airport/air-control';
+import { IdGenerator } from '@airport/fuel-hydrant-system';
+import { IStoreDriver, PortableQuery } from '@airport/ground-control';
+import { IActor, ITransactionHistory, OperationHistoryDmo, RecordHistoryDmo, RepositoryTransactionHistoryDmo, TransactionHistoryDmo } from '@airport/holding-pattern';
+import { DistributionStrategy, ITransactionManager, PlatformType } from '@airport/terminal-map';
+import { IRepositoryManager } from '../core/repository/RepositoryManager';
+import { IOfflineDeltaStore } from '../data/OfflineDeltaStore';
+import { IHistoryManager } from './HistoryManager';
 export declare type RecordId = number;
 export interface IInsertManager {
     insertValues(portableQuery: PortableQuery, actor: IActor): Promise<number>;

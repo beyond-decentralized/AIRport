@@ -10,7 +10,7 @@ import {Sequence}         from './Sequence'
 import {SequenceConsumer} from './SequenceConsumer'
 
 
-export type SequenceBlockFirstReservedId = number
+export type SequenceBlockSize = number
 export type SequenceBlockLastReservedId = number
 export type SequenceBlockReservationMillis = number
 
@@ -28,8 +28,7 @@ export class SequenceBlock {
 	@JoinColumn({name: 'CONSUMER_ID', referencedColumnName: 'ID'})
 	consumer: SequenceConsumer
 
-	@Column({name: 'FIRST_RESERVED_ID'})
-	firstReservedId: SequenceBlockFirstReservedId
+	size: SequenceBlockSize
 
 	@Column({name: 'LAST_RESERVED_ID'})
 	lastReservedId: SequenceBlockLastReservedId

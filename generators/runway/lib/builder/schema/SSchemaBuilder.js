@@ -374,6 +374,7 @@ class SSchemaBuilder {
 			but isn't of type "number" or "string"`;
         }
         const column = {
+            allocationSize: aProperty.allocationSize,
             columnDefinition: aProperty.columnDefinition,
             idIndex: isIdProperty ? entity.numIdColumns++ : undefined,
             index: entity.numColumns++,

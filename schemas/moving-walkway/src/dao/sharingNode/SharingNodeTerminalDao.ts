@@ -2,21 +2,21 @@ import {
 	and,
 	IUtils,
 	UtilsToken
-} from "@airport/air-control";
-import {TerminalId}                  from "@airport/holding-pattern";
+}                                    from '@airport/air-control'
+import {TerminalId}                  from '@airport/arrivals-n-departures'
 import {
 	Inject,
 	Service
-} from "typedi";
-import {SharingNodeId}               from "../../ddl/ddl";
+}                                    from 'typedi'
+import {SharingNodeId}               from '../../ddl/ddl'
 import {
 	BaseSharingNodeTerminalDao,
 	IBaseSharingNodeTerminalDao,
 	ISharingNodeTerminal,
 	Q,
 	QSharingNodeTerminal
-}                                    from "../../generated/generated";
-import {SharingNodeTerminalDaoToken} from "../../InjectionTokens";
+}                                    from '../../generated/generated'
+import {SharingNodeTerminalDaoToken} from '../../InjectionTokens'
 
 export interface ISharingNodeTerminalDao
 	extends IBaseSharingNodeTerminalDao {
@@ -37,16 +37,16 @@ export class SharingNodeTerminalDao
 		@Inject(UtilsToken)
 			utils: IUtils
 	) {
-		super(utils);
+		super(utils)
 	}
 
 	async findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(
 		terminalId: TerminalId,
 		sharingNodeIds: SharingNodeId[]
 	): Promise<Map<SharingNodeId, ISharingNodeTerminal>> {
-		const sharingNodeTmMapBySharingNodeId: Map<SharingNodeId, ISharingNodeTerminal> = new Map();
+		const sharingNodeTmMapBySharingNodeId: Map<SharingNodeId, ISharingNodeTerminal> = new Map()
 
-		let snd: QSharingNodeTerminal;
+		let snd: QSharingNodeTerminal
 		const sharingNodeTerminals = await this.db.find.tree({
 			select: {},
 			from: [snd = Q.SharingNodeTerminal],
@@ -54,13 +54,13 @@ export class SharingNodeTerminalDao
 				snd.terminal.id.equals(terminalId),
 				snd.sharingNode.id.in(sharingNodeIds)
 			)
-		});
+		})
 
 		for (const sharingNodeTerminal of sharingNodeTerminals) {
-			sharingNodeTmMapBySharingNodeId.set(sharingNodeTerminal.sharingNode.id, sharingNodeTerminal);
+			sharingNodeTmMapBySharingNodeId.set(sharingNodeTerminal.sharingNode.id, sharingNodeTerminal)
 		}
 
-		return sharingNodeTmMapBySharingNodeId;
+		return sharingNodeTmMapBySharingNodeId
 	}
 
 }

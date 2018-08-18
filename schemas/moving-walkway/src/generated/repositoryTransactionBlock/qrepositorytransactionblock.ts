@@ -29,6 +29,8 @@ import {
 	QTerminal,
 	QTerminalQId,
 	QTerminalQRelation,
+} from '@airport/travel-document-checkpoint';
+import {
 	IRepository,
 	RepositoryEId,
 	RepositoryEOptionalId,

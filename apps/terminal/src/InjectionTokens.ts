@@ -17,8 +17,6 @@ import {IInsertManager}      from "./orchestration/InsertManager";
 import {IQueryManager}       from "./orchestration/QueryManager";
 import {IUpdateManager}      from "./orchestration/UpdateManager";
 
-export const ActiveQueriesToken = new Token<IActiveQueries>();
-export const IdGeneratorToken = new Token<IIdGenerator>();
 export const DatabaseManagerToken = new Token<IDatabaseManager>();
 export const DeleteManagerToken = new Token<IDeleteManager>();
 export const HistoryManagerToken = new Token<IHistoryManager>();

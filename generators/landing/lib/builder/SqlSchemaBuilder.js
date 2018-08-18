@@ -16,9 +16,9 @@ let SqlSchemaBuilder = class SqlSchemaBuilder {
     }
     async build(jsonSchema) {
     }
-    async buildTable(jsonEntity) {
+    async buildTable(jsonSchema, jsonEntity) {
         const columnsDdl = jsonEntity.columns.map((jsonColumn) => {
-            let columnDdl = `${jsonColumn.name} ${this.getColumnType(jsonEntity, jsonColumn)}`;
+            let columnDdl = `${jsonColumn.name} ${this.getColumnType(jsonSchema, jsonEntity, jsonColumn)}`;
             return columnDdl;
         });
         const createDdl = `CREATE TABLE ${jsonEntity.name} (

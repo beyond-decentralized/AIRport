@@ -38,4 +38,5 @@ export class Sequence {
 
 	@Column({name: 'SEQUENCE_INCREMENT_BY'})
 	incrementBy: SequenceIncrementBy
+
 }

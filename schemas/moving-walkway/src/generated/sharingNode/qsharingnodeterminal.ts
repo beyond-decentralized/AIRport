@@ -39,7 +39,7 @@ import {
 	QTerminal,
 	QTerminalQId,
 	QTerminalQRelation,
-} from '@airport/holding-pattern';
+} from '@airport/travel-document-checkpoint';
 
 
 declare function require(moduleName: string): any;

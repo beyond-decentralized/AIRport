@@ -1,7 +1,11 @@
 import {
 	Column,
 	Entity,
+	GeneratedValue,
 	Id,
+	JoinColumn,
+	ManyToOne,
+	SequenceGenerator,
 	Table
 }               from '@airport/air-control'
 import {Domain} from '@airport/territory'
@@ -15,6 +19,8 @@ export type SequenceConsumerRandomNumber = number
 export class SequenceConsumer {
 
 	@Id()
+	@GeneratedValue()
+	@SequenceGenerator({allocationSize: 1000})
 	id: SequenceConsumerId
 
 	@Column({name: 'CREATE_TIMESTAMP'})
@@ -23,7 +29,8 @@ export class SequenceConsumer {
 	@Column({name: 'RANDOM_NUMBER'})
 	randomNumber: SequenceConsumerRandomNumber
 
-	@Column({name: 'DOMAIN'})
+	@ManyToOne()
+	@JoinColumn({name: 'DOMAIN_ID', referencedColumnName: 'ID'})
 	domain: Domain
 
 }

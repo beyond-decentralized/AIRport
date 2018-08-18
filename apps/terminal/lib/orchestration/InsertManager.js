@@ -12,15 +12,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b;
 const air_control_1 = require("@airport/air-control");
+const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const terminal_map_1 = require("@airport/terminal-map");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
-const IdGenerator_1 = require("../store/IdGenerator");
-const TransactionManager_1 = require("./TransactionManager");
 let InsertManager = class InsertManager {
     constructor(airportDb, dataStore, idGenerator, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager) {
         this.airportDb = airportDb;
@@ -45,7 +43,8 @@ let InsertManager = class InsertManager {
         return this.internalInsertValues(portableQuery, actor, true);
     }
     async internalInsertValues(portableQuery, actor, getIds = false) {
-        const dbEntity = this.airportDb.schemas[portableQuery.schemaIndex].entities[portableQuery.tableIndex];
+        const dbEntity = this.airportDb.schemas[portableQuery.schemaIndex]
+            .currentVersion.entities[portableQuery.tableIndex];
         let ids;
         if (!dbEntity.isLocal) {
             ids = await this.ensureRepositoryEntityIdValues(actor, dbEntity, portableQuery.jsonQuery);
@@ -86,7 +85,7 @@ let InsertManager = class InsertManager {
             }
             let repositoryId = null;
             if (dbEntity.isRepositoryEntity) {
-                repositoryId = dbEntity.columnMap[air_control_1.repositoryEntity.FOREIGN_KEY].index;
+                repositoryId = dbEntity.columnMap[ground_control_1.repositoryEntity.FOREIGN_KEY].index;
                 if (!repositoryId && repositoryId !== 0) {
                     throw `@Column({ name: 'REPOSITORY_ID'}) value is not specified on insert for '${dbEntity.name}.${idColumn.name}'.`;
                 }
@@ -141,9 +140,9 @@ let InsertManager = class InsertManager {
         const jsonInsertValues = portableQuery.jsonQuery;
         let operationsByRepo = [];
         let repoTransHistories = [];
-        const repositoryIdIndex = dbEntity.columnMap[air_control_1.repositoryEntity.REPOSITORY_ID].index;
-        const actorIdIndex = dbEntity.columnMap[air_control_1.repositoryEntity.ACTOR_ID].index;
-        const actorRecordIdIndex = dbEntity.columnMap[air_control_1.repositoryEntity.ACTOR_RECORD_ID].index;
+        const repositoryIdIndex = dbEntity.columnMap[ground_control_1.repositoryEntity.REPOSITORY_ID].index;
+        const actorIdIndex = dbEntity.columnMap[ground_control_1.repositoryEntity.ACTOR_ID].index;
+        const actorRecordIdIndex = dbEntity.columnMap[ground_control_1.repositoryEntity.ACTOR_RECORD_ID].index;
         let repositoryIdColumnNumber;
         let actorIdColumnNumber;
         let actorRecordIdColumnNumber;
@@ -199,20 +198,20 @@ let InsertManager = class InsertManager {
 };
 InsertManager = __decorate([
     typedi_1.Service(InjectionTokens_1.InsertManagerToken),
-    __param(0, typedi_1.Inject(_ => air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(_ => InjectionTokens_1.StoreDriverToken)),
-    __param(2, typedi_1.Inject(_ => InjectionTokens_1.IdGeneratorToken)),
-    __param(3, typedi_1.Inject(_ => InjectionTokens_1.HistoryManagerToken)),
-    __param(4, typedi_1.Inject(_ => InjectionTokens_1.OfflineDeltaStoreToken)),
-    __param(5, typedi_1.Inject(_ => holding_pattern_1.OperationHistoryDmoToken)),
-    __param(6, typedi_1.Inject(_ => holding_pattern_1.RecordHistoryDmoToken)),
-    __param(7, typedi_1.Inject(_ => InjectionTokens_1.RepositoryManagerToken)),
-    __param(8, typedi_1.Inject(_ => holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
-    __param(9, typedi_1.Inject(_ => holding_pattern_1.TransactionHistoryDmoToken)),
-    __param(10, typedi_1.Inject(_ => InjectionTokens_1.TransactionManagerToken)),
-    __metadata("design:paramtypes", [Object, Object, typeof (_a = typeof IdGenerator_1.IdGenerator !== "undefined" && IdGenerator_1.IdGenerator) === "function" ? _a : Object, Object, Object, holding_pattern_1.OperationHistoryDmo,
+    __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
+    __param(1, typedi_1.Inject(InjectionTokens_1.StoreDriverToken)),
+    __param(2, typedi_1.Inject(fuel_hydrant_system_1.IdGeneratorToken)),
+    __param(3, typedi_1.Inject(InjectionTokens_1.HistoryManagerToken)),
+    __param(4, typedi_1.Inject(InjectionTokens_1.OfflineDeltaStoreToken)),
+    __param(5, typedi_1.Inject(holding_pattern_1.OperationHistoryDmoToken)),
+    __param(6, typedi_1.Inject(holding_pattern_1.RecordHistoryDmoToken)),
+    __param(7, typedi_1.Inject(InjectionTokens_1.RepositoryManagerToken)),
+    __param(8, typedi_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
+    __param(9, typedi_1.Inject(holding_pattern_1.TransactionHistoryDmoToken)),
+    __param(10, typedi_1.Inject(terminal_map_1.TransactionManagerToken)),
+    __metadata("design:paramtypes", [Object, Object, fuel_hydrant_system_1.IdGenerator, Object, Object, holding_pattern_1.OperationHistoryDmo,
         holding_pattern_1.RecordHistoryDmo, Object, holding_pattern_1.RepositoryTransactionHistoryDmo,
-        holding_pattern_1.TransactionHistoryDmo, typeof (_b = typeof TransactionManager_1.ITransactionManager !== "undefined" && TransactionManager_1.ITransactionManager) === "function" ? _b : Object])
+        holding_pattern_1.TransactionHistoryDmo, Object])
 ], InsertManager);
 exports.InsertManager = InsertManager;
 //# sourceMappingURL=InsertManager.js.map

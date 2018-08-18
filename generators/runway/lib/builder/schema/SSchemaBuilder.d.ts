@@ -1,7 +1,7 @@
-import { DbSchema } from "@airport/ground-control";
-import { Configuration } from "../../options/Options";
-import { EntityCandidate } from "../../parser/EntityCandidate";
-import { SIndexedSchema } from "./SSchema";
+import { DbSchema } from '@airport/ground-control';
+import { Configuration } from '../../options/Options';
+import { EntityCandidate } from '../../parser/EntityCandidate';
+import { SIndexedSchema } from './SSchema';
 export declare class SSchemaBuilder {
     private config;
     private entityMapByName;

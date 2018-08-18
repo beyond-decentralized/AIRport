@@ -1,7 +1,7 @@
-import { IUtils } from "@airport/air-control";
-import { TerminalId } from "@airport/holding-pattern";
-import { SharingNodeId } from "../../ddl/ddl";
-import { BaseSharingNodeTerminalDao, IBaseSharingNodeTerminalDao, ISharingNodeTerminal } from "../../generated/generated";
+import { IUtils } from '@airport/air-control';
+import { TerminalId } from '@airport/arrivals-n-departures';
+import { SharingNodeId } from '../../ddl/ddl';
+import { BaseSharingNodeTerminalDao, IBaseSharingNodeTerminalDao, ISharingNodeTerminal } from '../../generated/generated';
 export interface ISharingNodeTerminalDao extends IBaseSharingNodeTerminalDao {
     findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(terminalId: TerminalId, sharingNodeIds: SharingNodeId[]): Promise<Map<SharingNodeId, ISharingNodeTerminal>>;
 }

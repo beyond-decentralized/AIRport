@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
 const holding_pattern_1 = require("@airport/holding-pattern");
+const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
 // FIXME: SECURITY - ensure that a given RepoTransBlock is processed only once by a given TM
 // FIXME: SECURITY - ensure that a given RepoTransBlock is processed only once by a given AGT
 /**
@@ -58,7 +59,7 @@ __decorate([
 __decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: "SOURCE_TERMINAL_ID", referencedColumnName: "ID" }),
-    __metadata("design:type", holding_pattern_1.Terminal)
+    __metadata("design:type", travel_document_checkpoint_1.Terminal)
 ], RepositoryTransactionBlock.prototype, "source", void 0);
 __decorate([
     air_control_1.ManyToOne(),

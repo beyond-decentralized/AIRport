@@ -119,6 +119,7 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
     function serializeSymbol(symbol) {
         const declarations = symbol.declarations;
         let isGenerated = false;
+        let allocationSize = undefined;
         let isId = false;
         let isMappedSuperclass = false;
         let isTransient = false;
@@ -133,6 +134,9 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
                     switch (decorator.name) {
                         case 'GeneratedValue':
                             isGenerated = true;
+                            break;
+                        case 'SequenceGenerator':
+                            allocationSize = decorator.values[0].allocationSize;
                             break;
                         case 'Id':
                             isId = true;
@@ -196,6 +200,7 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
             }
         }
         return {
+            allocationSize,
             decorators,
             isGenerated,
             isId,
@@ -431,7 +436,7 @@ export default WhereJoinTableFunction`;
                     const compilerOptions = { module: ts.ModuleKind.CommonJS };
                     const transpilationResult = ts.transpileModule(typescriptDefinition, {
                         compilerOptions: compilerOptions,
-                        moduleName: "WhereJoinTableModule"
+                        moduleName: 'WhereJoinTableModule'
                     });
                     value = transpilationResult.outputText;
                     break;

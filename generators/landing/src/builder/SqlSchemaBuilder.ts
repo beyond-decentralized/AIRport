@@ -22,12 +22,13 @@ export abstract class SqlSchemaBuilder
 	}
 
 	async buildTable(
+		jsonSchema: JsonSchema,
 		jsonEntity: JsonSchemaEntity
 	): Promise<void> {
 		const columnsDdl: string[] = jsonEntity.columns.map((
 			jsonColumn: JsonSchemaColumn
 		) => {
-			let columnDdl = `${jsonColumn.name} ${this.getColumnType(jsonEntity, jsonColumn)}`
+			let columnDdl = `${jsonColumn.name} ${this.getColumnType(jsonSchema, jsonEntity, jsonColumn)}`
 
 			return columnDdl
 		})
@@ -59,6 +60,7 @@ export abstract class SqlSchemaBuilder
 	}
 
 	abstract getColumnType(
+		jsonSchema: JsonSchema,
 		jsonEntity: JsonSchemaEntity,
 		column: JsonSchemaColumn
 	): string

@@ -1,6 +1,6 @@
 import { TerminalPassword, TerminalId } from "@airport/arrivals-n-departures";
-import { ITerminal } from "@airport/holding-pattern";
 import { TerminalSyncStatus } from "@airport/ground-control";
+import { ITerminal } from '@airport/travel-document-checkpoint';
 import { SharingNode } from "./SharingNode";
 export declare class SharingNodeTerminal {
     sharingNode: SharingNode;

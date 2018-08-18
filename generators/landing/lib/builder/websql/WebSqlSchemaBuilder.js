@@ -17,9 +17,14 @@ let WebSqlSchemaBuilder = class WebSqlSchemaBuilder extends SqlSchemaBuilder_1.S
     constructor() {
         super();
     }
-    getColumnType(jsonEntity, jsonColumn) {
+    getColumnType(jsonSchema, jsonEntity, jsonColumn) {
         const primaryKeySuffix = this.getPrimaryKeySuffix(jsonEntity, jsonColumn);
-        const autoincrementSuffix = jsonColumn.isGenerated ? ' AUTOINCREMENT' : '';
+        let autoincrementSuffix = '';
+        if (jsonColumn.isGenerated
+            && jsonSchema.name === '@airport/airportcode'
+            && jsonEntity.name === 'SEQUENCE_SETTINGS') {
+            autoincrementSuffix = ' AUTOINCREMENT';
+        }
         const suffix = primaryKeySuffix + autoincrementSuffix;
         switch (jsonColumn.type) {
             case ground_control_1.SQLDataType.ANY:

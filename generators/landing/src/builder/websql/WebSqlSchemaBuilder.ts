@@ -1,8 +1,9 @@
 import {
+	JsonSchema,
 	JsonSchemaColumn,
 	JsonSchemaEntity,
 	SQLDataType
-}                           from '@airport/ground-control'
+} from '@airport/ground-control'
 import {Service}            from 'typedi'
 import {SchemaBuilderToken} from '../../InjectionTokens'
 import {SqlSchemaBuilder}   from '../SqlSchemaBuilder'
@@ -16,12 +17,18 @@ export class WebSqlSchemaBuilder
 	}
 
 	getColumnType(
+		jsonSchema: JsonSchema,
 		jsonEntity: JsonSchemaEntity,
 		jsonColumn: JsonSchemaColumn
 	): string {
 		const primaryKeySuffix = this.getPrimaryKeySuffix(jsonEntity, jsonColumn)
 
-		const autoincrementSuffix = jsonColumn.isGenerated ? ' AUTOINCREMENT' : ''
+		let autoincrementSuffix = ''
+		if(jsonColumn.isGenerated
+			&& jsonSchema.name === '@airport/airportcode'
+			&& jsonEntity.name === 'SEQUENCE_SETTINGS') {
+		  autoincrementSuffix = ' AUTOINCREMENT'
+		}
 
 		const suffix = primaryKeySuffix + autoincrementSuffix
 

@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
-const ground_control_2 = require("@airport/ground-control");
 const SSchemaBuilder_1 = require("./SSchemaBuilder");
 class JsonSchemaBuilder {
     constructor(config, entityMapByName, existingSchemaString) {
@@ -38,6 +37,7 @@ class JsonSchemaBuilder {
         const jsonEntities = sIndexedSchema.entities.map(sIndexedEntity => {
             const sEntity = sIndexedEntity.entity;
             const columns = sIndexedEntity.columns.map(sColumn => ({
+                allocationSize: sColumn.allocationSize,
                 columnDefinition: sColumn.columnDefinition,
                 index: sColumn.index,
                 isGenerated: sColumn.isGenerated,
@@ -46,7 +46,7 @@ class JsonSchemaBuilder {
                 propertyRefs: sColumn.propertyRefs.map(index => ({
                     index
                 })),
-                type: ground_control_2.getSqlDataType(sColumn.type),
+                type: ground_control_1.getSqlDataType(sColumn.type),
             }));
             columns.sort((a, b) => a.index < b.index ? -1 : 1);
             const [properties, relations] = this.getPropertiesAndRelations(sIndexedSchema, sIndexedEntity, columns);
@@ -69,8 +69,9 @@ class JsonSchemaBuilder {
             name: sIndexedSchema.schema.name,
             versions: [{
                     entities: jsonEntities,
+                    integerVersion: 1,
                     referencedSchemas: [],
-                    versionString: "1.0.0"
+                    versionString: '1.0.0'
                 }]
         };
     }
@@ -143,9 +144,9 @@ class JsonSchemaBuilder {
     }
     buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationSchemaIndex, relationTableIndex, columns) {
         switch (sRelation.relationType) {
-            case ground_control_2.EntityRelationType.MANY_TO_ONE:
+            case ground_control_1.EntityRelationType.MANY_TO_ONE:
                 break;
-            case ground_control_2.EntityRelationType.ONE_TO_MANY:
+            case ground_control_1.EntityRelationType.ONE_TO_MANY:
                 // Currently only need to build manyRelationColumnRefs for ManyToOne relations.
                 return;
             default:

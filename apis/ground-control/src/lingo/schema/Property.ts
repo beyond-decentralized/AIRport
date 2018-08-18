@@ -78,6 +78,13 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex> {
 	 */
 	isGenerated?: boolean;
 
+
+	/**
+	 * How many ids to allocate at a time
+	 */
+	allocationSize: number;
+
+
 	/**
 	 * One-to-Many relations that are mapped to this column.
 	 */

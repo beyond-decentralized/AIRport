@@ -11,13 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
-/**
- * Created by Papa on 5/1/2017.
- */
 let TransactionHistory = class TransactionHistory {
-    /**
-     * Created by Papa on 5/1/2017.
-     */
     constructor() {
         this.repositoryTransactionHistories = [];
         this.repoTransHistoryMap = {};
@@ -40,7 +34,7 @@ __decorate([
     __metadata("design:type", Number)
 ], TransactionHistory.prototype, "transactionType", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "repoTransHistory" }),
+    air_control_1.OneToMany({ mappedBy: 'repoTransHistory' }),
     __metadata("design:type", Array)
 ], TransactionHistory.prototype, "repositoryTransactionHistories", void 0);
 __decorate([
@@ -73,7 +67,7 @@ __decorate([
 ], TransactionHistory.prototype, "numberOfOperations", void 0);
 TransactionHistory = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: "TRANSACTION_HISTORY" })
+    air_control_1.Table({ name: 'TRANSACTION_HISTORY' })
 ], TransactionHistory);
 exports.TransactionHistory = TransactionHistory;
 //# sourceMappingURL=TransactionHistory.js.map

@@ -12,7 +12,8 @@ export interface Decorator {
 }
 
 export interface DocEntry {
-	name?: string;
+	allocationSize?: number;
+	constructors?: DocEntry[];
 	fileName?: string;
 	decorators?: Decorator[];
 	documentation?: string;
@@ -20,11 +21,11 @@ export interface DocEntry {
 	isId?: boolean;
 	isMappedSuperclass?: boolean;
 	isTransient?: boolean;
-	type?: string;
-	constructors?: DocEntry[];
+	name?: string;
 	parameters?: DocEntry[];
 	properties?: PropertyDocEntry[];
 	returnType?: string;
+	type?: string;
 }
 
 export interface PropertyDocEntry extends DocEntry {

@@ -1,18 +1,22 @@
 import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
-import { Shard } from '../ddl/Shard';
-import { QShard } from './qshard';
-import { ShardedRecord } from '../ddl/ShardedRecord';
-import { QShardedRecord } from './qshardedrecord';
+import { Sequence } from '../ddl/Sequence';
+import { QSequence } from './qsequence';
+import { SequenceBlock } from '../ddl/SequenceBlock';
+import { QSequenceBlock } from './qsequenceblock';
+import { SequenceConsumer } from '../ddl/SequenceConsumer';
+import { QSequenceConsumer } from './qsequenceconsumer';
 
 import {
-	IBaseShardDmo,
-	IBaseShardedRecordDmo
+	IBaseSequenceDmo,
+	IBaseSequenceBlockDmo,
+	IBaseSequenceConsumerDmo
 } from './baseDmos';
 
 import {
-	IBaseShardDao,
-	IBaseShardedRecordDao
+	IBaseSequenceDao,
+	IBaseSequenceBlockDao,
+	IBaseSequenceConsumerDao
 } from './baseDaos';
 
 export interface LocalQSchema extends AirportQSchema {
@@ -20,23 +24,27 @@ export interface LocalQSchema extends AirportQSchema {
   db: DbSchema;
 
 	dmo: {
-		Shard: IBaseShardDmo;
-		ShardedRecord: IBaseShardedRecordDmo;
+		Sequence: IBaseSequenceDmo;
+		SequenceBlock: IBaseSequenceBlockDmo;
+		SequenceConsumer: IBaseSequenceConsumerDmo;
 	}
 
 	dao: {
-		Shard: IBaseShardDao;
-		ShardedRecord: IBaseShardedRecordDao;
+		Sequence: IBaseSequenceDao;
+		SequenceBlock: IBaseSequenceBlockDao;
+		SequenceConsumer: IBaseSequenceConsumerDao;
 	}
 	
-	Shard: QShard;
-	ShardedRecord: QShardedRecord;
+	Sequence: QSequence;
+	SequenceBlock: QSequenceBlock;
+	SequenceConsumer: QSequenceConsumer;
 
 }
 
 const __constructors__ = {
-	Shard: Shard,
-	ShardedRecord: ShardedRecord
+	Sequence: Sequence,
+	SequenceBlock: SequenceBlock,
+	SequenceConsumer: SequenceConsumer
 };
 
 export const Q_SCHEMA: LocalQSchema = <any>{

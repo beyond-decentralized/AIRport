@@ -1,14 +1,20 @@
 import { IDmo } from "@airport/air-control";
 import { Dmo } from "@airport/check-in";
-import { IShard, ShardESelect, ShardECreateProperties, ShardEUpdateProperties, ShardEId, QShard } from './qshard';
-import { IShardedRecord, ShardedRecordESelect, ShardedRecordECreateProperties, ShardedRecordEUpdateProperties, ShardedRecordEId, QShardedRecord } from './qshardedrecord';
-export interface IBaseShardDmo extends IDmo<IShard, ShardESelect, ShardECreateProperties, ShardEUpdateProperties, ShardEId, QShard> {
+import { ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, QSequence } from './qsequence';
+import { ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock } from './qsequenceblock';
+import { ISequenceConsumer, SequenceConsumerESelect, SequenceConsumerECreateProperties, SequenceConsumerEUpdateProperties, SequenceConsumerEId, QSequenceConsumer } from './qsequenceconsumer';
+export interface IBaseSequenceDmo extends IDmo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, QSequence> {
 }
-export declare class BaseShardDmo extends Dmo<IShard, ShardESelect, ShardECreateProperties, ShardEUpdateProperties, ShardEId, QShard> implements IBaseShardDmo {
+export declare class BaseSequenceDmo extends Dmo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, QSequence> implements IBaseSequenceDmo {
     constructor();
 }
-export interface IBaseShardedRecordDmo extends IDmo<IShardedRecord, ShardedRecordESelect, ShardedRecordECreateProperties, ShardedRecordEUpdateProperties, ShardedRecordEId, QShardedRecord> {
+export interface IBaseSequenceBlockDmo extends IDmo<ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock> {
 }
-export declare class BaseShardedRecordDmo extends Dmo<IShardedRecord, ShardedRecordESelect, ShardedRecordECreateProperties, ShardedRecordEUpdateProperties, ShardedRecordEId, QShardedRecord> implements IBaseShardedRecordDmo {
+export declare class BaseSequenceBlockDmo extends Dmo<ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock> implements IBaseSequenceBlockDmo {
+    constructor();
+}
+export interface IBaseSequenceConsumerDmo extends IDmo<ISequenceConsumer, SequenceConsumerESelect, SequenceConsumerECreateProperties, SequenceConsumerEUpdateProperties, SequenceConsumerEId, QSequenceConsumer> {
+}
+export declare class BaseSequenceConsumerDmo extends Dmo<ISequenceConsumer, SequenceConsumerESelect, SequenceConsumerECreateProperties, SequenceConsumerEUpdateProperties, SequenceConsumerEId, QSequenceConsumer> implements IBaseSequenceConsumerDmo {
     constructor();
 }

@@ -1,5 +1,6 @@
 import { RepositoryTransactionBlockContents, RepoTransBlockSyncOutcomeType, TmRepositoryTransactionBlockId } from "@airport/arrivals-n-departures";
-import { Repository, RepositoryTransactionHistory, Terminal } from "@airport/holding-pattern";
+import { Repository, RepositoryTransactionHistory } from "@airport/holding-pattern";
+import { Terminal } from '@airport/travel-document-checkpoint';
 import { MissingRecordRepoTransBlock } from "../missingRecord/MissingRecordRepoTransBlock";
 import { SharingMessageRepoTransBlock } from "../sharingMessage/SharingMessageRepoTransBlock";
 import { SharingNodeRepoTransBlock } from "../sharingNode/SharingNodeRepoTransBlock";
