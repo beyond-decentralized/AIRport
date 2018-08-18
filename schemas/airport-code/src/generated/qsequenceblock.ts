@@ -55,7 +55,7 @@ export interface ISequenceBlock {
 	id?: number;
 
 	// Id Relations
-	consumer?: ISequenceConsumer;
+	sequenceConsumer?: ISequenceConsumer;
 
 	// Non-Id Properties
 	size?: number;
@@ -81,7 +81,7 @@ export interface ISequenceBlock {
 export interface SequenceBlockESelect
     extends IEntitySelectProperties, SequenceBlockEOptionalId, SequenceBlockEUpdateProperties {
 	// Id Relations - full property interfaces
-	consumer?: SequenceConsumerESelect;
+	sequenceConsumer?: SequenceConsumerESelect;
 
   // Non-Id relations (including OneToMany's)
 	sequence?: SequenceESelect;
@@ -97,7 +97,7 @@ export interface SequenceBlockEId
 	id: number | IQNumberField;
 
 	// Id Relations - Ids only
-	consumer: SequenceConsumerEId;
+	sequenceConsumer: SequenceConsumerEId;
 
 }
 
@@ -109,7 +109,7 @@ export interface SequenceBlockEOptionalId {
 	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
-	consumer?: SequenceConsumerEOptionalId;
+	sequenceConsumer?: SequenceConsumerEOptionalId;
 
 }
 
@@ -171,7 +171,7 @@ export interface QSequenceBlock extends QEntity
 	id: IQNumberField;
 
 	// Id Relations
-	consumer: QSequenceConsumerQRelation;
+	sequenceConsumer: QSequenceConsumerQRelation;
 
 	// Non-Id Fields
 	size: IQNumberField;
@@ -192,7 +192,7 @@ export interface QSequenceBlockQId
 	id: IQNumberField;
 
 	// Id Relations
-	consumer: QSequenceConsumerQId;
+	sequenceConsumer: QSequenceConsumerQId;
 
 
 }

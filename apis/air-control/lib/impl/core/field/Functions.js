@@ -6,6 +6,7 @@ const DateField_1 = require("./DateField");
 const NumberField_1 = require("./NumberField");
 const OperableField_1 = require("./OperableField");
 const StringField_1 = require("./StringField");
+const UntypedField_1 = require("./UntypedField");
 const WrapperFunctions_1 = require("./WrapperFunctions");
 let utils;
 function setUtilsForFunctions(utilsForFunctions) {
@@ -128,6 +129,57 @@ exports.plus = function (numeric1, numeric2) {
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, [numeric2]));
     }
 };
+function coalesce(...values) {
+    if (!values || !values.length) {
+        throw new Error(`No arguments provided to the coalesce function`);
+    }
+    let dataType;
+    const firstValue = values[1];
+    if (firstValue instanceof UntypedField_1.QUntypedField) {
+        dataType = ground_control_1.SQLDataType.ANY;
+    }
+    else if (firstValue instanceof BooleanField_1.QBooleanField || typeof firstValue === 'boolean') {
+        dataType = ground_control_1.SQLDataType.BOOLEAN;
+    }
+    else if (firstValue instanceof DateField_1.QDateField || firstValue instanceof Date) {
+        dataType = ground_control_1.SQLDataType.DATE;
+    }
+    else if (firstValue instanceof NumberField_1.QNumberField || typeof firstValue === 'number') {
+        dataType = ground_control_1.SQLDataType.NUMBER;
+    }
+    else if (firstValue instanceof StringField_1.QStringField || typeof firstValue === 'string') {
+        dataType = ground_control_1.SQLDataType.STRING;
+    }
+    else {
+        dataType = ground_control_1.SQLDataType.ANY;
+    }
+    const otherValues = values.slice(1, values.length);
+    if (firstValue instanceof OperableField_1.QOperableField) {
+        return firstValue.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.COALESCE, otherValues));
+    }
+    else {
+        switch (dataType) {
+            case ground_control_1.SQLDataType.ANY:
+                return new UntypedField_1.QUntypedFunction(firstValue, utils)
+                    .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, otherValues));
+            case ground_control_1.SQLDataType.BOOLEAN:
+                return new BooleanField_1.QBooleanFunction(firstValue, utils)
+                    .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, otherValues));
+            case ground_control_1.SQLDataType.DATE:
+                return new DateField_1.QDateFunction(firstValue, utils)
+                    .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, otherValues));
+            case ground_control_1.SQLDataType.NUMBER:
+                return new NumberField_1.QNumberFunction(firstValue, utils)
+                    .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, otherValues));
+            case ground_control_1.SQLDataType.STRING:
+                return new StringField_1.QStringFunction(firstValue, utils)
+                    .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, otherValues));
+            default:
+                throw new Error(`Unexpected SQLDataType: ` + dataType);
+        }
+    }
+}
+exports.coalesce = coalesce;
 exports.ucase = function (stringValue) {
     if (stringValue instanceof StringField_1.QStringField) {
         return stringValue.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.UCASE));

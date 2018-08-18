@@ -7,9 +7,12 @@ import {
 	JSONSqlFunctionCall,
 	JsonTreeQuery,
 	OperationCategory,
+	SQLDataType,
 	SqlFunction,
 	SqlOperator
 }                          from '@airport/ground-control'
+import {IQUntypedField}    from '../../..'
+import {IQBooleanField}    from '../../../lingo/core/field/BooleanField'
 import {IQDateField}       from '../../../lingo/core/field/DateField'
 import {
 	absFunction,
@@ -72,6 +75,10 @@ import {
 	QStringField,
 	QStringFunction
 }                          from './StringField'
+import {
+	QUntypedField,
+	QUntypedFunction
+}                          from './UntypedField'
 import {
 	bool,
 	date,
@@ -225,6 +232,70 @@ export const plus: plusFunction = function (
 	}
 }
 
+export function coalesce(
+	...values: (IQBooleanField | boolean | RawFieldQuery<IQBooleanField>)[]
+): IQBooleanField
+export function coalesce(
+	...values: (IQDateField | Date | RawFieldQuery<IQDateField>)[]
+): IQDateField
+export function coalesce(
+	...values: (IQNumberField | number | RawFieldQuery<IQNumberField>)[]
+): IQNumberField
+export function coalesce(
+	...values: (IQStringField | string | RawFieldQuery<IQStringField>)[]
+): IQStringField
+export function coalesce(
+	...values: (IQUntypedField | any | RawFieldQuery<IQUntypedField>)[]
+): IQUntypedField
+export function coalesce(
+	...values: any[]
+): IQOperableField<any, any, any, any> {
+	if (!values || !values.length) {
+		throw new Error(`No arguments provided to the coalesce function`)
+	}
+
+	let dataType: SQLDataType
+	const firstValue = values[1]
+	if (firstValue instanceof QUntypedField) {
+		dataType = SQLDataType.ANY
+	} else if (firstValue instanceof QBooleanField || typeof firstValue === 'boolean') {
+		dataType = SQLDataType.BOOLEAN
+	} else if (firstValue instanceof QDateField || firstValue instanceof Date) {
+		dataType = SQLDataType.DATE
+	} else if (firstValue instanceof QNumberField || typeof firstValue === 'number') {
+		dataType = SQLDataType.NUMBER
+	} else if (firstValue instanceof QStringField || typeof firstValue === 'string') {
+		dataType = SQLDataType.STRING
+	} else {
+		dataType = SQLDataType.ANY
+	}
+
+	const otherValues = values.slice(1, values.length)
+	if (firstValue instanceof QOperableField) {
+		return firstValue.applySqlFunction(getSqlFunctionCall(SqlFunction.COALESCE, otherValues))
+	} else {
+		switch (dataType) {
+			case SQLDataType.ANY:
+				return new QUntypedFunction(<any>firstValue, utils)
+					.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues))
+			case SQLDataType.BOOLEAN:
+				return new QBooleanFunction(<any>firstValue, utils)
+					.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues))
+			case SQLDataType.DATE:
+				return new QDateFunction(<any>firstValue, utils)
+					.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues))
+			case SQLDataType.NUMBER:
+				return new QNumberFunction(<any>firstValue, utils)
+					.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues))
+			case SQLDataType.STRING:
+				return new QStringFunction(<any>firstValue, utils)
+					.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues))
+			default:
+				throw new Error(`Unexpected SQLDataType: ` + dataType)
+		}
+	}
+}
+
 export const ucase: ucaseFunction = function (
 	stringValue: IQStringField | string | RawFieldQuery<IQStringField>
 ): IQStringField {
@@ -340,7 +411,7 @@ export const distinct: distinctFunction = function <ISelect>(
 export class QDistinctFunction<ISelect>
 	extends StandAloneFunction
 	implements IQDistinctFunction<ISelect>,
-						 IAppliable<JSONClauseObject, any> {
+	           IAppliable<JSONClauseObject, any> {
 
 	__appliedFunctions__: JSONSqlFunctionCall[] = []
 
@@ -403,8 +474,8 @@ export const exists: existsFunction = function <IME extends ITreeEntity>(
 export class QExistsFunction<IME extends ITreeEntity>
 	extends StandAloneFunction
 	implements IQExistsFunction,
-						 IAppliable<JSONClauseObject, any>,
-						 JSONBaseOperation {
+	           IAppliable<JSONClauseObject, any>,
+	           JSONBaseOperation {
 
 	__appliedFunctions__: JSONSqlFunctionCall[] = []
 	operator                                    = SqlOperator.EXISTS

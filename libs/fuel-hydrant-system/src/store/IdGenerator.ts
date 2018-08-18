@@ -8,37 +8,36 @@ import {
 	RawSheetQuery,
 	unionAll,
 	UtilsToken,
-}                         from '@airport/air-control'
+}                             from '@airport/air-control'
 import {
+	ISequence,
+	ISequenceBlock,
+	ISequenceBlockDao,
 	ISequenceConsumer,
+	SequenceBlockDaoToken,
 	SequenceConsumerDaoToken,
 	SequenceDaoToken
-} from '@airport/airport-code'
+}                             from '@airport/airport-code'
 import {
+	DbColumn,
 	DbEntity,
 	Primitive
-}                         from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	OperationHistoryId,
 	Q,
 	RecordHistoryId,
 	RepositoryTransactionHistoryId,
 	TransactionHistoryId
-}                         from '@airport/holding-pattern'
-import {IDomain}          from '@airport/territory'
+}                             from '@airport/holding-pattern'
+import {IDomain}              from '@airport/territory'
 import {
 	Inject,
 	Service
-}                         from 'typedi'
-import {
-	ISequenceConsumerDao,
-	SequenceConsumerDao
-}                         from '../../node_modules/@airport/airport-code/lib/dao/SequenceConsumerDao'
-import {
-	ISequenceDao,
-	SequenceDao
-}                         from '../../node_modules/@airport/airport-code/lib/dao/SequenceDao'
-import {IdGeneratorToken} from '../InjectionTokens'
+}                             from 'typedi'
+import {ISequenceConsumerDao} from '../../node_modules/@airport/airport-code/lib/dao/SequenceConsumerDao'
+import {ISequenceDao}         from '../../node_modules/@airport/airport-code/lib/dao/SequenceDao'
+import {IdGeneratorToken}     from '../InjectionTokens'
 
 export type NumRepositoryTransHistories = number
 export type NumOperationTransHistories = number
@@ -88,14 +87,37 @@ export interface IIdGenerator {
 export class IdGenerator
 	implements IIdGenerator {
 
-	private lastIds: number[][][]
-	private lastIds: number[][][]
+	private lastIds: number[][][]         = []
+	private lastReservedIds: number[][][] = []
+	private sequences: ISequence[][][]    = []
 
-	private sequenceConsumer: ISequenceConsumer;
+	private sequenceConsumer: ISequenceConsumer
+
+	private operationHistoryDbEntity: DbEntity
+	private recordHistoryDbEntity: DbEntity
+	private repoTransHistoryDbEntity: DbEntity
+	private transHistoryDbEntity: DbEntity
+
+	private operationHistoryIds: number[]
+	private recordHistoryIds: number[]
+	private repoTransHistoryIds: number[]
+	private transHistoryIds: number[]
+
+	private operationHistoryReservedIds: number[]
+	private recordHistoryReservedIds: number[]
+	private repoTransHistoryReservedIds: number[]
+	private transHistoryReservedIds: number[]
+
+	private operationHistorySeqBlock: ISequenceBlock
+	private recordHistorySeqBlock: ISequenceBlock
+	private repoTransHistorySeqBlock: ISequenceBlock
+	private transHistorySeqBlock: ISequenceBlock
 
 	constructor(
 		@Inject(AirportDatabaseToken)
 		private airportDb: IAirportDatabase,
+		@Inject(SequenceBlockDaoToken)
+		private sequenceBlockDao: ISequenceBlockDao,
 		@Inject(SequenceConsumerDaoToken)
 		private sequenceConsumerDao: ISequenceConsumerDao,
 		@Inject(SequenceDaoToken)
@@ -112,10 +134,121 @@ export class IdGenerator
 			createTimestamp: new Date().getTime(),
 			domain,
 			randomNumber: Math.random()
-		};
+		}
 
-		await this.sequenceConsumerDao.create(this.sequenceConsumer);
-		const sequences = await this.sequenceDao.findAll();
+		await this.sequenceConsumerDao.create(this.sequenceConsumer)
+		const sequences = await this.sequenceDao.findAll()
+
+		for (const sequence of sequences) {
+			this.utils.ensureChildArray(
+				this.utils.ensureChildArray(this.sequences, sequence.schemaIndex),
+				sequence.tableIndex)[sequence.columnIndex] = sequence
+			this.utils.ensureChildArray(
+				this.utils.ensureChildArray(this.lastIds, sequence.schemaIndex),
+				sequence.tableIndex)
+			this.utils.ensureChildArray(
+				this.utils.ensureChildArray(this.lastReservedIds, sequence.schemaIndex),
+				sequence.tableIndex)
+		}
+
+		this.transHistoryDbEntity     =
+			this.getHoldingPatternDbEntity('TransactionHistory')
+		this.repoTransHistoryDbEntity =
+			this.getHoldingPatternDbEntity('RepositoryTransactionHistory')
+		this.operationHistoryDbEntity =
+			this.getHoldingPatternDbEntity('OperationHistory')
+		this.recordHistoryDbEntity    =
+			this.getHoldingPatternDbEntity('RecordHistory')
+
+		const holdingPatternLastIds
+			      = this.lastIds[this.transHistoryDbEntity.schemaVersion.schema.index]
+		const holdingPatternLastReservedIds
+			      = this.lastReservedIds[this.transHistoryDbEntity.schemaVersion.schema.index]
+
+
+		this.operationHistoryIds = holdingPatternLastIds[this.operationHistoryDbEntity.index]
+		this.recordHistoryIds    = holdingPatternLastIds[this.recordHistoryDbEntity.index]
+		this.repoTransHistoryIds = holdingPatternLastIds[this.repoTransHistoryDbEntity.index]
+		this.transHistoryIds     = holdingPatternLastIds[this.transHistoryDbEntity.index]
+
+		this.operationHistoryReservedIds
+			= holdingPatternLastReservedIds[this.operationHistoryDbEntity.index]
+		this.recordHistoryReservedIds
+			= holdingPatternLastReservedIds[this.recordHistoryDbEntity.index]
+		this.repoTransHistoryReservedIds
+			= holdingPatternLastReservedIds[this.repoTransHistoryDbEntity.index]
+		this.transHistoryReservedIds
+			= holdingPatternLastReservedIds[this.transHistoryDbEntity.index]
+
+		this.operationHistorySeqBlock = this.getHistorySeqBlock(this.transHistoryDbEntity)
+		this.recordHistorySeqBlock    = this.getHistorySeqBlock(this.transHistoryDbEntity)
+		this.repoTransHistorySeqBlock = this.getHistorySeqBlock(this.transHistoryDbEntity)
+		this.transHistorySeqBlock     = this.getHistorySeqBlock(this.transHistoryDbEntity);
+
+		[this.operationHistorySeqBlock, this.recordHistorySeqBlock,
+			this.repoTransHistorySeqBlock, this.transHistorySeqBlock]
+			= await this.sequenceBlockDao.createNewBlocks([
+			this.operationHistorySeqBlock,
+			this.recordHistorySeqBlock,
+			this.repoTransHistorySeqBlock,
+			this.transHistorySeqBlock
+		])
+		this.setHistoryIds(
+			this.operationHistoryDbEntity, this.operationHistorySeqBlock,
+			this.operationHistoryIds, this.operationHistoryReservedIds)
+		this.setHistoryIds(
+			this.recordHistoryDbEntity, this.recordHistorySeqBlock,
+			this.recordHistoryIds, this.recordHistoryReservedIds)
+		this.setHistoryIds(
+			this.repoTransHistoryDbEntity, this.repoTransHistorySeqBlock,
+			this.repoTransHistoryIds, this.repoTransHistoryReservedIds)
+		this.setHistoryIds(
+			this.transHistoryDbEntity, this.transHistorySeqBlock,
+			this.transHistoryIds, this.transHistoryReservedIds)
+	}
+
+	private getHistorySeqBlock(
+		dbEntity: DbEntity
+	): ISequenceBlock {
+		const operationHistorySequence = this.sequences
+			[this.transHistoryDbEntity.schemaVersion.schema.index]
+			[this.transHistoryDbEntity.index]
+			[this.transHistoryDbEntity.idColumns[0].index]
+
+		return {
+			sequence: {
+				id: operationHistorySequence.id
+			},
+			sequenceConsumer: {
+				id: this.sequenceConsumer.id
+			},
+			size: operationHistorySequence.incrementBy
+		}
+	}
+
+	private setHistoryIds(
+		dbEntity: DbEntity,
+		sequenceBlock: ISequenceBlock,
+		ids: number[],
+		reservedIds: number[]
+	) {
+		ids[dbEntity.idColumns[0].index]
+			= sequenceBlock.lastReservedId - sequenceBlock.size + 1
+		reservedIds[dbEntity.idColumns[0].index]
+			= sequenceBlock.lastReservedId
+	}
+
+	getHoldingPatternDbEntity(
+		holdingPatternEntityName: string
+	): DbEntity {
+		return Q.db.currentVersion.entityMapByName[holdingPatternEntityName]
+	}
+
+	generateIds(
+		dbColumns: DbColumn[],
+		numIds: number[]
+	): number[][] {
+		if(needNewSequences)
 	}
 
 	generateTransactionHistoryIds(
@@ -123,6 +256,12 @@ export class IdGenerator
 		numOperationTransHistories: NumOperationTransHistories,
 		numRecordHistories: NumRecordHistories
 	): TransactionHistoryIds {
+		const lastReservedId = this.operationHistoryReservedIds[this.operationHistoryDbEntity.idColumns[0].index]
+		const currentId = this.operationHistoryIds[this.operationHistoryDbEntity.idColumns[0].index]
+		if(currentId + numOperationTransHistories > lastReservedId) {
+
+		}
+		const nextTransHistoryId = this.lastIds
 
 	}
 

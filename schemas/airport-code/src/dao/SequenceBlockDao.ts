@@ -1,6 +1,7 @@
 import {
 	AirportDatabaseToken,
 	and,
+	coalesce,
 	field,
 	IAirportDatabase,
 	IQNumberField,
@@ -59,7 +60,7 @@ export class SequenceBlockDao
 			const sb                                                    = Q.SequenceBlock
 			const selectMaxLastReservedId: RawFieldQuery<IQNumberField> = {
 				from: [sb],
-				select: plus(max(sb.lastReservedId), sequenceBlock.size),
+				select: plus(max(coalesce(sb.lastReservedId, 0)), sequenceBlock.size),
 				where: and(
 					sb.sequence.id.equals(sequenceBlock.sequence.id),
 				)
@@ -72,7 +73,7 @@ export class SequenceBlockDao
 			index
 		) => [
 			sequenceBlock.sequence.id,
-			sequenceBlock.consumer.id,
+			sequenceBlock.sequenceConsumer.id,
 			sequenceBlock.size,
 			newLastReservedIds[index],
 			reservationMillis
@@ -82,7 +83,7 @@ export class SequenceBlockDao
 			insertInto: sb,
 			columns: [
 				sb.sequence.id,
-				sb.consumer.id,
+				sb.sequenceConsumer.id,
 				sb.size,
 				sb.lastReservedId,
 				sb.reservationMillis

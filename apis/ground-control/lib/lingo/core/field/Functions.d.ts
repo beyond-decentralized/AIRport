@@ -29,4 +29,5 @@ export declare enum SqlFunction {
     MULTIPLY = 20,
     PLUS = 21,
     CONCATENATE = 22,
+    COALESCE = 23
 }

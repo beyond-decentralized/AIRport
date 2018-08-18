@@ -1,5 +1,6 @@
 import { IAirportDatabase, IUtils } from '@airport/air-control';
-import { DbEntity } from '@airport/ground-control';
+import { ISequenceBlockDao } from '@airport/airport-code';
+import { DbColumn, DbEntity } from '@airport/ground-control';
 import { OperationHistoryId, RecordHistoryId, RepositoryTransactionHistoryId, TransactionHistoryId } from '@airport/holding-pattern';
 import { IDomain } from '@airport/territory';
 import { ISequenceConsumerDao } from '../../node_modules/@airport/airport-code/lib/dao/SequenceConsumerDao';
@@ -25,14 +26,36 @@ export interface IIdGenerator {
  */
 export declare class IdGenerator implements IIdGenerator {
     private airportDb;
+    private sequenceBlockDao;
     private sequenceConsumerDao;
     private sequenceDao;
     private utils;
     private lastIds;
-    private lastIds;
+    private lastReservedIds;
+    private sequences;
     private sequenceConsumer;
-    constructor(airportDb: IAirportDatabase, sequenceConsumerDao: ISequenceConsumerDao, sequenceDao: ISequenceDao, utils: IUtils);
+    private operationHistoryDbEntity;
+    private recordHistoryDbEntity;
+    private repoTransHistoryDbEntity;
+    private transHistoryDbEntity;
+    private operationHistoryIds;
+    private recordHistoryIds;
+    private repoTransHistoryIds;
+    private transHistoryIds;
+    private operationHistoryReservedIds;
+    private recordHistoryReservedIds;
+    private repoTransHistoryReservedIds;
+    private transHistoryReservedIds;
+    private operationHistorySeqBlock;
+    private recordHistorySeqBlock;
+    private repoTransHistorySeqBlock;
+    private transHistorySeqBlock;
+    constructor(airportDb: IAirportDatabase, sequenceBlockDao: ISequenceBlockDao, sequenceConsumerDao: ISequenceConsumerDao, sequenceDao: ISequenceDao, utils: IUtils);
     init(domain: IDomain): Promise<void>;
+    private getHistorySeqBlock;
+    private setHistoryIds;
+    getHoldingPatternDbEntity(holdingPatternEntityName: string): DbEntity;
+    generateIds(dbColumns: DbColumn[], numIds: number[]): number[][];
     generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): TransactionHistoryIds;
     generateTransHistoryId(): number;
     generateRepoTransHistoryId(): number;

@@ -51,5 +51,8 @@ export enum SqlFunction {
 	PLUS, // A + B
 
 		// Concatenate '||' functions
-	CONCATENATE
+	CONCATENATE,
+
+		// Other functions
+	COALESCE
 }

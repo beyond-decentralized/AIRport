@@ -3,7 +3,7 @@ import { ISequenceConsumer, SequenceConsumerEId, SequenceConsumerEOptionalId, Se
 import { ISequence, SequenceEOptionalId, SequenceESelect, QSequenceQRelation } from './qsequence';
 export interface ISequenceBlock {
     id?: number;
-    consumer?: ISequenceConsumer;
+    sequenceConsumer?: ISequenceConsumer;
     size?: number;
     lastReservedId?: number;
     reservationMillis?: number;
@@ -13,7 +13,7 @@ export interface ISequenceBlock {
  * SELECT - All fields and relations (optional).
  */
 export interface SequenceBlockESelect extends IEntitySelectProperties, SequenceBlockEOptionalId, SequenceBlockEUpdateProperties {
-    consumer?: SequenceConsumerESelect;
+    sequenceConsumer?: SequenceConsumerESelect;
     sequence?: SequenceESelect;
 }
 /**
@@ -21,14 +21,14 @@ export interface SequenceBlockESelect extends IEntitySelectProperties, SequenceB
  */
 export interface SequenceBlockEId extends IEntityIdProperties {
     id: number | IQNumberField;
-    consumer: SequenceConsumerEId;
+    sequenceConsumer: SequenceConsumerEId;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface SequenceBlockEOptionalId {
     id?: number | IQNumberField;
-    consumer?: SequenceConsumerEOptionalId;
+    sequenceConsumer?: SequenceConsumerEOptionalId;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -63,7 +63,7 @@ export interface SequenceBlockECreateColumns extends SequenceBlockEId, SequenceB
  */
 export interface QSequenceBlock extends QEntity {
     id: IQNumberField;
-    consumer: QSequenceConsumerQRelation;
+    sequenceConsumer: QSequenceConsumerQRelation;
     size: IQNumberField;
     lastReservedId: IQNumberField;
     reservationMillis: IQNumberField;
@@ -71,7 +71,7 @@ export interface QSequenceBlock extends QEntity {
 }
 export interface QSequenceBlockQId {
     id: IQNumberField;
-    consumer: QSequenceConsumerQId;
+    sequenceConsumer: QSequenceConsumerQId;
 }
 export interface QSequenceBlockQRelation extends QRelation<QSequenceBlock>, QSequenceBlockQId {
 }

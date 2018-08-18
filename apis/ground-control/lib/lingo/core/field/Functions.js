@@ -40,5 +40,7 @@ var SqlFunction;
     SqlFunction[SqlFunction["PLUS"] = 21] = "PLUS";
     // Concatenate '||' functions
     SqlFunction[SqlFunction["CONCATENATE"] = 22] = "CONCATENATE";
+    // Other functions
+    SqlFunction[SqlFunction["COALESCE"] = 23] = "COALESCE";
 })(SqlFunction = exports.SqlFunction || (exports.SqlFunction = {}));
 //# sourceMappingURL=Functions.js.map

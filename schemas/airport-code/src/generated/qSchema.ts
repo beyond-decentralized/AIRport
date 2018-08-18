@@ -1,10 +1,10 @@
 import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
-import { Sequence } from '../ddl/sequence';
+import { Sequence } from '../ddl/Sequence';
 import { QSequence } from './qsequence';
-import { SequenceBlock } from '../ddl/sequenceblock';
+import { SequenceBlock } from '../ddl/SequenceBlock';
 import { QSequenceBlock } from './qsequenceblock';
-import { SequenceConsumer } from '../ddl/sequenceconsumer';
+import { SequenceConsumer } from '../ddl/SequenceConsumer';
 import { QSequenceConsumer } from './qsequenceconsumer';
 
 import {

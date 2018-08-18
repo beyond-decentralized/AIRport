@@ -362,7 +362,7 @@ exports.SCHEMA = {
                         {
                             "index": 2,
                             "isId": true,
-                            "name": "consumer",
+                            "name": "sequenceConsumer",
                             "relationRef": {
                                 "index": 0
                             }

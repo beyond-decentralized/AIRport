@@ -2,17 +2,19 @@ import {
 	JSONBaseOperation,
 	OperationCategory,
 	SqlOperator
-}                          from "@airport/ground-control";
-import {RawFieldQuery}     from '../../query/facade/FieldQuery';
-import {RawNonEntityQuery} from "../../query/facade/NonEntityQuery";
+}                          from '@airport/ground-control'
+import {RawFieldQuery}     from '../../query/facade/FieldQuery'
+import {RawNonEntityQuery} from '../../query/facade/NonEntityQuery'
 import {
 	ITreeEntity,
 	RawTreeQuery
-}                          from '../../query/facade/TreeQuery';
-import {IQDateField}       from './DateField';
-import {IQNumberField}     from './NumberField';
-import {IQOperableField}   from './OperableField';
-import {IQStringField}     from './StringField';
+}                          from '../../query/facade/TreeQuery'
+import {IQBooleanField}    from './BooleanField'
+import {IQDateField}       from './DateField'
+import {IQNumberField}     from './NumberField'
+import {IQOperableField}   from './OperableField'
+import {IQStringField}     from './StringField'
+import {IQUntypedField}    from './UntypedField'
 
 
 /**
@@ -84,6 +86,26 @@ export interface plusFunction {
 	): IQNumberField;
 }
 
+export interface coalesceAnyFunction {
+	(...vals: (IQUntypedField | any | RawFieldQuery<IQUntypedField>)[]): IQUntypedField
+}
+
+export interface coalesceBooleanFunction {
+	(...vals: (IQBooleanField | boolean | RawFieldQuery<IQBooleanField>)[]): IQBooleanField
+}
+
+export interface coalesceDateFunction {
+	(...vals: (IQDateField | Date | RawFieldQuery<IQDateField>)[]): IQDateField
+}
+
+export interface coalesceNumberFunction {
+	(...vals: (IQNumberField | number | RawFieldQuery<IQNumberField>)[]): IQNumberField
+}
+
+export interface coalesceStringFunction {
+	(...vals: (IQStringField | string | RawFieldQuery<IQStringField>)[]): IQStringField
+}
+
 /**
  * UCASE('')
  */
@@ -138,7 +160,7 @@ export interface roundFunction {
 export interface nowFunction {
 	(): IQDateField;
 }
-;
+
 
 /**
  * FORMAT('', 1, ...)
@@ -189,7 +211,8 @@ export interface distinctFunction {
 /**
  * Concrete instance of an EXISTS function
  */
-export interface IQExistsFunction extends JSONBaseOperation {
+export interface IQExistsFunction
+	extends JSONBaseOperation {
 
 	/**
 	 * Category of the IOperation.

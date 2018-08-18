@@ -28,14 +28,14 @@ let SequenceBlockDao = class SequenceBlockDao extends generated_1.BaseSequenceBl
             const sb = generated_1.Q.SequenceBlock;
             const selectMaxLastReservedId = {
                 from: [sb],
-                select: air_control_1.plus(air_control_1.max(sb.lastReservedId), sequenceBlock.size),
+                select: air_control_1.plus(air_control_1.max(air_control_1.coalesce(sb.lastReservedId, 0)), sequenceBlock.size),
                 where: air_control_1.and(sb.sequence.id.equals(sequenceBlock.sequence.id))
             };
             return air_control_1.field(selectMaxLastReservedId);
         });
         const values = sequenceBlocks.map((sequenceBlock, index) => [
             sequenceBlock.sequence.id,
-            sequenceBlock.consumer.id,
+            sequenceBlock.sequenceConsumer.id,
             sequenceBlock.size,
             newLastReservedIds[index],
             reservationMillis
@@ -44,7 +44,7 @@ let SequenceBlockDao = class SequenceBlockDao extends generated_1.BaseSequenceBl
             insertInto: sb,
             columns: [
                 sb.sequence.id,
-                sb.consumer.id,
+                sb.sequenceConsumer.id,
                 sb.size,
                 sb.lastReservedId,
                 sb.reservationMillis

@@ -21,11 +21,15 @@ const InjectionTokens_1 = require("../InjectionTokens");
  * Created by Papa on 9/2/2016.
  */
 let IdGenerator = class IdGenerator {
-    constructor(airportDb, sequenceConsumerDao, sequenceDao, utils) {
+    constructor(airportDb, sequenceBlockDao, sequenceConsumerDao, sequenceDao, utils) {
         this.airportDb = airportDb;
+        this.sequenceBlockDao = sequenceBlockDao;
         this.sequenceConsumerDao = sequenceConsumerDao;
         this.sequenceDao = sequenceDao;
         this.utils = utils;
+        this.lastIds = [];
+        this.lastReservedIds = [];
+        this.sequences = [];
     }
     async init(domain) {
         this.sequenceConsumer = {
@@ -35,8 +39,81 @@ let IdGenerator = class IdGenerator {
         };
         await this.sequenceConsumerDao.create(this.sequenceConsumer);
         const sequences = await this.sequenceDao.findAll();
+        for (const sequence of sequences) {
+            this.utils.ensureChildArray(this.utils.ensureChildArray(this.sequences, sequence.schemaIndex), sequence.tableIndex)[sequence.columnIndex] = sequence;
+            this.utils.ensureChildArray(this.utils.ensureChildArray(this.lastIds, sequence.schemaIndex), sequence.tableIndex);
+            this.utils.ensureChildArray(this.utils.ensureChildArray(this.lastReservedIds, sequence.schemaIndex), sequence.tableIndex);
+        }
+        this.transHistoryDbEntity =
+            this.getHoldingPatternDbEntity('TransactionHistory');
+        this.repoTransHistoryDbEntity =
+            this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
+        this.operationHistoryDbEntity =
+            this.getHoldingPatternDbEntity('OperationHistory');
+        this.recordHistoryDbEntity =
+            this.getHoldingPatternDbEntity('RecordHistory');
+        const holdingPatternLastIds = this.lastIds[this.transHistoryDbEntity.schemaVersion.schema.index];
+        const holdingPatternLastReservedIds = this.lastReservedIds[this.transHistoryDbEntity.schemaVersion.schema.index];
+        this.operationHistoryIds = holdingPatternLastIds[this.operationHistoryDbEntity.index];
+        this.recordHistoryIds = holdingPatternLastIds[this.recordHistoryDbEntity.index];
+        this.repoTransHistoryIds = holdingPatternLastIds[this.repoTransHistoryDbEntity.index];
+        this.transHistoryIds = holdingPatternLastIds[this.transHistoryDbEntity.index];
+        this.operationHistoryReservedIds
+            = holdingPatternLastReservedIds[this.operationHistoryDbEntity.index];
+        this.recordHistoryReservedIds
+            = holdingPatternLastReservedIds[this.recordHistoryDbEntity.index];
+        this.repoTransHistoryReservedIds
+            = holdingPatternLastReservedIds[this.repoTransHistoryDbEntity.index];
+        this.transHistoryReservedIds
+            = holdingPatternLastReservedIds[this.transHistoryDbEntity.index];
+        this.operationHistorySeqBlock = this.getHistorySeqBlock(this.transHistoryDbEntity);
+        this.recordHistorySeqBlock = this.getHistorySeqBlock(this.transHistoryDbEntity);
+        this.repoTransHistorySeqBlock = this.getHistorySeqBlock(this.transHistoryDbEntity);
+        this.transHistorySeqBlock = this.getHistorySeqBlock(this.transHistoryDbEntity);
+        [this.operationHistorySeqBlock, this.recordHistorySeqBlock,
+            this.repoTransHistorySeqBlock, this.transHistorySeqBlock]
+            = await this.sequenceBlockDao.createNewBlocks([
+                this.operationHistorySeqBlock,
+                this.recordHistorySeqBlock,
+                this.repoTransHistorySeqBlock,
+                this.transHistorySeqBlock
+            ]);
+        this.setHistoryIds(this.operationHistoryDbEntity, this.operationHistorySeqBlock, this.operationHistoryIds, this.operationHistoryReservedIds);
+        this.setHistoryIds(this.recordHistoryDbEntity, this.recordHistorySeqBlock, this.recordHistoryIds, this.recordHistoryReservedIds);
+        this.setHistoryIds(this.repoTransHistoryDbEntity, this.repoTransHistorySeqBlock, this.repoTransHistoryIds, this.repoTransHistoryReservedIds);
+        this.setHistoryIds(this.transHistoryDbEntity, this.transHistorySeqBlock, this.transHistoryIds, this.transHistoryReservedIds);
+    }
+    getHistorySeqBlock(dbEntity) {
+        const operationHistorySequence = this.sequences[this.transHistoryDbEntity.schemaVersion.schema.index][this.transHistoryDbEntity.index][this.transHistoryDbEntity.idColumns[0].index];
+        return {
+            sequence: {
+                id: operationHistorySequence.id
+            },
+            sequenceConsumer: {
+                id: this.sequenceConsumer.id
+            },
+            size: operationHistorySequence.incrementBy
+        };
+    }
+    setHistoryIds(dbEntity, sequenceBlock, ids, reservedIds) {
+        ids[dbEntity.idColumns[0].index]
+            = sequenceBlock.lastReservedId - sequenceBlock.size + 1;
+        reservedIds[dbEntity.idColumns[0].index]
+            = sequenceBlock.lastReservedId;
+    }
+    getHoldingPatternDbEntity(holdingPatternEntityName) {
+        return holding_pattern_1.Q.db.currentVersion.entityMapByName[holdingPatternEntityName];
+    }
+    generateIds(dbColumns, numIds) {
+        if (needNewSequences)
+            ;
     }
     generateTransactionHistoryIds(numRepositoryTransHistories, numOperationTransHistories, numRecordHistories) {
+        const lastReservedId = this.operationHistoryReservedIds[this.operationHistoryDbEntity.idColumns[0].index];
+        const currentId = this.operationHistoryIds[this.operationHistoryDbEntity.idColumns[0].index];
+        if (currentId + numOperationTransHistories > lastReservedId) {
+        }
+        const nextTransHistoryId = this.lastIds;
     }
     generateTransHistoryId( //
     ) {
@@ -129,10 +206,11 @@ let IdGenerator = class IdGenerator {
 IdGenerator = __decorate([
     typedi_1.Service(InjectionTokens_1.IdGeneratorToken),
     __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(airport_code_1.SequenceConsumerDaoToken)),
-    __param(2, typedi_1.Inject(airport_code_1.SequenceDaoToken)),
-    __param(3, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object])
+    __param(1, typedi_1.Inject(airport_code_1.SequenceBlockDaoToken)),
+    __param(2, typedi_1.Inject(airport_code_1.SequenceConsumerDaoToken)),
+    __param(3, typedi_1.Inject(airport_code_1.SequenceDaoToken)),
+    __param(4, typedi_1.Inject(air_control_1.UtilsToken)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
 ], IdGenerator);
 exports.IdGenerator = IdGenerator;
 //# sourceMappingURL=IdGenerator.js.map

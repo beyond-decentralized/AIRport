@@ -32,7 +32,7 @@ export class SequenceBlock {
 	@Id()
 	@ManyToOne()
 	@JoinColumn({name: 'CONSUMER_ID', referencedColumnName: 'ID'})
-	consumer: SequenceConsumer
+	sequenceConsumer: SequenceConsumer
 
 	size: SequenceBlockSize
 

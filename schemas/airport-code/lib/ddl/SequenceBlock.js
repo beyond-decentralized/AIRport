@@ -30,7 +30,7 @@ __decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: 'CONSUMER_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", SequenceConsumer_1.SequenceConsumer)
-], SequenceBlock.prototype, "consumer", void 0);
+], SequenceBlock.prototype, "sequenceConsumer", void 0);
 __decorate([
     air_control_1.Column({ name: 'LAST_RESERVED_ID' }),
     __metadata("design:type", Number)
