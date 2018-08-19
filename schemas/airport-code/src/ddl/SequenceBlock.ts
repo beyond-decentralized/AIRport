@@ -6,7 +6,8 @@ import {
 	JoinColumn,
 	ManyToOne,
 	SequenceGenerator,
-	Table
+	Table,
+	Transient
 }                         from '@airport/air-control'
 import {Sequence}         from './Sequence'
 import {SequenceConsumer} from './SequenceConsumer'
@@ -15,6 +16,7 @@ export type SequenceBlockId = number
 export type SequenceBlockSize = number
 export type SequenceBlockLastReservedId = number
 export type SequenceBlockReservationMillis = number
+export type SequenceBlockCurrentNumber = number
 
 @Entity()
 @Table({name: 'SEQUENCE_BLOCKS'})
@@ -42,4 +44,6 @@ export class SequenceBlock {
 	@Column({name: 'RESERVATION_MILLIS'})
 	reservationMillis: SequenceBlockReservationMillis
 
+	@Transient()
+	currentNumber: SequenceBlockCurrentNumber
 }

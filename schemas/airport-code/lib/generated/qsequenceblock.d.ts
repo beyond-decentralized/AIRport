@@ -8,6 +8,7 @@ export interface ISequenceBlock {
     lastReservedId?: number;
     reservationMillis?: number;
     sequence?: ISequence;
+    currentNumber?: number;
 }
 /**
  * SELECT - All fields and relations (optional).

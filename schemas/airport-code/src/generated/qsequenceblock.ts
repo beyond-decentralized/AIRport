@@ -66,6 +66,7 @@ export interface ISequenceBlock {
 	sequence?: ISequence;
 
 	// Transient Properties
+	currentNumber?: number;
 
 	// Public Methods
 	

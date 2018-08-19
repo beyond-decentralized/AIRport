@@ -39,6 +39,10 @@ __decorate([
     air_control_1.Column({ name: 'RESERVATION_MILLIS' }),
     __metadata("design:type", Number)
 ], SequenceBlock.prototype, "reservationMillis", void 0);
+__decorate([
+    air_control_1.Transient(),
+    __metadata("design:type", Number)
+], SequenceBlock.prototype, "currentNumber", void 0);
 SequenceBlock = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({ name: 'SEQUENCE_BLOCKS' })

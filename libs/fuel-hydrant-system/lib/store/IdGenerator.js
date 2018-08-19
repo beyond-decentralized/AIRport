@@ -30,6 +30,7 @@ let IdGenerator = class IdGenerator {
         this.lastIds = [];
         this.lastReservedIds = [];
         this.sequences = [];
+        this.sequenceBlocks = [];
     }
     async init(domain) {
         this.sequenceConsumer = {
@@ -83,30 +84,44 @@ let IdGenerator = class IdGenerator {
         this.setHistoryIds(this.repoTransHistoryDbEntity, this.repoTransHistorySeqBlock, this.repoTransHistoryIds, this.repoTransHistoryReservedIds);
         this.setHistoryIds(this.transHistoryDbEntity, this.transHistorySeqBlock, this.transHistoryIds, this.transHistoryReservedIds);
     }
-    getHistorySeqBlock(dbEntity) {
-        const operationHistorySequence = this.sequences[this.transHistoryDbEntity.schemaVersion.schema.index][this.transHistoryDbEntity.index][this.transHistoryDbEntity.idColumns[0].index];
-        return {
-            sequence: {
-                id: operationHistorySequence.id
-            },
-            sequenceConsumer: {
-                id: this.sequenceConsumer.id
-            },
-            size: operationHistorySequence.incrementBy
-        };
-    }
-    setHistoryIds(dbEntity, sequenceBlock, ids, reservedIds) {
-        ids[dbEntity.idColumns[0].index]
-            = sequenceBlock.lastReservedId - sequenceBlock.size + 1;
-        reservedIds[dbEntity.idColumns[0].index]
-            = sequenceBlock.lastReservedId;
-    }
     getHoldingPatternDbEntity(holdingPatternEntityName) {
         return holding_pattern_1.Q.db.currentVersion.entityMapByName[holdingPatternEntityName];
     }
-    generateIds(dbColumns, numIds) {
-        if (needNewSequences)
-            ;
+    generateIds(dbColumns, numSequencesNeeded) {
+        const sequenceBlockToCreateMap = new Map();
+        dbColumns.forEach((dbColumn, index) => {
+            let { numNewSequencesNeeded, sequenceBlock } = this.getNumNewSequencesNeeded(dbColumn, numSequencesNeeded[index]);
+            if (numNewSequencesNeeded) {
+                sequenceBlock.size = numNewSequencesNeeded;
+                sequenceBlockToCreateMap.set(dbColumn, sequenceBlock);
+            }
+        });
+    }
+    getNumNewSequencesNeeded(dbColumn, numSequencesNeeded) {
+        const dbEntity = dbColumn.propertyColumns[0].property.entity;
+        const sequenceBlock = this.utils.ensureChildArray(this.utils.ensureChildArray(this.sequenceBlocks, dbEntity.schemaVersion.schema.index), dbEntity.index)[dbColumn.index];
+        const sequence = this.sequences[dbEntity.schemaVersion.schema.index][dbEntity.index][dbColumn.index];
+        let numNewSequencesNeeded = 0;
+        if (!sequenceBlock) {
+            numNewSequencesNeeded = sequence.incrementBy + numSequencesNeeded;
+            return {
+                numNewSequencesNeeded,
+                sequenceBlock: {
+                    sequence,
+                    sequenceConsumer: this.sequenceConsumer,
+                    size: 0
+                }
+            };
+        }
+        if (sequenceBlock.currentNumber + numSequencesNeeded > sequenceBlock.lastReservedId) {
+            numNewSequencesNeeded
+                = sequenceBlock.currentNumber + numSequencesNeeded
+                    - sequenceBlock.lastReservedId + sequence.incrementBy;
+        }
+        return {
+            numNewSequencesNeeded,
+            sequenceBlock
+        };
     }
     generateTransactionHistoryIds(numRepositoryTransHistories, numOperationTransHistories, numRecordHistories) {
         const lastReservedId = this.operationHistoryReservedIds[this.operationHistoryDbEntity.idColumns[0].index];
@@ -151,16 +166,10 @@ let IdGenerator = class IdGenerator {
         recordWithId[columnName] = newId;
         return recordWithId;
     }
-    /**
-     * Ids are tracked on per-Entity basis.  Id's are assigned optimistically can be
-     * retroactively updated if sync conflicts arise.  At load time latest ids
-     * are loaded into memory and then are maintained in memory for the uptime of the
-     * db server.
-     * @returns {Promise<void>}
-     */
-    async loadLatestIds( //
+    loadLatestIds( //
     ) {
-        const maxIdRecords = await this.airportDb.db.find.sheet(this.getMaxIdQueries());
+        const maxIdRecords = await;
+        this.airportDb.db.find.sheet(this.getMaxIdQueries());
         this.lastIds = [];
         for (const maxIdRecord of maxIdRecords) {
             const schemaLastIds = this.utils.ensureChildArray(this.lastIds, maxIdRecord[0]);
@@ -201,7 +210,24 @@ let IdGenerator = class IdGenerator {
         }
         return air_control_1.unionAll(...idQueries);
     }
-    ;
+    getHistorySeqBlock(dbEntity) {
+        const operationHistorySequence = this.sequences[this.transHistoryDbEntity.schemaVersion.schema.index][this.transHistoryDbEntity.index][this.transHistoryDbEntity.idColumns[0].index];
+        return {
+            sequence: {
+                id: operationHistorySequence.id
+            },
+            sequenceConsumer: {
+                id: this.sequenceConsumer.id
+            },
+            size: operationHistorySequence.incrementBy
+        };
+    }
+    setHistoryIds(dbEntity, sequenceBlock, ids, reservedIds) {
+        ids[dbEntity.idColumns[0].index]
+            = sequenceBlock.lastReservedId - sequenceBlock.size + 1;
+        reservedIds[dbEntity.idColumns[0].index]
+            = sequenceBlock.lastReservedId;
+    }
 };
 IdGenerator = __decorate([
     typedi_1.Service(InjectionTokens_1.IdGeneratorToken),

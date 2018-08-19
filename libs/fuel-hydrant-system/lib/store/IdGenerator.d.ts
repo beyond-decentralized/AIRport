@@ -1,5 +1,5 @@
-import { IAirportDatabase, IUtils } from '@airport/air-control';
-import { ISequenceBlockDao } from '@airport/airport-code';
+import { IAirportDatabase, IUtils, RawNonEntityQuery } from '@airport/air-control';
+import { ISequenceBlock, ISequenceBlockDao } from '@airport/airport-code';
 import { DbColumn, DbEntity } from '@airport/ground-control';
 import { OperationHistoryId, RecordHistoryId, RepositoryTransactionHistoryId, TransactionHistoryId } from '@airport/holding-pattern';
 import { IDomain } from '@airport/territory';
@@ -30,9 +30,23 @@ export declare class IdGenerator implements IIdGenerator {
     private sequenceConsumerDao;
     private sequenceDao;
     private utils;
+    currentNumber: any;
+    numSequencesNeeded: any;
+    sequenceBlock: any;
+    /**
+     * Ids are tracked on per-Entity basis.  Id's are assigned optimistically can be
+     * retroactively updated if sync conflicts arise.  At load time latest ids
+     * are loaded into memory and then are maintained in memory for the uptime of the
+     * db server.
+     * @returns {Promise<void>}
+     */
+    async: any;
+    private: any;
+    private: any;
     private lastIds;
     private lastReservedIds;
     private sequences;
+    private sequenceBlocks;
     private sequenceConsumer;
     private operationHistoryDbEntity;
     private recordHistoryDbEntity;
@@ -52,10 +66,12 @@ export declare class IdGenerator implements IIdGenerator {
     private transHistorySeqBlock;
     constructor(airportDb: IAirportDatabase, sequenceBlockDao: ISequenceBlockDao, sequenceConsumerDao: ISequenceConsumerDao, sequenceDao: ISequenceDao, utils: IUtils);
     init(domain: IDomain): Promise<void>;
-    private getHistorySeqBlock;
-    private setHistoryIds;
     getHoldingPatternDbEntity(holdingPatternEntityName: string): DbEntity;
-    generateIds(dbColumns: DbColumn[], numIds: number[]): number[][];
+    generateIds(dbColumns: DbColumn[], numSequencesNeeded: number[]): number[][];
+    getNumNewSequencesNeeded(dbColumn: DbColumn, numSequencesNeeded: number): {
+        numNewSequencesNeeded: number;
+        sequenceBlock: ISequenceBlock;
+    };
     generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): TransactionHistoryIds;
     generateTransHistoryId(): number;
     generateRepoTransHistoryId(): number;
@@ -63,14 +79,9 @@ export declare class IdGenerator implements IIdGenerator {
     generateRecordHistoryId(): number;
     generateHoldingPatternEntityId(holdingPatternEntityName: string): number;
     generateEntityId(dbEntity: DbEntity, entity?: any): number;
-    /**
-     * Ids are tracked on per-Entity basis.  Id's are assigned optimistically can be
-     * retroactively updated if sync conflicts arise.  At load time latest ids
-     * are loaded into memory and then are maintained in memory for the uptime of the
-     * db server.
-     * @returns {Promise<void>}
-     */
     loadLatestIds(): Promise<void>;
-    private generateByHoldingPatternEntityName;
-    private getMaxIdQueries;
+    generateByHoldingPatternEntityName(entityName: string): Promise<number>;
+    getMaxIdQueries(): RawNonEntityQuery;
+    private getHistorySeqBlock;
+    private setHistoryIds;
 }
