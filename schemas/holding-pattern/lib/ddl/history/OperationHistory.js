@@ -24,6 +24,7 @@ let OperationHistory = class OperationHistory {
 };
 __decorate([
     air_control_1.GeneratedValue(),
+    air_control_1.SequenceGenerator({ allocationSize: 600 }),
     air_control_1.Id(),
     __metadata("design:type", Number)
 ], OperationHistory.prototype, "id", void 0);
@@ -31,29 +32,29 @@ __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({
-        name: "REPOSITORY_TRANSACTION_HISTORY_ID", referencedColumnName: "ID"
+        name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID'
     }),
     __metadata("design:type", Object)
 ], OperationHistory.prototype, "repositoryTransactionHistory", void 0);
 __decorate([
-    air_control_1.Column({ name: "ORDER_NUMBER" }),
+    air_control_1.Column({ name: 'ORDER_NUMBER' }),
     __metadata("design:type", Number)
 ], OperationHistory.prototype, "orderNumber", void 0);
 __decorate([
-    air_control_1.Column({ name: "CHANGE_TYPE" }),
+    air_control_1.Column({ name: 'CHANGE_TYPE' }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], OperationHistory.prototype, "changeType", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "SCHEMA_VERSION_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", Object)
 ], OperationHistory.prototype, "schemaVersion", void 0);
 __decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumns([
-        { name: "SCHEMA_VERSION_ID" },
-        { name: "ENTITY_INDEX", referencedColumnName: "INDEX" }
+        { name: 'SCHEMA_VERSION_ID' },
+        { name: 'ENTITY_INDEX', referencedColumnName: 'INDEX' }
     ]),
     __metadata("design:type", Object)
 ], OperationHistory.prototype, "entity", void 0);
@@ -63,7 +64,7 @@ __decorate([
 ], OperationHistory.prototype, "recordHistory", void 0);
 OperationHistory = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: "REPOSITORY_OPERATION_HISTORY" })
+    air_control_1.Table({ name: 'REPOSITORY_OPERATION_HISTORY' })
 ], OperationHistory);
 exports.OperationHistory = OperationHistory;
 //# sourceMappingURL=OperationHistory.js.map

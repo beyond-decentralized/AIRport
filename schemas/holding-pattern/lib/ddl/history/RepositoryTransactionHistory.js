@@ -30,6 +30,7 @@ let RepositoryTransactionHistory = class RepositoryTransactionHistory {
 __decorate([
     air_control_1.GeneratedValue(),
     air_control_1.Id(),
+    air_control_1.SequenceGenerator({ allocationSize: 200 }),
     __metadata("design:type", Number)
 ], RepositoryTransactionHistory.prototype, "id", void 0);
 __decorate([

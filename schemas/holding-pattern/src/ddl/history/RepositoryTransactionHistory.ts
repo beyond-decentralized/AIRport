@@ -7,8 +7,9 @@ import {
 	JoinColumn,
 	ManyToOne,
 	OneToMany,
+	SequenceGenerator,
 	Table,
-}                                               from "@airport/air-control";
+} from '@airport/air-control'
 import {
 	CascadeType,
 }                                               from "@airport/ground-control";
@@ -36,6 +37,7 @@ export class RepositoryTransactionHistory
 
 	@GeneratedValue()
 	@Id()
+	@SequenceGenerator({allocationSize: 200})
 	id: RepositoryTransactionHistoryId;
 
 	@Column({name: "REMOTE_ID"})

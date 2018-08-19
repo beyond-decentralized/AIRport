@@ -8,19 +8,20 @@ import {
 	JoinColumns,
 	ManyToOne,
 	OneToMany,
+	SequenceGenerator,
 	Table
-}                                      from "@airport/air-control";
+}                                      from '@airport/air-control'
 import {
 	CascadeType,
 	ChangeType
-}                    from "@airport/ground-control";
+}                                      from '@airport/ground-control'
 import {
 	ISchemaEntity,
 	ISchemaVersion
-}                                      from "@airport/traffic-pattern";
-import {IOperationHistory,}            from "../../generated/history/qoperationhistory";
-import {IRecordHistory,}               from "../../generated/history/qrecordhistory";
-import {IRepositoryTransactionHistory} from "../../generated/history/qrepositorytransactionhistory";
+}                                      from '@airport/traffic-pattern'
+import {IOperationHistory,}            from '../../generated/history/qoperationhistory'
+import {IRecordHistory,}               from '../../generated/history/qrecordhistory'
+import {IRepositoryTransactionHistory} from '../../generated/history/qrepositorytransactionhistory'
 
 /**
  * Created by Papa on 4/17/2017.
@@ -33,40 +34,41 @@ export type OperationHistoryOrderNumber = number;
  * Marks a group of mutation history changes.
  */
 @Entity()
-@Table({name: "REPOSITORY_OPERATION_HISTORY"})
+@Table({name: 'REPOSITORY_OPERATION_HISTORY'})
 export class OperationHistory
 	implements IOperationHistory {
 
 	@GeneratedValue()
+	@SequenceGenerator({allocationSize: 600})
 	@Id()
-	id: OperationHistoryId;
+	id: OperationHistoryId
 
 	@Id()
 	@ManyToOne()
 	@JoinColumn({
-		name: "REPOSITORY_TRANSACTION_HISTORY_ID", referencedColumnName: "ID"
+		name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID'
 	})
-	repositoryTransactionHistory: IRepositoryTransactionHistory;
+	repositoryTransactionHistory: IRepositoryTransactionHistory
 
-	@Column({name: "ORDER_NUMBER"})
-	orderNumber: OperationHistoryOrderNumber;
+	@Column({name: 'ORDER_NUMBER'})
+	orderNumber: OperationHistoryOrderNumber
 
-	@Column({name: "CHANGE_TYPE"})
+	@Column({name: 'CHANGE_TYPE'})
 	@DbNumber()
-	changeType: ChangeType;
+	changeType: ChangeType
 
 	@ManyToOne()
-	@JoinColumn({name: "SCHEMA_VERSION_ID", referencedColumnName: "ID"})
-	schemaVersion: ISchemaVersion;
+	@JoinColumn({name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID'})
+	schemaVersion: ISchemaVersion
 
 	@ManyToOne()
 	@JoinColumns([
-		{name: "SCHEMA_VERSION_ID"},
-		{name: "ENTITY_INDEX", referencedColumnName: "INDEX"}
+		{name: 'SCHEMA_VERSION_ID'},
+		{name: 'ENTITY_INDEX', referencedColumnName: 'INDEX'}
 	])
-	entity: ISchemaEntity;
+	entity: ISchemaEntity
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'operationHistory'})
-	recordHistory: IRecordHistory[] = [];
+	recordHistory: IRecordHistory[] = []
 
 }

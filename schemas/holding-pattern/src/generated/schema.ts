@@ -8,6 +8,7 @@ export const SCHEMA = {
 				{
 					"columns": [
 						{
+							"allocationSize": 600,
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
@@ -229,6 +230,7 @@ export const SCHEMA = {
 				{
 					"columns": [
 						{
+							"allocationSize": 2000,
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
@@ -783,6 +785,7 @@ export const SCHEMA = {
 				{
 					"columns": [
 						{
+							"allocationSize": 200,
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
@@ -1051,6 +1054,7 @@ export const SCHEMA = {
 				{
 					"columns": [
 						{
+							"allocationSize": 100,
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
@@ -2120,6 +2124,7 @@ export const SCHEMA = {
 					}
 				}
 			],
+			"integerVersion": 1,
 			"referencedSchemas": [],
 			"versionString": "1.0.0"
 		}

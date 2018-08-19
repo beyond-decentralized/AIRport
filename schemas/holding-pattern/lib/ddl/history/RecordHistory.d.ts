@@ -1,9 +1,9 @@
-import { SyncColumnMap } from "@airport/ground-control";
-import { IOperationHistory } from "../../generated/history/qoperationhistory";
-import { IRecordHistory } from "../../generated/history/qrecordhistory";
-import { IRecordHistoryNewValue } from "../../generated/history/qrecordhistorynewvalue";
-import { IRecordHistoryOldValue } from "../../generated/history/qrecordhistoryoldvalue";
-import { IActor } from "../../generated/infrastructure/qactor";
+import { SyncColumnMap } from '@airport/ground-control';
+import { IOperationHistory } from '../../generated/history/qoperationhistory';
+import { IRecordHistory } from '../../generated/history/qrecordhistory';
+import { IRecordHistoryNewValue } from '../../generated/history/qrecordhistorynewvalue';
+import { IRecordHistoryOldValue } from '../../generated/history/qrecordhistoryoldvalue';
+import { IActor } from '../../generated/infrastructure/qactor';
 /**
  * Entity Changes are always local-only, so a sequence for id will do.
  */

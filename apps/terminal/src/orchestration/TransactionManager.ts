@@ -1,38 +1,40 @@
 import {
 	IUtils,
 	UtilsToken
-}                                from "@airport/air-control";
+}                      from "@airport/air-control";
+import {
+	ActiveQueries,
+	ActiveQueriesToken,
+	IdGeneratorToken,
+	IIdGenerator
+} from '@airport/fuel-hydrant-system'
 import {
 	IStoreDriver,
 	StoreType,
 	SyncSchemaMap
-}                                from "@airport/ground-control";
+}                      from "@airport/ground-control";
 import {
 	ITransactionHistory,
 	ITransactionHistoryDmo,
 	Q,
 	TransactionHistoryDmoToken
-}                                from "@airport/holding-pattern";
+}                      from "@airport/holding-pattern";
 import {
 	ITransactionManager,
 	TransactionManagerToken
-}                                from "@airport/terminal-map";
-import {Transactional}           from "@airport/tower";
+}                      from "@airport/terminal-map";
+import {Transactional} from "@airport/tower";
 import {
 	Inject,
 	Service
-}                                from "typedi";
+}                      from "typedi";
 import {IOfflineDeltaStore}      from "../data/OfflineDeltaStore";
 import {
-	ActiveQueriesToken,
-	IdGeneratorToken,
 	OfflineDeltaStoreToken,
 	OnlineManagerToken,
 	StoreDriverToken,
 }                                from "../InjectionTokens";
 import {IOnlineManager}          from "../net/OnlineManager";
-import {ActiveQueries}           from "../store/ActiveQueries";
-import {IIdGenerator}            from "../store/IdGenerator";
 import {AbstractMutationManager} from "./AbstractMutationManager";
 
 @Service(TransactionManagerToken)
@@ -185,31 +187,40 @@ export class TransactionManager
 		}
 		let schemaMap = transaction.schemaMap;
 
+		const transHistoryIds = await this.idGenerator.generateTransactionHistoryIds(
+			transaction.repositoryTransactionHistories.length,
+			transaction.allOperationHistory.length,
+			transaction.allRecordHistory.length
+		)
+
 		schemaMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true);
-		transaction.id = this.idGenerator.generateTransHistoryId();
+		transaction.id = transHistoryIds.transactionHistoryId;
 		await this.doInsertValues(Q.TransactionHistory, [transaction]);
 
 		schemaMap.ensureEntity(Q.RepositoryTransactionHistory.__driver__.dbEntity, true);
 		transaction.repositoryTransactionHistories.forEach((
-			repositoryTransactionHistory
+			repositoryTransactionHistory,
+			index
 		) => {
-			repositoryTransactionHistory.id = this.idGenerator.generateRepoTransHistoryId();
+			repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index];
 		});
 		await this.doInsertValues(Q.RepositoryTransactionHistory, transaction.repositoryTransactionHistories);
 
 		schemaMap.ensureEntity(Q.OperationHistory.__driver__.dbEntity, true);
 		transaction.allOperationHistory.forEach((
-			operationHistory
+			operationHistory,
+			index
 		) => {
-			operationHistory.id = this.idGenerator.generateOperationHistoryId();
+			operationHistory.id = transHistoryIds.operationHistoryIds[index];
 		});
 		await this.doInsertValues(Q.OperationHistory, transaction.allOperationHistory);
 
 		schemaMap.ensureEntity(Q.RecordHistory.__driver__.dbEntity, true);
 		transaction.allRecordHistory.forEach((
-			recordHistory
+			recordHistory,
+			index
 		) => {
-			recordHistory.id = this.idGenerator.generateRecordHistoryId();
+			recordHistory.id = transHistoryIds.recordHistoryIds[index];
 		});
 		await this.doInsertValues(Q.RecordHistory, transaction.allRecordHistory);
 

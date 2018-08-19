@@ -1,0 +1,1000 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/apis/air-control/src/tsconfig.json.3" line="0" mnemonic="1" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9c5a4502-68ae-4304-a543-572c83c81862" name="Default" comment="sequence generation">
+      <change afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/SequenceGenerator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/lingo/core/entity/Dictionary.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/core/entity/Dictionary.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/lingo/core/entity/Dictionary.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/core/entity/Dictionary.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/lingo/core/entity/Dictionary.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/core/entity/Dictionary.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/lingo/core/entity/Dictionary.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/lingo/core/entity/Dictionary.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/terminal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apps/terminal/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/terminal/lib/orchestration/InsertManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/terminal/lib/orchestration/InsertManager.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/terminal/lib/orchestration/InsertManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/terminal/lib/orchestration/InsertManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/terminal/lib/orchestration/InsertManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apps/terminal/lib/orchestration/InsertManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/terminal/lib/orchestration/TransactionManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/terminal/lib/orchestration/TransactionManager.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/terminal/lib/orchestration/TransactionManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/terminal/lib/orchestration/TransactionManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/terminal/lib/orchestration/TransactionManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apps/terminal/lib/orchestration/TransactionManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/terminal/src/orchestration/InsertManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/terminal/src/orchestration/InsertManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/terminal/src/orchestration/TransactionManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/terminal/src/orchestration/TransactionManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/config/rush/npm-shrinkwrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/rush/npm-shrinkwrap.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/InjectionTokens.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/InjectionTokens.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/InjectionTokens.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/IdGenerator.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/IdGenerator.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/IdGenerator.js" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/IdGenerator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/IdGenerator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/IdGenerator.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/InjectionTokens.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/IdGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/IdGenerator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/OperationHistory.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/OperationHistory.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/OperationHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/OperationHistory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/OperationHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/OperationHistory.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistory.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistory.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistory.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RepositoryTransactionHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RepositoryTransactionHistory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RepositoryTransactionHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RepositoryTransactionHistory.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/TransactionHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/TransactionHistory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/TransactionHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/TransactionHistory.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/AbstractRepositoryEntity.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/AbstractRepositoryEntity.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/AbstractRepositoryEntity.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/AbstractRepositoryEntity.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/AbstractRepositoryEntity.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/AbstractRepositoryEntity.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/schema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/OperationHistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/OperationHistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistoryNewValue.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistoryNewValue.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RepositoryTransactionHistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RepositoryTransactionHistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/TransactionHistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/TransactionHistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/AbstractRepositoryEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/AbstractRepositoryEntity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/schema.ts" afterDir="false" />
+    </list>
+    <list id="bd11709e-7b8d-4d56-80ac-4cc7f9b1ab94" name="Revert: " comment="" />
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-2023080075">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="27" />
+          <entry key="project.open.time.0" value="4" />
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.open.time.10" value="3" />
+          <entry key="project.open.time.11" value="2" />
+          <entry key="project.open.time.12" value="2" />
+          <entry key="project.open.time.3" value="3" />
+          <entry key="project.open.time.4" value="3" />
+          <entry key="project.open.time.5" value="4" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.open.time.7" value="4" />
+          <entry key="project.open.time.8" value="2" />
+          <entry key="project.opened" value="29" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts">
+        <counts>
+          <entry key="TypeScriptServerServiceImpl" value="29" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="json" value="43" />
+          <entry key="ts" value="74" />
+          <entry key="txt" value="143" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="JSON" value="43" />
+          <entry key="PLAIN_TEXT" value="143" />
+          <entry key="TypeScript" value="74" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="js" value="4" />
+          <entry key="json" value="11" />
+          <entry key="ts" value="10" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="JSON" value="9" />
+          <entry key="JavaScript" value="4" />
+          <entry key="TypeScript" value="10" />
+          <entry key="tsconfig" value="2" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/libs/tower/src/OperationManager.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="245">
+                  <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/rush.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="215">
+                  <caret line="105" column="58" selection-start-line="105" selection-start-column="58" selection-end-line="105" selection-end-column="58" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>air-control</find>
+      <find>z</find>
+      <find>guideway</find>
+      <find>arrivals</find>
+      <find>arrivals-n-</find>
+      <find>terminal-map</find>
+      <find>check-in</find>
+      <find>from</find>
+      <find>mo</find>
+      <find>traffic</find>
+      <find>airport-co</find>
+      <find>guidew</find>
+      <find>ground-co</find>
+      <find>DailyArchiveLogValues</find>
+      <find>guide</find>
+      <find>traffic-pa</find>
+      <find>Observable</find>
+      <find>index</find>
+      <find>SequenceGenerator</find>
+    </findStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/generators/runway/src</dir>
+      <dir>$PROJECT_DIR$/apis/arrivals-n-departures/src</dir>
+      <dir>$PROJECT_DIR$/schemas/moving-walkway</dir>
+      <dir>$PROJECT_DIR$/schemas/moving-walkway/src</dir>
+      <dir>$PROJECT_DIR$/schemas/guideway/src</dir>
+      <dir>$PROJECT_DIR$/schemas/point-of-destination/src</dir>
+      <dir>$PROJECT_DIR$/apis/terminal-map/src</dir>
+      <dir>$PROJECT_DIR$/libs/tower/src</dir>
+      <dir>$PROJECT_DIR$/schemas</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/schemas/traffic-pattern/src/dao/SchemaDao.ts" />
+        <option value="$PROJECT_DIR$/schemas/traffic-pattern/src/dao/SchemaVersionDao.ts" />
+        <option value="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/Schema.ts" />
+        <option value="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaProperty.ts" />
+        <option value="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaRelation.ts" />
+        <option value="$PROJECT_DIR$/schemas/runway-edge-lighting/src/dao/dao.ts" />
+        <option value="$PROJECT_DIR$/schemas/runway-edge-lighting/src/InjectionTokens.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/OperationHistory.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RepositoryTransactionHistory.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/infrastructure/Actor.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/infrastructure/Application.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/Repository.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/RepositorySchema.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/OperationHistoryDmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/RecordHistoryDmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/RecordHistoryNewValueDmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/RecordHistoryOldValueDmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/RepositoryTransactionHistoryDmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/TransactionHistoryDmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistory.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/index.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dao/sharingNode/SharingNodeRepoTransBlockDao.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/sharingNode/SharingNodeDatabase.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/sharingNode/SharingNodeRepository.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/sharingNode/SharingNodeRepoTransBlock.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/package.json" />
+        <option value="$PROJECT_DIR$/apis/arrivals-n-departures/package.json" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dao/RecordUpdateStageDao.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dao/missingRecord/MissingRecordDao.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dao/sharingNode/SharingNodeRepositoryDao.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/conflict/SynchronizationConflict.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/conflict/SynchronizationConflictValues.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dmo/dmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/guideway/package.json" />
+        <option value="$PROJECT_DIR$/schemas/guideway/src/dao/archive/DailyArchiveLogDao.ts" />
+        <option value="$PROJECT_DIR$/schemas/point-of-destination/package.json" />
+        <option value="$PROJECT_DIR$/apis/terminal-map/package.json" />
+        <option value="$PROJECT_DIR$/apis/terminal-map/src/store/TerminalStore.ts" />
+        <option value="$PROJECT_DIR$/libs/tower/src/AirportDatabase.ts" />
+        <option value="$PROJECT_DIR$/libs/tower/src/OperationManager.ts" />
+        <option value="$PROJECT_DIR$/libs/tower/src/core/data/UpdateCache.ts" />
+        <option value="$PROJECT_DIR$/libs/tower/src/core/metadata/MetadataUtils.ts" />
+        <option value="$PROJECT_DIR$/libs/tower/src/EntityManager.ts" />
+        <option value="$PROJECT_DIR$/libs/tower/src/QueryFacade.ts" />
+        <option value="$PROJECT_DIR$/schemas/baggage-screening.ts" />
+        <option value="$PROJECT_DIR$/rush.json" />
+        <option value="$PROJECT_DIR$/schemas/id-checkpoint/package.json" />
+        <option value="$PROJECT_DIR$/schemas/airport-code/src/ddl/ddl.ts" />
+        <option value="$PROJECT_DIR$/schemas/airport-code/src/ddl/SequenceBlock.ts" />
+        <option value="$PROJECT_DIR$/generators/runway/src/parser/EntityDefinitionGenerator.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/TransactionHistory.ts" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
+    <package-json value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/package.json" />
+    </packageJsonPaths>
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/apis/air-control/package.json" />
+    <dismissed value="$PROJECT_DIR$/apis/arrivals-n-departures/package.json" />
+    <dismissed value="$PROJECT_DIR$/apis/check-in/package.json" />
+    <dismissed value="$PROJECT_DIR$/apps/automated-guideway-transit/package.json" />
+    <dismissed value="$PROJECT_DIR$/apps/terminal/package.json" />
+    <dismissed value="$PROJECT_DIR$/package.json" />
+    <dismissed value="$PROJECT_DIR$/schemas/airport-code/package.json" />
+    <dismissed value="$PROJECT_DIR$/schemas/flight-log-archive/package.json" />
+    <dismissed value="$PROJECT_DIR$/schemas/guideway/package.json" />
+    <dismissed value="$PROJECT_DIR$/schemas/traffic-pattern/package.json" />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="1920" />
+    <option name="y" value="-2" />
+    <option name="width" value="1920" />
+    <option name="height" value="1082" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="schemas" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="schemas" type="462c0819:PsiDirectoryNode" />
+              <item name="holding-pattern" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="schemas" type="462c0819:PsiDirectoryNode" />
+              <item name="holding-pattern" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="schemas" type="462c0819:PsiDirectoryNode" />
+              <item name="holding-pattern" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ddl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="schemas" type="462c0819:PsiDirectoryNode" />
+              <item name="holding-pattern" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ddl" type="462c0819:PsiDirectoryNode" />
+              <item name="history" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="schemas" type="462c0819:PsiDirectoryNode" />
+              <item name="territory" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="schemas" type="462c0819:PsiDirectoryNode" />
+              <item name="territory" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="schemas" type="462c0819:PsiDirectoryNode" />
+              <item name="territory" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ddl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="schemas" type="462c0819:PsiDirectoryNode" />
+              <item name="travel-document-checkpoint" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/schemas/holding-pattern" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="settings.editor.selected.configurable" value="settings.typescriptcompiler" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/schemas/id-checkpoint" />
+      <recent name="$PROJECT_DIR$/apps/terminal/src" />
+      <recent name="$PROJECT_DIR$/apps/terminal/src/store" />
+      <recent name="$PROJECT_DIR$/apps/terminal/src/shared" />
+      <recent name="$PROJECT_DIR$/apps/terminal/src/query/sql" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/libs/ground-transport/src/google" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Node.js.holding-pattern">
+    <configuration name="airport-code" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/airport-code">
+      <method v="2" />
+    </configuration>
+    <configuration name="flight-log-archive" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/flight-log-archive">
+      <method v="2" />
+    </configuration>
+    <configuration name="guideway" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/guideway">
+      <method v="2" />
+    </configuration>
+    <configuration name="holding-pattern" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/holding-pattern">
+      <method v="2" />
+    </configuration>
+    <configuration name="moving-walkway" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/moving-walkway">
+      <method v="2" />
+    </configuration>
+    <configuration name="point-of-destination" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/point-of-destination">
+      <method v="2" />
+    </configuration>
+    <configuration name="runway-edge-lighting" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/runway-edge-lighting">
+      <method v="2" />
+    </configuration>
+    <configuration name="territory" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/territory">
+      <method v="2" />
+    </configuration>
+    <configuration name="traffic-pattern" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/traffic-pattern">
+      <method v="2" />
+    </configuration>
+    <configuration name="travel-document-checkpoint" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/travel-document-checkpoint">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Node.js.airport-code" />
+      <item itemvalue="Node.js.flight-log-archive" />
+      <item itemvalue="Node.js.territory" />
+      <item itemvalue="Node.js.guideway" />
+      <item itemvalue="Node.js.point-of-destination" />
+      <item itemvalue="Node.js.traffic-pattern" />
+      <item itemvalue="Node.js.holding-pattern" />
+      <item itemvalue="Node.js.travel-document-checkpoint" />
+      <item itemvalue="Node.js.moving-walkway" />
+      <item itemvalue="Node.js.runway-edge-lighting" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9c5a4502-68ae-4304-a543-572c83c81862" name="Default" comment="" />
+      <changelist id="bd11709e-7b8d-4d56-80ac-4cc7f9b1ab94" name="Revert: " comment="" />
+      <created>1531746759575</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1531746759575</updated>
+      <workItem from="1531746760688" duration="7078000" />
+      <workItem from="1531834383911" duration="5623000" />
+      <workItem from="1531841146150" duration="77000" />
+      <workItem from="1531841235913" duration="1298000" />
+      <workItem from="1531921682878" duration="9865000" />
+      <workItem from="1532091472579" duration="7074000" />
+      <workItem from="1532288498083" duration="403000" />
+      <workItem from="1532348464427" duration="1521000" />
+      <workItem from="1532445894400" duration="55000" />
+      <workItem from="1532523905611" duration="2215000" />
+      <workItem from="1532700254607" duration="5669000" />
+      <workItem from="1533130917783" duration="540000" />
+      <workItem from="1533131571373" duration="4360000" />
+      <workItem from="1533300504128" duration="87000" />
+      <workItem from="1533300696503" duration="661000" />
+      <workItem from="1533305498609" duration="141000" />
+      <workItem from="1533305670300" duration="5391000" />
+      <workItem from="1533505996682" duration="1009000" />
+      <workItem from="1533551164846" duration="151000" />
+      <workItem from="1533551730636" duration="71000" />
+      <workItem from="1533653637995" duration="81000" />
+      <workItem from="1533734705557" duration="1176000" />
+      <workItem from="1533736346954" duration="566000" />
+      <workItem from="1533736951552" duration="1686000" />
+      <workItem from="1533738825127" duration="138000" />
+      <workItem from="1533738978424" duration="38000" />
+      <workItem from="1534087343887" duration="735000" />
+      <workItem from="1534088443483" duration="599000" />
+      <workItem from="1534089387745" duration="4577000" />
+      <workItem from="1534431254092" duration="12000" />
+      <workItem from="1534431294710" duration="3841000" />
+      <workItem from="1534514995308" duration="879000" />
+      <workItem from="1534560737643" duration="185000" />
+      <workItem from="1534560961069" duration="1212000" />
+      <workItem from="1534603288855" duration="3989000" />
+      <workItem from="1534683935658" duration="785000" />
+      <workItem from="1534686381415" duration="1205000" />
+    </task>
+    <task id="LOCAL-00001" summary="trying out typescript 3.0 project references">
+      <created>1531754174047</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1531754174047</updated>
+    </task>
+    <task id="LOCAL-00002" summary="trying out typescript 3.0 project references">
+      <created>1531754200985</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1531754200985</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fixing migration errors and simplifying configuration">
+      <created>1531841199518</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1531841199518</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fixing migration errors and simplifying configuration">
+      <created>1531926436211</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1531926436212</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fixing migration errors and simplifying configuration">
+      <created>1532010061547</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1532010061547</updated>
+    </task>
+    <task id="LOCAL-00006" summary="fixing migration errors and simplifying configuration">
+      <created>1532093373158</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1532093373159</updated>
+    </task>
+    <task id="LOCAL-00007" summary="finishing renaming from Database to Terminal and re-working TM message&#10;processing">
+      <created>1532098815243</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1532098815243</updated>
+    </task>
+    <task id="LOCAL-00008" summary="finishing renaming from Database to Terminal and re-working TM message&#10;processing">
+      <created>1532186945495</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1532186945495</updated>
+    </task>
+    <task id="LOCAL-00009" summary="finishing renaming from Database to Terminal and re-working TM message&#10;processing">
+      <created>1532228632184</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1532228632184</updated>
+    </task>
+    <task id="LOCAL-00010" summary="finishing sync migration from SchemaIndex to SchemaVersionId + SchemaIndex">
+      <created>1532288879277</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1532288879277</updated>
+    </task>
+    <task id="LOCAL-00011" summary="finishing sync migration from SchemaIndex to SchemaVersionId + SchemaIndex">
+      <created>1532356437228</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1532356437228</updated>
+    </task>
+    <task id="LOCAL-00012" summary="finishing sync migration from SchemaIndex to SchemaVersionId + SchemaIndex">
+      <created>1532445912355</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1532445912355</updated>
+    </task>
+    <task id="LOCAL-00013" summary="finishing sync migration from SchemaIndex to SchemaVersionId + SchemaIndex">
+      <created>1532531034250</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1532531034250</updated>
+    </task>
+    <task id="LOCAL-00014" summary="refactoring SyncIn data checker">
+      <created>1532618722948</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1532618722948</updated>
+    </task>
+    <task id="LOCAL-00015" summary="refactoring SyncIn checkers">
+      <created>1532700282433</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1532700282434</updated>
+    </task>
+    <task id="LOCAL-00016" summary="refactoring SyncIn checkers">
+      <created>1532702364027</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1532702364027</updated>
+    </task>
+    <task id="LOCAL-00017" summary="refactoring SyncIn status processor">
+      <created>1532791386741</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1532791386741</updated>
+    </task>
+    <task id="LOCAL-00018" summary="refactoring SyncIn status processor">
+      <created>1532796754356</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1532796754356</updated>
+    </task>
+    <task id="LOCAL-00019" summary="refactoring SyncIn status processor">
+      <created>1533133251975</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1533133251975</updated>
+    </task>
+    <task id="LOCAL-00020" summary="refactoring SyncIn status processor">
+      <created>1533134425351</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1533134425351</updated>
+    </task>
+    <task id="LOCAL-00021" summary="refactoring SyncIn status processor">
+      <created>1533218974622</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1533218974622</updated>
+    </task>
+    <task id="LOCAL-00022" summary="refactoring SyncIn status processor">
+      <created>1533308199735</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1533308199735</updated>
+    </task>
+    <task id="LOCAL-00023" summary="refactoring SyncIn status processor">
+      <created>1533414790688</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1533414790688</updated>
+    </task>
+    <task id="LOCAL-00024" summary="refactoring core schemas">
+      <created>1533508737138</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1533508737138</updated>
+    </task>
+    <task id="LOCAL-00025" summary="refactoring core schemas">
+      <created>1533508789063</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1533508789063</updated>
+    </task>
+    <task id="LOCAL-00026" summary="refactoring core schemas">
+      <created>1533508880785</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1533508880785</updated>
+    </task>
+    <task id="LOCAL-00027" summary="refactoring core schemas">
+      <created>1533653652921</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1533653652921</updated>
+    </task>
+    <task id="LOCAL-00028" summary="refactoring core schemas">
+      <created>1533739005926</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1533739005926</updated>
+    </task>
+    <task id="LOCAL-00029" summary="adding missing files">
+      <created>1534105434481</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1534105434481</updated>
+    </task>
+    <task id="LOCAL-00030" summary="schema generator">
+      <created>1534346546526</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1534346546526</updated>
+    </task>
+    <task id="LOCAL-00031" summary="schema generator">
+      <created>1534346601819</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1534346601819</updated>
+    </task>
+    <task id="LOCAL-00032" summary="sequence generation">
+      <created>1534431468593</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1534431468593</updated>
+    </task>
+    <task id="LOCAL-00033" summary="sequence generation">
+      <created>1534608339234</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1534608339234</updated>
+    </task>
+    <task id="LOCAL-00034" summary="sequence generation">
+      <created>1534632261434</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1534632261434</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="74993000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1920" y="-2" width="1920" height="1082" extended-state="7" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14812863" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="npm" order="2" side_tool="true" />
+      <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32982087" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3277311" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39891893" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TypeScript" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.33718488" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32809225" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="trying out typescript 3.0 project references" />
+    <MESSAGE value="fixing migration errors and simplifying configuration" />
+    <MESSAGE value="finishing renaming from Database to Terminal and re-working TM message&#10;processing" />
+    <MESSAGE value="finishing sync migration from SchemaIndex to SchemaVersionId + SchemaIndex" />
+    <MESSAGE value="refactoring SyncIn data checker" />
+    <MESSAGE value="refactoring SyncIn checkers" />
+    <MESSAGE value="refactoring SyncIn status processor" />
+    <MESSAGE value="refactoring core schemas" />
+    <MESSAGE value="adding missing files" />
+    <MESSAGE value="schema generator" />
+    <MESSAGE value="sequence generation" />
+    <option name="LAST_COMMIT_MESSAGE" value="sequence generation" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.js</url>
+          <line>201</line>
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.js</url>
+          <line>99</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/generators/runway/lib/parser/EntityDefinitionGenerator.js</url>
+          <line>138</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/apps/automated-guideway-transit/techinical questions.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/automated-guideway-transit/src/clientConnection/Blacklist.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/automated-guideway-transit/src/server/archive/read/ServerSentEventsServer.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/automated-guideway-transit/src/server/archive/write/DataArchiver.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/automated-guideway-transit/src/server/gwt/JwtTokenProcessorClient.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/automated-guideway-transit/src/server/ws/IWebServer.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/automated-guideway-transit/src/InjectionTokens.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/pedestrian-terminal-connector/src/server/common/ErrorLogger.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/pedestrian-terminal-connector/src/server/gwt/JwtTokenProcessor.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/pedestrian-terminal-connector/src/server/ws/IWebConnection.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/pedestrian-terminal-connector/src/server/DataProcessor.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/tarmaq/src/core/metadata/QMetadataUtils.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/tarmaq/src/core/repository/ChangeToQueryRegistry.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/tarmaq/src/index.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/terminal/src/data/DeltaStore.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/terminal/src/net/OnlineManager.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/terminal/src/query/orderBy/EntityOrderByParser.ts" />
+    <entry file="file://$PROJECT_DIR$/apps/terminal/src/query/result/entity/IEntityResultParser.ts" />
+    <entry file="file://$PROJECT_DIR$/apps/terminal/src/query/sql/core/SQLNoJoinQuery.ts" />
+    <entry file="file://$PROJECT_DIR$/apps/terminal/src/query/sql/FieldSQLQuery.ts" />
+    <entry file="file://$PROJECT_DIR$/apps/terminal/src/query/sql/EntitySQLQuery.ts" />
+    <entry file="file://$PROJECT_DIR$/apps/terminal/src/shared/DateUtils.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/terminal/src/store/RecordState.ts" />
+    <entry file="file://$PROJECT_DIR$/libs/fuel-hydrant-system/src/validation/Validator.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/terminal/src/query/adaptor/OracleQueryAdaptor.ts" />
+    <entry file="file://$PROJECT_DIR$/apps/terminal/src/orchestration/DeleteManager.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="94" column="12" selection-start-line="94" selection-start-column="12" selection-end-line="94" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apis/air-control/package.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apis/check-in/package.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/package.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schemas/id-checkpoint/tsconfig.json" />
+    <entry file="file://$PROJECT_DIR$/schemas/territory/package.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schemas/id-checkpoint/package.json" />
+    <entry file="file://$PROJECT_DIR$/schemas/holding-pattern/tsconfig.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="538">
+          <caret line="99" column="32" selection-start-line="99" selection-start-column="32" selection-end-line="99" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apis/ground-control/package.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schemas/airport-code/src/ddl/ShardedRecord.ts" />
+    <entry file="file://$PROJECT_DIR$/schemas/airport-code/src/ddl/Shard.ts" />
+    <entry file="file://$PROJECT_DIR$/schemas/baggage-screening.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schemas/guideway/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" selection-start-line="7" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="201" column="47" selection-start-line="201" selection-start-column="47" selection-end-line="201" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schemas/airport-code/src/ddl/SequenceBlock.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schemas/airport-code/src/ddl/ddl.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schemas/holding-pattern/src/generated/schema.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="17" column="17" lean-forward="true" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/lib/builder/schema/SSchemaBuilder.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="195" column="30" lean-forward="true" selection-start-line="195" selection-start-column="30" selection-end-line="195" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/lib/parser/EntityDefinitionGenerator.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2622">
+          <caret line="138" column="55" selection-start-line="138" selection-start-column="55" selection-end-line="138" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/src/parser/EntityDefinitionGenerator.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2907">
+          <caret line="180" column="12" lean-forward="true" selection-start-line="180" selection-start-column="12" selection-end-line="180" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schemas/holding-pattern/src/dao/history/RecordHistoryOldValueDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#53#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schemas/holding-pattern/src/dao/infrastructure/ActorDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="53" column="10" lean-forward="true" selection-start-line="53" selection-start-column="10" selection-end-line="53" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#94#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/TransactionHistory.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="38" column="26" lean-forward="true" selection-start-line="38" selection-start-column="26" selection-end-line="38" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#158#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/tower/src/OperationManager.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rush.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="105" column="58" selection-start-line="105" selection-start-column="58" selection-end-line="105" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

@@ -20,10 +20,10 @@ const terminal_map_1 = require("@airport/terminal-map");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
 let InsertManager = class InsertManager {
-    constructor(airportDb, dataStore, idGenerator, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager) {
+    constructor(airportDb, dataStore, sequenceGenerator, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager) {
         this.airportDb = airportDb;
         this.dataStore = dataStore;
-        this.idGenerator = idGenerator;
+        this.sequenceGenerator = sequenceGenerator;
         this.historyManager = historyManager;
         this.offlineDataStore = offlineDataStore;
         this.operationHistoryDmo = operationHistoryDmo;
@@ -45,13 +45,12 @@ let InsertManager = class InsertManager {
     async internalInsertValues(portableQuery, actor, getIds = false) {
         const dbEntity = this.airportDb.schemas[portableQuery.schemaIndex]
             .currentVersion.entities[portableQuery.tableIndex];
-        let ids;
-        if (!dbEntity.isLocal) {
-            ids = await this.ensureRepositoryEntityIdValues(actor, dbEntity, portableQuery.jsonQuery);
-            await this.addInsertHistory(dbEntity, portableQuery, actor);
+        if (dbEntity.isRepositoryEntity) {
+            this.ensureRepositoryEntityIdValues(actor, dbEntity, portableQuery.jsonQuery);
         }
-        else {
-            ids = await this.ensureIdValues(dbEntity, portableQuery.jsonQuery);
+        const ids = await this.ensureGeneratedValues(dbEntity, portableQuery.jsonQuery);
+        if (!dbEntity.isLocal) {
+            await this.addInsertHistory(dbEntity, portableQuery, actor);
         }
         const numberOfInsertedRecords = await this.dataStore.insertValues(portableQuery);
         return getIds ? ids : numberOfInsertedRecords;
@@ -60,46 +59,66 @@ let InsertManager = class InsertManager {
         const repository = await this.repositoryManager.createRepository(name, distributionStrategy, this.transactionManager.storeType, platform, platformConfig, 'id');
         return repository.id;
     }
-    async ensureIdValues(dbEntity, jsonInsertValues) {
-        const idColumns = dbEntity.idColumns;
-        if (!idColumns.length) {
-            return null;
-        }
+    async ensureGeneratedValues(dbEntity, jsonInsertValues) {
+        let ids = null;
         const values = jsonInsertValues.V;
-        if (idColumns.length > 1
-            || !idColumns[0].isGenerated) {
-            for (const idColumn of idColumns) {
-                for (const entityValues of values) {
-                    if (!entityValues[idColumn.index]) {
-                        throw `No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`;
-                    }
+        const idColumns = dbEntity.idColumns;
+        for (const idColumn of idColumns) {
+            if (idColumn.isGenerated) {
+                continue;
+            }
+            for (const entityValues of values) {
+                if (!entityValues[idColumn.index]) {
+                    throw `No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`;
                 }
             }
-            return null;
         }
-        const idColumn = dbEntity.idColumns[0];
-        const ids = [];
-        for (const entityValues of values) {
-            if (entityValues[idColumn.index] || entityValues[idColumn.index] === 0) {
-                throw `Already provided value '${entityValues[idColumn.index]}' on insert for @Id @GeneratedValue '${dbEntity.name}.${idColumn.name}'.\nYou cannot explicitly provide values for generated ids'.`;
-            }
-            let repositoryId = null;
-            if (dbEntity.isRepositoryEntity) {
-                repositoryId = dbEntity.columnMap[ground_control_1.repositoryEntity.FOREIGN_KEY].index;
+        if (dbEntity.isRepositoryEntity) {
+            const repositoryColumn = dbEntity.columnMap[ground_control_1.repositoryEntity.FOREIGN_KEY];
+            const repositoryIdIndex = repositoryColumn.index;
+            for (const entityValues of values) {
+                const repositoryId = entityValues[repositoryIdIndex];
                 if (!repositoryId && repositoryId !== 0) {
-                    throw `@Column({ name: 'REPOSITORY_ID'}) value is not specified on insert for '${dbEntity.name}.${idColumn.name}'.`;
+                    throw `@Column({ name: 'REPOSITORY_ID'}) value is not specified on insert for 
+					'${dbEntity.name}.${repositoryColumn.name}'.`;
                 }
             }
-            const id = this.idGenerator.generateEntityId(dbEntity);
-            ids.push(id);
-            entityValues[idColumn.index] = id;
         }
+        const generatedColumns = dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
+        if (!generatedColumns.length) {
+            if (idColumns.length === 1) {
+                const idColumn = idColumns[0];
+                ids = values.map(entityValues => entityValues[idColumn.index]);
+            }
+            return ids;
+        }
+        for (const entityValues of values) {
+            generatedColumns.forEach((generatedColumn) => {
+                if (entityValues[generatedColumn.index] || entityValues[generatedColumn.index] === 0) {
+                    throw `Already provided value '${entityValues[generatedColumn.index]}'
+					on insert for @GeneratedValue '${dbEntity.name}.${generatedColumn.name}'.
+					You cannot explicitly provide values for @GeneratedValue columns'.`;
+                }
+            });
+        }
+        const numSequencesNeeded = generatedColumns.map(_ => values.length);
+        const generatedSequenceValues = this.sequenceGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
+        generatedColumns.forEach((dbColumn, generatedColumnIndex) => {
+            const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex];
+            values.forEach((entityValues, index) => {
+                entityValues[dbColumn.index] = generatedColumnSequenceValues[index];
+            });
+            if (dbEntity.idColumnMap[dbColumn.name]) {
+                ids = values.map(entityValues => entityValues[dbColumn.index]);
+            }
+        });
         return ids;
     }
-    async ensureRepositoryEntityIdValues(actor, dbEntity, jsonInsertValues) {
-        const actorRecordIds = [];
+    ensureRepositoryEntityIdValues(actor, dbEntity, jsonInsertValues) {
+        // const actorRecordIds: RepositoryEntityActorRecordId[] = []
         const actorIdColumn = dbEntity.idColumnMap['ACTOR_ID'];
-        const actorRecordIdColumn = dbEntity.idColumnMap['ACTOR_RECORD_ID'];
+        // const actorRecordIdColumn                             =
+        // dbEntity.idColumnMap['ACTOR_RECORD_ID']
         const repositoryIdColumn = dbEntity.idColumnMap['REPOSITORY_ID'];
         for (const entityValues of jsonInsertValues.V) {
             if (entityValues[actorIdColumn.index] || entityValues[actorIdColumn.index] === 0) {
@@ -107,11 +126,10 @@ let InsertManager = class InsertManager {
 				on insert for @Id '${dbEntity.name}.${actorIdColumn.name}'.
 				You cannot explicitly provide a value for ACTOR_ID on Repository row inserts.`;
             }
-            if (entityValues[actorRecordIdColumn.index] || entityValues[actorRecordIdColumn.index] === 0) {
-                throw `Already provided value '${entityValues[actorRecordIdColumn.index]}' 
-				on insert for @Id @GeneratedValue '${dbEntity.name}.${actorRecordIdColumn.name}'.
-				You cannot explicitly provide values for generated ids.`;
-            }
+            // if (entityValues[actorRecordIdColumn.index] || entityValues[actorRecordIdColumn.index]
+            // === 0) { throw `Already provided value '${entityValues[actorRecordIdColumn.index]}' on
+            // insert for @Id @GeneratedValue '${dbEntity.name}.${actorRecordIdColumn.name}'. You
+            // cannot explicitly provide values for generated ids.` }
             if (!entityValues[repositoryIdColumn.index]) {
                 throw `Did not provide a positive integer value 
 				(instead provided '${entityValues[repositoryIdColumn.index]}')
@@ -119,11 +137,11 @@ let InsertManager = class InsertManager {
 				 You must explicitly provide a value for REPOSITORY_ID on Repository row inserts.`;
             }
             entityValues[actorIdColumn.index] = actor.id;
-            const actorRecordId = this.idGenerator.generateEntityId(dbEntity);
-            actorRecordIds.push(actorRecordId);
-            entityValues[actorRecordIdColumn.index] = actorRecordId;
+            // const actorRecordId               = this.idGenerator.generateEntityId(dbEntity)
+            // actorRecordIds.push(actorRecordId)
+            // entityValues[actorRecordIdColumn.index] = actorRecordId
         }
-        return actorRecordIds;
+        // return actorRecordIds
     }
     /**
      *
@@ -200,7 +218,7 @@ InsertManager = __decorate([
     typedi_1.Service(InjectionTokens_1.InsertManagerToken),
     __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
     __param(1, typedi_1.Inject(InjectionTokens_1.StoreDriverToken)),
-    __param(2, typedi_1.Inject(fuel_hydrant_system_1.IdGeneratorToken)),
+    __param(2, typedi_1.Inject(fuel_hydrant_system_1.SequenceGeneratorToken)),
     __param(3, typedi_1.Inject(InjectionTokens_1.HistoryManagerToken)),
     __param(4, typedi_1.Inject(InjectionTokens_1.OfflineDeltaStoreToken)),
     __param(5, typedi_1.Inject(holding_pattern_1.OperationHistoryDmoToken)),
@@ -209,7 +227,7 @@ InsertManager = __decorate([
     __param(8, typedi_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
     __param(9, typedi_1.Inject(holding_pattern_1.TransactionHistoryDmoToken)),
     __param(10, typedi_1.Inject(terminal_map_1.TransactionManagerToken)),
-    __metadata("design:paramtypes", [Object, Object, fuel_hydrant_system_1.IdGenerator, Object, Object, holding_pattern_1.OperationHistoryDmo,
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, holding_pattern_1.OperationHistoryDmo,
         holding_pattern_1.RecordHistoryDmo, Object, holding_pattern_1.RepositoryTransactionHistoryDmo,
         holding_pattern_1.TransactionHistoryDmo, Object])
 ], InsertManager);

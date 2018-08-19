@@ -20,30 +20,30 @@ let RecordHistory = class RecordHistory {
 __decorate([
     air_control_1.Id(),
     air_control_1.GeneratedValue(),
-    air_control_1.DbNumber(),
+    air_control_1.SequenceGenerator({ allocationSize: 2000 }),
     __metadata("design:type", Number)
 ], RecordHistory.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "ACTOR_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: 'ACTOR_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", Object)
 ], RecordHistory.prototype, "actor", void 0);
 __decorate([
-    air_control_1.Column({ name: "ACTOR_RECORD_ID" }),
+    air_control_1.Column({ name: 'ACTOR_RECORD_ID' }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], RecordHistory.prototype, "actorRecordId", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_OPERATION_HISTORY_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: 'REPOSITORY_OPERATION_HISTORY_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", Object)
 ], RecordHistory.prototype, "operationHistory", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: "recordHistory" }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'recordHistory' }),
     __metadata("design:type", Array)
 ], RecordHistory.prototype, "newValues", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: "recordHistory" }),
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'recordHistory' }),
     __metadata("design:type", Array)
 ], RecordHistory.prototype, "oldValues", void 0);
 __decorate([
@@ -53,11 +53,11 @@ __decorate([
 RecordHistory = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({
-        name: "REPOSITORY_RECORD_HISTORY",
+        name: 'REPOSITORY_RECORD_HISTORY',
         indexes: [{
-                name: "RCRD_HSTR_TO_OPRTN_HSTR_FX",
+                name: 'RCRD_HSTR_TO_OPRTN_HSTR_FX',
                 columnList: [
-                    "REPOSITORY_OPERATION_HISTORY_ID"
+                    'REPOSITORY_OPERATION_HISTORY_ID'
                 ],
                 unique: false
             }]

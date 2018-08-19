@@ -1,6 +1,6 @@
-import { IAbstractRepositoryEntity } from "../../generated/repository/qabstractrepositoryentity";
-import { IActor } from "../../generated/infrastructure/qactor";
-import { IRepository } from "../../generated/repository/qrepository";
+import { IActor } from '../../generated/infrastructure/qactor';
+import { IAbstractRepositoryEntity } from '../../generated/repository/qabstractrepositoryentity';
+import { IRepository } from '../../generated/repository/qrepository';
 /**
  * Created by Papa on 2/17/2017.
  */

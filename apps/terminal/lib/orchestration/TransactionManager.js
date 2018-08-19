@@ -12,16 +12,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b;
 const air_control_1 = require("@airport/air-control");
+const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const terminal_map_1 = require("@airport/terminal-map");
 const tower_1 = require("@airport/tower");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
-const ActiveQueries_1 = require("../store/ActiveQueries");
-const IdGenerator_1 = require("../store/IdGenerator");
 const AbstractMutationManager_1 = require("./AbstractMutationManager");
 let TransactionManager = class TransactionManager extends AbstractMutationManager_1.AbstractMutationManager {
     constructor(utils, dataStore, idGenerator, offlineDeltaStore, onlineManager, 
@@ -126,22 +124,23 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
             return false;
         }
         let schemaMap = transaction.schemaMap;
+        const transHistoryIds = await this.idGenerator.generateTransactionHistoryIds(transaction.repositoryTransactionHistories.length, transaction.allOperationHistory.length, transaction.allRecordHistory.length);
         schemaMap.ensureEntity(holding_pattern_1.Q.TransactionHistory.__driver__.dbEntity, true);
-        transaction.id = this.idGenerator.generateTransHistoryId();
+        transaction.id = transHistoryIds.transactionHistoryId;
         await this.doInsertValues(holding_pattern_1.Q.TransactionHistory, [transaction]);
         schemaMap.ensureEntity(holding_pattern_1.Q.RepositoryTransactionHistory.__driver__.dbEntity, true);
-        transaction.repositoryTransactionHistories.forEach((repositoryTransactionHistory) => {
-            repositoryTransactionHistory.id = this.idGenerator.generateRepoTransHistoryId();
+        transaction.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
+            repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index];
         });
         await this.doInsertValues(holding_pattern_1.Q.RepositoryTransactionHistory, transaction.repositoryTransactionHistories);
         schemaMap.ensureEntity(holding_pattern_1.Q.OperationHistory.__driver__.dbEntity, true);
-        transaction.allOperationHistory.forEach((operationHistory) => {
-            operationHistory.id = this.idGenerator.generateOperationHistoryId();
+        transaction.allOperationHistory.forEach((operationHistory, index) => {
+            operationHistory.id = transHistoryIds.operationHistoryIds[index];
         });
         await this.doInsertValues(holding_pattern_1.Q.OperationHistory, transaction.allOperationHistory);
         schemaMap.ensureEntity(holding_pattern_1.Q.RecordHistory.__driver__.dbEntity, true);
-        transaction.allRecordHistory.forEach((recordHistory) => {
-            recordHistory.id = this.idGenerator.generateRecordHistoryId();
+        transaction.allRecordHistory.forEach((recordHistory, index) => {
+            recordHistory.id = transHistoryIds.recordHistoryIds[index];
         });
         await this.doInsertValues(holding_pattern_1.Q.RecordHistory, transaction.allRecordHistory);
         if (transaction.allRecordHistoryNewValues.length) {
@@ -184,12 +183,12 @@ TransactionManager = __decorate([
     typedi_1.Service(terminal_map_1.TransactionManagerToken),
     __param(0, typedi_1.Inject(air_control_1.UtilsToken)),
     __param(1, typedi_1.Inject(InjectionTokens_1.StoreDriverToken)),
-    __param(2, typedi_1.Inject(InjectionTokens_1.IdGeneratorToken)),
+    __param(2, typedi_1.Inject(fuel_hydrant_system_1.IdGeneratorToken)),
     __param(3, typedi_1.Inject(InjectionTokens_1.OfflineDeltaStoreToken)),
     __param(4, typedi_1.Inject(InjectionTokens_1.OnlineManagerToken)),
-    __param(5, typedi_1.Inject(InjectionTokens_1.ActiveQueriesToken)),
+    __param(5, typedi_1.Inject(fuel_hydrant_system_1.ActiveQueriesToken)),
     __param(6, typedi_1.Inject(holding_pattern_1.TransactionHistoryDmoToken)),
-    __metadata("design:paramtypes", [Object, Object, typeof (_a = typeof IdGenerator_1.IIdGenerator !== "undefined" && IdGenerator_1.IIdGenerator) === "function" ? _a : Object, Object, Object, typeof (_b = typeof ActiveQueries_1.ActiveQueries !== "undefined" && ActiveQueries_1.ActiveQueries) === "function" ? _b : Object, Object])
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, fuel_hydrant_system_1.ActiveQueries, Object])
 ], TransactionManager);
 exports.TransactionManager = TransactionManager;
 //# sourceMappingURL=TransactionManager.js.map

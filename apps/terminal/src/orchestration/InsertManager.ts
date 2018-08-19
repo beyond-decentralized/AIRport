@@ -1,11 +1,8 @@
 import {
 	AirportDatabaseToken,
 	IAirportDatabase
-}                           from '@airport/air-control'
-import {
-	IdGenerator,
-	IdGeneratorToken
-}                           from '@airport/fuel-hydrant-system'
+}                               from '@airport/air-control'
+import {SequenceGeneratorToken} from '@airport/fuel-hydrant-system'
 import {
 	ChangeType,
 	DbEntity,
@@ -13,7 +10,7 @@ import {
 	JsonInsertValues,
 	PortableQuery,
 	repositoryEntity
-}                           from '@airport/ground-control'
+}                               from '@airport/ground-control'
 import {
 	IActor,
 	IOperationHistory,
@@ -23,32 +20,32 @@ import {
 	OperationHistoryDmoToken,
 	RecordHistoryDmo,
 	RecordHistoryDmoToken,
-	RepositoryEntityActorRecordId,
 	RepositoryTransactionHistoryDmo,
 	RepositoryTransactionHistoryDmoToken,
 	TransactionHistoryDmo,
 	TransactionHistoryDmoToken
-}                           from '@airport/holding-pattern'
+}                               from '@airport/holding-pattern'
 import {
 	DistributionStrategy,
 	ITransactionManager,
 	PlatformType,
 	TransactionManagerToken
-}                           from '@airport/terminal-map'
+}                               from '@airport/terminal-map'
 import {
 	Inject,
 	Service
-}                           from 'typedi'
-import {IRepositoryManager} from '../core/repository/RepositoryManager'
-import {IOfflineDeltaStore} from '../data/OfflineDeltaStore'
+}                               from 'typedi'
+import {ISequenceGenerator}     from '../../node_modules/@airport/fuel-hydrant-system/lib/store/SequenceGenerator'
+import {IRepositoryManager}     from '../core/repository/RepositoryManager'
+import {IOfflineDeltaStore}     from '../data/OfflineDeltaStore'
 import {
 	HistoryManagerToken,
 	InsertManagerToken,
 	OfflineDeltaStoreToken,
 	RepositoryManagerToken,
 	StoreDriverToken,
-}                           from '../InjectionTokens'
-import {IHistoryManager}    from './HistoryManager'
+}                               from '../InjectionTokens'
+import {IHistoryManager}        from './HistoryManager'
 
 export type RecordId = number;
 
@@ -83,8 +80,8 @@ export class InsertManager
 		private airportDb: IAirportDatabase,
 		@Inject(StoreDriverToken)
 		private dataStore: IStoreDriver,
-		@Inject(IdGeneratorToken)
-		private idGenerator: IdGenerator,
+		@Inject(SequenceGeneratorToken)
+		private sequenceGenerator: ISequenceGenerator,
 		@Inject(HistoryManagerToken)
 		private historyManager: IHistoryManager,
 		@Inject(OfflineDeltaStoreToken)
@@ -131,14 +128,15 @@ export class InsertManager
 		const dbEntity = this.airportDb.schemas[portableQuery.schemaIndex]
 			.currentVersion.entities[portableQuery.tableIndex]
 
-
-		let ids: number[]
-		if (!dbEntity.isLocal) {
-			ids = await this.ensureRepositoryEntityIdValues(actor, dbEntity,
+		if (dbEntity.isRepositoryEntity) {
+			this.ensureRepositoryEntityIdValues(actor, dbEntity,
 				<JsonInsertValues>portableQuery.jsonQuery)
+		}
+
+		const ids = await this.ensureGeneratedValues(dbEntity, <JsonInsertValues>portableQuery.jsonQuery)
+
+		if (!dbEntity.isLocal) {
 			await this.addInsertHistory(dbEntity, portableQuery, actor)
-		} else {
-			ids = await this.ensureIdValues(dbEntity, <JsonInsertValues>portableQuery.jsonQuery)
 		}
 
 		const numberOfInsertedRecords = await this.dataStore.insertValues(portableQuery)
@@ -160,59 +158,98 @@ export class InsertManager
 		return repository.id
 	}
 
-	private async ensureIdValues(
+	private async ensureGeneratedValues(
 		dbEntity: DbEntity,
 		jsonInsertValues: JsonInsertValues
 	): Promise<number[]> {
-		const idColumns = dbEntity.idColumns
-		if (!idColumns.length) {
-			return null
-		}
+		let ids: number[] = null
 
-		const values = jsonInsertValues.V
-		if (idColumns.length > 1
-			|| !idColumns[0].isGenerated) {
-			for (const idColumn of idColumns) {
-				for (const entityValues of values) {
-					if (!entityValues[idColumn.index]) {
-						throw `No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`
-					}
+		const values    = jsonInsertValues.V
+		const idColumns = dbEntity.idColumns
+
+		for (const idColumn of idColumns) {
+			if(idColumn.isGenerated) {
+				continue
+			}
+			for (const entityValues of values) {
+				if (!entityValues[idColumn.index]) {
+					throw `No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`
 				}
 			}
-			return null
 		}
 
-		const idColumn      = dbEntity.idColumns[0]
-		const ids: number[] = []
+
+		if (dbEntity.isRepositoryEntity) {
+			const repositoryColumn  = dbEntity.columnMap[repositoryEntity.FOREIGN_KEY]
+			const repositoryIdIndex = repositoryColumn.index
+			for (const entityValues of values) {
+				const repositoryId = entityValues[repositoryIdIndex]
+				if (!repositoryId && repositoryId !== 0) {
+					throw `@Column({ name: 'REPOSITORY_ID'}) value is not specified on insert for 
+					'${dbEntity.name}.${repositoryColumn.name}'.`
+				}
+			}
+		}
+
+		const generatedColumns = dbEntity.columns.filter(
+			dbColumn => dbColumn.isGenerated
+		)
+		if (!generatedColumns.length) {
+			if (idColumns.length === 1) {
+				const idColumn = idColumns[0]
+				ids            = values.map(
+					entityValues => entityValues[idColumn.index])
+			}
+			return ids
+		}
 
 		for (const entityValues of values) {
-			if (entityValues[idColumn.index] || entityValues[idColumn.index] === 0) {
-				throw `Already provided value '${entityValues[idColumn.index]}' on insert for @Id @GeneratedValue '${dbEntity.name}.${idColumn.name}'.\nYou cannot explicitly provide values for generated ids'.`
-			}
-			let repositoryId = null
-			if (dbEntity.isRepositoryEntity) {
-				repositoryId = dbEntity.columnMap[repositoryEntity.FOREIGN_KEY].index
-				if (!repositoryId && repositoryId !== 0) {
-					throw `@Column({ name: 'REPOSITORY_ID'}) value is not specified on insert for '${dbEntity.name}.${idColumn.name}'.`
+			generatedColumns.forEach((generatedColumn) => {
+				if (entityValues[generatedColumn.index] || entityValues[generatedColumn.index] === 0) {
+					throw `Already provided value '${entityValues[generatedColumn.index]}'
+					on insert for @GeneratedValue '${dbEntity.name}.${generatedColumn.name}'.
+					You cannot explicitly provide values for @GeneratedValue columns'.`
 				}
-			}
-			const id = this.idGenerator.generateEntityId(dbEntity)
-			ids.push(id)
-			entityValues[idColumn.index] = id
+			})
 		}
+
+		const numSequencesNeeded      = generatedColumns.map(
+			_ => values.length)
+		const generatedSequenceValues = this.sequenceGenerator.generateSequenceNumbers(
+			generatedColumns, numSequencesNeeded)
+
+
+		generatedColumns.forEach((
+			dbColumn,
+			generatedColumnIndex
+		) => {
+			const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex]
+			values.forEach((
+				entityValues,
+				index
+			) => {
+				entityValues[dbColumn.index] = generatedColumnSequenceValues[index]
+			})
+
+			if (dbEntity.idColumnMap[dbColumn.name]) {
+				ids = values.map(
+					entityValues => entityValues[dbColumn.index])
+			}
+		})
 
 		return ids
 	}
 
-	private async ensureRepositoryEntityIdValues(
+	private ensureRepositoryEntityIdValues(
 		actor: IActor,
 		dbEntity: DbEntity,
 		jsonInsertValues: JsonInsertValues
-	): Promise<RepositoryEntityActorRecordId[]> {
-		const actorRecordIds: RepositoryEntityActorRecordId[] = []
-		const actorIdColumn                                   = dbEntity.idColumnMap['ACTOR_ID']
-		const actorRecordIdColumn                             = dbEntity.idColumnMap['ACTOR_RECORD_ID']
-		const repositoryIdColumn                              = dbEntity.idColumnMap['REPOSITORY_ID']
+	): void {
+		// const actorRecordIds: RepositoryEntityActorRecordId[] = []
+		const actorIdColumn      = dbEntity.idColumnMap['ACTOR_ID']
+		// const actorRecordIdColumn                             =
+		// dbEntity.idColumnMap['ACTOR_RECORD_ID']
+		const repositoryIdColumn = dbEntity.idColumnMap['REPOSITORY_ID']
 
 		for (const entityValues of jsonInsertValues.V) {
 			if (entityValues[actorIdColumn.index] || entityValues[actorIdColumn.index] === 0) {
@@ -220,11 +257,10 @@ export class InsertManager
 				on insert for @Id '${dbEntity.name}.${actorIdColumn.name}'.
 				You cannot explicitly provide a value for ACTOR_ID on Repository row inserts.`
 			}
-			if (entityValues[actorRecordIdColumn.index] || entityValues[actorRecordIdColumn.index] === 0) {
-				throw `Already provided value '${entityValues[actorRecordIdColumn.index]}' 
-				on insert for @Id @GeneratedValue '${dbEntity.name}.${actorRecordIdColumn.name}'.
-				You cannot explicitly provide values for generated ids.`
-			}
+			// if (entityValues[actorRecordIdColumn.index] || entityValues[actorRecordIdColumn.index]
+			// === 0) { throw `Already provided value '${entityValues[actorRecordIdColumn.index]}' on
+			// insert for @Id @GeneratedValue '${dbEntity.name}.${actorRecordIdColumn.name}'. You
+			// cannot explicitly provide values for generated ids.` }
 			if (!entityValues[repositoryIdColumn.index]) {
 				throw `Did not provide a positive integer value 
 				(instead provided '${entityValues[repositoryIdColumn.index]}')
@@ -233,12 +269,12 @@ export class InsertManager
 			}
 
 			entityValues[actorIdColumn.index] = actor.id
-			const actorRecordId               = this.idGenerator.generateEntityId(dbEntity)
-			actorRecordIds.push(actorRecordId)
-			entityValues[actorRecordIdColumn.index] = actorRecordId
+			// const actorRecordId               = this.idGenerator.generateEntityId(dbEntity)
+			// actorRecordIds.push(actorRecordId)
+			// entityValues[actorRecordIdColumn.index] = actorRecordId
 		}
 
-		return actorRecordIds
+		// return actorRecordIds
 	}
 
 	/**

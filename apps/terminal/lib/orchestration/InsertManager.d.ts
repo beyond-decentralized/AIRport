@@ -1,8 +1,8 @@
 import { IAirportDatabase } from '@airport/air-control';
-import { IdGenerator } from '@airport/fuel-hydrant-system';
 import { IStoreDriver, PortableQuery } from '@airport/ground-control';
 import { IActor, ITransactionHistory, OperationHistoryDmo, RecordHistoryDmo, RepositoryTransactionHistoryDmo, TransactionHistoryDmo } from '@airport/holding-pattern';
 import { DistributionStrategy, ITransactionManager, PlatformType } from '@airport/terminal-map';
+import { ISequenceGenerator } from '../../node_modules/@airport/fuel-hydrant-system/lib/store/SequenceGenerator';
 import { IRepositoryManager } from '../core/repository/RepositoryManager';
 import { IOfflineDeltaStore } from '../data/OfflineDeltaStore';
 import { IHistoryManager } from './HistoryManager';
@@ -15,7 +15,7 @@ export interface IInsertManager {
 export declare class InsertManager implements IInsertManager {
     private airportDb;
     private dataStore;
-    private idGenerator;
+    private sequenceGenerator;
     private historyManager;
     private offlineDataStore;
     private operationHistoryDmo;
@@ -24,13 +24,13 @@ export declare class InsertManager implements IInsertManager {
     private repositoryTransactionHistoryDmo;
     private transactionHistoryDmo;
     private transactionManager;
-    constructor(airportDb: IAirportDatabase, dataStore: IStoreDriver, idGenerator: IdGenerator, historyManager: IHistoryManager, offlineDataStore: IOfflineDeltaStore, operationHistoryDmo: OperationHistoryDmo, recordHistoryDmo: RecordHistoryDmo, repositoryManager: IRepositoryManager, repositoryTransactionHistoryDmo: RepositoryTransactionHistoryDmo, transactionHistoryDmo: TransactionHistoryDmo, transactionManager: ITransactionManager);
+    constructor(airportDb: IAirportDatabase, dataStore: IStoreDriver, sequenceGenerator: ISequenceGenerator, historyManager: IHistoryManager, offlineDataStore: IOfflineDeltaStore, operationHistoryDmo: OperationHistoryDmo, recordHistoryDmo: RecordHistoryDmo, repositoryManager: IRepositoryManager, repositoryTransactionHistoryDmo: RepositoryTransactionHistoryDmo, transactionHistoryDmo: TransactionHistoryDmo, transactionManager: ITransactionManager);
     readonly currentTransHistory: ITransactionHistory;
     insertValues(portableQuery: PortableQuery, actor: IActor): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, actor: IActor): Promise<RecordId[]>;
     private internalInsertValues;
     addRepository(name: string, url?: string, platform?: PlatformType, platformConfig?: string, distributionStrategy?: DistributionStrategy): Promise<number>;
-    private ensureIdValues;
+    private ensureGeneratedValues;
     private ensureRepositoryEntityIdValues;
     /**
      *

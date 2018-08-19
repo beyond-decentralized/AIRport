@@ -26,6 +26,7 @@ let TransactionHistory = class TransactionHistory {
 __decorate([
     air_control_1.GeneratedValue(),
     air_control_1.Id(),
+    air_control_1.SequenceGenerator({ allocationSize: 100 }),
     __metadata("design:type", Number)
 ], TransactionHistory.prototype, "id", void 0);
 __decorate([

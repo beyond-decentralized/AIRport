@@ -15,19 +15,19 @@ let AbstractRepositoryEntity = class AbstractRepositoryEntity {
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: 'REPOSITORY_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", Object)
 ], AbstractRepositoryEntity.prototype, "repository", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "ACTOR_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: 'ACTOR_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", Object)
 ], AbstractRepositoryEntity.prototype, "actor", void 0);
 __decorate([
     air_control_1.Id(),
-    air_control_1.Column({ name: "ACTOR_RECORD_ID" }),
-    air_control_1.DbNumber(),
+    air_control_1.Column({ name: 'ACTOR_RECORD_ID' }),
+    air_control_1.GeneratedValue(),
     __metadata("design:type", Number)
 ], AbstractRepositoryEntity.prototype, "actorRecordId", void 0);
 AbstractRepositoryEntity = __decorate([

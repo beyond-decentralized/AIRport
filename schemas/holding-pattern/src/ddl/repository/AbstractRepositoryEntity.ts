@@ -1,20 +1,14 @@
 import {
 	Column,
-	DbNumber,
+	GeneratedValue,
 	Id,
 	JoinColumn,
 	ManyToOne,
 	MappedSuperclass
-} from "@airport/air-control";
-import {
-	IAbstractRepositoryEntity,
-} from "../../generated/repository/qabstractrepositoryentity";
-import {
-	IActor,
-} from "../../generated/infrastructure/qactor";
-import {
-	IRepository
-} from "../../generated/repository/qrepository";
+}                                   from '@airport/air-control'
+import {IActor,}                    from '../../generated/infrastructure/qactor'
+import {IAbstractRepositoryEntity,} from '../../generated/repository/qabstractrepositoryentity'
+import {IRepository}                from '../../generated/repository/qrepository'
 
 /**
  * Created by Papa on 2/17/2017.
@@ -28,18 +22,18 @@ export abstract class AbstractRepositoryEntity
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID"})
-	repository: IRepository;
+	@JoinColumn({name: 'REPOSITORY_ID', referencedColumnName: 'ID'})
+	repository: IRepository
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: "ACTOR_ID", referencedColumnName: "ID"})
-	actor: IActor;
+	@JoinColumn({name: 'ACTOR_ID', referencedColumnName: 'ID'})
+	actor: IActor
 
 	@Id()
-	@Column({name: "ACTOR_RECORD_ID"})
-	@DbNumber()
-	actorRecordId: RepositoryEntityActorRecordId;
+	@Column({name: 'ACTOR_RECORD_ID'})
+	@GeneratedValue()
+	actorRecordId: RepositoryEntityActorRecordId
 
 	/*
 		@OneToMany()

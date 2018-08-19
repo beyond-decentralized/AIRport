@@ -1,11 +1,10 @@
 import { IUtils } from "@airport/air-control";
+import { ActiveQueries, IIdGenerator } from '@airport/fuel-hydrant-system';
 import { IStoreDriver, StoreType } from "@airport/ground-control";
 import { ITransactionHistory, ITransactionHistoryDmo } from "@airport/holding-pattern";
 import { ITransactionManager } from "@airport/terminal-map";
 import { IOfflineDeltaStore } from "../data/OfflineDeltaStore";
 import { IOnlineManager } from "../net/OnlineManager";
-import { ActiveQueries } from "../store/ActiveQueries";
-import { IIdGenerator } from "../store/IdGenerator";
 import { AbstractMutationManager } from "./AbstractMutationManager";
 export declare class TransactionManager extends AbstractMutationManager implements ITransactionManager {
     private idGenerator;

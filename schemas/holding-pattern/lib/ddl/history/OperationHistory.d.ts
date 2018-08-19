@@ -1,8 +1,8 @@
-import { ChangeType } from "@airport/ground-control";
-import { ISchemaEntity, ISchemaVersion } from "@airport/traffic-pattern";
-import { IOperationHistory } from "../../generated/history/qoperationhistory";
-import { IRecordHistory } from "../../generated/history/qrecordhistory";
-import { IRepositoryTransactionHistory } from "../../generated/history/qrepositorytransactionhistory";
+import { ChangeType } from '@airport/ground-control';
+import { ISchemaEntity, ISchemaVersion } from '@airport/traffic-pattern';
+import { IOperationHistory } from '../../generated/history/qoperationhistory';
+import { IRecordHistory } from '../../generated/history/qrecordhistory';
+import { IRepositoryTransactionHistory } from '../../generated/history/qrepositorytransactionhistory';
 /**
  * Created by Papa on 4/17/2017.
  */

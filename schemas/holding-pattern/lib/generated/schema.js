@@ -10,6 +10,7 @@ exports.SCHEMA = {
                 {
                     "columns": [
                         {
+                            "allocationSize": 600,
                             "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
@@ -231,6 +232,7 @@ exports.SCHEMA = {
                 {
                     "columns": [
                         {
+                            "allocationSize": 2000,
                             "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
@@ -785,6 +787,7 @@ exports.SCHEMA = {
                 {
                     "columns": [
                         {
+                            "allocationSize": 200,
                             "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
@@ -1053,6 +1056,7 @@ exports.SCHEMA = {
                 {
                     "columns": [
                         {
+                            "allocationSize": 100,
                             "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
@@ -2122,6 +2126,7 @@ exports.SCHEMA = {
                     }
                 }
             ],
+            "integerVersion": 1,
             "referencedSchemas": [],
             "versionString": "1.0.0"
         }

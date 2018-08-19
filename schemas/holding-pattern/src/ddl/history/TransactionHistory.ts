@@ -5,9 +5,10 @@ import {
 	GeneratedValue,
 	Id,
 	OneToMany,
+	SequenceGenerator,
 	Table,
 	Transient
-}                                       from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	ATransactionHistory,
 	SyncSchemaMap,
@@ -36,6 +37,7 @@ export class TransactionHistory
 
 	@GeneratedValue()
 	@Id()
+	@SequenceGenerator({allocationSize: 100})
 	id: TransactionHistoryId
 
 	@Column({name: 'TRANSACTION_TYPE'})

@@ -8,7 +8,7 @@ import {
 	ManyToOne,
 	Table
 }                               from "@airport/air-control";
-import {IRecordHistory,}        from "../../generated/history/qrecordhistory";
+import {IRecordHistory}        from "../../generated/history/qrecordhistory";
 import {IRecordHistoryNewValue} from "../../generated/history/qrecordhistorynewvalue";
 
 /**
