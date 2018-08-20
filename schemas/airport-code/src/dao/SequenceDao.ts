@@ -8,11 +8,17 @@ import {
 }                         from 'typedi'
 import {
 	BaseSequenceDao,
-	IBaseSequenceDao
-}                         from '..'
+	IBaseSequenceDao,
+	ISequence,
+	SequenceEId
+} from '..'
 import {SequenceDaoToken} from '../InjectionTokens'
 
 export interface IAbstractSequenceDao {
+
+	findAll(
+		entityIds?: SequenceEId[]
+	): Promise<ISequence[]>;
 
 }
 

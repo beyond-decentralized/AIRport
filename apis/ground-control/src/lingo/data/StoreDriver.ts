@@ -41,10 +41,6 @@ export interface IStoreDriver {
 		parameters: any[]
 	): Promise<any[]>;
 
-	getSequenceSql(
-		sequenceName: string
-	): string;
-
 	initialize(
 		dbName: string
 	): Promise<any>;

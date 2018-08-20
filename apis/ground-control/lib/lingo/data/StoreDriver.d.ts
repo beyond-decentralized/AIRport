@@ -18,7 +18,6 @@ export interface IStoreDriver {
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<E>;
     findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
-    getSequenceSql(sequenceName: string): string;
     initialize(dbName: string): Promise<any>;
     insertValues(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<number>;
     saveTransaction(transaction: ATransactionHistory): Promise<any>;

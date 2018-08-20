@@ -498,22 +498,34 @@ export const SCHEMA = {
 							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "NAME",
+							"name": "ALLOCATION_SIZE",
 							"propertyRefs": [
 								{
 									"index": 6
 								}
 							],
-							"type": 5
+							"type": 4
 						},
 						{
 							"index": 6,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
+							"name": "NAME",
+							"propertyRefs": [
+								{
+									"index": 7
+								}
+							],
+							"type": 5
+						},
+						{
+							"index": 7,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
 							"name": "TYPE",
 							"propertyRefs": [
 								{
-									"index": 9
+									"index": 10
 								}
 							],
 							"type": 4
@@ -589,10 +601,18 @@ export const SCHEMA = {
 							},
 							"index": 6,
 							"isId": false,
+							"name": "allocationSize"
+						},
+						{
+							"columnRef": {
+								"index": 6
+							},
+							"index": 7,
+							"isId": false,
 							"name": "name"
 						},
 						{
-							"index": 7,
+							"index": 8,
 							"isId": false,
 							"name": "manyRelationColumns",
 							"relationRef": {
@@ -600,7 +620,7 @@ export const SCHEMA = {
 							}
 						},
 						{
-							"index": 8,
+							"index": 9,
 							"isId": false,
 							"name": "oneRelationColumns",
 							"relationRef": {
@@ -609,9 +629,9 @@ export const SCHEMA = {
 						},
 						{
 							"columnRef": {
-								"index": 6
+								"index": 7
 							},
-							"index": 9,
+							"index": 10,
 							"isId": false,
 							"name": "type"
 						}
@@ -637,7 +657,7 @@ export const SCHEMA = {
 							},
 							"relationType": 0,
 							"propertyRef": {
-								"index": 7
+								"index": 8
 							},
 							"relationTableIndex": 8
 						},
@@ -649,7 +669,7 @@ export const SCHEMA = {
 							},
 							"relationType": 0,
 							"propertyRef": {
-								"index": 8
+								"index": 9
 							},
 							"relationTableIndex": 8
 						}
@@ -2017,6 +2037,7 @@ export const SCHEMA = {
 					}
 				}
 			],
+			"integerVersion": 1,
 			"referencedSchemas": [],
 			"versionString": "1.0.0"
 		}

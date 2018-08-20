@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const airport_code_1 = require("@airport/airport-code");
 const typedi_1 = require("typedi");
-let AbstractSequenceGenerator = class AbstractSequenceGenerator {
+const InjectionTokens_1 = require("../InjectionTokens");
+let SequenceGenerator = class SequenceGenerator {
     constructor(sequenceBlockDao, sequenceConsumerDao, sequenceDao, utils) {
         this.sequenceBlockDao = sequenceBlockDao;
         this.sequenceConsumerDao = sequenceConsumerDao;
@@ -73,20 +74,21 @@ let AbstractSequenceGenerator = class AbstractSequenceGenerator {
                 const dbColumn = columnsForCreatedBlocks[index];
                 const columnNumbers = sequentialNumbersForColumn.get(dbColumn);
                 let numSequencesNeeded = numSequencesNeededFromNewBlocks.get(dbColumn);
-                let lastBlock;
-                newBlocksForColumn.forEach((newBlockForColumn) => {
+                let lastBlock = null;
+                newBlocksForColumn.some((newBlockForColumn) => {
                     lastBlock = newBlockForColumn;
-                    newBlockForColumn.currentNumber = newBlockForColumn.lastReservedId - newBlockForColumn.size;
-                    while (numSequencesNeeded && newBlockForColumn.currentNumber <= newBlockForColumn.lastReservedId) {
+                    while (numSequencesNeeded > 0
+                        && newBlockForColumn.currentNumber <= newBlockForColumn.lastReservedId) {
+                        columnNumbers.push(newBlockForColumn.currentNumber);
+                        newBlockForColumn.currentNumber++;
+                        numSequencesNeeded--;
                     }
-                    for (; numSequencesNeeded && newBlockForColumn.currentNumber <= newBlockForColumn.lastReservedId; newBlockForColumn.currentNumber++, numSequencesNeeded--) {
+                    if (numSequencesNeeded === 0) {
+                        return true;
                     }
                 });
-                for (let i = 0; i < numSequencesNeeded; i++) {
-                    columnNumbers.push(++newBlock.currentNumber);
-                }
                 const dbEntity = dbColumn.propertyColumns[0].property.entity;
-                this.utils.ensureChildArray(this.utils.ensureChildArray(this.sequenceBlocks, dbEntity.schemaVersion.schema.index), dbEntity.index)[dbColumn.index] = newBlock;
+                this.utils.ensureChildArray(this.utils.ensureChildArray(this.sequenceBlocks, dbEntity.schemaVersion.schema.index), dbEntity.index)[dbColumn.index] = lastBlock;
             });
         }
         return sequentialNumbers;
@@ -120,12 +122,13 @@ let AbstractSequenceGenerator = class AbstractSequenceGenerator {
         };
     }
 };
-AbstractSequenceGenerator = __decorate([
+SequenceGenerator = __decorate([
+    typedi_1.Service(InjectionTokens_1.SequenceGeneratorToken),
     __param(0, typedi_1.Inject(airport_code_1.SequenceBlockDaoToken)),
     __param(1, typedi_1.Inject(airport_code_1.SequenceConsumerDaoToken)),
     __param(2, typedi_1.Inject(airport_code_1.SequenceDaoToken)),
     __param(3, typedi_1.Inject(air_control_1.UtilsToken)),
     __metadata("design:paramtypes", [Object, Object, Object, Object])
-], AbstractSequenceGenerator);
-exports.AbstractSequenceGenerator = AbstractSequenceGenerator;
+], SequenceGenerator);
+exports.SequenceGenerator = SequenceGenerator;
 //# sourceMappingURL=SequenceGenerator.js.map

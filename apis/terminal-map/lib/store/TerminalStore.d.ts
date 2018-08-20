@@ -7,6 +7,7 @@ import { ITerminalState } from './TerminalState';
 export interface ITerminalStore {
     state: Subject<ITerminalState>;
     getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<SchemaName, ISchemaVersion>>, ITerminalState>;
+    getLatestSchemaVersionsByIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
     tearDown(): any;
 }
 export declare class TerminalStore implements ITerminalStore {
@@ -17,5 +18,6 @@ export declare class TerminalStore implements ITerminalStore {
     getDomains: IMemoizedSelector<import("../../../../schemas/territory/lib/generated/qdomain").IDomain[], ITerminalState>;
     getNodesBySyncFrequency: IMemoizedSelector<Map<number, import("../../../../schemas/moving-walkway/lib/generated/sharingNode/qsharingnode").ISharingNode[]>, ITerminalState>;
     getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<string, Map<string, ISchemaVersion>>, ITerminalState>;
+    getLatestSchemaVersionsByIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
     tearDown(): void;
 }

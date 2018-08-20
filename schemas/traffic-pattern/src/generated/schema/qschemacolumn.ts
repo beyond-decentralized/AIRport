@@ -61,6 +61,7 @@ export interface ISchemaColumn {
 	// Non-Id Properties
 	idIndex?: number;
 	isGenerated?: boolean;
+	allocationSize?: number;
 	name?: string;
 	type?: number;
 
@@ -128,6 +129,7 @@ export interface SchemaColumnEUpdateProperties
 	// Non-Id Properties
 	idIndex?: number | IQNumberField;
 	isGenerated?: boolean | IQBooleanField;
+	allocationSize?: number | IQNumberField;
 	name?: string | IQStringField;
 	type?: number | IQNumberField;
 
@@ -143,6 +145,7 @@ export interface SchemaColumnEUpdateColumns
 	// Non-Id Columns
 	ID_INDEX?: number | IQNumberField;
 	IS_GENERATED?: boolean | IQBooleanField;
+	ALLOCATION_SIZE?: number | IQNumberField;
 	NAME?: string | IQStringField;
 	TYPE?: number | IQNumberField;
 
@@ -184,6 +187,7 @@ export interface QSchemaColumn extends QEntity
 	// Non-Id Fields
 	idIndex: IQNumberField;
 	isGenerated: IQBooleanField;
+	allocationSize: IQNumberField;
 	name: IQStringField;
 	type: IQNumberField;
 

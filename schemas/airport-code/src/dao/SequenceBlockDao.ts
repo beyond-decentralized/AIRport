@@ -117,7 +117,11 @@ export class SequenceBlockDao
 			seqBlock2
 		) =>
 			indexMapById.get(seqBlock1.id) - indexMapById.get(seqBlock2.id)
-		).map(seqBlock => [seqBlock]);
+		).map(seqBlock => {
+			seqBlock.currentNumber = seqBlock.lastReservedId - seqBlock.size
+
+			return [seqBlock]
+		});
 	}
 
 }

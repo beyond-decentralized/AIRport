@@ -15,6 +15,7 @@ export declare class SchemaColumn implements ISchemaColumn {
      */
     idIndex: number;
     isGenerated: boolean;
+    allocationSize: number;
     name: string;
     manyRelationColumns: ISchemaRelationColumn[];
     oneRelationColumns: ISchemaRelationColumn[];

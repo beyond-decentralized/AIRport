@@ -1,12 +1,11 @@
 import { IStoreDriver, PortableQuery } from "@airport/ground-control";
 import { ITransactionHistory } from "@airport/holding-pattern";
-import { DistributionStrategy, PlatformType } from "@airport/terminal-map";
+import { DistributionStrategy, ITransactionManager, PlatformType } from '@airport/terminal-map';
 import { IInternalTransactionalConnector } from "@airport/tower";
 import { Observable } from 'rxjs';
 import { IDeleteManager } from "../orchestration/DeleteManager";
 import { IInsertManager } from "../orchestration/InsertManager";
 import { IQueryManager } from "../orchestration/QueryManager";
-import { ITransactionManager } from "../orchestration/TransactionManager";
 import { IUpdateManager } from "../orchestration/UpdateManager";
 /**
  * Keeps track of transactions, per client and validates that a given

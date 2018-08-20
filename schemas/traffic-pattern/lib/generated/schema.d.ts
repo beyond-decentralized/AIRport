@@ -238,6 +238,7 @@ export declare const SCHEMA: {
                 "name": string;
             };
         })[];
+        "integerVersion": number;
         "referencedSchemas": any[];
         "versionString": string;
     }[];

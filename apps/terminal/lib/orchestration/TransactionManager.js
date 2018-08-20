@@ -23,8 +23,7 @@ const InjectionTokens_1 = require("../InjectionTokens");
 const AbstractMutationManager_1 = require("./AbstractMutationManager");
 let TransactionManager = class TransactionManager extends AbstractMutationManager_1.AbstractMutationManager {
     constructor(utils, dataStore, idGenerator, offlineDeltaStore, onlineManager, 
-    // @Inject(
-    // 	_ => RepositoryManagerToken)
+    // @Inject(RepositoryManagerToken)
     // private repositoryManager: IRepositoryManager,
     queries, transactionHistoryDmo) {
         super(utils, dataStore);

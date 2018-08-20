@@ -63,8 +63,7 @@ export class TransactionManager
 		private offlineDeltaStore: IOfflineDeltaStore,
 		@Inject(OnlineManagerToken)
 		private onlineManager: IOnlineManager,
-		// @Inject(
-		// 	_ => RepositoryManagerToken)
+		// @Inject(RepositoryManagerToken)
 		// private repositoryManager: IRepositoryManager,
 		@Inject(ActiveQueriesToken)
 		private queries: ActiveQueries,

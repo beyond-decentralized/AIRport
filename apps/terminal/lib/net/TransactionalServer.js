@@ -12,11 +12,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const ground_control_1 = require("@airport/ground-control");
+const terminal_map_1 = require("@airport/terminal-map");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
-const TransactionManager_1 = require("../orchestration/TransactionManager");
 /**
  * Keeps track of transactions, per client and validates that a given
  * transaction belongs to the provided client.  If the connection
@@ -127,12 +126,12 @@ let TransactionalServer = class TransactionalServer {
 };
 TransactionalServer = __decorate([
     typedi_1.Service(ground_control_1.TransactionalConnectorToken),
-    __param(0, typedi_1.Inject(_ => InjectionTokens_1.DeleteManagerToken)),
-    __param(1, typedi_1.Inject(_ => InjectionTokens_1.InsertManagerToken)),
-    __param(2, typedi_1.Inject(_ => InjectionTokens_1.QueryManagerToken)),
-    __param(3, typedi_1.Inject(_ => InjectionTokens_1.TransactionManagerToken)),
-    __param(4, typedi_1.Inject(_ => InjectionTokens_1.UpdateManagerToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, typeof (_a = typeof TransactionManager_1.ITransactionManager !== "undefined" && TransactionManager_1.ITransactionManager) === "function" ? _a : Object, Object])
+    __param(0, typedi_1.Inject(InjectionTokens_1.DeleteManagerToken)),
+    __param(1, typedi_1.Inject(InjectionTokens_1.InsertManagerToken)),
+    __param(2, typedi_1.Inject(InjectionTokens_1.QueryManagerToken)),
+    __param(3, typedi_1.Inject(terminal_map_1.TransactionManagerToken)),
+    __param(4, typedi_1.Inject(InjectionTokens_1.UpdateManagerToken)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
 ], TransactionalServer);
 exports.TransactionalServer = TransactionalServer;
 //# sourceMappingURL=TransactionalServer.js.map

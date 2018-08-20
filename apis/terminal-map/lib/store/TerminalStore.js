@@ -38,6 +38,15 @@ let TerminalStore = class TerminalStore {
             }
             return latestSchemaVersionMapByNames;
         });
+        this.getLatestSchemaVersionsByIndexes = Selector_1.createSelector(this.getDomains, domains => {
+            const latestSchemaVersionsByNames = [];
+            for (const domain of domains) {
+                for (const schema of domain.schemas) {
+                    latestSchemaVersionsByNames[schema.index] = schema.currentVersion;
+                }
+            }
+            return latestSchemaVersionsByNames;
+        });
     }
     tearDown() {
     }

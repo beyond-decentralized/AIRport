@@ -30,6 +30,8 @@ export interface ITerminalStore {
 	getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName,
 		Map<SchemaName, ISchemaVersion>>, ITerminalState>;
 
+	getLatestSchemaVersionsByIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
+
 	tearDown()
 }
 
@@ -60,7 +62,7 @@ export class TerminalStore
 	getLatestSchemaVersionMapByNames = createSelector(this.getDomains,
 		domains => {
 			const latestSchemaVersionMapByNames:
-				Map<DomainName, Map<SchemaName, ISchemaVersion>> = new Map()
+				      Map<DomainName, Map<SchemaName, ISchemaVersion>> = new Map()
 
 			for (const domain of domains) {
 				const mapForDomain = this.utils.ensureChildJsMap(
@@ -71,6 +73,20 @@ export class TerminalStore
 			}
 
 			return latestSchemaVersionMapByNames
+		})
+
+	getLatestSchemaVersionsByIndexes = createSelector(this.getDomains,
+		domains => {
+			const latestSchemaVersionsByNames:
+				      ISchemaVersion[] = []
+
+			for (const domain of domains) {
+				for (const schema of domain.schemas) {
+					latestSchemaVersionsByNames[schema.index] = schema.currentVersion
+				}
+			}
+
+			return latestSchemaVersionsByNames
 		})
 
 	tearDown() {

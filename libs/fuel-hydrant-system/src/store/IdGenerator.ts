@@ -35,13 +35,11 @@ import {
 	Inject,
 	Service
 }                             from 'typedi'
-import {ISequenceConsumerDao} from '../../node_modules/@airport/airport-code/lib/dao/SequenceConsumerDao'
-import {ISequenceDao}         from '../../node_modules/@airport/airport-code/lib/dao/SequenceDao'
 import {
 	IdGeneratorToken,
 	SequenceGeneratorToken
 }                             from '../InjectionTokens'
-import {ISequenceGenerator}   from './VirtualSequenceGenerator'
+import {ISequenceGenerator}   from './SequenceGenerator'
 
 export type NumRepositoryTransHistories = number
 export type NumOperationTransHistories = number

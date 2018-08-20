@@ -9,7 +9,7 @@ import { DDLManager }    from "./DDLManager";
 
 export abstract class PostgreSqlDriver extends SqlDriver {
 
-	protected async findNative(
+	async findNative(
 		sqlQuery: string,
 		parameters: any[]
 	): Promise<any[]> {

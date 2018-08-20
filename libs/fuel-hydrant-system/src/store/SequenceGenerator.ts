@@ -1,21 +1,25 @@
 import {
 	IUtils,
 	UtilsToken
-}                             from '@airport/air-control'
+}                               from '@airport/air-control'
 import {
+	IAbstractSequenceBlockDao,
+	IAbstractSequenceConsumerDao,
+	IAbstractSequenceDao,
 	ISequence,
 	ISequenceBlock,
-	ISequenceBlockDao,
 	ISequenceConsumer,
 	SequenceBlockDaoToken,
 	SequenceConsumerDaoToken,
 	SequenceDaoToken
-}                             from '@airport/airport-code'
-import {DbColumn}             from '@airport/ground-control'
-import {IDomain}              from '@airport/territory'
-import {Inject}               from 'typedi'
-import {ISequenceConsumerDao} from '../../node_modules/@airport/airport-code/lib/dao/SequenceConsumerDao'
-import {ISequenceDao}         from '../../node_modules/@airport/airport-code/lib/dao/SequenceDao'
+}                               from '@airport/airport-code'
+import {DbColumn}               from '@airport/ground-control'
+import {IDomain}                from '@airport/territory'
+import {
+	Inject,
+	Service
+}                               from 'typedi'
+import {SequenceGeneratorToken} from '../InjectionTokens'
 
 export interface ISequenceGenerator {
 
@@ -30,7 +34,8 @@ export interface ISequenceGenerator {
 
 }
 
-export abstract class AbstractSequenceGenerator
+@Service(SequenceGeneratorToken)
+export class SequenceGenerator
 	implements ISequenceGenerator {
 
 	private sequences: ISequence[][][]           = []
@@ -39,11 +44,11 @@ export abstract class AbstractSequenceGenerator
 
 	constructor(
 		@Inject(SequenceBlockDaoToken)
-		private sequenceBlockDao: ISequenceBlockDao,
+		private sequenceBlockDao: IAbstractSequenceBlockDao,
 		@Inject(SequenceConsumerDaoToken)
-		private sequenceConsumerDao: ISequenceConsumerDao,
+		private sequenceConsumerDao: IAbstractSequenceConsumerDao,
 		@Inject(SequenceDaoToken)
-		private sequenceDao: ISequenceDao,
+		private sequenceDao: IAbstractSequenceDao,
 		@Inject(UtilsToken)
 		private utils: IUtils
 	) {
@@ -86,7 +91,7 @@ export abstract class AbstractSequenceGenerator
 			const columnNumbers            = this.utils.ensureChildArray(sequentialNumbers, index)
 			sequentialNumbersForColumn.set(dbColumn, columnNumbers)
 			let {numNewSequencesNeeded, sequenceBlock}
-						= this.getNumNewSequencesNeeded(dbColumn, numColumnSequencesNeeded)
+				    = this.getNumNewSequencesNeeded(dbColumn, numColumnSequencesNeeded)
 			allSequenceBlocks.set(dbColumn, sequenceBlock)
 
 			let maxAvailableNumbers = sequenceBlock.lastReservedId - sequenceBlock.currentNumber
@@ -114,7 +119,7 @@ export abstract class AbstractSequenceGenerator
 				newBlocksToCreate.push(newBlock)
 			}
 			const newBlocks
-							= await this.sequenceBlockDao.createNewBlocks(newBlocksToCreate)
+				      = await this.sequenceBlockDao.createNewBlocks(newBlocksToCreate)
 			newBlocks.forEach((
 				newBlocksForColumn: ISequenceBlock[],
 				index: number
@@ -123,30 +128,28 @@ export abstract class AbstractSequenceGenerator
 				const columnNumbers    = sequentialNumbersForColumn.get(dbColumn)
 				let numSequencesNeeded = numSequencesNeededFromNewBlocks.get(dbColumn)
 
-				let lastBlock: ISequenceBlock
-				newBlocksForColumn.forEach((
+				let lastBlock: ISequenceBlock = null
+				newBlocksForColumn.some((
 					newBlockForColumn
 				) => {
-					lastBlock                       = newBlockForColumn
-					newBlockForColumn.currentNumber = newBlockForColumn.lastReservedId - newBlockForColumn.size
+					lastBlock = newBlockForColumn
 
-					while(numSequencesNeeded && newBlockForColumn.currentNumber <= newBlockForColumn.lastReservedId) {
-
+					while (numSequencesNeeded > 0
+					&& newBlockForColumn.currentNumber <= newBlockForColumn.lastReservedId) {
+						columnNumbers.push(newBlockForColumn.currentNumber)
+						newBlockForColumn.currentNumber++
+						numSequencesNeeded--
 					}
-					for (; numSequencesNeeded && newBlockForColumn.currentNumber <= newBlockForColumn.lastReservedId;
-								 newBlockForColumn.currentNumber++, numSequencesNeeded--) {
 
+					if (numSequencesNeeded === 0) {
+						return true
 					}
 				})
-
-				for (let i = 0; i < numSequencesNeeded; i++) {
-					columnNumbers.push(++newBlock.currentNumber)
-				}
 				const dbEntity                    = dbColumn.propertyColumns[0].property.entity
 				this.utils.ensureChildArray(
 					this.utils.ensureChildArray(
 						this.sequenceBlocks, dbEntity.schemaVersion.schema.index),
-					dbEntity.index)[dbColumn.index] = newBlock
+					dbEntity.index)[dbColumn.index] = lastBlock
 			})
 		}
 

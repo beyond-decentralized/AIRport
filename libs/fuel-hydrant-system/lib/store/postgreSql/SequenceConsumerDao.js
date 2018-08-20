@@ -9,6 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const airport_code_1 = require("@airport/airport-code");
 const typedi_1 = require("typedi");
 let SequenceConsumerDao = class SequenceConsumerDao {
+    async create(entityInfo) {
+        return 1;
+    }
 };
 SequenceConsumerDao = __decorate([
     typedi_1.Service(airport_code_1.SequenceConsumerDaoToken)

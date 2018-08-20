@@ -7,6 +7,7 @@ export interface ISchemaColumn {
     schemaVersionId?: number;
     idIndex?: number;
     isGenerated?: boolean;
+    allocationSize?: number;
     name?: string;
     type?: number;
     propertyColumns?: ISchemaPropertyColumn[];
@@ -43,6 +44,7 @@ export interface SchemaColumnEOptionalId {
 export interface SchemaColumnEUpdateProperties extends IEntityUpdateProperties {
     idIndex?: number | IQNumberField;
     isGenerated?: boolean | IQBooleanField;
+    allocationSize?: number | IQNumberField;
     name?: string | IQStringField;
     type?: number | IQNumberField;
 }
@@ -52,6 +54,7 @@ export interface SchemaColumnEUpdateProperties extends IEntityUpdateProperties {
 export interface SchemaColumnEUpdateColumns extends IEntityUpdateColumns {
     ID_INDEX?: number | IQNumberField;
     IS_GENERATED?: boolean | IQBooleanField;
+    ALLOCATION_SIZE?: number | IQNumberField;
     NAME?: string | IQStringField;
     TYPE?: number | IQNumberField;
 }
@@ -74,6 +77,7 @@ export interface QSchemaColumn extends QEntity {
     schemaVersionId: IQNumberField;
     idIndex: IQNumberField;
     isGenerated: IQBooleanField;
+    allocationSize: IQNumberField;
     name: IQStringField;
     type: IQNumberField;
     propertyColumns: IQOneToManyRelation<QSchemaPropertyColumn>;

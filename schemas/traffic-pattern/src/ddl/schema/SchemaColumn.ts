@@ -37,6 +37,9 @@ export class SchemaColumn
 	@Column({name: "IS_GENERATED"})
 	isGenerated: boolean;
 
+	@Column({name: "ALLOCATION_SIZE"})
+	allocationSize: number;
+
 	name: string;
 
 	@OneToMany({mappedBy: "manyColumn"})

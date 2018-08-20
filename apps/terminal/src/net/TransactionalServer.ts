@@ -9,8 +9,10 @@ import {
 }                                        from "@airport/holding-pattern";
 import {
 	DistributionStrategy,
-	PlatformType
-}                                        from "@airport/terminal-map";
+	ITransactionManager,
+	PlatformType,
+	TransactionManagerToken
+} from '@airport/terminal-map'
 import {IInternalTransactionalConnector} from "@airport/tower";
 import {Observable}                      from 'rxjs';
 import {
@@ -21,13 +23,11 @@ import {
 	DeleteManagerToken,
 	InsertManagerToken,
 	QueryManagerToken,
-	TransactionManagerToken,
 	UpdateManagerToken
 }                                        from "../InjectionTokens";
 import {IDeleteManager}                  from "../orchestration/DeleteManager";
 import {IInsertManager,}                 from "../orchestration/InsertManager";
 import {IQueryManager}                   from "../orchestration/QueryManager";
-import {ITransactionManager}             from "../orchestration/TransactionManager";
 import {IUpdateManager}                  from "../orchestration/UpdateManager";
 
 /**
@@ -65,20 +65,15 @@ export class TransactionalServer
 	dataStore: IStoreDriver;
 
 	constructor(
-		@Inject(
-			_ => DeleteManagerToken)
+		@Inject(DeleteManagerToken)
 		private deleteManager: IDeleteManager,
-		@Inject(
-			_ => InsertManagerToken)
+		@Inject(InsertManagerToken)
 		private insertManager: IInsertManager,
-		@Inject(
-			_ => QueryManagerToken)
+		@Inject(QueryManagerToken)
 		private queryManager: IQueryManager,
-		@Inject(
-			_ => TransactionManagerToken)
+		@Inject(TransactionManagerToken)
 		private transactionManager: ITransactionManager,
-		@Inject(
-			_ => UpdateManagerToken)
+		@Inject(UpdateManagerToken)
 		private updateManager: IUpdateManager,
 	) {
 	}

@@ -26,7 +26,7 @@ export declare abstract class SqlDriver implements IStoreDriver {
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<EntityArray>;
     getSQLQuery(portableQuery: PortableQuery): SQLQuery<any>;
     protected abstract getDialect(): SQLDialect;
-    protected abstract findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
+    abstract findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
     findOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Observable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Observable<E>;

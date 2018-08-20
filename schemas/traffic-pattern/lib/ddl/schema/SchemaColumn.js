@@ -40,6 +40,10 @@ __decorate([
     __metadata("design:type", Boolean)
 ], SchemaColumn.prototype, "isGenerated", void 0);
 __decorate([
+    air_control_1.Column({ name: "ALLOCATION_SIZE" }),
+    __metadata("design:type", Number)
+], SchemaColumn.prototype, "allocationSize", void 0);
+__decorate([
     air_control_1.OneToMany({ mappedBy: "manyColumn" }),
     __metadata("design:type", Array)
 ], SchemaColumn.prototype, "manyRelationColumns", void 0);

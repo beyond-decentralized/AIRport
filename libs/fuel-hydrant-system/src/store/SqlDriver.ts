@@ -162,7 +162,7 @@ export abstract class SqlDriver
 
 	protected abstract getDialect(): SQLDialect;
 
-	protected abstract async findNative(
+	abstract async findNative(
 		sqlQuery: string,
 		parameters: any[]
 	): Promise<any[]>;

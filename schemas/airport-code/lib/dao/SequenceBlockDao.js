@@ -60,7 +60,10 @@ let SequenceBlockDao = class SequenceBlockDao extends generated_1.BaseSequenceBl
             select: {},
             where: sb.id.in(ids)
         });
-        return newSequenceBlocks.sort((seqBlock1, seqBlock2) => indexMapById.get(seqBlock1.id) - indexMapById.get(seqBlock2.id)).map(seqBlock => [seqBlock]);
+        return newSequenceBlocks.sort((seqBlock1, seqBlock2) => indexMapById.get(seqBlock1.id) - indexMapById.get(seqBlock2.id)).map(seqBlock => {
+            seqBlock.currentNumber = seqBlock.lastReservedId - seqBlock.size;
+            return [seqBlock];
+        });
     }
 };
 SequenceBlockDao = __decorate([

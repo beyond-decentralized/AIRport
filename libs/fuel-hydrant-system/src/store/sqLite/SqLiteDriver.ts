@@ -9,7 +9,7 @@ import { DDLManager }    from "./DDLManager";
 
 export abstract class SqLiteDriver extends SqlDriver {
 
-	protected async findNative(
+	async findNative(
 		sqlQuery: string,
 		parameters: any[]
 	): Promise<any[]> {
