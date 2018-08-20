@@ -11,6 +11,7 @@ import {
 	RawFieldQuery,
 	UtilsToken
 }                                       from '@airport/air-control'
+import {index}                          from '@airport/ground-control'
 import {
 	Inject,
 	Service
@@ -24,12 +25,17 @@ import {
 }                                       from '../generated/generated'
 import {SequenceBlockDaoToken}          from '../InjectionTokens'
 
-export interface ISequenceBlockDao
-	extends IBaseSequenceBlockDao {
+export interface IAbstractSequenceBlockDao {
 
 	createNewBlocks(
 		sequenceBlocks: ISequenceBlock[]
-	): Promise<ISequenceBlock[]>
+	): Promise<ISequenceBlock[][]>
+
+}
+
+export interface ISequenceBlockDao
+	extends IAbstractSequenceBlockDao,
+					IBaseSequenceBlockDao {
 
 }
 
@@ -49,7 +55,7 @@ export class SequenceBlockDao
 
 	async createNewBlocks(
 		sequenceBlocks: ISequenceBlock[]
-	): Promise<ISequenceBlock[]> {
+	): Promise<ISequenceBlock[][]> {
 		const sb = Q.SequenceBlock
 
 		const reservationMillis: SequenceBlockReservationMillis = new Date().getTime()
@@ -91,11 +97,27 @@ export class SequenceBlockDao
 			values
 		})
 
-		return await this.db.find.tree({
+		const indexMapById: Map<number, number> = new Map()
+
+		ids.forEach((
+			id,
+			index
+		) => {
+			indexMapById.set(id, index)
+		})
+
+		const newSequenceBlocks = await this.db.find.tree({
 			from: [sb],
 			select: {},
 			where: sb.id.in(ids)
 		})
+
+		return newSequenceBlocks.sort((
+			seqBlock1,
+			seqBlock2
+		) =>
+			indexMapById.get(seqBlock1.id) - indexMapById.get(seqBlock2.id)
+		).map(seqBlock => [seqBlock]);
 	}
 
 }

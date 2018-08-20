@@ -41,7 +41,7 @@ import {
 	IdGeneratorToken,
 	SequenceGeneratorToken
 }                             from '../InjectionTokens'
-import {ISequenceGenerator}   from './SequenceGenerator'
+import {ISequenceGenerator}   from './VirtualSequenceGenerator'
 
 export type NumRepositoryTransHistories = number
 export type NumOperationTransHistories = number

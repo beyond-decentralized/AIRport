@@ -8,7 +8,7 @@ export interface ISequenceGenerator {
     generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
     init(domain: IDomain): Promise<void>;
 }
-export declare class SequenceGenerator implements ISequenceGenerator {
+export declare abstract class AbstractSequenceGenerator implements ISequenceGenerator {
     private sequenceBlockDao;
     private sequenceConsumerDao;
     private sequenceDao;

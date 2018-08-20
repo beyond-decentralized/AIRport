@@ -12,8 +12,13 @@ import {
 }                         from '..'
 import {SequenceDaoToken} from '../InjectionTokens'
 
+export interface IAbstractSequenceDao {
+
+}
+
 export interface ISequenceDao
-	extends IBaseSequenceDao {
+	extends IAbstractSequenceDao,
+					IBaseSequenceDao {
 
 }
 

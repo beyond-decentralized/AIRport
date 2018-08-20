@@ -12,10 +12,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const air_control_1 = require("@airport/air-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
+const VirtualSequenceGenerator_1 = require("./VirtualSequenceGenerator");
 /**
  * Created by Papa on 9/2/2016.
  */
@@ -62,7 +64,7 @@ IdGenerator = __decorate([
     __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
     __param(1, typedi_1.Inject(InjectionTokens_1.SequenceGeneratorToken)),
     __param(2, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object])
+    __metadata("design:paramtypes", [Object, typeof (_a = typeof VirtualSequenceGenerator_1.ISequenceGenerator !== "undefined" && VirtualSequenceGenerator_1.ISequenceGenerator) === "function" ? _a : Object, Object])
 ], IdGenerator);
 exports.IdGenerator = IdGenerator;
 //# sourceMappingURL=IdGenerator.js.map

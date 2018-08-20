@@ -51,11 +51,16 @@ let SequenceBlockDao = class SequenceBlockDao extends generated_1.BaseSequenceBl
             ],
             values
         });
-        return await this.db.find.tree({
+        const indexMapById = new Map();
+        ids.forEach((id, index) => {
+            indexMapById.set(id, index);
+        });
+        const newSequenceBlocks = await this.db.find.tree({
             from: [sb],
             select: {},
             where: sb.id.in(ids)
         });
+        return newSequenceBlocks.sort((seqBlock1, seqBlock2) => indexMapById.get(seqBlock1.id) - indexMapById.get(seqBlock2.id)).map(seqBlock => [seqBlock]);
     }
 };
 SequenceBlockDao = __decorate([

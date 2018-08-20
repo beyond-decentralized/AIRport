@@ -1,12 +1,19 @@
-import {IAirportDatabase, IUtils, Utils}            from "@airport/air-control";
-import { INVALID_TABLE_NAME, QueryType, StoreType } from "@airport/ground-control";
-import {SQLDialect}                                 from '../../sql/core/SQLQuery'
-import { SqLiteDriver }                             from "../sqLite/SqLiteDriver";
-import { ActiveQueries }                            from "../ActiveQueries";
+import {IAirportDatabase, IUtils, Utils} from "@airport/air-control";
+import {
+	INVALID_TABLE_NAME,
+	QueryType,
+	StoreDriverToken,
+	StoreType
+}                                        from "@airport/ground-control";
+import {Service}                         from 'typedi'
+import {SQLDialect}                      from '../../sql/core/SQLQuery'
+import { SqLiteDriver }                  from "../sqLite/SqLiteDriver";
+import { ActiveQueries }                 from "../ActiveQueries";
 
 /**
  * Created by Papa on 8/30/2016.
  */
+@Service(StoreDriverToken)
 export class WebSqlDriver
 	extends SqLiteDriver {
 

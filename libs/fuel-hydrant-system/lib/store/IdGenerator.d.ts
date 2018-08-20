@@ -1,7 +1,7 @@
 import { IAirportDatabase, IUtils } from '@airport/air-control';
 import { OperationHistoryId, RecordHistoryId, RepositoryTransactionHistoryId, TransactionHistoryId } from '@airport/holding-pattern';
 import { IDomain } from '@airport/territory';
-import { ISequenceGenerator } from './SequenceGenerator';
+import { ISequenceGenerator } from './VirtualSequenceGenerator';
 export declare type NumRepositoryTransHistories = number;
 export declare type NumOperationTransHistories = number;
 export declare type NumRecordHistories = number;

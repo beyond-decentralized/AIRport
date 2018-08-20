@@ -1,6 +1,11 @@
 import {IAirportDatabase, IUtils, Utils} from "@airport/air-control";
-import { QueryType, StoreType }          from "@airport/ground-control";
+import {
+	QueryType,
+	StoreDriverToken,
+	StoreType
+}                                        from "@airport/ground-control";
 import { Database }                      from "sql.js";
+import {Service}                         from 'typedi'
 import {SQLDialect}                      from '../../sql/core/SQLQuery'
 import { SqLiteDriver }                  from "../sqLite/SqLiteDriver";
 import { ActiveQueries }                 from "../ActiveQueries";
@@ -13,6 +18,7 @@ declare function require(moduleName: string): any;
 
 declare var SQL;
 
+@Service(StoreDriverToken)
 export class SqlJsDriver extends SqLiteDriver {
 
 	private _db: Database;

@@ -46,7 +46,6 @@ import {
  * Created by Papa on 9/9/2016.
  */
 
-@Service(StoreDriverToken)
 export abstract class SqlDriver
 	implements IStoreDriver {
 

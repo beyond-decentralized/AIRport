@@ -178,18 +178,17 @@ export class InsertManager
 			}
 		}
 
-
-		if (dbEntity.isRepositoryEntity) {
-			const repositoryColumn  = dbEntity.columnMap[repositoryEntity.FOREIGN_KEY]
-			const repositoryIdIndex = repositoryColumn.index
-			for (const entityValues of values) {
-				const repositoryId = entityValues[repositoryIdIndex]
-				if (!repositoryId && repositoryId !== 0) {
-					throw `@Column({ name: 'REPOSITORY_ID'}) value is not specified on insert for 
-					'${dbEntity.name}.${repositoryColumn.name}'.`
-				}
-			}
-		}
+		// if (dbEntity.isRepositoryEntity) {
+		// 	const repositoryColumn  = dbEntity.columnMap[repositoryEntity.FOREIGN_KEY]
+		// 	const repositoryIdIndex = repositoryColumn.index
+		// 	for (const entityValues of values) {
+		// 		const repositoryId = entityValues[repositoryIdIndex]
+		// 		if (!repositoryId && repositoryId !== 0) {
+		// 			throw `@Column({ name: 'REPOSITORY_ID'}) value is not specified on insert for
+		// 			'${dbEntity.name}.${repositoryColumn.name}'.`
+		// 		}
+		// 	}
+		// }
 
 		const generatedColumns = dbEntity.columns.filter(
 			dbColumn => dbColumn.isGenerated

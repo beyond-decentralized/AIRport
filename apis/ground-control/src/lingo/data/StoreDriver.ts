@@ -36,6 +36,15 @@ export interface IStoreDriver {
 		cachedSqlQueryId?: number,
 	): Promise<E>;
 
+	findNative(
+		sqlQuery: string,
+		parameters: any[]
+	): Promise<any[]>;
+
+	getSequenceSql(
+		sequenceName: string
+	): string;
+
 	initialize(
 		dbName: string
 	): Promise<any>;
