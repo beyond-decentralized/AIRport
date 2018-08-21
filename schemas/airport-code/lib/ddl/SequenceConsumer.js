@@ -16,6 +16,7 @@ let SequenceConsumer = class SequenceConsumer {
 __decorate([
     air_control_1.Id(),
     air_control_1.GeneratedValue(),
+    air_control_1.SequenceGenerator({ allocationSize: 1 }),
     __metadata("design:type", Number)
 ], SequenceConsumer.prototype, "id", void 0);
 __decorate([

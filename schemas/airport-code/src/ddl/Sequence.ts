@@ -17,7 +17,7 @@ export type SequenceId = number
 export type SequenceIncrementBy = number
 
 @Entity()
-@Table({name: 'SEQUENCE_SETTINGS'})
+@Table({name: 'SEQUENCES'})
 export class Sequence {
 
 	@Id()

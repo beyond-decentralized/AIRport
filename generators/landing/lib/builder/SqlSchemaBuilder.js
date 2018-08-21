@@ -1,29 +1,54 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../InjectionTokens");
-let SqlSchemaBuilder = class SqlSchemaBuilder {
-    constructor() {
+const ground_control_1 = require("@airport/ground-control");
+class SqlSchemaBuilder {
+    constructor(storeDriver) {
+        this.storeDriver = storeDriver;
     }
     async build(jsonSchema) {
+        await this.createSchema(jsonSchema);
+        for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
+            await this.buildTable(jsonSchema, jsonEntity);
+        }
+    }
+    getSchemaName(jsonSchema) {
+        const domainPrefix = jsonSchema.domain.replace(/\./g, '_');
+        const schemaPrefix = jsonSchema.name
+            .replace(/@/g, '_')
+            .replace(/\//g, '_');
+        return `${domainPrefix}__${schemaPrefix}`;
     }
     async buildTable(jsonSchema, jsonEntity) {
-        const columnsDdl = jsonEntity.columns.map((jsonColumn) => {
-            let columnDdl = `${jsonColumn.name} ${this.getColumnType(jsonSchema, jsonEntity, jsonColumn)}`;
+        const primaryKeyColumnNames = [];
+        const tableColumnsDdl = jsonEntity.columns.map((jsonColumn) => {
+            let columnDdl = `${jsonColumn.name} ${this.getColumnSuffix(jsonSchema, jsonEntity, jsonColumn)}`;
+            if (this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
+                primaryKeyColumnNames.push(jsonColumn.name);
+            }
             return columnDdl;
         });
-        const createDdl = `CREATE TABLE ${jsonEntity.name} (
-		${columnsDdl.join(',\n')}
-		) WITHOUT ROWID`;
+        const createTableSuffix = this.getCreateTableSuffix(jsonSchema, jsonEntity);
+        const tableName = this.getTableName(jsonSchema, jsonEntity);
+        let primaryKeySubStatement = ``;
+        if (primaryKeyColumnNames.length) {
+            primaryKeySubStatement = this.getPrimaryKeyStatement(primaryKeyColumnNames);
+        }
+        const createTableDdl = `CREATE TABLE ${tableName} (
+		${tableColumnsDdl.join(',\n')}${primaryKeySubStatement}
+		)${createTableSuffix}`;
+        await this.storeDriver.query(ground_control_1.QueryType.DDL, createTableDdl, [], false);
+        for (const indexConfig of jsonEntity.tableConfig.indexes) {
+            let uniquePrefix = '';
+            if (indexConfig.unique) {
+                uniquePrefix = ' UNIQUE';
+            }
+            const createIndexDdl = `CREATE${uniquePrefix} INDEX ${indexConfig.name}
+			ON ${tableName} (
+			${indexConfig.columnList.join(', ')}
+			)`;
+            await this.storeDriver.query(ground_control_1.QueryType.DDL, createIndexDdl, [], false);
+        }
+        //
     }
     getProperties(jsonEntity, jsonColumn) {
         const properties = [];
@@ -39,22 +64,26 @@ let SqlSchemaBuilder = class SqlSchemaBuilder {
         for (const propertyRef of jsonColumn.propertyRefs) {
         }
     }
-    getPrimaryKeySuffix(jsonEntity, jsonColumn) {
-        const isId = jsonColumn.propertyRefs.some((propertyRef) => {
+    isPrimaryKeyColumn(jsonEntity, jsonColumn) {
+        return jsonColumn.propertyRefs.some((propertyRef) => {
             const jsonProperty = jsonEntity.properties[propertyRef.index];
             if (jsonProperty.isId) {
                 return true;
             }
         });
-        if (isId) {
-            return this.getPrimaryKeyColumnSyntax();
-        }
-        return '';
     }
-};
-SqlSchemaBuilder = __decorate([
-    typedi_1.Service(InjectionTokens_1.SchemaBuilderToken),
-    __metadata("design:paramtypes", [])
-], SqlSchemaBuilder);
+    /*
+    protected abstract isForeignKey(
+        jsonEntity: JsonSchemaEntity,
+        jsonColumn: JsonSchemaColumn
+    ): boolean
+    */
+    getPrimaryKeyStatement(columnNames) {
+        return `,
+			PRIMARY KEY (
+			${columnNames.join(',\n')}
+			)`;
+    }
+}
 exports.SqlSchemaBuilder = SqlSchemaBuilder;
 //# sourceMappingURL=SqlSchemaBuilder.js.map

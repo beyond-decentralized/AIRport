@@ -50,6 +50,13 @@ export interface IStoreDriver {
 		cachedSqlQueryId?: number,
 	): Promise<number>;
 
+	query(
+		queryType: QueryType,
+		query: string,
+		params,
+		saveTransaction?: boolean
+	): Promise<any>;
+
 	saveTransaction(
 		transaction: ATransactionHistory
 	): Promise<any>;

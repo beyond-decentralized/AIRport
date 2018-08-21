@@ -20,6 +20,7 @@ export interface IStoreDriver {
     findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
     initialize(dbName: string): Promise<any>;
     insertValues(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<number>;
+    query(queryType: QueryType, query: string, params: any, saveTransaction?: boolean): Promise<any>;
     saveTransaction(transaction: ATransactionHistory): Promise<any>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Observable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Observable<E>;

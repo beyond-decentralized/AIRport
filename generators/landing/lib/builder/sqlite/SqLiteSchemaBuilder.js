@@ -8,21 +8,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../../InjectionTokens");
 const SqlSchemaBuilder_1 = require("../SqlSchemaBuilder");
-let WebSqlSchemaBuilder = class WebSqlSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
-    constructor() {
-        super();
+let SqLiteSchemaBuilder = class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
+    constructor(storeDriver) {
+        super(storeDriver);
     }
-    getColumnType(jsonSchema, jsonEntity, jsonColumn) {
-        const primaryKeySuffix = this.getPrimaryKeySuffix(jsonEntity, jsonColumn);
+    async createSchema(jsonSchema) {
+        // Nothing to do
+    }
+    getColumnSuffix(jsonSchema, jsonEntity, jsonColumn) {
+        let primaryKeySuffix = '';
+        if (this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
+            primaryKeySuffix = ' NOT NULL';
+        }
         let autoincrementSuffix = '';
         if (jsonColumn.isGenerated
-            && jsonSchema.name === '@airport/airportcode'
-            && jsonEntity.name === 'SEQUENCE_SETTINGS') {
+            && jsonSchema.name === '@airport/airport-code'
+            && jsonEntity.name === 'SEQUENCES') {
             autoincrementSuffix = ' AUTOINCREMENT';
         }
         const suffix = primaryKeySuffix + autoincrementSuffix;
@@ -44,14 +53,17 @@ let WebSqlSchemaBuilder = class WebSqlSchemaBuilder extends SqlSchemaBuilder_1.S
                 return `TEXT ${suffix}`;
         }
     }
-    getPrimaryKeyColumnSyntax() {
-        let primaryKeySyntax = ' PRIMARY KEY';
-        return primaryKeySyntax;
+    getTableName(jsonSchema, jsonEntity) {
+        return `${this.getSchemaName(jsonSchema)}__${jsonEntity.name}`;
+    }
+    getCreateTableSuffix(jsonSchema, jsonEntity) {
+        return ` WITHOUT ROWID`;
     }
 };
-WebSqlSchemaBuilder = __decorate([
+SqLiteSchemaBuilder = __decorate([
     typedi_1.Service(InjectionTokens_1.SchemaBuilderToken),
-    __metadata("design:paramtypes", [])
-], WebSqlSchemaBuilder);
-exports.WebSqlSchemaBuilder = WebSqlSchemaBuilder;
-//# sourceMappingURL=WebSqlSchemaBuilder.js.map
+    __param(0, typedi_1.Inject(ground_control_1.StoreDriverToken)),
+    __metadata("design:paramtypes", [Object])
+], SqLiteSchemaBuilder);
+exports.SqLiteSchemaBuilder = SqLiteSchemaBuilder;
+//# sourceMappingURL=SqLiteSchemaBuilder.js.map
