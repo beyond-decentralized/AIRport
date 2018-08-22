@@ -36,7 +36,7 @@ let SequenceBlockDao = class SequenceBlockDao {
             const numSequencesBlocksToCreate = Math.ceil(sequenceBlock.size / sequence.incrementBy);
             const blocksForSequence = [];
             for (let i = 0; i < numSequencesBlocksToCreate; i++) {
-                const result = await this.storeDriver.findNative(`select nextval('"${schemaName}".${tableName}_${columnName}_sequence')`, []);
+                const result = await this.storeDriver.findNative(`SELECT NEXTVAL('"${schemaName}".${tableName}_${columnName}_SEQUENCE')`, []);
                 const nextval = result[0];
                 const newSequenceBlock = {
                     sequence,

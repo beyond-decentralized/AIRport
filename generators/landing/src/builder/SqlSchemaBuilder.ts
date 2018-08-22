@@ -1,17 +1,19 @@
 import {
+	ISchemaUtils,
 	IStoreDriver,
 	JsonSchema,
 	JsonSchemaColumn,
 	JsonSchemaEntity,
 	PropertyReference,
 	QueryType,
-}                       from '@airport/ground-control'
+} from '@airport/ground-control'
 import {ISchemaBuilder} from './ISchemaBuilder'
 
 export abstract class SqlSchemaBuilder
 	implements ISchemaBuilder {
 
 	constructor(
+		protected schemaUtils: ISchemaUtils,
 		protected storeDriver: IStoreDriver
 	) {
 	}
@@ -29,18 +31,6 @@ export abstract class SqlSchemaBuilder
 	abstract createSchema(
 		jsonSchema: JsonSchema
 	): Promise<void>;
-
-	getSchemaName(
-		jsonSchema: JsonSchema
-	): string {
-		const domainPrefix = jsonSchema.domain.replace(/\./g, '_')
-
-		const schemaPrefix = jsonSchema.name
-			.replace(/@/g, '_')
-			.replace(/\//g, '_')
-
-		return `${domainPrefix}__${schemaPrefix}`
-	}
 
 	async buildTable(
 		jsonSchema: JsonSchema,
@@ -74,6 +64,8 @@ export abstract class SqlSchemaBuilder
 
 		await this.storeDriver.query(QueryType.DDL, createTableDdl, [], false)
 
+		await this.buildSequences(jsonSchema, jsonEntity)
+
 		for (const indexConfig of jsonEntity.tableConfig.indexes) {
 			let uniquePrefix = ''
 			if (indexConfig.unique) {
@@ -90,27 +82,6 @@ export abstract class SqlSchemaBuilder
 		//
 	}
 
-	getProperties(
-		jsonEntity: JsonSchemaEntity,
-		jsonColumn: JsonSchemaColumn
-	): string[] {
-		const properties = []
-		if (jsonColumn.isGenerated) {
-			properties.push('ai')
-		}
-
-		for (const index of jsonEntity.tableConfig.indexes) {
-			for (const column of index.columnList) {
-				if (column === jsonColumn.name) {
-
-				}
-			}
-		}
-		for (const propertyRef of jsonColumn.propertyRefs) {
-
-		}
-	}
-
 	abstract getColumnSuffix(
 		jsonSchema: JsonSchema,
 		jsonEntity: JsonSchemaEntity,
@@ -121,6 +92,11 @@ export abstract class SqlSchemaBuilder
 		jsonSchema: JsonSchema,
 		jsonEntity: JsonSchemaEntity
 	): string
+
+	abstract buildSequences(
+		jsonSchema: JsonSchema,
+		jsonEntity: JsonSchemaEntity
+	): Promise<void>
 
 
 	protected isPrimaryKeyColumn(

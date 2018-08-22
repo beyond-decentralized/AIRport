@@ -174,6 +174,21 @@ let SchemaDao = class SchemaDao extends generated_1.BaseSchemaDao {
             });
         });
     }
+    findMapByNames(schemaNames) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const mapByName = new Map();
+            let s;
+            const records = yield this.db.find.tree({
+                select: {},
+                from: [s],
+                where: s.name.in(schemaNames)
+            });
+            for (const record of records) {
+                mapByName.set(record.name, record);
+            }
+            return mapByName;
+        });
+    }
 };
 SchemaDao = __decorate([
     Service_1.Service(InjectionTokens_2.SchemaDaoToken),

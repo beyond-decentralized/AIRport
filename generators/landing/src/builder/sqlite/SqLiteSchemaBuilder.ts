@@ -1,8 +1,10 @@
 import {
+	ISchemaUtils,
 	IStoreDriver,
 	JsonSchema,
 	JsonSchemaColumn,
 	JsonSchemaEntity,
+	SchemaUtilsToken,
 	SQLDataType,
 	StoreDriverToken
 }                           from '@airport/ground-control'
@@ -18,10 +20,12 @@ export class SqLiteSchemaBuilder
 	extends SqlSchemaBuilder {
 
 	constructor(
+		@Inject(SchemaUtilsToken)
+			schemaUtils: ISchemaUtils,
 		@Inject(StoreDriverToken)
 			storeDriver: IStoreDriver
 	) {
-		super(storeDriver)
+		super(schemaUtils, storeDriver)
 	}
 
 	async createSchema(
@@ -35,8 +39,8 @@ export class SqLiteSchemaBuilder
 		jsonEntity: JsonSchemaEntity,
 		jsonColumn: JsonSchemaColumn
 	): string {
-		let primaryKeySuffix = '';
-		if(this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
+		let primaryKeySuffix = ''
+		if (this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
 			primaryKeySuffix = ' NOT NULL'
 		}
 
@@ -72,7 +76,7 @@ export class SqLiteSchemaBuilder
 		jsonSchema: JsonSchema,
 		jsonEntity: JsonSchemaEntity
 	): string {
-		return `${this.getSchemaName(jsonSchema)}__${jsonEntity.name}`
+		return `${this.schemaUtils.getSchemaName(jsonSchema)}__${jsonEntity.name}`
 	}
 
 	getCreateTableSuffix(
@@ -80,6 +84,12 @@ export class SqLiteSchemaBuilder
 		jsonEntity: JsonSchemaEntity
 	): string {
 		return ` WITHOUT ROWID`
+	}
+
+	async buildSequences(
+		jsonSchema: JsonSchema,
+		jsonEntity: JsonSchemaEntity
+	): Promise<void> {
 	}
 
 }

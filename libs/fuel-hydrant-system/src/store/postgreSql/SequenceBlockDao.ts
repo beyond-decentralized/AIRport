@@ -57,7 +57,7 @@ export class SequenceBlockDao
 			const blocksForSequence: ISequenceBlock[] = []
 			for (let i = 0; i < numSequencesBlocksToCreate; i++) {
 				const result          = await this.storeDriver.findNative(
-					`select nextval('"${schemaName}".${tableName}_${columnName}_sequence')`
+					`SELECT NEXTVAL('"${schemaName}".${tableName}_${columnName}_SEQUENCE')`
 					, [])
 				const nextval: number = result[0]
 

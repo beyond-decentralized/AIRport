@@ -5,6 +5,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./impl/query/ColumnMap"));
 __export(require("./impl/query/SchemaMap"));
+__export(require("./impl/query/SchemaUtils"));
 __export(require("./impl/query/TableMap"));
 __export(require("./impl/schema/builder/DbSchemaBuilder"));
 __export(require("./impl/sync/SyncColumnMap"));

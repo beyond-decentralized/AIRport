@@ -1,5 +1,6 @@
 export * from './impl/query/ColumnMap';
 export * from './impl/query/SchemaMap';
+export * from './impl/query/SchemaUtils';
 export * from './impl/query/TableMap';
 export * from './impl/schema/builder/DbSchemaBuilder';
 export * from './impl/sync/SyncColumnMap';

@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
 class SqlSchemaBuilder {
-    constructor(storeDriver) {
+    constructor(schemaUtils, storeDriver) {
+        this.schemaUtils = schemaUtils;
         this.storeDriver = storeDriver;
     }
     async build(jsonSchema) {
@@ -10,13 +11,6 @@ class SqlSchemaBuilder {
         for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
             await this.buildTable(jsonSchema, jsonEntity);
         }
-    }
-    getSchemaName(jsonSchema) {
-        const domainPrefix = jsonSchema.domain.replace(/\./g, '_');
-        const schemaPrefix = jsonSchema.name
-            .replace(/@/g, '_')
-            .replace(/\//g, '_');
-        return `${domainPrefix}__${schemaPrefix}`;
     }
     async buildTable(jsonSchema, jsonEntity) {
         const primaryKeyColumnNames = [];
@@ -37,6 +31,7 @@ class SqlSchemaBuilder {
 		${tableColumnsDdl.join(',\n')}${primaryKeySubStatement}
 		)${createTableSuffix}`;
         await this.storeDriver.query(ground_control_1.QueryType.DDL, createTableDdl, [], false);
+        await this.buildSequences(jsonSchema, jsonEntity);
         for (const indexConfig of jsonEntity.tableConfig.indexes) {
             let uniquePrefix = '';
             if (indexConfig.unique) {
@@ -49,20 +44,6 @@ class SqlSchemaBuilder {
             await this.storeDriver.query(ground_control_1.QueryType.DDL, createIndexDdl, [], false);
         }
         //
-    }
-    getProperties(jsonEntity, jsonColumn) {
-        const properties = [];
-        if (jsonColumn.isGenerated) {
-            properties.push('ai');
-        }
-        for (const index of jsonEntity.tableConfig.indexes) {
-            for (const column of index.columnList) {
-                if (column === jsonColumn.name) {
-                }
-            }
-        }
-        for (const propertyRef of jsonColumn.propertyRefs) {
-        }
     }
     isPrimaryKeyColumn(jsonEntity, jsonColumn) {
         return jsonColumn.propertyRefs.some((propertyRef) => {

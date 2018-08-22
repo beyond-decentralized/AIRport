@@ -1,36 +1,34 @@
+import {Y}                from '@airport/air-control'
+import {max}              from '@airport/air-control/lib/impl/core/field/Functions'
+import {tree}             from '@airport/air-control/lib/impl/core/Joins'
+import {and}              from '@airport/air-control/lib/impl/core/operation/LogicalOperation'
+import {
+	AirportDatabaseToken,
+	UtilsToken
+}                         from '@airport/air-control/lib/InjectionTokens'
+import {IAirportDatabase} from '@airport/air-control/lib/lingo/AirportDatabase'
+import {IUtils}           from '@airport/air-control/lib/lingo/utils/Utils'
 import {
 	DomainName,
 	SchemaIndex,
 	SchemaVersionId
-} 												from "@airport/ground-control";
-import {
-	Y
-}                         from "@airport/air-control";
-import {max}              from "@airport/air-control/lib/impl/core/field/Functions";
-import {tree}             from "@airport/air-control/lib/impl/core/Joins";
-import {and}              from "@airport/air-control/lib/impl/core/operation/LogicalOperation";
-import {
-	AirportDatabaseToken,
-	UtilsToken
-}                         from "@airport/air-control/lib/InjectionTokens";
-import {IAirportDatabase} from "@airport/air-control/lib/lingo/AirportDatabase";
-import {IUtils}           from "@airport/air-control/lib/lingo/utils/Utils";
-import {QDomain} 					from "@airport/territory";
-import {Inject}           from "typedi/decorators/Inject";
-import {Service}          from "typedi/decorators/Service";
+}                         from '@airport/ground-control'
+import {QDomain}          from '@airport/territory'
+import {Inject}           from 'typedi/decorators/Inject'
+import {Service}          from 'typedi/decorators/Service'
 import {
 	QSchemaVersion,
 	SchemaName
-}                         from "..";
-import {SchemaStatus}     from "../ddl/schema/SchemaStatus";
+}                         from '..'
+import {SchemaStatus}     from '../ddl/schema/SchemaStatus'
 import {
 	BaseSchemaDao,
 	IBaseSchemaDao,
 	ISchema,
 	Q,
 	QSchema
-}                         from "../generated/generated";
-import {SchemaDaoToken}   from "../InjectionTokens";
+}                         from '../generated/generated'
+import {SchemaDaoToken}   from '../InjectionTokens'
 
 
 export interface ISchemaDao
@@ -50,6 +48,10 @@ export interface ISchemaDao
 		status: SchemaStatus
 	): Promise<void>;
 
+	findMapByNames(
+		schemaNames: SchemaName[]
+	): Promise<Map<SchemaName, ISchema>>
+
 }
 
 @Service(SchemaDaoToken)
@@ -63,17 +65,17 @@ export class SchemaDao
 		@Inject(UtilsToken)
 			utils: IUtils,
 	) {
-		super(utils);
+		super(utils)
 	}
 
 	async findMapByVersionIds(
 		schemaVersionIds: SchemaVersionId[]
 	): Promise<Map<SchemaVersionId, ISchema>> {
 
-		const schemaMapByIndex: Map<SchemaVersionId, ISchema> = new Map();
+		const schemaMapByIndex: Map<SchemaVersionId, ISchema> = new Map()
 
 		let s: QSchema,
-			sv: QSchemaVersion;
+		    sv: QSchemaVersion
 		const schemas = await this.db.find.tree({
 			select: {
 				index: Y,
@@ -94,7 +96,7 @@ export class SchemaDao
 				sv = s.versions.innerJoin()
 			],
 			where: sv.id.in(schemaVersionIds)
-		});
+		})
 
 		for (const schema of schemas) {
 			for (const schemaVersion of schema.versions) {
@@ -102,17 +104,17 @@ export class SchemaDao
 			}
 		}
 
-		return schemaMapByIndex;
+		return schemaMapByIndex
 	}
 
 	async findMaxIndex(): Promise<SchemaIndex> {
-		const s = Q.Schema;
+		const s = Q.Schema
 		return await this.airportDatabase.findOne.field({
 			select: max(s.index),
 			from: [
 				s
 			]
-		});
+		})
 	}
 
 	async findMaxVersionedMapBySchemaAndDomainNames(
@@ -120,13 +122,13 @@ export class SchemaDao
 		schemaNames: SchemaName[]
 	): Promise<Map<DomainName, Map<SchemaName, ISchema>>> {
 		const maxVersionedMapBySchemaAndDomainNames: Map<DomainName, Map<SchemaName, ISchema>>
-			= new Map();
+			      = new Map()
 
-		let sv: QSchemaVersion;
-		let s: QSchema;
-		let d: QDomain;
-		let sMaV;
-		let sMiV;
+		let sv: QSchemaVersion
+		let s: QSchema
+		let d: QDomain
+		let sMaV
+		let sMiV
 
 
 		const schemas = await this.airportDatabase.db.find.tree({
@@ -198,29 +200,49 @@ export class SchemaDao
 				sMiV.majorVersion,
 				sMiV.minorVersion
 			]
-		});
+		})
 
 		for (const schema of schemas) {
 			this.utils.ensureChildJsMap(
 				maxVersionedMapBySchemaAndDomainNames, schema.domain.name)
-				.set(schema.name, schema);
+				.set(schema.name, schema)
 		}
 
 
-		return maxVersionedMapBySchemaAndDomainNames;
+		return maxVersionedMapBySchemaAndDomainNames
 	}
 
 	async setStatusByIndexes(
 		indexes: SchemaIndex[],
 		status: SchemaStatus
 	): Promise<void> {
-		let s: QSchema;
+		let s: QSchema
 		await this.db.updateWhere({
 			update: s = Q.Schema,
 			set: {
 				status
 			},
 			where: s.index.in(indexes)
-		});
+		})
+	}
+
+	async findMapByNames(
+		schemaNames: SchemaName[]
+	): Promise<Map<SchemaName, ISchema>> {
+		const mapByName: Map<SchemaName, ISchema> = new Map()
+
+		let s: QSchema
+
+		const records = await this.db.find.tree({
+			select: {},
+			from: [s],
+			where: s.name.in(schemaNames)
+		})
+
+		for (const record of records) {
+			mapByName.set(record.name, record)
+		}
+
+		return mapByName
 	}
 }

@@ -5,10 +5,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
 let SchemaChecker = class SchemaChecker {
+    constructor(utils) {
+        this.utils = utils;
+    }
     async check(jsonSchema) {
         if (!jsonSchema) {
             throw new Error(`Json Schema not provided`);
@@ -25,9 +35,30 @@ let SchemaChecker = class SchemaChecker {
     async checkDomain(jsonSchema) {
         // TODO: implement domain checking
     }
+    async checkDependencies(jsonSchemas) {
+        const referencedSchemaMap = new Map();
+        const referencedSchemaMapBySchema = new Map();
+        for (const jsonSchema of jsonSchemas) {
+            const lastJsonSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
+            const referencedSchemaMapForSchema = this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(referencedSchemaMapBySchema, jsonSchema.domain), jsonSchema.name);
+            for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
+                this.utils.ensureChildJsMap(referencedSchemaMap, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
+                this.utils.ensureChildJsMap(referencedSchemaMapForSchema, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
+            }
+        }
+        for (const jsonSchema of jsonSchemas) {
+            for (const [domainName, referenceMapForSchemasOfDomain] of referencedSchemaMapBySchema) {
+                for (const [schemaName, schemasReferencedByAGivenSchema] of referenceMapForSchemasOfDomain) {
+                }
+            }
+            const referencedSchemaMapForSchema = referencedSchemaMapBySchema.get(jsonSchema.domain).get(jsonSchema.name);
+        }
+    }
 };
 SchemaChecker = __decorate([
-    typedi_1.Service(InjectionTokens_1.SchemaCheckerToken)
+    typedi_1.Service(InjectionTokens_1.SchemaCheckerToken),
+    __param(0, typedi_1.Inject(air_control_1.UtilsToken)),
+    __metadata("design:paramtypes", [Object])
 ], SchemaChecker);
 exports.SchemaChecker = SchemaChecker;
 //# sourceMappingURL=SchemaChecker.js.map

@@ -1,15 +1,15 @@
-import { IStoreDriver, JsonSchema, JsonSchemaColumn, JsonSchemaEntity } from '@airport/ground-control';
+import { ISchemaUtils, IStoreDriver, JsonSchema, JsonSchemaColumn, JsonSchemaEntity } from '@airport/ground-control';
 import { ISchemaBuilder } from './ISchemaBuilder';
 export declare abstract class SqlSchemaBuilder implements ISchemaBuilder {
+    protected schemaUtils: ISchemaUtils;
     protected storeDriver: IStoreDriver;
-    constructor(storeDriver: IStoreDriver);
+    constructor(schemaUtils: ISchemaUtils, storeDriver: IStoreDriver);
     build(jsonSchema: JsonSchema): Promise<void>;
     abstract createSchema(jsonSchema: JsonSchema): Promise<void>;
-    getSchemaName(jsonSchema: JsonSchema): string;
     buildTable(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): Promise<void>;
-    getProperties(jsonEntity: JsonSchemaEntity, jsonColumn: JsonSchemaColumn): string[];
     abstract getColumnSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity, column: JsonSchemaColumn): string;
     abstract getCreateTableSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): string;
+    abstract buildSequences(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): Promise<void>;
     protected isPrimaryKeyColumn(jsonEntity: JsonSchemaEntity, jsonColumn: JsonSchemaColumn): boolean;
     abstract getTableName(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): string;
     protected getPrimaryKeyStatement(columnNames: string[]): string;
