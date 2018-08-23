@@ -12,7 +12,9 @@ import {
 import {SchemaIndex} from './Schema'
 
 export type ColumnIndex = number;
+export type ColumnName = string;
 export type PropertyIndex = number;
+export type PropertyName = string;
 export type RelationIndex = number;
 
 /**
@@ -30,7 +32,7 @@ export interface JsonSchemaProperty extends SchemaReferenceByIndex<PropertyIndex
 	/**
 	 * Name of the property.
 	 */
-	name: string;
+	name: PropertyName;
 
 	/**
 	 * Columns represented by the property.
@@ -47,7 +49,7 @@ export interface JsonSchemaProperty extends SchemaReferenceByIndex<PropertyIndex
 export interface DbProperty extends SchemaReferenceByIndex<PropertyIndex> {
 
 	entity: DbEntity;
-	name: string;
+	name: PropertyName;
 	isId: boolean;
 	propertyColumns: DbPropertyColumn[];
 	relation: DbRelation[];
@@ -93,7 +95,7 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex> {
 	/**
 	 * Name of the column.
 	 */
-	name: string;
+	name: ColumnName;
 
 	/**
 	 * Properties that are mapped to this column.
@@ -124,7 +126,7 @@ export interface DbColumn extends SchemaReferenceByIndex<ColumnIndex> {
 	 */
 	manyRelationColumns?: DbRelationColumn[];
 
-	name: string;
+	name: ColumnName;
 
 	/**
 	 * In which OneToMany relations is this column present.

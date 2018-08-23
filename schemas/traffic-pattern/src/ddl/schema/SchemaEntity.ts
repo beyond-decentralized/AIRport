@@ -11,7 +11,10 @@ import {
 	TableConfiguration
 }                        from '@airport/air-control';
 import {DbNumber}        from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
-import {CascadeType}     from '@airport/ground-control';
+import {
+	CascadeType,
+	EntityName
+}                        from '@airport/ground-control';
 import {ISchemaColumn}   from "../../generated/schema/qschemacolumn";
 import {ISchemaEntity}   from "../../generated/schema/qschemaentity";
 import {ISchemaProperty} from "../../generated/schema/qschemaproperty";
@@ -52,7 +55,7 @@ export class SchemaEntity
 	@Column({name: "IS_REPOSITORY_ENTITY"})
 	isRepositoryEntity: boolean;
 
-	name: string;
+	name: EntityName;
 
 	@Json()
 	tableConfig: TableConfiguration;

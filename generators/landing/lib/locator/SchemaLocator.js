@@ -19,7 +19,7 @@ let SchemaLocator = class SchemaLocator {
     constructor(terminalStore) {
         this.terminalStore = terminalStore;
     }
-    async locateExistingSchemaVersionRecord(jsonSchema) {
+    locateExistingSchemaVersionRecord(jsonSchema) {
         const schemaVersionsForDomainName = this.terminalStore
             .getLatestSchemaVersionMapByNames().get(jsonSchema.domain);
         if (!schemaVersionsForDomainName) {
@@ -31,6 +31,10 @@ let SchemaLocator = class SchemaLocator {
             throw new Error(`Multiple versions of schemas are not yet supported`);
         }
         return latestSchemaVersionForSchema;
+    }
+    locateLatestSchemaVersionBySchemaName(schemaName) {
+        return this.terminalStore.getLatestSchemaVersionMapBySchemaName()
+            .get(schemaName);
     }
 };
 SchemaLocator = __decorate([

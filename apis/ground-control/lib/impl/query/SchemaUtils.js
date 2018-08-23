@@ -17,7 +17,7 @@ let SchemaUtils = class SchemaUtils {
         return `${domainPrefix}__${schemaPrefix}`;
     }
     getSequenceName(prefixedTableName, columnName) {
-        return `${prefixedTableName}_columnName_SEQUENCE`;
+        return `${prefixedTableName}_${columnName}__SEQUENCE`;
     }
 };
 SchemaUtils = __decorate([

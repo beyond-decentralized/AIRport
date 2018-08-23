@@ -6,15 +6,15 @@ import {
 	DomainName,
 	ISchemaUtils,
 	JsonSchema,
+	JsonSchemaName,
 	SchemaName,
 	SchemaUtilsToken
-}                           from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	ISchema,
 	ISchemaDao,
-	SchemaDao,
 	SchemaDaoToken
-} from '@airport/traffic-pattern'
+}                           from '@airport/traffic-pattern'
 import {
 	Inject,
 	Service
@@ -47,6 +47,10 @@ export interface ISchemaChecker {
 	check(
 		jsonSchema: JsonSchema
 	): Promise<void>
+
+	checkDependencies(
+		jsonSchemas: JsonSchema[]
+	): Promise<SchemaReferenceCheckResults>
 
 }
 
@@ -90,11 +94,11 @@ export class SchemaChecker {
 	async checkDependencies(
 		jsonSchemas: JsonSchema[]
 	): Promise<SchemaReferenceCheckResults> {
-		const allReferencedSchemaMap: Map<DomainName, Map<SchemaName, JsonSchema>> = new Map()
+		const allReferencedSchemaMap: Map<DomainName, Map<JsonSchemaName, JsonSchema>> = new Map()
 
 		const referencedSchemaMapBySchema:
-						Map<DomainName, Map<SchemaName, Map<DomainName, Map<SchemaName, JsonSchema>>>>
-						= new Map()
+			      Map<DomainName, Map<SchemaName, Map<DomainName, Map<JsonSchemaName, JsonSchema>>>>
+			      = new Map()
 
 		for (const jsonSchema of jsonSchemas) {
 			const lastJsonSchemaVersion        = jsonSchema.versions[jsonSchema.versions.length - 1]
@@ -115,14 +119,41 @@ export class SchemaChecker {
 		this.pruneInGroupReferences(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema)
 		await this.pruneReferencesToExistingSchemas(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema)
 
+
+		const schemasWithValidDependencies: JsonSchema[]          = []
+		const schemasInNeedOfAdditionalDependencies: JsonSchema[] = []
+		const neededDependencies: JsonSchema[]                    = []
+
+		for (const dependenciesForDomain of allReferencedSchemaMap.values()) {
+			for (const dependency of dependenciesForDomain.values()) {
+				neededDependencies.push(dependency)
+			}
+		}
+
+		for (const jsonSchema of jsonSchemas) {
+			const referencedSchemaMapForSchema
+				      = referencedSchemaMapBySchema.get(jsonSchema.domain).get(jsonSchema.name)
+
+			if (this.hasReferences(referencedSchemaMapForSchema)) {
+				schemasWithValidDependencies.push(jsonSchema)
+			} else {
+				schemasInNeedOfAdditionalDependencies.push(jsonSchema)
+			}
+		}
+
+		return {
+			schemasWithValidDependencies,
+			schemasInNeedOfAdditionalDependencies,
+			neededDependencies
+		}
 	}
 
 	private pruneInGroupReferences(
 		jsonSchemas: JsonSchema[],
-		allReferencedSchemaMap: Map<DomainName, Map<SchemaName, JsonSchema>>,
+		allReferencedSchemaMap: Map<DomainName, Map<JsonSchemaName, JsonSchema>>,
 		referencedSchemaMapBySchema:
-			Map<DomainName, Map<SchemaName, Map<DomainName, Map<SchemaName, JsonSchema>>>>
-	):void {
+			Map<DomainName, Map<JsonSchemaName, Map<DomainName, Map<JsonSchemaName, JsonSchema>>>>
+	): void {
 		for (const jsonSchema of jsonSchemas) {
 			// Remove every in-group reference for this schema
 			for (const [domainName, referenceMapForSchemasOfDomain] of referencedSchemaMapBySchema) {
@@ -134,7 +165,7 @@ export class SchemaChecker {
 				}
 			}
 			const allSchemaReferencesForDomain = allReferencedSchemaMap.get(jsonSchema.domain)
-			if(allSchemaReferencesForDomain) {
+			if (allSchemaReferencesForDomain) {
 				allSchemaReferencesForDomain.delete(jsonSchema.name)
 			}
 		}
@@ -142,29 +173,29 @@ export class SchemaChecker {
 
 	private async pruneReferencesToExistingSchemas(
 		jsonSchemas: JsonSchema[],
-		allReferencedSchemaMap: Map<DomainName, Map<SchemaName, JsonSchema>>,
+		allReferencedSchemaMap: Map<DomainName, Map<JsonSchemaName, JsonSchema>>,
 		referencedSchemaMapBySchema:
-			Map<DomainName, Map<SchemaName, Map<DomainName, Map<SchemaName, JsonSchema>>>>
+			Map<DomainName, Map<JsonSchemaName, Map<DomainName, Map<JsonSchemaName, JsonSchema>>>>
 	): Promise<void> {
 		const existingSchemaInfo = await this.findExistingSchemas(allReferencedSchemaMap)
 
-		for(const [schemaName, schema] of existingSchemaInfo.existingSchemaMapByName) {
+		for (const schemaName of existingSchemaInfo.existingSchemaMapByName.keys()) {
 			const coreDomainAndSchemaNames
-							= existingSchemaInfo.coreDomainAndSchemaNamesBySchemaName.get(schemaName)
+				      = existingSchemaInfo.coreDomainAndSchemaNamesBySchemaName.get(schemaName)
 
 			// Remove every reference for this existing schema
-			for (const [domainName, referenceMapForSchemasOfDomain] of referencedSchemaMapBySchema) {
-				for (const [schemaName, schemasReferencedByAGivenSchema] of referenceMapForSchemasOfDomain) {
+			for (const referenceMapForSchemasOfDomain of referencedSchemaMapBySchema.values()) {
+				for (const schemasReferencedByAGivenSchema of referenceMapForSchemasOfDomain.values()) {
 					const schemaReferencesForDomain
-									= schemasReferencedByAGivenSchema.get(coreDomainAndSchemaNames.domain)
+						      = schemasReferencedByAGivenSchema.get(coreDomainAndSchemaNames.domain)
 					if (schemaReferencesForDomain) {
 						schemaReferencesForDomain.delete(coreDomainAndSchemaNames.schema)
 					}
 				}
 			}
 			const allSchemaReferencesForDomain
-							= allReferencedSchemaMap.get(coreDomainAndSchemaNames.domain)
-			if(allSchemaReferencesForDomain) {
+				      = allReferencedSchemaMap.get(coreDomainAndSchemaNames.domain)
+			if (allSchemaReferencesForDomain) {
 				allSchemaReferencesForDomain.delete(coreDomainAndSchemaNames.schema)
 			}
 		}
@@ -172,13 +203,13 @@ export class SchemaChecker {
 	}
 
 	private async findExistingSchemas(
-		allReferencedSchemaMap: Map<DomainName, Map<SchemaName, JsonSchema>>
-	):Promise<ExistingSchemaInfo> {
-		const schemaNames: SchemaName[] = []
+		allReferencedSchemaMap: Map<DomainName, Map<JsonSchemaName, JsonSchema>>
+	): Promise<ExistingSchemaInfo> {
+		const schemaNames: SchemaName[]                                                       = []
 		const coreDomainAndSchemaNamesBySchemaName: Map<SchemaName, CoreDomainAndSchemaNames> = new Map()
 
-		for(const [domainName, allReferencedSchemasForDomain] of allReferencedSchemaMap) {
-			for( const [coreSchemaName, referencedSchema] of allReferencedSchemasForDomain) {
+		for (const [domainName, allReferencedSchemasForDomain] of allReferencedSchemaMap) {
+			for (const [coreSchemaName, referencedSchema] of allReferencedSchemasForDomain) {
 				const schemaName = this.schemaUtils.getSchemaName(referencedSchema)
 				schemaNames.push(schemaName)
 				coreDomainAndSchemaNamesBySchemaName.set(schemaName, {
@@ -188,12 +219,30 @@ export class SchemaChecker {
 			}
 		}
 
-		const existingSchemaMapByName = await this.schemaDao.findMapByNames(schemaNames)
+		let existingSchemaMapByName: Map<string, ISchema>
+		if (schemaNames.length) {
+			existingSchemaMapByName = new Map()
+		} else {
+			existingSchemaMapByName = await this.schemaDao.findMapByNames(schemaNames)
+
+		}
 
 		return {
 			coreDomainAndSchemaNamesBySchemaName,
 			existingSchemaMapByName
 		}
+	}
+
+	private hasReferences(
+		referencedSchemaMap: Map<DomainName, Map<JsonSchemaName, JsonSchema>>
+	): boolean {
+		for (const referencesForDomain of referencedSchemaMap.values()) {
+			for (const _ of referencesForDomain) {
+				return true
+			}
+		}
+
+		return false
 	}
 
 }

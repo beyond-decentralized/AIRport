@@ -8,6 +8,7 @@ export const SCHEMA = {
 				{
 					"columns": [
 						{
+							"allocationSize": 100,
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
@@ -244,6 +245,7 @@ export const SCHEMA = {
 				{
 					"columns": [
 						{
+							"allocationSize": 1,
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],

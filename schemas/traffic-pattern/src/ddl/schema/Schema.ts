@@ -8,52 +8,53 @@ import {
 	JoinColumn,
 	ManyToOne,
 	OneToMany,
+	SequenceGenerator,
 	Table
-} from "@airport/air-control";
+}                      from '@airport/air-control'
 import {
-	DbSchema,
-	SchemaIndex
-} from "@airport/ground-control";
-import {Domain}        from "@airport/territory";
-import {ISchema}       from "../../generated/schema/qschema";
-import {SchemaStatus}  from "./SchemaStatus";
-import {SchemaVersion} from "./SchemaVersion";
+	SchemaIndex,
+	SchemaName
+}                      from '@airport/ground-control'
+import {Domain}        from '@airport/territory'
+import {ISchema}       from '../../generated/schema/qschema'
+import {SchemaStatus}  from './SchemaStatus'
+import {SchemaVersion} from './SchemaVersion'
 
 export type SchemaScope = 'private' | 'public' | null;
-export type SchemaName = string;
 
 @Entity()
 @Table({
-	name: "SCHEMAS"
+	name: 'SCHEMAS'
 })
 export class Schema
 	implements ISchema {
 
 	@Id()
 	@GeneratedValue()
+	@SequenceGenerator({allocationSize: 1})
 	@DbNumber()
-	index: SchemaIndex;
+	index: SchemaIndex
 
 	@ManyToOne()
-		@JoinColumn({name: "DOMAIN_ID", referencedColumnName: "ID"})
-	domain: Domain;
+	@JoinColumn({name: 'DOMAIN_ID', referencedColumnName: 'ID'})
+	domain: Domain
 
-	@Column({name: "SCOPE"})
+	@Column({name: 'SCOPE'})
 	@DbString()
-	scope: SchemaScope;
+	scope: SchemaScope
 
-	@Column({name: "SCHEMA_NAME"})
+	@Column({name: 'SCHEMA_NAME'})
 	@DbString()
-	name: SchemaName;
+	name: SchemaName
 
 	@DbNumber()
-	status: SchemaStatus;
+	status: SchemaStatus
 
 	@OneToMany({mappedBy: 'schema'})
-	versions: SchemaVersion[];
+	versions: SchemaVersion[]
 
 	@ManyToOne()
-	@JoinColumn({name: "CURRENT_VERSION_ID", referencedColumnName: "ID"})
-	currentVersion: SchemaVersion;
+	@JoinColumn({name: 'CURRENT_VERSION_ID', referencedColumnName: 'ID'})
+	currentVersion: SchemaVersion
 
 }

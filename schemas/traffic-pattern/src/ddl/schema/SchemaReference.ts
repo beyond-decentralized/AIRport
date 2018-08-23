@@ -4,8 +4,9 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-}                      from "@airport/air-control";
-import {SchemaVersion} from "./SchemaVersion";
+}                             from "@airport/air-control";
+import {SchemaReferenceIndex} from '@airport/ground-control'
+import {SchemaVersion}        from "./SchemaVersion";
 
 @Entity()
 @Table({
@@ -13,7 +14,7 @@ import {SchemaVersion} from "./SchemaVersion";
 })
 export class SchemaReference {
 
-	index: number;
+	index: SchemaReferenceIndex;
 
 	@Id()
 	@ManyToOne()

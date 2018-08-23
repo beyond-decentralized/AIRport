@@ -11,23 +11,21 @@ import {IUtils}           from '@airport/air-control/lib/lingo/utils/Utils'
 import {
 	DomainName,
 	SchemaIndex,
+	SchemaName,
 	SchemaVersionId
-}                         from '@airport/ground-control'
+} from '@airport/ground-control'
 import {QDomain}          from '@airport/territory'
 import {Inject}           from 'typedi/decorators/Inject'
 import {Service}          from 'typedi/decorators/Service'
-import {
-	QSchemaVersion,
-	SchemaName
-}                         from '..'
 import {SchemaStatus}     from '../ddl/schema/SchemaStatus'
 import {
 	BaseSchemaDao,
 	IBaseSchemaDao,
 	ISchema,
 	Q,
-	QSchema
-}                         from '../generated/generated'
+	QSchema,
+	QSchemaVersion
+} from '../generated/generated'
 import {SchemaDaoToken}   from '../InjectionTokens'
 
 

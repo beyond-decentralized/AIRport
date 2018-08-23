@@ -1,5 +1,8 @@
 import { Column, DbNumber, Entity, Id, OneToMany, Table } from '@airport/air-control';
-import { SQLDataType } from "@airport/ground-control";
+import {
+	ColumnName,
+	SQLDataType
+} from '@airport/ground-control'
 import { ISchemaColumn } from "../../generated/schema/qschemacolumn";
 import { ISchemaRelationColumn } from "../../generated/schema/qschemarelationcolumn";
 import { ISchemaPropertyColumn } from "../../generated/schema/qschemapropertycolumn";
@@ -40,7 +43,7 @@ export class SchemaColumn
 	@Column({name: "ALLOCATION_SIZE"})
 	allocationSize: number;
 
-	name: string;
+	name: ColumnName;
 
 	@OneToMany({mappedBy: "manyColumn"})
 	manyRelationColumns: ISchemaRelationColumn[];

@@ -15,6 +15,7 @@ let SchemaVersion = class SchemaVersion {
 __decorate([
     air_control_1.Id(),
     air_control_1.GeneratedValue(),
+    air_control_1.SequenceGenerator({ allocationSize: 100 }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], SchemaVersion.prototype, "id", void 0);

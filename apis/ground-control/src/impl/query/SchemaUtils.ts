@@ -1,16 +1,20 @@
 import {Service}          from 'typedi'
+import {ColumnName}       from '../..'
 import {SchemaUtilsToken} from '../../InjectionTokens'
-import {JsonSchema}       from '../../lingo/schema/Schema'
+import {
+	JsonSchema,
+	SchemaName
+}                         from '../../lingo/schema/Schema'
 
 export interface ISchemaUtils {
 
 	getSchemaName(
 		jsonSchema: JsonSchema
-	): string;
+	): SchemaName;
 
 	getSequenceName(
 		prefixedTableName: string,
-		columnName: string
+		columnName: ColumnName
 	): string
 
 }
@@ -33,8 +37,8 @@ export class SchemaUtils
 
 	getSequenceName(
 		prefixedTableName: string,
-		columnName: string
+		columnName: ColumnName
 	): string {
-		return `${prefixedTableName}_columnName_SEQUENCE`
+		return `${prefixedTableName}_${columnName}__SEQUENCE`
 	}
 }

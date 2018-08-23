@@ -25,7 +25,7 @@ export interface JsonSchemaEntity extends SchemaReferenceByIndex<TableIndex> {
     /**
      * Name of the entity.
      */
-    name: string;
+    name: EntityName;
     /**
      * Properties of the entity (parent properties included)
      */
@@ -71,7 +71,7 @@ export interface DbEntity extends SchemaReferenceByIndex<TableIndex> {
     /**
      * Name of the entity.
      */
-    name: string;
+    name: EntityName;
     /**
      * Map of all properties in the entity by name.
      */

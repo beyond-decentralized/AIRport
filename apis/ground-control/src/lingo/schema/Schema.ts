@@ -7,8 +7,10 @@ import {SchemaReferenceByIndex} from './Property'
 export type DatabaseIndex = number;
 export type DomainId = number;
 export type DomainName = string;
+export type JsonSchemaName = string;
 export type SchemaIndex = number;
 export type SchemaName = string;
+export type SchemaReferenceIndex = number;
 export type SchemaVersionId = number;
 export type SchemaVersionInteger = number;
 export type SchemaVersionMajor = number;
@@ -29,17 +31,18 @@ export interface DbDomain {
 /**
  * A schema.
  */
-export interface JsonSchema extends SchemaReferenceByIndex<SchemaIndex> {
+export interface JsonSchema
+	extends SchemaReferenceByIndex<SchemaIndex> {
 
 	/**
 	 * Domain of the schema ('public' if published).
 	 */
-	domain: string;
+	domain: DomainName;
 
 	/**
 	 * Name of the schema (npm package name).
 	 */
-	name: SchemaName;
+	name: JsonSchemaName;
 	/**
 	 * Versions by integer version
 	 */
@@ -50,7 +53,8 @@ export interface JsonSchema extends SchemaReferenceByIndex<SchemaIndex> {
 /**
  * A schema with additional indexes (maps).
  */
-export interface DbSchema extends SchemaReferenceByIndex<SchemaIndex> {
+export interface DbSchema
+	extends SchemaReferenceByIndex<SchemaIndex> {
 
 	currentVersion: DbSchemaVersion;
 
@@ -146,7 +150,7 @@ export interface DbSchemaVersion {
 
 export interface DbSchemaReference {
 
-	index: number;
+	index: SchemaReferenceIndex;
 	ownSchemaVersion: DbSchemaVersion;
 	referencedSchemaVersion: DbSchemaVersion;
 

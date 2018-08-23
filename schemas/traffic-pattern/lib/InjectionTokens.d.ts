@@ -1,5 +1,17 @@
 import { Token } from "typedi/Token";
 import { ISchemaDao } from "./dao/SchemaDao";
+import { ISchemaEntityDao } from './dao/SchemaEntityDao';
+import { ISchemaPropertyColumnDao } from './dao/SchemaPropertyColumnDao';
+import { ISchemaPropertyDao } from './dao/SchemaPropertyDao';
+import { ISchemaReferenceDao } from './dao/SchemaReferenceDao';
+import { ISchemaRelationColumnDao } from './dao/SchemaRelationColumnDao';
+import { ISchemaRelationDao } from './dao/SchemaRelationDao';
 import { ISchemaVersionDao } from "./dao/SchemaVersionDao";
 export declare const SchemaDaoToken: Token<ISchemaDao>;
+export declare const SchemaEntityDaoToken: Token<ISchemaEntityDao>;
+export declare const SchemaPropertyColumnDaoToken: Token<ISchemaPropertyColumnDao>;
+export declare const SchemaPropertyDaoToken: Token<ISchemaPropertyDao>;
+export declare const SchemaRelationColumnDaoToken: Token<ISchemaRelationColumnDao>;
+export declare const SchemaRelationDaoToken: Token<ISchemaRelationDao>;
+export declare const SchemaReferenceDaoToken: Token<ISchemaReferenceDao>;
 export declare const SchemaVersionDaoToken: Token<ISchemaVersionDao>;

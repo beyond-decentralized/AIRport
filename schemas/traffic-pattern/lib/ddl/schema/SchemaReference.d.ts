@@ -1,6 +1,7 @@
+import { SchemaReferenceIndex } from '@airport/ground-control';
 import { SchemaVersion } from "./SchemaVersion";
 export declare class SchemaReference {
-    index: number;
+    index: SchemaReferenceIndex;
     ownSchemaVersion: SchemaVersion;
     referencedSchemaVersion: SchemaVersion;
 }

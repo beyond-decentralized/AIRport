@@ -4,6 +4,7 @@ import {
 }                           from '@airport/air-control'
 import {
 	DomainName,
+	JsonSchemaName,
 	SchemaName
 }                           from '@airport/ground-control'
 import {ISchemaVersion}     from '@airport/traffic-pattern'
@@ -28,9 +29,12 @@ export interface ITerminalStore {
 	state: Subject<ITerminalState>
 
 	getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName,
-		Map<SchemaName, ISchemaVersion>>, ITerminalState>;
+		Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>
 
-	getLatestSchemaVersionsByIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
+	getLatestSchemaVersionMapBySchemaName:
+		IMemoizedSelector<Map<SchemaName, ISchemaVersion>, ITerminalState>
+
+	getLatestSchemaVersionsByIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>
 
 	tearDown()
 }
@@ -74,6 +78,23 @@ export class TerminalStore
 
 			return latestSchemaVersionMapByNames
 		})
+
+	getLatestSchemaVersionMapBySchemaName = createSelector(this.getLatestSchemaVersionMapByNames, (
+		latestSchemaVersionMapByNames:
+			Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>
+	) => {
+		const latestSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion> = new Map()
+
+		for (const schemaVersionsForDomainName of latestSchemaVersionMapByNames.values()) {
+			for (const schemaVersion of schemaVersionsForDomainName.values()) {
+				latestSchemaVersionMapBySchemaName.set(
+					schemaVersion.schema.name, schemaVersion
+				)
+			}
+		}
+
+		return latestSchemaVersionMapBySchemaName
+	})
 
 	getLatestSchemaVersionsByIndexes = createSelector(this.getDomains,
 		domains => {

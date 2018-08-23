@@ -1,4 +1,5 @@
 import { TableConfiguration } from '@airport/air-control';
+import { EntityName } from '@airport/ground-control';
 import { ISchemaColumn } from "../../generated/schema/qschemacolumn";
 import { ISchemaEntity } from "../../generated/schema/qschemaentity";
 import { ISchemaProperty } from "../../generated/schema/qschemaproperty";
@@ -10,7 +11,7 @@ export declare class SchemaEntity implements ISchemaEntity {
     schemaVersion: SchemaVersion;
     isLocal: boolean;
     isRepositoryEntity: boolean;
-    name: string;
+    name: EntityName;
     tableConfig: TableConfiguration;
     columns: ISchemaColumn[];
     properties: ISchemaProperty[];

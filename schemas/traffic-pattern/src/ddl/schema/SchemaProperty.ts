@@ -8,8 +8,9 @@ import {
 	Table
 }                              from '@airport/air-control';
 import {
-	CascadeType
-}                              from '@airport/ground-control';
+	CascadeType,
+	PropertyName
+} from '@airport/ground-control'
 import {ISchemaEntity}         from "../../generated/schema/qschemaentity";
 import {ISchemaProperty}       from "../../generated/schema/qschemaproperty";
 import {ISchemaPropertyColumn} from "../../generated/schema/qschemapropertycolumn";
@@ -33,7 +34,7 @@ export class SchemaProperty
 	])
 	entity: ISchemaEntity;
 
-	name: string;
+	name: PropertyName;
 
 	@Column({name: "IS_ID"})
 	isId: boolean;

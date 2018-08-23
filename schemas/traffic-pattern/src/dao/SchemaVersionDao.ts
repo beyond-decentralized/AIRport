@@ -3,17 +3,18 @@ import {
 	UtilsToken
 }                              from '@airport/air-control'
 import {max}                   from '@airport/air-control/lib/impl/core/field/Functions'
-import {tree}                  from '@airport/air-control/lib/impl/core/Joins'
 import {and}                   from '@airport/air-control/lib/impl/core/operation/LogicalOperation'
 import {AirportDatabaseToken}  from '@airport/air-control/lib/InjectionTokens'
 import {IAirportDatabase}      from '@airport/air-control/lib/lingo/AirportDatabase'
-import {DomainName}            from '@airport/ground-control'
+import {
+	DomainName,
+	SchemaName
+}                              from '@airport/ground-control'
 import {QDomain}               from '@airport/territory'
 import {
 	Inject,
 	Service
 }                              from 'typedi'
-import {SchemaName}            from '../ddl/schema/Schema'
 import {
 	BaseSchemaVersionDao,
 	IBaseSchemaVersionDao,

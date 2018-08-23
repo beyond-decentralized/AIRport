@@ -1,7 +1,6 @@
 import { IAirportDatabase } from '@airport/air-control/lib/lingo/AirportDatabase';
 import { IUtils } from '@airport/air-control/lib/lingo/utils/Utils';
-import { DomainName, SchemaIndex, SchemaVersionId } from '@airport/ground-control';
-import { SchemaName } from '..';
+import { DomainName, SchemaIndex, SchemaName, SchemaVersionId } from '@airport/ground-control';
 import { SchemaStatus } from '../ddl/schema/SchemaStatus';
 import { BaseSchemaDao, IBaseSchemaDao, ISchema } from '../generated/generated';
 export interface ISchemaDao extends IBaseSchemaDao {

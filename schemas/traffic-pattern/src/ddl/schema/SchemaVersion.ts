@@ -7,6 +7,7 @@ import {
 	JoinColumn,
 	ManyToOne,
 	OneToMany,
+	SequenceGenerator,
 	Table
 }                         from '@airport/air-control'
 import {
@@ -30,6 +31,7 @@ export class SchemaVersion
 
 	@Id()
 	@GeneratedValue()
+	@SequenceGenerator({allocationSize: 100})
 	@DbNumber()
 	id: SchemaVersionId
 

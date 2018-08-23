@@ -15,7 +15,11 @@ export interface ISchemaLocator {
 
 	locateExistingSchemaVersionRecord(
 		jsonSchema: JsonSchema
-	): Promise<ISchemaVersion>;
+	): ISchemaVersion
+
+	locateLatestSchemaVersionBySchemaName(
+		schemaName: string
+	): ISchemaVersion
 
 }
 
@@ -29,9 +33,9 @@ export class SchemaLocator
 	) {
 	}
 
-	async locateExistingSchemaVersionRecord(
+	locateExistingSchemaVersionRecord(
 		jsonSchema: JsonSchema
-	): Promise<ISchemaVersion> {
+	): ISchemaVersion {
 		const schemaVersionsForDomainName = this.terminalStore
 			.getLatestSchemaVersionMapByNames().get(jsonSchema.domain)
 		if (!schemaVersionsForDomainName) {
@@ -46,6 +50,13 @@ export class SchemaLocator
 		}
 
 		return latestSchemaVersionForSchema
+	}
+
+	locateLatestSchemaVersionBySchemaName(
+		schemaName: string
+	): ISchemaVersion {
+		return this.terminalStore.getLatestSchemaVersionMapBySchemaName()
+			.get(schemaName)
 	}
 
 }

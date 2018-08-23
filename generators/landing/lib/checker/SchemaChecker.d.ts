@@ -16,6 +16,7 @@ export interface SchemaReferenceCheckResults {
 }
 export interface ISchemaChecker {
     check(jsonSchema: JsonSchema): Promise<void>;
+    checkDependencies(jsonSchemas: JsonSchema[]): Promise<SchemaReferenceCheckResults>;
 }
 export declare class SchemaChecker {
     private schemaDao;
@@ -28,4 +29,5 @@ export declare class SchemaChecker {
     private pruneInGroupReferences;
     private pruneReferencesToExistingSchemas;
     private findExistingSchemas;
+    private hasReferences;
 }

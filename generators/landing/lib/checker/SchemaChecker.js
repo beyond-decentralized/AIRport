@@ -52,6 +52,28 @@ let SchemaChecker = class SchemaChecker {
         }
         this.pruneInGroupReferences(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema);
         await this.pruneReferencesToExistingSchemas(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema);
+        const schemasWithValidDependencies = [];
+        const schemasInNeedOfAdditionalDependencies = [];
+        const neededDependencies = [];
+        for (const dependenciesForDomain of allReferencedSchemaMap.values()) {
+            for (const dependency of dependenciesForDomain.values()) {
+                neededDependencies.push(dependency);
+            }
+        }
+        for (const jsonSchema of jsonSchemas) {
+            const referencedSchemaMapForSchema = referencedSchemaMapBySchema.get(jsonSchema.domain).get(jsonSchema.name);
+            if (this.hasReferences(referencedSchemaMapForSchema)) {
+                schemasWithValidDependencies.push(jsonSchema);
+            }
+            else {
+                schemasInNeedOfAdditionalDependencies.push(jsonSchema);
+            }
+        }
+        return {
+            schemasWithValidDependencies,
+            schemasInNeedOfAdditionalDependencies,
+            neededDependencies
+        };
     }
     pruneInGroupReferences(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema) {
         for (const jsonSchema of jsonSchemas) {
@@ -72,11 +94,11 @@ let SchemaChecker = class SchemaChecker {
     }
     async pruneReferencesToExistingSchemas(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema) {
         const existingSchemaInfo = await this.findExistingSchemas(allReferencedSchemaMap);
-        for (const [schemaName, schema] of existingSchemaInfo.existingSchemaMapByName) {
+        for (const schemaName of existingSchemaInfo.existingSchemaMapByName.keys()) {
             const coreDomainAndSchemaNames = existingSchemaInfo.coreDomainAndSchemaNamesBySchemaName.get(schemaName);
             // Remove every reference for this existing schema
-            for (const [domainName, referenceMapForSchemasOfDomain] of referencedSchemaMapBySchema) {
-                for (const [schemaName, schemasReferencedByAGivenSchema] of referenceMapForSchemasOfDomain) {
+            for (const referenceMapForSchemasOfDomain of referencedSchemaMapBySchema.values()) {
+                for (const schemasReferencedByAGivenSchema of referenceMapForSchemasOfDomain.values()) {
                     const schemaReferencesForDomain = schemasReferencedByAGivenSchema.get(coreDomainAndSchemaNames.domain);
                     if (schemaReferencesForDomain) {
                         schemaReferencesForDomain.delete(coreDomainAndSchemaNames.schema);
@@ -102,11 +124,25 @@ let SchemaChecker = class SchemaChecker {
                 });
             }
         }
-        const existingSchemaMapByName = await this.schemaDao.findMapByNames(schemaNames);
+        let existingSchemaMapByName;
+        if (schemaNames.length) {
+            existingSchemaMapByName = new Map();
+        }
+        else {
+            existingSchemaMapByName = await this.schemaDao.findMapByNames(schemaNames);
+        }
         return {
             coreDomainAndSchemaNamesBySchemaName,
             existingSchemaMapByName
         };
+    }
+    hasReferences(referencedSchemaMap) {
+        for (const referencesForDomain of referencedSchemaMap.values()) {
+            for (const _ of referencesForDomain) {
+                return true;
+            }
+        }
+        return false;
     }
 };
 SchemaChecker = __decorate([

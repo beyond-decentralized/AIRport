@@ -2,7 +2,9 @@ import { DatabaseForeignKey, DatabaseManyToOneElements, DatabaseOneToManyElement
 import { DbEntity, TableIndex } from './Entity';
 import { SchemaIndex } from './Schema';
 export declare type ColumnIndex = number;
+export declare type ColumnName = string;
 export declare type PropertyIndex = number;
+export declare type PropertyName = string;
 export declare type RelationIndex = number;
 /**
  * A property of an object in a schema.
@@ -17,7 +19,7 @@ export interface JsonSchemaProperty extends SchemaReferenceByIndex<PropertyIndex
     /**
      * Name of the property.
      */
-    name: string;
+    name: PropertyName;
     /**
      * Columns represented by the property.
      */
@@ -29,7 +31,7 @@ export interface JsonSchemaProperty extends SchemaReferenceByIndex<PropertyIndex
 }
 export interface DbProperty extends SchemaReferenceByIndex<PropertyIndex> {
     entity: DbEntity;
-    name: string;
+    name: PropertyName;
     isId: boolean;
     propertyColumns: DbPropertyColumn[];
     relation: DbRelation[];
@@ -63,7 +65,7 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex> {
     /**
      * Name of the column.
      */
-    name: string;
+    name: ColumnName;
     /**
      * Properties that are mapped to this column.
      */
@@ -85,7 +87,7 @@ export interface DbColumn extends SchemaReferenceByIndex<ColumnIndex> {
      * In which ManyToOne relations is this column present.
      */
     manyRelationColumns?: DbRelationColumn[];
-    name: string;
+    name: ColumnName;
     /**
      * In which OneToMany relations is this column present.
      */
