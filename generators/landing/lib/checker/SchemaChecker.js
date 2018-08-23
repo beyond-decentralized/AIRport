@@ -13,10 +13,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
+const traffic_pattern_1 = require("@airport/traffic-pattern");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
 let SchemaChecker = class SchemaChecker {
-    constructor(utils) {
+    constructor(schemaDao, schemaUtils, utils) {
+        this.schemaDao = schemaDao;
+        this.schemaUtils = schemaUtils;
         this.utils = utils;
     }
     async check(jsonSchema) {
@@ -36,29 +40,81 @@ let SchemaChecker = class SchemaChecker {
         // TODO: implement domain checking
     }
     async checkDependencies(jsonSchemas) {
-        const referencedSchemaMap = new Map();
+        const allReferencedSchemaMap = new Map();
         const referencedSchemaMapBySchema = new Map();
         for (const jsonSchema of jsonSchemas) {
             const lastJsonSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
             const referencedSchemaMapForSchema = this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(referencedSchemaMapBySchema, jsonSchema.domain), jsonSchema.name);
             for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
-                this.utils.ensureChildJsMap(referencedSchemaMap, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
+                this.utils.ensureChildJsMap(allReferencedSchemaMap, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
                 this.utils.ensureChildJsMap(referencedSchemaMapForSchema, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
             }
         }
+        this.pruneInGroupReferences(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema);
+        await this.pruneReferencesToExistingSchemas(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema);
+    }
+    pruneInGroupReferences(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema) {
         for (const jsonSchema of jsonSchemas) {
+            // Remove every in-group reference for this schema
             for (const [domainName, referenceMapForSchemasOfDomain] of referencedSchemaMapBySchema) {
                 for (const [schemaName, schemasReferencedByAGivenSchema] of referenceMapForSchemasOfDomain) {
+                    const schemaReferencesForDomain = schemasReferencedByAGivenSchema.get(jsonSchema.domain);
+                    if (schemaReferencesForDomain) {
+                        schemaReferencesForDomain.delete(jsonSchema.name);
+                    }
                 }
             }
-            const referencedSchemaMapForSchema = referencedSchemaMapBySchema.get(jsonSchema.domain).get(jsonSchema.name);
+            const allSchemaReferencesForDomain = allReferencedSchemaMap.get(jsonSchema.domain);
+            if (allSchemaReferencesForDomain) {
+                allSchemaReferencesForDomain.delete(jsonSchema.name);
+            }
         }
+    }
+    async pruneReferencesToExistingSchemas(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema) {
+        const existingSchemaInfo = await this.findExistingSchemas(allReferencedSchemaMap);
+        for (const [schemaName, schema] of existingSchemaInfo.existingSchemaMapByName) {
+            const coreDomainAndSchemaNames = existingSchemaInfo.coreDomainAndSchemaNamesBySchemaName.get(schemaName);
+            // Remove every reference for this existing schema
+            for (const [domainName, referenceMapForSchemasOfDomain] of referencedSchemaMapBySchema) {
+                for (const [schemaName, schemasReferencedByAGivenSchema] of referenceMapForSchemasOfDomain) {
+                    const schemaReferencesForDomain = schemasReferencedByAGivenSchema.get(coreDomainAndSchemaNames.domain);
+                    if (schemaReferencesForDomain) {
+                        schemaReferencesForDomain.delete(coreDomainAndSchemaNames.schema);
+                    }
+                }
+            }
+            const allSchemaReferencesForDomain = allReferencedSchemaMap.get(coreDomainAndSchemaNames.domain);
+            if (allSchemaReferencesForDomain) {
+                allSchemaReferencesForDomain.delete(coreDomainAndSchemaNames.schema);
+            }
+        }
+    }
+    async findExistingSchemas(allReferencedSchemaMap) {
+        const schemaNames = [];
+        const coreDomainAndSchemaNamesBySchemaName = new Map();
+        for (const [domainName, allReferencedSchemasForDomain] of allReferencedSchemaMap) {
+            for (const [coreSchemaName, referencedSchema] of allReferencedSchemasForDomain) {
+                const schemaName = this.schemaUtils.getSchemaName(referencedSchema);
+                schemaNames.push(schemaName);
+                coreDomainAndSchemaNamesBySchemaName.set(schemaName, {
+                    domain: domainName,
+                    schema: coreSchemaName
+                });
+            }
+        }
+        const existingSchemaMapByName = await this.schemaDao.findMapByNames(schemaNames);
+        return {
+            coreDomainAndSchemaNamesBySchemaName,
+            existingSchemaMapByName
+        };
     }
 };
 SchemaChecker = __decorate([
     typedi_1.Service(InjectionTokens_1.SchemaCheckerToken),
-    __param(0, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object])
+    __param(0, typedi_1.Inject(traffic_pattern_1.SchemaDaoToken)),
+    __param(1, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
+    __param(2, typedi_1.Inject(air_control_1.UtilsToken)),
+    __metadata("design:paramtypes", [Object, Object, Object])
 ], SchemaChecker);
 exports.SchemaChecker = SchemaChecker;
 //# sourceMappingURL=SchemaChecker.js.map

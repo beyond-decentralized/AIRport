@@ -5,51 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c5a4502-68ae-4304-a543-572c83c81862" name="Default" comment="schema generation">
-      <change afterPath="$PROJECT_DIR$/apis/ground-control/src/impl/query/SchemaUtils.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generators/landing/src/recorder/SchemaRecorder.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/InjectionTokens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/InjectionTokens.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/terminal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apps/terminal/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/config/rush/npm-shrinkwrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/rush/npm-shrinkwrap.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generators/landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/InjectionTokens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/InjectionTokens.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/builder/SqlSchemaBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/builder/SqlSchemaBuilder.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generators/landing/lib/builder/SqlSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/builder/SqlSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/builder/SqlSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/builder/SqlSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generators/landing/lib/checker/SchemaChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/checker/SchemaChecker.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generators/landing/lib/checker/SchemaChecker.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/checker/SchemaChecker.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generators/landing/lib/checker/SchemaChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/checker/SchemaChecker.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/src/builder/SqlSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/src/builder/SqlSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/src/builder/postgre/PostgreSqlSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/src/builder/postgre/PostgreSqlSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/src/builder/sqlite/SqLiteSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/src/builder/sqlite/SqLiteSchemaBuilder.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generators/landing/src/checker/SchemaChecker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/src/checker/SchemaChecker.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/postgreSql/SequenceBlockDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/postgreSql/SequenceBlockDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/postgreSql/SequenceBlockDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/postgreSql/SequenceBlockDao.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/airport-code/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/territory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/territory/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaDao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/dao/SchemaDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/dao/SchemaDao.ts" afterDir="false" />
     </list>
     <list id="bd11709e-7b8d-4d56-80ac-4cc7f9b1ab94" name="Revert: " comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -115,36 +84,34 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="-1608385056">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.28" value="1" />
+          <entry key="project.open.time.36" value="1" />
+          <entry key="project.opened" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts">
+        <counts>
+          <entry key="TypeScriptServerServiceImpl" value="2" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/libs/tower/src/OperationManager.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="359">
-                  <caret line="30" column="20" selection-start-line="30" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/rush.json">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="215">
-                  <caret line="105" column="58" selection-start-line="105" selection-start-column="58" selection-end-line="105" selection-end-column="58" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/libs/mono-rail/src/InjectionTokens.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="22">
+              <caret line="1" column="53" selection-start-line="1" selection-start-column="53" selection-end-line="1" selection-end-column="53" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -273,34 +240,16 @@
     <dismissed value="$PROJECT_DIR$/schemas/traffic-pattern/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="3840" />
-    <option name="y" value="-2" />
-    <option name="width" value="1920" />
-    <option name="height" value="1082" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport" type="462c0819:PsiDirectoryNode" />
-              <item name="schemas" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -428,6 +377,8 @@
       <workItem from="1534727064544" duration="4465000" />
       <workItem from="1534943253059" duration="598000" />
       <workItem from="1534950467678" duration="486000" />
+      <workItem from="1534997300636" duration="53000" />
+      <workItem from="1534997399060" duration="1236000" />
     </task>
     <task id="LOCAL-00001" summary="trying out typescript 3.0 project references">
       <created>1531754174047</created>
@@ -685,10 +636,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="81801000" />
+    <option name="totallyTimeSpent" value="83229000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="3840" y="-2" width="1920" height="1082" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.14812863" />
@@ -756,9 +707,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/apps/automated-guideway-transit/techinical questions.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/apps/automated-guideway-transit/src/clientConnection/Blacklist.ts">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -936,6 +884,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="215">
           <caret line="105" column="58" selection-start-line="105" selection-start-column="58" selection-end-line="105" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/mono-rail/src/InjectionTokens.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="1" column="53" selection-start-line="1" selection-start-column="53" selection-end-line="1" selection-end-column="53" />
         </state>
       </provider>
     </entry>

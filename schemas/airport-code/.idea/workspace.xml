@@ -2,51 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="843e89a7-1ff9-4818-8850-8278489b8319" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../../apis/ground-control/src/impl/query/SchemaUtils.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../generators/landing/src/recorder/SchemaRecorder.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apps/terminal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/InjectionTokens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/InjectionTokens.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/SqlSchemaBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/SqlSchemaBuilder.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/SqlSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/SqlSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/SqlSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/SqlSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/src/builder/SqlSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/builder/SqlSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/src/builder/postgre/PostgreSqlSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/builder/postgre/PostgreSqlSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/src/builder/sqlite/SqLiteSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/builder/sqlite/SqLiteSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/src/checker/SchemaChecker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/checker/SchemaChecker.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/store/postgreSql/SequenceBlockDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/lib/store/postgreSql/SequenceBlockDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/postgreSql/SequenceBlockDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/src/store/postgreSql/SequenceBlockDao.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../territory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../territory/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/dao/SchemaDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/dao/SchemaDao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/dao/SchemaDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/dao/SchemaDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/dao/SchemaDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/dao/SchemaDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/src/dao/SchemaDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/src/dao/SchemaDao.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/lib/" />
@@ -106,17 +68,19 @@
     <session id="-86986560">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="6" />
           <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.18" value="1" />
+          <entry key="project.open.time.23" value="1" />
           <entry key="project.open.time.8" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
         <counts>
-          <entry key="TypeScriptServerServiceImpl" value="4" />
+          <entry key="TypeScriptServerServiceImpl" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -148,8 +112,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/dao/SequenceConsumerDao.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="38">
-                  <caret line="15" column="45" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="45" />
+                <state relative-caret-position="264">
+                  <caret line="25" column="10" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="10" />
                   <folding>
                     <element signature="e#0#91#0" expanded="true" />
                   </folding>
@@ -157,11 +121,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/dao/SequenceBlockDao.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="114">
-                  <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
+                <state relative-caret-position="187">
+                  <caret line="29" column="2" selection-start-line="29" selection-start-column="2" selection-end-line="29" selection-end-column="2" />
                   <folding>
                     <element signature="e#0#209#0" expanded="true" />
                   </folding>
@@ -170,22 +134,22 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/package.json">
+            <entry file="file://$PROJECT_DIR$/src/dao/SequenceDao.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="266">
-                  <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
+                <state relative-caret-position="264">
+                  <caret line="26" column="10" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="10" />
+                  <folding>
+                    <element signature="e#0#83#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/ddl/SequenceConsumer.ts">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/package.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="247">
-                  <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
-                  <folding>
-                    <element signature="e#0#144#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="308">
+                  <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
                 </state>
               </provider>
             </entry>
@@ -197,8 +161,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ddl/Sequence.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="114">
-                  <caret line="19" column="23" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="23" />
+                <state relative-caret-position="308">
+                  <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
                   <folding>
                     <element signature="e#0#110#0" expanded="true" />
                   </folding>
@@ -209,8 +173,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/ddl/SequenceBlock.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="522">
-                  <caret line="46" column="14" selection-start-line="46" selection-start-column="14" selection-end-line="46" selection-end-column="14" />
+                <state relative-caret-position="279">
+                  <caret line="40" column="2" selection-start-line="40" selection-start-column="2" selection-end-line="40" selection-end-column="2" />
                   <folding>
                     <element signature="e#0#166#0" expanded="true" />
                   </folding>
@@ -219,22 +183,13 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/dao/SequenceDao.ts">
+            <entry file="file://$PROJECT_DIR$/src/ddl/SequenceConsumer.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="95">
-                  <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+                <state relative-caret-position="242">
+                  <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
                   <folding>
-                    <element signature="e#0#83#0" expanded="true" />
+                    <element signature="e#0#144#0" expanded="true" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/generated/baseDaos.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="76">
-                  <caret line="39" column="12" selection-start-line="39" selection-start-column="12" selection-end-line="39" selection-end-column="12" />
                 </state>
               </provider>
             </entry>
@@ -300,9 +255,10 @@
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="25" />
-    <option name="width" value="1920" />
-    <option name="height" value="1055" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -332,12 +288,6 @@
               <item name="airport-code" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ddl" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="airport-code" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport-code" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="generated" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -393,17 +343,18 @@
       <workItem from="1534860231871" duration="1733000" />
       <workItem from="1534943253496" duration="598000" />
       <workItem from="1534950468188" duration="485000" />
+      <workItem from="1534997302544" duration="51000" />
+      <workItem from="1534997425039" duration="45000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36277000" />
+    <option name="totallyTimeSpent" value="36373000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="25" width="1920" height="1055" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14865577" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14910433" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -414,7 +365,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.3372973" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.337487" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
@@ -530,63 +481,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/dao/SequenceConsumerDao.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="15" column="45" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#91#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dao/SequenceBlockDao.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#209#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ddl/SequenceConsumer.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#144#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ddl/Sequence.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="19" column="23" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#110#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dao/SequenceDao.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#83#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/generated/baseDaos.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="76">
@@ -594,10 +488,67 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SequenceConsumerDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="25" column="10" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#91#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SequenceDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="26" column="10" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#83#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/SequenceBlockDao.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="29" column="2" selection-start-line="29" selection-start-column="2" selection-end-line="29" selection-end-column="2" />
+          <folding>
+            <element signature="e#0#209#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/Sequence.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#110#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/SequenceConsumer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#144#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/SequenceBlock.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="46" column="14" selection-start-line="46" selection-start-column="14" selection-end-line="46" selection-end-column="14" />
+        <state relative-caret-position="279">
+          <caret line="40" column="2" selection-start-line="40" selection-start-column="2" selection-end-line="40" selection-end-column="2" />
           <folding>
             <element signature="e#0#166#0" expanded="true" />
           </folding>
