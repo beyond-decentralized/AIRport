@@ -75,10 +75,7 @@ export interface ISchemaRelation {
 	manyToOneElems?: ManyToOneElements;
 	oneToManyElems?: OneToManyElements;
 	relationType?: number;
-	isRepositoryJoin?: boolean;
 	isId?: boolean;
-	addToJoinFunction?: string;
-	joinFunctionWithOperator?: number;
 
 	// Non-Id Relations
 	relationEntity?: ISchemaEntity;
@@ -145,10 +142,7 @@ export interface SchemaRelationEUpdateProperties
 	manyToOneElems?: ManyToOneElements | IQStringField;
 	oneToManyElems?: OneToManyElements | IQStringField;
 	relationType?: number | IQNumberField;
-	isRepositoryJoin?: boolean | IQBooleanField;
 	isId?: boolean | IQBooleanField;
-	addToJoinFunction?: string | IQStringField;
-	joinFunctionWithOperator?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	relationEntity?: SchemaEntityEOptionalId;
@@ -165,10 +159,7 @@ export interface SchemaRelationEUpdateColumns
 	MANY_TO_ONE_ELEMENTS?: string | IQStringField;
 	ONE_TO_MANY_ELEMENTS?: string | IQStringField;
 	RELATION_TYPE?: number | IQNumberField;
-	IS_REPOSITORY_JOIN?: boolean | IQBooleanField;
 	IS_ID?: boolean | IQBooleanField;
-	ADD_TO_JOIN_FUNCTION?: string | IQStringField;
-	JOIN_FUNCTION_WITH_OPERATOR?: number | IQNumberField;
 	RELATION_SCHEMA_VERSION_ID?: number | IQNumberField;
 	RELATION_TABLE_INDEX?: number | IQNumberField;
 
@@ -211,10 +202,7 @@ export interface QSchemaRelation extends QEntity
 	manyToOneElems: IQStringField;
 	oneToManyElems: IQStringField;
 	relationType: IQNumberField;
-	isRepositoryJoin: IQBooleanField;
 	isId: IQBooleanField;
-	addToJoinFunction: IQStringField;
-	joinFunctionWithOperator: IQNumberField;
 
 	// Non-Id Relations
 	relationEntity: QSchemaEntityQRelation;

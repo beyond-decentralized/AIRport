@@ -11,10 +11,7 @@ export declare class SchemaRelation implements ISchemaRelation {
     manyToOneElems: ManyToOneElements;
     oneToManyElems: OneToManyElements;
     relationType: EntityRelationType;
-    isRepositoryJoin: boolean;
     isId: boolean;
-    addToJoinFunction: string;
-    joinFunctionWithOperator: number;
     relationEntity: ISchemaEntity;
     manyRelationColumns: ISchemaRelationColumn[];
     oneRelationColumns: ISchemaRelationColumn[];

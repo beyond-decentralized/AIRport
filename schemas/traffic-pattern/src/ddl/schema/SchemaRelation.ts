@@ -56,17 +56,17 @@ export class SchemaRelation
 	@Column({name: "RELATION_TYPE"})
 	relationType: EntityRelationType;
 
-	@Column({name: "IS_REPOSITORY_JOIN"})
-	isRepositoryJoin: boolean;
+	// @Column({name: "IS_REPOSITORY_JOIN"})
+	// isRepositoryJoin: boolean;
 
 	@Column({name: "IS_ID"})
 	isId: boolean;
 
-	@Column({name: "ADD_TO_JOIN_FUNCTION"})
-	addToJoinFunction: string;
-
-	@Column({name: "JOIN_FUNCTION_WITH_OPERATOR"})
-	joinFunctionWithOperator: number;
+	// @Column({name: "ADD_TO_JOIN_FUNCTION"})
+	// addToJoinFunction: string;
+	//
+	// @Column({name: "JOIN_FUNCTION_WITH_OPERATOR"})
+	// joinFunctionWithOperator: number;
 
 	@ManyToOne()
 	@JoinColumns([

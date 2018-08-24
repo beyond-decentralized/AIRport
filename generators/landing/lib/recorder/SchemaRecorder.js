@@ -12,21 +12,27 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const territory_1 = require("@airport/territory");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
 let SchemaRecorder = class SchemaRecorder {
-    constructor(domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaLocator, schemaReferenceDao, schemaUtils, schemaVersionDao) {
+    constructor(domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaLocator, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaUtils, schemaVersionDao, utils) {
         this.domainDao = domainDao;
         this.schemaColumnDao = schemaColumnDao;
         this.schemaDao = schemaDao;
         this.schemaEntityDao = schemaEntityDao;
         this.schemaLocator = schemaLocator;
+        this.schemaPropertyColumnDao = schemaPropertyColumnDao;
+        this.schemaPropertyDao = schemaPropertyDao;
         this.schemaReferenceDao = schemaReferenceDao;
+        this.schemaRelationColumnDao = schemaRelationColumnDao;
+        this.schemaRelationDao = schemaRelationDao;
         this.schemaUtils = schemaUtils;
         this.schemaVersionDao = schemaVersionDao;
+        this.utils = utils;
     }
     async record(jsonSchemas) {
         const domainSet = new Set();
@@ -38,9 +44,12 @@ let SchemaRecorder = class SchemaRecorder {
         const domainMapByName = await this.recordDomains(domainSet);
         const schemaMapByName = await this.recordSchemas(domainMapByName, jsonSchemaMapByName);
         const newSchemaVersionMapBySchemaName = await this.recordSchemaVersions(jsonSchemaMapByName, schemaMapByName);
-        await this.generateSchemaReferences(jsonSchemaMapByName, newSchemaVersionMapBySchemaName);
+        const schemaReferenceMap = await this.generateSchemaReferences(jsonSchemaMapByName, newSchemaVersionMapBySchemaName);
         const entitiesMapBySchemaName = await this.generateSchemaEntities(jsonSchemaMapByName, newSchemaVersionMapBySchemaName);
-        await this.generateSchemaColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, entitiesMapBySchemaName);
+        const propertiesMap = await this.generateSchemaProperties(jsonSchemaMapByName, entitiesMapBySchemaName);
+        const relationsMap = await this.generateSchemaRelations(jsonSchemaMapByName, entitiesMapBySchemaName, propertiesMap, schemaReferenceMap);
+        const columnsMap = await this.generateSchemaColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, propertiesMap);
+        await this.generateSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, schemaReferenceMap, entitiesMapBySchemaName, propertiesMap, relationsMap, columnsMap);
     }
     async recordDomains(domainSet) {
         const domainMapByName = await this.domainDao.findMapByNameWithNames(Array.from(domainSet));
@@ -108,30 +117,35 @@ let SchemaRecorder = class SchemaRecorder {
         return newSchemaVersionMapBySchemaName;
     }
     async generateSchemaReferences(jsonSchemaMapByName, newSchemaVersionMapBySchemaName) {
-        const schemaReferences = [];
-        for (const ownSchemaVersion of newSchemaVersionMapBySchemaName.values()) {
+        const schemaReferenceMap = new Map();
+        const allSchemaReferences = [];
+        for (const [schemaName, ownSchemaVersion] of newSchemaVersionMapBySchemaName) {
             const schema = ownSchemaVersion.schema;
             const jsonSchema = jsonSchemaMapByName.get(schema.name);
             const lastJsonSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
+            const schemaReferences = this.utils.ensureChildArray(schemaReferenceMap, schemaName);
             for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
-                const schemaName = this.schemaUtils.getSchemaName(jsonReferencedSchema);
-                let referencedSchemaVersion = newSchemaVersionMapBySchemaName.get(schemaName);
+                const referencedSchemaName = this.schemaUtils.getSchemaName(jsonReferencedSchema);
+                let referencedSchemaVersion = newSchemaVersionMapBySchemaName.get(referencedSchemaName);
                 if (!referencedSchemaVersion) {
-                    referencedSchemaVersion = this.schemaLocator.locateLatestSchemaVersionBySchemaName(schemaName);
+                    referencedSchemaVersion = this.schemaLocator.locateLatestSchemaVersionBySchemaName(referencedSchemaName);
                     if (!referencedSchemaVersion) {
                         throw new Error(`Could not locate schema:
-						${schemaName}
+						${referencedSchemaName}
 						in either existing schemas or schemas being currently processed`);
                     }
                 }
-                schemaReferences.push({
+                const schemaReference = {
                     index: jsonReferencedSchema.index,
                     ownSchemaVersion,
                     referencedSchemaVersion
-                });
+                };
+                schemaReferences.push(schemaReference);
+                allSchemaReferences.push(schemaReference);
             }
         }
-        await this.schemaReferenceDao.bulkCreate(schemaReferences, false, false);
+        await this.schemaReferenceDao.bulkCreate(allSchemaReferences, false, false);
+        return schemaReferenceMap;
     }
     async generateSchemaEntities(jsonSchemaMapByName, newSchemaVersionMapBySchemaName) {
         const entitiesMapBySchemaName = new Map();
@@ -159,31 +173,172 @@ let SchemaRecorder = class SchemaRecorder {
         await this.schemaEntityDao.bulkCreate(allEntities, false, false);
         return entitiesMapBySchemaName;
     }
-    async generateSchemaColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, entitiesMapBySchemaName) {
-        const columns = [];
+    async generateSchemaProperties(jsonSchemaMapByName, entitiesMapBySchemaName) {
+        const allProperties = [];
+        const propertiesMap = new Map();
         for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
-            let index = 0;
             const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
             const jsonEntities = currentSchemaVersion.entities;
-            const schemaVersion = newSchemaVersionMapBySchemaName.get(schemaName);
             const entities = entitiesMapBySchemaName.get(schemaName);
+            const propertiesByEntityIndex = this.utils.ensureChildArray(propertiesMap, schemaName);
             jsonEntities.forEach((jsonEntity, tableIndex) => {
                 const entity = entities[tableIndex];
+                const propertiesForEntity = [];
+                propertiesByEntityIndex[tableIndex]
+                    = propertiesForEntity;
                 let index = 0;
-                for (const jsonColumn of jsonEntity.columns) {
-                    columns.push({
+                const properties = [];
+                for (const jsonProperty of jsonEntity.properties) {
+                    const property = {
                         index: index++,
-                        tableIndex,
-                        schemaVersionId: schemaVersion.id,
-                        idIndex: ,
-                        isGenerated: jsonColumn.isGenerated,
-                        allocationSize: jsonColumn.allocationSize,
-                        type: jsonColumn.type
-                    });
+                        entity,
+                        name: jsonProperty.name,
+                        isId: jsonProperty.isId,
+                    };
+                    propertiesForEntity[index] = property;
+                    properties.push(property);
+                    allProperties.push(property);
                 }
             });
         }
-        await this.schemaEntityDao.bulkCreate(columns, false, false);
+        await this.schemaPropertyDao.bulkCreate(allProperties, false, false);
+        return propertiesMap;
+    }
+    async generateSchemaRelations(jsonSchemaMapByName, entitiesMapBySchemaName, propertiesMap, schemaReferenceMap) {
+        const allRelations = [];
+        const relationsMap = new Map();
+        for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
+            const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
+            const jsonEntities = currentSchemaVersion.entities;
+            const propertiesByEntityIndex = propertiesMap.get(schemaName);
+            const relationsByEntityIndex = this.utils.ensureChildArray(relationsMap, schemaName);
+            const referencesForSchema = schemaReferenceMap.get(schemaName);
+            jsonEntities.forEach((jsonEntity, tableIndex) => {
+                const propertiesForEntity = propertiesByEntityIndex[tableIndex];
+                const relationsForEntity = [];
+                relationsByEntityIndex[tableIndex]
+                    = relationsForEntity;
+                let index = 0;
+                const relations = [];
+                for (const jsonRelation of jsonEntity.relations) {
+                    const property = propertiesForEntity[jsonRelation.propertyRef.index];
+                    let referencedSchemaName = schemaName;
+                    if (jsonRelation.relationTableSchemaIndex
+                        || jsonRelation.relationTableSchemaIndex === 0) {
+                        const schemaReference = referencesForSchema[jsonRelation.relationTableSchemaIndex];
+                        referencedSchemaName = schemaReference.referencedSchemaVersion.schema.name;
+                    }
+                    const relationEntity = entitiesMapBySchemaName.get(referencedSchemaName)[jsonRelation.relationTableIndex];
+                    const relation = {
+                        index: index++,
+                        property,
+                        foreignKey: jsonRelation.foreignKey,
+                        manyToOneElems: jsonRelation.manyToOneElems,
+                        oneToManyElems: jsonRelation.oneToManyElems,
+                        relationType: jsonRelation.relationType,
+                        isId: property.isId,
+                        relationEntity
+                    };
+                    propertiesForEntity[index] = relation;
+                    relations.push(relation);
+                    allRelations.push(relation);
+                }
+            });
+        }
+        await this.schemaRelationDao.bulkCreate(allRelations, false, false);
+        return relationsMap;
+    }
+    async generateSchemaColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, propertiesMap) {
+        const columnsMap = new Map();
+        const allColumns = [];
+        const allPropertyColumns = [];
+        for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
+            const schemaVersion = newSchemaVersionMapBySchemaName.get(schemaName);
+            const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
+            const jsonEntities = currentSchemaVersion.entities;
+            jsonEntities.forEach((jsonEntity, tableIndex) => {
+                const idColumnIndexes = [];
+                jsonEntity.idColumnRefs.forEach((idColumnRef, tableIndex) => {
+                    idColumnIndexes[idColumnRef.index] = tableIndex;
+                });
+                jsonEntity.columns.forEach((jsonColumn, index) => {
+                    const column = {
+                        index,
+                        tableIndex,
+                        schemaVersionId: schemaVersion.id,
+                        idIndex: idColumnIndexes[index],
+                        isGenerated: jsonColumn.isGenerated,
+                        allocationSize: jsonColumn.allocationSize,
+                        name: jsonColumn.name,
+                        type: jsonColumn.type
+                    };
+                    allColumns.push(column);
+                    const properties = propertiesMap.get(schemaName)[tableIndex];
+                    jsonColumn.propertyRefs.forEach((propertyReference, propertyReferenceIndex) => {
+                        const propertyColumn = {
+                            column,
+                            property: properties[propertyReference.index]
+                        };
+                        allPropertyColumns.push(propertyColumn);
+                    });
+                });
+            });
+        }
+        await this.schemaColumnDao.bulkCreate(allColumns, false, false);
+        await this.schemaPropertyColumnDao.bulkCreate(allPropertyColumns, false, false);
+        return columnsMap;
+    }
+    async generateSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, schemaReferenceMap, entitiesMapBySchemaName, propertiesMap, relationsMap, columnsMap) {
+        const allRelationColumns = [];
+        for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
+            const schemaVersion = newSchemaVersionMapBySchemaName.get(schemaName);
+            const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
+            const jsonEntities = currentSchemaVersion.entities;
+            const entities = entitiesMapBySchemaName.get(schemaName);
+            jsonEntities.forEach((jsonEntity, tableIndex) => {
+                const entity = entities[tableIndex];
+                const idColumnIndexes = [];
+                jsonEntity.idColumnRefs.forEach((idColumnRef, tableIndex) => {
+                    idColumnIndexes[idColumnRef.index] = tableIndex;
+                });
+                jsonEntity.columns.forEach((jsonColumn, index) => {
+                    const column = {
+                        index,
+                        tableIndex,
+                        schemaVersionId: schemaVersion.id,
+                        idIndex: idColumnIndexes[index],
+                        isGenerated: jsonColumn.isGenerated,
+                        allocationSize: jsonColumn.allocationSize,
+                        name: jsonColumn.name,
+                        type: jsonColumn.type
+                    };
+                    allColumns.push(column);
+                    const properties = propertiesMap.get(schemaName)[tableIndex];
+                    jsonColumn.propertyRefs.forEach((propertyReference, propertyReferenceIndex) => {
+                        const propertyColumn = {
+                            column,
+                            property: properties[propertyReference.index]
+                        };
+                        allPropertyColumns.push(propertyColumn);
+                    });
+                    jsonColumn.manyRelationColumnRefs.forEach((jsonRelationColumn, relationColumnIndex) => {
+                        let manyColumn;
+                        let oneColumn;
+                        let manyRelation;
+                        let oneRelation;
+                        const relationColumn = {
+                            manyColumn: column,
+                        };
+                    });
+                });
+            });
+        }
+        await this.schemaColumnDao.bulkCreate(allColumns, false, false);
+        await this.schemaPropertyColumnDao.bulkCreate(allPropertyColumns, false, false);
+        if (allRelationColumns.length) {
+            await this.schemaRelationColumnDao.bulkCreate(allRelationColumns, false, false);
+        }
+        return columnsMap;
     }
 };
 SchemaRecorder = __decorate([
@@ -193,10 +348,15 @@ SchemaRecorder = __decorate([
     __param(2, typedi_1.Inject(traffic_pattern_1.SchemaDaoToken)),
     __param(3, typedi_1.Inject(traffic_pattern_1.SchemaEntityDaoToken)),
     __param(4, typedi_1.Inject(InjectionTokens_1.SchemaLocatorToken)),
-    __param(5, typedi_1.Inject(traffic_pattern_1.SchemaReferenceDaoToken)),
-    __param(6, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
-    __param(7, typedi_1.Inject(traffic_pattern_1.SchemaVersionDaoToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object])
+    __param(5, typedi_1.Inject(traffic_pattern_1.SchemaPropertyColumnDaoToken)),
+    __param(6, typedi_1.Inject(traffic_pattern_1.SchemaPropertyDaoToken)),
+    __param(7, typedi_1.Inject(traffic_pattern_1.SchemaReferenceDaoToken)),
+    __param(8, typedi_1.Inject(traffic_pattern_1.SchemaRelationColumnDaoToken)),
+    __param(9, typedi_1.Inject(traffic_pattern_1.SchemaRelationDaoToken)),
+    __param(10, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
+    __param(11, typedi_1.Inject(traffic_pattern_1.SchemaVersionDaoToken)),
+    __param(12, typedi_1.Inject(air_control_1.UtilsToken)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
 ], SchemaRecorder);
 exports.SchemaRecorder = SchemaRecorder;
 //# sourceMappingURL=SchemaRecorder.js.map

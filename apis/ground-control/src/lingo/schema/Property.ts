@@ -16,6 +16,8 @@ export type ColumnName = string;
 export type PropertyIndex = number;
 export type PropertyName = string;
 export type RelationIndex = number;
+export type SchemaColumnIsGenerated = boolean
+export type SchemaColumnAllocationSize = boolean
 
 /**
  * A property of an object in a schema.
@@ -78,13 +80,13 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex> {
 	/**
 	 * Is it column a generated value?
 	 */
-	isGenerated?: boolean;
+	isGenerated?: SchemaColumnIsGenerated;
 
 
 	/**
 	 * How many ids to allocate at a time
 	 */
-	allocationSize: number;
+	allocationSize: SchemaColumnAllocationSize;
 
 
 	/**
@@ -117,9 +119,9 @@ export interface DbColumn extends SchemaReferenceByIndex<ColumnIndex> {
 	/**
 	 * Id index of this column (if it's an ID column).
 	 */
-	idIndex?: number;
+	idIndex?: ColumnIndex;
 
-	isGenerated?: boolean;
+	isGenerated?: SchemaColumnIsGenerated;
 
 	/**
 	 * In which ManyToOne relations is this column present.
@@ -238,8 +240,8 @@ export interface DbRelation extends SchemaReferenceByIndex<RelationIndex> {
 	property: DbProperty;
 	relationEntity: DbEntity;
 	relationType: EntityRelationType;
-	addToJoinFunction?: string; // Serialized function to add to the join
-	joinFunctionWithOperator?: number; // How to add the function to the join
+	// addToJoinFunction?: string; // Serialized function to add to the join
+	// joinFunctionWithOperator?: number; // How to add the function to the join
 	// whereJoinTable?: WhereJoinTableDeserialized;
 }
 

@@ -49,21 +49,9 @@ __decorate([
     __metadata("design:type", Number)
 ], SchemaRelation.prototype, "relationType", void 0);
 __decorate([
-    air_control_1.Column({ name: "IS_REPOSITORY_JOIN" }),
-    __metadata("design:type", Boolean)
-], SchemaRelation.prototype, "isRepositoryJoin", void 0);
-__decorate([
     air_control_1.Column({ name: "IS_ID" }),
     __metadata("design:type", Boolean)
 ], SchemaRelation.prototype, "isId", void 0);
-__decorate([
-    air_control_1.Column({ name: "ADD_TO_JOIN_FUNCTION" }),
-    __metadata("design:type", String)
-], SchemaRelation.prototype, "addToJoinFunction", void 0);
-__decorate([
-    air_control_1.Column({ name: "JOIN_FUNCTION_WITH_OPERATOR" }),
-    __metadata("design:type", Number)
-], SchemaRelation.prototype, "joinFunctionWithOperator", void 0);
 __decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumns([

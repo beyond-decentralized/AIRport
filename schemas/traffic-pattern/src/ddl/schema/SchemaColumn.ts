@@ -1,7 +1,13 @@
 import { Column, DbNumber, Entity, Id, OneToMany, Table } from '@airport/air-control';
 import {
+	ColumnIndex,
 	ColumnName,
-	SQLDataType
+	IdColumnOnlyIndex,
+	SchemaColumnAllocationSize,
+	SchemaColumnIsGenerated,
+	SchemaVersionId,
+	SQLDataType,
+	TableIndex
 } from '@airport/ground-control'
 import { ISchemaColumn } from "../../generated/schema/qschemacolumn";
 import { ISchemaRelationColumn } from "../../generated/schema/qschemarelationcolumn";
@@ -18,15 +24,15 @@ export class SchemaColumn
 	 * Overall column index (within the entity).
 	 */
 	@Id()
-	index: number;
+	index: ColumnIndex;
 
 	@Id()
 	@Column({name: "TABLE_INDEX"})
-	tableIndex: number;
+	tableIndex: TableIndex;
 
 	@Id()
 	@Column({name: "SCHEMA_VERSION_ID"})
-	schemaVersionId: number;
+	schemaVersionId: SchemaVersionId;
 
 	@OneToMany({mappedBy: "column"})
 	propertyColumns: ISchemaPropertyColumn[];
@@ -35,13 +41,13 @@ export class SchemaColumn
 	 * Index of the ID (within the entity)
 	 */
 	@Column({name: "ID_INDEX"})
-	idIndex: number;
+	idIndex: IdColumnOnlyIndex;
 
 	@Column({name: "IS_GENERATED"})
-	isGenerated: boolean;
+	isGenerated: SchemaColumnIsGenerated;
 
 	@Column({name: "ALLOCATION_SIZE"})
-	allocationSize: number;
+	allocationSize: SchemaColumnAllocationSize;
 
 	name: ColumnName;
 
