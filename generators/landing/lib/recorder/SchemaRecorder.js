@@ -18,8 +18,9 @@ const traffic_pattern_1 = require("@airport/traffic-pattern");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
 let SchemaRecorder = class SchemaRecorder {
-    constructor(domainDao, schemaDao, schemaEntityDao, schemaLocator, schemaReferenceDao, schemaUtils, schemaVersionDao) {
+    constructor(domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaLocator, schemaReferenceDao, schemaUtils, schemaVersionDao) {
         this.domainDao = domainDao;
+        this.schemaColumnDao = schemaColumnDao;
         this.schemaDao = schemaDao;
         this.schemaEntityDao = schemaEntityDao;
         this.schemaLocator = schemaLocator;
@@ -38,7 +39,8 @@ let SchemaRecorder = class SchemaRecorder {
         const schemaMapByName = await this.recordSchemas(domainMapByName, jsonSchemaMapByName);
         const newSchemaVersionMapBySchemaName = await this.recordSchemaVersions(jsonSchemaMapByName, schemaMapByName);
         await this.generateSchemaReferences(jsonSchemaMapByName, newSchemaVersionMapBySchemaName);
-        await this.generateSchemaEntities(jsonSchemaMapByName, newSchemaVersionMapBySchemaName);
+        const entitiesMapBySchemaName = await this.generateSchemaEntities(jsonSchemaMapByName, newSchemaVersionMapBySchemaName);
+        await this.generateSchemaColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, entitiesMapBySchemaName);
     }
     async recordDomains(domainSet) {
         const domainMapByName = await this.domainDao.findMapByNameWithNames(Array.from(domainSet));
@@ -132,18 +134,69 @@ let SchemaRecorder = class SchemaRecorder {
         await this.schemaReferenceDao.bulkCreate(schemaReferences, false, false);
     }
     async generateSchemaEntities(jsonSchemaMapByName, newSchemaVersionMapBySchemaName) {
+        const entitiesMapBySchemaName = new Map();
+        const allEntities = [];
+        for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
+            let index = 0;
+            const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
+            const jsonEntities = currentSchemaVersion.entities;
+            const schemaVersion = newSchemaVersionMapBySchemaName.get(schemaName);
+            const entities = [];
+            for (const jsonEntity of jsonEntities) {
+                const entity = {
+                    index: index++,
+                    schemaVersion,
+                    isLocal: jsonEntity.isLocal,
+                    isRepositoryEntity: jsonEntity.isRepositoryEntity,
+                    name: jsonEntity.name,
+                    tableConfig: jsonEntity.tableConfig
+                };
+                entities.push(entity);
+                allEntities.push(entity);
+            }
+            entitiesMapBySchemaName.set(schemaName, entities);
+        }
+        await this.schemaEntityDao.bulkCreate(allEntities, false, false);
+        return entitiesMapBySchemaName;
+    }
+    async generateSchemaColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, entitiesMapBySchemaName) {
+        const columns = [];
+        for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
+            let index = 0;
+            const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
+            const jsonEntities = currentSchemaVersion.entities;
+            const schemaVersion = newSchemaVersionMapBySchemaName.get(schemaName);
+            const entities = entitiesMapBySchemaName.get(schemaName);
+            jsonEntities.forEach((jsonEntity, tableIndex) => {
+                const entity = entities[tableIndex];
+                let index = 0;
+                for (const jsonColumn of jsonEntity.columns) {
+                    columns.push({
+                        index: index++,
+                        tableIndex,
+                        schemaVersionId: schemaVersion.id,
+                        idIndex: ,
+                        isGenerated: jsonColumn.isGenerated,
+                        allocationSize: jsonColumn.allocationSize,
+                        type: jsonColumn.type
+                    });
+                }
+            });
+        }
+        await this.schemaEntityDao.bulkCreate(columns, false, false);
     }
 };
 SchemaRecorder = __decorate([
     typedi_1.Service(ground_control_1.SchemaUtilsToken),
     __param(0, typedi_1.Inject(territory_1.DomainDaoToken)),
-    __param(1, typedi_1.Inject(traffic_pattern_1.SchemaDaoToken)),
-    __param(2, typedi_1.Inject(traffic_pattern_1.SchemaEntityDaoToken)),
-    __param(3, typedi_1.Inject(InjectionTokens_1.SchemaLocatorToken)),
-    __param(4, typedi_1.Inject(traffic_pattern_1.SchemaReferenceDaoToken)),
-    __param(5, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
-    __param(6, typedi_1.Inject(traffic_pattern_1.SchemaVersionDaoToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object])
+    __param(1, typedi_1.Inject(traffic_pattern_1.SchemaColumnDaoToken)),
+    __param(2, typedi_1.Inject(traffic_pattern_1.SchemaDaoToken)),
+    __param(3, typedi_1.Inject(traffic_pattern_1.SchemaEntityDaoToken)),
+    __param(4, typedi_1.Inject(InjectionTokens_1.SchemaLocatorToken)),
+    __param(5, typedi_1.Inject(traffic_pattern_1.SchemaReferenceDaoToken)),
+    __param(6, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
+    __param(7, typedi_1.Inject(traffic_pattern_1.SchemaVersionDaoToken)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object])
 ], SchemaRecorder);
 exports.SchemaRecorder = SchemaRecorder;
 //# sourceMappingURL=SchemaRecorder.js.map

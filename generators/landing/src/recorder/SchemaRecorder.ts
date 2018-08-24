@@ -12,16 +12,20 @@ import {
 }                            from '@airport/territory'
 import {
 	ISchema,
+	ISchemaColumn,
 	ISchemaDao,
+	ISchemaEntity,
 	ISchemaReference,
 	ISchemaVersion,
 	ISchemaVersionDao,
+	SchemaColumnDaoToken,
 	SchemaDaoToken,
 	SchemaEntityDaoToken,
 	SchemaReferenceDaoToken,
 	SchemaStatus,
 	SchemaVersionDaoToken
 }                            from '@airport/traffic-pattern'
+import {ISchemaColumnDao}    from '@airport/traffic-pattern/lib/dao/SchemaColumnDao'
 import {ISchemaEntityDao}    from '@airport/traffic-pattern/lib/dao/SchemaEntityDao'
 import {ISchemaReferenceDao} from '@airport/traffic-pattern/lib/dao/SchemaReferenceDao'
 import {
@@ -46,6 +50,8 @@ export class SchemaRecorder
 	constructor(
 		@Inject(DomainDaoToken)
 		private domainDao: IDomainDao,
+		@Inject(SchemaColumnDaoToken)
+		private schemaColumnDao: ISchemaColumnDao,
 		@Inject(SchemaDaoToken)
 		private schemaDao: ISchemaDao,
 		@Inject(SchemaEntityDaoToken)
@@ -72,23 +78,25 @@ export class SchemaRecorder
 			jsonSchemaMapByName.set(this.schemaUtils.getSchemaName(jsonSchema), jsonSchema)
 		}
 
-		const domainMapByName   = await this.recordDomains(domainSet)
-		const schemaMapByName   = await this.recordSchemas(
+		const domainMapByName                 = await this.recordDomains(domainSet)
+		const schemaMapByName                 = await this.recordSchemas(
 			domainMapByName, jsonSchemaMapByName)
 		const newSchemaVersionMapBySchemaName = await this.recordSchemaVersions(
 			jsonSchemaMapByName, schemaMapByName)
 		await this.generateSchemaReferences(
 			jsonSchemaMapByName, newSchemaVersionMapBySchemaName)
-		await this.generateSchemaEntities(
+		const entitiesMapBySchemaName = await this.generateSchemaEntities(
 			jsonSchemaMapByName, newSchemaVersionMapBySchemaName)
 
+		await this.generateSchemaColumns(
+			jsonSchemaMapByName, newSchemaVersionMapBySchemaName, entitiesMapBySchemaName)
 	}
 
 	private async recordDomains(
 		domainSet: Set<DomainName>
 	): Promise<Map<DomainName, IDomain>> {
 		const domainMapByName
-			      = await this.domainDao.findMapByNameWithNames(Array.from(domainSet))
+						= await this.domainDao.findMapByNameWithNames(Array.from(domainSet))
 
 		const newDomains: IDomain[] = []
 		for (const domainName of domainSet) {
@@ -181,11 +189,11 @@ export class SchemaRecorder
 			const jsonSchema            = jsonSchemaMapByName.get(schema.name)
 			const lastJsonSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1]
 			for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
-				const schemaName = this.schemaUtils.getSchemaName(jsonReferencedSchema)
+				const schemaName            = this.schemaUtils.getSchemaName(jsonReferencedSchema)
 				let referencedSchemaVersion = newSchemaVersionMapBySchemaName.get(schemaName)
-				if(!referencedSchemaVersion) {
+				if (!referencedSchemaVersion) {
 					referencedSchemaVersion = this.schemaLocator.locateLatestSchemaVersionBySchemaName(schemaName)
-					if(!referencedSchemaVersion) {
+					if (!referencedSchemaVersion) {
 						throw new Error(`Could not locate schema:
 						${schemaName}
 						in either existing schemas or schemas being currently processed`)
@@ -205,7 +213,71 @@ export class SchemaRecorder
 	private async generateSchemaEntities(
 		jsonSchemaMapByName: Map<SchemaName, JsonSchema>,
 		newSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion>
-	) {
+	): Promise<Map<SchemaName, ISchemaEntity[]>> {
+		const entitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]> = new Map()
+
+		const allEntities: ISchemaEntity[] = []
+		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
+			let index                       = 0
+			const currentSchemaVersion      = jsonSchema.versions[jsonSchema.versions.length - 1]
+			const jsonEntities              = currentSchemaVersion.entities
+			const schemaVersion             = newSchemaVersionMapBySchemaName.get(schemaName)
+			const entities: ISchemaEntity[] = []
+			for (const jsonEntity of jsonEntities) {
+				const entity: ISchemaEntity = {
+					index: index++,
+					schemaVersion,
+					isLocal: jsonEntity.isLocal,
+					isRepositoryEntity: jsonEntity.isRepositoryEntity,
+					name: jsonEntity.name,
+					tableConfig: jsonEntity.tableConfig
+				}
+				entities.push(entity)
+				allEntities.push(entity)
+			}
+			entitiesMapBySchemaName.set(schemaName, entities)
+		}
+
+		await this.schemaEntityDao.bulkCreate(allEntities, false, false)
+
+		return entitiesMapBySchemaName
+	}
+
+	private async generateSchemaColumns(
+		jsonSchemaMapByName: Map<SchemaName, JsonSchema>,
+		newSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion>,
+		entitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]>
+	): Promise<void> {
+		const columns: ISchemaColumn[] = []
+
+		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
+			let index                  = 0
+			const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1]
+			const jsonEntities         = currentSchemaVersion.entities
+			const schemaVersion        = newSchemaVersionMapBySchemaName.get(schemaName)
+			const entities             = entitiesMapBySchemaName.get(schemaName)
+			jsonEntities.forEach((
+				jsonEntity,
+				tableIndex
+			) => {
+				const entity = entities[tableIndex]
+				let index    = 0
+
+				for (const jsonColumn of jsonEntity.columns) {
+					columns.push({
+						index: index++,
+						tableIndex,
+						schemaVersionId: schemaVersion.id,
+						idIndex: ,
+						isGenerated: jsonColumn.isGenerated,
+						allocationSize: jsonColumn.allocationSize,
+						type: jsonColumn.type
+					})
+				}
+			})
+		}
+
+		await this.schemaEntityDao.bulkCreate(columns, false, false)
 
 	}
 
