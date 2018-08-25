@@ -19,7 +19,10 @@ const traffic_pattern_1 = require("@airport/traffic-pattern");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
 let SchemaRecorder = class SchemaRecorder {
-    constructor(domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaLocator, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaUtils, schemaVersionDao, utils) {
+    constructor(
+    // @Inject(AirportDatabaseToken)
+    // private airportDatabase: IAirportDatabase,
+    domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaLocator, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaUtils, schemaVersionDao, utils) {
         this.domainDao = domainDao;
         this.schemaColumnDao = schemaColumnDao;
         this.schemaDao = schemaDao;
@@ -258,8 +261,8 @@ let SchemaRecorder = class SchemaRecorder {
             const jsonEntities = currentSchemaVersion.entities;
             jsonEntities.forEach((jsonEntity, tableIndex) => {
                 const idColumnIndexes = [];
-                jsonEntity.idColumnRefs.forEach((idColumnRef, tableIndex) => {
-                    idColumnIndexes[idColumnRef.index] = tableIndex;
+                jsonEntity.idColumnRefs.forEach((idColumnRef, idColumnIndex) => {
+                    idColumnIndexes[idColumnRef.index] = idColumnIndex;
                 });
                 jsonEntity.columns.forEach((jsonColumn, index) => {
                     const column = {
@@ -295,46 +298,60 @@ let SchemaRecorder = class SchemaRecorder {
             const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
             const jsonEntities = currentSchemaVersion.entities;
             const entities = entitiesMapBySchemaName.get(schemaName);
+            const columnsForSchema = columnsMap.get(schemaName);
+            const relationsForSchema = relationsMap.get(schemaName);
+            const schemaReferencesForSchema = schemaReferenceMap.get(schemaName);
             jsonEntities.forEach((jsonEntity, tableIndex) => {
                 const entity = entities[tableIndex];
-                const idColumnIndexes = [];
-                jsonEntity.idColumnRefs.forEach((idColumnRef, tableIndex) => {
-                    idColumnIndexes[idColumnRef.index] = tableIndex;
-                });
+                const columnsForEntity = columnsForSchema[tableIndex];
+                const relationsForEntity = columnsForSchema[tableIndex];
                 jsonEntity.columns.forEach((jsonColumn, index) => {
-                    const column = {
-                        index,
-                        tableIndex,
-                        schemaVersionId: schemaVersion.id,
-                        idIndex: idColumnIndexes[index],
-                        isGenerated: jsonColumn.isGenerated,
-                        allocationSize: jsonColumn.allocationSize,
-                        name: jsonColumn.name,
-                        type: jsonColumn.type
-                    };
-                    allColumns.push(column);
-                    const properties = propertiesMap.get(schemaName)[tableIndex];
-                    jsonColumn.propertyRefs.forEach((propertyReference, propertyReferenceIndex) => {
-                        const propertyColumn = {
-                            column,
-                            property: properties[propertyReference.index]
-                        };
-                        allPropertyColumns.push(propertyColumn);
-                    });
+                    const manyColumn = columnsForEntity[index];
+                    const relationColumns = [];
                     jsonColumn.manyRelationColumnRefs.forEach((jsonRelationColumn, relationColumnIndex) => {
-                        let manyColumn;
-                        let oneColumn;
-                        let manyRelation;
-                        let oneRelation;
+                        const manyRelation = relationsForEntity[jsonRelationColumn.manyRelationIndex];
+                        if (!manyRelation.manyRelationColumns) {
+                            manyRelation.manyRelationColumns = [];
+                        }
+                        let oneRelationSchemaVersion;
+                        if (jsonRelationColumn.oneSchemaIndex) {
+                            const schemaReference = schemaReferencesForSchema[jsonRelationColumn.oneSchemaIndex];
+                            oneRelationSchemaVersion = schemaReference.referencedSchemaVersion;
+                            // this.airportDatabase.schemas[]
+                        }
+                        else {
+                            oneRelationSchemaVersion = newSchemaVersionMapBySchemaName.get(schemaName);
+                        }
+                        const oneTable = oneRelationSchemaVersion
+                            .entities[jsonRelationColumn.oneTableIndex];
+                        const oneColumn = oneTable.columns[jsonRelationColumn.oneColumnIndex];
+                        if (!jsonRelationColumn.oneSchemaIndex
+                            && !oneColumn.oneRelationColumns) {
+                            oneColumn.oneRelationColumns = [];
+                        }
+                        const oneRelation = oneTable.relations[jsonRelationColumn.oneRelationIndex];
+                        if (!jsonRelationColumn.oneSchemaIndex
+                            && !oneRelation.oneRelationColumns) {
+                            oneRelation.oneRelationColumns = [];
+                        }
                         const relationColumn = {
-                            manyColumn: column,
+                            manyColumn,
+                            manyRelation,
+                            oneColumn,
+                            oneRelation
                         };
+                        manyRelation.manyRelationColumns.push(relationColumn);
+                        if (!jsonRelationColumn.oneSchemaIndex) {
+                            oneColumn.oneRelationColumns.push(relationColumn);
+                            oneRelation.oneRelationColumns.push(relationColumn);
+                        }
+                        relationColumns.push(relationColumn);
+                        allRelationColumns.push(relationColumn);
                     });
+                    manyColumn.manyRelationColumns = relationColumns;
                 });
             });
         }
-        await this.schemaColumnDao.bulkCreate(allColumns, false, false);
-        await this.schemaPropertyColumnDao.bulkCreate(allPropertyColumns, false, false);
         if (allRelationColumns.length) {
             await this.schemaRelationColumnDao.bulkCreate(allRelationColumns, false, false);
         }
