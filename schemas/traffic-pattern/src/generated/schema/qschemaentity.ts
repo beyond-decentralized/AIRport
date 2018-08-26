@@ -22,16 +22,6 @@ import {
 	TableConfiguration,
 } from '@airport/air-control';
 import {
-	ISchemaVersion,
-	SchemaVersionEId,
-	SchemaVersionEOptionalId,
-	SchemaVersionEUpdateProperties,
-	SchemaVersionESelect,
-	QSchemaVersion,
-	QSchemaVersionQId,
-	QSchemaVersionQRelation,
-} from './qschemaversion';
-import {
 	ISchemaColumn,
 	SchemaColumnEId,
 	SchemaColumnEOptionalId,
@@ -41,6 +31,16 @@ import {
 	QSchemaColumnQId,
 	QSchemaColumnQRelation,
 } from './qschemacolumn';
+import {
+	ISchemaVersion,
+	SchemaVersionEId,
+	SchemaVersionEOptionalId,
+	SchemaVersionEUpdateProperties,
+	SchemaVersionESelect,
+	QSchemaVersion,
+	QSchemaVersionQId,
+	QSchemaVersionQRelation,
+} from './qschemaversion';
 import {
 	ISchemaProperty,
 	SchemaPropertyEId,
@@ -90,6 +90,9 @@ export interface ISchemaEntity {
 	relations?: ISchemaRelation[];
 
 	// Transient Properties
+	columnMap?: { [name: string]: ISchemaColumn; };
+	idColumns?: ISchemaColumn[];
+	idColumnMap?: { [name: string]: ISchemaColumn; };
 
 	// Public Methods
 	

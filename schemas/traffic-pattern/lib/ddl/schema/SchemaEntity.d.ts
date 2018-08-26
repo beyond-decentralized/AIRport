@@ -16,4 +16,11 @@ export declare class SchemaEntity implements ISchemaEntity {
     columns: ISchemaColumn[];
     properties: ISchemaProperty[];
     relations: ISchemaRelation[];
+    columnMap?: {
+        [name: string]: ISchemaColumn;
+    };
+    idColumns: ISchemaColumn[];
+    idColumnMap?: {
+        [name: string]: ISchemaColumn;
+    };
 }

@@ -58,6 +58,18 @@ __decorate([
     ]),
     __metadata("design:type", Array)
 ], SchemaEntity.prototype, "relations", void 0);
+__decorate([
+    air_control_1.Transient(),
+    __metadata("design:type", Object)
+], SchemaEntity.prototype, "columnMap", void 0);
+__decorate([
+    air_control_1.Transient(),
+    __metadata("design:type", Array)
+], SchemaEntity.prototype, "idColumns", void 0);
+__decorate([
+    air_control_1.Transient(),
+    __metadata("design:type", Object)
+], SchemaEntity.prototype, "idColumnMap", void 0);
 SchemaEntity = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({
@@ -65,4 +77,4 @@ SchemaEntity = __decorate([
     })
 ], SchemaEntity);
 exports.SchemaEntity = SchemaEntity;
-//# sourceMappingURL=SchemaEntity.js.map
+//# sourceMappingURL=schemaentity.js.map

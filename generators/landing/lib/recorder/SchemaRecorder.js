@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const territory_1 = require("@airport/territory");
@@ -167,7 +166,12 @@ let SchemaRecorder = class SchemaRecorder {
                     isLocal: jsonEntity.isLocal,
                     isRepositoryEntity: jsonEntity.isRepositoryEntity,
                     name: jsonEntity.name,
-                    tableConfig: jsonEntity.tableConfig
+                    tableConfig: jsonEntity.tableConfig,
+                    columns: [],
+                    columnMap: {},
+                    idColumns: [],
+                    idColumnMap: {},
+                    relations: []
                 };
                 entities.push(entity);
                 allEntities.push(entity);
@@ -198,6 +202,7 @@ let SchemaRecorder = class SchemaRecorder {
                         entity,
                         name: jsonProperty.name,
                         isId: jsonProperty.isId,
+                        propertyColumns: []
                     };
                     propertiesForEntity[index] = property;
                     properties.push(property);
@@ -214,6 +219,7 @@ let SchemaRecorder = class SchemaRecorder {
         for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
             const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
             const jsonEntities = currentSchemaVersion.entities;
+            const entitiesForSchema = entitiesMapBySchemaName.get(schemaName);
             const propertiesByEntityIndex = propertiesMap.get(schemaName);
             const relationsByEntityIndex = this.utils.ensureChildArray(relationsMap, schemaName);
             const referencesForSchema = schemaReferenceMap.get(schemaName);
@@ -232,7 +238,7 @@ let SchemaRecorder = class SchemaRecorder {
                         const schemaReference = referencesForSchema[jsonRelation.relationTableSchemaIndex];
                         referencedSchemaName = schemaReference.referencedSchemaVersion.schema.name;
                     }
-                    const relationEntity = entitiesMapBySchemaName.get(referencedSchemaName)[jsonRelation.relationTableIndex];
+                    const relationEntity = entitiesForSchema[jsonRelation.relationTableIndex];
                     const relation = {
                         index: index++,
                         property,
@@ -241,8 +247,12 @@ let SchemaRecorder = class SchemaRecorder {
                         oneToManyElems: jsonRelation.oneToManyElems,
                         relationType: jsonRelation.relationType,
                         isId: property.isId,
-                        relationEntity
+                        relationEntity,
+                        oneRelationColumns: [],
+                        manyRelationColumns: []
                     };
+                    property.relation = [relation];
+                    relationEntity.relations.push(relation);
                     propertiesForEntity[index] = relation;
                     relations.push(relation);
                     allRelations.push(relation);
@@ -252,38 +262,54 @@ let SchemaRecorder = class SchemaRecorder {
         await this.schemaRelationDao.bulkCreate(allRelations, false, false);
         return relationsMap;
     }
-    async generateSchemaColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, propertiesMap) {
+    async generateSchemaColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, entitiesMapBySchemaName, propertiesMap) {
         const columnsMap = new Map();
         const allColumns = [];
         const allPropertyColumns = [];
         for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
             const schemaVersion = newSchemaVersionMapBySchemaName.get(schemaName);
+            const entitiesForSchema = entitiesMapBySchemaName.get(schemaName);
             const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
             const jsonEntities = currentSchemaVersion.entities;
+            const propertiesForSchema = propertiesMap.get(schemaName);
             jsonEntities.forEach((jsonEntity, tableIndex) => {
+                const entity = entitiesForSchema[tableIndex];
                 const idColumnIndexes = [];
                 jsonEntity.idColumnRefs.forEach((idColumnRef, idColumnIndex) => {
                     idColumnIndexes[idColumnRef.index] = idColumnIndex;
                 });
+                const propertiesForEntity = propertiesForSchema[tableIndex];
                 jsonEntity.columns.forEach((jsonColumn, index) => {
+                    const idColumndIndex = idColumnIndexes[index];
                     const column = {
                         index,
                         tableIndex,
                         schemaVersionId: schemaVersion.id,
-                        idIndex: idColumnIndexes[index],
+                        idIndex: idColumndIndex,
                         isGenerated: jsonColumn.isGenerated,
                         allocationSize: jsonColumn.allocationSize,
                         name: jsonColumn.name,
-                        type: jsonColumn.type
+                        type: jsonColumn.type,
+                        propertyColumns: [],
+                        oneRelationColumns: [],
+                        manyRelationColumns: []
                     };
                     allColumns.push(column);
-                    const properties = propertiesMap.get(schemaName)[tableIndex];
+                    entity.columns.push(column);
+                    entity.columnMap[column.name] = column;
+                    if (idColumndIndex || idColumndIndex === 0) {
+                        entity.idColumns[idColumndIndex] = column;
+                        entity.idColumnMap[column.name] = column;
+                    }
                     jsonColumn.propertyRefs.forEach((propertyReference) => {
+                        const property = propertiesForEntity[propertyReference.index];
                         const propertyColumn = {
                             column,
-                            property: properties[propertyReference.index]
+                            property
                         };
                         allPropertyColumns.push(propertyColumn);
+                        column.propertyColumns.push(propertyColumn);
+                        property.propertyColumns.push(propertyColumn);
                     });
                 });
             });
@@ -370,7 +396,7 @@ SchemaRecorder = __decorate([
     __param(10, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
     __param(11, typedi_1.Inject(traffic_pattern_1.SchemaVersionDaoToken)),
     __param(12, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [typeof (_a = typeof territory_1.IDomainDao !== "undefined" && territory_1.IDomainDao) === "function" && _a || Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, typeof (_b = typeof air_control_1.IUtils !== "undefined" && air_control_1.IUtils) === "function" && _b || Object])
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
 ], SchemaRecorder);
 exports.SchemaRecorder = SchemaRecorder;
 //# sourceMappingURL=SchemaRecorder.js.map

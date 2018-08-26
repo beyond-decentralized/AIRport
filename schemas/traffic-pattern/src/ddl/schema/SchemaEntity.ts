@@ -8,13 +8,15 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table,
-	TableConfiguration
-}                        from '@airport/air-control';
+	TableConfiguration,
+	Transient
+} from '@airport/air-control'
 import {DbNumber}        from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
 import {
 	CascadeType,
+	DbColumn,
 	EntityName
-}                        from '@airport/ground-control';
+} from '@airport/ground-control'
 import {ISchemaColumn}   from "../../generated/schema/qschemacolumn";
 import {ISchemaEntity}   from "../../generated/schema/qschemaentity";
 import {ISchemaProperty} from "../../generated/schema/qschemaproperty";
@@ -96,5 +98,14 @@ export class SchemaEntity
 		{name: "TABLE_INDEX", referencedColumnName: "INDEX"}
 	])
 	relations: ISchemaRelation[];
+
+	@Transient()
+	columnMap?: { [name: string]: ISchemaColumn }
+
+	@Transient()
+	idColumns:ISchemaColumn[]
+
+	@Transient()
+	idColumnMap?: { [name: string]: ISchemaColumn }
 
 }
