@@ -32,16 +32,6 @@ import {
 	QSchemaColumnQRelation,
 } from './qschemacolumn';
 import {
-	ISchemaVersion,
-	SchemaVersionEId,
-	SchemaVersionEOptionalId,
-	SchemaVersionEUpdateProperties,
-	SchemaVersionESelect,
-	QSchemaVersion,
-	QSchemaVersionQId,
-	QSchemaVersionQRelation,
-} from './qschemaversion';
-import {
 	ISchemaProperty,
 	SchemaPropertyEId,
 	SchemaPropertyEOptionalId,
@@ -51,6 +41,16 @@ import {
 	QSchemaPropertyQId,
 	QSchemaPropertyQRelation,
 } from './qschemaproperty';
+import {
+	ISchemaVersion,
+	SchemaVersionEId,
+	SchemaVersionEOptionalId,
+	SchemaVersionEUpdateProperties,
+	SchemaVersionESelect,
+	QSchemaVersion,
+	QSchemaVersionQId,
+	QSchemaVersionQRelation,
+} from './qschemaversion';
 import {
 	ISchemaRelation,
 	SchemaRelationEId,
@@ -93,6 +93,7 @@ export interface ISchemaEntity {
 	columnMap?: { [name: string]: ISchemaColumn; };
 	idColumns?: ISchemaColumn[];
 	idColumnMap?: { [name: string]: ISchemaColumn; };
+	propertyMap?: { [name: string]: ISchemaProperty; };
 
 	// Public Methods
 	

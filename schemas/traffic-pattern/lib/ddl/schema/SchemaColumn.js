@@ -62,4 +62,4 @@ SchemaColumn = __decorate([
     })
 ], SchemaColumn);
 exports.SchemaColumn = SchemaColumn;
-//# sourceMappingURL=SchemaColumn.js.map
+//# sourceMappingURL=schemacolumn.js.map

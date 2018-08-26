@@ -111,6 +111,7 @@ let SchemaRecorder = class SchemaRecorder {
                 majorVersion: parseInt(versionParts[0]),
                 minorVersion: parseInt(versionParts[1]),
                 patchVersion: parseInt(versionParts[2]),
+                entities: [],
                 schema
             };
             newSchemaVersions.push(newSchemaVersion);
@@ -158,7 +159,6 @@ let SchemaRecorder = class SchemaRecorder {
             const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
             const jsonEntities = currentSchemaVersion.entities;
             const schemaVersion = newSchemaVersionMapBySchemaName.get(schemaName);
-            const entities = [];
             for (const jsonEntity of jsonEntities) {
                 const entity = {
                     index: index++,
@@ -171,12 +171,14 @@ let SchemaRecorder = class SchemaRecorder {
                     columnMap: {},
                     idColumns: [],
                     idColumnMap: {},
-                    relations: []
+                    relations: [],
+                    properties: [],
+                    propertyMap: {}
                 };
-                entities.push(entity);
+                schemaVersion.entities.push(entity);
                 allEntities.push(entity);
             }
-            entitiesMapBySchemaName.set(schemaName, entities);
+            entitiesMapBySchemaName.set(schemaName, schemaVersion.entities);
         }
         await this.schemaEntityDao.bulkCreate(allEntities, false, false);
         return entitiesMapBySchemaName;
@@ -195,7 +197,6 @@ let SchemaRecorder = class SchemaRecorder {
                 propertiesByEntityIndex[tableIndex]
                     = propertiesForEntity;
                 let index = 0;
-                const properties = [];
                 for (const jsonProperty of jsonEntity.properties) {
                     const property = {
                         index: index++,
@@ -204,8 +205,9 @@ let SchemaRecorder = class SchemaRecorder {
                         isId: jsonProperty.isId,
                         propertyColumns: []
                     };
+                    entity.properties.push(property);
+                    entity.propertyMap[property.name] = property;
                     propertiesForEntity[index] = property;
-                    properties.push(property);
                     allProperties.push(property);
                 }
             });

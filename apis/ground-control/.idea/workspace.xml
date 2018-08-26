@@ -25,23 +25,18 @@
       <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/src/recorder/SchemaRecorder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/recorder/SchemaRecorder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaColumnDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaColumnDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaEntityDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaEntityDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaPropertyColumnDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaPropertyColumnDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaPropertyDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaPropertyDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaReferenceDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaReferenceDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaRelationColumnDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaRelationColumnDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaRelationDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaRelationDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaVersionDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/SchemaVersionDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/Schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/Schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaReference.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaReference.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaVersion.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaVersion.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemaentity.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemaentity.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/schema/qschemaentity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/schema/qschemaentity.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -93,31 +88,32 @@
     <session id="-1797924570">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="6" />
+          <entry key="project.closed" value="7" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="2" />
+          <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.43" value="1" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="9" />
+          <entry key="project.opened" value="10" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
         <counts>
-          <entry key="TypeScriptServerServiceImpl" value="9" />
+          <entry key="TypeScriptServerServiceImpl" value="10" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="ts" value="3" />
+          <entry key="ts" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="TypeScript" value="3" />
+          <entry key="TypeScript" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -136,14 +132,23 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/lingo/schema/Property.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="227">
-                  <caret line="271" column="14" selection-start-line="271" selection-start-column="2" selection-end-line="271" selection-end-column="14" />
+                <state relative-caret-position="58">
+                  <caret line="50" column="22" selection-start-line="50" selection-start-column="17" selection-end-line="50" selection-end-column="27" />
                   <folding>
                     <element signature="e#0#159#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/lingo/schema/Entity.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="208">
+                  <caret line="67" column="20" selection-start-line="67" selection-start-column="17" selection-end-line="67" selection-end-column="25" />
                 </state>
               </provider>
             </entry>
@@ -164,11 +169,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/lingo/schema/Schema.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="550">
-                  <caret line="29" selection-start-line="29" selection-end-line="29" />
+                <state relative-caret-position="352">
+                  <caret line="106" column="5" lean-forward="true" selection-start-line="106" selection-start-column="5" selection-end-line="106" selection-end-column="5" />
                   <folding>
                     <element signature="e#0#85#0" expanded="true" />
                   </folding>
@@ -185,11 +190,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/lingo/query/facade/Query.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="209">
-                  <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
+                <state relative-caret-position="231">
+                  <caret line="14" column="22" lean-forward="true" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
                 </state>
               </provider>
             </entry>
@@ -382,11 +387,12 @@
       <workItem from="1535030437901" duration="2417000" />
       <workItem from="1535115252434" duration="2928000" />
       <workItem from="1535236299709" duration="920000" />
+      <workItem from="1535313171036" duration="1863000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28216000" />
+    <option name="totallyTimeSpent" value="30126000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -529,9 +535,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="594">
           <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -545,13 +548,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lingo/schema/Schema.ts">
+    <entry file="file://$PROJECT_DIR$/src/impl/query/SchemaUtils.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
-          <folding>
-            <element signature="e#0#85#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="348">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
         </state>
       </provider>
     </entry>
@@ -562,33 +562,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/impl/query/SchemaUtils.ts">
+    <entry file="file://$PROJECT_DIR$/src/lingo/schema/Property.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lingo/query/facade/Query.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
+        <state relative-caret-position="2244">
+          <caret line="102" column="12" selection-start-line="102" selection-start-column="12" selection-end-line="102" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#159#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lingo/schema/Entity.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="71" column="5" lean-forward="true" selection-start-line="71" selection-start-column="5" selection-end-line="71" selection-end-column="5" />
+        <state relative-caret-position="208">
+          <caret line="67" column="20" selection-start-line="67" selection-start-column="17" selection-end-line="67" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lingo/schema/Property.ts">
+    <entry file="file://$PROJECT_DIR$/src/lingo/query/facade/Query.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="271" column="14" selection-start-line="271" selection-start-column="2" selection-end-line="271" selection-end-column="14" />
+        <state relative-caret-position="231">
+          <caret line="14" column="22" lean-forward="true" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lingo/schema/Schema.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="106" column="5" lean-forward="true" selection-start-line="106" selection-start-column="5" selection-end-line="106" selection-end-column="5" />
           <folding>
-            <element signature="e#0#159#0" expanded="true" />
+            <element signature="e#0#85#0" expanded="true" />
           </folding>
         </state>
       </provider>

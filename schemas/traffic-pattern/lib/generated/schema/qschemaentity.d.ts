@@ -1,7 +1,7 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation, TableConfiguration } from '@airport/air-control';
 import { ISchemaColumn, SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
-import { ISchemaVersion, SchemaVersionEId, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQId, QSchemaVersionQRelation } from './qschemaversion';
 import { ISchemaProperty, SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';
+import { ISchemaVersion, SchemaVersionEId, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQId, QSchemaVersionQRelation } from './qschemaversion';
 import { ISchemaRelation, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
 export interface ISchemaEntity {
     index?: number;
@@ -19,6 +19,9 @@ export interface ISchemaEntity {
     idColumns?: ISchemaColumn[];
     idColumnMap?: {
         [name: string]: ISchemaColumn;
+    };
+    propertyMap?: {
+        [name: string]: ISchemaProperty;
     };
 }
 /**

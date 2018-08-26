@@ -108,4 +108,7 @@ export class SchemaEntity
 	@Transient()
 	idColumnMap?: { [name: string]: ISchemaColumn }
 
+	@Transient()
+	propertyMap: {[name: string]: ISchemaProperty }
+
 }

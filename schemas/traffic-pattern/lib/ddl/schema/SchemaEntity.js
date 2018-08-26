@@ -70,6 +70,10 @@ __decorate([
     air_control_1.Transient(),
     __metadata("design:type", Object)
 ], SchemaEntity.prototype, "idColumnMap", void 0);
+__decorate([
+    air_control_1.Transient(),
+    __metadata("design:type", Object)
+], SchemaEntity.prototype, "propertyMap", void 0);
 SchemaEntity = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({
