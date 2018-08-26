@@ -12,6 +12,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a, _b;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const territory_1 = require("@airport/territory");
@@ -51,7 +52,7 @@ let SchemaRecorder = class SchemaRecorder {
         const entitiesMapBySchemaName = await this.generateSchemaEntities(jsonSchemaMapByName, newSchemaVersionMapBySchemaName);
         const propertiesMap = await this.generateSchemaProperties(jsonSchemaMapByName, entitiesMapBySchemaName);
         const relationsMap = await this.generateSchemaRelations(jsonSchemaMapByName, entitiesMapBySchemaName, propertiesMap, schemaReferenceMap);
-        const columnsMap = await this.generateSchemaColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, propertiesMap);
+        const columnsMap = await this.generateSchemaColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, entitiesMapBySchemaName, propertiesMap);
         await this.generateSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, schemaReferenceMap, relationsMap, columnsMap);
     }
     async recordDomains(domainSet) {
@@ -398,7 +399,7 @@ SchemaRecorder = __decorate([
     __param(10, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
     __param(11, typedi_1.Inject(traffic_pattern_1.SchemaVersionDaoToken)),
     __param(12, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof territory_1.IDomainDao !== "undefined" && territory_1.IDomainDao) === "function" ? _a : Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, typeof (_b = typeof air_control_1.IUtils !== "undefined" && air_control_1.IUtils) === "function" ? _b : Object])
 ], SchemaRecorder);
 exports.SchemaRecorder = SchemaRecorder;
 //# sourceMappingURL=SchemaRecorder.js.map

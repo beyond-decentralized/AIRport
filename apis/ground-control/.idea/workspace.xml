@@ -2,41 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0aa95de4-695f-41d7-af1e-b6965d77a74d" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/../../generators/takeoff/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../generators/takeoff/src/InjectionTokens.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../generators/takeoff/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../generators/takeoff/tsconfig.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/impl/query/ColumnMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/query/ColumnMap.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/impl/query/SchemaMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/query/SchemaMap.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/impl/query/SchemaUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/query/SchemaUtils.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/impl/query/TableMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/query/TableMap.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/impl/schema/builder/DbSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/schema/builder/DbSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/impl/schema/builder/DbSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/schema/builder/DbSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/impl/sync/SyncColumnMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/sync/SyncColumnMap.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/impl/sync/SyncSchemaMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/sync/SyncSchemaMap.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/impl/sync/SyncTableMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/sync/SyncTableMap.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/impl/utils/DatastructureUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/impl/utils/DatastructureUtils.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lingo/core/APSubject.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/lingo/core/APSubject.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lingo/core/field/JSONClause.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/lingo/core/field/JSONClause.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lingo/schema/Property.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/lingo/schema/Property.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/SchemaInitializer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/SchemaInitializer.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/locator/SchemaLocator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/locator/SchemaLocator.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/index.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/landing/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/src/recorder/SchemaRecorder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/recorder/SchemaRecorder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemaentity.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemaentity.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/schema/qschemaentity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/schema/qschemaentity.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -135,8 +118,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/lingo/schema/Property.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="58">
-                  <caret line="50" column="22" selection-start-line="50" selection-start-column="17" selection-end-line="50" selection-end-column="27" />
+                <state relative-caret-position="1540">
+                  <caret line="81" column="5" selection-start-line="81" selection-start-column="5" selection-end-line="81" selection-end-column="5" />
                   <folding>
                     <element signature="e#0#159#0" expanded="true" />
                   </folding>
@@ -144,11 +127,56 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/lingo/schema/Entity.ts">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/lingo/core/field/Functions.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="208">
-                  <caret line="67" column="20" selection-start-line="67" selection-start-column="17" selection-end-line="67" selection-end-column="25" />
+                <state relative-caret-position="770">
+                  <caret line="37" column="34" selection-start-line="37" selection-start-column="34" selection-end-line="37" selection-end-column="34" />
+                  <folding>
+                    <element signature="n#!!doc" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/lingo/core/entity/Dictionary.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="2266">
+                  <caret line="103" column="28" selection-start-line="103" selection-start-column="27" selection-end-line="103" selection-end-column="28" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/lingo/data/StoreDriver.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="594">
+                  <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
+                  <folding>
+                    <element signature="e#0#34#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/impl/query/SchemaUtils.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="150">
+                  <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/impl/schema/builder/DbSchemaBuilder.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1012">
+                  <caret line="66" column="16" selection-start-line="66" selection-start-column="16" selection-end-line="66" selection-end-column="16" />
+                  <folding>
+                    <element signature="e#0#81#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -157,11 +185,11 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/lingo/schema/Property.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2244">
-                  <caret line="102" column="12" selection-start-line="102" selection-start-column="12" selection-end-line="102" selection-end-column="12" />
+                <state relative-caret-position="150">
+                  <caret line="140" column="19" selection-start-line="140" selection-start-column="19" selection-end-line="140" selection-end-column="19" />
                   <folding>
                     <element signature="e#0#159#0" expanded="true" />
                   </folding>
@@ -169,11 +197,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/lingo/schema/Schema.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="352">
-                  <caret line="106" column="5" lean-forward="true" selection-start-line="106" selection-start-column="5" selection-end-line="106" selection-end-column="5" />
+                <state relative-caret-position="550">
+                  <caret line="29" selection-start-line="29" selection-end-line="29" />
                   <folding>
                     <element signature="e#0#85#0" expanded="true" />
                   </folding>
@@ -193,8 +221,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/lingo/query/facade/Query.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="231">
-                  <caret line="14" column="22" lean-forward="true" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+                <state relative-caret-position="242">
+                  <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
                 </state>
               </provider>
             </entry>
@@ -404,7 +432,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.11801897" />
@@ -535,6 +563,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="594">
           <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -550,8 +581,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/impl/query/SchemaUtils.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
+        <state relative-caret-position="150">
+          <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
         </state>
       </provider>
     </entry>
@@ -564,8 +595,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lingo/schema/Property.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2244">
-          <caret line="102" column="12" selection-start-line="102" selection-start-column="12" selection-end-line="102" selection-end-column="12" />
+        <state relative-caret-position="150">
+          <caret line="140" column="19" selection-start-line="140" selection-start-column="19" selection-end-line="140" selection-end-column="19" />
           <folding>
             <element signature="e#0#159#0" expanded="true" />
           </folding>
@@ -581,15 +612,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lingo/query/facade/Query.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="14" column="22" lean-forward="true" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+        <state relative-caret-position="242">
+          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lingo/schema/Schema.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="106" column="5" lean-forward="true" selection-start-line="106" selection-start-column="5" selection-end-line="106" selection-end-column="5" />
+        <state relative-caret-position="550">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
           <folding>
             <element signature="e#0#85#0" expanded="true" />
           </folding>

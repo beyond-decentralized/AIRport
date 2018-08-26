@@ -81,4 +81,4 @@ SchemaEntity = __decorate([
     })
 ], SchemaEntity);
 exports.SchemaEntity = SchemaEntity;
-//# sourceMappingURL=schemaentity.js.map
+//# sourceMappingURL=SchemaEntity.js.map

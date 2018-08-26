@@ -121,7 +121,8 @@ export class SchemaRecorder
 		const relationsMap                    = await this.generateSchemaRelations(
 			jsonSchemaMapByName, entitiesMapBySchemaName, propertiesMap, schemaReferenceMap)
 		const columnsMap                      = await this.generateSchemaColumns(
-			jsonSchemaMapByName, newSchemaVersionMapBySchemaName, propertiesMap)
+			jsonSchemaMapByName, newSchemaVersionMapBySchemaName,
+			entitiesMapBySchemaName, propertiesMap)
 
 		await this.generateSchemaRelationColumns(
 			jsonSchemaMapByName, newSchemaVersionMapBySchemaName,
