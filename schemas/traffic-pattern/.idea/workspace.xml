@@ -4,12 +4,44 @@
     <list default="true" id="1708d190-699c-44ec-95a7-c55913ef8b36" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/ColumnMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/ColumnMap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/SchemaMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/SchemaMap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/SchemaUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/SchemaUtils.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/TableMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/TableMap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/sync/SyncColumnMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/sync/SyncColumnMap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/sync/SyncSchemaMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/sync/SyncSchemaMap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/sync/SyncTableMap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/sync/SyncTableMap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/utils/DatastructureUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/utils/DatastructureUtils.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/core/APSubject.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/core/APSubject.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/core/field/JSONClause.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/core/field/JSONClause.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/SchemaInitializer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/SchemaInitializer.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/locator/SchemaLocator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/locator/SchemaLocator.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/src/recorder/SchemaRecorder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/recorder/SchemaRecorder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SchemaColumnDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaColumnDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SchemaDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SchemaEntityDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaEntityDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SchemaPropertyColumnDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaPropertyColumnDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SchemaPropertyDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaPropertyDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SchemaReferenceDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaReferenceDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SchemaRelationColumnDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaRelationColumnDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SchemaRelationDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaRelationDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dao/SchemaVersionDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/SchemaVersionDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/Schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/Schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaColumn.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaEntity.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaEntity.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaProperty.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaProperty.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaReference.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaReference.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaRelation.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaRelation.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ddl/schema/SchemaVersion.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ddl/schema/SchemaVersion.js.map" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -98,87 +130,83 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="374">
-                  <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="220">
-                  <caret line="33" column="41" selection-start-line="33" selection-start-column="41" selection-end-line="33" selection-end-column="41" />
-                  <folding>
-                    <element signature="e#0#177#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaReference.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="176">
-                  <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/generated/schema.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2804">
-                  <caret line="1973" column="37" selection-start-line="1973" selection-start-column="37" selection-end-line="1973" selection-end-column="37" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaRelationColumn.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state>
-                  <folding>
-                    <element signature="e#0#81#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaRelation.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="76">
-                  <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/dao/SchemaColumnDao.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="198">
-                  <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-                  <folding>
-                    <element signature="e#0#43#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="748">
+              <caret line="53" column="17" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="17" />
+              <folding>
+                <element signature="e#0#145#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dao/SchemaDao.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4268">
+              <caret line="194" column="21" selection-start-line="194" selection-start-column="21" selection-end-line="194" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="352">
+              <caret line="40" column="35" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#157#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/InjectionTokens.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret selection-end-column="27" />
+              <folding>
+                <element signature="e#0#53#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/generated/schema/qschemaversion.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="418">
+              <caret line="70" column="25" selection-start-line="70" selection-start-column="25" selection-end-line="73" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaEntity.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="176">
+              <caret line="26" column="9" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#171#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/generated/schema/qschemarelationcolumn.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="51" column="17" selection-start-line="51" selection-start-column="17" selection-end-line="51" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -235,9 +263,10 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="25" />
-    <option name="width" value="1920" />
-    <option name="height" value="1055" />
+    <option name="x" value="-9" />
+    <option name="y" value="38" />
+    <option name="width" value="1943" />
+    <option name="height" value="1103" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -250,11 +279,6 @@
             <path>
               <item name="traffic-pattern" type="b2602c69:ProjectViewProjectNode" />
               <item name="traffic-pattern" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="traffic-pattern" type="b2602c69:ProjectViewProjectNode" />
-              <item name="traffic-pattern" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="traffic-pattern" type="b2602c69:ProjectViewProjectNode" />
@@ -351,10 +375,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30375000" />
+    <option name="totallyTimeSpent" value="30485000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.16859852" />
@@ -456,14 +480,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/generated/schema/qschemaversion.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
+        <state relative-caret-position="418">
           <caret line="70" column="25" selection-start-line="70" selection-start-column="25" selection-end-line="73" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/generated/schema/qschemarelationcolumn.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
+        <state relative-caret-position="220">
           <caret line="51" column="17" selection-start-line="51" selection-start-column="17" selection-end-line="51" selection-end-column="17" />
         </state>
       </provider>
@@ -477,8 +501,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/dao/SchemaDao.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
+        <state relative-caret-position="4268">
+          <caret line="194" column="21" selection-start-line="194" selection-start-column="21" selection-end-line="194" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -491,8 +515,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaEntity.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="62">
-          <caret line="57" column="18" selection-start-line="57" selection-start-column="18" selection-end-line="57" selection-end-column="18" />
+        <state relative-caret-position="176">
+          <caret line="26" column="9" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#171#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -540,8 +567,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/InjectionTokens.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="33" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="33" />
+        <state>
+          <caret selection-end-column="27" />
           <folding>
             <element signature="e#0#53#0" expanded="true" />
           </folding>
@@ -560,10 +587,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="33" column="41" selection-start-line="33" selection-start-column="41" selection-end-line="33" selection-end-column="41" />
+        <state relative-caret-position="352">
+          <caret line="40" column="35" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
           <folding>
-            <element signature="e#0#177#0" expanded="true" />
+            <element signature="e#0#157#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -598,8 +625,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/schema/Schema.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
+        <state relative-caret-position="748">
+          <caret line="53" column="17" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#145#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -616,13 +646,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaRelationColumn.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#81#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaReference.ts">
       <provider selected="true" editor-type-id="text-editor">
