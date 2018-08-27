@@ -1,8 +1,6 @@
-import { DatabaseObjectConfiguration } from "./DatabaseObjectConfiguration";
-import { DbColumn, DbProperty, DbRelation, JsonSchemaColumn, JsonSchemaProperty, JsonSchemaRelation, SchemaReferenceByIndex } from "./Property";
-import { DbSchemaVersion } from "./Schema";
-export declare type ObjectSinceVersion = number;
-export declare type ObjectUntilVersion = number;
+import { DatabaseObjectConfiguration } from './DatabaseObjectConfiguration';
+import { DbColumn, DbProperty, DbRelation, JsonSchemaColumn, JsonSchemaProperty, JsonSchemaRelation, SchemaReferenceByIndex } from './Property';
+import { DbObject, DbSchemaVersion, JsonDatabaseObject } from './Schema';
 export declare type EntityName = string;
 export declare type EntityIsLocal = boolean;
 export declare type EntityIsRepositoryEntity = boolean;
@@ -12,7 +10,7 @@ export declare type IdColumnOnlyIndex = number;
  * An entity in a schema.
  * Indexed on per schema basis.
  */
-export interface JsonSchemaEntity extends SchemaReferenceByIndex<TableIndex> {
+export interface JsonSchemaEntity extends SchemaReferenceByIndex<TableIndex>, JsonDatabaseObject {
     /**
      * Columns by their table column indexes.
      */
@@ -46,7 +44,7 @@ export interface JsonSchemaEntity extends SchemaReferenceByIndex<TableIndex> {
 /**
  * Schema Entity with additional indexes (maps).
  */
-export interface DbEntity extends SchemaReferenceByIndex<TableIndex> {
+export interface DbEntity extends SchemaReferenceByIndex<TableIndex>, DbObject {
     /**
      * Map of all columns in the entity by name.
      */

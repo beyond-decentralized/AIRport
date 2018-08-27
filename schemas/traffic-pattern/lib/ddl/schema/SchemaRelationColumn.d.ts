@@ -1,9 +1,9 @@
-import { ISchemaRelationColumn } from "../../generated/schema/qschemarelationcolumn";
-import { ISchemaColumn } from "../../generated/schema/qschemacolumn";
-import { ISchemaRelation } from "../../generated/schema/qschemarelation";
-export declare class SchemaRelationColumn implements ISchemaRelationColumn {
-    manyColumn: ISchemaColumn;
-    oneColumn: ISchemaColumn;
-    manyRelation: ISchemaRelation;
-    oneRelation: ISchemaRelation;
+import { SchemaColumn } from './SchemaColumn';
+import { SchemaRelation } from './SchemaRelation';
+import { VersionedSchemaObject } from './VersionedSchemaObject';
+export declare class SchemaRelationColumn extends VersionedSchemaObject {
+    manyColumn: SchemaColumn;
+    oneColumn: SchemaColumn;
+    manyRelation: SchemaRelation;
+    oneRelation: SchemaRelation;
 }

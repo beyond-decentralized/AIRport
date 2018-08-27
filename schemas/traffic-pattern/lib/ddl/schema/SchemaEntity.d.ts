@@ -1,12 +1,12 @@
 import { TableConfiguration } from '@airport/air-control';
 import { EntityName, TableIndex } from '@airport/ground-control';
-import { ISchemaColumn } from '../../generated/schema/qschemacolumn';
-import { ISchemaEntity } from '../../generated/schema/qschemaentity';
-import { ISchemaProperty } from '../../generated/schema/qschemaproperty';
-import { ISchemaRelation } from '../../generated/schema/qschemarelation';
+import { SchemaColumn } from './SchemaColumn';
+import { SchemaProperty } from './SchemaProperty';
+import { SchemaRelation } from './SchemaRelation';
 import { SchemaVersion } from './SchemaVersion';
+import { VersionedSchemaObject } from './VersionedSchemaObject';
 export declare type SchemaEntityId = number;
-export declare class SchemaEntity implements ISchemaEntity {
+export declare class SchemaEntity extends VersionedSchemaObject {
     id: SchemaEntityId;
     index: TableIndex;
     isLocal: boolean;
@@ -14,17 +14,17 @@ export declare class SchemaEntity implements ISchemaEntity {
     name: EntityName;
     tableConfig: TableConfiguration;
     schemaVersion: SchemaVersion;
-    columns: ISchemaColumn[];
-    properties: ISchemaProperty[];
-    relations: ISchemaRelation[];
+    columns: SchemaColumn[];
+    properties: SchemaProperty[];
+    relations: SchemaRelation[];
     columnMap?: {
-        [name: string]: ISchemaColumn;
+        [name: string]: SchemaColumn;
     };
-    idColumns: ISchemaColumn[];
+    idColumns: SchemaColumn[];
     idColumnMap?: {
-        [name: string]: ISchemaColumn;
+        [name: string]: SchemaColumn;
     };
     propertyMap: {
-        [name: string]: ISchemaProperty;
+        [name: string]: SchemaProperty;
     };
 }

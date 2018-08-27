@@ -2,7 +2,9 @@ import {
 	DatabaseForeignKey,
 	DatabaseManyToOneElements,
 	DatabaseOneToManyElements,
+	DbObject,
 	EntityRelationType,
+	JsonDatabaseObject,
 	SQLDataType
 }                    from '../../index'
 import {
@@ -26,7 +28,9 @@ export type SchemaColumnAllocationSize = boolean
  * Parent properties for the entity are indexed at each child table,
  * and are the first entries.
  */
-export interface JsonSchemaProperty extends SchemaReferenceByIndex<PropertyIndex> {
+export interface JsonSchemaProperty
+	extends SchemaReferenceByIndex<PropertyIndex>,
+	        JsonDatabaseObject {
 
 	/**
 	 * Does this property consist of @Id columns?
@@ -50,7 +54,9 @@ export interface JsonSchemaProperty extends SchemaReferenceByIndex<PropertyIndex
 
 }
 
-export interface DbProperty extends SchemaReferenceByIndex<PropertyIndex> {
+export interface DbProperty
+	extends SchemaReferenceByIndex<PropertyIndex>,
+	        DbObject {
 
 	entity: DbEntity;
 	name: PropertyName;
@@ -70,7 +76,9 @@ export class DbPropertyColumn {
 /**
  * A column in a schema table.
  */
-export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex> {
+export interface JsonSchemaColumn
+	extends SchemaReferenceByIndex<ColumnIndex>,
+	        JsonDatabaseObject {
 
 	/**
 	 * Verbatim DDL for the column (after the name of the column)
@@ -113,10 +121,13 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex> {
 
 }
 
-export interface IdKeyArrayByIdColumnIndex extends Array<(number | string)> {
+export interface IdKeyArrayByIdColumnIndex
+	extends Array<(number | string)> {
 }
 
-export interface DbColumn extends SchemaReferenceByIndex<ColumnIndex> {
+export interface DbColumn
+	extends SchemaReferenceByIndex<ColumnIndex>,
+	        DbObject {
 
 	/**
 	 * Id index of this column (if it's an ID column).
@@ -165,7 +176,9 @@ export interface PropertyReference
 /**
  * A schema relation.
  */
-export interface JsonSchemaRelation extends SchemaReferenceByIndex<RelationIndex> {
+export interface JsonSchemaRelation
+	extends SchemaReferenceByIndex<RelationIndex>,
+	        DbObject {
 
 	/**
 	 * Foreign key definition, if provided by (R)JoinColumn(s)
@@ -227,7 +240,9 @@ export interface JsonSchemaRelation extends SchemaReferenceByIndex<RelationIndex
 
 }
 
-export interface DbRelation extends SchemaReferenceByIndex<RelationIndex> {
+export interface DbRelation
+	extends SchemaReferenceByIndex<RelationIndex>,
+	        DbObject {
 
 	foreignKey: DatabaseForeignKey;
 	isId: boolean;
@@ -254,7 +269,8 @@ export interface DbRelation extends SchemaReferenceByIndex<RelationIndex> {
 //
 // }
 
-export interface JsonSchemaRelationColumn {
+export interface JsonSchemaRelationColumn
+	extends JsonDatabaseObject {
 
 	manyRelationIndex: RelationIndex;
 	oneSchemaIndex: SchemaIndex;
@@ -264,7 +280,8 @@ export interface JsonSchemaRelationColumn {
 
 }
 
-export interface DbRelationColumn {
+export interface DbRelationColumn
+	extends DbObject {
 
 	manyColumn: DbColumn;
 

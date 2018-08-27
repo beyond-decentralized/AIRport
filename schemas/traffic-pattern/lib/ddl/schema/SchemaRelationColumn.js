@@ -10,52 +10,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-let SchemaRelationColumn = class SchemaRelationColumn {
+const SchemaColumn_1 = require("./SchemaColumn");
+const SchemaRelation_1 = require("./SchemaRelation");
+const VersionedSchemaObject_1 = require("./VersionedSchemaObject");
+let SchemaRelationColumn = class SchemaRelationColumn extends VersionedSchemaObject_1.VersionedSchemaObject {
 };
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumns([
-        { name: "MANY_SCHEMA_VERSION_ID", referencedColumnName: "SCHEMA_VERSION_ID" },
-        { name: "MANY_TABLE_INDEX", referencedColumnName: "TABLE_INDEX" },
-        { name: "MANY_COLUMN_INDEX", referencedColumnName: "INDEX" }
-    ]),
-    __metadata("design:type", Object)
+    air_control_1.JoinColumn({ name: 'MANY_COLUMN_ID', referencedColumnName: 'ID' }),
+    __metadata("design:type", SchemaColumn_1.SchemaColumn)
 ], SchemaRelationColumn.prototype, "manyColumn", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumns([
-        { name: "ONE_SCHEMA_VERSION_ID", referencedColumnName: "SCHEMA_VERSION_ID" },
-        { name: "ONE_TABLE_INDEX", referencedColumnName: "TABLE_INDEX" },
-        { name: "ONE_COLUMN_INDEX", referencedColumnName: "INDEX" }
-    ]),
-    __metadata("design:type", Object)
+    air_control_1.JoinColumn({ name: 'ONE_COLUMN_ID', referencedColumnName: 'ID' }),
+    __metadata("design:type", SchemaColumn_1.SchemaColumn)
 ], SchemaRelationColumn.prototype, "oneColumn", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumns([
-        { name: "MANY_SCHEMA_VERSION_ID", referencedColumnName: "SCHEMA_VERSION_ID" },
-        { name: "MANY_TABLE_INDEX", referencedColumnName: "TABLE_INDEX" },
-        { name: "MANY_RELATION_INDEX", referencedColumnName: "INDEX" }
-    ]),
-    __metadata("design:type", Object)
+    air_control_1.JoinColumn({ name: 'MANY_RELATION_ID', referencedColumnName: 'ID' }),
+    __metadata("design:type", SchemaRelation_1.SchemaRelation)
 ], SchemaRelationColumn.prototype, "manyRelation", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumns([
-        { name: "ONE_SCHEMA_VERSION_ID", referencedColumnName: "SCHEMA_VERSION_ID" },
-        { name: "ONE_TABLE_INDEX", referencedColumnName: "TABLE_INDEX" },
-        { name: "ONE_RELATION_INDEX", referencedColumnName: "INDEX" }
-    ]),
-    __metadata("design:type", Object)
+    air_control_1.JoinColumn({ name: 'ONE_RELATION_ID', referencedColumnName: 'ID' }),
+    __metadata("design:type", SchemaRelation_1.SchemaRelation)
 ], SchemaRelationColumn.prototype, "oneRelation", void 0);
 SchemaRelationColumn = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({
-        name: "SCHEMA_RELATION_COLUMNS"
+        name: 'SCHEMA_RELATION_COLUMNS'
     })
 ], SchemaRelationColumn);
 exports.SchemaRelationColumn = SchemaRelationColumn;

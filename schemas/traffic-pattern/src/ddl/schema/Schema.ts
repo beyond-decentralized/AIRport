@@ -10,15 +10,15 @@ import {
 	OneToMany,
 	SequenceGenerator,
 	Table
-}                      from '@airport/air-control'
+}                              from '@airport/air-control'
 import {
 	SchemaIndex,
 	SchemaName
-}                      from '@airport/ground-control'
-import {Domain}        from '@airport/territory'
-import {ISchema}       from '../../generated/schema/qschema'
-import {SchemaStatus}  from './SchemaStatus'
-import {SchemaVersion} from './SchemaVersion'
+}                              from '@airport/ground-control'
+import {Domain}                from '@airport/territory'
+import {SchemaStatus}          from './SchemaStatus'
+import {SchemaVersion}         from './SchemaVersion'
+import {VersionedSchemaObject} from './VersionedSchemaObject'
 
 export type SchemaScope = 'private' | 'public' | null;
 
@@ -27,7 +27,7 @@ export type SchemaScope = 'private' | 'public' | null;
 	name: 'SCHEMAS'
 })
 export class Schema
-	implements ISchema {
+	extends VersionedSchemaObject {
 
 	@Id()
 	@GeneratedValue()

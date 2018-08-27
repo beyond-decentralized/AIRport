@@ -4,26 +4,28 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-}                             from "@airport/air-control";
-import {SchemaReferenceIndex} from '@airport/ground-control'
-import {SchemaVersion}        from "./SchemaVersion";
+}                              from '@airport/air-control'
+import {SchemaReferenceIndex}  from '@airport/ground-control'
+import {SchemaVersion}         from './SchemaVersion'
+import {VersionedSchemaObject} from './VersionedSchemaObject'
 
 @Entity()
 @Table({
-	name: "SCHEMA_REFERENCES"
+	name: 'SCHEMA_REFERENCES'
 })
-export class SchemaReference {
+export class SchemaReference
+	extends VersionedSchemaObject {
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: "OWN_SCHEMA_VERSION_ID", referencedColumnName: "ID"})
-	ownSchemaVersion: SchemaVersion;
+	@JoinColumn({name: 'OWN_SCHEMA_VERSION_ID', referencedColumnName: 'ID'})
+	ownSchemaVersion: SchemaVersion
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: "REFERENCED_SCHEMA_VERSION_ID", referencedColumnName: "ID"})
-	referencedSchemaVersion: SchemaVersion;
+	@JoinColumn({name: 'REFERENCED_SCHEMA_VERSION_ID', referencedColumnName: 'ID'})
+	referencedSchemaVersion: SchemaVersion
 
-	index: SchemaReferenceIndex;
+	index: SchemaReferenceIndex
 
 }

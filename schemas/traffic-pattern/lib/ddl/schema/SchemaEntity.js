@@ -13,7 +13,8 @@ const air_control_1 = require("@airport/air-control");
 const ColumnDecorators_1 = require("@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators");
 const ground_control_1 = require("@airport/ground-control");
 const SchemaVersion_1 = require("./SchemaVersion");
-let SchemaEntity = class SchemaEntity {
+const VersionedSchemaObject_1 = require("./VersionedSchemaObject");
+let SchemaEntity = class SchemaEntity extends VersionedSchemaObject_1.VersionedSchemaObject {
 };
 __decorate([
     air_control_1.Id(),
@@ -47,11 +48,7 @@ __decorate([
     )
 ], SchemaEntity.prototype, "schemaVersion", void 0);
 __decorate([
-    air_control_1.OneToMany(),
-    air_control_1.JoinColumns([
-        { name: 'SCHEMA_VERSION_ID' },
-        { name: 'TABLE_INDEX', referencedColumnName: 'INDEX' }
-    ]),
+    air_control_1.OneToMany({ mappedBy: 'entity' }),
     __metadata("design:type", Array)
 ], SchemaEntity.prototype, "columns", void 0);
 __decorate([
@@ -60,10 +57,7 @@ __decorate([
 ], SchemaEntity.prototype, "properties", void 0);
 __decorate([
     air_control_1.OneToMany(),
-    air_control_1.JoinColumns([
-        { name: 'SCHEMA_VERSION_ID' },
-        { name: 'TABLE_INDEX', referencedColumnName: 'INDEX' }
-    ]),
+    air_control_1.JoinColumn({ name: 'SCHEMA_RELATION_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", Array)
 ], SchemaEntity.prototype, "relations", void 0);
 __decorate([

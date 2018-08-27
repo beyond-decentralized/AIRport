@@ -17,10 +17,10 @@ import {
 	SchemaColumnIsGenerated,
 	SQLDataType
 }                              from '@airport/ground-control'
-import {ISchemaColumn}         from '../../generated/schema/qschemacolumn'
 import {ISchemaPropertyColumn} from '../../generated/schema/qschemapropertycolumn'
 import {ISchemaRelationColumn} from '../../generated/schema/qschemarelationcolumn'
 import {SchemaEntity}          from './SchemaEntity'
+import {VersionedSchemaObject} from './VersionedSchemaObject'
 
 export type SchemaColumnId = number
 
@@ -29,7 +29,7 @@ export type SchemaColumnId = number
 	name: 'SCHEMA_COLUMNS'
 })
 export class SchemaColumn
-	implements ISchemaColumn {
+	extends VersionedSchemaObject {
 
 	@Id()
 	@GeneratedValue()

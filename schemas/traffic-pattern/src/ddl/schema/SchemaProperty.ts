@@ -1,7 +1,5 @@
 import {
 	Column,
-	DbNumber,
-	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
@@ -9,16 +7,17 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-} from '@airport/air-control'
+}                              from '@airport/air-control'
 import {
 	CascadeType,
 	PropertyIndex,
 	PropertyIsId,
 	PropertyName
-} from '@airport/ground-control'
-import {SchemaEntity}         from './SchemaEntity'
-import {SchemaPropertyColumn} from './SchemaPropertyColumn'
-import {SchemaRelation}       from './SchemaRelation'
+}                              from '@airport/ground-control'
+import {SchemaEntity}          from './SchemaEntity'
+import {SchemaPropertyColumn}  from './SchemaPropertyColumn'
+import {SchemaRelation}        from './SchemaRelation'
+import {VersionedSchemaObject} from './VersionedSchemaObject'
 
 export type SchemaPropertyId = number
 
@@ -26,7 +25,8 @@ export type SchemaPropertyId = number
 @Table({
 	name: 'SCHEMA_PROPERTIES'
 })
-export class SchemaProperty {
+export class SchemaProperty
+	extends VersionedSchemaObject {
 
 	@Id()
 	@GeneratedValue()

@@ -10,10 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const VersionedSchemaObject_1 = require("./VersionedSchemaObject");
 /**
  * Many-to-Many between Columns and properties
  */
-let SchemaPropertyColumn = class SchemaPropertyColumn {
+let SchemaPropertyColumn = class SchemaPropertyColumn extends VersionedSchemaObject_1.VersionedSchemaObject {
 };
 __decorate([
     air_control_1.Id(),

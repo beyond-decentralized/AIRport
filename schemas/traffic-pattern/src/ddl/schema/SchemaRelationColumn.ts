@@ -1,48 +1,38 @@
-import { Entity, Id, JoinColumns, ManyToOne, Table } from "@airport/air-control";
-import { ISchemaRelationColumn } from "../../generated/schema/qschemarelationcolumn";
-import { ISchemaColumn } from "../../generated/schema/qschemacolumn";
-import { ISchemaRelation } from "../../generated/schema/qschemarelation";
+import {
+	Entity,
+	Id,
+	JoinColumn,
+	ManyToOne,
+	Table
+}                              from '@airport/air-control'
+import {SchemaColumn}          from './SchemaColumn'
+import {SchemaRelation}        from './SchemaRelation'
+import {VersionedSchemaObject} from './VersionedSchemaObject'
 
 @Entity()
 @Table({
-	name: "SCHEMA_RELATION_COLUMNS"
+	name: 'SCHEMA_RELATION_COLUMNS'
 })
 export class SchemaRelationColumn
-	implements ISchemaRelationColumn {
+	extends VersionedSchemaObject {
 
 	@Id()
 	@ManyToOne()
-	@JoinColumns([
-		{name: "MANY_SCHEMA_VERSION_ID", referencedColumnName: "SCHEMA_VERSION_ID"},
-		{name: "MANY_TABLE_INDEX", referencedColumnName: "TABLE_INDEX"},
-		{name: "MANY_COLUMN_INDEX", referencedColumnName: "INDEX"}
-	])
-	manyColumn: ISchemaColumn;
+	@JoinColumn({name: 'MANY_COLUMN_ID', referencedColumnName: 'ID'})
+	manyColumn: SchemaColumn
 
 	@Id()
 	@ManyToOne()
-	@JoinColumns([
-		{name: "ONE_SCHEMA_VERSION_ID", referencedColumnName: "SCHEMA_VERSION_ID"},
-		{name: "ONE_TABLE_INDEX", referencedColumnName: "TABLE_INDEX"},
-		{name: "ONE_COLUMN_INDEX", referencedColumnName: "INDEX"}
-	])
-	oneColumn: ISchemaColumn;
+	@JoinColumn({name: 'ONE_COLUMN_ID', referencedColumnName: 'ID'})
+	oneColumn: SchemaColumn
 
 	@Id()
 	@ManyToOne()
-	@JoinColumns([
-		{name: "MANY_SCHEMA_VERSION_ID", referencedColumnName: "SCHEMA_VERSION_ID"},
-		{name: "MANY_TABLE_INDEX", referencedColumnName: "TABLE_INDEX"},
-		{name: "MANY_RELATION_INDEX", referencedColumnName: "INDEX"}
-	])
-	manyRelation: ISchemaRelation;
+	@JoinColumn({name: 'MANY_RELATION_ID', referencedColumnName: 'ID'})
+	manyRelation: SchemaRelation
 
 	@Id()
 	@ManyToOne()
-	@JoinColumns([
-		{name: "ONE_SCHEMA_VERSION_ID", referencedColumnName: "SCHEMA_VERSION_ID"},
-		{name: "ONE_TABLE_INDEX", referencedColumnName: "TABLE_INDEX"},
-		{name: "ONE_RELATION_INDEX", referencedColumnName: "INDEX"}
-	])
-	oneRelation: ISchemaRelation;
+	@JoinColumn({name: 'ONE_RELATION_ID', referencedColumnName: 'ID'})
+	oneRelation: SchemaRelation
 }

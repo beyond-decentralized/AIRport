@@ -1,10 +1,10 @@
 import { SchemaIndex, SchemaName } from '@airport/ground-control';
 import { Domain } from '@airport/territory';
-import { ISchema } from '../../generated/schema/qschema';
 import { SchemaStatus } from './SchemaStatus';
 import { SchemaVersion } from './SchemaVersion';
+import { VersionedSchemaObject } from './VersionedSchemaObject';
 export declare type SchemaScope = 'private' | 'public' | null;
-export declare class Schema implements ISchema {
+export declare class Schema extends VersionedSchemaObject {
     index: SchemaIndex;
     domain: Domain;
     scope: SchemaScope;

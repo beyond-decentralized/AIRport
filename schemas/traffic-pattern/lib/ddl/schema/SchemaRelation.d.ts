@@ -1,19 +1,20 @@
 import { ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/air-control';
-import { RelationIndex } from '@airport/ground-control';
-import { EntityRelationType } from "@airport/ground-control";
-import { ISchemaEntity } from "../../generated/schema/qschemaentity";
-import { ISchemaProperty } from "../../generated/schema/qschemaproperty";
-import { ISchemaRelation } from "../../generated/schema/qschemarelation";
-import { ISchemaRelationColumn } from "../../generated/schema/qschemarelationcolumn";
-export declare class SchemaRelation implements ISchemaRelation {
+import { EntityRelationType, RelationIndex } from '@airport/ground-control';
+import { SchemaEntity } from './SchemaEntity';
+import { SchemaProperty } from './SchemaProperty';
+import { SchemaRelationColumn } from './SchemaRelationColumn';
+import { VersionedSchemaObject } from './VersionedSchemaObject';
+export declare type SchemaRelationId = number;
+export declare class SchemaRelation extends VersionedSchemaObject {
+    id: SchemaRelationId;
     index: RelationIndex;
-    property: ISchemaProperty;
+    property: SchemaProperty;
     foreignKey: ForeignKey;
     manyToOneElems: ManyToOneElements;
     oneToManyElems: OneToManyElements;
     relationType: EntityRelationType;
     isId: boolean;
-    relationEntity: ISchemaEntity;
-    manyRelationColumns: ISchemaRelationColumn[];
-    oneRelationColumns: ISchemaRelationColumn[];
+    relationEntity: SchemaEntity;
+    manyRelationColumns: SchemaRelationColumn[];
+    oneRelationColumns: SchemaRelationColumn[];
 }

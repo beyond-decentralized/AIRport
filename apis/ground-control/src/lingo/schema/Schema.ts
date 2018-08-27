@@ -32,7 +32,8 @@ export interface DbDomain {
  * A schema.
  */
 export interface JsonSchema
-	extends SchemaReferenceByIndex<SchemaIndex> {
+	extends SchemaReferenceByIndex<SchemaIndex>,
+	        JsonDatabaseObject {
 
 	/**
 	 * Domain of the schema ('public' if published).
@@ -54,7 +55,8 @@ export interface JsonSchema
  * A schema with additional indexes (maps).
  */
 export interface DbSchema
-	extends SchemaReferenceByIndex<SchemaIndex> {
+	extends SchemaReferenceByIndex<SchemaIndex>,
+	        DbObject {
 
 	currentVersion: DbSchemaVersion;
 
@@ -72,11 +74,25 @@ export interface DbSchema
 
 }
 
-export interface JsonSchemaVersion {
+export interface JsonDatabaseObject {
+
+	deprecatedSinceVersion?: JsonSchemaVersionReference
+	removedInVersion?: JsonSchemaVersionReference
+	sinceVersion: JsonSchemaVersionReference
+
+}
+
+export interface JsonSchemaVersionReference {
+
 	/**
 	 * Integer version of the schema
 	 */
 	integerVersion: SchemaVersionInteger;
+
+}
+
+export interface JsonSchemaVersion
+	extends JsonSchemaVersionReference {
 
 	/**
 	 * Semantic version of the schema.
@@ -95,10 +111,25 @@ export interface JsonSchemaVersion {
 
 }
 
+export interface DbObject {
+
+	deprecatedSinceVersion?: JsonSchemaVersionReference
+	removedInVersion?: JsonSchemaVersionReference
+	sinceVersion: JsonSchemaVersionReference
+
+}
+
+export interface DbSchemaVersionReference {
+
+	integerVersion: SchemaVersionInteger;
+
+}
+
 /**
  * A schema with additional indexes (maps).
  */
-export interface DbSchemaVersion {
+export interface DbSchemaVersion
+	extends DbSchemaVersionReference {
 
 	id: SchemaVersionId;
 
@@ -133,8 +164,6 @@ export interface DbSchemaVersion {
 	 * Map of all referencing schemas, by name.
 	 */
 	referencedByMapByName?: { [schemaName: string]: DbSchemaReference };
-
-	integerVersion: SchemaVersionInteger;
 
 	versionString: SchemaVersionString;
 

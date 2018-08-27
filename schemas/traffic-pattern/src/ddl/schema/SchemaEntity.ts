@@ -4,25 +4,24 @@ import {
 	GeneratedValue,
 	Id,
 	JoinColumn,
-	JoinColumns,
 	Json,
 	ManyToOne,
 	OneToMany,
 	Table,
 	TableConfiguration,
 	Transient
-}                        from '@airport/air-control'
-import {DbNumber}        from '@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators'
+}                              from '@airport/air-control'
+import {DbNumber}              from '@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators'
 import {
 	CascadeType,
 	EntityName,
 	TableIndex
-}                        from '@airport/ground-control'
-import {ISchemaColumn}   from '../../generated/schema/qschemacolumn'
-import {ISchemaEntity}   from '../../generated/schema/qschemaentity'
-import {ISchemaProperty} from '../../generated/schema/qschemaproperty'
-import {ISchemaRelation} from '../../generated/schema/qschemarelation'
-import {SchemaVersion}   from './SchemaVersion'
+}                              from '@airport/ground-control'
+import {SchemaColumn}          from './SchemaColumn'
+import {SchemaProperty}        from './SchemaProperty'
+import {SchemaRelation}        from './SchemaRelation'
+import {SchemaVersion}         from './SchemaVersion'
+import {VersionedSchemaObject} from './VersionedSchemaObject'
 
 export type SchemaEntityId = number
 
@@ -31,7 +30,7 @@ export type SchemaEntityId = number
 	name: 'SCHEMA_ENTITIES'
 })
 export class SchemaEntity
-	implements ISchemaEntity {
+	extends VersionedSchemaObject {
 
 	//
 	// Id columns
@@ -70,12 +69,8 @@ export class SchemaEntity
 	// One-to-Many's
 	//
 
-	@OneToMany()
-	@JoinColumns([
-		{name: 'SCHEMA_VERSION_ID'},
-		{name: 'TABLE_INDEX', referencedColumnName: 'INDEX'}
-	])
-	columns: ISchemaColumn[]
+	@OneToMany({mappedBy: 'entity'})
+	columns: SchemaColumn[]
 
 	// TODO: implement if needed
 	// @OneToMany()
@@ -90,25 +85,22 @@ export class SchemaEntity
 	// idColumns: ISchemaColumn[];
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entity'})
-	properties: ISchemaProperty[]
+	properties: SchemaProperty[]
 
 	@OneToMany()
-	@JoinColumns([
-		{name: 'SCHEMA_VERSION_ID'},
-		{name: 'TABLE_INDEX', referencedColumnName: 'INDEX'}
-	])
-	relations: ISchemaRelation[]
+	@JoinColumn({name: 'SCHEMA_RELATION_ID', referencedColumnName: 'ID'})
+	relations: SchemaRelation[]
 
 	@Transient()
-	columnMap?: { [name: string]: ISchemaColumn }
+	columnMap?: { [name: string]: SchemaColumn }
 
 	@Transient()
-	idColumns: ISchemaColumn[]
+	idColumns: SchemaColumn[]
 
 	@Transient()
-	idColumnMap?: { [name: string]: ISchemaColumn }
+	idColumnMap?: { [name: string]: SchemaColumn }
 
 	@Transient()
-	propertyMap: { [name: string]: ISchemaProperty }
+	propertyMap: { [name: string]: SchemaProperty }
 
 }

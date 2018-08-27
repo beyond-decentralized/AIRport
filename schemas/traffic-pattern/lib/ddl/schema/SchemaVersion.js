@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const Schema_1 = require("./Schema");
 let SchemaVersion = class SchemaVersion {
 };
 __decorate([
@@ -45,7 +46,7 @@ __decorate([
 __decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: 'SCHEMA_INDEX', referencedColumnName: 'INDEX' }),
-    __metadata("design:type", Object)
+    __metadata("design:type", Schema_1.Schema)
 ], SchemaVersion.prototype, "schema", void 0);
 __decorate([
     air_control_1.OneToMany({ mappedBy: 'schemaVersion' }),

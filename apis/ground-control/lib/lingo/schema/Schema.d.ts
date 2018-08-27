@@ -24,7 +24,7 @@ export interface DbDomain {
 /**
  * A schema.
  */
-export interface JsonSchema extends SchemaReferenceByIndex<SchemaIndex> {
+export interface JsonSchema extends SchemaReferenceByIndex<SchemaIndex>, JsonDatabaseObject {
     /**
      * Domain of the schema ('public' if published).
      */
@@ -41,7 +41,7 @@ export interface JsonSchema extends SchemaReferenceByIndex<SchemaIndex> {
 /**
  * A schema with additional indexes (maps).
  */
-export interface DbSchema extends SchemaReferenceByIndex<SchemaIndex> {
+export interface DbSchema extends SchemaReferenceByIndex<SchemaIndex>, DbObject {
     currentVersion: DbSchemaVersion;
     /**
      * Domain of the schema ('public' if published).
@@ -53,11 +53,18 @@ export interface DbSchema extends SchemaReferenceByIndex<SchemaIndex> {
      */
     versions: DbSchemaVersion[];
 }
-export interface JsonSchemaVersion {
+export interface JsonDatabaseObject {
+    deprecatedSinceVersion?: JsonSchemaVersionReference;
+    removedInVersion?: JsonSchemaVersionReference;
+    sinceVersion: JsonSchemaVersionReference;
+}
+export interface JsonSchemaVersionReference {
     /**
      * Integer version of the schema
      */
     integerVersion: SchemaVersionInteger;
+}
+export interface JsonSchemaVersion extends JsonSchemaVersionReference {
     /**
      * Semantic version of the schema.
      */
@@ -71,10 +78,18 @@ export interface JsonSchemaVersion {
      */
     referencedSchemas: JsonSchema[];
 }
+export interface DbObject {
+    deprecatedSinceVersion?: JsonSchemaVersionReference;
+    removedInVersion?: JsonSchemaVersionReference;
+    sinceVersion: JsonSchemaVersionReference;
+}
+export interface DbSchemaVersionReference {
+    integerVersion: SchemaVersionInteger;
+}
 /**
  * A schema with additional indexes (maps).
  */
-export interface DbSchemaVersion {
+export interface DbSchemaVersion extends DbSchemaVersionReference {
     id: SchemaVersionId;
     /**
      * Entities by their schema table indexes.
@@ -108,7 +123,6 @@ export interface DbSchemaVersion {
     referencedByMapByName?: {
         [schemaName: string]: DbSchemaReference;
     };
-    integerVersion: SchemaVersionInteger;
     versionString: SchemaVersionString;
     majorVersion: SchemaVersionMajor;
     minorVersion: SchemaVersionMinor;

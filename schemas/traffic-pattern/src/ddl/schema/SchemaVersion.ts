@@ -9,7 +9,7 @@ import {
 	OneToMany,
 	SequenceGenerator,
 	Table
-}                         from '@airport/air-control'
+}                        from '@airport/air-control'
 import {
 	SchemaVersionId,
 	SchemaVersionInteger,
@@ -17,17 +17,15 @@ import {
 	SchemaVersionMinor,
 	SchemaVersionPatch,
 	SchemaVersionString
-}                         from '@airport/ground-control'
-import {ISchema}          from '../../generated/schema/qschema'
-import {ISchemaEntity}    from '../../generated/schema/qschemaentity'
-import {ISchemaReference} from '../../generated/schema/qschemareference'
-import {ISchemaVersion}   from '../../generated/schema/qschemaversion'
+}                        from '@airport/ground-control'
+import {Schema}          from './Schema'
+import {SchemaEntity}    from './SchemaEntity'
+import {SchemaReference} from './SchemaReference'
 
 
 @Entity()
 @Table({name: 'SCHEMA_VERSIONS'})
-export class SchemaVersion
-	implements ISchemaVersion {
+export class SchemaVersion {
 
 	@Id()
 	@GeneratedValue()
@@ -55,15 +53,15 @@ export class SchemaVersion
 
 	@ManyToOne()
 	@JoinColumn({name: 'SCHEMA_INDEX', referencedColumnName: 'INDEX'})
-	schema: ISchema
+	schema: Schema
 
 	@OneToMany({mappedBy: 'schemaVersion'})
-	entities: ISchemaEntity[]
+	entities: SchemaEntity[]
 
 	@OneToMany({mappedBy: 'ownSchemaVersion'})
-	references: ISchemaReference[]
+	references: SchemaReference[]
 
 	@OneToMany({mappedBy: 'referencedSchemaVersion'})
-	referencedBy: ISchemaReference[]
+	referencedBy: SchemaReference[]
 
 }

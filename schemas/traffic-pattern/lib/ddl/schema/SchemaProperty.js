@@ -12,7 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const SchemaEntity_1 = require("./SchemaEntity");
-let SchemaProperty = class SchemaProperty {
+const VersionedSchemaObject_1 = require("./VersionedSchemaObject");
+let SchemaProperty = class SchemaProperty extends VersionedSchemaObject_1.VersionedSchemaObject {
 };
 __decorate([
     air_control_1.Id(),
