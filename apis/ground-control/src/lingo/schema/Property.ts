@@ -13,7 +13,9 @@ import {SchemaIndex} from './Schema'
 
 export type ColumnIndex = number;
 export type ColumnName = string;
+// export type ColumnDefinition = string;
 export type PropertyIndex = number;
+export type PropertyIsId = boolean;
 export type PropertyName = string;
 export type RelationIndex = number;
 export type SchemaColumnIsGenerated = boolean
@@ -29,7 +31,7 @@ export interface JsonSchemaProperty extends SchemaReferenceByIndex<PropertyIndex
 	/**
 	 * Does this property consist of @Id columns?
 	 */
-	isId: boolean;
+	isId: PropertyIsId;
 
 	/**
 	 * Name of the property.
@@ -52,7 +54,7 @@ export interface DbProperty extends SchemaReferenceByIndex<PropertyIndex> {
 
 	entity: DbEntity;
 	name: PropertyName;
-	isId: boolean;
+	isId: PropertyIsId;
 	propertyColumns: DbPropertyColumn[];
 	relation: DbRelation[];
 
@@ -75,7 +77,7 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex> {
 	 *
 	 * TODO: either sanitize this string or disallow in Client Installations
 	 */
-	columnDefinition?: string;
+	// columnDefinition?: string;
 
 	/**
 	 * Is it column a generated value?

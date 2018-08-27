@@ -21,11 +21,7 @@ __decorate([
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumns([
-        { name: "SCHEMA_VERSION_ID" },
-        { name: "TABLE_INDEX" },
-        { name: "PROPERTY_INDEX", referencedColumnName: "INDEX" }
-    ]),
+    air_control_1.JoinColumn({ name: "PROPERTY_ID", referencedColumnName: "ID" }),
     __metadata("design:type", Object)
 ], SchemaRelation.prototype, "property", void 0);
 __decorate([
@@ -75,4 +71,4 @@ SchemaRelation = __decorate([
     })
 ], SchemaRelation);
 exports.SchemaRelation = SchemaRelation;
-//# sourceMappingURL=schemarelation.js.map
+//# sourceMappingURL=SchemaRelation.js.map

@@ -1,48 +1,54 @@
 import {
 	Column,
+	DbNumber,
+	DbString,
 	Entity,
+	GeneratedValue,
 	Id,
-	JoinColumns,
+	JoinColumn,
 	ManyToOne,
 	OneToMany,
 	Table
-}                              from '@airport/air-control';
+} from '@airport/air-control'
 import {
 	CascadeType,
+	PropertyIndex,
+	PropertyIsId,
 	PropertyName
 } from '@airport/ground-control'
-import {ISchemaEntity}         from "../../generated/schema/qschemaentity";
-import {ISchemaProperty}       from "../../generated/schema/qschemaproperty";
-import {ISchemaPropertyColumn} from "../../generated/schema/qschemapropertycolumn";
-import {ISchemaRelation}       from "../../generated/schema/qschemarelation";
+import {SchemaEntity}         from './SchemaEntity'
+import {SchemaPropertyColumn} from './SchemaPropertyColumn'
+import {SchemaRelation}       from './SchemaRelation'
+
+export type SchemaPropertyId = number
 
 @Entity()
 @Table({
-	name: "SCHEMA_PROPERTIES"
+	name: 'SCHEMA_PROPERTIES'
 })
-export class SchemaProperty
-	implements ISchemaProperty {
+export class SchemaProperty {
 
 	@Id()
-	index: number;
+	@GeneratedValue()
+	id: SchemaPropertyId
 
-	@Id()
+	index: PropertyIndex
+
 	@ManyToOne()
-	@JoinColumns([
-		{name: "SCHEMA_VERSION_ID"},
-		{name: "TABLE_INDEX", referencedColumnName: "INDEX"}
-	])
-	entity: ISchemaEntity;
+	@JoinColumn(
+		{name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID'}
+	)
+	entity: SchemaEntity
 
-	name: PropertyName;
+	name: PropertyName
 
-	@Column({name: "IS_ID"})
-	isId: boolean;
-
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'property'})
-	propertyColumns: ISchemaPropertyColumn[];
+	@Column({name: 'IS_ID'})
+	isId: PropertyIsId
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'property'})
-	relation: ISchemaRelation[];
+	propertyColumns: SchemaPropertyColumn[]
+
+	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'property'})
+	relation: SchemaRelation[]
 
 }

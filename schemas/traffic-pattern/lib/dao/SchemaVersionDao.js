@@ -28,9 +28,22 @@ const typedi_1 = require("typedi");
 const generated_1 = require("../generated/generated");
 const InjectionTokens_2 = require("../InjectionTokens");
 let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVersionDao {
-    constructor(airportDatabase, utils) {
+    constructor(airportDatabase, schemaVersionDmo, utils) {
         super(utils);
         this.airportDatabase = airportDatabase;
+        this.schemaVersionDmo = schemaVersionDmo;
+    }
+    findAllLatest() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let sv;
+            return yield this.db.find.tree({
+                from: [
+                    sv = generated_1.Q.SchemaVersion
+                ],
+                select: {},
+                where: sv.id.in(this.idsForMaxVersionSelect())
+            });
+        });
     }
     findMaxVersionedMapBySchemaAndDomainNames(schemaDomainNames, schemaNames) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -38,116 +51,29 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
             let sv;
             let s;
             let d;
-            let sMaV;
-            let sMiV;
-            const maxSchemaVersions = yield this.airportDatabase.db.find.tree({
+            const maxSchemaVersions = yield this.db.find.tree({
+                select: {
+                    integerVersion: air_control_1.Y,
+                    majorVersion: air_control_1.Y,
+                    minorVersion: air_control_1.Y,
+                    patchVersion: air_control_1.Y,
+                    schema: {
+                        index: air_control_1.Y,
+                        name: air_control_1.Y,
+                        domain: {
+                            id: air_control_1.Y,
+                            name: air_control_1.Y
+                        }
+                    },
+                    id: air_control_1.Y
+                },
                 from: [
                     sv = generated_1.Q.SchemaVersion,
                     s = sv.schema.innerJoin(),
                     d = s.domain.innerJoin()
                 ],
-                select: {
-                    integerVersion: Functions_1.max(sv.integerVersion),
-                    majorVersion: sv.majorVersion,
-                    minorVersion: sv.minorVersion,
-                    patchVersion: sv.patchVersion,
-                    schema: {
-                        index: s.index,
-                        name: s.name,
-                        domain: {
-                            id: d.id,
-                            name: d.name
-                        }
-                    },
-                    id: sv.id
-                },
-                where: LogicalOperation_1.and(d.name.in(schemaDomainNames), s.name.in(schemaNames)),
-                groupBy: [
-                    sv.majorVersion,
-                    sv.minorVersion,
-                    sv.patchVersion,
-                    s.index,
-                    s.name,
-                    d.id,
-                    d.name
-                ]
+                where: LogicalOperation_1.and(sv.id.in(this.idsForMaxVersionSelect()), d.name.in(schemaDomainNames), s.name.in(schemaNames)),
             });
-            // const maxSchemaVersions: ISchemaVersion[] = await this.airportDatabase.db.find.tree({
-            // 	from: [
-            // 		sMiV = tree({
-            // 			from: [
-            // 				sMaV = tree({
-            // 					from: [
-            // 						s = Q.Schema,
-            // 						sv = s.versions.innerJoin(),
-            // 						d = s.domain.innerJoin()
-            // 					],
-            // 					select: {
-            // 						index: s.index,
-            // 						schemaVersionId: sv.id,
-            // 						domainId: d.id,
-            // 						domainName: d.name,
-            // 						name: s.name,
-            // 						majorVersion: max(sv.majorVersion),
-            // 						minorVersion: sv.minorVersion,
-            // 						patchVersion: sv.patchVersion,
-            // 					},
-            // 					where: and(
-            // 						d.name.in(schemaDomainNames),
-            // 						s.name.in(schemaNames)
-            // 					),
-            // 					groupBy: [
-            // 						s.index,
-            // 						d.id,
-            // 						d.name,
-            // 						s.name,
-            // 						sv.minorVersion,
-            // 						sv.patchVersion,
-            // 					]
-            // 				})],
-            // 			select: {
-            // 				index: sMaV.index,
-            // 				schemaVersionId: sMaV.schemaVersionId,
-            // 				domainId: sMaV.domainId,
-            // 				domainName: sMaV.domainName,
-            // 				name: sMaV.name,
-            // 				majorVersion: sMaV.majorVersion,
-            // 				minorVersion: max(sMaV.minorVersion),
-            // 				patchVersion: sMaV.patchVersion,
-            // 			},
-            // 			groupBy: [
-            // 				sMaV.index,
-            // 				sMaV.domainId,
-            // 				sMaV.domainName,
-            // 				sMaV.name,
-            // 				sMaV.majorVersion,
-            // 				sMaV.patchVersion
-            // 			]
-            // 		})],
-            // 	select: {
-            // 		majorVersion: sMiV.majorVersion,
-            // 		minorVersion: sMiV.minorVersion,
-            // 		patchVersion: max(sMiV.patchVersion),
-            // 		schema: {
-            // 			index: sMiV.index,
-            // 			name: sMiV.name,
-            // 			domain: {
-            // 				id: sMiV.domainId,
-            // 				name: sMiV.domainName,
-            //
-            // 			}
-            // 		},
-            // 		id: sMiV.schemaVersionId
-            // 	},
-            // 	groupBy: [
-            // 		sMiV.index,
-            // 		sMiV.domainId,
-            // 		sMiV.domainName,
-            // 		sMiV.name,
-            // 		sMiV.majorVersion,
-            // 		sMiV.minorVersion
-            // 	]
-            // })
             for (const maxSchemaVersion of maxSchemaVersions) {
                 const schema = maxSchemaVersion.schema;
                 this.utils.ensureChildJsMap(maxVersionedMapBySchemaAndDomainNames, schema.domain.name)
@@ -156,12 +82,32 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
             return maxVersionedMapBySchemaAndDomainNames;
         });
     }
+    idsForMaxVersionSelect() {
+        let svMax;
+        let sv2;
+        return air_control_1.field({
+            from: [
+                svMax = air_control_1.tree({
+                    from: [
+                        sv2 = generated_1.Q.SchemaVersion
+                    ],
+                    select: air_control_1.distinct({
+                        integerVersion: Functions_1.max(sv2.integerVersion),
+                        id: sv2.id,
+                        schemaIndex: sv2.schema.index
+                    })
+                })
+            ],
+            select: svMax.id
+        });
+    }
 };
 SchemaVersionDao = __decorate([
     typedi_1.Service(InjectionTokens_2.SchemaVersionDaoToken),
     __param(0, typedi_1.Inject(InjectionTokens_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object])
+    __param(1, typedi_1.Inject(InjectionTokens_2.SchemaVersionDmoToken)),
+    __param(2, typedi_1.Inject(air_control_1.UtilsToken)),
+    __metadata("design:paramtypes", [Object, Object, Object])
 ], SchemaVersionDao);
 exports.SchemaVersionDao = SchemaVersionDao;
 //# sourceMappingURL=SchemaVersionDao.js.map

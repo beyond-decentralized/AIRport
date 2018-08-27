@@ -1,7 +1,11 @@
 import { DatabaseObjectConfiguration } from "./DatabaseObjectConfiguration";
 import { DbColumn, DbProperty, DbRelation, JsonSchemaColumn, JsonSchemaProperty, JsonSchemaRelation, SchemaReferenceByIndex } from "./Property";
 import { DbSchemaVersion } from "./Schema";
+export declare type ObjectSinceVersion = number;
+export declare type ObjectUntilVersion = number;
 export declare type EntityName = string;
+export declare type EntityIsLocal = boolean;
+export declare type EntityIsRepositoryEntity = boolean;
 export declare type TableIndex = number;
 export declare type IdColumnOnlyIndex = number;
 /**
@@ -17,11 +21,11 @@ export interface JsonSchemaEntity extends SchemaReferenceByIndex<TableIndex> {
      * References to ID columns.
      */
     idColumnRefs: SchemaReferenceByIndex<IdColumnOnlyIndex>[];
-    isLocal: boolean;
+    isLocal: EntityIsLocal;
     /**
      * Does this entity extend RepositoryEntity or LocalRepositoryEntity
      */
-    isRepositoryEntity: boolean;
+    isRepositoryEntity: EntityIsRepositoryEntity;
     /**
      * Name of the entity.
      */
@@ -63,11 +67,11 @@ export interface DbEntity extends SchemaReferenceByIndex<TableIndex> {
      * Array of all @Id() columns in the entity by index.
      */
     idColumns: DbColumn[];
-    isLocal: boolean;
+    isLocal: EntityIsLocal;
     /**
      * Does this entity extend RepositoryEntity or LocalRepositoryEntity
      */
-    isRepositoryEntity: boolean;
+    isRepositoryEntity: EntityIsRepositoryEntity;
     /**
      * Name of the entity.
      */

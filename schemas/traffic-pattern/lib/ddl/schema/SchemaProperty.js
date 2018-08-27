@@ -11,23 +11,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
+const SchemaEntity_1 = require("./SchemaEntity");
 let SchemaProperty = class SchemaProperty {
 };
 __decorate([
     air_control_1.Id(),
+    air_control_1.GeneratedValue(),
     __metadata("design:type", Number)
-], SchemaProperty.prototype, "index", void 0);
+], SchemaProperty.prototype, "id", void 0);
 __decorate([
-    air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumns([
-        { name: "SCHEMA_VERSION_ID" },
-        { name: "TABLE_INDEX", referencedColumnName: "INDEX" }
-    ]),
-    __metadata("design:type", Object)
+    air_control_1.JoinColumn({ name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID' }),
+    __metadata("design:type", SchemaEntity_1.SchemaEntity)
 ], SchemaProperty.prototype, "entity", void 0);
 __decorate([
-    air_control_1.Column({ name: "IS_ID" }),
+    air_control_1.Column({ name: 'IS_ID' }),
     __metadata("design:type", Boolean)
 ], SchemaProperty.prototype, "isId", void 0);
 __decorate([
@@ -41,8 +39,8 @@ __decorate([
 SchemaProperty = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({
-        name: "SCHEMA_PROPERTIES"
+        name: 'SCHEMA_PROPERTIES'
     })
 ], SchemaProperty);
 exports.SchemaProperty = SchemaProperty;
-//# sourceMappingURL=schemaproperty.js.map
+//# sourceMappingURL=SchemaProperty.js.map

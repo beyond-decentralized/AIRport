@@ -17,21 +17,19 @@ let SchemaEntity = class SchemaEntity {
 };
 __decorate([
     air_control_1.Id(),
+    air_control_1.GeneratedValue(),
+    __metadata("design:type", Number)
+], SchemaEntity.prototype, "id", void 0);
+__decorate([
     ColumnDecorators_1.DbNumber(),
     __metadata("design:type", Number)
 ], SchemaEntity.prototype, "index", void 0);
 __decorate([
-    air_control_1.Id(),
-    air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "SCHEMA_VERSION_ID", referencedColumnName: "ID" }),
-    __metadata("design:type", SchemaVersion_1.SchemaVersion)
-], SchemaEntity.prototype, "schemaVersion", void 0);
-__decorate([
-    air_control_1.Column({ name: "IS_LOCAL" }),
+    air_control_1.Column({ name: 'IS_LOCAL' }),
     __metadata("design:type", Boolean)
 ], SchemaEntity.prototype, "isLocal", void 0);
 __decorate([
-    air_control_1.Column({ name: "IS_REPOSITORY_ENTITY" }),
+    air_control_1.Column({ name: 'IS_REPOSITORY_ENTITY' }),
     __metadata("design:type", Boolean)
 ], SchemaEntity.prototype, "isRepositoryEntity", void 0);
 __decorate([
@@ -39,10 +37,20 @@ __decorate([
     __metadata("design:type", Object)
 ], SchemaEntity.prototype, "tableConfig", void 0);
 __decorate([
+    air_control_1.Id(),
+    air_control_1.ManyToOne(),
+    air_control_1.JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID' }),
+    __metadata("design:type", SchemaVersion_1.SchemaVersion
+    //
+    // One-to-Many's
+    //
+    )
+], SchemaEntity.prototype, "schemaVersion", void 0);
+__decorate([
     air_control_1.OneToMany(),
     air_control_1.JoinColumns([
-        { name: "SCHEMA_VERSION_ID" },
-        { name: "TABLE_INDEX", referencedColumnName: "INDEX" }
+        { name: 'SCHEMA_VERSION_ID' },
+        { name: 'TABLE_INDEX', referencedColumnName: 'INDEX' }
     ]),
     __metadata("design:type", Array)
 ], SchemaEntity.prototype, "columns", void 0);
@@ -53,8 +61,8 @@ __decorate([
 __decorate([
     air_control_1.OneToMany(),
     air_control_1.JoinColumns([
-        { name: "SCHEMA_VERSION_ID" },
-        { name: "TABLE_INDEX", referencedColumnName: "INDEX" }
+        { name: 'SCHEMA_VERSION_ID' },
+        { name: 'TABLE_INDEX', referencedColumnName: 'INDEX' }
     ]),
     __metadata("design:type", Array)
 ], SchemaEntity.prototype, "relations", void 0);
@@ -77,7 +85,7 @@ __decorate([
 SchemaEntity = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({
-        name: "SCHEMA_ENTITIES"
+        name: 'SCHEMA_ENTITIES'
     })
 ], SchemaEntity);
 exports.SchemaEntity = SchemaEntity;

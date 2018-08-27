@@ -71,13 +71,18 @@
     },
     // "generators" folder (alphabetical order)
     {
+      "packageName": "@airport/landing",
+      "projectFolder": "generators/landing",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/runway",
       "projectFolder": "generators/runway",
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/landing",
-      "projectFolder": "generators/landing",
+      "packageName": "@airport/takeoff",
+      "projectFolder": "generators/takeoff",
       "shouldPublish": true
     },
     // "schemas" folder (alphabetical order),

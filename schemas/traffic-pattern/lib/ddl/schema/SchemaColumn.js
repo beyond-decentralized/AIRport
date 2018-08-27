@@ -11,44 +11,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
+const SchemaEntity_1 = require("./SchemaEntity");
 let SchemaColumn = class SchemaColumn {
 };
 __decorate([
     air_control_1.Id(),
+    air_control_1.GeneratedValue(),
     __metadata("design:type", Number)
-], SchemaColumn.prototype, "index", void 0);
+], SchemaColumn.prototype, "id", void 0);
 __decorate([
-    air_control_1.Id(),
-    air_control_1.Column({ name: "TABLE_INDEX" }),
-    __metadata("design:type", Number)
-], SchemaColumn.prototype, "tableIndex", void 0);
+    air_control_1.ManyToOne(),
+    air_control_1.JoinColumn({ name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID' }),
+    __metadata("design:type", SchemaEntity_1.SchemaEntity)
+], SchemaColumn.prototype, "entity", void 0);
 __decorate([
-    air_control_1.Id(),
-    air_control_1.Column({ name: "SCHEMA_VERSION_ID" }),
-    __metadata("design:type", Number)
-], SchemaColumn.prototype, "schemaVersionId", void 0);
-__decorate([
-    air_control_1.OneToMany({ mappedBy: "column" }),
+    air_control_1.OneToMany({ mappedBy: 'column' }),
     __metadata("design:type", Array)
 ], SchemaColumn.prototype, "propertyColumns", void 0);
 __decorate([
-    air_control_1.Column({ name: "ID_INDEX" }),
+    air_control_1.Column({ name: 'ID_INDEX' }),
     __metadata("design:type", Number)
 ], SchemaColumn.prototype, "idIndex", void 0);
 __decorate([
-    air_control_1.Column({ name: "IS_GENERATED" }),
+    air_control_1.Column({ name: 'IS_GENERATED' }),
     __metadata("design:type", Boolean)
 ], SchemaColumn.prototype, "isGenerated", void 0);
 __decorate([
-    air_control_1.Column({ name: "ALLOCATION_SIZE" }),
+    air_control_1.Column({ name: 'ALLOCATION_SIZE' }),
     __metadata("design:type", Boolean)
 ], SchemaColumn.prototype, "allocationSize", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "manyColumn" }),
+    air_control_1.OneToMany({ mappedBy: 'manyColumn' }),
     __metadata("design:type", Array)
 ], SchemaColumn.prototype, "manyRelationColumns", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "oneColumn" }),
+    air_control_1.OneToMany({ mappedBy: 'oneColumn' }),
     __metadata("design:type", Array)
 ], SchemaColumn.prototype, "oneRelationColumns", void 0);
 __decorate([
@@ -58,8 +55,8 @@ __decorate([
 SchemaColumn = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({
-        name: "SCHEMA_COLUMNS"
+        name: 'SCHEMA_COLUMNS'
     })
 ], SchemaColumn);
 exports.SchemaColumn = SchemaColumn;
-//# sourceMappingURL=schemacolumn.js.map
+//# sourceMappingURL=SchemaColumn.js.map

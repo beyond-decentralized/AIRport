@@ -1,5 +1,5 @@
-import { ISchemaColumn } from "../../generated/schema/qschemacolumn";
-import { ISchemaProperty } from "../../generated/schema/qschemaproperty";
+import { ISchemaColumn } from '../../generated/schema/qschemacolumn';
+import { ISchemaProperty } from '../../generated/schema/qschemaproperty';
 /**
  * Many-to-Many between Columns and properties
  */

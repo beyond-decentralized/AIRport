@@ -1,63 +1,73 @@
-import { Column, DbNumber, Entity, Id, OneToMany, Table } from '@airport/air-control';
+import {
+	Column,
+	DbNumber,
+	Entity,
+	GeneratedValue,
+	Id,
+	JoinColumn,
+	ManyToOne,
+	OneToMany,
+	Table
+}                              from '@airport/air-control'
 import {
 	ColumnIndex,
 	ColumnName,
 	IdColumnOnlyIndex,
 	SchemaColumnAllocationSize,
 	SchemaColumnIsGenerated,
-	SchemaVersionId,
-	SQLDataType,
-	TableIndex
-} from '@airport/ground-control'
-import { ISchemaColumn } from "../../generated/schema/qschemacolumn";
-import { ISchemaRelationColumn } from "../../generated/schema/qschemarelationcolumn";
-import { ISchemaPropertyColumn } from "../../generated/schema/qschemapropertycolumn";
+	SQLDataType
+}                              from '@airport/ground-control'
+import {ISchemaColumn}         from '../../generated/schema/qschemacolumn'
+import {ISchemaPropertyColumn} from '../../generated/schema/qschemapropertycolumn'
+import {ISchemaRelationColumn} from '../../generated/schema/qschemarelationcolumn'
+import {SchemaEntity}          from './SchemaEntity'
+
+export type SchemaColumnId = number
 
 @Entity()
 @Table({
-	name: "SCHEMA_COLUMNS"
+	name: 'SCHEMA_COLUMNS'
 })
 export class SchemaColumn
 	implements ISchemaColumn {
 
+	@Id()
+	@GeneratedValue()
+	id: SchemaColumnId
+
 	/**
 	 * Overall column index (within the entity).
 	 */
-	@Id()
-	index: ColumnIndex;
+	index: ColumnIndex
 
-	@Id()
-	@Column({name: "TABLE_INDEX"})
-	tableIndex: TableIndex;
+	@ManyToOne()
+	@JoinColumn({name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID'})
+	entity: SchemaEntity
 
-	@Id()
-	@Column({name: "SCHEMA_VERSION_ID"})
-	schemaVersionId: SchemaVersionId;
-
-	@OneToMany({mappedBy: "column"})
-	propertyColumns: ISchemaPropertyColumn[];
+	@OneToMany({mappedBy: 'column'})
+	propertyColumns: ISchemaPropertyColumn[]
 
 	/**
 	 * Index of the ID (within the entity)
 	 */
-	@Column({name: "ID_INDEX"})
-	idIndex: IdColumnOnlyIndex;
+	@Column({name: 'ID_INDEX'})
+	idIndex: IdColumnOnlyIndex
 
-	@Column({name: "IS_GENERATED"})
-	isGenerated: SchemaColumnIsGenerated;
+	@Column({name: 'IS_GENERATED'})
+	isGenerated: SchemaColumnIsGenerated
 
-	@Column({name: "ALLOCATION_SIZE"})
-	allocationSize: SchemaColumnAllocationSize;
+	@Column({name: 'ALLOCATION_SIZE'})
+	allocationSize: SchemaColumnAllocationSize
 
-	name: ColumnName;
+	name: ColumnName
 
-	@OneToMany({mappedBy: "manyColumn"})
-	manyRelationColumns: ISchemaRelationColumn[];
+	@OneToMany({mappedBy: 'manyColumn'})
+	manyRelationColumns: ISchemaRelationColumn[]
 
-	@OneToMany({mappedBy: "oneColumn"})
-	oneRelationColumns: ISchemaRelationColumn[];
+	@OneToMany({mappedBy: 'oneColumn'})
+	oneRelationColumns: ISchemaRelationColumn[]
 
 	@DbNumber()
-	type: SQLDataType;
+	type: SQLDataType
 
 }

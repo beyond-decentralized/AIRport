@@ -4,34 +4,34 @@
     <list default="true" id="843e89a7-1ff9-4818-8850-8278489b8319" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/schema/Property.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/schema/Property.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/src/recorder/SchemaRecorder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/recorder/SchemaRecorder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/takeoff/src/QueryObjectInitializer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/takeoff/src/QueryObjectInitializer.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../rush.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../rush.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../territory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../territory/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaColumn.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaColumn.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/Schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/Schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/Schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/Schema.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaColumn.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelation.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelation.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaProperty.js" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaProperty.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaProperty.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaProperty.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaReference.js" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaReference.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaReference.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaReference.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelation.js" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelation.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelation.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelation.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/generated/schema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/generated/schema.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/generated/schema/qschemacolumn.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/generated/schema/qschemacolumn.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/generated/schema/qschemarelation.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/generated/schema/qschemarelation.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/src/ddl/schema/SchemaColumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/src/ddl/schema/SchemaColumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/src/ddl/schema/SchemaRelation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/src/ddl/schema/SchemaRelation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/src/generated/schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/src/generated/schema/qschemacolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/src/generated/schema/qschemacolumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/src/generated/schema/qschemarelation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/src/generated/schema/qschemarelation.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js.map" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/lib/" />
@@ -47,7 +47,7 @@
     <session id="2071424323">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="14" />
+          <entry key="project.closed" value="16" />
           <entry key="project.open.time.0" value="3" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.10" value="1" />
@@ -56,8 +56,9 @@
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.5" value="3" />
           <entry key="project.open.time.6" value="4" />
+          <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.8" value="1" />
-          <entry key="project.opened" value="16" />
+          <entry key="project.opened" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -86,7 +87,7 @@
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
         <counts>
-          <entry key="TypeScriptServerServiceImpl" value="15" />
+          <entry key="TypeScriptServerServiceImpl" value="16" />
         </counts>
       </usages-collector>
     </session>
@@ -267,7 +268,7 @@
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="25" />
     <option name="width" value="1920" />
     <option name="height" value="1055" />
@@ -366,15 +367,15 @@
       <workItem from="1535029299217" duration="599000" />
       <workItem from="1535030437474" duration="1807000" />
       <workItem from="1535115251751" duration="599000" />
+      <workItem from="1535320130597" duration="287000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39382000" />
+    <option name="totallyTimeSpent" value="39669000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="25" width="1920" height="1055" extended-state="7" />
-    <editor active="true" />
+    <frame x="0" y="25" width="1920" height="1055" extended-state="6" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14865577" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />

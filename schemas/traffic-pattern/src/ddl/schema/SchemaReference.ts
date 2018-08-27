@@ -14,8 +14,6 @@ import {SchemaVersion}        from "./SchemaVersion";
 })
 export class SchemaReference {
 
-	index: SchemaReferenceIndex;
-
 	@Id()
 	@ManyToOne()
 	@JoinColumn({name: "OWN_SCHEMA_VERSION_ID", referencedColumnName: "ID"})
@@ -25,5 +23,7 @@ export class SchemaReference {
 	@ManyToOne()
 	@JoinColumn({name: "REFERENCED_SCHEMA_VERSION_ID", referencedColumnName: "ID"})
 	referencedSchemaVersion: SchemaVersion;
+
+	index: SchemaReferenceIndex;
 
 }

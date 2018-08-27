@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
@@ -151,7 +150,7 @@ SchemaChecker = __decorate([
     __param(0, typedi_1.Inject(traffic_pattern_1.SchemaDaoToken)),
     __param(1, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
     __param(2, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, typeof (_a = typeof air_control_1.IUtils !== "undefined" && air_control_1.IUtils) === "function" ? _a : Object])
+    __metadata("design:paramtypes", [Object, Object, Object])
 ], SchemaChecker);
 exports.SchemaChecker = SchemaChecker;
 //# sourceMappingURL=SchemaChecker.js.map

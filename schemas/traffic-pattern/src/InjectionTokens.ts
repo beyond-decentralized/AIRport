@@ -8,6 +8,7 @@ import {ISchemaReferenceDao}      from './dao/SchemaReferenceDao'
 import {ISchemaRelationColumnDao} from './dao/SchemaRelationColumnDao'
 import {ISchemaRelationDao}       from './dao/SchemaRelationDao'
 import {ISchemaVersionDao}        from './dao/SchemaVersionDao'
+import {ISchemaVersionDmo}        from './dmo/SchemaVersionDmo'
 
 export const SchemaColumnDaoToken         = new Token<ISchemaColumnDao>()
 export const SchemaDaoToken               = new Token<ISchemaDao>()
@@ -18,3 +19,4 @@ export const SchemaReferenceDaoToken      = new Token<ISchemaReferenceDao>()
 export const SchemaRelationColumnDaoToken = new Token<ISchemaRelationColumnDao>()
 export const SchemaRelationDaoToken       = new Token<ISchemaRelationDao>()
 export const SchemaVersionDaoToken        = new Token<ISchemaVersionDao>()
+export const SchemaVersionDmoToken        = new Token<ISchemaVersionDmo>()

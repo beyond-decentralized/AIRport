@@ -59,4 +59,4 @@ SchemaRelationColumn = __decorate([
     })
 ], SchemaRelationColumn);
 exports.SchemaRelationColumn = SchemaRelationColumn;
-//# sourceMappingURL=schemarelationcolumn.js.map
+//# sourceMappingURL=SchemaRelationColumn.js.map

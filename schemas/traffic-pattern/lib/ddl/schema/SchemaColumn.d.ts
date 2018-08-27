@@ -1,14 +1,16 @@
-import { ColumnIndex, ColumnName, IdColumnOnlyIndex, SchemaColumnAllocationSize, SchemaColumnIsGenerated, SchemaVersionId, SQLDataType, TableIndex } from '@airport/ground-control';
-import { ISchemaColumn } from "../../generated/schema/qschemacolumn";
-import { ISchemaRelationColumn } from "../../generated/schema/qschemarelationcolumn";
-import { ISchemaPropertyColumn } from "../../generated/schema/qschemapropertycolumn";
+import { ColumnIndex, ColumnName, IdColumnOnlyIndex, SchemaColumnAllocationSize, SchemaColumnIsGenerated, SQLDataType } from '@airport/ground-control';
+import { ISchemaColumn } from '../../generated/schema/qschemacolumn';
+import { ISchemaPropertyColumn } from '../../generated/schema/qschemapropertycolumn';
+import { ISchemaRelationColumn } from '../../generated/schema/qschemarelationcolumn';
+import { SchemaEntity } from './SchemaEntity';
+export declare type SchemaColumnId = number;
 export declare class SchemaColumn implements ISchemaColumn {
+    id: SchemaColumnId;
     /**
      * Overall column index (within the entity).
      */
     index: ColumnIndex;
-    tableIndex: TableIndex;
-    schemaVersionId: SchemaVersionId;
+    entity: SchemaEntity;
     propertyColumns: ISchemaPropertyColumn[];
     /**
      * Index of the ID (within the entity)

@@ -10,7 +10,12 @@ import {
 }                                    from "./Property";
 import {DbSchemaVersion}             from "./Schema";
 
+export type ObjectSinceVersion = number;
+export type ObjectUntilVersion = number;
+
 export type EntityName = string;
+export type EntityIsLocal = boolean;
+export type EntityIsRepositoryEntity = boolean;
 export type TableIndex = number;
 export type IdColumnOnlyIndex = number;
 
@@ -33,12 +38,12 @@ export interface JsonSchemaEntity extends SchemaReferenceByIndex<TableIndex> {
 	/*
 	 * Is this entity local-only (does not extend RepositoryEntity)
 	 */
-	isLocal: boolean;
+	isLocal: EntityIsLocal;
 
 	/**
 	 * Does this entity extend RepositoryEntity or LocalRepositoryEntity
 	 */
-	isRepositoryEntity: boolean;
+	isRepositoryEntity: EntityIsRepositoryEntity;
 
 	/**
 	 * Name of the entity.
@@ -90,12 +95,12 @@ export interface DbEntity extends SchemaReferenceByIndex<TableIndex> {
 	/*
 	 * Is this entity local-only (does not extend RepositoryEntity)
 	 */
-	isLocal: boolean;
+	isLocal: EntityIsLocal;
 
 	/**
 	 * Does this entity extend RepositoryEntity or LocalRepositoryEntity
 	 */
-	isRepositoryEntity: boolean;
+	isRepositoryEntity: EntityIsRepositoryEntity;
 
 	/**
 	 * Name of the entity.

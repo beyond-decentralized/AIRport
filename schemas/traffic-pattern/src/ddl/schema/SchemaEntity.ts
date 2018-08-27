@@ -1,6 +1,7 @@
 import {
 	Column,
 	Entity,
+	GeneratedValue,
 	Id,
 	JoinColumn,
 	JoinColumns,
@@ -10,25 +11,24 @@ import {
 	Table,
 	TableConfiguration,
 	Transient
-} from '@airport/air-control'
-import {DbNumber}        from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
+}                        from '@airport/air-control'
+import {DbNumber}        from '@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators'
 import {
 	CascadeType,
-	DbColumn,
-	EntityName
-} from '@airport/ground-control'
-import {ISchemaColumn}   from "../../generated/schema/qschemacolumn";
-import {ISchemaEntity}   from "../../generated/schema/qschemaentity";
-import {ISchemaProperty} from "../../generated/schema/qschemaproperty";
-import {ISchemaRelation} from "../../generated/schema/qschemarelation";
-import {SchemaVersion}   from "./SchemaVersion";
+	EntityName,
+	TableIndex
+}                        from '@airport/ground-control'
+import {ISchemaColumn}   from '../../generated/schema/qschemacolumn'
+import {ISchemaEntity}   from '../../generated/schema/qschemaentity'
+import {ISchemaProperty} from '../../generated/schema/qschemaproperty'
+import {ISchemaRelation} from '../../generated/schema/qschemarelation'
+import {SchemaVersion}   from './SchemaVersion'
 
-
-export type SchemaEntityIndex = number;
+export type SchemaEntityId = number
 
 @Entity()
 @Table({
-	name: "SCHEMA_ENTITIES"
+	name: 'SCHEMA_ENTITIES'
 })
 export class SchemaEntity
 	implements ISchemaEntity {
@@ -37,34 +37,34 @@ export class SchemaEntity
 	// Id columns
 	//
 	@Id()
-	@DbNumber()
-	index: SchemaEntityIndex;
-
-	//
-	// Id Relations
-	//
-	@Id()
-	@ManyToOne()
-	@JoinColumn({name: "SCHEMA_VERSION_ID", referencedColumnName: "ID"})
-	schemaVersion: SchemaVersion;
+	@GeneratedValue()
+	id: SchemaEntityId
 
 	//
 	// Non-Id columns
 	//
-	@Column({name: "IS_LOCAL"})
-	isLocal: boolean;
+	@DbNumber()
+	index: TableIndex
 
-	@Column({name: "IS_REPOSITORY_ENTITY"})
-	isRepositoryEntity: boolean;
+	@Column({name: 'IS_LOCAL'})
+	isLocal: boolean
 
-	name: EntityName;
+	@Column({name: 'IS_REPOSITORY_ENTITY'})
+	isRepositoryEntity: boolean
+
+	name: EntityName
 
 	@Json()
-	tableConfig: TableConfiguration;
+	tableConfig: TableConfiguration
 
 	//
 	// Non-Id relations
 	//
+
+	@Id()
+	@ManyToOne()
+	@JoinColumn({name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID'})
+	schemaVersion: SchemaVersion
 
 	//
 	// One-to-Many's
@@ -72,10 +72,10 @@ export class SchemaEntity
 
 	@OneToMany()
 	@JoinColumns([
-		{name: "SCHEMA_VERSION_ID"},
-		{name: "TABLE_INDEX", referencedColumnName: "INDEX"}
+		{name: 'SCHEMA_VERSION_ID'},
+		{name: 'TABLE_INDEX', referencedColumnName: 'INDEX'}
 	])
-	columns: ISchemaColumn[];
+	columns: ISchemaColumn[]
 
 	// TODO: implement if needed
 	// @OneToMany()
@@ -90,25 +90,25 @@ export class SchemaEntity
 	// idColumns: ISchemaColumn[];
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entity'})
-	properties: ISchemaProperty[];
+	properties: ISchemaProperty[]
 
 	@OneToMany()
 	@JoinColumns([
-		{name: "SCHEMA_VERSION_ID"},
-		{name: "TABLE_INDEX", referencedColumnName: "INDEX"}
+		{name: 'SCHEMA_VERSION_ID'},
+		{name: 'TABLE_INDEX', referencedColumnName: 'INDEX'}
 	])
-	relations: ISchemaRelation[];
+	relations: ISchemaRelation[]
 
 	@Transient()
 	columnMap?: { [name: string]: ISchemaColumn }
 
 	@Transient()
-	idColumns:ISchemaColumn[]
+	idColumns: ISchemaColumn[]
 
 	@Transient()
 	idColumnMap?: { [name: string]: ISchemaColumn }
 
 	@Transient()
-	propertyMap: {[name: string]: ISchemaProperty }
+	propertyMap: { [name: string]: ISchemaProperty }
 
 }

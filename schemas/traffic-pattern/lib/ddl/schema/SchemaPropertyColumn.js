@@ -18,28 +18,20 @@ let SchemaPropertyColumn = class SchemaPropertyColumn {
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumns([
-        { name: "SCHEMA_VERSION_ID" },
-        { name: "TABLE_INDEX" },
-        { name: "COLUMN_INDEX", referencedColumnName: "INDEX" }
-    ]),
+    air_control_1.JoinColumn({ name: 'COLUMN_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", Object)
 ], SchemaPropertyColumn.prototype, "column", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumns([
-        { name: "SCHEMA_VERSION_ID" },
-        { name: "TABLE_INDEX" },
-        { name: "PROPERTY_INDEX", referencedColumnName: "INDEX" }
-    ]),
+    air_control_1.JoinColumn({ name: 'PROPERTY_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", Object)
 ], SchemaPropertyColumn.prototype, "property", void 0);
 SchemaPropertyColumn = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({
-        name: "SCHEMA_COLUMN_PROPERTIES"
+        name: 'SCHEMA_COLUMN_PROPERTIES'
     })
 ], SchemaPropertyColumn);
 exports.SchemaPropertyColumn = SchemaPropertyColumn;
-//# sourceMappingURL=schemapropertycolumn.js.map
+//# sourceMappingURL=SchemaPropertyColumn.js.map

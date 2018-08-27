@@ -10,4 +10,5 @@ exports.SchemaReferenceDaoToken = new Token_1.Token();
 exports.SchemaRelationColumnDaoToken = new Token_1.Token();
 exports.SchemaRelationDaoToken = new Token_1.Token();
 exports.SchemaVersionDaoToken = new Token_1.Token();
+exports.SchemaVersionDmoToken = new Token_1.Token();
 //# sourceMappingURL=InjectionTokens.js.map

@@ -4,6 +4,7 @@ import {
 	Entity,
 	ForeignKey,
 	Id,
+	JoinColumn,
 	JoinColumns,
 	Json,
 	ManyToOne,
@@ -11,10 +12,11 @@ import {
 	OneToMany,
 	OneToManyElements,
 	Table
-}                              from '@airport/air-control';
+} from '@airport/air-control'
 import {
 	CascadeType,
-}                              from '@airport/ground-control';
+	RelationIndex,
+} from '@airport/ground-control'
 import {EntityRelationType}    from "@airport/ground-control";
 import {ISchemaEntity}         from "../../generated/schema/qschemaentity";
 import {ISchemaProperty}       from "../../generated/schema/qschemaproperty";
@@ -29,15 +31,11 @@ export class SchemaRelation
 	implements ISchemaRelation {
 
 	@Id()
-	index: number;
+	index: RelationIndex;
 
 	@Id()
 	@ManyToOne()
-	@JoinColumns([
-		{name: "SCHEMA_VERSION_ID"},
-		{name: "TABLE_INDEX"},
-		{name: "PROPERTY_INDEX", referencedColumnName: "INDEX"}
-	])
+	@JoinColumn({name: "PROPERTY_ID", referencedColumnName: "ID"})
 	property: ISchemaProperty;
 
 	@Json()

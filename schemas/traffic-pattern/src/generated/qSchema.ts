@@ -1,22 +1,22 @@
 import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
-import { Schema } from '../ddl/schema/schema';
+import { Schema } from '../ddl/schema/Schema';
 import { QSchema } from './schema/qschema';
-import { SchemaColumn } from '../ddl/schema/schemacolumn';
+import { SchemaColumn } from '../ddl/schema/SchemaColumn';
 import { QSchemaColumn } from './schema/qschemacolumn';
-import { SchemaEntity } from '../ddl/schema/schemaentity';
+import { SchemaEntity } from '../ddl/schema/SchemaEntity';
 import { QSchemaEntity } from './schema/qschemaentity';
-import { SchemaProperty } from '../ddl/schema/schemaproperty';
+import { SchemaProperty } from '../ddl/schema/SchemaProperty';
 import { QSchemaProperty } from './schema/qschemaproperty';
-import { SchemaPropertyColumn } from '../ddl/schema/schemapropertycolumn';
+import { SchemaPropertyColumn } from '../ddl/schema/SchemaPropertyColumn';
 import { QSchemaPropertyColumn } from './schema/qschemapropertycolumn';
-import { SchemaReference } from '../ddl/schema/schemareference';
+import { SchemaReference } from '../ddl/schema/SchemaReference';
 import { QSchemaReference } from './schema/qschemareference';
-import { SchemaRelation } from '../ddl/schema/schemarelation';
+import { SchemaRelation } from '../ddl/schema/SchemaRelation';
 import { QSchemaRelation } from './schema/qschemarelation';
-import { SchemaRelationColumn } from '../ddl/schema/schemarelationcolumn';
+import { SchemaRelationColumn } from '../ddl/schema/SchemaRelationColumn';
 import { QSchemaRelationColumn } from './schema/qschemarelationcolumn';
-import { SchemaVersion } from '../ddl/schema/schemaversion';
+import { SchemaVersion } from '../ddl/schema/SchemaVersion';
 import { QSchemaVersion } from './schema/qschemaversion';
 
 import {
