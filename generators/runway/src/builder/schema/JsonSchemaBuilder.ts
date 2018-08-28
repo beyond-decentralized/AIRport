@@ -91,6 +91,7 @@ export class JsonSchemaBuilder {
 							index => ({
 								index
 							})),
+						sinceVersion: 1,
 						type: getSqlDataType(sColumn.type),
 					}))
 				columns.sort((
@@ -111,6 +112,7 @@ export class JsonSchemaBuilder {
 					name: sEntity.name,
 					properties: properties,
 					relations: relations,
+					sinceVersion: 1,
 					tableConfig: sEntity.table,
 				}
 			})
@@ -120,6 +122,7 @@ export class JsonSchemaBuilder {
 			domain,
 			index: null,
 			name: sIndexedSchema.schema.name,
+			sinceVersion: 1,
 			versions: [{
 				entities: jsonEntities,
 				integerVersion: 1,
@@ -194,7 +197,8 @@ export class JsonSchemaBuilder {
 						index: index
 					},
 					relationTableIndex,
-					relationTableSchemaIndex
+					relationTableSchemaIndex,
+					sinceVersion: 1
 				}
 				relations[sRelation.index]         = relation
 				relationRef                        = {

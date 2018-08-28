@@ -46,6 +46,7 @@ class JsonSchemaBuilder {
                 propertyRefs: sColumn.propertyRefs.map(index => ({
                     index
                 })),
+                sinceVersion: 1,
                 type: ground_control_1.getSqlDataType(sColumn.type),
             }));
             columns.sort((a, b) => a.index < b.index ? -1 : 1);
@@ -59,6 +60,7 @@ class JsonSchemaBuilder {
                 name: sEntity.name,
                 properties: properties,
                 relations: relations,
+                sinceVersion: 1,
                 tableConfig: sEntity.table,
             };
         });
@@ -67,6 +69,7 @@ class JsonSchemaBuilder {
             domain,
             index: null,
             name: sIndexedSchema.schema.name,
+            sinceVersion: 1,
             versions: [{
                     entities: jsonEntities,
                     integerVersion: 1,
@@ -125,7 +128,8 @@ class JsonSchemaBuilder {
                         index: index
                     },
                     relationTableIndex,
-                    relationTableSchemaIndex
+                    relationTableSchemaIndex,
+                    sinceVersion: 1
                 };
                 relations[sRelation.index] = relation;
                 relationRef = {

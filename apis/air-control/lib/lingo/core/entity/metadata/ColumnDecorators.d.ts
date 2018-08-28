@@ -13,8 +13,8 @@ export interface IdDecorator {
  * SQL Column configuration.
  */
 export interface ColumnConfiguration {
-    columnDefinition?: string;
     name: string;
+    nullable?: boolean;
 }
 export declare enum ConstraintMode {
     CONSTRAINT = 0,
@@ -37,6 +37,7 @@ export interface JoinColumnConfiguration extends CoreJoinColumnConfiguration {
 }
 export interface CoreJoinColumnConfiguration {
     name: string;
+    nullable?: boolean;
     referencedColumnName?: string;
 }
 export interface JoinColumnsConfiguration {

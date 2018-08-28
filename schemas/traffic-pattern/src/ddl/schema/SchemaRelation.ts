@@ -37,10 +37,11 @@ export class SchemaRelation
 	@GeneratedValue()
 	id: SchemaRelationId
 
+	@Column({name: 'INDEX', nullable: false})
 	index: RelationIndex
 
 	@ManyToOne()
-	@JoinColumn({name: 'PROPERTY_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'SCHEMA_PROPERTY_ID', referencedColumnName: 'ID', nullable: false})
 	property: SchemaProperty
 
 	@Json()
@@ -56,13 +57,13 @@ export class SchemaRelation
 	oneToManyElems: OneToManyElements
 
 	@DbNumber()
-	@Column({name: 'RELATION_TYPE'})
+	@Column({name: 'RELATION_TYPE', nullable: false})
 	relationType: EntityRelationType
 
 	// @Column({name: "IS_REPOSITORY_JOIN"})
 	// isRepositoryJoin: boolean;
 
-	@Column({name: 'IS_ID'})
+	@Column({name: 'IS_ID', nullable: false})
 	isId: boolean
 
 	// @Column({name: "ADD_TO_JOIN_FUNCTION"})
@@ -72,10 +73,11 @@ export class SchemaRelation
 	// joinFunctionWithOperator: number;
 
 	@ManyToOne()
-	@JoinColumns([
-		{name: 'RELATION_SCHEMA_VERSION_ID', referencedColumnName: 'SCHEMA_VERSION_ID'},
-		{name: 'RELATION_TABLE_INDEX', referencedColumnName: 'INDEX'}
-	])
+	@JoinColumn({name: 'SCHEMA_TABLE_ID', referencedColumnName: 'ID', nullable: false})
+	entity: SchemaEntity
+
+	@ManyToOne()
+	@JoinColumn({name: 'RELATION_SCHEMA_TABLE_ID', referencedColumnName: 'ID', nullable: false})
 	relationEntity: SchemaEntity
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'manyRelation'})

@@ -36,17 +36,18 @@ export class Schema
 	index: SchemaIndex
 
 	@ManyToOne()
-	@JoinColumn({name: 'DOMAIN_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'DOMAIN_ID', referencedColumnName: 'ID', nullable: false})
 	domain: Domain
 
-	@Column({name: 'SCOPE'})
+	@Column({name: 'SCOPE', nullable: false})
 	@DbString()
 	scope: SchemaScope
 
-	@Column({name: 'SCHEMA_NAME'})
+	@Column({name: 'SCHEMA_NAME', nullable: false})
 	@DbString()
 	name: SchemaName
 
+	@Column({name: 'STATUS', nullable: false})
 	@DbNumber()
 	status: SchemaStatus
 
@@ -54,7 +55,7 @@ export class Schema
 	versions: SchemaVersion[]
 
 	@ManyToOne()
-	@JoinColumn({name: 'CURRENT_VERSION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'CURRENT_VERSION_ID', referencedColumnName: 'ID', nullable: false})
 	currentVersion: SchemaVersion
 
 }

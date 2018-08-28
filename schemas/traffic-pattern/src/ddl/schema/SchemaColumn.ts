@@ -38,10 +38,11 @@ export class SchemaColumn
 	/**
 	 * Overall column index (within the entity).
 	 */
+	@Column({name: 'INDEX', nullable: false})
 	index: ColumnIndex
 
 	@ManyToOne()
-	@JoinColumn({name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID', nullable: false})
 	entity: SchemaEntity
 
 	@OneToMany({mappedBy: 'column'})
@@ -53,12 +54,13 @@ export class SchemaColumn
 	@Column({name: 'ID_INDEX'})
 	idIndex: IdColumnOnlyIndex
 
-	@Column({name: 'IS_GENERATED'})
+	@Column({name: 'IS_GENERATED', nullable: false})
 	isGenerated: SchemaColumnIsGenerated
 
 	@Column({name: 'ALLOCATION_SIZE'})
 	allocationSize: SchemaColumnAllocationSize
 
+	@Column({name: 'NAME', nullable: false})
 	name: ColumnName
 
 	@OneToMany({mappedBy: 'manyColumn'})
@@ -68,6 +70,7 @@ export class SchemaColumn
 	oneRelationColumns: ISchemaRelationColumn[]
 
 	@DbNumber()
+	@Column({name: 'TYPE', nullable: false})
 	type: SQLDataType
 
 }

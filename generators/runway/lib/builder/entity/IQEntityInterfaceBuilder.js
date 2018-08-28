@@ -139,7 +139,9 @@ ${publicMethodSignatures}
  * SELECT - All fields and relations (optional).
  */
 export interface ${entityName}ESelect
-    extends ${extendedQInterface}, ${entityName}EOptionalId, ${entityName}EUpdateProperties {
+    extends ${extendedQInterface}, ${entityName}EOptionalId {
+	// Non-Id Properties
+${nonIdEProperties}
 	// Id Relations - full property interfaces
 ${idRelationsForEntityEProperties}
   // Non-Id relations (including OneToMany's)

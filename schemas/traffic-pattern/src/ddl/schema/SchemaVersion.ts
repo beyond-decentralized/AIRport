@@ -33,26 +33,26 @@ export class SchemaVersion {
 	@DbNumber()
 	id: SchemaVersionId
 
-	@Column({name: 'INTEGER_VERSION'})
+	@Column({name: 'INTEGER_VERSION', nullable: false})
 	integerVersion: SchemaVersionInteger
 
-	@Column({name: 'VERSION_STRING'})
+	@Column({name: 'VERSION_STRING', nullable: false})
 	versionString: SchemaVersionString
 
-	@Column({name: 'MAJOR_VERSION'})
+	@Column({name: 'MAJOR_VERSION', nullable: false})
 	@DbNumber()
 	majorVersion: SchemaVersionMajor
 
-	@Column({name: 'MINOR_VERSION'})
+	@Column({name: 'MINOR_VERSION', nullable: false})
 	@DbNumber()
 	minorVersion: SchemaVersionMinor
 
-	@Column({name: 'PATCH_VERSION'})
+	@Column({name: 'PATCH_VERSION', nullable: false})
 	@DbNumber()
 	patchVersion: SchemaVersionPatch
 
 	@ManyToOne()
-	@JoinColumn({name: 'SCHEMA_INDEX', referencedColumnName: 'INDEX'})
+	@JoinColumn({name: 'SCHEMA_INDEX', referencedColumnName: 'INDEX', nullable: false})
 	schema: Schema
 
 	@OneToMany({mappedBy: 'schemaVersion'})

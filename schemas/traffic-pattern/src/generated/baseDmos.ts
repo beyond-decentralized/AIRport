@@ -91,6 +91,16 @@ import {
 	SchemaVersionEId,
 	QSchemaVersion
 } from './schema/qschemaversion';
+import {
+	IVersionedSchemaObject,
+	VersionedSchemaObjectESelect,
+	VersionedSchemaObjectECreateColumns,
+	VersionedSchemaObjectECreateProperties,
+	VersionedSchemaObjectEUpdateColumns,
+	VersionedSchemaObjectEUpdateProperties,
+	VersionedSchemaObjectEId,
+	QVersionedSchemaObject
+} from './schema/qversionedschemaobject';
 
 
 export interface IBaseSchemaDmo
@@ -206,5 +216,18 @@ export class BaseSchemaVersionDmo
 	implements IBaseSchemaVersionDmo {
 	constructor() {
 		super(Q.db.currentVersion.entityMapByName['SchemaVersion']);
+	}
+}
+
+
+export interface IBaseVersionedSchemaObjectDmo
+  extends IDmo<IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject> {
+}
+
+export class BaseVersionedSchemaObjectDmo
+  extends Dmo<IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject>
+	implements IBaseVersionedSchemaObjectDmo {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['VersionedSchemaObject']);
 	}
 }

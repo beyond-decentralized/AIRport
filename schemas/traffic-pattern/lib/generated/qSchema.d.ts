@@ -9,8 +9,9 @@ import { QSchemaReference } from './schema/qschemareference';
 import { QSchemaRelation } from './schema/qschemarelation';
 import { QSchemaRelationColumn } from './schema/qschemarelationcolumn';
 import { QSchemaVersion } from './schema/qschemaversion';
-import { IBaseSchemaDmo, IBaseSchemaColumnDmo, IBaseSchemaEntityDmo, IBaseSchemaPropertyDmo, IBaseSchemaPropertyColumnDmo, IBaseSchemaReferenceDmo, IBaseSchemaRelationDmo, IBaseSchemaRelationColumnDmo, IBaseSchemaVersionDmo } from './baseDmos';
-import { IBaseSchemaDao, IBaseSchemaColumnDao, IBaseSchemaEntityDao, IBaseSchemaPropertyDao, IBaseSchemaPropertyColumnDao, IBaseSchemaReferenceDao, IBaseSchemaRelationDao, IBaseSchemaRelationColumnDao, IBaseSchemaVersionDao } from './baseDaos';
+import { QVersionedSchemaObject } from './schema/qversionedschemaobject';
+import { IBaseSchemaDmo, IBaseSchemaColumnDmo, IBaseSchemaEntityDmo, IBaseSchemaPropertyDmo, IBaseSchemaPropertyColumnDmo, IBaseSchemaReferenceDmo, IBaseSchemaRelationDmo, IBaseSchemaRelationColumnDmo, IBaseSchemaVersionDmo, IBaseVersionedSchemaObjectDmo } from './baseDmos';
+import { IBaseSchemaDao, IBaseSchemaColumnDao, IBaseSchemaEntityDao, IBaseSchemaPropertyDao, IBaseSchemaPropertyColumnDao, IBaseSchemaReferenceDao, IBaseSchemaRelationDao, IBaseSchemaRelationColumnDao, IBaseSchemaVersionDao, IBaseVersionedSchemaObjectDao } from './baseDaos';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
     dmo: {
@@ -23,6 +24,7 @@ export interface LocalQSchema extends AirportQSchema {
         SchemaRelation: IBaseSchemaRelationDmo;
         SchemaRelationColumn: IBaseSchemaRelationColumnDmo;
         SchemaVersion: IBaseSchemaVersionDmo;
+        VersionedSchemaObject: IBaseVersionedSchemaObjectDmo;
     };
     dao: {
         Schema: IBaseSchemaDao;
@@ -34,6 +36,7 @@ export interface LocalQSchema extends AirportQSchema {
         SchemaRelation: IBaseSchemaRelationDao;
         SchemaRelationColumn: IBaseSchemaRelationColumnDao;
         SchemaVersion: IBaseSchemaVersionDao;
+        VersionedSchemaObject: IBaseVersionedSchemaObjectDao;
     };
     Schema: QSchema;
     SchemaColumn: QSchemaColumn;
@@ -44,6 +47,7 @@ export interface LocalQSchema extends AirportQSchema {
     SchemaRelation: QSchemaRelation;
     SchemaRelationColumn: QSchemaRelationColumn;
     SchemaVersion: QSchemaVersion;
+    VersionedSchemaObject: QVersionedSchemaObject;
 }
 export declare const Q_SCHEMA: LocalQSchema;
 export declare const Q: LocalQSchema;

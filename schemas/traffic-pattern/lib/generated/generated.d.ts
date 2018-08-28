@@ -11,3 +11,4 @@ export * from './schema/qschemareference';
 export * from './schema/qschemarelation';
 export * from './schema/qschemarelationcolumn';
 export * from './schema/qschemaversion';
+export * from './schema/qversionedschemaobject';

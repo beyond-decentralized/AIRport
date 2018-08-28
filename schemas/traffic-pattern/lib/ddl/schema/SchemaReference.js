@@ -17,15 +17,19 @@ let SchemaReference = class SchemaReference extends VersionedSchemaObject_1.Vers
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'OWN_SCHEMA_VERSION_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'OWN_SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", SchemaVersion_1.SchemaVersion)
 ], SchemaReference.prototype, "ownSchemaVersion", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'REFERENCED_SCHEMA_VERSION_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'REFERENCED_SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", SchemaVersion_1.SchemaVersion)
 ], SchemaReference.prototype, "referencedSchemaVersion", void 0);
+__decorate([
+    air_control_1.Column({ name: 'INDEX', nullable: false }),
+    __metadata("design:type", Number)
+], SchemaReference.prototype, "index", void 0);
 SchemaReference = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({

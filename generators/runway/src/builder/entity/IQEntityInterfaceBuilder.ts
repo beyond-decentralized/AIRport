@@ -1,165 +1,166 @@
-import {TypeOrParamDocEntry} from "../../parser/DocEntry";
-import {EntityCandidate}     from "../../parser/EntityCandidate";
-import {addImportForType}    from "../../resolve/pathResolver";
-import {IQBuilder}           from "./../QBuilder";
-import {QColumnBuilder}      from "./QColumnBuilder";
-import {QEntityBuilder}      from "./QEntityBuilder";
-import {QPropertyBuilder}    from "./QPropertyBuilder";
-import {QRelationBuilder}    from "./QRelationBuilder";
-import {QTransientBuilder}   from "./QTransientBuilder";
+import {TypeOrParamDocEntry} from '../../parser/DocEntry'
+import {EntityCandidate}     from '../../parser/EntityCandidate'
+import {addImportForType}    from '../../resolve/pathResolver'
+import {IQBuilder}           from './../QBuilder'
+import {QColumnBuilder}      from './QColumnBuilder'
+import {QEntityBuilder}      from './QEntityBuilder'
+import {QPropertyBuilder}    from './QPropertyBuilder'
+import {QRelationBuilder}    from './QRelationBuilder'
+import {QTransientBuilder}   from './QTransientBuilder'
 
 /**
  * Created by Papa on 5/20/2016.
  */
-export class IQEntityInterfaceBuilder implements IQBuilder {
+export class IQEntityInterfaceBuilder
+	implements IQBuilder {
 
-	idPropertyBuilders: QPropertyBuilder[];
-	idRelationBuilders: QRelationBuilder[];
-	nonIdColumnBuilders: QColumnBuilder[];
-	nonIdPropertyBuilders: QPropertyBuilder[];
-	nonIdRelationBuilders: QRelationBuilder[];
-	transientPropertyBuilders: QTransientBuilder[];
+	idPropertyBuilders: QPropertyBuilder[]
+	idRelationBuilders: QRelationBuilder[]
+	nonIdColumnBuilders: QColumnBuilder[]
+	nonIdPropertyBuilders: QPropertyBuilder[]
+	nonIdRelationBuilders: QRelationBuilder[]
+	transientPropertyBuilders: QTransientBuilder[]
 
 	constructor(
 		public entity: EntityCandidate,
 		private qEntityBuilder: QEntityBuilder
 	) {
-		this.idPropertyBuilders        = qEntityBuilder.idPropertyBuilders;
-		this.idRelationBuilders        = qEntityBuilder.idRelationBuilders;
-		this.nonIdColumnBuilders       = qEntityBuilder.nonIdColumnBuilders;
-		this.nonIdPropertyBuilders     = qEntityBuilder.nonIdPropertyBuilders;
-		this.nonIdRelationBuilders     = qEntityBuilder.nonIdRelationBuilders;
-		this.transientPropertyBuilders = qEntityBuilder.transientPropertyBuilders;
+		this.idPropertyBuilders        = qEntityBuilder.idPropertyBuilders
+		this.idRelationBuilders        = qEntityBuilder.idRelationBuilders
+		this.nonIdColumnBuilders       = qEntityBuilder.nonIdColumnBuilders
+		this.nonIdPropertyBuilders     = qEntityBuilder.nonIdPropertyBuilders
+		this.nonIdRelationBuilders     = qEntityBuilder.nonIdRelationBuilders
+		this.transientPropertyBuilders = qEntityBuilder.transientPropertyBuilders
 	}
 
 	build(): string {
-		let entityName = `${this.entity.docEntry.name}`;
+		let entityName = `${this.entity.docEntry.name}`
 
-		let idProperties = ``;
+		let idProperties = ``
 		this.idPropertyBuilders.forEach((
 			builder: QPropertyBuilder
 		) => {
-			idProperties += `\t${builder.buildInterfaceDefinition(true, false)}\n`;
-		});
+			idProperties += `\t${builder.buildInterfaceDefinition(true, false)}\n`
+		})
 
-		let idEProperties = ``;
+		let idEProperties = ``
 		this.idPropertyBuilders.forEach((
 			builder: QPropertyBuilder
 		) => {
-			idEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`;
-		});
+			idEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`
+		})
 
-		let optionalIdEProperties = ``;
+		let optionalIdEProperties = ``
 		this.idPropertyBuilders.forEach((
 			builder: QPropertyBuilder
 		) => {
-			optionalIdEProperties += `\t${builder.buildInterfaceDefinition()}\n`;
-		});
+			optionalIdEProperties += `\t${builder.buildInterfaceDefinition()}\n`
+		})
 
 
-		let idRelations = ``;
+		let idRelations = ``
 		this.idRelationBuilders.forEach((
 			builder: QRelationBuilder
 		) => {
-			const idRelation = builder.buildInterfaceDefinition(true, true, false);
+			const idRelation = builder.buildInterfaceDefinition(true, true, false)
 			if (idRelation) {
-				idRelations += `\t${idRelation}\n`;
+				idRelations += `\t${idRelation}\n`
 			}
-		});
+		})
 
-		let idRelationsEntityIdEProperties = ``;
+		let idRelationsEntityIdEProperties = ``
 		this.idRelationBuilders.forEach((
 			builder: QRelationBuilder
 		) => {
-			const idRelationsEntityIdProperty = builder.buildInterfaceDefinition(true, false);
+			const idRelationsEntityIdProperty = builder.buildInterfaceDefinition(true, false)
 			if (idRelationsEntityIdProperty) {
-				idRelationsEntityIdEProperties += `\t${idRelationsEntityIdProperty}\n`;
+				idRelationsEntityIdEProperties += `\t${idRelationsEntityIdProperty}\n`
 			}
-		});
+		})
 
-		let optionalIdRelationsEntityIdEProperties = ``;
+		let optionalIdRelationsEntityIdEProperties = ``
 		this.idRelationBuilders.forEach((
 			builder: QRelationBuilder
 		) => {
-			const idRelationsEntityIdProperty = builder.buildInterfaceDefinition(true);
+			const idRelationsEntityIdProperty = builder.buildInterfaceDefinition(true)
 			if (idRelationsEntityIdProperty) {
-				optionalIdRelationsEntityIdEProperties += `\t${idRelationsEntityIdProperty}\n`;
+				optionalIdRelationsEntityIdEProperties += `\t${idRelationsEntityIdProperty}\n`
 			}
-		});
+		})
 
-		let idRelationsForEntityEProperties = ``;
+		let idRelationsForEntityEProperties = ``
 		this.idRelationBuilders.forEach((
 			builder: QRelationBuilder
 		) => {
-			idRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`;
-		});
+			idRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`
+		})
 
-		let nonIdProperties = ``;
+		let nonIdProperties = ``
 		this.nonIdPropertyBuilders.forEach((
 			builder: QPropertyBuilder
 		) => {
-			nonIdProperties += `\t${builder.buildInterfaceDefinition(true, false)}\n`;
-		});
+			nonIdProperties += `\t${builder.buildInterfaceDefinition(true, false)}\n`
+		})
 
-		let nonIdEProperties = ``;
+		let nonIdEProperties = ``
 		this.nonIdPropertyBuilders.forEach((
 			builder: QPropertyBuilder
 		) => {
-			nonIdEProperties += `\t${builder.buildInterfaceDefinition()}\n`;
-		});
+			nonIdEProperties += `\t${builder.buildInterfaceDefinition()}\n`
+		})
 
-		let nonIdEColumns = ``;
+		let nonIdEColumns = ``
 		this.nonIdColumnBuilders.forEach((
 			builder: QColumnBuilder
 		) => {
-			nonIdEColumns += `\t${builder.buildInterfaceDefinition()}\n`;
-		});
+			nonIdEColumns += `\t${builder.buildInterfaceDefinition()}\n`
+		})
 
-		let nonIdRelations = ``;
+		let nonIdRelations = ``
 		this.nonIdRelationBuilders.forEach((
 			builder: QRelationBuilder
 		) => {
-			const nonIdRelation = builder.buildInterfaceDefinition(false, true, false);
+			const nonIdRelation = builder.buildInterfaceDefinition(false, true, false)
 			if (nonIdRelation) {
-				nonIdRelations += `\t${nonIdRelation}\n`;
+				nonIdRelations += `\t${nonIdRelation}\n`
 			}
-		});
+		})
 
-		let nonIdRelationsForUpdateEProperties = ``;
+		let nonIdRelationsForUpdateEProperties = ``
 		this.nonIdRelationBuilders.forEach((
 			builder: QRelationBuilder
 		) => {
-			const nonIdRelationForUpdateProperties = builder.buildInterfaceDefinition(true);
+			const nonIdRelationForUpdateProperties = builder.buildInterfaceDefinition(true)
 			if (nonIdRelationForUpdateProperties) {
-				nonIdRelationsForUpdateEProperties += `\t${nonIdRelationForUpdateProperties}\n`;
+				nonIdRelationsForUpdateEProperties += `\t${nonIdRelationForUpdateProperties}\n`
 			}
-		});
+		})
 
-		let nonIdRelationsForEntityEProperties = ``;
+		let nonIdRelationsForEntityEProperties = ``
 		this.nonIdRelationBuilders.forEach((
 			builder: QRelationBuilder
 		) => {
-			nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`;
-		});
+			nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`
+		})
 
-		let transientProperties = ``;
+		let transientProperties = ``
 		this.transientPropertyBuilders.forEach((
 			builder: QTransientBuilder
 		) => {
-			transientProperties += `\t${builder.buildInterfaceDefinition()}\n`;
-		});
+			transientProperties += `\t${builder.buildInterfaceDefinition()}\n`
+		})
 
-		let entityExtendsClause                = '';
-		let extendedQInterface                 = `IEntitySelectProperties`;
-		let extendedQUpdatePropertiesInterface = `IEntityUpdateProperties`;
-		let extendedQUpdateColumnsInterface    = `IEntityUpdateColumns`;
-		let extendedQIdInterface               = 'IEntityIdProperties';
+		let entityExtendsClause                = ''
+		let extendedQInterface                 = `IEntitySelectProperties`
+		let extendedQUpdatePropertiesInterface = `IEntityUpdateProperties`
+		let extendedQUpdateColumnsInterface    = `IEntityUpdateColumns`
+		let extendedQIdInterface               = 'IEntityIdProperties'
 		if (this.entity.parentEntity) {
-			const parentType                   = this.entity.parentEntity.type;
-			extendedQInterface                 = `${parentType}ESelect`;
-			extendedQUpdatePropertiesInterface = `${parentType}EUpdateProperties`;
-			extendedQUpdateColumnsInterface    = `${parentType}EUpdateColumns`;
-			extendedQIdInterface               = `${parentType}EId`;
+			const parentType                   = this.entity.parentEntity.type
+			extendedQInterface                 = `${parentType}ESelect`
+			extendedQUpdatePropertiesInterface = `${parentType}EUpdateProperties`
+			extendedQUpdateColumnsInterface    = `${parentType}EUpdateColumns`
+			extendedQIdInterface               = `${parentType}EId`
 			entityExtendsClause                = ` extends I${parentType}`
 		}
 
@@ -168,13 +169,13 @@ export class IQEntityInterfaceBuilder implements IQBuilder {
 				method => {
 					let methodParams = method.parameters.map(
 						paramDocEntry => {
-							const optional = paramDocEntry.optional ? '?' : '';
-							return `\t\t${paramDocEntry.name}${optional}: ${this.getTypeString(paramDocEntry)}`;
-						}).join(',\n');
-					methodParams     = methodParams ? `\n${methodParams}\n\t` : '';
+							const optional = paramDocEntry.optional ? '?' : ''
+							return `\t\t${paramDocEntry.name}${optional}: ${this.getTypeString(paramDocEntry)}`
+						}).join(',\n')
+					methodParams     = methodParams ? `\n${methodParams}\n\t` : ''
 
-					return `\t${method.name}?(${methodParams}): ${this.getTypeString(method.returnType)};`;
-				}).join('\n');
+					return `\t${method.name}?(${methodParams}): ${this.getTypeString(method.returnType)};`
+				}).join('\n')
 
 		let interfaceSource = `
 //////////////////////////////
@@ -205,7 +206,9 @@ ${publicMethodSignatures}
  * SELECT - All fields and relations (optional).
  */
 export interface ${entityName}ESelect
-    extends ${extendedQInterface}, ${entityName}EOptionalId, ${entityName}EUpdateProperties {
+    extends ${extendedQInterface}, ${entityName}EOptionalId {
+	// Non-Id Properties
+${nonIdEProperties}
 	// Id Relations - full property interfaces
 ${idRelationsForEntityEProperties}
   // Non-Id relations (including OneToMany's)
@@ -267,45 +270,45 @@ export interface ${entityName}ECreateColumns
 extends ${entityName}EId, ${entityName}EUpdateColumns {
 }
 
-`;
+`
 
-		return interfaceSource;
+		return interfaceSource
 	}
 
 	getTypeString(
 		docEntry: TypeOrParamDocEntry
 	): string {
-		let type = docEntry.type;
+		let type = docEntry.type
 
-		let suffix = '';
+		let suffix = ''
 		if (docEntry.arrayDepth) {
 			for (let i = 0; i < docEntry.arrayDepth; i++) {
-				suffix += '[]';
+				suffix += '[]'
 			}
 		}
 
 		if (docEntry.primitive) {
-			return type + suffix;
+			return type + suffix
 		}
 		if (type === 'void') {
-			return type;
+			return type
 		}
 		if (type === 'Date' || type === 'any') {
-			return type + suffix;
+			return type + suffix
 		}
 
 		if (type !== 'Promise') {
-			addImportForType(this.entity, type, this.qEntityBuilder.fileBuilder);
+			addImportForType(this.entity, type, this.qEntityBuilder.fileBuilder)
 		}
 
 		if (docEntry.genericParams.length) {
 			suffix = '<' + docEntry.genericParams.map(
 				genericParam =>
 					this.getTypeString(genericParam)
-			).join(', ') + '>' + suffix;
+			).join(', ') + '>' + suffix
 		}
 
-		return type + suffix;
+		return type + suffix
 	}
 
 }

@@ -21,6 +21,15 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
+	IVersionedSchemaObject,
+	VersionedSchemaObjectEId,
+	VersionedSchemaObjectEUpdateProperties,
+	VersionedSchemaObjectESelect,
+	QVersionedSchemaObjectQId,
+	QVersionedSchemaObjectQRelation,
+	QVersionedSchemaObject,
+} from './qversionedschemaobject';
+import {
 	ISchemaEntity,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
@@ -59,19 +68,20 @@ declare function require(moduleName: string): any;
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface ISchemaProperty {
+export interface ISchemaProperty extends IVersionedSchemaObject {
 	
 	// Id Properties
-	index?: number;
+	id?: number;
 
 	// Id Relations
-	entity?: ISchemaEntity;
 
 	// Non-Id Properties
+	index?: number;
 	name?: string;
 	isId?: boolean;
 
 	// Non-Id Relations
+	entity?: ISchemaEntity;
 	propertyColumns?: ISchemaPropertyColumn[];
 	relation?: ISchemaRelation[];
 
@@ -89,11 +99,11 @@ export interface ISchemaProperty {
  * SELECT - All fields and relations (optional).
  */
 export interface SchemaPropertyESelect
-    extends IEntitySelectProperties, SchemaPropertyEOptionalId, SchemaPropertyEUpdateProperties {
+    extends VersionedSchemaObjectESelect, SchemaPropertyEOptionalId, SchemaPropertyEUpdateProperties {
 	// Id Relations - full property interfaces
-	entity?: SchemaEntityESelect;
 
   // Non-Id relations (including OneToMany's)
+	entity?: SchemaEntityESelect;
 	propertyColumns?: SchemaPropertyColumnESelect;
 	relation?: SchemaRelationESelect;
 
@@ -103,12 +113,11 @@ export interface SchemaPropertyESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface SchemaPropertyEId
-    extends IEntityIdProperties {
+    extends VersionedSchemaObjectEId {
 	// Id Properties
-	index: number | IQNumberField;
+	id: number | IQNumberField;
 
 	// Id Relations - Ids only
-	entity: SchemaEntityEId;
 
 }
 
@@ -117,10 +126,9 @@ export interface SchemaPropertyEId
  */
 export interface SchemaPropertyEOptionalId {
 	// Id Properties
-	index?: number | IQNumberField;
+	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
-	entity?: SchemaEntityEOptionalId;
 
 }
 
@@ -128,12 +136,14 @@ export interface SchemaPropertyEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SchemaPropertyEUpdateProperties
-	extends IEntityUpdateProperties {
+	extends VersionedSchemaObjectEUpdateProperties {
 	// Non-Id Properties
+	index?: number | IQNumberField;
 	name?: string | IQStringField;
 	isId?: boolean | IQBooleanField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+	entity?: SchemaEntityEOptionalId;
 
 }
 
@@ -141,10 +151,15 @@ export interface SchemaPropertyEUpdateProperties
  * UPDATE - non-id columns (optional).
  */
 export interface SchemaPropertyEUpdateColumns
-	extends IEntityUpdateColumns {
+	extends VersionedSchemaObjectEUpdateColumns {
 	// Non-Id Columns
+	DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+	REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
+	SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+	INDEX?: number | IQNumberField;
 	NAME?: string | IQStringField;
 	IS_ID?: boolean | IQBooleanField;
+	SCHEMA_ENTITY_ID?: number | IQNumberField;
 
 }
 
@@ -172,19 +187,20 @@ extends SchemaPropertyEId, SchemaPropertyEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaProperty extends QEntity
+export interface QSchemaProperty extends QVersionedSchemaObject
 {
 	// Id Fields
-	index: IQNumberField;
+	id: IQNumberField;
 
 	// Id Relations
-	entity: QSchemaEntityQRelation;
 
 	// Non-Id Fields
+	index: IQNumberField;
 	name: IQStringField;
 	isId: IQBooleanField;
 
 	// Non-Id Relations
+	entity: QSchemaEntityQRelation;
 	propertyColumns: IQOneToManyRelation<QSchemaPropertyColumn>;
 	relation: IQOneToManyRelation<QSchemaRelation>;
 
@@ -192,20 +208,19 @@ export interface QSchemaProperty extends QEntity
 
 
 // Entity Id Interface
-export interface QSchemaPropertyQId
+export interface QSchemaPropertyQId extends QVersionedSchemaObjectQId
 {
 	
 	// Id Fields
-	index: IQNumberField;
+	id: IQNumberField;
 
 	// Id Relations
-	entity: QSchemaEntityQId;
 
 
 }
 
 // Entity Relation Interface
 export interface QSchemaPropertyQRelation
-	extends QRelation<QSchemaProperty>, QSchemaPropertyQId {
+	extends QVersionedSchemaObjectQRelation<QSchemaProperty>, QSchemaPropertyQId {
 }
 

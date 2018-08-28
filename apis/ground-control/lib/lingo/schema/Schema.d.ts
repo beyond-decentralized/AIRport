@@ -54,9 +54,9 @@ export interface DbSchema extends SchemaReferenceByIndex<SchemaIndex>, DbObject 
     versions: DbSchemaVersion[];
 }
 export interface JsonDatabaseObject {
-    deprecatedSinceVersion?: JsonSchemaVersionReference;
-    removedInVersion?: JsonSchemaVersionReference;
-    sinceVersion: JsonSchemaVersionReference;
+    deprecatedSinceVersion?: SchemaVersionInteger;
+    removedInVersion?: SchemaVersionInteger;
+    sinceVersion: SchemaVersionInteger;
 }
 export interface JsonSchemaVersionReference {
     /**

@@ -94,6 +94,16 @@ import {
 	SchemaVersionEId,
 	QSchemaVersion
 } from './schema/qschemaversion';
+import {
+	IVersionedSchemaObject,
+	VersionedSchemaObjectESelect,
+	VersionedSchemaObjectECreateColumns,
+	VersionedSchemaObjectECreateProperties,
+	VersionedSchemaObjectEUpdateColumns,
+	VersionedSchemaObjectEUpdateProperties,
+	VersionedSchemaObjectEId,
+	QVersionedSchemaObject
+} from './schema/qversionedschemaobject';
 
 
 export interface IBaseSchemaDao
@@ -227,5 +237,20 @@ export class BaseSchemaVersionDao
 		utils: IUtils
 	) {
 		super(Q.db.currentVersion.entityMapByName['SchemaVersion'], Q, utils);
+	}
+}
+
+
+export interface IBaseVersionedSchemaObjectDao
+  extends IDao<IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject> {
+}
+
+export class BaseVersionedSchemaObjectDao
+  extends Dao<IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject>
+	implements IBaseVersionedSchemaObjectDao {
+	constructor(
+		utils: IUtils
+	) {
+		super(Q.db.currentVersion.entityMapByName['VersionedSchemaObject'], Q, utils);
 	}
 }

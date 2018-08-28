@@ -18,6 +18,8 @@ import { SchemaRelationColumn } from '../ddl/schema/SchemaRelationColumn';
 import { QSchemaRelationColumn } from './schema/qschemarelationcolumn';
 import { SchemaVersion } from '../ddl/schema/SchemaVersion';
 import { QSchemaVersion } from './schema/qschemaversion';
+import { VersionedSchemaObject } from '../ddl/schema/VersionedSchemaObject';
+import { QVersionedSchemaObject } from './schema/qversionedschemaobject';
 
 import {
 	IBaseSchemaDmo,
@@ -28,7 +30,8 @@ import {
 	IBaseSchemaReferenceDmo,
 	IBaseSchemaRelationDmo,
 	IBaseSchemaRelationColumnDmo,
-	IBaseSchemaVersionDmo
+	IBaseSchemaVersionDmo,
+	IBaseVersionedSchemaObjectDmo
 } from './baseDmos';
 
 import {
@@ -40,7 +43,8 @@ import {
 	IBaseSchemaReferenceDao,
 	IBaseSchemaRelationDao,
 	IBaseSchemaRelationColumnDao,
-	IBaseSchemaVersionDao
+	IBaseSchemaVersionDao,
+	IBaseVersionedSchemaObjectDao
 } from './baseDaos';
 
 export interface LocalQSchema extends AirportQSchema {
@@ -57,6 +61,7 @@ export interface LocalQSchema extends AirportQSchema {
 		SchemaRelation: IBaseSchemaRelationDmo;
 		SchemaRelationColumn: IBaseSchemaRelationColumnDmo;
 		SchemaVersion: IBaseSchemaVersionDmo;
+		VersionedSchemaObject: IBaseVersionedSchemaObjectDmo;
 	}
 
 	dao: {
@@ -69,6 +74,7 @@ export interface LocalQSchema extends AirportQSchema {
 		SchemaRelation: IBaseSchemaRelationDao;
 		SchemaRelationColumn: IBaseSchemaRelationColumnDao;
 		SchemaVersion: IBaseSchemaVersionDao;
+		VersionedSchemaObject: IBaseVersionedSchemaObjectDao;
 	}
 	
 	Schema: QSchema;
@@ -80,6 +86,7 @@ export interface LocalQSchema extends AirportQSchema {
 	SchemaRelation: QSchemaRelation;
 	SchemaRelationColumn: QSchemaRelationColumn;
 	SchemaVersion: QSchemaVersion;
+	VersionedSchemaObject: QVersionedSchemaObject;
 
 }
 
@@ -92,7 +99,8 @@ const __constructors__ = {
 	SchemaReference: SchemaReference,
 	SchemaRelation: SchemaRelation,
 	SchemaRelationColumn: SchemaRelationColumn,
-	SchemaVersion: SchemaVersion
+	SchemaVersion: SchemaVersion,
+	VersionedSchemaObject: VersionedSchemaObject
 };
 
 export const Q_SCHEMA: LocalQSchema = <any>{

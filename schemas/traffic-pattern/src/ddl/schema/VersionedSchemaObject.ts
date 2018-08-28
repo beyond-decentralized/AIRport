@@ -17,7 +17,7 @@ export class VersionedSchemaObject {
 	removedInVersion?: SchemaVersion
 
 	@ManyToOne()
-	@JoinColumn({name: 'SINCE_SCHEMA_VERSION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'SINCE_SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false})
 	sinceVersion: SchemaVersion
 
 }

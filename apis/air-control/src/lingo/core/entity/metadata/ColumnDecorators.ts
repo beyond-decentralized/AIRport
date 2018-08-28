@@ -19,9 +19,11 @@ export interface IdDecorator {
  * SQL Column configuration.
  */
 export interface ColumnConfiguration {
-	columnDefinition?: string;
+	// columnDefinition?: string;
 	// Name of column
 	name: string;
+	// (Optional) Whether the database column is nullable.
+	nullable?: boolean;
 }
 
 export enum ConstraintMode {
@@ -51,6 +53,8 @@ export interface JoinColumnConfiguration
 export interface CoreJoinColumnConfiguration {
 	// Name of column
 	name: string;
+	// (Optional) Whether the foreign key column is nullable.
+	nullable?: boolean;
 	// nullable: boolean
 	// Name of the column on the One-to-Many side (defaults to the single @Id)
 	referencedColumnName?: string;

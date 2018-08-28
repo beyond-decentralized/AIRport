@@ -21,31 +21,31 @@ __decorate([
     __metadata("design:type", Number)
 ], SchemaVersion.prototype, "id", void 0);
 __decorate([
-    air_control_1.Column({ name: 'INTEGER_VERSION' }),
+    air_control_1.Column({ name: 'INTEGER_VERSION', nullable: false }),
     __metadata("design:type", Number)
 ], SchemaVersion.prototype, "integerVersion", void 0);
 __decorate([
-    air_control_1.Column({ name: 'VERSION_STRING' }),
+    air_control_1.Column({ name: 'VERSION_STRING', nullable: false }),
     __metadata("design:type", String)
 ], SchemaVersion.prototype, "versionString", void 0);
 __decorate([
-    air_control_1.Column({ name: 'MAJOR_VERSION' }),
+    air_control_1.Column({ name: 'MAJOR_VERSION', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], SchemaVersion.prototype, "majorVersion", void 0);
 __decorate([
-    air_control_1.Column({ name: 'MINOR_VERSION' }),
+    air_control_1.Column({ name: 'MINOR_VERSION', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], SchemaVersion.prototype, "minorVersion", void 0);
 __decorate([
-    air_control_1.Column({ name: 'PATCH_VERSION' }),
+    air_control_1.Column({ name: 'PATCH_VERSION', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], SchemaVersion.prototype, "patchVersion", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'SCHEMA_INDEX', referencedColumnName: 'INDEX' }),
+    air_control_1.JoinColumn({ name: 'SCHEMA_INDEX', referencedColumnName: 'INDEX', nullable: false }),
     __metadata("design:type", Schema_1.Schema)
 ], SchemaVersion.prototype, "schema", void 0);
 __decorate([

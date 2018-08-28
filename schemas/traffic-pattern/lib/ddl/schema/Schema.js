@@ -25,20 +25,21 @@ __decorate([
 ], Schema.prototype, "index", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'DOMAIN_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'DOMAIN_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", territory_1.Domain)
 ], Schema.prototype, "domain", void 0);
 __decorate([
-    air_control_1.Column({ name: 'SCOPE' }),
+    air_control_1.Column({ name: 'SCOPE', nullable: false }),
     air_control_1.DbString(),
     __metadata("design:type", String)
 ], Schema.prototype, "scope", void 0);
 __decorate([
-    air_control_1.Column({ name: 'SCHEMA_NAME' }),
+    air_control_1.Column({ name: 'SCHEMA_NAME', nullable: false }),
     air_control_1.DbString(),
     __metadata("design:type", String)
 ], Schema.prototype, "name", void 0);
 __decorate([
+    air_control_1.Column({ name: 'STATUS', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Schema.prototype, "status", void 0);
@@ -48,7 +49,7 @@ __decorate([
 ], Schema.prototype, "versions", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'CURRENT_VERSION_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'CURRENT_VERSION_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", SchemaVersion_1.SchemaVersion)
 ], Schema.prototype, "currentVersion", void 0);
 Schema = __decorate([

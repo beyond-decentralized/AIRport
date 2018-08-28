@@ -36,13 +36,14 @@ export class SchemaProperty
 
 	@ManyToOne()
 	@JoinColumn(
-		{name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID'}
+		{name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID', nullable: false}
 	)
 	entity: SchemaEntity
 
+	@Column({name: 'NAME', nullable: false})
 	name: PropertyName
 
-	@Column({name: 'IS_ID'})
+	@Column({name: 'IS_ID', nullable: false})
 	isId: PropertyIsId
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'property'})

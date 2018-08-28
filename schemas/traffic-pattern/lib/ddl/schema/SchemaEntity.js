@@ -22,25 +22,31 @@ __decorate([
     __metadata("design:type", Number)
 ], SchemaEntity.prototype, "id", void 0);
 __decorate([
+    air_control_1.Column({ name: 'INDEX', nullable: false }),
     ColumnDecorators_1.DbNumber(),
     __metadata("design:type", Number)
 ], SchemaEntity.prototype, "index", void 0);
 __decorate([
-    air_control_1.Column({ name: 'IS_LOCAL' }),
+    air_control_1.Column({ name: 'IS_LOCAL', nullable: false }),
     __metadata("design:type", Boolean)
 ], SchemaEntity.prototype, "isLocal", void 0);
 __decorate([
-    air_control_1.Column({ name: 'IS_REPOSITORY_ENTITY' }),
+    air_control_1.Column({ name: 'IS_REPOSITORY_ENTITY', nullable: false }),
     __metadata("design:type", Boolean)
 ], SchemaEntity.prototype, "isRepositoryEntity", void 0);
 __decorate([
+    air_control_1.Column({ name: 'NAME', nullable: false }),
+    __metadata("design:type", String)
+], SchemaEntity.prototype, "name", void 0);
+__decorate([
+    air_control_1.Column({ name: 'TABLE_CONFIGURATION', nullable: false }),
     air_control_1.Json(),
     __metadata("design:type", Object)
 ], SchemaEntity.prototype, "tableConfig", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", SchemaVersion_1.SchemaVersion
     //
     // One-to-Many's
@@ -56,10 +62,13 @@ __decorate([
     __metadata("design:type", Array)
 ], SchemaEntity.prototype, "properties", void 0);
 __decorate([
-    air_control_1.OneToMany(),
-    air_control_1.JoinColumn({ name: 'SCHEMA_RELATION_ID', referencedColumnName: 'ID' }),
+    air_control_1.OneToMany({ mappedBy: 'entity' }),
     __metadata("design:type", Array)
 ], SchemaEntity.prototype, "relations", void 0);
+__decorate([
+    air_control_1.OneToMany({ mappedBy: 'relationEntity' }),
+    __metadata("design:type", Array)
+], SchemaEntity.prototype, "relationReferences", void 0);
 __decorate([
     air_control_1.Transient(),
     __metadata("design:type", Object)

@@ -14,6 +14,7 @@ export declare class SchemaRelation extends VersionedSchemaObject {
     oneToManyElems: OneToManyElements;
     relationType: EntityRelationType;
     isId: boolean;
+    entity: SchemaEntity;
     relationEntity: SchemaEntity;
     manyRelationColumns: SchemaRelationColumn[];
     oneRelationColumns: SchemaRelationColumn[];

@@ -17,6 +17,7 @@ export declare class SchemaEntity extends VersionedSchemaObject {
     columns: SchemaColumn[];
     properties: SchemaProperty[];
     relations: SchemaRelation[];
+    relationReferences: SchemaRelation[];
     columnMap?: {
         [name: string]: SchemaColumn;
     };

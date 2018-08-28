@@ -18,21 +18,21 @@ export class SchemaRelationColumn
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'MANY_COLUMN_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'MANY_SCHEMA_COLUMN_ID', referencedColumnName: 'ID', nullable: false})
 	manyColumn: SchemaColumn
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'ONE_COLUMN_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'ONE_SCHEMA_COLUMN_ID', referencedColumnName: 'ID', nullable: false})
 	oneColumn: SchemaColumn
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'MANY_RELATION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'MANY_SCHEMA_RELATION_ID', referencedColumnName: 'ID', nullable: false})
 	manyRelation: SchemaRelation
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'ONE_RELATION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'ONE_SCHEMA_RELATION_ID', referencedColumnName: 'ID', nullable: false})
 	oneRelation: SchemaRelation
 }

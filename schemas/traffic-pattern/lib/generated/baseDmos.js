@@ -56,4 +56,10 @@ class BaseSchemaVersionDmo extends check_in_1.Dmo {
     }
 }
 exports.BaseSchemaVersionDmo = BaseSchemaVersionDmo;
+class BaseVersionedSchemaObjectDmo extends check_in_1.Dmo {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['VersionedSchemaObject']);
+    }
+}
+exports.BaseVersionedSchemaObjectDmo = BaseVersionedSchemaObjectDmo;
 //# sourceMappingURL=baseDmos.js.map

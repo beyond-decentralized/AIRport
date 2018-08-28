@@ -56,4 +56,10 @@ class BaseSchemaVersionDao extends check_in_1.Dao {
     }
 }
 exports.BaseSchemaVersionDao = BaseSchemaVersionDao;
+class BaseVersionedSchemaObjectDao extends check_in_1.Dao {
+    constructor(utils) {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['VersionedSchemaObject'], qSchema_1.Q, utils);
+    }
+}
+exports.BaseVersionedSchemaObjectDao = BaseVersionedSchemaObjectDao;
 //# sourceMappingURL=baseDaos.js.map

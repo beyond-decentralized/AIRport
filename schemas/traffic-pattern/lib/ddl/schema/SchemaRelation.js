@@ -22,8 +22,12 @@ __decorate([
     __metadata("design:type", Number)
 ], SchemaRelation.prototype, "id", void 0);
 __decorate([
+    air_control_1.Column({ name: 'INDEX', nullable: false }),
+    __metadata("design:type", Number)
+], SchemaRelation.prototype, "index", void 0);
+__decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'PROPERTY_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'SCHEMA_PROPERTY_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", SchemaProperty_1.SchemaProperty)
 ], SchemaRelation.prototype, "property", void 0);
 __decorate([
@@ -43,19 +47,21 @@ __decorate([
 ], SchemaRelation.prototype, "oneToManyElems", void 0);
 __decorate([
     air_control_1.DbNumber(),
-    air_control_1.Column({ name: 'RELATION_TYPE' }),
+    air_control_1.Column({ name: 'RELATION_TYPE', nullable: false }),
     __metadata("design:type", Number)
 ], SchemaRelation.prototype, "relationType", void 0);
 __decorate([
-    air_control_1.Column({ name: 'IS_ID' }),
+    air_control_1.Column({ name: 'IS_ID', nullable: false }),
     __metadata("design:type", Boolean)
 ], SchemaRelation.prototype, "isId", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumns([
-        { name: 'RELATION_SCHEMA_VERSION_ID', referencedColumnName: 'SCHEMA_VERSION_ID' },
-        { name: 'RELATION_TABLE_INDEX', referencedColumnName: 'INDEX' }
-    ]),
+    air_control_1.JoinColumn({ name: 'SCHEMA_TABLE_ID', referencedColumnName: 'ID', nullable: false }),
+    __metadata("design:type", SchemaEntity_1.SchemaEntity)
+], SchemaRelation.prototype, "entity", void 0);
+__decorate([
+    air_control_1.ManyToOne(),
+    air_control_1.JoinColumn({ name: 'RELATION_SCHEMA_TABLE_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", SchemaEntity_1.SchemaEntity)
 ], SchemaRelation.prototype, "relationEntity", void 0);
 __decorate([

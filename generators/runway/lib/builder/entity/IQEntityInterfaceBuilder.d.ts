@@ -1,11 +1,11 @@
-import { TypeOrParamDocEntry } from "../../parser/DocEntry";
-import { EntityCandidate } from "../../parser/EntityCandidate";
-import { IQBuilder } from "./../QBuilder";
-import { QColumnBuilder } from "./QColumnBuilder";
-import { QEntityBuilder } from "./QEntityBuilder";
-import { QPropertyBuilder } from "./QPropertyBuilder";
-import { QRelationBuilder } from "./QRelationBuilder";
-import { QTransientBuilder } from "./QTransientBuilder";
+import { TypeOrParamDocEntry } from '../../parser/DocEntry';
+import { EntityCandidate } from '../../parser/EntityCandidate';
+import { IQBuilder } from './../QBuilder';
+import { QColumnBuilder } from './QColumnBuilder';
+import { QEntityBuilder } from './QEntityBuilder';
+import { QPropertyBuilder } from './QPropertyBuilder';
+import { QRelationBuilder } from './QRelationBuilder';
+import { QTransientBuilder } from './QTransientBuilder';
 /**
  * Created by Papa on 5/20/2016.
  */

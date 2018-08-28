@@ -19,13 +19,13 @@ let SchemaPropertyColumn = class SchemaPropertyColumn extends VersionedSchemaObj
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'COLUMN_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'SCHEMA_COLUMN_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", Object)
 ], SchemaPropertyColumn.prototype, "column", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'PROPERTY_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'SCHEMA_PROPERTY_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", Object)
 ], SchemaPropertyColumn.prototype, "property", void 0);
 SchemaPropertyColumn = __decorate([

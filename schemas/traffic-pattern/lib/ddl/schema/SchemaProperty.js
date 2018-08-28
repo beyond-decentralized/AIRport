@@ -22,11 +22,15 @@ __decorate([
 ], SchemaProperty.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", SchemaEntity_1.SchemaEntity)
 ], SchemaProperty.prototype, "entity", void 0);
 __decorate([
-    air_control_1.Column({ name: 'IS_ID' }),
+    air_control_1.Column({ name: 'NAME', nullable: false }),
+    __metadata("design:type", String)
+], SchemaProperty.prototype, "name", void 0);
+__decorate([
+    air_control_1.Column({ name: 'IS_ID', nullable: false }),
     __metadata("design:type", Boolean)
 ], SchemaProperty.prototype, "isId", void 0);
 __decorate([

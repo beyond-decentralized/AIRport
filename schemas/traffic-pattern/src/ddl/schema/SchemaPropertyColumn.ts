@@ -21,12 +21,12 @@ export class SchemaPropertyColumn
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'COLUMN_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'SCHEMA_COLUMN_ID', referencedColumnName: 'ID', nullable: false})
 	column: ISchemaColumn
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'PROPERTY_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'SCHEMA_PROPERTY_ID', referencedColumnName: 'ID', nullable: false})
 	property: ISchemaProperty
 
 }

@@ -9,6 +9,7 @@ const SchemaReference_1 = require("../ddl/schema/SchemaReference");
 const SchemaRelation_1 = require("../ddl/schema/SchemaRelation");
 const SchemaRelationColumn_1 = require("../ddl/schema/SchemaRelationColumn");
 const SchemaVersion_1 = require("../ddl/schema/SchemaVersion");
+const VersionedSchemaObject_1 = require("../ddl/schema/VersionedSchemaObject");
 const __constructors__ = {
     Schema: Schema_1.Schema,
     SchemaColumn: SchemaColumn_1.SchemaColumn,
@@ -18,7 +19,8 @@ const __constructors__ = {
     SchemaReference: SchemaReference_1.SchemaReference,
     SchemaRelation: SchemaRelation_1.SchemaRelation,
     SchemaRelationColumn: SchemaRelationColumn_1.SchemaRelationColumn,
-    SchemaVersion: SchemaVersion_1.SchemaVersion
+    SchemaVersion: SchemaVersion_1.SchemaVersion,
+    VersionedSchemaObject: VersionedSchemaObject_1.VersionedSchemaObject
 };
 exports.Q_SCHEMA = {
     __constructors__

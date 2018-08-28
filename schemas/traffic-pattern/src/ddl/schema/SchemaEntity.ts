@@ -42,17 +42,20 @@ export class SchemaEntity
 	//
 	// Non-Id columns
 	//
+	@Column({name: 'INDEX', nullable: false})
 	@DbNumber()
 	index: TableIndex
 
-	@Column({name: 'IS_LOCAL'})
+	@Column({name: 'IS_LOCAL', nullable: false})
 	isLocal: boolean
 
-	@Column({name: 'IS_REPOSITORY_ENTITY'})
+	@Column({name: 'IS_REPOSITORY_ENTITY', nullable: false})
 	isRepositoryEntity: boolean
 
+	@Column({name: 'NAME', nullable: false})
 	name: EntityName
 
+	@Column({name: 'TABLE_CONFIGURATION', nullable: false})
 	@Json()
 	tableConfig: TableConfiguration
 
@@ -62,7 +65,7 @@ export class SchemaEntity
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false})
 	schemaVersion: SchemaVersion
 
 	//
@@ -87,9 +90,11 @@ export class SchemaEntity
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entity'})
 	properties: SchemaProperty[]
 
-	@OneToMany()
-	@JoinColumn({name: 'SCHEMA_RELATION_ID', referencedColumnName: 'ID'})
+	@OneToMany({mappedBy: 'entity'})
 	relations: SchemaRelation[]
+
+	@OneToMany({mappedBy: 'relationEntity'})
+	relationReferences: SchemaRelation[]
 
 	@Transient()
 	columnMap?: { [name: string]: SchemaColumn }

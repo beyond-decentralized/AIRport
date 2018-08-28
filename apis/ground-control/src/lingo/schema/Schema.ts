@@ -76,9 +76,9 @@ export interface DbSchema
 
 export interface JsonDatabaseObject {
 
-	deprecatedSinceVersion?: JsonSchemaVersionReference
-	removedInVersion?: JsonSchemaVersionReference
-	sinceVersion: JsonSchemaVersionReference
+	deprecatedSinceVersion?: SchemaVersionInteger
+	removedInVersion?: SchemaVersionInteger
+	sinceVersion: SchemaVersionInteger
 
 }
 
