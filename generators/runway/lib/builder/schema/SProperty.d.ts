@@ -101,6 +101,7 @@ export interface SColumn extends SchemaReferenceByIndex<ColumnIndex> {
      * Name of the column.
      */
     name: string;
+    notNull: boolean;
     /**
      * Properties that are mapped to this column.
      */

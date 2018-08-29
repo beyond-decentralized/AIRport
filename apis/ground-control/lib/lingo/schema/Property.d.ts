@@ -3,12 +3,13 @@ import { DbEntity, TableIndex } from './Entity';
 import { SchemaIndex } from './Schema';
 export declare type ColumnIndex = number;
 export declare type ColumnName = string;
+export declare type ColumnNotNull = boolean;
 export declare type PropertyIndex = number;
 export declare type PropertyIsId = boolean;
 export declare type PropertyName = string;
 export declare type RelationIndex = number;
 export declare type SchemaColumnIsGenerated = boolean;
-export declare type SchemaColumnAllocationSize = boolean;
+export declare type SchemaColumnAllocationSize = number;
 /**
  * A property of an object in a schema.
  * Parent properties for the entity are indexed at each child table,
@@ -68,6 +69,7 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex>, J
      * Name of the column.
      */
     name: ColumnName;
+    notNull: ColumnNotNull;
     /**
      * Properties that are mapped to this column.
      */
@@ -90,6 +92,7 @@ export interface DbColumn extends SchemaReferenceByIndex<ColumnIndex>, DbObject 
      */
     manyRelationColumns?: DbRelationColumn[];
     name: ColumnName;
+    notNull: ColumnNotNull;
     /**
      * In which OneToMany relations is this column present.
      */
@@ -114,7 +117,7 @@ export interface PropertyReference extends SchemaReferenceByIndex<PropertyIndex>
 /**
  * A schema relation.
  */
-export interface JsonSchemaRelation extends SchemaReferenceByIndex<RelationIndex>, DbObject {
+export interface JsonSchemaRelation extends SchemaReferenceByIndex<RelationIndex>, JsonDatabaseObject {
     /**
      * Foreign key definition, if provided by (R)JoinColumn(s)
      */

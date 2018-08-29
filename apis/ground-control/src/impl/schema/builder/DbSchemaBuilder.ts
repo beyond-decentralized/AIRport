@@ -71,6 +71,7 @@ export class DbSchemaBuilder
 			domain: dbDomain,
 			index: allSchemas.length,
 			name: jsonSchema.name,
+			sinceVersion: dbSchemaVersion,
 			versions: [dbSchemaVersion]
 		}
 		dbSchemaVersion.schema = dbSchema
@@ -78,8 +79,8 @@ export class DbSchemaBuilder
 
 		for (const jsonEntity of currentJsonSchemaVersion.entities) {
 			const dbEntity = this.buildDbEntity(
-				jsonSchema, jsonEntity, dictionary, currentJsonSchemaVersion.referencedSchemas)
-			dbEntity.schemaVersion = dbSchemaVersion
+				jsonSchema, jsonEntity, dictionary,
+				currentJsonSchemaVersion.referencedSchemas, dbSchemaVersion)
 			entities[dbEntity.index] = dbEntity
 			entityMapByName[dbEntity.name] = dbEntity
 		}
@@ -92,6 +93,7 @@ export class DbSchemaBuilder
 		jsonEntity: JsonSchemaEntity,
 		dictionary: ILinkingDictionary,
 		referencedSchemas: JsonSchema[],
+		schemaVersion: DbSchemaVersion
 	): DbEntity {
 		const columnMap = {}
 		const columns: DbColumn[] = []
@@ -110,7 +112,8 @@ export class DbSchemaBuilder
 			propertyMap,
 			properties,
 			relations,
-			schemaVersion: null,
+			schemaVersion,
+			sinceVersion: schemaVersion,
 			tableConfig: jsonEntity.tableConfig
 		}
 
@@ -125,6 +128,7 @@ export class DbSchemaBuilder
 				isId: jsonProperty.isId,
 				name: jsonProperty.name,
 				relation: null,
+				sinceVersion: schemaVersion
 			}
 			propertyMap[jsonProperty.name] = property
 			properties[index] = property
@@ -147,7 +151,8 @@ export class DbSchemaBuilder
 			index
 		) => {
 			const dbProperty = properties[jsonRelation.propertyRef.index]
-			const dbRelation = this.buildDbRelation(jsonRelation, dbProperty)
+			const dbRelation = this.buildDbRelation(
+				jsonRelation, dbProperty, schemaVersion)
 			relations[index] = dbRelation
 		})
 		relations.sort((
@@ -161,7 +166,9 @@ export class DbSchemaBuilder
 			jsonColumn,
 			index
 		) => {
-			const dbColumn = this.buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas)
+			const dbColumn = this.buildDbColumn(
+				jsonSchema, jsonEntity, jsonColumn, properties,
+				dictionary, referencedSchemas, schemaVersion)
 			columnMap[jsonColumn.name] = dbColumn
 			columns[index] = dbColumn
 		})
@@ -184,6 +191,7 @@ export class DbSchemaBuilder
 	private buildDbRelation(
 		jsonRelation: JsonSchemaRelation,
 		dbProperty: DbProperty,
+		schemaVersion: DbSchemaVersion
 	): DbRelation {
 		const dbRelation: DbRelation = {
 			foreignKey: jsonRelation.foreignKey,
@@ -197,6 +205,7 @@ export class DbSchemaBuilder
 			manyRelationColumns: [],
 			oneRelationColumns: [],
 			relationEntity: null,
+			sinceVersion: schemaVersion
 			// addToJoinFunction: jsonRelation.addToJoinFunction,
 			// joinFunctionWithOperator: jsonRelation.joinFunctionWithOperator,
 		}
@@ -219,12 +228,15 @@ export class DbSchemaBuilder
 		properties: DbProperty[],
 		dictionary: ILinkingDictionary,
 		referencedSchemas: JsonSchema[],
+		schemaVersion: DbSchemaVersion
 	): DbColumn {
 		const dbColumn: DbColumn = {
 			index: jsonColumn.index,
 			isGenerated: !!jsonColumn.isGenerated,
 			name: jsonColumn.name,
+			notNull: jsonColumn.notNull,
 			propertyColumns: null,
+			sinceVersion: schemaVersion,
 			type: jsonColumn.type
 		}
 		const propertyColumns = jsonColumn.propertyRefs.map(

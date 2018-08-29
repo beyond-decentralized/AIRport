@@ -23,6 +23,7 @@ import {
 import {
 	IVersionedSchemaObject,
 	VersionedSchemaObjectEId,
+	VersionedSchemaObjectEUpdateColumns,
 	VersionedSchemaObjectEUpdateProperties,
 	VersionedSchemaObjectESelect,
 	QVersionedSchemaObjectQId,
@@ -99,7 +100,12 @@ export interface ISchemaProperty extends IVersionedSchemaObject {
  * SELECT - All fields and relations (optional).
  */
 export interface SchemaPropertyESelect
-    extends VersionedSchemaObjectESelect, SchemaPropertyEOptionalId, SchemaPropertyEUpdateProperties {
+    extends VersionedSchemaObjectESelect, SchemaPropertyEOptionalId {
+	// Non-Id Properties
+	index?: number | IQNumberField;
+	name?: string | IQStringField;
+	isId?: boolean | IQBooleanField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

@@ -2,28 +2,42 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="85f0f2ef-561d-419c-9d09-6832aa737a18" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/../takeoff/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../takeoff/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../takeoff/.idea/takeoff.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../takeoff/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../takeoff/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/entity/metadata/ColumnDecorators.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/entity/metadata/ColumnDecorators.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/entity/metadata/ColumnDecorators.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/entity/metadata/ColumnDecorators.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/lingo/core/entity/metadata/ColumnDecorators.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/lingo/core/entity/metadata/ColumnDecorators.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Schema.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/schema/Schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/schema/Schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/impl/schema/builder/DbSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/impl/schema/builder/DbSchemaBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/schema/Property.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/schema/Property.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../landing/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/builder/entity/IQEntityInterfaceBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/entity/IQEntityInterfaceBuilder.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/builder/entity/IQEntityInterfaceBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/entity/IQEntityInterfaceBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/builder/entity/IQEntityInterfaceBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/entity/IQEntityInterfaceBuilder.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/builder/entity/QEntityFileBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/entity/QEntityFileBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/builder/entity/QEntityFileBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/entity/QEntityFileBuilder.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/builder/schema/JsonSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/schema/JsonSchemaBuilder.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/builder/schema/JsonSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/schema/JsonSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builder/entity/IQEntityInterfaceBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/builder/entity/IQEntityInterfaceBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/builder/schema/SProperty.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/schema/SProperty.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/builder/schema/SSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/schema/SSchemaBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/builder/schema/SSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/schema/SSchemaBuilder.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/parser/DocEntry.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/parser/DocEntry.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builder/entity/QEntityFileBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/builder/entity/QEntityFileBuilder.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/builder/schema/JsonSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/builder/schema/JsonSchemaBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builder/schema/SProperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/builder/schema/SProperty.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builder/schema/SSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/builder/schema/SSchemaBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/DocEntry.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/DocEntry.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../takeoff/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../takeoff/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/Schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/Schema.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/Schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/Schema.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.js" afterDir="false" />
@@ -32,36 +46,21 @@
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaReference.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaReference.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaReference.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaReference.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaVersion.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaVersion.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaVersion.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaVersion.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/baseDaos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/baseDaos.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/baseDaos.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/baseDaos.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/baseDaos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/baseDaos.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/baseDmos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/baseDmos.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/baseDmos.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/baseDmos.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/baseDmos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/baseDmos.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/generated.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/generated.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/qSchema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/qSchema.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/qSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/qSchema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/qSchema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/qSchema.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/Schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/Schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaProperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaProperty.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaPropertyColumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaPropertyColumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaReference.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaReference.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaRelation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaRelation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaRelationColumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaRelationColumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaVersion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaVersion.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/VersionedSchemaObject.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/VersionedSchemaObject.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemacolumn.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemacolumn.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemaentity.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemaentity.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemaproperty.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemaproperty.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemapropertycolumn.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemapropertycolumn.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemareference.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemareference.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemarelation.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemarelation.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemarelationcolumn.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemarelationcolumn.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemaversion.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/generated/schema/qschemaversion.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/baseDaos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/baseDaos.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/baseDmos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/baseDmos.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/generated.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/generated.ts" afterDir="false" />
@@ -75,6 +74,7 @@
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/schema/qschemareference.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/schema/qschemareference.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/schema/qschemarelation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/schema/qschemarelation.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/schema/qschemarelationcolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/schema/qschemarelationcolumn.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/schema/qschemaversion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/generated/schema/qschemaversion.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -121,26 +121,47 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="382868915">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts">
+        <counts>
+          <entry key="TypeScriptServerServiceImpl" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="ts" value="9" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="TypeScript" value="9" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="ts" value="536" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="TypeScript" value="536" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/builder/entity/IQEntityInterfaceBuilder.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="207" column="37" selection-start-line="207" selection-start-column="37" selection-end-line="207" selection-end-column="37" />
-              <folding>
-                <element signature="e#0#57#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/builder/schema/JsonSchemaBuilder.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="185" column="34" lean-forward="true" selection-start-line="185" selection-start-column="34" selection-end-line="185" selection-end-column="34" />
+            <state relative-caret-position="455">
+              <caret line="266" column="25" selection-start-line="266" selection-start-column="25" selection-end-line="266" selection-end-column="25" />
               <folding>
                 <element signature="e#0#324#0" expanded="true" />
               </folding>
@@ -151,8 +172,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/schema/Property.d.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="116" column="86" selection-start-line="116" selection-start-column="86" selection-end-line="116" selection-end-column="86" />
+            <state relative-caret-position="125">
+              <caret line="119" column="96" selection-start-line="119" selection-start-column="96" selection-end-line="119" selection-end-column="96" />
             </state>
           </provider>
         </entry>
@@ -160,8 +181,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/schema/Schema.d.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
-              <caret line="80" column="17" selection-start-line="80" selection-start-column="17" selection-end-line="80" selection-end-column="17" />
+            <state relative-caret-position="148">
+              <caret line="58" column="27" selection-start-line="58" selection-start-column="18" selection-end-line="58" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -183,10 +204,16 @@
       <find>allocationSize</find>
       <find>ESelect</find>
       <find>EUpdateProperties</find>
+      <find>'Column'</find>
+      <find>name:</find>
+      <find>nullable</find>
+      <find>EUpdateColumns</find>
+      <find>processRelationColumn</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src</dir>
       <dir>$PROJECT_DIR$/src/builder/entity</dir>
+      <dir>C:\Users\Papa\dac\airport\generators\runway\src</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -199,12 +226,13 @@
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/builder/QSchemaBuilder.ts" />
         <option value="$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/schema/Property.d.ts" />
-        <option value="$PROJECT_DIR$/src/parser/DocEntry.ts" />
         <option value="$PROJECT_DIR$/src/parser/EntityDefinitionGenerator.ts" />
-        <option value="$PROJECT_DIR$/src/builder/schema/SProperty.ts" />
-        <option value="$PROJECT_DIR$/src/builder/schema/SSchemaBuilder.ts" />
         <option value="$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/core/entity/Dictionary.d.ts" />
         <option value="$PROJECT_DIR$/src/builder/entity/IQEntityInterfaceBuilder.ts" />
+        <option value="$PROJECT_DIR$/src/builder/entity/QEntityFileBuilder.ts" />
+        <option value="$PROJECT_DIR$/src/builder/schema/SProperty.ts" />
+        <option value="$PROJECT_DIR$/src/parser/DocEntry.ts" />
+        <option value="$PROJECT_DIR$/src/builder/schema/SSchemaBuilder.ts" />
         <option value="$PROJECT_DIR$/src/builder/schema/JsonSchemaBuilder.ts" />
       </list>
     </option>
@@ -340,21 +368,22 @@
       <workItem from="1534691054604" duration="253000" />
       <workItem from="1534772434670" duration="41000" />
       <workItem from="1535466064744" duration="472000" />
+      <workItem from="1535546321308" duration="2771000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6839000" />
+    <option name="totallyTimeSpent" value="9610000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="25" width="1920" height="1055" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25266525" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32878152" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3281412" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -362,12 +391,12 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" order="8" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.34702703" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3468328" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="11" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.2489339" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -438,47 +467,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/builder/schema/SProperty.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2052">
-          <caret line="116" column="55" selection-start-line="116" selection-start-column="55" selection-end-line="116" selection-end-column="55" />
-          <folding>
-            <element signature="e#0#193#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/builder/schema/SchemaRelationResolver.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
           <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/parser/EntityDefinitionGenerator.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4142">
-          <caret line="245" column="21" selection-start-line="245" selection-start-column="21" selection-end-line="245" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#63#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/parser/DocEntry.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="8" selection-start-line="19" selection-start-column="2" selection-end-line="19" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/builder/schema/SSchemaBuilder.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="434" column="61" selection-start-line="434" selection-start-column="61" selection-end-line="434" selection-end-column="61" />
-          <folding>
-            <element signature="e#0#251#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -489,39 +481,83 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/builder/entity/QEntityFileBuilder.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="69" column="30" selection-start-line="69" selection-start-column="30" selection-end-line="69" selection-end-column="30" />
+        <state relative-caret-position="-2802">
+          <caret line="68" column="44" selection-start-line="68" selection-start-column="44" selection-end-line="68" selection-end-column="44" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/builder/entity/IQEntityInterfaceBuilder.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="207" column="37" selection-start-line="207" selection-start-column="37" selection-end-line="207" selection-end-column="37" />
+        <state relative-caret-position="-921">
+          <caret line="252" column="44" selection-start-line="252" selection-start-column="30" selection-end-line="252" selection-end-column="44" />
           <folding>
             <element signature="e#0#57#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/schema/Schema.d.ts">
+    <entry file="file://$PROJECT_DIR$/src/builder/schema/SProperty.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="80" column="17" selection-start-line="80" selection-start-column="17" selection-end-line="80" selection-end-column="17" />
+        <state relative-caret-position="192">
+          <caret line="118" column="2" selection-start-line="118" selection-start-column="2" selection-end-line="118" selection-end-column="2" />
+          <folding>
+            <element signature="e#0#193#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/builder/schema/SSchemaBuilder.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="358" column="39" selection-start-line="358" selection-start-column="39" selection-end-line="358" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#251#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/parser/DocEntry.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="37" column="8" selection-start-line="37" selection-start-column="2" selection-end-line="37" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/parser/EntityDefinitionGenerator.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2266">
+          <caret line="267" column="23" selection-start-line="267" selection-start-column="23" selection-end-line="267" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#63#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/parser/EntityCandidateRegistry.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="134" column="22" selection-start-line="134" selection-start-column="22" selection-end-line="134" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/schema/Property.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="116" column="86" selection-start-line="116" selection-start-column="86" selection-end-line="116" selection-end-column="86" />
+        <state relative-caret-position="125">
+          <caret line="119" column="96" selection-start-line="119" selection-start-column="96" selection-end-line="119" selection-end-column="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/lingo/schema/Schema.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="58" column="27" selection-start-line="58" selection-start-column="18" selection-end-line="58" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/builder/schema/JsonSchemaBuilder.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="185" column="34" lean-forward="true" selection-start-line="185" selection-start-column="34" selection-end-line="185" selection-end-column="34" />
+        <state relative-caret-position="455">
+          <caret line="266" column="25" selection-start-line="266" selection-start-column="25" selection-end-line="266" selection-end-column="25" />
           <folding>
             <element signature="e#0#324#0" expanded="true" />
           </folding>

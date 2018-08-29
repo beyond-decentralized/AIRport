@@ -43,7 +43,7 @@ __decorate([
 ], SchemaColumn.prototype, "isGenerated", void 0);
 __decorate([
     air_control_1.Column({ name: 'ALLOCATION_SIZE' }),
-    __metadata("design:type", Boolean)
+    __metadata("design:type", Number)
 ], SchemaColumn.prototype, "allocationSize", void 0);
 __decorate([
     air_control_1.Column({ name: 'NAME', nullable: false }),

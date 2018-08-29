@@ -43,6 +43,7 @@ class JsonSchemaBuilder {
                 isGenerated: sColumn.isGenerated,
                 manyRelationColumnRefs: [],
                 name: sColumn.name,
+                notNull: sColumn.notNull,
                 propertyRefs: sColumn.propertyRefs.map(index => ({
                     index
                 })),
@@ -141,7 +142,8 @@ class JsonSchemaBuilder {
                 index,
                 isId: sProperty.isId,
                 name: sProperty.name,
-                relationRef
+                relationRef,
+                sinceVersion: 1
             };
         });
         return [properties, relations];
@@ -181,7 +183,8 @@ class JsonSchemaBuilder {
                 oneSchemaIndex: relationSchemaIndex,
                 oneTableIndex: relationTableIndex,
                 oneRelationIndex: sRelationColumn.oneSideRelationIndex,
-                oneColumnIndex: relationColumnIndex
+                oneColumnIndex: relationColumnIndex,
+                sinceVersion: 1
             });
         });
     }

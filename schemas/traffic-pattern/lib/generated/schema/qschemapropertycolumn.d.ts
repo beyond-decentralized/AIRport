@@ -1,21 +1,22 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, QEntity, QRelation } from '@airport/air-control';
+import { IQNumberField } from '@airport/air-control';
+import { IVersionedSchemaObject, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { ISchemaColumn, SchemaColumnEId, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQId, QSchemaColumnQRelation } from './qschemacolumn';
 import { ISchemaProperty, SchemaPropertyEId, SchemaPropertyEOptionalId, SchemaPropertyESelect, QSchemaPropertyQId, QSchemaPropertyQRelation } from './qschemaproperty';
-export interface ISchemaPropertyColumn {
+export interface ISchemaPropertyColumn extends IVersionedSchemaObject {
     column?: ISchemaColumn;
     property?: ISchemaProperty;
 }
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SchemaPropertyColumnESelect extends IEntitySelectProperties, SchemaPropertyColumnEOptionalId, SchemaPropertyColumnEUpdateProperties {
+export interface SchemaPropertyColumnESelect extends VersionedSchemaObjectESelect, SchemaPropertyColumnEOptionalId {
     column?: SchemaColumnESelect;
     property?: SchemaPropertyESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface SchemaPropertyColumnEId extends IEntityIdProperties {
+export interface SchemaPropertyColumnEId extends VersionedSchemaObjectEId {
     column: SchemaColumnEId;
     property: SchemaPropertyEId;
 }
@@ -29,12 +30,15 @@ export interface SchemaPropertyColumnEOptionalId {
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface SchemaPropertyColumnEUpdateProperties extends IEntityUpdateProperties {
+export interface SchemaPropertyColumnEUpdateProperties extends VersionedSchemaObjectEUpdateProperties {
 }
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface SchemaPropertyColumnEUpdateColumns extends IEntityUpdateColumns {
+export interface SchemaPropertyColumnEUpdateColumns extends VersionedSchemaObjectEUpdateColumns {
+    DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+    REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
+    SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -49,13 +53,13 @@ export interface SchemaPropertyColumnECreateColumns extends SchemaPropertyColumn
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaPropertyColumn extends QEntity {
+export interface QSchemaPropertyColumn extends QVersionedSchemaObject {
     column: QSchemaColumnQRelation;
     property: QSchemaPropertyQRelation;
 }
-export interface QSchemaPropertyColumnQId {
+export interface QSchemaPropertyColumnQId extends QVersionedSchemaObjectQId {
     column: QSchemaColumnQId;
     property: QSchemaPropertyQId;
 }
-export interface QSchemaPropertyColumnQRelation extends QRelation<QSchemaPropertyColumn>, QSchemaPropertyColumnQId {
+export interface QSchemaPropertyColumnQRelation extends QVersionedSchemaObjectQRelation<QSchemaPropertyColumn>, QSchemaPropertyColumnQId {
 }

@@ -23,6 +23,7 @@ import {
 import {
 	IVersionedSchemaObject,
 	VersionedSchemaObjectEId,
+	VersionedSchemaObjectEUpdateColumns,
 	VersionedSchemaObjectEUpdateProperties,
 	VersionedSchemaObjectESelect,
 	QVersionedSchemaObjectQId,
@@ -86,7 +87,9 @@ export interface ISchemaRelationColumn extends IVersionedSchemaObject {
  * SELECT - All fields and relations (optional).
  */
 export interface SchemaRelationColumnESelect
-    extends VersionedSchemaObjectESelect, SchemaRelationColumnEOptionalId, SchemaRelationColumnEUpdateProperties {
+    extends VersionedSchemaObjectESelect, SchemaRelationColumnEOptionalId {
+	// Non-Id Properties
+
 	// Id Relations - full property interfaces
 	manyColumn?: SchemaColumnESelect;
 	oneColumn?: SchemaColumnESelect;

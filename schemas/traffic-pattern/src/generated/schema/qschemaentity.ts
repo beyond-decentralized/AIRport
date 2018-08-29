@@ -24,6 +24,7 @@ import {
 import {
 	IVersionedSchemaObject,
 	VersionedSchemaObjectEId,
+	VersionedSchemaObjectEUpdateColumns,
 	VersionedSchemaObjectEUpdateProperties,
 	VersionedSchemaObjectESelect,
 	QVersionedSchemaObjectQId,
@@ -124,7 +125,14 @@ export interface ISchemaEntity extends IVersionedSchemaObject {
  * SELECT - All fields and relations (optional).
  */
 export interface SchemaEntityESelect
-    extends VersionedSchemaObjectESelect, SchemaEntityEOptionalId, SchemaEntityEUpdateProperties {
+    extends VersionedSchemaObjectESelect, SchemaEntityEOptionalId {
+	// Non-Id Properties
+	index?: number | IQNumberField;
+	isLocal?: boolean | IQBooleanField;
+	isRepositoryEntity?: boolean | IQBooleanField;
+	name?: string | IQStringField;
+	tableConfig?: TableConfiguration | IQStringField;
+
 	// Id Relations - full property interfaces
 	schemaVersion?: SchemaVersionESelect;
 

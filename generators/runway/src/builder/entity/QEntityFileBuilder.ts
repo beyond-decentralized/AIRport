@@ -66,6 +66,7 @@ export class QEntityFileBuilder implements IQBuilder {
 			this.addImport([
 					`I${parentEntityType}`,
 					`${parentEntityType}EId`,
+					`${parentEntityType}EUpdateColumns`,
 					`${parentEntityType}EUpdateProperties`,
 					`${parentEntityType}ESelect`,
 					`Q${parentEntityType}QId`,

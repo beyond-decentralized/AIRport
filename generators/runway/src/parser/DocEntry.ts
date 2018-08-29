@@ -46,6 +46,7 @@ export interface PropertyDocEntry extends DocEntry {
 	mapValueType?: string;
 	mapValueIsPrimitive?: boolean;
 	nonArrayType?: string;
+	notNull?: string;
 }
 
 export interface ClassDocEntry extends DocEntry {

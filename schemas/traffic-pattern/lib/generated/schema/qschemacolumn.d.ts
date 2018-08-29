@@ -1,15 +1,17 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField } from '@airport/air-control';
+import { IVersionedSchemaObject, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
+import { ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
 import { ISchemaPropertyColumn, SchemaPropertyColumnESelect, QSchemaPropertyColumn } from './qschemapropertycolumn';
 import { ISchemaRelationColumn, SchemaRelationColumnESelect, QSchemaRelationColumn } from './qschemarelationcolumn';
-export interface ISchemaColumn {
+export interface ISchemaColumn extends IVersionedSchemaObject {
+    id?: number;
     index?: number;
-    tableIndex?: number;
-    schemaVersionId?: number;
     idIndex?: number;
     isGenerated?: boolean;
-    allocationSize?: boolean;
+    allocationSize?: number;
     name?: string;
     type?: number;
+    entity?: ISchemaEntity;
     propertyColumns?: ISchemaPropertyColumn[];
     manyRelationColumns?: ISchemaRelationColumn[];
     oneRelationColumns?: ISchemaRelationColumn[];
@@ -17,7 +19,14 @@ export interface ISchemaColumn {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SchemaColumnESelect extends IEntitySelectProperties, SchemaColumnEOptionalId, SchemaColumnEUpdateProperties {
+export interface SchemaColumnESelect extends VersionedSchemaObjectESelect, SchemaColumnEOptionalId {
+    index?: number | IQNumberField;
+    idIndex?: number | IQNumberField;
+    isGenerated?: boolean | IQBooleanField;
+    allocationSize?: number | IQNumberField;
+    name?: string | IQStringField;
+    type?: number | IQNumberField;
+    entity?: SchemaEntityESelect;
     propertyColumns?: SchemaPropertyColumnESelect;
     manyRelationColumns?: SchemaRelationColumnESelect;
     oneRelationColumns?: SchemaRelationColumnESelect;
@@ -25,38 +34,41 @@ export interface SchemaColumnESelect extends IEntitySelectProperties, SchemaColu
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface SchemaColumnEId extends IEntityIdProperties {
-    index: number | IQNumberField;
-    tableIndex: number | IQNumberField;
-    schemaVersionId: number | IQNumberField;
+export interface SchemaColumnEId extends VersionedSchemaObjectEId {
+    id: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface SchemaColumnEOptionalId {
-    index?: number | IQNumberField;
-    tableIndex?: number | IQNumberField;
-    schemaVersionId?: number | IQNumberField;
+    id?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface SchemaColumnEUpdateProperties extends IEntityUpdateProperties {
+export interface SchemaColumnEUpdateProperties extends VersionedSchemaObjectEUpdateProperties {
+    index?: number | IQNumberField;
     idIndex?: number | IQNumberField;
     isGenerated?: boolean | IQBooleanField;
-    allocationSize?: boolean | IQBooleanField;
+    allocationSize?: number | IQNumberField;
     name?: string | IQStringField;
     type?: number | IQNumberField;
+    entity?: SchemaEntityEOptionalId;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface SchemaColumnEUpdateColumns extends IEntityUpdateColumns {
+export interface SchemaColumnEUpdateColumns extends VersionedSchemaObjectEUpdateColumns {
+    DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+    REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
+    SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+    INDEX?: number | IQNumberField;
     ID_INDEX?: number | IQNumberField;
     IS_GENERATED?: boolean | IQBooleanField;
-    ALLOCATION_SIZE?: boolean | IQBooleanField;
+    ALLOCATION_SIZE?: number | IQNumberField;
     NAME?: string | IQStringField;
     TYPE?: number | IQNumberField;
+    SCHEMA_ENTITY_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -71,23 +83,21 @@ export interface SchemaColumnECreateColumns extends SchemaColumnEId, SchemaColum
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaColumn extends QEntity {
+export interface QSchemaColumn extends QVersionedSchemaObject {
+    id: IQNumberField;
     index: IQNumberField;
-    tableIndex: IQNumberField;
-    schemaVersionId: IQNumberField;
     idIndex: IQNumberField;
     isGenerated: IQBooleanField;
-    allocationSize: IQBooleanField;
+    allocationSize: IQNumberField;
     name: IQStringField;
     type: IQNumberField;
+    entity: QSchemaEntityQRelation;
     propertyColumns: IQOneToManyRelation<QSchemaPropertyColumn>;
     manyRelationColumns: IQOneToManyRelation<QSchemaRelationColumn>;
     oneRelationColumns: IQOneToManyRelation<QSchemaRelationColumn>;
 }
-export interface QSchemaColumnQId {
-    index: IQNumberField;
-    tableIndex: IQNumberField;
-    schemaVersionId: IQNumberField;
+export interface QSchemaColumnQId extends QVersionedSchemaObjectQId {
+    id: IQNumberField;
 }
-export interface QSchemaColumnQRelation extends QRelation<QSchemaColumn>, QSchemaColumnQId {
+export interface QSchemaColumnQRelation extends QVersionedSchemaObjectQRelation<QSchemaColumn>, QSchemaColumnQId {
 }

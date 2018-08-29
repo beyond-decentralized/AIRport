@@ -41,19 +41,19 @@ class DbSchemaBuilder {
             domain: dbDomain,
             index: allSchemas.length,
             name: jsonSchema.name,
+            sinceVersion: dbSchemaVersion,
             versions: [dbSchemaVersion]
         };
         dbSchemaVersion.schema = dbSchema;
         allSchemas.push(dbSchema);
         for (const jsonEntity of currentJsonSchemaVersion.entities) {
-            const dbEntity = this.buildDbEntity(jsonSchema, jsonEntity, dictionary, currentJsonSchemaVersion.referencedSchemas);
-            dbEntity.schemaVersion = dbSchemaVersion;
+            const dbEntity = this.buildDbEntity(jsonSchema, jsonEntity, dictionary, currentJsonSchemaVersion.referencedSchemas, dbSchemaVersion);
             entities[dbEntity.index] = dbEntity;
             entityMapByName[dbEntity.name] = dbEntity;
         }
         return dbSchema;
     }
-    buildDbEntity(jsonSchema, jsonEntity, dictionary, referencedSchemas) {
+    buildDbEntity(jsonSchema, jsonEntity, dictionary, referencedSchemas, schemaVersion) {
         const columnMap = {};
         const columns = [];
         const idColumns = [];
@@ -71,7 +71,8 @@ class DbSchemaBuilder {
             propertyMap,
             properties,
             relations,
-            schemaVersion: null,
+            schemaVersion,
+            sinceVersion: schemaVersion,
             tableConfig: jsonEntity.tableConfig
         };
         jsonEntity.properties.forEach((jsonProperty, index) => {
@@ -82,6 +83,7 @@ class DbSchemaBuilder {
                 isId: jsonProperty.isId,
                 name: jsonProperty.name,
                 relation: null,
+                sinceVersion: schemaVersion
             };
             propertyMap[jsonProperty.name] = property;
             properties[index] = property;
@@ -90,12 +92,12 @@ class DbSchemaBuilder {
         properties.sort((a, b) => a.index < b.index ? -1 : 1);
         jsonEntity.relations.forEach((jsonRelation, index) => {
             const dbProperty = properties[jsonRelation.propertyRef.index];
-            const dbRelation = this.buildDbRelation(jsonRelation, dbProperty);
+            const dbRelation = this.buildDbRelation(jsonRelation, dbProperty, schemaVersion);
             relations[index] = dbRelation;
         });
         relations.sort((a, b) => a.index < b.index ? -1 : 1);
         jsonEntity.columns.forEach((jsonColumn, index) => {
-            const dbColumn = this.buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas);
+            const dbColumn = this.buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas, schemaVersion);
             columnMap[jsonColumn.name] = dbColumn;
             columns[index] = dbColumn;
         });
@@ -105,7 +107,7 @@ class DbSchemaBuilder {
         columns.sort((a, b) => a.index < b.index ? -1 : 1);
         return dbEntity;
     }
-    buildDbRelation(jsonRelation, dbProperty) {
+    buildDbRelation(jsonRelation, dbProperty, schemaVersion) {
         const dbRelation = {
             foreignKey: jsonRelation.foreignKey,
             isId: dbProperty.isId,
@@ -118,6 +120,9 @@ class DbSchemaBuilder {
             manyRelationColumns: [],
             oneRelationColumns: [],
             relationEntity: null,
+            sinceVersion: schemaVersion
+            // addToJoinFunction: jsonRelation.addToJoinFunction,
+            // joinFunctionWithOperator: jsonRelation.joinFunctionWithOperator,
         };
         // if (dbRelation.addToJoinFunction) {
         // 	dbRelation.whereJoinTable = {
@@ -129,12 +134,14 @@ class DbSchemaBuilder {
         dbProperty.relation = [dbRelation];
         return dbRelation;
     }
-    buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas) {
+    buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas, schemaVersion) {
         const dbColumn = {
             index: jsonColumn.index,
             isGenerated: !!jsonColumn.isGenerated,
             name: jsonColumn.name,
+            notNull: jsonColumn.notNull,
             propertyColumns: null,
+            sinceVersion: schemaVersion,
             type: jsonColumn.type
         };
         const propertyColumns = jsonColumn.propertyRefs.map(propertyColumnRef => {

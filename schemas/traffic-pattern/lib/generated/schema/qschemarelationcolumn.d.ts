@@ -1,7 +1,8 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, QEntity, QRelation } from '@airport/air-control';
+import { IQNumberField } from '@airport/air-control';
+import { IVersionedSchemaObject, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { ISchemaColumn, SchemaColumnEId, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQId, QSchemaColumnQRelation } from './qschemacolumn';
 import { ISchemaRelation, SchemaRelationEId, SchemaRelationEOptionalId, SchemaRelationESelect, QSchemaRelationQId, QSchemaRelationQRelation } from './qschemarelation';
-export interface ISchemaRelationColumn {
+export interface ISchemaRelationColumn extends IVersionedSchemaObject {
     manyColumn?: ISchemaColumn;
     oneColumn?: ISchemaColumn;
     manyRelation?: ISchemaRelation;
@@ -10,7 +11,7 @@ export interface ISchemaRelationColumn {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SchemaRelationColumnESelect extends IEntitySelectProperties, SchemaRelationColumnEOptionalId, SchemaRelationColumnEUpdateProperties {
+export interface SchemaRelationColumnESelect extends VersionedSchemaObjectESelect, SchemaRelationColumnEOptionalId {
     manyColumn?: SchemaColumnESelect;
     oneColumn?: SchemaColumnESelect;
     manyRelation?: SchemaRelationESelect;
@@ -19,7 +20,7 @@ export interface SchemaRelationColumnESelect extends IEntitySelectProperties, Sc
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface SchemaRelationColumnEId extends IEntityIdProperties {
+export interface SchemaRelationColumnEId extends VersionedSchemaObjectEId {
     manyColumn: SchemaColumnEId;
     oneColumn: SchemaColumnEId;
     manyRelation: SchemaRelationEId;
@@ -37,12 +38,15 @@ export interface SchemaRelationColumnEOptionalId {
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface SchemaRelationColumnEUpdateProperties extends IEntityUpdateProperties {
+export interface SchemaRelationColumnEUpdateProperties extends VersionedSchemaObjectEUpdateProperties {
 }
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface SchemaRelationColumnEUpdateColumns extends IEntityUpdateColumns {
+export interface SchemaRelationColumnEUpdateColumns extends VersionedSchemaObjectEUpdateColumns {
+    DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+    REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
+    SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -57,17 +61,17 @@ export interface SchemaRelationColumnECreateColumns extends SchemaRelationColumn
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaRelationColumn extends QEntity {
+export interface QSchemaRelationColumn extends QVersionedSchemaObject {
     manyColumn: QSchemaColumnQRelation;
     oneColumn: QSchemaColumnQRelation;
     manyRelation: QSchemaRelationQRelation;
     oneRelation: QSchemaRelationQRelation;
 }
-export interface QSchemaRelationColumnQId {
+export interface QSchemaRelationColumnQId extends QVersionedSchemaObjectQId {
     manyColumn: QSchemaColumnQId;
     oneColumn: QSchemaColumnQId;
     manyRelation: QSchemaRelationQId;
     oneRelation: QSchemaRelationQId;
 }
-export interface QSchemaRelationColumnQRelation extends QRelation<QSchemaRelationColumn>, QSchemaRelationColumnQId {
+export interface QSchemaRelationColumnQRelation extends QVersionedSchemaObjectQRelation<QSchemaRelationColumn>, QSchemaRelationColumnQId {
 }

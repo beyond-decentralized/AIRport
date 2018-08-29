@@ -313,10 +313,14 @@ export class SSchemaBuilder {
 		if (columnsDefined) {
 			for (const columnRelationDef of columnRelationDefs) {
 				let name = columnRelationDef.name
+				let notNull = false
 				if (name) {
 					name = name.toUpperCase()
 				} else {
 					throw `"name" is not defined in for a (R)JoinColumn(s) configuration of ${entity.name}.${aProperty.name}`
+				}
+				if(columnRelationDef.nullable === false) {
+					notNull = true
 				}
 				let referencedColumnName = columnRelationDef.referencedColumnName
 				if (referencedColumnName) {
@@ -343,7 +347,7 @@ export class SSchemaBuilder {
 				const [sRelationColumn, sColumn] = this.processRelationColumn(
 					ownColumnReference, relationColumnReference, isManyToOne,
 					isIdProperty, propertyIndex, entity,
-					relationColumnMapByName, primitiveColumnMapByName)
+					relationColumnMapByName, primitiveColumnMapByName, notNull)
 				sRelationColumns.push(sRelationColumn)
 				if (sColumn) {
 					columns.push(sColumn)
@@ -352,15 +356,17 @@ export class SSchemaBuilder {
 		} else {
 			switch (relationType) {
 				case EntityRelationType.MANY_TO_ONE:
-					relationMustBeSingleIdEntity = true
-					const [sRelationColumn, sColumn] = this.processRelationColumn(
-						aProperty.name.toUpperCase(), 'IdColumnIndex.ONE', true,
-						isIdProperty, propertyIndex, entity,
-						relationColumnMapByName, primitiveColumnMapByName,
-						true)
-					sRelationColumns.push(sRelationColumn)
-					columns.push(sColumn)
-					break
+					throw new Error(`@JoinColumn(s) must be specified for @ManyToOne
+					in ${entity.name}.${aProperty.name}.`)
+					// relationMustBeSingleIdEntity = true
+					// const [sRelationColumn, sColumn] = this.processRelationColumn(
+					// 	aProperty.name.toUpperCase(), 'IdColumnIndex.ONE', true,
+					// 	isIdProperty, propertyIndex, entity,
+					// 	relationColumnMapByName, primitiveColumnMapByName, notNull,
+					// 	true)
+					// sRelationColumns.push(sRelationColumn)
+					// columns.push(sColumn)
+					// break
 				case EntityRelationType.ONE_TO_MANY:
 					// Nothing to do
 					break
@@ -469,6 +475,7 @@ export class SSchemaBuilder {
 		primitiveColumnMapByName: { [columnName: string]: SColumn }
 	): SColumn {
 		let columnName
+		let notNull = false
 		let columnDefined = false
 		for (const decorator of aProperty.decorators) {
 			switch (decorator.name) {
@@ -478,7 +485,11 @@ export class SSchemaBuilder {
 					}
 					columnDefined = true
 					if (decorator.values.length) {
-						columnName = decorator.values[0].name
+						const columnDecoratorDefs = decorator.values[0]
+						columnName = columnDecoratorDefs.name
+						if(columnDecoratorDefs.nullable === false) {
+							notNull = true
+						}
 					} else {
 						columnName = aProperty.name
 					}
@@ -510,6 +521,7 @@ export class SSchemaBuilder {
 			index: entity.numColumns++,
 			isGenerated: aProperty.isGenerated,
 			name: columnName,
+			notNull,
 			propertyRefs: [propertyIndex],
 			type: aProperty.primitive
 		}
@@ -545,7 +557,8 @@ export class SSchemaBuilder {
 		entity: SEntity,
 		relationColumnMapByName: { [columnName: string]: SColumn },
 		primitiveColumnMapByName: { [columnName: string]: SColumn },
-		entityCannotReferenceOtherColumns: boolean = false
+		notNull: boolean,
+		entityCannotReferenceOtherColumns: boolean = false,
 	): [SRelationColumn, SColumn] {
 		const ownColumnIdIndex = this.getIdColumnIndex(ownColumnReference)
 		const relationColumnIdIndex = this.getIdColumnIndex(relationColumnReference)
@@ -577,6 +590,10 @@ export class SSchemaBuilder {
 			A column can either be defined as a non-relational.
 			Column: '${entity.name}.${ownColumnReference}'`
 			}
+			if((existingPrimitiveColumn.notNull && !notNull)
+				|| (!existingPrimitiveColumn.notNull && notNull)) {
+				throw new Error(`Column ${existingPrimitiveColumn.name} has conflicting nullable definitions`)
+			}
 			return [
 				sRelationColumn,
 				existingPrimitiveColumn
@@ -588,6 +605,10 @@ export class SSchemaBuilder {
 			if (entityCannotReferenceOtherColumns) {
 				throw `ManyToOne relation without (R)JoinColumn(s) cannot be named as other columns.`
 			}
+			if((existingRelationColumn.notNull && !notNull)
+			|| (!existingRelationColumn.notNull && notNull)) {
+				throw new Error(`Column ${existingRelationColumn.name} has conflicting nullable definitions`)
+			}
 			existingRelationColumn.propertyRefs.push(propertyIndex)
 			return [
 				sRelationColumn,
@@ -595,10 +616,11 @@ export class SSchemaBuilder {
 			]
 		}
 
-		const column = {
+		const column: SColumn = {
 			idIndex: isIdProperty ? entity.numIdColumns++ : undefined,
 			index: entity.numColumns++,
 			name: ownColumnReference,
+			notNull,
 			propertyRefs: [propertyIndex],
 			type: undefined
 		}

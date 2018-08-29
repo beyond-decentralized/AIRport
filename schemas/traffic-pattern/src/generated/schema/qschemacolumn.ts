@@ -23,6 +23,7 @@ import {
 import {
 	IVersionedSchemaObject,
 	VersionedSchemaObjectEId,
+	VersionedSchemaObjectEUpdateColumns,
 	VersionedSchemaObjectEUpdateProperties,
 	VersionedSchemaObjectESelect,
 	QVersionedSchemaObjectQId,
@@ -79,7 +80,7 @@ export interface ISchemaColumn extends IVersionedSchemaObject {
 	index?: number;
 	idIndex?: number;
 	isGenerated?: boolean;
-	allocationSize?: boolean;
+	allocationSize?: number;
 	name?: string;
 	type?: number;
 
@@ -103,7 +104,15 @@ export interface ISchemaColumn extends IVersionedSchemaObject {
  * SELECT - All fields and relations (optional).
  */
 export interface SchemaColumnESelect
-    extends VersionedSchemaObjectESelect, SchemaColumnEOptionalId, SchemaColumnEUpdateProperties {
+    extends VersionedSchemaObjectESelect, SchemaColumnEOptionalId {
+	// Non-Id Properties
+	index?: number | IQNumberField;
+	idIndex?: number | IQNumberField;
+	isGenerated?: boolean | IQBooleanField;
+	allocationSize?: number | IQNumberField;
+	name?: string | IQStringField;
+	type?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
@@ -146,7 +155,7 @@ export interface SchemaColumnEUpdateProperties
 	index?: number | IQNumberField;
 	idIndex?: number | IQNumberField;
 	isGenerated?: boolean | IQBooleanField;
-	allocationSize?: boolean | IQBooleanField;
+	allocationSize?: number | IQNumberField;
 	name?: string | IQStringField;
 	type?: number | IQNumberField;
 
@@ -167,7 +176,7 @@ export interface SchemaColumnEUpdateColumns
 	INDEX?: number | IQNumberField;
 	ID_INDEX?: number | IQNumberField;
 	IS_GENERATED?: boolean | IQBooleanField;
-	ALLOCATION_SIZE?: boolean | IQBooleanField;
+	ALLOCATION_SIZE?: number | IQNumberField;
 	NAME?: string | IQStringField;
 	TYPE?: number | IQNumberField;
 	SCHEMA_ENTITY_ID?: number | IQNumberField;
@@ -209,7 +218,7 @@ export interface QSchemaColumn extends QVersionedSchemaObject
 	index: IQNumberField;
 	idIndex: IQNumberField;
 	isGenerated: IQBooleanField;
-	allocationSize: IQBooleanField;
+	allocationSize: IQNumberField;
 	name: IQStringField;
 	type: IQNumberField;
 

@@ -17,7 +17,12 @@ export interface ISchemaVersion {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SchemaVersionESelect extends IEntitySelectProperties, SchemaVersionEOptionalId, SchemaVersionEUpdateProperties {
+export interface SchemaVersionESelect extends IEntitySelectProperties, SchemaVersionEOptionalId {
+    integerVersion?: number | IQNumberField;
+    versionString?: string | IQStringField;
+    majorVersion?: number | IQNumberField;
+    minorVersion?: number | IQNumberField;
+    patchVersion?: number | IQNumberField;
     schema?: SchemaESelect;
     entities?: SchemaEntityESelect;
     references?: SchemaReferenceESelect;

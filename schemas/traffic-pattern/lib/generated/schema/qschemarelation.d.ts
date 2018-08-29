@@ -1,15 +1,18 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation, ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/air-control';
-import { ISchemaProperty, SchemaPropertyEId, SchemaPropertyEOptionalId, SchemaPropertyESelect, QSchemaPropertyQId, QSchemaPropertyQRelation } from './qschemaproperty';
+import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/air-control';
+import { IVersionedSchemaObject, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
+import { ISchemaProperty, SchemaPropertyEOptionalId, SchemaPropertyESelect, QSchemaPropertyQRelation } from './qschemaproperty';
 import { ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
 import { ISchemaRelationColumn, SchemaRelationColumnESelect, QSchemaRelationColumn } from './qschemarelationcolumn';
-export interface ISchemaRelation {
+export interface ISchemaRelation extends IVersionedSchemaObject {
+    id?: number;
     index?: number;
-    property?: ISchemaProperty;
     foreignKey?: ForeignKey;
     manyToOneElems?: ManyToOneElements;
     oneToManyElems?: OneToManyElements;
     relationType?: number;
     isId?: boolean;
+    property?: ISchemaProperty;
+    entity?: ISchemaEntity;
     relationEntity?: ISchemaEntity;
     manyRelationColumns?: ISchemaRelationColumn[];
     oneRelationColumns?: ISchemaRelationColumn[];
@@ -17,8 +20,15 @@ export interface ISchemaRelation {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SchemaRelationESelect extends IEntitySelectProperties, SchemaRelationEOptionalId, SchemaRelationEUpdateProperties {
+export interface SchemaRelationESelect extends VersionedSchemaObjectESelect, SchemaRelationEOptionalId {
+    index?: number | IQNumberField;
+    foreignKey?: ForeignKey | IQStringField;
+    manyToOneElems?: ManyToOneElements | IQStringField;
+    oneToManyElems?: OneToManyElements | IQStringField;
+    relationType?: number | IQNumberField;
+    isId?: boolean | IQBooleanField;
     property?: SchemaPropertyESelect;
+    entity?: SchemaEntityESelect;
     relationEntity?: SchemaEntityESelect;
     manyRelationColumns?: SchemaRelationColumnESelect;
     oneRelationColumns?: SchemaRelationColumnESelect;
@@ -26,39 +36,45 @@ export interface SchemaRelationESelect extends IEntitySelectProperties, SchemaRe
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface SchemaRelationEId extends IEntityIdProperties {
-    index: number | IQNumberField;
-    property: SchemaPropertyEId;
+export interface SchemaRelationEId extends VersionedSchemaObjectEId {
+    id: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface SchemaRelationEOptionalId {
-    index?: number | IQNumberField;
-    property?: SchemaPropertyEOptionalId;
+    id?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface SchemaRelationEUpdateProperties extends IEntityUpdateProperties {
+export interface SchemaRelationEUpdateProperties extends VersionedSchemaObjectEUpdateProperties {
+    index?: number | IQNumberField;
     foreignKey?: ForeignKey | IQStringField;
     manyToOneElems?: ManyToOneElements | IQStringField;
     oneToManyElems?: OneToManyElements | IQStringField;
     relationType?: number | IQNumberField;
     isId?: boolean | IQBooleanField;
+    property?: SchemaPropertyEOptionalId;
+    entity?: SchemaEntityEOptionalId;
     relationEntity?: SchemaEntityEOptionalId;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface SchemaRelationEUpdateColumns extends IEntityUpdateColumns {
+export interface SchemaRelationEUpdateColumns extends VersionedSchemaObjectEUpdateColumns {
+    DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+    REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
+    SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+    INDEX?: number | IQNumberField;
     FOREIGN_KEY?: string | IQStringField;
     MANY_TO_ONE_ELEMENTS?: string | IQStringField;
     ONE_TO_MANY_ELEMENTS?: string | IQStringField;
     RELATION_TYPE?: number | IQNumberField;
     IS_ID?: boolean | IQBooleanField;
-    RELATION_SCHEMA_VERSION_ID?: number | IQNumberField;
-    RELATION_TABLE_INDEX?: number | IQNumberField;
+    SCHEMA_PROPERTY_ID?: number | IQNumberField;
+    SCHEMA_TABLE_ID?: number | IQNumberField;
+    RELATION_SCHEMA_TABLE_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -73,21 +89,22 @@ export interface SchemaRelationECreateColumns extends SchemaRelationEId, SchemaR
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaRelation extends QEntity {
+export interface QSchemaRelation extends QVersionedSchemaObject {
+    id: IQNumberField;
     index: IQNumberField;
-    property: QSchemaPropertyQRelation;
     foreignKey: IQStringField;
     manyToOneElems: IQStringField;
     oneToManyElems: IQStringField;
     relationType: IQNumberField;
     isId: IQBooleanField;
+    property: QSchemaPropertyQRelation;
+    entity: QSchemaEntityQRelation;
     relationEntity: QSchemaEntityQRelation;
     manyRelationColumns: IQOneToManyRelation<QSchemaRelationColumn>;
     oneRelationColumns: IQOneToManyRelation<QSchemaRelationColumn>;
 }
-export interface QSchemaRelationQId {
-    index: IQNumberField;
-    property: QSchemaPropertyQId;
+export interface QSchemaRelationQId extends QVersionedSchemaObjectQId {
+    id: IQNumberField;
 }
-export interface QSchemaRelationQRelation extends QRelation<QSchemaRelation>, QSchemaRelationQId {
+export interface QSchemaRelationQRelation extends QVersionedSchemaObjectQRelation<QSchemaRelation>, QSchemaRelationQId {
 }

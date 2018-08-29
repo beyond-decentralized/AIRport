@@ -1,24 +1,24 @@
 import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
-import { Schema } from '../ddl/schema/Schema';
+import { Schema } from '../ddl/schema/schema';
 import { QSchema } from './schema/qschema';
-import { SchemaColumn } from '../ddl/schema/SchemaColumn';
+import { SchemaColumn } from '../ddl/schema/schemacolumn';
 import { QSchemaColumn } from './schema/qschemacolumn';
-import { SchemaEntity } from '../ddl/schema/SchemaEntity';
+import { SchemaEntity } from '../ddl/schema/schemaentity';
 import { QSchemaEntity } from './schema/qschemaentity';
-import { SchemaProperty } from '../ddl/schema/SchemaProperty';
+import { SchemaProperty } from '../ddl/schema/schemaproperty';
 import { QSchemaProperty } from './schema/qschemaproperty';
-import { SchemaPropertyColumn } from '../ddl/schema/SchemaPropertyColumn';
+import { SchemaPropertyColumn } from '../ddl/schema/schemapropertycolumn';
 import { QSchemaPropertyColumn } from './schema/qschemapropertycolumn';
-import { SchemaReference } from '../ddl/schema/SchemaReference';
+import { SchemaReference } from '../ddl/schema/schemareference';
 import { QSchemaReference } from './schema/qschemareference';
-import { SchemaRelation } from '../ddl/schema/SchemaRelation';
+import { SchemaRelation } from '../ddl/schema/schemarelation';
 import { QSchemaRelation } from './schema/qschemarelation';
-import { SchemaRelationColumn } from '../ddl/schema/SchemaRelationColumn';
+import { SchemaRelationColumn } from '../ddl/schema/schemarelationcolumn';
 import { QSchemaRelationColumn } from './schema/qschemarelationcolumn';
-import { SchemaVersion } from '../ddl/schema/SchemaVersion';
+import { SchemaVersion } from '../ddl/schema/schemaversion';
 import { QSchemaVersion } from './schema/qschemaversion';
-import { VersionedSchemaObject } from '../ddl/schema/VersionedSchemaObject';
+import { VersionedSchemaObject } from '../ddl/schema/versionedschemaobject';
 import { QVersionedSchemaObject } from './schema/qversionedschemaobject';
 
 import {

@@ -93,7 +93,14 @@ export interface ISchemaVersion {
  * SELECT - All fields and relations (optional).
  */
 export interface SchemaVersionESelect
-    extends IEntitySelectProperties, SchemaVersionEOptionalId, SchemaVersionEUpdateProperties {
+    extends IEntitySelectProperties, SchemaVersionEOptionalId {
+	// Non-Id Properties
+	integerVersion?: number | IQNumberField;
+	versionString?: string | IQStringField;
+	majorVersion?: number | IQNumberField;
+	minorVersion?: number | IQNumberField;
+	patchVersion?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
