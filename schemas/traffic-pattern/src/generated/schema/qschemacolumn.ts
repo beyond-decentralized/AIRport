@@ -82,6 +82,7 @@ export interface ISchemaColumn extends IVersionedSchemaObject {
 	isGenerated?: boolean;
 	allocationSize?: number;
 	name?: string;
+	notNull?: boolean;
 	type?: number;
 
 	// Non-Id Relations
@@ -111,6 +112,7 @@ export interface SchemaColumnESelect
 	isGenerated?: boolean | IQBooleanField;
 	allocationSize?: number | IQNumberField;
 	name?: string | IQStringField;
+	notNull?: boolean | IQBooleanField;
 	type?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
@@ -157,6 +159,7 @@ export interface SchemaColumnEUpdateProperties
 	isGenerated?: boolean | IQBooleanField;
 	allocationSize?: number | IQNumberField;
 	name?: string | IQStringField;
+	notNull?: boolean | IQBooleanField;
 	type?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -178,6 +181,7 @@ export interface SchemaColumnEUpdateColumns
 	IS_GENERATED?: boolean | IQBooleanField;
 	ALLOCATION_SIZE?: number | IQNumberField;
 	NAME?: string | IQStringField;
+	NOT_NULL?: boolean | IQBooleanField;
 	TYPE?: number | IQNumberField;
 	SCHEMA_ENTITY_ID?: number | IQNumberField;
 
@@ -220,6 +224,7 @@ export interface QSchemaColumn extends QVersionedSchemaObject
 	isGenerated: IQBooleanField;
 	allocationSize: IQNumberField;
 	name: IQStringField;
+	notNull: IQBooleanField;
 	type: IQNumberField;
 
 	// Non-Id Relations

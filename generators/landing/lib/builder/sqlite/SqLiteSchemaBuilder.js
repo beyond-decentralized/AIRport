@@ -25,7 +25,8 @@ let SqLiteSchemaBuilder = class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.S
     }
     getColumnSuffix(jsonSchema, jsonEntity, jsonColumn) {
         let primaryKeySuffix = '';
-        if (this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
+        if (jsonColumn.notNull
+            || this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
             primaryKeySuffix = ' NOT NULL';
         }
         let autoincrementSuffix = '';

@@ -10,6 +10,7 @@ export interface ISchemaColumn extends IVersionedSchemaObject {
     isGenerated?: boolean;
     allocationSize?: number;
     name?: string;
+    notNull?: boolean;
     type?: number;
     entity?: ISchemaEntity;
     propertyColumns?: ISchemaPropertyColumn[];
@@ -25,6 +26,7 @@ export interface SchemaColumnESelect extends VersionedSchemaObjectESelect, Schem
     isGenerated?: boolean | IQBooleanField;
     allocationSize?: number | IQNumberField;
     name?: string | IQStringField;
+    notNull?: boolean | IQBooleanField;
     type?: number | IQNumberField;
     entity?: SchemaEntityESelect;
     propertyColumns?: SchemaPropertyColumnESelect;
@@ -52,6 +54,7 @@ export interface SchemaColumnEUpdateProperties extends VersionedSchemaObjectEUpd
     isGenerated?: boolean | IQBooleanField;
     allocationSize?: number | IQNumberField;
     name?: string | IQStringField;
+    notNull?: boolean | IQBooleanField;
     type?: number | IQNumberField;
     entity?: SchemaEntityEOptionalId;
 }
@@ -67,6 +70,7 @@ export interface SchemaColumnEUpdateColumns extends VersionedSchemaObjectEUpdate
     IS_GENERATED?: boolean | IQBooleanField;
     ALLOCATION_SIZE?: number | IQNumberField;
     NAME?: string | IQStringField;
+    NOT_NULL?: boolean | IQBooleanField;
     TYPE?: number | IQNumberField;
     SCHEMA_ENTITY_ID?: number | IQNumberField;
 }
@@ -90,6 +94,7 @@ export interface QSchemaColumn extends QVersionedSchemaObject {
     isGenerated: IQBooleanField;
     allocationSize: IQNumberField;
     name: IQStringField;
+    notNull: IQBooleanField;
     type: IQNumberField;
     entity: QSchemaEntityQRelation;
     propertyColumns: IQOneToManyRelation<QSchemaPropertyColumn>;

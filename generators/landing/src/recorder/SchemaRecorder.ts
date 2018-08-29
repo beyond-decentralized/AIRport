@@ -457,6 +457,7 @@ export class SchemaRecorder
 						isGenerated: jsonColumn.isGenerated,
 						allocationSize: jsonColumn.allocationSize,
 						name: jsonColumn.name,
+						notNull: jsonColumn.notNull,
 						type: jsonColumn.type,
 						propertyColumns: [],
 						oneRelationColumns: [],

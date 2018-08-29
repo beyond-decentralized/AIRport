@@ -1,4 +1,4 @@
-import { ColumnIndex, ColumnName, IdColumnOnlyIndex, SchemaColumnAllocationSize, SchemaColumnIsGenerated, SQLDataType } from '@airport/ground-control';
+import { ColumnIndex, ColumnName, ColumnNotNull, IdColumnOnlyIndex, SchemaColumnAllocationSize, SchemaColumnIsGenerated, SQLDataType } from '@airport/ground-control';
 import { ISchemaPropertyColumn } from '../../generated/schema/qschemapropertycolumn';
 import { ISchemaRelationColumn } from '../../generated/schema/qschemarelationcolumn';
 import { SchemaEntity } from './SchemaEntity';
@@ -19,6 +19,7 @@ export declare class SchemaColumn extends VersionedSchemaObject {
     isGenerated: SchemaColumnIsGenerated;
     allocationSize: SchemaColumnAllocationSize;
     name: ColumnName;
+    notNull: ColumnNotNull;
     manyRelationColumns: ISchemaRelationColumn[];
     oneRelationColumns: ISchemaRelationColumn[];
     type: SQLDataType;

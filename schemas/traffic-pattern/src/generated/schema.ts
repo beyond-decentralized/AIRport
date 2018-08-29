@@ -1490,18 +1490,32 @@ export const SCHEMA = {
 							"index": 9,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
+							"name": "NOT_NULL",
+							"notNull": true,
+							"propertyRefs": [
+								{
+									"index": 11
+								}
+							],
+							"sinceVersion": 1,
+							"type": 1
+						},
+						{
+							"index": 10,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
 							"name": "TYPE",
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 13
+									"index": 14
 								}
 							],
 							"sinceVersion": 1,
 							"type": 4
 						},
 						{
-							"index": 10,
+							"index": 11,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 3,
@@ -1633,7 +1647,16 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
+							"columnRef": {
+								"index": 9
+							},
 							"index": 11,
+							"isId": false,
+							"name": "notNull",
+							"sinceVersion": 1
+						},
+						{
+							"index": 12,
 							"isId": false,
 							"name": "manyRelationColumns",
 							"relationRef": {
@@ -1642,7 +1665,7 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 12,
+							"index": 13,
 							"isId": false,
 							"name": "oneRelationColumns",
 							"relationRef": {
@@ -1652,9 +1675,9 @@ export const SCHEMA = {
 						},
 						{
 							"columnRef": {
-								"index": 9
+								"index": 10
 							},
-							"index": 13,
+							"index": 14,
 							"isId": false,
 							"name": "type",
 							"sinceVersion": 1
@@ -1722,7 +1745,7 @@ export const SCHEMA = {
 							},
 							"relationType": 0,
 							"propertyRef": {
-								"index": 11
+								"index": 12
 							},
 							"relationTableIndex": 1,
 							"sinceVersion": 1
@@ -1735,7 +1758,7 @@ export const SCHEMA = {
 							},
 							"relationType": 0,
 							"propertyRef": {
-								"index": 12
+								"index": 13
 							},
 							"relationTableIndex": 1,
 							"sinceVersion": 1

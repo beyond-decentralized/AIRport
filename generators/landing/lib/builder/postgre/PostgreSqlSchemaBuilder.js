@@ -27,7 +27,8 @@ let PostgreSqlSchemaBuilder = class PostgreSqlSchemaBuilder extends SqlSchemaBui
     }
     getColumnSuffix(jsonSchema, jsonEntity, jsonColumn) {
         let primaryKeySuffix = '';
-        if (this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
+        if (jsonColumn.notNull
+            || this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
             primaryKeySuffix = ' NOT NULL';
         }
         const suffix = primaryKeySuffix;

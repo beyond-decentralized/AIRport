@@ -44,7 +44,8 @@ export class PostgreSqlSchemaBuilder
 		jsonColumn: JsonSchemaColumn
 	): string {
 		let primaryKeySuffix = ''
-		if (this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
+		if (jsonColumn.notNull
+			|| this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
 			primaryKeySuffix = ' NOT NULL'
 		}
 

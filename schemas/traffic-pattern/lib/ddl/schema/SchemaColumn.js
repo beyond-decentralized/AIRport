@@ -50,6 +50,10 @@ __decorate([
     __metadata("design:type", String)
 ], SchemaColumn.prototype, "name", void 0);
 __decorate([
+    air_control_1.Column({ name: 'NOT_NULL', nullable: false }),
+    __metadata("design:type", Boolean)
+], SchemaColumn.prototype, "notNull", void 0);
+__decorate([
     air_control_1.OneToMany({ mappedBy: 'manyColumn' }),
     __metadata("design:type", Array)
 ], SchemaColumn.prototype, "manyRelationColumns", void 0);

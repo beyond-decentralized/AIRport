@@ -12,11 +12,12 @@ import {
 import {
 	ColumnIndex,
 	ColumnName,
+	ColumnNotNull,
 	IdColumnOnlyIndex,
 	SchemaColumnAllocationSize,
 	SchemaColumnIsGenerated,
 	SQLDataType
-}                              from '@airport/ground-control'
+} from '@airport/ground-control'
 import {ISchemaPropertyColumn} from '../../generated/schema/qschemapropertycolumn'
 import {ISchemaRelationColumn} from '../../generated/schema/qschemarelationcolumn'
 import {SchemaEntity}          from './SchemaEntity'
@@ -62,6 +63,9 @@ export class SchemaColumn
 
 	@Column({name: 'NAME', nullable: false})
 	name: ColumnName
+
+	@Column({name: 'NOT_NULL', nullable: false})
+	notNull: ColumnNotNull
 
 	@OneToMany({mappedBy: 'manyColumn'})
 	manyRelationColumns: ISchemaRelationColumn[]
