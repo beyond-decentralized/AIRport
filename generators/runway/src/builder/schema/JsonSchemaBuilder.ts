@@ -19,7 +19,10 @@ import {Configuration}   from '../../options/Options'
 import {EntityCandidate} from '../../parser/EntityCandidate'
 import {SIndexedEntity}  from './SEntity'
 import {SRelation}       from './SProperty'
-import {SIndexedSchema}  from './SSchema'
+import {
+	SIndexedSchema,
+	SSchemaReference
+}                        from './SSchema'
 import {SSchemaBuilder}  from './SSchemaBuilder'
 
 export class JsonSchemaBuilder {
@@ -127,7 +130,20 @@ export class JsonSchemaBuilder {
 			versions: [{
 				entities: jsonEntities,
 				integerVersion: 1,
-				referencedSchemas: [],
+				referencedSchemas: sIndexedSchema.schema.referencedSchemas.map((
+					sSchemaReference: SSchemaReference
+				) => ({
+					domain: sSchemaReference.dbSchema.domain.name,
+					index: sSchemaReference.index,
+					name: sSchemaReference.dbSchema.name,
+					sinceVersion: 1,
+					versions: [{
+						entities: null,
+						integerVersion: 1,
+						referencedSchemas: null,
+						versionString: '1.0.0'
+					}]
+				})),
 				versionString: '1.0.0'
 			}]
 		}

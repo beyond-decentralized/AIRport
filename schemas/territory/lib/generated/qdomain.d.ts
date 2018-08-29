@@ -10,7 +10,8 @@ export interface IDomain {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface DomainESelect extends IEntitySelectProperties, DomainEOptionalId, DomainEUpdateProperties {
+export interface DomainESelect extends IEntitySelectProperties, DomainEOptionalId {
+    name?: string | IQStringField;
     applications?: ApplicationESelect;
 }
 /**

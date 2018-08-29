@@ -6,7 +6,7 @@ export interface Configuration {
     airport: {
         cacheGeneratedPaths: boolean;
         ddlDir: string;
-        domain: 'public' | 'private';
+        domain: 'private' | string;
         generatedDir: string;
         node_modulesLinks?: {
             pathToProject: string;

@@ -22,8 +22,8 @@ function verifyConfiguration(options) {
     if (!options.airport) {
         throw `"airport" configuration object must be specified in package.json.`;
     }
-    if (options.airport.domain !== 'public' && options.airport.domain !== 'private') {
-        throw `"airport.domain" configuration object must be specified (as 'public' or 'private') in package.json.  It is: ${options.airport.domain}`;
+    if (typeof options.airport.domain !== 'string') {
+        throw `"airport.domain" configuration object must be specified (as HTTL Domain URL or 'private') in package.json.  It is: ${options.airport.domain}`;
     }
     if (!options.airport.ddlDir) {
         throw `"airport.ddlDir" configuration property must be specified in package.json.`;

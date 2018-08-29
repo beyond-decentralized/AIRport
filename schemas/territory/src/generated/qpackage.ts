@@ -66,7 +66,10 @@ export interface IPackage {
  * SELECT - All fields and relations (optional).
  */
 export interface PackageESelect
-    extends IEntitySelectProperties, PackageEOptionalId, PackageEUpdateProperties {
+    extends IEntitySelectProperties, PackageEOptionalId {
+	// Non-Id Properties
+	name?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

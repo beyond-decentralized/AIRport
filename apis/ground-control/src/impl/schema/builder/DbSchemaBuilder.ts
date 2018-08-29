@@ -63,7 +63,7 @@ export class DbSchemaBuilder
 		}
 		const dbDomain: DbDomain = {
 			id: undefined,
-			name: jsonSchema.name,
+			name: jsonSchema.domain,
 			schemas: []
 		}
 		const dbSchema: DbSchema = {

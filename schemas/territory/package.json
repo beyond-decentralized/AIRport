@@ -1,6 +1,6 @@
 {
   "airport": {
-    "domain": "public",
+    "domain": "npmjs.org",
     "ddlDir": "src/ddl",
     "generatedDir": "src/generated",
     "tablePrefix": "AP"

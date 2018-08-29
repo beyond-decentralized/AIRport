@@ -9,7 +9,7 @@ export interface IApplicationPackage {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface ApplicationPackageESelect extends IEntitySelectProperties, ApplicationPackageEOptionalId, ApplicationPackageEUpdateProperties {
+export interface ApplicationPackageESelect extends IEntitySelectProperties, ApplicationPackageEOptionalId {
     application?: ApplicationESelect;
     package?: PackageESelect;
 }

@@ -515,7 +515,18 @@ export declare const SCHEMA: {
             };
         })[];
         "integerVersion": number;
-        "referencedSchemas": any[];
+        "referencedSchemas": {
+            "domain": string;
+            "index": number;
+            "name": string;
+            "sinceVersion": number;
+            "versions": {
+                "entities": any;
+                "integerVersion": number;
+                "referencedSchemas": any;
+                "versionString": string;
+            }[];
+        }[];
         "versionString": string;
     }[];
 };

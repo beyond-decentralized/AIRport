@@ -8,7 +8,8 @@ export interface IPackage {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface PackageESelect extends IEntitySelectProperties, PackageEOptionalId, PackageEUpdateProperties {
+export interface PackageESelect extends IEntitySelectProperties, PackageEOptionalId {
+    name?: string | IQStringField;
     applicationPackages?: ApplicationPackageESelect;
 }
 /**

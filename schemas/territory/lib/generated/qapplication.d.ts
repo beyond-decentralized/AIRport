@@ -10,7 +10,8 @@ export interface IApplication {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface ApplicationESelect extends IEntitySelectProperties, ApplicationEOptionalId, ApplicationEUpdateProperties {
+export interface ApplicationESelect extends IEntitySelectProperties, ApplicationEOptionalId {
+    name?: string | IQStringField;
     domain?: DomainESelect;
     applicationPackages?: ApplicationPackageESelect;
 }

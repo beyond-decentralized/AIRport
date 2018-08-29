@@ -33,7 +33,7 @@ class DbSchemaBuilder {
         };
         const dbDomain = {
             id: undefined,
-            name: jsonSchema.name,
+            name: jsonSchema.domain,
             schemas: []
         };
         const dbSchema = {

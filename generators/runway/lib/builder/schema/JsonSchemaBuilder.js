@@ -74,7 +74,18 @@ class JsonSchemaBuilder {
             versions: [{
                     entities: jsonEntities,
                     integerVersion: 1,
-                    referencedSchemas: [],
+                    referencedSchemas: sIndexedSchema.schema.referencedSchemas.map((sSchemaReference) => ({
+                        domain: sSchemaReference.dbSchema.domain.name,
+                        index: sSchemaReference.index,
+                        name: sSchemaReference.dbSchema.name,
+                        sinceVersion: 1,
+                        versions: [{
+                                entities: null,
+                                integerVersion: 1,
+                                referencedSchemas: null,
+                                versionString: '1.0.0'
+                            }]
+                    })),
                     versionString: '1.0.0'
                 }]
         };

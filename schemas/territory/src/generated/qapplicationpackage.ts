@@ -76,7 +76,9 @@ export interface IApplicationPackage {
  * SELECT - All fields and relations (optional).
  */
 export interface ApplicationPackageESelect
-    extends IEntitySelectProperties, ApplicationPackageEOptionalId, ApplicationPackageEUpdateProperties {
+    extends IEntitySelectProperties, ApplicationPackageEOptionalId {
+	// Non-Id Properties
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

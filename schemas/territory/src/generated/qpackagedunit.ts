@@ -66,7 +66,10 @@ export interface IPackagedUnit {
  * SELECT - All fields and relations (optional).
  */
 export interface PackagedUnitESelect
-    extends IEntitySelectProperties, PackagedUnitEOptionalId, PackagedUnitEUpdateProperties {
+    extends IEntitySelectProperties, PackagedUnitEOptionalId {
+	// Non-Id Properties
+	name?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

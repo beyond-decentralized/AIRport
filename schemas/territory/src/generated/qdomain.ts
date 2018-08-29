@@ -70,7 +70,10 @@ export interface IDomain {
  * SELECT - All fields and relations (optional).
  */
 export interface DomainESelect
-    extends IEntitySelectProperties, DomainEOptionalId, DomainEUpdateProperties {
+    extends IEntitySelectProperties, DomainEOptionalId {
+	// Non-Id Properties
+	name?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

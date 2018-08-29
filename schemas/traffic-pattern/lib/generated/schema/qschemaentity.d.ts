@@ -1,7 +1,7 @@
 import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, TableConfiguration } from '@airport/air-control';
 import { IVersionedSchemaObject, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
-import { SchemaColumn } from '../../ddl/schema/schemacolumn';
-import { SchemaProperty } from '../../ddl/schema/schemaproperty';
+import { SchemaColumn } from '../../ddl/schema/SchemaColumn';
+import { SchemaProperty } from '../../ddl/schema/SchemaProperty';
 import { ISchemaVersion, SchemaVersionEId, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQId, QSchemaVersionQRelation } from './qschemaversion';
 import { ISchemaColumn, SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
 import { ISchemaProperty, SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';

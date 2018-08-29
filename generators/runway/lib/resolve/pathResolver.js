@@ -87,7 +87,7 @@ function addImportForType(entity, type, fileBuilder) {
         const fullPathToImport = getFullPathFromRelativePath(moduleImport.path, entity.path);
         relativePathToImport = resolveRelativePath(fileBuilder.fullGenerationPath, fullPathToImport);
     }
-    fileBuilder.addImport([moduleImport.objectMapByAsName[type]], relativePathToImport);
+    fileBuilder.addImport([moduleImport.objectMapByAsName[type]], relativePathToImport, false);
 }
 exports.addImportForType = addImportForType;
 /*

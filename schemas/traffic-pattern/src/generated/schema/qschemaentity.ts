@@ -33,10 +33,10 @@ import {
 } from './qversionedschemaobject';
 import {
 	SchemaColumn,
-} from '../../ddl/schema/schemacolumn';
+} from '../../ddl/schema/SchemaColumn';
 import {
 	SchemaProperty,
-} from '../../ddl/schema/schemaproperty';
+} from '../../ddl/schema/SchemaProperty';
 import {
 	ISchemaVersion,
 	SchemaVersionEId,

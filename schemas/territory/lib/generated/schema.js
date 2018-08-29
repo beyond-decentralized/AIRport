@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SCHEMA = {
-    "domain": "public",
+    "domain": "npmjs.org",
     "index": null,
     "name": "@airport/territory",
+    "sinceVersion": 1,
     "versions": [
         {
             "entities": [
@@ -14,11 +15,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -26,11 +29,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "NAME",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         }
                     ],
@@ -50,7 +55,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -58,7 +64,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "name"
+                            "name": "name",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 2,
@@ -66,7 +73,8 @@ exports.SCHEMA = {
                             "name": "applicationPackages",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -80,9 +88,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 1
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "PACKAGES"
                     }
@@ -94,11 +104,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -109,15 +121,18 @@ exports.SCHEMA = {
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 3,
                                     "oneRelationIndex": 1,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "APPLICATION_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -128,15 +143,18 @@ exports.SCHEMA = {
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 0,
                                     "oneRelationIndex": 0,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "PACKAGE_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -156,7 +174,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -164,7 +183,8 @@ exports.SCHEMA = {
                             "name": "application",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 2,
@@ -172,7 +192,8 @@ exports.SCHEMA = {
                             "name": "package",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -183,7 +204,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 3
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -192,9 +214,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 0
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "APPLICATION_PACKAGES"
                     }
@@ -206,11 +230,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -218,11 +244,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "NAME",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         }
                     ],
@@ -242,7 +270,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -250,7 +279,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "name"
+                            "name": "name",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 2,
@@ -258,7 +288,8 @@ exports.SCHEMA = {
                             "name": "applications",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -272,9 +303,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 3
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "DOMAINS"
                     }
@@ -286,11 +319,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -298,11 +333,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "NAME",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -313,15 +350,18 @@ exports.SCHEMA = {
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 2,
                                     "oneRelationIndex": 0,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "DOMAIN_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -341,7 +381,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -349,7 +390,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "name"
+                            "name": "name",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 2,
@@ -357,7 +399,8 @@ exports.SCHEMA = {
                             "name": "domain",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 3,
@@ -365,7 +408,8 @@ exports.SCHEMA = {
                             "name": "applicationPackages",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -376,7 +420,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 2
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -388,9 +433,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 1
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "APPLICATIONS"
                     }
@@ -402,11 +449,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -414,11 +463,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "NAME",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -428,15 +479,18 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 0,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "PACKAGE_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -456,7 +510,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -464,7 +519,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "name"
+                            "name": "name",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 2,
@@ -472,7 +528,8 @@ exports.SCHEMA = {
                             "name": "package",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -483,9 +540,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 0
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "PACKAGED_UNITS"
                     }

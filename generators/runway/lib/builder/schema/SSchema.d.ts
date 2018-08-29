@@ -4,7 +4,7 @@ import { SEntity, SIndexedEntity } from "./SEntity";
  * A schema.
  */
 export interface SSchema {
-    domain: 'public' | 'private';
+    domain: 'private' | string;
     entities: SEntity[];
     /**
      * Name of the schema.

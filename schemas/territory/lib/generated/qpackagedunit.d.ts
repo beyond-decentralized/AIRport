@@ -8,7 +8,8 @@ export interface IPackagedUnit {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface PackagedUnitESelect extends IEntitySelectProperties, PackagedUnitEOptionalId, PackagedUnitEUpdateProperties {
+export interface PackagedUnitESelect extends IEntitySelectProperties, PackagedUnitEOptionalId {
+    name?: string | IQStringField;
     package?: PackageESelect;
 }
 /**
