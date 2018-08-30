@@ -9,7 +9,8 @@ export interface ITerminalRepository {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface TerminalRepositoryESelect extends IEntitySelectProperties, TerminalRepositoryEOptionalId, TerminalRepositoryEUpdateProperties {
+export interface TerminalRepositoryESelect extends IEntitySelectProperties, TerminalRepositoryEOptionalId {
+    permission?: number | IQNumberField;
     terminal?: TerminalESelect;
     repository?: RepositoryESelect;
 }

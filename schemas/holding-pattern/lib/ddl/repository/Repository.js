@@ -37,31 +37,32 @@ __decorate([
 ], Repository.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "OWNER_ACTOR_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
+        nullable: false }),
     __metadata("design:type", Object)
 ], Repository.prototype, "ownerActor", void 0);
 __decorate([
-    air_control_1.Column({ name: "ORDERED_ID" }),
+    air_control_1.Column({ name: "ORDERED_ID", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Repository.prototype, "orderedId", void 0);
 __decorate([
-    air_control_1.Column({ name: "RANDOM_ID" }),
+    air_control_1.Column({ name: "RANDOM_ID", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Repository.prototype, "randomId", void 0);
 __decorate([
-    air_control_1.Column({ name: "NAME" }),
+    air_control_1.Column({ name: "NAME", nullable: false }),
     air_control_1.DbString(),
     __metadata("design:type", String)
 ], Repository.prototype, "name", void 0);
 __decorate([
-    air_control_1.Column({ name: "REPOSITORY_URL" }),
+    air_control_1.Column({ name: "REPOSITORY_URL", nullable: false }),
     air_control_1.DbString(),
     __metadata("design:type", String)
 ], Repository.prototype, "url", void 0);
 __decorate([
-    air_control_1.Column({ name: "PLATFORM_CONFIG" }),
+    air_control_1.Column({ name: "PLATFORM_CONFIG", nullable: false }),
     __metadata("design:type", String)
 ], Repository.prototype, "platformConfig", void 0);
 __decorate([
@@ -77,7 +78,7 @@ __decorate([
     __metadata("design:type", Array)
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
 __decorate([
-    air_control_1.Column({ name: "SYNC_PRIORITY" }),
+    air_control_1.Column({ name: "SYNC_PRIORITY", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Repository.prototype, "syncPriority", void 0);

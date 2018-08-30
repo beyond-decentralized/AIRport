@@ -60,6 +60,18 @@ __decorate([
     air_control_1.OneToMany({ mappedBy: 'referencedSchemaVersion' }),
     __metadata("design:type", Array)
 ], SchemaVersion.prototype, "referencedBy", void 0);
+__decorate([
+    air_control_1.Transient(),
+    __metadata("design:type", Object)
+], SchemaVersion.prototype, "entityMapByName", void 0);
+__decorate([
+    air_control_1.Transient(),
+    __metadata("design:type", Object)
+], SchemaVersion.prototype, "referencesMapByName", void 0);
+__decorate([
+    air_control_1.Transient(),
+    __metadata("design:type", Object)
+], SchemaVersion.prototype, "referencedByMapByName", void 0);
 SchemaVersion = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({ name: 'SCHEMA_VERSIONS' })

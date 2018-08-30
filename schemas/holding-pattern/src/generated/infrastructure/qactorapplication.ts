@@ -76,7 +76,9 @@ export interface IActorApplication {
  * SELECT - All fields and relations (optional).
  */
 export interface ActorApplicationESelect
-    extends IEntitySelectProperties, ActorApplicationEOptionalId, ActorApplicationEUpdateProperties {
+    extends IEntitySelectProperties, ActorApplicationEOptionalId {
+	// Non-Id Properties
+
 	// Id Relations - full property interfaces
 	actor?: ActorESelect;
 

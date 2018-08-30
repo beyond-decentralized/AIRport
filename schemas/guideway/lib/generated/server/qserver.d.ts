@@ -8,7 +8,8 @@ export interface IServer {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface ServerESelect extends IEntitySelectProperties, ServerEOptionalId, ServerEUpdateProperties {
+export interface ServerESelect extends IEntitySelectProperties, ServerEOptionalId {
+    serverType?: number | IQNumberField;
     serverSyncLogs?: ServerSyncLogESelect;
 }
 /**
@@ -33,7 +34,7 @@ export interface ServerEUpdateProperties extends IEntityUpdateProperties {
  * UPDATE - non-id columns (optional).
  */
 export interface ServerEUpdateColumns extends IEntityUpdateColumns {
-    SERVERTYPE?: number | IQNumberField;
+    SERVER_TYPE?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).

@@ -15,13 +15,15 @@ const Repository_1 = require("./Repository");
 let RepositoryArchive = class RepositoryArchive {
 };
 __decorate([
+    air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID", nullable: false }),
     __metadata("design:type", Repository_1.Repository)
 ], RepositoryArchive.prototype, "repository", void 0);
 __decorate([
+    air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "ARCHIVE_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "ARCHIVE_ID", referencedColumnName: "ID", nullable: false }),
     __metadata("design:type", Archive_1.Archive)
 ], RepositoryArchive.prototype, "archive", void 0);
 RepositoryArchive = __decorate([

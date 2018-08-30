@@ -26,12 +26,14 @@ export class User {
 	@GeneratedValue()
 	id: UserId;
 
+	@Column({name: 'HASH', nullable: false})
 	@DbString()
 	hash: UserHash;
 
+	@Column({name: 'EMAIL', nullable: false})
 	email: UserEmail;
 
-	@Column({name: "IS_INVITATION"})
+	@Column({name: "IS_INVITATION", nullable: false})
 	@DbBoolean()
 	isInvitation: UserIsInvitation;
 

@@ -20,16 +20,16 @@ __decorate([
     __metadata("design:type", Number)
 ], SequenceConsumer.prototype, "id", void 0);
 __decorate([
-    air_control_1.Column({ name: 'CREATE_TIMESTAMP' }),
+    air_control_1.Column({ name: 'CREATE_TIMESTAMP', nullable: false }),
     __metadata("design:type", Number)
 ], SequenceConsumer.prototype, "createTimestamp", void 0);
 __decorate([
-    air_control_1.Column({ name: 'RANDOM_NUMBER' }),
+    air_control_1.Column({ name: 'RANDOM_NUMBER', nullable: false }),
     __metadata("design:type", Number)
 ], SequenceConsumer.prototype, "randomNumber", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'DOMAIN_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'DOMAIN_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", territory_1.Domain)
 ], SequenceConsumer.prototype, "domain", void 0);
 SequenceConsumer = __decorate([

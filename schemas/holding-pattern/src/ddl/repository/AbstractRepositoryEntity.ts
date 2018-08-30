@@ -22,16 +22,18 @@ export abstract class AbstractRepositoryEntity
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'REPOSITORY_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'REPOSITORY_ID', referencedColumnName: 'ID',
+		nullable: false})
 	repository: IRepository
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'ACTOR_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'ACTOR_ID', referencedColumnName: 'ID',
+		nullable: false})
 	actor: IActor
 
 	@Id()
-	@Column({name: 'ACTOR_RECORD_ID'})
+	@Column({name: 'ACTOR_RECORD_ID', nullable: false})
 	@GeneratedValue()
 	actorRecordId: RepositoryEntityActorRecordId
 

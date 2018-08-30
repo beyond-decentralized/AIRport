@@ -1,4 +1,12 @@
-import {DbNumber, Entity, Id, JoinColumn, ManyToOne, Table} from "@airport/air-control";
+import {
+	Column,
+	DbNumber,
+	Entity,
+	Id,
+	JoinColumn,
+	ManyToOne,
+	Table
+} from '@airport/air-control'
 import {Repository} from "../repository/Repository";
 import {UserRepositoryPermission} from "./Permission";
 import {User} from "./User";
@@ -21,6 +29,7 @@ export class UserRepository {
 	)
 	user: User;
 
+	@Column({name: 'PERMISSION', nullable: false})
 	@DbNumber()
 	permission: UserRepositoryPermission;
 

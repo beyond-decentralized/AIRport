@@ -26,15 +26,15 @@ export class DailyArchiveLog {
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID", nullable: false})
 	repository: Repository;
 
 	@Id()
-	@Column({name: "DATE_NUMBER"})
+	@Column({name: "DATE_NUMBER", nullable: false})
 	@DbNumber()
 	dateNumber: DailyArchiveLogDate;
 
-	@Column({name: "NUMBER_OF_CHANGES"})
+	@Column({name: "NUMBER_OF_CHANGES", nullable: false})
 	@DbNumber()
 	numberOfChanges: DailyArchiveLogNumberOfChanges;
 

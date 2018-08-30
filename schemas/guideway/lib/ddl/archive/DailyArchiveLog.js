@@ -18,17 +18,17 @@ class DailyArchiveLog {
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID", nullable: false }),
     __metadata("design:type", Repository_1.Repository)
 ], DailyArchiveLog.prototype, "repository", void 0);
 __decorate([
     air_control_1.Id(),
-    air_control_1.Column({ name: "DATE_NUMBER" }),
+    air_control_1.Column({ name: "DATE_NUMBER", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], DailyArchiveLog.prototype, "dateNumber", void 0);
 __decorate([
-    air_control_1.Column({ name: "NUMBER_OF_CHANGES" }),
+    air_control_1.Column({ name: "NUMBER_OF_CHANGES", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], DailyArchiveLog.prototype, "numberOfChanges", void 0);

@@ -20,15 +20,17 @@ __decorate([
     __metadata("design:type", Number)
 ], Repository.prototype, "id", void 0);
 __decorate([
-    air_control_1.Column({ name: "LAST_UPDATE_DATETIME" }),
+    air_control_1.Column({ name: 'LAST_UPDATE_DATETIME', nullable: false }),
     air_control_1.DbDate(),
     __metadata("design:type", Object)
 ], Repository.prototype, "lastUpdateTime", void 0);
 __decorate([
     air_control_1.DbString(),
+    air_control_1.Column({ name: 'NAME', nullable: false }),
     __metadata("design:type", String)
 ], Repository.prototype, "name", void 0);
 __decorate([
+    air_control_1.Column({ name: 'STATUS', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Repository.prototype, "status", void 0);
@@ -42,7 +44,7 @@ __decorate([
 ], Repository.prototype, "repositoryTransactionBlocks", void 0);
 Repository = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: "AGT_REPOSITORIES" })
+    air_control_1.Table({ name: 'AGT_REPOSITORIES' })
 ], Repository);
 exports.Repository = Repository;
 //# sourceMappingURL=Repository.js.map

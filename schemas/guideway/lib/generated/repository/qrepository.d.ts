@@ -12,7 +12,10 @@ export interface IRepository {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEOptionalId, RepositoryEUpdateProperties {
+export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEOptionalId {
+    lastUpdateTime?: Date | IQDateField;
+    name?: string | IQStringField;
+    status?: number | IQNumberField;
     terminalRepositories?: TerminalRepositoryESelect;
     repositoryTransactionBlocks?: AgtRepositoryTransactionBlockESelect;
 }

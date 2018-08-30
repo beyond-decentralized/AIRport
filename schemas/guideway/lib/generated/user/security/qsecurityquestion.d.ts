@@ -6,7 +6,8 @@ export interface ISecurityQuestion {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SecurityQuestionESelect extends IEntitySelectProperties, SecurityQuestionEOptionalId, SecurityQuestionEUpdateProperties {
+export interface SecurityQuestionESelect extends IEntitySelectProperties, SecurityQuestionEOptionalId {
+    question?: string | IQStringField;
 }
 /**
  * DELETE - Ids fields and relations only (required).

@@ -32,7 +32,8 @@ __decorate([
 ], ActorApplication.prototype, "actor", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "APPLICATION_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "APPLICATION_ID", referencedColumnName: "ID",
+        nullable: false }),
     __metadata("design:type", Object)
 ], ActorApplication.prototype, "application", void 0);
 ActorApplication = __decorate([

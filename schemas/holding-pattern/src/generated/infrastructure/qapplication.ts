@@ -78,7 +78,11 @@ export interface IApplication {
  * SELECT - All fields and relations (optional).
  */
 export interface ApplicationESelect
-    extends IEntitySelectProperties, ApplicationEOptionalId, ApplicationEUpdateProperties {
+    extends IEntitySelectProperties, ApplicationEOptionalId {
+	// Non-Id Properties
+	host?: string | IQStringField;
+	port?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

@@ -53,7 +53,9 @@ export interface ILog {
  * SELECT - All fields and relations (optional).
  */
 export interface LogESelect
-    extends IEntitySelectProperties, LogEOptionalId, LogEUpdateProperties {
+    extends IEntitySelectProperties, LogEOptionalId {
+	// Non-Id Properties
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

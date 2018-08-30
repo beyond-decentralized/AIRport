@@ -8,39 +8,41 @@ import {
 	Id,
 	OneToMany,
 	Table
-}                                      from "@airport/air-control";
-import {AgtRepositoryId}               from "@airport/arrivals-n-departures";
-import {TerminalRepository}            from "../terminal/TerminalRepository";
-import {AgtRepositoryTransactionBlock} from "../synchronization/AgtRepositoryTransactionBlock";
-import {RepositoryStatus}              from "./RepositoryStatus";
+}                                      from '@airport/air-control'
+import {AgtRepositoryId}               from '@airport/arrivals-n-departures'
+import {AgtRepositoryTransactionBlock} from '../synchronization/AgtRepositoryTransactionBlock'
+import {TerminalRepository}            from '../terminal/TerminalRepository'
+import {RepositoryStatus}              from './RepositoryStatus'
 
 export type RepositoryLastUpdateDatetime = Date;
 export type RepositoryName = string;
 
 @Entity()
-@Table({name: "AGT_REPOSITORIES"})
+@Table({name: 'AGT_REPOSITORIES'})
 export class Repository {
 
 	@Id()
 	@DbNumber()
 	@GeneratedValue()
-	id: AgtRepositoryId;
+	id: AgtRepositoryId
 
-	@Column({name: "LAST_UPDATE_DATETIME"})
+	@Column({name: 'LAST_UPDATE_DATETIME', nullable: false})
 	@DbDate()
-	lastUpdateTime: RepositoryLastUpdateDatetime;
+	lastUpdateTime: RepositoryLastUpdateDatetime
 
 	// NOTE: needed to for archiving purposes - name of the directory of daily records in month
 	@DbString()
-	name: RepositoryName;
+	@Column({name: 'NAME', nullable: false})
+	name: RepositoryName
 
+	@Column({name: 'STATUS', nullable: false})
 	@DbNumber()
-	status: RepositoryStatus;
+	status: RepositoryStatus
 
 	@OneToMany()
-	terminalRepositories: TerminalRepository[];
+	terminalRepositories: TerminalRepository[]
 
 	@OneToMany()
-	repositoryTransactionBlocks: AgtRepositoryTransactionBlock[];
+	repositoryTransactionBlocks: AgtRepositoryTransactionBlock[]
 
 }

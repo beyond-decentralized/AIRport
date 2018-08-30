@@ -22,21 +22,25 @@ __decorate([
 ], RepoTransHistoryChangedRepositoryActor.prototype, "id", void 0);
 __decorate([
     ColumnDecorators_1.ManyToOne(),
-    ColumnDecorators_1.JoinColumn({ name: "REPOSITORY_TRANSACTION_HISTORY_ID", referencedColumnName: "ID" }),
+    ColumnDecorators_1.JoinColumn({ name: "REPOSITORY_TRANSACTION_HISTORY_ID",
+        referencedColumnName: "ID", nullable: false }),
     __metadata("design:type", Object)
 ], RepoTransHistoryChangedRepositoryActor.prototype, "repositoryTransactionHistory", void 0);
 __decorate([
     ColumnDecorators_1.ManyToOne(),
-    ColumnDecorators_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" }),
+    ColumnDecorators_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID",
+        nullable: false }),
     __metadata("design:type", Object)
 ], RepoTransHistoryChangedRepositoryActor.prototype, "repository", void 0);
 __decorate([
     ColumnDecorators_1.ManyToOne(),
-    ColumnDecorators_1.JoinColumn({ name: "ACTOR_ID", referencedColumnName: "ID" }),
+    ColumnDecorators_1.JoinColumn({ name: "ACTOR_ID", referencedColumnName: "ID",
+        nullable: false }),
     __metadata("design:type", Object)
 ], RepoTransHistoryChangedRepositoryActor.prototype, "actor", void 0);
 __decorate([
-    ColumnDecorators_1.Column({ name: "REFERENCE_TYPE" }),
+    ColumnDecorators_1.Column({ name: "REFERENCE_TYPE",
+        nullable: false }),
     ColumnDecorators_1.DbNumber(),
     __metadata("design:type", Number)
 ], RepoTransHistoryChangedRepositoryActor.prototype, "referenceType", void 0);

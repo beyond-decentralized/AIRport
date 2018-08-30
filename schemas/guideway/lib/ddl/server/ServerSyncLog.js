@@ -21,35 +21,36 @@ __decorate([
 ], ServerSyncLog.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "SERVER_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "SERVER_ID", referencedColumnName: "ID", nullable: false }),
     __metadata("design:type", Object)
 ], ServerSyncLog.prototype, "server", void 0);
 __decorate([
+    air_control_1.Column({ name: 'TYPE', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], ServerSyncLog.prototype, "type", void 0);
 __decorate([
-    air_control_1.Column({ name: "START_DATETIME" }),
+    air_control_1.Column({ name: "START_DATETIME", nullable: false }),
     air_control_1.DbDate(),
     __metadata("design:type", Object)
 ], ServerSyncLog.prototype, "startDatetime", void 0);
 __decorate([
-    air_control_1.Column({ name: "PROCESSED_DATETIME" }),
+    air_control_1.Column({ name: "PROCESSED_DATETIME", nullable: false }),
     air_control_1.DbDate(),
     __metadata("design:type", Object)
 ], ServerSyncLog.prototype, "endDatetime", void 0);
 __decorate([
-    air_control_1.Column({ name: "NUMBER_OF_CONNECTIONS" }),
+    air_control_1.Column({ name: "NUMBER_OF_CONNECTIONS", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], ServerSyncLog.prototype, "numberOfConnections", void 0);
 __decorate([
-    air_control_1.Column({ name: "NUMBER_OF_SYNC_RECORDS" }),
+    air_control_1.Column({ name: "NUMBER_OF_SYNC_RECORDS", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], ServerSyncLog.prototype, "numberOfRecords", void 0);
 __decorate([
-    air_control_1.Column({ name: "DATA_CHARS_TOTAL" }),
+    air_control_1.Column({ name: "DATA_CHARS_TOTAL", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], ServerSyncLog.prototype, "dataCharsTotal", void 0);

@@ -30,6 +30,7 @@ __decorate([
     __metadata("design:type", Repository_1.Repository)
 ], TerminalRepository.prototype, "repository", void 0);
 __decorate([
+    air_control_1.Column({ name: 'PERMISSION', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], TerminalRepository.prototype, "permission", void 0);

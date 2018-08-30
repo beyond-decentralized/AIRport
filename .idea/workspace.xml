@@ -1,103 +1,274 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/apis/air-control/src/tsconfig.json.3" line="0" mnemonic="1" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c5a4502-68ae-4304-a543-572c83c81862" name="Default" comment="schema generation">
-<<<<<<< Updated upstream
-=======
-      <change afterPath="$PROJECT_DIR$/generators/takeoff/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generators/takeoff/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generators/takeoff/.idea/takeoff.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generators/takeoff/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generators/takeoff/.idea/workspace.xml" afterDir="false" />
->>>>>>> Stashed changes
+    <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/lib/lingo/core/entity/metadata/ColumnDecorators.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/lib/lingo/core/entity/metadata/ColumnDecorators.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/lib/lingo/core/entity/metadata/ColumnDecorators.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/lib/lingo/core/entity/metadata/ColumnDecorators.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/src/lingo/core/entity/metadata/ColumnDecorators.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/src/lingo/core/entity/metadata/ColumnDecorators.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/.idea/workspace.xml" afterDir="false" />
-<<<<<<< Updated upstream
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Entity.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Entity.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Property.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Property.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Property.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Property.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Schema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Entity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Entity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Property.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Property.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/IQEntityInterfaceBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/entity/IQEntityInterfaceBuilder.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/IQEntityInterfaceBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/entity/IQEntityInterfaceBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/IQEntityInterfaceBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/entity/IQEntityInterfaceBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/JsonSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/schema/JsonSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/JsonSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/schema/JsonSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/IQEntityInterfaceBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/builder/entity/IQEntityInterfaceBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/schema/JsonSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/builder/schema/JsonSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/Schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/Schema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/Schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/Schema.js.map" afterDir="false" />
-=======
       <change beforePath="$PROJECT_DIR$/generators/landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/recorder/SchemaRecorder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/takeoff/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/generators/takeoff/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/takeoff/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/takeoff/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/Sequence.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/Sequence.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/Sequence.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/Sequence.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/SequenceBlock.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/SequenceBlock.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/SequenceBlock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/SequenceBlock.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/SequenceConsumer.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/SequenceConsumer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/SequenceConsumer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/SequenceConsumer.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qsequence.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qsequence.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qsequenceblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qsequenceblock.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qsequenceconsumer.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qsequenceconsumer.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/schema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/src/ddl/Sequence.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/src/ddl/Sequence.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/src/ddl/SequenceBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/src/ddl/SequenceBlock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/src/ddl/SequenceConsumer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/src/ddl/SequenceConsumer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/src/generated/qsequence.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/src/generated/qsequence.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/src/generated/qsequenceblock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/src/generated/qsequenceblock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/src/generated/qsequenceconsumer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/src/generated/qsequenceconsumer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/airport-code/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/src/generated/schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/lib/ddl/DailySyncLog.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/lib/ddl/DailySyncLog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/lib/ddl/DailySyncLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/lib/ddl/DailySyncLog.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/lib/ddl/MonthlySyncLog.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/lib/ddl/MonthlySyncLog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/lib/ddl/MonthlySyncLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/lib/ddl/MonthlySyncLog.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/lib/generated/log/qlog.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/lib/generated/log/qlog.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/lib/generated/qdailysynclog.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/lib/generated/qdailysynclog.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/lib/generated/qmonthlysynclog.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/lib/generated/qmonthlysynclog.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/lib/generated/schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/lib/generated/schema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/lib/generated/schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/lib/generated/schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/src/ddl/DailySyncLog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/src/ddl/DailySyncLog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/src/ddl/MonthlySyncLog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/src/ddl/MonthlySyncLog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/src/generated/log/qlog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/src/generated/log/qlog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/src/generated/qdailysynclog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/src/generated/qdailysynclog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/src/generated/qmonthlysynclog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/src/generated/qmonthlysynclog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/flight-log-archive/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/flight-log-archive/src/generated/schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/dao/archive/DailyArchiveLogDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/dao/archive/DailyArchiveLogDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/dao/repository/RepositoryDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/dao/repository/RepositoryDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/dao/synchronization/AgtRepositoryTransactionBlockDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/dao/synchronization/AgtRepositoryTransactionBlockDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/dao/synchronization/AgtSharingMessageDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/dao/synchronization/AgtSharingMessageDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/dao/synchronization/SyncLogDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/dao/synchronization/SyncLogDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/dao/terminal/TerminalDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/dao/terminal/TerminalDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/dao/terminal/TerminalRepositoryDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/dao/terminal/TerminalRepositoryDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/DailyArchiveLog.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/DailyArchiveLog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/DailyArchiveLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/DailyArchiveLog.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/DailyTerminalSyncLog.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/DailyTerminalSyncLog.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/DailyTerminalSyncLog.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/DailyTerminalSyncLog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/DailyTerminalSyncLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/DailyTerminalSyncLog.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/MonthlyArchiveLog.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/MonthlyArchiveLog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/MonthlyArchiveLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/MonthlyArchiveLog.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/MonthlyTerminalSyncLog.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/MonthlyTerminalSyncLog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/MonthlyTerminalSyncLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/archive/MonthlyTerminalSyncLog.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/Archive.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/Archive.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/Archive.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/Archive.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/Repository.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/Repository.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/Repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/Repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/Repository.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/Repository.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/RepositoryArchive.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/RepositoryArchive.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/RepositoryArchive.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/repository/RepositoryArchive.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/server/Server.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/server/Server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/server/Server.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/server/Server.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/server/ServerSyncLog.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/server/ServerSyncLog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/server/ServerSyncLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/server/ServerSyncLog.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/synchronization/AgtRepositoryTransactionBlock.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/synchronization/AgtRepositoryTransactionBlock.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/synchronization/AgtRepositoryTransactionBlock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/synchronization/AgtRepositoryTransactionBlock.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/synchronization/AgtSharingMessage.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/synchronization/AgtSharingMessage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/synchronization/AgtSharingMessage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/synchronization/AgtSharingMessage.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/synchronization/SyncLog.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/synchronization/SyncLog.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/terminal/Terminal.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/terminal/Terminal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/terminal/Terminal.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/terminal/Terminal.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/terminal/TerminalRepository.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/terminal/TerminalRepository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/terminal/TerminalRepository.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/terminal/TerminalRepository.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/tuning/TuningParameters.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/tuning/TuningParameters.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/tuning/TuningParameters.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/tuning/TuningParameters.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/User.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/User.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/User.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/UserRepository.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/UserRepository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/UserRepository.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/UserRepository.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/security/SecurityAnswer.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/security/SecurityAnswer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/security/SecurityAnswer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/security/SecurityAnswer.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/security/SecurityQuestion.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/security/SecurityQuestion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/security/SecurityQuestion.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/ddl/user/security/SecurityQuestion.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/archive/qdailyarchivelog.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/archive/qdailyarchivelog.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/archive/qdailyterminalsynclog.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/archive/qdailyterminalsynclog.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/archive/qmonthlyarchivelog.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/archive/qmonthlyarchivelog.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/archive/qmonthlyterminalsynclog.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/archive/qmonthlyterminalsynclog.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/baseDaos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/baseDaos.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/baseDmos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/baseDmos.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/repository/qarchive.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/repository/qarchive.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/repository/qrepository.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/repository/qrepository.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/repository/qrepositoryarchive.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/repository/qrepositoryarchive.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/schema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/server/qserver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/server/qserver.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/server/qserversynclog.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/server/qserversynclog.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/synchronization/qagtrepositorytransactionblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/synchronization/qagtrepositorytransactionblock.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/synchronization/qagtsharingmessage.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/synchronization/qagtsharingmessage.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/synchronization/qsynclog.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/synchronization/qsynclog.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/terminal/qterminal.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/terminal/qterminal.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/terminal/qterminalrepository.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/terminal/qterminalrepository.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/tuning/qtuningparameters.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/tuning/qtuningparameters.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/user/quser.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/user/quser.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/user/quserrepository.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/user/quserrepository.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/user/security/qsecurityanswer.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/user/security/qsecurityanswer.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/lib/generated/user/security/qsecurityquestion.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/lib/generated/user/security/qsecurityquestion.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/archive/DailyArchiveLog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/archive/DailyArchiveLog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/archive/DailyTerminalSyncLog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/archive/DailyTerminalSyncLog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/archive/MonthlyArchiveLog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/archive/MonthlyArchiveLog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/archive/MonthlyTerminalSyncLog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/archive/MonthlyTerminalSyncLog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/repository/Archive.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/repository/Archive.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/repository/Repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/repository/Repository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/repository/RepositoryArchive.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/repository/RepositoryArchive.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/server/Server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/server/Server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/server/ServerSyncLog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/server/ServerSyncLog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/synchronization/AgtRepositoryTransactionBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/synchronization/AgtRepositoryTransactionBlock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/synchronization/AgtSharingMessage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/synchronization/AgtSharingMessage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/terminal/Terminal.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/terminal/Terminal.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/terminal/TerminalRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/terminal/TerminalRepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/tuning/TuningParameters.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/tuning/TuningParameters.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/user/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/user/User.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/user/UserRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/user/UserRepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/user/security/SecurityAnswer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/user/security/SecurityAnswer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/ddl/user/security/SecurityQuestion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/ddl/user/security/SecurityQuestion.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/archive/qdailyarchivelog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/archive/qdailyarchivelog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/archive/qdailyterminalsynclog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/archive/qdailyterminalsynclog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/archive/qmonthlyarchivelog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/archive/qmonthlyarchivelog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/archive/qmonthlyterminalsynclog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/archive/qmonthlyterminalsynclog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/repository/qarchive.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/repository/qarchive.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/repository/qrepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/repository/qrepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/repository/qrepositoryarchive.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/repository/qrepositoryarchive.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/server/qserver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/server/qserver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/server/qserversynclog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/server/qserversynclog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/synchronization/qagtrepositorytransactionblock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/synchronization/qagtrepositorytransactionblock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/synchronization/qagtsharingmessage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/synchronization/qagtsharingmessage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/synchronization/qsynclog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/synchronization/qsynclog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/terminal/qterminal.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/terminal/qterminal.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/terminal/qterminalrepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/terminal/qterminalrepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/tuning/qtuningparameters.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/tuning/qtuningparameters.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/user/quser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/user/quser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/user/quserrepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/user/quserrepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/user/security/qsecurityanswer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/user/security/qsecurityanswer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/guideway/src/generated/user/security/qsecurityquestion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/guideway/src/generated/user/security/qsecurityquestion.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/OperationHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/OperationHistory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/OperationHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/OperationHistory.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistory.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistoryNewValue.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistoryNewValue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistoryNewValue.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistoryNewValue.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistoryOldValue.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistoryOldValue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistoryOldValue.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RecordHistoryOldValue.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RepoTransHistoryChangedRepositoryActor.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RepoTransHistoryChangedRepositoryActor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RepoTransHistoryChangedRepositoryActor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RepoTransHistoryChangedRepositoryActor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RepositoryTransactionHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RepositoryTransactionHistory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RepositoryTransactionHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/RepositoryTransactionHistory.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/TransactionHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/TransactionHistory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/TransactionHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/history/TransactionHistory.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/infrastructure/Actor.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/infrastructure/Actor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/infrastructure/Actor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/infrastructure/Actor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/infrastructure/ActorApplication.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/infrastructure/ActorApplication.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/infrastructure/ActorApplication.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/infrastructure/ActorApplication.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/infrastructure/Application.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/infrastructure/Application.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/infrastructure/Application.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/infrastructure/Application.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/AbstractRepositoryEntity.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/AbstractRepositoryEntity.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/AbstractRepositoryEntity.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/AbstractRepositoryEntity.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/Repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/Repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/Repository.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/Repository.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/RepositoryActor.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/RepositoryActor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/RepositoryActor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/RepositoryActor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/RepositoryApplication.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/RepositoryApplication.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/RepositoryApplication.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/RepositoryApplication.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/RepositorySchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/RepositorySchema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/RepositorySchema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/ddl/repository/RepositorySchema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qoperationhistory.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qoperationhistory.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qrecordhistory.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qrecordhistory.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qrecordhistorynewvalue.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qrecordhistorynewvalue.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qrecordhistoryoldvalue.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qrecordhistoryoldvalue.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qrepositorytransactionhistory.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qrepositorytransactionhistory.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qrepotranshistorychangedrepositoryactor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qrepotranshistorychangedrepositoryactor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qtransactionhistory.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/history/qtransactionhistory.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/infrastructure/qactor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/infrastructure/qactor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/infrastructure/qactorapplication.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/infrastructure/qactorapplication.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/infrastructure/qapplication.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/infrastructure/qapplication.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/repository/qabstractrepositoryentity.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/repository/qabstractrepositoryentity.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/repository/qrepository.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/repository/qrepository.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/repository/qrepositoryactor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/repository/qrepositoryactor.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/repository/qrepositoryapplication.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/repository/qrepositoryapplication.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/repository/qrepositoryschema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/repository/qrepositoryschema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/schema.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/generated/schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/OperationHistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/OperationHistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistoryNewValue.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistoryNewValue.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistoryOldValue.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistoryOldValue.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RepoTransHistoryChangedRepositoryActor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RepoTransHistoryChangedRepositoryActor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RepositoryTransactionHistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RepositoryTransactionHistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/TransactionHistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/TransactionHistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/infrastructure/Actor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/infrastructure/Actor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/infrastructure/ActorApplication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/infrastructure/ActorApplication.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/infrastructure/Application.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/infrastructure/Application.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/AbstractRepositoryEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/AbstractRepositoryEntity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/Repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/Repository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/RepositoryActor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/RepositoryActor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/RepositoryApplication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/RepositoryApplication.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/RepositorySchema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/RepositorySchema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qoperationhistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qoperationhistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qrecordhistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qrecordhistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qrecordhistorynewvalue.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qrecordhistorynewvalue.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qrecordhistoryoldvalue.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qrecordhistoryoldvalue.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qrepositorytransactionhistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qrepositorytransactionhistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qrepotranshistorychangedrepositoryactor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qrepotranshistorychangedrepositoryactor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qtransactionhistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/history/qtransactionhistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/infrastructure/qactor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/infrastructure/qactor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/infrastructure/qactorapplication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/infrastructure/qactorapplication.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/infrastructure/qapplication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/infrastructure/qapplication.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/repository/qabstractrepositoryentity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/repository/qabstractrepositoryentity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/repository/qrepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/repository/qrepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/repository/qrepositoryactor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/repository/qrepositoryactor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/repository/qrepositoryapplication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/repository/qrepositoryapplication.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/repository/qrepositoryschema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/repository/qrepositoryschema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/generated/schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/territory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/territory/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" afterDir="false" />
->>>>>>> Stashed changes
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaReference.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaReference.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaReference.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaReference.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.js.map" afterDir="false" />
-<<<<<<< Updated upstream
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaVersion.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaVersion.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaVersion.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaVersion.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaVersion.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaVersion.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/baseDaos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/baseDaos.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/baseDaos.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/baseDaos.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/baseDaos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/baseDaos.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/baseDmos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/baseDmos.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/baseDmos.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/baseDmos.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/baseDmos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/baseDmos.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/generated.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/generated.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/qSchema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/qSchema.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/qSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/qSchema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/qSchema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/qSchema.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/schema.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/schema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/schema.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/Schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/Schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/schema/qschemaversion.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/schema/qschemaversion.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaProperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaProperty.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaPropertyColumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaPropertyColumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaReference.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaReference.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaRelation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaRelation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaRelationColumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaRelationColumn.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaVersion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaVersion.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/VersionedSchemaObject.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/VersionedSchemaObject.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/baseDaos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/baseDaos.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/baseDmos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/baseDmos.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/generated.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/generated.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/qSchema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/qSchema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemacolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemacolumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaentity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaentity.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaproperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaproperty.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemapropertycolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemapropertycolumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemareference.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemareference.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemarelation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemarelation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemarelationcolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemarelationcolumn.ts" afterDir="false" />
-=======
->>>>>>> Stashed changes
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaversion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaversion.ts" afterDir="false" />
     </list>
-    <list id="bd11709e-7b8d-4d56-80ac-4cc7f9b1ab94" name="Revert: " comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/apis/" />
+    <ignored path="$PROJECT_DIR$/apps/" />
+    <ignored path="$PROJECT_DIR$/common/" />
+    <ignored path="$PROJECT_DIR$/generators/" />
+    <ignored path="$PROJECT_DIR$/libs/" />
+    <ignored path="$PROJECT_DIR$/schemas/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -110,245 +281,34 @@
     <session id="-2023080075">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="37" />
-          <entry key="project.open.time.0" value="4" />
-          <entry key="project.open.time.1" value="1" />
-          <entry key="project.open.time.10" value="5" />
-          <entry key="project.open.time.11" value="3" />
-          <entry key="project.open.time.12" value="4" />
-          <entry key="project.open.time.15" value="1" />
-          <entry key="project.open.time.17" value="1" />
-          <entry key="project.open.time.2" value="1" />
-          <entry key="project.open.time.3" value="3" />
-          <entry key="project.open.time.4" value="4" />
-          <entry key="project.open.time.5" value="5" />
-          <entry key="project.open.time.6" value="1" />
-          <entry key="project.open.time.7" value="4" />
-          <entry key="project.open.time.8" value="2" />
-          <entry key="project.opened" value="39" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.js.language.service.starts">
-        <counts>
-          <entry key="TypeScriptServerServiceImpl" value="39" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="json" value="60" />
-          <entry key="ts" value="74" />
-          <entry key="txt" value="149" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="JSON" value="60" />
-          <entry key="PLAIN_TEXT" value="149" />
-          <entry key="TypeScript" value="74" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="js" value="4" />
-          <entry key="json" value="11" />
-          <entry key="ts" value="10" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="JSON" value="9" />
-          <entry key="JavaScript" value="4" />
-          <entry key="TypeScript" value="10" />
-          <entry key="tsconfig" value="2" />
-        </counts>
-      </usages-collector>
-    </session>
-    <session id="-1608385056">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="3" />
-          <entry key="project.open.time.22" value="1" />
-          <entry key="project.open.time.28" value="1" />
-          <entry key="project.open.time.36" value="1" />
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.12" value="2" />
           <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
-      <usages-collector id="statistics.js.language.service.starts">
-        <counts>
-          <entry key="TypeScriptServerServiceImpl" value="4" />
-        </counts>
-      </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="json" value="2" />
-          <entry key="ts" value="4" />
+          <entry key="json" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JSON" value="1" />
-          <entry key="TypeScript" value="4" />
-          <entry key="tsconfig" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="json" value="7" />
-          <entry key="ts" value="3" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="JSON" value="7" />
-          <entry key="TypeScript" value="3" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-<<<<<<< Updated upstream
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/libs/tower/src/OperationManager.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="416">
-                  <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/rush.json">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="195">
-                  <caret line="84" column="42" selection-start-line="84" selection-start-column="42" selection-end-line="84" selection-end-column="42" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
-=======
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/libs/mono-rail/src/InjectionTokens.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="1" column="53" selection-start-line="1" selection-start-column="53" selection-end-line="1" selection-end-column="53" />
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/rush.json">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
->>>>>>> Stashed changes
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="TypeScript File" />
-      </list>
-    </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>air-control</find>
-      <find>z</find>
-      <find>guideway</find>
-      <find>arrivals</find>
-      <find>arrivals-n-</find>
-      <find>terminal-map</find>
-      <find>check-in</find>
-      <find>from</find>
-      <find>mo</find>
-      <find>traffic</find>
-      <find>airport-co</find>
-      <find>guidew</find>
-      <find>ground-co</find>
-      <find>DailyArchiveLogValues</find>
-      <find>guide</find>
-      <find>traffic-pa</find>
-      <find>Observable</find>
-      <find>index</find>
-      <find>SequenceGenerator</find>
-    </findStrings>
-    <dirStrings>
-      <dir>$PROJECT_DIR$/generators/runway/src</dir>
-      <dir>$PROJECT_DIR$/apis/arrivals-n-departures/src</dir>
-      <dir>$PROJECT_DIR$/schemas/moving-walkway</dir>
-      <dir>$PROJECT_DIR$/schemas/moving-walkway/src</dir>
-      <dir>$PROJECT_DIR$/schemas/guideway/src</dir>
-      <dir>$PROJECT_DIR$/schemas/point-of-destination/src</dir>
-      <dir>$PROJECT_DIR$/apis/terminal-map/src</dir>
-      <dir>$PROJECT_DIR$/libs/tower/src</dir>
-      <dir>$PROJECT_DIR$/schemas</dir>
-    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaRelation.ts" />
-        <option value="$PROJECT_DIR$/schemas/runway-edge-lighting/src/dao/dao.ts" />
-        <option value="$PROJECT_DIR$/schemas/runway-edge-lighting/src/InjectionTokens.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/OperationHistory.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RepositoryTransactionHistory.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/infrastructure/Actor.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/infrastructure/Application.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/Repository.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/RepositorySchema.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/OperationHistoryDmo.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/RecordHistoryDmo.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/RecordHistoryNewValueDmo.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/RecordHistoryOldValueDmo.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/RepositoryTransactionHistoryDmo.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/TransactionHistoryDmo.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistory.ts" />
-        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/index.ts" />
-        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dao/sharingNode/SharingNodeRepoTransBlockDao.ts" />
-        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/sharingNode/SharingNodeDatabase.ts" />
-        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/sharingNode/SharingNodeRepository.ts" />
-        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/sharingNode/SharingNodeRepoTransBlock.ts" />
-        <option value="$PROJECT_DIR$/schemas/moving-walkway/package.json" />
-        <option value="$PROJECT_DIR$/apis/arrivals-n-departures/package.json" />
-        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dao/RecordUpdateStageDao.ts" />
-        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dao/missingRecord/MissingRecordDao.ts" />
-        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dao/sharingNode/SharingNodeRepositoryDao.ts" />
-        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/conflict/SynchronizationConflict.ts" />
-        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/conflict/SynchronizationConflictValues.ts" />
-        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dmo/dmo.ts" />
-        <option value="$PROJECT_DIR$/schemas/guideway/package.json" />
-        <option value="$PROJECT_DIR$/schemas/guideway/src/dao/archive/DailyArchiveLogDao.ts" />
-        <option value="$PROJECT_DIR$/schemas/point-of-destination/package.json" />
-        <option value="$PROJECT_DIR$/apis/terminal-map/package.json" />
-        <option value="$PROJECT_DIR$/apis/terminal-map/src/store/TerminalStore.ts" />
-        <option value="$PROJECT_DIR$/libs/tower/src/AirportDatabase.ts" />
-        <option value="$PROJECT_DIR$/libs/tower/src/OperationManager.ts" />
-        <option value="$PROJECT_DIR$/libs/tower/src/core/data/UpdateCache.ts" />
-        <option value="$PROJECT_DIR$/libs/tower/src/core/metadata/MetadataUtils.ts" />
-        <option value="$PROJECT_DIR$/libs/tower/src/EntityManager.ts" />
-        <option value="$PROJECT_DIR$/libs/tower/src/QueryFacade.ts" />
-        <option value="$PROJECT_DIR$/schemas/baggage-screening.ts" />
-        <option value="$PROJECT_DIR$/schemas/id-checkpoint/package.json" />
-        <option value="$PROJECT_DIR$/schemas/airport-code/src/ddl/ddl.ts" />
-        <option value="$PROJECT_DIR$/schemas/airport-code/src/ddl/SequenceBlock.ts" />
-        <option value="$PROJECT_DIR$/generators/runway/src/parser/EntityDefinitionGenerator.ts" />
-        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/TransactionHistory.ts" />
-        <option value="$PROJECT_DIR$/generators/takeoff/package.json" />
-        <option value="$PROJECT_DIR$/generators/takeoff/src/InjectionTokens.ts" />
-        <option value="$PROJECT_DIR$/generators/landing/src/index.ts" />
-        <option value="$PROJECT_DIR$/generators/takeoff/src/QueryObjectInitializer.ts" />
-        <option value="$PROJECT_DIR$/rush.json" />
-      </list>
-    </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
@@ -364,22 +324,13 @@
     </packageJsonPaths>
   </component>
   <component name="PackageJsonUpdateNotifier">
-    <dismissed value="$PROJECT_DIR$/apis/air-control/package.json" />
-    <dismissed value="$PROJECT_DIR$/apis/arrivals-n-departures/package.json" />
-    <dismissed value="$PROJECT_DIR$/apis/check-in/package.json" />
-    <dismissed value="$PROJECT_DIR$/apps/automated-guideway-transit/package.json" />
-    <dismissed value="$PROJECT_DIR$/apps/terminal/package.json" />
     <dismissed value="$PROJECT_DIR$/package.json" />
-    <dismissed value="$PROJECT_DIR$/schemas/airport-code/package.json" />
-    <dismissed value="$PROJECT_DIR$/schemas/flight-log-archive/package.json" />
-    <dismissed value="$PROJECT_DIR$/schemas/guideway/package.json" />
-    <dismissed value="$PROJECT_DIR$/schemas/traffic-pattern/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-9" />
-    <option name="y" value="38" />
-    <option name="width" value="1943" />
-    <option name="height" value="1103" />
+    <option name="x" value="3840" />
+    <option name="y" value="-2" />
+    <option name="width" value="1920" />
+    <option name="height" value="1082" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -394,42 +345,6 @@
               <item name="airport" type="b2602c69:ProjectViewProjectNode" />
               <item name="airport" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport" type="462c0819:PsiDirectoryNode" />
-              <item name="apis" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport" type="462c0819:PsiDirectoryNode" />
-              <item name="generators" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport" type="462c0819:PsiDirectoryNode" />
-              <item name="generators" type="462c0819:PsiDirectoryNode" />
-              <item name="landing" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport" type="462c0819:PsiDirectoryNode" />
-              <item name="generators" type="462c0819:PsiDirectoryNode" />
-              <item name="landing" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport" type="462c0819:PsiDirectoryNode" />
-              <item name="generators" type="462c0819:PsiDirectoryNode" />
-              <item name="takeoff" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport" type="462c0819:PsiDirectoryNode" />
-              <item name="generators" type="462c0819:PsiDirectoryNode" />
-              <item name="takeoff" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -438,206 +353,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/schemas/traffic-pattern" />
     <property name="nodejs_package_manager_path" value="yarn" />
-    <property name="settings.editor.selected.configurable" value="settings.typescriptcompiler" />
-    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/libs/ground-transport/src/google" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Papa\dac\airport\generators\takeoff\src" />
-      <recent name="C:\Users\Papa\dac\airport\generators\takeoff" />
-      <recent name="$PROJECT_DIR$/schemas/id-checkpoint" />
-      <recent name="$PROJECT_DIR$/apps/terminal/src" />
-      <recent name="$PROJECT_DIR$/apps/terminal/src/store" />
-    </key>
-  </component>
-  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
-    <UpdatedFiles>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Updated from server" />
-        <option name="myStatusName" value="Changed on server" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="CHANGED_ON_SERVER" />
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Updated" />
-          <option name="myStatusName" value="Changed" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/apis/ground-control/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Entity.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Property.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Property.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Entity.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Property.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/apis/terminal-map/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/common/config/rush/npm-shrinkwrap.json</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/landing/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/landing/lib/index.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/landing/lib/index.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/landing/lib/index.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/landing/lib/recorder/SchemaRecorder.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/landing/lib/recorder/SchemaRecorder.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/landing/src/index.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/landing/src/recorder/SchemaRecorder.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/libs/fuel-hydrant-system/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/rush.json</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/airport-code/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/territory/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/InjectionTokens.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/InjectionTokens.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/InjectionTokens.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaEntityDao.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaEntityDao.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaEntityDao.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaReferenceDao.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaReferenceDao.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaReferenceDao.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaVersionDao.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaVersionDao.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/SchemaVersionDao.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/Schema.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/Schema.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaEntity.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaProperty.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaPropertyColumn.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaReference.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaReference.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaReference.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.d.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelation.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaRelationColumn.js.map</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/lib/generated/qSchema.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/InjectionTokens.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/dao/SchemaEntityDao.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/dao/SchemaReferenceDao.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/dao/SchemaVersionDao.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaProperty.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaPropertyColumn.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaReference.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaRelation.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/generated/qSchema.ts</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Created" />
-          <option name="myStatusName" value="Created" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/takeoff/package.json</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/takeoff/src/InjectionTokens.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/takeoff/src/QueryObjectInitializer.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/takeoff/src/index.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/generators/takeoff/tsconfig.json</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/VersionedSchemaObject.ts</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/schemas/traffic-pattern/src/dmo/SchemaVersionDmo.ts</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Deleted" />
-          <option name="myStatusName" value="Deleted" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="true" />
-          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Restored" />
-          <option name="myStatusName" value="Will be restored" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="RESTORED" />
-        </FILE-GROUP>
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Modified" />
-        <option name="myStatusName" value="Modified" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MODIFIED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Skipped" />
-        <option name="myStatusName" value="Skipped" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SKIPPED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with conflicts" />
-        <option name="myStatusName" value="Will be merged with conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_CONFLICTS" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with tree conflicts" />
-        <option name="myStatusName" value="Merged with tree conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with property conflicts" />
-        <option name="myStatusName" value="Will be merged with property conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged" />
-        <option name="myStatusName" value="Will be merged" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Not in repository" />
-        <option name="myStatusName" value="Not in repository" />
-        <option name="mySupportsDeletion" value="true" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="UNKNOWN" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally added" />
-        <option name="myStatusName" value="Locally added" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_ADDED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally removed" />
-        <option name="myStatusName" value="Locally removed" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_REMOVED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Switched" />
-        <option name="myStatusName" value="Switched" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SWITCHED" />
-      </FILE-GROUP>
-    </UpdatedFiles>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -651,418 +367,45 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Node.js.traffic-pattern">
-    <configuration name="airport-code" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/airport-code">
-      <method v="2" />
-    </configuration>
-    <configuration name="flight-log-archive" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/flight-log-archive">
-      <method v="2" />
-    </configuration>
-    <configuration name="guideway" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/guideway">
-      <method v="2" />
-    </configuration>
-    <configuration name="holding-pattern" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/holding-pattern">
-      <method v="2" />
-    </configuration>
-    <configuration name="moving-walkway" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/moving-walkway">
-      <method v="2" />
-    </configuration>
-    <configuration name="point-of-destination" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/point-of-destination">
-      <method v="2" />
-    </configuration>
-    <configuration name="runway-edge-lighting" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/runway-edge-lighting">
-      <method v="2" />
-    </configuration>
-    <configuration name="territory" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/territory">
-      <method v="2" />
-    </configuration>
-    <configuration name="traffic-pattern" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/traffic-pattern">
-      <method v="2" />
-    </configuration>
-    <configuration name="travel-document-checkpoint" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/travel-document-checkpoint">
-      <method v="2" />
-    </configuration>
-    <list>
-      <item itemvalue="Node.js.airport-code" />
-      <item itemvalue="Node.js.flight-log-archive" />
-      <item itemvalue="Node.js.territory" />
-      <item itemvalue="Node.js.guideway" />
-      <item itemvalue="Node.js.point-of-destination" />
-      <item itemvalue="Node.js.traffic-pattern" />
-      <item itemvalue="Node.js.holding-pattern" />
-      <item itemvalue="Node.js.travel-document-checkpoint" />
-      <item itemvalue="Node.js.moving-walkway" />
-      <item itemvalue="Node.js.runway-edge-lighting" />
-    </list>
-  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="9c5a4502-68ae-4304-a543-572c83c81862" name="Default" comment="" />
-      <changelist id="bd11709e-7b8d-4d56-80ac-4cc7f9b1ab94" name="Revert: " comment="" />
-      <created>1531746759575</created>
+      <changelist id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="" />
+      <created>1535638446575</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1531746759575</updated>
-      <workItem from="1531746760688" duration="7078000" />
-      <workItem from="1531834383911" duration="5623000" />
-      <workItem from="1531841146150" duration="77000" />
-      <workItem from="1531841235913" duration="1298000" />
-      <workItem from="1531921682878" duration="9865000" />
-      <workItem from="1532091472579" duration="7074000" />
-      <workItem from="1532288498083" duration="403000" />
-      <workItem from="1532348464427" duration="1521000" />
-      <workItem from="1532445894400" duration="55000" />
-      <workItem from="1532523905611" duration="2215000" />
-      <workItem from="1532700254607" duration="5669000" />
-      <workItem from="1533130917783" duration="540000" />
-      <workItem from="1533131571373" duration="4360000" />
-      <workItem from="1533300504128" duration="87000" />
-      <workItem from="1533300696503" duration="661000" />
-      <workItem from="1533305498609" duration="141000" />
-      <workItem from="1533305670300" duration="5391000" />
-      <workItem from="1533505996682" duration="1009000" />
-      <workItem from="1533551164846" duration="151000" />
-      <workItem from="1533551730636" duration="71000" />
-      <workItem from="1533653637995" duration="81000" />
-      <workItem from="1533734705557" duration="1176000" />
-      <workItem from="1533736346954" duration="566000" />
-      <workItem from="1533736951552" duration="1686000" />
-      <workItem from="1533738825127" duration="138000" />
-      <workItem from="1533738978424" duration="38000" />
-      <workItem from="1534087343887" duration="735000" />
-      <workItem from="1534088443483" duration="599000" />
-      <workItem from="1534089387745" duration="4577000" />
-      <workItem from="1534431254092" duration="12000" />
-      <workItem from="1534431294710" duration="3841000" />
-      <workItem from="1534514995308" duration="879000" />
-      <workItem from="1534560737643" duration="185000" />
-      <workItem from="1534560961069" duration="1212000" />
-      <workItem from="1534603288855" duration="3989000" />
-      <workItem from="1534683935658" duration="785000" />
-      <workItem from="1534686381415" duration="1917000" />
-      <workItem from="1534727064544" duration="4465000" />
-      <workItem from="1534943253059" duration="598000" />
-      <workItem from="1534950467678" duration="486000" />
-      <workItem from="1534997300636" duration="53000" />
-      <workItem from="1534997399060" duration="1236000" />
-      <workItem from="1535029298808" duration="599000" />
-      <workItem from="1535030436712" duration="2177000" />
-      <workItem from="1535115251257" duration="2245000" />
-      <workItem from="1535313169301" duration="1192000" />
-      <workItem from="1535320130089" duration="288000" />
-      <workItem from="1535321828985" duration="13000" />
-      <workItem from="1535321855885" duration="2558000" />
-      <workItem from="1535377489983" duration="2588000" />
+      <updated>1535638446575</updated>
+      <workItem from="1535638457165" duration="57000" />
+      <workItem from="1535638549576" duration="3000" />
+      <workItem from="1535638590431" duration="598000" />
     </task>
-    <task id="LOCAL-00001" summary="trying out typescript 3.0 project references">
-      <created>1531754174047</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1531754174047</updated>
-    </task>
-    <task id="LOCAL-00002" summary="trying out typescript 3.0 project references">
-      <created>1531754200985</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1531754200985</updated>
-    </task>
-    <task id="LOCAL-00003" summary="fixing migration errors and simplifying configuration">
-      <created>1531841199518</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1531841199518</updated>
-    </task>
-    <task id="LOCAL-00004" summary="fixing migration errors and simplifying configuration">
-      <created>1531926436211</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1531926436212</updated>
-    </task>
-    <task id="LOCAL-00005" summary="fixing migration errors and simplifying configuration">
-      <created>1532010061547</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1532010061547</updated>
-    </task>
-    <task id="LOCAL-00006" summary="fixing migration errors and simplifying configuration">
-      <created>1532093373158</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1532093373159</updated>
-    </task>
-    <task id="LOCAL-00007" summary="finishing renaming from Database to Terminal and re-working TM message&#10;processing">
-      <created>1532098815243</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1532098815243</updated>
-    </task>
-    <task id="LOCAL-00008" summary="finishing renaming from Database to Terminal and re-working TM message&#10;processing">
-      <created>1532186945495</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1532186945495</updated>
-    </task>
-    <task id="LOCAL-00009" summary="finishing renaming from Database to Terminal and re-working TM message&#10;processing">
-      <created>1532228632184</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1532228632184</updated>
-    </task>
-    <task id="LOCAL-00010" summary="finishing sync migration from SchemaIndex to SchemaVersionId + SchemaIndex">
-      <created>1532288879277</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1532288879277</updated>
-    </task>
-    <task id="LOCAL-00011" summary="finishing sync migration from SchemaIndex to SchemaVersionId + SchemaIndex">
-      <created>1532356437228</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1532356437228</updated>
-    </task>
-    <task id="LOCAL-00012" summary="finishing sync migration from SchemaIndex to SchemaVersionId + SchemaIndex">
-      <created>1532445912355</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1532445912355</updated>
-    </task>
-    <task id="LOCAL-00013" summary="finishing sync migration from SchemaIndex to SchemaVersionId + SchemaIndex">
-      <created>1532531034250</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1532531034250</updated>
-    </task>
-    <task id="LOCAL-00014" summary="refactoring SyncIn data checker">
-      <created>1532618722948</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1532618722948</updated>
-    </task>
-    <task id="LOCAL-00015" summary="refactoring SyncIn checkers">
-      <created>1532700282433</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1532700282434</updated>
-    </task>
-    <task id="LOCAL-00016" summary="refactoring SyncIn checkers">
-      <created>1532702364027</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1532702364027</updated>
-    </task>
-    <task id="LOCAL-00017" summary="refactoring SyncIn status processor">
-      <created>1532791386741</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1532791386741</updated>
-    </task>
-    <task id="LOCAL-00018" summary="refactoring SyncIn status processor">
-      <created>1532796754356</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1532796754356</updated>
-    </task>
-    <task id="LOCAL-00019" summary="refactoring SyncIn status processor">
-      <created>1533133251975</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1533133251975</updated>
-    </task>
-    <task id="LOCAL-00020" summary="refactoring SyncIn status processor">
-      <created>1533134425351</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1533134425351</updated>
-    </task>
-    <task id="LOCAL-00021" summary="refactoring SyncIn status processor">
-      <created>1533218974622</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1533218974622</updated>
-    </task>
-    <task id="LOCAL-00022" summary="refactoring SyncIn status processor">
-      <created>1533308199735</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1533308199735</updated>
-    </task>
-    <task id="LOCAL-00023" summary="refactoring SyncIn status processor">
-      <created>1533414790688</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1533414790688</updated>
-    </task>
-    <task id="LOCAL-00024" summary="refactoring core schemas">
-      <created>1533508737138</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1533508737138</updated>
-    </task>
-    <task id="LOCAL-00025" summary="refactoring core schemas">
-      <created>1533508789063</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1533508789063</updated>
-    </task>
-    <task id="LOCAL-00026" summary="refactoring core schemas">
-      <created>1533508880785</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1533508880785</updated>
-    </task>
-    <task id="LOCAL-00027" summary="refactoring core schemas">
-      <created>1533653652921</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1533653652921</updated>
-    </task>
-    <task id="LOCAL-00028" summary="refactoring core schemas">
-      <created>1533739005926</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1533739005926</updated>
-    </task>
-    <task id="LOCAL-00029" summary="adding missing files">
-      <created>1534105434481</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1534105434481</updated>
-    </task>
-    <task id="LOCAL-00030" summary="schema generator">
-      <created>1534346546526</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1534346546526</updated>
-    </task>
-    <task id="LOCAL-00031" summary="schema generator">
-      <created>1534346601819</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1534346601819</updated>
-    </task>
-    <task id="LOCAL-00032" summary="sequence generation">
-      <created>1534431468593</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1534431468593</updated>
-    </task>
-    <task id="LOCAL-00033" summary="sequence generation">
-      <created>1534608339234</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1534608339234</updated>
-    </task>
-    <task id="LOCAL-00034" summary="sequence generation">
-      <created>1534632261434</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1534632261434</updated>
-    </task>
-    <task id="LOCAL-00035" summary="sequence generation">
-      <created>1534775569638</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1534775569640</updated>
-    </task>
-    <task id="LOCAL-00036" summary="schema generation">
-      <created>1534864492795</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1534864492795</updated>
-    </task>
-    <task id="LOCAL-00037" summary="schema generation">
-      <created>1535296087116</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1535296087116</updated>
-    </task>
-    <task id="LOCAL-00038" summary="schema generation">
-      <created>1535329142885</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1535329142885</updated>
-    </task>
-    <task id="LOCAL-00039" summary="schema generation">
-      <created>1535378869667</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1535378869667</updated>
-    </task>
-    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-<<<<<<< Updated upstream
-    <option name="totallyTimeSpent" value="100043000" />
+    <option name="totallyTimeSpent" value="658000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="3840" y="-2" width="1920" height="1082" extended-state="6" />
     <editor active="true" />
-=======
-    <option name="totallyTimeSpent" value="96917000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
->>>>>>> Stashed changes
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14812863" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32982087" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3277311" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39891893" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="TypeScript" order="8" weight="0.32917964" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3364486" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="TypeScript" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.3271028" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -1074,234 +417,9 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="trying out typescript 3.0 project references" />
-    <MESSAGE value="fixing migration errors and simplifying configuration" />
-    <MESSAGE value="finishing renaming from Database to Terminal and re-working TM message&#10;processing" />
-    <MESSAGE value="finishing sync migration from SchemaIndex to SchemaVersionId + SchemaIndex" />
-    <MESSAGE value="refactoring SyncIn data checker" />
-    <MESSAGE value="refactoring SyncIn checkers" />
-    <MESSAGE value="refactoring SyncIn status processor" />
-    <MESSAGE value="refactoring core schemas" />
-    <MESSAGE value="adding missing files" />
-    <MESSAGE value="schema generator" />
-    <MESSAGE value="sequence generation" />
-    <MESSAGE value="schema generation" />
-    <option name="LAST_COMMIT_MESSAGE" value="schema generation" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.js</url>
-          <line>201</line>
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.js</url>
-          <line>99</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/generators/runway/lib/parser/EntityDefinitionGenerator.js</url>
-          <line>138</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/apps/pedestrian-terminal-connector/src/server/common/ErrorLogger.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/pedestrian-terminal-connector/src/server/gwt/JwtTokenProcessor.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/pedestrian-terminal-connector/src/server/ws/IWebConnection.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/pedestrian-terminal-connector/src/server/DataProcessor.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/tarmaq/src/core/metadata/QMetadataUtils.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/tarmaq/src/core/repository/ChangeToQueryRegistry.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/tarmaq/src/index.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/terminal/src/data/DeltaStore.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/terminal/src/net/OnlineManager.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/terminal/src/query/orderBy/EntityOrderByParser.ts" />
-    <entry file="file://$PROJECT_DIR$/apps/terminal/src/query/result/entity/IEntityResultParser.ts" />
-    <entry file="file://$PROJECT_DIR$/apps/terminal/src/query/sql/core/SQLNoJoinQuery.ts" />
-    <entry file="file://$PROJECT_DIR$/apps/terminal/src/query/sql/FieldSQLQuery.ts" />
-    <entry file="file://$PROJECT_DIR$/apps/terminal/src/query/sql/EntitySQLQuery.ts" />
-    <entry file="file://$PROJECT_DIR$/apps/terminal/src/shared/DateUtils.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/terminal/src/store/RecordState.ts" />
-    <entry file="file://$PROJECT_DIR$/libs/fuel-hydrant-system/src/validation/Validator.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/terminal/src/query/adaptor/OracleQueryAdaptor.ts" />
-    <entry file="file://$PROJECT_DIR$/apps/terminal/src/orchestration/DeleteManager.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="94" column="12" selection-start-line="94" selection-start-column="12" selection-end-line="94" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apis/air-control/package.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apis/check-in/package.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/runway/package.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schemas/id-checkpoint/tsconfig.json" />
-    <entry file="file://$PROJECT_DIR$/schemas/territory/package.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schemas/id-checkpoint/package.json" />
-    <entry file="file://$PROJECT_DIR$/schemas/holding-pattern/tsconfig.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="538">
-          <caret line="99" column="32" selection-start-line="99" selection-start-column="32" selection-end-line="99" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apis/ground-control/package.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schemas/airport-code/src/ddl/ShardedRecord.ts" />
-    <entry file="file://$PROJECT_DIR$/schemas/airport-code/src/ddl/Shard.ts" />
-    <entry file="file://$PROJECT_DIR$/schemas/baggage-screening.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schemas/guideway/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" selection-start-line="7" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="201" column="47" selection-start-line="201" selection-start-column="47" selection-end-line="201" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schemas/airport-code/src/ddl/SequenceBlock.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schemas/airport-code/src/ddl/ddl.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schemas/holding-pattern/src/generated/schema.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="17" column="17" lean-forward="true" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/runway/lib/builder/schema/SSchemaBuilder.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="195" column="30" lean-forward="true" selection-start-line="195" selection-start-column="30" selection-end-line="195" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/runway/lib/parser/EntityDefinitionGenerator.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2622">
-          <caret line="138" column="55" selection-start-line="138" selection-start-column="55" selection-end-line="138" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/runway/src/parser/EntityDefinitionGenerator.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2907">
-          <caret line="180" column="12" lean-forward="true" selection-start-line="180" selection-start-column="12" selection-end-line="180" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schemas/holding-pattern/src/dao/history/RecordHistoryOldValueDao.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schemas/holding-pattern/src/dao/infrastructure/ActorDao.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="53" column="10" lean-forward="true" selection-start-line="53" selection-start-column="10" selection-end-line="53" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/TransactionHistory.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="38" column="26" lean-forward="true" selection-start-line="38" selection-start-column="26" selection-end-line="38" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/libs/mono-rail/src/InjectionTokens.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" column="53" selection-start-line="1" selection-start-column="53" selection-end-line="1" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/takeoff/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/takeoff/tsconfig.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/takeoff/src/InjectionTokens.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/takeoff/src/index.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/landing/src/index.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/takeoff/src/QueryObjectInitializer.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/libs/tower/src/OperationManager.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rush.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="84" column="42" selection-start-line="84" selection-start-column="42" selection-end-line="84" selection-end-column="42" />
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

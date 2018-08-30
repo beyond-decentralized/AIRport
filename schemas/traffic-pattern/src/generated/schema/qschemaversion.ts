@@ -21,6 +21,12 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
+	SchemaEntity,
+} from '../../ddl/schema/SchemaEntity';
+import {
+	SchemaReference,
+} from '../../ddl/schema/SchemaReference';
+import {
 	ISchema,
 	SchemaEId,
 	SchemaEOptionalId,
@@ -80,6 +86,9 @@ export interface ISchemaVersion {
 	referencedBy?: ISchemaReference[];
 
 	// Transient Properties
+	entityMapByName?: { [entityName: string]: SchemaEntity; };
+	referencesMapByName?: { [schemaName: string]: SchemaReference; };
+	referencedByMapByName?: { [schemaName: string]: SchemaReference; };
 
 	// Public Methods
 	

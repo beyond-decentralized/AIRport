@@ -66,7 +66,10 @@ export interface IDailyArchiveLog {
  * SELECT - All fields and relations (optional).
  */
 export interface DailyArchiveLogESelect
-    extends IEntitySelectProperties, DailyArchiveLogEOptionalId, DailyArchiveLogEUpdateProperties {
+    extends IEntitySelectProperties, DailyArchiveLogEOptionalId {
+	// Non-Id Properties
+	numberOfChanges?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 	repository?: RepositoryESelect;
 

@@ -44,22 +44,23 @@ export class Repository
 	id: RepositoryId;
 
 	@ManyToOne()
-	@JoinColumn({name: "OWNER_ACTOR_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
+		nullable: false})
 	ownerActor: IActor;
 
-	@Column({name: "ORDERED_ID"})
+	@Column({name: "ORDERED_ID", nullable: false})
 	@DbNumber()
 	orderedId: RepositoryOrderedId;
 
-	@Column({name: "RANDOM_ID"})
+	@Column({name: "RANDOM_ID", nullable: false})
 	@DbNumber()
 	randomId: RepositoryRandomId;
 
-	@Column({name: "NAME"})
+	@Column({name: "NAME", nullable: false})
 	@DbString()
 	name: RepositoryName;
 
-	@Column({name: "REPOSITORY_URL"})
+	@Column({name: "REPOSITORY_URL", nullable: false})
 	@DbString()
 	url: RepositoryUrl;
 
@@ -71,7 +72,7 @@ export class Repository
 	// @DbNumber()
 	// platform: PlatformType;
 
-	@Column({name: "PLATFORM_CONFIG"})
+	@Column({name: "PLATFORM_CONFIG", nullable: false})
 	platformConfig: string;
 
 	/*
@@ -93,7 +94,7 @@ export class Repository
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'repository'})
 	repositoryTransactionHistory: IRepositoryTransactionHistory[] = [];
 
-	@Column({name: "SYNC_PRIORITY"})
+	@Column({name: "SYNC_PRIORITY", nullable: false})
 	@DbNumber()
 	syncPriority: SyncPriority;
 

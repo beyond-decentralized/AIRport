@@ -18,22 +18,22 @@ __decorate([
     __metadata("design:type", Number)
 ], Sequence.prototype, "id", void 0);
 __decorate([
-    air_control_1.Column({ name: 'SCHEMA_INDEX' }),
+    air_control_1.Column({ name: 'SCHEMA_INDEX', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Sequence.prototype, "schemaIndex", void 0);
 __decorate([
-    air_control_1.Column({ name: 'TABLE_INDEX' }),
+    air_control_1.Column({ name: 'TABLE_INDEX', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Sequence.prototype, "tableIndex", void 0);
 __decorate([
-    air_control_1.Column({ name: 'COLUMN_INDEX' }),
+    air_control_1.Column({ name: 'COLUMN_INDEX', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Sequence.prototype, "columnIndex", void 0);
 __decorate([
-    air_control_1.Column({ name: 'SEQUENCE_INCREMENT_BY' }),
+    air_control_1.Column({ name: 'SEQUENCE_INCREMENT_BY', nullable: false }),
     __metadata("design:type", Number)
 ], Sequence.prototype, "incrementBy", void 0);
 Sequence = __decorate([

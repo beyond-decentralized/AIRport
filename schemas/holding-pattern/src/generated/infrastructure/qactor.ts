@@ -97,7 +97,10 @@ export interface IActor {
  * SELECT - All fields and relations (optional).
  */
 export interface ActorESelect
-    extends IEntitySelectProperties, ActorEOptionalId, ActorEUpdateProperties {
+    extends IEntitySelectProperties, ActorEOptionalId {
+	// Non-Id Properties
+	randomId?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

@@ -9,7 +9,7 @@ export interface IAbstractRepositoryEntity {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface AbstractRepositoryEntityESelect extends IEntitySelectProperties, AbstractRepositoryEntityEOptionalId, AbstractRepositoryEntityEUpdateProperties {
+export interface AbstractRepositoryEntityESelect extends IEntitySelectProperties, AbstractRepositoryEntityEOptionalId {
     repository?: RepositoryESelect;
     actor?: ActorESelect;
 }

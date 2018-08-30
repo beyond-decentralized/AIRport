@@ -26,18 +26,22 @@ export class RepoTransHistoryChangedRepositoryActor {
 	id: RepoTransHistoryChangedRepositoryActorId;
 
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_TRANSACTION_HISTORY_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "REPOSITORY_TRANSACTION_HISTORY_ID",
+		referencedColumnName: "ID", nullable: false})
 	repositoryTransactionHistory: IRepositoryTransactionHistory;
 
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID",
+		nullable: false})
 	repository: IRepository;
 
 	@ManyToOne()
-	@JoinColumn({name: "ACTOR_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "ACTOR_ID", referencedColumnName: "ID",
+		nullable: false})
 	actor: IActor;
 
-	@Column({name: "REFERENCE_TYPE"})
+	@Column({name: "REFERENCE_TYPE",
+		nullable: false})
 	@DbNumber()
 	referenceType: RepoTransHistoryChangedReferenceType;
 

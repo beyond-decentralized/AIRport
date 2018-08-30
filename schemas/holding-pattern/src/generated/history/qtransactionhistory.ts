@@ -88,7 +88,10 @@ export interface ITransactionHistory {
  * SELECT - All fields and relations (optional).
  */
 export interface TransactionHistoryESelect
-    extends IEntitySelectProperties, TransactionHistoryEOptionalId, TransactionHistoryEUpdateProperties {
+    extends IEntitySelectProperties, TransactionHistoryEOptionalId {
+	// Non-Id Properties
+	transactionType?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

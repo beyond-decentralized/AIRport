@@ -66,7 +66,10 @@ export interface IRepositorySchema {
  * SELECT - All fields and relations (optional).
  */
 export interface RepositorySchemaESelect
-    extends IEntitySelectProperties, RepositorySchemaEOptionalId, RepositorySchemaEUpdateProperties {
+    extends IEntitySelectProperties, RepositorySchemaEOptionalId {
+	// Non-Id Properties
+	schemaIndex?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 	repository?: RepositoryESelect;
 

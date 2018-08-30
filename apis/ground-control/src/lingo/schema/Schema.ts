@@ -165,6 +165,8 @@ export interface DbSchemaVersion
 	 */
 	referencedByMapByName?: { [schemaName: string]: DbSchemaReference };
 
+	integerVersion: SchemaVersionInteger
+
 	versionString: SchemaVersionString;
 
 	majorVersion: SchemaVersionMajor;

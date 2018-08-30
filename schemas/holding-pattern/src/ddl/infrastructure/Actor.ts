@@ -30,14 +30,16 @@ export class Actor
 	id: ActorId
 
 	@ManyToOne()
-	@JoinColumn({name: 'USER_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'USER_ID', referencedColumnName: 'ID',
+		nullable: false})
 	user: User
 
 	@ManyToOne()
-	@JoinColumn({name: 'TERMINAL_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'TERMINAL_ID', referencedColumnName: 'ID',
+		nullable: false})
 	terminal: Terminal
 
-	@Column({name: 'RANDOM_ID'})
+	@Column({name: 'RANDOM_ID', nullable: false})
 	@DbNumber()
 	randomId: ActorRandomId
 

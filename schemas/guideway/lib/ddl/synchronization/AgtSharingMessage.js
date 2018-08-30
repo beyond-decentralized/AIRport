@@ -27,11 +27,11 @@ __decorate([
 ], AgtSharingMessage.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "SYNCED_TERMINAL_ID", referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: "SYNCED_TERMINAL_ID", referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", __1.Terminal)
 ], AgtSharingMessage.prototype, "terminal", void 0);
 __decorate([
-    air_control_1.Column({ name: "TM_SHARING_MESSAGE_ID" }),
+    air_control_1.Column({ name: "TM_SHARING_MESSAGE_ID", nullable: false }),
     __metadata("design:type", Number)
 ], AgtSharingMessage.prototype, "tmSharingMessageId", void 0);
 __decorate([
@@ -39,6 +39,7 @@ __decorate([
     __metadata("design:type", Array)
 ], AgtSharingMessage.prototype, "syncLogs", void 0);
 __decorate([
+    air_control_1.Column({ name: 'ACKNOWLEDGED', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], AgtSharingMessage.prototype, "acknowledged", void 0);

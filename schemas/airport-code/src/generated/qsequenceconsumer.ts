@@ -67,7 +67,11 @@ export interface ISequenceConsumer {
  * SELECT - All fields and relations (optional).
  */
 export interface SequenceConsumerESelect
-    extends IEntitySelectProperties, SequenceConsumerEOptionalId, SequenceConsumerEUpdateProperties {
+    extends IEntitySelectProperties, SequenceConsumerEOptionalId {
+	// Non-Id Properties
+	createTimestamp?: number | IQNumberField;
+	randomNumber?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

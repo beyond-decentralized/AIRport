@@ -2,17 +2,33 @@ export declare const SCHEMA: {
     "domain": string;
     "index": any;
     "name": string;
+    "sinceVersion": number;
     "versions": {
         "entities": ({
             "columns": ({
+                "allocationSize": number;
                 "index": number;
                 "isGenerated": boolean;
                 "manyRelationColumnRefs": any[];
                 "name": string;
+                "notNull": boolean;
                 "propertyRefs": {
                     "index": number;
                 }[];
+                "sinceVersion": number;
                 "type": number;
+            } | {
+                "index": number;
+                "isGenerated": boolean;
+                "manyRelationColumnRefs": any[];
+                "name": string;
+                "notNull": boolean;
+                "propertyRefs": {
+                    "index": number;
+                }[];
+                "sinceVersion": number;
+                "type": number;
+                "allocationSize"?: undefined;
             } | {
                 "index": number;
                 "manyRelationColumnRefs": {
@@ -20,12 +36,16 @@ export declare const SCHEMA: {
                     "oneSchemaIndex": number;
                     "oneTableIndex": number;
                     "oneColumnIndex": number;
+                    "sinceVersion": number;
                 }[];
                 "name": string;
+                "notNull": boolean;
                 "propertyRefs": {
                     "index": number;
                 }[];
+                "sinceVersion": number;
                 "type": number;
+                "allocationSize"?: undefined;
                 "isGenerated"?: undefined;
             })[];
             "idColumnRefs": {
@@ -42,6 +62,7 @@ export declare const SCHEMA: {
                 "index": number;
                 "isId": boolean;
                 "name": string;
+                "sinceVersion": number;
                 "relationRef"?: undefined;
             } | {
                 "index": number;
@@ -50,6 +71,7 @@ export declare const SCHEMA: {
                 "relationRef": {
                     "index": number;
                 };
+                "sinceVersion": number;
                 "columnRef"?: undefined;
             })[];
             "relations": {
@@ -61,7 +83,9 @@ export declare const SCHEMA: {
                 };
                 "relationTableIndex": number;
                 "relationTableSchemaIndex": number;
+                "sinceVersion": number;
             }[];
+            "sinceVersion": number;
             "tableConfig": {
                 "name": string;
             };
@@ -72,18 +96,22 @@ export declare const SCHEMA: {
                 "isGenerated": boolean;
                 "manyRelationColumnRefs": any[];
                 "name": string;
+                "notNull": boolean;
                 "propertyRefs": {
                     "index": number;
                 }[];
+                "sinceVersion": number;
                 "type": number;
             } | {
                 "index": number;
                 "isGenerated": boolean;
                 "manyRelationColumnRefs": any[];
                 "name": string;
+                "notNull": boolean;
                 "propertyRefs": {
                     "index": number;
                 }[];
+                "sinceVersion": number;
                 "type": number;
                 "allocationSize"?: undefined;
             } | {
@@ -93,11 +121,14 @@ export declare const SCHEMA: {
                     "oneSchemaIndex": any;
                     "oneTableIndex": number;
                     "oneColumnIndex": number;
+                    "sinceVersion": number;
                 }[];
                 "name": string;
+                "notNull": boolean;
                 "propertyRefs": {
                     "index": number;
                 }[];
+                "sinceVersion": number;
                 "type": number;
                 "allocationSize"?: undefined;
                 "isGenerated"?: undefined;
@@ -116,6 +147,7 @@ export declare const SCHEMA: {
                 "index": number;
                 "isId": boolean;
                 "name": string;
+                "sinceVersion": number;
                 "relationRef"?: undefined;
             } | {
                 "index": number;
@@ -124,6 +156,7 @@ export declare const SCHEMA: {
                 "relationRef": {
                     "index": number;
                 };
+                "sinceVersion": number;
                 "columnRef"?: undefined;
             })[];
             "relations": {
@@ -134,13 +167,26 @@ export declare const SCHEMA: {
                     "index": number;
                 };
                 "relationTableIndex": number;
+                "sinceVersion": number;
             }[];
+            "sinceVersion": number;
             "tableConfig": {
                 "name": string;
             };
         })[];
         "integerVersion": number;
-        "referencedSchemas": any[];
+        "referencedSchemas": {
+            "domain": string;
+            "index": number;
+            "name": string;
+            "sinceVersion": number;
+            "versions": {
+                "entities": any;
+                "integerVersion": number;
+                "referencedSchemas": any;
+                "versionString": string;
+            }[];
+        }[];
         "versionString": string;
     }[];
 };

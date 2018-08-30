@@ -13,13 +13,16 @@ import {
 }                    from './Entity'
 import {SchemaIndex} from './Schema'
 
+export type ColumnId = number;
 export type ColumnIndex = number;
 export type ColumnName = string;
 export type ColumnNotNull = boolean;
 // export type ColumnDefinition = string;
+export type PropertyId = number;
 export type PropertyIndex = number;
 export type PropertyIsId = boolean;
 export type PropertyName = string;
+export type RelationId = number;
 export type RelationIndex = number;
 export type SchemaColumnIsGenerated = boolean
 export type SchemaColumnAllocationSize = number
@@ -59,6 +62,7 @@ export interface DbProperty
 	extends SchemaReferenceByIndex<PropertyIndex>,
 					DbObject {
 
+	id: PropertyId
 	entity: DbEntity;
 	name: PropertyName;
 	isId: PropertyIsId;
@@ -131,6 +135,8 @@ export interface IdKeyArrayByIdColumnIndex
 export interface DbColumn
 	extends SchemaReferenceByIndex<ColumnIndex>,
 					DbObject {
+
+	id: ColumnId
 
 	/**
 	 * Id index of this column (if it's an ID column).
@@ -248,6 +254,8 @@ export interface JsonSchemaRelation
 export interface DbRelation
 	extends SchemaReferenceByIndex<RelationIndex>,
 					DbObject {
+
+	id: RelationId
 
 	foreignKey: DatabaseForeignKey;
 	isId: boolean;

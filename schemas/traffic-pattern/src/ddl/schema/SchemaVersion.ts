@@ -8,8 +8,9 @@ import {
 	ManyToOne,
 	OneToMany,
 	SequenceGenerator,
-	Table
-}                        from '@airport/air-control'
+	Table,
+	Transient
+} from '@airport/air-control'
 import {
 	SchemaVersionId,
 	SchemaVersionInteger,
@@ -63,5 +64,14 @@ export class SchemaVersion {
 
 	@OneToMany({mappedBy: 'referencedSchemaVersion'})
 	referencedBy: SchemaReference[]
+
+	@Transient()
+	entityMapByName?: { [entityName: string]: SchemaEntity };
+
+	@Transient()
+	referencesMapByName?: { [schemaName: string]: SchemaReference };
+
+	@Transient()
+	referencedByMapByName?: { [schemaName: string]: SchemaReference };
 
 }

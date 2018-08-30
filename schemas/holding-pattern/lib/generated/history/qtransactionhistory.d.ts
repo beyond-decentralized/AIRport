@@ -22,7 +22,8 @@ export interface ITransactionHistory {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface TransactionHistoryESelect extends IEntitySelectProperties, TransactionHistoryEOptionalId, TransactionHistoryEUpdateProperties {
+export interface TransactionHistoryESelect extends IEntitySelectProperties, TransactionHistoryEOptionalId {
+    transactionType?: number | IQNumberField;
     repositoryTransactionHistories?: RepositoryTransactionHistoryESelect;
 }
 /**

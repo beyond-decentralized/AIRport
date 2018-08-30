@@ -4,6 +4,7 @@ exports.SCHEMA = {
     "domain": "public",
     "index": null,
     "name": "@airport/guideway",
+    "sinceVersion": 1,
     "versions": [
         {
             "entities": [
@@ -11,372 +12,16 @@ exports.SCHEMA = {
                     "columns": [
                         {
                             "index": 0,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 14,
-                                    "oneRelationIndex": 1,
-                                    "oneColumnIndex": 0
-                                }
-                            ],
-                            "name": "AGT_SHARING_MESSAGE_ID",
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 1,
-                                    "oneRelationIndex": 4,
-                                    "oneColumnIndex": 0
-                                }
-                            ],
-                            "name": "AGT_REPO_TRANS_BLOCK_ID",
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        }
-                    ],
-                    "index": 0,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "SyncLog",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "sharingMessage",
-                            "relationRef": {
-                                "index": 0
-                            }
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "name": "repositoryTransactionBlock",
-                            "relationRef": {
-                                "index": 1
-                            }
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 14
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 1
-                        }
-                    ],
-                    "tableConfig": {
-                        "name": "AGT_SYNC_LOG"
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "ID",
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ARCHIVING_STATUS",
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ADD_DATETIME",
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "TM_REPOSITORY_TRANSACTION_BLOCK_ID",
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_TRANSACTION_BLOCK",
-                            "propertyRefs": [
-                                {
-                                    "index": 8
-                                }
-                            ],
-                            "type": 5
-                        },
-                        {
-                            "index": 5,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 17,
-                                    "oneRelationIndex": 1,
-                                    "oneColumnIndex": 0
-                                }
-                            ],
-                            "name": "REPOSITORY_ID",
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                },
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 6,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 15,
-                                    "oneColumnIndex": 0
-                                }
-                            ],
-                            "name": "TERMINAL_ID",
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 7,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 12,
-                                    "oneColumnIndex": 0
-                                }
-                            ],
-                            "name": "ARCHIVING_SERVER_ID",
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 1,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "AgtRepositoryTransactionBlock",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "id"
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 0
-                            }
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "name": "terminalRepositories",
-                            "relationRef": {
-                                "index": 1
-                            }
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "terminal",
-                            "relationRef": {
-                                "index": 2
-                            }
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "archivingServer",
-                            "relationRef": {
-                                "index": 3
-                            }
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 5,
-                            "isId": false,
-                            "name": "archivingStatus"
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 6,
-                            "isId": false,
-                            "name": "addDatetime"
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 7,
-                            "isId": false,
-                            "name": "tmRepositoryTransactionBlockId"
-                        },
-                        {
-                            "columnRef": {
-                                "index": 4
-                            },
-                            "index": 8,
-                            "isId": false,
-                            "name": "contents"
-                        },
-                        {
-                            "index": 9,
-                            "isId": false,
-                            "name": "syncLogs",
-                            "relationRef": {
-                                "index": 4
-                            }
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 17
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": 0,
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 16
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 15
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 12
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "relationType": 0,
-                            "propertyRef": {
-                                "index": 9
-                            },
-                            "relationTableIndex": 0
-                        }
-                    ],
-                    "tableConfig": {
-                        "name": "AGT_REPOSITORY_TRANSACTION_BLOCKS"
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -384,11 +29,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "LOCATION",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         }
                     ],
@@ -397,7 +44,7 @@ exports.SCHEMA = {
                             "index": 0
                         }
                     ],
-                    "index": 2,
+                    "index": 0,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "Archive",
@@ -408,7 +55,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -416,10 +64,12 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "location"
+                            "name": "location",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "ARCHIVES"
                     }
@@ -431,11 +81,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "ACKNOWLEDGED",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -445,15 +97,18 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 18,
-                                    "oneColumnIndex": 2
+                                    "oneColumnIndex": 2,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "REPOSITORY_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -463,15 +118,18 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 18,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "DATE_NUMBER",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -481,15 +139,18 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 15,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "TERMINAL_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -504,7 +165,7 @@ exports.SCHEMA = {
                             "index": 3
                         }
                     ],
-                    "index": 3,
+                    "index": 1,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "DailyTerminalSyncLog",
@@ -515,7 +176,8 @@ exports.SCHEMA = {
                             "name": "dailyArchiveLog",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -523,7 +185,8 @@ exports.SCHEMA = {
                             "name": "terminal",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -531,7 +194,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "acknowledged"
+                            "name": "acknowledged",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -542,7 +206,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 18
+                            "relationTableIndex": 18,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -551,9 +216,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 15
+                            "relationTableIndex": 15,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "DAILY_TERMINAL_SYNC_LOG"
                     }
@@ -565,11 +232,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "MONTH_NUMBER",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -577,24 +246,27 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "NUMBER_OF_CHANGES",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
-                            "columnDefinition": "BOOL[]",
                             "index": 2,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "DAYS_WITH_CHANGES",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 3
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 0
                         },
                         {
@@ -604,15 +276,18 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 17,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "REPOSITORY_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -624,7 +299,7 @@ exports.SCHEMA = {
                             "index": 3
                         }
                     ],
-                    "index": 4,
+                    "index": 2,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "MonthlyArchiveLog",
@@ -635,7 +310,8 @@ exports.SCHEMA = {
                             "name": "repository",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -643,7 +319,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": true,
-                            "name": "monthNumber"
+                            "name": "monthNumber",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -651,7 +328,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "numberOfChanges"
+                            "name": "numberOfChanges",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -659,7 +337,8 @@ exports.SCHEMA = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "daysWithChanges"
+                            "name": "daysWithChanges",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -670,9 +349,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 17
+                            "relationTableIndex": 17,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "MONTHLY_ARCHIVE_LOG"
                     }
@@ -684,24 +365,27 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "ALL_ACKNOWLEDGED",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 1
                         },
                         {
-                            "columnDefinition": "BOOL[]",
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "DAILY_SYNC_STATUSES",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 3
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -710,16 +394,19 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 4,
-                                    "oneColumnIndex": 3
+                                    "oneTableIndex": 2,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "REPOSITORY_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -728,16 +415,19 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 4,
-                                    "oneColumnIndex": 0
+                                    "oneTableIndex": 2,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "MONTH_NUMBER",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -747,15 +437,18 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 15,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "TERMINAL_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -770,7 +463,7 @@ exports.SCHEMA = {
                             "index": 4
                         }
                     ],
-                    "index": 5,
+                    "index": 3,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "MonthlyTerminalSyncLog",
@@ -781,7 +474,8 @@ exports.SCHEMA = {
                             "name": "monthlyArchiveLog",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -789,7 +483,8 @@ exports.SCHEMA = {
                             "name": "terminal",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -797,7 +492,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "allAcknowledged"
+                            "name": "allAcknowledged",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -805,7 +501,8 @@ exports.SCHEMA = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "dailySyncStatuses"
+                            "name": "dailySyncStatuses",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -816,7 +513,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 4
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -825,9 +523,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 15
+                            "relationTableIndex": 15,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "MONTHLY_TERMINAL_SYNC_LOG"
                     }
@@ -841,15 +541,18 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 17,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "REPOSITORY_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -858,62 +561,77 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 2,
-                                    "oneColumnIndex": 0
+                                    "oneTableIndex": 0,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "ARCHIVE_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         }
                     ],
-                    "idColumnRefs": [],
-                    "index": 6,
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 4,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "RepositoryArchive",
                     "properties": [
                         {
                             "index": 0,
-                            "isId": false,
+                            "isId": true,
                             "name": "repository",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
-                            "isId": false,
+                            "isId": true,
                             "name": "archive",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
                         {
                             "index": 0,
-                            "isId": false,
+                            "isId": true,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 17
+                            "relationTableIndex": 17,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
-                            "isId": false,
+                            "isId": true,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 2
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "REPOSITORY_ARCHIVE"
                     }
@@ -925,11 +643,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "PERMISSION",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -939,15 +659,18 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 17,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "REPOSITORY_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -956,17 +679,20 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 8,
+                                    "oneTableIndex": 6,
                                     "oneRelationIndex": 1,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "USER_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -978,7 +704,7 @@ exports.SCHEMA = {
                             "index": 2
                         }
                     ],
-                    "index": 7,
+                    "index": 5,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "UserRepository",
@@ -989,7 +715,8 @@ exports.SCHEMA = {
                             "name": "repository",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -997,7 +724,8 @@ exports.SCHEMA = {
                             "name": "user",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1005,7 +733,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "permission"
+                            "name": "permission",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -1016,7 +745,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 17
+                            "relationTableIndex": 17,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -1025,9 +755,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 8
+                            "relationTableIndex": 6,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "AGT_USER_REPOSITORIES"
                     }
@@ -1039,11 +771,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -1051,11 +785,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "HASH",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -1063,11 +799,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "EMAIL",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -1075,11 +813,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "IS_INVITATION",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 3
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 1
                         }
                     ],
@@ -1088,7 +828,7 @@ exports.SCHEMA = {
                             "index": 0
                         }
                     ],
-                    "index": 8,
+                    "index": 6,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "User",
@@ -1099,7 +839,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1107,7 +848,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "hash"
+                            "name": "hash",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1115,7 +857,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "email"
+                            "name": "email",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1123,7 +866,8 @@ exports.SCHEMA = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "isInvitation"
+                            "name": "isInvitation",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 4,
@@ -1131,7 +875,8 @@ exports.SCHEMA = {
                             "name": "securityAnswers",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 5,
@@ -1139,7 +884,8 @@ exports.SCHEMA = {
                             "name": "userRepositories",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 6,
@@ -1147,7 +893,8 @@ exports.SCHEMA = {
                             "name": "terminals",
                             "relationRef": {
                                 "index": 2
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 7,
@@ -1155,7 +902,8 @@ exports.SCHEMA = {
                             "name": "repositoryTransactionBlocks",
                             "relationRef": {
                                 "index": 3
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -1166,7 +914,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 10
+                            "relationTableIndex": 8,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -1175,7 +924,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 7
+                            "relationTableIndex": 5,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 2,
@@ -1184,7 +934,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 15
+                            "relationTableIndex": 15,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 3,
@@ -1193,9 +944,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 1
+                            "relationTableIndex": 16,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "AGT_USERS"
                     }
@@ -1207,11 +960,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -1219,11 +974,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "QUESTION",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         }
                     ],
@@ -1232,7 +989,7 @@ exports.SCHEMA = {
                             "index": 0
                         }
                     ],
-                    "index": 9,
+                    "index": 7,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "SecurityQuestion",
@@ -1243,7 +1000,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1251,10 +1009,12 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "question"
+                            "name": "question",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "AGT_SECURITY_QUESTIONS"
                     }
@@ -1266,11 +1026,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "ANSWER",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -1279,17 +1041,20 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 8,
+                                    "oneTableIndex": 6,
                                     "oneRelationIndex": 0,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "USER_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -1298,16 +1063,19 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 9,
-                                    "oneColumnIndex": 0
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "SECURITY_QUESTION_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -1319,7 +1087,7 @@ exports.SCHEMA = {
                             "index": 2
                         }
                     ],
-                    "index": 10,
+                    "index": 8,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "SecurityAnswer",
@@ -1330,7 +1098,8 @@ exports.SCHEMA = {
                             "name": "user",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -1338,7 +1107,8 @@ exports.SCHEMA = {
                             "name": "securityQuestion",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1346,7 +1116,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "answer"
+                            "name": "answer",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -1357,7 +1128,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 8
+                            "relationTableIndex": 6,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -1366,9 +1138,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 9
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "AGT_SECURITY_ANSWERS"
                     }
@@ -1380,11 +1154,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -1392,11 +1168,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "TYPE",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -1404,11 +1182,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "START_DATETIME",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 3
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 2
                         },
                         {
@@ -1416,11 +1196,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "PROCESSED_DATETIME",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 4
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 2
                         },
                         {
@@ -1428,11 +1210,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "NUMBER_OF_CONNECTIONS",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 5
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -1440,11 +1224,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "NUMBER_OF_SYNC_RECORDS",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 6
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -1452,11 +1238,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "DATA_CHARS_TOTAL",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 7
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -1465,17 +1253,20 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 12,
+                                    "oneTableIndex": 10,
                                     "oneRelationIndex": 0,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "SERVER_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -1484,7 +1275,7 @@ exports.SCHEMA = {
                             "index": 0
                         }
                     ],
-                    "index": 11,
+                    "index": 9,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "ServerSyncLog",
@@ -1495,7 +1286,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -1503,7 +1295,8 @@ exports.SCHEMA = {
                             "name": "server",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1511,7 +1304,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "type"
+                            "name": "type",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1519,7 +1313,8 @@ exports.SCHEMA = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "startDatetime"
+                            "name": "startDatetime",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1527,7 +1322,8 @@ exports.SCHEMA = {
                             },
                             "index": 4,
                             "isId": false,
-                            "name": "endDatetime"
+                            "name": "endDatetime",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1535,7 +1331,8 @@ exports.SCHEMA = {
                             },
                             "index": 5,
                             "isId": false,
-                            "name": "numberOfConnections"
+                            "name": "numberOfConnections",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1543,7 +1340,8 @@ exports.SCHEMA = {
                             },
                             "index": 6,
                             "isId": false,
-                            "name": "numberOfRecords"
+                            "name": "numberOfRecords",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1551,7 +1349,8 @@ exports.SCHEMA = {
                             },
                             "index": 7,
                             "isId": false,
-                            "name": "dataCharsTotal"
+                            "name": "dataCharsTotal",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -1562,9 +1361,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 12
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "AGT_SERVER_SYNC_LOG"
                     }
@@ -1576,23 +1377,27 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "SERVERTYPE",
+                            "name": "SERVER_TYPE",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -1601,7 +1406,7 @@ exports.SCHEMA = {
                             "index": 0
                         }
                     ],
-                    "index": 12,
+                    "index": 10,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "Server",
@@ -1612,7 +1417,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1620,7 +1426,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "serverType"
+                            "name": "serverType",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 2,
@@ -1628,7 +1435,8 @@ exports.SCHEMA = {
                             "name": "serverSyncLogs",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -1639,11 +1447,248 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 11
+                            "relationTableIndex": 9,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "AGT_SERVERS"
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 14,
+                                    "oneRelationIndex": 1,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "AGT_SHARING_MESSAGE_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 16,
+                                    "oneRelationIndex": 4,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "AGT_REPO_TRANS_BLOCK_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 11,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SyncLog",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "sharingMessage",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "repositoryTransactionBlock",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 14,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 16,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "AGT_SYNC_LOG"
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "PERMISSION",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 15,
+                                    "oneRelationIndex": 1,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "TERMINAL_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 17,
+                                    "oneRelationIndex": 0,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 1
+                        },
+                        {
+                            "index": 2
+                        }
+                    ],
+                    "index": 12,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "TerminalRepository",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "terminal",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "permission",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 15,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 17,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "AGT_TERMINAL_REPOSITORIES"
                     }
                 },
                 {
@@ -1653,11 +1698,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "SERVER_TYPE",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -1665,11 +1712,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "PARAMETER_GROUP",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -1677,11 +1726,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "PARAMETER_NAME",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -1689,11 +1740,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "PARAMETER_VALUE",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 3
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         }
                     ],
@@ -1719,7 +1772,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "serverType"
+                            "name": "serverType",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1727,7 +1781,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": true,
-                            "name": "parameterGroup"
+                            "name": "parameterGroup",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1735,7 +1790,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": true,
-                            "name": "parameterName"
+                            "name": "parameterName",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1743,10 +1799,12 @@ exports.SCHEMA = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "parameterValue"
+                            "name": "parameterValue",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "AGT_TUNING_PARAMETERS"
                     }
@@ -1758,11 +1816,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -1770,11 +1830,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "TM_SHARING_MESSAGE_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -1782,11 +1844,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "ACKNOWLEDGED",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 4
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -1797,15 +1861,18 @@ exports.SCHEMA = {
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 15,
                                     "oneRelationIndex": 2,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "SYNCED_TERMINAL_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -1825,7 +1892,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -1833,7 +1901,8 @@ exports.SCHEMA = {
                             "name": "terminal",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1841,7 +1910,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "tmSharingMessageId"
+                            "name": "tmSharingMessageId",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 3,
@@ -1849,7 +1919,8 @@ exports.SCHEMA = {
                             "name": "syncLogs",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1857,7 +1928,8 @@ exports.SCHEMA = {
                             },
                             "index": 4,
                             "isId": false,
-                            "name": "acknowledged"
+                            "name": "acknowledged",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -1868,7 +1940,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 15
+                            "relationTableIndex": 15,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -1877,9 +1950,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 0
+                            "relationTableIndex": 11,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "AGT_SHARING_MESSAGES"
                     }
@@ -1891,66 +1966,105 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "PASSWORD",
+                            "name": "NAME",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
                             "index": 2,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "LAST_RECENT_CONNECTION_DATETIME",
+                            "name": "SECOND_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "LAST_ARCHIVE_CONNECTION_DATETIME",
+                            "name": "PASSWORD",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 3
                                 }
                             ],
-                            "type": 4
+                            "sinceVersion": 1,
+                            "type": 5
                         },
                         {
                             "index": 4,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 8,
-                                    "oneRelationIndex": 2,
-                                    "oneColumnIndex": 0
-                                }
-                            ],
-                            "name": "USER_ID",
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "LAST_RECENT_CONNECTION_DATETIME",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 4
                                 }
                             ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "LAST_ARCHIVE_CONNECTION_DATETIME",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 6,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 6,
+                                    "oneRelationIndex": 2,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "USER_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -1970,7 +2084,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1978,7 +2093,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "password"
+                            "name": "name",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1986,7 +2102,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "lastPollConnectionDatetime"
+                            "name": "secondId",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -1994,31 +2111,53 @@ exports.SCHEMA = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "lastSseConnectionDatetime"
+                            "name": "password",
+                            "sinceVersion": 1
                         },
                         {
+                            "columnRef": {
+                                "index": 4
+                            },
                             "index": 4,
                             "isId": false,
-                            "name": "user",
-                            "relationRef": {
-                                "index": 0
-                            }
+                            "name": "lastPollConnectionDatetime",
+                            "sinceVersion": 1
                         },
                         {
+                            "columnRef": {
+                                "index": 5
+                            },
                             "index": 5,
                             "isId": false,
-                            "name": "terminalRepositories",
-                            "relationRef": {
-                                "index": 1
-                            }
+                            "name": "lastSseConnectionDatetime",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 6,
                             "isId": false,
+                            "name": "user",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
+                            "isId": false,
+                            "name": "terminalRepositories",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 8,
+                            "isId": false,
                             "name": "sharingMessages",
                             "relationRef": {
                                 "index": 2
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -2026,147 +2165,36 @@ exports.SCHEMA = {
                             "index": 0,
                             "isId": false,
                             "relationType": 1,
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 8
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": 0,
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 16
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": 0,
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 14
-                        }
-                    ],
-                    "tableConfig": {
-                        "name": "AGT_TERMINALS"
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "PERMISSION",
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "type": 4
+                            "relationTableIndex": 6,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 15,
-                                    "oneRelationIndex": 1,
-                                    "oneColumnIndex": 0
-                                }
-                            ],
-                            "name": "TERMINAL_ID",
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 17,
-                                    "oneRelationIndex": 0,
-                                    "oneColumnIndex": 0
-                                }
-                            ],
-                            "name": "REPOSITORY_ID",
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 1
-                        },
-                        {
-                            "index": 2
-                        }
-                    ],
-                    "index": 16,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "TerminalRepository",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "terminal",
-                            "relationRef": {
-                                "index": 0
-                            }
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 1
-                            }
-                        },
-                        {
-                            "columnRef": {
-                                "index": 0
+                            "isId": false,
+                            "relationType": 0,
+                            "propertyRef": {
+                                "index": 7
                             },
+                            "relationTableIndex": 12,
+                            "sinceVersion": 1
+                        },
+                        {
                             "index": 2,
                             "isId": false,
-                            "name": "permission"
+                            "relationType": 0,
+                            "propertyRef": {
+                                "index": 8
+                            },
+                            "relationTableIndex": 14,
+                            "sinceVersion": 1
                         }
                     ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 15
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 17
-                        }
-                    ],
+                    "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "AGT_TERMINAL_REPOSITORIES"
+                        "name": "AGT_TERMINALS"
                     }
                 },
                 {
@@ -2176,11 +2204,311 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ARCHIVING_STATUS",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ADD_DATETIME",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "TM_REPOSITORY_TRANSACTION_BLOCK_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 7
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "REPOSITORY_TRANSACTION_BLOCK",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 8
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 5
+                        },
+                        {
+                            "index": 5,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 17,
+                                    "oneRelationIndex": 1,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                },
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 6,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 15,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "TERMINAL_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 7,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 3,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ARCHIVING_SERVER_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 16,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "AgtRepositoryTransactionBlock",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "id",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "terminalRepositories",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "terminal",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "archivingServer",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 5,
+                            "isId": false,
+                            "name": "archivingStatus",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 6,
+                            "isId": false,
+                            "name": "addDatetime",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 7,
+                            "isId": false,
+                            "name": "tmRepositoryTransactionBlockId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 4
+                            },
+                            "index": 8,
+                            "isId": false,
+                            "name": "contents",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 9,
+                            "isId": false,
+                            "name": "syncLogs",
+                            "relationRef": {
+                                "index": 4
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 17,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": 0,
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 12,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 15,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "relationType": 0,
+                            "propertyRef": {
+                                "index": 9
+                            },
+                            "relationTableIndex": 11,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "AGT_REPOSITORY_TRANSACTION_BLOCKS"
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -2188,11 +2516,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "LAST_UPDATE_DATETIME",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 2
                         },
                         {
@@ -2200,11 +2530,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "NAME",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -2212,11 +2544,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "STATUS",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 3
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -2236,7 +2570,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -2244,7 +2579,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "lastUpdateTime"
+                            "name": "lastUpdateTime",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -2252,7 +2588,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "name"
+                            "name": "name",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -2260,7 +2597,8 @@ exports.SCHEMA = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "status"
+                            "name": "status",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 4,
@@ -2268,7 +2606,8 @@ exports.SCHEMA = {
                             "name": "terminalRepositories",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 5,
@@ -2276,7 +2615,8 @@ exports.SCHEMA = {
                             "name": "repositoryTransactionBlocks",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -2287,7 +2627,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 16
+                            "relationTableIndex": 12,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -2296,9 +2637,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 1
+                            "relationTableIndex": 16,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "AGT_REPOSITORIES"
                     }
@@ -2310,11 +2653,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "DATE_NUMBER",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -2322,11 +2667,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "NUMBER_OF_CHANGES",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -2336,15 +2683,18 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 17,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "REPOSITORY_ID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -2367,7 +2717,8 @@ exports.SCHEMA = {
                             "name": "repository",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -2375,7 +2726,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": true,
-                            "name": "dateNumber"
+                            "name": "dateNumber",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -2383,7 +2735,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "numberOfChanges"
+                            "name": "numberOfChanges",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -2394,14 +2747,17 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 17
+                            "relationTableIndex": 17,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "DAILY_ARCHIVE_LOG"
                     }
                 }
             ],
+            "integerVersion": 1,
             "referencedSchemas": [],
             "versionString": "1.0.0"
         }

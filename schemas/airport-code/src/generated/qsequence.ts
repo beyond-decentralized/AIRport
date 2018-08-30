@@ -58,7 +58,13 @@ export interface ISequence {
  * SELECT - All fields and relations (optional).
  */
 export interface SequenceESelect
-    extends IEntitySelectProperties, SequenceEOptionalId, SequenceEUpdateProperties {
+    extends IEntitySelectProperties, SequenceEOptionalId {
+	// Non-Id Properties
+	schemaIndex?: number | IQNumberField;
+	tableIndex?: number | IQNumberField;
+	columnIndex?: number | IQNumberField;
+	incrementBy?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

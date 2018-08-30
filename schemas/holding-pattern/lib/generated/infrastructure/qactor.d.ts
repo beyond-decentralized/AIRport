@@ -13,7 +13,8 @@ export interface IActor {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface ActorESelect extends IEntitySelectProperties, ActorEOptionalId, ActorEUpdateProperties {
+export interface ActorESelect extends IEntitySelectProperties, ActorEOptionalId {
+    randomId?: number | IQNumberField;
     user?: UserESelect;
     terminal?: TerminalESelect;
     actorApplications?: ActorApplicationESelect;

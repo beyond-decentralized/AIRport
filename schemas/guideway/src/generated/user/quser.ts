@@ -101,7 +101,12 @@ export interface IUser {
  * SELECT - All fields and relations (optional).
  */
 export interface UserESelect
-    extends IEntitySelectProperties, UserEOptionalId, UserEUpdateProperties {
+    extends IEntitySelectProperties, UserEOptionalId {
+	// Non-Id Properties
+	hash?: string | IQStringField;
+	email?: string | IQStringField;
+	isInvitation?: boolean | IQBooleanField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

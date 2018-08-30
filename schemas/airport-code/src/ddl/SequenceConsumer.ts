@@ -23,14 +23,14 @@ export class SequenceConsumer {
 	@SequenceGenerator({allocationSize: 1})
 	id: SequenceConsumerId
 
-	@Column({name: 'CREATE_TIMESTAMP'})
+	@Column({name: 'CREATE_TIMESTAMP', nullable: false})
 	createTimestamp: SequenceConsumerCreateTimestamp
 
-	@Column({name: 'RANDOM_NUMBER'})
+	@Column({name: 'RANDOM_NUMBER', nullable: false})
 	randomNumber: SequenceConsumerRandomNumber
 
 	@ManyToOne()
-	@JoinColumn({name: 'DOMAIN_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'DOMAIN_ID', referencedColumnName: 'ID', nullable: false})
 	domain: Domain
 
 }

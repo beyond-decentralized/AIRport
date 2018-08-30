@@ -14,6 +14,7 @@ import {
 	JsonDatabaseObject
 }                                    from './Schema'
 
+export type EntityId = number;
 export type EntityName = string;
 export type EntityIsLocal = boolean;
 export type EntityIsRepositoryEntity = boolean;
@@ -77,6 +78,8 @@ export interface DbEntity
 	extends SchemaReferenceByIndex<TableIndex>,
 	        DbObject {
 
+	id: EntityId
+
 	/**
 	 * Map of all columns in the entity by name.
 	 */
@@ -136,5 +139,7 @@ export interface DbEntity
 	 * Indexed schema reference
 	 */
 	schemaVersion: DbSchemaVersion;
+
+	relationReferences: DbRelation[]
 
 }

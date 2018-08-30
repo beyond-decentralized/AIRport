@@ -13,7 +13,10 @@ export interface ISequenceBlock {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SequenceBlockESelect extends IEntitySelectProperties, SequenceBlockEOptionalId, SequenceBlockEUpdateProperties {
+export interface SequenceBlockESelect extends IEntitySelectProperties, SequenceBlockEOptionalId {
+    size?: number | IQNumberField;
+    lastReservedId?: number | IQNumberField;
+    reservationMillis?: number | IQNumberField;
     sequenceConsumer?: SequenceConsumerESelect;
     sequence?: SequenceESelect;
 }

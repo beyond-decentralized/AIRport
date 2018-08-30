@@ -11,7 +11,9 @@ export interface IAgtSharingMessage {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface AgtSharingMessageESelect extends IEntitySelectProperties, AgtSharingMessageEOptionalId, AgtSharingMessageEUpdateProperties {
+export interface AgtSharingMessageESelect extends IEntitySelectProperties, AgtSharingMessageEOptionalId {
+    tmSharingMessageId?: number | IQNumberField;
+    acknowledged?: number | IQNumberField;
     terminal?: TerminalESelect;
     syncLogs?: SyncLogESelect;
 }

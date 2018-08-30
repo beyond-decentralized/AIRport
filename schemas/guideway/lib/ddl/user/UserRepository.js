@@ -28,6 +28,7 @@ __decorate([
     __metadata("design:type", User_1.User)
 ], UserRepository.prototype, "user", void 0);
 __decorate([
+    air_control_1.Column({ name: 'PERMISSION', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], UserRepository.prototype, "permission", void 0);

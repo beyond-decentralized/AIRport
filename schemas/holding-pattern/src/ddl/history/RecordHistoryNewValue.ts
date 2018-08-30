@@ -40,11 +40,12 @@ export class RecordHistoryNewValue
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_RECORD_HISTORY_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "REPOSITORY_RECORD_HISTORY_ID",
+		referencedColumnName: "ID", nullable: false})
 	recordHistory: IRecordHistory;
 
 	@Id()
-	@Column({name: "COLUMN_INDEX"})
+	@Column({name: "COLUMN_INDEX", nullable: false})
 	@DbNumber()
 	columnIndex: RecordHistoryNewValueColumnIndex;
 

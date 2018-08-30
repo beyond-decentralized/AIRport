@@ -14,16 +14,17 @@ import {
 import {DbNumber}              from '@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators'
 import {
 	CascadeType,
+	EntityId,
+	EntityIsLocal,
+	EntityIsRepositoryEntity,
 	EntityName,
 	TableIndex
-}                              from '@airport/ground-control'
+} from '@airport/ground-control'
 import {SchemaColumn}          from './SchemaColumn'
 import {SchemaProperty}        from './SchemaProperty'
 import {SchemaRelation}        from './SchemaRelation'
 import {SchemaVersion}         from './SchemaVersion'
 import {VersionedSchemaObject} from './VersionedSchemaObject'
-
-export type SchemaEntityId = number
 
 @Entity()
 @Table({
@@ -37,7 +38,7 @@ export class SchemaEntity
 	//
 	@Id()
 	@GeneratedValue()
-	id: SchemaEntityId
+	id: EntityId
 
 	//
 	// Non-Id columns
@@ -47,10 +48,10 @@ export class SchemaEntity
 	index: TableIndex
 
 	@Column({name: 'IS_LOCAL', nullable: false})
-	isLocal: boolean
+	isLocal: EntityIsLocal
 
 	@Column({name: 'IS_REPOSITORY_ENTITY', nullable: false})
-	isRepositoryEntity: boolean
+	isRepositoryEntity: EntityIsRepositoryEntity
 
 	@Column({name: 'NAME', nullable: false})
 	name: EntityName

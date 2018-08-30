@@ -34,17 +34,19 @@ __decorate([
     __metadata("design:type", Number)
 ], RepositoryTransactionHistory.prototype, "id", void 0);
 __decorate([
-    air_control_1.Column({ name: "REMOTE_ID" }),
+    air_control_1.Column({ name: "REMOTE_ID", nullable: false }),
     __metadata("design:type", Number)
 ], RepositoryTransactionHistory.prototype, "remoteId", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "TRANSACTION_HISTORY_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "TRANSACTION_HISTORY_ID",
+        referencedColumnName: "ID", nullable: false }),
     __metadata("design:type", Object)
 ], RepositoryTransactionHistory.prototype, "transactionHistory", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "REPOSITORY_ID",
+        referencedColumnName: "ID", nullable: false }),
     __metadata("design:type", Object)
 ], RepositoryTransactionHistory.prototype, "repository", void 0);
 __decorate([
@@ -53,20 +55,22 @@ __decorate([
 ], RepositoryTransactionHistory.prototype, "changedRepositoryActors", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "ACTOR_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "ACTOR_ID", referencedColumnName: "ID",
+        nullable: false }),
     __metadata("design:type", Object)
 ], RepositoryTransactionHistory.prototype, "actor", void 0);
 __decorate([
-    air_control_1.Column({ name: "SAVE_TIMESTAMP" }),
+    air_control_1.Column({ name: "SAVE_TIMESTAMP", nullable: false }),
     __metadata("design:type", Object)
 ], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
 __decorate([
-    air_control_1.Column({ name: "REPOSITORY_TRANSACTION_TYPE" }),
+    air_control_1.Column({ name: "REPOSITORY_TRANSACTION_TYPE", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
 __decorate([
-    air_control_1.Column({ name: "REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID" }),
+    air_control_1.Column({ name: "REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID",
+        nullable: false }),
     __metadata("design:type", Number)
 ], RepositoryTransactionHistory.prototype, "blockId", void 0);
 __decorate([

@@ -123,6 +123,7 @@ export interface DbSchemaVersion extends DbSchemaVersionReference {
     referencedByMapByName?: {
         [schemaName: string]: DbSchemaReference;
     };
+    integerVersion: SchemaVersionInteger;
     versionString: SchemaVersionString;
     majorVersion: SchemaVersionMajor;
     minorVersion: SchemaVersionMinor;

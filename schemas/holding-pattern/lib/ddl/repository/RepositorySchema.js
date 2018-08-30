@@ -26,7 +26,7 @@ __decorate([
     __metadata("design:type", Object)
 ], RepositorySchema.prototype, "repository", void 0);
 __decorate([
-    air_control_1.Column({ name: "SCHEMA_INDEX" }),
+    air_control_1.Column({ name: "SCHEMA_INDEX", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], RepositorySchema.prototype, "schemaIndex", void 0);

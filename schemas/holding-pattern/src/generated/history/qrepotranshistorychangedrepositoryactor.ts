@@ -88,7 +88,10 @@ export interface IRepoTransHistoryChangedRepositoryActor {
  * SELECT - All fields and relations (optional).
  */
 export interface RepoTransHistoryChangedRepositoryActorESelect
-    extends IEntitySelectProperties, RepoTransHistoryChangedRepositoryActorEOptionalId, RepoTransHistoryChangedRepositoryActorEUpdateProperties {
+    extends IEntitySelectProperties, RepoTransHistoryChangedRepositoryActorEOptionalId {
+	// Non-Id Properties
+	referenceType?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

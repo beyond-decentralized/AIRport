@@ -1,12 +1,11 @@
 import { ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/air-control';
-import { EntityRelationType, RelationIndex } from '@airport/ground-control';
+import { EntityRelationType, RelationId, RelationIndex } from '@airport/ground-control';
 import { SchemaEntity } from './SchemaEntity';
 import { SchemaProperty } from './SchemaProperty';
 import { SchemaRelationColumn } from './SchemaRelationColumn';
 import { VersionedSchemaObject } from './VersionedSchemaObject';
-export declare type SchemaRelationId = number;
 export declare class SchemaRelation extends VersionedSchemaObject {
-    id: SchemaRelationId;
+    id: RelationId;
     index: RelationIndex;
     property: SchemaProperty;
     foreignKey: ForeignKey;

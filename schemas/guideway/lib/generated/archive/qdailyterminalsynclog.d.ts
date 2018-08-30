@@ -9,7 +9,8 @@ export interface IDailyTerminalSyncLog {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface DailyTerminalSyncLogESelect extends IEntitySelectProperties, DailyTerminalSyncLogEOptionalId, DailyTerminalSyncLogEUpdateProperties {
+export interface DailyTerminalSyncLogESelect extends IEntitySelectProperties, DailyTerminalSyncLogEOptionalId {
+    acknowledged?: number | IQNumberField;
     dailyArchiveLog?: DailyArchiveLogESelect;
     terminal?: TerminalESelect;
 }

@@ -9,7 +9,9 @@ export interface IMonthlyArchiveLog {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface MonthlyArchiveLogESelect extends IEntitySelectProperties, MonthlyArchiveLogEOptionalId, MonthlyArchiveLogEUpdateProperties {
+export interface MonthlyArchiveLogESelect extends IEntitySelectProperties, MonthlyArchiveLogEOptionalId {
+    numberOfChanges?: number | IQNumberField;
+    daysWithChanges?: any | IQUntypedField;
     repository?: RepositoryESelect;
 }
 /**

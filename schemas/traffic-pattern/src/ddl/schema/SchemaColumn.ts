@@ -10,6 +10,7 @@ import {
 	Table
 }                              from '@airport/air-control'
 import {
+	ColumnId,
 	ColumnIndex,
 	ColumnName,
 	ColumnNotNull,
@@ -23,8 +24,6 @@ import {ISchemaRelationColumn} from '../../generated/schema/qschemarelationcolum
 import {SchemaEntity}          from './SchemaEntity'
 import {VersionedSchemaObject} from './VersionedSchemaObject'
 
-export type SchemaColumnId = number
-
 @Entity()
 @Table({
 	name: 'SCHEMA_COLUMNS'
@@ -34,7 +33,7 @@ export class SchemaColumn
 
 	@Id()
 	@GeneratedValue()
-	id: SchemaColumnId
+	id: ColumnId
 
 	/**
 	 * Overall column index (within the entity).

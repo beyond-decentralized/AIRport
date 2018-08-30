@@ -31,7 +31,7 @@ __decorate([
     __metadata("design:type", String)
 ], TuningParameters.prototype, "parameterName", void 0);
 __decorate([
-    air_control_1.Column({ name: "PARAMETER_VALUE" }),
+    air_control_1.Column({ name: "PARAMETER_VALUE", nullable: false }),
     air_control_1.DbString(),
     __metadata("design:type", String)
 ], TuningParameters.prototype, "parameterValue", void 0);

@@ -23,20 +23,22 @@ __decorate([
     __metadata("design:type", Number)
 ], Terminal.prototype, "id", void 0);
 __decorate([
+    air_control_1.Column({ name: 'NAME', nullable: false }),
     air_control_1.DbString(),
     __metadata("design:type", String)
 ], Terminal.prototype, "name", void 0);
 __decorate([
     air_control_1.DbNumber(),
-    air_control_1.Column({ name: 'SECOND_ID' }),
+    air_control_1.Column({ name: 'SECOND_ID', nullable: false }),
     __metadata("design:type", Number)
 ], Terminal.prototype, "secondId", void 0);
 __decorate([
+    air_control_1.Column({ name: 'PASSWORD', nullable: false }),
     air_control_1.DbString(),
     __metadata("design:type", String)
 ], Terminal.prototype, "password", void 0);
 __decorate([
-    air_control_1.Column({ name: 'LAST_RECENT_CONNECTION_DATETIME' }),
+    air_control_1.Column({ name: 'LAST_RECENT_CONNECTION_DATETIME', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Terminal.prototype, "lastPollConnectionDatetime", void 0);
@@ -47,7 +49,7 @@ __decorate([
 ], Terminal.prototype, "lastSseConnectionDatetime", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'USER_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'USER_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", User_1.User)
 ], Terminal.prototype, "user", void 0);
 __decorate([

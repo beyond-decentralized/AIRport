@@ -37,19 +37,19 @@ export class AgtRepositoryTransactionBlock {
 
 	@ManyToOne()
 	@JoinColumn(
-		{name: "REPOSITORY_ID", referencedColumnName: 'ID'}
+		{name: "REPOSITORY_ID", referencedColumnName: 'ID', nullable: false}
 	)
 	repository: Repository;
 
 	@OneToMany()
 	@JoinColumn(
-		{name: "REPOSITORY_ID"}
+		{name: "REPOSITORY_ID", nullable: false}
 	)
 	terminalRepositories: TerminalRepository[];
 
 	@ManyToOne()
 	@JoinColumn(
-		{name: "TERMINAL_ID", referencedColumnName: 'ID'}
+		{name: "TERMINAL_ID", referencedColumnName: 'ID', nullable: false}
 	)
 	terminal: Terminal;
 
@@ -59,11 +59,11 @@ export class AgtRepositoryTransactionBlock {
 	)
 	archivingServer: IServer;
 
-	@Column({name: "ARCHIVING_STATUS"})
+	@Column({name: "ARCHIVING_STATUS", nullable: false})
 	@DbNumber()
 	archivingStatus: AgtRepositoryTransactionBlockArchivingStatus;
 
-	@Column({name: "ADD_DATETIME"})
+	@Column({name: "ADD_DATETIME", nullable: false})
 	addDatetime: AgtRepositoryTransactionBlockAddDatetime;
 
 	/*
@@ -77,7 +77,7 @@ export class AgtRepositoryTransactionBlock {
 	isRecent: AgtRepositoryTransactionBlockIsRecent;
 */
 
-	@Column({name: "TM_REPOSITORY_TRANSACTION_BLOCK_ID"})
+	@Column({name: "TM_REPOSITORY_TRANSACTION_BLOCK_ID", nullable: false})
 	@DbNumber()
 	tmRepositoryTransactionBlockId: TmRepositoryTransactionBlockId;
 
@@ -115,7 +115,7 @@ export class AgtRepositoryTransactionBlock {
 	 * no known const
 	 *
 	 */
-	@Column({name: "REPOSITORY_TRANSACTION_BLOCK"})
+	@Column({name: "REPOSITORY_TRANSACTION_BLOCK", nullable: false})
 	contents: RepositoryTransactionBlockContents;
 
 	@OneToMany()

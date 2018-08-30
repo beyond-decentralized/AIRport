@@ -8,7 +8,8 @@ export interface IRecordHistoryNewValue {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RecordHistoryNewValueESelect extends IEntitySelectProperties, RecordHistoryNewValueEOptionalId, RecordHistoryNewValueEUpdateProperties {
+export interface RecordHistoryNewValueESelect extends IEntitySelectProperties, RecordHistoryNewValueEOptionalId {
+    newValue?: any | IQUntypedField;
     recordHistory?: RecordHistoryESelect;
 }
 /**

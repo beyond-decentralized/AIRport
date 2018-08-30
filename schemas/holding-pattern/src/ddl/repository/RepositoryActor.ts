@@ -29,12 +29,14 @@ export class RepositoryActor
 	id: number;
 
 	@ManyToOne()
-	@JoinColumn({name: "ACTOR_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "ACTOR_ID", referencedColumnName: "ID",
+		nullable: false})
 	actor: IActor;
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID",
+		nullable: false})
 	repository: IRepository;
 
 }

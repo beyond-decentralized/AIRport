@@ -76,7 +76,10 @@ export interface ISecurityAnswer {
  * SELECT - All fields and relations (optional).
  */
 export interface SecurityAnswerESelect
-    extends IEntitySelectProperties, SecurityAnswerEOptionalId, SecurityAnswerEUpdateProperties {
+    extends IEntitySelectProperties, SecurityAnswerEOptionalId {
+	// Non-Id Properties
+	answer?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 	user?: UserESelect;
 	securityQuestion?: SecurityQuestionESelect;

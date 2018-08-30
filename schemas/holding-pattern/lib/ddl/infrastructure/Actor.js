@@ -25,16 +25,18 @@ __decorate([
 ], Actor.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'USER_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'USER_ID', referencedColumnName: 'ID',
+        nullable: false }),
     __metadata("design:type", travel_document_checkpoint_1.User)
 ], Actor.prototype, "user", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID',
+        nullable: false }),
     __metadata("design:type", travel_document_checkpoint_1.Terminal)
 ], Actor.prototype, "terminal", void 0);
 __decorate([
-    air_control_1.Column({ name: 'RANDOM_ID' }),
+    air_control_1.Column({ name: 'RANDOM_ID', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Actor.prototype, "randomId", void 0);

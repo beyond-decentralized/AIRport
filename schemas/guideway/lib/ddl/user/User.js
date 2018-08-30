@@ -18,11 +18,16 @@ __decorate([
     __metadata("design:type", Number)
 ], User.prototype, "id", void 0);
 __decorate([
+    air_control_1.Column({ name: 'HASH', nullable: false }),
     air_control_1.DbString(),
     __metadata("design:type", String)
 ], User.prototype, "hash", void 0);
 __decorate([
-    air_control_1.Column({ name: "IS_INVITATION" }),
+    air_control_1.Column({ name: 'EMAIL', nullable: false }),
+    __metadata("design:type", String)
+], User.prototype, "email", void 0);
+__decorate([
+    air_control_1.Column({ name: "IS_INVITATION", nullable: false }),
     air_control_1.DbBoolean(),
     __metadata("design:type", Boolean)
 ], User.prototype, "isInvitation", void 0);

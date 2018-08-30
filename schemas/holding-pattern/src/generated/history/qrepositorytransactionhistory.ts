@@ -113,7 +113,13 @@ export interface IRepositoryTransactionHistory {
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryTransactionHistoryESelect
-    extends IEntitySelectProperties, RepositoryTransactionHistoryEOptionalId, RepositoryTransactionHistoryEUpdateProperties {
+    extends IEntitySelectProperties, RepositoryTransactionHistoryEOptionalId {
+	// Non-Id Properties
+	remoteId?: number | IQNumberField;
+	saveTimestamp?: Date | IQDateField;
+	repositoryTransactionType?: number | IQNumberField;
+	blockId?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

@@ -1,4 +1,6 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { SchemaEntity } from '../../ddl/schema/SchemaEntity';
+import { SchemaReference } from '../../ddl/schema/SchemaReference';
 import { ISchema, SchemaEOptionalId, SchemaESelect, QSchemaQRelation } from './qschema';
 import { ISchemaEntity, SchemaEntityESelect, QSchemaEntity } from './qschemaentity';
 import { ISchemaReference, SchemaReferenceESelect, QSchemaReference } from './qschemareference';
@@ -13,6 +15,15 @@ export interface ISchemaVersion {
     entities?: ISchemaEntity[];
     references?: ISchemaReference[];
     referencedBy?: ISchemaReference[];
+    entityMapByName?: {
+        [entityName: string]: SchemaEntity;
+    };
+    referencesMapByName?: {
+        [schemaName: string]: SchemaReference;
+    };
+    referencedByMapByName?: {
+        [schemaName: string]: SchemaReference;
+    };
 }
 /**
  * SELECT - All fields and relations (optional).

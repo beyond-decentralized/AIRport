@@ -20,24 +20,24 @@ __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
     air_control_1.JoinColumns([
-        { name: "REPOSITORY_ID" },
-        { name: "MONTH_NUMBER" }
+        { name: "REPOSITORY_ID", nullable: false },
+        { name: "MONTH_NUMBER", nullable: false }
     ]),
     __metadata("design:type", MonthlyArchiveLog_1.MonthlyArchiveLog)
 ], MonthlyTerminalSyncLog.prototype, "monthlyArchiveLog", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "TERMINAL_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "TERMINAL_ID", referencedColumnName: "ID", nullable: false }),
     __metadata("design:type", Terminal_1.Terminal)
 ], MonthlyTerminalSyncLog.prototype, "terminal", void 0);
 __decorate([
-    air_control_1.Column({ name: "ALL_ACKNOWLEDGED" }),
+    air_control_1.Column({ name: "ALL_ACKNOWLEDGED", nullable: false }),
     air_control_1.DbBoolean(),
     __metadata("design:type", Boolean)
 ], MonthlyTerminalSyncLog.prototype, "allAcknowledged", void 0);
 __decorate([
-    air_control_1.Column({ name: "DAILY_SYNC_STATUSES", columnDefinition: "BOOL[]" }),
+    air_control_1.Column({ name: "DAILY_SYNC_STATUSES", nullable: false }),
     air_control_1.DbString(),
     __metadata("design:type", String)
 ], MonthlyTerminalSyncLog.prototype, "dailySyncStatuses", void 0);

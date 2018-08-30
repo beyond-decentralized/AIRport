@@ -57,7 +57,10 @@ export interface ITuningParameters {
  * SELECT - All fields and relations (optional).
  */
 export interface TuningParametersESelect
-    extends IEntitySelectProperties, TuningParametersEOptionalId, TuningParametersEUpdateProperties {
+    extends IEntitySelectProperties, TuningParametersEOptionalId {
+	// Non-Id Properties
+	parameterValue?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

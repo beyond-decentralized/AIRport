@@ -103,7 +103,10 @@ export interface IRecordHistory {
  * SELECT - All fields and relations (optional).
  */
 export interface RecordHistoryESelect
-    extends IEntitySelectProperties, RecordHistoryEOptionalId, RecordHistoryEUpdateProperties {
+    extends IEntitySelectProperties, RecordHistoryEOptionalId {
+	// Non-Id Properties
+	actorRecordId?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

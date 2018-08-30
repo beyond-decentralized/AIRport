@@ -57,7 +57,10 @@ export interface IMonthlySyncLog {
  * SELECT - All fields and relations (optional).
  */
 export interface MonthlySyncLogESelect
-    extends IEntitySelectProperties, MonthlySyncLogEOptionalId, MonthlySyncLogEUpdateProperties {
+    extends IEntitySelectProperties, MonthlySyncLogEOptionalId {
+	// Non-Id Properties
+	synced?: boolean | IQBooleanField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

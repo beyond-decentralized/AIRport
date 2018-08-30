@@ -18,6 +18,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Server.prototype, "id", void 0);
 __decorate([
+    air_control_1.Column({ name: 'SERVER_TYPE', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Server.prototype, "serverType", void 0);

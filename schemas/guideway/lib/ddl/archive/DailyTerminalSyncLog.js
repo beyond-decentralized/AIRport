@@ -20,25 +20,26 @@ __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
     air_control_1.JoinColumns([
-        { name: "REPOSITORY_ID" },
-        { name: "DATE_NUMBER" }
+        { name: 'REPOSITORY_ID', nullable: false },
+        { name: 'DATE_NUMBER', nullable: false }
     ]),
     __metadata("design:type", DailyArchiveLog_1.DailyArchiveLog)
 ], DailyTerminalSyncLog.prototype, "dailyArchiveLog", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "TERMINAL_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", Terminal_1.Terminal)
 ], DailyTerminalSyncLog.prototype, "terminal", void 0);
 __decorate([
     air_control_1.DbNumber(),
     air_control_1.DbBoolean(),
+    air_control_1.Column({ name: 'ACKNOWLEDGED', nullable: false }),
     __metadata("design:type", Boolean)
 ], DailyTerminalSyncLog.prototype, "acknowledged", void 0);
 DailyTerminalSyncLog = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: "DAILY_TERMINAL_SYNC_LOG" })
+    air_control_1.Table({ name: 'DAILY_TERMINAL_SYNC_LOG' })
     // TODO: partition on each node by date
 ], DailyTerminalSyncLog);
 exports.DailyTerminalSyncLog = DailyTerminalSyncLog;

@@ -69,17 +69,17 @@ export type DailySyncLogValues = [
 export class DailySyncLog {
 
 	@Id()
-	@Column({name: "DATABASE_ID"})
+	@Column({name: "DATABASE_ID", nullable: false})
 	@DbNumber()
 	databaseId: DailySyncLogDatabaseId;
 
 	@Id()
-	@Column({name: "DATE_NUMBER"})
+	@Column({name: "DATE_NUMBER", nullable: false})
 	@DbNumber()
 	date: DailySyncLogDateNumber;
 
 	@Id()
-	@Column({name: "REPOSITORY_ID"})
+	@Column({name: "REPOSITORY_ID", nullable: false})
 	@DbNumber()
 	repositoryId: DailySyncLogRepositoryId;
 

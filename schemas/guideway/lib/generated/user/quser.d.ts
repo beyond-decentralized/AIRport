@@ -16,7 +16,10 @@ export interface IUser {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface UserESelect extends IEntitySelectProperties, UserEOptionalId, UserEUpdateProperties {
+export interface UserESelect extends IEntitySelectProperties, UserEOptionalId {
+    hash?: string | IQStringField;
+    email?: string | IQStringField;
+    isInvitation?: boolean | IQBooleanField;
     securityAnswers?: SecurityAnswerESelect;
     userRepositories?: UserRepositoryESelect;
     terminals?: TerminalESelect;

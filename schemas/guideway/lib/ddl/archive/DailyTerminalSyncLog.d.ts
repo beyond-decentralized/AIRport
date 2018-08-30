@@ -1,5 +1,5 @@
-import { Terminal } from "../terminal/Terminal";
-import { DailyArchiveLog } from "./DailyArchiveLog";
+import { Terminal } from '../terminal/Terminal';
+import { DailyArchiveLog } from './DailyArchiveLog';
 export declare type DailyTerminalSyncLogAcknowledged = boolean;
 export declare class DailyTerminalSyncLog {
     dailyArchiveLog: DailyArchiveLog;

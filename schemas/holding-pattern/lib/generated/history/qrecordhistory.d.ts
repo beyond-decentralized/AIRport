@@ -16,7 +16,8 @@ export interface IRecordHistory {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RecordHistoryESelect extends IEntitySelectProperties, RecordHistoryEOptionalId, RecordHistoryEUpdateProperties {
+export interface RecordHistoryESelect extends IEntitySelectProperties, RecordHistoryEOptionalId {
+    actorRecordId?: number | IQNumberField;
     actor?: ActorESelect;
     operationHistory?: OperationHistoryESelect;
     newValues?: RecordHistoryNewValueESelect;

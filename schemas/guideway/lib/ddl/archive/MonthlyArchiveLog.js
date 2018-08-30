@@ -18,22 +18,22 @@ class MonthlyArchiveLog {
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID", nullable: false }),
     __metadata("design:type", Repository_1.Repository)
 ], MonthlyArchiveLog.prototype, "repository", void 0);
 __decorate([
     air_control_1.Id(),
-    air_control_1.Column({ name: "MONTH_NUMBER" }),
+    air_control_1.Column({ name: "MONTH_NUMBER", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], MonthlyArchiveLog.prototype, "monthNumber", void 0);
 __decorate([
-    air_control_1.Column({ name: "NUMBER_OF_CHANGES" }),
+    air_control_1.Column({ name: "NUMBER_OF_CHANGES", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], MonthlyArchiveLog.prototype, "numberOfChanges", void 0);
 __decorate([
-    air_control_1.Column({ name: "DAYS_WITH_CHANGES", columnDefinition: "BOOL[]" }),
+    air_control_1.Column({ name: "DAYS_WITH_CHANGES", nullable: false }),
     __metadata("design:type", Object)
 ], MonthlyArchiveLog.prototype, "daysWithChanges", void 0);
 MonthlyArchiveLog = __decorate([

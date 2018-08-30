@@ -13,4 +13,13 @@ export declare class SchemaVersion {
     entities: SchemaEntity[];
     references: SchemaReference[];
     referencedBy: SchemaReference[];
+    entityMapByName?: {
+        [entityName: string]: SchemaEntity;
+    };
+    referencesMapByName?: {
+        [schemaName: string]: SchemaReference;
+    };
+    referencedByMapByName?: {
+        [schemaName: string]: SchemaReference;
+    };
 }

@@ -23,12 +23,13 @@ let RecordHistoryNewValue = class RecordHistoryNewValue {
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_RECORD_HISTORY_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "REPOSITORY_RECORD_HISTORY_ID",
+        referencedColumnName: "ID", nullable: false }),
     __metadata("design:type", Object)
 ], RecordHistoryNewValue.prototype, "recordHistory", void 0);
 __decorate([
     air_control_1.Id(),
-    air_control_1.Column({ name: "COLUMN_INDEX" }),
+    air_control_1.Column({ name: "COLUMN_INDEX", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], RecordHistoryNewValue.prototype, "columnIndex", void 0);

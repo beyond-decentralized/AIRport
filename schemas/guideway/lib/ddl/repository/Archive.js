@@ -16,6 +16,10 @@ __decorate([
     air_control_1.Id(),
     __metadata("design:type", String)
 ], Archive.prototype, "id", void 0);
+__decorate([
+    air_control_1.Column({ name: 'LOCATION', nullable: false }),
+    __metadata("design:type", String)
+], Archive.prototype, "location", void 0);
 Archive = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({ name: "ARCHIVES" })

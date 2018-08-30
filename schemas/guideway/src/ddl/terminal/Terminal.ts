@@ -35,17 +35,19 @@ export class Terminal {
 	@GeneratedValue()
 	id: TerminalId
 
+	@Column({name: 'NAME', nullable: false})
 	@DbString()
 	name: TerminalName
 
 	@DbNumber()
-	@Column({name: 'SECOND_ID'})
+	@Column({name: 'SECOND_ID', nullable: false})
 	secondId: TerminalSecondId
 
+	@Column({name: 'PASSWORD', nullable: false})
 	@DbString()
 	password: TerminalPassword
 
-	@Column({name: 'LAST_RECENT_CONNECTION_DATETIME'})
+	@Column({name: 'LAST_RECENT_CONNECTION_DATETIME', nullable: false})
 	@DbNumber()
 	lastPollConnectionDatetime: TerminalLastPollConnectionDatetime
 
@@ -55,7 +57,7 @@ export class Terminal {
 
 	@ManyToOne()
 	@JoinColumn(
-		{name: 'USER_ID', referencedColumnName: 'ID'}
+		{name: 'USER_ID', referencedColumnName: 'ID', nullable: false}
 	)
 	user: User
 

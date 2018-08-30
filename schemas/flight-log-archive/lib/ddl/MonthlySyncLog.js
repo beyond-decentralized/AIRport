@@ -16,24 +16,24 @@ class MonthlySyncLog {
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.Column({ name: "DATABASE_ID" }),
+    air_control_1.Column({ name: "DATABASE_ID", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], MonthlySyncLog.prototype, "databaseId", void 0);
 __decorate([
     air_control_1.Id(),
-    air_control_1.Column({ name: "DATE" }),
+    air_control_1.Column({ name: "DATE", nullable: false }),
     air_control_1.DbDate(),
     __metadata("design:type", Number)
 ], MonthlySyncLog.prototype, "month", void 0);
 __decorate([
     air_control_1.Id(),
-    air_control_1.Column({ name: "REPOSITORY_ID" }),
+    air_control_1.Column({ name: "REPOSITORY_ID", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], MonthlySyncLog.prototype, "repositoryId", void 0);
 __decorate([
-    air_control_1.Column({ name: "SYNCED" }),
+    air_control_1.Column({ name: "SYNCED", nullable: false }),
     air_control_1.DbBoolean(),
     __metadata("design:type", Boolean)
 ], MonthlySyncLog.prototype, "synced", void 0);

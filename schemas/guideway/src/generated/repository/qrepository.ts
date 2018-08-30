@@ -79,7 +79,12 @@ export interface IRepository {
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryESelect
-    extends IEntitySelectProperties, RepositoryEOptionalId, RepositoryEUpdateProperties {
+    extends IEntitySelectProperties, RepositoryEOptionalId {
+	// Non-Id Properties
+	lastUpdateTime?: Date | IQDateField;
+	name?: string | IQStringField;
+	status?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

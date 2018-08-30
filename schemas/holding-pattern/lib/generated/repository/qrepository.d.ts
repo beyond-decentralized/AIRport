@@ -19,7 +19,13 @@ export interface IRepository {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEOptionalId, RepositoryEUpdateProperties {
+export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEOptionalId {
+    orderedId?: number | IQNumberField;
+    randomId?: number | IQNumberField;
+    name?: string | IQStringField;
+    url?: string | IQStringField;
+    platformConfig?: string | IQStringField;
+    syncPriority?: number | IQNumberField;
     ownerActor?: ActorESelect;
     repositoryActors?: RepositoryActorESelect;
     repositoryApplications?: RepositoryApplicationESelect;

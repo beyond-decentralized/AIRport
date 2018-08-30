@@ -75,7 +75,9 @@ export interface ISyncLog {
  * SELECT - All fields and relations (optional).
  */
 export interface SyncLogESelect
-    extends IEntitySelectProperties, SyncLogEOptionalId, SyncLogEUpdateProperties {
+    extends IEntitySelectProperties, SyncLogEOptionalId {
+	// Non-Id Properties
+
 	// Id Relations - full property interfaces
 	sharingMessage?: AgtSharingMessageESelect;
 	repositoryTransactionBlock?: AgtRepositoryTransactionBlockESelect;

@@ -28,6 +28,7 @@ __decorate([
     __metadata("design:type", String)
 ], Application.prototype, "host", void 0);
 __decorate([
+    air_control_1.Column({ name: 'PORT', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], Application.prototype, "port", void 0);

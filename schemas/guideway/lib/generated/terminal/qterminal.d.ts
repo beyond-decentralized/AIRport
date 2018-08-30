@@ -4,6 +4,8 @@ import { ITerminalRepository, TerminalRepositoryESelect, QTerminalRepository } f
 import { IAgtSharingMessage, AgtSharingMessageESelect, QAgtSharingMessage } from '../synchronization/qagtsharingmessage';
 export interface ITerminal {
     id?: number;
+    name?: string;
+    secondId?: number;
     password?: string;
     lastPollConnectionDatetime?: number;
     lastSseConnectionDatetime?: number;
@@ -14,7 +16,12 @@ export interface ITerminal {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface TerminalESelect extends IEntitySelectProperties, TerminalEOptionalId, TerminalEUpdateProperties {
+export interface TerminalESelect extends IEntitySelectProperties, TerminalEOptionalId {
+    name?: string | IQStringField;
+    secondId?: number | IQNumberField;
+    password?: string | IQStringField;
+    lastPollConnectionDatetime?: number | IQNumberField;
+    lastSseConnectionDatetime?: number | IQNumberField;
     user?: UserESelect;
     terminalRepositories?: TerminalRepositoryESelect;
     sharingMessages?: AgtSharingMessageESelect;
@@ -35,6 +42,8 @@ export interface TerminalEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface TerminalEUpdateProperties extends IEntityUpdateProperties {
+    name?: string | IQStringField;
+    secondId?: number | IQNumberField;
     password?: string | IQStringField;
     lastPollConnectionDatetime?: number | IQNumberField;
     lastSseConnectionDatetime?: number | IQNumberField;
@@ -44,6 +53,8 @@ export interface TerminalEUpdateProperties extends IEntityUpdateProperties {
  * UPDATE - non-id columns (optional).
  */
 export interface TerminalEUpdateColumns extends IEntityUpdateColumns {
+    NAME?: string | IQStringField;
+    SECOND_ID?: number | IQNumberField;
     PASSWORD?: string | IQStringField;
     LAST_RECENT_CONNECTION_DATETIME?: number | IQNumberField;
     LAST_ARCHIVE_CONNECTION_DATETIME?: number | IQNumberField;
@@ -64,6 +75,8 @@ export interface TerminalECreateColumns extends TerminalEId, TerminalEUpdateColu
  */
 export interface QTerminal extends QEntity {
     id: IQNumberField;
+    name: IQStringField;
+    secondId: IQNumberField;
     password: IQStringField;
     lastPollConnectionDatetime: IQNumberField;
     lastSseConnectionDatetime: IQNumberField;

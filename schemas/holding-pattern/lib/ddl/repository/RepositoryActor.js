@@ -26,13 +26,15 @@ __decorate([
 ], RepositoryActor.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "ACTOR_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "ACTOR_ID", referencedColumnName: "ID",
+        nullable: false }),
     __metadata("design:type", Object)
 ], RepositoryActor.prototype, "actor", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID",
+        nullable: false }),
     __metadata("design:type", Object)
 ], RepositoryActor.prototype, "repository", void 0);
 RepositoryActor = __decorate([

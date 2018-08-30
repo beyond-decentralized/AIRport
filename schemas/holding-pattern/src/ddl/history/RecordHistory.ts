@@ -48,15 +48,16 @@ export class RecordHistory
 	id: RecordHistoryId
 
 	@ManyToOne()
-	@JoinColumn({name: 'ACTOR_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'ACTOR_ID', referencedColumnName: 'ID', nullable: false})
 	actor: IActor
 
-	@Column({name: 'ACTOR_RECORD_ID'})
+	@Column({name: 'ACTOR_RECORD_ID', nullable: false})
 	@DbNumber()
 	actorRecordId: RecordHistoryActorRecordId
 
 	@ManyToOne()
-	@JoinColumn({name: 'REPOSITORY_OPERATION_HISTORY_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'REPOSITORY_OPERATION_HISTORY_ID', referencedColumnName: 'ID',
+		nullable: false})
 	operationHistory: IOperationHistory
 
 

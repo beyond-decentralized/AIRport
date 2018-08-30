@@ -8,7 +8,8 @@ export interface ITuningParameters {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface TuningParametersESelect extends IEntitySelectProperties, TuningParametersEOptionalId, TuningParametersEUpdateProperties {
+export interface TuningParametersESelect extends IEntitySelectProperties, TuningParametersEOptionalId {
+    parameterValue?: string | IQStringField;
 }
 /**
  * DELETE - Ids fields and relations only (required).

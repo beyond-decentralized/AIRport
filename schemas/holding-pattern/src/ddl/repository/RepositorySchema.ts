@@ -35,7 +35,7 @@ export class RepositorySchema
 	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID"})
 	repository: IRepository;
 
-	@Column({name: "SCHEMA_INDEX"})
+	@Column({name: "SCHEMA_INDEX", nullable: false})
 	@DbNumber()
 	schemaIndex: SchemaIndex;
 

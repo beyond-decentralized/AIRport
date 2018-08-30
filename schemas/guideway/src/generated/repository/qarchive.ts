@@ -55,7 +55,10 @@ export interface IArchive {
  * SELECT - All fields and relations (optional).
  */
 export interface ArchiveESelect
-    extends IEntitySelectProperties, ArchiveEOptionalId, ArchiveEUpdateProperties {
+    extends IEntitySelectProperties, ArchiveEOptionalId {
+	// Non-Id Properties
+	location?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

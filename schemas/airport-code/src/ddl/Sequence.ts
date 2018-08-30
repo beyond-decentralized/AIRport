@@ -24,19 +24,19 @@ export class Sequence {
 	@GeneratedValue()
 	id: SequenceId
 
-	@Column({name: 'SCHEMA_INDEX'})
+	@Column({name: 'SCHEMA_INDEX', nullable: false})
 	@DbNumber()
 	schemaIndex: SchemaIndex
 
-	@Column({name: 'TABLE_INDEX'})
+	@Column({name: 'TABLE_INDEX', nullable: false})
 	@DbNumber()
 	tableIndex: TableIndex
 
-	@Column({name: 'COLUMN_INDEX'})
+	@Column({name: 'COLUMN_INDEX', nullable: false})
 	@DbNumber()
 	columnIndex: ColumnIndex
 
-	@Column({name: 'SEQUENCE_INCREMENT_BY'})
+	@Column({name: 'SEQUENCE_INCREMENT_BY', nullable: false})
 	incrementBy: SequenceIncrementBy
 
 }

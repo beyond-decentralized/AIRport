@@ -2,6 +2,7 @@ export const SCHEMA = {
 	"domain": "public",
 	"index": null,
 	"name": "@airport/flight-log-archive",
+	"sinceVersion": 1,
 	"versions": [
 		{
 			"entities": [
@@ -12,11 +13,13 @@ export const SCHEMA = {
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "DATABASE_ID",
+							"notNull": true,
 							"propertyRefs": [
 								{
 									"index": 0
 								}
 							],
+							"sinceVersion": 1,
 							"type": 4
 						},
 						{
@@ -24,11 +27,13 @@ export const SCHEMA = {
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "DATE_NUMBER",
+							"notNull": true,
 							"propertyRefs": [
 								{
 									"index": 1
 								}
 							],
+							"sinceVersion": 1,
 							"type": 4
 						},
 						{
@@ -36,11 +41,13 @@ export const SCHEMA = {
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "REPOSITORY_ID",
+							"notNull": true,
 							"propertyRefs": [
 								{
 									"index": 2
 								}
 							],
+							"sinceVersion": 1,
 							"type": 4
 						}
 					],
@@ -66,7 +73,8 @@ export const SCHEMA = {
 							},
 							"index": 0,
 							"isId": true,
-							"name": "databaseId"
+							"name": "databaseId",
+							"sinceVersion": 1
 						},
 						{
 							"columnRef": {
@@ -74,7 +82,8 @@ export const SCHEMA = {
 							},
 							"index": 1,
 							"isId": true,
-							"name": "date"
+							"name": "date",
+							"sinceVersion": 1
 						},
 						{
 							"columnRef": {
@@ -82,10 +91,12 @@ export const SCHEMA = {
 							},
 							"index": 2,
 							"isId": true,
-							"name": "repositoryId"
+							"name": "repositoryId",
+							"sinceVersion": 1
 						}
 					],
 					"relations": [],
+					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "DAILY_SYNC_LOG"
 					}
@@ -97,11 +108,13 @@ export const SCHEMA = {
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "DATABASE_ID",
+							"notNull": true,
 							"propertyRefs": [
 								{
 									"index": 0
 								}
 							],
+							"sinceVersion": 1,
 							"type": 4
 						},
 						{
@@ -109,11 +122,13 @@ export const SCHEMA = {
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "DATE",
+							"notNull": true,
 							"propertyRefs": [
 								{
 									"index": 1
 								}
 							],
+							"sinceVersion": 1,
 							"type": 2
 						},
 						{
@@ -121,11 +136,13 @@ export const SCHEMA = {
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "REPOSITORY_ID",
+							"notNull": true,
 							"propertyRefs": [
 								{
 									"index": 2
 								}
 							],
+							"sinceVersion": 1,
 							"type": 4
 						},
 						{
@@ -133,11 +150,13 @@ export const SCHEMA = {
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "SYNCED",
+							"notNull": true,
 							"propertyRefs": [
 								{
 									"index": 3
 								}
 							],
+							"sinceVersion": 1,
 							"type": 1
 						}
 					],
@@ -163,7 +182,8 @@ export const SCHEMA = {
 							},
 							"index": 0,
 							"isId": true,
-							"name": "databaseId"
+							"name": "databaseId",
+							"sinceVersion": 1
 						},
 						{
 							"columnRef": {
@@ -171,7 +191,8 @@ export const SCHEMA = {
 							},
 							"index": 1,
 							"isId": true,
-							"name": "month"
+							"name": "month",
+							"sinceVersion": 1
 						},
 						{
 							"columnRef": {
@@ -179,7 +200,8 @@ export const SCHEMA = {
 							},
 							"index": 2,
 							"isId": true,
-							"name": "repositoryId"
+							"name": "repositoryId",
+							"sinceVersion": 1
 						},
 						{
 							"columnRef": {
@@ -187,10 +209,12 @@ export const SCHEMA = {
 							},
 							"index": 3,
 							"isId": false,
-							"name": "synced"
+							"name": "synced",
+							"sinceVersion": 1
 						}
 					],
 					"relations": [],
+					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "MONTHLY_SYNC_LOG"
 					}
@@ -203,9 +227,11 @@ export const SCHEMA = {
 					"isRepositoryEntity": false,
 					"name": "Log",
 					"properties": [],
-					"relations": []
+					"relations": [],
+					"sinceVersion": 1
 				}
 			],
+			"integerVersion": 1,
 			"referencedSchemas": [],
 			"versionString": "1.0.0"
 		}

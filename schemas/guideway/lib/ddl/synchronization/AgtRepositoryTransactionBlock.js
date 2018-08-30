@@ -24,17 +24,17 @@ __decorate([
 ], AgtRepositoryTransactionBlock.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", Repository_1.Repository)
 ], AgtRepositoryTransactionBlock.prototype, "repository", void 0);
 __decorate([
     air_control_1.OneToMany(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_ID" }),
+    air_control_1.JoinColumn({ name: "REPOSITORY_ID", nullable: false }),
     __metadata("design:type", Array)
 ], AgtRepositoryTransactionBlock.prototype, "terminalRepositories", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "TERMINAL_ID", referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: "TERMINAL_ID", referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", Terminal_1.Terminal)
 ], AgtRepositoryTransactionBlock.prototype, "terminal", void 0);
 __decorate([
@@ -43,21 +43,21 @@ __decorate([
     __metadata("design:type", Object)
 ], AgtRepositoryTransactionBlock.prototype, "archivingServer", void 0);
 __decorate([
-    air_control_1.Column({ name: "ARCHIVING_STATUS" }),
+    air_control_1.Column({ name: "ARCHIVING_STATUS", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], AgtRepositoryTransactionBlock.prototype, "archivingStatus", void 0);
 __decorate([
-    air_control_1.Column({ name: "ADD_DATETIME" }),
+    air_control_1.Column({ name: "ADD_DATETIME", nullable: false }),
     __metadata("design:type", Number)
 ], AgtRepositoryTransactionBlock.prototype, "addDatetime", void 0);
 __decorate([
-    air_control_1.Column({ name: "TM_REPOSITORY_TRANSACTION_BLOCK_ID" }),
+    air_control_1.Column({ name: "TM_REPOSITORY_TRANSACTION_BLOCK_ID", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], AgtRepositoryTransactionBlock.prototype, "tmRepositoryTransactionBlockId", void 0);
 __decorate([
-    air_control_1.Column({ name: "REPOSITORY_TRANSACTION_BLOCK" }),
+    air_control_1.Column({ name: "REPOSITORY_TRANSACTION_BLOCK", nullable: false }),
     __metadata("design:type", String)
 ], AgtRepositoryTransactionBlock.prototype, "contents", void 0);
 __decorate([

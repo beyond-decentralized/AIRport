@@ -25,17 +25,18 @@ __decorate([
 ], RecordHistory.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'ACTOR_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'ACTOR_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", Object)
 ], RecordHistory.prototype, "actor", void 0);
 __decorate([
-    air_control_1.Column({ name: 'ACTOR_RECORD_ID' }),
+    air_control_1.Column({ name: 'ACTOR_RECORD_ID', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], RecordHistory.prototype, "actorRecordId", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'REPOSITORY_OPERATION_HISTORY_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'REPOSITORY_OPERATION_HISTORY_ID', referencedColumnName: 'ID',
+        nullable: false }),
     __metadata("design:type", Object)
 ], RecordHistory.prototype, "operationHistory", void 0);
 __decorate([

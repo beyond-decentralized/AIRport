@@ -113,7 +113,13 @@ export interface IAgtRepositoryTransactionBlock {
  * SELECT - All fields and relations (optional).
  */
 export interface AgtRepositoryTransactionBlockESelect
-    extends IEntitySelectProperties, AgtRepositoryTransactionBlockEOptionalId, AgtRepositoryTransactionBlockEUpdateProperties {
+    extends IEntitySelectProperties, AgtRepositoryTransactionBlockEOptionalId {
+	// Non-Id Properties
+	archivingStatus?: number | IQNumberField;
+	addDatetime?: number | IQNumberField;
+	tmRepositoryTransactionBlockId?: number | IQNumberField;
+	contents?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

@@ -32,29 +32,30 @@ __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({
-        name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID'
+        name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID',
+        nullable: false
     }),
     __metadata("design:type", Object)
 ], OperationHistory.prototype, "repositoryTransactionHistory", void 0);
 __decorate([
-    air_control_1.Column({ name: 'ORDER_NUMBER' }),
+    air_control_1.Column({ name: 'ORDER_NUMBER', nullable: false }),
     __metadata("design:type", Number)
 ], OperationHistory.prototype, "orderNumber", void 0);
 __decorate([
-    air_control_1.Column({ name: 'CHANGE_TYPE' }),
+    air_control_1.Column({ name: 'CHANGE_TYPE', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], OperationHistory.prototype, "changeType", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", Object)
 ], OperationHistory.prototype, "schemaVersion", void 0);
 __decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumns([
-        { name: 'SCHEMA_VERSION_ID' },
-        { name: 'ENTITY_INDEX', referencedColumnName: 'INDEX' }
+        { name: 'SCHEMA_VERSION_ID', nullable: false },
+        { name: 'ENTITY_INDEX', referencedColumnName: 'INDEX', nullable: false }
     ]),
     __metadata("design:type", Object)
 ], OperationHistory.prototype, "entity", void 0);

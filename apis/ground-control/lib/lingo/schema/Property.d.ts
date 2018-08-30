@@ -1,12 +1,15 @@
 import { DatabaseForeignKey, DatabaseManyToOneElements, DatabaseOneToManyElements, DbObject, EntityRelationType, JsonDatabaseObject, SQLDataType } from '../../index';
 import { DbEntity, TableIndex } from './Entity';
 import { SchemaIndex } from './Schema';
+export declare type ColumnId = number;
 export declare type ColumnIndex = number;
 export declare type ColumnName = string;
 export declare type ColumnNotNull = boolean;
+export declare type PropertyId = number;
 export declare type PropertyIndex = number;
 export declare type PropertyIsId = boolean;
 export declare type PropertyName = string;
+export declare type RelationId = number;
 export declare type RelationIndex = number;
 export declare type SchemaColumnIsGenerated = boolean;
 export declare type SchemaColumnAllocationSize = number;
@@ -34,6 +37,7 @@ export interface JsonSchemaProperty extends SchemaReferenceByIndex<PropertyIndex
     relationRef?: SchemaReferenceByIndex<RelationIndex>;
 }
 export interface DbProperty extends SchemaReferenceByIndex<PropertyIndex>, DbObject {
+    id: PropertyId;
     entity: DbEntity;
     name: PropertyName;
     isId: PropertyIsId;
@@ -82,6 +86,7 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex>, J
 export interface IdKeyArrayByIdColumnIndex extends Array<(number | string)> {
 }
 export interface DbColumn extends SchemaReferenceByIndex<ColumnIndex>, DbObject {
+    id: ColumnId;
     /**
      * Id index of this column (if it's an ID column).
      */
@@ -156,6 +161,7 @@ export interface JsonSchemaRelation extends SchemaReferenceByIndex<RelationIndex
     relationTableIndex: TableIndex;
 }
 export interface DbRelation extends SchemaReferenceByIndex<RelationIndex>, DbObject {
+    id: RelationId;
     foreignKey: DatabaseForeignKey;
     isId: boolean;
     /**

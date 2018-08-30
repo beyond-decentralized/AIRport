@@ -1,16 +1,15 @@
 import { TableConfiguration } from '@airport/air-control';
-import { EntityName, TableIndex } from '@airport/ground-control';
+import { EntityId, EntityIsLocal, EntityIsRepositoryEntity, EntityName, TableIndex } from '@airport/ground-control';
 import { SchemaColumn } from './SchemaColumn';
 import { SchemaProperty } from './SchemaProperty';
 import { SchemaRelation } from './SchemaRelation';
 import { SchemaVersion } from './SchemaVersion';
 import { VersionedSchemaObject } from './VersionedSchemaObject';
-export declare type SchemaEntityId = number;
 export declare class SchemaEntity extends VersionedSchemaObject {
-    id: SchemaEntityId;
+    id: EntityId;
     index: TableIndex;
-    isLocal: boolean;
-    isRepositoryEntity: boolean;
+    isLocal: EntityIsLocal;
+    isRepositoryEntity: EntityIsRepositoryEntity;
     name: EntityName;
     tableConfig: TableConfiguration;
     schemaVersion: SchemaVersion;

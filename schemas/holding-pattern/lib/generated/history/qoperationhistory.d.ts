@@ -14,7 +14,9 @@ export interface IOperationHistory {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface OperationHistoryESelect extends IEntitySelectProperties, OperationHistoryEOptionalId, OperationHistoryEUpdateProperties {
+export interface OperationHistoryESelect extends IEntitySelectProperties, OperationHistoryEOptionalId {
+    orderNumber?: number | IQNumberField;
+    changeType?: number | IQNumberField;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
     schemaVersion?: SchemaVersionESelect;
     entity?: SchemaEntityESelect;

@@ -24,7 +24,7 @@ export class TuningParameters {
 	@DbString()
 	parameterName: TuningParametersParameterName;
 
-	@Column({name: "PARAMETER_VALUE"})
+	@Column({name: "PARAMETER_VALUE", nullable: false})
 	@DbString()
 	parameterValue: TuningParametersParameterValue;
 

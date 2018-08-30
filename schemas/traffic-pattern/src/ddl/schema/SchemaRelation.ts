@@ -17,14 +17,13 @@ import {
 import {
 	CascadeType,
 	EntityRelationType,
+	RelationId,
 	RelationIndex,
-}                              from '@airport/ground-control'
+} from '@airport/ground-control'
 import {SchemaEntity}          from './SchemaEntity'
 import {SchemaProperty}        from './SchemaProperty'
 import {SchemaRelationColumn}  from './SchemaRelationColumn'
 import {VersionedSchemaObject} from './VersionedSchemaObject'
-
-export type SchemaRelationId = number
 
 @Entity()
 @Table({
@@ -35,7 +34,7 @@ export class SchemaRelation
 
 	@Id()
 	@GeneratedValue()
-	id: SchemaRelationId
+	id: RelationId
 
 	@Column({name: 'INDEX', nullable: false})
 	index: RelationIndex

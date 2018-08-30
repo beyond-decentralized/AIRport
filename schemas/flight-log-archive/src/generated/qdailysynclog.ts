@@ -56,7 +56,9 @@ export interface IDailySyncLog {
  * SELECT - All fields and relations (optional).
  */
 export interface DailySyncLogESelect
-    extends IEntitySelectProperties, DailySyncLogEOptionalId, DailySyncLogEUpdateProperties {
+    extends IEntitySelectProperties, DailySyncLogEOptionalId {
+	// Non-Id Properties
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

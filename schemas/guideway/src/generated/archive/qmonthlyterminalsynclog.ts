@@ -77,7 +77,11 @@ export interface IMonthlyTerminalSyncLog {
  * SELECT - All fields and relations (optional).
  */
 export interface MonthlyTerminalSyncLogESelect
-    extends IEntitySelectProperties, MonthlyTerminalSyncLogEOptionalId, MonthlyTerminalSyncLogEUpdateProperties {
+    extends IEntitySelectProperties, MonthlyTerminalSyncLogEOptionalId {
+	// Non-Id Properties
+	allAcknowledged?: boolean | IQBooleanField;
+	dailySyncStatuses?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 	monthlyArchiveLog?: MonthlyArchiveLogESelect;
 	terminal?: TerminalESelect;

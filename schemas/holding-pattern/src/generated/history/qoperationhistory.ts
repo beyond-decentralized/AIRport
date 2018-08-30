@@ -98,7 +98,11 @@ export interface IOperationHistory {
  * SELECT - All fields and relations (optional).
  */
 export interface OperationHistoryESelect
-    extends IEntitySelectProperties, OperationHistoryEOptionalId, OperationHistoryEUpdateProperties {
+    extends IEntitySelectProperties, OperationHistoryEOptionalId {
+	// Non-Id Properties
+	orderNumber?: number | IQNumberField;
+	changeType?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 

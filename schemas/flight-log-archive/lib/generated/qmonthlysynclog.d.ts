@@ -8,7 +8,8 @@ export interface IMonthlySyncLog {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface MonthlySyncLogESelect extends IEntitySelectProperties, MonthlySyncLogEOptionalId, MonthlySyncLogEUpdateProperties {
+export interface MonthlySyncLogESelect extends IEntitySelectProperties, MonthlySyncLogEOptionalId {
+    synced?: boolean | IQBooleanField;
 }
 /**
  * DELETE - Ids fields and relations only (required).

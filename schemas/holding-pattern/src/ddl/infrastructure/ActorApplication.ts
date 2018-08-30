@@ -32,7 +32,8 @@ export class ActorApplication {
 	actor: IActor;
 
 	@ManyToOne()
-	@JoinColumn({name: "APPLICATION_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "APPLICATION_ID", referencedColumnName: "ID",
+		nullable: false})
 	application: IApplication;
 
 }

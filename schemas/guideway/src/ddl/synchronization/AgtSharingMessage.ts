@@ -33,16 +33,17 @@ export class AgtSharingMessage {
 
 	@ManyToOne()
 	@JoinColumn(
-		{name: "SYNCED_TERMINAL_ID", referencedColumnName: 'ID'}
+		{name: "SYNCED_TERMINAL_ID", referencedColumnName: 'ID', nullable: false}
 	)
 	terminal: Terminal;
 
-	@Column({name: "TM_SHARING_MESSAGE_ID"})
+	@Column({name: "TM_SHARING_MESSAGE_ID", nullable: false})
 	tmSharingMessageId: TmSharingMessageId;
 
 	@OneToMany()
 	syncLogs: SyncLog[];
 
+	@Column({name: 'ACKNOWLEDGED', nullable: false})
 	@DbNumber()
 	acknowledged: AgtSharingMessageAcknowledged;
 

@@ -55,7 +55,10 @@ export interface ISecurityQuestion {
  * SELECT - All fields and relations (optional).
  */
 export interface SecurityQuestionESelect
-    extends IEntitySelectProperties, SecurityQuestionEOptionalId, SecurityQuestionEUpdateProperties {
+    extends IEntitySelectProperties, SecurityQuestionEOptionalId {
+	// Non-Id Properties
+	question?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

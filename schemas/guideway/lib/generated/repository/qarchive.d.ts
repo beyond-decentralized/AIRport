@@ -6,7 +6,8 @@ export interface IArchive {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface ArchiveESelect extends IEntitySelectProperties, ArchiveEOptionalId, ArchiveEUpdateProperties {
+export interface ArchiveESelect extends IEntitySelectProperties, ArchiveEOptionalId {
+    location?: string | IQStringField;
 }
 /**
  * DELETE - Ids fields and relations only (required).

@@ -9,7 +9,7 @@ export interface IRepositoryApplication {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepositoryApplicationESelect extends IEntitySelectProperties, RepositoryApplicationEOptionalId, RepositoryApplicationEUpdateProperties {
+export interface RepositoryApplicationESelect extends IEntitySelectProperties, RepositoryApplicationEOptionalId {
     repository?: RepositoryESelect;
     application?: ApplicationESelect;
 }

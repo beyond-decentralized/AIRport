@@ -28,20 +28,21 @@ export class SequenceBlock {
 	id: SequenceBlockId
 
 	@ManyToOne()
-	@JoinColumn({name: 'SEQUENCE_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'SEQUENCE_ID', referencedColumnName: 'ID', nullable: false})
 	sequence: Sequence
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'CONSUMER_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'CONSUMER_ID', referencedColumnName: 'ID', nullable: false})
 	sequenceConsumer: SequenceConsumer
 
+	@Column({name: 'SIZE', nullable: false})
 	size: SequenceBlockSize
 
-	@Column({name: 'LAST_RESERVED_ID'})
+	@Column({name: 'LAST_RESERVED_ID', nullable: false})
 	lastReservedId: SequenceBlockLastReservedId
 
-	@Column({name: 'RESERVATION_MILLIS'})
+	@Column({name: 'RESERVATION_MILLIS', nullable: false})
 	reservationMillis: SequenceBlockReservationMillis
 
 	@Transient()

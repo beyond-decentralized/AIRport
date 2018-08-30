@@ -54,19 +54,19 @@ let DailySyncLog = class DailySyncLog {
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.Column({ name: "DATABASE_ID" }),
+    air_control_1.Column({ name: "DATABASE_ID", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], DailySyncLog.prototype, "databaseId", void 0);
 __decorate([
     air_control_1.Id(),
-    air_control_1.Column({ name: "DATE_NUMBER" }),
+    air_control_1.Column({ name: "DATE_NUMBER", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], DailySyncLog.prototype, "date", void 0);
 __decorate([
     air_control_1.Id(),
-    air_control_1.Column({ name: "REPOSITORY_ID" }),
+    air_control_1.Column({ name: "REPOSITORY_ID", nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], DailySyncLog.prototype, "repositoryId", void 0);

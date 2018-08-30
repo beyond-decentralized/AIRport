@@ -9,7 +9,11 @@ export interface ISequence {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SequenceESelect extends IEntitySelectProperties, SequenceEOptionalId, SequenceEUpdateProperties {
+export interface SequenceESelect extends IEntitySelectProperties, SequenceEOptionalId {
+    schemaIndex?: number | IQNumberField;
+    tableIndex?: number | IQNumberField;
+    columnIndex?: number | IQNumberField;
+    incrementBy?: number | IQNumberField;
 }
 /**
  * DELETE - Ids fields and relations only (required).

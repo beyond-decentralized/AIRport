@@ -46,25 +46,26 @@ export class OperationHistory
 	@Id()
 	@ManyToOne()
 	@JoinColumn({
-		name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID'
+		name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID',
+		nullable: false
 	})
 	repositoryTransactionHistory: IRepositoryTransactionHistory
 
-	@Column({name: 'ORDER_NUMBER'})
+	@Column({name: 'ORDER_NUMBER', nullable: false})
 	orderNumber: OperationHistoryOrderNumber
 
-	@Column({name: 'CHANGE_TYPE'})
+	@Column({name: 'CHANGE_TYPE', nullable: false})
 	@DbNumber()
 	changeType: ChangeType
 
 	@ManyToOne()
-	@JoinColumn({name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false})
 	schemaVersion: ISchemaVersion
 
 	@ManyToOne()
 	@JoinColumns([
-		{name: 'SCHEMA_VERSION_ID'},
-		{name: 'ENTITY_INDEX', referencedColumnName: 'INDEX'}
+		{name: 'SCHEMA_VERSION_ID', nullable: false},
+		{name: 'ENTITY_INDEX', referencedColumnName: 'INDEX', nullable: false}
 	])
 	entity: ISchemaEntity
 

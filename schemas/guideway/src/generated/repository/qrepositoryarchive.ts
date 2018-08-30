@@ -54,12 +54,12 @@ export interface IRepositoryArchive {
 	// Id Properties
 
 	// Id Relations
+	repository?: IRepository;
+	archive?: IArchive;
 
 	// Non-Id Properties
 
 	// Non-Id Relations
-	repository?: IRepository;
-	archive?: IArchive;
 
 	// Transient Properties
 
@@ -75,12 +75,14 @@ export interface IRepositoryArchive {
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryArchiveESelect
-    extends IEntitySelectProperties, RepositoryArchiveEOptionalId, RepositoryArchiveEUpdateProperties {
-	// Id Relations - full property interfaces
+    extends IEntitySelectProperties, RepositoryArchiveEOptionalId {
+	// Non-Id Properties
 
-  // Non-Id relations (including OneToMany's)
+	// Id Relations - full property interfaces
 	repository?: RepositoryESelect;
 	archive?: ArchiveESelect;
+
+  // Non-Id relations (including OneToMany's)
 
 }
 
@@ -92,6 +94,8 @@ export interface RepositoryArchiveEId
 	// Id Properties
 
 	// Id Relations - Ids only
+	repository: RepositoryEId;
+	archive: ArchiveEId;
 
 }
 
@@ -102,6 +106,8 @@ export interface RepositoryArchiveEOptionalId {
 	// Id Properties
 
 	// Id Relations - Ids only
+	repository?: RepositoryEOptionalId;
+	archive?: ArchiveEOptionalId;
 
 }
 
@@ -113,8 +119,6 @@ export interface RepositoryArchiveEUpdateProperties
 	// Non-Id Properties
 
 	// Non-Id Relations - ids only & no OneToMany's
-	repository?: RepositoryEOptionalId;
-	archive?: ArchiveEOptionalId;
 
 }
 
@@ -124,8 +128,6 @@ export interface RepositoryArchiveEUpdateProperties
 export interface RepositoryArchiveEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	REPOSITORY_ID?: number | IQNumberField;
-	ARCHIVE_ID?: string | IQStringField;
 
 }
 
@@ -158,12 +160,12 @@ export interface QRepositoryArchive extends QEntity
 	// Id Fields
 
 	// Id Relations
+	repository: QRepositoryQRelation;
+	archive: QArchiveQRelation;
 
 	// Non-Id Fields
 
 	// Non-Id Relations
-	repository: QRepositoryQRelation;
-	archive: QArchiveQRelation;
 
 }
 
@@ -175,6 +177,8 @@ export interface QRepositoryArchiveQId
 	// Id Fields
 
 	// Id Relations
+	repository: QRepositoryQId;
+	archive: QArchiveQId;
 
 
 }

@@ -66,7 +66,10 @@ export interface IRecordHistoryNewValue {
  * SELECT - All fields and relations (optional).
  */
 export interface RecordHistoryNewValueESelect
-    extends IEntitySelectProperties, RecordHistoryNewValueEOptionalId, RecordHistoryNewValueEUpdateProperties {
+    extends IEntitySelectProperties, RecordHistoryNewValueEOptionalId {
+	// Non-Id Properties
+	newValue?: any | IQUntypedField;
+
 	// Id Relations - full property interfaces
 	recordHistory?: RecordHistoryESelect;
 

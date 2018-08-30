@@ -19,7 +19,11 @@ export interface IAgtRepositoryTransactionBlock {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface AgtRepositoryTransactionBlockESelect extends IEntitySelectProperties, AgtRepositoryTransactionBlockEOptionalId, AgtRepositoryTransactionBlockEUpdateProperties {
+export interface AgtRepositoryTransactionBlockESelect extends IEntitySelectProperties, AgtRepositoryTransactionBlockEOptionalId {
+    archivingStatus?: number | IQNumberField;
+    addDatetime?: number | IQNumberField;
+    tmRepositoryTransactionBlockId?: number | IQNumberField;
+    contents?: string | IQStringField;
     repository?: RepositoryESelect;
     terminalRepositories?: TerminalRepositoryESelect;
     terminal?: TerminalESelect;

@@ -8,7 +8,8 @@ export interface IRepositorySchema {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepositorySchemaESelect extends IEntitySelectProperties, RepositorySchemaEOptionalId, RepositorySchemaEUpdateProperties {
+export interface RepositorySchemaESelect extends IEntitySelectProperties, RepositorySchemaEOptionalId {
+    schemaIndex?: number | IQNumberField;
     repository?: RepositoryESelect;
 }
 /**

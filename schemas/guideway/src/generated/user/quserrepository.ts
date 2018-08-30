@@ -76,7 +76,10 @@ export interface IUserRepository {
  * SELECT - All fields and relations (optional).
  */
 export interface UserRepositoryESelect
-    extends IEntitySelectProperties, UserRepositoryEOptionalId, UserRepositoryEUpdateProperties {
+    extends IEntitySelectProperties, UserRepositoryEOptionalId {
+	// Non-Id Properties
+	permission?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 	repository?: RepositoryESelect;
 	user?: UserESelect;

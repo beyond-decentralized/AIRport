@@ -67,6 +67,8 @@ export interface ITerminal {
 	// Id Relations
 
 	// Non-Id Properties
+	name?: string;
+	secondId?: number;
 	password?: string;
 	lastPollConnectionDatetime?: number;
 	lastSseConnectionDatetime?: number;
@@ -90,7 +92,14 @@ export interface ITerminal {
  * SELECT - All fields and relations (optional).
  */
 export interface TerminalESelect
-    extends IEntitySelectProperties, TerminalEOptionalId, TerminalEUpdateProperties {
+    extends IEntitySelectProperties, TerminalEOptionalId {
+	// Non-Id Properties
+	name?: string | IQStringField;
+	secondId?: number | IQNumberField;
+	password?: string | IQStringField;
+	lastPollConnectionDatetime?: number | IQNumberField;
+	lastSseConnectionDatetime?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
@@ -129,6 +138,8 @@ export interface TerminalEOptionalId {
 export interface TerminalEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
+	name?: string | IQStringField;
+	secondId?: number | IQNumberField;
 	password?: string | IQStringField;
 	lastPollConnectionDatetime?: number | IQNumberField;
 	lastSseConnectionDatetime?: number | IQNumberField;
@@ -144,6 +155,8 @@ export interface TerminalEUpdateProperties
 export interface TerminalEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
+	NAME?: string | IQStringField;
+	SECOND_ID?: number | IQNumberField;
 	PASSWORD?: string | IQStringField;
 	LAST_RECENT_CONNECTION_DATETIME?: number | IQNumberField;
 	LAST_ARCHIVE_CONNECTION_DATETIME?: number | IQNumberField;
@@ -183,6 +196,8 @@ export interface QTerminal extends QEntity
 	// Id Relations
 
 	// Non-Id Fields
+	name: IQStringField;
+	secondId: IQNumberField;
 	password: IQStringField;
 	lastPollConnectionDatetime: IQNumberField;
 	lastSseConnectionDatetime: IQNumberField;

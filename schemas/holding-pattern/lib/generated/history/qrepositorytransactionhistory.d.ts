@@ -19,7 +19,11 @@ export interface IRepositoryTransactionHistory {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepositoryTransactionHistoryESelect extends IEntitySelectProperties, RepositoryTransactionHistoryEOptionalId, RepositoryTransactionHistoryEUpdateProperties {
+export interface RepositoryTransactionHistoryESelect extends IEntitySelectProperties, RepositoryTransactionHistoryEOptionalId {
+    remoteId?: number | IQNumberField;
+    saveTimestamp?: Date | IQDateField;
+    repositoryTransactionType?: number | IQNumberField;
+    blockId?: number | IQNumberField;
     transactionHistory?: TransactionHistoryESelect;
     repository?: RepositoryESelect;
     changedRepositoryActors?: RepoTransHistoryChangedRepositoryActorESelect;

@@ -66,7 +66,10 @@ export interface IServer {
  * SELECT - All fields and relations (optional).
  */
 export interface ServerESelect
-    extends IEntitySelectProperties, ServerEOptionalId, ServerEUpdateProperties {
+    extends IEntitySelectProperties, ServerEOptionalId {
+	// Non-Id Properties
+	serverType?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
@@ -115,7 +118,7 @@ export interface ServerEUpdateProperties
 export interface ServerEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	SERVERTYPE?: number | IQNumberField;
+	SERVER_TYPE?: number | IQNumberField;
 
 }
 

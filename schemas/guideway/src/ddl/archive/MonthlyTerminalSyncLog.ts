@@ -23,21 +23,21 @@ export class MonthlyTerminalSyncLog {
 	@Id()
 	@ManyToOne()
 	@JoinColumns([
-		{name: "REPOSITORY_ID"},
-		{name: "MONTH_NUMBER"}
+		{name: "REPOSITORY_ID", nullable: false},
+		{name: "MONTH_NUMBER", nullable: false}
 	])
 	monthlyArchiveLog: MonthlyArchiveLog;
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: "TERMINAL_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "TERMINAL_ID", referencedColumnName: "ID", nullable: false})
 	terminal: Terminal;
 
-	@Column({name: "ALL_ACKNOWLEDGED"})
+	@Column({name: "ALL_ACKNOWLEDGED", nullable: false})
 	@DbBoolean()
 	allAcknowledged: MonthlyTerminalSyncLogAcknowledged;
 
-	@Column({name: "DAILY_SYNC_STATUSES", columnDefinition: "BOOL[]"})
+	@Column({name: "DAILY_SYNC_STATUSES", nullable: false})
 	@DbString()
 	dailySyncStatuses: MonthlyTerminalSyncLogMonthlySyncStatuses;
 

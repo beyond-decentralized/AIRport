@@ -11,7 +11,9 @@ export interface IApplication {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface ApplicationESelect extends IEntitySelectProperties, ApplicationEOptionalId, ApplicationEUpdateProperties {
+export interface ApplicationESelect extends IEntitySelectProperties, ApplicationEOptionalId {
+    host?: string | IQStringField;
+    port?: number | IQNumberField;
     actorApplications?: ActorApplicationESelect;
     repositoryApplications?: RepositoryApplicationESelect;
 }

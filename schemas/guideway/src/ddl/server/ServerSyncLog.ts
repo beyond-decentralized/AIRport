@@ -31,30 +31,31 @@ export class ServerSyncLog {
 
 	@ManyToOne()
 	@JoinColumn(
-		{name: "SERVER_ID", referencedColumnName: "ID"}
+		{name: "SERVER_ID", referencedColumnName: "ID", nullable: false}
 	)
 	server: IServer;
 
+	@Column({name: 'TYPE', nullable: false})
 	@DbNumber()
 	type: SyncType;
 
-	@Column({name: "START_DATETIME"})
+	@Column({name: "START_DATETIME", nullable: false})
 	@DbDate()
 	startDatetime: ServerSyncLogStartDatetime;
 
-	@Column({name: "PROCESSED_DATETIME"})
+	@Column({name: "PROCESSED_DATETIME", nullable: false})
 	@DbDate()
 	endDatetime: ServerSyncLogEndDatetime;
 
-	@Column({name: "NUMBER_OF_CONNECTIONS"})
+	@Column({name: "NUMBER_OF_CONNECTIONS", nullable: false})
 	@DbNumber()
 	numberOfConnections: ServerSyncLogNumberOfConnections;
 
-	@Column({name: "NUMBER_OF_SYNC_RECORDS"})
+	@Column({name: "NUMBER_OF_SYNC_RECORDS", nullable: false})
 	@DbNumber()
 	numberOfRecords: ServerSyncLogNumberOfRecords;
 
-	@Column({name: "DATA_CHARS_TOTAL"})
+	@Column({name: "DATA_CHARS_TOTAL", nullable: false})
 	@DbNumber()
 	dataCharsTotal: ServerSyncLogDataCharsTotal;
 

@@ -104,7 +104,15 @@ export interface IRepository {
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryESelect
-    extends IEntitySelectProperties, RepositoryEOptionalId, RepositoryEUpdateProperties {
+    extends IEntitySelectProperties, RepositoryEOptionalId {
+	// Non-Id Properties
+	orderedId?: number | IQNumberField;
+	randomId?: number | IQNumberField;
+	name?: string | IQStringField;
+	url?: string | IQStringField;
+	platformConfig?: string | IQStringField;
+	syncPriority?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

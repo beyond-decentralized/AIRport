@@ -17,6 +17,10 @@ __decorate([
     air_control_1.GeneratedValue(),
     __metadata("design:type", Number)
 ], SecurityQuestion.prototype, "id", void 0);
+__decorate([
+    air_control_1.Column({ name: 'QUESTION', nullable: false }),
+    __metadata("design:type", String)
+], SecurityQuestion.prototype, "question", void 0);
 SecurityQuestion = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({ name: "AGT_SECURITY_QUESTIONS" })

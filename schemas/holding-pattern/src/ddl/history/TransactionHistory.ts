@@ -40,7 +40,7 @@ export class TransactionHistory
 	@SequenceGenerator({allocationSize: 100})
 	id: TransactionHistoryId
 
-	@Column({name: 'TRANSACTION_TYPE'})
+	@Column({name: 'TRANSACTION_TYPE', nullable: false})
 	@DbNumber()
 	transactionType: TransactionType
 

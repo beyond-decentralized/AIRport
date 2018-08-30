@@ -9,7 +9,9 @@ export interface ISequenceConsumer {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SequenceConsumerESelect extends IEntitySelectProperties, SequenceConsumerEOptionalId, SequenceConsumerEUpdateProperties {
+export interface SequenceConsumerESelect extends IEntitySelectProperties, SequenceConsumerEOptionalId {
+    createTimestamp?: number | IQNumberField;
+    randomNumber?: number | IQNumberField;
     domain?: DomainESelect;
 }
 /**

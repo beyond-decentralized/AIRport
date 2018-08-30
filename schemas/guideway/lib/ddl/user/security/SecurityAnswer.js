@@ -17,15 +17,19 @@ let SecurityAnswer = class SecurityAnswer {
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "USER_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "USER_ID", referencedColumnName: "ID", nullable: false }),
     __metadata("design:type", User_1.User)
 ], SecurityAnswer.prototype, "user", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "SECURITY_QUESTION_ID", referencedColumnName: "ID" }),
+    air_control_1.JoinColumn({ name: "SECURITY_QUESTION_ID", referencedColumnName: "ID", nullable: false }),
     __metadata("design:type", SecurityQuestion_1.SecurityQuestion)
 ], SecurityAnswer.prototype, "securityQuestion", void 0);
+__decorate([
+    air_control_1.Column({ name: 'ANSWER', nullable: false }),
+    __metadata("design:type", String)
+], SecurityAnswer.prototype, "answer", void 0);
 SecurityAnswer = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({ name: "AGT_SECURITY_ANSWERS" })

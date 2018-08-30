@@ -30,7 +30,7 @@ __decorate([
     __metadata("design:type", Number)
 ], TransactionHistory.prototype, "id", void 0);
 __decorate([
-    air_control_1.Column({ name: 'TRANSACTION_TYPE' }),
+    air_control_1.Column({ name: 'TRANSACTION_TYPE', nullable: false }),
     air_control_1.DbNumber(),
     __metadata("design:type", Number)
 ], TransactionHistory.prototype, "transactionType", void 0);

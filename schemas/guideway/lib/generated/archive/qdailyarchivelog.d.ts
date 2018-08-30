@@ -8,7 +8,8 @@ export interface IDailyArchiveLog {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface DailyArchiveLogESelect extends IEntitySelectProperties, DailyArchiveLogEOptionalId, DailyArchiveLogEUpdateProperties {
+export interface DailyArchiveLogESelect extends IEntitySelectProperties, DailyArchiveLogEOptionalId {
+    numberOfChanges?: number | IQNumberField;
     repository?: RepositoryESelect;
 }
 /**

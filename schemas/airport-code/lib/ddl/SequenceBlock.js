@@ -22,21 +22,25 @@ __decorate([
 ], SequenceBlock.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'SEQUENCE_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'SEQUENCE_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", Sequence_1.Sequence)
 ], SequenceBlock.prototype, "sequence", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'CONSUMER_ID', referencedColumnName: 'ID' }),
+    air_control_1.JoinColumn({ name: 'CONSUMER_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", SequenceConsumer_1.SequenceConsumer)
 ], SequenceBlock.prototype, "sequenceConsumer", void 0);
 __decorate([
-    air_control_1.Column({ name: 'LAST_RESERVED_ID' }),
+    air_control_1.Column({ name: 'SIZE', nullable: false }),
+    __metadata("design:type", Number)
+], SequenceBlock.prototype, "size", void 0);
+__decorate([
+    air_control_1.Column({ name: 'LAST_RESERVED_ID', nullable: false }),
     __metadata("design:type", Number)
 ], SequenceBlock.prototype, "lastReservedId", void 0);
 __decorate([
-    air_control_1.Column({ name: 'RESERVATION_MILLIS' }),
+    air_control_1.Column({ name: 'RESERVATION_MILLIS', nullable: false }),
     __metadata("design:type", Number)
 ], SequenceBlock.prototype, "reservationMillis", void 0);
 __decorate([

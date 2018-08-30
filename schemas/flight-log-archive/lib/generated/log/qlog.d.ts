@@ -4,7 +4,7 @@ export interface ILog {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface LogESelect extends IEntitySelectProperties, LogEOptionalId, LogEUpdateProperties {
+export interface LogESelect extends IEntitySelectProperties, LogEOptionalId {
 }
 /**
  * DELETE - Ids fields and relations only (required).

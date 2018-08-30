@@ -1,8 +1,9 @@
 import {
+	Column,
 	Entity,
 	Id,
 	Table
-} from "@airport/air-control";
+} from '@airport/air-control'
 
 export type ArchiveId = string;
 export type ArchiveLocation = string;
@@ -14,6 +15,7 @@ export class Archive {
 	@Id()
 	id: ArchiveId;
 
+	@Column({name: 'LOCATION', nullable: false})
 	location: ArchiveLocation;
 
 }

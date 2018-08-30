@@ -76,7 +76,9 @@ export interface IRepositoryActor {
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryActorESelect
-    extends IEntitySelectProperties, RepositoryActorEOptionalId, RepositoryActorEUpdateProperties {
+    extends IEntitySelectProperties, RepositoryActorEOptionalId {
+	// Non-Id Properties
+
 	// Id Relations - full property interfaces
 	repository?: RepositoryESelect;
 

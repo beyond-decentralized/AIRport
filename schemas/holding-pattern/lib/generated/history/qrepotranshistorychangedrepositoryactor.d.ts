@@ -12,7 +12,8 @@ export interface IRepoTransHistoryChangedRepositoryActor {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepoTransHistoryChangedRepositoryActorESelect extends IEntitySelectProperties, RepoTransHistoryChangedRepositoryActorEOptionalId, RepoTransHistoryChangedRepositoryActorEUpdateProperties {
+export interface RepoTransHistoryChangedRepositoryActorESelect extends IEntitySelectProperties, RepoTransHistoryChangedRepositoryActorEOptionalId {
+    referenceType?: number | IQNumberField;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
     repository?: RepositoryESelect;
     actor?: ActorESelect;

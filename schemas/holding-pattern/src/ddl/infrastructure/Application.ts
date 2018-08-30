@@ -1,11 +1,12 @@
 import {
+	Column,
 	DbNumber,
 	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
 	OneToMany
-}                               from "@airport/air-control";
+} from '@airport/air-control'
 import {
 	CascadeType
 }                               from "@airport/ground-control";
@@ -27,6 +28,7 @@ export class Application {
 	@DbString()
 	host: ApplicationHost;
 
+	@Column({name: 'PORT', nullable: false})
 	@DbNumber()
 	port: ApplicationPort;
 

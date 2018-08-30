@@ -40,32 +40,36 @@ export class RepositoryTransactionHistory
 	@SequenceGenerator({allocationSize: 200})
 	id: RepositoryTransactionHistoryId;
 
-	@Column({name: "REMOTE_ID"})
+	@Column({name: "REMOTE_ID", nullable: false})
 	remoteId: RepositoryTransactionHistoryRemoteId;
 
 	@ManyToOne()
-	@JoinColumn({name: "TRANSACTION_HISTORY_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "TRANSACTION_HISTORY_ID",
+		referencedColumnName: "ID", nullable: false})
 	transactionHistory: ITransactionHistory;
 
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "REPOSITORY_ID",
+		referencedColumnName: "ID", nullable: false})
 	repository: IRepository;
 
 	@OneToMany({mappedBy: "repositoryTransactionHistory"})
 	changedRepositoryActors: RepoTransHistoryChangedRepositoryActor[];
 
 	@ManyToOne()
-	@JoinColumn({name: "ACTOR_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "ACTOR_ID", referencedColumnName: "ID",
+		nullable: false})
 	actor: IActor;
 
-	@Column({name: "SAVE_TIMESTAMP"})
+	@Column({name: "SAVE_TIMESTAMP", nullable: false})
 	saveTimestamp: RepositoryTransactionHistorySaveTimestamp;
 
-	@Column({name: "REPOSITORY_TRANSACTION_TYPE"})
+	@Column({name: "REPOSITORY_TRANSACTION_TYPE", nullable: false})
 	@DbNumber()
 	repositoryTransactionType: RepositoryTransactionType = RepositoryTransactionType.LOCAL;
 
-	@Column({name: "REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID"})
+	@Column({name: "REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID",
+		nullable: false})
 	blockId: RepositoryTransactionHistoryBlockId;
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'repositoryTransactionHistory'})

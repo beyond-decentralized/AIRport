@@ -27,12 +27,14 @@ export class RepositoryApplication {
 	id: number;
 
 	@ManyToOne()
-	@JoinColumn({name: "APPLICATION_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "APPLICATION_ID", referencedColumnName: "ID",
+		nullable: false})
 	application: IApplication;
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID"})
+	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID",
+		nullable: false})
 	repository: IRepository;
 
 }

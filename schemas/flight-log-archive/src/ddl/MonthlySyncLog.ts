@@ -12,21 +12,21 @@ export type MonthlySyncLogSynced = boolean;
 export class MonthlySyncLog {
 
 	@Id()
-	@Column({name: "DATABASE_ID"})
+	@Column({name: "DATABASE_ID", nullable: false})
 	@DbNumber()
 	databaseId: MonthlySyncLogDatabaseId;
 
 	@Id()
-	@Column({name: "DATE"})
+	@Column({name: "DATE", nullable: false})
 	@DbDate()
 	month: MonthlySyncLogDate;
 
 	@Id()
-	@Column({name: "REPOSITORY_ID"})
+	@Column({name: "REPOSITORY_ID", nullable: false})
 	@DbNumber()
 	repositoryId: MonthlySyncLogRepositoryId;
 
-	@Column({name: "SYNCED"})
+	@Column({name: "SYNCED", nullable: false})
 	@DbBoolean()
 	synced: MonthlySyncLogSynced;
 

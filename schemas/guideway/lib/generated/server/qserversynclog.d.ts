@@ -13,7 +13,13 @@ export interface IServerSyncLog {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface ServerSyncLogESelect extends IEntitySelectProperties, ServerSyncLogEOptionalId, ServerSyncLogEUpdateProperties {
+export interface ServerSyncLogESelect extends IEntitySelectProperties, ServerSyncLogEOptionalId {
+    type?: number | IQNumberField;
+    startDatetime?: Date | IQDateField;
+    endDatetime?: Date | IQDateField;
+    numberOfConnections?: number | IQNumberField;
+    numberOfRecords?: number | IQNumberField;
+    dataCharsTotal?: number | IQNumberField;
     server?: ServerESelect;
 }
 /**

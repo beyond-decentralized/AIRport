@@ -78,7 +78,11 @@ export interface IAgtSharingMessage {
  * SELECT - All fields and relations (optional).
  */
 export interface AgtSharingMessageESelect
-    extends IEntitySelectProperties, AgtSharingMessageEOptionalId, AgtSharingMessageEUpdateProperties {
+    extends IEntitySelectProperties, AgtSharingMessageEOptionalId {
+	// Non-Id Properties
+	tmSharingMessageId?: number | IQNumberField;
+	acknowledged?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

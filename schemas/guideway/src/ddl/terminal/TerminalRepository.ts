@@ -1,11 +1,12 @@
 import {
+	Column,
 	DbNumber,
 	Entity,
 	Id,
 	JoinColumn,
 	ManyToOne,
 	Table
-}                                 from "@airport/air-control";
+} from '@airport/air-control'
 import {Repository}               from "../repository/Repository";
 import {UserRepositoryPermission} from "../user/Permission";
 import {Terminal}                 from "./Terminal";
@@ -33,6 +34,7 @@ export class TerminalRepository {
 	)
 	repository: Repository;
 
+	@Column({name: 'PERMISSION', nullable: false})
 	@DbNumber()
 	permission: TerminalRepositoryPermission;
 
