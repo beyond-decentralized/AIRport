@@ -79,7 +79,7 @@ let SyncInDataChecker = class SyncInDataChecker {
                         const recordToInsertMapForSchemaInRepo = recordToInsertMapForRepo.get(operationHistory.schemaVersion.id);
                         if (recordToInsertMapForSchemaInRepo) {
                             recordToInsertMapForEntityInRepo
-                                = recordToInsertMapForSchemaInRepo.get(operationHistory.entity.index);
+                                = recordToInsertMapForSchemaInRepo.get(operationHistory.entity.id);
                         }
                     }
                     switch (operationHistory.changeType) {
@@ -96,7 +96,7 @@ let SyncInDataChecker = class SyncInDataChecker {
                                     const recordToUpdateMapForRepoInTable = this.syncInUtils
                                         .ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordsToUpdateMap);
                                     this.ensureRecordId(recordHistory, recordToUpdateMapForRepoInTable, recordHistory.actorRecordId);
-                                    this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(messageIndexMapByRecordToUpdateIds, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.index), recordHistory.actor.id), recordHistory.actorRecordId)
+                                    this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(messageIndexMapByRecordToUpdateIds, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.id), recordHistory.actor.id), recordHistory.actorRecordId)
                                         .add(i);
                                 }
                             }
@@ -124,12 +124,12 @@ let SyncInDataChecker = class SyncInDataChecker {
                     existingRecordMapForSchemaInRepo = existingRecordMapForRepository.get(schemaIndex);
                 }
                 const messageIndexMapForSchemaIndRepo = messageIndexMapForRepository.get(schemaIndex);
-                for (const [tableIndex, updatedRecordMapForTableInRepo] of updatedRecordMapForSchemaInRepo) {
+                for (const [entityId, updatedRecordMapForTableInRepo] of updatedRecordMapForSchemaInRepo) {
                     let existingRecordMapForTableInSchema;
                     if (existingRecordMapForSchemaInRepo) {
-                        existingRecordMapForTableInSchema = existingRecordMapForSchemaInRepo.get(tableIndex);
+                        existingRecordMapForTableInSchema = existingRecordMapForSchemaInRepo.get(entityId);
                     }
-                    const messageIndexMapForTableInSchema = messageIndexMapForSchemaIndRepo.get(tableIndex);
+                    const messageIndexMapForTableInSchema = messageIndexMapForSchemaIndRepo.get(entityId);
                     for (const [actorId, actorRecordIds] of updatedRecordMapForTableInRepo) {
                         let existingRecordIdSetForActor;
                         if (existingRecordMapForTableInSchema) {
@@ -139,13 +139,13 @@ let SyncInDataChecker = class SyncInDataChecker {
                         if (existingRecordIdSetForActor) {
                             for (const actorRecordId of actorRecordIds) {
                                 if (!existingRecordIdSetForActor.has(actorRecordId)) {
-                                    this.recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaIndex, tableIndex, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordDataToTMs);
+                                    this.recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaIndex, entityId, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordDataToTMs);
                                 }
                             }
                         }
                         else {
                             for (const actorRecordId of actorRecordIds) {
-                                this.recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaIndex, tableIndex, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordDataToTMs);
+                                this.recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaIndex, entityId, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordDataToTMs);
                             }
                         }
                     }
@@ -170,7 +170,7 @@ let SyncInDataChecker = class SyncInDataChecker {
                     switch (operationHistory.changeType) {
                         case ground_control_1.ChangeType.INSERT_VALUES:
                             for (const recordHistory of operationHistory.recordHistory) {
-                                this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(recordsToInsertMap, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.index), recordHistory.actor.id)
+                                this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(recordsToInsertMap, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.id), recordHistory.actor.id)
                                     .add(recordHistory.actorRecordId);
                             }
                             break;
@@ -183,8 +183,8 @@ let SyncInDataChecker = class SyncInDataChecker {
     ensureRecordId(recordHistory, actorRecordIdSetByActor, actorRecordId = recordHistory.actorRecordId) {
         this.utils.ensureChildJsSet(actorRecordIdSetByActor, recordHistory.actor.id).add(actorRecordId);
     }
-    recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaVersionId, tableIndex, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordDataToTMs) {
-        const missingRecord = this.createMissingRecord(repositoryId, schemaVersionId, tableIndex, actorId, actorRecordId);
+    recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaVersionId, entityId, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordDataToTMs) {
+        const missingRecord = this.createMissingRecord(repositoryId, schemaVersionId, entityId, actorId, actorRecordId);
         missingRecords.push(missingRecord);
         for (const messageIndex of messageIndexMapForActor.get(actorRecordId)) {
             let dataMessage;
@@ -205,16 +205,13 @@ let SyncInDataChecker = class SyncInDataChecker {
             });
         }
     }
-    createMissingRecord(repositoryId, schemaVersionId, tableIndex, actorId, actorRecordId) {
+    createMissingRecord(repositoryId, schemaVersionId, entityId, actorId, actorRecordId) {
         return {
             schemaVersion: {
                 id: schemaVersionId
             },
             entity: {
-                index: tableIndex,
-                schemaVersion: {
-                    id: schemaVersionId
-                }
+                id: entityId
             },
             repository: {
                 id: repositoryId

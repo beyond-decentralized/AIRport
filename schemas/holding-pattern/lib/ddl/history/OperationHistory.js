@@ -48,15 +48,7 @@ __decorate([
 ], OperationHistory.prototype, "changeType", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false }),
-    __metadata("design:type", Object)
-], OperationHistory.prototype, "schemaVersion", void 0);
-__decorate([
-    air_control_1.ManyToOne(),
-    air_control_1.JoinColumns([
-        { name: 'SCHEMA_VERSION_ID', nullable: false },
-        { name: 'ENTITY_INDEX', referencedColumnName: 'INDEX', nullable: false }
-    ]),
+    air_control_1.JoinColumn({ name: 'ENTITY_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", Object)
 ], OperationHistory.prototype, "entity", void 0);
 __decorate([

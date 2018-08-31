@@ -8,7 +8,7 @@ import {
 	SchemaIndex,
 	SchemaName,
 	SchemaVersionId,
-	TableIndex
+	EntityId
 }                                      from "@airport/ground-control";
 import {
 	ActorId,
@@ -72,7 +72,7 @@ export enum SchemaComparisonResult {
 export interface ISyncRepoTransHistory
 	extends IRepositoryTransactionHistory {
 	isLocal?: boolean;
-	operationHistory: ISyncOperationHistory[];
+	operationHistory?: ISyncOperationHistory[];
 }
 
 export interface ISyncOperationHistory
@@ -102,7 +102,7 @@ export interface ISyncInUtils {
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
 		recordMapBySchemaTableAndRepository: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>
+			Map<EntityId, Map<RepositoryId, Map<CI, V>>>>
 	): Map<CI, V>;
 
 	// createSharingMessage(
@@ -115,13 +115,13 @@ export interface ISyncInUtils {
 
 export interface Stage1SyncedInDataProcessingResult {
 	recordCreations: Map<SchemaVersionId,
-		Map<TableIndex, Map<RepositoryId, Map<ActorId,
+		Map<EntityId, Map<RepositoryId, Map<ActorId,
 			Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
 	recordDeletions: Map<SchemaVersionId,
-		Map<TableIndex, Map<RepositoryId, Map<ActorId,
+		Map<EntityId, Map<RepositoryId, Map<ActorId,
 			Set<RepositoryEntityActorRecordId>>>>>,
 	recordUpdates: Map<SchemaVersionId,
-		Map<TableIndex, Map<RepositoryId, Map<ActorId,
+		Map<EntityId, Map<RepositoryId, Map<ActorId,
 			Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 	syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>
 }
@@ -140,14 +140,14 @@ export class SyncInUtils
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
 		recordMapBySchemaTableAndRepository: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<CI, V>>>>
+			Map<EntityId, Map<RepositoryId, Map<CI, V>>>>
 	): Map<CI, V> {
 		// FIXME: ensure that OperationHistory schemaVersion is correctly set
 		return <any>this.utils.ensureChildJsMap(
 			this.utils.ensureChildJsMap(
 				this.utils.ensureChildJsMap(
 					recordMapBySchemaTableAndRepository, operationHistory.schemaVersion.id),
-				operationHistory.entity.index), repositoryId);
+				operationHistory.entity.id), repositoryId);
 	}
 
 	// createSharingMessage(

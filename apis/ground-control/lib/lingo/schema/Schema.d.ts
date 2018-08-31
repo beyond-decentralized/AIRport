@@ -1,19 +1,43 @@
 import { DbEntity, JsonSchemaEntity } from './Entity';
 import { SchemaReferenceByIndex } from './Property';
+import { SchemaStatus } from './SchemaStatus';
+export declare type ApplicationId = number;
+export declare type ApplicationName = string;
+export declare type ApplicationPackageId = number;
 export declare type DatabaseIndex = number;
 export declare type DomainId = number;
 export declare type DomainName = string;
 export declare type JsonSchemaName = string;
+export declare type PackageId = number;
+export declare type PackageName = string;
 export declare type SchemaIndex = number;
 export declare type SchemaName = string;
 export declare type SchemaReferenceIndex = number;
+export declare type SchemaScope = 'private' | 'public' | null;
 export declare type SchemaVersionId = number;
 export declare type SchemaVersionInteger = number;
 export declare type SchemaVersionMajor = number;
 export declare type SchemaVersionMinor = number;
 export declare type SchemaVersionPatch = number;
 export declare type SchemaVersionString = string;
+export interface DbPackage {
+    id: PackageId;
+    name: PackageName;
+    applicationPackages: DbApplicationPackage[];
+}
+export interface DbApplicationPackage {
+    application: DbApplication;
+    id: ApplicationPackageId;
+    package: DbPackage;
+}
+export interface DbApplication {
+    applicationPackages: DbApplicationPackage[];
+    domain: DbDomain;
+    id: ApplicationId;
+    name: ApplicationName;
+}
 export interface DbDomain {
+    applications: DbApplication[];
     id: DomainId;
     name: DomainName;
     /**
@@ -41,13 +65,15 @@ export interface JsonSchema extends SchemaReferenceByIndex<SchemaIndex>, JsonDat
 /**
  * A schema with additional indexes (maps).
  */
-export interface DbSchema extends SchemaReferenceByIndex<SchemaIndex>, DbObject {
+export interface DbSchema extends SchemaReferenceByIndex<SchemaIndex>, DatabaseObject {
     currentVersion: DbSchemaVersion;
     /**
      * Domain of the schema ('public' if published).
      */
     domain: DbDomain;
     name: SchemaName;
+    scope: SchemaScope;
+    status: SchemaStatus;
     /**
      * Versions by integer version
      */
@@ -78,10 +104,10 @@ export interface JsonSchemaVersion extends JsonSchemaVersionReference {
      */
     referencedSchemas: JsonSchema[];
 }
-export interface DbObject {
-    deprecatedSinceVersion?: JsonSchemaVersionReference;
-    removedInVersion?: JsonSchemaVersionReference;
-    sinceVersion: JsonSchemaVersionReference;
+export interface DatabaseObject {
+    deprecatedSinceVersion?: DbSchemaVersion;
+    removedInVersion?: DbSchemaVersion;
+    sinceVersion: DbSchemaVersion;
 }
 export interface DbSchemaVersionReference {
     integerVersion: SchemaVersionInteger;
@@ -130,7 +156,7 @@ export interface DbSchemaVersion extends DbSchemaVersionReference {
     patchVersion: SchemaVersionPatch;
     schema: DbSchema;
 }
-export interface DbSchemaReference {
+export interface DbSchemaReference extends DatabaseObject {
     index: SchemaReferenceIndex;
     ownSchemaVersion: DbSchemaVersion;
     referencedSchemaVersion: DbSchemaVersion;

@@ -1,4 +1,4 @@
-import { DatabaseForeignKey, DatabaseManyToOneElements, DatabaseOneToManyElements, DbObject, EntityRelationType, JsonDatabaseObject, SQLDataType } from '../../index';
+import { DatabaseForeignKey, DatabaseManyToOneElements, DatabaseOneToManyElements, DatabaseObject, EntityRelationType, JsonDatabaseObject, SQLDataType } from '../../index';
 import { DbEntity, TableIndex } from './Entity';
 import { SchemaIndex } from './Schema';
 export declare type ColumnId = number;
@@ -36,7 +36,7 @@ export interface JsonSchemaProperty extends SchemaReferenceByIndex<PropertyIndex
      */
     relationRef?: SchemaReferenceByIndex<RelationIndex>;
 }
-export interface DbProperty extends SchemaReferenceByIndex<PropertyIndex>, DbObject {
+export interface DbProperty extends SchemaReferenceByIndex<PropertyIndex>, DatabaseObject {
     id: PropertyId;
     entity: DbEntity;
     name: PropertyName;
@@ -85,7 +85,9 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex>, J
 }
 export interface IdKeyArrayByIdColumnIndex extends Array<(number | string)> {
 }
-export interface DbColumn extends SchemaReferenceByIndex<ColumnIndex>, DbObject {
+export interface DbColumn extends SchemaReferenceByIndex<ColumnIndex>, DatabaseObject {
+    allocationSize?: SchemaColumnAllocationSize;
+    entity: DbEntity;
     id: ColumnId;
     /**
      * Id index of this column (if it's an ID column).
@@ -160,7 +162,7 @@ export interface JsonSchemaRelation extends SchemaReferenceByIndex<RelationIndex
      */
     relationTableIndex: TableIndex;
 }
-export interface DbRelation extends SchemaReferenceByIndex<RelationIndex>, DbObject {
+export interface DbRelation extends SchemaReferenceByIndex<RelationIndex>, DatabaseObject {
     id: RelationId;
     foreignKey: DatabaseForeignKey;
     isId: boolean;
@@ -182,7 +184,7 @@ export interface JsonSchemaRelationColumn extends JsonDatabaseObject {
     oneRelationIndex?: RelationIndex;
     oneColumnIndex: ColumnIndex;
 }
-export interface DbRelationColumn extends DbObject {
+export interface DbRelationColumn extends DatabaseObject {
     manyColumn: DbColumn;
     /**
      * Only present if @ManyToOne side of the relationship is defined.

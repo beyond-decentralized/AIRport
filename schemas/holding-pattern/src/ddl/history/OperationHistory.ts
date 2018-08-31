@@ -59,14 +59,7 @@ export class OperationHistory
 	changeType: ChangeType
 
 	@ManyToOne()
-	@JoinColumn({name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false})
-	schemaVersion: ISchemaVersion
-
-	@ManyToOne()
-	@JoinColumns([
-		{name: 'SCHEMA_VERSION_ID', nullable: false},
-		{name: 'ENTITY_INDEX', referencedColumnName: 'INDEX', nullable: false}
-	])
+	@JoinColumn({name: 'ENTITY_ID', referencedColumnName: 'ID', nullable: false})
 	entity: ISchemaEntity
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'operationHistory'})

@@ -1,3 +1,4 @@
+import {SchemaStatus}        from '../../..'
 import {IDbSchemaBuilder}    from '../../../lingo/schema/builder/DbSchemaBuilder'
 import {ILinkingDictionary}  from '../../../lingo/schema/builder/LinkingDictionary'
 import {
@@ -62,6 +63,7 @@ export class DbSchemaBuilder
 			versionString,
 		}
 		const dbDomain: DbDomain = {
+			applications: [],
 			id: undefined,
 			name: jsonSchema.domain,
 			schemas: []
@@ -71,7 +73,9 @@ export class DbSchemaBuilder
 			domain: dbDomain,
 			index: allSchemas.length,
 			name: jsonSchema.name,
+			scope: null,
 			sinceVersion: dbSchemaVersion,
+			status: SchemaStatus.CURRENT,
 			versions: [dbSchemaVersion]
 		}
 		dbSchemaVersion.schema = dbSchema
@@ -105,12 +109,14 @@ export class DbSchemaBuilder
 			columnMap,
 			columns,
 			idColumns,
+			id: null,
 			index: jsonEntity.index,
 			isLocal: jsonEntity.isLocal,
 			isRepositoryEntity: jsonEntity.isRepositoryEntity,
 			name: jsonEntity.name,
 			propertyMap,
 			properties,
+			relationReferences: [],
 			relations,
 			schemaVersion,
 			sinceVersion: schemaVersion,
@@ -124,6 +130,7 @@ export class DbSchemaBuilder
 			const property: DbProperty = {
 				propertyColumns: [],
 				entity: dbEntity,
+				id: null,
 				index: jsonProperty.index,
 				isId: jsonProperty.isId,
 				name: jsonProperty.name,
@@ -168,7 +175,7 @@ export class DbSchemaBuilder
 		) => {
 			const dbColumn = this.buildDbColumn(
 				jsonSchema, jsonEntity, jsonColumn, properties,
-				dictionary, referencedSchemas, schemaVersion)
+				dictionary, referencedSchemas, schemaVersion, dbEntity)
 			columnMap[jsonColumn.name] = dbColumn
 			columns[index] = dbColumn
 		})
@@ -200,6 +207,7 @@ export class DbSchemaBuilder
 			manyToOneElems: jsonRelation.manyToOneElems,
 			oneToManyElems: jsonRelation.oneToManyElems,
 			relationType: jsonRelation.relationType,
+			id: null,
 			index: jsonRelation.index,
 			property: dbProperty,
 			manyRelationColumns: [],
@@ -228,9 +236,12 @@ export class DbSchemaBuilder
 		properties: DbProperty[],
 		dictionary: ILinkingDictionary,
 		referencedSchemas: JsonSchema[],
-		schemaVersion: DbSchemaVersion
+		schemaVersion: DbSchemaVersion,
+		entity: DbEntity
 	): DbColumn {
 		const dbColumn: DbColumn = {
+			entity,
+			id: null,
 			index: jsonColumn.index,
 			isGenerated: !!jsonColumn.isGenerated,
 			name: jsonColumn.name,
@@ -400,6 +411,7 @@ export class DbSchemaBuilder
 						index: parseInt(index),
 						ownSchemaVersion,
 						referencedSchemaVersion,
+						sinceVersion: null
 					}
 					ownSchemaVersion.references[index] = dbSchemaReference
 					referencedSchemaVersion.referencedBy.push(dbSchemaReference)

@@ -31,14 +31,6 @@ import {
 	QRepositoryTransactionHistoryQRelation,
 } from './qrepositorytransactionhistory';
 import {
-	ISchemaVersion,
-	SchemaVersionEId,
-	SchemaVersionEOptionalId,
-	SchemaVersionEUpdateProperties,
-	SchemaVersionESelect,
-	QSchemaVersion,
-	QSchemaVersionQId,
-	QSchemaVersionQRelation,
 	ISchemaEntity,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
@@ -80,7 +72,6 @@ export interface IOperationHistory {
 	changeType?: number;
 
 	// Non-Id Relations
-	schemaVersion?: ISchemaVersion;
 	entity?: ISchemaEntity;
 	recordHistory?: IRecordHistory[];
 
@@ -107,7 +98,6 @@ export interface OperationHistoryESelect
 	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 
   // Non-Id relations (including OneToMany's)
-	schemaVersion?: SchemaVersionESelect;
 	entity?: SchemaEntityESelect;
 	recordHistory?: RecordHistoryESelect;
 
@@ -148,7 +138,6 @@ export interface OperationHistoryEUpdateProperties
 	changeType?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	schemaVersion?: SchemaVersionEOptionalId;
 	entity?: SchemaEntityEOptionalId;
 
 }
@@ -161,8 +150,7 @@ export interface OperationHistoryEUpdateColumns
 	// Non-Id Columns
 	ORDER_NUMBER?: number | IQNumberField;
 	CHANGE_TYPE?: number | IQNumberField;
-	SCHEMA_VERSION_ID?: number | IQNumberField;
-	ENTITY_INDEX?: number | IQNumberField;
+	ENTITY_ID?: number | IQNumberField;
 
 }
 
@@ -203,7 +191,6 @@ export interface QOperationHistory extends QEntity
 	changeType: IQNumberField;
 
 	// Non-Id Relations
-	schemaVersion: QSchemaVersionQRelation;
 	entity: QSchemaEntityQRelation;
 	recordHistory: IQOneToManyRelation<QRecordHistory>;
 

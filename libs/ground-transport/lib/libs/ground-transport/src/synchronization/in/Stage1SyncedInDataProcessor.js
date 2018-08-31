@@ -57,7 +57,7 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
                 }
                 for (const operationHistory of repoTransHistory.operationHistory) {
                     // Collect the Actor related ids
-                    const idsForEntity = this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(changedRecordsForRepo.ids, operationHistory.schemaVersion.id), operationHistory.entity.index);
+                    const idsForEntity = this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(changedRecordsForRepo.ids, operationHistory.schemaVersion.id), operationHistory.entity.id);
                     for (const recordHistory of operationHistory.recordHistory) {
                         // Collect the Actor related ids
                         this.utils.ensureChildJsSet(idsForEntity, recordHistory.actor.id)
@@ -354,7 +354,7 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
             .get(operationHistory.schemaVersion.id);
         let recordMapForTable;
         if (recordMapForSchema) {
-            recordMapForTable = recordMapForSchema.get(operationHistory.entity.index);
+            recordMapForTable = recordMapForSchema.get(operationHistory.entity.id);
         }
         let recordMapForRepoInTable;
         if (recordMapForTable) {
@@ -392,11 +392,11 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
     }
     getRecordInfo(repositoryId, operationHistory, recordHistory) {
         return `
-		Schema Version Id:     ${operationHistory.schemaVersion.id}
-		Table Index:      ${operationHistory.entity.index}
-		Repository ID:    ${repositoryId}
-		Actor ID:         ${recordHistory.actor.id}
-		Actor Record ID:  ${recordHistory.actorRecordId}
+		Schema Version ID: ${operationHistory.schemaVersion.id}
+		Entity ID:         ${operationHistory.entity.id}
+		Repository ID:     ${repositoryId}
+		Actor ID:          ${recordHistory.actor.id}
+		Actor Record ID:   ${recordHistory.actorRecordId}
 		`;
     }
     addSyncConflict(synchronizationConflictType, repositoryId, overwrittenRecordHistory, overwritingRecordHistory, syncConflictMapByRepoId) {

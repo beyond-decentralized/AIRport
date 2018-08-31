@@ -2,10 +2,10 @@ import {IUtils, UtilsToken} from "@airport/air-control";
 import {
 	ChangeType,
 	ColumnIndex,
+	EntityId,
 	SchemaIndex,
-	SchemaVersionId,
-	TableIndex
-} from "@airport/ground-control";
+	SchemaVersionId
+} from '@airport/ground-control'
 import {
 	ActorId,
 	IActor,
@@ -108,7 +108,7 @@ export class Stage1SyncedInDataProcessor
 						= this.utils.ensureChildJsMap(
 						this.utils.ensureChildJsMap(changedRecordsForRepo.ids,
 							operationHistory.schemaVersion.id),
-						operationHistory.entity.index);
+						operationHistory.entity.id);
 					for (const recordHistory of operationHistory.recordHistory) {
 						// Collect the Actor related ids
 						this.utils.ensureChildJsSet(idsForEntity, recordHistory.actor.id)
@@ -167,13 +167,13 @@ export class Stage1SyncedInDataProcessor
 		}
 
 		const recordCreations: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>> = new Map();
 		const recordUpdates: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>> = new Map();
 		const recordDeletions: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<RepositoryId, Map<ActorId,
 				Set<RepositoryEntityActorRecordId>>>>> = new Map();
 
 		const syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]> = new Map();
@@ -276,19 +276,19 @@ export class Stage1SyncedInDataProcessor
 		operationHistory: IOperationHistory,
 		isLocal: boolean,
 		recordCreations: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
 		recordUpdates: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 		recordDeletions: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<RepositoryId, Map<ActorId,
 				Set<RepositoryEntityActorRecordId>>>>>,
 		allRemoteRecordDeletions: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, RecordHistoryId>>>>>,
 		allLocalRecordDeletions: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, RecordHistoryId>>>>>,
 		syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>
 	): void {
@@ -576,13 +576,13 @@ export class Stage1SyncedInDataProcessor
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
 		recordMapBySchemaTableAndRepository: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, T>>>
+			Map<EntityId, Map<RepositoryId, T>>>
 	): T {
 		const recordMapForSchema = recordMapBySchemaTableAndRepository
 			.get(operationHistory.schemaVersion.id);
 		let recordMapForTable: Map<RepositoryId, T>;
 		if (recordMapForSchema) {
-			recordMapForTable = recordMapForSchema.get(operationHistory.entity.index);
+			recordMapForTable = recordMapForSchema.get(operationHistory.entity.id);
 		}
 		let recordMapForRepoInTable: T;
 		if (recordMapForTable) {
@@ -646,11 +646,11 @@ export class Stage1SyncedInDataProcessor
 		recordHistory: IRecordHistory
 	): string {
 		return `
-		Schema Version Id:     ${operationHistory.schemaVersion.id}
-		Table Index:      ${operationHistory.entity.index}
-		Repository ID:    ${repositoryId}
-		Actor ID:         ${recordHistory.actor.id}
-		Actor Record ID:  ${recordHistory.actorRecordId}
+		Schema Version ID: ${operationHistory.schemaVersion.id}
+		Entity ID:         ${operationHistory.entity.id}
+		Repository ID:     ${repositoryId}
+		Actor ID:          ${recordHistory.actor.id}
+		Actor Record ID:   ${recordHistory.actorRecordId}
 		`;
 	}
 

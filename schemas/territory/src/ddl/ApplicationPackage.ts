@@ -5,11 +5,11 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-}                    from "@airport/air-control";
-import {Application} from "./Application";
-import {Package}     from "./Package";
+}                             from "@airport/air-control";
+import {ApplicationPackageId} from '@airport/ground-control'
+import {Application}          from "./Application";
+import {Package}              from "./Package";
 
-export type ApplicationPackageId = number;
 
 @Entity()
 @Table({name: "APPLICATION_PACKAGES"})
@@ -17,14 +17,14 @@ export class ApplicationPackage {
 
 	@Id()
 	@GeneratedValue()
-	id: ApplicationPackageId;
+	id: ApplicationPackageId
 
 	@ManyToOne()
 	@JoinColumn({name: "APPLICATION_ID", referencedColumnName: "ID"})
-	application: Application;
+	application: Application
 
 	@ManyToOne()
 	@JoinColumn({name: "PACKAGE_ID", referencedColumnName: "ID"})
-	package: Package;
+	package: Package
 
 }

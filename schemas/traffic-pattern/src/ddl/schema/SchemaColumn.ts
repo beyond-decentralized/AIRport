@@ -52,13 +52,13 @@ export class SchemaColumn
 	 * Index of the ID (within the entity)
 	 */
 	@Column({name: 'ID_INDEX'})
-	idIndex: IdColumnOnlyIndex
+	idIndex?: IdColumnOnlyIndex
 
 	@Column({name: 'IS_GENERATED', nullable: false})
 	isGenerated: SchemaColumnIsGenerated
 
 	@Column({name: 'ALLOCATION_SIZE'})
-	allocationSize: SchemaColumnAllocationSize
+	allocationSize?: SchemaColumnAllocationSize
 
 	@Column({name: 'NAME', nullable: false})
 	name: ColumnName

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = require("../../..");
 exports.test = 2;
 class DbSchemaBuilder {
     constructor(utils) {
@@ -32,6 +33,7 @@ class DbSchemaBuilder {
             versionString,
         };
         const dbDomain = {
+            applications: [],
             id: undefined,
             name: jsonSchema.domain,
             schemas: []
@@ -41,7 +43,9 @@ class DbSchemaBuilder {
             domain: dbDomain,
             index: allSchemas.length,
             name: jsonSchema.name,
+            scope: null,
             sinceVersion: dbSchemaVersion,
+            status: __1.SchemaStatus.CURRENT,
             versions: [dbSchemaVersion]
         };
         dbSchemaVersion.schema = dbSchema;
@@ -64,12 +68,14 @@ class DbSchemaBuilder {
             columnMap,
             columns,
             idColumns,
+            id: null,
             index: jsonEntity.index,
             isLocal: jsonEntity.isLocal,
             isRepositoryEntity: jsonEntity.isRepositoryEntity,
             name: jsonEntity.name,
             propertyMap,
             properties,
+            relationReferences: [],
             relations,
             schemaVersion,
             sinceVersion: schemaVersion,
@@ -79,6 +85,7 @@ class DbSchemaBuilder {
             const property = {
                 propertyColumns: [],
                 entity: dbEntity,
+                id: null,
                 index: jsonProperty.index,
                 isId: jsonProperty.isId,
                 name: jsonProperty.name,
@@ -97,7 +104,7 @@ class DbSchemaBuilder {
         });
         relations.sort((a, b) => a.index < b.index ? -1 : 1);
         jsonEntity.columns.forEach((jsonColumn, index) => {
-            const dbColumn = this.buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas, schemaVersion);
+            const dbColumn = this.buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas, schemaVersion, dbEntity);
             columnMap[jsonColumn.name] = dbColumn;
             columns[index] = dbColumn;
         });
@@ -115,6 +122,7 @@ class DbSchemaBuilder {
             manyToOneElems: jsonRelation.manyToOneElems,
             oneToManyElems: jsonRelation.oneToManyElems,
             relationType: jsonRelation.relationType,
+            id: null,
             index: jsonRelation.index,
             property: dbProperty,
             manyRelationColumns: [],
@@ -134,8 +142,10 @@ class DbSchemaBuilder {
         dbProperty.relation = [dbRelation];
         return dbRelation;
     }
-    buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas, schemaVersion) {
+    buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas, schemaVersion, entity) {
         const dbColumn = {
+            entity,
+            id: null,
             index: jsonColumn.index,
             isGenerated: !!jsonColumn.isGenerated,
             name: jsonColumn.name,
@@ -280,6 +290,7 @@ class DbSchemaBuilder {
                         index: parseInt(index),
                         ownSchemaVersion,
                         referencedSchemaVersion,
+                        sinceVersion: null
                     };
                     ownSchemaVersion.references[index] = dbSchemaReference;
                     referencedSchemaVersion.referencedBy.push(dbSchemaReference);

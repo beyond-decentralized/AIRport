@@ -1,6 +1,6 @@
 import { DatabaseObjectConfiguration } from './DatabaseObjectConfiguration';
 import { DbColumn, DbProperty, DbRelation, JsonSchemaColumn, JsonSchemaProperty, JsonSchemaRelation, SchemaReferenceByIndex } from './Property';
-import { DbObject, DbSchemaVersion, JsonDatabaseObject } from './Schema';
+import { DatabaseObject, DbSchemaVersion, JsonDatabaseObject } from './Schema';
 export declare type EntityId = number;
 export declare type EntityName = string;
 export declare type EntityIsLocal = boolean;
@@ -45,7 +45,7 @@ export interface JsonSchemaEntity extends SchemaReferenceByIndex<TableIndex>, Js
 /**
  * Schema Entity with additional indexes (maps).
  */
-export interface DbEntity extends SchemaReferenceByIndex<TableIndex>, DbObject {
+export interface DbEntity extends SchemaReferenceByIndex<TableIndex>, DatabaseObject {
     id: EntityId;
     /**
      * Map of all columns in the entity by name.

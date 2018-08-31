@@ -9,7 +9,7 @@ import {
 	SchemaReferenceByIndex
 }                                    from './Property'
 import {
-	DbObject,
+	DatabaseObject,
 	DbSchemaVersion,
 	JsonDatabaseObject
 }                                    from './Schema'
@@ -76,7 +76,7 @@ export interface JsonSchemaEntity
  */
 export interface DbEntity
 	extends SchemaReferenceByIndex<TableIndex>,
-	        DbObject {
+	        DatabaseObject {
 
 	id: EntityId
 

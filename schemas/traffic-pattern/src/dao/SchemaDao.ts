@@ -17,7 +17,7 @@ import {
 import {QDomain}          from '@airport/territory'
 import {Inject}           from 'typedi/decorators/Inject'
 import {Service}          from 'typedi/decorators/Service'
-import {SchemaStatus}     from '../ddl/schema/SchemaStatus'
+import {SchemaStatus}     from '../../../../apis/ground-control/src/lingo/schema/SchemaStatus'
 import {
 	BaseSchemaDao,
 	IBaseSchemaDao,

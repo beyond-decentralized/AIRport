@@ -13,14 +13,13 @@ import {
 }                              from '@airport/air-control'
 import {
 	SchemaIndex,
-	SchemaName
-}                              from '@airport/ground-control'
+	SchemaName,
+	SchemaScope
+} from '@airport/ground-control'
 import {Domain}                from '@airport/territory'
-import {SchemaStatus}          from './SchemaStatus'
+import {SchemaStatus}          from '../../../../../apis/ground-control/src/lingo/schema/SchemaStatus'
 import {SchemaVersion}         from './SchemaVersion'
 import {VersionedSchemaObject} from './VersionedSchemaObject'
-
-export type SchemaScope = 'private' | 'public' | null;
 
 @Entity()
 @Table({

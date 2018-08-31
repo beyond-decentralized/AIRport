@@ -14,11 +14,12 @@ import {
 }                from "@airport/air-control";
 import {
 	ChangeType,
+	EntityId,
 	JSONBaseOperation,
 	SchemaVersionId,
 	TableIndex,
 	TransactionType
-}                from "@airport/ground-control";
+} from '@airport/ground-control'
 import {Service} from "typedi";
 import {Inject}  from "typedi/decorators/Inject";
 import {
@@ -94,7 +95,7 @@ export interface IRepositoryTransactionHistoryDao {
 }
 
 export interface IChangedRecordIdsForRepository {
-	ids: Map<SchemaVersionId, Map<TableIndex,
+	ids: Map<SchemaVersionId, Map<EntityId,
 		Map<ActorId, Set<RecordHistoryActorRecordId>>>>;
 	firstChangeTime: Date;
 }
@@ -252,7 +253,7 @@ export class RepositoryTransactionHistoryDao
 			const schemaEquals: JSONBaseOperation[] = [];
 			for (const [schemaVersionId, recordMapForSchema] of recordMapForRepository) {
 				const entityEquals: JSONBaseOperation[] = [];
-				for (const [entityIndex, recordMapForEntity] of recordMapForSchema) {
+				for (const [entityId, recordMapForEntity] of recordMapForSchema) {
 					const actorEquals: JSONBaseOperation[] = [];
 					for (const [actorId, recordsForActor] of recordMapForEntity) {
 						actorEquals.push(and(
@@ -261,7 +262,7 @@ export class RepositoryTransactionHistoryDao
 						))
 					}
 					entityEquals.push(and(
-						oh.entity.index.equals(entityIndex),
+						oh.entity.id.equals(entityId),
 						or(...actorEquals)
 					));
 				}
@@ -351,11 +352,11 @@ export class RepositoryTransactionHistoryDao
 
 	async findExistingRecordIdMap(
 		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
+			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 	): Promise<Map<RepositoryId, Map<SchemaVersionId,
-		Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>> {
+		Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>> {
 		const existingRecordIdMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
+			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 			= new Map();
 
 		const rth = Q.RepositoryTransactionHistory,
@@ -368,7 +369,7 @@ export class RepositoryTransactionHistoryDao
 			for (const [schemaVersionId, recordIdMapForSchemaInRepository]
 				of recordIdMapForRepository) {
 				let tableFragments: JSONBaseOperation[] = [];
-				for (const [tableIndex, recordIdMapForTableInRepository]
+				for (const [entityId, recordIdMapForTableInRepository]
 					of recordIdMapForSchemaInRepository) {
 
 					let actorIdsFragments: JSONBaseOperation[] = [];
@@ -379,7 +380,7 @@ export class RepositoryTransactionHistoryDao
 						))
 					}
 					tableFragments.push(and(
-						oh.entity.index.equals(tableIndex),
+						oh.entity.id.equals(entityId),
 						or(...actorIdsFragments)
 					));
 				}
@@ -404,7 +405,7 @@ export class RepositoryTransactionHistoryDao
 			select: distinct([
 				rth.repository.id,
 				oh.schemaVersion.id,
-				oh.entity.index,
+				oh.entity.id,
 				rh.actor.id,
 				rh.actorRecordId
 			]),

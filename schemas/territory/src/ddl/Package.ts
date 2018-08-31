@@ -5,10 +5,12 @@ import {
 	OneToMany,
 	Table
 }                           from "@airport/air-control";
+import {
+	PackageId,
+	PackageName
+} from '@airport/ground-control'
 import {ApplicationPackage} from "./ApplicationPackage";
 
-export type PackageId = number;
-export type PackageName = string;
 
 @Entity()
 @Table({name: "PACKAGES"})
@@ -16,11 +18,11 @@ export class Package {
 
 	@Id()
 	@GeneratedValue()
-	id: PackageId;
+	id: PackageId
 
-	name: PackageName;
+	name: PackageName
 
 	@OneToMany({mappedBy: "package"})
-	applicationPackages: ApplicationPackage[];
+	applicationPackages: ApplicationPackage[]
 
 }

@@ -1,5 +1,5 @@
 import { ChangeType } from '@airport/ground-control';
-import { ISchemaEntity, ISchemaVersion } from '@airport/traffic-pattern';
+import { ISchemaEntity } from '@airport/traffic-pattern';
 import { IOperationHistory } from '../../generated/history/qoperationhistory';
 import { IRecordHistory } from '../../generated/history/qrecordhistory';
 import { IRepositoryTransactionHistory } from '../../generated/history/qrepositorytransactionhistory';
@@ -16,7 +16,6 @@ export declare class OperationHistory implements IOperationHistory {
     repositoryTransactionHistory: IRepositoryTransactionHistory;
     orderNumber: OperationHistoryOrderNumber;
     changeType: ChangeType;
-    schemaVersion: ISchemaVersion;
     entity: ISchemaEntity;
     recordHistory: IRecordHistory[];
 }

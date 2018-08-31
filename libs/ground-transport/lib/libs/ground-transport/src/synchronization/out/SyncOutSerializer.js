@@ -9,8 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../../../../apps/terminal/src/InjectionTokens");
+const holding_pattern_1 = require("@airport/holding-pattern");
 const tower_1 = require("@airport/tower");
 const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
@@ -100,7 +102,7 @@ __decorate([
         Map,
         Map,
         Map,
-        Set, Object]),
+        Set, typeof (_a = typeof holding_pattern_1.ITerminal !== "undefined" && holding_pattern_1.ITerminal) === "function" ? _a : Object]),
     __metadata("design:returntype", Promise)
 ], SyncOutSerializer.prototype, "serializeMessages", null);
 SyncOutSerializer = __decorate([

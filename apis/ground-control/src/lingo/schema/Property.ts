@@ -2,7 +2,7 @@ import {
 	DatabaseForeignKey,
 	DatabaseManyToOneElements,
 	DatabaseOneToManyElements,
-	DbObject,
+	DatabaseObject,
 	EntityRelationType,
 	JsonDatabaseObject,
 	SQLDataType
@@ -60,7 +60,7 @@ export interface JsonSchemaProperty
 
 export interface DbProperty
 	extends SchemaReferenceByIndex<PropertyIndex>,
-					DbObject {
+	        DatabaseObject {
 
 	id: PropertyId
 	entity: DbEntity;
@@ -134,39 +134,43 @@ export interface IdKeyArrayByIdColumnIndex
 
 export interface DbColumn
 	extends SchemaReferenceByIndex<ColumnIndex>,
-					DbObject {
+	        DatabaseObject {
+
+	allocationSize?: SchemaColumnAllocationSize
+
+	entity: DbEntity
 
 	id: ColumnId
 
 	/**
 	 * Id index of this column (if it's an ID column).
 	 */
-	idIndex?: ColumnIndex;
+	idIndex?: ColumnIndex
 
-	isGenerated?: SchemaColumnIsGenerated;
+	isGenerated?: SchemaColumnIsGenerated
 
 	/**
 	 * In which ManyToOne relations is this column present.
 	 */
-	manyRelationColumns?: DbRelationColumn[];
+	manyRelationColumns?: DbRelationColumn[]
 
-	name: ColumnName;
+	name: ColumnName
 
 	notNull: ColumnNotNull
 
 	/**
 	 * In which OneToMany relations is this column present.
 	 */
-	oneRelationColumns?: DbRelationColumn[];
+	oneRelationColumns?: DbRelationColumn[]
 
 	/**
 	 * In which properties is this column present.
 	 */
-	propertyColumns: DbPropertyColumn[];
+	propertyColumns: DbPropertyColumn[]
 
-	propertyColumnMap?: { [propertyIndex: number]: DbPropertyColumn };
+	propertyColumnMap?: { [propertyIndex: number]: DbPropertyColumn }
 
-	type: SQLDataType;
+	type: SQLDataType
 
 }
 
@@ -253,7 +257,7 @@ export interface JsonSchemaRelation
 
 export interface DbRelation
 	extends SchemaReferenceByIndex<RelationIndex>,
-					DbObject {
+	        DatabaseObject {
 
 	id: RelationId
 
@@ -294,7 +298,7 @@ export interface JsonSchemaRelationColumn
 }
 
 export interface DbRelationColumn
-	extends DbObject {
+	extends DatabaseObject {
 
 	manyColumn: DbColumn;
 

@@ -1,13 +1,12 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, QEntity, QRelation } from '@airport/air-control';
 import { IRepositoryTransactionHistory, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEOptionalId, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistoryQId, QRepositoryTransactionHistoryQRelation } from './qrepositorytransactionhistory';
-import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
+import { ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
 import { IRecordHistory, RecordHistoryESelect, QRecordHistory } from './qrecordhistory';
 export interface IOperationHistory {
     id?: number;
     repositoryTransactionHistory?: IRepositoryTransactionHistory;
     orderNumber?: number;
     changeType?: number;
-    schemaVersion?: ISchemaVersion;
     entity?: ISchemaEntity;
     recordHistory?: IRecordHistory[];
 }
@@ -18,7 +17,6 @@ export interface OperationHistoryESelect extends IEntitySelectProperties, Operat
     orderNumber?: number | IQNumberField;
     changeType?: number | IQNumberField;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
-    schemaVersion?: SchemaVersionESelect;
     entity?: SchemaEntityESelect;
     recordHistory?: RecordHistoryESelect;
 }
@@ -42,7 +40,6 @@ export interface OperationHistoryEOptionalId {
 export interface OperationHistoryEUpdateProperties extends IEntityUpdateProperties {
     orderNumber?: number | IQNumberField;
     changeType?: number | IQNumberField;
-    schemaVersion?: SchemaVersionEOptionalId;
     entity?: SchemaEntityEOptionalId;
 }
 /**
@@ -51,8 +48,7 @@ export interface OperationHistoryEUpdateProperties extends IEntityUpdateProperti
 export interface OperationHistoryEUpdateColumns extends IEntityUpdateColumns {
     ORDER_NUMBER?: number | IQNumberField;
     CHANGE_TYPE?: number | IQNumberField;
-    SCHEMA_VERSION_ID?: number | IQNumberField;
-    ENTITY_INDEX?: number | IQNumberField;
+    ENTITY_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -72,7 +68,6 @@ export interface QOperationHistory extends QEntity {
     repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
     orderNumber: IQNumberField;
     changeType: IQNumberField;
-    schemaVersion: QSchemaVersionQRelation;
     entity: QSchemaEntityQRelation;
     recordHistory: IQOneToManyRelation<QRecordHistory>;
 }

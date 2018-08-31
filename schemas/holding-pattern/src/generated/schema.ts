@@ -79,47 +79,16 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 7,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								},
-								{
-									"manyRelationIndex": 2,
-									"oneSchemaIndex": 0,
 									"oneTableIndex": 5,
-									"oneColumnIndex": 9,
+									"oneColumnIndex": 3,
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_VERSION_ID",
+							"name": "ENTITY_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
 									"index": 4
-								},
-								{
-									"index": 5
-								}
-							],
-							"sinceVersion": 1,
-							"type": 4
-						},
-						{
-							"index": 5,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 2,
-									"oneSchemaIndex": 0,
-									"oneTableIndex": 5,
-									"oneColumnIndex": 4,
-									"sinceVersion": 1
-								}
-							],
-							"name": "ENTITY_INDEX",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 5
 								}
 							],
 							"sinceVersion": 1,
@@ -178,7 +147,7 @@ export const SCHEMA = {
 						{
 							"index": 4,
 							"isId": false,
-							"name": "schemaVersion",
+							"name": "entity",
 							"relationRef": {
 								"index": 1
 							},
@@ -187,18 +156,9 @@ export const SCHEMA = {
 						{
 							"index": 5,
 							"isId": false,
-							"name": "entity",
-							"relationRef": {
-								"index": 2
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 6,
-							"isId": false,
 							"name": "recordHistory",
 							"relationRef": {
-								"index": 3
+								"index": 2
 							},
 							"sinceVersion": 1
 						}
@@ -221,23 +181,12 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 4
 							},
-							"relationTableIndex": 7,
-							"relationTableSchemaIndex": 0,
-							"sinceVersion": 1
-						},
-						{
-							"index": 2,
-							"isId": false,
-							"relationType": 1,
-							"propertyRef": {
-								"index": 5
-							},
 							"relationTableIndex": 5,
 							"relationTableSchemaIndex": 0,
 							"sinceVersion": 1
 						},
 						{
-							"index": 3,
+							"index": 2,
 							"isId": false,
 							"oneToManyElems": {
 								"cascade": 1,
@@ -245,7 +194,7 @@ export const SCHEMA = {
 							},
 							"relationType": 0,
 							"propertyRef": {
-								"index": 6
+								"index": 5
 							},
 							"relationTableIndex": 1,
 							"sinceVersion": 1
@@ -315,7 +264,7 @@ export const SCHEMA = {
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": null,
 									"oneTableIndex": 0,
-									"oneRelationIndex": 3,
+									"oneRelationIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}

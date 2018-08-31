@@ -109,12 +109,12 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
             const schemaEquals = [];
             for (const [schemaVersionId, recordMapForSchema] of recordMapForRepository) {
                 const entityEquals = [];
-                for (const [entityIndex, recordMapForEntity] of recordMapForSchema) {
+                for (const [entityId, recordMapForEntity] of recordMapForSchema) {
                     const actorEquals = [];
                     for (const [actorId, recordsForActor] of recordMapForEntity) {
                         actorEquals.push(air_control_1.and(rh.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordsForActor))));
                     }
-                    entityEquals.push(air_control_1.and(oh.entity.index.equals(entityIndex), air_control_1.or(...actorEquals)));
+                    entityEquals.push(air_control_1.and(oh.entity.id.equals(entityId), air_control_1.or(...actorEquals)));
                 }
                 const sv = trafficPatternQSchema.SchemaVersion;
                 schemaEquals.push(air_control_1.and(oh.schemaVersion.id.in(air_control_1.field({
@@ -189,12 +189,12 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
             let schemaFragments = [];
             for (const [schemaVersionId, recordIdMapForSchemaInRepository] of recordIdMapForRepository) {
                 let tableFragments = [];
-                for (const [tableIndex, recordIdMapForTableInRepository] of recordIdMapForSchemaInRepository) {
+                for (const [entityId, recordIdMapForTableInRepository] of recordIdMapForSchemaInRepository) {
                     let actorIdsFragments = [];
                     for (const [actorId, recordIdSetForActor] of recordIdMapForTableInRepository) {
                         actorIdsFragments.push(air_control_1.and(rh.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordIdSetForActor))));
                     }
-                    tableFragments.push(air_control_1.and(oh.entity.index.equals(tableIndex), air_control_1.or(...actorIdsFragments)));
+                    tableFragments.push(air_control_1.and(oh.entity.id.equals(entityId), air_control_1.or(...actorIdsFragments)));
                 }
                 schemaFragments.push(air_control_1.and(oh.schemaVersion.id.equals(schemaVersionId), air_control_1.or(...tableFragments)));
             }
@@ -209,7 +209,7 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
             select: air_control_1.distinct([
                 rth.repository.id,
                 oh.schemaVersion.id,
-                oh.entity.index,
+                oh.entity.id,
                 rh.actor.id,
                 rh.actorRecordId
             ]),

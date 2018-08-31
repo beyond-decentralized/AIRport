@@ -27,6 +27,7 @@ export * from './lingo/schema/DatabaseRelationConfiguration';
 export * from './lingo/schema/Entity';
 export * from './lingo/schema/Property';
 export * from './lingo/schema/Schema';
+export * from './lingo/schema/SchemaStatus';
 export * from './lingo/query/facade/Delete';
 export * from './lingo/query/facade/EntityQuery';
 export * from './lingo/query/facade/FieldQuery';

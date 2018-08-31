@@ -12,6 +12,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const air_control_1 = require("@airport/air-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const typedi_1 = require("typedi");
@@ -105,7 +106,7 @@ SyncInUserChecker = __decorate([
     typedi_1.Inject(InjectionTokens_1.SyncInUserCheckerToken),
     __param(0, typedi_1.Inject(holding_pattern_1.UserDaoToken)),
     __param(1, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof holding_pattern_1.IUserDao !== "undefined" && holding_pattern_1.IUserDao) === "function" ? _a : Object, Object])
 ], SyncInUserChecker);
 exports.SyncInUserChecker = SyncInUserChecker;
 //# sourceMappingURL=SyncInUserChecker.js.map

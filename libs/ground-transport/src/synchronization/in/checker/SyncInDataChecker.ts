@@ -4,9 +4,10 @@ import {
 }                                                 from '@airport/air-control'
 import {
 	ChangeType,
+	EntityId,
 	SchemaVersionId,
 	TableIndex
-}                                                 from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	ActorId,
 	IRecordHistory,
@@ -68,9 +69,9 @@ export interface MissingRecordResults {
 
 export interface DataStructuresForChanges {
 	messageIndexMapByRecordToUpdateIds: Map<RepositoryId, Map<SchemaVersionId,
-		Map<TableIndex, Map<ActorId, Map<RepositoryEntityActorRecordId, Set<number>>>>>>;
+		Map<EntityId, Map<ActorId, Map<RepositoryEntityActorRecordId, Set<number>>>>>>;
 	recordsToUpdateMap: Map<RepositoryId, Map<SchemaVersionId,
-		Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>;
+		Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>;
 }
 
 export interface ISyncInDataChecker {
@@ -125,7 +126,7 @@ export class SyncInDataChecker
 		} = this.getDataStructuresForChanges(dataMessagesWithCompatibleSchemas)
 
 		const existingRecordIdMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
+			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 			= await this.repositoryTransactionHistoryDao.findExistingRecordIdMap(recordsToUpdateMap)
 
 		const dataMessagesWithIncompatibleData: IDataToTM[] = []
@@ -147,7 +148,7 @@ export class SyncInDataChecker
 		}
 
 		const toBeInsertedRecordMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
+			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 			= this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemasAndData)
 
 		const foundMissingRecordIds =
@@ -170,14 +171,14 @@ export class SyncInDataChecker
 		dataMessagesWithCompatibleSchemas: IDataToTM[]
 	): DataStructuresForChanges {
 		const recordsToInsertMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
+			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 			= this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemas)
 
 		const recordsToUpdateMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
+			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 			= new Map()
 		const messageIndexMapByRecordToUpdateIds: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Map<RepositoryEntityActorRecordId, Set<number>>>>>>
+			Map<EntityId, Map<ActorId, Map<RepositoryEntityActorRecordId, Set<number>>>>>>
 			= new Map()
 
 
@@ -201,7 +202,7 @@ export class SyncInDataChecker
 							= recordToInsertMapForRepo.get(operationHistory.schemaVersion.id)
 						if (recordToInsertMapForSchemaInRepo) {
 							recordToInsertMapForEntityInRepo
-								= recordToInsertMapForSchemaInRepo.get(operationHistory.entity.index)
+								= recordToInsertMapForSchemaInRepo.get(operationHistory.entity.id)
 						}
 					}
 
@@ -228,7 +229,7 @@ export class SyncInDataChecker
 													this.utils.ensureChildJsMap(
 														messageIndexMapByRecordToUpdateIds, repositoryId),
 													operationHistory.schemaVersion.id),
-												operationHistory.entity.index),
+												operationHistory.entity.id),
 											recordHistory.actor.id),
 										recordHistory.actorRecordId)
 										.add(i)
@@ -250,11 +251,11 @@ export class SyncInDataChecker
 		dataMessagesWithCompatibleSchemas: IDataToTM[],
 		dataMessagesWithIncompatibleData: IDataToTM[],
 		recordToUpdateMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>,
+			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>,
 		existingRecordIdMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>,
+			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>,
 		messageIndexMapByRecordToUpdateIds: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Map<RepositoryEntityActorRecordId, Set<number>>>>>>
+			Map<EntityId, Map<ActorId, Map<RepositoryEntityActorRecordId, Set<number>>>>>>
 	): Promise<MissingRecordResults> {
 		const compatibleDataMessageFlags: boolean[]
 			= dataMessagesWithCompatibleSchemas.map(
@@ -272,23 +273,23 @@ export class SyncInDataChecker
 				= messageIndexMapByRecordToUpdateIds.get(repositoryId)
 
 			for (const [schemaIndex, updatedRecordMapForSchemaInRepo] of updatedRecordMapForRepository) {
-				let existingRecordMapForSchemaInRepo: Map<TableIndex,
+				let existingRecordMapForSchemaInRepo: Map<EntityId,
 					Map<ActorId, Set<RepositoryEntityActorRecordId>>>
 				if (existingRecordMapForRepository) {
 					existingRecordMapForSchemaInRepo = existingRecordMapForRepository.get(schemaIndex)
 				}
-				const messageIndexMapForSchemaIndRepo: Map<TableIndex, Map<ActorId,
+				const messageIndexMapForSchemaIndRepo: Map<EntityId, Map<ActorId,
 					Map<RepositoryEntityActorRecordId, Set<number>>>>
 					= messageIndexMapForRepository.get(schemaIndex)
 
-				for (const [tableIndex, updatedRecordMapForTableInRepo] of updatedRecordMapForSchemaInRepo) {
+				for (const [entityId, updatedRecordMapForTableInRepo] of updatedRecordMapForSchemaInRepo) {
 					let existingRecordMapForTableInSchema: Map<ActorId, Set<RepositoryEntityActorRecordId>>
 					if (existingRecordMapForSchemaInRepo) {
-						existingRecordMapForTableInSchema = existingRecordMapForSchemaInRepo.get(tableIndex)
+						existingRecordMapForTableInSchema = existingRecordMapForSchemaInRepo.get(entityId)
 					}
 					const messageIndexMapForTableInSchema: Map<ActorId,
 						Map<RepositoryEntityActorRecordId, Set<number>>>
-						= messageIndexMapForSchemaIndRepo.get(tableIndex)
+						= messageIndexMapForSchemaIndRepo.get(entityId)
 
 					for (const [actorId, actorRecordIds] of updatedRecordMapForTableInRepo) {
 						let existingRecordIdSetForActor: Set<RepositoryEntityActorRecordId>
@@ -303,7 +304,7 @@ export class SyncInDataChecker
 									this.recordMissingRecordAndRepoTransBlockRelations(
 										repositoryId,
 										schemaIndex,
-										tableIndex,
+										entityId,
 										actorId,
 										actorRecordId,
 										missingRecords,
@@ -321,7 +322,7 @@ export class SyncInDataChecker
 								this.recordMissingRecordAndRepoTransBlockRelations(
 									repositoryId,
 									schemaIndex,
-									tableIndex,
+									entityId,
 									actorId,
 									actorRecordId,
 									missingRecords,
@@ -352,9 +353,9 @@ export class SyncInDataChecker
 	private getRecordsToInsertMap(
 		dataMessages: IDataToTM[]
 	): Map<RepositoryId, Map<SchemaVersionId,
-		Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>> {
+		Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>> {
 		const recordsToInsertMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
+			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
 			= new Map()
 
 		for (let i = 0; i < dataMessages.length; i++) {
@@ -371,7 +372,7 @@ export class SyncInDataChecker
 											this.utils.ensureChildJsMap(
 												recordsToInsertMap, repositoryId),
 											operationHistory.schemaVersion.id),
-										operationHistory.entity.index),
+										operationHistory.entity.id),
 									recordHistory.actor.id)
 									.add(recordHistory.actorRecordId)
 							}
@@ -395,7 +396,7 @@ export class SyncInDataChecker
 	private recordMissingRecordAndRepoTransBlockRelations(
 		repositoryId: RepositoryId,
 		schemaVersionId: SchemaVersionId,
-		tableIndex: TableIndex,
+		entityId: TableIndex,
 		actorId: ActorId,
 		actorRecordId: RepositoryEntityActorRecordId,
 		missingRecords: IMissingRecord[],
@@ -407,7 +408,7 @@ export class SyncInDataChecker
 		missingRecordDataToTMs: IMissingRecordDataToTM[]
 	): void {
 		const missingRecord = this.createMissingRecord(repositoryId, schemaVersionId,
-			tableIndex, actorId, actorRecordId)
+			entityId, actorId, actorRecordId)
 		missingRecords.push(missingRecord)
 		for (const messageIndex of messageIndexMapForActor.get(actorRecordId)) {
 			let dataMessage: IDataToTM
@@ -431,7 +432,7 @@ export class SyncInDataChecker
 	private createMissingRecord(
 		repositoryId: RepositoryId,
 		schemaVersionId: SchemaVersionId,
-		tableIndex: TableIndex,
+		entityId: EntityId,
 		actorId: ActorId,
 		actorRecordId: RecordHistoryActorRecordId
 	): IMissingRecord {
@@ -440,10 +441,7 @@ export class SyncInDataChecker
 				id: schemaVersionId
 			},
 			entity: {
-				index: tableIndex,
-				schemaVersion: {
-					id: schemaVersionId
-				}
+				id: entityId
 			},
 			repository: {
 				id: repositoryId

@@ -7,11 +7,13 @@ import {
 	OneToMany,
 	Table
 }                           from "@airport/air-control";
+import {
+	ApplicationId,
+	ApplicationName
+}                           from '@airport/ground-control'
 import {ApplicationPackage} from "./ApplicationPackage";
 import {Domain}             from "./Domain";
 
-export type ApplicationId = number;
-export type ApplicationName = string;
 
 @Entity()
 @Table({name: "APPLICATIONS"})
@@ -19,15 +21,15 @@ export class Application {
 
 	@Id()
 	@GeneratedValue()
-	id: ApplicationId;
+	id: ApplicationId
 
-	name: ApplicationName;
+	name: ApplicationName
 
 	@ManyToOne()
 	@JoinColumn({name: "DOMAIN_ID", referencedColumnName: "ID"})
-	domain: Domain;
+	domain: Domain
 
 	@OneToMany({mappedBy: "APPLICATION_ID"})
-	applicationPackages: ApplicationPackage[];
+	applicationPackages: ApplicationPackage[]
 
 }

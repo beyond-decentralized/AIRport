@@ -27,6 +27,7 @@ __export(require("./lingo/data/StoreDriver"));
 __export(require("./lingo/data/storeInfo"));
 __export(require("./lingo/schema/DatabaseRelationConfiguration"));
 __export(require("./lingo/schema/Property"));
+__export(require("./lingo/schema/SchemaStatus"));
 __export(require("./lingo/query/facade/Query"));
 __export(require("./lingo/query/QueryResultType"));
 __export(require("./lingo/schema/DatabaseRelationConfiguration"));
