@@ -34,6 +34,18 @@ let SchemaDao = class SchemaDao extends generated_1.BaseSchemaDao {
         super(utils);
         this.airportDatabase = airportDatabase;
     }
+    findAllActive() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let s;
+            return this.db.find.tree({
+                select: {},
+                from: [
+                    s = generated_1.Q.Schema
+                ],
+                where: s.removedInVersion.id.isNull()
+            });
+        });
+    }
     findMapByVersionIds(schemaVersionIds) {
         return __awaiter(this, void 0, void 0, function* () {
             const schemaMapByIndex = new Map();

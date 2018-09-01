@@ -1,10 +1,8 @@
 import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, TableConfiguration } from '@airport/air-control';
 import { IVersionedSchemaObject, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
-import { SchemaColumn } from '../../ddl/schema/SchemaColumn';
-import { SchemaProperty } from '../../ddl/schema/SchemaProperty';
-import { ISchemaVersion, SchemaVersionEId, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQId, QSchemaVersionQRelation } from './qschemaversion';
 import { ISchemaColumn, SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
 import { ISchemaProperty, SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';
+import { ISchemaVersion, SchemaVersionEId, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQId, QSchemaVersionQRelation } from './qschemaversion';
 import { ISchemaRelation, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
 export interface ISchemaEntity extends IVersionedSchemaObject {
     id?: number;
@@ -19,14 +17,14 @@ export interface ISchemaEntity extends IVersionedSchemaObject {
     relations?: ISchemaRelation[];
     relationReferences?: ISchemaRelation[];
     columnMap?: {
-        [name: string]: SchemaColumn;
+        [name: string]: ISchemaColumn;
     };
-    idColumns?: SchemaColumn[];
+    idColumns?: ISchemaColumn[];
     idColumnMap?: {
-        [name: string]: SchemaColumn;
+        [name: string]: ISchemaColumn;
     };
     propertyMap?: {
-        [name: string]: SchemaProperty;
+        [name: string]: ISchemaProperty;
     };
 }
 /**

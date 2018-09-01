@@ -14,9 +14,9 @@ export declare class SchemaColumn extends VersionedSchemaObject {
     /**
      * Index of the ID (within the entity)
      */
-    idIndex: IdColumnOnlyIndex;
+    idIndex?: IdColumnOnlyIndex;
     isGenerated: SchemaColumnIsGenerated;
-    allocationSize: SchemaColumnAllocationSize;
+    allocationSize?: SchemaColumnAllocationSize;
     name: ColumnName;
     notNull: ColumnNotNull;
     manyRelationColumns: ISchemaRelationColumn[];

@@ -14,10 +14,10 @@ import {
 import {
 	SchemaIndex,
 	SchemaName,
-	SchemaScope
+	SchemaScope,
+	SchemaStatus
 } from '@airport/ground-control'
 import {Domain}                from '@airport/territory'
-import {SchemaStatus}          from '../../../../../apis/ground-control/src/lingo/schema/SchemaStatus'
 import {SchemaVersion}         from './SchemaVersion'
 import {VersionedSchemaObject} from './VersionedSchemaObject'
 

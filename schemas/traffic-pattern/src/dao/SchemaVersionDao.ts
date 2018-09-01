@@ -7,13 +7,14 @@ import {
 	tree,
 	UtilsToken,
 	Y
-} from '@airport/air-control'
+}                             from '@airport/air-control'
 import {max}                  from '@airport/air-control/lib/impl/core/field/Functions'
 import {and}                  from '@airport/air-control/lib/impl/core/operation/LogicalOperation'
 import {AirportDatabaseToken} from '@airport/air-control/lib/InjectionTokens'
 import {IAirportDatabase}     from '@airport/air-control/lib/lingo/AirportDatabase'
 import {
 	DomainName,
+	SchemaIndex,
 	SchemaName
 }                             from '@airport/ground-control'
 import {QDomain}              from '@airport/territory'
@@ -38,7 +39,8 @@ import {
 export interface ISchemaVersionDao
 	extends IBaseSchemaVersionDao {
 
-	findAllLatest(
+	findAllLatestForSchemaIndexes(
+		schemaIndexes: SchemaIndex[]
 	): Promise<ISchemaVersion[]>;
 
 	findMaxVersionedMapBySchemaAndDomainNames(
@@ -64,7 +66,8 @@ export class SchemaVersionDao
 		super(utils)
 	}
 
-	async findAllLatest(
+	async findAllLatestForSchemaIndexes(
+		schemaIndexes: SchemaIndex[]
 	): Promise<ISchemaVersion[]> {
 		let sv: QSchemaVersion
 
@@ -73,7 +76,10 @@ export class SchemaVersionDao
 				sv = Q.SchemaVersion
 			],
 			select: {},
-			where: sv.id.in(this.idsForMaxVersionSelect())
+			where: and(
+				sv.id.in(this.idsForMaxVersionSelect()),
+				sv.schema.index.in(schemaIndexes)
+			)
 		})
 	}
 

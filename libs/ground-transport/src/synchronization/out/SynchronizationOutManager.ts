@@ -5,7 +5,6 @@ import {
 import {
 	IRepositoryDao,
 	IRepositoryTransactionHistoryDao,
-	ITerminal,
 	RepositoryDaoToken,
 	RepositoryTransactionHistoryDaoToken
 }                                                  from "@airport/holding-pattern";
@@ -24,7 +23,6 @@ import {
 	ISharingNodeTerminalDao,
 	RepositoryTransactionBlockDaoToken,
 	SharingMessageDaoToken,
-	SharingMessageProcessingStatus,
 	SharingMessageRepoTransBlockDaoToken,
 	SharingNodeDaoToken,
 	SharingNodeId,
@@ -32,10 +30,6 @@ import {
 	SharingNodeRepoTransBlockDaoToken,
 	SharingNodeTerminalDaoToken
 }                                                  from "@airport/moving-walkway";
-import {
-	BlockSyncStatus,
-	SyncStatus
-}                                                  from "@airport/terminal-map";
 import {
 	ISchemaDao,
 	SchemaDaoToken
@@ -47,11 +41,9 @@ import {
 import {stringify}                                 from "zipson";
 import {
 	GroundTransportLogger,
-	RepositoryTransactionBlockCreatorToken,
 	SynchronizationOutManagerToken,
 	SyncOutMessageSenderToken,
 	SyncOutSerializerToken,
-	TerminalLogger,
 } from "../../InjectionTokens";
 import {ISyncOutMessageSender}                     from "./SyncOutMessageSender";
 import {ISyncOutRepositoryTransactionBlockCreator} from "./SyncOutRepositoryTransactionBlockCreator";

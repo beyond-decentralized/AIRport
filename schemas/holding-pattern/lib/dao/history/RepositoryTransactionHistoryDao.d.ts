@@ -1,5 +1,5 @@
 import { IAirportDatabase, IQNumberField, IUtils, JSONLogicalOperation, RawFieldQuery } from '@airport/air-control';
-import { EntityId, JSONBaseOperation, SchemaVersionId } from '@airport/ground-control';
+import { EntityId, JSONBaseOperation } from '@airport/ground-control';
 import { ActorId, RecordHistoryActorRecordId, RepositoryEntityActorRecordId, RepositoryId, RepositoryTransactionHistoryId } from '../../ddl/ddl';
 import { IOperationHistoryDmo, IRecordHistoryDmo } from '../../dmo/dmo';
 import { BaseRepositoryTransactionHistoryDao, IRepositoryTransactionHistory, QActor, QOperationHistory, QRecordHistory, QRecordHistoryNewValue, QRepository, QRepositoryTransactionHistory, RepositoryTransactionHistoryESelect } from '../../generated/generated';
@@ -15,7 +15,7 @@ export interface IRepositoryTransactionHistoryDao {
     findAllLocalChangesForRecordIds(changedRecordIds: Map<RepositoryId, IChangedRecordIdsForRepository>): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>>;
 }
 export interface IChangedRecordIdsForRepository {
-    ids: Map<SchemaVersionId, Map<EntityId, Map<ActorId, Set<RecordHistoryActorRecordId>>>>;
+    ids: Map<EntityId, Map<ActorId, Set<RecordHistoryActorRecordId>>>;
     firstChangeTime: Date;
 }
 export declare class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao implements IRepositoryTransactionHistoryDao {

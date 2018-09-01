@@ -33,7 +33,7 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
         this.airportDatabase = airportDatabase;
         this.schemaVersionDmo = schemaVersionDmo;
     }
-    findAllLatest() {
+    findAllLatestForSchemaIndexes(schemaIndexes) {
         return __awaiter(this, void 0, void 0, function* () {
             let sv;
             return yield this.db.find.tree({
@@ -41,7 +41,7 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
                     sv = generated_1.Q.SchemaVersion
                 ],
                 select: {},
-                where: sv.id.in(this.idsForMaxVersionSelect())
+                where: LogicalOperation_1.and(sv.id.in(this.idsForMaxVersionSelect()), sv.schema.index.in(schemaIndexes))
             });
         });
     }

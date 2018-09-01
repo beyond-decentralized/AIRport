@@ -6,4 +6,3 @@ export * from './schema/SchemaPropertyColumn';
 export * from './schema/SchemaReference';
 export * from './schema/SchemaRelation';
 export * from './schema/SchemaRelationColumn';
-export * from './schema/SchemaStatus';

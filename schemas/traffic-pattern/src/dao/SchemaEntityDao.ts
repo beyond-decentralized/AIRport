@@ -16,7 +16,7 @@ extends IBaseSchemaEntityDao {
 
 	findAllForSchemaVersions(
 		schemaVersionIds: SchemaVersionId[]
-	): Promise<ISchemaReference[]>
+	): Promise<ISchemaEntity[]>
 
 }
 

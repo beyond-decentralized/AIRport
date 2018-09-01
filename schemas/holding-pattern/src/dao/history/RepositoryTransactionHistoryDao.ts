@@ -95,8 +95,7 @@ export interface IRepositoryTransactionHistoryDao {
 }
 
 export interface IChangedRecordIdsForRepository {
-	ids: Map<SchemaVersionId, Map<EntityId,
-		Map<ActorId, Set<RecordHistoryActorRecordId>>>>;
+	ids: Map<EntityId, Map<ActorId, Set<RecordHistoryActorRecordId>>>;
 	firstChangeTime: Date;
 }
 
@@ -247,10 +246,8 @@ export class RepositoryTransactionHistoryDao
 		const repositoryEquals: JSONBaseOperation[] = []
 		for (const [repositoryId, idsForRepository] of changedRecordIds) {
 			const recordMapForRepository            = idsForRepository.ids
-			const schemaEquals: JSONBaseOperation[] = []
-			for (const [schemaVersionId, recordMapForSchema] of recordMapForRepository) {
 				const entityEquals: JSONBaseOperation[] = []
-				for (const [entityId, recordMapForEntity] of recordMapForSchema) {
+				for (const [entityId, recordMapForEntity] of recordMapForRepository) {
 					const actorEquals: JSONBaseOperation[] = []
 					for (const [actorId, recordsForActor] of recordMapForEntity) {
 						actorEquals.push(and(
@@ -262,23 +259,11 @@ export class RepositoryTransactionHistoryDao
 						oh.entity.id.equals(entityId),
 						or(...actorEquals)
 					))
-				}
-				const sv = trafficPatternQSchema.SchemaVersion
-				schemaEquals.push(and(
-					oh.schemaVersion.id.in(field({
-						from: [
-							sv
-						],
-						select: sv.id,
-						where: sv.id.equals(schemaVersionId)
-					})),
-					or(...entityEquals)
-				))
 			}
 			repositoryEquals.push(and(
 				rth.repository.id.equals(repositoryId),
 				rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime),
-				or(...schemaEquals)
+				or(...entityEquals)
 			))
 		}
 

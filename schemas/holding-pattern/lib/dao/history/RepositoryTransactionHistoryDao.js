@@ -103,26 +103,15 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
         const repositoryEquals = [];
         for (const [repositoryId, idsForRepository] of changedRecordIds) {
             const recordMapForRepository = idsForRepository.ids;
-            const schemaEquals = [];
-            for (const [schemaVersionId, recordMapForSchema] of recordMapForRepository) {
-                const entityEquals = [];
-                for (const [entityId, recordMapForEntity] of recordMapForSchema) {
-                    const actorEquals = [];
-                    for (const [actorId, recordsForActor] of recordMapForEntity) {
-                        actorEquals.push(air_control_1.and(rh.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordsForActor))));
-                    }
-                    entityEquals.push(air_control_1.and(oh.entity.id.equals(entityId), air_control_1.or(...actorEquals)));
+            const entityEquals = [];
+            for (const [entityId, recordMapForEntity] of recordMapForRepository) {
+                const actorEquals = [];
+                for (const [actorId, recordsForActor] of recordMapForEntity) {
+                    actorEquals.push(air_control_1.and(rh.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordsForActor))));
                 }
-                const sv = trafficPatternQSchema.SchemaVersion;
-                schemaEquals.push(air_control_1.and(oh.schemaVersion.id.in(air_control_1.field({
-                    from: [
-                        sv
-                    ],
-                    select: sv.id,
-                    where: sv.id.equals(schemaVersionId)
-                })), air_control_1.or(...entityEquals)));
+                entityEquals.push(air_control_1.and(oh.entity.id.equals(entityId), air_control_1.or(...actorEquals)));
             }
-            repositoryEquals.push(air_control_1.and(rth.repository.id.equals(repositoryId), rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime), air_control_1.or(...schemaEquals)));
+            repositoryEquals.push(air_control_1.and(rth.repository.id.equals(repositoryId), rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime), air_control_1.or(...entityEquals)));
         }
         const repoTransHistories = await this.db.find.tree({
             select: {

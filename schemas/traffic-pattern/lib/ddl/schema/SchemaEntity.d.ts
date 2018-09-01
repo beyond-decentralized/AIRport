@@ -1,5 +1,7 @@
 import { TableConfiguration } from '@airport/air-control';
 import { EntityId, EntityIsLocal, EntityIsRepositoryEntity, EntityName, TableIndex } from '@airport/ground-control';
+import { ISchemaColumn } from '../../generated/schema/qschemacolumn';
+import { ISchemaProperty } from '../../generated/schema/qschemaproperty';
 import { SchemaColumn } from './SchemaColumn';
 import { SchemaProperty } from './SchemaProperty';
 import { SchemaRelation } from './SchemaRelation';
@@ -18,13 +20,13 @@ export declare class SchemaEntity extends VersionedSchemaObject {
     relations: SchemaRelation[];
     relationReferences: SchemaRelation[];
     columnMap?: {
-        [name: string]: SchemaColumn;
+        [name: string]: ISchemaColumn;
     };
-    idColumns: SchemaColumn[];
+    idColumns: ISchemaColumn[];
     idColumnMap?: {
-        [name: string]: SchemaColumn;
+        [name: string]: ISchemaColumn;
     };
     propertyMap: {
-        [name: string]: SchemaProperty;
+        [name: string]: ISchemaProperty;
     };
 }

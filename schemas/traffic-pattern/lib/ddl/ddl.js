@@ -11,5 +11,4 @@ __export(require("./schema/SchemaPropertyColumn"));
 __export(require("./schema/SchemaReference"));
 __export(require("./schema/SchemaRelation"));
 __export(require("./schema/SchemaRelationColumn"));
-__export(require("./schema/SchemaStatus"));
 //# sourceMappingURL=ddl.js.map

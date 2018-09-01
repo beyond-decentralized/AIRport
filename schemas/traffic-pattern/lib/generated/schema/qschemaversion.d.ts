@@ -1,9 +1,7 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation } from '@airport/air-control';
-import { SchemaEntity } from '../../ddl/schema/SchemaEntity';
-import { SchemaReference } from '../../ddl/schema/SchemaReference';
-import { ISchema, SchemaEOptionalId, SchemaESelect, QSchemaQRelation } from './qschema';
 import { ISchemaEntity, SchemaEntityESelect, QSchemaEntity } from './qschemaentity';
 import { ISchemaReference, SchemaReferenceESelect, QSchemaReference } from './qschemareference';
+import { ISchema, SchemaEOptionalId, SchemaESelect, QSchemaQRelation } from './qschema';
 export interface ISchemaVersion {
     id?: number;
     integerVersion?: number;
@@ -16,13 +14,13 @@ export interface ISchemaVersion {
     references?: ISchemaReference[];
     referencedBy?: ISchemaReference[];
     entityMapByName?: {
-        [entityName: string]: SchemaEntity;
+        [entityName: string]: ISchemaEntity;
     };
     referencesMapByName?: {
-        [schemaName: string]: SchemaReference;
+        [schemaName: string]: ISchemaReference;
     };
     referencedByMapByName?: {
-        [schemaName: string]: SchemaReference;
+        [schemaName: string]: ISchemaReference;
     };
 }
 /**

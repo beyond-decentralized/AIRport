@@ -1,12 +1,21 @@
+import {EntityId}               from '@airport/ground-control'
 import {Service}                from 'typedi'
 import {
 	BaseSchemaPropertyDao,
 	IBaseSchemaPropertyDao,
-}                               from '../generated/generated'
+	ISchemaEntity,
+	ISchemaProperty,
+	Q,
+	QSchemaProperty,
+} from '../generated/generated'
 import {SchemaPropertyDaoToken} from '../InjectionTokens'
 
 export interface ISchemaPropertyDao
-extends IBaseSchemaPropertyDao {
+	extends IBaseSchemaPropertyDao {
+
+	findAllForEntities(
+		entityIds: EntityId[]
+	): Promise<ISchemaProperty[]>;
 
 }
 
@@ -14,5 +23,19 @@ extends IBaseSchemaPropertyDao {
 export class SchemaPropertyDao
 	extends BaseSchemaPropertyDao
 	implements ISchemaPropertyDao {
+
+	async findAllForEntities(
+		entityIds: EntityId[]
+	): Promise<ISchemaProperty[]> {
+		let p: QSchemaProperty
+
+		return this.db.find.tree({
+			select: {},
+			from: [
+				p = Q.SchemaProperty
+			],
+			where: p.entity.id.in(entityIds)
+		})
+	}
 
 }

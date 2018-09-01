@@ -1,13 +1,13 @@
-import {Service} from "typedi";
-import {SyncOutMessageSenderToken} from "../../../../apps/terminal/src/InjectionTokens";
+import {MessageFromTM}               from '@airport/arrivals-n-departures'
+import {Service}                     from "typedi";
 import {ISharingNode, SharingNodeId} from "@airport/moving-walkway";
-import {MessageFromClient} from "@airport/ground-control";
+import {SyncOutMessageSenderToken}   from '../../InjectionTokens'
 
 export interface ISyncOutMessageSender {
 
 	sendMessages(
 		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
-		messagesBySharingNode: Map<SharingNodeId, MessageFromClient>
+		messagesBySharingNode: Map<SharingNodeId, MessageFromTM>
 	): Promise<void>;
 
 }
@@ -18,7 +18,7 @@ export class SyncOutMessageSender
 
 	async sendMessages(
 		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
-		messagesBySharingNode: Map<SharingNodeId, MessageFromClient>
+		messagesBySharingNode: Map<SharingNodeId, MessageFromTM>
 	): Promise<void> {
 		// FIXME: implement
 	}

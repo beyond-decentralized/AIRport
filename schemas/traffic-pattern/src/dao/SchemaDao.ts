@@ -12,12 +12,12 @@ import {
 	DomainName,
 	SchemaIndex,
 	SchemaName,
+	SchemaStatus,
 	SchemaVersionId
 } from '@airport/ground-control'
 import {QDomain}          from '@airport/territory'
 import {Inject}           from 'typedi/decorators/Inject'
 import {Service}          from 'typedi/decorators/Service'
-import {SchemaStatus}     from '../../../../apis/ground-control/src/lingo/schema/SchemaStatus'
 import {
 	BaseSchemaDao,
 	IBaseSchemaDao,
@@ -25,12 +25,14 @@ import {
 	Q,
 	QSchema,
 	QSchemaVersion
-} from '../generated/generated'
+}                         from '../generated/generated'
 import {SchemaDaoToken}   from '../InjectionTokens'
 
 
 export interface ISchemaDao
 	extends IBaseSchemaDao {
+
+	findAllActive(): Promise<ISchema[]>;
 
 	findMapByVersionIds(
 		schemaVersionIds: SchemaVersionId[]
@@ -64,6 +66,19 @@ export class SchemaDao
 			utils: IUtils,
 	) {
 		super(utils)
+	}
+
+	async findAllActive()
+		: Promise<ISchema[]> {
+		let s: QSchema
+
+		return this.db.find.tree({
+			select: {},
+			from: [
+				s = Q.Schema
+			],
+			where: s.removedInVersion.id.isNull()
+		})
 	}
 
 	async findMapByVersionIds(

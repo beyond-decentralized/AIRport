@@ -1,30 +1,42 @@
-import {Service} from "typedi";
-import {SyncOutSerializerToken} from "../../../../apps/terminal/src/InjectionTokens";
 import {
-	IRepositoryTransactionBlock,
-	IRepoTransBlockRepoTransHistory,
-	ISharingMessage,
-	ISharingMessageRepoTransBlock,
-	ISharingNode,
-	ISharingNodeTerminal,
-	RepositoryTransactionBlockData,
-	SharingNodeId
-} from "@airport/moving-walkway";
+	IUtils,
+	UtilsToken
+}                               from '@airport/air-control'
 import {
-	ITerminal,
+	AgtRepositoryId,
+	DataTransferMessageFromTM,
+	MessageFromTM,
+	MessageFromTMContentType,
+	RepositoryUpdateRequest,
+	TerminalCredentials
+}                               from '@airport/arrivals-n-departures'
+import {
 	IRepository,
 	RepositoryId,
 	RepositoryTransactionHistoryId
-} from "@airport/holding-pattern";
-import {Transactional} from "@airport/tower";
+}                               from '@airport/holding-pattern'
 import {
-	AgtRepositoryId,
-	TerminalCredentials,
-	MessageFromClient,
-	MessageFromClientOperation,
-	RepositoryUpdateRequest
-} from "@airport/ground-control";
-import {SyncStatus} from "@airport/terminal-map";
+	IRepositoryTransactionBlock,
+	IRepositoryTransactionBlockDao,
+	ISharingMessage,
+	ISharingMessageDao,
+	ISharingMessageRepoTransBlock,
+	ISharingMessageRepoTransBlockDao,
+	ISharingNode,
+	ISharingNodeTerminal,
+	RepositoryTransactionBlockDaoToken,
+	RepositoryTransactionBlockData,
+	SharingMessageDaoToken,
+	SharingMessageRepoTransBlockDaoToken,
+	SharingNodeId
+}                               from '@airport/moving-walkway'
+import {Transactional}          from '@airport/tower'
+import {
+	Inject,
+	Service
+}                               from 'typedi'
+import {stringify}              from 'zipson/lib'
+import {SyncOutSerializerToken} from '../../InjectionTokens'
 
 export interface ISyncOutSerializer {
 
@@ -36,13 +48,28 @@ export interface ISyncOutSerializer {
 		repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>,
 		repoTransHistoryIds: Set<RepositoryTransactionHistoryId>,
 		terminal: ITerminal
-	): Promise<Map<SharingNodeId, MessageFromClient>>;
+	): Promise<Map<SharingNodeId, MessageFromTM>>;
 
 }
 
 @Service(SyncOutSerializerToken)
 export class SyncOutSerializer
 	implements ISyncOutSerializer {
+
+	constructor(
+		@Inject(UtilsToken)
+		private utils: IUtils,
+		@Inject(RepositoryTransactionBlockDaoToken)
+		private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
+		@Inject(RepoTransBlockRepoTransHistoryDaoToken)
+		private repoTransBlockRepoTransHistoryDao: IRepoTransBlockRepoTransHistoryDao,
+		@Inject(SharingMessageRepoTransBlockDaoToken)
+		private sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao,
+		@Inject(SharingMessageDaoToken)
+		private sharingMessageDao: ISharingMessageDao
+	) {
+	}
+
 
 	@Transactional()
 	async serializeMessages(
@@ -53,18 +80,18 @@ export class SyncOutSerializer
 		repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>,
 		repoTransHistoryIds: Set<RepositoryTransactionHistoryId>,
 		terminal: ITerminal
-	): Promise<Map<SharingNodeId, MessageFromClient>> {
-		const messageMap: Map<SharingNodeId, MessageFromClient> = new Map();
+	): Promise<Map<SharingNodeId, MessageFromTM>> {
+		const messageMap: Map<SharingNodeId, MessageFromTM> = new Map()
 
-		const lastSyncAttemptTimestamp = new Date();
-		const repositoryTransactionBlocks: IRepositoryTransactionBlock[] = [];
-		const repoTransBlocksByRepositoryId: Map<RepositoryId, IRepositoryTransactionBlock> = new Map();
+		const lastSyncAttemptTimestamp                                                      = new Date()
+		const repositoryTransactionBlocks: IRepositoryTransactionBlock[]                    = []
+		const repoTransBlocksByRepositoryId: Map<RepositoryId, IRepositoryTransactionBlock> = new Map()
 
-		let allTransLogRepoTransHistories: IRepoTransBlockRepoTransHistory[] = [];
+		let allTransLogRepoTransHistories: IRepoTransBlockRepoTransHistory[] = []
 		for (const [repositoryId, messageData] of repoTransBlockDataByRepoId) {
-			const repositoryTransactionBlockContents = stringify(messageData);
+			const repositoryTransactionBlockContents = stringify(messageData)
 
-			const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = [];
+			const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = []
 
 			const repositoryTransactionBlock: IRepositoryTransactionBlock = {
 				lastSyncAttemptTimestamp,
@@ -80,75 +107,87 @@ export class SyncOutSerializer
 				},
 				contents: repositoryTransactionBlockContents,
 				repoTransBlockRepoTransHistories,
-			};
+			}
 
 			this.utils.ensureChildArray(repoTransBlocksByRepositoryId, repositoryId)
-				.push(repositoryTransactionBlock);
+				.push(repositoryTransactionBlock)
 
 			for (const repositoryTransactionHistory of messageData.repoTransHistories) {
 				repoTransBlockRepoTransHistories.push({
 					repositoryTransactionHistory,
 					repositoryTransactionBlock
-				});
+				})
 			}
 			allTransLogRepoTransHistories
-				= allTransLogRepoTransHistories.concat(repoTransBlockRepoTransHistories);
+				= allTransLogRepoTransHistories.concat(repoTransBlockRepoTransHistories)
 
-			repositoryTransactionBlocks.push(repositoryTransactionBlock);
+			repositoryTransactionBlocks.push(repositoryTransactionBlock)
 		}
 
-		await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
+		await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false)
 		await this.repoTransBlockRepoTransHistoryDao
-			.bulkCreate(allTransLogRepoTransHistories, false, false);
+			.bulkCreate(allTransLogRepoTransHistories, false, false)
 
-		const sharingMessages: ISharingMessage[] = [];
-		const sharingMessageRepoTransBlocks: ISharingMessageRepoTransBlock[] = [];
+		const sharingMessages: ISharingMessage[]                             = []
+		const sharingMessageRepoTransBlocks: ISharingMessageRepoTransBlock[] = []
 
 		for (const [sharingNodeId, repositoryMapById] of repoMapBySharingNodeAndRepoIds) {
-			const repositoryUpdateRequests: RepositoryUpdateRequest[] = [];
-			const sharingNodeDb = sharingNodeDbMap.get(sharingNodeId);
+			const repositoryUpdateRequests: RepositoryUpdateRequest[]
+				                                       = []
+			const sharingNodeDb                      = sharingNodeDbMap.get(sharingNodeId)
 			const terminalCredentials: TerminalCredentials
-				= [sharingNodeDb.agtTerminalId, sharingNodeDb.agtTerminalHash];
+				                                       = {
+				terminalId: sharingNodeDb.agtTerminalId,
+				terminalPassword: sharingNodeDb.agtTerminalPassword
+			}
 			// FIXME: add sync ACKS
-			const message: MessageFromClient = [
-				MessageFromClientOperation.ADD_DATA, terminalCredentials, null, repositoryUpdateRequests, null];
-			messageMap.set(sharingNodeId, message);
+			const message: DataTransferMessageFromTM = {
+				protocolVersion: 0,
+				contentType: MessageFromTMContentType.DATA_TRANSFER,
+				terminalCredentials,
+				tmSharingMessageId: null,
+				repositoryUpdateRequests,
+				terminalSyncAcks: []
+			}
+			messageMap.set(sharingNodeId, message)
 
 			const sharingMessage: ISharingMessage = {
-				syncStatus: SyncStatus.SYNC_PENDING,
-				transmissionRetryCount: 0,
 				sharingNode: sharingNodeMap.get(sharingNodeId)
-			};
-			sharingMessages.push(sharingMessage);
+			}
+			sharingMessages.push(sharingMessage)
 			for (const [repositoryId, repositoryAndAgtRepositoryId] of repositoryMapById) {
-				const repositoryTransactionBlock = repoTransBlocksByRepositoryId.get(repositoryId);
+				const repositoryTransactionBlock = repoTransBlocksByRepositoryId.get(repositoryId)
 
-				repositoryUpdateRequests.push([repositoryAndAgtRepositoryId[1],
-					repositoryTransactionBlock.id, repositoryTransactionBlock.repositoryTransactionBlockContents]);
+				repositoryUpdateRequests.push({
+						agtRepositoryId: repositoryAndAgtRepositoryId[1],
+						tmRepositoryTransactionBlockId: repositoryTransactionBlock.id,
+						repositoryTransactionBlockContents: repositoryTransactionBlock.contents
+					}
+				)
 
 				const sharingMessageRepoTransBlock: ISharingMessageRepoTransBlock = {
 					sharingMessage,
 					repositoryTransactionBlock,
-				};
-				sharingMessageRepoTransBlocks.push(sharingMessageRepoTransBlock);
+				}
+				sharingMessageRepoTransBlocks.push(sharingMessageRepoTransBlock)
 			}
 		}
 
-		await this.sharingMessageDao.bulkCreate(sharingMessages, false, false);
+		await this.sharingMessageDao.bulkCreate(sharingMessages, false, false)
 
 		for (const sharingMessage of sharingMessages) {
-			messageMap.get(sharingMessage.sharingNode.id)[2] = sharingMessage.id;
+			messageMap.get(sharingMessage.sharingNode.id)[2] = sharingMessage.id
 		}
 
 		await this.sharingMessageRepoTransBlockDao.bulkCreate(
 			sharingMessageRepoTransBlocks, false, false
-		);
+		)
 
 		// await this.repositoryTransactionHistoryDao.updateSyncStatusHistory(
 		// 	SyncStatus.SYNCHRONIZING, Array.from(repoTransHistoryIds)
 		// );
 
-		return messageMap;
+		return messageMap
 	}
 
 

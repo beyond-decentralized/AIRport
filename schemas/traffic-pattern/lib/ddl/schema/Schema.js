@@ -9,10 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
 const territory_1 = require("@airport/territory");
-const SchemaStatus_1 = require("./SchemaStatus");
 const SchemaVersion_1 = require("./SchemaVersion");
 const VersionedSchemaObject_1 = require("./VersionedSchemaObject");
 let Schema = class Schema extends VersionedSchemaObject_1.VersionedSchemaObject {
@@ -32,7 +31,7 @@ __decorate([
 __decorate([
     air_control_1.Column({ name: 'SCOPE', nullable: false }),
     air_control_1.DbString(),
-    __metadata("design:type", typeof (_a = typeof SchemaScope !== "undefined" && SchemaScope) === "function" ? _a : Object)
+    __metadata("design:type", String)
 ], Schema.prototype, "scope", void 0);
 __decorate([
     air_control_1.Column({ name: 'SCHEMA_NAME', nullable: false }),

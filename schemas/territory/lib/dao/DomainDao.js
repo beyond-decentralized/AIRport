@@ -21,6 +21,16 @@ let DomainDao = class DomainDao extends baseDaos_1.BaseDomainDao {
     constructor(utils) {
         super(utils);
     }
+    async findByIdIn(domainIds) {
+        let d;
+        return await this.db.find.tree({
+            select: {},
+            from: [
+                d = __1.Q.Domain
+            ],
+            where: d.id.in(domainIds)
+        });
+    }
     async findMapByNameWithNames(domainNames) {
         let d;
         const domains = await this.db.find.tree({

@@ -92,7 +92,6 @@ export declare const SCHEMA: {
                 "index": number;
                 "isId": boolean;
                 "oneToManyElems": {
-                    "cascade": number;
                     "mappedBy": string;
                 };
                 "relationType": number;
@@ -194,6 +193,7 @@ export declare const SCHEMA: {
                 "index": number;
                 "isId": boolean;
                 "oneToManyElems": {
+                    "cascade": number;
                     "mappedBy": string;
                 };
                 "relationType": number;
