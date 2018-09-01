@@ -23,9 +23,6 @@
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaStatus.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaStatus.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/SchemaStatus.js.map" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -70,13 +67,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="js" value="2" />
-          <entry key="txt" value="72" />
+          <entry key="txt" value="160" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JavaScript" value="2" />
-          <entry key="PLAIN_TEXT" value="72" />
+          <entry key="PLAIN_TEXT" value="160" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -3008,11 +3005,18 @@
       <option name="project" value="LOCAL" />
       <updated>1535765386136</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="finished in-memory ddl for 'takeoff', started adding datastructure setup for 'landing'">
+      <created>1535835199188</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1535835199188</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12701000" />
+    <option name="totallyTimeSpent" value="13322000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1920" height="1055" extended-state="6" />
@@ -3046,9 +3050,12 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="adding not null constraints" />
     <MESSAGE value="refactoring holding-pattern and dependencies" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactoring holding-pattern and dependencies" />
+    <MESSAGE value="finished in-memory ddl for 'takeoff', started adding datastructure setup for 'landing'" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished in-memory ddl for 'takeoff', started adding datastructure setup for 'landing'" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

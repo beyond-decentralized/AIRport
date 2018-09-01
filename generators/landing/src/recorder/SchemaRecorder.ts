@@ -113,7 +113,10 @@ export class SchemaRecorder
 			jsonSchemaMapByName.set(this.schemaUtils.getSchemaName(jsonSchema), jsonSchema)
 		}
 
-		const domainMapByName                 = await this.recordDomains(domainSet)
+		const {
+			domainMapByName,
+			domains
+		}                 = await this.recordDomains(domainSet)
 		const schemaMapByName                 = await this.recordSchemas(
 			domainMapByName, jsonSchemaMapByName)
 		const newSchemaVersionMapBySchemaName = await this.recordSchemaVersions(
@@ -134,11 +137,6 @@ export class SchemaRecorder
 			schemaReferenceMap, relationsMap, columnsMap)
 
 
-		const domains: IDomain[] = []
-		for(const domain of domainMapByName.values()) {
-			domains.push(domain)
-		}
-
 		const schemas: ISchema[] = []
 		for(const schema of schemaMapByName.values()) {
 			schemas[schema.index] = schema
@@ -152,20 +150,30 @@ export class SchemaRecorder
 	}
 
 	private async recordDomains(
-		domainSet: Set<DomainName>
-	): Promise<Map<DomainName, IDomain>> {
-		const domainMapByName
-			      = await this.domainDao.findMapByNameWithNames(Array.from(domainSet))
+		domainNameSet: Set<DomainName>
+	): Promise<{
+		domainMapByName: Map<DomainName, IDomain>,
+		domains: IDomain[]
+	}> {
+		const domains = this.terminalStore.getDomains();
 
+		const domainMapByName: Map<DomainName, IDomain> = new Map()
+		for(const domain of domains) {
+			if(domainNameSet.has(domain.name)) {
+				domainMapByName.set(domain.name, domain)
+			}
+		}
 		const newDomains: IDomain[] = []
-		for (const domainName of domainSet) {
+		for (const domainName of domainNameSet) {
 			if (domainMapByName.has(domainName)) {
 				continue
 			}
-			newDomains.push({
+			const domain: IDomain = {
 				name: domainName,
 				schemas: []
-			})
+			};
+			newDomains.push(domain)
+			domains.push(domain)
 		}
 
 		if (newDomains.length) {
@@ -176,15 +184,22 @@ export class SchemaRecorder
 			}
 		}
 
-		return domainMapByName
+		return {
+			domainMapByName,
+			domains
+		}
 	}
 
 	private async recordSchemas(
 		domainMapByName: Map<DomainName, IDomain>,
 		jsonSchemaMapByName: Map<SchemaName, JsonSchema>
-	): Promise<Map<SchemaName, ISchema>> {
-		const schemaMapByName = await this.schemaDao
-			.findMapByNames(Array.from(jsonSchemaMapByName.keys()))
+	): Promise<{
+		schemaMapByName: Map<SchemaName, ISchema>,
+		schemas: ISchema[]
+	}> {
+		const schemaMapByName: Map<SchemaName, ISchema> = new Map()
+
+		const schemas = this.
 
 		const newSchemas: ISchema[] = []
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {

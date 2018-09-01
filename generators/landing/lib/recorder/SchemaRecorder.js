@@ -46,7 +46,7 @@ let SchemaRecorder = class SchemaRecorder {
             domainSet.add(jsonSchema.domain);
             jsonSchemaMapByName.set(this.schemaUtils.getSchemaName(jsonSchema), jsonSchema);
         }
-        const domainMapByName = await this.recordDomains(domainSet);
+        const { domainMapByName, domains } = await this.recordDomains(domainSet);
         const schemaMapByName = await this.recordSchemas(domainMapByName, jsonSchemaMapByName);
         const newSchemaVersionMapBySchemaName = await this.recordSchemaVersions(jsonSchemaMapByName, schemaMapByName);
         const schemaReferenceMap = await this.generateSchemaReferences(jsonSchemaMapByName, newSchemaVersionMapBySchemaName);
@@ -55,10 +55,6 @@ let SchemaRecorder = class SchemaRecorder {
         const relationsMap = await this.generateSchemaRelations(jsonSchemaMapByName, entitiesMapBySchemaName, propertiesMap, schemaReferenceMap);
         const columnsMap = await this.generateSchemaColumns(jsonSchemaMapByName, entitiesMapBySchemaName, propertiesMap);
         await this.generateSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, schemaReferenceMap, relationsMap, columnsMap);
-        const domains = [];
-        for (const domain of domainMapByName.values()) {
-            domains.push(domain);
-        }
         const schemas = [];
         for (const schema of schemaMapByName.values()) {
             schemas[schema.index] = schema;
@@ -69,17 +65,25 @@ let SchemaRecorder = class SchemaRecorder {
             schemas
         });
     }
-    async recordDomains(domainSet) {
-        const domainMapByName = await this.domainDao.findMapByNameWithNames(Array.from(domainSet));
+    async recordDomains(domainNameSet) {
+        const domains = this.terminalStore.getDomains();
+        const domainMapByName = new Map();
+        for (const domain of domains) {
+            if (domainNameSet.has(domain.name)) {
+                domainMapByName.set(domain.name, domain);
+            }
+        }
         const newDomains = [];
-        for (const domainName of domainSet) {
+        for (const domainName of domainNameSet) {
             if (domainMapByName.has(domainName)) {
                 continue;
             }
-            newDomains.push({
+            const domain = {
                 name: domainName,
                 schemas: []
-            });
+            };
+            newDomains.push(domain);
+            domains.push(domain);
         }
         if (newDomains.length) {
             await this.domainDao.bulkCreate(newDomains, false, false);
@@ -87,11 +91,15 @@ let SchemaRecorder = class SchemaRecorder {
                 domainMapByName.set(domain.name, domain);
             }
         }
-        return domainMapByName;
+        return {
+            domainMapByName,
+            domains
+        };
     }
     async recordSchemas(domainMapByName, jsonSchemaMapByName) {
-        const schemaMapByName = await this.schemaDao
-            .findMapByNames(Array.from(jsonSchemaMapByName.keys()));
+        const schemaMapByName = new Map();
+        const schemas = this.
+        ;
         const newSchemas = [];
         for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
             if (schemaMapByName.has(schemaName)) {

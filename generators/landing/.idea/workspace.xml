@@ -11,7 +11,6 @@
       <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalState.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalStore.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/recorder/SchemaRecorder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recorder/SchemaRecorder.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recorder/SchemaRecorder.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/recorder/SchemaRecorder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recorder/SchemaRecorder.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/recorder/SchemaRecorder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/recorder/SchemaRecorder.ts" afterDir="false" />
@@ -36,6 +35,48 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <splitter split-orientation="horizontal" split-proportion="0.5">
+            <split-first>
+              <leaf>
+                <file pinned="false" current-in-tab="true">
+                  <entry file="file://$PROJECT_DIR$/src/recorder/SchemaRecorder.ts">
+                    <provider selected="true" editor-type-id="text-editor">
+                      <state relative-caret-position="638">
+                        <caret line="139" selection-start-line="139" selection-end-line="139" />
+                        <folding>
+                          <element signature="e#0#85#0" expanded="true" />
+                        </folding>
+                      </state>
+                    </provider>
+                  </entry>
+                </file>
+              </leaf>
+            </split-first>
+            <split-second>
+              <leaf>
+                <file pinned="false" current-in-tab="true">
+                  <entry file="file://$PROJECT_DIR$/src/recorder/SchemaRecorder.ts">
+                    <provider selected="true" editor-type-id="text-editor">
+                      <state relative-caret-position="762">
+                        <caret line="201" column="25" selection-start-line="201" selection-start-column="25" selection-end-line="201" selection-end-column="25" />
+                        <folding>
+                          <element signature="e#0#85#0" expanded="true" />
+                        </folding>
+                      </state>
+                    </provider>
+                  </entry>
+                </file>
+              </leaf>
+            </split-second>
+          </splitter>
+        </state>
+      </content>
+    </window>
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="2134754356">
@@ -105,27 +146,27 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="json" value="34" />
-          <entry key="ts" value="11437" />
+          <entry key="ts" value="11746" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="34" />
-          <entry key="TypeScript" value="11437" />
+          <entry key="TypeScript" value="11746" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="json" value="5" />
           <entry key="md" value="2" />
-          <entry key="ts" value="57" />
+          <entry key="ts" value="60" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JSON" value="5" />
           <entry key="Markdown" value="2" />
-          <entry key="TypeScript" value="57" />
+          <entry key="TypeScript" value="60" />
         </counts>
       </usages-collector>
     </session>
@@ -137,8 +178,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/recorder/SchemaRecorder.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="365">
-                  <caret line="234" column="23" lean-forward="true" selection-start-line="234" selection-start-column="23" selection-end-line="234" selection-end-column="23" />
+                <state relative-caret-position="4">
+                  <caret line="230" column="36" selection-start-line="230" selection-start-column="16" selection-end-line="230" selection-end-column="36" />
                   <folding>
                     <element signature="e#0#85#0" expanded="true" />
                   </folding>
@@ -153,8 +194,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/recorder/SchemaRecorder.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="560">
-                  <caret line="131" column="29" selection-start-line="131" selection-start-column="29" selection-end-line="131" selection-end-column="29" />
+                <state relative-caret-position="204">
+                  <caret line="273" column="80" selection-start-line="273" selection-start-column="49" selection-end-line="273" selection-end-column="80" />
                   <folding>
                     <element signature="e#0#85#0" expanded="true" />
                   </folding>
@@ -181,12 +222,12 @@
       <find>existingSchemaMapByName</find>
       <find>SchemaName</find>
       <find>string</find>
-      <find>recordSchemaVersions</find>
       <find>JsonSchemaColumn</find>
       <find>schemaVersion =</find>
       <find>generateSchemaReferences</find>
       <find>generateSchemaRelationColumns</find>
       <find>manyRelation</find>
+      <find>recordSchemaVersions</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src</dir>
@@ -359,12 +400,12 @@
       <workItem from="1535638591625" duration="595000" />
       <workItem from="1535771619544" duration="566000" />
       <workItem from="1535816139207" duration="647000" />
-      <workItem from="1535833241372" duration="1727000" />
+      <workItem from="1535833241372" duration="2534000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68400000" />
+    <option name="totallyTimeSpent" value="69207000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
@@ -614,8 +655,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/recorder/SchemaRecorder.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="234" column="23" lean-forward="true" selection-start-line="234" selection-start-column="23" selection-end-line="234" selection-end-column="23" />
+        <state relative-caret-position="762">
+          <caret line="201" column="25" selection-start-line="201" selection-start-column="25" selection-end-line="201" selection-end-column="25" />
           <folding>
             <element signature="e#0#85#0" expanded="true" />
           </folding>

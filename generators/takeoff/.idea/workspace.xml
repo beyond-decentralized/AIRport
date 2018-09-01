@@ -11,7 +11,6 @@
       <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalState.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalStore.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../landing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../landing/lib/recorder/SchemaRecorder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../landing/lib/recorder/SchemaRecorder.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../landing/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../landing/lib/recorder/SchemaRecorder.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../landing/lib/recorder/SchemaRecorder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../landing/lib/recorder/SchemaRecorder.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../landing/src/recorder/SchemaRecorder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../landing/src/recorder/SchemaRecorder.ts" afterDir="false" />
@@ -259,7 +258,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33977000" />
+    <option name="totallyTimeSpent" value="34072000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
