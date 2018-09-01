@@ -4,11 +4,13 @@ import {
 }                                    from '@airport/air-control'
 import {
 	DomainId,
+	EntityId,
 	ISchemaUtils,
+	PropertyId,
 	SchemaIndex,
 	SchemaUtilsToken,
 	SchemaVersionId
-}                                    from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	DomainDaoToken,
 	IDomain,
@@ -112,7 +114,10 @@ export class QueryObjectInitializer
 			retrievedDdlObjects.latestSchemaVersions
 		)
 
-		this.linkEntities(schemaVersionMapById)
+		const entityMapById = this.linkEntities(
+			schemaVersionMapById, retrievedDdlObjects.entities)
+
+
 	}
 
 	async retrieveDdlObjects()
@@ -224,14 +229,62 @@ export class QueryObjectInitializer
 	private linkEntities(
 		schemaVersionMapById: Map<SchemaVersionId, ISchemaVersion>,
 		entities: ISchemaEntity[]
-	) {
+	): Map<EntityId, ISchemaEntity> {
+		const entityMapById: Map<EntityId, ISchemaEntity> = new Map()
+
 		entities.forEach((
 			entity: ISchemaEntity
 		) => {
 			const schemaVersion = schemaVersionMapById.get(entity.schemaVersion.id)
 			entity.schemaVersion = schemaVersion
-			schemaVersion.entities.push(entity)
+			schemaVersion.entities[entity.index] = entity
 
+			entity.columns = []
+			entity.properties = []
+			entity.relations = []
+			entity.relationReferences = []
+			entity.columnMap = {}
+			entity.idColumns = []
+			entity.idColumnMap = {}
+			entity.propertyMap = {}
+
+			entityMapById.set(entity.id, entity)
+		})
+
+		return entityMapById
+	}
+
+	private linkPropertiesAndRelations(
+		entityMapById: Map<EntityId, ISchemaEntity>,
+		properties: ISchemaProperty[],
+		relations: ISchemaRelation[]
+	) {
+		const propertyMapById: Map<PropertyId, ISchemaProperty> = new Map()
+
+		properties.forEach((
+			property: ISchemaProperty
+		) => {
+			const entity = entityMapById.get(property.entity.id)
+			entity.properties[property.index] = property
+			entity.propertyMap[property.name] = property
+
+			property.entity = entity
+
+			property.propertyColumns = []
+
+			propertyMapById.set(property.id, property)
+		})
+
+		relations.forEach((
+			relation: ISchemaRelation
+		) => {
+			const entity = entityMapById.get(relation.entity.id)
+			entity.relations[relation.index] = relation
+
+			relation.entity = entity
+			relation.manyRelationColumns = []
+			relation.oneRelationColumns = []
+			relation
 		})
 	}
 
