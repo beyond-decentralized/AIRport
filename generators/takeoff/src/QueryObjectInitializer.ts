@@ -6,7 +6,8 @@ import {
 	DomainId,
 	ISchemaUtils,
 	SchemaIndex,
-	SchemaUtilsToken
+	SchemaUtilsToken,
+	SchemaVersionId
 }                                    from '@airport/ground-control'
 import {
 	DomainDaoToken,
@@ -15,12 +16,19 @@ import {
 }                                    from '@airport/territory'
 import {
 	ISchema,
+	ISchemaColumn,
 	ISchemaColumnDao,
 	ISchemaDao,
+	ISchemaEntity,
 	ISchemaEntityDao,
+	ISchemaProperty,
+	ISchemaPropertyColumn,
 	ISchemaPropertyColumnDao,
 	ISchemaPropertyDao,
+	ISchemaReference,
 	ISchemaReferenceDao,
+	ISchemaRelation,
+	ISchemaRelationColumn,
 	ISchemaRelationColumnDao,
 	ISchemaRelationDao,
 	ISchemaVersion,
@@ -45,6 +53,19 @@ export interface IQueryObjectInitializer {
 
 	initialize(): Promise<void>
 
+}
+
+interface RetrievedDllObjects {
+	columns: ISchemaColumn[]
+	domains: IDomain[]
+	entities: ISchemaEntity[]
+	latestSchemaVersions: ISchemaVersion[]
+	properties: ISchemaProperty[]
+	propertyColumns: ISchemaPropertyColumn[]
+	relationColumns: ISchemaRelationColumn[]
+	relations: ISchemaRelation[]
+	schemaReferences: ISchemaReference[]
+	schemas: ISchema[]
 }
 
 @Service(QueryObjectInitializerToken)
@@ -83,6 +104,19 @@ export class QueryObjectInitializer
 
 
 	async initialize(): Promise<void> {
+		const retrievedDdlObjects = await this.retrieveDdlObjects()
+
+		const schemaVersionMapById = this.linkDomainsAndSchemasAndVersions(
+			retrievedDdlObjects.domains,
+			retrievedDdlObjects.schemas,
+			retrievedDdlObjects.latestSchemaVersions
+		)
+
+		this.linkEntities(schemaVersionMapById)
+	}
+
+	async retrieveDdlObjects()
+		: Promise<RetrievedDllObjects> {
 		const schemas                      = await this.schemaDao
 			.findAllActive()
 		const schemaIndexes: SchemaIndex[] = []
@@ -128,13 +162,25 @@ export class QueryObjectInitializer
 		const relationColumns = await this.schemaRelationColumnDao
 			.findAllForColumns(columnIds)
 
+		return {
+			columns,
+			domains,
+			entities,
+			latestSchemaVersions,
+			properties,
+			propertyColumns,
+			relationColumns,
+			relations,
+			schemaReferences,
+			schemas
+		}
 	}
 
 	linkDomainsAndSchemasAndVersions(
 		domains: IDomain[],
 		schemas: ISchema[],
-		schemaVersions: ISchemaVersion
-	) {
+		latestSchemaVersions: ISchemaVersion[]
+	): Map<SchemaVersionId, ISchemaVersion> {
 		const domainMapById: Map<DomainId, IDomain> = new Map()
 		domains.forEach((
 			domain: IDomain
@@ -150,9 +196,43 @@ export class QueryObjectInitializer
 			schemaMapByIndex.set(schema.index, schema)
 			const domain  = domainMapById.get(schema.domain.id)
 			schema.domain = domain
-			domain.schemas.push(schema)
+			domain.schemas.push(<any>schema)
 		})
 
+		const schemaVersionMapById: Map<SchemaVersionId, ISchemaVersion> = new Map()
+		latestSchemaVersions.forEach((
+			schemaVersion: ISchemaVersion
+		) => {
+			schemaVersionMapById.set(schemaVersion.id, schemaVersion)
+
+			const schema          = schemaMapByIndex.get(schemaVersion.schema.index)
+			schema.currentVersion = schemaVersion
+			schema.versions       = [schemaVersion]
+
+			schemaVersion.schema                = schema
+			schemaVersion.entities              = []
+			schemaVersion.references            = []
+			schemaVersion.referencedBy          = []
+			schemaVersion.entityMapByName       = {}
+			schemaVersion.referencesMapByName   = {}
+			schemaVersion.referencedByMapByName = {}
+		})
+
+		return schemaVersionMapById
+	}
+
+	private linkEntities(
+		schemaVersionMapById: Map<SchemaVersionId, ISchemaVersion>,
+		entities: ISchemaEntity[]
+	) {
+		entities.forEach((
+			entity: ISchemaEntity
+		) => {
+			const schemaVersion = schemaVersionMapById.get(entity.schemaVersion.id)
+			entity.schemaVersion = schemaVersion
+			schemaVersion.entities.push(entity)
+
+		})
 	}
 
 }
