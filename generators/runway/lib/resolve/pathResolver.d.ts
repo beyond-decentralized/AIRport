@@ -1,5 +1,5 @@
-import { EntityCandidate } from "../parser/EntityCandidate";
-import { QEntityFileBuilder } from "../builder/entity/QEntityFileBuilder";
+import { QEntityFileBuilder } from '../builder/entity/QEntityFileBuilder';
+import { EntityCandidate } from '../parser/EntityCandidate';
 /**
  * Created by Papa on 4/27/2016.
  */

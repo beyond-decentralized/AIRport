@@ -7,19 +7,13 @@
     <list default="true" id="8eea2d2d-1845-4dd0-be94-e280d49c3831" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/resolve/pathResolver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/resolve/pathResolver.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/resolve/pathResolver.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/resolve/pathResolver.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/resolve/pathResolver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/resolve/pathResolver.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/runway/src/resolve/pathResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/src/resolve/pathResolver.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dao/history/RepositoryTransactionHistoryDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/history/RepositoryTransactionHistoryDao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dao/history/RepositoryTransactionHistoryDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/history/RepositoryTransactionHistoryDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dao/history/RepositoryTransactionHistoryDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dao/history/RepositoryTransactionHistoryDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dmo/history/OperationHistoryDmo.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dmo/history/OperationHistoryDmo.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dmo/history/OperationHistoryDmo.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dmo/history/OperationHistoryDmo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dmo/history/OperationHistoryDmo.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dmo/history/OperationHistoryDmo.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao/history/RepositoryTransactionHistoryDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/history/RepositoryTransactionHistoryDao.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dmo/history/OperationHistoryDmo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dmo/history/OperationHistoryDmo.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/src/ddl/schema/SchemaEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/src/ddl/schema/SchemaEntity.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/src/ddl/schema/SchemaVersion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/src/ddl/schema/SchemaVersion.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -620,7 +614,7 @@
       <workItem from="1535638191274" duration="197000" />
       <workItem from="1535638411243" duration="17000" />
       <workItem from="1535638458652" duration="55000" />
-      <workItem from="1535638591818" duration="6586000" />
+      <workItem from="1535638591818" duration="7040000" />
     </task>
     <task id="LOCAL-00001" summary="AIR schema changes">
       <created>1518967641273</created>
@@ -654,7 +648,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="276184000" />
+    <option name="totallyTimeSpent" value="276638000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />

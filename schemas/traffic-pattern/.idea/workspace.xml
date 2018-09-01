@@ -4,19 +4,13 @@
     <list default="true" id="1e57073d-557d-42e2-ad03-627051383ce6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/resolve/pathResolver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/resolve/pathResolver.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/resolve/pathResolver.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/resolve/pathResolver.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/resolve/pathResolver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/resolve/pathResolver.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../generators/runway/src/resolve/pathResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/src/resolve/pathResolver.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../holding-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/dmo/history/OperationHistoryDmo.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/dmo/history/OperationHistoryDmo.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/dmo/history/OperationHistoryDmo.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/dmo/history/OperationHistoryDmo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/dmo/history/OperationHistoryDmo.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/dmo/history/OperationHistoryDmo.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/src/dao/history/RepositoryTransactionHistoryDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/src/dao/history/RepositoryTransactionHistoryDao.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/src/dmo/history/OperationHistoryDmo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/src/dmo/history/OperationHistoryDmo.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ddl/schema/SchemaEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/ddl/schema/SchemaEntity.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/lib/" />
@@ -38,12 +32,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="ts" value="21" />
+          <entry key="ts" value="22" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="TypeScript" value="21" />
+          <entry key="TypeScript" value="22" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -137,13 +131,25 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ddl/schema/SchemaVersion.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="431">
               <caret line="78" column="66" lean-forward="true" selection-start-line="78" selection-start-column="66" selection-end-line="78" selection-end-column="66" />
               <folding>
                 <element signature="e#0#165#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ddl/schema/VersionedSchemaObject.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="18" column="14" lean-forward="true" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#102#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -157,15 +163,6 @@
               <folding>
                 <element signature="e#0#162#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/generated/schema/qschemacolumn.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="71" column="17" selection-start-line="71" selection-start-column="17" selection-end-line="71" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -294,12 +291,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1535638583637</updated>
-      <workItem from="1535638590845" duration="4515000" />
+      <workItem from="1535638590845" duration="4968000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4515000" />
+    <option name="totallyTimeSpent" value="4968000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="3840" y="-2" width="1920" height="1082" extended-state="6" />
@@ -453,6 +450,16 @@
           <caret line="78" column="66" lean-forward="true" selection-start-line="78" selection-start-column="66" selection-end-line="78" selection-end-column="66" />
           <folding>
             <element signature="e#0#165#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ddl/schema/VersionedSchemaObject.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="18" column="14" lean-forward="true" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#102#0" expanded="true" />
           </folding>
         </state>
       </provider>

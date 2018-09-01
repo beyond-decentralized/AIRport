@@ -6,14 +6,6 @@
       <change beforePath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libs/ground-transport/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/libs/ground-transport/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/dmo/history/OperationHistoryDmo.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/dmo/history/OperationHistoryDmo.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/dmo/history/OperationHistoryDmo.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/dmo/history/OperationHistoryDmo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/lib/dmo/history/OperationHistoryDmo.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/lib/dmo/history/OperationHistoryDmo.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/dao/history/RepositoryTransactionHistoryDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/dao/history/RepositoryTransactionHistoryDao.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/OperationHistoryDmo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/OperationHistoryDmo.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -42,33 +34,71 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
+          <entry key="js" value="2" />
           <entry key="json" value="1" />
+          <entry key="ts" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JSON" value="1" />
+          <entry key="JavaScript" value="2" />
+          <entry key="TypeScript" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
+          <entry key="js" value="1" />
           <entry key="txt" value="72" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
+          <entry key="JavaScript" value="1" />
           <entry key="PLAIN_TEXT" value="72" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts">
+        <counts>
+          <entry key="TypeScriptServerServiceImpl" value="1" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/rush.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="209">
               <caret line="11" column="28" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/generators/runway/lib/resolve/pathResolver.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="53" column="25" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generators/runway/src/builder/GeneratedSummaryBuilder.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="172">
+              <caret line="20" column="32" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generators/runway/lib/FileWatcher.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="172">
+              <caret line="85" column="36" selection-start-line="85" selection-start-column="36" selection-end-line="85" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -95,7 +125,7 @@
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="3840" />
+    <option name="x" value="1920" />
     <option name="y" value="-2" />
     <option name="width" value="1920" />
     <option name="height" value="1082" />
@@ -122,6 +152,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -163,7 +194,7 @@
       <updated>1535638446575</updated>
       <workItem from="1535638457165" duration="57000" />
       <workItem from="1535638549576" duration="3000" />
-      <workItem from="1535638590431" duration="3926000" />
+      <workItem from="1535638590431" duration="4362000" />
     </task>
     <task id="LOCAL-00001" summary="adding not null constraints">
       <created>1535641136191</created>
@@ -179,14 +210,21 @@
       <option name="project" value="LOCAL" />
       <updated>1535723534273</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="refactoring holding-pattern and dependencies">
+      <created>1535765386136</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1535765386136</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3986000" />
+    <option name="totallyTimeSpent" value="4422000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="3840" y="-2" width="1920" height="1082" extended-state="6" />
+    <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
@@ -195,8 +233,8 @@
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32983193" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32983193" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39915967" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -221,11 +259,54 @@
     <MESSAGE value="refactoring holding-pattern and dependencies" />
     <option name="LAST_COMMIT_MESSAGE" value="refactoring holding-pattern and dependencies" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <condition expression="!toFragments[i]" language="JavaScript" />
+          <url>file://$PROJECT_DIR$/generators/runway/lib/resolve/pathResolver.js</url>
+          <line>53</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="breakpointCondition">
+      <expression>
+        <expression-string>!toFragments[i]</expression-string>
+        <language-id>JavaScript</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/rush.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
           <caret line="11" column="28" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/lib/FileWatcher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="85" column="36" selection-start-line="85" selection-start-column="36" selection-end-line="85" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/src/builder/GeneratedSummaryBuilder.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="20" column="32" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/lib/resolve/pathResolver.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="53" column="25" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="25" />
         </state>
       </provider>
     </entry>

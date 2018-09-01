@@ -50,8 +50,14 @@ toPath //
     let toFragments = toPath.split('/');
     let numCommonFragments = 0;
     for (let i = 0; i < fromFragments.length; i++) {
-        let fromFragment = fromFragments[i].toLowerCase();
-        let toFragment = toFragments[i].toLowerCase();
+        let fromFragment;
+        if (fromFragments[i]) {
+            fromFragment = fromFragments[i].toLowerCase();
+        }
+        let toFragment;
+        if (toFragments[i]) {
+            toFragment = toFragments[i].toLowerCase();
+        }
         if (fromFragment !== toFragment) {
             break;
         }

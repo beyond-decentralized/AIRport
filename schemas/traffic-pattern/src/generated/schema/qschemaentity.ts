@@ -32,11 +32,9 @@ import {
 	QVersionedSchemaObject,
 } from './qversionedschemaobject';
 import {
-	SchemaColumn,
-} from '../../ddl/schema/SchemaColumn';
-import {
-	SchemaProperty,
-} from '../../ddl/schema/SchemaProperty';
+	ISchemaColumn,
+	ISchemaProperty,
+} from '../../';
 import {
 	ISchemaVersion,
 	SchemaVersionEId,
@@ -108,10 +106,10 @@ export interface ISchemaEntity extends IVersionedSchemaObject {
 	relationReferences?: ISchemaRelation[];
 
 	// Transient Properties
-	columnMap?: { [name: string]: SchemaColumn; };
-	idColumns?: SchemaColumn[];
-	idColumnMap?: { [name: string]: SchemaColumn; };
-	propertyMap?: { [name: string]: SchemaProperty; };
+	columnMap?: { [name: string]: ISchemaColumn; };
+	idColumns?: ISchemaColumn[];
+	idColumnMap?: { [name: string]: ISchemaColumn; };
+	propertyMap?: { [name: string]: ISchemaProperty; };
 
 	// Public Methods
 	
