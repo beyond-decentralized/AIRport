@@ -1,25 +1,24 @@
-import {DbEntity}                 from "@airport/ground-control";
-import {ChangeType}               from "@airport/ground-control";
+import {
+	ChangeType,
+	DbEntity
+}                                      from '@airport/ground-control'
 import {
 	Inject,
 	Service
-}                                 from "typedi";
-import {IBaseOperationHistoryDmo} from "../../";
-import {
-	OperationHistory,
-	RepositoryEntityActorRecordId
-}                                 from "../../ddl/ddl";
+}                                      from 'typedi'
+import {IBaseOperationHistoryDmo}      from '../../'
+import {RepositoryEntityActorRecordId} from '../../ddl/ddl'
 import {
 	BaseOperationHistoryDmo,
 	IOperationHistory,
 	IRecordHistory,
 	IRepositoryTransactionHistory
-}                                 from "../../generated/generated";
+}                                      from '../../generated/generated'
 import {
 	OperationHistoryDmoToken,
 	RecordHistoryDmoToken
-}                                 from "../../InjectionTokens";
-import {IRecordHistoryDmo}        from "./RecordHistoryDmo";
+}                                      from '../../InjectionTokens'
+import {IRecordHistoryDmo}             from './RecordHistoryDmo'
 
 export interface IOperationHistoryDmo
 	extends IBaseOperationHistoryDmo {
@@ -51,7 +50,7 @@ export class OperationHistoryDmo
 		@Inject(RecordHistoryDmoToken)
 		private recordHistoryDmo: IRecordHistoryDmo
 	) {
-		super();
+		super()
 	}
 
 	getNewRecord(
@@ -59,29 +58,28 @@ export class OperationHistoryDmo
 		dbEntity: DbEntity,
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 	): IOperationHistory {
-		let operationHistory = new OperationHistory();
-		operationHistory.repositoryTransactionHistory = repositoryTransactionHistory;
-		operationHistory.changeType = entityChangeType;
-		operationHistory.orderNumber = ++repositoryTransactionHistory.transactionHistory.numberOfOperations;
-		operationHistory.entity = dbEntity;
-		operationHistory.schemaVersion = dbEntity.schemaVersion;
-
-		return operationHistory;
+		let operationHistory: IOperationHistory = {
+			repositoryTransactionHistory: repositoryTransactionHistory,
+			changeType: entityChangeType,
+			orderNumber: ++repositoryTransactionHistory.transactionHistory.numberOfOperations,
+			entity: dbEntity
+		}
+		return operationHistory
 	}
 
 	sort(
 		ew1: IOperationHistory,
 		ew2: IOperationHistory
 	): number {
-		let startId1 = ew1.orderNumber;
-		let startId2 = ew2.orderNumber;
+		let startId1 = ew1.orderNumber
+		let startId2 = ew2.orderNumber
 		if (startId1 > startId2) {
-			return 1;
+			return 1
 		}
 		if (startId2 > startId1) {
-			return -1;
+			return -1
 		}
-		return 0;
+		return 0
 	}
 
 
@@ -90,14 +88,14 @@ export class OperationHistoryDmo
 		actorRecordId: RepositoryEntityActorRecordId,
 	): IRecordHistory {
 
-		const recordHistory = this.recordHistoryDmo.getNewRecord(actorRecordId);
+		const recordHistory = this.recordHistoryDmo.getNewRecord(actorRecordId)
 
-		operationHistory.recordHistory.push(recordHistory);
+		operationHistory.recordHistory.push(recordHistory)
 
 		operationHistory.repositoryTransactionHistory
-			.transactionHistory.allRecordHistory.push(recordHistory);
+			.transactionHistory.allRecordHistory.push(recordHistory)
 
-		return recordHistory;
+		return recordHistory
 	}
 
 }

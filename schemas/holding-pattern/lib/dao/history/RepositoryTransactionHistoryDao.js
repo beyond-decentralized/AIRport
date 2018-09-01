@@ -37,11 +37,8 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
             },
             operationHistory: {
                 ...this.operationHistoryDmo.getAllFieldsSelect(),
-                schemaVersion: {
-                    id: air_control_1.Y
-                },
                 entity: {
-                    index: air_control_1.Y
+                    id: air_control_1.Y
                 },
                 recordHistory: {
                     ...this.recordHistoryDmo.getAllFieldsSelect()
@@ -186,19 +183,15 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
         const rth = generated_1.Q.RepositoryTransactionHistory, oh = rth.operationHistory.innerJoin(), rh = oh.recordHistory.innerJoin();
         const idsFragments = [];
         for (const [repositoryId, recordIdMapForRepository] of recordIdMap) {
-            let schemaFragments = [];
-            for (const [schemaVersionId, recordIdMapForSchemaInRepository] of recordIdMapForRepository) {
-                let tableFragments = [];
-                for (const [entityId, recordIdMapForTableInRepository] of recordIdMapForSchemaInRepository) {
-                    let actorIdsFragments = [];
-                    for (const [actorId, recordIdSetForActor] of recordIdMapForTableInRepository) {
-                        actorIdsFragments.push(air_control_1.and(rh.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordIdSetForActor))));
-                    }
-                    tableFragments.push(air_control_1.and(oh.entity.id.equals(entityId), air_control_1.or(...actorIdsFragments)));
+            let tableFragments = [];
+            for (const [entityId, recordIdMapForTableInRepository] of recordIdMapForRepository) {
+                let actorIdsFragments = [];
+                for (const [actorId, recordIdSetForActor] of recordIdMapForTableInRepository) {
+                    actorIdsFragments.push(air_control_1.and(rh.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordIdSetForActor))));
                 }
-                schemaFragments.push(air_control_1.and(oh.schemaVersion.id.equals(schemaVersionId), air_control_1.or(...tableFragments)));
+                tableFragments.push(air_control_1.and(oh.entity.id.equals(entityId), air_control_1.or(...actorIdsFragments)));
             }
-            idsFragments.push(air_control_1.and(rth.repository.id.equals(repositoryId), oh.changeType.equals(ground_control_1.ChangeType.INSERT_VALUES), air_control_1.or(...schemaFragments)));
+            idsFragments.push(air_control_1.and(rth.repository.id.equals(repositoryId), oh.changeType.equals(ground_control_1.ChangeType.INSERT_VALUES), air_control_1.or(...tableFragments)));
         }
         const records = await this.airportDb.find.sheet({
             from: [
@@ -208,7 +201,6 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
             ],
             select: air_control_1.distinct([
                 rth.repository.id,
-                oh.schemaVersion.id,
                 oh.entity.id,
                 rh.actor.id,
                 rh.actorRecordId
@@ -216,7 +208,7 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
             where: air_control_1.or(...idsFragments)
         });
         for (const record of records) {
-            this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(existingRecordIdMap, record[0]), record[1]), record[2]), record[3]).add(record[4]);
+            this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(existingRecordIdMap, record[0]), record[1]), record[2]).add(record[3]);
         }
         return existingRecordIdMap;
     }

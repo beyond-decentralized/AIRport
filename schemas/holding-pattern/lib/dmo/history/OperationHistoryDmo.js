@@ -13,7 +13,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typedi_1 = require("typedi");
-const ddl_1 = require("../../ddl/ddl");
 const generated_1 = require("../../generated/generated");
 const InjectionTokens_1 = require("../../InjectionTokens");
 let OperationHistoryDmo = class OperationHistoryDmo extends generated_1.BaseOperationHistoryDmo {
@@ -22,12 +21,12 @@ let OperationHistoryDmo = class OperationHistoryDmo extends generated_1.BaseOper
         this.recordHistoryDmo = recordHistoryDmo;
     }
     getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory) {
-        let operationHistory = new ddl_1.OperationHistory();
-        operationHistory.repositoryTransactionHistory = repositoryTransactionHistory;
-        operationHistory.changeType = entityChangeType;
-        operationHistory.orderNumber = ++repositoryTransactionHistory.transactionHistory.numberOfOperations;
-        operationHistory.entity = dbEntity;
-        operationHistory.schemaVersion = dbEntity.schemaVersion;
+        let operationHistory = {
+            repositoryTransactionHistory: repositoryTransactionHistory,
+            changeType: entityChangeType,
+            orderNumber: ++repositoryTransactionHistory.transactionHistory.numberOfOperations,
+            entity: dbEntity
+        };
         return operationHistory;
     }
     sort(ew1, ew2) {

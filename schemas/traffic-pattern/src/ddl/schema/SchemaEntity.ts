@@ -19,7 +19,11 @@ import {
 	EntityIsRepositoryEntity,
 	EntityName,
 	TableIndex
-} from '@airport/ground-control'
+}                              from '@airport/ground-control'
+import {
+	ISchemaColumn,
+	ISchemaProperty
+}                              from '../..'
 import {SchemaColumn}          from './SchemaColumn'
 import {SchemaProperty}        from './SchemaProperty'
 import {SchemaRelation}        from './SchemaRelation'
@@ -98,15 +102,15 @@ export class SchemaEntity
 	relationReferences: SchemaRelation[]
 
 	@Transient()
-	columnMap?: { [name: string]: SchemaColumn }
+	columnMap?: { [name: string]: ISchemaColumn }
 
 	@Transient()
-	idColumns: SchemaColumn[]
+	idColumns: ISchemaColumn[]
 
 	@Transient()
-	idColumnMap?: { [name: string]: SchemaColumn }
+	idColumnMap?: { [name: string]: ISchemaColumn }
 
 	@Transient()
-	propertyMap: { [name: string]: SchemaProperty }
+	propertyMap: { [name: string]: ISchemaProperty }
 
 }

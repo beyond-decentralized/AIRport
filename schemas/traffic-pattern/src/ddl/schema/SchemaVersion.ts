@@ -10,7 +10,7 @@ import {
 	SequenceGenerator,
 	Table,
 	Transient
-} from '@airport/air-control'
+}                        from '@airport/air-control'
 import {
 	SchemaVersionId,
 	SchemaVersionInteger,
@@ -19,6 +19,10 @@ import {
 	SchemaVersionPatch,
 	SchemaVersionString
 }                        from '@airport/ground-control'
+import {
+	ISchemaEntity,
+	ISchemaReference
+}                        from '../..'
 import {Schema}          from './Schema'
 import {SchemaEntity}    from './SchemaEntity'
 import {SchemaReference} from './SchemaReference'
@@ -66,12 +70,12 @@ export class SchemaVersion {
 	referencedBy: SchemaReference[]
 
 	@Transient()
-	entityMapByName?: { [entityName: string]: SchemaEntity };
+	entityMapByName?: { [entityName: string]: ISchemaEntity };
 
 	@Transient()
-	referencesMapByName?: { [schemaName: string]: SchemaReference };
+	referencesMapByName?: { [schemaName: string]: ISchemaReference };
 
 	@Transient()
-	referencedByMapByName?: { [schemaName: string]: SchemaReference };
+	referencedByMapByName?: { [schemaName: string]: ISchemaReference };
 
 }

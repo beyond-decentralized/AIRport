@@ -1,8 +1,8 @@
-import { IAirportDatabase, IQNumberField, IUtils, JSONLogicalOperation, RawFieldQuery } from "@airport/air-control";
-import { EntityId, JSONBaseOperation, SchemaVersionId, TableIndex } from '@airport/ground-control';
-import { ActorId, RecordHistoryActorRecordId, RepositoryEntityActorRecordId, RepositoryId, RepositoryTransactionHistoryId } from "../../ddl/ddl";
-import { IOperationHistoryDmo, IRecordHistoryDmo } from "../../dmo/dmo";
-import { BaseRepositoryTransactionHistoryDao, IRepositoryTransactionHistory, QActor, QOperationHistory, QRecordHistory, QRecordHistoryNewValue, QRepository, QRepositoryTransactionHistory, RepositoryTransactionHistoryESelect } from "../../generated/generated";
+import { IAirportDatabase, IQNumberField, IUtils, JSONLogicalOperation, RawFieldQuery } from '@airport/air-control';
+import { EntityId, JSONBaseOperation, SchemaVersionId } from '@airport/ground-control';
+import { ActorId, RecordHistoryActorRecordId, RepositoryEntityActorRecordId, RepositoryId, RepositoryTransactionHistoryId } from '../../ddl/ddl';
+import { IOperationHistoryDmo, IRecordHistoryDmo } from '../../dmo/dmo';
+import { BaseRepositoryTransactionHistoryDao, IRepositoryTransactionHistory, QActor, QOperationHistory, QRecordHistory, QRecordHistoryNewValue, QRepository, QRepositoryTransactionHistory, RepositoryTransactionHistoryESelect } from '../../generated/generated';
 export interface IRepositoryTransactionHistoryDao {
     getSelectClauseWithRecordHistory(): RepositoryTransactionHistoryESelect;
     findWhere(whereClauseFunction: {
@@ -11,7 +11,7 @@ export interface IRepositoryTransactionHistoryDao {
     findWhereIdsIn(idsInClause: RepositoryTransactionHistoryId[] | RawFieldQuery<IQNumberField> | {
         (...args: any[]): RawFieldQuery<IQNumberField>;
     }): Promise<IRepositoryTransactionHistory[]>;
-    findExistingRecordIdMap(recordIdMap: Map<RepositoryId, Map<SchemaVersionId, Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>): Promise<Map<RepositoryId, Map<SchemaVersionId, Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>>;
+    findExistingRecordIdMap(recordIdMap: Map<RepositoryId, Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>): Promise<Map<RepositoryId, Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>;
     findAllLocalChangesForRecordIds(changedRecordIds: Map<RepositoryId, IChangedRecordIdsForRepository>): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>>;
 }
 export interface IChangedRecordIdsForRepository {
@@ -37,5 +37,5 @@ export declare class RepositoryTransactionHistoryDao extends BaseRepositoryTrans
         (...args: any[]): RawFieldQuery<IQNumberField>;
     }): Promise<IRepositoryTransactionHistory[]>;
     findAllLocalChangesForRecordIds(changedRecordIds: Map<RepositoryId, IChangedRecordIdsForRepository>): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>>;
-    findExistingRecordIdMap(recordIdMap: Map<RepositoryId, Map<SchemaVersionId, Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>): Promise<Map<RepositoryId, Map<SchemaVersionId, Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>>;
+    findExistingRecordIdMap(recordIdMap: Map<RepositoryId, Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>): Promise<Map<RepositoryId, Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>;
 }
