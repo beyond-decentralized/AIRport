@@ -45,9 +45,6 @@ export class SchemaColumn
 	@JoinColumn({name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID', nullable: false})
 	entity: SchemaEntity
 
-	@OneToMany({mappedBy: 'column'})
-	propertyColumns: ISchemaPropertyColumn[]
-
 	/**
 	 * Index of the ID (within the entity)
 	 */
@@ -66,14 +63,17 @@ export class SchemaColumn
 	@Column({name: 'NOT_NULL', nullable: false})
 	notNull: ColumnNotNull
 
+	@DbNumber()
+	@Column({name: 'TYPE', nullable: false})
+	type: SQLDataType
+
+	@OneToMany({mappedBy: 'column'})
+	propertyColumns: ISchemaPropertyColumn[]
+
 	@OneToMany({mappedBy: 'manyColumn'})
 	manyRelationColumns: ISchemaRelationColumn[]
 
 	@OneToMany({mappedBy: 'oneColumn'})
 	oneRelationColumns: ISchemaRelationColumn[]
-
-	@DbNumber()
-	@Column({name: 'TYPE', nullable: false})
-	type: SQLDataType
 
 }

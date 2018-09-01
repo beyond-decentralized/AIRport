@@ -21,13 +21,15 @@ let TerminalStore = class TerminalStore {
     constructor(utils) {
         this.utils = utils;
         this.state = new rxjs_1.BehaviorSubject({
+            domains: [],
+            // nodesBySyncFrequency: new Map(),
+            schemas: [],
             terminal: null,
-            nodesBySyncFrequency: new Map(),
-            domains: []
         });
         this.getTerminalState = Selector_1.createRootSelector(this.state);
         this.getDomains = Selector_1.createSelector(this.getTerminalState, terminal => terminal.domains);
-        this.getNodesBySyncFrequency = Selector_1.createSelector(this.getTerminalState, terminal => terminal.nodesBySyncFrequency);
+        // getNodesBySyncFrequency = createSelector(this.getTerminalState,
+        // 	terminal => terminal.nodesBySyncFrequency)
         this.getLatestSchemaVersionMapByNames = Selector_1.createSelector(this.getDomains, domains => {
             const latestSchemaVersionMapByNames = new Map();
             for (const domain of domains) {
@@ -56,6 +58,7 @@ let TerminalStore = class TerminalStore {
             }
             return latestSchemaVersionsByNames;
         });
+        this.getSchemas = Selector_1.createSelector(this.getTerminalState, terminal => terminal.schemas);
     }
     tearDown() {
     }

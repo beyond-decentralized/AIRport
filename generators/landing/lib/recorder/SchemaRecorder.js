@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
+const terminal_map_1 = require("@airport/terminal-map");
 const territory_1 = require("@airport/territory");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
 const typedi_1 = require("typedi");
@@ -22,7 +23,7 @@ let SchemaRecorder = class SchemaRecorder {
     constructor(
     // @Inject(AirportDatabaseToken)
     // private airportDatabase: IAirportDatabase,
-    domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaLocator, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaUtils, schemaVersionDao, utils) {
+    domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaLocator, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaUtils, schemaVersionDao, terminalStore, utils) {
         this.domainDao = domainDao;
         this.schemaColumnDao = schemaColumnDao;
         this.schemaDao = schemaDao;
@@ -35,6 +36,7 @@ let SchemaRecorder = class SchemaRecorder {
         this.schemaRelationDao = schemaRelationDao;
         this.schemaUtils = schemaUtils;
         this.schemaVersionDao = schemaVersionDao;
+        this.terminalStore = terminalStore;
         this.utils = utils;
     }
     async record(jsonSchemas) {
@@ -51,8 +53,21 @@ let SchemaRecorder = class SchemaRecorder {
         const entitiesMapBySchemaName = await this.generateSchemaEntities(jsonSchemaMapByName, newSchemaVersionMapBySchemaName);
         const propertiesMap = await this.generateSchemaProperties(jsonSchemaMapByName, entitiesMapBySchemaName);
         const relationsMap = await this.generateSchemaRelations(jsonSchemaMapByName, entitiesMapBySchemaName, propertiesMap, schemaReferenceMap);
-        const columnsMap = await this.generateSchemaColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, entitiesMapBySchemaName, propertiesMap);
+        const columnsMap = await this.generateSchemaColumns(jsonSchemaMapByName, entitiesMapBySchemaName, propertiesMap);
         await this.generateSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, schemaReferenceMap, relationsMap, columnsMap);
+        const domains = [];
+        for (const domain of domainMapByName.values()) {
+            domains.push(domain);
+        }
+        const schemas = [];
+        for (const schema of schemaMapByName.values()) {
+            schemas[schema.index] = schema;
+        }
+        this.terminalStore.state.next({
+            ...this.terminalStore.getTerminalState(),
+            domains,
+            schemas
+        });
     }
     async recordDomains(domainSet) {
         const domainMapByName = await this.domainDao.findMapByNameWithNames(Array.from(domainSet));
@@ -62,7 +77,8 @@ let SchemaRecorder = class SchemaRecorder {
                 continue;
             }
             newDomains.push({
-                name: domainName
+                name: domainName,
+                schemas: []
             });
         }
         if (newDomains.length) {
@@ -82,12 +98,14 @@ let SchemaRecorder = class SchemaRecorder {
                 continue;
             }
             const domain = domainMapByName.get(jsonSchema.domain);
-            newSchemas.push({
+            const schema = {
                 domain,
-                scope: 'public',
                 name: schemaName,
-                status: traffic_pattern_1.SchemaStatus.CURRENT
-            });
+                scope: 'public',
+                status: ground_control_1.SchemaStatus.CURRENT,
+            };
+            domain.schemas.push(schema);
+            newSchemas.push(schema);
         }
         if (newSchemas.length) {
             await this.schemaDao.bulkCreate(newSchemas, false, false);
@@ -111,9 +129,16 @@ let SchemaRecorder = class SchemaRecorder {
                 majorVersion: parseInt(versionParts[0]),
                 minorVersion: parseInt(versionParts[1]),
                 patchVersion: parseInt(versionParts[2]),
+                schema,
                 entities: [],
-                schema
+                references: [],
+                referencedBy: [],
+                entityMapByName: {},
+                referencesMapByName: {},
+                referencedByMapByName: {},
             };
+            schema.currentVersion = newSchemaVersion;
+            schema.versions = [newSchemaVersion];
             newSchemaVersions.push(newSchemaVersion);
             newSchemaVersionMapBySchemaName.set(schemaName, newSchemaVersion);
         }
@@ -264,12 +289,11 @@ let SchemaRecorder = class SchemaRecorder {
         await this.schemaRelationDao.bulkCreate(allRelations, false, false);
         return relationsMap;
     }
-    async generateSchemaColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, entitiesMapBySchemaName, propertiesMap) {
+    async generateSchemaColumns(jsonSchemaMapByName, entitiesMapBySchemaName, propertiesMap) {
         const columnsMap = new Map();
         const allColumns = [];
         const allPropertyColumns = [];
         for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
-            const schemaVersion = newSchemaVersionMapBySchemaName.get(schemaName);
             const entitiesForSchema = entitiesMapBySchemaName.get(schemaName);
             const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
             const jsonEntities = currentSchemaVersion.entities;
@@ -285,8 +309,7 @@ let SchemaRecorder = class SchemaRecorder {
                     const idColumndIndex = idColumnIndexes[index];
                     const column = {
                         index,
-                        tableIndex,
-                        schemaVersionId: schemaVersion.id,
+                        entity,
                         idIndex: idColumndIndex,
                         isGenerated: jsonColumn.isGenerated,
                         allocationSize: jsonColumn.allocationSize,
@@ -398,8 +421,9 @@ SchemaRecorder = __decorate([
     __param(9, typedi_1.Inject(traffic_pattern_1.SchemaRelationDaoToken)),
     __param(10, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
     __param(11, typedi_1.Inject(traffic_pattern_1.SchemaVersionDaoToken)),
-    __param(12, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
+    __param(12, typedi_1.Inject(terminal_map_1.TerminalStoreToken)),
+    __param(13, typedi_1.Inject(air_control_1.UtilsToken)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
 ], SchemaRecorder);
 exports.SchemaRecorder = SchemaRecorder;
 //# sourceMappingURL=SchemaRecorder.js.map

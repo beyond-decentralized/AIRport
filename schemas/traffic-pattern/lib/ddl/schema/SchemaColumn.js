@@ -27,12 +27,12 @@ __decorate([
 __decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID', nullable: false }),
-    __metadata("design:type", SchemaEntity_1.SchemaEntity)
+    __metadata("design:type", SchemaEntity_1.SchemaEntity
+    /**
+     * Index of the ID (within the entity)
+     */
+    )
 ], SchemaColumn.prototype, "entity", void 0);
-__decorate([
-    air_control_1.OneToMany({ mappedBy: 'column' }),
-    __metadata("design:type", Array)
-], SchemaColumn.prototype, "propertyColumns", void 0);
 __decorate([
     air_control_1.Column({ name: 'ID_INDEX' }),
     __metadata("design:type", Number)
@@ -54,6 +54,15 @@ __decorate([
     __metadata("design:type", Boolean)
 ], SchemaColumn.prototype, "notNull", void 0);
 __decorate([
+    air_control_1.DbNumber(),
+    air_control_1.Column({ name: 'TYPE', nullable: false }),
+    __metadata("design:type", Number)
+], SchemaColumn.prototype, "type", void 0);
+__decorate([
+    air_control_1.OneToMany({ mappedBy: 'column' }),
+    __metadata("design:type", Array)
+], SchemaColumn.prototype, "propertyColumns", void 0);
+__decorate([
     air_control_1.OneToMany({ mappedBy: 'manyColumn' }),
     __metadata("design:type", Array)
 ], SchemaColumn.prototype, "manyRelationColumns", void 0);
@@ -61,11 +70,6 @@ __decorate([
     air_control_1.OneToMany({ mappedBy: 'oneColumn' }),
     __metadata("design:type", Array)
 ], SchemaColumn.prototype, "oneRelationColumns", void 0);
-__decorate([
-    air_control_1.DbNumber(),
-    air_control_1.Column({ name: 'TYPE', nullable: false }),
-    __metadata("design:type", Number)
-], SchemaColumn.prototype, "type", void 0);
 SchemaColumn = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({

@@ -1,30 +1,42 @@
 import {
 	IUtils,
 	UtilsToken
-}                                 from '@airport/air-control'
+}                           from '@airport/air-control'
 import {
 	DomainName,
 	IdColumnOnlyIndex,
 	ISchemaUtils,
 	JsonSchema,
 	SchemaName,
+	SchemaStatus,
 	SchemaUtilsToken
-}                                 from '@airport/ground-control'
+}                           from '@airport/ground-control'
+import {
+	ITerminalStore,
+	TerminalStoreToken
+} from '@airport/terminal-map'
 import {
 	DomainDaoToken,
 	IDomain,
 	IDomainDao
-}                                 from '@airport/territory'
+}                           from '@airport/territory'
 import {
 	ISchema,
 	ISchemaColumn,
+	ISchemaColumnDao,
 	ISchemaDao,
 	ISchemaEntity,
+	ISchemaEntityDao,
 	ISchemaProperty,
 	ISchemaPropertyColumn,
+	ISchemaPropertyColumnDao,
+	ISchemaPropertyDao,
 	ISchemaReference,
+	ISchemaReferenceDao,
 	ISchemaRelation,
 	ISchemaRelationColumn,
+	ISchemaRelationColumnDao,
+	ISchemaRelationDao,
 	ISchemaVersion,
 	ISchemaVersionDao,
 	SchemaColumnDaoToken,
@@ -35,22 +47,14 @@ import {
 	SchemaReferenceDaoToken,
 	SchemaRelationColumnDaoToken,
 	SchemaRelationDaoToken,
-	SchemaStatus,
 	SchemaVersionDaoToken
-}                                 from '@airport/traffic-pattern'
-import {ISchemaColumnDao}         from '@airport/traffic-pattern/lib/dao/SchemaColumnDao'
-import {ISchemaEntityDao}         from '@airport/traffic-pattern/lib/dao/SchemaEntityDao'
-import {ISchemaPropertyColumnDao} from '@airport/traffic-pattern/lib/dao/SchemaPropertyColumnDao'
-import {ISchemaPropertyDao}       from '@airport/traffic-pattern/lib/dao/SchemaPropertyDao'
-import {ISchemaReferenceDao}      from '@airport/traffic-pattern/lib/dao/SchemaReferenceDao'
-import {ISchemaRelationColumnDao} from '@airport/traffic-pattern/lib/dao/SchemaRelationColumnDao'
-import {ISchemaRelationDao}       from '@airport/traffic-pattern/lib/dao/SchemaRelationDao'
+}                           from '@airport/traffic-pattern'
 import {
 	Inject,
 	Service
-}                                 from 'typedi'
-import {SchemaLocatorToken}       from '../InjectionTokens'
-import {ISchemaLocator}           from '../locator/SchemaLocator'
+}                           from 'typedi'
+import {SchemaLocatorToken} from '../InjectionTokens'
+import {ISchemaLocator}     from '../locator/SchemaLocator'
 
 export interface ISchemaRecorder {
 
@@ -91,6 +95,8 @@ export class SchemaRecorder
 		private schemaUtils: ISchemaUtils,
 		@Inject(SchemaVersionDaoToken)
 		private schemaVersionDao: ISchemaVersionDao,
+		@Inject(TerminalStoreToken)
+		private terminalStore: ITerminalStore,
 		@Inject(UtilsToken)
 		private utils: IUtils
 	) {
@@ -121,19 +127,35 @@ export class SchemaRecorder
 		const relationsMap                    = await this.generateSchemaRelations(
 			jsonSchemaMapByName, entitiesMapBySchemaName, propertiesMap, schemaReferenceMap)
 		const columnsMap                      = await this.generateSchemaColumns(
-			jsonSchemaMapByName, newSchemaVersionMapBySchemaName,
-			entitiesMapBySchemaName, propertiesMap)
+			jsonSchemaMapByName, entitiesMapBySchemaName, propertiesMap)
 
 		await this.generateSchemaRelationColumns(
 			jsonSchemaMapByName, newSchemaVersionMapBySchemaName,
 			schemaReferenceMap, relationsMap, columnsMap)
+
+
+		const domains: IDomain[] = []
+		for(const domain of domainMapByName.values()) {
+			domains.push(domain)
+		}
+
+		const schemas: ISchema[] = []
+		for(const schema of schemaMapByName.values()) {
+			schemas[schema.index] = schema
+		}
+
+		this.terminalStore.state.next({
+			...this.terminalStore.getTerminalState(),
+			domains,
+			schemas
+		})
 	}
 
 	private async recordDomains(
 		domainSet: Set<DomainName>
 	): Promise<Map<DomainName, IDomain>> {
 		const domainMapByName
-						= await this.domainDao.findMapByNameWithNames(Array.from(domainSet))
+			      = await this.domainDao.findMapByNameWithNames(Array.from(domainSet))
 
 		const newDomains: IDomain[] = []
 		for (const domainName of domainSet) {
@@ -141,7 +163,8 @@ export class SchemaRecorder
 				continue
 			}
 			newDomains.push({
-				name: domainName
+				name: domainName,
+				schemas: []
 			})
 		}
 
@@ -168,13 +191,15 @@ export class SchemaRecorder
 			if (schemaMapByName.has(schemaName)) {
 				continue
 			}
-			const domain = domainMapByName.get(jsonSchema.domain)
-			newSchemas.push({
+			const domain          = domainMapByName.get(jsonSchema.domain)
+			const schema: ISchema = {
 				domain,
-				scope: 'public',
 				name: schemaName,
-				status: SchemaStatus.CURRENT
-			})
+				scope: 'public',
+				status: SchemaStatus.CURRENT,
+			}
+			domain.schemas.push(<any>schema)
+			newSchemas.push(schema)
 		}
 
 		if (newSchemas.length) {
@@ -205,9 +230,16 @@ export class SchemaRecorder
 				majorVersion: parseInt(versionParts[0]),
 				minorVersion: parseInt(versionParts[1]),
 				patchVersion: parseInt(versionParts[2]),
+				schema,
 				entities: [],
-				schema
+				references: [],
+				referencedBy: [],
+				entityMapByName: {},
+				referencesMapByName: {},
+				referencedByMapByName: {},
 			}
+			schema.currentVersion                  = newSchemaVersion
+			schema.versions                        = [newSchemaVersion]
 			newSchemaVersions.push(newSchemaVersion)
 			newSchemaVersionMapBySchemaName.set(schemaName, newSchemaVersion)
 		}
@@ -228,9 +260,9 @@ export class SchemaRecorder
 			const schema     = ownSchemaVersion.schema
 			const jsonSchema = jsonSchemaMapByName.get(schema.name)
 			const lastJsonSchemaVersion
-											 = jsonSchema.versions[jsonSchema.versions.length - 1]
+			                 = jsonSchema.versions[jsonSchema.versions.length - 1]
 			const schemaReferences: ISchemaReference[]
-											 = this.utils.ensureChildArray(schemaReferenceMap, schemaName)
+			                 = this.utils.ensureChildArray(schemaReferenceMap, schemaName)
 
 			for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
 				const referencedSchemaName  = this.schemaUtils.getSchemaName(jsonReferencedSchema)
@@ -266,10 +298,10 @@ export class SchemaRecorder
 
 		const allEntities: ISchemaEntity[] = []
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
-			let index                       = 0
-			const currentSchemaVersion      = jsonSchema.versions[jsonSchema.versions.length - 1]
-			const jsonEntities              = currentSchemaVersion.entities
-			const schemaVersion             = newSchemaVersionMapBySchemaName.get(schemaName)
+			let index                  = 0
+			const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1]
+			const jsonEntities         = currentSchemaVersion.entities
+			const schemaVersion        = newSchemaVersionMapBySchemaName.get(schemaName)
 			for (const jsonEntity of jsonEntities) {
 				const entity: ISchemaEntity = {
 					index: index++,
@@ -309,16 +341,16 @@ export class SchemaRecorder
 			const jsonEntities         = currentSchemaVersion.entities
 			const entities             = entitiesMapBySchemaName.get(schemaName)
 			const propertiesByEntityIndex
-																 = this.utils.ensureChildArray(propertiesMap, schemaName)
+			                           = this.utils.ensureChildArray(propertiesMap, schemaName)
 			jsonEntities.forEach((
 				jsonEntity,
 				tableIndex
 			) => {
 				const entity = entities[tableIndex]
 				const propertiesForEntity
-										 = []
+				             = []
 				propertiesByEntityIndex[tableIndex]
-										 = propertiesForEntity
+				             = propertiesForEntity
 				let index    = 0
 
 				for (const jsonProperty of jsonEntity.properties) {
@@ -330,8 +362,8 @@ export class SchemaRecorder
 						propertyColumns: []
 					}
 					entity.properties.push(property)
-					entity.propertyMap[property.name] = property;
-					propertiesForEntity[index]      = property
+					entity.propertyMap[property.name] = property
+					propertiesForEntity[index]        = property
 					allProperties.push(property)
 				}
 			})
@@ -356,9 +388,9 @@ export class SchemaRecorder
 			const jsonEntities         = currentSchemaVersion.entities
 			const entitiesForSchema    = entitiesMapBySchemaName.get(schemaName)
 			const propertiesByEntityIndex
-																 = propertiesMap.get(schemaName)
+			                           = propertiesMap.get(schemaName)
 			const relationsByEntityIndex
-																 = this.utils.ensureChildArray(relationsMap, schemaName)
+			                           = this.utils.ensureChildArray(relationsMap, schemaName)
 			const referencesForSchema  = schemaReferenceMap.get(schemaName)
 
 			jsonEntities.forEach((
@@ -366,11 +398,11 @@ export class SchemaRecorder
 				tableIndex
 			) => {
 				const propertiesForEntity
-									= propertiesByEntityIndex[tableIndex]
+					        = propertiesByEntityIndex[tableIndex]
 				const relationsForEntity
-									= []
+					        = []
 				relationsByEntityIndex[tableIndex]
-									= relationsForEntity
+					        = relationsForEntity
 				let index = 0
 
 				const relations: ISchemaRelation[] = []
@@ -400,7 +432,7 @@ export class SchemaRecorder
 					}
 					property.relation               = [relation]
 					relationEntity.relations.push(relation)
-					propertiesForEntity[index]      = relation
+					propertiesForEntity[index] = relation
 					relations.push(relation)
 					allRelations.push(relation)
 				}
@@ -414,7 +446,6 @@ export class SchemaRecorder
 
 	private async generateSchemaColumns(
 		jsonSchemaMapByName: Map<SchemaName, JsonSchema>,
-		newSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion>,
 		entitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]>,
 		propertiesMap: Map<SchemaName, ISchemaProperty[][]>,
 	): Promise<Map<SchemaName, ISchemaColumn[][]>> {
@@ -424,7 +455,6 @@ export class SchemaRecorder
 		const allPropertyColumns: ISchemaPropertyColumn[] = []
 
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
-			const schemaVersion        = newSchemaVersionMapBySchemaName.get(schemaName)
 			const entitiesForSchema    = entitiesMapBySchemaName.get(schemaName)
 			const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1]
 			const jsonEntities         = currentSchemaVersion.entities
@@ -451,8 +481,7 @@ export class SchemaRecorder
 					const idColumndIndex        = idColumnIndexes[index]
 					const column: ISchemaColumn = {
 						index,
-						tableIndex,
-						schemaVersionId: schemaVersion.id,
+						entity,
 						idIndex: idColumndIndex,
 						isGenerated: jsonColumn.isGenerated,
 						allocationSize: jsonColumn.allocationSize,
@@ -523,7 +552,7 @@ export class SchemaRecorder
 				) => {
 					const manyColumn = columnsForEntity[index]
 					const relationColumns: ISchemaRelationColumn[]
-													 = []
+					                 = []
 
 					jsonColumn.manyRelationColumnRefs.forEach((
 						jsonRelationColumn

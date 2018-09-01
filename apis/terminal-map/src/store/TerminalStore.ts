@@ -7,11 +7,12 @@ import {
 	JsonSchemaName,
 	SchemaName
 }                           from '@airport/ground-control'
-import {ISchemaVersion}     from '@airport/traffic-pattern'
+import {IDomain}            from '@airport/territory'
 import {
-	BehaviorSubject,
-	Subject
-}                           from 'rxjs'
+	ISchema,
+	ISchemaVersion
+}                           from '@airport/traffic-pattern'
+import {BehaviorSubject}    from 'rxjs'
 import {
 	Inject,
 	Service
@@ -26,7 +27,9 @@ import {ITerminalState}     from './TerminalState'
 
 export interface ITerminalStore {
 
-	state: Subject<ITerminalState>
+	state: BehaviorSubject<ITerminalState>
+
+	getDomains: IMemoizedSelector<IDomain[], ITerminalState>
 
 	getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName,
 		Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>
@@ -35,6 +38,10 @@ export interface ITerminalStore {
 		IMemoizedSelector<Map<SchemaName, ISchemaVersion>, ITerminalState>
 
 	getLatestSchemaVersionsByIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>
+
+	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>
+
+	getSchemas: IMemoizedSelector<ISchema[], ITerminalState>
 
 	tearDown()
 }
@@ -50,18 +57,20 @@ export class TerminalStore
 	}
 
 	state = new BehaviorSubject<ITerminalState>({
+		domains: [],
+		// nodesBySyncFrequency: new Map(),
+		schemas: [],
 		terminal: null,
-		nodesBySyncFrequency: new Map(),
-		domains: []
 	})
+
 
 	getTerminalState = createRootSelector(this.state)
 
 	getDomains = createSelector(this.getTerminalState,
 		terminal => terminal.domains)
 
-	getNodesBySyncFrequency = createSelector(this.getTerminalState,
-		terminal => terminal.nodesBySyncFrequency)
+	// getNodesBySyncFrequency = createSelector(this.getTerminalState,
+	// 	terminal => terminal.nodesBySyncFrequency)
 
 	getLatestSchemaVersionMapByNames = createSelector(this.getDomains,
 		domains => {
@@ -109,6 +118,9 @@ export class TerminalStore
 
 			return latestSchemaVersionsByNames
 		})
+
+	getSchemas = createSelector(this.getTerminalState,
+		terminal => terminal.schemas)
 
 	tearDown() {
 	}

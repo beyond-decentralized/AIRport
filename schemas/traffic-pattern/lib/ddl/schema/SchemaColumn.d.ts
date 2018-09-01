@@ -10,7 +10,6 @@ export declare class SchemaColumn extends VersionedSchemaObject {
      */
     index: ColumnIndex;
     entity: SchemaEntity;
-    propertyColumns: ISchemaPropertyColumn[];
     /**
      * Index of the ID (within the entity)
      */
@@ -19,7 +18,8 @@ export declare class SchemaColumn extends VersionedSchemaObject {
     allocationSize?: SchemaColumnAllocationSize;
     name: ColumnName;
     notNull: ColumnNotNull;
+    type: SQLDataType;
+    propertyColumns: ISchemaPropertyColumn[];
     manyRelationColumns: ISchemaRelationColumn[];
     oneRelationColumns: ISchemaRelationColumn[];
-    type: SQLDataType;
 }
