@@ -2,11 +2,39 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/generators/runway/src/FileWatcher.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/generators/runway/src/Logger.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/generators/runway/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/config/rush/npm-shrinkwrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/rush/npm-shrinkwrap.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/landing/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/recorder/SchemaRecorder.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/ground-transport/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/libs/ground-transport/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/FileWatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/FileWatcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/FileWatcher.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/FileWatcher.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/Logger.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/Logger.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/GeneratedSummaryBuilder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/GeneratedSummaryBuilder.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/GeneratedSummaryBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/GeneratedSummaryBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/GeneratedSummaryBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/GeneratedSummaryBuilder.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityFileBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityFileBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/JsonSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/schema/JsonSchemaBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/index.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityDefinitionGenerator.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/parser/EntityDefinitionGenerator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/GeneratedSummaryBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/builder/GeneratedSummaryBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/takeoff/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/generators/takeoff/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaVersion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaVersion.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/qSchema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/qSchema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemacolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemacolumn.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaentity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaentity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaversion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaversion.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/apis/" />
@@ -64,49 +92,212 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="-1608385056">
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="js" value="1" />
+          <entry key="ts" value="9" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="JavaScript" value="1" />
+          <entry key="TypeScript" value="9" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="ts" value="31" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="TypeScript" value="31" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.17" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts">
+        <counts>
+          <entry key="TypeScriptServerServiceImpl" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/rush.json">
+        <entry file="file://$PROJECT_DIR$/libs/mono-rail/src/InjectionTokens.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="11" column="28" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="28" />
+            <state relative-caret-position="22">
+              <caret line="1" column="56" selection-start-column="7" selection-end-line="1" selection-end-column="56" />
+              <folding>
+                <element signature="e#0#58#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generators/runway/src/resolve/pathResolver.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="22">
+              <caret line="55" column="16" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="16" />
+              <folding>
+                <element signature="e#0#71#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generators/runway/src/FileWatcher.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="154">
+              <caret line="85" column="32" lean-forward="true" selection-start-line="85" selection-start-column="32" selection-end-line="85" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generators/runway/src/parser/EntityDefinitionGenerator.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="227">
+              <caret line="78" column="51" selection-start-line="78" selection-start-column="51" selection-end-line="78" selection-end-column="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generators/runway/src/parser/EntityCandidateRegistry.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="59" column="74" selection-start-line="59" selection-start-column="56" selection-end-line="59" selection-end-column="74" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/generators/runway/lib/resolve/pathResolver.js">
+        <entry file="file://$PROJECT_DIR$/generators/runway/src/parser/utils.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="53" column="25" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="25" />
-            </state>
+            <state relative-caret-position="-932" />
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/generators/runway/src/builder/GeneratedSummaryBuilder.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
-              <caret line="20" column="32" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
+            <state relative-caret-position="462">
+              <caret line="23" column="4" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="4" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/generators/runway/lib/FileWatcher.js">
+        <entry file="file://$PROJECT_DIR$/generators/runway/src/builder/PathBuilder.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
-              <caret line="85" column="36" selection-start-line="85" selection-start-column="36" selection-end-line="85" selection-end-column="36" />
+            <state relative-caret-position="1936">
+              <caret line="90" column="2" selection-start-line="90" selection-start-column="2" selection-end-line="90" selection-end-column="2" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es5.d.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8844">
+              <caret line="415" column="4" selection-start-line="415" selection-start-column="4" selection-end-line="415" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generators/runway/src/builder/QSchemaBuilder.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
+              <folding>
+                <element signature="e#0#39#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>path:</find>
+      <find>matchVerifiedEntities</find>
+    </findStrings>
+    <dirStrings>
+      <dir>C:\Users\Papa\dac\airport\generators\runway\src</dir>
+    </dirStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/OperationHistory.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RepositoryTransactionHistory.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/infrastructure/Actor.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/infrastructure/Application.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/Repository.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/RepositorySchema.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/OperationHistoryDmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/RecordHistoryDmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/RecordHistoryNewValueDmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/RecordHistoryOldValueDmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/RepositoryTransactionHistoryDmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/dmo/history/TransactionHistoryDmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/RecordHistory.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/index.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dao/sharingNode/SharingNodeRepoTransBlockDao.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/sharingNode/SharingNodeDatabase.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/sharingNode/SharingNodeRepository.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/sharingNode/SharingNodeRepoTransBlock.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/package.json" />
+        <option value="$PROJECT_DIR$/apis/arrivals-n-departures/package.json" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dao/RecordUpdateStageDao.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dao/missingRecord/MissingRecordDao.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dao/sharingNode/SharingNodeRepositoryDao.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/conflict/SynchronizationConflict.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/ddl/conflict/SynchronizationConflictValues.ts" />
+        <option value="$PROJECT_DIR$/schemas/moving-walkway/src/dmo/dmo.ts" />
+        <option value="$PROJECT_DIR$/schemas/guideway/package.json" />
+        <option value="$PROJECT_DIR$/schemas/guideway/src/dao/archive/DailyArchiveLogDao.ts" />
+        <option value="$PROJECT_DIR$/schemas/point-of-destination/package.json" />
+        <option value="$PROJECT_DIR$/apis/terminal-map/package.json" />
+        <option value="$PROJECT_DIR$/apis/terminal-map/src/store/TerminalStore.ts" />
+        <option value="$PROJECT_DIR$/libs/tower/src/AirportDatabase.ts" />
+        <option value="$PROJECT_DIR$/libs/tower/src/OperationManager.ts" />
+        <option value="$PROJECT_DIR$/libs/tower/src/core/data/UpdateCache.ts" />
+        <option value="$PROJECT_DIR$/libs/tower/src/core/metadata/MetadataUtils.ts" />
+        <option value="$PROJECT_DIR$/libs/tower/src/EntityManager.ts" />
+        <option value="$PROJECT_DIR$/libs/tower/src/QueryFacade.ts" />
+        <option value="$PROJECT_DIR$/schemas/baggage-screening.ts" />
+        <option value="$PROJECT_DIR$/schemas/id-checkpoint/package.json" />
+        <option value="$PROJECT_DIR$/schemas/airport-code/src/ddl/ddl.ts" />
+        <option value="$PROJECT_DIR$/schemas/airport-code/src/ddl/SequenceBlock.ts" />
+        <option value="$PROJECT_DIR$/generators/runway/src/parser/EntityDefinitionGenerator.ts" />
+        <option value="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/history/TransactionHistory.ts" />
+        <option value="$PROJECT_DIR$/generators/takeoff/package.json" />
+        <option value="$PROJECT_DIR$/generators/takeoff/src/InjectionTokens.ts" />
+        <option value="$PROJECT_DIR$/generators/landing/src/index.ts" />
+        <option value="$PROJECT_DIR$/generators/takeoff/src/QueryObjectInitializer.ts" />
+        <option value="$PROJECT_DIR$/rush.json" />
+        <option value="$PROJECT_DIR$/generators/runway/src/resolve/pathResolver.ts" />
+        <option value="$PROJECT_DIR$/generators/runway/src/builder/GeneratedSummaryBuilder.ts" />
+        <option value="$PROJECT_DIR$/generators/runway/src/parser/EntityCandidateRegistry.ts" />
+      </list>
+    </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
@@ -125,17 +316,15 @@
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1920" />
-    <option name="y" value="-2" />
+    <option name="y" value="25" />
     <option name="width" value="1920" />
-    <option name="height" value="1082" />
+    <option name="height" value="1055" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -143,10 +332,45 @@
               <item name="airport" type="b2602c69:ProjectViewProjectNode" />
               <item name="airport" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="generators" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="generators" type="462c0819:PsiDirectoryNode" />
+              <item name="runway" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="generators" type="462c0819:PsiDirectoryNode" />
+              <item name="runway" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="generators" type="462c0819:PsiDirectoryNode" />
+              <item name="runway" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="builder" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="airport" type="462c0819:PsiDirectoryNode" />
+              <item name="generators" type="462c0819:PsiDirectoryNode" />
+              <item name="runway" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="parser" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -195,6 +419,7 @@
       <workItem from="1535638457165" duration="57000" />
       <workItem from="1535638549576" duration="3000" />
       <workItem from="1535638590431" duration="4362000" />
+      <workItem from="1535771622822" duration="1333000" />
     </task>
     <task id="LOCAL-00001" summary="adding not null constraints">
       <created>1535641136191</created>
@@ -221,31 +446,31 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4422000" />
+    <option name="totallyTimeSpent" value="7695000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14978679" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32983193" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39915967" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49947312" weight="0.3271028" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49947312" visible="true" weight="0.39875388" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="TypeScript" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50052685" side_tool="true" weight="0.39875388" />
       <window_info anchor="bottom" id="Terminal" order="11" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.25" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -266,8 +491,13 @@
           <condition expression="!toFragments[i]" language="JavaScript" />
           <url>file://$PROJECT_DIR$/generators/runway/lib/resolve/pathResolver.js</url>
           <line>53</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/generators/runway/src/builder/QSchemaBuilder.ts</url>
+          <line>24</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -289,25 +519,95 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/lib/resolve/pathResolver.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="53" column="25" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/mono-rail/src/InjectionTokens.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="1" column="56" selection-start-column="7" selection-end-line="1" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#58#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/src/builder/PathBuilder.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1936">
+          <caret line="90" column="2" selection-start-line="90" selection-start-column="2" selection-end-line="90" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es5.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8844">
+          <caret line="415" column="4" selection-start-line="415" selection-start-column="4" selection-end-line="415" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/generators/runway/lib/FileWatcher.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
+        <state relative-caret-position="176">
           <caret line="85" column="36" selection-start-line="85" selection-start-column="36" selection-end-line="85" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/generators/runway/src/builder/GeneratedSummaryBuilder.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="20" column="32" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
+        <state relative-caret-position="462">
+          <caret line="23" column="4" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/generators/runway/lib/resolve/pathResolver.js">
+    <entry file="file://$PROJECT_DIR$/generators/runway/src/resolve/pathResolver.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="53" column="25" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="25" />
+        <state relative-caret-position="22">
+          <caret line="55" column="16" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#71#0" expanded="true" />
+          </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/src/builder/QSchemaBuilder.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/src/FileWatcher.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="85" column="32" lean-forward="true" selection-start-line="85" selection-start-column="32" selection-end-line="85" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/src/parser/EntityDefinitionGenerator.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="78" column="51" selection-start-line="78" selection-start-column="51" selection-end-line="78" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/src/parser/EntityCandidateRegistry.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="59" column="74" selection-start-line="59" selection-start-column="56" selection-end-line="59" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/runway/src/parser/utils.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-932" />
       </provider>
     </entry>
   </component>

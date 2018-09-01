@@ -1,5 +1,5 @@
-import { IQBuilder } from "./QBuilder";
-import { PathBuilder } from "./PathBuilder";
+import { PathBuilder } from './PathBuilder';
+import { IQBuilder } from './QBuilder';
 export declare class GeneratedSummaryBuilder implements IQBuilder {
     private pathBuilder;
     generatedListingFilePath: any;

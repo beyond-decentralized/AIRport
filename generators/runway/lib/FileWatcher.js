@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const ts = require("typescript");
+const QEntityFileBuilder_1 = require("./builder/entity/QEntityFileBuilder");
+const PathBuilder_1 = require("./builder/PathBuilder");
+const EntityDefinitionGenerator_1 = require("./parser/EntityDefinitionGenerator");
+const JsonSchemaBuilder_1 = require("./builder/schema/JsonSchemaBuilder");
+const GeneratedSummaryBuilder_1 = require("./builder/GeneratedSummaryBuilder");
 const DaoBuilder_1 = require("./builder/DaoBuilder");
 const DmoBuilder_1 = require("./builder/DmoBuilder");
-const QEntityFileBuilder_1 = require("./builder/entity/QEntityFileBuilder");
-const GeneratedSummaryBuilder_1 = require("./builder/GeneratedSummaryBuilder");
-const PathBuilder_1 = require("./builder/PathBuilder");
 const QSchemaBuilder_1 = require("./builder/QSchemaBuilder");
-const JsonSchemaBuilder_1 = require("./builder/schema/JsonSchemaBuilder");
-const EntityDefinitionGenerator_1 = require("./parser/EntityDefinitionGenerator");
 /**
  * Created by Papa on 3/30/2016.
  */

@@ -22,20 +22,6 @@ import {
 } from '@airport/air-control';
 import {
 	ISchemaEntity,
-	ISchemaReference,
-} from '../../';
-import {
-	ISchema,
-	SchemaEId,
-	SchemaEOptionalId,
-	SchemaEUpdateProperties,
-	SchemaESelect,
-	QSchema,
-	QSchemaQId,
-	QSchemaQRelation,
-} from './qschema';
-import {
-	ISchemaEntity,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
 	SchemaEntityEUpdateProperties,
@@ -54,6 +40,16 @@ import {
 	QSchemaReferenceQId,
 	QSchemaReferenceQRelation,
 } from './qschemareference';
+import {
+	ISchema,
+	SchemaEId,
+	SchemaEOptionalId,
+	SchemaEUpdateProperties,
+	SchemaESelect,
+	QSchema,
+	QSchemaQId,
+	QSchemaQRelation,
+} from './qschema';
 
 
 declare function require(moduleName: string): any;

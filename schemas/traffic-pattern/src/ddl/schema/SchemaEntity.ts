@@ -21,9 +21,11 @@ import {
 	TableIndex
 }                              from '@airport/ground-control'
 import {
-	ISchemaColumn,
+	ISchemaColumn
+}                              from '../../generated/schema/qschemacolumn'
+import {
 	ISchemaProperty
-}                              from '../..'
+}                              from '../../generated/schema/qschemaproperty'
 import {SchemaColumn}          from './SchemaColumn'
 import {SchemaProperty}        from './SchemaProperty'
 import {SchemaRelation}        from './SchemaRelation'

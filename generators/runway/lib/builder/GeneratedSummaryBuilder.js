@@ -14,7 +14,8 @@ class GeneratedSummaryBuilder {
     }
     build() {
         this.generatedFilePaths.sort();
-        const exports = this.generatedFilePaths.map(filePath => `export * from '${filePath}';`).join('\n');
+        const exports = this.generatedFilePaths.map(filePath => `export * from '${filePath}';`)
+            .join('\n');
         return `export * from './schema';
 export * from './qSchema';
 export * from './baseDaos';

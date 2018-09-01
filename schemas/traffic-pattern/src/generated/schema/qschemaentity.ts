@@ -33,20 +33,6 @@ import {
 } from './qversionedschemaobject';
 import {
 	ISchemaColumn,
-	ISchemaProperty,
-} from '../../';
-import {
-	ISchemaVersion,
-	SchemaVersionEId,
-	SchemaVersionEOptionalId,
-	SchemaVersionEUpdateProperties,
-	SchemaVersionESelect,
-	QSchemaVersion,
-	QSchemaVersionQId,
-	QSchemaVersionQRelation,
-} from './qschemaversion';
-import {
-	ISchemaColumn,
 	SchemaColumnEId,
 	SchemaColumnEOptionalId,
 	SchemaColumnEUpdateProperties,
@@ -65,6 +51,16 @@ import {
 	QSchemaPropertyQId,
 	QSchemaPropertyQRelation,
 } from './qschemaproperty';
+import {
+	ISchemaVersion,
+	SchemaVersionEId,
+	SchemaVersionEOptionalId,
+	SchemaVersionEUpdateProperties,
+	SchemaVersionESelect,
+	QSchemaVersion,
+	QSchemaVersionQId,
+	QSchemaVersionQRelation,
+} from './qschemaversion';
 import {
 	ISchemaRelation,
 	SchemaRelationEId,

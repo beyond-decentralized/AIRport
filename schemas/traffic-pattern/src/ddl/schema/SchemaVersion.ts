@@ -20,9 +20,11 @@ import {
 	SchemaVersionString
 }                        from '@airport/ground-control'
 import {
-	ISchemaEntity,
+	ISchemaEntity
+}                        from '../../generated/schema/qschemaentity'
+import {
 	ISchemaReference
-}                        from '../..'
+}                        from '../../generated/schema/qschemareference'
 import {Schema}          from './Schema'
 import {SchemaEntity}    from './SchemaEntity'
 import {SchemaReference} from './SchemaReference'

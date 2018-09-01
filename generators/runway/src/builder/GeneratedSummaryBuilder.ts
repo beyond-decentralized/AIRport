@@ -1,11 +1,12 @@
-import {IQBuilder} from "./QBuilder";
-import {resolveRelativePath} from "../resolve/pathResolver";
-import {PathBuilder} from "./PathBuilder";
+import {resolveRelativePath} from '../resolve/pathResolver'
+import {PathBuilder}         from './PathBuilder'
+import {IQBuilder}           from './QBuilder'
 
-export class GeneratedSummaryBuilder implements IQBuilder {
+export class GeneratedSummaryBuilder
+	implements IQBuilder {
 
-	public generatedListingFilePath;
-	private generatedFilePaths: string[] = [];
+	public generatedListingFilePath
+	private generatedFilePaths: string[] = []
 
 	constructor(
 		private pathBuilder: PathBuilder
@@ -16,18 +17,19 @@ export class GeneratedSummaryBuilder implements IQBuilder {
 	addFileNameAndPaths(
 		entityName: string,
 		fullDdlPath: string,
-		fullGenerationPath: string,
+		fullGenerationPath: string
 	): void {
 		const generatedRelativePath = resolveRelativePath(this.generatedListingFilePath, fullGenerationPath)
-			.replace('.ts', '');
-		this.generatedFilePaths.push(this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath));
+			.replace('.ts', '')
+		this.generatedFilePaths.push(this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath))
 	}
 
 	build(): string {
-		this.generatedFilePaths.sort();
+		this.generatedFilePaths.sort()
 
 		const exports = this.generatedFilePaths.map(
-			filePath => `export * from '${filePath}';`).join('\n');
+			filePath => `export * from '${filePath}';`)
+			.join('\n')
 
 		return `export * from './schema';
 export * from './qSchema';
