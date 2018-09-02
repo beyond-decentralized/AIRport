@@ -101,12 +101,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="ts" value="3339" />
+          <entry key="ts" value="3380" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="TypeScript" value="3339" />
+          <entry key="TypeScript" value="3380" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -139,8 +139,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/QueryEntityClassCreator.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="522">
-                  <caret line="43" column="4" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="4" />
+                <state relative-caret-position="598">
+                  <caret line="47" column="6" selection-start-line="47" selection-start-column="6" selection-end-line="47" selection-end-column="6" />
                   <folding>
                     <element signature="e#0#156#0" expanded="true" />
                   </folding>
@@ -174,7 +174,7 @@
             <entry file="file://$PROJECT_DIR$/src/QueryEntityClassCreator.ts">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="327">
-                  <caret line="58" selection-start-line="58" selection-end-line="58" />
+                  <caret line="63" selection-start-line="63" selection-end-line="63" />
                 </state>
               </provider>
             </entry>
@@ -301,12 +301,12 @@
       <workItem from="1535827971468" duration="1300000" />
       <workItem from="1535846018937" duration="59000" />
       <workItem from="1535846144213" duration="7285000" />
-      <workItem from="1535894602946" duration="4367000" />
+      <workItem from="1535894602946" duration="4478000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46699000" />
+    <option name="totallyTimeSpent" value="46810000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
@@ -498,8 +498,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/QueryEntityClassCreator.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="43" column="4" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="4" />
+        <state relative-caret-position="598">
+          <caret line="47" column="6" selection-start-line="47" selection-start-column="6" selection-end-line="47" selection-end-column="6" />
           <folding>
             <element signature="e#0#156#0" expanded="true" />
           </folding>

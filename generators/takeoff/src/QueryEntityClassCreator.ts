@@ -42,6 +42,11 @@ export class QueryEntityClassCreator
 	): QSchema {
 		let qSchema: QSchemaInternal;
 
+		if(this.airportDatabase.qSchemaMapByName[schema.name]){
+
+		} else {
+
+		}
 
 		qSchema: QSchemaInternal = {
 			__constructors__: {},

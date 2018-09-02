@@ -26,6 +26,7 @@
       <change beforePath="$PROJECT_DIR$/generators/takeoff/src/QueryEntityClassCreator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/takeoff/src/QueryEntityClassCreator.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/territory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/territory/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/index.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/index.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/index.ts" afterDir="false" />
@@ -303,7 +304,7 @@
       <workItem from="1535816138860" duration="763000" />
       <workItem from="1535846018375" duration="61000" />
       <workItem from="1535846144119" duration="1898000" />
-      <workItem from="1535894602015" duration="628000" />
+      <workItem from="1535894602015" duration="707000" />
     </task>
     <task id="LOCAL-00001" summary="adding not null constraints">
       <created>1535641136191</created>
@@ -340,11 +341,18 @@
       <option name="project" value="LOCAL" />
       <updated>1535863389035</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="working on Q Object generation 'takeoff' (and related changes to schema&#10;generation)">
+      <created>1535899508389</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1535899508389</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16895000" />
+    <option name="totallyTimeSpent" value="16974000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1920" height="1055" extended-state="6" />
