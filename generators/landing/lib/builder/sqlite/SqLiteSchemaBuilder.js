@@ -12,6 +12,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const ground_control_1 = require("@airport/ground-control");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../../InjectionTokens");
@@ -67,7 +68,7 @@ SqLiteSchemaBuilder = __decorate([
     typedi_1.Service(InjectionTokens_1.SchemaBuilderToken),
     __param(0, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
     __param(1, typedi_1.Inject(ground_control_1.StoreDriverToken)),
-    __metadata("design:paramtypes", [Object, Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof ground_control_1.ISchemaUtils !== "undefined" && ground_control_1.ISchemaUtils) === "function" ? _a : Object, Object])
 ], SqLiteSchemaBuilder);
 exports.SqLiteSchemaBuilder = SqLiteSchemaBuilder;
 //# sourceMappingURL=SqLiteSchemaBuilder.js.map

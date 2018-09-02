@@ -18,6 +18,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const typedi_1 = require("typedi");
+const qSchema_1 = require("./generated/qSchema");
 const schema_1 = require("./generated/schema");
 const InjectionTokens_1 = require("./InjectionTokens");
 __export(require("./dao/dao"));
@@ -29,13 +30,20 @@ let AtAirport_TrafficPattern_QSchema = class AtAirport_TrafficPattern_QSchema {
         this.dao = dao;
         this.dmo = dmo;
         const schemaName = dbSchemaUtils.getSchemaName(schema_1.SCHEMA);
+        this.__constructors__ = qSchema_1.Q_SCHEMA.__constructors;
+        qSchema_1.Q_SCHEMA.dao = dao;
+        qSchema_1.Q_SCHEMA.dmo = dmo;
         const existingQSchema = airportDatabase.qSchemaMapByName[schemaName];
+        // If '@airport/takeoff' has already run
         if (existingQSchema) {
             existingQSchema.dao = dao;
             existingQSchema.dmo = dao;
+            existingQSchema.__constructors__ = qSchema_1.Q_SCHEMA.__constructors;
+            air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, this);
+            air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, qSchema_1.Q_SCHEMA);
         }
         else {
-            airportDatabase.qSchemaMapByName[schemaName] = this;
+            airportDatabase.qSchemaMapByName[schemaName] = qSchema_1.Q_SCHEMA;
         }
     }
 };

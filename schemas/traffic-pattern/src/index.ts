@@ -1,6 +1,7 @@
 import {
 	AirportDatabaseToken,
-	IAirportDatabase
+	IAirportDatabase,
+	setQSchemaEntities
 }                                       from '@airport/air-control'
 import {
 	DbSchema,
@@ -13,7 +14,10 @@ import {
 }                                       from 'typedi'
 import {IAtAirport_TrafficPattern_Daos} from './dao/dao'
 import {IAtAirport_TrafficPattern_Dmos} from './dmo/dmo'
-import {LocalQSchema}                   from './generated/qSchema'
+import {
+	LocalQSchema,
+	Q_SCHEMA
+}                                       from './generated/qSchema'
 import {SCHEMA}                         from './generated/schema'
 import {QSchema}                        from './generated/schema/qschema'
 import {QSchemaColumn}                  from './generated/schema/qschemacolumn'
@@ -46,6 +50,7 @@ export class AtAirport_TrafficPattern_QSchema
  implements IAtAirport_TrafficPattern_QSchema {
 
 	db: DbSchema;
+	__constructors__;
 
 	Schema: QSchema;
 	SchemaColumn: QSchemaColumn;
@@ -70,12 +75,20 @@ export class AtAirport_TrafficPattern_QSchema
 	) {
 		const schemaName = dbSchemaUtils.getSchemaName(SCHEMA)
 
+		this.__constructors__ = Q_SCHEMA.__constructors
+		Q_SCHEMA.dao = dao
+		Q_SCHEMA.dmo = dmo
+
 		const existingQSchema = airportDatabase.qSchemaMapByName[schemaName]
+		// If '@airport/takeoff' has already run
 		if (existingQSchema) {
 			existingQSchema.dao = dao
 			existingQSchema.dmo = dao
+			existingQSchema.__constructors__ = Q_SCHEMA.__constructors
+			setQSchemaEntities(existingQSchema.__dbSchema__, this)
+			setQSchemaEntities(existingQSchema.__dbSchema__, Q_SCHEMA)
 		} else {
-			airportDatabase.qSchemaMapByName[schemaName] = this
+			airportDatabase.qSchemaMapByName[schemaName] = Q_SCHEMA
 		}
 	}
 }

@@ -70,4 +70,5 @@ export interface QSchema {
 export interface QSchemaInternal {
 	__constructors__?: { [name: string]: EntityConstructor }
 	__qConstructors__?: { [name: string]: QEntityConstructor };
+	__dbSchema__?: DbSchema;
 }

@@ -12,6 +12,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
@@ -442,7 +443,7 @@ SchemaRecorder = __decorate([
     __param(11, typedi_1.Inject(traffic_pattern_1.SchemaVersionDaoToken)),
     __param(12, typedi_1.Inject(terminal_map_1.TerminalStoreToken)),
     __param(13, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, typeof (_a = typeof ground_control_1.ISchemaUtils !== "undefined" && ground_control_1.ISchemaUtils) === "function" ? _a : Object, Object, Object, Object])
 ], SchemaRecorder);
 exports.SchemaRecorder = SchemaRecorder;
 //# sourceMappingURL=SchemaRecorder.js.map

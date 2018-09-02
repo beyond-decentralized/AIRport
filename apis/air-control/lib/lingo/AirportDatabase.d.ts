@@ -53,4 +53,5 @@ export interface QSchemaInternal {
     __qConstructors__?: {
         [name: string]: QEntityConstructor;
     };
+    __dbSchema__?: DbSchema;
 }
