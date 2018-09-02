@@ -1,4 +1,5 @@
 import { Token } from 'typedi/Token';
+import { IAtAirport_TrafficPattern_Daos } from './dao/dao';
 import { ISchemaColumnDao } from './dao/SchemaColumnDao';
 import { ISchemaDao } from './dao/SchemaDao';
 import { ISchemaEntityDao } from './dao/SchemaEntityDao';
@@ -8,7 +9,12 @@ import { ISchemaReferenceDao } from './dao/SchemaReferenceDao';
 import { ISchemaRelationColumnDao } from './dao/SchemaRelationColumnDao';
 import { ISchemaRelationDao } from './dao/SchemaRelationDao';
 import { ISchemaVersionDao } from './dao/SchemaVersionDao';
+import { IAtAirport_TrafficPattern_Dmos } from './dmo/dmo';
 import { ISchemaVersionDmo } from './dmo/SchemaVersionDmo';
+import { IAtAirport_TrafficPattern_QSchema } from './index';
+export declare const AtAirport_TrafficPattern_QSchemaToken: Token<IAtAirport_TrafficPattern_QSchema>;
+export declare const AtAirport_TrafficPattern_DaosToken: Token<IAtAirport_TrafficPattern_Daos>;
+export declare const AtAirport_TrafficPattern_DmosToken: Token<IAtAirport_TrafficPattern_Dmos>;
 export declare const SchemaColumnDaoToken: Token<ISchemaColumnDao>;
 export declare const SchemaDaoToken: Token<ISchemaDao>;
 export declare const SchemaEntityDaoToken: Token<ISchemaEntityDao>;

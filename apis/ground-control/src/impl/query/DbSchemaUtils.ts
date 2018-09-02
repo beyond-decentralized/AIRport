@@ -1,12 +1,12 @@
-import {Service}          from 'typedi'
-import {ColumnName}       from '../..'
-import {SchemaUtilsToken} from '../../InjectionTokens'
+import {Service}            from 'typedi'
+import {ColumnName}         from '../../lingo/schema/Property'
+import {DbSchemaUtilsToken} from '../../InjectionTokens'
 import {
 	JsonSchema,
 	SchemaName
-}                         from '../../lingo/schema/Schema'
+}                           from '../../lingo/schema/Schema'
 
-export interface ISchemaUtils {
+export interface IDbSchemaUtils {
 
 	getSchemaName(
 		jsonSchema: JsonSchema
@@ -19,9 +19,9 @@ export interface ISchemaUtils {
 
 }
 
-@Service(SchemaUtilsToken)
-export class SchemaUtils
-	implements ISchemaUtils {
+@Service(DbSchemaUtilsToken)
+export class DbSchemaUtils
+	implements IDbSchemaUtils {
 
 	getSchemaName(
 		jsonSchema: JsonSchema
@@ -41,4 +41,5 @@ export class SchemaUtils
 	): string {
 		return `${prefixedTableName}_${columnName}__SEQUENCE`
 	}
+
 }

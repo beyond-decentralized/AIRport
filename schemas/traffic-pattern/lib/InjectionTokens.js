@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Token_1 = require("typedi/Token");
+exports.AtAirport_TrafficPattern_QSchemaToken = new Token_1.Token();
+exports.AtAirport_TrafficPattern_DaosToken = new Token_1.Token();
+exports.AtAirport_TrafficPattern_DmosToken = new Token_1.Token();
 exports.SchemaColumnDaoToken = new Token_1.Token();
 exports.SchemaDaoToken = new Token_1.Token();
 exports.SchemaEntityDaoToken = new Token_1.Token();

@@ -101,7 +101,7 @@ export interface JsonSchemaColumn
 	/**
 	 * How many ids to allocate at a time
 	 */
-	allocationSize: SchemaColumnAllocationSize;
+	allocationSize?: SchemaColumnAllocationSize;
 
 
 	/**

@@ -64,7 +64,7 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex>, J
     /**
      * How many ids to allocate at a time
      */
-    allocationSize: SchemaColumnAllocationSize;
+    allocationSize?: SchemaColumnAllocationSize;
     /**
      * One-to-Many relations that are mapped to this column.
      */

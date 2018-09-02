@@ -2,30 +2,56 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bd751d23-7c92-42a0-9635-9fd6ed37eff5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../takeoff/src/AirportDatabasePopulator.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../takeoff/src/DdlObjectLinker.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../takeoff/src/DdlObjectRetriever.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../takeoff/src/QueryEntityClassCreator.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/dmo/dmo.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalState.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalState.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalState.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalStore.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/SchemaUtils.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/SchemaUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/query/SchemaUtils.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/index.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/schema/Property.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/InjectionTokens.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/impl/query/SchemaUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/impl/query/DbSchemaUtils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/schema/Property.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/schema/Property.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/SchemaInitializer.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SchemaInitializer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/recorder/SchemaRecorder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recorder/SchemaRecorder.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recorder/SchemaRecorder.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/recorder/SchemaRecorder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recorder/SchemaRecorder.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/recorder/SchemaRecorder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/recorder/SchemaRecorder.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../takeoff/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../takeoff/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../takeoff/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../takeoff/src/InjectionTokens.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../takeoff/src/QueryObjectInitializer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../takeoff/src/QueryObjectInitializer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/moving-walkway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/moving-walkway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/territory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/territory/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../takeoff/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../takeoff/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaStatus.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaStatus.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/SchemaStatus.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/InjectionTokens.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/InjectionTokens.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/InjectionTokens.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/dao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/dao.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/dao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/dao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/dao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/dao/dao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/Schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/Schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/Schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/ddl/schema/Schema.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/lib/index.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/InjectionTokens.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/dao/dao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/dao/dao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/traffic-pattern/src/index.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -36,89 +62,50 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DockManager">
-    <window id="1">
-      <content type="file-editors">
-        <state>
-          <splitter split-orientation="horizontal" split-proportion="0.5">
-            <split-first>
-              <leaf>
-                <file pinned="false" current-in-tab="true">
-                  <entry file="file://$PROJECT_DIR$/src/recorder/SchemaRecorder.ts">
-                    <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="638">
-                        <caret line="139" selection-start-line="139" selection-end-line="139" />
-                        <folding>
-                          <element signature="e#0#85#0" expanded="true" />
-                        </folding>
-                      </state>
-                    </provider>
-                  </entry>
-                </file>
-              </leaf>
-            </split-first>
-            <split-second>
-              <leaf>
-                <file pinned="false" current-in-tab="true">
-                  <entry file="file://$PROJECT_DIR$/src/recorder/SchemaRecorder.ts">
-                    <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="762">
-                        <caret line="201" column="25" selection-start-line="201" selection-start-column="25" selection-end-line="201" selection-end-column="25" />
-                        <folding>
-                          <element signature="e#0#85#0" expanded="true" />
-                        </folding>
-                      </state>
-                    </provider>
-                  </entry>
-                </file>
-              </leaf>
-            </split-second>
-          </splitter>
-        </state>
-      </content>
-    </window>
-  </component>
   <component name="FUSProjectUsageTrigger">
     <session id="2134754356">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="7" />
+          <entry key="project.closed" value="9" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.19" value="1" />
           <entry key="project.open.time.2" value="1" />
-          <entry key="project.open.time.4" value="3" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.4" value="4" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="9" />
+          <entry key="project.opened" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="json" value="3" />
-          <entry key="ts" value="37" />
+          <entry key="json" value="4" />
+          <entry key="ts" value="42" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JSON" value="3" />
-          <entry key="TypeScript" value="37" />
+          <entry key="JSON" value="4" />
+          <entry key="TypeScript" value="42" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
         <counts>
-          <entry key="TypeScriptServerServiceImpl" value="9" />
+          <entry key="TypeScriptServerServiceImpl" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="json" value="29" />
-          <entry key="ts" value="6415" />
+          <entry key="dummy" value="12" />
+          <entry key="json" value="46" />
+          <entry key="ts" value="7009" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JSON" value="29" />
-          <entry key="TypeScript" value="6415" />
+          <entry key="JSON" value="46" />
+          <entry key="PLAIN_TEXT" value="12" />
+          <entry key="TypeScript" value="7009" />
         </counts>
       </usages-collector>
     </session>
@@ -172,16 +159,17 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.49947917">
       <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+        <leaf>
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/recorder/SchemaRecorder.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="4">
-                  <caret line="230" column="36" selection-start-line="230" selection-start-column="16" selection-end-line="230" selection-end-column="36" />
+                <state relative-caret-position="2354">
+                  <caret line="107" column="13" selection-start-line="107" selection-start-column="13" selection-end-line="107" selection-end-column="13" />
                   <folding>
                     <element signature="e#0#85#0" expanded="true" />
+                    <marker date="1535856288289" expanded="true" signature="13230:13272" ph="..." />
                   </folding>
                 </state>
               </provider>
@@ -190,15 +178,34 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
+        <leaf>
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/recorder/SchemaRecorder.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="204">
-                  <caret line="273" column="80" selection-start-line="273" selection-start-column="49" selection-end-line="273" selection-end-column="80" />
+                <state relative-caret-position="10713">
+                  <caret line="695" column="1" lean-forward="true" selection-start-line="695" selection-start-column="1" selection-end-line="695" selection-end-column="1" />
                   <folding>
                     <element signature="e#0#85#0" expanded="true" />
+                    <marker date="1535856288289" expanded="true" signature="13230:13272" ph="..." />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/builder/sqlite/SqLiteSchemaBuilder.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="532">
+                  <caret line="79" column="38" selection-start-line="79" selection-start-column="38" selection-end-line="79" selection-end-column="38" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/SchemaInitializer.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="744">
+                  <caret line="72" selection-start-line="72" selection-end-line="72" />
                 </state>
               </provider>
             </entry>
@@ -228,9 +235,12 @@
       <find>generateSchemaRelationColumns</find>
       <find>manyRelation</find>
       <find>recordSchemaVersions</find>
+      <find>recordDomains</find>
+      <find>.name</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src</dir>
+      <dir>C:\Users\Papa\dac\airport\generators\landing\src</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -248,13 +258,13 @@
         <option value="$PROJECT_DIR$/src/builder/SqlSchemaBuilder.ts" />
         <option value="$PROJECT_DIR$/src/recorder/IRecorderBuilder.ts" />
         <option value="$PROJECT_DIR$/src/InjectionTokens.ts" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/SchemaInitializer.ts" />
         <option value="$PROJECT_DIR$/src/checker/SchemaChecker.ts" />
         <option value="$PROJECT_DIR$/src/locator/SchemaLocator.ts" />
         <option value="$PROJECT_DIR$/src/index.ts" />
         <option value="$PROJECT_DIR$/src/builder/sqlite/SqLiteSchemaBuilder.ts" />
         <option value="$PROJECT_DIR$/src/builder/postgre/PostgreSqlSchemaBuilder.ts" />
+        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/recorder/SchemaRecorder.ts" />
       </list>
     </option>
@@ -277,10 +287,8 @@
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1920" />
-    <option name="y" value="-2" />
-    <option name="width" value="1920" />
-    <option name="height" value="1082" />
+    <option name="width" value="1943" />
+    <option name="height" value="1103" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -290,6 +298,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -330,12 +339,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../takeoff" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../apis/air-control" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -401,31 +409,33 @@
       <workItem from="1535771619544" duration="566000" />
       <workItem from="1535816139207" duration="647000" />
       <workItem from="1535833241372" duration="2534000" />
+      <workItem from="1535846018937" duration="58000" />
+      <workItem from="1535846144697" duration="2241000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="69207000" />
+    <option name="totallyTimeSpent" value="73724000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.11544544" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32917964" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="TypeScript" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.33852544" />
-      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.11643836" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TypeScript" order="1" />
+      <window_info anchor="bottom" id="Terminal" order="2" weight="0.33852544" />
+      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="Find" order="5" weight="0.32917964" />
+      <window_info anchor="bottom" id="Run" order="6" />
+      <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.2497332" />
@@ -483,13 +493,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/typedi/Container.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="311">
@@ -497,7 +500,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/impl/query/SchemaUtils.d.ts" />
     <entry file="file://$PROJECT_DIR$/node_modules/@airport/terminal-map/lib/store/Selector.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
@@ -597,13 +599,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/SchemaInitializer.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1060">
-          <caret line="72" selection-start-line="72" selection-end-line="72" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/@airport/traffic-pattern/lib/generated/schema/qschemacolumn.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
@@ -615,13 +610,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1425">
           <caret line="84" column="11" selection-start-line="84" selection-start-column="11" selection-end-line="84" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/builder/sqlite/SqLiteSchemaBuilder.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
-          <caret line="43" column="9" selection-start-line="43" selection-start-column="9" selection-end-line="43" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -653,13 +641,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="13" column="25" selection-start-line="13" selection-start-column="25" selection-end-line="13" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SchemaInitializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="744">
+          <caret line="72" selection-start-line="72" selection-end-line="72" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/recorder/SchemaRecorder.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="762">
-          <caret line="201" column="25" selection-start-line="201" selection-start-column="25" selection-end-line="201" selection-end-column="25" />
+        <state relative-caret-position="10713">
+          <caret line="695" column="1" lean-forward="true" selection-start-line="695" selection-start-column="1" selection-end-line="695" selection-end-column="1" />
           <folding>
             <element signature="e#0#85#0" expanded="true" />
+            <marker date="1535856288289" expanded="true" signature="13230:13272" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@airport/ground-control/lib/impl/query/SchemaUtils.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/builder/sqlite/SqLiteSchemaBuilder.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="79" column="38" selection-start-line="79" selection-start-column="38" selection-end-line="79" selection-end-column="38" />
         </state>
       </provider>
     </entry>
