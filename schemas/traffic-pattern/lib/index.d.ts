@@ -24,6 +24,9 @@ export declare class AtAirport_TrafficPattern_QSchema implements IAtAirport_Traf
     dmo: IAtAirport_TrafficPattern_Dmos;
     db: DbSchema;
     __constructors__: any;
+    __created__: any;
+    __exported__: any;
+    __injected__: any;
     Schema: QSchema;
     SchemaColumn: QSchemaColumn;
     SchemaEntity: QSchemaEntity;

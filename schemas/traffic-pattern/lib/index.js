@@ -33,9 +33,18 @@ let AtAirport_TrafficPattern_QSchema = class AtAirport_TrafficPattern_QSchema {
         this.__constructors__ = qSchema_1.Q_SCHEMA.__constructors;
         qSchema_1.Q_SCHEMA.dao = dao;
         qSchema_1.Q_SCHEMA.dmo = dmo;
+        qSchema_1.Q_SCHEMA.__exported__ = qSchema_1.Q_SCHEMA;
+        qSchema_1.Q_SCHEMA.__injected__ = this;
+        this.__injected__ = this;
+        this.__exported__ = qSchema_1.Q_SCHEMA;
         const existingQSchema = airportDatabase.qSchemaMapByName[schemaName];
         // If '@airport/takeoff' has already run
         if (existingQSchema) {
+            qSchema_1.Q_SCHEMA.__created__ = existingQSchema;
+            this.__created__ = existingQSchema;
+            existingQSchema.__injected__ = this;
+            existingQSchema.__exported__ = qSchema_1.Q_SCHEMA;
+            existingQSchema.__created__ = existingQSchema;
             existingQSchema.dao = dao;
             existingQSchema.dmo = dao;
             existingQSchema.__constructors__ = qSchema_1.Q_SCHEMA.__constructors;
@@ -43,6 +52,8 @@ let AtAirport_TrafficPattern_QSchema = class AtAirport_TrafficPattern_QSchema {
             air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, qSchema_1.Q_SCHEMA);
         }
         else {
+            qSchema_1.Q_SCHEMA.__created__ = qSchema_1.Q_SCHEMA;
+            this.__created__ = qSchema_1.Q_SCHEMA;
             airportDatabase.qSchemaMapByName[schemaName] = qSchema_1.Q_SCHEMA;
         }
     }

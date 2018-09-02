@@ -47,21 +47,24 @@ export interface IAtAirport_TrafficPattern_QSchema
 
 @Service(AtAirport_TrafficPattern_QSchemaToken)
 export class AtAirport_TrafficPattern_QSchema
- implements IAtAirport_TrafficPattern_QSchema {
+	implements IAtAirport_TrafficPattern_QSchema {
 
-	db: DbSchema;
-	__constructors__;
+	db: DbSchema
+	__constructors__
+	__created__
+	__exported__
+	__injected__
 
-	Schema: QSchema;
-	SchemaColumn: QSchemaColumn;
-	SchemaEntity: QSchemaEntity;
-	SchemaProperty: QSchemaProperty;
-	SchemaPropertyColumn: QSchemaPropertyColumn;
-	SchemaReference: QSchemaReference;
-	SchemaRelation: QSchemaRelation;
-	SchemaRelationColumn: QSchemaRelationColumn;
-	SchemaVersion: QSchemaVersion;
-	VersionedSchemaObject: QVersionedSchemaObject;
+	Schema: QSchema
+	SchemaColumn: QSchemaColumn
+	SchemaEntity: QSchemaEntity
+	SchemaProperty: QSchemaProperty
+	SchemaPropertyColumn: QSchemaPropertyColumn
+	SchemaReference: QSchemaReference
+	SchemaRelation: QSchemaRelation
+	SchemaRelationColumn: QSchemaRelationColumn
+	SchemaVersion: QSchemaVersion
+	VersionedSchemaObject: QVersionedSchemaObject
 
 	constructor(
 		@Inject(AtAirport_TrafficPattern_DaosToken)
@@ -76,18 +79,31 @@ export class AtAirport_TrafficPattern_QSchema
 		const schemaName = dbSchemaUtils.getSchemaName(SCHEMA)
 
 		this.__constructors__ = Q_SCHEMA.__constructors
-		Q_SCHEMA.dao = dao
-		Q_SCHEMA.dmo = dmo
+		Q_SCHEMA.dao          = dao
+		Q_SCHEMA.dmo          = dmo
+		Q_SCHEMA.__exported__ = Q_SCHEMA
+		Q_SCHEMA.__injected__ = this
+		this.__injected__     = this
+		this.__exported__     = Q_SCHEMA
+
 
 		const existingQSchema = airportDatabase.qSchemaMapByName[schemaName]
 		// If '@airport/takeoff' has already run
 		if (existingQSchema) {
-			existingQSchema.dao = dao
-			existingQSchema.dmo = dao
+			Q_SCHEMA.__created__         = existingQSchema
+			this.__created__             = existingQSchema
+			existingQSchema.__injected__ = this
+			existingQSchema.__exported__ = Q_SCHEMA
+			existingQSchema.__created__  = existingQSchema
+
+			existingQSchema.dao              = dao
+			existingQSchema.dmo              = dao
 			existingQSchema.__constructors__ = Q_SCHEMA.__constructors
 			setQSchemaEntities(existingQSchema.__dbSchema__, this)
 			setQSchemaEntities(existingQSchema.__dbSchema__, Q_SCHEMA)
 		} else {
+			Q_SCHEMA.__created__                         = Q_SCHEMA
+			this.__created__                             = Q_SCHEMA
 			airportDatabase.qSchemaMapByName[schemaName] = Q_SCHEMA
 		}
 	}

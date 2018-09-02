@@ -2,26 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="25b20eb5-0657-4253-b188-d9c4383e1abf" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/impl/utils/qSchemaBuilderUtils.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lingo/AirportDatabase.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/lingo/AirportDatabase.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lingo/AirportDatabase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lingo/AirportDatabase.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ground-control/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../terminal-map/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../terminal-map/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/takeoff/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/takeoff/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/takeoff/src/QueryEntityClassCreator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/takeoff/src/QueryEntityClassCreator.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/territory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/territory/.idea/workspace.xml" afterDir="false" />
@@ -126,8 +111,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/impl/utils/qSchemaBuilderUtils.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="742">
-                  <caret line="128" column="1" lean-forward="true" selection-start-line="128" selection-start-column="1" selection-end-line="128" selection-end-column="1" />
+                <state relative-caret-position="495">
+                  <caret line="115" column="18" lean-forward="true" selection-start-line="115" selection-start-column="18" selection-end-line="115" selection-end-column="18" />
                   <folding>
                     <element signature="e#0#136#0" expanded="true" />
                   </folding>
@@ -346,16 +331,15 @@
       <workItem from="1535638591063" duration="594000" />
       <workItem from="1535771622822" duration="1054000" />
       <workItem from="1535854566627" duration="4033000" />
-      <workItem from="1535896882026" duration="2542000" />
+      <workItem from="1535896882026" duration="3276000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21092000" />
+    <option name="totallyTimeSpent" value="21826000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1920" height="1055" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13547707" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -655,8 +639,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/impl/utils/qSchemaBuilderUtils.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="742">
-          <caret line="128" column="1" lean-forward="true" selection-start-line="128" selection-start-column="1" selection-end-line="128" selection-end-column="1" />
+        <state relative-caret-position="495">
+          <caret line="115" column="18" lean-forward="true" selection-start-line="115" selection-start-column="18" selection-end-line="115" selection-end-column="18" />
           <folding>
             <element signature="e#0#136#0" expanded="true" />
           </folding>

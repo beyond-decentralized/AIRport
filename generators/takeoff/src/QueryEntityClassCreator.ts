@@ -7,7 +7,7 @@ import {
 	QSchemaInternal,
 	setQSchemaEntities,
 	UtilsToken
-} from '@airport/air-control'
+}                                     from '@airport/air-control'
 import {ISchema}                      from '@airport/traffic-pattern'
 import {
 	Inject,
@@ -40,21 +40,22 @@ export class QueryEntityClassCreator
 	create(
 		schema: ISchema
 	): QSchema {
-		let qSchema: QSchemaInternal;
-
-		if(this.airportDatabase.qSchemaMapByName[schema.name]){
-
+		const dbSchema               = <any>schema
+		let qSchema: QSchemaInternal = this.airportDatabase.qSchemaMapByName[schema.name]
+		// If the Schema API source has already been loaded
+		if (qSchema) {
+			qSchema.__dbSchema__              = dbSchema
+			qSchema.__injected__.__dbSchema__ = dbSchema
+			setQSchemaEntities(dbSchema, qSchema.__injected__)
 		} else {
-
+			qSchema                                            = {
+				__constructors__: {},
+				__qConstructors__: {},
+				__dbSchema__: dbSchema
+			}
+			this.airportDatabase.qSchemaMapByName[schema.name] = qSchema
 		}
-
-		qSchema: QSchemaInternal = {
-			__constructors__: {},
-			__qConstructors__: {},
-			__dbSchema__: <any>schema
-		}
-
-		setQSchemaEntities(schema, qSchema)
+		setQSchemaEntities(dbSchema, qSchema)
 
 		return qSchema
 	}

@@ -2,26 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ff1219ed-ef72-4546-b3da-e1c4662ab21c" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../air-control/src/impl/utils/qSchemaBuilderUtils.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../air-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../air-control/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../air-control/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../air-control/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../air-control/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../air-control/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../air-control/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../air-control/lib/lingo/AirportDatabase.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../air-control/lib/lingo/AirportDatabase.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../air-control/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../air-control/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../air-control/src/lingo/AirportDatabase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../air-control/src/lingo/AirportDatabase.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ground-control/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/takeoff/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/takeoff/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../generators/takeoff/src/QueryEntityClassCreator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/takeoff/src/QueryEntityClassCreator.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../schemas/territory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../schemas/territory/.idea/workspace.xml" afterDir="false" />
@@ -343,7 +328,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1920" height="1055" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24934107" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
