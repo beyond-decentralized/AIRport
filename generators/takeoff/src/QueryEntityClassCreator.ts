@@ -36,6 +36,7 @@ import {
 }                                     from 'typedi'
 import {QueryEntityClassCreatorToken} from './InjectionTokens'
 
+//https://github.com/russoturisto/tarmaq/blob/master/src/generated/data/schema/qRepositorySchema.ts
 /**
  * From:
  * http://js-bits.blogspot.com/2010/08/javascript-inheritance-done-right.html

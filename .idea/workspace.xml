@@ -1,58 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/generators/takeoff/src/AirportDatabasePopulator.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generators/takeoff/src/DdlObjectLinker.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generators/takeoff/src/DdlObjectRetriever.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generators/takeoff/src/QueryEntityClassCreator.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/dmo/dmo.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/InjectionTokens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/InjectionTokens.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/impl/query/SchemaUtils.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/impl/query/SchemaUtils.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/impl/query/SchemaUtils.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/impl/schema/builder/DbSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Property.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Property.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/impl/query/SchemaUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/impl/query/DbSchemaUtils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Property.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Property.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/config/rush/npm-shrinkwrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/rush/npm-shrinkwrap.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/SchemaInitializer.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/SchemaInitializer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/recorder/SchemaRecorder.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/recorder/SchemaRecorder.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/recorder/SchemaRecorder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/lib/recorder/SchemaRecorder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/lib/recorder/SchemaRecorder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/landing/src/recorder/SchemaRecorder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/landing/src/recorder/SchemaRecorder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/takeoff/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/takeoff/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/takeoff/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/takeoff/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/takeoff/src/QueryObjectInitializer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/takeoff/src/QueryObjectInitializer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/takeoff/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/takeoff/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/InjectionTokens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/InjectionTokens.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/dao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/dao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/dao.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/dao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/dao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/dao/dao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/Schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/Schema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/Schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/ddl/schema/Schema.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/dao/dao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/dao/dao.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/index.ts" afterDir="false" />
-    </list>
+    <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/apis/" />
     <ignored path="$PROJECT_DIR$/apps/" />
@@ -126,10 +75,12 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="ts" value="31" />
+          <entry key="txt" value="101" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
+          <entry key="PLAIN_TEXT" value="101" />
           <entry key="TypeScript" value="31" />
         </counts>
       </usages-collector>
@@ -154,8 +105,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/generators/runway/src/parser/utils.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="53" selection-start-line="53" selection-end-line="53" />
+            <state relative-caret-position="366">
+              <caret line="59" selection-start-line="50" selection-end-line="59" />
             </state>
           </provider>
         </entry>
@@ -355,7 +306,7 @@
       <workItem from="1535809571622" duration="1205000" />
       <workItem from="1535816138860" duration="763000" />
       <workItem from="1535846018375" duration="61000" />
-      <workItem from="1535846144119" duration="1190000" />
+      <workItem from="1535846144119" duration="1898000" />
     </task>
     <task id="LOCAL-00001" summary="adding not null constraints">
       <created>1535641136191</created>
@@ -385,11 +336,18 @@
       <option name="project" value="LOCAL" />
       <updated>1535835199188</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="working on Q Object generation 'takeoff' (and related changes to schema&#10;generation)">
+      <created>1535863389035</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1535863389035</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15179000" />
+    <option name="totallyTimeSpent" value="15887000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -428,7 +386,8 @@
     <MESSAGE value="adding not null constraints" />
     <MESSAGE value="refactoring holding-pattern and dependencies" />
     <MESSAGE value="finished in-memory ddl for 'takeoff', started adding datastructure setup for 'landing'" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished in-memory ddl for 'takeoff', started adding datastructure setup for 'landing'" />
+    <MESSAGE value="working on Q Object generation 'takeoff' (and related changes to schema&#10;generation)" />
+    <option name="LAST_COMMIT_MESSAGE" value="working on Q Object generation 'takeoff' (and related changes to schema&#10;generation)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -547,8 +506,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/generators/runway/src/parser/utils.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="53" selection-start-line="53" selection-end-line="53" />
+        <state relative-caret-position="366">
+          <caret line="59" selection-start-line="50" selection-end-line="59" />
         </state>
       </provider>
     </entry>
