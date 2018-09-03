@@ -3,6 +3,7 @@ import {
 	DbProperty,
 	DbSchema,
 	EntityRelationType,
+	SchemaIndex,
 	SQLDataType
 }                           from '@airport/ground-control'
 import {QSchema}            from '../../lingo/AirportDatabase'
@@ -109,7 +110,7 @@ export function getQEntityConstructor(): typeof QEntity {
 
 
 	return <any>ChildQEntity
-}
++-}
 
 export function setQSchemaEntities(
 	schema: DbSchema,
@@ -125,5 +126,69 @@ export function setQSchemaEntities(
 			}
 		})
 	})
+}
+
+export function setQSchemaEntityIds(
+	schema: DbSchema,
+	qSchema: QSchema
+) {
+	// order schema entities by their
+}
+
+export interface DbSchemaWithDependencies {
+	schema: DbSchema
+	dependencies: Set<SchemaIndex>
+}
+
+export function orderSchemasInOrderOfPrecedence(
+	schemas: DbSchema[]
+): DbSchema[] {
+	const schemaWithDepsMap: Map<SchemaIndex, DbSchemaWithDependencies> = new Map()
+	const schemasWithDeps: DbSchemaWithDependencies[] = schemas.map(
+		schema => {
+			const dependencies: Set<SchemaIndex> = new Set()
+			for(const schemaReference of schema.currentVersion.references) {
+				dependencies.add(schemaReference.referencedSchemaVersion.schema.index)
+			}
+			const schemaWithDependencies: DbSchemaWithDependencies = {
+				schema,
+				dependencies
+			}
+			schemaWithDepsMap.set(schema.index, schemaWithDependencies)
+
+			return schemaWithDependencies;
+		}
+	)
+
+	schemasWithDeps.sort((
+		orderedSchema1: DbSchemaWithDependencies,
+		orderedSchema2: DbSchemaWithDependencies
+	) => {
+		if(firstSchemaDependendsOnSecond(
+			orderedSchema1, orderedSchema2, schemaWithDepsMap)) {
+			return 1
+		} else if (firstSchemaDependendsOnSecond(
+			orderedSchema2, orderedSchema1, schemaWithDepsMap)) {
+			return -1
+		}
+
+		return 0
+	})
+
+	return schemasWithDeps.map(schemaWithDeps => schemaWithDeps.schema)
+}
+
+export function firstSchemaDependendsOnSecond(
+	firstSchema: DbSchemaWithDependencies,
+	secondSchema: DbSchemaWithDependencies,
+	schemaWithDepsMap: Map<SchemaIndex, DbSchemaWithDependencies>
+) {
+	const secondSchemaIndex = secondSchema.schema.index
+
+}
+
+export function orderEntitiesByIdDependencies(
+	entities: DbEntity[]
+): DbEntity[] {
 
 }

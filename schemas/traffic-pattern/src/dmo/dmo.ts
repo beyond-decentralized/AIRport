@@ -12,13 +12,13 @@ import {
 	IBaseVersionedSchemaObjectDmo
 } from '..'
 import {
-	AtAirport_TrafficPattern_DaosToken,
-	AtAirport_TrafficPattern_DmosToken
+	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DaosToken,
+	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DmosToken
 }                from '../InjectionTokens'
 
 export * from './SchemaVersionDmo'
 
-export interface IAtAirport_TrafficPattern_Dmos {
+export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos {
 
 	Schema: IBaseSchemaDmo;
 	SchemaColumn: IBaseSchemaColumnDmo;
@@ -33,9 +33,9 @@ export interface IAtAirport_TrafficPattern_Dmos {
 
 }
 
-@Service(AtAirport_TrafficPattern_DmosToken)
+@Service(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DmosToken)
 class AtAirport_TrafficPattern_Dmos
-	implements IAtAirport_TrafficPattern_Dmos {
+	implements NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos {
 
 	Schema: IBaseSchemaDmo;
 	SchemaColumn: IBaseSchemaColumnDmo;

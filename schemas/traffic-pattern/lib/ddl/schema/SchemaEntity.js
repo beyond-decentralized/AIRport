@@ -44,7 +44,6 @@ __decorate([
     __metadata("design:type", Object)
 ], SchemaEntity.prototype, "tableConfig", void 0);
 __decorate([
-    air_control_1.Id(),
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", SchemaVersion_1.SchemaVersion

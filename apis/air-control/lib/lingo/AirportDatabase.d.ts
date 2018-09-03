@@ -1,12 +1,12 @@
-import { DbSchema, JsonSchema } from "@airport/ground-control";
-import { QEntityConstructor } from "../impl/core/entity/Entity";
-import { EntityConstructor } from "./core/entity/Entity";
-import { FunctionsAndOperators } from "./core/FunctionsAndOperators";
-import { IDatabaseFacade } from "./core/repository/DatabaseFacade";
-import { INonEntityFind } from "./query/api/NonEntityFind";
-import { INonEntityFindOne } from "./query/api/NonEntityFindOne";
-import { INonEntitySearch } from "./query/api/NonEntitySearch";
-import { INonEntitySearchOne } from "./query/api/NonEntitySearchOne";
+import { DbSchema, JsonSchema } from '@airport/ground-control';
+import { QEntityConstructor } from '../impl/core/entity/Entity';
+import { EntityConstructor } from './core/entity/Entity';
+import { FunctionsAndOperators } from './core/FunctionsAndOperators';
+import { IDatabaseFacade } from './core/repository/DatabaseFacade';
+import { INonEntityFind } from './query/api/NonEntityFind';
+import { INonEntityFindOne } from './query/api/NonEntityFindOne';
+import { INonEntitySearch } from './query/api/NonEntitySearch';
+import { INonEntitySearchOne } from './query/api/NonEntitySearchOne';
 export interface FunctionAndOperatorHub {
     functions: FunctionsAndOperators;
     F: FunctionsAndOperators;
@@ -47,6 +47,9 @@ export interface QSchema {
     [name: string]: any;
 }
 export interface QSchemaInternal {
+    __created__?: QSchemaInternal;
+    __exported__?: QSchemaInternal;
+    __injected__?: QSchemaInternal;
     __constructors__?: {
         [name: string]: EntityConstructor;
     };

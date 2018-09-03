@@ -23,6 +23,6 @@ __export(require("./SchemaVersionDao"));
 let AtAirport_TrafficPattern_Daos = class AtAirport_TrafficPattern_Daos {
 };
 AtAirport_TrafficPattern_Daos = __decorate([
-    typedi_1.Service(InjectionTokens_1.AtAirport_TrafficPattern_DaosToken)
+    typedi_1.Service(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DaosToken)
 ], AtAirport_TrafficPattern_Daos);
 //# sourceMappingURL=dao.js.map

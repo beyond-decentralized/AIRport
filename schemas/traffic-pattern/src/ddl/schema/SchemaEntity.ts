@@ -70,7 +70,6 @@ export class SchemaEntity
 	// Non-Id relations
 	//
 
-	@Id()
 	@ManyToOne()
 	@JoinColumn({name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false})
 	schemaVersion: SchemaVersion

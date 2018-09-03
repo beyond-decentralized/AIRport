@@ -1,15 +1,15 @@
 import {
 	DbSchema,
 	JsonSchema
-}                              from "@airport/ground-control";
-import {QEntityConstructor}    from "../impl/core/entity/Entity";
-import {EntityConstructor}     from "./core/entity/Entity";
-import {FunctionsAndOperators} from "./core/FunctionsAndOperators";
-import {IDatabaseFacade}       from "./core/repository/DatabaseFacade";
-import {INonEntityFind}        from "./query/api/NonEntityFind";
-import {INonEntityFindOne}     from "./query/api/NonEntityFindOne";
-import {INonEntitySearch}      from "./query/api/NonEntitySearch";
-import {INonEntitySearchOne}   from "./query/api/NonEntitySearchOne";
+}                              from '@airport/ground-control'
+import {QEntityConstructor}    from '../impl/core/entity/Entity'
+import {EntityConstructor}     from './core/entity/Entity'
+import {FunctionsAndOperators} from './core/FunctionsAndOperators'
+import {IDatabaseFacade}       from './core/repository/DatabaseFacade'
+import {INonEntityFind}        from './query/api/NonEntityFind'
+import {INonEntityFindOne}     from './query/api/NonEntityFindOne'
+import {INonEntitySearch}      from './query/api/NonEntitySearch'
+import {INonEntitySearchOne}   from './query/api/NonEntitySearchOne'
 
 export interface FunctionAndOperatorHub {
 
@@ -33,7 +33,8 @@ export interface SchemaHub {
 }
 
 export interface IAirportDatabase
-	extends SchemaHub, FunctionAndOperatorHub {
+	extends SchemaHub,
+	        FunctionAndOperatorHub {
 
 	registerDatabase(
 		facade: IDatabaseFacade
@@ -68,6 +69,9 @@ export interface QSchema {
 }
 
 export interface QSchemaInternal {
+	__created__?: QSchemaInternal
+	__exported__?: QSchemaInternal
+	__injected__?: QSchemaInternal
 	__constructors__?: { [name: string]: EntityConstructor }
 	__qConstructors__?: { [name: string]: QEntityConstructor };
 	__dbSchema__?: DbSchema;

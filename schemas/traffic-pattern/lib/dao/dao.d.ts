@@ -8,7 +8,7 @@ export * from './SchemaReferenceDao';
 export * from './SchemaRelationColumnDao';
 export * from './SchemaRelationDao';
 export * from './SchemaVersionDao';
-export interface IAtAirport_TrafficPattern_Daos {
+export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos {
     Schema: IBaseSchemaDao;
     SchemaColumn: IBaseSchemaColumnDao;
     SchemaEntity: IBaseSchemaEntityDao;

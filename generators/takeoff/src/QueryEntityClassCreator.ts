@@ -8,14 +8,19 @@ import {
 	setQSchemaEntities,
 	UtilsToken
 }                                     from '@airport/air-control'
+import {
+	DbSchemaUtilsToken,
+	IDbSchemaUtils
+}                                     from '@airport/ground-control'
 import {ISchema}                      from '@airport/traffic-pattern'
 import {
+	Container,
 	Inject,
 	Service
-}                                     from 'typedi'
+} from 'typedi'
 import {QueryEntityClassCreatorToken} from './InjectionTokens'
 
-//https://github.com/russoturisto/tarmaq/blob/master/src/generated/data/schema/qRepositorySchema.ts
+// https://github.com/russoturisto/tarmaq/blob/master/src/generated/data/schema/qRepositorySchema.ts
 
 export interface IQueryEntityClassCreator {
 
@@ -30,10 +35,12 @@ export class QueryEntityClassCreator
 	implements IQueryEntityClassCreator {
 
 	constructor(
+		@Inject(AirportDatabaseToken)
+		private airportDatabase: IAirportDatabase,
 		@Inject(UtilsToken)
 		private utils: IUtils,
-		@Inject(AirportDatabaseToken)
-		private airportDatabase: IAirportDatabase
+		@Inject(DbSchemaUtilsToken)
+		private dbSchemaUtils: IDbSchemaUtils
 	) {
 	}
 
@@ -47,6 +54,7 @@ export class QueryEntityClassCreator
 			qSchema.__dbSchema__              = dbSchema
 			qSchema.__injected__.__dbSchema__ = dbSchema
 			setQSchemaEntities(dbSchema, qSchema.__injected__)
+			Container.get(`${dbSchema.name}QSchemaToken`)
 		} else {
 			qSchema                                            = {
 				__constructors__: {},
@@ -55,6 +63,7 @@ export class QueryEntityClassCreator
 			}
 			this.airportDatabase.qSchemaMapByName[schema.name] = qSchema
 		}
+		this.airportDatabase.qSchemas[schema.index] = qSchema
 		setQSchemaEntities(dbSchema, qSchema)
 
 		return qSchema

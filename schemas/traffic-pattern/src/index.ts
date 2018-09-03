@@ -1,28 +1,29 @@
 import {
 	AirportDatabaseToken,
 	IAirportDatabase,
+	QSchemaInternal,
 	setQSchemaEntities
-}                                       from '@airport/air-control'
+}                                                 from '@airport/air-control'
 import {
 	DbSchema,
 	DbSchemaUtilsToken,
 	IDbSchemaUtils,
-}                                       from '@airport/ground-control'
+}                                                 from '@airport/ground-control'
 import {
 	Inject,
 	Service
-}                                       from 'typedi'
-import {IAtAirport_TrafficPattern_Daos} from './dao/dao'
-import {IAtAirport_TrafficPattern_Dmos} from './dmo/dmo'
+}                                                 from 'typedi'
+import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos} from './dao/dao'
+import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos} from './dmo/dmo'
 import {
 	LocalQSchema,
 	Q_SCHEMA
-}                                       from './generated/qSchema'
-import {SCHEMA}                         from './generated/schema'
-import {QSchema}                        from './generated/schema/qschema'
-import {QSchemaColumn}                  from './generated/schema/qschemacolumn'
-import {QSchemaEntity}                  from './generated/schema/qschemaentity'
-import {QSchemaProperty}                from './generated/schema/qschemaproperty'
+}                                                 from './generated/qSchema'
+import {SCHEMA}                                   from './generated/schema'
+import {QSchema}                                  from './generated/schema/qschema'
+import {QSchemaColumn}                            from './generated/schema/qschemacolumn'
+import {QSchemaEntity}                            from './generated/schema/qschemaentity'
+import {QSchemaProperty}                          from './generated/schema/qschemaproperty'
 import {QSchemaPropertyColumn}          from './generated/schema/qschemapropertycolumn'
 import {QSchemaReference}               from './generated/schema/qschemareference'
 import {QSchemaRelation}                from './generated/schema/qschemarelation'
@@ -30,9 +31,9 @@ import {QSchemaRelationColumn}          from './generated/schema/qschemarelation
 import {QSchemaVersion}                 from './generated/schema/qschemaversion'
 import {QVersionedSchemaObject}         from './generated/schema/qversionedschemaobject'
 import {
-	AtAirport_TrafficPattern_DaosToken,
-	AtAirport_TrafficPattern_DmosToken,
-	AtAirport_TrafficPattern_QSchemaToken
+	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DaosToken,
+	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DmosToken,
+	NPMJS_ORG___AIRPORT_Airport_TrafficPattern_QSchemaToken
 }                                       from './InjectionTokens'
 
 export * from './dao/dao'
@@ -40,14 +41,14 @@ export * from './ddl/ddl'
 export * from './generated/generated'
 export * from './InjectionTokens'
 
-export interface IAtAirport_TrafficPattern_QSchema
+export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSchema
 	extends LocalQSchema {
 
 }
 
-@Service(AtAirport_TrafficPattern_QSchemaToken)
+@Service(NPMJS_ORG___AIRPORT_Airport_TrafficPattern_QSchemaToken)
 export class AtAirport_TrafficPattern_QSchema
-	implements IAtAirport_TrafficPattern_QSchema {
+	implements NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSchema, QSchemaInternal {
 
 	db: DbSchema
 	__constructors__
@@ -67,10 +68,10 @@ export class AtAirport_TrafficPattern_QSchema
 	VersionedSchemaObject: QVersionedSchemaObject
 
 	constructor(
-		@Inject(AtAirport_TrafficPattern_DaosToken)
-		public dao: IAtAirport_TrafficPattern_Daos,
-		@Inject(AtAirport_TrafficPattern_DmosToken)
-		public dmo: IAtAirport_TrafficPattern_Dmos,
+		@Inject(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DaosToken)
+		public dao: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos,
+		@Inject(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DmosToken)
+		public dmo: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos,
 		@Inject(AirportDatabaseToken)
 			airportDatabase: IAirportDatabase,
 		@Inject(DbSchemaUtilsToken)
@@ -85,7 +86,6 @@ export class AtAirport_TrafficPattern_QSchema
 		Q_SCHEMA.__injected__ = this
 		this.__injected__     = this
 		this.__exported__     = Q_SCHEMA
-
 
 		const existingQSchema = airportDatabase.qSchemaMapByName[schemaName]
 		// If '@airport/takeoff' has already run
@@ -107,4 +107,5 @@ export class AtAirport_TrafficPattern_QSchema
 			airportDatabase.qSchemaMapByName[schemaName] = Q_SCHEMA
 		}
 	}
+
 }
