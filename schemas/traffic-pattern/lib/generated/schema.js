@@ -109,7 +109,7 @@ exports.SCHEMA = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 7
+                                    "index": 6
                                 }
                             ],
                             "sinceVersion": 1,
@@ -123,7 +123,7 @@ exports.SCHEMA = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 8
+                                    "index": 7
                                 }
                             ],
                             "sinceVersion": 1,
@@ -137,7 +137,7 @@ exports.SCHEMA = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 9
+                                    "index": 8
                                 }
                             ],
                             "sinceVersion": 1,
@@ -151,7 +151,7 @@ exports.SCHEMA = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 10
+                                    "index": 9
                                 }
                             ],
                             "sinceVersion": 1,
@@ -165,7 +165,7 @@ exports.SCHEMA = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 11
+                                    "index": 10
                                 }
                             ],
                             "sinceVersion": 1,
@@ -179,7 +179,7 @@ exports.SCHEMA = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 14
+                                    "index": 11
                                 }
                             ],
                             "sinceVersion": 1,
@@ -273,19 +273,10 @@ exports.SCHEMA = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 6,
-                            "isId": false,
-                            "name": "propertyColumns",
-                            "relationRef": {
-                                "index": 4
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
                             "columnRef": {
                                 "index": 5
                             },
-                            "index": 7,
+                            "index": 6,
                             "isId": false,
                             "name": "idIndex",
                             "sinceVersion": 1
@@ -294,7 +285,7 @@ exports.SCHEMA = {
                             "columnRef": {
                                 "index": 6
                             },
-                            "index": 8,
+                            "index": 7,
                             "isId": false,
                             "name": "isGenerated",
                             "sinceVersion": 1
@@ -303,7 +294,7 @@ exports.SCHEMA = {
                             "columnRef": {
                                 "index": 7
                             },
-                            "index": 9,
+                            "index": 8,
                             "isId": false,
                             "name": "allocationSize",
                             "sinceVersion": 1
@@ -312,7 +303,7 @@ exports.SCHEMA = {
                             "columnRef": {
                                 "index": 8
                             },
-                            "index": 10,
+                            "index": 9,
                             "isId": false,
                             "name": "name",
                             "sinceVersion": 1
@@ -321,13 +312,31 @@ exports.SCHEMA = {
                             "columnRef": {
                                 "index": 9
                             },
-                            "index": 11,
+                            "index": 10,
                             "isId": false,
                             "name": "notNull",
                             "sinceVersion": 1
                         },
                         {
+                            "columnRef": {
+                                "index": 10
+                            },
+                            "index": 11,
+                            "isId": false,
+                            "name": "type",
+                            "sinceVersion": 1
+                        },
+                        {
                             "index": 12,
+                            "isId": false,
+                            "name": "propertyColumns",
+                            "relationRef": {
+                                "index": 4
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 13,
                             "isId": false,
                             "name": "manyRelationColumns",
                             "relationRef": {
@@ -336,21 +345,12 @@ exports.SCHEMA = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 13,
+                            "index": 14,
                             "isId": false,
                             "name": "oneRelationColumns",
                             "relationRef": {
                                 "index": 6
                             },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 10
-                            },
-                            "index": 14,
-                            "isId": false,
-                            "name": "type",
                             "sinceVersion": 1
                         }
                     ],
@@ -403,7 +403,7 @@ exports.SCHEMA = {
                             },
                             "relationType": 0,
                             "propertyRef": {
-                                "index": 6
+                                "index": 12
                             },
                             "relationTableIndex": 1,
                             "sinceVersion": 1
@@ -416,7 +416,7 @@ exports.SCHEMA = {
                             },
                             "relationType": 0,
                             "propertyRef": {
-                                "index": 12
+                                "index": 13
                             },
                             "relationTableIndex": 2,
                             "sinceVersion": 1
@@ -429,7 +429,7 @@ exports.SCHEMA = {
                             },
                             "relationType": 0,
                             "propertyRef": {
-                                "index": 13
+                                "index": 14
                             },
                             "relationTableIndex": 2,
                             "sinceVersion": 1
@@ -1949,9 +1949,6 @@ exports.SCHEMA = {
                     "idColumnRefs": [
                         {
                             "index": 3
-                        },
-                        {
-                            "index": 9
                         }
                     ],
                     "index": 5,
@@ -2042,7 +2039,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 9,
-                            "isId": true,
+                            "isId": false,
                             "name": "schemaVersion",
                             "relationRef": {
                                 "index": 3
@@ -2119,7 +2116,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 3,
-                            "isId": true,
+                            "isId": false,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 9
@@ -3037,6 +3034,372 @@ exports.SCHEMA = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "SCHEMAS"
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IDAONE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "A_TWO",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "A_THREE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 9,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "TestA",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "idAOne",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "aTwo",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "aThree",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "TEST_A"
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IDBONE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "B_FOUR",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 9,
+                                    "oneColumnIndex": 1,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "B_A_TWO",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 3,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 9,
+                                    "oneColumnIndex": 2,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "B_A_THREE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 10,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "TestB",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "idBOne",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "name": "bToA",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "bFour",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 9,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "TEST_B"
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IDCONE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "C_FIVE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 2,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "C_A_TWO",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 3,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "C_A_THREE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 4,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 1,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "C_B_FOUR",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 11,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "TestC",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "idCOne",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "name": "cToB",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "cFive",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "TEST_C"
                     }
                 }
             ],

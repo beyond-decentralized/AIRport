@@ -2,16 +2,16 @@ import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, Tabl
 import { IVersionedSchemaObject, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { ISchemaColumn, SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
 import { ISchemaProperty, SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';
-import { ISchemaVersion, SchemaVersionEId, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQId, QSchemaVersionQRelation } from './qschemaversion';
+import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
 import { ISchemaRelation, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
 export interface ISchemaEntity extends IVersionedSchemaObject {
     id?: number;
-    schemaVersion?: ISchemaVersion;
     index?: number;
     isLocal?: boolean;
     isRepositoryEntity?: boolean;
     name?: string;
     tableConfig?: TableConfiguration;
+    schemaVersion?: ISchemaVersion;
     columns?: ISchemaColumn[];
     properties?: ISchemaProperty[];
     relations?: ISchemaRelation[];
@@ -47,14 +47,12 @@ export interface SchemaEntityESelect extends VersionedSchemaObjectESelect, Schem
  */
 export interface SchemaEntityEId extends VersionedSchemaObjectEId {
     id: number | IQNumberField;
-    schemaVersion: SchemaVersionEId;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface SchemaEntityEOptionalId {
     id?: number | IQNumberField;
-    schemaVersion?: SchemaVersionEOptionalId;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -65,6 +63,7 @@ export interface SchemaEntityEUpdateProperties extends VersionedSchemaObjectEUpd
     isRepositoryEntity?: boolean | IQBooleanField;
     name?: string | IQStringField;
     tableConfig?: TableConfiguration | IQStringField;
+    schemaVersion?: SchemaVersionEOptionalId;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -78,6 +77,7 @@ export interface SchemaEntityEUpdateColumns extends VersionedSchemaObjectEUpdate
     IS_REPOSITORY_ENTITY?: boolean | IQBooleanField;
     NAME?: string | IQStringField;
     TABLE_CONFIGURATION?: string | IQStringField;
+    SCHEMA_VERSION_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -94,12 +94,12 @@ export interface SchemaEntityECreateColumns extends SchemaEntityEId, SchemaEntit
  */
 export interface QSchemaEntity extends QVersionedSchemaObject {
     id: IQNumberField;
-    schemaVersion: QSchemaVersionQRelation;
     index: IQNumberField;
     isLocal: IQBooleanField;
     isRepositoryEntity: IQBooleanField;
     name: IQStringField;
     tableConfig: IQStringField;
+    schemaVersion: QSchemaVersionQRelation;
     columns: IQOneToManyRelation<QSchemaColumn>;
     properties: IQOneToManyRelation<QSchemaProperty>;
     relations: IQOneToManyRelation<QSchemaRelation>;
@@ -107,7 +107,6 @@ export interface QSchemaEntity extends QVersionedSchemaObject {
 }
 export interface QSchemaEntityQId extends QVersionedSchemaObjectQId {
     id: IQNumberField;
-    schemaVersion: QSchemaVersionQId;
 }
 export interface QSchemaEntityQRelation extends QVersionedSchemaObjectQRelation<QSchemaEntity>, QSchemaEntityQId {
 }

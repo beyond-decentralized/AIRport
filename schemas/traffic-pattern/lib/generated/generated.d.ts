@@ -12,3 +12,6 @@ export * from './schema/qschemarelation';
 export * from './schema/qschemarelationcolumn';
 export * from './schema/qschemaversion';
 export * from './schema/qversionedschemaobject';
+export * from './test/qtesta';
+export * from './test/qtestb';
+export * from './test/qtestc';

@@ -86,7 +86,6 @@ export interface ISchemaEntity extends IVersionedSchemaObject {
 	id?: number;
 
 	// Id Relations
-	schemaVersion?: ISchemaVersion;
 
 	// Non-Id Properties
 	index?: number;
@@ -96,6 +95,7 @@ export interface ISchemaEntity extends IVersionedSchemaObject {
 	tableConfig?: TableConfiguration;
 
 	// Non-Id Relations
+	schemaVersion?: ISchemaVersion;
 	columns?: ISchemaColumn[];
 	properties?: ISchemaProperty[];
 	relations?: ISchemaRelation[];
@@ -128,9 +128,9 @@ export interface SchemaEntityESelect
 	tableConfig?: TableConfiguration | IQStringField;
 
 	// Id Relations - full property interfaces
-	schemaVersion?: SchemaVersionESelect;
 
   // Non-Id relations (including OneToMany's)
+	schemaVersion?: SchemaVersionESelect;
 	columns?: SchemaColumnESelect;
 	properties?: SchemaPropertyESelect;
 	relations?: SchemaRelationESelect;
@@ -147,7 +147,6 @@ export interface SchemaEntityEId
 	id: number | IQNumberField;
 
 	// Id Relations - Ids only
-	schemaVersion: SchemaVersionEId;
 
 }
 
@@ -159,7 +158,6 @@ export interface SchemaEntityEOptionalId {
 	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
-	schemaVersion?: SchemaVersionEOptionalId;
 
 }
 
@@ -176,6 +174,7 @@ export interface SchemaEntityEUpdateProperties
 	tableConfig?: TableConfiguration | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+	schemaVersion?: SchemaVersionEOptionalId;
 
 }
 
@@ -193,6 +192,7 @@ export interface SchemaEntityEUpdateColumns
 	IS_REPOSITORY_ENTITY?: boolean | IQBooleanField;
 	NAME?: string | IQStringField;
 	TABLE_CONFIGURATION?: string | IQStringField;
+	SCHEMA_VERSION_ID?: number | IQNumberField;
 
 }
 
@@ -226,7 +226,6 @@ export interface QSchemaEntity extends QVersionedSchemaObject
 	id: IQNumberField;
 
 	// Id Relations
-	schemaVersion: QSchemaVersionQRelation;
 
 	// Non-Id Fields
 	index: IQNumberField;
@@ -236,6 +235,7 @@ export interface QSchemaEntity extends QVersionedSchemaObject
 	tableConfig: IQStringField;
 
 	// Non-Id Relations
+	schemaVersion: QSchemaVersionQRelation;
 	columns: IQOneToManyRelation<QSchemaColumn>;
 	properties: IQOneToManyRelation<QSchemaProperty>;
 	relations: IQOneToManyRelation<QSchemaRelation>;
@@ -252,7 +252,6 @@ export interface QSchemaEntityQId extends QVersionedSchemaObjectQId
 	id: IQNumberField;
 
 	// Id Relations
-	schemaVersion: QSchemaVersionQId;
 
 
 }

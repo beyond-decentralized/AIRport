@@ -1,4 +1,5 @@
 import { DbSchema, JsonSchema } from '@airport/ground-control';
+import { QRelation } from '..';
 import { QEntityConstructor } from '../impl/core/entity/Entity';
 import { EntityConstructor } from './core/entity/Entity';
 import { FunctionsAndOperators } from './core/FunctionsAndOperators';
@@ -55,6 +56,9 @@ export interface QSchemaInternal {
     };
     __qConstructors__?: {
         [name: string]: QEntityConstructor;
+    };
+    __qRelations__?: {
+        [name: string]: Map<string, QRelation<any>>;
     };
     __dbSchema__?: DbSchema;
 }

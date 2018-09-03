@@ -56,6 +56,24 @@ class BaseSchemaVersionDao extends check_in_1.Dao {
     }
 }
 exports.BaseSchemaVersionDao = BaseSchemaVersionDao;
+class BaseTestADao extends check_in_1.Dao {
+    constructor(utils) {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['TestA'], qSchema_1.Q, utils);
+    }
+}
+exports.BaseTestADao = BaseTestADao;
+class BaseTestBDao extends check_in_1.Dao {
+    constructor(utils) {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['TestB'], qSchema_1.Q, utils);
+    }
+}
+exports.BaseTestBDao = BaseTestBDao;
+class BaseTestCDao extends check_in_1.Dao {
+    constructor(utils) {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['TestC'], qSchema_1.Q, utils);
+    }
+}
+exports.BaseTestCDao = BaseTestCDao;
 class BaseVersionedSchemaObjectDao extends check_in_1.Dao {
     constructor(utils) {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['VersionedSchemaObject'], qSchema_1.Q, utils);

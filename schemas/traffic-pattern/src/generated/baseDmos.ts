@@ -92,6 +92,36 @@ import {
 	QSchemaVersion
 } from './schema/qschemaversion';
 import {
+	ITestA,
+	TestAESelect,
+	TestAECreateColumns,
+	TestAECreateProperties,
+	TestAEUpdateColumns,
+	TestAEUpdateProperties,
+	TestAEId,
+	QTestA
+} from './test/qtesta';
+import {
+	ITestB,
+	TestBESelect,
+	TestBECreateColumns,
+	TestBECreateProperties,
+	TestBEUpdateColumns,
+	TestBEUpdateProperties,
+	TestBEId,
+	QTestB
+} from './test/qtestb';
+import {
+	ITestC,
+	TestCESelect,
+	TestCECreateColumns,
+	TestCECreateProperties,
+	TestCEUpdateColumns,
+	TestCEUpdateProperties,
+	TestCEId,
+	QTestC
+} from './test/qtestc';
+import {
 	IVersionedSchemaObject,
 	VersionedSchemaObjectESelect,
 	VersionedSchemaObjectECreateColumns,
@@ -216,6 +246,45 @@ export class BaseSchemaVersionDmo
 	implements IBaseSchemaVersionDmo {
 	constructor() {
 		super(Q.db.currentVersion.entityMapByName['SchemaVersion']);
+	}
+}
+
+
+export interface IBaseTestADmo
+  extends IDmo<ITestA, TestAESelect, TestAECreateProperties, TestAEUpdateProperties, TestAEId, QTestA> {
+}
+
+export class BaseTestADmo
+  extends Dmo<ITestA, TestAESelect, TestAECreateProperties, TestAEUpdateProperties, TestAEId, QTestA>
+	implements IBaseTestADmo {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['TestA']);
+	}
+}
+
+
+export interface IBaseTestBDmo
+  extends IDmo<ITestB, TestBESelect, TestBECreateProperties, TestBEUpdateProperties, TestBEId, QTestB> {
+}
+
+export class BaseTestBDmo
+  extends Dmo<ITestB, TestBESelect, TestBECreateProperties, TestBEUpdateProperties, TestBEId, QTestB>
+	implements IBaseTestBDmo {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['TestB']);
+	}
+}
+
+
+export interface IBaseTestCDmo
+  extends IDmo<ITestC, TestCESelect, TestCECreateProperties, TestCEUpdateProperties, TestCEId, QTestC> {
+}
+
+export class BaseTestCDmo
+  extends Dmo<ITestC, TestCESelect, TestCECreateProperties, TestCEUpdateProperties, TestCEId, QTestC>
+	implements IBaseTestCDmo {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['TestC']);
 	}
 }
 

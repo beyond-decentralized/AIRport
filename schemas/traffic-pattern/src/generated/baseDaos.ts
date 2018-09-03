@@ -95,6 +95,36 @@ import {
 	QSchemaVersion
 } from './schema/qschemaversion';
 import {
+	ITestA,
+	TestAESelect,
+	TestAECreateColumns,
+	TestAECreateProperties,
+	TestAEUpdateColumns,
+	TestAEUpdateProperties,
+	TestAEId,
+	QTestA
+} from './test/qtesta';
+import {
+	ITestB,
+	TestBESelect,
+	TestBECreateColumns,
+	TestBECreateProperties,
+	TestBEUpdateColumns,
+	TestBEUpdateProperties,
+	TestBEId,
+	QTestB
+} from './test/qtestb';
+import {
+	ITestC,
+	TestCESelect,
+	TestCECreateColumns,
+	TestCECreateProperties,
+	TestCEUpdateColumns,
+	TestCEUpdateProperties,
+	TestCEId,
+	QTestC
+} from './test/qtestc';
+import {
 	IVersionedSchemaObject,
 	VersionedSchemaObjectESelect,
 	VersionedSchemaObjectECreateColumns,
@@ -237,6 +267,51 @@ export class BaseSchemaVersionDao
 		utils: IUtils
 	) {
 		super(Q.db.currentVersion.entityMapByName['SchemaVersion'], Q, utils);
+	}
+}
+
+
+export interface IBaseTestADao
+  extends IDao<ITestA, TestAESelect, TestAECreateProperties, TestAEUpdateColumns, TestAEUpdateProperties, TestAEId, QTestA> {
+}
+
+export class BaseTestADao
+  extends Dao<ITestA, TestAESelect, TestAECreateProperties, TestAEUpdateColumns, TestAEUpdateProperties, TestAEId, QTestA>
+	implements IBaseTestADao {
+	constructor(
+		utils: IUtils
+	) {
+		super(Q.db.currentVersion.entityMapByName['TestA'], Q, utils);
+	}
+}
+
+
+export interface IBaseTestBDao
+  extends IDao<ITestB, TestBESelect, TestBECreateProperties, TestBEUpdateColumns, TestBEUpdateProperties, TestBEId, QTestB> {
+}
+
+export class BaseTestBDao
+  extends Dao<ITestB, TestBESelect, TestBECreateProperties, TestBEUpdateColumns, TestBEUpdateProperties, TestBEId, QTestB>
+	implements IBaseTestBDao {
+	constructor(
+		utils: IUtils
+	) {
+		super(Q.db.currentVersion.entityMapByName['TestB'], Q, utils);
+	}
+}
+
+
+export interface IBaseTestCDao
+  extends IDao<ITestC, TestCESelect, TestCECreateProperties, TestCEUpdateColumns, TestCEUpdateProperties, TestCEId, QTestC> {
+}
+
+export class BaseTestCDao
+  extends Dao<ITestC, TestCESelect, TestCECreateProperties, TestCEUpdateColumns, TestCEUpdateProperties, TestCEId, QTestC>
+	implements IBaseTestCDao {
+	constructor(
+		utils: IUtils
+	) {
+		super(Q.db.currentVersion.entityMapByName['TestC'], Q, utils);
 	}
 }
 

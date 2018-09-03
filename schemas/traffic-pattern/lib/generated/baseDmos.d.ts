@@ -9,6 +9,9 @@ import { ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreatePropert
 import { ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateProperties, SchemaRelationEId, QSchemaRelation } from './schema/qschemarelation';
 import { ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, QSchemaRelationColumn } from './schema/qschemarelationcolumn';
 import { ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion } from './schema/qschemaversion';
+import { ITestA, TestAESelect, TestAECreateProperties, TestAEUpdateProperties, TestAEId, QTestA } from './test/qtesta';
+import { ITestB, TestBESelect, TestBECreateProperties, TestBEUpdateProperties, TestBEId, QTestB } from './test/qtestb';
+import { ITestC, TestCESelect, TestCECreateProperties, TestCEUpdateProperties, TestCEId, QTestC } from './test/qtestc';
 import { IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject } from './schema/qversionedschemaobject';
 export interface IBaseSchemaDmo extends IDmo<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateProperties, SchemaEId, QSchema> {
 }
@@ -53,6 +56,21 @@ export declare class BaseSchemaRelationColumnDmo extends Dmo<ISchemaRelationColu
 export interface IBaseSchemaVersionDmo extends IDmo<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion> {
 }
 export declare class BaseSchemaVersionDmo extends Dmo<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion> implements IBaseSchemaVersionDmo {
+    constructor();
+}
+export interface IBaseTestADmo extends IDmo<ITestA, TestAESelect, TestAECreateProperties, TestAEUpdateProperties, TestAEId, QTestA> {
+}
+export declare class BaseTestADmo extends Dmo<ITestA, TestAESelect, TestAECreateProperties, TestAEUpdateProperties, TestAEId, QTestA> implements IBaseTestADmo {
+    constructor();
+}
+export interface IBaseTestBDmo extends IDmo<ITestB, TestBESelect, TestBECreateProperties, TestBEUpdateProperties, TestBEId, QTestB> {
+}
+export declare class BaseTestBDmo extends Dmo<ITestB, TestBESelect, TestBECreateProperties, TestBEUpdateProperties, TestBEId, QTestB> implements IBaseTestBDmo {
+    constructor();
+}
+export interface IBaseTestCDmo extends IDmo<ITestC, TestCESelect, TestCECreateProperties, TestCEUpdateProperties, TestCEId, QTestC> {
+}
+export declare class BaseTestCDmo extends Dmo<ITestC, TestCESelect, TestCECreateProperties, TestCEUpdateProperties, TestCEId, QTestC> implements IBaseTestCDmo {
     constructor();
 }
 export interface IBaseVersionedSchemaObjectDmo extends IDmo<IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject> {

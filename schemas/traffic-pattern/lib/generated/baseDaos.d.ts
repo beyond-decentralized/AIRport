@@ -9,6 +9,9 @@ import { ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreatePropert
 import { ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, QSchemaRelation } from './schema/qschemarelation';
 import { ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, QSchemaRelationColumn } from './schema/qschemarelationcolumn';
 import { ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion } from './schema/qschemaversion';
+import { ITestA, TestAESelect, TestAECreateProperties, TestAEUpdateColumns, TestAEUpdateProperties, TestAEId, QTestA } from './test/qtesta';
+import { ITestB, TestBESelect, TestBECreateProperties, TestBEUpdateColumns, TestBEUpdateProperties, TestBEId, QTestB } from './test/qtestb';
+import { ITestC, TestCESelect, TestCECreateProperties, TestCEUpdateColumns, TestCEUpdateProperties, TestCEId, QTestC } from './test/qtestc';
 import { IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject } from './schema/qversionedschemaobject';
 export interface IBaseSchemaDao extends IDao<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, QSchema> {
 }
@@ -53,6 +56,21 @@ export declare class BaseSchemaRelationColumnDao extends Dao<ISchemaRelationColu
 export interface IBaseSchemaVersionDao extends IDao<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion> {
 }
 export declare class BaseSchemaVersionDao extends Dao<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion> implements IBaseSchemaVersionDao {
+    constructor(utils: IUtils);
+}
+export interface IBaseTestADao extends IDao<ITestA, TestAESelect, TestAECreateProperties, TestAEUpdateColumns, TestAEUpdateProperties, TestAEId, QTestA> {
+}
+export declare class BaseTestADao extends Dao<ITestA, TestAESelect, TestAECreateProperties, TestAEUpdateColumns, TestAEUpdateProperties, TestAEId, QTestA> implements IBaseTestADao {
+    constructor(utils: IUtils);
+}
+export interface IBaseTestBDao extends IDao<ITestB, TestBESelect, TestBECreateProperties, TestBEUpdateColumns, TestBEUpdateProperties, TestBEId, QTestB> {
+}
+export declare class BaseTestBDao extends Dao<ITestB, TestBESelect, TestBECreateProperties, TestBEUpdateColumns, TestBEUpdateProperties, TestBEId, QTestB> implements IBaseTestBDao {
+    constructor(utils: IUtils);
+}
+export interface IBaseTestCDao extends IDao<ITestC, TestCESelect, TestCECreateProperties, TestCEUpdateColumns, TestCEUpdateProperties, TestCEId, QTestC> {
+}
+export declare class BaseTestCDao extends Dao<ITestC, TestCESelect, TestCECreateProperties, TestCEUpdateColumns, TestCEUpdateProperties, TestCEId, QTestC> implements IBaseTestCDao {
     constructor(utils: IUtils);
 }
 export interface IBaseVersionedSchemaObjectDao extends IDao<IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject> {

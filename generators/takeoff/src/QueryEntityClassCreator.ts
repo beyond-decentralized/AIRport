@@ -54,7 +54,6 @@ export class QueryEntityClassCreator
 			qSchema.__dbSchema__              = dbSchema
 			qSchema.__injected__.__dbSchema__ = dbSchema
 			setQSchemaEntities(dbSchema, qSchema.__injected__)
-			Container.get(`${dbSchema.name}QSchemaToken`)
 		} else {
 			qSchema                                            = {
 				__constructors__: {},
