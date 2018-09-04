@@ -56,24 +56,6 @@ class BaseSchemaVersionDmo extends check_in_1.Dmo {
     }
 }
 exports.BaseSchemaVersionDmo = BaseSchemaVersionDmo;
-class BaseTestADmo extends check_in_1.Dmo {
-    constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['TestA']);
-    }
-}
-exports.BaseTestADmo = BaseTestADmo;
-class BaseTestBDmo extends check_in_1.Dmo {
-    constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['TestB']);
-    }
-}
-exports.BaseTestBDmo = BaseTestBDmo;
-class BaseTestCDmo extends check_in_1.Dmo {
-    constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['TestC']);
-    }
-}
-exports.BaseTestCDmo = BaseTestCDmo;
 class BaseVersionedSchemaObjectDmo extends check_in_1.Dmo {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['VersionedSchemaObject']);

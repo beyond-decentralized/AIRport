@@ -4,13 +4,16 @@ import {
 	JoinType,
 	JSONBaseOperation,
 	JSONRelation
-}                                from "@airport/ground-control";
-import {IAirportDatabase}        from "../../AirportDatabase";
-import {IUtils}                  from "../../utils/Utils";
-import {IQOperableFieldInternal} from "../field/OperableField";
-import {IFieldColumnAliases}     from "./Aliases";
-import {IJoinFields}             from './Joins';
-import {IQInternalRelation}      from "./Relation";
+}                                from '@airport/ground-control'
+import {IAirportDatabase}        from '../../AirportDatabase'
+import {IUtils}                  from '../../utils/Utils'
+import {IQOperableFieldInternal} from '../field/OperableField'
+import {IFieldColumnAliases}     from './Aliases'
+import {IJoinFields}             from './Joins'
+import {
+	IQInternalRelation,
+	IQRelation
+}                                from './Relation'
 
 /**
  * Marker interface for a collection of only Entity @Id Properties.
@@ -143,6 +146,7 @@ export interface IQEntityInternal
 	extends IQEntity {
 
 	__driver__: IQEntityDriver;
+	__idRelation__: IQRelation<any>
 
 }
 

@@ -75,6 +75,5 @@ export interface QSchemaInternal {
 	__injected__?: QSchemaInternal
 	__constructors__?: { [name: string]: EntityConstructor }
 	__qConstructors__?: { [name: string]: QEntityConstructor };
-	__qRelations__?: { [name: string]: Map<string, QRelation<any>> };
 	__dbSchema__?: DbSchema;
 }

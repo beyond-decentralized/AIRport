@@ -8,7 +8,7 @@ import {
 	SchemaIndex,
 	SQLDataType,
 	TableIndex
-}                           from '@airport/ground-control'
+} from '@airport/ground-control'
 import {QSchema}            from '../../lingo/AirportDatabase'
 import {IQEntityInternal}   from '../../lingo/core/entity/Entity'
 import {IQBooleanField}     from '../../lingo/core/field/BooleanField'
@@ -54,8 +54,8 @@ export function getColumnQField(
 	property: DbProperty,
 	q: IQEntityInternal,
 	utils: IUtils,
+	column = property.propertyColumns[0].column
 ): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField {
-	const column = property.propertyColumns[0].column
 	switch (column.type) {
 		case SQLDataType.ANY:
 			return new QUntypedField(column, property, q, utils)
@@ -80,7 +80,10 @@ export function getQRelation(
 	const relation = property.relation[0]
 	switch (relation.relationType) {
 		case EntityRelationType.MANY_TO_ONE:
-		// TODO: work here next
+			// TODO: work here next
+			const qIdRelationConstructor = (<any>relation.relationEntity)
+				.__qConstructor__.__qIdRelationConstructor__
+			return new qIdRelationConstructor(entity, property, q, utils)
 		case EntityRelationType.ONE_TO_MANY:
 			return new QOneToManyRelation(relation, q)
 	}
@@ -104,8 +107,9 @@ export function getQEntityConstructor(): typeof QEntity {
 			} else {
 				qFieldOrRelation = getColumnQField(entity, property, this, this.utils)
 			}
-			entity[property.name] = qFieldOrRelation
+			this[property.name] = qFieldOrRelation
 		})
+		entity.__qConstructor__ = ChildQEntity
 
 	}
 
@@ -113,6 +117,63 @@ export function getQEntityConstructor(): typeof QEntity {
 
 
 	return <any>ChildQEntity
+}
+
+export function getQEntityIdRelationConstructor(): typeof QRelation {
+
+	function QEntityIdRelation(
+		entity: DbEntity,
+		relation: DbRelation,
+		qEntity: IQEntityInternal,
+		utils: IUtils
+	) {
+		(<any>QEntityIdRelation).base.constructor.call(this, relation, qEntity)
+
+		getQEntityIdFields(this, entity);
+
+		(<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
+	}
+
+	extend(QRelation, QEntityIdRelation, {})
+
+	return <any>QEntityIdRelation
+}
+
+export function getQEntityIdFields(
+	addToObject,
+	entity: DbEntity,
+	parentProperty?: DbProperty,
+	relationColumnMap: Map<DbColumn, DbColumn>
+) {
+	entity.properties.forEach((
+		property: DbProperty
+	) => {
+		if (!property.isId) {
+			return
+		}
+		let qFieldOrRelation
+
+		const currentProperty = parentProperty ? parentProperty : property
+
+		if (property.relation && property.relation.length) {
+			if(!parentProperty) {
+				relationColumnMap = new Map()
+				const parentRelation = parentProperty.relation[0]
+				const relationColumns = parentRelation.manyRelationColumns;
+				for(const relationColumn of relationColumns) {
+					relationColumnMap.set(relationColumn.oneColumn,
+						relationColumn.manyColumn)
+				}
+			}
+			qFieldOrRelation = getQEntityIdFields(
+				{}, property.relation[0].relationEntity,
+				currentProperty, relationColumnMap)
+		} else {
+			qFieldOrRelation = getColumnQField(entity,
+				currentProperty, this, this.utils)
+		}
+		addToObject[property.name] = qFieldOrRelation
+	})
 }
 
 export function setQSchemaEntities(
@@ -130,42 +191,26 @@ export function setQSchemaEntities(
 	entities.forEach((
 		entity: DbEntity
 	) => {
-		for(const idColumn of entity.idColumns) {
-			idColumn.manyRelationColumns
-		}
-		qSchema.__qRelations__[entity.index] = new Map()
-		for (const relation of entity.relations) {
-			switch (relation.relationType) {
-				case EntityRelationType.MANY_TO_ONE: {
-					const relationEntity = relation.relationEntity
-					let oneSideRelationMap: Map<DbRelation, number> = new Map()
-					relation.manyRelationColumns.forEach((
-						relationColumn
-					) => {
-						let oneSidePrimitiveProperty: DbProperty
-						const oneSideColumn = relationColumn.oneColumn
-						oneSideColumn.propertyColumns.forEach((
-							propertyColumn
-						) => {
-							const oneSideProperty = propertyColumn.property
-							if (!oneSideProperty.relation || !oneSideProperty.relation.length) {
-								oneSidePrimitiveProperty = oneSideProperty
-							} else {
-								const relation = oneSideProperty.relation[0]
-								if (oneSideRelationMap.has(relation)) {
-									oneSideRelationMap.set(relation, oneSideRelationMap.get(relation) + 1)
-								} else {
-									oneSideRelationMap.set(relation, 1)
-								}
-							}
-						})
-					})
-					break
+		// NOTE: an @Id column is guaranteed to be present in only one property
+		for (const idColumn of entity.idColumns) {
+			if (idColumn.manyRelationColumns
+				&& idColumn.manyRelationColumns.length) {
+				const idRelation     = idColumn.manyRelationColumns[0].oneRelation
+				const relatedEntity  = idRelation.relationEntity
+				const relatedQSchema = allQSchemas[relatedEntity.schemaVersion.schema.index]
+				if (!relatedQSchema) {
+					throw new Error(`QSchema not yet initialized for ID relation:
+					${entity.name}.${idRelation.property.name}
+					`)
 				}
-				case EntityRelationType.ONE_TO_MANY:
-					continue
-				default:
-					throw new Error(`Unknown relation type ${relation.relationType}`)
+				const relatedQEntityConstructor = qSchema.__qConstructors__[relatedEntity.index]
+				if (!relatedQEntityConstructor) {
+					throw new Error(`QEntity not yet initialized for ID relation:
+					${entity.name}.${idRelation.property.name}
+					`)
+				}
+
+
 			}
 		}
 	})
@@ -175,12 +220,14 @@ export function setQSchemaEntities(
 	entities.forEach((
 		entity: DbEntity
 	) => {
-		qSchema.__qConstructors__[entity.index] = <any>getQEntityConstructor()
+		const qConstructor                      = <any>getQEntityConstructor()
+		qSchema.__qConstructors__[entity.index] = qConstructor
 		Object.defineProperty(qSchema, entity.name, {
 			get: function () {
 				return new this.__qConstructors__[entity.name](entity)
 			}
 		})
+		qConstructor.__idRelation__ =
 	})
 }
 
@@ -255,7 +302,7 @@ export function orderEntitiesByIdDependencies(
 	entities: DbEntity[]
 ): DbEntity[] {
 	const entityWithDepsMap: Map<TableIndex, DbEntityWithDependencies> = new Map()
-	const entitiesWithDeps: DbEntityWithDependencies[]                  = entities.map(
+	const entitiesWithDeps: DbEntityWithDependencies[]                 = entities.map(
 		entity => {
 			const dependencies: Set<TableIndex> = new Set()
 			for (const relation of entity.relations) {

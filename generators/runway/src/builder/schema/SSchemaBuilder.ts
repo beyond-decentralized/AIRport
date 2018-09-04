@@ -587,7 +587,8 @@ export class SSchemaBuilder {
 				// if (entityCannotReferenceOtherColumns) {
 				// throw `ManyToOne relation without (R)JoinColumn(s) cannot be named as other columns.`;
 				throw `@Id & @ManyToOne relation columns cannot be named as other non-relational columns.
-			A column can either be defined as a non-relational.
+			A column can either be defined as a non-relational column
+			OR as a relation.
 			Column: '${entity.name}.${ownColumnReference}'`
 			}
 			if((existingPrimitiveColumn.notNull && !notNull)
@@ -602,6 +603,13 @@ export class SSchemaBuilder {
 
 		const existingRelationColumn = relationColumnMapByName[ownColumnReference]
 		if (existingRelationColumn) {
+			if (manyToOne && isIdProperty) {
+				// if (entityCannotReferenceOtherColumns) {
+				// throw `ManyToOne relation without (R)JoinColumn(s) cannot be named as other columns.`;
+				throw `@Id & @ManyToOne relation columns cannot be named in multiple relations.
+			A @Id column can either be defined in only one relation.
+			Column: '${entity.name}.${ownColumnReference}'`
+			}
 			if (entityCannotReferenceOtherColumns) {
 				throw `ManyToOne relation without (R)JoinColumn(s) cannot be named as other columns.`
 			}

@@ -10,21 +10,15 @@ import { SchemaProperty } from '../ddl/schema/SchemaProperty';
 import { QSchemaProperty } from './schema/qschemaproperty';
 import { SchemaPropertyColumn } from '../ddl/schema/SchemaPropertyColumn';
 import { QSchemaPropertyColumn } from './schema/qschemapropertycolumn';
-import { SchemaReference }        from '../ddl/schema/SchemaReference';
-import { QSchemaReference }       from './schema/qschemareference';
-import { SchemaRelation }         from '../ddl/schema/SchemaRelation';
-import { QSchemaRelation }        from './schema/qschemarelation';
-import { SchemaRelationColumn }   from '../ddl/schema/SchemaRelationColumn';
-import { QSchemaRelationColumn }  from './schema/qschemarelationcolumn';
-import { SchemaVersion }          from '../ddl/schema/SchemaVersion';
-import { QSchemaVersion }         from './schema/qschemaversion';
-import { TestA }                  from '../ddl/test/TestA.ts';
-import { QTestA }                 from './test/qtesta';
-import { TestB }                  from '../ddl/test/TestB.ts';
-import { QTestB }                 from './test/qtestb';
-import { TestC }                  from '../ddl/test/TestC.ts';
-import { QTestC }                 from './test/qtestc';
-import { VersionedSchemaObject }  from '../ddl/schema/VersionedSchemaObject';
+import { SchemaReference } from '../ddl/schema/SchemaReference';
+import { QSchemaReference } from './schema/qschemareference';
+import { SchemaRelation } from '../ddl/schema/SchemaRelation';
+import { QSchemaRelation } from './schema/qschemarelation';
+import { SchemaRelationColumn } from '../ddl/schema/SchemaRelationColumn';
+import { QSchemaRelationColumn } from './schema/qschemarelationcolumn';
+import { SchemaVersion } from '../ddl/schema/SchemaVersion';
+import { QSchemaVersion } from './schema/qschemaversion';
+import { VersionedSchemaObject } from '../ddl/schema/VersionedSchemaObject';
 import { QVersionedSchemaObject } from './schema/qversionedschemaobject';
 
 import {
@@ -37,9 +31,6 @@ import {
 	IBaseSchemaRelationDmo,
 	IBaseSchemaRelationColumnDmo,
 	IBaseSchemaVersionDmo,
-	IBaseTestADmo,
-	IBaseTestBDmo,
-	IBaseTestCDmo,
 	IBaseVersionedSchemaObjectDmo
 } from './baseDmos';
 
@@ -53,9 +44,6 @@ import {
 	IBaseSchemaRelationDao,
 	IBaseSchemaRelationColumnDao,
 	IBaseSchemaVersionDao,
-	IBaseTestADao,
-	IBaseTestBDao,
-	IBaseTestCDao,
 	IBaseVersionedSchemaObjectDao
 } from './baseDaos';
 
@@ -73,9 +61,6 @@ export interface LocalQSchema extends AirportQSchema {
 		SchemaRelation: IBaseSchemaRelationDmo;
 		SchemaRelationColumn: IBaseSchemaRelationColumnDmo;
 		SchemaVersion: IBaseSchemaVersionDmo;
-		TestA: IBaseTestADmo;
-		TestB: IBaseTestBDmo;
-		TestC: IBaseTestCDmo;
 		VersionedSchemaObject: IBaseVersionedSchemaObjectDmo;
 	}
 
@@ -89,9 +74,6 @@ export interface LocalQSchema extends AirportQSchema {
 		SchemaRelation: IBaseSchemaRelationDao;
 		SchemaRelationColumn: IBaseSchemaRelationColumnDao;
 		SchemaVersion: IBaseSchemaVersionDao;
-		TestA: IBaseTestADao;
-		TestB: IBaseTestBDao;
-		TestC: IBaseTestCDao;
 		VersionedSchemaObject: IBaseVersionedSchemaObjectDao;
 	}
 	
@@ -104,9 +86,6 @@ export interface LocalQSchema extends AirportQSchema {
 	SchemaRelation: QSchemaRelation;
 	SchemaRelationColumn: QSchemaRelationColumn;
 	SchemaVersion: QSchemaVersion;
-	TestA: QTestA;
-	TestB: QTestB;
-	TestC: QTestC;
 	VersionedSchemaObject: QVersionedSchemaObject;
 
 }
@@ -121,9 +100,6 @@ const __constructors__ = {
 	SchemaRelation: SchemaRelation,
 	SchemaRelationColumn: SchemaRelationColumn,
 	SchemaVersion: SchemaVersion,
-	TestA: TestA,
-	TestB: TestB,
-	TestC: TestC,
 	VersionedSchemaObject: VersionedSchemaObject
 };
 

@@ -28,6 +28,18 @@ export class TestF {
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'E_ONE'})
+	@JoinColumns([
+		{name: 'D_ONE'},
+		{name: 'D_TWO'},
+		{name: 'E_ONE'}
+	])
 	e: TestE
+
+	// @Column({name: 'D_TWO'})
+	// dTwo: number
+
+	// @Id()
+	// @ManyToOne()
+	// @JoinColumn({name: 'E_ONE'})
+	// e: TestE
 }
