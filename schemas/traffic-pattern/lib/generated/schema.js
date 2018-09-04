@@ -3089,7 +3089,7 @@ exports.SCHEMA = {
                     "index": 9,
                     "isLocal": true,
                     "isRepositoryEntity": false,
-                    "name": "TestA",
+                    "name": "TestATs",
                     "properties": [
                         {
                             "columnRef": {
@@ -3206,7 +3206,7 @@ exports.SCHEMA = {
                     "index": 10,
                     "isLocal": true,
                     "isRepositoryEntity": false,
-                    "name": "TestB",
+                    "name": "TestBTs",
                     "properties": [
                         {
                             "columnRef": {
@@ -3355,7 +3355,7 @@ exports.SCHEMA = {
                     "index": 11,
                     "isLocal": true,
                     "isRepositoryEntity": false,
-                    "name": "TestC",
+                    "name": "TestCTs",
                     "properties": [
                         {
                             "columnRef": {

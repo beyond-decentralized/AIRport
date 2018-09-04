@@ -11,7 +11,7 @@ import {
 	TableConfiguration,
 	Transient
 }                              from '@airport/air-control'
-import {DbNumber}              from '@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators'
+import {DbNumber}              from '@airport/air-control'
 import {
 	CascadeType,
 	EntityId,

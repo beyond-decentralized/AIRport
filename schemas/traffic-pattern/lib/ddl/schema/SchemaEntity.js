@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const ColumnDecorators_1 = require("@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators");
+const air_control_2 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const SchemaVersion_1 = require("./SchemaVersion");
 const VersionedSchemaObject_1 = require("./VersionedSchemaObject");
@@ -23,7 +23,7 @@ __decorate([
 ], SchemaEntity.prototype, "id", void 0);
 __decorate([
     air_control_1.Column({ name: 'INDEX', nullable: false }),
-    ColumnDecorators_1.DbNumber(),
+    air_control_2.DbNumber(),
     __metadata("design:type", Number)
 ], SchemaEntity.prototype, "index", void 0);
 __decorate([

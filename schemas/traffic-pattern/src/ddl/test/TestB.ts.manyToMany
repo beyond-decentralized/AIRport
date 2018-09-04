@@ -6,7 +6,7 @@ import {
 	ManyToOne,
 	Table
 }              from '@airport/air-control'
-import {TestA} from './TestA'
+import {TestA} from './TestA.ts'
 
 // TODO: add support for TS interfaces on non-id based relations
 @Entity()
@@ -16,12 +16,12 @@ export class TestB {
 	@Id()
 	idBOne: number
 
-	@ManyToOne()
+	@ManyToMany()
 	@JoinColumns([
 		{name: 'B_A_TWO', referencedColumnName: 'A_TWO'},
 		{name: 'B_A_THREE', referencedColumnName: 'A_THREE'},
 	])
-	bToA: TestA
+	bToA: TestA[]
 
 	@Column({name: 'B_FOUR'})
 	bFour: number

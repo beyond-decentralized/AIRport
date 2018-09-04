@@ -122,18 +122,23 @@ export function setQSchemaEntities(
 ) {
 	const entities = orderEntitiesByIdDependencies(schema.currentVersion.entities)
 
+	// NOTE: only need to compute the keys of entities for Many-to-One(s)
+	// Many-to-Ones must reference the table by primary key in order to
+	// guarantee a single record.  Any other type of join may return multiple
+	// records is is in fact a Many-to-Many
+	const referencedRelations: Set<DbRelation>[] = []
 	entities.forEach((
 		entity: DbEntity
 	) => {
+		for(const idColumn of entity.idColumns) {
+			idColumn.manyRelationColumns
+		}
 		qSchema.__qRelations__[entity.index] = new Map()
 		for (const relation of entity.relations) {
 			switch (relation.relationType) {
 				case EntityRelationType.MANY_TO_ONE: {
 					const relationEntity = relation.relationEntity
-					let oneSideRelationMap: Map<DbRelation, number>
-					                     = new Map()
-					let oneSideRelationMapByColumn: Map<DbColumn, Set<DbRelation>>
-					                     = new Map()
+					let oneSideRelationMap: Map<DbRelation, number> = new Map()
 					relation.manyRelationColumns.forEach((
 						relationColumn
 					) => {
@@ -152,11 +157,6 @@ export function setQSchemaEntities(
 								} else {
 									oneSideRelationMap.set(relation, 1)
 								}
-								if (!oneSideRelationMapByColumn.has(oneSideColumn)) {
-									oneSideRelationMapByColumn.set(oneSideColumn, new Set())
-								}
-								const oneSideColumnRelations = oneSideRelationMapByColumn.get(oneSideColumn)
-								oneSideColumnRelations.add(relation)
 							}
 						})
 					})
@@ -169,6 +169,8 @@ export function setQSchemaEntities(
 			}
 		}
 	})
+
+	// TODO: compute many-to-many relations
 
 	entities.forEach((
 		entity: DbEntity
@@ -253,7 +255,7 @@ export function orderEntitiesByIdDependencies(
 	entities: DbEntity[]
 ): DbEntity[] {
 	const entityWithDepsMap: Map<TableIndex, DbEntityWithDependencies> = new Map()
-	const entitysWithDeps: DbEntityWithDependencies[]                  = entities.map(
+	const entitiesWithDeps: DbEntityWithDependencies[]                  = entities.map(
 		entity => {
 			const dependencies: Set<TableIndex> = new Set()
 			for (const relation of entity.relations) {
@@ -277,7 +279,7 @@ export function orderEntitiesByIdDependencies(
 		}
 	)
 
-	entitysWithDeps.sort((
+	entitiesWithDeps.sort((
 		orderedEntity1: DbEntityWithDependencies,
 		orderedEntity2: DbEntityWithDependencies
 	) => {
@@ -292,7 +294,7 @@ export function orderEntitiesByIdDependencies(
 		return 0
 	})
 
-	return entitysWithDeps.map(
+	return entitiesWithDeps.map(
 		entityWithDeps => entityWithDeps.entity)
 }
 

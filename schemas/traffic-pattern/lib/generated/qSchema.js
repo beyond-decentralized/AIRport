@@ -9,9 +9,9 @@ const SchemaReference_1 = require("../ddl/schema/SchemaReference");
 const SchemaRelation_1 = require("../ddl/schema/SchemaRelation");
 const SchemaRelationColumn_1 = require("../ddl/schema/SchemaRelationColumn");
 const SchemaVersion_1 = require("../ddl/schema/SchemaVersion");
-const TestA_1 = require("../ddl/test/TestA");
-const TestB_1 = require("../ddl/test/TestB");
-const TestC_1 = require("../ddl/test/TestC");
+const TestA_ts_1 = require("../ddl/test/TestA.ts");
+const TestB_ts_1 = require("../ddl/test/TestB.ts");
+const TestC_ts_1 = require("../ddl/test/TestC.ts");
 const VersionedSchemaObject_1 = require("../ddl/schema/VersionedSchemaObject");
 const __constructors__ = {
     Schema: Schema_1.Schema,
@@ -23,9 +23,9 @@ const __constructors__ = {
     SchemaRelation: SchemaRelation_1.SchemaRelation,
     SchemaRelationColumn: SchemaRelationColumn_1.SchemaRelationColumn,
     SchemaVersion: SchemaVersion_1.SchemaVersion,
-    TestA: TestA_1.TestA,
-    TestB: TestB_1.TestB,
-    TestC: TestC_1.TestC,
+    TestA: TestA_ts_1.TestA,
+    TestB: TestB_ts_1.TestB,
+    TestC: TestC_ts_1.TestC,
     VersionedSchemaObject: VersionedSchemaObject_1.VersionedSchemaObject
 };
 exports.Q_SCHEMA = {
