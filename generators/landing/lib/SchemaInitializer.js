@@ -12,10 +12,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const InjectionTokens_1 = require("@airport/takeoff/lib/InjectionTokens");
 const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("./InjectionTokens");
+const InjectionTokens_2 = require("./InjectionTokens");
 let SchemaInitializer = class SchemaInitializer {
-    constructor(schemaBuilder, schemaChecker, schemaLocator, schemaRecorder) {
+    constructor(queryObjectInitializer, schemaBuilder, schemaChecker, schemaLocator, schemaRecorder) {
+        this.queryObjectInitializer = queryObjectInitializer;
         this.schemaBuilder = schemaBuilder;
         this.schemaChecker = schemaChecker;
         this.schemaLocator = schemaLocator;
@@ -32,25 +34,28 @@ let SchemaInitializer = class SchemaInitializer {
             }
             jsonSchemasToInstall.push(jsonSchema);
         }
-        const schemaReferenceCheckResults = await this.schemaChecker.checkDependencies(jsonSchemasToInstall);
+        const schemaReferenceCheckResults = await this.schemaChecker
+            .checkDependencies(jsonSchemasToInstall);
         if (schemaReferenceCheckResults.neededDependencies.length
             || schemaReferenceCheckResults.schemasInNeedOfAdditionalDependencies.length) {
-            throw new Error(`Installing schemas with external depedencies
+            throw new Error(`Installing schemas with external dependencies
 			is not currently supported.`);
         }
         for (const jsonSchema of schemaReferenceCheckResults.schemasWithValidDependencies) {
             await this.schemaBuilder.build(jsonSchema);
         }
-        await this.schemaRecorder.record(schemaReferenceCheckResults.schemasWithValidDependencies);
+        const ddlObjects = await this.schemaRecorder.record(schemaReferenceCheckResults.schemasWithValidDependencies);
+        this.queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects);
     }
 };
 SchemaInitializer = __decorate([
-    typedi_1.Service(InjectionTokens_1.SchemaInitializerToken),
-    __param(0, typedi_1.Inject(InjectionTokens_1.SchemaBuilderToken)),
-    __param(1, typedi_1.Inject(InjectionTokens_1.SchemaCheckerToken)),
-    __param(2, typedi_1.Inject(InjectionTokens_1.SchemaLocatorToken)),
-    __param(3, typedi_1.Inject(InjectionTokens_1.SchemaRecorderToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object])
+    typedi_1.Service(InjectionTokens_2.SchemaInitializerToken),
+    __param(0, typedi_1.Inject(InjectionTokens_1.QueryObjectInitializerToken)),
+    __param(1, typedi_1.Inject(InjectionTokens_2.SchemaBuilderToken)),
+    __param(2, typedi_1.Inject(InjectionTokens_2.SchemaCheckerToken)),
+    __param(3, typedi_1.Inject(InjectionTokens_2.SchemaLocatorToken)),
+    __param(4, typedi_1.Inject(InjectionTokens_2.SchemaRecorderToken)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
 ], SchemaInitializer);
 exports.SchemaInitializer = SchemaInitializer;
 //# sourceMappingURL=SchemaInitializer.js.map

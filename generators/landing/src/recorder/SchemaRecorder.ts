@@ -3,15 +3,15 @@ import {
 	UtilsToken
 }                            from '@airport/air-control'
 import {
+	DbSchemaUtilsToken,
 	DomainName,
+	IDbSchemaUtils,
 	IdColumnOnlyIndex,
-	ISchemaUtils,
 	JsonSchema,
 	SchemaName,
 	SchemaStatus,
-	SchemaUtilsToken
-}                            from '@airport/ground-control'
-import {DllObjects} from '@airport/takeoff'
+} from '@airport/ground-control'
+import {DdlObjects} from '@airport/takeoff'
 import {
 	ITerminalStore,
 	TerminalStoreToken
@@ -49,23 +49,26 @@ import {
 	SchemaRelationColumnDaoToken,
 	SchemaRelationDaoToken,
 	SchemaVersionDaoToken
-}                            from '@airport/traffic-pattern'
+}                       from '@airport/traffic-pattern'
 import {
 	Inject,
 	Service
-}                           from 'typedi'
-import {SchemaLocatorToken} from '../InjectionTokens'
-import {ISchemaLocator}     from '../locator/SchemaLocator'
+}                       from 'typedi'
+import {
+	SchemaLocatorToken,
+	SchemaRecorderToken
+}                       from '../InjectionTokens'
+import {ISchemaLocator} from '../locator/SchemaLocator'
 
 export interface ISchemaRecorder {
 
 	record(
 		jsonSchemas: JsonSchema[]
-	): Promise<DllObjects>
+	): Promise<DdlObjects>
 
 }
 
-@Service(SchemaUtilsToken)
+@Service(SchemaRecorderToken)
 export class SchemaRecorder
 	implements ISchemaRecorder {
 
@@ -92,8 +95,8 @@ export class SchemaRecorder
 		private schemaRelationColumnDao: ISchemaRelationColumnDao,
 		@Inject(SchemaRelationDaoToken)
 		private schemaRelationDao: ISchemaRelationDao,
-		@Inject(SchemaUtilsToken)
-		private schemaUtils: ISchemaUtils,
+		@Inject(DbSchemaUtilsToken)
+		private dbSchemaUtils: IDbSchemaUtils,
 		@Inject(SchemaVersionDaoToken)
 		private schemaVersionDao: ISchemaVersionDao,
 		@Inject(TerminalStoreToken)
@@ -105,13 +108,13 @@ export class SchemaRecorder
 
 	async record(
 		jsonSchemas: JsonSchema[]
-	): Promise<DllObjects> {
+	): Promise<DdlObjects> {
 		const domainSet: Set<DomainName>                       = new Set()
 		const jsonSchemaMapByName: Map<SchemaName, JsonSchema> = new Map()
 
 		for (const jsonSchema of jsonSchemas) {
 			domainSet.add(jsonSchema.domain)
-			jsonSchemaMapByName.set(this.schemaUtils.getSchemaName(jsonSchema), jsonSchema)
+			jsonSchemaMapByName.set(this.dbSchemaUtils.getSchemaName(jsonSchema), jsonSchema)
 		}
 
 		const {
@@ -321,7 +324,7 @@ export class SchemaRecorder
 											 = this.utils.ensureChildArray(newSchemaReferenceMap, schemaName)
 
 			for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
-				const referencedSchemaName  = this.schemaUtils.getSchemaName(jsonReferencedSchema)
+				const referencedSchemaName  = this.dbSchemaUtils.getSchemaName(jsonReferencedSchema)
 				let referencedSchemaVersion = newSchemaVersionMapBySchemaName.get(referencedSchemaName)
 				if (!referencedSchemaVersion) {
 					referencedSchemaVersion = this.schemaLocator.locateLatestSchemaVersionBySchemaName(referencedSchemaName)

@@ -26,7 +26,7 @@ __export(require("./ddl/ddl"));
 __export(require("./generated/generated"));
 __export(require("./InjectionTokens"));
 let AtAirport_TrafficPattern_QSchema = class AtAirport_TrafficPattern_QSchema {
-    constructor(dao, dmo, airportDatabase, dbSchemaUtils) {
+    constructor(airportDatabase, dao, dbSchemaUtils, dmo) {
         this.dao = dao;
         this.dmo = dmo;
         const schemaName = dbSchemaUtils.getSchemaName(schema_1.SCHEMA);
@@ -48,8 +48,8 @@ let AtAirport_TrafficPattern_QSchema = class AtAirport_TrafficPattern_QSchema {
             existingQSchema.dao = dao;
             existingQSchema.dmo = dao;
             existingQSchema.__constructors__ = qSchema_1.Q_SCHEMA.__constructors;
-            air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, this);
-            air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, qSchema_1.Q_SCHEMA);
+            air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, this, airportDatabase.qSchemas);
+            air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, qSchema_1.Q_SCHEMA, airportDatabase.qSchemas);
         }
         else {
             qSchema_1.Q_SCHEMA.__created__ = qSchema_1.Q_SCHEMA;
@@ -59,11 +59,11 @@ let AtAirport_TrafficPattern_QSchema = class AtAirport_TrafficPattern_QSchema {
     }
 };
 AtAirport_TrafficPattern_QSchema = __decorate([
-    typedi_1.Service(InjectionTokens_1.NPMJS_ORG___AIRPORT_Airport_TrafficPattern_QSchemaToken),
-    __param(0, typedi_1.Inject(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DaosToken)),
-    __param(1, typedi_1.Inject(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DmosToken)),
-    __param(2, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(3, typedi_1.Inject(ground_control_1.DbSchemaUtilsToken)),
+    typedi_1.Service(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSchemaToken),
+    __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
+    __param(1, typedi_1.Inject(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DaosToken)),
+    __param(2, typedi_1.Inject(ground_control_1.DbSchemaUtilsToken)),
+    __param(3, typedi_1.Inject(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DmosToken)),
     __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], AtAirport_TrafficPattern_QSchema);
 exports.AtAirport_TrafficPattern_QSchema = AtAirport_TrafficPattern_QSchema;

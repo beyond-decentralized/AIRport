@@ -37,5 +37,5 @@ export declare class AtAirport_TrafficPattern_QSchema implements NPMJS_ORG___AIR
     SchemaRelationColumn: QSchemaRelationColumn;
     SchemaVersion: QSchemaVersion;
     VersionedSchemaObject: QVersionedSchemaObject;
-    constructor(dao: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos, dmo: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos, airportDatabase: IAirportDatabase, dbSchemaUtils: IDbSchemaUtils);
+    constructor(airportDatabase: IAirportDatabase, dao: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos, dbSchemaUtils: IDbSchemaUtils, dmo: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos);
 }

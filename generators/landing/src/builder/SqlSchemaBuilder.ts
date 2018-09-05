@@ -1,5 +1,5 @@
 import {
-	ISchemaUtils,
+	IDbSchemaUtils,
 	IStoreDriver,
 	JsonSchema,
 	JsonSchemaColumn,
@@ -13,7 +13,7 @@ export abstract class SqlSchemaBuilder
 	implements ISchemaBuilder {
 
 	constructor(
-		protected schemaUtils: ISchemaUtils,
+		protected dbSchemaUtils: IDbSchemaUtils,
 		protected storeDriver: IStoreDriver
 	) {
 	}

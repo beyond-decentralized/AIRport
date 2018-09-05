@@ -1,75 +1,44 @@
 import {
-	IUtils,
-	UtilsToken
-}                           from '@airport/air-control'
-import {
-	ColumnId,
-	DomainId,
-	EntityId,
-	ISchemaUtils,
-	PropertyId,
-	RelationId,
-	SchemaIndex,
-	SchemaUtilsToken,
-	SchemaVersionId
-}                           from '@airport/ground-control'
-import {
 	ITerminalStore,
 	TerminalStoreToken
-} from '@airport/terminal-map'
-import {
-	DomainDaoToken,
-	IDomain,
-	IDomainDao
-}                           from '@airport/territory'
+}                                 from '@airport/terminal-map'
+import {IDomain}                  from '@airport/territory'
 import {
 	ISchema,
 	ISchemaColumn,
-	ISchemaColumnDao,
-	ISchemaDao,
 	ISchemaEntity,
-	ISchemaEntityDao,
 	ISchemaProperty,
 	ISchemaPropertyColumn,
-	ISchemaPropertyColumnDao,
-	ISchemaPropertyDao,
 	ISchemaReference,
-	ISchemaReferenceDao,
 	ISchemaRelation,
 	ISchemaRelationColumn,
-	ISchemaRelationColumnDao,
-	ISchemaRelationDao,
-	ISchemaVersion,
-	ISchemaVersionDao,
-	SchemaColumnDaoToken,
-	SchemaDaoToken,
-	SchemaEntityDaoToken,
-	SchemaPropertyColumnDaoToken,
-	SchemaPropertyDaoToken,
-	SchemaReferenceDaoToken,
-	SchemaRelationColumnDaoToken,
-	SchemaRelationDaoToken,
-	SchemaVersionDaoToken
-}                           from '@airport/traffic-pattern'
+	ISchemaVersion
+}                                 from '@airport/traffic-pattern'
 import {
 	Inject,
 	Service
-}                           from 'typedi'
-import {DdlObjectLinker}    from './DdlObjectLinker'
-import {DdlObjectRetriever} from './DdlObjectRetriever'
+}                                 from 'typedi'
+import {DdlObjectLinker}          from './DdlObjectLinker'
+import {DdlObjectRetriever}       from './DdlObjectRetriever'
 import {
 	DdlObjectLinkerToken,
 	DdlObjectRetrieverToken,
+	QueryEntityClassCreatorToken,
 	QueryObjectInitializerToken
-} from './InjectionTokens'
+}                                 from './InjectionTokens'
+import {IQueryEntityClassCreator} from './QueryEntityClassCreator'
 
 export interface IQueryObjectInitializer {
 
 	initialize(): Promise<void>
 
+	generateQObjectsAndPopulateStore(
+		ddlObjects: DdlObjects
+	): void
+
 }
 
-export interface DllObjects {
+export interface DdlObjects {
 
 	columns: ISchemaColumn[]
 	domains: IDomain[]
@@ -89,18 +58,14 @@ export class QueryObjectInitializer
 	implements IQueryObjectInitializer {
 
 	constructor(
-		// @Inject(AirportDatabaseToken)
-		// private airportDatabase: IAirportDatabase,
 		@Inject(DdlObjectLinkerToken)
 		private ddlObjectLinker: DdlObjectLinker,
 		@Inject(DdlObjectRetrieverToken)
 		private ddlObjectRetriever: DdlObjectRetriever,
-		@Inject(SchemaUtilsToken)
-		private schemaUtils: ISchemaUtils,
+		@Inject(QueryEntityClassCreatorToken)
+		private queryEntityClassCreator: IQueryEntityClassCreator,
 		@Inject(TerminalStoreToken)
 		private terminalStore: ITerminalStore,
-		@Inject(UtilsToken)
-		private utils: IUtils
 	) {
 	}
 
@@ -108,15 +73,21 @@ export class QueryObjectInitializer
 	async initialize(): Promise<void> {
 		const ddlObjects = await this.ddlObjectRetriever.retrieveDdlObjects()
 
+		this.generateQObjectsAndPopulateStore(ddlObjects)
+	}
+
+	generateQObjectsAndPopulateStore(
+		ddlObjects: DdlObjects
+	): void {
 		this.ddlObjectLinker.link(ddlObjects)
-		
+
+		this.queryEntityClassCreator.createAll(ddlObjects.schemas)
 
 		this.terminalStore.state.next({
 			...this.terminalStore.getTerminalState(),
-			domains,
-			schemas
+			domains: ddlObjects.domains,
+			schemas: ddlObjects.schemas
 		})
-
 	}
 
 }

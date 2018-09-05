@@ -6,7 +6,7 @@ import {
 	RelationId,
 	SchemaIndex,
 	SchemaVersionId
-} from '@airport/ground-control'
+}                             from '@airport/ground-control'
 import {IDomain}              from '@airport/territory'
 import {
 	ISchema,
@@ -18,15 +18,15 @@ import {
 	ISchemaRelation,
 	ISchemaRelationColumn,
 	ISchemaVersion
-} from '@airport/traffic-pattern'
+}                             from '@airport/traffic-pattern'
 import {Service}              from 'typedi'
 import {DdlObjectLinkerToken} from './InjectionTokens'
-import {DllObjects}           from './QueryObjectInitializer'
+import {DdlObjects}           from './QueryObjectInitializer'
 
 export interface IDdlObjectLinker {
 
 	link(
-		ddlObjects: DllObjects
+		ddlObjects: DdlObjects
 	): void
 
 }
@@ -36,7 +36,7 @@ export class DdlObjectLinker
 	implements IDdlObjectLinker {
 
 	link(
-		ddlObjects: DllObjects
+		ddlObjects: DdlObjects
 	): void {
 		const {
 						columns,

@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
 class SqlSchemaBuilder {
-    constructor(schemaUtils, storeDriver) {
-        this.schemaUtils = schemaUtils;
+    constructor(dbSchemaUtils, storeDriver) {
+        this.dbSchemaUtils = dbSchemaUtils;
         this.storeDriver = storeDriver;
     }
     async build(jsonSchema) {

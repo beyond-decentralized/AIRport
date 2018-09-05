@@ -12,17 +12,16 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const ground_control_1 = require("@airport/ground-control");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../../InjectionTokens");
 const SqlSchemaBuilder_1 = require("../SqlSchemaBuilder");
 let PostgreSqlSchemaBuilder = class PostgreSqlSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
-    constructor(schemaUtils, storeDriver) {
-        super(schemaUtils, storeDriver);
+    constructor(dbSchemaUtils, storeDriver) {
+        super(dbSchemaUtils, storeDriver);
     }
     async createSchema(jsonSchema) {
-        const schemaName = this.schemaUtils.getSchemaName(jsonSchema);
+        const schemaName = this.dbSchemaUtils.getSchemaName(jsonSchema);
         const createSchemaStatement = `CREATE SCHEMA ${schemaName}`;
         await this.storeDriver.query(ground_control_1.QueryType.DDL, createSchemaStatement, [], false);
     }
@@ -52,7 +51,7 @@ let PostgreSqlSchemaBuilder = class PostgreSqlSchemaBuilder extends SqlSchemaBui
         }
     }
     getTableName(jsonSchema, jsonEntity) {
-        return `${this.schemaUtils.getSchemaName(jsonSchema)}.${jsonEntity.name}`;
+        return `${this.dbSchemaUtils.getSchemaName(jsonSchema)}.${jsonEntity.name}`;
     }
     getCreateTableSuffix(jsonSchema, jsonEntity) {
         return ``;
@@ -63,7 +62,7 @@ let PostgreSqlSchemaBuilder = class PostgreSqlSchemaBuilder extends SqlSchemaBui
                 continue;
             }
             const prefixedTableName = this.getTableName(jsonSchema, jsonEntity);
-            const sequenceName = this.schemaUtils.getSequenceName(prefixedTableName, jsonColumn.name);
+            const sequenceName = this.dbSchemaUtils.getSequenceName(prefixedTableName, jsonColumn.name);
             let incrementBy = jsonColumn.allocationSize;
             if (!incrementBy) {
                 incrementBy = 100000;
@@ -75,9 +74,9 @@ let PostgreSqlSchemaBuilder = class PostgreSqlSchemaBuilder extends SqlSchemaBui
 };
 PostgreSqlSchemaBuilder = __decorate([
     typedi_1.Service(InjectionTokens_1.SchemaBuilderToken),
-    __param(0, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
+    __param(0, typedi_1.Inject(ground_control_1.DbSchemaUtilsToken)),
     __param(1, typedi_1.Inject(ground_control_1.StoreDriverToken)),
-    __metadata("design:paramtypes", [typeof (_a = typeof ground_control_1.ISchemaUtils !== "undefined" && ground_control_1.ISchemaUtils) === "function" ? _a : Object, Object])
+    __metadata("design:paramtypes", [Object, Object])
 ], PostgreSqlSchemaBuilder);
 exports.PostgreSqlSchemaBuilder = PostgreSqlSchemaBuilder;
 //# sourceMappingURL=PostgreSqlSchemaBuilder.js.map

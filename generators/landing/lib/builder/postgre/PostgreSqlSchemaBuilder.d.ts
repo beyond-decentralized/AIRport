@@ -1,7 +1,7 @@
-import { ISchemaUtils, IStoreDriver, JsonSchema, JsonSchemaColumn, JsonSchemaEntity } from '@airport/ground-control';
+import { IDbSchemaUtils, IStoreDriver, JsonSchema, JsonSchemaColumn, JsonSchemaEntity } from '@airport/ground-control';
 import { SqlSchemaBuilder } from '../SqlSchemaBuilder';
 export declare class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
-    constructor(schemaUtils: ISchemaUtils, storeDriver: IStoreDriver);
+    constructor(dbSchemaUtils: IDbSchemaUtils, storeDriver: IStoreDriver);
     createSchema(jsonSchema: JsonSchema): Promise<void>;
     getColumnSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity, jsonColumn: JsonSchemaColumn): string;
     getTableName(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): string;

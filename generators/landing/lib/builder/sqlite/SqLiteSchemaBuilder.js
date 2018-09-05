@@ -12,14 +12,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const ground_control_1 = require("@airport/ground-control");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../../InjectionTokens");
 const SqlSchemaBuilder_1 = require("../SqlSchemaBuilder");
 let SqLiteSchemaBuilder = class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
-    constructor(schemaUtils, storeDriver) {
-        super(schemaUtils, storeDriver);
+    constructor(dbSchemaUtils, storeDriver) {
+        super(dbSchemaUtils, storeDriver);
     }
     async createSchema(jsonSchema) {
         // Nothing to do
@@ -56,7 +55,7 @@ let SqLiteSchemaBuilder = class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.S
         }
     }
     getTableName(jsonSchema, jsonEntity) {
-        return `${this.schemaUtils.getSchemaName(jsonSchema)}__${jsonEntity.name}`;
+        return `${this.dbSchemaUtils.getSchemaName(jsonSchema)}__${jsonEntity.name}`;
     }
     getCreateTableSuffix(jsonSchema, jsonEntity) {
         return ` WITHOUT ROWID`;
@@ -66,9 +65,9 @@ let SqLiteSchemaBuilder = class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.S
 };
 SqLiteSchemaBuilder = __decorate([
     typedi_1.Service(InjectionTokens_1.SchemaBuilderToken),
-    __param(0, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
+    __param(0, typedi_1.Inject(ground_control_1.DbSchemaUtilsToken)),
     __param(1, typedi_1.Inject(ground_control_1.StoreDriverToken)),
-    __metadata("design:paramtypes", [typeof (_a = typeof ground_control_1.ISchemaUtils !== "undefined" && ground_control_1.ISchemaUtils) === "function" ? _a : Object, Object])
+    __metadata("design:paramtypes", [Object, Object])
 ], SqLiteSchemaBuilder);
 exports.SqLiteSchemaBuilder = SqLiteSchemaBuilder;
 //# sourceMappingURL=SqLiteSchemaBuilder.js.map

@@ -12,16 +12,15 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
 let SchemaChecker = class SchemaChecker {
-    constructor(schemaDao, schemaUtils, utils) {
+    constructor(schemaDao, dbSchemaUtils, utils) {
         this.schemaDao = schemaDao;
-        this.schemaUtils = schemaUtils;
+        this.dbSchemaUtils = dbSchemaUtils;
         this.utils = utils;
     }
     async check(jsonSchema) {
@@ -117,7 +116,7 @@ let SchemaChecker = class SchemaChecker {
         const coreDomainAndSchemaNamesBySchemaName = new Map();
         for (const [domainName, allReferencedSchemasForDomain] of allReferencedSchemaMap) {
             for (const [coreSchemaName, referencedSchema] of allReferencedSchemasForDomain) {
-                const schemaName = this.schemaUtils.getSchemaName(referencedSchema);
+                const schemaName = this.dbSchemaUtils.getSchemaName(referencedSchema);
                 schemaNames.push(schemaName);
                 coreDomainAndSchemaNamesBySchemaName.set(schemaName, {
                     domain: domainName,
@@ -149,9 +148,9 @@ let SchemaChecker = class SchemaChecker {
 SchemaChecker = __decorate([
     typedi_1.Service(InjectionTokens_1.SchemaCheckerToken),
     __param(0, typedi_1.Inject(traffic_pattern_1.SchemaDaoToken)),
-    __param(1, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
+    __param(1, typedi_1.Inject(ground_control_1.DbSchemaUtilsToken)),
     __param(2, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, typeof (_a = typeof ground_control_1.ISchemaUtils !== "undefined" && ground_control_1.ISchemaUtils) === "function" ? _a : Object, Object])
+    __metadata("design:paramtypes", [Object, Object, Object])
 ], SchemaChecker);
 exports.SchemaChecker = SchemaChecker;
 //# sourceMappingURL=SchemaChecker.js.map

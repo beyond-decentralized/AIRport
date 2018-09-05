@@ -1,19 +1,21 @@
-import {JsonSchema}      from '@airport/ground-control'
+import {JsonSchema}                  from '@airport/ground-control'
+import {IQueryObjectInitializer}     from '@airport/takeoff'
+import {QueryObjectInitializerToken} from '@airport/takeoff/lib/InjectionTokens'
 import {
 	Inject,
 	Service
-}                        from 'typedi'
-import {ISchemaBuilder}  from './builder/ISchemaBuilder'
-import {ISchemaChecker}  from './checker/SchemaChecker'
+}                                    from 'typedi'
+import {ISchemaBuilder}              from './builder/ISchemaBuilder'
+import {ISchemaChecker}              from './checker/SchemaChecker'
 import {
 	SchemaBuilderToken,
 	SchemaCheckerToken,
 	SchemaInitializerToken,
 	SchemaLocatorToken,
 	SchemaRecorderToken
-}                        from './InjectionTokens'
-import {ISchemaLocator}  from './locator/SchemaLocator'
-import {ISchemaRecorder} from './recorder/SchemaRecorder'
+}                                    from './InjectionTokens'
+import {ISchemaLocator}              from './locator/SchemaLocator'
+import {ISchemaRecorder}             from './recorder/SchemaRecorder'
 
 export interface ISchemaInitializer {
 
@@ -28,6 +30,8 @@ export class SchemaInitializer
 	implements ISchemaInitializer {
 
 	constructor(
+		@Inject(QueryObjectInitializerToken)
+		private queryObjectInitializer: IQueryObjectInitializer,
 		@Inject(SchemaBuilderToken)
 		private schemaBuilder: ISchemaBuilder,
 		@Inject(SchemaCheckerToken)
@@ -56,11 +60,12 @@ export class SchemaInitializer
 			jsonSchemasToInstall.push(jsonSchema)
 		}
 
-		const schemaReferenceCheckResults = await this.schemaChecker.checkDependencies(jsonSchemasToInstall)
+		const schemaReferenceCheckResults = await this.schemaChecker
+			.checkDependencies(jsonSchemasToInstall)
 
 		if (schemaReferenceCheckResults.neededDependencies.length
 			|| schemaReferenceCheckResults.schemasInNeedOfAdditionalDependencies.length) {
-			throw new Error(`Installing schemas with external depedencies
+			throw new Error(`Installing schemas with external dependencies
 			is not currently supported.`)
 		}
 
@@ -68,7 +73,9 @@ export class SchemaInitializer
 			await this.schemaBuilder.build(jsonSchema)
 		}
 
-		await this.schemaRecorder.record(schemaReferenceCheckResults.schemasWithValidDependencies)
+		const ddlObjects = await this.schemaRecorder.record(schemaReferenceCheckResults.schemasWithValidDependencies)
+
+		this.queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects)
 	}
 
 }

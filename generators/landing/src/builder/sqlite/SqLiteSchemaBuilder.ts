@@ -1,10 +1,10 @@
 import {
-	ISchemaUtils,
+	IDbSchemaUtils,
 	IStoreDriver,
 	JsonSchema,
 	JsonSchemaColumn,
 	JsonSchemaEntity,
-	SchemaUtilsToken,
+	DbSchemaUtilsToken,
 	SQLDataType,
 	StoreDriverToken
 }                           from '@airport/ground-control'
@@ -20,12 +20,12 @@ export class SqLiteSchemaBuilder
 	extends SqlSchemaBuilder {
 
 	constructor(
-		@Inject(SchemaUtilsToken)
-			schemaUtils: ISchemaUtils,
+		@Inject(DbSchemaUtilsToken)
+		dbSchemaUtils: IDbSchemaUtils,
 		@Inject(StoreDriverToken)
-			storeDriver: IStoreDriver
+		storeDriver: IStoreDriver
 	) {
-		super(schemaUtils, storeDriver)
+		super(dbSchemaUtils, storeDriver)
 	}
 
 	async createSchema(
@@ -77,7 +77,7 @@ export class SqLiteSchemaBuilder
 		jsonSchema: JsonSchema,
 		jsonEntity: JsonSchemaEntity
 	): string {
-		return `${this.schemaUtils.getSchemaName(jsonSchema)}__${jsonEntity.name}`
+		return `${this.dbSchemaUtils.getSchemaName(jsonSchema)}__${jsonEntity.name}`
 	}
 
 	getCreateTableSuffix(

@@ -1,17 +1,7 @@
 import {
-	IUtils,
-	UtilsToken
-}                                from '@airport/air-control'
-import {
 	DomainId,
-	ISchemaUtils,
 	SchemaIndex,
-	SchemaUtilsToken
-} from '@airport/ground-control'
-import {
-	ITerminalStore,
-	TerminalStoreToken
-}                                from '@airport/terminal-map'
+}                                from '@airport/ground-control'
 import {
 	DomainDaoToken,
 	IDomainDao
@@ -42,12 +32,12 @@ import {
 	Service
 }                                from 'typedi'
 import {DdlObjectRetrieverToken} from './InjectionTokens'
-import {DllObjects}              from './QueryObjectInitializer'
+import {DdlObjects}              from './QueryObjectInitializer'
 
 export interface IDdlObjectRetriever {
 
 	retrieveDdlObjects()
-		: Promise<DllObjects>
+		: Promise<DdlObjects>
 
 }
 
@@ -80,7 +70,7 @@ export class DdlObjectRetriever
 	}
 
 	async retrieveDdlObjects()
-		: Promise<DllObjects> {
+		: Promise<DdlObjects> {
 		const schemas                      = await this.schemaDao
 			.findAllActive()
 		const schemaIndexes: SchemaIndex[] = []

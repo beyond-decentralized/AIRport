@@ -1,11 +1,11 @@
 import {
-	ISchemaUtils,
+	IDbSchemaUtils,
 	IStoreDriver,
 	JsonSchema,
 	JsonSchemaColumn,
 	JsonSchemaEntity,
 	QueryType,
-	SchemaUtilsToken,
+	DbSchemaUtilsToken,
 	SQLDataType,
 	StoreDriverToken
 }                           from '@airport/ground-control'
@@ -21,18 +21,18 @@ export class PostgreSqlSchemaBuilder
 	extends SqlSchemaBuilder {
 
 	constructor(
-		@Inject(SchemaUtilsToken)
-			schemaUtils: ISchemaUtils,
+		@Inject(DbSchemaUtilsToken)
+			dbSchemaUtils: IDbSchemaUtils,
 		@Inject(StoreDriverToken)
 			storeDriver: IStoreDriver
 	) {
-		super(schemaUtils, storeDriver)
+		super(dbSchemaUtils, storeDriver)
 	}
 
 	async createSchema(
 		jsonSchema: JsonSchema
 	): Promise<void> {
-		const schemaName            = this.schemaUtils.getSchemaName(jsonSchema)
+		const schemaName            = this.dbSchemaUtils.getSchemaName(jsonSchema)
 		const createSchemaStatement = `CREATE SCHEMA ${schemaName}`
 
 		await this.storeDriver.query(QueryType.DDL, createSchemaStatement, [], false)
@@ -74,7 +74,7 @@ export class PostgreSqlSchemaBuilder
 		jsonSchema: JsonSchema,
 		jsonEntity: JsonSchemaEntity
 	): string {
-		return `${this.schemaUtils.getSchemaName(jsonSchema)}.${jsonEntity.name}`
+		return `${this.dbSchemaUtils.getSchemaName(jsonSchema)}.${jsonEntity.name}`
 	}
 
 	getCreateTableSuffix(
@@ -93,7 +93,7 @@ export class PostgreSqlSchemaBuilder
 				continue
 			}
 			const prefixedTableName = this.getTableName(jsonSchema, jsonEntity)
-			const sequenceName      = this.schemaUtils.getSequenceName(prefixedTableName, jsonColumn.name)
+			const sequenceName      = this.dbSchemaUtils.getSequenceName(prefixedTableName, jsonColumn.name)
 			let incrementBy         = jsonColumn.allocationSize
 			if (!incrementBy) {
 				incrementBy = 100000

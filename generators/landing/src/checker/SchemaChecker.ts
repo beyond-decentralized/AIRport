@@ -3,12 +3,12 @@ import {
 	UtilsToken
 }                           from '@airport/air-control'
 import {
+	DbSchemaUtilsToken,
 	DomainName,
-	ISchemaUtils,
+	IDbSchemaUtils,
 	JsonSchema,
 	JsonSchemaName,
 	SchemaName,
-	SchemaUtilsToken
 } from '@airport/ground-control'
 import {
 	ISchema,
@@ -60,8 +60,8 @@ export class SchemaChecker {
 	constructor(
 		@Inject(SchemaDaoToken)
 		private schemaDao: ISchemaDao,
-		@Inject(SchemaUtilsToken)
-		private schemaUtils: ISchemaUtils,
+		@Inject(DbSchemaUtilsToken)
+		private dbSchemaUtils: IDbSchemaUtils,
 		@Inject(UtilsToken)
 		private utils: IUtils
 	) {
@@ -210,7 +210,7 @@ export class SchemaChecker {
 
 		for (const [domainName, allReferencedSchemasForDomain] of allReferencedSchemaMap) {
 			for (const [coreSchemaName, referencedSchema] of allReferencedSchemasForDomain) {
-				const schemaName = this.schemaUtils.getSchemaName(referencedSchema)
+				const schemaName = this.dbSchemaUtils.getSchemaName(referencedSchema)
 				schemaNames.push(schemaName)
 				coreDomainAndSchemaNamesBySchemaName.set(schemaName, {
 					domain: domainName,

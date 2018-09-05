@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
@@ -24,7 +23,7 @@ let SchemaRecorder = class SchemaRecorder {
     constructor(
     // @Inject(AirportDatabaseToken)
     // private airportDatabase: IAirportDatabase,
-    domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaLocator, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaUtils, schemaVersionDao, terminalStore, utils) {
+    domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaLocator, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, dbSchemaUtils, schemaVersionDao, terminalStore, utils) {
         this.domainDao = domainDao;
         this.schemaColumnDao = schemaColumnDao;
         this.schemaDao = schemaDao;
@@ -35,7 +34,7 @@ let SchemaRecorder = class SchemaRecorder {
         this.schemaReferenceDao = schemaReferenceDao;
         this.schemaRelationColumnDao = schemaRelationColumnDao;
         this.schemaRelationDao = schemaRelationDao;
-        this.schemaUtils = schemaUtils;
+        this.dbSchemaUtils = dbSchemaUtils;
         this.schemaVersionDao = schemaVersionDao;
         this.terminalStore = terminalStore;
         this.utils = utils;
@@ -45,7 +44,7 @@ let SchemaRecorder = class SchemaRecorder {
         const jsonSchemaMapByName = new Map();
         for (const jsonSchema of jsonSchemas) {
             domainSet.add(jsonSchema.domain);
-            jsonSchemaMapByName.set(this.schemaUtils.getSchemaName(jsonSchema), jsonSchema);
+            jsonSchemaMapByName.set(this.dbSchemaUtils.getSchemaName(jsonSchema), jsonSchema);
         }
         const { domainMapByName, domains } = await this.recordDomains(domainSet);
         const { newSchemaMapByName, newSchemas } = await this.recordSchemas(domainMapByName, jsonSchemaMapByName);
@@ -171,7 +170,7 @@ let SchemaRecorder = class SchemaRecorder {
             const lastJsonSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
             const schemaReferences = this.utils.ensureChildArray(newSchemaReferenceMap, schemaName);
             for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
-                const referencedSchemaName = this.schemaUtils.getSchemaName(jsonReferencedSchema);
+                const referencedSchemaName = this.dbSchemaUtils.getSchemaName(jsonReferencedSchema);
                 let referencedSchemaVersion = newSchemaVersionMapBySchemaName.get(referencedSchemaName);
                 if (!referencedSchemaVersion) {
                     referencedSchemaVersion = this.schemaLocator.locateLatestSchemaVersionBySchemaName(referencedSchemaName);
@@ -428,7 +427,7 @@ let SchemaRecorder = class SchemaRecorder {
     }
 };
 SchemaRecorder = __decorate([
-    typedi_1.Service(ground_control_1.SchemaUtilsToken),
+    typedi_1.Service(InjectionTokens_1.SchemaRecorderToken),
     __param(0, typedi_1.Inject(territory_1.DomainDaoToken)),
     __param(1, typedi_1.Inject(traffic_pattern_1.SchemaColumnDaoToken)),
     __param(2, typedi_1.Inject(traffic_pattern_1.SchemaDaoToken)),
@@ -439,11 +438,11 @@ SchemaRecorder = __decorate([
     __param(7, typedi_1.Inject(traffic_pattern_1.SchemaReferenceDaoToken)),
     __param(8, typedi_1.Inject(traffic_pattern_1.SchemaRelationColumnDaoToken)),
     __param(9, typedi_1.Inject(traffic_pattern_1.SchemaRelationDaoToken)),
-    __param(10, typedi_1.Inject(ground_control_1.SchemaUtilsToken)),
+    __param(10, typedi_1.Inject(ground_control_1.DbSchemaUtilsToken)),
     __param(11, typedi_1.Inject(traffic_pattern_1.SchemaVersionDaoToken)),
     __param(12, typedi_1.Inject(terminal_map_1.TerminalStoreToken)),
     __param(13, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, typeof (_a = typeof ground_control_1.ISchemaUtils !== "undefined" && ground_control_1.ISchemaUtils) === "function" ? _a : Object, Object, Object, Object])
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
 ], SchemaRecorder);
 exports.SchemaRecorder = SchemaRecorder;
 //# sourceMappingURL=SchemaRecorder.js.map
