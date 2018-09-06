@@ -1,25 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="85f0f2ef-561d-419c-9d09-6832aa737a18" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/builder/schema/SProperty.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/schema/SProperty.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/builder/schema/SSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/schema/SSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/builder/schema/SSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/schema/SSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/builder/schema/SchemaRelationResolver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/schema/SchemaRelationResolver.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/builder/schema/SchemaRelationResolver.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/schema/SchemaRelationResolver.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/builder/schema/SchemaRelationResolver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/builder/schema/SchemaRelationResolver.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/parser/EntityCandidateRegistry.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/parser/EntityCandidateRegistry.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/parser/EntityCandidateRegistry.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/parser/EntityCandidateRegistry.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/parser/EntityCandidateRegistry.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/lib/parser/EntityCandidateRegistry.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builder/schema/SProperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/builder/schema/SProperty.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builder/schema/SSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/builder/schema/SSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builder/schema/SchemaRelationResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/builder/schema/SchemaRelationResolver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/EntityCandidateRegistry.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/EntityCandidateRegistry.ts" afterDir="false" />
-    </list>
+    <list default="true" id="85f0f2ef-561d-419c-9d09-6832aa737a18" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -33,20 +15,20 @@
     <session id="-1848675941">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="17" />
+          <entry key="project.closed" value="18" />
           <entry key="project.open.time.0" value="7" />
           <entry key="project.open.time.3" value="2" />
-          <entry key="project.open.time.4" value="2" />
+          <entry key="project.open.time.4" value="3" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.8" value="2" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="17" />
+          <entry key="project.opened" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
         <counts>
-          <entry key="TypeScriptServerServiceImpl" value="17" />
+          <entry key="TypeScriptServerServiceImpl" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -344,11 +326,12 @@
       <workItem from="1536238889396" duration="156000" />
       <workItem from="1536239070247" duration="158000" />
       <workItem from="1536239253589" duration="233000" />
+      <workItem from="1536239511125" duration="142000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20966000" />
+    <option name="totallyTimeSpent" value="21108000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
