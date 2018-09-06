@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/apps/automated-guideway-transit/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/automated-guideway-transit/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apps/automated-guideway-transit/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SProperty.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SProperty.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/schema/SProperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/builder/schema/SProperty.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/schema/SSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/builder/schema/SSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/schema/SchemaRelationResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/builder/schema/SchemaRelationResolver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/parser/EntityCandidateRegistry.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/parser/EntityCandidateRegistry.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/apis/" />
@@ -39,16 +23,16 @@
     <session id="-2023080075">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="13" />
+          <entry key="project.closed" value="14" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.12" value="2" />
           <entry key="project.open.time.16" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.4" value="3" />
-          <entry key="project.open.time.5" value="2" />
+          <entry key="project.open.time.5" value="3" />
           <entry key="project.open.time.8" value="1" />
-          <entry key="project.opened" value="13" />
+          <entry key="project.opened" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -68,13 +52,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="js" value="2" />
-          <entry key="txt" value="160" />
+          <entry key="txt" value="204" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JavaScript" value="2" />
-          <entry key="PLAIN_TEXT" value="160" />
+          <entry key="PLAIN_TEXT" value="204" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -128,43 +112,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/rush.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+            <state relative-caret-position="304">
+              <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apis/air-control/package.json">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apis/ground-control/package.json">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apis/check-in/package.json">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/schemas/travel-document-checkpoint/package.json">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apis/arrivals-n-departures/package.json">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/generators/runway/package.json">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -307,7 +261,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../bumperpoll" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
@@ -366,6 +320,7 @@
       <workItem from="1536238888867" duration="156000" />
       <workItem from="1536239069971" duration="159000" />
       <workItem from="1536239253066" duration="233000" />
+      <workItem from="1536239510826" duration="164000" />
     </task>
     <task id="LOCAL-00001" summary="adding not null constraints">
       <created>1535641136191</created>
@@ -430,14 +385,29 @@
       <option name="project" value="LOCAL" />
       <updated>1536157721258</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="adjustments to 'runway' needed by 'bumperpoll'">
+      <created>1536239598310</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1536239598310</updated>
+    </task>
+    <task id="LOCAL-00011" summary="adjustments to 'runway' needed by 'bumperpoll'">
+      <created>1536239666461</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1536239666461</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27822000" />
+    <option name="totallyTimeSpent" value="27986000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -473,7 +443,8 @@
     <MESSAGE value="refactoring holding-pattern and dependencies" />
     <MESSAGE value="finished in-memory ddl for 'takeoff', started adding datastructure setup for 'landing'" />
     <MESSAGE value="working on Q Object generation 'takeoff' (and related changes to schema&#10;generation)" />
-    <option name="LAST_COMMIT_MESSAGE" value="working on Q Object generation 'takeoff' (and related changes to schema&#10;generation)" />
+    <MESSAGE value="adjustments to 'runway' needed by 'bumperpoll'" />
+    <option name="LAST_COMMIT_MESSAGE" value="adjustments to 'runway' needed by 'bumperpoll'" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -590,13 +561,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rush.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/apis/air-control/package.json">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -614,6 +578,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/generators/runway/package.json">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rush.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>

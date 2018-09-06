@@ -16,7 +16,7 @@ const air_control_1 = require("@airport/air-control");
 const rxjs_1 = require("rxjs");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
-const Selector_1 = require("./Selector");
+const check_in_1 = require("@airport/check-in");
 let TerminalStore = class TerminalStore {
     constructor(utils) {
         this.utils = utils;
@@ -26,11 +26,11 @@ let TerminalStore = class TerminalStore {
             schemas: [],
             terminal: null,
         });
-        this.getTerminalState = Selector_1.createRootSelector(this.state);
-        this.getDomains = Selector_1.createSelector(this.getTerminalState, terminal => terminal.domains);
+        this.getTerminalState = check_in_1.createRootSelector(this.state);
+        this.getDomains = check_in_1.createSelector(this.getTerminalState, terminal => terminal.domains);
         // getNodesBySyncFrequency = createSelector(this.getTerminalState,
         // 	terminal => terminal.nodesBySyncFrequency)
-        this.getLatestSchemaVersionMapByNames = Selector_1.createSelector(this.getDomains, domains => {
+        this.getLatestSchemaVersionMapByNames = check_in_1.createSelector(this.getDomains, domains => {
             const latestSchemaVersionMapByNames = new Map();
             for (const domain of domains) {
                 const mapForDomain = this.utils.ensureChildJsMap(latestSchemaVersionMapByNames, domain.name);
@@ -40,7 +40,7 @@ let TerminalStore = class TerminalStore {
             }
             return latestSchemaVersionMapByNames;
         });
-        this.getLatestSchemaVersionMapBySchemaName = Selector_1.createSelector(this.getLatestSchemaVersionMapByNames, (latestSchemaVersionMapByNames) => {
+        this.getLatestSchemaVersionMapBySchemaName = check_in_1.createSelector(this.getLatestSchemaVersionMapByNames, (latestSchemaVersionMapByNames) => {
             const latestSchemaVersionMapBySchemaName = new Map();
             for (const schemaVersionsForDomainName of latestSchemaVersionMapByNames.values()) {
                 for (const schemaVersion of schemaVersionsForDomainName.values()) {
@@ -49,7 +49,7 @@ let TerminalStore = class TerminalStore {
             }
             return latestSchemaVersionMapBySchemaName;
         });
-        this.getLatestSchemaVersionsByIndexes = Selector_1.createSelector(this.getDomains, domains => {
+        this.getLatestSchemaVersionsByIndexes = check_in_1.createSelector(this.getDomains, domains => {
             const latestSchemaVersionsByNames = [];
             for (const domain of domains) {
                 for (const schema of domain.schemas) {
@@ -58,7 +58,7 @@ let TerminalStore = class TerminalStore {
             }
             return latestSchemaVersionsByNames;
         });
-        this.getSchemas = Selector_1.createSelector(this.getTerminalState, terminal => terminal.schemas);
+        this.getSchemas = check_in_1.createSelector(this.getTerminalState, terminal => terminal.schemas);
     }
     tearDown() {
     }

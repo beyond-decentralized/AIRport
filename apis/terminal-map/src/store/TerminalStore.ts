@@ -22,7 +22,7 @@ import {
 	createRootSelector,
 	createSelector,
 	IMemoizedSelector
-}                           from './Selector'
+}                           from '@airport/check-in'
 import {ITerminalState}     from './TerminalState'
 
 export interface ITerminalStore {

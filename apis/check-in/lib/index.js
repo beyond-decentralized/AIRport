@@ -6,4 +6,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./Dao"));
 __export(require("./Dmo"));
 __export(require("./EntityDatabaseFacade"));
+__export(require("./Selector"));
 //# sourceMappingURL=index.js.map

@@ -3,7 +3,7 @@ import { DomainName, JsonSchemaName, SchemaName } from '@airport/ground-control'
 import { IDomain } from '@airport/territory';
 import { ISchema, ISchemaVersion } from '@airport/traffic-pattern';
 import { BehaviorSubject } from 'rxjs';
-import { IMemoizedSelector } from './Selector';
+import { IMemoizedSelector } from '@airport/check-in';
 import { ITerminalState } from './TerminalState';
 export interface ITerminalStore {
     state: BehaviorSubject<ITerminalState>;
