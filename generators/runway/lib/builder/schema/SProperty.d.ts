@@ -68,11 +68,6 @@ export interface SRelation {
      * Intermediate representation of relation columns
      */
     sRelationColumns: SRelationColumn[];
-    /**
-     * Serialized function to add to the join
-     * Not currently needed
-     */
-    joinFunctionWithOperator?: number;
 }
 /**
  * A column in a schema table.

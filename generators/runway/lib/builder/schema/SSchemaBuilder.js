@@ -116,7 +116,7 @@ class SSchemaBuilder {
         let isId = false;
         // let repositoryJoin                       = false;
         // let addToJoinFunction;
-        let joinFunctionWithOperator = ground_control_1.SqlOperator.AND;
+        // let joinFunctionWithOperator = SqlOperator.AND
         let relationType;
         for (const decorator of aProperty.decorators) {
             switch (decorator.name) {
@@ -304,7 +304,7 @@ class SSchemaBuilder {
             entityName,
             foreignKey,
             index: entity.numRelations++,
-            joinFunctionWithOperator,
+            // joinFunctionWithOperator,
             manyToOne,
             oneToMany,
             relationType,

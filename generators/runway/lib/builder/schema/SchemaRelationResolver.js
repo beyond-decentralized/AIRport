@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
-const ground_control_2 = require("@airport/ground-control");
 class SchemaRelationResolver {
     resolveAllRelationLinks(indexedSchema) {
         for (const entityName in indexedSchema.entityMapByName) {
@@ -49,24 +48,30 @@ class SchemaRelationResolver {
                     throw `Did not find ${aRelation.entityName} entity `
                         + `(via the ${anEntity.name}.${aProperty.name} relation).`;
                 }
-                relatedOneToManys = this.getEntityRelationsOfType(relationIndexedEntity, ground_control_2.EntityRelationType.ONE_TO_MANY, anEntity.name);
+                relatedOneToManys = this.getEntityRelationsOfType(relationIndexedEntity, ground_control_1.EntityRelationType.ONE_TO_MANY, anEntity.name);
                 if (relatedOneToManys.length > 1) {
                     for (const relatedOneToMany of relatedOneToManys) {
-                        if (!relatedOneToMany.oneToMany ||
-                            !relatedOneToMany.oneToMany.mappedBy) {
-                            throw `'mappedBy' property must be specified on all @OneToManys of ${relationIndexedEntity.entity.name}.
-							You must specify 'mappedBy' to assign each relation to a corresponding @ManyToOne.`;
+                        if (relatedOneToMany.oneToMany &&
+                            relatedOneToMany.oneToMany.mappedBy) {
+                            if (relatedOneToMany.sRelationColumns
+                                && relatedOneToMany.sRelationColumns.length) {
+                                throw new Error(`@OneToMany with 'mappedBy' cannot define any @JoinColumn(s).`);
+                            }
+                        }
+                        else if (!relatedOneToMany.sRelationColumns
+                            || !relatedOneToMany.sRelationColumns.length) {
+                            throw new Error(`@OneToMany without 'mappedBy' must define any @JoinColumn(s)`);
                         }
                     }
                 }
-                relatedManyToOnes = this.getEntityRelationsOfType(relationIndexedEntity, ground_control_2.EntityRelationType.MANY_TO_ONE, anEntity.name);
+                relatedManyToOnes = this.getEntityRelationsOfType(relationIndexedEntity, ground_control_1.EntityRelationType.MANY_TO_ONE, anEntity.name);
                 const relationEntity = relationIndexedEntity.entity;
                 relationEntityName = relationEntity.name;
                 relationEntityIsLocal = relationEntity.isLocal;
             }
             relationEntityNameSet[aRelation.entityName] = true;
             switch (aRelation.relationType) {
-                case ground_control_2.EntityRelationType.ONE_TO_MANY:
+                case ground_control_1.EntityRelationType.ONE_TO_MANY:
                     if (aRelation.oneToMany && aRelation.oneToMany.cascade
                         && anEntity.isLocal && !relationEntityIsLocal) {
                         throw `@OneToMany Relation '${anEntity.name}.${aProperty.name}' is on a Local entity and is cascading 
@@ -78,7 +83,7 @@ class SchemaRelationResolver {
 						@OneToMany associations are not allowed across schemas (without @JoinColumn(s)).`;
                     }
                     break;
-                case ground_control_2.EntityRelationType.MANY_TO_ONE:
+                case ground_control_1.EntityRelationType.MANY_TO_ONE:
                     // Many-To-One relations are not cascaded, so no cascade check is needed
                     break;
                 default:
@@ -86,27 +91,22 @@ class SchemaRelationResolver {
             }
             let oneSideRelationIndex;
             switch (aRelation.relationType) {
-                case ground_control_2.EntityRelationType.ONE_TO_MANY:
+                case ground_control_1.EntityRelationType.ONE_TO_MANY:
                     // Don't need to assign oneSideRelationIndex
                     break;
-                case ground_control_2.EntityRelationType.MANY_TO_ONE:
+                case ground_control_1.EntityRelationType.MANY_TO_ONE:
                     if (!crossSchema) {
-                        if (relatedOneToManys.length === 1) {
-                            oneSideRelationIndex = relatedOneToManys[0].index;
+                        const matchingRelatedOneToManys = relatedOneToManys.filter(relatedOneToMany => relatedOneToMany.oneToMany && relatedOneToMany.oneToMany.mappedBy === aProperty.name);
+                        if (matchingRelatedOneToManys.length > 1) {
+                            throw `Found more ${matchingRelatedOneToManys.length} matching @OneToMany for ${anEntity.name}.${aProperty.name}. Expecting 1 or 0.`;
                         }
-                        else {
-                            const matchingRelatedOneToManys = relatedOneToManys.filter(relatedOneToMany => relatedOneToMany.oneToMany.mappedBy === aProperty.name);
-                            if (matchingRelatedOneToManys.length > 1) {
-                                throw `Found more ${matchingRelatedOneToManys.length} matching @OneToMany for ${anEntity.name}.${aProperty.name}. Expecting 1 or 0.`;
-                            }
-                            if (matchingRelatedOneToManys.length !== 1) {
-                                break;
-                                // throw `Expecting one matching @OneToMany for
-                                // ${anEntity.name}.${aProperty.name} and found
-                                // ${matchingRelatedOneToManys.length}`;
-                            }
-                            oneSideRelationIndex = matchingRelatedOneToManys[0].index;
+                        if (!matchingRelatedOneToManys.length) {
+                            break;
+                            // throw `Expecting one matching @OneToMany for
+                            // ${anEntity.name}.${aProperty.name} and found
+                            // ${matchingRelatedOneToManys.length}`;
                         }
+                        oneSideRelationIndex = matchingRelatedOneToManys[0].index;
                     }
                     break;
                 default:
@@ -212,17 +212,17 @@ class SchemaRelationResolver {
     }
     getTypeFromSQLDataType(sqlDataType) {
         switch (sqlDataType) {
-            case ground_control_2.SQLDataType.ANY:
+            case ground_control_1.SQLDataType.ANY:
                 return 'any';
-            case ground_control_2.SQLDataType.BOOLEAN:
+            case ground_control_1.SQLDataType.BOOLEAN:
                 return 'boolean';
-            case ground_control_2.SQLDataType.DATE:
+            case ground_control_1.SQLDataType.DATE:
                 return 'Date';
-            case ground_control_2.SQLDataType.JSON:
+            case ground_control_1.SQLDataType.JSON:
                 return 'Json';
-            case ground_control_2.SQLDataType.NUMBER:
+            case ground_control_1.SQLDataType.NUMBER:
                 return 'number';
-            case ground_control_2.SQLDataType.STRING:
+            case ground_control_1.SQLDataType.STRING:
                 return 'string';
             default:
                 throw `Unexpected SQLDataType: ${sqlDataType}.`;

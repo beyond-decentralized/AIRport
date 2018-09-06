@@ -1,18 +1,16 @@
 import {
 	DbColumn,
 	DbEntity,
-	repositoryEntity
-}                       from "@airport/ground-control";
-import {
 	EntityRelationType,
+	repositoryEntity,
 	SQLDataType
-}                       from "@airport/ground-control";
-import {SIndexedEntity} from "./SEntity";
+}                       from '@airport/ground-control'
+import {SIndexedEntity} from './SEntity'
 import {
 	SColumn,
 	SRelation
-}                       from "./SProperty";
-import {SIndexedSchema} from "./SSchema";
+}                       from './SProperty'
+import {SIndexedSchema} from './SSchema'
 
 export class SchemaRelationResolver {
 
@@ -20,13 +18,13 @@ export class SchemaRelationResolver {
 		indexedSchema: SIndexedSchema,
 	): void {
 		for (const entityName in indexedSchema.entityMapByName) {
-			const indexedEntity = indexedSchema.entityMapByName[entityName];
+			const indexedEntity = indexedSchema.entityMapByName[entityName]
 			if (indexedEntity.entity.isRepositoryEntity) {
 				if (indexedEntity.idColumns[0].name !== repositoryEntity.FOREIGN_KEY) {
-					throw `@Id Column at index 0, must be 'REPOSITORY_ID'`;
+					throw `@Id Column at index 0, must be 'REPOSITORY_ID'`
 				}
 			}
-			this.resolveEntityRelationLinks(indexedSchema, indexedEntity);
+			this.resolveEntityRelationLinks(indexedSchema, indexedEntity)
 		}
 	}
 
@@ -39,64 +37,69 @@ export class SchemaRelationResolver {
 			relation: SRelation
 		) => {
 			return relation.relationType === entityRelationType
-				&& relation.entityName === entityName;
-		});
+				&& relation.entityName === entityName
+		})
 	}
 
 	private resolveEntityRelationLinks(
 		indexedSchema: SIndexedSchema,
 		indexedEntity: SIndexedEntity,
 	): void {
-		const anEntity              = indexedEntity.entity;
-		const relationEntityNameSet = {};
+		const anEntity              = indexedEntity.entity
+		const relationEntityNameSet = {}
 		for (const aProperty of anEntity.properties) {
-			const aRelation = aProperty.relation;
+			const aRelation = aProperty.relation
 			if (!aRelation) {
-				continue;
+				continue
 			}
 
 			// TODO: find matching relation
-			let relatedOneToManys: SRelation[];
-			let relatedManyToOnes: SRelation[];
+			let relatedOneToManys: SRelation[]
+			let relatedManyToOnes: SRelation[]
 
-			let relationEntityIsLocal;
-			let relationIndexedEntity: SIndexedEntity | DbEntity;
-			let relationEntityName: string;
-			let crossSchema = aRelation.referencedSchemaIndex || aRelation.referencedSchemaIndex === 0;
+			let relationEntityIsLocal
+			let relationIndexedEntity: SIndexedEntity | DbEntity
+			let relationEntityName: string
+			let crossSchema = aRelation.referencedSchemaIndex || aRelation.referencedSchemaIndex === 0
 			if (crossSchema) {
 				relationIndexedEntity = indexedSchema.schema
 					.referencedSchemas[aRelation.referencedSchemaIndex].dbSchema.currentVersion
-					.entityMapByName[aRelation.entityName];
-				relationEntityName    = relationIndexedEntity.name;
-				relationEntityIsLocal = relationIndexedEntity.isLocal;
+					.entityMapByName[aRelation.entityName]
+				relationEntityName    = relationIndexedEntity.name
+				relationEntityIsLocal = relationIndexedEntity.isLocal
 			} else {
 				relationIndexedEntity =
-					indexedSchema.entityMapByName[aRelation.entityName];
+					indexedSchema.entityMapByName[aRelation.entityName]
 				if (!relationIndexedEntity) {
 					throw `Did not find ${aRelation.entityName} entity `
-					+ `(via the ${anEntity.name}.${aProperty.name} relation).`;
+					+ `(via the ${anEntity.name}.${aProperty.name} relation).`
 				}
 
 				relatedOneToManys = this.getEntityRelationsOfType(
-					relationIndexedEntity, EntityRelationType.ONE_TO_MANY, anEntity.name);
+					relationIndexedEntity, EntityRelationType.ONE_TO_MANY, anEntity.name)
 				if (relatedOneToManys.length > 1) {
 					for (const relatedOneToMany of relatedOneToManys) {
-						if (!relatedOneToMany.oneToMany ||
-							!relatedOneToMany.oneToMany.mappedBy) {
-							throw `'mappedBy' property must be specified on all @OneToManys of ${relationIndexedEntity.entity.name}.
-							You must specify 'mappedBy' to assign each relation to a corresponding @ManyToOne.`;
+						if (relatedOneToMany.oneToMany &&
+							relatedOneToMany.oneToMany.mappedBy) {
+							if (relatedOneToMany.sRelationColumns
+								&& relatedOneToMany.sRelationColumns.length) {
+								throw new Error(`@OneToMany with 'mappedBy' cannot define any @JoinColumn(s).`)
+							}
+						} else if (!relatedOneToMany.sRelationColumns
+							|| !relatedOneToMany.sRelationColumns.length) {
+							throw new Error(`@OneToMany without 'mappedBy' must define any @JoinColumn(s)`)
 						}
 					}
 				}
 				relatedManyToOnes = this.getEntityRelationsOfType(
-					relationIndexedEntity, EntityRelationType.MANY_TO_ONE, anEntity.name);
+					relationIndexedEntity, EntityRelationType.MANY_TO_ONE, anEntity.name)
 
-				const relationEntity  = relationIndexedEntity.entity;
-				relationEntityName    = relationEntity.name;
-				relationEntityIsLocal = relationEntity.isLocal;
+				const relationEntity  = relationIndexedEntity.entity
+				relationEntityName    = relationEntity.name
+				relationEntityIsLocal = relationEntity.isLocal
 			}
 
-			relationEntityNameSet[aRelation.entityName] = true;
+			relationEntityNameSet[aRelation.entityName] = true
 
 			switch (aRelation.relationType) {
 				case EntityRelationType.ONE_TO_MANY:
@@ -104,98 +107,94 @@ export class SchemaRelationResolver {
 						&& anEntity.isLocal && !relationEntityIsLocal) {
 						throw `@OneToMany Relation '${anEntity.name}.${aProperty.name}' is on a Local entity and is cascading 
 						into a repository entity '${aRelation.entityName}'.
-						Cascading from Local entities to Repository entities is not currently supported.`;
+						Cascading from Local entities to Repository entities is not currently supported.`
 					}
 					if (crossSchema && !aRelation.sRelationColumns.length) {
 						throw `@OneToMany Relation '${anEntity.name}.${aProperty.name}' is a cross-schema @OneToMany association.
-						@OneToMany associations are not allowed across schemas (without @JoinColumn(s)).`;
+						@OneToMany associations are not allowed across schemas (without @JoinColumn(s)).`
 					}
-					break;
+					break
 				case EntityRelationType.MANY_TO_ONE:
 					// Many-To-One relations are not cascaded, so no cascade check is needed
-					break;
+					break
 				default:
-					throw `Unknown EntityRelationType: ${aRelation.relationType}.`;
+					throw `Unknown EntityRelationType: ${aRelation.relationType}.`
 			}
 
-			let oneSideRelationIndex;
+			let oneSideRelationIndex
 			switch (aRelation.relationType) {
 				case EntityRelationType.ONE_TO_MANY:
 					// Don't need to assign oneSideRelationIndex
-					break;
+					break
 				case EntityRelationType.MANY_TO_ONE:
 					if (!crossSchema) {
-						if (relatedOneToManys.length === 1) {
-							oneSideRelationIndex = relatedOneToManys[0].index;
-						} else {
-							const matchingRelatedOneToManys = relatedOneToManys.filter(
-								relatedOneToMany =>
-									relatedOneToMany.oneToMany.mappedBy === aProperty.name
-							);
-							if (matchingRelatedOneToManys.length > 1) {
-								throw `Found more ${matchingRelatedOneToManys.length} matching @OneToMany for ${anEntity.name}.${aProperty.name}. Expecting 1 or 0.`;
-							}
-							if (matchingRelatedOneToManys.length !== 1) {
-								break;
-								// throw `Expecting one matching @OneToMany for
-								// ${anEntity.name}.${aProperty.name} and found
-								// ${matchingRelatedOneToManys.length}`;
-							}
-							oneSideRelationIndex = matchingRelatedOneToManys[0].index;
+						const matchingRelatedOneToManys = relatedOneToManys.filter(
+							relatedOneToMany =>
+								relatedOneToMany.oneToMany && relatedOneToMany.oneToMany.mappedBy === aProperty.name
+						)
+						if (matchingRelatedOneToManys.length > 1) {
+							throw `Found more ${matchingRelatedOneToManys.length} matching @OneToMany for ${anEntity.name}.${aProperty.name}. Expecting 1 or 0.`
 						}
+						if (!matchingRelatedOneToManys.length) {
+							break
+							// throw `Expecting one matching @OneToMany for
+							// ${anEntity.name}.${aProperty.name} and found
+							// ${matchingRelatedOneToManys.length}`;
+						}
+						oneSideRelationIndex = matchingRelatedOneToManys[0].index
 					}
-					break;
+					break
 				default:
-					throw `Unknown relation type ${aRelation.relationType}.`;
+					throw `Unknown relation type ${aRelation.relationType}.`
 			}
 
 			for (const sRelationColumn of aRelation.sRelationColumns) {
-				sRelationColumn.oneSideRelationIndex = oneSideRelationIndex;
+				sRelationColumn.oneSideRelationIndex = oneSideRelationIndex
 
-				let ownColumn;
+				let ownColumn
 				if (sRelationColumn.ownColumnIdIndex) {
-					ownColumn = indexedEntity.idColumns[sRelationColumn.ownColumnIdIndex];
+					ownColumn = indexedEntity.idColumns[sRelationColumn.ownColumnIdIndex]
 					if (!ownColumn) {
 						throw `Did not find @Id column of ${anEntity.name} at index ${sRelationColumn.ownColumnIdIndex} `
-						+ `(via the ${anEntity.name}.${aProperty.name} relation).`;
+						+ `(via the ${anEntity.name}.${aProperty.name} relation).`
 					}
 				} else {
-					ownColumn = indexedEntity.columnMap[sRelationColumn.ownColumnReference];
+					ownColumn = indexedEntity.columnMap[sRelationColumn.ownColumnReference]
 					if (!ownColumn) {
 						throw `Did not find column ${anEntity.name}.${sRelationColumn.ownColumnReference} `
-						+ `(via the ${anEntity.name}.${aProperty.name} relation).`;
+						+ `(via the ${anEntity.name}.${aProperty.name} relation).`
 					}
 				}
 
-				let relatedColumn: SColumn | DbColumn;
+				let relatedColumn: SColumn | DbColumn
 				if (sRelationColumn.relationColumnIdIndex
 					|| sRelationColumn.relationColumnIdIndex == 0) {
-					relatedColumn = relationIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex];
+					relatedColumn = relationIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex]
 					if (!relatedColumn) {
 						throw `Did not find @Id column of ${relationEntityName} at index ${sRelationColumn.relationColumnIdIndex} `
-						+ `(via the ${anEntity.name}.${aProperty.name} relation).`;
+						+ `(via the ${anEntity.name}.${aProperty.name} relation).`
 					}
 				} else if (sRelationColumn.relationColumnReference) {
-					relatedColumn = relationIndexedEntity.columnMap[sRelationColumn.relationColumnReference];
+					relatedColumn = relationIndexedEntity.columnMap[sRelationColumn.relationColumnReference]
 					if (!relatedColumn) {
 						throw `Did not find column ${relationEntityName}.${sRelationColumn.relationColumnReference} `
-						+ `(via the ${anEntity.name}.${aProperty.name} relation).`;
+						+ `(via the ${anEntity.name}.${aProperty.name} relation).`
 					}
 				} else {
-					relatedColumn = relationIndexedEntity.columnMap[ownColumn.name];
+					relatedColumn = relationIndexedEntity.columnMap[ownColumn.name]
 					if (!relatedColumn) {
 						throw `Did not find column ${relationEntityName}.${ownColumn.name} `
-						+ `(via the ${anEntity.name}.${aProperty.name} relation).`;
+						+ `(via the ${anEntity.name}.${aProperty.name} relation).`
 					}
-					sRelationColumn.relationColumnReference = ownColumn.name;
+					sRelationColumn.relationColumnReference = ownColumn.name
 				}
 
 				if (crossSchema) {
-					ownColumn.type = this.getTypeFromSQLDataType((<DbColumn>relatedColumn).type);
-					this.setTypeForLinkedColumns(ownColumn);
+					ownColumn.type = this.getTypeFromSQLDataType((<DbColumn>relatedColumn).type)
+					this.setTypeForLinkedColumns(ownColumn)
 				} else {
-					this.linkColumnTypes(ownColumn, <SColumn>relatedColumn);
-					this.setType(ownColumn, <SColumn>relatedColumn);
+					this.linkColumnTypes(ownColumn, <SColumn>relatedColumn)
+					this.setType(ownColumn, <SColumn>relatedColumn)
 				}
 			}
 		}
@@ -206,24 +205,24 @@ export class SchemaRelationResolver {
 		ownColumn: SColumn,
 		relatedColumn: SColumn,
 	): void {
-		let relatedColumns;
+		let relatedColumns
 		if (ownColumn.tempColumnTypeLinks) {
-			relatedColumns = ownColumn.tempColumnTypeLinks;
+			relatedColumns = ownColumn.tempColumnTypeLinks
 			if (relatedColumn.tempColumnTypeLinks) {
-				relatedColumns                = relatedColumns.concat(relatedColumn.tempColumnTypeLinks);
-				ownColumn.tempColumnTypeLinks = relatedColumns;
+				relatedColumns                = relatedColumns.concat(relatedColumn.tempColumnTypeLinks)
+				ownColumn.tempColumnTypeLinks = relatedColumns
 			} else {
-				relatedColumns.push(relatedColumn);
+				relatedColumns.push(relatedColumn)
 			}
-			relatedColumn.tempColumnTypeLinks = relatedColumns;
+			relatedColumn.tempColumnTypeLinks = relatedColumns
 		} else if (relatedColumn.tempColumnTypeLinks) {
-			relatedColumns = relatedColumn.tempColumnTypeLinks;
-			relatedColumns.push(ownColumn);
-			ownColumn.tempColumnTypeLinks = relatedColumns;
+			relatedColumns = relatedColumn.tempColumnTypeLinks
+			relatedColumns.push(ownColumn)
+			ownColumn.tempColumnTypeLinks = relatedColumns
 		} else {
-			relatedColumns                    = [ownColumn, relatedColumn];
-			ownColumn.tempColumnTypeLinks     = relatedColumns;
-			relatedColumn.tempColumnTypeLinks = relatedColumns;
+			relatedColumns                    = [ownColumn, relatedColumn]
+			ownColumn.tempColumnTypeLinks     = relatedColumns
+			relatedColumn.tempColumnTypeLinks = relatedColumns
 		}
 	}
 
@@ -231,28 +230,28 @@ export class SchemaRelationResolver {
 		ownColumn: SColumn,
 		relatedColumn: SColumn
 	): void {
-		let type = ownColumn.type;
+		let type = ownColumn.type
 		if (!type) {
 			type = relatedColumn.type
 		}
 		if (!type) {
-			return;
+			return
 		}
 		for (const column of ownColumn.tempColumnTypeLinks) {
-			column.type = type;
+			column.type = type
 		}
 	}
 
 	private setTypeForLinkedColumns(
 		ownColumn: SColumn,
 	): void {
-		let type = ownColumn.type;
+		let type = ownColumn.type
 		if (!type
 			|| !ownColumn.tempColumnTypeLinks) {
-			return;
+			return
 		}
 		for (const column of ownColumn.tempColumnTypeLinks) {
-			column.type = type;
+			column.type = type
 		}
 	}
 
@@ -261,19 +260,19 @@ export class SchemaRelationResolver {
 	): 'any' | 'boolean' | 'Date' | 'number' | 'string' | 'Json' {
 		switch (sqlDataType) {
 			case SQLDataType.ANY:
-				return 'any';
+				return 'any'
 			case SQLDataType.BOOLEAN:
-				return 'boolean';
+				return 'boolean'
 			case SQLDataType.DATE:
-				return 'Date';
+				return 'Date'
 			case SQLDataType.JSON:
-				return 'Json';
+				return 'Json'
 			case SQLDataType.NUMBER:
-				return 'number';
+				return 'number'
 			case SQLDataType.STRING:
-				return 'string';
+				return 'string'
 			default:
-				throw `Unexpected SQLDataType: ${sqlDataType}.`;
+				throw `Unexpected SQLDataType: ${sqlDataType}.`
 		}
 
 	}

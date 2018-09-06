@@ -74,7 +74,7 @@ class EntityCandidateRegistry {
             dbColumnRelationMapByManySide: {},
             dbColumnRelationMapByOneSide: {}
         };
-        for (let [type, candidate] of this.entityCandidateMap) {
+        for (let [candidateType, candidate] of this.entityCandidateMap) {
             classifiedEntitySet.add(candidate);
             let properties = candidate.docEntry.properties;
             if (!properties) {
@@ -167,7 +167,9 @@ class EntityCandidateRegistry {
                         .replace(']', '')
                         .trim();
                 }
-                if (!property.mapValueIsPrimitive && !fileImports.importMapByObjectAsName[type]) {
+                if (!property.mapValueIsPrimitive
+                    && !fileImports.importMapByObjectAsName[type]
+                    && candidateType !== type) {
                     throw `Type '${type}' is not an import in ${candidate.path}.` +
                         `  All type references in entities must must be imported (needed for DDL hiding).`;
                 }
@@ -176,7 +178,7 @@ class EntityCandidateRegistry {
                     return;
                 }
                 const moduleImport = fileImports.importMapByObjectAsName[type];
-                if (!moduleImport.isLocal) {
+                if (moduleImport && !moduleImport.isLocal) {
                     const projectName = this.getProjectReferenceFromPath(moduleImport.path);
                     property.fromProject = projectName;
                     const projectSchema = this.schemaMap[projectName];

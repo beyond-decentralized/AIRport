@@ -1,6 +1,6 @@
-import { DbSchema, IDbSchemaBuilder } from "@airport/ground-control";
-import { Configuration } from "../options/Options";
-import { EntityCandidate, Interface } from "./EntityCandidate";
+import { DbSchema, IDbSchemaBuilder } from '@airport/ground-control';
+import { Configuration } from '../options/Options';
+import { EntityCandidate, Interface } from './EntityCandidate';
 /**
  * Created by Papa on 3/27/2016.
  */

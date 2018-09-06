@@ -1,4 +1,4 @@
-import { SIndexedSchema } from "./SSchema";
+import { SIndexedSchema } from './SSchema';
 export declare class SchemaRelationResolver {
     resolveAllRelationLinks(indexedSchema: SIndexedSchema): void;
     private getEntityRelationsOfType;

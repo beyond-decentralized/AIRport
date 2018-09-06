@@ -104,7 +104,7 @@ export interface SRelation {
 	/*
 	 * How to add the function to the join
 	 */
-	joinFunctionWithOperator?: number;
+	// joinFunctionWithOperator?: number;
 
 }
 
