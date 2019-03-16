@@ -1,143 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../../apis/check-in/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/Observable.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/Observer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/Subject.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/SubscriberFunction.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/Subscription.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/SubscriptionObserver.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/operators/combineLatest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/operators/distinctUntilChanged.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/operators/map.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/operators/share.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/observe/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../flight-log-archive/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../moving-walkway/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/webResources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/InjectionTokens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/InjectionTokens.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/Utils.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/Utils.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/Utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/Utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/Utils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/Utils.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/EntitySearch.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/EntitySearch.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/EntitySearchOne.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/EntitySearchOne.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/NonEntitySearch.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/NonEntitySearch.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/NonEntitySearchOne.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/NonEntitySearchOne.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/facade/UpdateProperties.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/facade/UpdateProperties.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/QMetadataUtils.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/QMetadataUtils.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/QMetadataUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/QMetadataUtils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/QMetadataUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/QMetadataUtils.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/repository/DatabaseFacade.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/repository/DatabaseFacade.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/query/api/EntitySearch.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/query/api/EntitySearch.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/query/api/EntitySearchOne.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/query/api/EntitySearchOne.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/query/api/NonEntitySearch.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/query/api/NonEntitySearch.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/query/api/NonEntitySearchOne.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/query/api/NonEntitySearchOne.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/utils/Utils.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/utils/Utils.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/impl/Utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/impl/Utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/impl/query/QuerySubject.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/EntitySearch.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/EntitySearch.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/EntitySearchOne.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/EntitySearchOne.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/NonEntitySearch.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/NonEntitySearch.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/NonEntitySearchOne.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/NonEntitySearchOne.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/impl/utils/QMetadataUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/impl/utils/QMetadataUtils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/impl/utils/SchemaUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/impl/utils/SchemaUtils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/lingo/core/repository/DatabaseFacade.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/lingo/core/repository/DatabaseFacade.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/EntitySearch.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/EntitySearch.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/EntitySearchOne.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/EntitySearchOne.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/NonEntitySearch.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/NonEntitySearch.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/NonEntitySearchOne.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/NonEntitySearchOne.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/lingo/utils/Utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/lingo/utils/Utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/check-in/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/Selector.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/Selector.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/check-in/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/InjectionTokens.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/data/ITransactionalConnector.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/data/ITransactionalConnector.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/data/StoreDriver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/data/StoreDriver.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/InjectionTokens.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/impl/query/DbSchemaUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/impl/query/DbSchemaUtils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/core/APSubject.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/data/ITransactionalConnector.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/data/ITransactionalConnector.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/data/StoreDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/data/StoreDriver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/tarmaq/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/tarmaq/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/SchemaInitializer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/SchemaInitializer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/SchemaInitializer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/SchemaInitializer.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/postgre/PostgreSqlSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/builder/sqlite/SqLiteSchemaBuilder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/checker/SchemaChecker.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/locator/SchemaLocator.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/locator/SchemaLocator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/locator/SchemaLocator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/locator/SchemaLocator.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/lib/recorder/SchemaRecorder.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/landing/src/recorder/SchemaRecorder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/landing/src/recorder/SchemaRecorder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/takeoff/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/takeoff/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/takeoff/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/takeoff/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/approach-lighting-system/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/approach-lighting-system/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/fuel-hydrant-system/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/jet-bridge/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/jet-bridge/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/mono-rail/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/mono-rail/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/AirportDatabase.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/AirportDatabase.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/AirportDatabase.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/AirportDatabase.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/AirportDatabase.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/AirportDatabase.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/EntityManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/EntityManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/EntityManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/EntityManager.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/InjectionTokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/QueryFacade.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/QueryFacade.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/QueryFacade.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/QueryFacade.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/core/data/UpdateCache.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/core/data/UpdateCache.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/core/data/UpdateCache.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/core/data/UpdateCache.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/tower/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/tower/src/AirportDatabase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/src/AirportDatabase.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../rush.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../rush.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../airport-code/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../airport-code/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flight-log-archive/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../flight-log-archive/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flight-log-archive/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../flight-log-archive/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingMessage/SharingMessageResponseStageDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/dao/sharingMessage/SharingMessageResponseStageDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/src/dao/sharingMessage/SharingMessageResponseStageDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/src/dao/sharingMessage/SharingMessageResponseStageDao.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../point-of-destination/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../point-of-destination/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../runway-edge-lighting/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../runway-edge-lighting/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/territory.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/territory.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../travel-document-checkpoint/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../travel-document-checkpoint/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tsconfig.core.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../tsconfig.core.json" afterDir="false" />
+    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="started replacing di and observable with concise impls">
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/operators/share.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/operators/share.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -216,7 +81,7 @@
             <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/share.ts">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="110">
-                  <caret line="5" column="2" selection-start-line="5" selection-start-column="2" selection-end-line="5" selection-end-column="2" />
+                  <caret line="5" selection-start-line="5" selection-end-line="5" />
                 </state>
               </provider>
             </entry>
@@ -237,7 +102,7 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/../../apis/check-in/src/Selector.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="180">
+                <state relative-caret-position="378">
                   <caret line="98" column="11" selection-start-line="98" selection-start-column="6" selection-end-line="98" selection-end-column="11" />
                   <folding>
                     <element signature="e#0#50#0" expanded="true" />
@@ -395,6 +260,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="GO_FMT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
@@ -475,7 +341,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18390192" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -525,9 +390,13 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
+    <MESSAGE value="started replacing di and observable with concise impls" />
+    <option name="LAST_COMMIT_MESSAGE" value="started replacing di and observable with concise impls" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/impl/query/facade/EntityQuery.ts">
@@ -915,7 +784,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../apis/check-in/src/Selector.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
+        <state relative-caret-position="378">
           <caret line="98" column="11" selection-start-line="98" selection-start-column="6" selection-end-line="98" selection-end-column="11" />
           <folding>
             <element signature="e#0#50#0" expanded="true" />
@@ -926,7 +795,7 @@
     <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/share.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
-          <caret line="5" column="2" selection-start-line="5" selection-start-column="2" selection-end-line="5" selection-end-column="2" />
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
         </state>
       </provider>
     </entry>

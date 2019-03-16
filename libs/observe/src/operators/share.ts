@@ -3,5 +3,5 @@ export interface IShare {
 }
 
 export function share() {
-	
+
 }
