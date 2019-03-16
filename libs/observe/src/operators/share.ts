@@ -1,7 +1,6 @@
-export interface IShare {
-	(): void
-}
-
-export function share() {
-
+export function share<V>(
+	value: V,
+	context: any
+): V {
+	return null
 }

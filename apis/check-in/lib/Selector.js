@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const rxjs_1 = require("rxjs");
-const operators_1 = require("rxjs/operators");
+const observe_1 = require("@airport/observe");
 function createSelector(...args) {
     let numInputSelectors;
     switch (args.length) {
@@ -27,13 +26,13 @@ function createSelector(...args) {
         for (let i = 1; i < inputSelectors.length; i++) {
             additionalObservables.push(inputSelectors[i].observable);
         }
-        combine = rxjs_1.combineLatest(...additionalObservables, callback);
+        combine = (ctx) => observe_1.combineLatest(additionalObservables, callback);
     }
     if (combine) {
-        observable = observable.pipe(combine, operators_1.distinctUntilChanged(), operators_1.share());
+        observable = observe_1.pipe(observable, (v, ctx) => observe_1.share(observe_1.distinctUntilChanged(combine(v), ctx), ctx));
     }
     else {
-        observable = observable.pipe(operators_1.map(callback), operators_1.distinctUntilChanged(), operators_1.share());
+        observable = observe_1.pipe(observable, (v, ctx) => observe_1.share(observe_1.distinctUntilChanged(observe_1.map(callback), ctx), ctx));
     }
     const selector = function (
     // otherStateObservable?: Observable<SV>

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function share(value, context) {
+function pipe(observable, callback) {
     return null;
 }
-exports.share = share;
-//# sourceMappingURL=share.js.map
+exports.pipe = pipe;
+//# sourceMappingURL=pipe.js.map
