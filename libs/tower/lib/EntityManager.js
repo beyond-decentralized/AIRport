@@ -5,14 +5,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b, _c, _d;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
@@ -161,66 +157,38 @@ let EntityManager = class EntityManager extends OperationManager_1.OperationMana
     }
 };
 __decorate([
-    decorators_1.Transactional(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, typeof (_a = typeof E !== "undefined" && E) === "function" && _a || Object]),
-    __metadata("design:returntype", Promise)
+    decorators_1.Transactional()
 ], EntityManager.prototype, "create", null);
 __decorate([
-    decorators_1.Transactional(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Array, Boolean, Boolean]),
-    __metadata("design:returntype", Promise)
+    decorators_1.Transactional()
 ], EntityManager.prototype, "bulkCreate", null);
 __decorate([
-    decorators_1.Transactional(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
+    decorators_1.Transactional()
 ], EntityManager.prototype, "insertValues", null);
 __decorate([
-    decorators_1.Transactional(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
+    decorators_1.Transactional()
 ], EntityManager.prototype, "insertValuesGenerateIds", null);
 __decorate([
-    decorators_1.Transactional(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, typeof (_b = typeof E !== "undefined" && E) === "function" && _b || Object]),
-    __metadata("design:returntype", Promise)
+    decorators_1.Transactional()
 ], EntityManager.prototype, "delete", null);
 __decorate([
-    decorators_1.Transactional(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
+    decorators_1.Transactional()
 ], EntityManager.prototype, "deleteWhere", null);
 __decorate([
-    decorators_1.Transactional(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, typeof (_c = typeof E !== "undefined" && E) === "function" && _c || Object]),
-    __metadata("design:returntype", Promise)
+    decorators_1.Transactional()
 ], EntityManager.prototype, "save", null);
 __decorate([
-    decorators_1.Transactional(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, typeof (_d = typeof E !== "undefined" && E) === "function" && _d || Object]),
-    __metadata("design:returntype", Promise)
+    decorators_1.Transactional()
 ], EntityManager.prototype, "update", null);
 __decorate([
-    decorators_1.Transactional(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
+    decorators_1.Transactional()
 ], EntityManager.prototype, "updateWhere", null);
 EntityManager = __decorate([
     typedi_1.Service(InjectionTokens_1.EntityManagerToken),
     __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
     __param(2, typedi_1.Inject(air_control_1.UtilsToken)),
     __param(3, typedi_1.Inject(ground_control_1.TransactionalConnectorToken)),
-    __param(4, typedi_1.Inject(InjectionTokens_1.UpdateCacheToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
+    __param(4, typedi_1.Inject(InjectionTokens_1.UpdateCacheToken))
 ], EntityManager);
 exports.EntityManager = EntityManager;
 class FunctionWrapper {

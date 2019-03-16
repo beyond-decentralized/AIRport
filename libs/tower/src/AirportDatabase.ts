@@ -1,4 +1,5 @@
 import {
+	AIRPORT_DATABASE,
 	AirportDatabaseToken,
 	dbConst,
 	FunctionsAndOperators,
@@ -9,90 +10,91 @@ import {
 	INonEntitySearch,
 	INonEntitySearchOne,
 	QSchema
-}                from "@airport/air-control";
+}           from '@airport/air-control'
+import {DI} from '@airport/di'
 import {
 	DbSchema,
 	JsonSchema
-}                from "@airport/ground-control";
-import {Service} from 'typedi';
+}           from '@airport/ground-control'
 
-@Service(AirportDatabaseToken)
 export class AirportDatabase
 	implements IAirportDatabase {
 
-	functions: FunctionsAndOperators;
-	F: FunctionsAndOperators;
+	functions: FunctionsAndOperators
+	F: FunctionsAndOperators
 
-	schemas: DbSchema[];
-	S: DbSchema[];
-	schemaMapByName: { [name: string]: DbSchema };
-	SM: { [name: string]: DbSchema };
+	schemas: DbSchema[]
+	S: DbSchema[]
+	schemaMapByName: { [name: string]: DbSchema }
+	SM: { [name: string]: DbSchema }
 
-	qSchemas: QSchema[];
-	Q: QSchema[];
-	qSchemaMapByName: { [name: string]: QSchema };
-	QM: { [name: string]: QSchema };
+	qSchemas: QSchema[]
+	Q: QSchema[]
+	qSchemaMapByName: { [name: string]: QSchema }
+	QM: { [name: string]: QSchema }
 
-	private databaseMap: { [databaseName: string]: IDatabaseFacade } = {};
-	private dbNames: string[] = [];
-	private dbNameSet: { [databaseName: string]: boolean } = {};
-	private schemaTuples: [JsonSchema, QSchema][] = [];
+	private databaseMap: { [databaseName: string]: IDatabaseFacade } = {}
+	private dbNames: string[]                                        = []
+	private dbNameSet: { [databaseName: string]: boolean }           = {}
+	private schemaTuples: [JsonSchema, QSchema][]                    = []
 
-	private currentDbName = dbConst.DEFAULT_DB;
+	private currentDbName = dbConst.DEFAULT_DB
 
 	registerDatabase(
 		facade: IDatabaseFacade
 	) {
 		if (!this.dbNameSet[facade.name]) {
-			this.dbNames.push(facade.name);
+			this.dbNames.push(facade.name)
 		}
-		this.databaseMap[facade.name] = facade;
-		this.dbNameSet[facade.name] = true;
+		this.databaseMap[facade.name] = facade
+		this.dbNameSet[facade.name]   = true
 	}
 
 	registerSchema(
 		schema: JsonSchema,
 		qSchema: QSchema
 	): void {
-		this.schemaTuples.push([schema, qSchema]);
+		this.schemaTuples.push([schema, qSchema])
 	}
 
 	setCurrentDb(
 		dbName: string = dbConst.DEFAULT_DB
 	): void {
-		this.currentDbName = dbName;
+		this.currentDbName = dbName
 	}
 
 	getDbNames(): string[] {
-		return this.dbNames;
+		return this.dbNames
 	}
 
 	getDbNameSet(): { [databaseName: string]: boolean } {
-		return this.dbNameSet;
+		return this.dbNameSet
 	}
 
 	get db(): IDatabaseFacade {
-		let database = this.databaseMap[this.currentDbName];
+		let database = this.databaseMap[this.currentDbName]
 		if (!database) {
-			throw `Did not find database '${this.currentDbName}'`;
+			throw `Did not find database '${this.currentDbName}'`
 		}
-		return database;
+		return database
 	}
 
 	get find(): INonEntityFind {
-		return this.db.find;
+		return this.db.find
 	}
 
 	get findOne(): INonEntityFindOne {
-		return this.db.findOne;
+		return this.db.findOne
 	}
 
 	get search(): INonEntitySearch {
-		return this.db.search;
+		return this.db.search
 	}
 
 	get searchOne(): INonEntitySearchOne {
-		return this.db.searchOne;
+		return this.db.searchOne
 	}
 
 }
+
+DI.set(AIRPORT_DATABASE, AirportDatabase)

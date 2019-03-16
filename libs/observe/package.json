@@ -1,0 +1,6 @@
+{
+  "main": "lib/index.js",
+  "name": "@airport/observe",
+  "typings": "lib/index",
+  "version": "0.0.1"
+}

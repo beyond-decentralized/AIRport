@@ -1,8 +1,8 @@
 {
   "dependencies": {
+    "@airport/di": "0.0.1",
     "@airport/ground-control": "0.0.1",
-    "rxjs": "^6.2.2",
-    "typedi": "^0.8.0"
+    "@airport/observe": "0.0.1"
   },
   "main": "lib/index.js",
   "name": "@airport/air-control",

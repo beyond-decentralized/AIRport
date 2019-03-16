@@ -1,4 +1,4 @@
-import { Observable } from "rxjs";
+import { IObservable } from "@airport/observe";
 import { IQOrderableField } from "../../../lingo/core/field/Field";
 import { IDatabaseFacade } from "../../../lingo/core/repository/DatabaseFacade";
 import { INonEntitySearch } from "../../../lingo/query/api/NonEntitySearch";
@@ -15,11 +15,11 @@ export declare class NonEntitySearch implements INonEntitySearch {
     constructor(dbFacade: IDatabaseFacade, utils: IUtils);
     tree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
         (...args: any[]): RawTreeQuery<any>;
-    }): Observable<ITE[]>;
+    }): IObservable<ITE[]>;
     sheet(rawSheetQuery: RawSheetQuery | {
         (...args: any[]): RawSheetQuery;
-    }): Observable<any[][]>;
+    }): IObservable<any[][]>;
     field<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<any>;
-    }): Observable<any[]>;
+    }): IObservable<any[]>;
 }

@@ -1,9 +1,9 @@
 /*,
 import {
     IUtils,
-    UtilsToken
+    UTILS
 }                                            from "@airport/air-control";
-import {AirportDatabaseToken}                from "@airport/air-control/lib/InjectionTokens";
+import {AIRPORT_DATABASE}                from "@airport/air-control/lib/InjectionTokens";
 import {IAirportDatabase}                    from "@airport/air-control/lib/lingo/AirportDatabase";
 import {
     AgtTerminalSyncLogId,
@@ -43,9 +43,9 @@ export class SharingMessageResponseStageDao
     implements ISharingMessageResponseStageDao {
 
     constructor(
-        @Inject(AirportDatabaseToken)
+        @Inject(AIRPORT_DATABASE)
         private airportDb: IAirportDatabase,
-        @Inject(UtilsToken)
+        @Inject(UTILS)
             utils: IUtils
     ) {
         super(utils);

@@ -1,10 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../../apis/air-control">
+      <excludeFolder url="file://$MODULE_DIR$/../../apis/air-control/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../apis/arrivals-n-departures">
+      <excludeFolder url="file://$MODULE_DIR$/../../apis/arrivals-n-departures/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../apis/check-in">
+      <excludeFolder url="file://$MODULE_DIR$/../../apis/check-in/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../apis/ground-control">
+      <excludeFolder url="file://$MODULE_DIR$/../../apis/ground-control/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../apis/terminal-map">
+      <excludeFolder url="file://$MODULE_DIR$/../../apis/terminal-map/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../apps/automated-guideway-transit" />
+    <content url="file://$MODULE_DIR$/../../apps/tarmaq" />
+    <content url="file://$MODULE_DIR$/../../apps/terminal" />
+    <content url="file://$MODULE_DIR$/../../generators/landing" />
+    <content url="file://$MODULE_DIR$/../../generators/runway" />
+    <content url="file://$MODULE_DIR$/../../generators/takeoff" />
+    <content url="file://$MODULE_DIR$/../../libs/approach-lighting-system" />
+    <content url="file://$MODULE_DIR$/../../libs/di" />
+    <content url="file://$MODULE_DIR$/../../libs/fuel-hydrant-system" />
+    <content url="file://$MODULE_DIR$/../../libs/ground-transport" />
+    <content url="file://$MODULE_DIR$/../../libs/mono-rail" />
+    <content url="file://$MODULE_DIR$/../../libs/observe">
+      <excludeFolder url="file://$MODULE_DIR$/../../libs/observe/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../libs/tower" />
+    <content url="file://$MODULE_DIR$/../airport-code">
+      <excludeFolder url="file://$MODULE_DIR$/../airport-code/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../flight-log-archive">
+      <excludeFolder url="file://$MODULE_DIR$/../flight-log-archive/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../guideway">
+      <excludeFolder url="file://$MODULE_DIR$/../guideway/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../holding-pattern">
+      <excludeFolder url="file://$MODULE_DIR$/../holding-pattern/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../moving-walkway">
+      <excludeFolder url="file://$MODULE_DIR$/../moving-walkway/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../point-of-destination">
+      <excludeFolder url="file://$MODULE_DIR$/../point-of-destination/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../runway-edge-lighting">
+      <excludeFolder url="file://$MODULE_DIR$/../runway-edge-lighting/lib" />
+    </content>
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/lib" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
+    </content>
+    <content url="file://$MODULE_DIR$/../traffic-pattern">
+      <excludeFolder url="file://$MODULE_DIR$/../traffic-pattern/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../travel-document-checkpoint">
+      <excludeFolder url="file://$MODULE_DIR$/../travel-document-checkpoint/lib" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

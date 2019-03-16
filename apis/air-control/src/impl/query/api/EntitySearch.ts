@@ -2,7 +2,7 @@ import {
 	DbEntity,
 	QueryResultType
 }                                from "@airport/ground-control";
-import {Observable}              from "rxjs";
+import {IObservable}              from "@airport/observe";
 import {IEntitySelectProperties} from "../../../lingo/core/entity/Entity";
 import {IDatabaseFacade}         from "../../../lingo/core/repository/DatabaseFacade";
 import {IEntitySearch}           from "../../../lingo/query/api/EntitySearch";
@@ -30,7 +30,7 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 
 	graph(
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
-	): Observable<EntityArray> {
+	): IObservable<EntityArray> {
 		let entityQuery: EntityQuery<IESP> = this.utils.Entity.getEntityQuery(rawGraphQuery);
 		const cacheForUpdate               = this.cleanNextCallState();
 
@@ -40,7 +40,7 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
-	): Observable<EntityArray> {
+	): IObservable<EntityArray> {
 		let entityQuery: EntityQuery<IESP> = this.utils.Entity.getEntityQuery(rawTreeQuery);
 		const cacheForUpdate               = this.cleanNextCallState();
 

@@ -1,9 +1,9 @@
-import { CRUDOperation, DbColumn, DbEntity, DbRelation, SchemaIndex, TableIndex } from "@airport/ground-control";
-import { IAirportDatabase } from "../../lingo/AirportDatabase";
-import { IEntityIdProperties, IQEntity } from "../../lingo/core/entity/Entity";
-import { IdKeysByIdColumnIndex, ISchemaUtils } from "../../lingo/utils/SchemaUtils";
-import { IUtils } from "../../lingo/utils/Utils";
-import { QEntityConstructor } from "../core/entity/Entity";
+import { CRUDOperation, DbColumn, DbEntity, DbRelation, SchemaIndex, TableIndex } from '@airport/ground-control';
+import { IAirportDatabase } from '../../lingo/AirportDatabase';
+import { IEntityIdProperties, IQEntity } from '../../lingo/core/entity/Entity';
+import { IdKeysByIdColumnIndex, ISchemaUtils } from '../../lingo/utils/SchemaUtils';
+import { IUtils } from '../../lingo/utils/Utils';
+import { QEntityConstructor } from '../core/entity/Entity';
 export declare class SchemaUtils implements ISchemaUtils {
     private airportDb;
     private utils;

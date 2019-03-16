@@ -1,4 +1,4 @@
-import { Observable } from "rxjs";
+import { IObservable } from "@airport/observe";
 import { PortableQuery } from "../query/PortableQuery";
 import { StoreType } from "./storeInfo";
 
@@ -64,12 +64,12 @@ export interface IStoreDriver {
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): Observable<EntityArray>;
+	): IObservable<EntityArray>;
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): Observable<E>;
+	): IObservable<E>;
 
 	updateWhere(
 		portableQuery: PortableQuery,

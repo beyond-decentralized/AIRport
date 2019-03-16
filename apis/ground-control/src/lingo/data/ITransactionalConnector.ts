@@ -1,4 +1,4 @@
-import {Observable}    from "rxjs";
+import {IObservable}    from "@airport/observe";
 import {PortableQuery} from "../query/PortableQuery";
 
 export interface ITransactionalConnector {
@@ -26,12 +26,12 @@ export interface ITransactionalConnector {
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): Observable<EntityArray>;
+	): IObservable<EntityArray>;
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): Observable<E>;
+	): IObservable<E>;
 
 	insertValues(
 		portableQuery: PortableQuery,

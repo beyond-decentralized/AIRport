@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebResourcesPaths">
+    <contentEntries>
+      <entry url="file://$PROJECT_DIR$/../../apis/air-control">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../apis/air-control/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../apis/arrivals-n-departures">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../apis/arrivals-n-departures/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../apis/check-in">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../apis/check-in/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../apis/ground-control">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../apis/ground-control/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../apis/terminal-map">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../apis/terminal-map/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../libs/observe">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../libs/observe/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../airport-code">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../airport-code/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../flight-log-archive">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../flight-log-archive/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../guideway">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../guideway/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../holding-pattern">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../holding-pattern/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../moving-walkway">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../moving-walkway/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../point-of-destination">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../point-of-destination/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../runway-edge-lighting">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../runway-edge-lighting/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../traffic-pattern">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../traffic-pattern/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../travel-document-checkpoint">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../travel-document-checkpoint/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+    </contentEntries>
+  </component>
+</project>

@@ -1,5 +1,5 @@
 import { DbEntity } from "@airport/ground-control";
-import { Observable } from "rxjs";
+import { IObservable } from "@airport/observe";
 import { IEntitySelectProperties } from "../../../lingo/core/entity/Entity";
 import { IDatabaseFacade } from "../../../lingo/core/repository/DatabaseFacade";
 import { IEntitySearchOne } from "../../../lingo/query/api/EntitySearchOne";
@@ -16,8 +16,8 @@ export declare class EntitySearchOne<Entity, IESP extends IEntitySelectPropertie
     constructor(dbEntity: DbEntity, dbFacade: IDatabaseFacade, utils: IUtils);
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }): Observable<Entity>;
+    }): IObservable<Entity>;
     tree(rawTreeQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }): Observable<Entity>;
+    }): IObservable<Entity>;
 }

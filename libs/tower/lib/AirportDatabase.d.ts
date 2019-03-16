@@ -1,5 +1,5 @@
-import { FunctionsAndOperators, IAirportDatabase, IDatabaseFacade, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, QSchema } from "@airport/air-control";
-import { DbSchema, JsonSchema } from "@airport/ground-control";
+import { FunctionsAndOperators, IAirportDatabase, IDatabaseFacade, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, QSchema } from '@airport/air-control';
+import { DbSchema, JsonSchema } from '@airport/ground-control';
 export declare class AirportDatabase implements IAirportDatabase {
     functions: FunctionsAndOperators;
     F: FunctionsAndOperators;

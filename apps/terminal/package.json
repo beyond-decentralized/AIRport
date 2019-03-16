@@ -3,6 +3,7 @@
     "@airport/air-control": "0.0.1",
     "@airport/approach-lighting-system": "0.0.1",
     "@airport/arrivals-n-departures": "0.0.1",
+    "@airport/di": "0.0.1",
     "@airport/fuel-hydrant-system": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/ground-transport": "0.0.1",
@@ -12,8 +13,6 @@
     "@airport/terminal-map": "0.0.1",
     "@airport/tower": "0.0.1",
     "@airport/traffic-pattern": "0.0.1",
-    "rxjs": "^6.2.2",
-    "typedi": "^0.8.0",
     "zipson": "^0.2.7"
   },
   "main": "lib/index.js",

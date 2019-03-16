@@ -1,5 +1,5 @@
 import {QueryResultType}     from "@airport/ground-control";
-import {Observable}          from "rxjs";
+import {IObservable}          from "@airport/observe";
 import {IQOrderableField}    from "../../../lingo/core/field/Field";
 import {IDatabaseFacade}     from "../../../lingo/core/repository/DatabaseFacade";
 import {INonEntitySearchOne} from "../../../lingo/query/api/NonEntitySearchOne";
@@ -28,7 +28,7 @@ export class NonEntitySearchOne implements INonEntitySearchOne {
 
 	tree<ITE extends ITreeEntity>(
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
-	): Observable<ITE> {
+	): IObservable<ITE> {
 		const treeQuery: TreeQuery<ITE>
 			      = new TreeQuery(this.utils.Entity.getQuery(rawTreeQuery), this.utils);
 		return this.dbFacade.entity.searchOne<ITE>(null, treeQuery, QueryResultType.TREE);
@@ -36,7 +36,7 @@ export class NonEntitySearchOne implements INonEntitySearchOne {
 
 	sheet(
 		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery }
-	): Observable<any[]> {
+	): IObservable<any[]> {
 		const sheetQuery: SheetQuery
 			      = new SheetQuery(this.utils.Entity.getQuery(rawSheetQuery), this.utils);
 		return this.dbFacade.entity.searchOne<any>(null, sheetQuery, QueryResultType.SHEET);
@@ -44,7 +44,7 @@ export class NonEntitySearchOne implements INonEntitySearchOne {
 
 	field<IQF extends IQOrderableField<IQF>>(
 		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
-	): Observable<any> {
+	): IObservable<any> {
 		const fieldQuery: FieldQuery<IQF>
 			      = new FieldQuery(this.utils.Entity.getQuery(rawFieldQuery), this.utils);
 		return this.dbFacade.entity.searchOne<any>(null, fieldQuery, QueryResultType.FIELD);

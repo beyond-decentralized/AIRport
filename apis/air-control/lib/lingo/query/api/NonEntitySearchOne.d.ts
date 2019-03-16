@@ -1,4 +1,4 @@
-import { Observable } from "rxjs";
+import { IObservable } from '@airport/observe';
 import { IQOrderableField } from '../../core/field/Field';
 import { RawFieldQuery } from '../facade/FieldQuery';
 import { RawSheetQuery } from '../facade/SheetQuery';
@@ -12,17 +12,17 @@ export interface INonEntitySearchOne {
      */
     tree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
         (...args: any[]): RawTreeQuery<any>;
-    }): Observable<ITE>;
+    }): IObservable<ITE>;
     /**
      * Returns an Observable for a flat sheet/table of RawInsertValues.
      */
     sheet(rawSheetQuery: RawSheetQuery | {
         (...args: any[]): RawSheetQuery;
-    }): Observable<any[]>;
+    }): IObservable<any[]>;
     /**
      * Returns an Observable for a single value.
      */
     field<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<any>;
-    }): Observable<any>;
+    }): IObservable<any>;
 }

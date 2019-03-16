@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Token_1 = require("typedi/Token");
-exports.AirportDatabaseToken = new Token_1.Token();
-exports.QMetadataUtilsToken = new Token_1.Token();
-exports.UtilsToken = new Token_1.Token();
+const di_1 = require("@airport/di");
+exports.AIRPORT_DATABASE = di_1.TOKE.n;
+exports.Q_METADATA_UTILS = di_1.TOKE.n;
+exports.UTILS = di_1.TOKE.n;
 //# sourceMappingURL=InjectionTokens.js.map

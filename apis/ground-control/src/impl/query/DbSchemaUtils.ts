@@ -1,13 +1,12 @@
-import {Service}            from 'typedi'
-import {ColumnName}         from '../../lingo/schema/Property'
-import {DbSchemaUtilsToken} from '../../InjectionTokens'
+import {DI}              from '@airport/di'
+import {DB_SCHEMA_UTILS} from '../../InjectionTokens'
+import {ColumnName}      from '../../lingo/schema/Property'
 import {
-	DbSchema,
 	DomainName,
 	JsonSchema,
 	JsonSchemaName,
 	SchemaName
-} from '../../lingo/schema/Schema'
+}                        from '../../lingo/schema/Schema'
 
 export interface IDbSchemaUtils {
 
@@ -27,7 +26,6 @@ export interface IDbSchemaUtils {
 
 }
 
-@Service(DbSchemaUtilsToken)
 export class DbSchemaUtils
 	implements IDbSchemaUtils {
 
@@ -61,3 +59,5 @@ export class DbSchemaUtils
 	}
 
 }
+
+DI.set(DB_SCHEMA_UTILS, DbSchemaUtils)

@@ -1,5 +1,5 @@
 import { DbEntity, DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery, QueryResultType } from "@airport/ground-control";
-import { Observable } from "rxjs";
+import { IObservable } from "@airport/observe";
 import { AbstractQuery } from "../../../impl/query/facade/AbstractQuery";
 import { UpdateCacheType } from "../../query/api/EntityLookup";
 import { INonEntityFind } from '../../query/api/NonEntityFind';
@@ -153,7 +153,7 @@ export interface IDatabaseFacade {
 export interface IQueryFacade {
     find<E, EntityArray extends Array<E>>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType, cacheForUpdate?: UpdateCacheType): Promise<EntityArray>;
     findOne<E>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType, cacheForUpdate?: UpdateCacheType): Promise<E>;
-    search<E, EntityArray extends Array<E>>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType, cacheForUpdate?: UpdateCacheType): Observable<EntityArray>;
-    searchOne<E>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType, cacheForUpdate?: UpdateCacheType): Observable<E>;
+    search<E, EntityArray extends Array<E>>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType, cacheForUpdate?: UpdateCacheType): IObservable<EntityArray>;
+    searchOne<E>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType, cacheForUpdate?: UpdateCacheType): IObservable<E>;
     getPortableQuery<E>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType): PortableQuery;
 }

@@ -1,8 +1,5 @@
-import {Token}                   from "typedi";
-import {IDbSchemaUtils}          from './impl/query/DbSchemaUtils'
-import {ITransactionalConnector} from "./lingo/data/ITransactionalConnector";
-import {IStoreDriver}            from './lingo/data/StoreDriver'
+import {TOKE} from '@airport/di'
 
-export const DbSchemaUtilsToken = new Token<IDbSchemaUtils>();
-export const StoreDriverToken = new Token<IStoreDriver>();
-export const TransactionalConnectorToken = new Token<ITransactionalConnector>();
+export const DB_SCHEMA_UTILS       = TOKE.n
+export const STORE_DRIVER          = TOKE.n
+export const TRANSACTION_CONNECTOR = TOKE.n

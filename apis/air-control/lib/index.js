@@ -53,7 +53,6 @@ __export(require("./impl/query/facade/SheetQuery"));
 __export(require("./impl/query/facade/TreeQuery"));
 __export(require("./impl/query/facade/UpdateColumns"));
 __export(require("./impl/query/facade/UpdateProperties"));
-__export(require("./impl/query/QuerySubject"));
 __export(require("./impl/utils/EntityUtils"));
 __export(require("./impl/utils/FieldUtils"));
 __export(require("./impl/utils/QMetadataUtils"));

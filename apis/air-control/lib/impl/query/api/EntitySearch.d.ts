@@ -1,5 +1,5 @@
 import { DbEntity } from "@airport/ground-control";
-import { Observable } from "rxjs";
+import { IObservable } from "@airport/observe";
 import { IEntitySelectProperties } from "../../../lingo/core/entity/Entity";
 import { IDatabaseFacade } from "../../../lingo/core/repository/DatabaseFacade";
 import { IEntitySearch } from "../../../lingo/query/api/EntitySearch";
@@ -17,8 +17,8 @@ export declare class EntitySearch<Entity, EntityArray extends Array<Entity>, IES
     constructor(dbEntity: DbEntity, dbFacade: IDatabaseFacade, utils: IUtils);
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }): Observable<EntityArray>;
+    }): IObservable<EntityArray>;
     tree(rawTreeQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }): Observable<EntityArray>;
+    }): IObservable<EntityArray>;
 }

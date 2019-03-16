@@ -148,8 +148,8 @@ class SchemaUtils {
             propertyBreadCrumb.push(propertyName);
             const value = relationObject[propertyName];
             if (forIdKey && this.isIdEmpty(value)) {
-                // if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value, noValueCallback))
-                // { return null; }
+                // if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value,
+                // noValueCallback)) { return null; }
                 throw `Cannot retrieve composite Id value, value chain '${propertyBreadCrumb.join('.')}' is : ${value}.`;
             }
             return [{

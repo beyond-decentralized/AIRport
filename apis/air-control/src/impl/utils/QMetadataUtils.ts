@@ -1,50 +1,50 @@
+import {DI}                      from '@airport/di/lib'
 import {
 	DbEntity,
 	JSONBaseOperation
-}                                from "@airport/ground-control";
+}                                from '@airport/ground-control'
 import {
-	Inject,
-	Service
-}                                from "typedi";
-import {
-	AirportDatabaseToken,
-	QMetadataUtilsToken,
-	UtilsToken
-}                                from "../../InjectionTokens";
-import {IAirportDatabase}        from "../../lingo/AirportDatabase";
-import {IQEntityInternal}        from "../../lingo/core/entity/Entity";
-import {IQOperableFieldInternal} from "../../lingo/core/field/OperableField";
-import {IQMetadataUtils}         from "../../lingo/utils/QMetadataUtils";
-import {IUtils}                  from "../../lingo/utils/Utils";
+	AIRPORT_DATABASE,
+	Q_METADATA_UTILS,
+	UTILS
+}                                from '../../InjectionTokens'
+import {IAirportDatabase}        from '../../lingo/AirportDatabase'
+import {IQEntityInternal}        from '../../lingo/core/entity/Entity'
+import {IQOperableFieldInternal} from '../../lingo/core/field/OperableField'
+import {IQMetadataUtils}         from '../../lingo/utils/QMetadataUtils'
+import {IUtils}                  from '../../lingo/utils/Utils'
 
-@Service(QMetadataUtilsToken)
 export class QMetadataUtils
 	implements IQMetadataUtils {
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(UtilsToken)
-		private utils: IUtils,
-	) {
+	private airportDb: IAirportDatabase
+	private utils: IUtils
+
+	constructor() {
+		DI.get(
+			di => {
+				[this.airportDb, this.utils] = di
+			}, AIRPORT_DATABASE, UTILS)
 	}
 
 	getAllColumns(
 		qEntity: IQEntityInternal
 	): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[] {
-		return qEntity.__driver__.allColumns;
+		return qEntity.__driver__.allColumns
 	}
 
 	getDbEntity<IQE extends IQEntityInternal>(
 		qEntity: IQE
 	): DbEntity {
-		return qEntity.__driver__.dbEntity;
+		return qEntity.__driver__.dbEntity
 	}
 
 	getNewEntity(qEntity: IQEntityInternal): any {
-		const dbEntity          = qEntity.__driver__.dbEntity;
-		const entityConstructor = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index].__constructors__[dbEntity.name];
-		return new entityConstructor();
+		const dbEntity          = qEntity.__driver__.dbEntity
+		const entityConstructor = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index].__constructors__[dbEntity.name]
+		return new entityConstructor()
 	}
 
 }
+
+DI.set(Q_METADATA_UTILS, QMetadataUtils)

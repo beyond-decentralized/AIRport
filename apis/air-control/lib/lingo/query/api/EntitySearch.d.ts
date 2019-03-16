@@ -1,8 +1,8 @@
-import { Observable } from "rxjs";
-import { IEntitySelectProperties } from "../../core/entity/Entity";
+import { IObservable } from '@airport/observe';
+import { IEntitySelectProperties } from '../../core/entity/Entity';
 import { RawEntityQuery } from '../facade/EntityQuery';
-import { MappedEntityArray } from "../MappedEntityArray";
-import { IEntityLookup } from "./EntityLookup";
+import { MappedEntityArray } from '../MappedEntityArray';
+import { IEntityLookup } from './EntityLookup';
 /**
  * Entity 'search' (search many) API.
  */
@@ -12,11 +12,11 @@ export interface IEntitySearch<Entity, EntityArray extends Array<Entity>, IESP e
      */
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }): Observable<EntityArray>;
+    }): IObservable<EntityArray>;
     /**
      * Returns an Observable for a list of non-interlinked entity trees.
      */
     tree(rawTreeQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }): Observable<EntityArray>;
+    }): IObservable<EntityArray>;
 }

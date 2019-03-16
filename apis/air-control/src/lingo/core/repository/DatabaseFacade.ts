@@ -6,7 +6,7 @@ import {
 	PortableQuery,
 	QueryResultType
 }                            from "@airport/ground-control";
-import {Observable}          from "rxjs";
+import {IObservable}          from "@airport/observe";
 import {AbstractQuery}       from "../../../impl/query/facade/AbstractQuery";
 import {UpdateCacheType}     from "../../query/api/EntityLookup";
 import {INonEntityFind}      from '../../query/api/NonEntityFind';
@@ -272,14 +272,14 @@ export interface IQueryFacade {
 		query: AbstractQuery,
 		queryResultType: QueryResultType,
 		cacheForUpdate?: UpdateCacheType,
-	): Observable<EntityArray>;
+	): IObservable<EntityArray>;
 
 	searchOne<E>(
 		dbEntity: DbEntity,
 		query: AbstractQuery,
 		queryResultType: QueryResultType,
 		cacheForUpdate?: UpdateCacheType,
-	): Observable<E>;
+	): IObservable<E>;
 
 	getPortableQuery<E>(
 		dbEntity: DbEntity,

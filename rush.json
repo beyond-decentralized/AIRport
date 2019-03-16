@@ -1,7 +1,7 @@
 {
   // NOTE: Comments are allowed in all Rush config files :-)
-  "rushVersion": "4.2.5",
-  "npmVersion": "6.1.0",
+  "rushVersion": "5.5.4",
+  "npmVersion": "2.21.1",
   "nodeSupportedVersionRange": ">=10.0.0 <11.0.0",
   "projectFolderMinDepth": 1,
 
@@ -55,6 +55,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/di",
+      "projectFolder": "libs/di",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/fuel-hydrant-system",
       "projectFolder": "libs/fuel-hydrant-system",
       "shouldPublish": true
@@ -62,6 +67,11 @@
     {
       "packageName": "@airport/ground-transport",
       "projectFolder": "libs/ground-transport",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/observe",
+      "projectFolder": "libs/observe",
       "shouldPublish": true
     },
     {

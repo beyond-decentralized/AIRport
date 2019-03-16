@@ -1,60 +1,58 @@
-import {DatastructureUtils} from "@airport/ground-control";
+import {DI}                 from '@airport/di'
+import {DatastructureUtils} from '@airport/ground-control'
 import {
-	Inject,
-	Service
-}                           from "typedi";
-import {
-	AirportDatabaseToken,
-	UtilsToken
-}                           from "../InjectionTokens";
-import {IAirportDatabase}   from "../lingo/AirportDatabase";
-import {IEntityUtils}       from "../lingo/utils/EntityUtils";
-import {IFieldUtils}        from "../lingo/utils/FieldUtils";
-import {IQMetadataUtils}    from "../lingo/utils/QMetadataUtils";
-import {IQueryUtils}        from "../lingo/utils/QueryUtils";
-import {ISchemaUtils}       from "../lingo/utils/SchemaUtils";
-import {IUtils}             from "../lingo/utils/Utils";
-import {EntityUtils}        from "./utils/EntityUtils";
-import {FieldUtils}         from "./utils/FieldUtils";
-import {QMetadataUtils}     from "./utils/QMetadataUtils";
-import {QueryUtils}         from "./utils/QueryUtils";
-import {SchemaUtils}        from "./utils/SchemaUtils";
+	AIRPORT_DATABASE,
+	Q_METADATA_UTILS,
+	UTILS
+}                           from '../InjectionTokens'
+import {IAirportDatabase}   from '../lingo/AirportDatabase'
+import {IEntityUtils}       from '../lingo/utils/EntityUtils'
+import {IFieldUtils}        from '../lingo/utils/FieldUtils'
+import {IQMetadataUtils}    from '../lingo/utils/QMetadataUtils'
+import {IQueryUtils}        from '../lingo/utils/QueryUtils'
+import {ISchemaUtils}       from '../lingo/utils/SchemaUtils'
+import {IUtils}             from '../lingo/utils/Utils'
+import {EntityUtils}        from './utils/EntityUtils'
+import {FieldUtils}         from './utils/FieldUtils'
+import {QueryUtils}         from './utils/QueryUtils'
+import {SchemaUtils}        from './utils/SchemaUtils'
 
-
-@Service(UtilsToken)
 export class Utils
 	extends DatastructureUtils
 	implements IUtils {
 
-	Entity: IEntityUtils;
-	Field: IFieldUtils;
-	Medatada: IQMetadataUtils;
-	Query: IQueryUtils;
-	Schema: ISchemaUtils;
+	private airportDb: IAirportDatabase
+	Entity: IEntityUtils
+	Field: IFieldUtils
+	Metadata: IQMetadataUtils
+	Query: IQueryUtils
+	Schema: ISchemaUtils
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-	) {
-		super();
-		this.Entity   = new EntityUtils(this);
-		this.Field    = new FieldUtils(this);
-		this.Medatada = new QMetadataUtils(airportDb, this);
-		this.Query    = new QueryUtils(this);
-		this.Schema   = new SchemaUtils(airportDb, this);
+	constructor() {
+		super()
+
+		DI.get(
+			di => {
+				[this.airportDb, this.Metadata] = di
+				this.Entity                     = new EntityUtils(this)
+				this.Field                      = new FieldUtils(this)
+				this.Query                      = new QueryUtils(this)
+				this.Schema                     = new SchemaUtils(this.airportDb, this)
+			}, AIRPORT_DATABASE, Q_METADATA_UTILS)
+
 	}
 
 	strsToNums(
 		strings: string[]
 	): number[] {
 		return strings.map(
-			str => parseInt(str));
+			str => parseInt(str))
 	}
 
 	objectExists(
 		object: any
 	): boolean {
-		return object !== null && object !== undefined;
+		return object !== null && object !== undefined
 	}
 
 	valuesEqual(
@@ -65,52 +63,52 @@ export class Utils
 		if (typeof value1 === 'object') {
 			if (value1 instanceof Date) {
 				if (value2 instanceof Date) {
-					return value1.getTime() === value2.getTime();
+					return value1.getTime() === value2.getTime()
 				} else {
-					return false;
+					return false
 				}
 			} else {
 				if (typeof value2 !== 'object') {
-					return false;
+					return false
 				}
 				if (!checkChildObjects) {
 					// Skip child objects
-					return true;
+					return true
 				}
-				let checkedKeys = {};
+				let checkedKeys = {}
 				for (let key in value1) {
-					checkedKeys[key] = true;
+					checkedKeys[key] = true
 					if (!this.valuesEqual(value1[key], value2[key], checkChildObjects)) {
-						return false;
+						return false
 					}
 				}
 				for (let key in value2) {
 					if (!checkedKeys[key]) {
-						return false;
+						return false
 					}
 				}
-				return true;
+				return true
 			}
 		}
 		if (!value1) {
 			if (value1 === '') {
-				return value2 === '';
+				return value2 === ''
 			} else if (value1 === false) {
-				return value2 === false;
+				return value2 === false
 			} else if (value1 === 0) {
-				return value2 === 0;
+				return value2 === 0
 			}
 			if (value2 === '' || value2 === false || value2 === 0) {
-				return false;
+				return false
 			}
 			// treat undefined and null as same value
-			return (!value2);
+			return (!value2)
 		}
 		if (!value2) {
-			return false;
+			return false
 		}
 
-		return value1 === value2;
+		return value1 === value2
 	}
 
 	compareNumbers(
@@ -118,14 +116,15 @@ export class Utils
 		number2: number
 	): -1 | 0 | 1 {
 		if (number1 < number2) {
-			return -1;
+			return -1
 		}
 		if (number1 > number2) {
-			return 1;
+			return 1
 		}
 
-		return 0;
+		return 0
 	}
 
 }
 
+DI.set(UTILS, Utils)

@@ -9,26 +9,26 @@ import {
 	repositoryEntity,
 	SchemaIndex,
 	TableIndex
-}                           from "@airport/ground-control";
+}                           from '@airport/ground-control'
 import {
 	IAirportDatabase,
 	QSchemaInternal
-}                           from "../../lingo/AirportDatabase";
+}                           from '../../lingo/AirportDatabase'
 import {
 	IEntityIdProperties,
 	IQEntity
-}                           from "../../lingo/core/entity/Entity";
+}                           from '../../lingo/core/entity/Entity'
 import {
 	convertToY,
 	isY
-}                           from "../../lingo/query/facade/Query";
+}                           from '../../lingo/query/facade/Query'
 import {
 	IdKeysByIdColumnIndex,
 	ISchemaUtils
-}                           from "../../lingo/utils/SchemaUtils";
-import {IUtils}             from "../../lingo/utils/Utils";
-import {QEntityConstructor} from "../core/entity/Entity";
-import {markAsStub}         from "../core/entity/EntityState";
+}                           from '../../lingo/utils/SchemaUtils'
+import {IUtils}             from '../../lingo/utils/Utils'
+import {QEntityConstructor} from '../core/entity/Entity'
+import {markAsStub}         from '../core/entity/EntityState'
 
 
 interface ColumnValueForPath {
@@ -49,13 +49,13 @@ export class SchemaUtils
 		schemaIndex: SchemaIndex,
 		tableIndex: TableIndex,
 	): DbEntity {
-		return this.airportDb.schemas[schemaIndex][tableIndex];
+		return this.airportDb.schemas[schemaIndex][tableIndex]
 	}
 
 	isRepositoryId(
 		columnName: string
 	): boolean {
-		return columnName === repositoryEntity.REPOSITORY_ID;
+		return columnName === repositoryEntity.REPOSITORY_ID
 	}
 
 	doCascade(
@@ -63,21 +63,21 @@ export class SchemaUtils
 		crudOperation: CRUDOperation
 	): boolean {
 		if (dbRelation.relationType !== EntityRelationType.ONE_TO_MANY) {
-			return false;
+			return false
 		}
 
 		if (!dbRelation.oneToManyElems) {
-			return false;
+			return false
 		}
 
-		const cascade: any = dbRelation.oneToManyElems.cascade;
+		const cascade: any = dbRelation.oneToManyElems.cascade
 
 		switch (crudOperation) {
 			case CRUDOperation.CREATE:
 			case CRUDOperation.UPDATE:
-				return cascade === CascadeType.ALL || cascade === CascadeType.PERSIST;
+				return cascade === CascadeType.ALL || cascade === CascadeType.PERSIST
 			case CRUDOperation.DELETE:
-				return cascade === CascadeType.ALL || cascade === CascadeType.REMOVE;
+				return cascade === CascadeType.ALL || cascade === CascadeType.REMOVE
 			default:
 				throw `Unsupported CRUDOperation '${crudOperation}' for cascade check.`
 		}
@@ -87,49 +87,49 @@ export class SchemaUtils
 		dbEntity: DbEntity
 	): QEntityConstructor {
 		return (<QSchemaInternal>this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index])
-			.__qConstructors__[dbEntity.index];
+			.__qConstructors__[dbEntity.index]
 	}
 
 	getEntityConstructor(
 		dbEntity: DbEntity
 	): any {
 		const entityConstructor = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index]
-			.__constructors__[dbEntity.name];
-		return entityConstructor;
+			.__constructors__[dbEntity.name]
+		return entityConstructor
 	}
 
 	getNewEntity(
 		dbEntity: DbEntity
 	): any {
-		const entityConstructor = this.getEntityConstructor(dbEntity);
-		return entityConstructor;
+		const entityConstructor = this.getEntityConstructor(dbEntity)
+		return entityConstructor
 	}
 
 	isIdEmpty(idValue: any): boolean {
-		return !idValue && idValue !== 0;
+		return !idValue && idValue !== 0
 	}
 
 	isEmpty(value: any): boolean {
-		return this.isIdEmpty(value) && value !== false && value !== '';
+		return this.isIdEmpty(value) && value !== false && value !== ''
 	}
 
 	isRelationColumn(
 		dbColumn: DbColumn
 	): boolean {
 		return this.isManyRelationColumn(dbColumn)
-			|| this.isOneRelationColumn(dbColumn);
+			|| this.isOneRelationColumn(dbColumn)
 	}
 
 	isManyRelationColumn(
 		dbColumn: DbColumn
 	): boolean {
-		return !!(dbColumn.manyRelationColumns && dbColumn.manyRelationColumns.length);
+		return !!(dbColumn.manyRelationColumns && dbColumn.manyRelationColumns.length)
 	}
 
 	isOneRelationColumn(
 		dbColumn: DbColumn
 	): boolean {
-		return !!(dbColumn.oneRelationColumns && dbColumn.oneRelationColumns.length);
+		return !!(dbColumn.oneRelationColumns && dbColumn.oneRelationColumns.length)
 	}
 
 	getIdKey(
@@ -151,8 +151,8 @@ export class SchemaUtils
 			): void;
 		}
 	): string {
-		const keys = this.getIdKeyInfo(entityObject, dbEntity, failOnNoId, idValueCallback);
-		return keys.arrayByIdColumnIndex.join('|');
+		const keys = this.getIdKeyInfo(entityObject, dbEntity, failOnNoId, idValueCallback)
+		return keys.arrayByIdColumnIndex.join('|')
 	}
 
 	getIdKeyInfo(
@@ -169,27 +169,27 @@ export class SchemaUtils
 	): IdKeysByIdColumnIndex {
 		if (!dbEntity.idColumns.length) {
 			if (failOnNoId) {
-				throw `@Id is not defined on entity '${dbEntity.name}'.`;
+				throw `@Id is not defined on entity '${dbEntity.name}'.`
 			}
-			return null;
+			return null
 		}
 
 		const idKeys = {
 			arrayByIdColumnIndex: [],
 			mapByIdColumnName: {}
-		};
+		}
 		for (const dbColumn of dbEntity.idColumns) {
 
 			const [propertyNameChains, idValue] =
-				      this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, true);
+				      this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, true)
 
-			idValueCallback && idValueCallback(dbColumn, idValue, propertyNameChains);
+			idValueCallback && idValueCallback(dbColumn, idValue, propertyNameChains)
 
-			idKeys.arrayByIdColumnIndex.push(idValue);
-			idKeys.mapByIdColumnName[dbColumn.name] = idValue;
+			idKeys.arrayByIdColumnIndex.push(idValue)
+			idKeys.mapByIdColumnName[dbColumn.name] = idValue
 		}
 
-		return idKeys;
+		return idKeys
 	}
 
 	getColumnPropertyNameChainsAndValue(
@@ -199,10 +199,10 @@ export class SchemaUtils
 		forIdKey = false
 	): [string[][], any] {
 		const columnValuesAndPaths           = this.getColumnValuesAndPaths(
-			dbColumn, entityObject, [], forIdKey);
-		const firstColumnValueAndPath        = columnValuesAndPaths[0];
-		const propertyNameChains: string[][] = [firstColumnValueAndPath.path];
-		const value                          = firstColumnValueAndPath.value;
+			dbColumn, entityObject, [], forIdKey)
+		const firstColumnValueAndPath        = columnValuesAndPaths[0]
+		const propertyNameChains: string[][] = [firstColumnValueAndPath.path]
+		const value                          = firstColumnValueAndPath.value
 		columnValuesAndPaths.reduce((
 			last,
 			current
@@ -210,14 +210,14 @@ export class SchemaUtils
 			if (!this.utils.valuesEqual(last.value, current.value, true)) {
 				throw `Values differ for ${dbEntity.name}.${dbColumn.name}:
 						'${last.path.join('.')}' = ${last.value}
-						'${current.path.join('.')}' = ${current.value}`;
+						'${current.path.join('.')}' = ${current.value}`
 			}
-			propertyNameChains.push(current.path);
+			propertyNameChains.push(current.path)
 
-			return current;
-		});
+			return current
+		})
 
-		return [propertyNameChains, value];
+		return [propertyNameChains, value]
 	}
 
 	private getColumnValuesAndPaths(
@@ -234,50 +234,50 @@ export class SchemaUtils
 		// }
 	): ColumnValueForPath[] {
 		if (this.isManyRelationColumn(dbColumn)) {
-			let columnValuesAndPaths = [];
+			let columnValuesAndPaths = []
 			// If a column is part of a relation, it would be on the Many Side
 			for (const dbRelationColumn of dbColumn.manyRelationColumns) {
-				const dbProperty         = dbRelationColumn.manyRelation.property;
-				const relationBreadCrumb = [...breadCrumb];
-				const propertyName       = dbProperty.name;
-				relationBreadCrumb.push(propertyName);
-				const value = relationObject[propertyName];
+				const dbProperty         = dbRelationColumn.manyRelation.property
+				const relationBreadCrumb = [...breadCrumb]
+				const propertyName       = dbProperty.name
+				relationBreadCrumb.push(propertyName)
+				const value = relationObject[propertyName]
 				if (!value) {
 					if (forIdKey
 					// && this.handleNoId(dbColumn, dbProperty, relationBreadCrumb, value,
 					// noIdValueCallback)
 					) {
-						throw `Cannot retrieve composite Id value, value chain '${relationBreadCrumb.join('.')}' is : ${value}.`;
+						throw `Cannot retrieve composite Id value, value chain '${relationBreadCrumb.join('.')}' is : ${value}.`
 						// return null;
 					}
 					columnValuesAndPaths.push({
 						path: relationBreadCrumb,
 						value
-					});
+					})
 				} else {
-					const otherEntityColumn      = dbRelationColumn.oneColumn;
-					const relationValuesAndPaths = this.getColumnValuesAndPaths(otherEntityColumn, value, relationBreadCrumb, forIdKey);
-					columnValuesAndPaths         = columnValuesAndPaths.concat(relationValuesAndPaths);
+					const otherEntityColumn      = dbRelationColumn.oneColumn
+					const relationValuesAndPaths = this.getColumnValuesAndPaths(otherEntityColumn, value, relationBreadCrumb, forIdKey)
+					columnValuesAndPaths         = columnValuesAndPaths.concat(relationValuesAndPaths)
 				}
 			}
-			return columnValuesAndPaths;
+			return columnValuesAndPaths
 		} else {
 			// If a column is not a part of (a) relation(s) then it is associated
 			// to only one property
-			const dbProperty         = dbColumn.propertyColumns[0].property;
-			const propertyBreadCrumb = [...breadCrumb];
-			const propertyName       = dbProperty.name;
-			propertyBreadCrumb.push(propertyName);
-			const value = relationObject[propertyName];
+			const dbProperty         = dbColumn.propertyColumns[0].property
+			const propertyBreadCrumb = [...breadCrumb]
+			const propertyName       = dbProperty.name
+			propertyBreadCrumb.push(propertyName)
+			const value = relationObject[propertyName]
 			if (forIdKey && this.isIdEmpty(value)) {
-				// if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value, noValueCallback))
-				// { return null; }
-				throw `Cannot retrieve composite Id value, value chain '${propertyBreadCrumb.join('.')}' is : ${value}.`;
+				// if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value,
+				// noValueCallback)) { return null; }
+				throw `Cannot retrieve composite Id value, value chain '${propertyBreadCrumb.join('.')}' is : ${value}.`
 			}
 			return [{
 				path: propertyBreadCrumb,
 				value
-			}];
+			}]
 		}
 	}
 
@@ -285,28 +285,28 @@ export class SchemaUtils
 		dbColumn: DbColumn,
 		breadCrumb: string[],
 	): string[][] {
-		let columnValuesAndPaths = [];
+		let columnValuesAndPaths = []
 
 		if (this.isManyRelationColumn(dbColumn)) {
 			// If a column is part of a relation, it would be on the Many Side
 			for (const dbRelationColumn of dbColumn.manyRelationColumns) {
-				const dbProperty         = dbRelationColumn.manyRelation.property;
-				const relationBreadCrumb = [...breadCrumb];
-				relationBreadCrumb.push(dbProperty.name);
-				const otherEntityColumn      = dbRelationColumn.oneColumn;
-				const relationValuesAndPaths = this.getColumnPaths(otherEntityColumn, relationBreadCrumb);
-				columnValuesAndPaths         = columnValuesAndPaths.concat(relationValuesAndPaths);
+				const dbProperty         = dbRelationColumn.manyRelation.property
+				const relationBreadCrumb = [...breadCrumb]
+				relationBreadCrumb.push(dbProperty.name)
+				const otherEntityColumn      = dbRelationColumn.oneColumn
+				const relationValuesAndPaths = this.getColumnPaths(otherEntityColumn, relationBreadCrumb)
+				columnValuesAndPaths         = columnValuesAndPaths.concat(relationValuesAndPaths)
 			}
 		} else {
 			// If a column is not a part of (a) relation(s) then it is associated
 			// to only one property
-			const dbProperty         = dbColumn.propertyColumns[0].property;
-			const propertyBreadCrumb = [...breadCrumb];
-			propertyBreadCrumb.push(dbProperty.name);
-			columnValuesAndPaths.push(propertyBreadCrumb);
+			const dbProperty         = dbColumn.propertyColumns[0].property
+			const propertyBreadCrumb = [...breadCrumb]
+			propertyBreadCrumb.push(dbProperty.name)
+			columnValuesAndPaths.push(propertyBreadCrumb)
 		}
 
-		return columnValuesAndPaths;
+		return columnValuesAndPaths
 	}
 
 	addRelationToEntitySelectClause(
@@ -320,18 +320,18 @@ export class SchemaUtils
 				dbColumn: DbColumn,
 				propertyNameChains: string[][]
 			) => {
-				let convertTo                = true;
-				let propertySelectClause     = selectClause;
-				const firstPropertyNameChain = propertyNameChains[0];
+				let convertTo                = true
+				let propertySelectClause     = selectClause
+				const firstPropertyNameChain = propertyNameChains[0]
 				firstPropertyNameChain.forEach((
 					propertyNameLink,
 					index
 				) => {
-					let propertyObject = propertySelectClause[propertyNameLink];
+					let propertyObject = propertySelectClause[propertyNameLink]
 					if (!propertyObject) {
-						propertyObject = {};
-						markAsStub(propertyObject);
-						propertySelectClause[propertyNameLink] = propertyObject;
+						propertyObject = {}
+						markAsStub(propertyObject)
+						propertySelectClause[propertyNameLink] = propertyObject
 					} else {
 						if (index < firstPropertyNameChain.length - 1) {
 							if (!(propertyObject instanceof Object) || propertyObject instanceof Date) {
@@ -342,7 +342,7 @@ export class SchemaUtils
 									${propertyNameLink}: ${propertyObject}
 								}
 								in '${dbRelation.property.entity.name}.${dbRelation.property.name}',
-								Property must be an Object.`;
+								Property must be an Object.`
 							}
 						} else {
 							if (!allowDefaults && !isY(propertyObject)) {
@@ -355,17 +355,17 @@ export class SchemaUtils
 									...
 									${propertyNameLink}: ${propertyObject}
 								}
-								${reason}.`;
+								${reason}.`
 							}
-							convertTo = false;
+							convertTo = false
 						}
 					}
-					propertySelectClause = propertyObject;
-				});
+					propertySelectClause = propertyObject
+				})
 				if (convertTo) {
-					convertToY(propertySelectClause);
+					convertToY(propertySelectClause)
 				}
-			});
+			})
 	}
 
 	forEachColumnOfRelation(
@@ -380,12 +380,12 @@ export class SchemaUtils
 		},
 		failOnNoValue: boolean = true
 	): void {
-		const dbEntity = dbRelation.property.entity;
+		const dbEntity = dbRelation.property.entity
 		for (const dbRelationColumn of dbRelation.manyRelationColumns) {
-			const dbColumn                    = dbRelationColumn.manyColumn;
-			const [propertyNameChains, value] = this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entity);
+			const dbColumn                    = dbRelationColumn.manyColumn
+			const [propertyNameChains, value] = this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entity)
 			if (callback(dbColumn, value, propertyNameChains)) {
-				return;
+				return
 			}
 		}
 	}
@@ -400,10 +400,10 @@ export class SchemaUtils
 		}
 	): void {
 		for (const dbRelationColumn of dbRelation.manyRelationColumns) {
-			const dbColumn           = dbRelationColumn.manyColumn;
-			const propertyNameChains = this.getColumnPaths(dbColumn, []);
+			const dbColumn           = dbRelationColumn.manyColumn
+			const propertyNameChains = this.getColumnPaths(dbColumn, [])
 			if (callback(dbColumn, propertyNameChains)) {
-				return;
+				return
 			}
 		}
 	}
@@ -413,38 +413,38 @@ export class SchemaUtils
 		qEntity: IQEntity,
 		setClause: any
 	): any[] {
-		const entitySelectClause = [];
+		const entitySelectClause = []
 
 		for (const columnIndex in dbEntity.columns) {
-			const dbColumn   = dbEntity.columns[columnIndex];
-			let dbProperty;
+			const dbColumn   = dbEntity.columns[columnIndex]
+			let dbProperty
 			const isIdColumn = dbColumn.propertyColumns.some(
 				propertyColumn => {
-					dbProperty = propertyColumn.property;
-					return dbProperty.isId;
-				});
+					dbProperty = propertyColumn.property
+					return dbProperty.isId
+				})
 			if (isIdColumn) {
 				if (setClause[dbColumn.name]) {
-					throw `Cannot update @Id column '${dbColumn.name}' of property '${dbEntity.name}.${dbProperty.name}'.`;
+					throw `Cannot update @Id column '${dbColumn.name}' of property '${dbEntity.name}.${dbProperty.name}'.`
 				}
-				this.addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause);
+				this.addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause)
 			} else if (setClause[dbColumn.name]) {
-				this.addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause);
+				this.addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause)
 				// } else {
 				// entitySelectClause[dbColumn.index] = null;
 			}
 		}
 
-		return entitySelectClause;
+		return entitySelectClause
 	}
 
 	getTableName(
 		dbEntity: DbEntity
 	): string {
 		if (dbEntity.tableConfig && dbEntity.tableConfig.name) {
-			return dbEntity.tableConfig.name;
+			return dbEntity.tableConfig.name
 		}
-		return dbEntity.name;
+		return dbEntity.name
 	}
 
 	private addColumnToSheetSelect(
@@ -453,19 +453,19 @@ export class SchemaUtils
 		entitySelectClause: any,
 	) {
 		if (this.isManyRelationColumn(dbColumn)) {
-			const columnPaths     = this.getColumnPaths(dbColumn, []);
-			const firstColumnPath = columnPaths[0];
-			let relationColumn    = qEntity[firstColumnPath[0]];
+			const columnPaths     = this.getColumnPaths(dbColumn, [])
+			const firstColumnPath = columnPaths[0]
+			let relationColumn    = qEntity[firstColumnPath[0]]
 			firstColumnPath.reduce((
 				last,
 				current
 			) => {
-				relationColumn = relationColumn[current];
-				return current;
-			});
-			entitySelectClause[dbColumn.index] = relationColumn;
+				relationColumn = relationColumn[current]
+				return current
+			})
+			entitySelectClause[dbColumn.index] = relationColumn
 		} else {
-			entitySelectClause[dbColumn.index] = qEntity[dbColumn.propertyColumns[0].property.name];
+			entitySelectClause[dbColumn.index] = qEntity[dbColumn.propertyColumns[0].property.name]
 		}
 	}
 
@@ -509,17 +509,17 @@ export class SchemaUtils
 				relationColumn: DbColumn,
 				value: any,
 				propertyNameChains: string[][],
-			): void;
+			): boolean;
 		},
 	): boolean {
 		if (noIdValueCallback) {
 			if (!noIdValueCallback(dbColumn, value, propertyNameChains)) {
-				return true;
+				return true
 			}
 		} else {
-			throw `Cannot retrieve composite Id value, value chain '${propertyNameChains.join('.')}' is : ${value}.`;
+			throw `Cannot retrieve composite Id value, value chain '${propertyNameChains.join('.')}' is : ${value}.`
 		}
-		return false;
+		return false
 	}
 
 }

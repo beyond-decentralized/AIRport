@@ -4,6 +4,7 @@
     "@airport/airport-code": "0.0.1",
     "@airport/approach-lighting-system": "0.0.1",
     "@airport/arrivals-n-departures": "0.0.1",
+    "@airport/di": "0.0.1",
     "@airport/flight-log-archive": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/guideway": "0.0.1",
@@ -11,9 +12,7 @@
     "@airport/runway-edge-lighting": "0.0.1",
     "@airport/tarmaq": "0.0.1",
     "@airport/tower": "0.0.1",
-    "@types/node": "^8.0.53",
-    "rxjs": "^6.2.2",
-    "typedi": "^0.8.0"
+    "@types/node": "^8.0.53"
   },
   "main": "lib/index.js",
   "name": "@airport/automated-guideway-transit",

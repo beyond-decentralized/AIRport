@@ -1,4 +1,4 @@
-import { Observable } from "rxjs";
+import { IObservable } from "@airport/observe";
 import { PortableQuery } from "../query/PortableQuery";
 import { StoreType } from "./storeInfo";
 /**
@@ -22,8 +22,8 @@ export interface IStoreDriver {
     insertValues(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<number>;
     query(queryType: QueryType, query: string, params: any, saveTransaction?: boolean): Promise<any>;
     saveTransaction(transaction: ATransactionHistory): Promise<any>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Observable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Observable<E>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<EntityArray>;
+    searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<E>;
     updateWhere(portableQuery: PortableQuery): Promise<number>;
     startTransaction(): Promise<void>;
     commitTransaction(): Promise<void>;

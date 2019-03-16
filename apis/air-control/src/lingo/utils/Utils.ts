@@ -10,7 +10,7 @@ export interface IUtils
 
 	Entity: IEntityUtils;
 	Field: IFieldUtils;
-	Medatada: IQMetadataUtils;
+	Metadata: IQMetadataUtils;
 	Query: IQueryUtils;
 	Schema: ISchemaUtils;
 
