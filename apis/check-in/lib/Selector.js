@@ -32,7 +32,7 @@ function createSelector(...args) {
         observable = observe_1.pipe(observable, (v, ctx) => observe_1.share(observe_1.distinctUntilChanged(combine(v), ctx), ctx));
     }
     else {
-        observable = observe_1.pipe(observable, (v, ctx) => observe_1.share(observe_1.distinctUntilChanged(observe_1.map(callback), ctx), ctx));
+        observable = observe_1.pipe(observable, (v, ctx) => observe_1.share(observe_1.distinctUntilChanged(callback(v), ctx), ctx));
     }
     const selector = function (
     // otherStateObservable?: Observable<SV>

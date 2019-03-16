@@ -2,7 +2,6 @@ import {
 	combineLatest,
 	distinctUntilChanged,
 	IObservable,
-	map,
 	pipe,
 	share
 } from '@airport/observe'
@@ -108,7 +107,7 @@ export function createSelector<V, SV>(
 		) =>
 			share(
 				distinctUntilChanged(
-					map(callback), ctx), ctx))
+					callback(v), ctx), ctx))
 	}
 
 	const selector      = <IMemoizedSelector<V, SV>>function (

@@ -5,7 +5,6 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./operators/combineLatest"));
 __export(require("./operators/distinctUntilChanged"));
-__export(require("./operators/map"));
 __export(require("./operators/pipe"));
 __export(require("./operators/share"));
 __export(require("./Subject"));
