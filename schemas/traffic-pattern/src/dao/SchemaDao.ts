@@ -7,17 +7,17 @@ import {
 	UtilsToken
 }                         from '@airport/air-control/lib/InjectionTokens'
 import {IAirportDatabase} from '@airport/air-control/lib/lingo/AirportDatabase'
-import {IUtils}           from '@airport/air-control/lib/lingo/utils/Utils'
+import {IUtils}     from '@airport/air-control/lib/lingo/utils/Utils'
 import {
 	DomainName,
 	SchemaIndex,
 	SchemaName,
 	SchemaStatus,
 	SchemaVersionId
-} from '@airport/ground-control'
-import {QDomain}          from '@airport/territory'
-import {Inject}           from 'typedi/decorators/Inject'
-import {Service}          from 'typedi/decorators/Service'
+}                   from '@airport/ground-control'
+import {QDomain}    from '@airport/territory'
+import {Inject}     from 'typedi/decorators/Inject'
+import {Service}    from 'typedi/decorators/Service'
 import {
 	BaseSchemaDao,
 	IBaseSchemaDao,
@@ -25,8 +25,8 @@ import {
 	Q,
 	QSchema,
 	QSchemaVersion
-}                         from '../generated/generated'
-import {SchemaDaoToken}   from '../InjectionTokens'
+}                   from '../generated/generated'
+import {SCHEMA_DAO} from '../InjectionTokens'
 
 
 export interface ISchemaDao
@@ -54,7 +54,7 @@ export interface ISchemaDao
 
 }
 
-@Service(SchemaDaoToken)
+@Service(SCHEMA_DAO)
 export class SchemaDao
 	extends BaseSchemaDao
 	implements ISchemaDao {

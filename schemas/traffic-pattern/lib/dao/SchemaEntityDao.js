@@ -32,7 +32,7 @@ let SchemaEntityDao = class SchemaEntityDao extends generated_1.BaseSchemaEntity
     }
 };
 SchemaEntityDao = __decorate([
-    typedi_1.Service(InjectionTokens_1.SchemaEntityDaoToken)
+    typedi_1.Service(InjectionTokens_1.SCHEMA_ENTITY_DAO)
 ], SchemaEntityDao);
 exports.SchemaEntityDao = SchemaEntityDao;
 //# sourceMappingURL=SchemaEntityDao.js.map

@@ -32,7 +32,7 @@ let SchemaPropertyDao = class SchemaPropertyDao extends generated_1.BaseSchemaPr
     }
 };
 SchemaPropertyDao = __decorate([
-    typedi_1.Service(InjectionTokens_1.SchemaPropertyDaoToken)
+    typedi_1.Service(InjectionTokens_1.SCHEMA_PROPERTY_DAO)
 ], SchemaPropertyDao);
 exports.SchemaPropertyDao = SchemaPropertyDao;
 //# sourceMappingURL=SchemaPropertyDao.js.map

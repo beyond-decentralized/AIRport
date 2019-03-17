@@ -33,7 +33,7 @@ let SchemaRelationColumnDao = class SchemaRelationColumnDao extends generated_1.
     }
 };
 SchemaRelationColumnDao = __decorate([
-    typedi_1.Service(InjectionTokens_1.SchemaRelationColumnDaoToken)
+    typedi_1.Service(InjectionTokens_1.SCHEMA_RELATION_COLUMN_DAO)
 ], SchemaRelationColumnDao);
 exports.SchemaRelationColumnDao = SchemaRelationColumnDao;
 //# sourceMappingURL=SchemaRelationColumnDao.js.map

@@ -1,13 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
 const EntityDatabaseFacade_1 = require("./EntityDatabaseFacade");
 /**
  * Created by Papa on 8/26/2017.
  */
 class Dao {
-    constructor(dbEntity, Q, utils) {
-        this.utils = utils;
-        this.db = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q, utils);
+    constructor(dbEntity, Q) {
+        di_1.DI.get(di => {
+            [this.utils] = di;
+            this.db = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q, this.utils);
+        }, air_control_1.UTILS);
     }
     get find() {
         return this.db.find;

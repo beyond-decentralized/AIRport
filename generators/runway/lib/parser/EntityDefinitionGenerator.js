@@ -85,7 +85,7 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
             currentFileImports = fileImports;
             // This is a top level class, get its symbol
             let symbol = checker.getSymbolAtLocation(node.name);
-            let serializedClass = serializeClass(symbol, node.decorators, path, fileImports);
+            let serializedClass = serializeClass(symbol, node.decorators, path, fileImports, node.parent);
             if (serializedClass) {
                 output.push(serializedClass);
             }
@@ -116,7 +116,7 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
         }
     }
     /** Serialize a symbol into a json object */
-    function serializeSymbol(symbol) {
+    function serializeSymbol(symbol, parent = symbol.parent) {
         const declarations = symbol.declarations;
         let isGenerated = false;
         let allocationSize = undefined;
@@ -158,7 +158,7 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
         // if (flags & 4096 /* SuppressAnyReturnType */) {
         // if (flags & 1 /* WriteArrayAsGenericType */) {
         // if (flags & 64 /* WriteTypeArgumentsOfSignature */) {
-        let type = checker.typeToString(checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration), symbol.parent);
+        let type = checker.typeToString(checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration), parent);
         if (declaration) {
             if (type === 'any' && declaration) {
                 if (declaration.type
@@ -490,8 +490,8 @@ export default WhereJoinTableFunction`;
         }
     }
     /** Serialize a class symbol information */
-    function serializeClass(symbol, decorators, classPath, fileImports) {
-        const details = serializeSymbol(symbol);
+    function serializeClass(symbol, decorators, classPath, fileImports, file) {
+        const details = serializeSymbol(symbol, file);
         details.fileImports = fileImports;
         let properties = [];
         let methodSignatures = [];
@@ -501,7 +501,7 @@ export default WhereJoinTableFunction`;
                 switch (member.valueDeclaration.kind) {
                     case ts.SyntaxKind.PropertyDeclaration:
                         console.log(`Property: ${memberName}`);
-                        let propertySymbolDescriptor = serializeSymbol(member);
+                        let propertySymbolDescriptor = serializeSymbol(member, file);
                         if (propertySymbolDescriptor) {
                             if (propertySymbolDescriptor.isId) {
                                 ids.push(propertySymbolDescriptor);

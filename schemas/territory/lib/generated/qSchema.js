@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Application_1 = require("../ddl/Application");
-const ApplicationPackage_1 = require("../ddl/ApplicationPackage");
-const Domain_1 = require("../ddl/Domain");
-const Package_1 = require("../ddl/Package");
-const PackagedUnit_1 = require("../ddl/PackagedUnit");
+const application_1 = require("../ddl/application");
+const applicationpackage_1 = require("../ddl/applicationpackage");
+const domain_1 = require("../ddl/domain");
+const package_1 = require("../ddl/package");
+const packagedunit_1 = require("../ddl/packagedunit");
 const __constructors__ = {
-    Application: Application_1.Application,
-    ApplicationPackage: ApplicationPackage_1.ApplicationPackage,
-    Domain: Domain_1.Domain,
-    Package: Package_1.Package,
-    PackagedUnit: PackagedUnit_1.PackagedUnit
+    Application: application_1.Application,
+    ApplicationPackage: applicationpackage_1.ApplicationPackage,
+    Domain: domain_1.Domain,
+    Package: package_1.Package,
+    PackagedUnit: packagedunit_1.PackagedUnit
 };
 exports.Q_SCHEMA = {
     __constructors__

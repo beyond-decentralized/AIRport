@@ -4,7 +4,6 @@
   "typings": "lib/index",
   "version": "0.0.1",
   "devDependencies": {
-    "tslint": "^5.14.0",
-    "typescript": "^3.2.2"
+    "tslint": "^5.14.0"
   }
 }

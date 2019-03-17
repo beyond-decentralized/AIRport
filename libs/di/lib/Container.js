@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class Container {
     constructor() {
+        this.objects = [];
+        this.classes = [];
         this.numPendingInits = 0;
     }
     get(callback, ...tokens) {

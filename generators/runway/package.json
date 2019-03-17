@@ -2,7 +2,7 @@
   "dependencies": {
     "@airport/ground-control": "0.0.1",
     "@types/node": "^6.0.85",
-    "typescript": "^3.0.1"
+    "typescript": "^3.3.3333"
   },
   "main": "lib/index.js",
   "name": "@airport/runway",

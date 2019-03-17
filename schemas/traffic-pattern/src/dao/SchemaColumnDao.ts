@@ -1,13 +1,13 @@
-import {EntityId}             from '@airport/ground-control'
-import {Service}              from 'typedi'
+import {EntityId}          from '@airport/ground-control'
+import {Service}           from 'typedi'
 import {
 	BaseSchemaColumnDao,
 	IBaseSchemaColumnDao,
 	ISchemaColumn,
 	Q,
 	QSchemaColumn
-}                             from '../generated/generated'
-import {SchemaColumnDaoToken} from '../InjectionTokens'
+}                          from '../generated/generated'
+import {SCHEMA_COLUMN_DAO} from '../InjectionTokens'
 
 export interface ISchemaColumnDao
 	extends IBaseSchemaColumnDao {
@@ -18,7 +18,7 @@ export interface ISchemaColumnDao
 
 }
 
-@Service(SchemaColumnDaoToken)
+@Service(SCHEMA_COLUMN_DAO)
 export class SchemaColumnDao
 	extends BaseSchemaColumnDao
 	implements ISchemaColumnDao {

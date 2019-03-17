@@ -1,4 +1,4 @@
-import {Service}                                       from 'typedi'
+import {Service}                                  from 'typedi'
 import {
 	IBaseSchemaColumnDao,
 	IBaseSchemaDao,
@@ -11,8 +11,8 @@ import {
 	IBaseSchemaVersionDao,
 	IBaseVersionedSchemaObjectDao,
 	Q_SCHEMA
-}                                                      from '../generated/generated'
-import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DaosToken} from '../InjectionTokens'
+}                                                 from '../generated/generated'
+import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS} from '../InjectionTokens'
 
 export * from './SchemaColumnDao'
 export * from './SchemaDao'
@@ -40,7 +40,7 @@ export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos {
 
 }
 
-@Service(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DaosToken)
+@Service(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS)
 class AtAirport_TrafficPattern_Daos
 	implements NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos {
 

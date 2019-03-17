@@ -1,32 +1,21 @@
-import {
-	IUtils,
-	UtilsToken
-}                             from "@airport/air-control";
-import {
-	Inject,
-	Service
-}                             from "typedi";
+import {DI} from '@airport/di'
 import {
 	BasePackagedUnitDao,
 	IBasePackagedUnitDao
-}                             from "../generated/generated";
-import {PackagedUnitDaoToken} from "../InjectionTokens";
+}           from "../generated/generated";
+import {
+	PACKAGE_UNIT_DAO
+}           from '../InjectionTokens';
 
 export interface IPackagedUnitDao
 	extends IBasePackagedUnitDao {
 
 }
 
-@Service(PackagedUnitDaoToken)
 export class PackagedUnitDao
 	extends BasePackagedUnitDao
 	implements IPackagedUnitDao {
 
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
-
 }
+
+DI.set(PACKAGE_UNIT_DAO, PackagedUnitDao)

@@ -32,7 +32,7 @@ let SchemaReferenceDao = class SchemaReferenceDao extends generated_1.BaseSchema
     }
 };
 SchemaReferenceDao = __decorate([
-    typedi_1.Service(InjectionTokens_1.SchemaReferenceDaoToken)
+    typedi_1.Service(InjectionTokens_1.SCHEMA_REFERENCE_DAO)
 ], SchemaReferenceDao);
 exports.SchemaReferenceDao = SchemaReferenceDao;
 //# sourceMappingURL=SchemaReferenceDao.js.map

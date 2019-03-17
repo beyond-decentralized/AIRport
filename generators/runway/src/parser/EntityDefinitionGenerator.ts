@@ -127,7 +127,7 @@ export function generateEntityDefinitions(
 
 			// This is a top level class, get its symbol
 			let symbol = checker.getSymbolAtLocation((<ts.ClassDeclaration>node).name)
-			let serializedClass = serializeClass(symbol, node.decorators, path, fileImports)
+			let serializedClass = serializeClass(symbol, node.decorators, path, fileImports, node.parent)
 			if (serializedClass) {
 				output.push(serializedClass)
 			}
@@ -157,7 +157,7 @@ export function generateEntityDefinitions(
 
 
 	/** Serialize a symbol into a json object */
-	function serializeSymbol(symbol: ts.Symbol): DocEntry {
+	function serializeSymbol(symbol: ts.Symbol, parent = (<any>symbol).parent): DocEntry {
 		const declarations = symbol.declarations
 		let isGenerated = false
 		let allocationSize = undefined
@@ -204,7 +204,7 @@ export function generateEntityDefinitions(
 
 		let type = checker.typeToString(
 			checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration),
-			(<any>symbol).parent,
+			parent,
 			// 8 + 256 + 1 + 64 + 4096
 		)
 
@@ -587,8 +587,9 @@ export default WhereJoinTableFunction`;
 		decorators: ts.NodeArray<ts.Decorator>,
 		classPath: string,
 		fileImports: FileImports,
+		file
 	): ClassDocEntry {
-		const details: ClassDocEntry = serializeSymbol(symbol)
+		const details: ClassDocEntry = serializeSymbol(symbol, file)
 		details.fileImports = fileImports
 
 		let properties: PropertyDocEntry[] = []
@@ -603,7 +604,7 @@ export default WhereJoinTableFunction`;
 				switch (member.valueDeclaration.kind) {
 					case ts.SyntaxKind.PropertyDeclaration:
 						console.log(`Property: ${memberName}`)
-						let propertySymbolDescriptor = serializeSymbol(member)
+						let propertySymbolDescriptor = serializeSymbol(member, file)
 						if (propertySymbolDescriptor) {
 							if (propertySymbolDescriptor.isId) {
 								ids.push(propertySymbolDescriptor)

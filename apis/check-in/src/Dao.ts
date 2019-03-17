@@ -13,10 +13,12 @@ import {
 	IQEntity,
 	IUtils,
 	QSchema,
-	UpdateCacheType
-}                             from "@airport/air-control";
-import {DbEntity}             from "@airport/ground-control";
-import {EntityDatabaseFacade} from "./EntityDatabaseFacade";
+	UpdateCacheType,
+	UTILS
+}                             from '@airport/air-control'
+import {DI}                   from '@airport/di'
+import {DbEntity}             from '@airport/ground-control'
+import {EntityDatabaseFacade} from './EntityDatabaseFacade'
 
 /**
  * Created by Papa on 8/26/2017.
@@ -32,61 +34,66 @@ export abstract class Dao<Entity,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE> {
 
 	protected db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
-		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>;
+		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>
+
+	protected utils: IUtils
 
 	constructor(
 		dbEntity: DbEntity,
-		Q: QSchema,
-		protected utils: IUtils
+		Q: QSchema
 	) {
-		this.db = new EntityDatabaseFacade<Entity,
-			EntitySelect, EntityCreate,
-			EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>(
-			dbEntity, Q, utils);
+		DI.get(
+			di => {
+				[this.utils] = di
+				this.db      = new EntityDatabaseFacade<Entity,
+					EntitySelect, EntityCreate,
+					EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>(
+					dbEntity, Q, this.utils)
+			}, UTILS)
 	}
 
 	get find(): IEntityFind<Entity, Array<Entity>, EntitySelect> {
-		return this.db.find;
+		return this.db.find
 	}
 
 	get findOne(): IEntityFindOne<Entity, EntitySelect> {
-		return this.db.findOne;
+		return this.db.findOne
 	}
 
 	get search(): IEntitySearch<Entity, Array<Entity>, EntitySelect> {
-		return this.db.search;
+		return this.db.search
 	}
 
 	get searchOne(): IEntitySearchOne<Entity, EntitySelect> {
-		return this.db.searchOne;
+		return this.db.searchOne
 	}
 
 	releaseCachedForUpdate(
 		updateCacheType: UpdateCacheType,
 		...entities: Entity[]
 	) {
-		return this.db.releaseCachedForUpdate(updateCacheType, ...entities);
+		return this.db.releaseCachedForUpdate(updateCacheType, ...entities)
 	}
 
 	async bulkCreate(
 		entities: EntityCreate[],
-		cascade: boolean = false,
+		cascade: boolean          = false,
 		checkIfProcessed: boolean = true
 	): Promise<number> {
-		return await this.db.bulkCreate(entities, cascade, checkIfProcessed);
+		return await this.db.bulkCreate(entities, cascade, checkIfProcessed)
 	}
 
 	async count(): Promise<number> {
-		throw `Not Implemented`;
+		throw `Not Implemented`
 	}
 
 	async create<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entityInfo: EntityInfo
 	): Promise<number> {
 		if (entityInfo instanceof Array) {
-			return await this.bulkCreate(entityInfo);
+			return await this.bulkCreate(entityInfo)
 		} else {
-			return await this.db.create(<EntityCreate>entityInfo);
+			return await this.db.create(<EntityCreate>entityInfo)
 		}
 	}
 
@@ -94,18 +101,18 @@ export abstract class Dao<Entity,
 		entityIdInfo: EntityId | EntityId[],
 	): Promise<number> {
 		if (entityIdInfo instanceof Array) {
-			throw `Not Implemented`;
+			throw `Not Implemented`
 		} else {
-			return await this.db.delete(entityIdInfo);
+			return await this.db.delete(entityIdInfo)
 		}
 	}
 
 	async deleteAll(): Promise<number> {
-		throw `Not Implemented`;
+		throw `Not Implemented`
 	}
 
 	exists(entityId: EntityId): Promise<boolean> {
-		throw `Not Implemented`;
+		throw `Not Implemented`
 	}
 
 	async findAll(
@@ -113,12 +120,12 @@ export abstract class Dao<Entity,
 		cacheForUpdate: boolean = false
 	): Promise<Entity[]> {
 		if (entityIds) {
-			throw `Not implemented`;
+			throw `Not implemented`
 		}
 		return await this.db.find.graph({
 			select: <any>{},
 			from: [this.db.from],
-		});
+		})
 	}
 
 	async findAllAsTrees(
@@ -126,28 +133,28 @@ export abstract class Dao<Entity,
 		cacheForUpdate: boolean = false
 	): Promise<Entity[]> {
 		if (entityIds) {
-			throw `Not implemented`;
+			throw `Not implemented`
 		}
 		return await this.db.find.tree({
 			select: <any>{},
 			from: [this.db.from],
-		});
+		})
 	}
 
 	findById(
 		entityId: EntityId,
 		cacheForUpdate: boolean = false
 	): Promise<Entity> {
-		throw `Not implemented`;
+		throw `Not implemented`
 	}
 
 	async save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entity: EntityInfo,
 	): Promise<number> {
 		if (entity instanceof Array) {
-			throw `Not Implemented`;
+			throw `Not Implemented`
 		} else {
-			return await this.db.save(<EntityCreate>entity);
+			return await this.db.save(<EntityCreate>entity)
 		}
 	}
 
@@ -155,9 +162,9 @@ export abstract class Dao<Entity,
 		entityInfo: EntityCreate | EntityCreate[]
 	): Promise<number> {
 		if (entityInfo instanceof Array) {
-			throw `Not Implemented`;
+			throw `Not Implemented`
 		} else {
-			return await this.db.update(entityInfo);
+			return await this.db.update(entityInfo)
 		}
 	}
 

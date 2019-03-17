@@ -1,28 +1,24 @@
 import {
+	AIRPORT_DATABASE,
+	and,
 	distinct,
 	field,
+	IAirportDatabase,
 	IQNumberField,
 	IUtils,
+	max,
 	RawFieldQuery,
 	tree,
-	UtilsToken,
 	Y
-}                             from '@airport/air-control'
-import {max}                  from '@airport/air-control/lib/impl/core/field/Functions'
-import {and}                  from '@airport/air-control/lib/impl/core/operation/LogicalOperation'
-import {AirportDatabaseToken} from '@airport/air-control/lib/InjectionTokens'
-import {IAirportDatabase}     from '@airport/air-control/lib/lingo/AirportDatabase'
+}                          from '@airport/air-control'
+import {DI}                from '@airport/di'
 import {
 	DomainName,
 	SchemaIndex,
 	SchemaName
-}                             from '@airport/ground-control'
-import {QDomain}              from '@airport/territory'
-import {
-	Inject,
-	Service
-}                             from 'typedi'
-import {ISchemaVersionDmo}    from '../dmo/SchemaVersionDmo'
+}                          from '@airport/ground-control'
+import {QDomain}           from '@airport/territory'
+import {ISchemaVersionDmo} from '../dmo/SchemaVersionDmo'
 import {
 	BaseSchemaVersionDao,
 	IBaseSchemaVersionDao,
@@ -30,40 +26,45 @@ import {
 	Q,
 	QSchema,
 	QSchemaVersion
-}                             from '../generated/generated'
+}                          from '../generated/generated'
 import {
-	SchemaVersionDaoToken,
-	SchemaVersionDmoToken
-}                             from '../InjectionTokens'
+	SCHEMA_VERSION_DAO,
+	SCHEMA_VERSION_DMO
+}                          from '../InjectionTokens'
 
 export interface ISchemaVersionDao
 	extends IBaseSchemaVersionDao {
 
 	findAllLatestForSchemaIndexes(
 		schemaIndexes: SchemaIndex[]
-	): Promise<ISchemaVersion[]>;
+	): Promise<ISchemaVersion[]>
 
 	findMaxVersionedMapBySchemaAndDomainNames(
 		schemaDomainNames: DomainName[],
 		schemaNames: SchemaName[]
-	): Promise<Map<DomainName, Map<SchemaName, ISchemaVersion>>>;
+	): Promise<Map<DomainName, Map<SchemaName, ISchemaVersion>>>
 
 }
 
-@Service(SchemaVersionDaoToken)
 export class SchemaVersionDao
 	extends BaseSchemaVersionDao
 	implements ISchemaVersionDao {
 
+	private airportDatabase: IAirportDatabase
+	private schemaVersionDmo: ISchemaVersionDmo
+
 	constructor(
 		@Inject(AirportDatabaseToken)
-		private airportDatabase: IAirportDatabase,
-		@Inject(SchemaVersionDmoToken)
-		private schemaVersionDmo: ISchemaVersionDmo,
+		@Inject(SCHEMA_VERSION_DMO)
 		@Inject(UtilsToken)
 			utils: IUtils
 	) {
-		super(utils)
+		super()
+
+		DI.get(
+			di => {
+				[this.airportDatabase, this.schemaVersionDmo] = di
+			}, AIRPORT_DATABASE, SCHEMA_VERSION_DMO)
 	}
 
 	async findAllLatestForSchemaIndexes(
@@ -156,3 +157,5 @@ export class SchemaVersionDao
 	}
 
 }
+
+DI.set(SCHEMA_VERSION_DAO, SchemaVersionDao)

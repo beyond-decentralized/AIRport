@@ -1,12 +1,7 @@
-import {Token}                  from "typedi";
-import {IApplicationDao}        from "./dao/ApplicationDao";
-import {IApplicationPackageDao} from "./dao/ApplicationPackageDao";
-import {IDomainDao}             from "./dao/DomainDao";
-import {IPackageDao}            from "./dao/PackageDao";
-import {IPackagedUnitDao}       from "./dao/PackagedUnitDao";
+import {TOKE}                   from '@airport/di'
 
-export const ApplicationDaoToken = new Token<IApplicationDao>();
-export const ApplicationPackageDaoToken = new Token<IApplicationPackageDao>();
-export const DomainDaoToken = new Token<IDomainDao>();
-export const PackageDaoToken = new Token<IPackageDao>();
-export const PackagedUnitDaoToken = new Token<IPackagedUnitDao>();
+export const APPLICATION_DAO         = TOKE.n
+export const APPLICATION_PACKAGE_DAO = TOKE.n
+export const DOMAIN_DAO              = TOKE.n
+export const PACKAGE_DAO             = TOKE.n
+export const PACKAGE_UNIT_DAO        = TOKE.n

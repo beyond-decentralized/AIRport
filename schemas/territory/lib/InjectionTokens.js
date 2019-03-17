@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
-exports.ApplicationDaoToken = new typedi_1.Token();
-exports.ApplicationPackageDaoToken = new typedi_1.Token();
-exports.DomainDaoToken = new typedi_1.Token();
-exports.PackageDaoToken = new typedi_1.Token();
-exports.PackagedUnitDaoToken = new typedi_1.Token();
+const di_1 = require("@airport/di");
+exports.APPLICATION_DAO = di_1.TOKE.n;
+exports.APPLICATION_PACKAGE_DAO = di_1.TOKE.n;
+exports.DOMAIN_DAO = di_1.TOKE.n;
+exports.PACKAGE_DAO = di_1.TOKE.n;
+exports.PACKAGE_UNIT_DAO = di_1.TOKE.n;
 //# sourceMappingURL=InjectionTokens.js.map

@@ -63,10 +63,8 @@ export interface IBaseApplicationDao
 export class BaseApplicationDao
   extends Dao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, QApplication>
 	implements IBaseApplicationDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['Application'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['Application'], Q)
 	}
 }
 
@@ -78,10 +76,8 @@ export interface IBaseApplicationPackageDao
 export class BaseApplicationPackageDao
   extends Dao<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateColumns, ApplicationPackageEUpdateProperties, ApplicationPackageEId, QApplicationPackage>
 	implements IBaseApplicationPackageDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['ApplicationPackage'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['ApplicationPackage'], Q)
 	}
 }
 
@@ -93,10 +89,8 @@ export interface IBaseDomainDao
 export class BaseDomainDao
   extends Dao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, QDomain>
 	implements IBaseDomainDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['Domain'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['Domain'], Q)
 	}
 }
 
@@ -108,10 +102,8 @@ export interface IBasePackageDao
 export class BasePackageDao
   extends Dao<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateColumns, PackageEUpdateProperties, PackageEId, QPackage>
 	implements IBasePackageDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['Package'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['Package'], Q)
 	}
 }
 
@@ -123,9 +115,7 @@ export interface IBasePackagedUnitDao
 export class BasePackagedUnitDao
   extends Dao<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateColumns, PackagedUnitEUpdateProperties, PackagedUnitEId, QPackagedUnit>
 	implements IBasePackagedUnitDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['PackagedUnit'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['PackagedUnit'], Q)
 	}
 }

@@ -32,7 +32,7 @@ let SchemaColumnDao = class SchemaColumnDao extends generated_1.BaseSchemaColumn
     }
 };
 SchemaColumnDao = __decorate([
-    typedi_1.Service(InjectionTokens_1.SchemaColumnDaoToken)
+    typedi_1.Service(InjectionTokens_1.SCHEMA_COLUMN_DAO)
 ], SchemaColumnDao);
 exports.SchemaColumnDao = SchemaColumnDao;
 //# sourceMappingURL=SchemaColumnDao.js.map

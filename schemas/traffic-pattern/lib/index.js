@@ -59,11 +59,11 @@ let AtAirport_TrafficPattern_QSchema = class AtAirport_TrafficPattern_QSchema {
     }
 };
 AtAirport_TrafficPattern_QSchema = __decorate([
-    typedi_1.Service(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSchemaToken),
+    typedi_1.Service(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA),
     __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DaosToken)),
+    __param(1, typedi_1.Inject(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS)),
     __param(2, typedi_1.Inject(ground_control_1.DbSchemaUtilsToken)),
-    __param(3, typedi_1.Inject(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DmosToken)),
+    __param(3, typedi_1.Inject(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS)),
     __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], AtAirport_TrafficPattern_QSchema);
 exports.AtAirport_TrafficPattern_QSchema = AtAirport_TrafficPattern_QSchema;

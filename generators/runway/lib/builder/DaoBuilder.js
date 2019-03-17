@@ -29,10 +29,8 @@ export interface IBase${entityName}Dao
 export class Base${entityName}Dao
   extends Dao<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, Q${entityName}>
 	implements IBase${entityName}Dao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['${entityName}'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['${entityName}'], Q)
 	}
 }
 `).join('\n');

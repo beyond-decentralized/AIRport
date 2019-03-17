@@ -37,10 +37,95 @@
           </resourceRoots>
         </entryData>
       </entry>
+      <entry url="file://$PROJECT_DIR$/../../apps/automated-guideway-transit">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../apps/automated-guideway-transit/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../apps/tarmaq">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../apps/tarmaq/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../apps/terminal">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../apps/terminal/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../generators/landing">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../generators/landing/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../generators/runway">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../generators/runway/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../generators/takeoff">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../generators/takeoff/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../libs/approach-lighting-system">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../libs/approach-lighting-system/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../libs/di">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../libs/di/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../libs/fuel-hydrant-system">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../libs/fuel-hydrant-system/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../libs/ground-transport">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../libs/ground-transport/src" />
+            <path value="file://$PROJECT_DIR$/../../libs/ground-transport/test" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../libs/mono-rail">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../libs/mono-rail/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
       <entry url="file://$PROJECT_DIR$/../../libs/observe">
         <entryData>
           <resourceRoots>
             <path value="file://$PROJECT_DIR$/../../libs/observe/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/../../libs/tower">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../libs/tower/src" />
           </resourceRoots>
         </entryData>
       </entry>

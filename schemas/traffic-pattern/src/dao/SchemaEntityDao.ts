@@ -1,5 +1,5 @@
-import {SchemaVersionId}      from '@airport/ground-control'
-import {Service}              from 'typedi'
+import {SchemaVersionId}   from '@airport/ground-control'
+import {Service}           from 'typedi'
 import {
 	BaseSchemaEntityDao,
 	IBaseSchemaEntityDao,
@@ -8,8 +8,8 @@ import {
 	Q,
 	QSchemaEntity,
 	QSchemaReference,
-} from '../generated/generated'
-import {SchemaEntityDaoToken} from '../InjectionTokens'
+}                          from '../generated/generated'
+import {SCHEMA_ENTITY_DAO} from '../InjectionTokens'
 
 export interface ISchemaEntityDao
 extends IBaseSchemaEntityDao {
@@ -20,7 +20,7 @@ extends IBaseSchemaEntityDao {
 
 }
 
-@Service(SchemaEntityDaoToken)
+@Service(SCHEMA_ENTITY_DAO)
 export class SchemaEntityDao
 	extends BaseSchemaEntityDao
 	implements ISchemaEntityDao {

@@ -15,6 +15,6 @@ __export(require("./SchemaVersionDmo"));
 let AtAirport_TrafficPattern_Dmos = class AtAirport_TrafficPattern_Dmos {
 };
 AtAirport_TrafficPattern_Dmos = __decorate([
-    typedi_1.Service(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DmosToken)
+    typedi_1.Service(InjectionTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS)
 ], AtAirport_TrafficPattern_Dmos);
 //# sourceMappingURL=dmo.js.map

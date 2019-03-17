@@ -1,31 +1,18 @@
-import {Token}                                    from 'typedi/Token'
-import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos} from './dao/dao'
-import {ISchemaColumnDao}                         from './dao/SchemaColumnDao'
-import {ISchemaDao}                               from './dao/SchemaDao'
-import {ISchemaEntityDao}                         from './dao/SchemaEntityDao'
-import {ISchemaPropertyColumnDao}                 from './dao/SchemaPropertyColumnDao'
-import {ISchemaPropertyDao}                          from './dao/SchemaPropertyDao'
-import {ISchemaReferenceDao}                         from './dao/SchemaReferenceDao'
-import {ISchemaRelationColumnDao}                    from './dao/SchemaRelationColumnDao'
-import {ISchemaRelationDao}                          from './dao/SchemaRelationDao'
-import {ISchemaVersionDao}                           from './dao/SchemaVersionDao'
-import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos}    from './dmo/dmo'
-import {ISchemaVersionDmo}                           from './dmo/SchemaVersionDmo'
-import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSchema} from './index'
+import {TOKE}                                     from '@airport/di'
 
-export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSchemaToken
-= 'NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSchemaToken'
-export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DaosToken
-= new Token<NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos>()
-export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DmosToken
-= new Token<NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos>()
-export const SchemaColumnDaoToken         = new Token<ISchemaColumnDao>()
-export const SchemaDaoToken               = new Token<ISchemaDao>()
-export const SchemaEntityDaoToken         = new Token<ISchemaEntityDao>()
-export const SchemaPropertyColumnDaoToken = new Token<ISchemaPropertyColumnDao>()
-export const SchemaPropertyDaoToken       = new Token<ISchemaPropertyDao>()
-export const SchemaReferenceDaoToken      = new Token<ISchemaReferenceDao>()
-export const SchemaRelationColumnDaoToken = new Token<ISchemaRelationColumnDao>()
-export const SchemaRelationDaoToken       = new Token<ISchemaRelationDao>()
-export const SchemaVersionDaoToken        = new Token<ISchemaVersionDao>()
-export const SchemaVersionDmoToken        = new Token<ISchemaVersionDmo>()
+export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA
+	                                      = 'NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA'
+export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS
+	                                      = TOKE.n
+export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS
+	                                      = TOKE.n
+export const SCHEMA_COLUMN_DAO          = TOKE.n
+export const SCHEMA_DAO                 = TOKE.n
+export const SCHEMA_ENTITY_DAO          = TOKE.n
+export const SCHEMA_PROPERTY_COLUMN_DAO = TOKE.n
+export const SCHEMA_PROPERTY_DAO        = TOKE.n
+export const SCHEMA_REFERENCE_DAO       = TOKE.n
+export const SCHEMA_RELATION_COLUMN_DAO = TOKE.n
+export const SCHEMA_RELATION_DAO        = TOKE.n
+export const SCHEMA_VERSION_DAO         = TOKE.n
+export const SCHEMA_VERSION_DMO         = TOKE.n

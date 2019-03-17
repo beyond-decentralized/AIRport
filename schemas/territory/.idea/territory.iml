@@ -16,21 +16,45 @@
     <content url="file://$MODULE_DIR$/../../apis/terminal-map">
       <excludeFolder url="file://$MODULE_DIR$/../../apis/terminal-map/lib" />
     </content>
-    <content url="file://$MODULE_DIR$/../../apps/automated-guideway-transit" />
-    <content url="file://$MODULE_DIR$/../../apps/tarmaq" />
-    <content url="file://$MODULE_DIR$/../../apps/terminal" />
-    <content url="file://$MODULE_DIR$/../../generators/landing" />
-    <content url="file://$MODULE_DIR$/../../generators/runway" />
-    <content url="file://$MODULE_DIR$/../../generators/takeoff" />
-    <content url="file://$MODULE_DIR$/../../libs/approach-lighting-system" />
-    <content url="file://$MODULE_DIR$/../../libs/di" />
-    <content url="file://$MODULE_DIR$/../../libs/fuel-hydrant-system" />
-    <content url="file://$MODULE_DIR$/../../libs/ground-transport" />
-    <content url="file://$MODULE_DIR$/../../libs/mono-rail" />
+    <content url="file://$MODULE_DIR$/../../apps/automated-guideway-transit">
+      <excludeFolder url="file://$MODULE_DIR$/../../apps/automated-guideway-transit/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../apps/tarmaq">
+      <excludeFolder url="file://$MODULE_DIR$/../../apps/tarmaq/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../apps/terminal">
+      <excludeFolder url="file://$MODULE_DIR$/../../apps/terminal/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../generators/landing">
+      <excludeFolder url="file://$MODULE_DIR$/../../generators/landing/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../generators/runway">
+      <excludeFolder url="file://$MODULE_DIR$/../../generators/runway/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../generators/takeoff">
+      <excludeFolder url="file://$MODULE_DIR$/../../generators/takeoff/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../libs/approach-lighting-system">
+      <excludeFolder url="file://$MODULE_DIR$/../../libs/approach-lighting-system/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../libs/di">
+      <excludeFolder url="file://$MODULE_DIR$/../../libs/di/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../libs/fuel-hydrant-system">
+      <excludeFolder url="file://$MODULE_DIR$/../../libs/fuel-hydrant-system/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../libs/ground-transport">
+      <excludeFolder url="file://$MODULE_DIR$/../../libs/ground-transport/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../libs/mono-rail">
+      <excludeFolder url="file://$MODULE_DIR$/../../libs/mono-rail/lib" />
+    </content>
     <content url="file://$MODULE_DIR$/../../libs/observe">
       <excludeFolder url="file://$MODULE_DIR$/../../libs/observe/lib" />
     </content>
-    <content url="file://$MODULE_DIR$/../../libs/tower" />
+    <content url="file://$MODULE_DIR$/../../libs/tower">
+      <excludeFolder url="file://$MODULE_DIR$/../../libs/tower/lib" />
+    </content>
     <content url="file://$MODULE_DIR$/../airport-code">
       <excludeFolder url="file://$MODULE_DIR$/../airport-code/lib" />
     </content>

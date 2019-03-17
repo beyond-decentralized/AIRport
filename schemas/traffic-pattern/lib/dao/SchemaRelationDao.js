@@ -32,7 +32,7 @@ let SchemaRelationDao = class SchemaRelationDao extends generated_1.BaseSchemaRe
     }
 };
 SchemaRelationDao = __decorate([
-    typedi_1.Service(InjectionTokens_1.SchemaRelationDaoToken)
+    typedi_1.Service(InjectionTokens_1.SCHEMA_RELATION_DAO)
 ], SchemaRelationDao);
 exports.SchemaRelationDao = SchemaRelationDao;
 //# sourceMappingURL=SchemaRelationDao.js.map

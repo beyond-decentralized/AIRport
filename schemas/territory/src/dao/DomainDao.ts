@@ -1,25 +1,18 @@
-import {
-	IUtils,
-	UtilsToken
-}                       from '@airport/air-control'
+import {DI}         from '@airport/di'
 import {
 	DomainId,
 	DomainName
-}                       from '@airport/ground-control'
-import {
-	Inject,
-	Service
-}                       from 'typedi'
-import {
-	IDomain,
-	Q,
-	QDomain
-}                       from '..'
+}                   from '@airport/ground-control'
 import {
 	BaseDomainDao,
 	IBaseDomainDao
-}                       from '../generated/baseDaos'
-import {DomainDaoToken} from '../InjectionTokens'
+}                   from '../generated/baseDaos'
+import {
+	IDomain,
+	QDomain
+}                   from '../generated/qdomain'
+import {Q}          from '../generated/qschema'
+import {DOMAIN_DAO} from '../InjectionTokens'
 
 export interface IDomainDao
 	extends IBaseDomainDao {
@@ -34,17 +27,9 @@ export interface IDomainDao
 
 }
 
-@Service(DomainDaoToken)
 export class DomainDao
 	extends BaseDomainDao
 	implements IDomainDao {
-
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils)
-	}
 
 	async findByIdIn(
 		domainIds: DomainId[]
@@ -80,3 +65,5 @@ export class DomainDao
 	}
 
 }
+
+DI.set(DOMAIN_DAO, DomainDao)

@@ -32,7 +32,7 @@ let SchemaPropertyColumnDao = class SchemaPropertyColumnDao extends generated_1.
     }
 };
 SchemaPropertyColumnDao = __decorate([
-    typedi_1.Service(InjectionTokens_1.SchemaPropertyColumnDaoToken)
+    typedi_1.Service(InjectionTokens_1.SCHEMA_PROPERTY_COLUMN_DAO)
 ], SchemaPropertyColumnDao);
 exports.SchemaPropertyColumnDao = SchemaPropertyColumnDao;
 //# sourceMappingURL=SchemaPropertyColumnDao.js.map

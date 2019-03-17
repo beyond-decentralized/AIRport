@@ -22,8 +22,8 @@ export interface IContainer {
 
 export class Container {
 
-	objects: any[]
-	classes: any[]
+	objects: any[]  = []
+	classes: any[]  = []
 	onInitCallback: () => void
 	numPendingInits = 0
 

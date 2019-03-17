@@ -1,7 +1,5 @@
-import { IUtils } from "@airport/air-control";
 import { BasePackagedUnitDao, IBasePackagedUnitDao } from "../generated/generated";
 export interface IPackagedUnitDao extends IBasePackagedUnitDao {
 }
 export declare class PackagedUnitDao extends BasePackagedUnitDao implements IPackagedUnitDao {
-    constructor(utils: IUtils);
 }

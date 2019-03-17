@@ -12,7 +12,7 @@ const InjectionTokens_1 = require("../InjectionTokens");
 let SchemaVersionDmo = class SchemaVersionDmo extends generated_1.BaseSchemaVersionDmo {
 };
 SchemaVersionDmo = __decorate([
-    typedi_1.Service(InjectionTokens_1.SchemaVersionDmoToken)
+    typedi_1.Service(InjectionTokens_1.SCHEMA_VERSION_DMO)
 ], SchemaVersionDmo);
 exports.SchemaVersionDmo = SchemaVersionDmo;
 //# sourceMappingURL=SchemaVersionDmo.js.map

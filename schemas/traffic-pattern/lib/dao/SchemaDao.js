@@ -203,7 +203,7 @@ let SchemaDao = class SchemaDao extends generated_1.BaseSchemaDao {
     }
 };
 SchemaDao = __decorate([
-    Service_1.Service(InjectionTokens_2.SchemaDaoToken),
+    Service_1.Service(InjectionTokens_2.SCHEMA_DAO),
     __param(0, Inject_1.Inject(InjectionTokens_1.AirportDatabaseToken)),
     __param(1, Inject_1.Inject(InjectionTokens_1.UtilsToken)),
     __metadata("design:paramtypes", [Object, Object])

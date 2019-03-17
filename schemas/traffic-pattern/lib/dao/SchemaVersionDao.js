@@ -21,17 +21,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const Functions_1 = require("@airport/air-control/lib/impl/core/field/Functions");
-const LogicalOperation_1 = require("@airport/air-control/lib/impl/core/operation/LogicalOperation");
-const InjectionTokens_1 = require("@airport/air-control/lib/InjectionTokens");
-const typedi_1 = require("typedi");
+const di_1 = require("@airport/di");
 const generated_1 = require("../generated/generated");
-const InjectionTokens_2 = require("../InjectionTokens");
+const InjectionTokens_1 = require("../InjectionTokens");
 let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVersionDao {
-    constructor(airportDatabase, schemaVersionDmo, utils) {
-        super(utils);
-        this.airportDatabase = airportDatabase;
-        this.schemaVersionDmo = schemaVersionDmo;
+    constructor(utils) {
+        super();
+        di_1.DI.get(di => {
+            [this.airportDatabase, this.schemaVersionDmo] = di;
+        }, air_control_1.AIRPORT_DATABASE, InjectionTokens_1.SCHEMA_VERSION_DMO);
     }
     findAllLatestForSchemaIndexes(schemaIndexes) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -41,7 +39,7 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
                     sv = generated_1.Q.SchemaVersion
                 ],
                 select: {},
-                where: LogicalOperation_1.and(sv.id.in(this.idsForMaxVersionSelect()), sv.schema.index.in(schemaIndexes))
+                where: air_control_1.and(sv.id.in(this.idsForMaxVersionSelect()), sv.schema.index.in(schemaIndexes))
             });
         });
     }
@@ -72,7 +70,7 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
                     s = sv.schema.innerJoin(),
                     d = s.domain.innerJoin()
                 ],
-                where: LogicalOperation_1.and(sv.id.in(this.idsForMaxVersionSelect()), d.name.in(schemaDomainNames), s.name.in(schemaNames)),
+                where: air_control_1.and(sv.id.in(this.idsForMaxVersionSelect()), d.name.in(schemaDomainNames), s.name.in(schemaNames)),
             });
             for (const maxSchemaVersion of maxSchemaVersions) {
                 const schema = maxSchemaVersion.schema;
@@ -92,7 +90,7 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
                         sv2 = generated_1.Q.SchemaVersion
                     ],
                     select: air_control_1.distinct({
-                        integerVersion: Functions_1.max(sv2.integerVersion),
+                        integerVersion: air_control_1.max(sv2.integerVersion),
                         id: sv2.id,
                         schemaIndex: sv2.schema.index
                     })
@@ -103,11 +101,11 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
     }
 };
 SchemaVersionDao = __decorate([
-    typedi_1.Service(InjectionTokens_2.SchemaVersionDaoToken),
-    __param(0, typedi_1.Inject(InjectionTokens_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(InjectionTokens_2.SchemaVersionDmoToken)),
-    __param(2, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object])
+    __param(0, Inject(AirportDatabaseToken)),
+    __param(0, Inject(InjectionTokens_1.SCHEMA_VERSION_DMO)),
+    __param(0, Inject(UtilsToken)),
+    __metadata("design:paramtypes", [Object])
 ], SchemaVersionDao);
 exports.SchemaVersionDao = SchemaVersionDao;
+di_1.DI.set(InjectionTokens_1.SCHEMA_VERSION_DAO, SchemaVersionDao);
 //# sourceMappingURL=SchemaVersionDao.js.map
