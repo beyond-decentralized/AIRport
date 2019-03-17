@@ -1,22 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Subject {
-    constructor(unsubscribeCallback) {
-        this.unsubscribeCallback = unsubscribeCallback;
-    }
-    complete() {
-    }
+const Observable_1 = require("./Observable");
+class Subject extends Observable_1.Observable {
+    // complete(): void {
+    // }
     error(errorValue) {
+        this.exec(errorValue, 'onError');
     }
     next(value) {
-    }
-    start(subscription) {
-    }
-    subscribe(observer, onError, onComplete) {
-        if (!(observer instanceof Function)) {
-            throw 'Subjects can only be subscribed to with functions';
-        }
-        return undefined;
+        this.exec(value, 'onNext');
     }
 }
 exports.Subject = Subject;

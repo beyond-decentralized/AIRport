@@ -1,3 +1,5 @@
+import {Observable} from './Observable'
+
 export interface ISubscription {
 
 	// Cancels the subscription
@@ -14,13 +16,26 @@ export class Subscription
 	private _closed = false
 
 	constructor(
-		private onUnsubscribe?: () => void
+		private observable: Observable<any>,
+		public onNext: { (value: any): void },
+		public onError?: { (error: any): void },
+		public onComplete?: Function
 	) {
 	}
 
 	// Cancels the subscription
-	unsubscribe(): void {
-		this.onUnsubscribe();
+	unsubscribe(
+		onUnsubscribe?: () => void
+	): void {
+		if (this._closed) {
+			return
+		}
+		this._closed                  = true
+		this.observable.subscriptions = this.observable.subscriptions.filter(
+			subscription => subscription !== this
+		)
+
+		onUnsubscribe()
 	}
 
 	// A boolean value indicating whether the subscription is closed

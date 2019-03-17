@@ -1,6 +1,8 @@
-import {IObservable}   from './Observable'
-import {IObserver}     from './Observer'
-import {ISubscription} from './Subscription'
+import {
+	IObservable,
+	Observable
+}                  from './Observable'
+import {IObserver} from './Observer'
 
 export interface ISubject<V>
 	extends IObservable<V>,
@@ -8,41 +10,22 @@ export interface ISubject<V>
 }
 
 export class Subject<V>
+	extends Observable<V>
 	implements ISubject<V> {
 
-	constructor(
-		private unsubscribeCallback: () => void
-	) {
-	}
 
-	complete(): void {
-	}
+	// complete(): void {
+	// }
 
-	error(errorValue): void {
+	error(errorValue: any): void {
+		this.exec(errorValue, 'onError')
 	}
 
 	next(value: V): void {
+		this.exec(value, 'onNext')
 	}
 
-	start(subscription: ISubscription): void {
-	}
-
-	subscribe(observer: IObserver<V>): ISubscription
-	subscribe(
-		onNext: { (value: V): void },
-		onError?: Function,
-		onComplete?: Function
-	): ISubscription
-	subscribe(
-		observer: IObserver<V> | { (value: V): void },
-		onError?: Function,
-		onComplete?: Function
-	): ISubscription {
-		if(!(observer instanceof Function)) {
-			throw 'Subjects can only be subscribed to with functions'
-		}
-
-		return undefined;
-	}
+	// start(subscription: ISubscription): void {
+	// }
 
 }

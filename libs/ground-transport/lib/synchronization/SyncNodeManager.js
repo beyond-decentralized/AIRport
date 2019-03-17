@@ -65,7 +65,7 @@ SyncNodeManager = __decorate([
     typedi_1.Service(InjectionTokens_1.SyncNodeManagerToken),
     __param(0, typedi_1.Inject(moving_walkway_1.SharingNodeDaoToken)),
     __param(1, typedi_1.Inject(InjectionTokens_1.SynchronizationInManagerToken)),
-    __param(2, typedi_1.Inject(TerminalStoreToken)),
+    __param(2, typedi_1.Inject(TERMINAL_STORE)),
     __metadata("design:paramtypes", [typeof (_a = typeof moving_walkway_1.ISharingNodeDao !== "undefined" && moving_walkway_1.ISharingNodeDao) === "function" ? _a : Object, Object, typeof (_b = typeof ITerminalStore !== "undefined" && ITerminalStore) === "function" ? _b : Object])
 ], SyncNodeManager);
 exports.SyncNodeManager = SyncNodeManager;

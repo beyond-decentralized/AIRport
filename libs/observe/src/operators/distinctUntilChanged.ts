@@ -2,5 +2,9 @@ export function distinctUntilChanged<V>(
 	value: V,
 	context: any
 ): V {
-	return null
+	if (value === context.lastValue) {
+		return undefined
+	}
+
+	return value
 }

@@ -26,13 +26,17 @@ function createSelector(...args) {
         for (let i = 1; i < inputSelectors.length; i++) {
             additionalObservables.push(inputSelectors[i].observable);
         }
-        combine = (ctx) => observe_1.combineLatest(additionalObservables, callback);
+        combine = (v, ctx) => observe_1.combineLatest(additionalObservables, ctx, callback);
     }
     if (combine) {
-        observable = observe_1.pipe(observable, (v, ctx) => observe_1.share(observe_1.distinctUntilChanged(combine(v), ctx), ctx));
+        observable = observe_1.pipe(observable, (v, ctx) => 
+        // share(
+        observe_1.distinctUntilChanged(combine(v, ctx), ctx));
     }
     else {
-        observable = observe_1.pipe(observable, (v, ctx) => observe_1.share(observe_1.distinctUntilChanged(callback(v), ctx), ctx));
+        observable = observe_1.pipe(observable, (v, ctx) => 
+        // share(
+        observe_1.distinctUntilChanged(callback(v), ctx));
     }
     const selector = function (
     // otherStateObservable?: Observable<SV>

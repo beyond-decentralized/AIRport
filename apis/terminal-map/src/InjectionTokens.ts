@@ -1,6 +1,4 @@
-import {Token}               from "typedi";
-import {ITransactionManager} from "./orchestration/TransactionManager";
-import {ITerminalStore}      from "./store/TerminalStore";
+import {TOKE}                from '@airport/di'
 
-export const TerminalStoreToken = new Token<ITerminalStore>();
-export const TransactionManagerToken = new Token<ITransactionManager>();
+export const TERMINAL_STORE      = TOKE.n
+export const TRANSACTION_MANAGER = TOKE.n

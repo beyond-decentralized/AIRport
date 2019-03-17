@@ -1,11 +1,23 @@
+import { Observable } from './Observable';
 export interface ISubscription {
     unsubscribe(): void;
     closed: boolean;
 }
 export declare class Subscription implements ISubscription {
-    private onUnsubscribe?;
+    private observable;
+    onNext: {
+        (value: any): void;
+    };
+    onError?: {
+        (error: any): void;
+    };
+    onComplete?: Function;
     private _closed;
-    constructor(onUnsubscribe?: () => void);
-    unsubscribe(): void;
+    constructor(observable: Observable<any>, onNext: {
+        (value: any): void;
+    }, onError?: {
+        (error: any): void;
+    }, onComplete?: Function);
+    unsubscribe(onUnsubscribe?: () => void): void;
     readonly closed: boolean;
 }

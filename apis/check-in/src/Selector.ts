@@ -2,8 +2,7 @@ import {
 	combineLatest,
 	distinctUntilChanged,
 	IObservable,
-	pipe,
-	share
+	pipe
 } from '@airport/observe'
 
 /**
@@ -89,25 +88,32 @@ export function createSelector<V, SV>(
 		for (let i = 1; i < inputSelectors.length; i++) {
 			additionalObservables.push(inputSelectors[i].observable)
 		}
-		combine = (ctx) => combineLatest(additionalObservables as any, callback)
+		combine = (
+			v,
+			ctx
+		) => combineLatest(additionalObservables as any, ctx, callback)
 	}
 
 	if (combine) {
 		observable = pipe(observable, (
 			v,
 			ctx
-		) =>
-			share(
+			) =>
+				// share(
 				distinctUntilChanged(
-					combine(v), ctx), ctx))
+					combine(v, ctx), ctx),
+			// ctx)
+		)
 	} else {
 		observable = pipe(observable, (
 			v,
 			ctx
-		) =>
-			share(
+			) =>
+				// share(
 				distinctUntilChanged(
-					callback(v), ctx), ctx))
+					callback(v), ctx),
+			// ctx)
+		)
 	}
 
 	const selector      = <IMemoizedSelector<V, SV>>function (

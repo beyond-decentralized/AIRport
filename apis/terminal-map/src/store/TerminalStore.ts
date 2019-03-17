@@ -1,29 +1,26 @@
 import {
 	IUtils,
-	UtilsToken
-}                           from '@airport/air-control'
-import {
-	DomainName,
-	JsonSchemaName,
-	SchemaName
-}                           from '@airport/ground-control'
-import {IDomain}            from '@airport/territory'
-import {
-	ISchema,
-	ISchemaVersion
-}                           from '@airport/traffic-pattern'
-import {BehaviorSubject}    from 'rxjs'
-import {
-	Inject,
-	Service
-}                           from 'typedi'
-import {TerminalStoreToken} from '../InjectionTokens'
+	UTILS
+}                        from '@airport/air-control'
 import {
 	createRootSelector,
 	createSelector,
 	IMemoizedSelector
-}                           from '@airport/check-in'
-import {ITerminalState}     from './TerminalState'
+}                        from '@airport/check-in'
+import {DI}              from '@airport/di'
+import {
+	DomainName,
+	JsonSchemaName,
+	SchemaName
+}                        from '@airport/ground-control'
+import {BehaviorSubject} from '@airport/observe'
+import {IDomain}         from '@airport/territory'
+import {
+	ISchema,
+	ISchemaVersion
+}                        from '@airport/traffic-pattern'
+import {TERMINAL_STORE}  from '../InjectionTokens'
+import {ITerminalState}  from './TerminalState'
 
 export interface ITerminalStore {
 
@@ -46,14 +43,17 @@ export interface ITerminalStore {
 	tearDown()
 }
 
-@Service(TerminalStoreToken)
+
 export class TerminalStore
 	implements ITerminalStore {
 
-	constructor(
-		@Inject(UtilsToken)
-		private utils: IUtils
-	) {
+	private utils: IUtils
+
+	constructor() {
+		DI.get(
+			di => {
+				[this.utils] = di
+			}, UTILS)
 	}
 
 	state = new BehaviorSubject<ITerminalState>({
@@ -126,3 +126,5 @@ export class TerminalStore
 	}
 
 }
+
+DI.set(TERMINAL_STORE, TerminalStore)

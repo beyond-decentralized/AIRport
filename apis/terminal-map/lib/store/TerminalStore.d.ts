@@ -1,9 +1,8 @@
-import { IUtils } from '@airport/air-control';
+import { IMemoizedSelector } from '@airport/check-in';
 import { DomainName, JsonSchemaName, SchemaName } from '@airport/ground-control';
+import { BehaviorSubject } from '@airport/observe';
 import { IDomain } from '@airport/territory';
 import { ISchema, ISchemaVersion } from '@airport/traffic-pattern';
-import { BehaviorSubject } from 'rxjs';
-import { IMemoizedSelector } from '@airport/check-in';
 import { ITerminalState } from './TerminalState';
 export interface ITerminalStore {
     state: BehaviorSubject<ITerminalState>;
@@ -17,7 +16,7 @@ export interface ITerminalStore {
 }
 export declare class TerminalStore implements ITerminalStore {
     private utils;
-    constructor(utils: IUtils);
+    constructor();
     state: BehaviorSubject<ITerminalState>;
     getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;

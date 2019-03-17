@@ -1,17 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="initial rxjs replacement API">
+    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="removed map operator - not needed with the functional approach :)">
+      <change afterPath="$PROJECT_DIR$/../../libs/observe/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/BehaviorSubject.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/operators/withLatestFrom.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/pipe.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/Selector.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/Selector.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/Selector.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/Selector.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../apis/check-in/src/Selector.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/src/Selector.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/InjectionTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/InjectionTokens.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/InjectionTokens.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/InjectionTokens.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/InjectionTokens.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/InjectionTokens.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/store/TerminalStore.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/lib/sync/SharedChangeList.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/lib/sync/SharedChangeList.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/src/InjectionTokens.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/src/InjectionTokens.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalStore.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/terminal-map/src/sync/SharedChangeList.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/terminal-map/src/sync/SharedChangeList.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../common/config/rush/npm-shrinkwrap.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/lib/synchronization/SyncNodeManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/lib/synchronization/SyncNodeManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observer.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observer.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Subject.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Subject.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Subject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Subject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Subject.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Subject.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Subscription.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Subscription.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Subscription.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Subscription.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Subscription.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Subscription.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/index.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/map.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/map.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/map.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/combineLatest.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/combineLatest.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/combineLatest.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/combineLatest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/combineLatest.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/combineLatest.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/distinctUntilChanged.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/distinctUntilChanged.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/distinctUntilChanged.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/distinctUntilChanged.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/pipe.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/pipe.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/pipe.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/pipe.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/pipe.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/pipe.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/share.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/share.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/share.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/share.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/Observable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/Observable.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/Observer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/Observer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/Subject.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/Subject.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/Subscription.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/Subscription.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/observe/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/operators/map.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/operators/combineLatest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/operators/combineLatest.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/operators/distinctUntilChanged.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/operators/distinctUntilChanged.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/operators/pipe.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/operators/share.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../rush.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../rush.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../yarn.lock" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -29,53 +75,32 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../../libs/observe/src/Subject.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="286">
-                  <caret line="13" column="43" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
+                <state relative-caret-position="462">
+                  <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="30" />
                   <folding>
-                    <element signature="e#0#42#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/../../libs/observe/src/Subscription.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="484">
-                  <caret line="22" column="25" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/EntitySearch.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="924">
-                  <caret line="42" column="6" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
-                  <folding>
-                    <element signature="e#0#101#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/impl/Utils.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="522">
-                  <caret line="102" column="7" selection-start-line="102" selection-start-column="7" selection-end-line="102" selection-end-column="7" />
-                  <folding>
-                    <element signature="e#0#46#0" expanded="true" />
+                    <element signature="e#0#73#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/distinctUntilChanged.ts">
+            <entry file="file://$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalStore.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="66">
-                  <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+                <state relative-caret-position="22">
+                  <caret line="22" column="47" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+                  <folding>
+                    <element signature="e#0#77#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/../../apis/terminal-map/package.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="176">
+                  <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
                 </state>
               </provider>
             </entry>
@@ -84,41 +109,23 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/../../apis/check-in/package.json">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="88">
-                  <caret line="4" column="39" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/../../apis/ground-control/src/InjectionTokens.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state>
-                  <caret line="5" selection-start-line="5" selection-end-line="5" />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/../../apis/check-in/src/Selector.ts">
+            <entry file="file://$PROJECT_DIR$/../../apis/terminal-map/src/sync/SharedChangeList.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="175">
-                  <caret line="109" column="20" lean-forward="true" selection-start-line="109" selection-start-column="20" selection-end-line="109" selection-end-column="20" />
+                <state relative-caret-position="46">
+                  <caret line="6" column="49" selection-start-line="6" selection-start-column="49" selection-end-line="6" selection-end-column="49" />
                   <folding>
-                    <element signature="e#0#107#0" expanded="true" />
+                    <element signature="e#0#52#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/combineLatest.ts">
+            <entry file="file://$PROJECT_DIR$/../../libs/observe/src/BehaviorSubject.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="66">
-                  <caret line="3" column="113" selection-start-line="3" selection-start-column="113" selection-end-line="3" selection-end-column="113" />
+                <state relative-caret-position="286">
+                  <caret line="13" column="30" selection-start-line="13" selection-start-column="30" selection-end-line="13" selection-end-column="30" />
                 </state>
               </provider>
             </entry>
@@ -144,6 +151,12 @@
       <find>@Service</find>
       <find>@</find>
       <find>share</find>
+      <find>children</find>
+      <find>...</find>
+      <find>.parent</find>
+      <find>typedi</find>
+      <find>BehaviorSubject</find>
+      <find>traffic-pa</find>
     </findStrings>
     <replaceStrings>
       <replace>Module</replace>
@@ -153,6 +166,8 @@
       <dir>$PROJECT_DIR$/src/ddl</dir>
       <dir>C:\Users\Papa\dac\airport\apis\ground-control\src</dir>
       <dir>C:\Users\Papa\dac\airport\apis\air-control\src</dir>
+      <dir>C:\Users\Papa\dac\airport\libs\observe\src</dir>
+      <dir>C:\Users\Papa\dac\airport\apis\terminal-map\src</dir>
     </dirStrings>
   </component>
   <component name="GOROOT" path="C:\Go" />
@@ -162,16 +177,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/dao/ApplicationPackageDao.ts" />
-        <option value="$PROJECT_DIR$/src/dao/PackagedModuleDao.ts" />
-        <option value="$PROJECT_DIR$/src/dao/dao.ts" />
-        <option value="$PROJECT_DIR$/src/InjectionTokens.ts" />
-        <option value="$PROJECT_DIR$/src/dao/PackagedUnitDao.ts" />
-        <option value="$PROJECT_DIR$/src/dao/PackageDao.ts" />
-        <option value="$PROJECT_DIR$/src/index.ts" />
-        <option value="$PROJECT_DIR$/src/ddl/Domain.ts" />
-        <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/src/ddl/Application.ts" />
         <option value="$PROJECT_DIR$/src/ddl/Package.ts" />
         <option value="$PROJECT_DIR$/src/ddl/ApplicationPackage.ts" />
         <option value="$PROJECT_DIR$/src/dao/DomainDao.ts" />
@@ -187,8 +192,6 @@
         <option value="$PROJECT_DIR$/../../libs/observe/src/SubscriptionObserver.ts" />
         <option value="$PROJECT_DIR$/../../libs/observe/src/SubscriberFunction.ts" />
         <option value="$PROJECT_DIR$/../../apis/ground-control/src/lingo/core/Subscription.ts" />
-        <option value="$PROJECT_DIR$/../../libs/observe/src/Observer.ts" />
-        <option value="$PROJECT_DIR$/../../libs/observe/src/Observable.ts" />
         <option value="$PROJECT_DIR$/../../apis/ground-control/package.json" />
         <option value="$PROJECT_DIR$/../../apis/ground-control/src/lingo/data/StoreDriver.ts" />
         <option value="$PROJECT_DIR$/../../apis/ground-control/src/lingo/data/ITransactionalConnector.ts" />
@@ -198,23 +201,38 @@
         <option value="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/EntitySearchOne.ts" />
         <option value="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/EntitySearch.ts" />
         <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/core/repository/DatabaseFacade.ts" />
-        <option value="$PROJECT_DIR$/../../libs/observe/src/Subject.ts" />
-        <option value="$PROJECT_DIR$/../../libs/observe/src/Subscription.ts" />
         <option value="$PROJECT_DIR$/../../apis/air-control/src/index.ts" />
         <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/NonEntitySearchOne.ts" />
         <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/NonEntitySearch.ts" />
         <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/EntitySearchOne.ts" />
         <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/EntitySearch.ts" />
         <option value="$PROJECT_DIR$/../../apis/check-in/package.json" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/operators/map.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/README.md.ts" />
         <option value="$PROJECT_DIR$/../../libs/observe/src/operators/share.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/impl/Context.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/Observer.ts" />
         <option value="$PROJECT_DIR$/../../libs/observe/src/operators/distinctUntilChanged.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/operators/withLatestFrom.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/README.md" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/operators/merge.ts" />
+        <option value="$PROJECT_DIR$/../../apis/check-in/src/Selector.ts" />
         <option value="$PROJECT_DIR$/../../libs/observe/src/operators/pipe.ts" />
         <option value="$PROJECT_DIR$/../../libs/observe/src/operators/combineLatest.ts" />
-        <option value="$PROJECT_DIR$/../../libs/observe/src/operators/map.ts" />
-        <option value="$PROJECT_DIR$/../../apis/check-in/src/Selector.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/Subject.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/Subscription.ts" />
+        <option value="$PROJECT_DIR$/../../apis/terminal-map/src/InjectionTokens.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/BehaviorSubject.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/Observable.ts" />
         <option value="$PROJECT_DIR$/../../libs/observe/src/index.ts" />
+        <option value="$PROJECT_DIR$/../../apis/terminal-map/package.json" />
+        <option value="$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalStore.ts" />
+        <option value="$PROJECT_DIR$/../../apis/terminal-map/src/sync/SharedChangeList.ts" />
       </list>
     </option>
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/../../libs/mono-rail/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
@@ -239,13 +257,7 @@
             <path>
               <item name="territory" type="b2602c69:ProjectViewProjectNode" />
               <item name="territory" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="check-in" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="territory" type="b2602c69:ProjectViewProjectNode" />
-              <item name="territory" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="check-in" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="terminal-map" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="territory" type="b2602c69:ProjectViewProjectNode" />
@@ -257,13 +269,6 @@
               <item name="territory" type="47feb1d3:ProjectViewModuleNode" />
               <item name="observe" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="territory" type="b2602c69:ProjectViewProjectNode" />
-              <item name="territory" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="observe" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="operators" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -285,6 +290,11 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="ts.external.directory.path" value="C:\Users\Papa\dac\airport\generators\runway\node_modules\typescript\lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Papa\dac\airport\libs\observe\src" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -353,13 +363,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18603411" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22228146" />
+      <window_info id="Favorites" order="1" side_tool="true" />
+      <window_info id="Structure" order="2" weight="0.15405117" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.32917964" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32917964" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -367,7 +376,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.35929388" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.35929388" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="11" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
@@ -377,9 +386,9 @@
       <window_info anchor="right" id="Database" order="3" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18603411" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22228146" />
+      <window_info id="Favorites" order="1" side_tool="true" />
+      <window_info id="Structure" order="2" weight="0.15405117" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32917964" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -410,92 +419,10 @@
     </ignored-roots>
     <MESSAGE value="started replacing di and observable with concise impls" />
     <MESSAGE value="initial rxjs replacement API" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial rxjs replacement API" />
+    <MESSAGE value="removed map operator - not needed with the functional approach :)" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed map operator - not needed with the functional approach :)" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../apis/air-control/tsconfig.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../apis/arrivals-n-departures/package.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/impl/query/facade/AbstractUpdate.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#106#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ddl/Domain.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="34" column="9" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#141#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/lingo/AirportDatabase.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="404">
-          <caret line="35" column="17" selection-start-line="35" selection-start-column="17" selection-end-line="35" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/generated/schema.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="8" selection-start-line="14" selection-start-column="8" selection-end-line="14" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="21" selection-start-line="3" selection-start-column="21" selection-end-line="3" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/tower/src/AirportDatabase.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="97" column="1" lean-forward="true" selection-start-line="97" selection-start-column="1" selection-end-line="99" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#248#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/InjectionTokens.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="29" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/impl/utils/SchemaUtils.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="511" column="16" selection-start-line="511" selection-start-column="16" selection-end-line="511" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#211#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dao/DomainDao.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1320">
-          <caret line="60" column="3" selection-start-line="60" selection-start-column="3" selection-end-line="60" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#81#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/impl/utils/QMetadataUtils.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="506">
@@ -506,42 +433,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/SubscriptionObserver.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../apis/ground-control/src/lingo/core/Subject.ts" />
     <entry file="file://$PROJECT_DIR$/../../apis/ground-control/src/lingo/core/Subscription.ts" />
-    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/SubscriberFunction.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="36" selection-start-line="5" selection-start-column="36" selection-end-line="5" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/Observable.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#40#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/Observer.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="12" column="31" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../apis/ground-control/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="44">
@@ -706,37 +599,122 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/Subject.ts">
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/map.ts" />
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/impl/Context.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="13" column="43" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
+        <state relative-caret-position="154">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/SubscriptionObserver.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="2" lean-forward="true" selection-start-line="1" selection-start-column="56" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/SubscriberFunction.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="36" selection-start-line="5" selection-start-column="36" selection-end-line="5" selection-end-column="36" />
           <folding>
-            <element signature="e#0#42#0" expanded="true" />
+            <element signature="e#0#51#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/Subscription.ts">
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/share.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="22" column="25" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/EntitySearch.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="924">
-          <caret line="42" column="6" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#101#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="154">
+          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../apis/ground-control/src/InjectionTokens.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="110">
           <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/package.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../generators/runway/node_modules/typescript/lib/lib.es5.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="311">
+          <caret line="1319" column="4" selection-start-line="1319" selection-start-column="4" selection-end-line="1319" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/Observer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="11" selection-start-line="11" selection-end-line="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/merge.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/combineLatest.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/withLatestFrom.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="24" column="22" lean-forward="true" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/pipe.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="17" column="56" lean-forward="true" selection-start-line="17" selection-start-column="56" selection-end-line="17" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/distinctUntilChanged.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/Subscription.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="20" column="21" lean-forward="true" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="66">
+            <caret line="3" selection-start-line="3" selection-end-line="3" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state>
+          <caret column="2" selection-start-column="2" selection-end-column="2" />
         </state>
       </provider>
     </entry>
@@ -747,65 +725,101 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/impl/Utils.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="102" column="7" selection-start-line="102" selection-start-column="7" selection-end-line="102" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/combineLatest.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="113" selection-start-line="3" selection-start-column="113" selection-end-line="3" selection-end-column="113" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../apis/check-in/src/Selector.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="109" column="20" lean-forward="true" selection-start-line="109" selection-start-column="20" selection-end-line="109" selection-end-column="20" />
+        <state relative-caret-position="-1054">
+          <caret line="93" column="15" lean-forward="true" selection-start-line="93" selection-start-column="15" selection-end-line="93" selection-end-column="15" />
           <folding>
-            <element signature="e#0#107#0" expanded="true" />
+            <element signature="e#0#93#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/map.ts">
+    <entry file="file://$PROJECT_DIR$/../../apis/terminal-map/src/InjectionTokens.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        <state relative-caret-position="66">
+          <caret line="3" column="32" selection-start-line="3" selection-start-column="32" selection-end-line="3" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/BehaviorSubject.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="13" column="30" selection-start-line="13" selection-start-column="30" selection-end-line="13" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/Observable.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="463">
+          <caret line="135" selection-start-line="135" selection-end-line="135" />
+          <folding>
+            <element signature="e#0#62#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/EntitySearch.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="599">
+          <caret line="42" column="6" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#101#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/Subject.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#73#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../libs/observe/src/index.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="44">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
+          <caret line="2" column="32" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="32" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/pipe.ts">
+    <entry file="file://$PROJECT_DIR$/../../apis/terminal-map/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
-          <caret line="8" column="8" lean-forward="true" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
+          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/share.ts">
+    <entry file="file://$PROJECT_DIR$/../../apis/terminal-map/src/store/TerminalStore.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        <state relative-caret-position="22">
+          <caret line="22" column="47" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#77#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/distinctUntilChanged.ts">
+    <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/impl/Utils.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+        <state relative-caret-position="202">
+          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../apis/terminal-map/src/sync/SharedChangeList.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="6" column="49" selection-start-line="6" selection-start-column="49" selection-end-line="6" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
