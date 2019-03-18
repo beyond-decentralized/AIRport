@@ -1,21 +1,21 @@
-import {DI}                 from '@airport/di'
+import {DI} from '@airport/di'
 import {DatastructureUtils} from '@airport/ground-control'
 import {
 	AIRPORT_DATABASE,
 	Q_METADATA_UTILS,
 	UTILS
-}                           from '../InjectionTokens'
-import {IAirportDatabase}   from '../lingo/AirportDatabase'
-import {IEntityUtils}       from '../lingo/utils/EntityUtils'
-import {IFieldUtils}        from '../lingo/utils/FieldUtils'
-import {IQMetadataUtils}    from '../lingo/utils/QMetadataUtils'
-import {IQueryUtils}        from '../lingo/utils/QueryUtils'
-import {ISchemaUtils}       from '../lingo/utils/SchemaUtils'
-import {IUtils}             from '../lingo/utils/Utils'
-import {EntityUtils}        from './utils/EntityUtils'
-import {FieldUtils}         from './utils/FieldUtils'
-import {QueryUtils}         from './utils/QueryUtils'
-import {SchemaUtils}        from './utils/SchemaUtils'
+} from '../diTokens'
+import {IAirportDatabase} from '../lingo/AirportDatabase'
+import {IEntityUtils} from '../lingo/utils/EntityUtils'
+import {IFieldUtils} from '../lingo/utils/FieldUtils'
+import {IQMetadataUtils} from '../lingo/utils/QMetadataUtils'
+import {IQueryUtils} from '../lingo/utils/QueryUtils'
+import {ISchemaUtils} from '../lingo/utils/SchemaUtils'
+import {IUtils} from '../lingo/utils/Utils'
+import {EntityUtils} from './utils/EntityUtils'
+import {FieldUtils} from './utils/FieldUtils'
+import {QueryUtils} from './utils/QueryUtils'
+import {SchemaUtils} from './utils/SchemaUtils'
 
 export class Utils
 	extends DatastructureUtils
@@ -32,12 +32,16 @@ export class Utils
 		super()
 
 		DI.get(
-			di => {
-				[this.airportDb, this.Metadata] = di
-				this.Entity                     = new EntityUtils(this)
-				this.Field                      = new FieldUtils(this)
-				this.Query                      = new QueryUtils(this)
-				this.Schema                     = new SchemaUtils(this.airportDb, this)
+			(
+				airportDb,
+				Metadata
+			) => {
+				this.airportDb = airportDb
+				this.Metadata  = Metadata
+				this.Entity    = new EntityUtils(this)
+				this.Field     = new FieldUtils(this)
+				this.Query     = new QueryUtils(this)
+				this.Schema    = new SchemaUtils(this.airportDb, this)
 			}, AIRPORT_DATABASE, Q_METADATA_UTILS)
 
 	}

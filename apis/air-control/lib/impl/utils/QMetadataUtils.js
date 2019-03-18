@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const lib_1 = require("@airport/di/lib");
-const InjectionTokens_1 = require("../../InjectionTokens");
+const diTokens_1 = require("../../diTokens");
 class QMetadataUtils {
     constructor() {
-        lib_1.DI.get(di => {
-            [this.airportDb, this.utils] = di;
-        }, InjectionTokens_1.AIRPORT_DATABASE, InjectionTokens_1.UTILS);
+        lib_1.DI.get((airportDb, utils) => {
+            this.airportDb = airportDb;
+            this.utils = utils;
+        }, diTokens_1.AIRPORT_DATABASE, diTokens_1.UTILS);
     }
     getAllColumns(qEntity) {
         return qEntity.__driver__.allColumns;
@@ -21,5 +22,5 @@ class QMetadataUtils {
     }
 }
 exports.QMetadataUtils = QMetadataUtils;
-lib_1.DI.set(InjectionTokens_1.Q_METADATA_UTILS, QMetadataUtils);
+lib_1.DI.set(diTokens_1.Q_METADATA_UTILS, QMetadataUtils);
 //# sourceMappingURL=QMetadataUtils.js.map

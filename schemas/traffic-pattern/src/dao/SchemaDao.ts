@@ -1,13 +1,12 @@
-import {Y}                from '@airport/air-control'
-import {max}              from '@airport/air-control/lib/impl/core/field/Functions'
-import {tree}             from '@airport/air-control/lib/impl/core/Joins'
-import {and}              from '@airport/air-control/lib/impl/core/operation/LogicalOperation'
 import {
-	AirportDatabaseToken,
-	UtilsToken
-}                         from '@airport/air-control/lib/InjectionTokens'
-import {IAirportDatabase} from '@airport/air-control/lib/lingo/AirportDatabase'
-import {IUtils}     from '@airport/air-control/lib/lingo/utils/Utils'
+	AIRPORT_DATABASE,
+	and,
+	IAirportDatabase,
+	max,
+	tree,
+	Y
+}                   from '@airport/air-control'
+import {DI}         from '@airport/di'
 import {
 	DomainName,
 	SchemaIndex,
@@ -16,8 +15,6 @@ import {
 	SchemaVersionId
 }                   from '@airport/ground-control'
 import {QDomain}    from '@airport/territory'
-import {Inject}     from 'typedi/decorators/Inject'
-import {Service}    from 'typedi/decorators/Service'
 import {
 	BaseSchemaDao,
 	IBaseSchemaDao,
@@ -26,7 +23,7 @@ import {
 	QSchema,
 	QSchemaVersion
 }                   from '../generated/generated'
-import {SCHEMA_DAO} from '../InjectionTokens'
+import {SCHEMA_DAO} from '../diTokens'
 
 
 export interface ISchemaDao
@@ -54,19 +51,9 @@ export interface ISchemaDao
 
 }
 
-@Service(SCHEMA_DAO)
 export class SchemaDao
 	extends BaseSchemaDao
 	implements ISchemaDao {
-
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDatabase: IAirportDatabase,
-		@Inject(UtilsToken)
-			utils: IUtils,
-	) {
-		super(utils)
-	}
 
 	async findAllActive()
 		: Promise<ISchema[]> {
@@ -259,3 +246,5 @@ export class SchemaDao
 		return mapByName
 	}
 }
+
+DI.set(SCHEMA_DAO, SchemaDao)

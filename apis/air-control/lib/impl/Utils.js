@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
-const InjectionTokens_1 = require("../InjectionTokens");
+const diTokens_1 = require("../diTokens");
 const EntityUtils_1 = require("./utils/EntityUtils");
 const FieldUtils_1 = require("./utils/FieldUtils");
 const QueryUtils_1 = require("./utils/QueryUtils");
@@ -10,13 +10,14 @@ const SchemaUtils_1 = require("./utils/SchemaUtils");
 class Utils extends ground_control_1.DatastructureUtils {
     constructor() {
         super();
-        di_1.DI.get(di => {
-            [this.airportDb, this.Metadata] = di;
+        di_1.DI.get((airportDb, Metadata) => {
+            this.airportDb = airportDb;
+            this.Metadata = Metadata;
             this.Entity = new EntityUtils_1.EntityUtils(this);
             this.Field = new FieldUtils_1.FieldUtils(this);
             this.Query = new QueryUtils_1.QueryUtils(this);
             this.Schema = new SchemaUtils_1.SchemaUtils(this.airportDb, this);
-        }, InjectionTokens_1.AIRPORT_DATABASE, InjectionTokens_1.Q_METADATA_UTILS);
+        }, diTokens_1.AIRPORT_DATABASE, diTokens_1.Q_METADATA_UTILS);
     }
     strsToNums(strings) {
         return strings.map(str => parseInt(str));
@@ -89,5 +90,5 @@ class Utils extends ground_control_1.DatastructureUtils {
     }
 }
 exports.Utils = Utils;
-di_1.DI.set(InjectionTokens_1.UTILS, Utils);
+di_1.DI.set(diTokens_1.UTILS, Utils);
 //# sourceMappingURL=Utils.js.map

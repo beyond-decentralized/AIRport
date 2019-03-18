@@ -5,7 +5,7 @@ import {
 }           from "../generated/generated";
 import {
 	PACKAGE_UNIT_DAO
-}           from '../InjectionTokens';
+}           from '../diTokens';
 
 export interface IPackagedUnitDao
 	extends IBasePackagedUnitDao {

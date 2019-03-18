@@ -1,6 +1,7 @@
 import {or}                         from '@airport/air-control'
+import {DI}                         from '@airport/di'
 import {ColumnId}                   from '@airport/ground-control'
-import {Service}                    from 'typedi'
+import {SCHEMA_RELATION_COLUMN_DAO} from '../diTokens'
 import {
 	BaseSchemaRelationColumnDao,
 	IBaseSchemaRelationColumnDao,
@@ -8,7 +9,6 @@ import {
 	Q,
 	QSchemaRelationColumn,
 }                                   from '../generated/generated'
-import {SCHEMA_RELATION_COLUMN_DAO} from '../InjectionTokens'
 
 export interface ISchemaRelationColumnDao
 	extends IBaseSchemaRelationColumnDao {
@@ -19,7 +19,6 @@ export interface ISchemaRelationColumnDao
 
 }
 
-@Service(SCHEMA_RELATION_COLUMN_DAO)
 export class SchemaRelationColumnDao
 	extends BaseSchemaRelationColumnDao
 	implements ISchemaRelationColumnDao {
@@ -42,3 +41,5 @@ export class SchemaRelationColumnDao
 	}
 
 }
+
+DI.set(SCHEMA_RELATION_COLUMN_DAO, SchemaRelationColumnDao)

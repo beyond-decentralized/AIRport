@@ -3,7 +3,7 @@ import {
 	BaseApplicationPackageDao,
 	IBaseApplicationDao
 }                                from '../generated/baseDaos'
-import {APPLICATION_PACKAGE_DAO} from '../InjectionTokens'
+import {APPLICATION_PACKAGE_DAO} from '../diTokens'
 
 export interface IApplicationPackageDao
 	extends IBaseApplicationDao {

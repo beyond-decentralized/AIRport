@@ -1,19 +1,21 @@
 import {
-	AirportDatabaseToken,
+	AIRPORT_DATABASE,
 	IAirportDatabase,
 	QSchemaInternal,
 	setQSchemaEntities
 }                                                 from '@airport/air-control'
+import {DI}                                       from '@airport/di'
 import {
+	DB_SCHEMA_UTILS,
 	DbSchema,
-	DbSchemaUtilsToken,
 	IDbSchemaUtils,
 }                                                 from '@airport/ground-control'
-import {
-	Inject,
-	Service
-}                                                 from 'typedi'
 import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos} from './dao/dao'
+import {
+	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS,
+	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS,
+	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA
+}                                                 from './diTokens'
 import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos} from './dmo/dmo'
 import {
 	LocalQSchema,
@@ -30,23 +32,17 @@ import {QSchemaRelation}                          from './generated/schema/qsche
 import {QSchemaRelationColumn}                    from './generated/schema/qschemarelationcolumn'
 import {QSchemaVersion}                           from './generated/schema/qschemaversion'
 import {QVersionedSchemaObject}                   from './generated/schema/qversionedschemaobject'
-import {
-	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS,
-	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS,
-	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA
-}                                                 from './InjectionTokens'
 
 export * from './dao/dao'
 export * from './ddl/ddl'
 export * from './generated/generated'
-export * from './InjectionTokens'
+export * from './diTokens'
 
 export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSchema
 	extends LocalQSchema {
 
 }
 
-@Service(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA)
 export class AtAirport_TrafficPattern_QSchema
 	implements NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSchema,
 	           QSchemaInternal {
@@ -68,21 +64,36 @@ export class AtAirport_TrafficPattern_QSchema
 	SchemaVersion: QSchemaVersion
 	VersionedSchemaObject: QVersionedSchemaObject
 
-	constructor(
-		@Inject(AirportDatabaseToken)
+	public dao: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos
+	public dmo: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos
+
+	constructor() {
+		DI.get((
+			airportDatabase,
+			dao,
+			dbSchemaUtils,
+			dmo
+			) => {
+				this.dao = dao
+				this.dmo = dmo
+				this.init(airportDatabase, dbSchemaUtils)
+			}, AIRPORT_DATABASE,
+			NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS,
+			DB_SCHEMA_UTILS,
+			NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS
+		)
+
+	}
+
+	private init(
 		airportDatabase: IAirportDatabase,
-		@Inject(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS)
-		public dao: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos,
-		@Inject(DbSchemaUtilsToken)
-		dbSchemaUtils: IDbSchemaUtils,
-		@Inject(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS)
-		public dmo: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos,
-	) {
+		dbSchemaUtils: IDbSchemaUtils
+	): void {
 		const schemaName = dbSchemaUtils.getSchemaName(SCHEMA)
 
 		this.__constructors__ = Q_SCHEMA.__constructors
-		Q_SCHEMA.dao          = dao
-		Q_SCHEMA.dmo          = dmo
+		Q_SCHEMA.dao          = this.dao
+		Q_SCHEMA.dmo          = this.dmo
 		Q_SCHEMA.__exported__ = Q_SCHEMA
 		Q_SCHEMA.__injected__ = this
 		this.__injected__     = this
@@ -97,8 +108,8 @@ export class AtAirport_TrafficPattern_QSchema
 			existingQSchema.__exported__ = Q_SCHEMA
 			existingQSchema.__created__  = existingQSchema
 
-			existingQSchema.dao              = dao
-			existingQSchema.dmo              = dao
+			existingQSchema.dao              = this.dao
+			existingQSchema.dmo              = this.dmo
 			existingQSchema.__constructors__ = Q_SCHEMA.__constructors
 			setQSchemaEntities(existingQSchema.__dbSchema__, this, airportDatabase.qSchemas)
 			setQSchemaEntities(existingQSchema.__dbSchema__, Q_SCHEMA, airportDatabase.qSchemas)
@@ -110,3 +121,5 @@ export class AtAirport_TrafficPattern_QSchema
 	}
 
 }
+
+DI.set(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA, AtAirport_TrafficPattern_QSchema)

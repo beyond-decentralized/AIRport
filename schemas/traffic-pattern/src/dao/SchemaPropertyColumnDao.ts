@@ -1,6 +1,5 @@
-import {or}                         from '@airport/air-control'
+import {DI}                         from '@airport/di'
 import {ColumnId}                   from '@airport/ground-control'
-import {Service}                    from 'typedi'
 import {
 	BaseSchemaPropertyColumnDao,
 	IBaseSchemaPropertyColumnDao,
@@ -8,7 +7,7 @@ import {
 	Q,
 	QSchemaPropertyColumn,
 }                                   from '../generated/generated'
-import {SCHEMA_PROPERTY_COLUMN_DAO} from '../InjectionTokens'
+import {SCHEMA_PROPERTY_COLUMN_DAO} from '../diTokens'
 
 export interface ISchemaPropertyColumnDao
 	extends IBaseSchemaPropertyColumnDao {
@@ -19,7 +18,6 @@ export interface ISchemaPropertyColumnDao
 
 }
 
-@Service(SCHEMA_PROPERTY_COLUMN_DAO)
 export class SchemaPropertyColumnDao
 	extends BaseSchemaPropertyColumnDao
 	implements ISchemaPropertyColumnDao {
@@ -40,3 +38,5 @@ export class SchemaPropertyColumnDao
 	}
 
 }
+
+DI.set(SCHEMA_PROPERTY_COLUMN_DAO, SchemaPropertyColumnDao)

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
-const InjectionTokens_1 = require("../../InjectionTokens");
+const diTokens_1 = require("../../diTokens");
 class DbSchemaUtils {
     getSchemaName(jsonSchema) {
         return this.getSchemaNameFromDomainAndJsonSchemaNames(jsonSchema.domain, jsonSchema.name);
@@ -19,5 +19,5 @@ class DbSchemaUtils {
     }
 }
 exports.DbSchemaUtils = DbSchemaUtils;
-di_1.DI.set(InjectionTokens_1.DB_SCHEMA_UTILS, DbSchemaUtils);
+di_1.DI.set(diTokens_1.DB_SCHEMA_UTILS, DbSchemaUtils);
 //# sourceMappingURL=DbSchemaUtils.js.map

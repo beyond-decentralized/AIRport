@@ -8,10 +8,11 @@ const EntityDatabaseFacade_1 = require("./EntityDatabaseFacade");
  */
 class Dao {
     constructor(dbEntity, Q) {
-        di_1.DI.get(di => {
-            [this.utils] = di;
+        di_1.DI.get((airportDatabase, utils) => {
+            this.airportDatabase = airportDatabase;
+            this.utils = utils;
             this.db = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q, this.utils);
-        }, air_control_1.UTILS);
+        }, air_control_1.AIRPORT_DATABASE, air_control_1.UTILS);
     }
     get find() {
         return this.db.find;

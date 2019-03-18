@@ -1,9 +1,7 @@
 export declare type Token = number;
-export interface ITokenSequence {
-    n: Token;
+export interface DiToken<Injectable> {
 }
-export declare class TokenSequence {
-    counter: number;
-    readonly n: number;
+export interface GenericDependencyInjectionError {
+    DiTokenMustBeGenerisizedWithTypeOfInjectedObject(): void;
 }
-export declare const TOKE: TokenSequence;
+export declare function diToken<I = GenericDependencyInjectionError>(): DiToken<I>;

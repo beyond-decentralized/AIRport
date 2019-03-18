@@ -1,5 +1,5 @@
 import {DI}              from '@airport/di'
-import {DB_SCHEMA_UTILS} from '../../InjectionTokens'
+import {DB_SCHEMA_UTILS} from '../../diTokens'
 import {ColumnName}      from '../../lingo/schema/Property'
 import {
 	DomainName,

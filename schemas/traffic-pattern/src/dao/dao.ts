@@ -1,4 +1,5 @@
-import {Service}                                  from 'typedi'
+import {DI}                                       from '@airport/di'
+import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS} from '../diTokens'
 import {
 	IBaseSchemaColumnDao,
 	IBaseSchemaDao,
@@ -9,10 +10,8 @@ import {
 	IBaseSchemaRelationColumnDao,
 	IBaseSchemaRelationDao,
 	IBaseSchemaVersionDao,
-	IBaseVersionedSchemaObjectDao,
-	Q_SCHEMA
+	IBaseVersionedSchemaObjectDao
 }                                                 from '../generated/generated'
-import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS} from '../InjectionTokens'
 
 export * from './SchemaColumnDao'
 export * from './SchemaDao'
@@ -40,19 +39,20 @@ export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos {
 
 }
 
-@Service(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS)
 class AtAirport_TrafficPattern_Daos
 	implements NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos {
 
-	Schema: IBaseSchemaDao;
-	SchemaColumn: IBaseSchemaColumnDao;
-	SchemaEntity: IBaseSchemaEntityDao;
-	SchemaProperty: IBaseSchemaPropertyDao;
-	SchemaPropertyColumn: IBaseSchemaPropertyColumnDao;
-	SchemaReference: IBaseSchemaReferenceDao;
-	SchemaRelation: IBaseSchemaRelationDao;
-	SchemaRelationColumn: IBaseSchemaRelationColumnDao;
-	SchemaVersion: IBaseSchemaVersionDao;
-	VersionedSchemaObject: IBaseVersionedSchemaObjectDao;
+	Schema: IBaseSchemaDao
+	SchemaColumn: IBaseSchemaColumnDao
+	SchemaEntity: IBaseSchemaEntityDao
+	SchemaProperty: IBaseSchemaPropertyDao
+	SchemaPropertyColumn: IBaseSchemaPropertyColumnDao
+	SchemaReference: IBaseSchemaReferenceDao
+	SchemaRelation: IBaseSchemaRelationDao
+	SchemaRelationColumn: IBaseSchemaRelationColumnDao
+	SchemaVersion: IBaseSchemaVersionDao
+	VersionedSchemaObject: IBaseVersionedSchemaObjectDao
 
 }
+
+DI.set(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS, AtAirport_TrafficPattern_Daos)

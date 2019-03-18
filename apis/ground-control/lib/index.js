@@ -32,5 +32,5 @@ __export(require("./lingo/query/facade/Query"));
 __export(require("./lingo/query/QueryResultType"));
 __export(require("./lingo/schema/DatabaseRelationConfiguration"));
 __export(require("./lingo/schema/Property"));
-__export(require("./InjectionTokens"));
+__export(require("./diTokens"));
 //# sourceMappingURL=index.js.map

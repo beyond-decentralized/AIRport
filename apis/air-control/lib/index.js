@@ -64,5 +64,5 @@ __export(require("./impl/Utils"));
 __export(require("./lingo/core/entity/metadata/ColumnDecorators"));
 __export(require("./lingo/query/api/EntityLookup"));
 __export(require("./lingo/query/facade/Query"));
-__export(require("./InjectionTokens"));
+__export(require("./diTokens"));
 //# sourceMappingURL=index.js.map

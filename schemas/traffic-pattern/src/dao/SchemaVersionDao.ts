@@ -1,11 +1,8 @@
 import {
-	AIRPORT_DATABASE,
 	and,
 	distinct,
 	field,
-	IAirportDatabase,
 	IQNumberField,
-	IUtils,
 	max,
 	RawFieldQuery,
 	tree,
@@ -18,6 +15,10 @@ import {
 	SchemaName
 }                          from '@airport/ground-control'
 import {QDomain}           from '@airport/territory'
+import {
+	SCHEMA_VERSION_DAO,
+	SCHEMA_VERSION_DMO
+}                          from '../diTokens'
 import {ISchemaVersionDmo} from '../dmo/SchemaVersionDmo'
 import {
 	BaseSchemaVersionDao,
@@ -27,10 +28,6 @@ import {
 	QSchema,
 	QSchemaVersion
 }                          from '../generated/generated'
-import {
-	SCHEMA_VERSION_DAO,
-	SCHEMA_VERSION_DMO
-}                          from '../InjectionTokens'
 
 export interface ISchemaVersionDao
 	extends IBaseSchemaVersionDao {
@@ -50,21 +47,15 @@ export class SchemaVersionDao
 	extends BaseSchemaVersionDao
 	implements ISchemaVersionDao {
 
-	private airportDatabase: IAirportDatabase
 	private schemaVersionDmo: ISchemaVersionDmo
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		@Inject(SCHEMA_VERSION_DMO)
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
+	constructor() {
 		super()
 
 		DI.get(
-			di => {
-				[this.airportDatabase, this.schemaVersionDmo] = di
-			}, AIRPORT_DATABASE, SCHEMA_VERSION_DMO)
+			(schemaVersionDmo) => {
+				this.schemaVersionDmo = schemaVersionDmo
+			}, SCHEMA_VERSION_DMO)
 	}
 
 	async findAllLatestForSchemaIndexes(

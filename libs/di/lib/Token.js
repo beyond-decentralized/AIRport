@@ -1,13 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class TokenSequence {
-    constructor() {
-        this.counter = 0;
-    }
-    get n() {
-        return this.counter++;
-    }
+let diTokenSeq = -1;
+function diToken() {
+    diTokenSeq++;
+    return diTokenSeq;
 }
-exports.TokenSequence = TokenSequence;
-exports.TOKE = new TokenSequence();
+exports.diToken = diToken;
 //# sourceMappingURL=Token.js.map

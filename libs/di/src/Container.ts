@@ -1,7 +1,60 @@
-import {Token} from './Token'
+import {
+	DiToken,
+	Token
+} from './Token'
 
 export interface IContainer {
 
+	get<A>(
+		callback: (
+			objA: A
+		) => void,
+		tokenA: DiToken<A>
+	): void
+	get<A, B>(
+		callback: (
+			objA: A,
+			objB: B
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>
+	): void
+	get<A, B, C>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>
+	): void
+	get<A, B, C, D>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>
+	): void
+	get<A, B, C, D, E>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+			objE: E,
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>,
+		tokenE: DiToken<E>
+	): void
 	get(
 		callback: (
 			...objects: any[]
@@ -27,18 +80,68 @@ export class Container {
 	onInitCallback: () => void
 	numPendingInits = 0
 
+	get<A>(
+		callback: (
+			objA: A
+		) => void,
+		tokenA: DiToken<A>
+	): void
+	get<A, B>(
+		callback: (
+			objA: A,
+			objB: B
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>
+	): void
+	get<A, B, C>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>
+	): void
+	get<A, B, C, D>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>
+	): void
+	get<A, B, C, D, E>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+			objE: E
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>,
+		tokenE: DiToken<E>
+	): void
 	get(
 		callback: (...objects: any[]) => void,
-		...tokens: Token[]
+		...tokens: DiToken<any>[]
 	): void {
 		this.numPendingInits++
 		setTimeout(() => {
 			callback(tokens.map(
 				token => {
-					let object = this.objects[token]
+					let object = this.objects[token as any]
 					if (!object) {
-						object              = new this.classes[token]()
-						this.objects[token] = object
+						object                     = new this.classes[token as any]()
+						this.objects[token as any] = object
 					}
 
 					return object
@@ -57,11 +160,11 @@ export class Container {
 		this.onInitCallback = callback
 	}
 
-	set(
-		token: Token,
-		clazz: any
+	set<I>(
+		token: DiToken<I>,
+		clazz: new() => I
 	): void {
-		this.classes[token] = clazz
+		this.classes[token as any] = clazz
 	}
 
 }

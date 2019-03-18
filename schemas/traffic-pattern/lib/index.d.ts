@@ -1,5 +1,5 @@
-import { IAirportDatabase, QSchemaInternal } from '@airport/air-control';
-import { DbSchema, IDbSchemaUtils } from '@airport/ground-control';
+import { QSchemaInternal } from '@airport/air-control';
+import { DbSchema } from '@airport/ground-control';
 import { NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos } from './dao/dao';
 import { NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos } from './dmo/dmo';
 import { LocalQSchema } from './generated/qSchema';
@@ -16,12 +16,10 @@ import { QVersionedSchemaObject } from './generated/schema/qversionedschemaobjec
 export * from './dao/dao';
 export * from './ddl/ddl';
 export * from './generated/generated';
-export * from './InjectionTokens';
+export * from './diTokens';
 export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSchema extends LocalQSchema {
 }
 export declare class AtAirport_TrafficPattern_QSchema implements NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSchema, QSchemaInternal {
-    dao: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos;
-    dmo: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos;
     db: DbSchema;
     __constructors__: any;
     __created__: any;
@@ -37,5 +35,8 @@ export declare class AtAirport_TrafficPattern_QSchema implements NPMJS_ORG___AIR
     SchemaRelationColumn: QSchemaRelationColumn;
     SchemaVersion: QSchemaVersion;
     VersionedSchemaObject: QVersionedSchemaObject;
-    constructor(airportDatabase: IAirportDatabase, dao: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos, dbSchemaUtils: IDbSchemaUtils, dmo: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos);
+    dao: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos;
+    dmo: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos;
+    constructor();
+    private init;
 }

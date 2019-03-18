@@ -1,5 +1,5 @@
+import {DI}                from '@airport/di'
 import {EntityId}          from '@airport/ground-control'
-import {Service}           from 'typedi'
 import {
 	BaseSchemaColumnDao,
 	IBaseSchemaColumnDao,
@@ -7,7 +7,7 @@ import {
 	Q,
 	QSchemaColumn
 }                          from '../generated/generated'
-import {SCHEMA_COLUMN_DAO} from '../InjectionTokens'
+import {SCHEMA_COLUMN_DAO} from '../diTokens'
 
 export interface ISchemaColumnDao
 	extends IBaseSchemaColumnDao {
@@ -18,7 +18,6 @@ export interface ISchemaColumnDao
 
 }
 
-@Service(SCHEMA_COLUMN_DAO)
 export class SchemaColumnDao
 	extends BaseSchemaColumnDao
 	implements ISchemaColumnDao {
@@ -38,3 +37,5 @@ export class SchemaColumnDao
 	}
 
 }
+
+DI.set(SCHEMA_COLUMN_DAO, SchemaColumnDao)

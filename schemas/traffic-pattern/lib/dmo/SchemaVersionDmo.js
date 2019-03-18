@@ -1,18 +1,10 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
+const di_1 = require("@airport/di");
+const diTokens_1 = require("../diTokens");
 const generated_1 = require("../generated/generated");
-const InjectionTokens_1 = require("../InjectionTokens");
-let SchemaVersionDmo = class SchemaVersionDmo extends generated_1.BaseSchemaVersionDmo {
-};
-SchemaVersionDmo = __decorate([
-    typedi_1.Service(InjectionTokens_1.SCHEMA_VERSION_DMO)
-], SchemaVersionDmo);
+class SchemaVersionDmo extends generated_1.BaseSchemaVersionDmo {
+}
 exports.SchemaVersionDmo = SchemaVersionDmo;
+di_1.DI.set(diTokens_1.SCHEMA_VERSION_DMO, SchemaVersionDmo);
 //# sourceMappingURL=SchemaVersionDmo.js.map

@@ -1,18 +1,16 @@
+import {DI}                from '@airport/di'
 import {SchemaVersionId}   from '@airport/ground-control'
-import {Service}           from 'typedi'
 import {
 	BaseSchemaEntityDao,
 	IBaseSchemaEntityDao,
 	ISchemaEntity,
-	ISchemaReference,
 	Q,
 	QSchemaEntity,
-	QSchemaReference,
 }                          from '../generated/generated'
-import {SCHEMA_ENTITY_DAO} from '../InjectionTokens'
+import {SCHEMA_ENTITY_DAO} from '../diTokens'
 
 export interface ISchemaEntityDao
-extends IBaseSchemaEntityDao {
+	extends IBaseSchemaEntityDao {
 
 	findAllForSchemaVersions(
 		schemaVersionIds: SchemaVersionId[]
@@ -20,7 +18,6 @@ extends IBaseSchemaEntityDao {
 
 }
 
-@Service(SCHEMA_ENTITY_DAO)
 export class SchemaEntityDao
 	extends BaseSchemaEntityDao
 	implements ISchemaEntityDao {
@@ -40,3 +37,5 @@ export class SchemaEntityDao
 	}
 
 }
+
+DI.set(SCHEMA_ENTITY_DAO, SchemaEntityDao)

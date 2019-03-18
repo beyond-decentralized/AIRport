@@ -1,5 +1,6 @@
+import {DI}                   from '@airport/di'
 import {SchemaVersionId}      from '@airport/ground-control'
-import {Service}              from 'typedi'
+import {SCHEMA_REFERENCE_DAO} from '../diTokens'
 import {
 	BaseSchemaReferenceDao,
 	IBaseSchemaReferenceDao,
@@ -7,7 +8,6 @@ import {
 	Q,
 	QSchemaReference,
 }                             from '../generated/generated'
-import {SCHEMA_REFERENCE_DAO} from '../InjectionTokens'
 
 export interface ISchemaReferenceDao
 	extends IBaseSchemaReferenceDao {
@@ -18,7 +18,6 @@ export interface ISchemaReferenceDao
 
 }
 
-@Service(SCHEMA_REFERENCE_DAO)
 export class SchemaReferenceDao
 	extends BaseSchemaReferenceDao
 	implements ISchemaReferenceDao {
@@ -38,3 +37,5 @@ export class SchemaReferenceDao
 	}
 
 }
+
+DI.set(SCHEMA_REFERENCE_DAO, SchemaReferenceDao)

@@ -113,10 +113,8 @@ export interface IBaseSchemaDao
 export class BaseSchemaDao
   extends Dao<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, QSchema>
 	implements IBaseSchemaDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['Schema'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['Schema'], Q)
 	}
 }
 
@@ -128,10 +126,8 @@ export interface IBaseSchemaColumnDao
 export class BaseSchemaColumnDao
   extends Dao<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, QSchemaColumn>
 	implements IBaseSchemaColumnDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SchemaColumn'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SchemaColumn'], Q)
 	}
 }
 
@@ -143,10 +139,8 @@ export interface IBaseSchemaEntityDao
 export class BaseSchemaEntityDao
   extends Dao<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, QSchemaEntity>
 	implements IBaseSchemaEntityDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SchemaEntity'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SchemaEntity'], Q)
 	}
 }
 
@@ -158,10 +152,8 @@ export interface IBaseSchemaPropertyDao
 export class BaseSchemaPropertyDao
   extends Dao<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, QSchemaProperty>
 	implements IBaseSchemaPropertyDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SchemaProperty'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SchemaProperty'], Q)
 	}
 }
 
@@ -173,10 +165,8 @@ export interface IBaseSchemaPropertyColumnDao
 export class BaseSchemaPropertyColumnDao
   extends Dao<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, QSchemaPropertyColumn>
 	implements IBaseSchemaPropertyColumnDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SchemaPropertyColumn'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SchemaPropertyColumn'], Q)
 	}
 }
 
@@ -188,10 +178,8 @@ export interface IBaseSchemaReferenceDao
 export class BaseSchemaReferenceDao
   extends Dao<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, QSchemaReference>
 	implements IBaseSchemaReferenceDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SchemaReference'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SchemaReference'], Q)
 	}
 }
 
@@ -203,10 +191,8 @@ export interface IBaseSchemaRelationDao
 export class BaseSchemaRelationDao
   extends Dao<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, QSchemaRelation>
 	implements IBaseSchemaRelationDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SchemaRelation'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SchemaRelation'], Q)
 	}
 }
 
@@ -218,10 +204,8 @@ export interface IBaseSchemaRelationColumnDao
 export class BaseSchemaRelationColumnDao
   extends Dao<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, QSchemaRelationColumn>
 	implements IBaseSchemaRelationColumnDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SchemaRelationColumn'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SchemaRelationColumn'], Q)
 	}
 }
 
@@ -233,10 +217,8 @@ export interface IBaseSchemaVersionDao
 export class BaseSchemaVersionDao
   extends Dao<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion>
 	implements IBaseSchemaVersionDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SchemaVersion'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SchemaVersion'], Q)
 	}
 }
 
@@ -248,9 +230,7 @@ export interface IBaseVersionedSchemaObjectDao
 export class BaseVersionedSchemaObjectDao
   extends Dao<IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject>
 	implements IBaseVersionedSchemaObjectDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['VersionedSchemaObject'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['VersionedSchemaObject'], Q)
 	}
 }

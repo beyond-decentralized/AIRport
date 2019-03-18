@@ -1,18 +1,19 @@
-import {Service}            from 'typedi'
+import {DI}                 from '@airport/di'
+import {SCHEMA_VERSION_DMO} from '../diTokens'
 import {
 	BaseSchemaVersionDmo,
 	IBaseSchemaVersionDmo
 }                           from '../generated/generated'
-import {SCHEMA_VERSION_DMO} from '../InjectionTokens'
 
 export interface ISchemaVersionDmo
 	extends IBaseSchemaVersionDmo {
 
 }
 
-@Service(SCHEMA_VERSION_DMO)
 export class SchemaVersionDmo
 	extends BaseSchemaVersionDmo
 	implements ISchemaVersionDmo {
 
 }
+
+DI.set(SCHEMA_VERSION_DMO, SchemaVersionDmo)

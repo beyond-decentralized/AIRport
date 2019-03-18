@@ -12,7 +12,7 @@ import {
 	QDomain
 }                   from '../generated/qdomain'
 import {Q}          from '../generated/qschema'
-import {DOMAIN_DAO} from '../InjectionTokens'
+import {DOMAIN_DAO} from '../diTokens'
 
 export interface IDomainDao
 	extends IBaseDomainDao {

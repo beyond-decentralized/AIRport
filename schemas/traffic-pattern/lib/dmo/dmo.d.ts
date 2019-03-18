@@ -1,4 +1,4 @@
-import { IBaseSchemaColumnDmo, IBaseSchemaDmo, IBaseSchemaEntityDmo, IBaseSchemaPropertyColumnDmo, IBaseSchemaPropertyDmo, IBaseSchemaReferenceDmo, IBaseSchemaRelationColumnDmo, IBaseSchemaRelationDmo, IBaseSchemaVersionDmo, IBaseVersionedSchemaObjectDmo } from '..';
+import { IBaseSchemaColumnDmo, IBaseSchemaDmo, IBaseSchemaEntityDmo, IBaseSchemaPropertyColumnDmo, IBaseSchemaPropertyDmo, IBaseSchemaReferenceDmo, IBaseSchemaRelationColumnDmo, IBaseSchemaRelationDmo, IBaseSchemaVersionDmo, IBaseVersionedSchemaObjectDmo } from '../generated/generated';
 export * from './SchemaVersionDmo';
 export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos {
     Schema: IBaseSchemaDmo;

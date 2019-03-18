@@ -1,16 +1,4 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -22,14 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const diTokens_1 = require("../diTokens");
 const generated_1 = require("../generated/generated");
-const InjectionTokens_1 = require("../InjectionTokens");
-let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVersionDao {
-    constructor(utils) {
+class SchemaVersionDao extends generated_1.BaseSchemaVersionDao {
+    constructor() {
         super();
-        di_1.DI.get(di => {
-            [this.airportDatabase, this.schemaVersionDmo] = di;
-        }, air_control_1.AIRPORT_DATABASE, InjectionTokens_1.SCHEMA_VERSION_DMO);
+        di_1.DI.get((schemaVersionDmo) => {
+            this.schemaVersionDmo = schemaVersionDmo;
+        }, diTokens_1.SCHEMA_VERSION_DMO);
     }
     findAllLatestForSchemaIndexes(schemaIndexes) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -99,13 +87,7 @@ let SchemaVersionDao = class SchemaVersionDao extends generated_1.BaseSchemaVers
             select: svMax.id
         });
     }
-};
-SchemaVersionDao = __decorate([
-    __param(0, Inject(AirportDatabaseToken)),
-    __param(0, Inject(InjectionTokens_1.SCHEMA_VERSION_DMO)),
-    __param(0, Inject(UtilsToken)),
-    __metadata("design:paramtypes", [Object])
-], SchemaVersionDao);
+}
 exports.SchemaVersionDao = SchemaVersionDao;
-di_1.DI.set(InjectionTokens_1.SCHEMA_VERSION_DAO, SchemaVersionDao);
+di_1.DI.set(diTokens_1.SCHEMA_VERSION_DAO, SchemaVersionDao);
 //# sourceMappingURL=SchemaVersionDao.js.map

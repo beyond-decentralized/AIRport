@@ -1778,7 +1778,6 @@ export const SCHEMA = {
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": null,
 									"oneTableIndex": 7,
-									"oneRelationIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -1800,7 +1799,6 @@ export const SCHEMA = {
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": null,
 									"oneTableIndex": 7,
-									"oneRelationIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -1822,7 +1820,6 @@ export const SCHEMA = {
 									"manyRelationIndex": 2,
 									"oneSchemaIndex": null,
 									"oneTableIndex": 7,
-									"oneRelationIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}

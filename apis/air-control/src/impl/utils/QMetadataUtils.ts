@@ -7,7 +7,7 @@ import {
 	AIRPORT_DATABASE,
 	Q_METADATA_UTILS,
 	UTILS
-}                                from '../../InjectionTokens'
+}                                from '../../diTokens'
 import {IAirportDatabase}        from '../../lingo/AirportDatabase'
 import {IQEntityInternal}        from '../../lingo/core/entity/Entity'
 import {IQOperableFieldInternal} from '../../lingo/core/field/OperableField'
@@ -22,8 +22,12 @@ export class QMetadataUtils
 
 	constructor() {
 		DI.get(
-			di => {
-				[this.airportDb, this.utils] = di
+			(
+				airportDb,
+				utils
+			) => {
+				this.airportDb = airportDb
+				this.utils     = utils
 			}, AIRPORT_DATABASE, UTILS)
 	}
 
