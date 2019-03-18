@@ -1,13 +1,14 @@
-import {Service}                   from "typedi";
-import {TMDataFormatVerifierToken} from "../../InjectionTokens";
+import {DI}                      from '@airport/di'
+import {TM_DATA_FORMAT_VERIFIER} from '../../diTokens'
 
 export interface ITMDataFormatVerifier {
 
 }
 
-@Service(TMDataFormatVerifierToken)
 export class TMDataFormatVerifier
 	implements ITMDataFormatVerifier {
 
 	// FIXME: add data format verification
 }
+
+DI.set(TM_DATA_FORMAT_VERIFIER, TMDataFormatVerifier)

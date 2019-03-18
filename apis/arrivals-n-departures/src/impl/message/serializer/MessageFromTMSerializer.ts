@@ -1,5 +1,5 @@
-import {Service}                      from "typedi";
-import {MessageFromTMSerializerToken} from "../../../InjectionTokens";
+import {DI}                         from '@airport/di'
+import {MESSAGE_FROM_TM_SERIALIZER} from '../../../diTokens'
 import {
 	DataTransferMessageFromTM,
 	MessageFromTM,
@@ -7,7 +7,7 @@ import {
 	SerializedDataTransferMessageFromTM,
 	SerializedMessageFromTM,
 	SerializedRepositoryUpdateRequest
-}                                     from "../../../lingo/lingo";
+}                                   from '../../../lingo/lingo'
 
 export interface IMessageFromTMSerializer {
 
@@ -17,28 +17,27 @@ export interface IMessageFromTMSerializer {
 
 }
 
-@Service(MessageFromTMSerializerToken)
 export class MessageFromTMSerializer
 	implements IMessageFromTMSerializer {
 
 	serialize(
 		messageFromTM: MessageFromTM
 	): SerializedMessageFromTM {
-		const protocolVersion = messageFromTM.protocolVersion;
+		const protocolVersion = messageFromTM.protocolVersion
 		if (protocolVersion !== 0) {
-			throw new Error(`Unsupported TmToAgtProtocolVersion: ${protocolVersion}`);
+			throw new Error(`Unsupported TmToAgtProtocolVersion: ${protocolVersion}`)
 		}
-		const contentType = messageFromTM.contentType;
+		const contentType = messageFromTM.contentType
 		switch (contentType) {
 			case MessageFromTMContentType.CONNECTION_REQUEST: {
-				throw new Error('Not implemented');
+				throw new Error('Not implemented')
 			}
 			case MessageFromTMContentType.SYNC_VERIFICATIONS: {
-				throw new Error('Not implemented');
+				throw new Error('Not implemented')
 			}
 			case MessageFromTMContentType.DATA_TRANSFER: {
 				const dataTransferMFTM: DataTransferMessageFromTM
-					= <DataTransferMessageFromTM> messageFromTM;
+					                                                                        = <DataTransferMessageFromTM>messageFromTM
 				const
 					serializedRepositoryUpdateRequests: SerializedRepositoryUpdateRequest[] =
 						dataTransferMFTM.repositoryUpdateRequests.map((
@@ -47,8 +46,8 @@ export class MessageFromTMSerializer
 							repositoryUpdateRequest.agtRepositoryId,
 							repositoryUpdateRequest.tmRepositoryTransactionBlockId,
 							repositoryUpdateRequest.repositoryTransactionBlockContents
-						]);
-				const terminalCredentials = dataTransferMFTM.terminalCredentials;
+						])
+				const terminalCredentials                                                 = dataTransferMFTM.terminalCredentials
 
 				// let serializedSyncsToVerify = null;
 				// if (dataTransferMFTM.syncsToVerify !== null) {
@@ -66,12 +65,14 @@ export class MessageFromTMSerializer
 					serializedRepositoryUpdateRequests,
 					dataTransferMFTM.terminalSyncAcks,
 					// serializedSyncsToVerify
-				];
+				]
 			}
 			default: {
-				throw new Error('Invalid MessageFromTMContentType: ' + contentType);
+				throw new Error('Invalid MessageFromTMContentType: ' + contentType)
 			}
 		}
 	}
 
 }
+
+DI.set(MESSAGE_FROM_TM_SERIALIZER, MessageFromTMSerializer)

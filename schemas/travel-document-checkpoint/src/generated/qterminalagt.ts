@@ -87,7 +87,10 @@ export interface ITerminalAgt {
  * SELECT - All fields and relations (optional).
  */
 export interface TerminalAgtESelect
-    extends IEntitySelectProperties, TerminalAgtEOptionalId, TerminalAgtEUpdateProperties {
+    extends IEntitySelectProperties, TerminalAgtEOptionalId {
+	// Non-Id Properties
+	password?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 	terminal?: TerminalESelect;
 	agt?: AgtESelect;

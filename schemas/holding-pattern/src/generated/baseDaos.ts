@@ -163,10 +163,8 @@ export interface IBaseAbstractRepositoryEntityDao
 export class BaseAbstractRepositoryEntityDao
   extends Dao<IAbstractRepositoryEntity, AbstractRepositoryEntityESelect, AbstractRepositoryEntityECreateProperties, AbstractRepositoryEntityEUpdateColumns, AbstractRepositoryEntityEUpdateProperties, AbstractRepositoryEntityEId, QAbstractRepositoryEntity>
 	implements IBaseAbstractRepositoryEntityDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['AbstractRepositoryEntity'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['AbstractRepositoryEntity'], Q)
 	}
 }
 
@@ -178,10 +176,8 @@ export interface IBaseActorDao
 export class BaseActorDao
   extends Dao<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateColumns, ActorEUpdateProperties, ActorEId, QActor>
 	implements IBaseActorDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['Actor'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['Actor'], Q)
 	}
 }
 
@@ -193,10 +189,8 @@ export interface IBaseActorApplicationDao
 export class BaseActorApplicationDao
   extends Dao<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateColumns, ActorApplicationEUpdateProperties, ActorApplicationEId, QActorApplication>
 	implements IBaseActorApplicationDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['ActorApplication'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['ActorApplication'], Q)
 	}
 }
 
@@ -208,10 +202,8 @@ export interface IBaseApplicationDao
 export class BaseApplicationDao
   extends Dao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, QApplication>
 	implements IBaseApplicationDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['Application'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['Application'], Q)
 	}
 }
 
@@ -223,10 +215,8 @@ export interface IBaseOperationHistoryDao
 export class BaseOperationHistoryDao
   extends Dao<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateColumns, OperationHistoryEUpdateProperties, OperationHistoryEId, QOperationHistory>
 	implements IBaseOperationHistoryDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['OperationHistory'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['OperationHistory'], Q)
 	}
 }
 
@@ -238,10 +228,8 @@ export interface IBaseRecordHistoryDao
 export class BaseRecordHistoryDao
   extends Dao<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateColumns, RecordHistoryEUpdateProperties, RecordHistoryEId, QRecordHistory>
 	implements IBaseRecordHistoryDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RecordHistory'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RecordHistory'], Q)
 	}
 }
 
@@ -253,10 +241,8 @@ export interface IBaseRecordHistoryNewValueDao
 export class BaseRecordHistoryNewValueDao
   extends Dao<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateColumns, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, QRecordHistoryNewValue>
 	implements IBaseRecordHistoryNewValueDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RecordHistoryNewValue'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RecordHistoryNewValue'], Q)
 	}
 }
 
@@ -268,10 +254,8 @@ export interface IBaseRecordHistoryOldValueDao
 export class BaseRecordHistoryOldValueDao
   extends Dao<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, QRecordHistoryOldValue>
 	implements IBaseRecordHistoryOldValueDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RecordHistoryOldValue'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RecordHistoryOldValue'], Q)
 	}
 }
 
@@ -283,10 +267,8 @@ export interface IBaseRepoTransHistoryChangedRepositoryActorDao
 export class BaseRepoTransHistoryChangedRepositoryActorDao
   extends Dao<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateColumns, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, QRepoTransHistoryChangedRepositoryActor>
 	implements IBaseRepoTransHistoryChangedRepositoryActorDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RepoTransHistoryChangedRepositoryActor'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RepoTransHistoryChangedRepositoryActor'], Q)
 	}
 }
 
@@ -298,10 +280,8 @@ export interface IBaseRepositoryDao
 export class BaseRepositoryDao
   extends Dao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, QRepository>
 	implements IBaseRepositoryDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['Repository'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['Repository'], Q)
 	}
 }
 
@@ -313,10 +293,8 @@ export interface IBaseRepositoryActorDao
 export class BaseRepositoryActorDao
   extends Dao<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, QRepositoryActor>
 	implements IBaseRepositoryActorDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RepositoryActor'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RepositoryActor'], Q)
 	}
 }
 
@@ -328,10 +306,8 @@ export interface IBaseRepositoryApplicationDao
 export class BaseRepositoryApplicationDao
   extends Dao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, QRepositoryApplication>
 	implements IBaseRepositoryApplicationDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RepositoryApplication'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RepositoryApplication'], Q)
 	}
 }
 
@@ -343,10 +319,8 @@ export interface IBaseRepositorySchemaDao
 export class BaseRepositorySchemaDao
   extends Dao<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, QRepositorySchema>
 	implements IBaseRepositorySchemaDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RepositorySchema'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RepositorySchema'], Q)
 	}
 }
 
@@ -358,10 +332,8 @@ export interface IBaseRepositoryTransactionHistoryDao
 export class BaseRepositoryTransactionHistoryDao
   extends Dao<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, QRepositoryTransactionHistory>
 	implements IBaseRepositoryTransactionHistoryDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionHistory'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionHistory'], Q)
 	}
 }
 
@@ -373,9 +345,7 @@ export interface IBaseTransactionHistoryDao
 export class BaseTransactionHistoryDao
   extends Dao<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, QTransactionHistory>
 	implements IBaseTransactionHistoryDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['TransactionHistory'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['TransactionHistory'], Q)
 	}
 }

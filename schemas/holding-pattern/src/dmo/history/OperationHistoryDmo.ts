@@ -1,23 +1,20 @@
+import {DI}                            from '@airport/di'
 import {
 	ChangeType,
 	DbEntity
 }                                      from '@airport/ground-control'
-import {
-	Inject,
-	Service
-}                                      from 'typedi'
 import {IBaseOperationHistoryDmo}      from '../../'
 import {RepositoryEntityActorRecordId} from '../../ddl/ddl'
+import {
+	OPERATION_HISTORY_DMO,
+	RECORD_HISTORY_DMO
+}                                      from '../../diTokens'
 import {
 	BaseOperationHistoryDmo,
 	IOperationHistory,
 	IRecordHistory,
 	IRepositoryTransactionHistory
 }                                      from '../../generated/generated'
-import {
-	OperationHistoryDmoToken,
-	RecordHistoryDmoToken
-}                                      from '../../InjectionTokens'
 import {IRecordHistoryDmo}             from './RecordHistoryDmo'
 
 export interface IOperationHistoryDmo
@@ -41,16 +38,20 @@ export interface IOperationHistoryDmo
 
 }
 
-@Service(OperationHistoryDmoToken)
 export class OperationHistoryDmo
 	extends BaseOperationHistoryDmo
 	implements IOperationHistoryDmo {
 
-	constructor(
-		@Inject(RecordHistoryDmoToken)
-		private recordHistoryDmo: IRecordHistoryDmo
-	) {
+	private recHistoryDmo: IRecordHistoryDmo
+
+	constructor() {
 		super()
+
+		DI.get((
+			recordHistoryDmo
+		) => {
+			this.recHistoryDmo = recordHistoryDmo
+		}, RECORD_HISTORY_DMO)
 	}
 
 	getNewRecord(
@@ -88,7 +89,7 @@ export class OperationHistoryDmo
 		actorRecordId: RepositoryEntityActorRecordId,
 	): IRecordHistory {
 
-		const recordHistory = this.recordHistoryDmo.getNewRecord(actorRecordId)
+		const recordHistory = this.recHistoryDmo.getNewRecord(actorRecordId)
 
 		operationHistory.recordHistory.push(recordHistory)
 
@@ -99,3 +100,5 @@ export class OperationHistoryDmo
 	}
 
 }
+
+DI.set(OPERATION_HISTORY_DMO, OperationHistoryDmo)

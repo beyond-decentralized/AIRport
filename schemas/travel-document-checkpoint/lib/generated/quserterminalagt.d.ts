@@ -15,7 +15,8 @@ export interface IUserTerminalAgt {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface UserTerminalAgtESelect extends IEntitySelectProperties, UserTerminalAgtEOptionalId, UserTerminalAgtEUpdateProperties {
+export interface UserTerminalAgtESelect extends IEntitySelectProperties, UserTerminalAgtEOptionalId {
+    password?: number | IQNumberField;
     user?: UserESelect;
     terminal?: TerminalESelect;
     agt?: AgtESelect;

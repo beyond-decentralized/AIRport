@@ -5,9 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
@@ -26,45 +23,35 @@ let TransactionHistory = class TransactionHistory {
 __decorate([
     air_control_1.GeneratedValue(),
     air_control_1.Id(),
-    air_control_1.SequenceGenerator({ allocationSize: 100 }),
-    __metadata("design:type", Number)
+    air_control_1.SequenceGenerator({ allocationSize: 100 })
 ], TransactionHistory.prototype, "id", void 0);
 __decorate([
     air_control_1.Column({ name: 'TRANSACTION_TYPE', nullable: false }),
-    air_control_1.DbNumber(),
-    __metadata("design:type", Number)
+    air_control_1.DbNumber()
 ], TransactionHistory.prototype, "transactionType", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: 'repoTransHistory' }),
-    __metadata("design:type", Array)
+    air_control_1.OneToMany({ mappedBy: 'repoTransHistory' })
 ], TransactionHistory.prototype, "repositoryTransactionHistories", void 0);
 __decorate([
-    air_control_1.Transient(),
-    __metadata("design:type", Object)
+    air_control_1.Transient()
 ], TransactionHistory.prototype, "repoTransHistoryMap", void 0);
 __decorate([
-    air_control_1.Transient(),
-    __metadata("design:type", ground_control_1.SyncSchemaMap)
+    air_control_1.Transient()
 ], TransactionHistory.prototype, "schemaMap", void 0);
 __decorate([
-    air_control_1.Transient(),
-    __metadata("design:type", Array)
+    air_control_1.Transient()
 ], TransactionHistory.prototype, "allOperationHistory", void 0);
 __decorate([
-    air_control_1.Transient(),
-    __metadata("design:type", Array)
+    air_control_1.Transient()
 ], TransactionHistory.prototype, "allRecordHistory", void 0);
 __decorate([
-    air_control_1.Transient(),
-    __metadata("design:type", Array)
+    air_control_1.Transient()
 ], TransactionHistory.prototype, "allRecordHistoryNewValues", void 0);
 __decorate([
-    air_control_1.Transient(),
-    __metadata("design:type", Array)
+    air_control_1.Transient()
 ], TransactionHistory.prototype, "allRecordHistoryOldValues", void 0);
 __decorate([
-    air_control_1.Transient(),
-    __metadata("design:type", Number)
+    air_control_1.Transient()
 ], TransactionHistory.prototype, "numberOfOperations", void 0);
 TransactionHistory = __decorate([
     air_control_1.Entity(),

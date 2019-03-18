@@ -1,15 +1,13 @@
-import {Service}                       from "typedi";
-import {
-	IRecordHistoryNewValue,
-	Q,
-	QRecordHistoryNewValue,
-	RecordHistoryId
-}                                      from "../..";
+import {DI}                           from '@airport/di'
+import {RecordHistoryId}              from '../../ddl/ddl'
+import {RECORD_HISTORY_NEW_VALUE_DAO} from '../../diTokens'
 import {
 	BaseRecordHistoryNewValueDao,
-	IBaseRecordHistoryNewValueDao
-}                                      from "../../generated/generated";
-import {RecordHistoryNewValueDaoToken} from "../../InjectionTokens";
+	IBaseRecordHistoryNewValueDao,
+	IRecordHistoryNewValue,
+	Q,
+	QRecordHistoryNewValue
+}                                     from '../../generated/generated'
 
 export interface IRecordHistoryNewValueDao
 	extends IBaseRecordHistoryNewValueDao {
@@ -20,7 +18,6 @@ export interface IRecordHistoryNewValueDao
 
 }
 
-@Service(RecordHistoryNewValueDaoToken)
 export class RecordHistoryNewValueDao
 	extends BaseRecordHistoryNewValueDao
 	implements IRecordHistoryNewValueDao {
@@ -28,7 +25,7 @@ export class RecordHistoryNewValueDao
 	async findByRecordHistoryIdIn(
 		recordHistoryIds: RecordHistoryId[]
 	): Promise<IRecordHistoryNewValue[]> {
-		let rhnv: QRecordHistoryNewValue;
+		let rhnv: QRecordHistoryNewValue
 
 		return await this.db.find.tree({
 			select: {},
@@ -36,8 +33,10 @@ export class RecordHistoryNewValueDao
 				rhnv = Q.RecordHistoryNewValue
 			],
 			where: rhnv.recordHistory.id.in(recordHistoryIds)
-		});
+		})
 
 	}
 
 }
+
+DI.set(RECORD_HISTORY_NEW_VALUE_DAO, RecordHistoryNewValueDao)

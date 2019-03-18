@@ -5,9 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
@@ -94,8 +91,7 @@ SharingMessageDao = __decorate([
     __param(1, Inject_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDaoToken)),
     __param(2, Inject_1.Inject(holding_pattern_1.RecordHistoryNewValueDaoToken)),
     __param(3, Inject_1.Inject(holding_pattern_1.RecordHistoryOldValueDaoToken)),
-    __param(4, Inject_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
+    __param(4, Inject_1.Inject(air_control_1.UtilsToken))
 ], SharingMessageDao);
 exports.SharingMessageDao = SharingMessageDao;
 //# sourceMappingURL=SharingMessageDao.js.map

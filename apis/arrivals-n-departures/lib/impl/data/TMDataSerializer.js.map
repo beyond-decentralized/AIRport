@@ -1,1 +1,1 @@
-{"version":3,"file":"TMDataSerializer.js","sourceRoot":"","sources":["../../../src/impl/data/TMDataSerializer.ts"],"names":[],"mappings":";;;;;;;;AAAA,mCAA6C;AAC7C,2DAA4D;AAO5D,IAAa,gBAAgB,GAA7B,MAAa,gBAAgB;CAK5B,CAAA;AALY,gBAAgB;IAD5B,gBAAO,CAAC,uCAAqB,CAAC;GAClB,gBAAgB,CAK5B;AALY,4CAAgB"}
+{"version":3,"file":"TMDataSerializer.js","sourceRoot":"","sources":["../../../src/impl/data/TMDataSerializer.ts"],"names":[],"mappings":";;AAAA,oCAA8C;AAC9C,6CAAiD;AAMjD,MAAa,gBAAgB;CAK5B;AALD,4CAKC;AAED,OAAE,CAAC,GAAG,CAAC,6BAAkB,EAAE,gBAAgB,CAAC,CAAA"}

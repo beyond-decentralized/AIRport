@@ -61,7 +61,7 @@ class SchemaDao extends generated_1.BaseSchemaDao {
     findMaxIndex() {
         return __awaiter(this, void 0, void 0, function* () {
             const s = generated_1.Q.Schema;
-            return yield this.airportDatabase.findOne.field({
+            return yield this.airDb.findOne.field({
                 select: air_control_1.max(s.index),
                 from: [
                     s
@@ -77,7 +77,7 @@ class SchemaDao extends generated_1.BaseSchemaDao {
             let d;
             let sMaV;
             let sMiV;
-            const schemas = yield this.airportDatabase.db.find.tree({
+            const schemas = yield this.airDb.db.find.tree({
                 from: [
                     sMiV = air_control_1.tree({
                         from: [

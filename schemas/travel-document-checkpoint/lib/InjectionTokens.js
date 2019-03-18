@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
-exports.TerminalDaoToken = new typedi_1.Token();
-exports.UserDaoToken = new typedi_1.Token();
+const di_1 = require("@airport/di");
+exports.TERMINAL_DAO = di_1.diToken();
+exports.USER_DAO = di_1.diToken();
 //# sourceMappingURL=InjectionTokens.js.map

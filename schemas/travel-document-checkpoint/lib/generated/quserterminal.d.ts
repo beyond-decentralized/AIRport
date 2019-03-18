@@ -8,7 +8,7 @@ export interface IUserTerminal {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface UserTerminalESelect extends IEntitySelectProperties, UserTerminalEOptionalId, UserTerminalEUpdateProperties {
+export interface UserTerminalESelect extends IEntitySelectProperties, UserTerminalEOptionalId {
     user?: UserESelect;
     terminal?: TerminalESelect;
 }

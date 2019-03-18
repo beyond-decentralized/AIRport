@@ -1,5 +1,5 @@
-import { IRecordHistoryNewValue, RecordHistoryId } from "../..";
-import { BaseRecordHistoryNewValueDao, IBaseRecordHistoryNewValueDao } from "../../generated/generated";
+import { RecordHistoryId } from '../../ddl/ddl';
+import { BaseRecordHistoryNewValueDao, IBaseRecordHistoryNewValueDao, IRecordHistoryNewValue } from '../../generated/generated';
 export interface IRecordHistoryNewValueDao extends IBaseRecordHistoryNewValueDao {
     findByRecordHistoryIdIn(recordHistoryIds: RecordHistoryId[]): Promise<IRecordHistoryNewValue[]>;
 }

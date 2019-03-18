@@ -6,7 +6,7 @@ import { DbEntity } from '@airport/ground-control';
 export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, QE extends IQEntity> implements IDao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, QE> {
     protected db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>;
     protected utils: IUtils;
-    protected airportDatabase: IAirportDatabase;
+    protected airDb: IAirportDatabase;
     constructor(dbEntity: DbEntity, Q: QSchema);
     readonly find: IEntityFind<Entity, Array<Entity>, EntitySelect>;
     readonly findOne: IEntityFindOne<Entity, EntitySelect>;

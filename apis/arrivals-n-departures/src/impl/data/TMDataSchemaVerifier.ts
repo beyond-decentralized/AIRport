@@ -1,14 +1,15 @@
-import {Service}                   from "typedi";
-import {TMDataSchemaVerifierToken} from "../../InjectionTokens";
+import {DI}                      from '@airport/di'
+import {TM_DATA_SCHEMA_VERIFIER} from '../../diTokens'
 
 export interface ITMDataSchemaVerifier {
 
 }
 
-@Service(TMDataSchemaVerifierToken)
 export class TMDataSchemaVerifier
 	implements ITMDataSchemaVerifier {
 
 	// FIXME: add data schema verification
 
 }
+
+DI.set(TM_DATA_SCHEMA_VERIFIER, TMDataSchemaVerifier)

@@ -1,19 +1,19 @@
-import {Service}                      from "typedi";
-import {MessageToTMDeserializerToken} from "../../../InjectionTokens";
+import {DI}                         from '@airport/di'
+import {MESSAGE_TO_TM_DESERIALIZER} from '../../../diTokens'
 import {
 	BatchedMessagesToTM,
 	MessageToTM,
 	RepoTransBlockMessageToTM,
 	RepoTransBlockSyncStatus,
 	SyncNotificationMessageToTM
-}                                     from "../../../lingo/message/MessageToTM";
-import {MessageToTMContentType}       from "../../../lingo/message/MessageTypes";
+}                                   from '../../../lingo/message/MessageToTM'
+import {MessageToTMContentType}     from '../../../lingo/message/MessageTypes'
 import {
 	SerializedBatchedMessagesToTM,
 	SerializedMessageToTM,
 	SerializedRepoTransBlockSyncStatus,
 	SerializedSyncNotificationMessageToTM
-}                                     from "../../../lingo/message/SerializedMessageToTM";
+}                                   from '../../../lingo/message/SerializedMessageToTM'
 
 export interface IMessageToTMDeserializer {
 
@@ -23,20 +23,19 @@ export interface IMessageToTMDeserializer {
 
 }
 
-@Service(MessageToTMDeserializerToken)
 export class MessageToTMDeserializer
 	implements IMessageToTMDeserializer {
 
 	deserialize(
 		serializedBatchedMessagesToTM: SerializedBatchedMessagesToTM
 	): BatchedMessagesToTM {
-		const protocolVersion = serializedBatchedMessagesToTM[0];
+		const protocolVersion = serializedBatchedMessagesToTM[0]
 		if (protocolVersion !== 0) {
-			throw new Error(`Unsupported TmToAgtProtocolVersion: ${protocolVersion}`);
+			throw new Error(`Unsupported TmToAgtProtocolVersion: ${protocolVersion}`)
 		}
-		const serializedMessagesToTM = serializedBatchedMessagesToTM[3];
+		const serializedMessagesToTM = serializedBatchedMessagesToTM[3]
 
-		const agtSharingMessageId = serializedBatchedMessagesToTM[2];
+		const agtSharingMessageId = serializedBatchedMessagesToTM[2]
 
 		return {
 			protocolVersion,
@@ -49,7 +48,7 @@ export class MessageToTMDeserializer
 	deserializeAMessage(
 		serializedMessageToTM: SerializedMessageToTM
 	): MessageToTM {
-		const contentType = serializedMessageToTM[0];
+		const contentType = serializedMessageToTM[0]
 		switch (contentType) {
 			case MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK: {
 				return <RepoTransBlockMessageToTM>{
@@ -59,18 +58,18 @@ export class MessageToTMDeserializer
 					// agtRepositoryId: serializedMessageToTM[3],
 					// addDatetime: serializedMessageToTM[4],
 					repositoryTransactionBlock: serializedMessageToTM[1]
-				};
+				}
 			}
 			case MessageToTMContentType.SYNC_NOTIFICATION: {
 				const syncOutcomes: RepoTransBlockSyncStatus[] = this.deserializeSyncOutcomes(
-					(<SerializedSyncNotificationMessageToTM>serializedMessageToTM)[2]);
+					(<SerializedSyncNotificationMessageToTM>serializedMessageToTM)[2])
 				return <SyncNotificationMessageToTM>{
 					contentType,
 					tmSharingMessageId: serializedMessageToTM[1],
 					// terminalSyncLogId: serializedMessageToTM[2],
 					// agtRepositoryTransactionBlockAddDatetime: serializedMessageToTM[2],
 					syncOutcomes
-				};
+				}
 			}
 			// case MessageToTMContentType.SYNC_ACK: {
 			// 	const syncOutcomes: RepoTransBlockSyncOutcome[] = this.deserializeSyncOutcomes(
@@ -81,7 +80,7 @@ export class MessageToTMDeserializer
 			// 	}
 			// }
 			default: {
-				throw new Error('Invalid MessageToTMContentType: ' + contentType);
+				throw new Error('Invalid MessageToTMContentType: ' + contentType)
 			}
 		}
 	}
@@ -95,7 +94,9 @@ export class MessageToTMDeserializer
 			tmRepositoryTransactionBlockId: serializedSyncOutcome[0],
 			agtRepositoryTransactionBlockId: serializedSyncOutcome[1],
 			syncStatus: serializedSyncOutcome[2],
-		}));
+		}))
 	}
 
 }
+
+DI.set(MESSAGE_TO_TM_DESERIALIZER, MessageToTMDeserializer)

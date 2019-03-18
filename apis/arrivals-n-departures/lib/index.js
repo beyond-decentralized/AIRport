@@ -5,5 +5,5 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./impl/impl"));
 __export(require("./lingo/lingo"));
-__export(require("./InjectionTokens"));
+__export(require("./diTokens"));
 //# sourceMappingURL=index.js.map

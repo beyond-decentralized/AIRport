@@ -1,16 +1,10 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../../../InjectionTokens");
+const di_1 = require("@airport/di");
+const diTokens_1 = require("../../../diTokens");
 const lingo_1 = require("../../../lingo/lingo");
 const AbstractCommonMessageVerifier_1 = require("./AbstractCommonMessageVerifier");
-let MessageToTMVerifier = class MessageToTMVerifier extends AbstractCommonMessageVerifier_1.AbstractCommonMessageVerifier {
+class MessageToTMVerifier extends AbstractCommonMessageVerifier_1.AbstractCommonMessageVerifier {
     verifyMessagesBatch(batchedMessages) {
         if (!(batchedMessages instanceof Array)) {
             return [lingo_1.MessageToTMError.MESSAGES_BATCH_IS_NOT_ARRAY, typeof batchedMessages];
@@ -94,12 +88,10 @@ let MessageToTMVerifier = class MessageToTMVerifier extends AbstractCommonMessag
             return [lingo_1.MessageToTMError.TM_SHARING_MESSAGE_ID_IS_NOT_NUMBER, typeof message[1], index];
         }
         // if (typeof message[2] !== 'number') {
-        // 	return [MessageToTMError.AGT_DATABASE_SYNC_LOG_ID_IS_NOT_NUMBER, typeof message[2],
+        // 	return [MessageToTMError.AGT_DATABASE_SYNC_LOG_ID_IS_NOT_NUMBER, typeof
+        // message[2], index]; } if (typeof message[2] !== 'number') { return
+        // [MessageToTMError.AGT_SYNC_RECORD_ADD_DATETIME_IS_NOT_NUMBER, typeof message[2],
         // index]; }
-        // if (typeof message[2] !== 'number') {
-        // 	return [MessageToTMError.AGT_SYNC_RECORD_ADD_DATETIME_IS_NOT_NUMBER,
-        // 		typeof message[2], index];
-        // }
         let error;
         message[2].some((syncOutcome, syncOutcomeIndex) => {
             if (typeof syncOutcome[0] !== 'number') {
@@ -146,9 +138,7 @@ let MessageToTMVerifier = class MessageToTMVerifier extends AbstractCommonMessag
                 message[5], index];
         }
     }
-};
-MessageToTMVerifier = __decorate([
-    typedi_1.Service(InjectionTokens_1.MessageToTMVerifierToken)
-], MessageToTMVerifier);
+}
 exports.MessageToTMVerifier = MessageToTMVerifier;
+di_1.DI.set(diTokens_1.MESSAGE_TO_TM_VERIFIER, MessageToTMVerifier);
 //# sourceMappingURL=MessageToTMVerifier.js.map

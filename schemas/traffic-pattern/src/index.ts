@@ -69,14 +69,14 @@ export class AtAirport_TrafficPattern_QSchema
 
 	constructor() {
 		DI.get((
-			airportDatabase,
+			airDb,
 			dao,
 			dbSchemaUtils,
 			dmo
 			) => {
 				this.dao = dao
 				this.dmo = dmo
-				this.init(airportDatabase, dbSchemaUtils)
+				this.init(airDb, dbSchemaUtils)
 			}, AIRPORT_DATABASE,
 			NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS,
 			DB_SCHEMA_UTILS,
@@ -86,7 +86,7 @@ export class AtAirport_TrafficPattern_QSchema
 	}
 
 	private init(
-		airportDatabase: IAirportDatabase,
+		airDb: IAirportDatabase,
 		dbSchemaUtils: IDbSchemaUtils
 	): void {
 		const schemaName = dbSchemaUtils.getSchemaName(SCHEMA)
@@ -99,7 +99,7 @@ export class AtAirport_TrafficPattern_QSchema
 		this.__injected__     = this
 		this.__exported__     = Q_SCHEMA
 
-		const existingQSchema = airportDatabase.qSchemaMapByName[schemaName]
+		const existingQSchema = airDb.qSchemaMapByName[schemaName]
 		// If '@airport/takeoff' has already run
 		if (existingQSchema) {
 			Q_SCHEMA.__created__         = existingQSchema
@@ -111,12 +111,12 @@ export class AtAirport_TrafficPattern_QSchema
 			existingQSchema.dao              = this.dao
 			existingQSchema.dmo              = this.dmo
 			existingQSchema.__constructors__ = Q_SCHEMA.__constructors
-			setQSchemaEntities(existingQSchema.__dbSchema__, this, airportDatabase.qSchemas)
-			setQSchemaEntities(existingQSchema.__dbSchema__, Q_SCHEMA, airportDatabase.qSchemas)
+			setQSchemaEntities(existingQSchema.__dbSchema__, this, airDb.qSchemas)
+			setQSchemaEntities(existingQSchema.__dbSchema__, Q_SCHEMA, airDb.qSchemas)
 		} else {
 			Q_SCHEMA.__created__                         = Q_SCHEMA
 			this.__created__                             = Q_SCHEMA
-			airportDatabase.qSchemaMapByName[schemaName] = Q_SCHEMA
+			airDb.qSchemaMapByName[schemaName] = Q_SCHEMA
 		}
 	}
 

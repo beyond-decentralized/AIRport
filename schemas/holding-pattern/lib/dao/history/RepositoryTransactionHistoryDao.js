@@ -1,29 +1,17 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
-const typedi_1 = require("typedi");
-const Inject_1 = require("typedi/decorators/Inject");
+const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
-const InjectionTokens_1 = require("../../InjectionTokens");
-let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransactionHistoryDao {
-    constructor(airportDb, operationHistoryDmo, recordHistoryDmo, utils) {
-        super(utils);
-        this.airportDb = airportDb;
-        this.operationHistoryDmo = operationHistoryDmo;
-        this.recordHistoryDmo = recordHistoryDmo;
+class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransactionHistoryDao {
+    constructor() {
+        super();
+        di_1.DI.get((operationHistoryDmo, recordHistoryDmo) => {
+            this.operHistoryDmo = operationHistoryDmo;
+            this.recHistoryDmo = recordHistoryDmo;
+        }, diTokens_1.OPERATION_HISTORY_DMO, diTokens_1.RECORD_HISTORY_DMO);
     }
     getSelectClauseWithRecordHistory() {
         const id = air_control_1.Y;
@@ -36,12 +24,12 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
                 id
             },
             operationHistory: {
-                ...this.operationHistoryDmo.getAllFieldsSelect(),
+                ...this.operHistoryDmo.getAllFieldsSelect(),
                 entity: {
                     id: air_control_1.Y
                 },
                 recordHistory: {
-                    ...this.recordHistoryDmo.getAllFieldsSelect()
+                    ...this.recHistoryDmo.getAllFieldsSelect()
                 }
             },
         };
@@ -93,7 +81,7 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
     }
     async findAllLocalChangesForRecordIds(changedRecordIds) {
         const repoTransHistoryMapByRepositoryId = new Map();
-        const trafficPatternQSchema = this.airportDb.qSchemaMapByName['@airport/traffic-pattern'];
+        const trafficPatternQSchema = this.airDb.qSchemaMapByName['@airport/traffic-pattern'];
         const rth = generated_1.Q.RepositoryTransactionHistory;
         const th = rth.transactionHistory.innerJoin();
         const oh = rth.operationHistory.leftJoin();
@@ -182,7 +170,7 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
             }
             idsFragments.push(air_control_1.and(rth.repository.id.equals(repositoryId), oh.changeType.equals(ground_control_1.ChangeType.INSERT_VALUES), air_control_1.or(...tableFragments)));
         }
-        const records = await this.airportDb.find.sheet({
+        const records = await this.airDb.find.sheet({
             from: [
                 rth,
                 oh,
@@ -201,14 +189,7 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
         }
         return existingRecordIdMap;
     }
-};
-RepositoryTransactionHistoryDao = __decorate([
-    typedi_1.Service(InjectionTokens_1.RepositoryTransactionHistoryDaoToken),
-    __param(0, Inject_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(1, Inject_1.Inject(InjectionTokens_1.OperationHistoryDmoToken)),
-    __param(2, Inject_1.Inject(InjectionTokens_1.RecordHistoryDmoToken)),
-    __param(3, Inject_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object])
-], RepositoryTransactionHistoryDao);
+}
 exports.RepositoryTransactionHistoryDao = RepositoryTransactionHistoryDao;
+di_1.DI.set(diTokens_1.REPOSITORY_TRANSACTION_HISTORY_DAO, RepositoryTransactionHistoryDao);
 //# sourceMappingURL=RepositoryTransactionHistoryDao.js.map

@@ -1,12 +1,12 @@
-import {DbColumn}                      from "@airport/ground-control";
-import {Service}                       from "typedi";
-import {RecordHistoryNewValue}         from "../../ddl/ddl";
+import {DI}                           from '@airport/di'
+import {DbColumn}                     from '@airport/ground-control'
+import {RecordHistoryNewValue}        from '../../ddl/ddl'
+import {RECORD_HISTORY_NEW_VALUE_DMO} from '../../diTokens'
 import {
 	BaseRecordHistoryNewValueDmo,
 	IRecordHistory,
 	IRecordHistoryNewValue
-}                                      from "../../generated/generated";
-import {RecordHistoryNewValueDmoToken} from "../../InjectionTokens";
+}                                     from '../../generated/generated'
 
 export interface IRecordHistoryNewValueDmo {
 
@@ -18,13 +18,12 @@ export interface IRecordHistoryNewValueDmo {
 
 }
 
-@Service(RecordHistoryNewValueDmoToken)
 export class RecordHistoryNewValueDmo
 	extends BaseRecordHistoryNewValueDmo
 	implements IRecordHistoryNewValueDmo {
 
 	constructor() {
-		super();
+		super()
 	}
 
 	getNewRecord(
@@ -32,14 +31,16 @@ export class RecordHistoryNewValueDmo
 		dbColumn: DbColumn,
 		newValue: any
 	): IRecordHistoryNewValue {
-		const recordHistoryNewValue = new RecordHistoryNewValue();
+		const recordHistoryNewValue = new RecordHistoryNewValue()
 
-		recordHistoryNewValue.columnIndex = dbColumn.index;
-		recordHistoryNewValue.recordHistory = recordHistory;
-		recordHistoryNewValue.newValue = newValue;
+		recordHistoryNewValue.columnIndex   = dbColumn.index
+		recordHistoryNewValue.recordHistory = recordHistory
+		recordHistoryNewValue.newValue      = newValue
 
-		return recordHistoryNewValue;
+		return recordHistoryNewValue
 
 	}
 
 }
+
+DI.set(RECORD_HISTORY_NEW_VALUE_DMO, RecordHistoryNewValueDmo)

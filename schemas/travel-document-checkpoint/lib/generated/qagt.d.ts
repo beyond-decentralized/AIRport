@@ -10,7 +10,8 @@ export interface IAgt {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface AgtESelect extends IEntitySelectProperties, AgtEOptionalId, AgtEUpdateProperties {
+export interface AgtESelect extends IEntitySelectProperties, AgtEOptionalId {
+    address?: string | IQStringField;
     terminalAgts?: TerminalAgtESelect;
     userTerminalAgts?: UserTerminalAgtESelect;
 }

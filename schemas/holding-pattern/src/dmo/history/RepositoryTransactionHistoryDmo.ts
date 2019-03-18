@@ -1,25 +1,24 @@
-import {DbEntity}             from "@airport/ground-control";
-import {ChangeType}           from "@airport/ground-control";
+import {DI}                   from '@airport/di'
 import {
-	Inject,
-	Service
-}                             from "typedi";
+	ChangeType,
+	DbEntity
+}                             from '@airport/ground-control'
 import {
 	ActorId,
 	RepositoryTransactionHistory
-}                             from "../../ddl/ddl";
+}                             from '../../ddl/ddl'
+import {
+	OPERATION_HISTORY_DMO,
+	REPOSITORY_TRANSACTION_HISTORY_DMO
+}                             from '../../diTokens'
 import {
 	BaseRepositoryTransactionHistoryDmo,
 	IActor,
 	IOperationHistory,
 	IRepository,
 	IRepositoryTransactionHistory,
-}                             from "../../generated/generated";
-import {
-	OperationHistoryDmoToken,
-	RepositoryTransactionHistoryDmoToken
-}                             from "../../InjectionTokens";
-import {IOperationHistoryDmo} from "./OperationHistoryDmo";
+}                             from '../../generated/generated'
+import {IOperationHistoryDmo} from './OperationHistoryDmo'
 
 export interface IRepositoryTransactionHistoryDmo {
 
@@ -45,42 +44,46 @@ export interface IRepositoryTransactionHistoryDmo {
 
 }
 
-@Service(RepositoryTransactionHistoryDmoToken)
 export class RepositoryTransactionHistoryDmo
 	extends BaseRepositoryTransactionHistoryDmo
 	implements IRepositoryTransactionHistoryDmo {
 
-	constructor(
-		@Inject(OperationHistoryDmoToken)
-		private operationHistoryDmo: IOperationHistoryDmo
-	) {
-		super();
+	private operHistoryDmo: IOperationHistoryDmo
+
+	constructor() {
+		super()
+
+		DI.get((
+			operationHistoryDmo
+		) => {
+			this.operHistoryDmo = operationHistoryDmo
+		}, OPERATION_HISTORY_DMO)
 	}
 
 	getNewRecord(
 		repository: IRepository,
 		actor: IActor
 	): IRepositoryTransactionHistory {
-		let transaction = new RepositoryTransactionHistory();
+		let transaction = new RepositoryTransactionHistory()
 
-		let saveTimestamp = new Date();
+		let saveTimestamp = new Date()
 
-		transaction.saveTimestamp = saveTimestamp;
-		transaction.repository = repository;
-		transaction.actor = actor;
+		transaction.saveTimestamp = saveTimestamp
+		transaction.repository    = repository
+		transaction.actor         = actor
 		// transaction.syncStatus = SyncStatus.SYNC_PENDING;
 
-		return transaction;
+		return transaction
 	}
 
 	newRecord(
 		data?: IRepositoryTransactionHistory
 	): IRepositoryTransactionHistory {
 		if (!data) {
-			return null;
+			return null
 		}
 
-		return {...data};
+		return {...data}
 	}
 
 	sortRepoTransHistories(
@@ -92,40 +95,40 @@ export class RepositoryTransactionHistoryDmo
 			repoTransHistory2: IRepositoryTransactionHistory
 		) => {
 			const saveTimeComparison
-				= this.compareDates(repoTransHistory1.saveTimestamp, repoTransHistory2.saveTimestamp);
+				      = this.compareDates(repoTransHistory1.saveTimestamp, repoTransHistory2.saveTimestamp)
 			if (saveTimeComparison) {
-				return saveTimeComparison;
+				return saveTimeComparison
 			}
 
-			const actor1 = actorMapById.get(repoTransHistory1.actor.id);
-			const actor2 = actorMapById.get(repoTransHistory2.actor.id);
+			const actor1 = actorMapById.get(repoTransHistory1.actor.id)
+			const actor2 = actorMapById.get(repoTransHistory2.actor.id)
 
-			const userIdComparison = actor1.user.uniqueId.localeCompare(actor2.user.uniqueId);
+			const userIdComparison = actor1.user.uniqueId.localeCompare(actor2.user.uniqueId)
 			if (userIdComparison) {
-				return userIdComparison;
+				return userIdComparison
 			}
 
-			const databaseNameComparison = actor1.terminal.name.localeCompare(actor2.terminal.name);
+			const databaseNameComparison = actor1.terminal.name.localeCompare(actor2.terminal.name)
 			if (databaseNameComparison) {
-				return databaseNameComparison;
+				return databaseNameComparison
 			}
 
 			const databaseSecondIdComparison
-				= this.compareNumbers(actor1.terminal.secondId, actor2.terminal.secondId);
+				      = this.compareNumbers(actor1.terminal.secondId, actor2.terminal.secondId)
 			if (databaseSecondIdComparison) {
-				return databaseSecondIdComparison;
+				return databaseSecondIdComparison
 			}
 
 			const databaseOwnerComparison
-				= actor1.terminal.owner.uniqueId.localeCompare(actor2.terminal.owner.uniqueId);
+				      = actor1.terminal.owner.uniqueId.localeCompare(actor2.terminal.owner.uniqueId)
 			if (databaseOwnerComparison) {
-				return databaseOwnerComparison;
+				return databaseOwnerComparison
 			}
 
 			const actorRandomIdComparison
-				= this.compareNumbers(actor1.randomId, actor2.randomId);
-			return actorRandomIdComparison;
-		});
+				      = this.compareNumbers(actor1.randomId, actor2.randomId)
+			return actorRandomIdComparison
+		})
 	}
 
 	startOperation(
@@ -133,24 +136,24 @@ export class RepositoryTransactionHistoryDmo
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity
 	): IOperationHistory {
-		let operationHistory = this.operationHistoryDmo.getNewRecord(
-			entityChangeType, dbEntity, repositoryTransactionHistory);
-		repositoryTransactionHistory.operationHistory.push(operationHistory);
+		let operationHistory = this.operHistoryDmo.getNewRecord(
+			entityChangeType, dbEntity, repositoryTransactionHistory)
+		repositoryTransactionHistory.operationHistory.push(operationHistory)
 
 		repositoryTransactionHistory
-			.transactionHistory.allOperationHistory.push(operationHistory);
+			.transactionHistory.allOperationHistory.push(operationHistory)
 
-		return operationHistory;
+		return operationHistory
 	}
 
 	private compareDates(
 		date1: Date,
 		date2: Date
 	): number {
-		const time1 = date1 ? date1.getTime() : -1;
-		const time2 = date2 ? date2.getTime() : -1;
+		const time1 = date1 ? date1.getTime() : -1
+		const time2 = date2 ? date2.getTime() : -1
 
-		return this.compareNumbers(time1, time2);
+		return this.compareNumbers(time1, time2)
 	}
 
 	private compareNumbers(
@@ -158,12 +161,12 @@ export class RepositoryTransactionHistoryDmo
 		number2: number
 	): number {
 		if (number1 < number2) {
-			return -1;
+			return -1
 		}
 		if (number2 > number1) {
-			return 1;
+			return 1
 		}
-		return 0;
+		return 0
 	}
 
 	/*
@@ -184,3 +187,5 @@ export class RepositoryTransactionHistoryDmo
 		}*/
 
 }
+
+DI.set(REPOSITORY_TRANSACTION_HISTORY_DMO, RepositoryTransactionHistoryDmo)

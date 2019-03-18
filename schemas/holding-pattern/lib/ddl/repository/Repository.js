@@ -5,13 +5,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
-const SyncPrority_1 = require("./SyncPrority");
 let Repository = class Repository {
     constructor() {
         /*
@@ -32,55 +28,44 @@ __decorate([
     air_control_1.Column({ name: "ID" }),
     air_control_1.GeneratedValue(),
     air_control_1.Id(),
-    air_control_1.DbNumber(),
-    __metadata("design:type", Number)
+    air_control_1.DbNumber()
 ], Repository.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
-        nullable: false }),
-    __metadata("design:type", Object)
+        nullable: false })
 ], Repository.prototype, "ownerActor", void 0);
 __decorate([
     air_control_1.Column({ name: "ORDERED_ID", nullable: false }),
-    air_control_1.DbNumber(),
-    __metadata("design:type", Number)
+    air_control_1.DbNumber()
 ], Repository.prototype, "orderedId", void 0);
 __decorate([
     air_control_1.Column({ name: "RANDOM_ID", nullable: false }),
-    air_control_1.DbNumber(),
-    __metadata("design:type", Number)
+    air_control_1.DbNumber()
 ], Repository.prototype, "randomId", void 0);
 __decorate([
     air_control_1.Column({ name: "NAME", nullable: false }),
-    air_control_1.DbString(),
-    __metadata("design:type", String)
+    air_control_1.DbString()
 ], Repository.prototype, "name", void 0);
 __decorate([
     air_control_1.Column({ name: "REPOSITORY_URL", nullable: false }),
-    air_control_1.DbString(),
-    __metadata("design:type", String)
+    air_control_1.DbString()
 ], Repository.prototype, "url", void 0);
 __decorate([
-    air_control_1.Column({ name: "PLATFORM_CONFIG", nullable: false }),
-    __metadata("design:type", String)
+    air_control_1.Column({ name: "PLATFORM_CONFIG", nullable: false })
 ], Repository.prototype, "platformConfig", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repository' }),
-    __metadata("design:type", Array)
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repository' })
 ], Repository.prototype, "repositoryActors", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repository' }),
-    __metadata("design:type", Array)
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repository' })
 ], Repository.prototype, "repositoryApplications", void 0);
 __decorate([
-    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repository' }),
-    __metadata("design:type", Array)
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repository' })
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
 __decorate([
     air_control_1.Column({ name: "SYNC_PRIORITY", nullable: false }),
-    air_control_1.DbNumber(),
-    __metadata("design:type", Number)
+    air_control_1.DbNumber()
 ], Repository.prototype, "syncPriority", void 0);
 Repository = __decorate([
     air_control_1.Entity(),

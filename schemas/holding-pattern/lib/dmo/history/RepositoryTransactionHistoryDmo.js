@@ -1,25 +1,15 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
+const di_1 = require("@airport/di");
 const ddl_1 = require("../../ddl/ddl");
+const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
-const InjectionTokens_1 = require("../../InjectionTokens");
-let RepositoryTransactionHistoryDmo = class RepositoryTransactionHistoryDmo extends generated_1.BaseRepositoryTransactionHistoryDmo {
-    constructor(operationHistoryDmo) {
+class RepositoryTransactionHistoryDmo extends generated_1.BaseRepositoryTransactionHistoryDmo {
+    constructor() {
         super();
-        this.operationHistoryDmo = operationHistoryDmo;
+        di_1.DI.get((operationHistoryDmo) => {
+            this.operHistoryDmo = operationHistoryDmo;
+        }, diTokens_1.OPERATION_HISTORY_DMO);
     }
     getNewRecord(repository, actor) {
         let transaction = new ddl_1.RepositoryTransactionHistory();
@@ -65,7 +55,7 @@ let RepositoryTransactionHistoryDmo = class RepositoryTransactionHistoryDmo exte
         });
     }
     startOperation(repositoryTransactionHistory, entityChangeType, dbEntity) {
-        let operationHistory = this.operationHistoryDmo.getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory);
+        let operationHistory = this.operHistoryDmo.getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory);
         repositoryTransactionHistory.operationHistory.push(operationHistory);
         repositoryTransactionHistory
             .transactionHistory.allOperationHistory.push(operationHistory);
@@ -85,11 +75,7 @@ let RepositoryTransactionHistoryDmo = class RepositoryTransactionHistoryDmo exte
         }
         return 0;
     }
-};
-RepositoryTransactionHistoryDmo = __decorate([
-    typedi_1.Service(InjectionTokens_1.RepositoryTransactionHistoryDmoToken),
-    __param(0, typedi_1.Inject(InjectionTokens_1.OperationHistoryDmoToken)),
-    __metadata("design:paramtypes", [Object])
-], RepositoryTransactionHistoryDmo);
+}
 exports.RepositoryTransactionHistoryDmo = RepositoryTransactionHistoryDmo;
+di_1.DI.set(diTokens_1.REPOSITORY_TRANSACTION_HISTORY_DMO, RepositoryTransactionHistoryDmo);
 //# sourceMappingURL=RepositoryTransactionHistoryDmo.js.map

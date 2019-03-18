@@ -1,15 +1,15 @@
-import {Service}                       from "typedi";
+import {DI}                           from '@airport/di'
+import {RECORD_HISTORY_OLD_VALUE_DAO} from '../../diTokens'
 import {
 	BaseRecordHistoryOldValueDao,
 	IBaseRecordHistoryOldValueDao
-}                                      from "../../generated/generated";
+}                                     from '../../generated/generated'
 import {
 	IRecordHistoryOldValue,
 	Q,
 	QRecordHistoryOldValue,
 	RecordHistoryId
-}                                      from "../../index";
-import {RecordHistoryOldValueDaoToken} from "../../InjectionTokens";
+}                                     from '../../index'
 
 export interface IRecordHistoryOldValueDao
 	extends IBaseRecordHistoryOldValueDao {
@@ -20,7 +20,6 @@ export interface IRecordHistoryOldValueDao
 
 }
 
-@Service(RecordHistoryOldValueDaoToken)
 export class RecordHistoryOldValueDao
 	extends BaseRecordHistoryOldValueDao
 	implements IRecordHistoryOldValueDao {
@@ -28,7 +27,7 @@ export class RecordHistoryOldValueDao
 	async findByRecordHistoryIdIn(
 		recordHistoryIds: RecordHistoryId[]
 	): Promise<IRecordHistoryOldValue[]> {
-		let rhov: QRecordHistoryOldValue;
+		let rhov: QRecordHistoryOldValue
 
 		return await this.db.find.tree({
 			select: {},
@@ -36,9 +35,10 @@ export class RecordHistoryOldValueDao
 				rhov = Q.RecordHistoryOldValue
 			],
 			where: rhov.recordHistory.id.in(recordHistoryIds)
-		});
+		})
 
 	}
 
-
 }
+
+DI.set(RECORD_HISTORY_OLD_VALUE_DAO, RecordHistoryOldValueDao)

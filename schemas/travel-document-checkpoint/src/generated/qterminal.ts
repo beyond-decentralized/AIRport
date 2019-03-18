@@ -101,7 +101,12 @@ export interface ITerminal {
  * SELECT - All fields and relations (optional).
  */
 export interface TerminalESelect
-    extends IEntitySelectProperties, TerminalEOptionalId, TerminalEUpdateProperties {
+    extends IEntitySelectProperties, TerminalEOptionalId {
+	// Non-Id Properties
+	name?: string | IQStringField;
+	secondId?: number | IQNumberField;
+	isLocal?: boolean | IQBooleanField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

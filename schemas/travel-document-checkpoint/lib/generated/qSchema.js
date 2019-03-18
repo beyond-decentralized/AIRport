@@ -1,18 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Agt_1 = require("../ddl/Agt");
-const Terminal_1 = require("../ddl/Terminal");
-const TerminalAgt_1 = require("../ddl/TerminalAgt");
-const User_1 = require("../ddl/User");
-const UserTerminal_1 = require("../ddl/UserTerminal");
-const UserTerminalAgt_1 = require("../ddl/UserTerminalAgt");
+const agt_1 = require("../ddl/agt");
+const terminal_1 = require("../ddl/terminal");
+const terminalagt_1 = require("../ddl/terminalagt");
+const user_1 = require("../ddl/user");
+const userterminal_1 = require("../ddl/userterminal");
+const userterminalagt_1 = require("../ddl/userterminalagt");
 const __constructors__ = {
-    Agt: Agt_1.Agt,
-    Terminal: Terminal_1.Terminal,
-    TerminalAgt: TerminalAgt_1.TerminalAgt,
-    User: User_1.User,
-    UserTerminal: UserTerminal_1.UserTerminal,
-    UserTerminalAgt: UserTerminalAgt_1.UserTerminalAgt
+    Agt: agt_1.Agt,
+    Terminal: terminal_1.Terminal,
+    TerminalAgt: terminalagt_1.TerminalAgt,
+    User: user_1.User,
+    UserTerminal: userterminal_1.UserTerminal,
+    UserTerminalAgt: userterminalagt_1.UserTerminalAgt
 };
 exports.Q_SCHEMA = {
     __constructors__

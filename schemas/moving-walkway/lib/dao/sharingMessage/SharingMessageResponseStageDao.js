@@ -44,7 +44,7 @@ export class SharingMessageResponseStageDao
 
     constructor(
         @Inject(AIRPORT_DATABASE)
-        private airportDb: IAirportDatabase,
+        private airDb: IAirportDatabase,
         @Inject(UTILS)
             utils: IUtils
     ) {
@@ -58,7 +58,7 @@ export class SharingMessageResponseStageDao
 
         let smrs: QSharingMessageResponseStage;
 
-        return await this.airportDb.db.insertValues(dbEntity, {
+        return await this.airDb.db.insertValues(dbEntity, {
             insertInto: smrs = Q.SharingMessageResponseStage,
             columns: [
                 smrs.id,

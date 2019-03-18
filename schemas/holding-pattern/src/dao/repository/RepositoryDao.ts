@@ -1,30 +1,28 @@
 import {
 	and,
+	IQNumberField,
 	MappedEntityArray,
+	RawFieldQuery,
 	Y
-}                           from '@airport/air-control'
-import {UtilsToken}         from '@airport/air-control/lib/InjectionTokens'
-import {IQNumberField}      from '@airport/air-control/lib/lingo/core/field/NumberField'
-import {RawFieldQuery}      from '@airport/air-control/lib/lingo/query/facade/FieldQuery'
-import {IUtils}             from '@airport/air-control/lib/lingo/utils/Utils'
+}                       from '@airport/air-control'
 import {
 	TerminalName,
 	TerminalSecondId
-}                           from '@airport/arrivals-n-departures'
+}                       from '@airport/arrivals-n-departures'
+import {DI}             from '@airport/di'
 import {
 	QTerminal,
 	QUser,
 	UserUniqueId
-}                           from '@airport/travel-document-checkpoint'
-import {Service}            from 'typedi'
-import {Inject}             from 'typedi/decorators/Inject'
-import {RepositoryId,}      from '../../ddl/ddl'
+}                       from '@airport/travel-document-checkpoint'
+import {RepositoryId,}  from '../../ddl/ddl'
+import {REPOSITORY_DAO} from '../../diTokens'
 import {
 	BaseRepositoryDao,
 	IRepository,
 	Q,
 	QRepository,
-}                           from '../../generated/generated'
+}                       from '../../generated/generated'
 import {
 	ActorRandomId,
 	QActor,
@@ -32,8 +30,7 @@ import {
 	RepositoryOrderedId,
 	RepositoryRandomId,
 	RepositoryTransactionHistoryId
-}                           from '../../index'
-import {RepositoryDaoToken} from '../../InjectionTokens'
+}                       from '../../index'
 
 export interface IRepositoryDao {
 
@@ -68,17 +65,9 @@ export type RepositoryIdMap = Map<UserUniqueId,
 		Map<ActorRandomId, Map<RepositoryOrderedId,
 			Map<RepositoryRandomId, RepositoryId>>>>>>>;
 
-@Service(RepositoryDaoToken)
 export class RepositoryDao
 	extends BaseRepositoryDao
 	implements IRepositoryDao {
-
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils)
-	}
 
 	async findReposWithTransactionLogDetailsByIds(
 		repositoryIds: RepositoryId[]
@@ -188,7 +177,7 @@ export class RepositoryDao
 		repositoryIds: RepositoryId[]
 	): Promise<Map<RepositoryId, IRepository>> {
 		const repositoryMapById: Map<RepositoryId, IRepository>
-			= new Map()
+			      = new Map()
 
 		let r: QRepository
 		let a: QActor
@@ -286,3 +275,5 @@ export class RepositoryDao
 	}
 
 }
+
+DI.set(REPOSITORY_DAO, RepositoryDao)

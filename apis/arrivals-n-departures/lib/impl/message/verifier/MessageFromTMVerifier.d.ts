@@ -1,5 +1,5 @@
-import { MessageFromTMError, SerializedDataTransferMessageFromTM, SerializedMessageFromTM, SerializedSyncVerificationMessageFromTM } from "../../../lingo/lingo";
-import { AbstractCommonMessageVerifier } from "./AbstractCommonMessageVerifier";
+import { MessageFromTMError, SerializedDataTransferMessageFromTM, SerializedMessageFromTM, SerializedSyncVerificationMessageFromTM } from '../../../lingo/lingo';
+import { AbstractCommonMessageVerifier } from './AbstractCommonMessageVerifier';
 export interface IMessageFromTMVerifier {
     verifyMessage(message: SerializedMessageFromTM, maxAllRepoChangesLength: number, maxSingleRepoChangeLength: number): [MessageFromTMError, any] | [MessageFromTMError, any, any];
 }

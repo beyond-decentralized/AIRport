@@ -1,8 +1,6 @@
-import {UtilsToken}   from '@airport/air-control/lib/InjectionTokens'
-import {IUtils}       from '@airport/air-control/lib/lingo/utils/Utils'
-import {Inject}       from 'typedi/decorators/Inject'
-import {Service}      from 'typedi/decorators/Service'
+import {DI}           from '@airport/di'
 import {UserUniqueId} from '../ddl/ddl'
+import {USER_DAO}     from '../diTokens'
 import {
 	BaseUserDao,
 	IBaseUserDao,
@@ -11,7 +9,6 @@ import {
 	QUser,
 	UserESelect
 }                     from '../generated/generated'
-import {UserDaoToken} from '../InjectionTokens'
 
 export interface IUserDao
 	extends IBaseUserDao {
@@ -36,17 +33,9 @@ export interface IUserDao
 
 }
 
-@Service(UserDaoToken)
 export class UserDao
 	extends BaseUserDao
 	implements IUserDao {
-
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils)
-	}
 
 	async findMapByUniqueId(
 		userUniqueIds: UserUniqueId[]
@@ -89,3 +78,5 @@ export class UserDao
 	}
 
 }
+
+DI.set(USER_DAO, UserDao)

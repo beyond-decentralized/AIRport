@@ -109,7 +109,7 @@ export class SchemaDao
 
 	async findMaxIndex(): Promise<SchemaIndex> {
 		const s = Q.Schema
-		return await this.airportDatabase.findOne.field({
+		return await this.airDb.findOne.field({
 			select: max(s.index),
 			from: [
 				s
@@ -131,7 +131,7 @@ export class SchemaDao
 		let sMiV
 
 
-		const schemas = await this.airportDatabase.db.find.tree({
+		const schemas = await this.airDb.db.find.tree({
 			from: [
 				sMiV = tree({
 					from: [

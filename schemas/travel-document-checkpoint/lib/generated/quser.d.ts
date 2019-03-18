@@ -14,7 +14,12 @@ export interface IUser {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface UserESelect extends IEntitySelectProperties, UserEOptionalId, UserEUpdateProperties {
+export interface UserESelect extends IEntitySelectProperties, UserEOptionalId {
+    uniqueId?: string | IQStringField;
+    firstName?: string | IQStringField;
+    lastName?: string | IQStringField;
+    middleName?: string | IQStringField;
+    phone?: string | IQStringField;
     userTerminal?: UserTerminalESelect;
     userTerminalAgts?: UserTerminalAgtESelect;
 }

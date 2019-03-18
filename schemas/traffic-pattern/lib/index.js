@@ -15,13 +15,13 @@ __export(require("./generated/generated"));
 __export(require("./diTokens"));
 class AtAirport_TrafficPattern_QSchema {
     constructor() {
-        di_1.DI.get((airportDatabase, dao, dbSchemaUtils, dmo) => {
+        di_1.DI.get((airDb, dao, dbSchemaUtils, dmo) => {
             this.dao = dao;
             this.dmo = dmo;
-            this.init(airportDatabase, dbSchemaUtils);
+            this.init(airDb, dbSchemaUtils);
         }, air_control_1.AIRPORT_DATABASE, diTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS, ground_control_1.DB_SCHEMA_UTILS, diTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS);
     }
-    init(airportDatabase, dbSchemaUtils) {
+    init(airDb, dbSchemaUtils) {
         const schemaName = dbSchemaUtils.getSchemaName(schema_1.SCHEMA);
         this.__constructors__ = qSchema_1.Q_SCHEMA.__constructors;
         qSchema_1.Q_SCHEMA.dao = this.dao;
@@ -30,7 +30,7 @@ class AtAirport_TrafficPattern_QSchema {
         qSchema_1.Q_SCHEMA.__injected__ = this;
         this.__injected__ = this;
         this.__exported__ = qSchema_1.Q_SCHEMA;
-        const existingQSchema = airportDatabase.qSchemaMapByName[schemaName];
+        const existingQSchema = airDb.qSchemaMapByName[schemaName];
         // If '@airport/takeoff' has already run
         if (existingQSchema) {
             qSchema_1.Q_SCHEMA.__created__ = existingQSchema;
@@ -41,13 +41,13 @@ class AtAirport_TrafficPattern_QSchema {
             existingQSchema.dao = this.dao;
             existingQSchema.dmo = this.dmo;
             existingQSchema.__constructors__ = qSchema_1.Q_SCHEMA.__constructors;
-            air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, this, airportDatabase.qSchemas);
-            air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, qSchema_1.Q_SCHEMA, airportDatabase.qSchemas);
+            air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, this, airDb.qSchemas);
+            air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, qSchema_1.Q_SCHEMA, airDb.qSchemas);
         }
         else {
             qSchema_1.Q_SCHEMA.__created__ = qSchema_1.Q_SCHEMA;
             this.__created__ = qSchema_1.Q_SCHEMA;
-            airportDatabase.qSchemaMapByName[schemaName] = qSchema_1.Q_SCHEMA;
+            airDb.qSchemaMapByName[schemaName] = qSchema_1.Q_SCHEMA;
         }
     }
 }

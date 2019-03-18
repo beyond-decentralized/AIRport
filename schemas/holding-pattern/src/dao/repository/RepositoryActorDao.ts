@@ -1,16 +1,14 @@
 import {
 	and,
-	IUtils,
-	UtilsToken,
 	Y
-}                                from '@airport/air-control'
-import {QTerminal}               from '@airport/travel-document-checkpoint'
-import {Service}                 from 'typedi'
-import {Inject}                  from 'typedi/decorators/Inject'
+}                             from '@airport/air-control'
+import {DI}                   from '@airport/di'
+import {QTerminal}            from '@airport/travel-document-checkpoint'
 import {
 	ActorId,
 	RepositoryId
-}                                from '../../ddl/ddl'
+}                             from '../../ddl/ddl'
+import {REPOSITORY_ACTOR_DAO} from '../../diTokens'
 import {
 	BaseRepositoryActorDao,
 	IBaseRepositoryActorDao,
@@ -18,8 +16,7 @@ import {
 	Q,
 	QActor,
 	QRepositoryActor,
-}                                from '../../generated/generated'
-import {RepositoryActorDaoToken} from '../../InjectionTokens'
+}                             from '../../generated/generated'
 
 export interface IRepositoryActorDao
 	extends IBaseRepositoryActorDao {
@@ -34,24 +31,16 @@ export interface IRepositoryActorDao
 
 }
 
-@Service(RepositoryActorDaoToken)
 export class RepositoryActorDao
 	extends BaseRepositoryActorDao
 	implements IRepositoryActorDao {
-
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils)
-	}
 
 	async findAllForLocalActorsWhereRepositoryIdIn(
 		repositoryIds: RepositoryId[]
 	): Promise<IRepositoryActor[]> {
 		let ra: QRepositoryActor,
-			a: QActor,
-			d: QTerminal
+		    a: QActor,
+		    d: QTerminal
 		const id = Y
 
 		return await this.db.find.tree({
@@ -91,3 +80,5 @@ export class RepositoryActorDao
 	}
 
 }
+
+DI.set(REPOSITORY_ACTOR_DAO, RepositoryActorDao)

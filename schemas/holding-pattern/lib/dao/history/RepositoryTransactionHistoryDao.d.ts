@@ -1,7 +1,6 @@
-import { IAirportDatabase, IQNumberField, IUtils, JSONLogicalOperation, RawFieldQuery } from '@airport/air-control';
+import { IQNumberField, JSONLogicalOperation, RawFieldQuery } from '@airport/air-control';
 import { EntityId, JSONBaseOperation } from '@airport/ground-control';
 import { ActorId, RecordHistoryActorRecordId, RepositoryEntityActorRecordId, RepositoryId, RepositoryTransactionHistoryId } from '../../ddl/ddl';
-import { IOperationHistoryDmo, IRecordHistoryDmo } from '../../dmo/dmo';
 import { BaseRepositoryTransactionHistoryDao, IRepositoryTransactionHistory, QActor, QOperationHistory, QRecordHistory, QRecordHistoryNewValue, QRepository, QRepositoryTransactionHistory, RepositoryTransactionHistoryESelect } from '../../generated/generated';
 export interface IRepositoryTransactionHistoryDao {
     getSelectClauseWithRecordHistory(): RepositoryTransactionHistoryESelect;
@@ -19,10 +18,9 @@ export interface IChangedRecordIdsForRepository {
     firstChangeTime: Date;
 }
 export declare class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao implements IRepositoryTransactionHistoryDao {
-    private airportDb;
-    private operationHistoryDmo;
-    private recordHistoryDmo;
-    constructor(airportDb: IAirportDatabase, operationHistoryDmo: IOperationHistoryDmo, recordHistoryDmo: IRecordHistoryDmo, utils: IUtils);
+    private operHistoryDmo;
+    private recHistoryDmo;
+    constructor();
     getSelectClauseWithRecordHistory(): RepositoryTransactionHistoryESelect;
     findWhere(whereClauseFunction: {
         (rth: QRepositoryTransactionHistory, r: QRepository, oh?: QOperationHistory, rh?: QRecordHistory): JSONBaseOperation;

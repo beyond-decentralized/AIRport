@@ -1,4 +1,4 @@
-import {Token}                      from "typedi";
+import {diToken}                    from '@airport/di'
 import {ITMDataDeserializer}        from "./impl/data/TMDataDeserializer";
 import {ITMDataFormatVerifier}      from "./impl/data/TMDataFormatVerifier";
 import {ITMDataSchemaVerifier}      from "./impl/data/TMDataSchemaVerifier";
@@ -11,14 +11,14 @@ import {IMessageFromTMVerifier}     from "./impl/message/verifier/MessageFromTMV
 import {IMessageToTMVerifier}       from "./impl/message/verifier/MessageToTMVerifier";
 import {ISyncConnectionServer}      from "./lingo/SyncConnectionServer";
 
-export const MessageFromTMDeserializerToken = new Token<IMessageFromTMDeserializer>();
-export const MessageFromTMSerializerToken = new Token<IMessageFromTMSerializer>();
-export const MessageFromTMVerifierToken = new Token<IMessageFromTMVerifier>();
-export const MessageToTMDeserializerToken = new Token<IMessageToTMDeserializer>();
-export const MessageToTMSerializerToken = new Token<IMessageToTMSerializer>();
-export const MessageToTMVerifierToken = new Token<IMessageToTMVerifier>();
-export const SyncConnectionServerToken = new Token<ISyncConnectionServer<any, any, any, any>>();
-export const TMDataSerializerToken = new Token<ITMDataSerializer>();
-export const TMDataDeserializerToken = new Token<ITMDataDeserializer>();
-export const TMDataFormatVerifierToken = new Token<ITMDataFormatVerifier>();
-export const TMDataSchemaVerifierToken = new Token<ITMDataSchemaVerifier>();
+export const MESSAGE_FROM_TM_DESERIALIZER = diToken<IMessageFromTMDeserializer>();
+export const MESSAGE_FROM_TM_SERIALIZER = diToken<IMessageFromTMSerializer>();
+export const MESSAGE_FROM_TM_VERIFIER   = diToken<IMessageFromTMVerifier>();
+export const MESSAGE_TO_TM_DESERIALIZER = diToken<IMessageToTMDeserializer>();
+export const MESSAGE_TO_TM_SERIALIZER   = diToken<IMessageToTMSerializer>();
+export const MESSAGE_TO_TM_VERIFIER     = diToken<IMessageToTMVerifier>();
+export const SYNC_CONNECTION_SERVER     = diToken<ISyncConnectionServer<any, any, any, any>>();
+export const TM_DATA_SERIALIZER         = diToken<ITMDataSerializer>();
+export const TM_DATA_DESERIALIZER       = diToken<ITMDataDeserializer>();
+export const TM_DATA_FORMAT_VERIFIER    = diToken<ITMDataFormatVerifier>();
+export const TM_DATA_SCHEMA_VERIFIER    = diToken<ITMDataSchemaVerifier>();

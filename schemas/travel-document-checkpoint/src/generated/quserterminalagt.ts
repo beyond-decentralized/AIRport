@@ -100,7 +100,10 @@ export interface IUserTerminalAgt {
  * SELECT - All fields and relations (optional).
  */
 export interface UserTerminalAgtESelect
-    extends IEntitySelectProperties, UserTerminalAgtEOptionalId, UserTerminalAgtEUpdateProperties {
+    extends IEntitySelectProperties, UserTerminalAgtEOptionalId {
+	// Non-Id Properties
+	password?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

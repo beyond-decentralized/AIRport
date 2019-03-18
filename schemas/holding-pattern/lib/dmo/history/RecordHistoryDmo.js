@@ -1,26 +1,16 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
+const di_1 = require("@airport/di");
 const ddl_1 = require("../../ddl/ddl");
+const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
-const InjectionTokens_1 = require("../../InjectionTokens");
-let RecordHistoryDmo = class RecordHistoryDmo extends generated_1.BaseRecordHistoryDmo {
-    constructor(recordHistoryNewValueDmo, recordHistoryOldValueDmo) {
+class RecordHistoryDmo extends generated_1.BaseRecordHistoryDmo {
+    constructor() {
         super();
-        this.recordHistoryNewValueDmo = recordHistoryNewValueDmo;
-        this.recordHistoryOldValueDmo = recordHistoryOldValueDmo;
+        di_1.DI.get((recordHistoryNewValueDmo, recordHistoryOldValueDmo) => {
+            this.recHistoryNewValueDmo = recordHistoryNewValueDmo;
+            this.recHistoryOldValueDmo = recordHistoryOldValueDmo;
+        }, diTokens_1.RECORD_HISTORY_NEW_VALUE_DMO, diTokens_1.RECORD_HISTORY_OLD_VALUE_DMO);
     }
     getNewRecord(actorRecordId) {
         const recordHistory = new ddl_1.RecordHistory();
@@ -28,25 +18,20 @@ let RecordHistoryDmo = class RecordHistoryDmo extends generated_1.BaseRecordHist
         return recordHistory;
     }
     addNewValue(recordHistory, dbColumn, newValue) {
-        const recordHistoryNewValue = this.recordHistoryNewValueDmo.getNewRecord(recordHistory, dbColumn, newValue);
+        const recordHistoryNewValue = this.recHistoryNewValueDmo.getNewRecord(recordHistory, dbColumn, newValue);
         recordHistory.newValues.push(recordHistoryNewValue);
         recordHistory.operationHistory.repositoryTransactionHistory
             .transactionHistory.allRecordHistoryNewValues.push(recordHistoryNewValue);
         return recordHistoryNewValue;
     }
     addOldValue(recordHistory, dbColumn, oldValue) {
-        const recordHistoryOldValue = this.recordHistoryOldValueDmo.getNewRecord(recordHistory, dbColumn, oldValue);
+        const recordHistoryOldValue = this.recHistoryOldValueDmo.getNewRecord(recordHistory, dbColumn, oldValue);
         recordHistory.oldValues.push(recordHistoryOldValue);
         recordHistory.operationHistory.repositoryTransactionHistory
             .transactionHistory.allRecordHistoryOldValues.push(recordHistoryOldValue);
         return recordHistoryOldValue;
     }
-};
-RecordHistoryDmo = __decorate([
-    typedi_1.Service(InjectionTokens_1.RecordHistoryDmoToken),
-    __param(0, typedi_1.Inject(InjectionTokens_1.RecordHistoryNewValueDmoToken)),
-    __param(1, typedi_1.Inject(InjectionTokens_1.RecordHistoryOldValueDmoToken)),
-    __metadata("design:paramtypes", [Object, Object])
-], RecordHistoryDmo);
+}
 exports.RecordHistoryDmo = RecordHistoryDmo;
+di_1.DI.set(diTokens_1.RECORD_HISTORY_DMO, RecordHistoryDmo);
 //# sourceMappingURL=RecordHistoryDmo.js.map

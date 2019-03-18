@@ -5,14 +5,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
-const holding_pattern_1 = require("@airport/holding-pattern");
-const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
 // FIXME: SECURITY - ensure that a given RepoTransBlock is processed only once by a given TM
 // FIXME: SECURITY - ensure that a given RepoTransBlock is processed only once by a given AGT
 /**
@@ -48,57 +42,46 @@ let RepositoryTransactionBlock = class RepositoryTransactionBlock {
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.DbNumber(),
-    __metadata("design:type", Number)
+    air_control_1.DbNumber()
 ], RepositoryTransactionBlock.prototype, "id", void 0);
 __decorate([
     air_control_1.Column({ name: "SOURCE_ID" }),
-    air_control_1.DbNumber(),
-    __metadata("design:type", Number)
+    air_control_1.DbNumber()
 ], RepositoryTransactionBlock.prototype, "sourceId", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "SOURCE_TERMINAL_ID", referencedColumnName: "ID" }),
-    __metadata("design:type", travel_document_checkpoint_1.Terminal)
+    air_control_1.JoinColumn({ name: "SOURCE_TERMINAL_ID", referencedColumnName: "ID" })
 ], RepositoryTransactionBlock.prototype, "source", void 0);
 __decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({
         name: "REPOSITORY_ID", referencedColumnName: "ID"
-    }),
-    __metadata("design:type", holding_pattern_1.Repository)
+    })
 ], RepositoryTransactionBlock.prototype, "repository", void 0);
 __decorate([
     air_control_1.Column({ name: "SYNC_OUTCOME_TYPE" }),
-    air_control_1.DbNumber(),
-    __metadata("design:type", Number)
+    air_control_1.DbNumber()
 ], RepositoryTransactionBlock.prototype, "syncOutcomeType", void 0);
 __decorate([
-    air_control_1.DbString(),
-    __metadata("design:type", String)
+    air_control_1.DbString()
 ], RepositoryTransactionBlock.prototype, "contents", void 0);
 __decorate([
     air_control_1.OneToMany(),
     air_control_1.JoinColumn({
         name: "REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID", referencedColumnName: "ID"
-    }),
-    __metadata("design:type", Array)
+    })
 ], RepositoryTransactionBlock.prototype, "repositoryTransactionHistory", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "repositoryTransactionBlock" }),
-    __metadata("design:type", Array)
+    air_control_1.OneToMany({ mappedBy: "repositoryTransactionBlock" })
 ], RepositoryTransactionBlock.prototype, "sharingNodeRepoTransBlocks", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "repositoryTransactionBlock" }),
-    __metadata("design:type", Array)
+    air_control_1.OneToMany({ mappedBy: "repositoryTransactionBlock" })
 ], RepositoryTransactionBlock.prototype, "sharingMessageRepoTransBlocks", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "repositoryTransactionBlock" }),
-    __metadata("design:type", Array)
+    air_control_1.OneToMany({ mappedBy: "repositoryTransactionBlock" })
 ], RepositoryTransactionBlock.prototype, "missingRecordRepoTransBlocks", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "repositoryTransactionBlock" }),
-    __metadata("design:type", Array)
+    air_control_1.OneToMany({ mappedBy: "repositoryTransactionBlock" })
 ], RepositoryTransactionBlock.prototype, "repoTransBlockSchemasToChange", void 0);
 RepositoryTransactionBlock = __decorate([
     air_control_1.Entity(),

@@ -1,4 +1,4 @@
-import { MessageFromTM, SerializedMessageFromTM } from "../../../lingo/lingo";
+import { MessageFromTM, SerializedMessageFromTM } from '../../../lingo/lingo';
 export interface IMessageFromTMSerializer {
     serialize(messageFromTM: MessageFromTM): SerializedMessageFromTM;
 }

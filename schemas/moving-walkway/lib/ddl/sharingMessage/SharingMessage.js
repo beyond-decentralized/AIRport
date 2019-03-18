@@ -5,13 +5,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const __1 = require("../..");
-const SharingNode_1 = require("../sharingNode/SharingNode");
 // FIXME: SECURITY - ensure that a given sharing message is processed only once by a given AGT
 /**
  * A sharing message is a record of a number of RepositoryTransactionBlocks
@@ -57,33 +52,27 @@ let SharingMessage = class SharingMessage {
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.GeneratedValue(),
-    __metadata("design:type", Number)
+    air_control_1.GeneratedValue()
 ], SharingMessage.prototype, "id", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({
         name: "SHARING_NODE_ID", referencedColumnName: "ID"
-    }),
-    __metadata("design:type", SharingNode_1.SharingNode)
+    })
 ], SharingMessage.prototype, "sharingNode", void 0);
 __decorate([
-    air_control_1.DbNumber(),
-    __metadata("design:type", Number)
+    air_control_1.DbNumber()
 ], SharingMessage.prototype, "origin", void 0);
 __decorate([
-    air_control_1.Column({ name: "AGT_SHARING_MESSAGE_ID" }),
-    __metadata("design:type", Number)
+    air_control_1.Column({ name: "AGT_SHARING_MESSAGE_ID" })
 ], SharingMessage.prototype, "agtSharingMessageId", void 0);
 __decorate([
     air_control_1.Column({ name: "SYNC_TIMESTAMP" }),
-    air_control_1.DbDate(),
-    __metadata("design:type", Object)
+    air_control_1.DbDate()
 ], SharingMessage.prototype, "syncTimestamp", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "sharingMessage" }),
-    __metadata("design:type", Array)
+    air_control_1.OneToMany({ mappedBy: "sharingMessage" })
 ], SharingMessage.prototype, "sharingMessageRepoTransBlocks", void 0);
 SharingMessage = __decorate([
     air_control_1.Entity(),

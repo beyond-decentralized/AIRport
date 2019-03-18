@@ -1,5 +1,5 @@
-import {Service}                    from "typedi";
-import {MessageToTMSerializerToken} from "../../../InjectionTokens";
+import {DI}                       from '@airport/di'
+import {MESSAGE_TO_TM_SERIALIZER} from '../../../diTokens'
 import {
 	BatchedMessagesToTM,
 	MessageToTM,
@@ -10,8 +10,8 @@ import {
 	SerializedRepoTransBlockMessageToTM,
 	SerializedRepoTransBlockSyncStatus,
 	SerializedSyncNotificationMessageToTM
-}                                   from "../../../lingo/lingo";
-import {RepoTransBlockSyncStatus}   from "../../../lingo/message/MessageToTM";
+}                                 from '../../../lingo/lingo'
+import {RepoTransBlockSyncStatus} from '../../../lingo/message/MessageToTM'
 
 export interface IMessageToTMSerializer {
 
@@ -25,22 +25,21 @@ export interface IMessageToTMSerializer {
 
 }
 
-@Service(MessageToTMSerializerToken)
 export class MessageToTMSerializer
 	implements IMessageToTMSerializer {
 
 	serialize(
 		batchedMessagesToTM: BatchedMessagesToTM
 	): SerializedBatchedMessagesToTM {
-		const protocolVersion = batchedMessagesToTM.protocolVersion;
+		const protocolVersion = batchedMessagesToTM.protocolVersion
 		if (protocolVersion !== 0) {
-			throw new Error(`Unsupported TmToAgtProtocolVersion: ${protocolVersion}`);
+			throw new Error(`Unsupported TmToAgtProtocolVersion: ${protocolVersion}`)
 		}
 		return [0,
 			batchedMessagesToTM.targetAgtTerminalIds,
 			batchedMessagesToTM.agtSharingMessageId,
 			batchedMessagesToTM.messages.map(this.serializeAMessage)
-		];
+		]
 	}
 
 	serializeAMessage(
@@ -56,18 +55,18 @@ export class MessageToTMSerializer
 					// messageToTM.addDatetime,
 					// messageToTM.tmRepositoryTransactionBlockId,
 					messageToTM.repositoryTransactionBlock
-				];
+				]
 			}
 			case MessageToTMContentType.SYNC_NOTIFICATION: {
 				const serializedSyncOutcomes = this.serializeSyncOutcomes(
-					messageToTM.syncOutcomes);
+					messageToTM.syncOutcomes)
 				return <SerializedSyncNotificationMessageToTM>[
 					messageToTM.contentType,
 					messageToTM.tmSharingMessageId,
 					// messageToTM.terminalSyncLogId,
 					// messageToTM.agtRepositoryTransactionBlockAddDatetime,
 					serializedSyncOutcomes
-				];
+				]
 			}
 			// case MessageToTMContentType.SYNC_ACK: {
 			// 	const serializedSyncOutcomes = this.serializeSyncOutcomes(
@@ -78,13 +77,13 @@ export class MessageToTMSerializer
 			// 	];
 			// }
 			case MessageToTMContentType.ALIVE_ACK: {
-				return <SerializedAliveAcknowledgementMessageToTM> [
+				return <SerializedAliveAcknowledgementMessageToTM>[
 					messageToTM.contentType
-				];
+				]
 			}
 			default: {
 				throw new Error('Unknown MessageToTMContentType: ' +
-					(<MessageToTM>messageToTM).contentType);
+					(<MessageToTM>messageToTM).contentType)
 			}
 		}
 	}
@@ -98,7 +97,9 @@ export class MessageToTMSerializer
 			syncOutcome.tmRepositoryTransactionBlockId,
 			// syncOutcome.agtRepositoryTransactionBlockId,
 			syncOutcome.syncStatus
-		]);
+		])
 	}
 
 }
+
+DI.set(MESSAGE_TO_TM_SERIALIZER, MessageToTMSerializer)

@@ -39,7 +39,7 @@ export abstract class Dao<Entity,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>
 
 	protected utils: IUtils
-	protected airportDatabase: IAirportDatabase
+	protected airDb: IAirportDatabase
 
 	constructor(
 		dbEntity: DbEntity,
@@ -50,9 +50,9 @@ export abstract class Dao<Entity,
 				airportDatabase,
 				utils
 			) => {
-				this.airportDatabase = airportDatabase
-				this.utils           = utils
-				this.db              = new EntityDatabaseFacade<Entity,
+				this.airDb = airportDatabase
+				this.utils = utils
+				this.db    = new EntityDatabaseFacade<Entity,
 					EntitySelect, EntityCreate,
 					EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>(
 					dbEntity, Q, this.utils)

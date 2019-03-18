@@ -1,26 +1,23 @@
-import {DbColumn}                  from "@airport/ground-control";
-import {
-	Inject,
-	Service
-}                                  from "typedi";
-import {IBaseRecordHistoryDmo}     from "../../";
+import {DI}                        from '@airport/di'
+import {DbColumn}                  from '@airport/ground-control'
 import {
 	RecordHistory,
 	RepositoryEntityActorRecordId
-}                                  from "../../ddl/ddl";
+}                                  from '../../ddl/ddl'
+import {
+	RECORD_HISTORY_DMO,
+	RECORD_HISTORY_NEW_VALUE_DMO,
+	RECORD_HISTORY_OLD_VALUE_DMO
+}                                  from '../../diTokens'
 import {
 	BaseRecordHistoryDmo,
+	IBaseRecordHistoryDmo,
 	IRecordHistory,
 	IRecordHistoryNewValue,
 	IRecordHistoryOldValue,
-}                                  from "../../generated/generated";
-import {
-	RecordHistoryDmoToken,
-	RecordHistoryNewValueDmoToken,
-	RecordHistoryOldValueDmoToken
-}                                  from "../../InjectionTokens";
-import {IRecordHistoryNewValueDmo} from "./RecordHistoryNewValueDmo";
-import {IRecordHistoryOldValueDmo} from "./RecordHistoryOldValueDmo";
+}                                  from '../../generated/generated'
+import {IRecordHistoryNewValueDmo} from './RecordHistoryNewValueDmo'
+import {IRecordHistoryOldValueDmo} from './RecordHistoryOldValueDmo'
 
 
 export interface IRecordHistoryDmo
@@ -44,28 +41,33 @@ export interface IRecordHistoryDmo
 
 }
 
-@Service(RecordHistoryDmoToken)
-export abstract class RecordHistoryDmo
+export class RecordHistoryDmo
 	extends BaseRecordHistoryDmo
 	implements IRecordHistoryDmo {
 
-	constructor(
-		@Inject(RecordHistoryNewValueDmoToken)
-		private recordHistoryNewValueDmo: IRecordHistoryNewValueDmo,
-		@Inject(RecordHistoryOldValueDmoToken)
-		private recordHistoryOldValueDmo: IRecordHistoryOldValueDmo
-	) {
-		super();
+	private recHistoryNewValueDmo: IRecordHistoryNewValueDmo
+	private recHistoryOldValueDmo: IRecordHistoryOldValueDmo
+
+	constructor() {
+		super()
+
+		DI.get((
+			recordHistoryNewValueDmo,
+			recordHistoryOldValueDmo
+		) => {
+			this.recHistoryNewValueDmo = recordHistoryNewValueDmo
+			this.recHistoryOldValueDmo = recordHistoryOldValueDmo
+		}, RECORD_HISTORY_NEW_VALUE_DMO, RECORD_HISTORY_OLD_VALUE_DMO)
 	}
 
 	getNewRecord(
 		actorRecordId: RepositoryEntityActorRecordId
 	): IRecordHistory {
-		const recordHistory = new RecordHistory();
+		const recordHistory = new RecordHistory()
 
-		recordHistory.actorRecordId = actorRecordId;
+		recordHistory.actorRecordId = actorRecordId
 
-		return recordHistory;
+		return recordHistory
 	}
 
 	addNewValue(
@@ -73,15 +75,15 @@ export abstract class RecordHistoryDmo
 		dbColumn: DbColumn,
 		newValue: any
 	): IRecordHistoryNewValue {
-		const recordHistoryNewValue = this.recordHistoryNewValueDmo.getNewRecord(recordHistory, dbColumn, newValue);
+		const recordHistoryNewValue = this.recHistoryNewValueDmo.getNewRecord(recordHistory, dbColumn, newValue)
 
-		recordHistory.newValues.push(recordHistoryNewValue);
+		recordHistory.newValues.push(recordHistoryNewValue)
 
 
 		recordHistory.operationHistory.repositoryTransactionHistory
-			.transactionHistory.allRecordHistoryNewValues.push(recordHistoryNewValue);
+			.transactionHistory.allRecordHistoryNewValues.push(recordHistoryNewValue)
 
-		return recordHistoryNewValue;
+		return recordHistoryNewValue
 	}
 
 	addOldValue(
@@ -89,15 +91,17 @@ export abstract class RecordHistoryDmo
 		dbColumn: DbColumn,
 		oldValue: any
 	): IRecordHistoryOldValue {
-		const recordHistoryOldValue = this.recordHistoryOldValueDmo.getNewRecord(recordHistory, dbColumn, oldValue);
+		const recordHistoryOldValue = this.recHistoryOldValueDmo.getNewRecord(recordHistory, dbColumn, oldValue)
 
-		recordHistory.oldValues.push(recordHistoryOldValue);
+		recordHistory.oldValues.push(recordHistoryOldValue)
 
 
 		recordHistory.operationHistory.repositoryTransactionHistory
-			.transactionHistory.allRecordHistoryOldValues.push(recordHistoryOldValue);
+			.transactionHistory.allRecordHistoryOldValues.push(recordHistoryOldValue)
 
-		return recordHistoryOldValue;
+		return recordHistoryOldValue
 	}
 
 }
+
+DI.set(RECORD_HISTORY_DMO, RecordHistoryDmo)

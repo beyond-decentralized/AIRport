@@ -1,5 +1,5 @@
-import { MessageToTMError, SerializedBatchedMessagesToTM, SerializedMessageToTM, SerializedRepoTransBlockMessageToTM, SerializedSyncNotificationMessageToTM } from "../../../lingo/lingo";
-import { AbstractCommonMessageVerifier } from "./AbstractCommonMessageVerifier";
+import { MessageToTMError, SerializedBatchedMessagesToTM, SerializedMessageToTM, SerializedRepoTransBlockMessageToTM, SerializedSyncNotificationMessageToTM } from '../../../lingo/lingo';
+import { AbstractCommonMessageVerifier } from './AbstractCommonMessageVerifier';
 export interface IMessageToTMVerifier {
     verifyMessagesBatch(batchedMessages: SerializedBatchedMessagesToTM): [MessageToTMError, any] | [MessageToTMError, any, any] | [MessageToTMError, any, any, any];
 }

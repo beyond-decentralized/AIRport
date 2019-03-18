@@ -1,38 +1,35 @@
 import {
-	AirportDatabaseToken,
 	and,
 	distinct,
-	field,
-	IAirportDatabase,
 	IQNumberField,
-	IUtils,
 	JSONLogicalOperation,
 	or,
 	RawFieldQuery,
-	UtilsToken,
 	Y
-}                from '@airport/air-control'
+}           from '@airport/air-control'
+import {DI} from '@airport/di'
 import {
 	ChangeType,
 	EntityId,
 	JSONBaseOperation,
-	SchemaVersionId,
-	TableIndex,
 	TransactionType
-}                from '@airport/ground-control'
-import {Service} from 'typedi'
-import {Inject}  from 'typedi/decorators/Inject'
+}           from '@airport/ground-control'
+import {
+	IOperationHistoryDmo,
+	IRecordHistoryDmo
+}           from '../..'
 import {
 	ActorId,
 	RecordHistoryActorRecordId,
 	RepositoryEntityActorRecordId,
 	RepositoryId,
 	RepositoryTransactionHistoryId
-}                from '../../ddl/ddl'
+}           from '../../ddl/ddl'
 import {
-	IOperationHistoryDmo,
-	IRecordHistoryDmo,
-}                from '../../dmo/dmo'
+	OPERATION_HISTORY_DMO,
+	RECORD_HISTORY_DMO,
+	REPOSITORY_TRANSACTION_HISTORY_DAO,
+}           from '../../diTokens'
 import {
 	BaseRepositoryTransactionHistoryDao,
 	IOperationHistory,
@@ -46,12 +43,7 @@ import {
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
 	RepositoryTransactionHistoryESelect
-}                from '../../generated/generated'
-import {
-	OperationHistoryDmoToken,
-	RecordHistoryDmoToken,
-	RepositoryTransactionHistoryDaoToken,
-}                from '../../InjectionTokens'
+}           from '../../generated/generated'
 
 export interface IRepositoryTransactionHistoryDao {
 
@@ -99,23 +91,23 @@ export interface IChangedRecordIdsForRepository {
 	firstChangeTime: Date;
 }
 
-
-@Service(RepositoryTransactionHistoryDaoToken)
 export class RepositoryTransactionHistoryDao
 	extends BaseRepositoryTransactionHistoryDao
 	implements IRepositoryTransactionHistoryDao {
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(OperationHistoryDmoToken)
-		private operationHistoryDmo: IOperationHistoryDmo,
-		@Inject(RecordHistoryDmoToken)
-		private recordHistoryDmo: IRecordHistoryDmo,
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils)
+	private operHistoryDmo: IOperationHistoryDmo
+	private recHistoryDmo: IRecordHistoryDmo
+
+	constructor() {
+		super()
+
+		DI.get((
+			operationHistoryDmo,
+			recordHistoryDmo
+		) => {
+			this.operHistoryDmo = operationHistoryDmo
+			this.recHistoryDmo    = recordHistoryDmo
+		}, OPERATION_HISTORY_DMO, RECORD_HISTORY_DMO)
 	}
 
 	getSelectClauseWithRecordHistory(): RepositoryTransactionHistoryESelect {
@@ -129,12 +121,12 @@ export class RepositoryTransactionHistoryDao
 				id
 			},
 			operationHistory: {
-				...this.operationHistoryDmo.getAllFieldsSelect(),
+				...this.operHistoryDmo.getAllFieldsSelect(),
 				entity: {
 					id: Y
 				},
 				recordHistory: {
-					...this.recordHistoryDmo.getAllFieldsSelect()
+					...this.recHistoryDmo.getAllFieldsSelect()
 				}
 			},
 		}
@@ -234,7 +226,7 @@ export class RepositoryTransactionHistoryDao
 		const repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>
 			      = new Map()
 
-		const trafficPatternQSchema = this.airportDb.qSchemaMapByName['@airport/traffic-pattern']
+		const trafficPatternQSchema = this.airDb.qSchemaMapByName['@airport/traffic-pattern']
 
 		const rth: QRepositoryTransactionHistory = Q.RepositoryTransactionHistory
 		const th: QTransactionHistory            = rth.transactionHistory.innerJoin()
@@ -246,19 +238,19 @@ export class RepositoryTransactionHistoryDao
 		const repositoryEquals: JSONBaseOperation[] = []
 		for (const [repositoryId, idsForRepository] of changedRecordIds) {
 			const recordMapForRepository            = idsForRepository.ids
-				const entityEquals: JSONBaseOperation[] = []
-				for (const [entityId, recordMapForEntity] of recordMapForRepository) {
-					const actorEquals: JSONBaseOperation[] = []
-					for (const [actorId, recordsForActor] of recordMapForEntity) {
-						actorEquals.push(and(
-							rh.actor.id.equals(actorId),
-							rh.actorRecordId.in(Array.from(recordsForActor))
-						))
-					}
-					entityEquals.push(and(
-						oh.entity.id.equals(entityId),
-						or(...actorEquals)
+			const entityEquals: JSONBaseOperation[] = []
+			for (const [entityId, recordMapForEntity] of recordMapForRepository) {
+				const actorEquals: JSONBaseOperation[] = []
+				for (const [actorId, recordsForActor] of recordMapForEntity) {
+					actorEquals.push(and(
+						rh.actor.id.equals(actorId),
+						rh.actorRecordId.in(Array.from(recordsForActor))
 					))
+				}
+				entityEquals.push(and(
+					oh.entity.id.equals(entityId),
+					or(...actorEquals)
+				))
 			}
 			repositoryEquals.push(and(
 				rth.repository.id.equals(repositoryId),
@@ -370,7 +362,7 @@ export class RepositoryTransactionHistoryDao
 			))
 		}
 
-		const records = await this.airportDb.find.sheet({
+		const records = await this.airDb.find.sheet({
 			from: [
 				rth,
 				oh,
@@ -397,3 +389,5 @@ export class RepositoryTransactionHistoryDao
 	}
 
 }
+
+DI.set(REPOSITORY_TRANSACTION_HISTORY_DAO, RepositoryTransactionHistoryDao)

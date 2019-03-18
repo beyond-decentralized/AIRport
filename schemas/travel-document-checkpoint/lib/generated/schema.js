@@ -4,6 +4,7 @@ exports.SCHEMA = {
     "domain": "public",
     "index": null,
     "name": "@airport/travel-document-checkpoint",
+    "sinceVersion": 1,
     "versions": [
         {
             "entities": [
@@ -17,15 +18,18 @@ exports.SCHEMA = {
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 2,
                                     "oneRelationIndex": 0,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "USER_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -36,15 +40,18 @@ exports.SCHEMA = {
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 3,
                                     "oneRelationIndex": 2,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "TERMINAL_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -60,7 +67,8 @@ exports.SCHEMA = {
                             "name": "user",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -68,7 +76,8 @@ exports.SCHEMA = {
                             "name": "terminal",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -79,7 +88,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 2
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -88,9 +98,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 3
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "USER_TERMINAL"
                     }
@@ -102,11 +114,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -118,22 +132,26 @@ exports.SCHEMA = {
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 5,
                                     "oneRelationIndex": 1,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 },
                                 {
                                     "manyRelationIndex": 3,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 4,
                                     "oneRelationIndex": 2,
-                                    "oneColumnIndex": 2
+                                    "oneColumnIndex": 2,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "AGT_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -141,11 +159,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "PASSWORD",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -156,15 +176,18 @@ exports.SCHEMA = {
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 2,
                                     "oneRelationIndex": 1,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "USER_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 3
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -175,17 +198,20 @@ exports.SCHEMA = {
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 3,
                                     "oneRelationIndex": 3,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 },
                                 {
                                     "manyRelationIndex": 3,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 4,
                                     "oneRelationIndex": 2,
-                                    "oneColumnIndex": 1
+                                    "oneColumnIndex": 1,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "TERMINAL_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 4
@@ -194,6 +220,7 @@ exports.SCHEMA = {
                                     "index": 6
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -216,7 +243,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -224,7 +252,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": true,
-                            "name": "agtId"
+                            "name": "agtId",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -232,7 +261,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "password"
+                            "name": "password",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 3,
@@ -240,7 +270,8 @@ exports.SCHEMA = {
                             "name": "user",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 4,
@@ -248,7 +279,8 @@ exports.SCHEMA = {
                             "name": "terminal",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 5,
@@ -256,7 +288,8 @@ exports.SCHEMA = {
                             "name": "agt",
                             "relationRef": {
                                 "index": 2
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 6,
@@ -264,7 +297,8 @@ exports.SCHEMA = {
                             "name": "terminalAgt",
                             "relationRef": {
                                 "index": 3
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -275,7 +309,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 2
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -284,7 +319,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 3
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 2,
@@ -293,7 +329,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 5
+                            "relationTableIndex": 5,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 3,
@@ -302,9 +339,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 4
+                            "relationTableIndex": 4,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "USER_TERMINAL_AGT"
                     }
@@ -316,11 +355,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -328,11 +369,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "UNIQUE_IDENTIFIER",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -340,11 +383,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "FIRST_NAME",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -352,11 +397,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "LAST_NAME",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 3
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -364,11 +411,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "MIDDLE_NAME",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 4
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -376,11 +425,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "PHONE",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 5
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         }
                     ],
@@ -400,7 +451,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -408,7 +460,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "uniqueId"
+                            "name": "uniqueId",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -416,7 +469,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "firstName"
+                            "name": "firstName",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -424,7 +478,8 @@ exports.SCHEMA = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "lastName"
+                            "name": "lastName",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -432,7 +487,8 @@ exports.SCHEMA = {
                             },
                             "index": 4,
                             "isId": false,
-                            "name": "middleName"
+                            "name": "middleName",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -440,7 +496,8 @@ exports.SCHEMA = {
                             },
                             "index": 5,
                             "isId": false,
-                            "name": "phone"
+                            "name": "phone",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 6,
@@ -448,7 +505,8 @@ exports.SCHEMA = {
                             "name": "userTerminal",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 7,
@@ -456,7 +514,8 @@ exports.SCHEMA = {
                             "name": "userTerminalAgts",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -470,7 +529,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 0
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -482,9 +542,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 1
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
                         }
-                    ]
+                    ],
+                    "sinceVersion": 1
                 },
                 {
                     "columns": [
@@ -493,11 +555,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -505,11 +569,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "NAME",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -517,11 +583,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "SECOND_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -529,11 +597,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "IS_LOCAL",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 4
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 1
                         },
                         {
@@ -543,15 +613,18 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 2,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "OWNER_USER_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 3
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -571,7 +644,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -579,7 +653,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "name"
+                            "name": "name",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -587,7 +662,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "secondId"
+                            "name": "secondId",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 3,
@@ -595,7 +671,8 @@ exports.SCHEMA = {
                             "name": "owner",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -603,7 +680,8 @@ exports.SCHEMA = {
                             },
                             "index": 4,
                             "isId": false,
-                            "name": "isLocal"
+                            "name": "isLocal",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 5,
@@ -611,7 +689,8 @@ exports.SCHEMA = {
                             "name": "terminalAgts",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 6,
@@ -619,7 +698,8 @@ exports.SCHEMA = {
                             "name": "userTerminal",
                             "relationRef": {
                                 "index": 2
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 7,
@@ -627,7 +707,8 @@ exports.SCHEMA = {
                             "name": "userTerminalAgt",
                             "relationRef": {
                                 "index": 3
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -638,7 +719,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 2
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -650,7 +732,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 4
+                            "relationTableIndex": 4,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 2,
@@ -662,7 +745,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 0
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 3,
@@ -674,9 +758,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 1
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
                         }
-                    ]
+                    ],
+                    "sinceVersion": 1
                 },
                 {
                     "columns": [
@@ -685,11 +771,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "PASSWORD",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -700,15 +788,18 @@ exports.SCHEMA = {
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 3,
                                     "oneRelationIndex": 1,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "TERMINAL_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -719,15 +810,18 @@ exports.SCHEMA = {
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 5,
                                     "oneRelationIndex": 0,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "AGT_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -750,7 +844,8 @@ exports.SCHEMA = {
                             "name": "terminal",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -758,7 +853,8 @@ exports.SCHEMA = {
                             "name": "agt",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -766,7 +862,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "password"
+                            "name": "password",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 3,
@@ -774,7 +871,8 @@ exports.SCHEMA = {
                             "name": "userTerminalAgts",
                             "relationRef": {
                                 "index": 2
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -785,7 +883,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 3
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -794,7 +893,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 5
+                            "relationTableIndex": 5,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 2,
@@ -806,9 +906,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 1
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "TERMINAL_AGTS"
                     }
@@ -820,11 +922,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -832,11 +936,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "ADDRESS",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         }
                     ],
@@ -856,7 +962,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -864,7 +971,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "address"
+                            "name": "address",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 2,
@@ -872,7 +980,8 @@ exports.SCHEMA = {
                             "name": "terminalAgts",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 3,
@@ -880,7 +989,8 @@ exports.SCHEMA = {
                             "name": "userTerminalAgts",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -894,7 +1004,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 4
+                            "relationTableIndex": 4,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -906,11 +1017,14 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 1
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
                         }
-                    ]
+                    ],
+                    "sinceVersion": 1
                 }
             ],
+            "integerVersion": 1,
             "referencedSchemas": [],
             "versionString": "1.0.0"
         }

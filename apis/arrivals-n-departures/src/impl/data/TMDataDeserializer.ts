@@ -1,14 +1,15 @@
-import {Service}                 from "typedi";
-import {TMDataDeserializerToken} from "../../InjectionTokens";
+import {DI}                   from '@airport/di'
+import {TM_DATA_DESERIALIZER} from '../../diTokens'
 
 export interface ITMDataDeserializer {
 
 }
 
-@Service(TMDataDeserializerToken)
 export class TMDataDeserializer
 	implements ITMDataDeserializer {
 
 	// FIXME: add data deserialization
 
 }
+
+DI.set(TM_DATA_DESERIALIZER, TMDataDeserializer)

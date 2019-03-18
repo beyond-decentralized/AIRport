@@ -1,7 +1,4 @@
-import { MappedEntityArray } from '@airport/air-control';
-import { IQNumberField } from '@airport/air-control/lib/lingo/core/field/NumberField';
-import { RawFieldQuery } from '@airport/air-control/lib/lingo/query/facade/FieldQuery';
-import { IUtils } from '@airport/air-control/lib/lingo/utils/Utils';
+import { IQNumberField, MappedEntityArray, RawFieldQuery } from '@airport/air-control';
 import { TerminalName, TerminalSecondId } from '@airport/arrivals-n-departures';
 import { UserUniqueId } from '@airport/travel-document-checkpoint';
 import { RepositoryId } from '../../ddl/ddl';
@@ -16,7 +13,6 @@ export interface IRepositoryDao {
 }
 export declare type RepositoryIdMap = Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, Map<ActorRandomId, Map<RepositoryOrderedId, Map<RepositoryRandomId, RepositoryId>>>>>>>;
 export declare class RepositoryDao extends BaseRepositoryDao implements IRepositoryDao {
-    constructor(utils: IUtils);
     findReposWithTransactionLogDetailsByIds(repositoryIds: RepositoryId[]): Promise<MappedEntityArray<IRepository>>;
     findReposWithDetailsAndSyncNodeIds(repositoryIds: RepositoryId[]): Promise<IRepository[]>;
     findReposWithDetailsByIds(repositoryIdsInClause: RepositoryTransactionHistoryId[] | RawFieldQuery<IQNumberField> | {

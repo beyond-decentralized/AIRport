@@ -74,7 +74,7 @@ export class SchemaRecorder
 
 	constructor(
 		// @Inject(AIRPORT_DATABASE)
-		// private airportDatabase: IAirportDatabase,
+		// private airDb: IAirportDatabase,
 		@Inject(DomainDaoToken)
 		private domainDao: IDomainDao,
 		@Inject(SchemaColumnDaoToken)

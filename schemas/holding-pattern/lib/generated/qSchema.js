@@ -1,36 +1,36 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const AbstractRepositoryEntity_1 = require("../ddl/repository/AbstractRepositoryEntity");
-const Actor_1 = require("../ddl/infrastructure/Actor");
-const ActorApplication_1 = require("../ddl/infrastructure/ActorApplication");
-const Application_1 = require("../ddl/infrastructure/Application");
-const OperationHistory_1 = require("../ddl/history/OperationHistory");
-const RecordHistory_1 = require("../ddl/history/RecordHistory");
-const RecordHistoryNewValue_1 = require("../ddl/history/RecordHistoryNewValue");
-const RecordHistoryOldValue_1 = require("../ddl/history/RecordHistoryOldValue");
-const RepoTransHistoryChangedRepositoryActor_1 = require("../ddl/history/RepoTransHistoryChangedRepositoryActor");
-const Repository_1 = require("../ddl/repository/Repository");
-const RepositoryActor_1 = require("../ddl/repository/RepositoryActor");
-const RepositoryApplication_1 = require("../ddl/repository/RepositoryApplication");
-const RepositorySchema_1 = require("../ddl/repository/RepositorySchema");
-const RepositoryTransactionHistory_1 = require("../ddl/history/RepositoryTransactionHistory");
-const TransactionHistory_1 = require("../ddl/history/TransactionHistory");
+const abstractrepositoryentity_1 = require("../ddl/repository/abstractrepositoryentity");
+const actor_1 = require("../ddl/infrastructure/actor");
+const actorapplication_1 = require("../ddl/infrastructure/actorapplication");
+const application_1 = require("../ddl/infrastructure/application");
+const operationhistory_1 = require("../ddl/history/operationhistory");
+const recordhistory_1 = require("../ddl/history/recordhistory");
+const recordhistorynewvalue_1 = require("../ddl/history/recordhistorynewvalue");
+const recordhistoryoldvalue_1 = require("../ddl/history/recordhistoryoldvalue");
+const repotranshistorychangedrepositoryactor_1 = require("../ddl/history/repotranshistorychangedrepositoryactor");
+const repository_1 = require("../ddl/repository/repository");
+const repositoryactor_1 = require("../ddl/repository/repositoryactor");
+const repositoryapplication_1 = require("../ddl/repository/repositoryapplication");
+const repositoryschema_1 = require("../ddl/repository/repositoryschema");
+const repositorytransactionhistory_1 = require("../ddl/history/repositorytransactionhistory");
+const transactionhistory_1 = require("../ddl/history/transactionhistory");
 const __constructors__ = {
-    AbstractRepositoryEntity: AbstractRepositoryEntity_1.AbstractRepositoryEntity,
-    Actor: Actor_1.Actor,
-    ActorApplication: ActorApplication_1.ActorApplication,
-    Application: Application_1.Application,
-    OperationHistory: OperationHistory_1.OperationHistory,
-    RecordHistory: RecordHistory_1.RecordHistory,
-    RecordHistoryNewValue: RecordHistoryNewValue_1.RecordHistoryNewValue,
-    RecordHistoryOldValue: RecordHistoryOldValue_1.RecordHistoryOldValue,
-    RepoTransHistoryChangedRepositoryActor: RepoTransHistoryChangedRepositoryActor_1.RepoTransHistoryChangedRepositoryActor,
-    Repository: Repository_1.Repository,
-    RepositoryActor: RepositoryActor_1.RepositoryActor,
-    RepositoryApplication: RepositoryApplication_1.RepositoryApplication,
-    RepositorySchema: RepositorySchema_1.RepositorySchema,
-    RepositoryTransactionHistory: RepositoryTransactionHistory_1.RepositoryTransactionHistory,
-    TransactionHistory: TransactionHistory_1.TransactionHistory
+    AbstractRepositoryEntity: abstractrepositoryentity_1.AbstractRepositoryEntity,
+    Actor: actor_1.Actor,
+    ActorApplication: actorapplication_1.ActorApplication,
+    Application: application_1.Application,
+    OperationHistory: operationhistory_1.OperationHistory,
+    RecordHistory: recordhistory_1.RecordHistory,
+    RecordHistoryNewValue: recordhistorynewvalue_1.RecordHistoryNewValue,
+    RecordHistoryOldValue: recordhistoryoldvalue_1.RecordHistoryOldValue,
+    RepoTransHistoryChangedRepositoryActor: repotranshistorychangedrepositoryactor_1.RepoTransHistoryChangedRepositoryActor,
+    Repository: repository_1.Repository,
+    RepositoryActor: repositoryactor_1.RepositoryActor,
+    RepositoryApplication: repositoryapplication_1.RepositoryApplication,
+    RepositorySchema: repositoryschema_1.RepositorySchema,
+    RepositoryTransactionHistory: repositorytransactionhistory_1.RepositoryTransactionHistory,
+    TransactionHistory: transactionhistory_1.TransactionHistory
 };
 exports.Q_SCHEMA = {
     __constructors__

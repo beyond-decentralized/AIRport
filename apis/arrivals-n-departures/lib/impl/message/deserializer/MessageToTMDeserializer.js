@@ -1,15 +1,9 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../../../InjectionTokens");
+const di_1 = require("@airport/di");
+const diTokens_1 = require("../../../diTokens");
 const MessageTypes_1 = require("../../../lingo/message/MessageTypes");
-let MessageToTMDeserializer = class MessageToTMDeserializer {
+class MessageToTMDeserializer {
     deserialize(serializedBatchedMessagesToTM) {
         const protocolVersion = serializedBatchedMessagesToTM[0];
         if (protocolVersion !== 0) {
@@ -67,9 +61,7 @@ let MessageToTMDeserializer = class MessageToTMDeserializer {
             syncStatus: serializedSyncOutcome[2],
         }));
     }
-};
-MessageToTMDeserializer = __decorate([
-    typedi_1.Service(InjectionTokens_1.MessageToTMDeserializerToken)
-], MessageToTMDeserializer);
+}
 exports.MessageToTMDeserializer = MessageToTMDeserializer;
+di_1.DI.set(diTokens_1.MESSAGE_TO_TM_DESERIALIZER, MessageToTMDeserializer);
 //# sourceMappingURL=MessageToTMDeserializer.js.map

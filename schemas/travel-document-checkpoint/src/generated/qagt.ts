@@ -77,7 +77,10 @@ export interface IAgt {
  * SELECT - All fields and relations (optional).
  */
 export interface AgtESelect
-    extends IEntitySelectProperties, AgtEOptionalId, AgtEUpdateProperties {
+    extends IEntitySelectProperties, AgtEOptionalId {
+	// Non-Id Properties
+	address?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

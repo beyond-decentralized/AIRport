@@ -1,5 +1,5 @@
-import { BatchedMessagesToTM, MessageToTM } from "../../../lingo/message/MessageToTM";
-import { SerializedBatchedMessagesToTM, SerializedMessageToTM } from "../../../lingo/message/SerializedMessageToTM";
+import { BatchedMessagesToTM, MessageToTM } from '../../../lingo/message/MessageToTM';
+import { SerializedBatchedMessagesToTM, SerializedMessageToTM } from '../../../lingo/message/SerializedMessageToTM';
 export interface IMessageToTMDeserializer {
     deserialize(serializedMessageToTM: SerializedBatchedMessagesToTM): BatchedMessagesToTM;
 }

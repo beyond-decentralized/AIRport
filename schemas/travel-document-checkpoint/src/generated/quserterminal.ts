@@ -75,7 +75,9 @@ export interface IUserTerminal {
  * SELECT - All fields and relations (optional).
  */
 export interface UserTerminalESelect
-    extends IEntitySelectProperties, UserTerminalEOptionalId, UserTerminalEUpdateProperties {
+    extends IEntitySelectProperties, UserTerminalEOptionalId {
+	// Non-Id Properties
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

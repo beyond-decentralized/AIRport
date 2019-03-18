@@ -16,7 +16,10 @@ export interface ITerminal {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface TerminalESelect extends IEntitySelectProperties, TerminalEOptionalId, TerminalEUpdateProperties {
+export interface TerminalESelect extends IEntitySelectProperties, TerminalEOptionalId {
+    name?: string | IQStringField;
+    secondId?: number | IQNumberField;
+    isLocal?: boolean | IQBooleanField;
     owner?: UserESelect;
     terminalAgts?: TerminalAgtESelect;
     userTerminal?: UserTerminalESelect;

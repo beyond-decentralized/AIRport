@@ -1,23 +1,19 @@
 import {
 	and,
-	IUtils,
-	UtilsToken,
 	Y
 }                          from '@airport/air-control'
+import {DI}                from '@airport/di'
 import {JSONBaseOperation} from '@airport/ground-control'
 import {
 	QUser,
 	TmTerminalId,
 	UserId
-} from '@airport/travel-document-checkpoint'
-import {
-	Inject,
-	Service
-}                          from 'typedi'
+}                          from '@airport/travel-document-checkpoint'
 import {
 	ActorId,
 	ActorRandomId,
 }                          from '../../ddl/ddl'
+import {ACTOR_DAO}         from '../../diTokens'
 import {
 	BaseActorDao,
 	IActor,
@@ -25,9 +21,9 @@ import {
 	Q,
 	QActor,
 }                          from '../../generated/generated'
-import {ActorDaoToken}     from '../../InjectionTokens'
 
-export interface IActorDao extends IBaseActorDao {
+export interface IActorDao
+	extends IBaseActorDao {
 
 	findWithDetailsAndGlobalIdsByIds(
 		actorIds: ActorId[]
@@ -49,17 +45,9 @@ export interface IActorDao extends IBaseActorDao {
 
 }
 
-@Service(ActorDaoToken)
 export class ActorDao
 	extends BaseActorDao
 	implements IActorDao {
-
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils)
-	}
 
 	async findWithDetailsAndGlobalIdsByIds(
 		actorIds: ActorId[]
@@ -129,3 +117,5 @@ export class ActorDao
 		})
 	}
 }
+
+DI.set(ACTOR_DAO, ActorDao)
