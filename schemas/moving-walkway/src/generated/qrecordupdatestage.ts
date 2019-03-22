@@ -47,14 +47,6 @@ import {
 	QSchemaColumnQRelation,
 } from '@airport/traffic-pattern';
 import {
-	IActor,
-	ActorEId,
-	ActorEOptionalId,
-	ActorEUpdateProperties,
-	ActorESelect,
-	QActor,
-	QActorQId,
-	QActorQRelation,
 	IRepository,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -63,6 +55,14 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
+	IActor,
+	ActorEId,
+	ActorEOptionalId,
+	ActorEUpdateProperties,
+	ActorESelect,
+	QActor,
+	QActorQId,
+	QActorQRelation,
 } from '@airport/holding-pattern';
 
 
@@ -76,19 +76,20 @@ declare function require(moduleName: string): any;
 export interface IRecordUpdateStage {
 	
 	// Id Properties
-	actorRecordId?: number;
+	id?: number;
 
 	// Id Relations
-	schemaVersion?: ISchemaVersion;
-	entity?: ISchemaEntity;
-	actor?: IActor;
-	column?: ISchemaColumn;
 
 	// Non-Id Properties
+	actorRecordId?: number;
 	updatedValue?: any;
 
 	// Non-Id Relations
+	schemaVersion?: ISchemaVersion;
+	entity?: ISchemaEntity;
 	repository?: IRepository;
+	actor?: IActor;
+	column?: ISchemaColumn;
 
 	// Transient Properties
 
@@ -104,15 +105,19 @@ export interface IRecordUpdateStage {
  * SELECT - All fields and relations (optional).
  */
 export interface RecordUpdateStageESelect
-    extends IEntitySelectProperties, RecordUpdateStageEOptionalId, RecordUpdateStageEUpdateProperties {
+    extends IEntitySelectProperties, RecordUpdateStageEOptionalId {
+	// Non-Id Properties
+	actorRecordId?: number | IQNumberField;
+	updatedValue?: any | IQUntypedField;
+
 	// Id Relations - full property interfaces
-	schemaVersion?: SchemaVersionESelect;
-	entity?: SchemaEntityESelect;
-	actor?: ActorESelect;
-	column?: SchemaColumnESelect;
 
   // Non-Id relations (including OneToMany's)
+	schemaVersion?: SchemaVersionESelect;
+	entity?: SchemaEntityESelect;
 	repository?: RepositoryESelect;
+	actor?: ActorESelect;
+	column?: SchemaColumnESelect;
 
 }
 
@@ -122,13 +127,9 @@ export interface RecordUpdateStageESelect
 export interface RecordUpdateStageEId
     extends IEntityIdProperties {
 	// Id Properties
-	actorRecordId: number | IQNumberField;
+	id: number | IQNumberField;
 
 	// Id Relations - Ids only
-	schemaVersion: SchemaVersionEId;
-	entity: SchemaEntityEId;
-	actor: ActorEId;
-	column: SchemaColumnEId;
 
 }
 
@@ -137,13 +138,9 @@ export interface RecordUpdateStageEId
  */
 export interface RecordUpdateStageEOptionalId {
 	// Id Properties
-	actorRecordId?: number | IQNumberField;
+	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
-	schemaVersion?: SchemaVersionEOptionalId;
-	entity?: SchemaEntityEOptionalId;
-	actor?: ActorEOptionalId;
-	column?: SchemaColumnEOptionalId;
 
 }
 
@@ -153,10 +150,15 @@ export interface RecordUpdateStageEOptionalId {
 export interface RecordUpdateStageEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
+	actorRecordId?: number | IQNumberField;
 	updatedValue?: any | IQUntypedField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+	schemaVersion?: SchemaVersionEOptionalId;
+	entity?: SchemaEntityEOptionalId;
 	repository?: RepositoryEOptionalId;
+	actor?: ActorEOptionalId;
+	column?: SchemaColumnEOptionalId;
 
 }
 
@@ -166,8 +168,14 @@ export interface RecordUpdateStageEUpdateProperties
 export interface RecordUpdateStageEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
+	ACTOR_RECORD_ID?: number | IQNumberField;
 	UPDATED_VALUE?: any | IQUntypedField;
+	SCHEMA_VERSION_ID?: number | IQNumberField;
+	TABLE_INDEX?: number | IQNumberField;
 	REPOSITORY_ID?: number | IQNumberField;
+	ACTOR_ID?: number | IQNumberField;
+	SCHEMA_ENTITY_ID?: number | IQNumberField;
+	COLUMN_INDEX?: number | IQNumberField;
 
 }
 
@@ -198,19 +206,20 @@ extends RecordUpdateStageEId, RecordUpdateStageEUpdateColumns {
 export interface QRecordUpdateStage extends QEntity
 {
 	// Id Fields
-	actorRecordId: IQNumberField;
+	id: IQNumberField;
 
 	// Id Relations
-	schemaVersion: QSchemaVersionQRelation;
-	entity: QSchemaEntityQRelation;
-	actor: QActorQRelation;
-	column: QSchemaColumnQRelation;
 
 	// Non-Id Fields
+	actorRecordId: IQNumberField;
 	updatedValue: IQUntypedField;
 
 	// Non-Id Relations
+	schemaVersion: QSchemaVersionQRelation;
+	entity: QSchemaEntityQRelation;
 	repository: QRepositoryQRelation;
+	actor: QActorQRelation;
+	column: QSchemaColumnQRelation;
 
 }
 
@@ -220,13 +229,9 @@ export interface QRecordUpdateStageQId
 {
 	
 	// Id Fields
-	actorRecordId: IQNumberField;
+	id: IQNumberField;
 
 	// Id Relations
-	schemaVersion: QSchemaVersionQId;
-	entity: QSchemaEntityQId;
-	actor: QActorQId;
-	column: QSchemaColumnQId;
 
 
 }

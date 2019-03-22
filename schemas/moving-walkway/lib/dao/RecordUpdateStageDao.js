@@ -1,23 +1,10 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const typedi_1 = require("typedi");
+const di_1 = require("@airport/di");
+const diTokens_1 = require("../diTokens");
 const generated_1 = require("../generated/generated");
-const InjectionTokens_1 = require("../InjectionTokens");
-let RecordUpdateStageDao = class RecordUpdateStageDao extends generated_1.BaseRecordUpdateStageDao {
-    constructor(airportDb, utils) {
-        super(utils);
-        this.airportDb = airportDb;
-    }
+class RecordUpdateStageDao extends generated_1.BaseRecordUpdateStageDao {
     async insertValues(values) {
         const rus = generated_1.Q.RecordUpdateStage;
         const columns = [
@@ -39,8 +26,8 @@ let RecordUpdateStageDao = class RecordUpdateStageDao extends generated_1.BaseRe
         });
     }
     async updateEntityWhereIds(schemaIndex, schemaVersionId, tableIndex, idMap, updatedColumnIndexes) {
-        const dbEntity = this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
-        const qEntity = this.airportDb.qSchemas[schemaIndex][dbEntity.name];
+        const dbEntity = this.airDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
+        const qEntity = this.airDb.qSchemas[schemaIndex][dbEntity.name];
         const repositoryEquals = [];
         for (const [repositoryId, idsForRepository] of idMap) {
             const actorEquals = [];
@@ -75,11 +62,7 @@ let RecordUpdateStageDao = class RecordUpdateStageDao extends generated_1.BaseRe
             deleteFrom: generated_1.Q.RecordUpdateStage
         });
     }
-};
-RecordUpdateStageDao = __decorate([
-    typedi_1.Service(InjectionTokens_1.RecordUpdateStageDaoToken),
-    __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(air_control_1.UtilsToken))
-], RecordUpdateStageDao);
+}
 exports.RecordUpdateStageDao = RecordUpdateStageDao;
+di_1.DI.set(diTokens_1.RECORD_UPDATE_STAGE_DAO, RecordUpdateStageDao);
 //# sourceMappingURL=RecordUpdateStageDao.js.map

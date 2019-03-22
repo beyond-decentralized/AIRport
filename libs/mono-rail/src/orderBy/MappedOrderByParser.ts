@@ -1,6 +1,10 @@
-import { JSONClauseField, JSONFieldInOrderBy, SortOrder } from "../../../../apis/ground-control/lib/index";
-import { IValidator }                                     from "../../../../apps/terminal/src/validation/Validator";
-import { INonEntityOrderByParser }                        from "./AbstractEntityOrderByParser";
+import {
+	JSONClauseField,
+	JSONFieldInOrderBy,
+	SortOrder
+}                                from '@airport/ground-control'
+import {IValidator}              from '@airport/terminal'
+import {INonEntityOrderByParser} from './AbstractEntityOrderByParser'
 
 /**
  * Created by Papa on 11/8/2016.
@@ -8,9 +12,11 @@ import { INonEntityOrderByParser }                        from "./AbstractEntity
 
 /**
  * Will hierarchically order the results of the query using breadth-first processing.
- * Within a given sub-select facade will take into account the sort order specified in the Order By clause.
+ * Within a given sub-select facade will take into account the sort order specified in
+ * the Order By clause.
  */
-export class MappedOrderByParser implements INonEntityOrderByParser {
+export class MappedOrderByParser
+	implements INonEntityOrderByParser {
 
 	constructor(private validator: IValidator) {
 	}
@@ -23,10 +29,8 @@ export class MappedOrderByParser implements INonEntityOrderByParser {
 	  var result = '',
 	  queue = [],
 	  current = this.root;
-
 	  if (!current) return null;
 	  queue.push(current);
-
 	  while (current = queue.shift()) {
 			result += current.value + ' ';
 			current.left && queue.push(current.left);
@@ -43,72 +47,74 @@ export class MappedOrderByParser implements INonEntityOrderByParser {
 		rootSelectClauseFragment: any,
 		originalOrderBy: JSONFieldInOrderBy[]
 	): string {
-		let orderByFragments: string[] = [];
-		let orderBy: JSONFieldInOrderBy[] = [];
+		let orderByFragments: string[]    = []
+		let orderBy: JSONFieldInOrderBy[] = []
 		if (originalOrderBy) {
-			orderBy = originalOrderBy.slice();
+			orderBy = originalOrderBy.slice()
 		}
 
-		let selectFragmentQueue = [];
-		let currentSelectFragment = rootSelectClauseFragment;
-		selectFragmentQueue.push(currentSelectFragment);
+		let selectFragmentQueue   = []
+		let currentSelectFragment = rootSelectClauseFragment
+		selectFragmentQueue.push(currentSelectFragment)
 
 		// Breadth first traversal using a queue
 		while (currentSelectFragment = selectFragmentQueue.shift()) {
 
-			let currentSelectFragmentFieldSet: { [alias: string]: boolean } = {};
+			let currentSelectFragmentFieldSet: { [alias: string]: boolean } = {}
 
 			for (let propertyName in currentSelectFragment) {
-				let field: JSONClauseField = currentSelectFragment[propertyName];
+				let field: JSONClauseField = currentSelectFragment[propertyName]
 				if (!field.af) {
-					selectFragmentQueue.push(field);
-					continue;
+					selectFragmentQueue.push(field)
+					continue
 				}
-				currentSelectFragmentFieldSet[field.fa] = true;
+				currentSelectFragmentFieldSet[field.fa] = true
 			}
 
 
-			let currentEntityOrderBy: JSONFieldInOrderBy[] = [];
+			let currentEntityOrderBy: JSONFieldInOrderBy[] = []
 
-			// First add the fields specified in the query Order By clause for this entity, in the order they are specified
+			// First add the fields specified in the query Order By clause for this entity, in
+			// the order they are specified
 			orderBy = orderBy.filter((orderByField) => {
 				if (!currentSelectFragmentFieldSet[orderByField.fa]) {
-					return true;
+					return true
 				}
-				delete currentSelectFragmentFieldSet[orderByField.fa];
-				currentEntityOrderBy.push(orderByField);
-				return false;
-			});
-			// Then add all the rest of the fields for this entity, we are maintaining the tree structure of the result
+				delete currentSelectFragmentFieldSet[orderByField.fa]
+				currentEntityOrderBy.push(orderByField)
+				return false
+			})
+			// Then add all the rest of the fields for this entity, we are maintaining the tree
+			// structure of the result
 			for (let alias in currentSelectFragmentFieldSet) {
 				currentEntityOrderBy.push({
 					fa: alias,
 					so: SortOrder.ASCENDING
-				});
+				})
 			}
 
-			let entityOrderByFragments = this.buildOrderByFragmentForEntity(currentEntityOrderBy);
-			orderByFragments = orderByFragments.concat(entityOrderByFragments);
+			let entityOrderByFragments = this.buildOrderByFragmentForEntity(currentEntityOrderBy)
+			orderByFragments           = orderByFragments.concat(entityOrderByFragments)
 		}
 		if (orderBy.length) {
-			throw `Found entries in Order By for tables not found in select clause.  Entries must be ordered hierarchically, in breadth-first order.`;
+			throw `Found entries in Order By for tables not found in select clause.  Entries must be ordered hierarchically, in breadth-first order.`
 		}
 
-		return orderByFragments.join(', ');
+		return orderByFragments.join(', ')
 	}
 
 	buildOrderByFragmentForEntity(
 		orderByFields: JSONFieldInOrderBy[]
 	): string[] {
 		return orderByFields.map((orderByField) => {
-			this.validator.validateAliasedFieldAccess(orderByField.fa);
+			this.validator.validateAliasedFieldAccess(orderByField.fa)
 			switch (orderByField.so) {
 				case SortOrder.ASCENDING:
-					return `${orderByField.fa} ASC`;
+					return `${orderByField.fa} ASC`
 				case SortOrder.DESCENDING:
-					return `${orderByField.fa} DESC`;
+					return `${orderByField.fa} DESC`
 			}
-		});
+		})
 	}
 
 }

@@ -5,20 +5,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
+const src_1 = require("@airport/di/lib/src");
 const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
-const terminal_map_1 = require("@airport/terminal-map");
+const src_2 = require("@airport/terminal-map/lib/src");
 const tower_1 = require("@airport/tower");
-const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
 const AbstractMutationManager_1 = require("./AbstractMutationManager");
 let TransactionManager = class TransactionManager extends AbstractMutationManager_1.AbstractMutationManager {
@@ -173,21 +169,17 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
     }
 };
 __decorate([
-    tower_1.Transactional(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
+    tower_1.Transactional()
 ], TransactionManager.prototype, "initialize", null);
 TransactionManager = __decorate([
-    typedi_1.Service(terminal_map_1.TransactionManagerToken),
-    __param(0, typedi_1.Inject(air_control_1.UtilsToken)),
-    __param(1, typedi_1.Inject(InjectionTokens_1.StoreDriverToken)),
-    __param(2, typedi_1.Inject(fuel_hydrant_system_1.IdGeneratorToken)),
-    __param(3, typedi_1.Inject(InjectionTokens_1.OfflineDeltaStoreToken)),
-    __param(4, typedi_1.Inject(InjectionTokens_1.OnlineManagerToken)),
-    __param(5, typedi_1.Inject(fuel_hydrant_system_1.ActiveQueriesToken)),
-    __param(6, typedi_1.Inject(holding_pattern_1.TransactionHistoryDmoToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, fuel_hydrant_system_1.ActiveQueries, Object])
+    __param(0, Inject(UtilsToken)),
+    __param(1, Inject(InjectionTokens_1.StoreDriverToken)),
+    __param(2, Inject(fuel_hydrant_system_1.IdGeneratorToken)),
+    __param(3, Inject(InjectionTokens_1.OfflineDeltaStoreToken)),
+    __param(4, Inject(InjectionTokens_1.OnlineManagerToken)),
+    __param(5, Inject(fuel_hydrant_system_1.ActiveQueriesToken)),
+    __param(6, Inject(TransactionHistoryDmoToken))
 ], TransactionManager);
 exports.TransactionManager = TransactionManager;
+src_1.DI.set(src_2.TRANSACTION_MANAGER, TransactionManager);
 //# sourceMappingURL=TransactionManager.js.map

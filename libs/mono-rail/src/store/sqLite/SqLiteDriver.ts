@@ -1,5 +1,5 @@
-import { QueryType }     from "../../../../../apis/ground-control/lib/index";
-import { Transactional } from "../../../../tower/lib/index";
+import { QueryType }     from "@airport/ground-control";
+import { Transactional } from "@airport/tower";
 import { SqlDriver }     from "../SqlDriver";
 import { DDLManager }    from "./DDLManager";
 

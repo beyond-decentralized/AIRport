@@ -1,23 +1,16 @@
 import {
-	AirportDatabaseToken,
-	UtilsToken
-}                                               from "@airport/air-control/lib/InjectionTokens";
-import {IAirportDatabase}                       from "@airport/air-control/lib/lingo/AirportDatabase";
-import {IUtils}                                 from "@airport/air-control/lib/lingo/utils/Utils";
-import {
 	SharingNodeRepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
-}                                               from "@airport/arrivals-n-departures";
-import {Inject}                                 from "typedi/decorators/Inject";
-import {Service}                                from "typedi/decorators/Service";
-import {SharingNodeId}                          from "../../ddl/ddl";
+}                                                from '@airport/arrivals-n-departures'
+import {DI}                                      from '@airport/di'
+import {SharingNodeId}                           from '../../ddl/ddl'
+import {SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO} from '../../diTokens'
 import {
 	BaseSharingNodeRepoTransBlockStageDao,
 	IBaseSharingNodeRepoTransBlockStageDao,
 	Q,
 	QSharingNodeRepoTransBlockStage
-}                                               from "../../generated/generated";
-import {SharingNodeRepoTransBlockStageDaoToken} from "../../InjectionTokens";
+}                                                from '../../generated/generated'
 
 export type SharingNodeRepoTransBlockStageValues = [
 	SharingNodeId,
@@ -37,28 +30,18 @@ export interface ISharingNodeRepoTransBlockStageDao
 
 }
 
-@Service(SharingNodeRepoTransBlockStageDaoToken)
 export class SharingNodeRepoTransBlockStageDao
 	extends BaseSharingNodeRepoTransBlockStageDao
 	implements ISharingNodeRepoTransBlockStageDao {
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
-
 	async insertValues(
 		values: SharingNodeRepoTransBlockStageValues[]
 	): Promise<number> {
-		const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlockStage;
+		const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlockStage
 
-		let snrtbs: QSharingNodeRepoTransBlockStage;
+		let snrtbs: QSharingNodeRepoTransBlockStage
 
-		return await this.airportDb.db.insertValues(dbEntity, {
+		return await this.airDb.db.insertValues(dbEntity, {
 			insertInto: snrtbs = Q.SharingNodeRepoTransBlockStage,
 			columns: [
 				snrtbs.sharingNodeId,
@@ -67,14 +50,16 @@ export class SharingNodeRepoTransBlockStageDao
 				snrtbs.syncStatus
 			],
 			values
-		});
+		})
 	}
 
 	async delete( //
 	): Promise<number> {
 		return await this.db.deleteWhere({
 			deleteFrom: Q.SharingNodeRepoTransBlockStage
-		});
+		})
 	}
 
 }
+
+DI.set(SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO, SharingNodeRepoTransBlockStageDao)

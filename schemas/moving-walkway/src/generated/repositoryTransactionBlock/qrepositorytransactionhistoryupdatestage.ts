@@ -55,7 +55,10 @@ export interface IRepositoryTransactionHistoryUpdateStage {
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryTransactionHistoryUpdateStageESelect
-    extends IEntitySelectProperties, RepositoryTransactionHistoryUpdateStageEOptionalId, RepositoryTransactionHistoryUpdateStageEUpdateProperties {
+    extends IEntitySelectProperties, RepositoryTransactionHistoryUpdateStageEOptionalId {
+	// Non-Id Properties
+	blockId?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

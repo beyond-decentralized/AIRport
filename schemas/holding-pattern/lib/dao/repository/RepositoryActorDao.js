@@ -36,5 +36,5 @@ class RepositoryActorDao extends generated_1.BaseRepositoryActorDao {
     }
 }
 exports.RepositoryActorDao = RepositoryActorDao;
-di_1.DI.set(diTokens_1.REPOSITORY_ACTOR_DAO, RepositoryActorDao);
+di_1.DI.set(diTokens_1.REPO_ACTOR_DAO, RepositoryActorDao);
 //# sourceMappingURL=RepositoryActorDao.js.map

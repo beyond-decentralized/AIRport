@@ -96,7 +96,11 @@ export interface IMissingRecord {
  * SELECT - All fields and relations (optional).
  */
 export interface MissingRecordESelect
-    extends IEntitySelectProperties, MissingRecordEOptionalId, MissingRecordEUpdateProperties {
+    extends IEntitySelectProperties, MissingRecordEOptionalId {
+	// Non-Id Properties
+	actorRecordId?: number | IQNumberField;
+	status?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

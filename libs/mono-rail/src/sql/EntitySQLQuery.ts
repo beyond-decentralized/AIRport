@@ -12,7 +12,7 @@ import {
 	ReferencedColumnData,
 	Utils,
 	Y
-}                               from "../../../../apis/air-control/lib/index";
+}                               from "@airport/air-control";
 import {
 	EntityRelationType,
 	JoinType,
@@ -20,7 +20,7 @@ import {
 	JSONEntityRelation,
 	JSONRelationType,
 	QueryResultType
-}                               from "../../../../apis/ground-control/lib/index";
+}                               from "@airport/ground-control";
 import { IEntityOrderByParser } from "../orderBy/AbstractEntityOrderByParser";
 import { EntityOrderByParser }  from "../orderBy/EntityOrderByParser";
 import {

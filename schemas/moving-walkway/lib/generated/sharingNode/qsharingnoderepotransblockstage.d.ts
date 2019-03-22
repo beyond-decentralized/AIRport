@@ -7,7 +7,8 @@ export interface ISharingNodeRepoTransBlockStage {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SharingNodeRepoTransBlockStageESelect extends IEntitySelectProperties, SharingNodeRepoTransBlockStageEOptionalId, SharingNodeRepoTransBlockStageEUpdateProperties {
+export interface SharingNodeRepoTransBlockStageESelect extends IEntitySelectProperties, SharingNodeRepoTransBlockStageEOptionalId {
+    syncStatus?: number | IQNumberField;
 }
 /**
  * DELETE - Ids fields and relations only (required).

@@ -16,46 +16,44 @@ let RecordUpdateStage = class RecordUpdateStage {
 };
 __decorate([
     air_control_1.Id(),
+    air_control_1.GeneratedValue()
+], RecordUpdateStage.prototype, "id", void 0);
+__decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "SCHEMA_VERSION_ID", referencedColumnName: "ID" })
+    air_control_1.JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID' })
 ], RecordUpdateStage.prototype, "schemaVersion", void 0);
 __decorate([
-    air_control_1.Id(),
     air_control_1.ManyToOne(),
     air_control_1.JoinColumns([
-        { name: "SCHEMA_VERSION_ID" },
-        { name: "TABLE_INDEX", referencedColumnName: "INDEX" }
+        { name: 'SCHEMA_VERSION_ID' },
+        { name: 'TABLE_INDEX', referencedColumnName: 'INDEX' }
     ])
 ], RecordUpdateStage.prototype, "entity", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" })
+    air_control_1.JoinColumn({ name: 'REPOSITORY_ID', referencedColumnName: 'ID' })
 ], RecordUpdateStage.prototype, "repository", void 0);
 __decorate([
-    air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "ACTOR_ID", referencedColumnName: "ID" })
+    air_control_1.JoinColumn({ name: 'ACTOR_ID', referencedColumnName: 'ID' })
 ], RecordUpdateStage.prototype, "actor", void 0);
 __decorate([
-    air_control_1.Id(),
-    air_control_1.Column({ name: "ACTOR_RECORD_ID" }),
+    air_control_1.Column({ name: 'ACTOR_RECORD_ID' }),
     air_control_1.DbNumber()
 ], RecordUpdateStage.prototype, "actorRecordId", void 0);
 __decorate([
-    air_control_1.Id(),
     air_control_1.ManyToOne(),
     air_control_1.JoinColumns([
-        { name: "SCHEMA_VERSION_ID" },
-        { name: "TABLE_INDEX" },
-        { name: "COLUMN_INDEX", referencedColumnName: "INDEX" }
+        { name: 'SCHEMA_ENTITY_ID' },
+        { name: 'COLUMN_INDEX', referencedColumnName: 'INDEX' }
     ])
 ], RecordUpdateStage.prototype, "column", void 0);
 __decorate([
-    air_control_1.Column({ name: "UPDATED_VALUE" })
+    air_control_1.Column({ name: 'UPDATED_VALUE' })
 ], RecordUpdateStage.prototype, "updatedValue", void 0);
 RecordUpdateStage = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: "RECORD_UPDATE_STAGE" })
+    air_control_1.Table({ name: 'RECORD_UPDATE_STAGE' })
 ], RecordUpdateStage);
 exports.RecordUpdateStage = RecordUpdateStage;
-//# sourceMappingURL=RecordUpdateStage.js.map
+//# sourceMappingURL=recordupdatestage.js.map

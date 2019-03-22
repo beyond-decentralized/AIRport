@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
-exports.ActiveQueriesToken = new typedi_1.Token();
-exports.IdGeneratorToken = new typedi_1.Token();
-exports.SequenceGeneratorToken = new typedi_1.Token();
+const di_1 = require("@airport/di");
+exports.ACTIVE_QUERIES = di_1.diToken();
+exports.ID_GENERATOR = di_1.diToken();
+exports.SEQUENCE_GENERATOR = di_1.diToken();
 //# sourceMappingURL=InjectionTokens.js.map

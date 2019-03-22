@@ -3,7 +3,7 @@ import {
 	IDatabaseFacade,
 	IQueryFacade,
 	UpdateCacheType
-}                         from "@airport/air-control";
+}                     from "@airport/air-control";
 import {
 	DbEntity,
 	ITransactionalConnector,
@@ -11,15 +11,15 @@ import {
 	PortableQuery,
 	QueryResultType,
 	TransactionalConnectorToken
-}                         from "@airport/ground-control";
-import {Observable}       from "rxjs";
+}                     from "@airport/ground-control";
+import {Observable}   from "rxjs";
 import {
 	Inject,
 	Service
-}                         from "typedi";
-import {QueryFacadeToken} from "./InjectionTokens";
+}                     from "typedi";
+import {QUERY_FACADE} from "./InjectionTokens";
 
-@Service(QueryFacadeToken)
+@Service(QUERY_FACADE)
 export class QueryFacade
 	implements IQueryFacade {
 

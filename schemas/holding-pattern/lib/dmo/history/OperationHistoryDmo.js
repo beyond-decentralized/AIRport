@@ -8,7 +8,7 @@ class OperationHistoryDmo extends generated_1.BaseOperationHistoryDmo {
         super();
         di_1.DI.get((recordHistoryDmo) => {
             this.recHistoryDmo = recordHistoryDmo;
-        }, diTokens_1.RECORD_HISTORY_DMO);
+        }, diTokens_1.REC_HISTORY_DMO);
     }
     getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory) {
         let operationHistory = {
@@ -39,5 +39,5 @@ class OperationHistoryDmo extends generated_1.BaseOperationHistoryDmo {
     }
 }
 exports.OperationHistoryDmo = OperationHistoryDmo;
-di_1.DI.set(diTokens_1.OPERATION_HISTORY_DMO, OperationHistoryDmo);
+di_1.DI.set(diTokens_1.OPER_HISTORY_DMO, OperationHistoryDmo);
 //# sourceMappingURL=OperationHistoryDmo.js.map

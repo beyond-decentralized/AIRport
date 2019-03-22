@@ -17,5 +17,5 @@ class RecordHistoryOldValueDao extends generated_1.BaseRecordHistoryOldValueDao 
     }
 }
 exports.RecordHistoryOldValueDao = RecordHistoryOldValueDao;
-di_1.DI.set(diTokens_1.RECORD_HISTORY_OLD_VALUE_DAO, RecordHistoryOldValueDao);
+di_1.DI.set(diTokens_1.REC_HIST_OLD_VALUE_DAO, RecordHistoryOldValueDao);
 //# sourceMappingURL=RecordHistoryOldValueDao.js.map

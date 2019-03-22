@@ -1,5 +1,5 @@
-import { IAirportDatabase, IQEntityInternal, JoinTreeNode } from "@airport/air-control";
-import { JSONEntityFieldInOrderBy, JSONFieldInOrderBy, QueryResultType } from "@airport/ground-control";
+import { IAirportDatabase, IQEntityInternal, JoinTreeNode } from '@airport/air-control';
+import { JSONEntityFieldInOrderBy, JSONFieldInOrderBy, QueryResultType } from '@airport/ground-control';
 import { IValidator } from '../validation/Validator';
 /**
  * Created by Papa on 10/16/2016.

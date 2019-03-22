@@ -1,23 +1,16 @@
-import {
-	IUtils,
-	UtilsToken
-}                            from "@airport/air-control";
-import {
-	Inject,
-	Service
-}                            from "typedi";
+import {DI}               from '@airport/di'
 import {
 	SharingNodeId,
 	SharingNodeIsActive,
 	SharingNodeSyncFrequency
-}                            from "../../ddl/ddl";
+}                         from '../../ddl/ddl'
+import {SHARING_NODE_DAO} from '../../diTokens'
 import {
 	BaseSharingNodeDao,
 	ISharingNode,
 	Q,
 	QSharingNode
-}                            from "../../generated/generated";
-import {SharingNodeDaoToken} from "../../InjectionTokens";
+}                         from '../../generated/generated'
 
 export interface ISharingNodeDao {
 
@@ -31,23 +24,15 @@ export interface ISharingNodeDao {
 
 }
 
-@Service(SharingNodeDaoToken)
 export class SharingNodeDao
 	extends BaseSharingNodeDao
 	implements ISharingNodeDao {
 
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
-
 	async findAllGroupedBySyncFrequency( //
 	): Promise<Map<SharingNodeSyncFrequency, ISharingNode[]>> {
-		const allBySyncFrequency = new Map();
+		const allBySyncFrequency = new Map()
 
-		let sn: QSharingNode;
+		let sn: QSharingNode
 		const sharingNodes: ISharingNode[] = await this.db.find.tree({
 			select: {
 				...this.db.dmo.getAllFieldsSelect()
@@ -58,42 +43,44 @@ export class SharingNodeDao
 			orderBy: [
 				sn.syncFrequency.asc()
 			]
-		});
+		})
 
-		let lastSyncFrequency;
-		let currentSyncFrequencyNodes = [];
+		let lastSyncFrequency
+		let currentSyncFrequencyNodes = []
 		if (sharingNodes.length) {
-			lastSyncFrequency = sharingNodes[0].syncFrequency;
+			lastSyncFrequency = sharingNodes[0].syncFrequency
 		}
 		for (const sharingNode of sharingNodes) {
 			if (sharingNode.syncFrequency != lastSyncFrequency) {
-				allBySyncFrequency.set(lastSyncFrequency, currentSyncFrequencyNodes);
-				lastSyncFrequency = sharingNode.syncFrequency;
-				currentSyncFrequencyNodes = [];
+				allBySyncFrequency.set(lastSyncFrequency, currentSyncFrequencyNodes)
+				lastSyncFrequency         = sharingNode.syncFrequency
+				currentSyncFrequencyNodes = []
 			}
-			currentSyncFrequencyNodes.push(sharingNode);
+			currentSyncFrequencyNodes.push(sharingNode)
 		}
 
 		if (lastSyncFrequency) {
-			allBySyncFrequency.set(lastSyncFrequency, currentSyncFrequencyNodes);
+			allBySyncFrequency.set(lastSyncFrequency, currentSyncFrequencyNodes)
 		}
 
-		return allBySyncFrequency;
+		return allBySyncFrequency
 	}
 
 	async updateIsActive(
 		sharingNodeIds: SharingNodeId[],
 		isActive: SharingNodeIsActive
 	): Promise<void> {
-		let sn: QSharingNode;
+		let sn: QSharingNode
 		await this.db.updateWhere({
 			update: sn = Q.SharingNode,
 			set: {
 				isActive: isActive
 			},
 			where: sn.id.in(sharingNodeIds)
-		});
+		})
 	}
 
-
 }
+
+DI.set(SHARING_NODE_DAO, SharingNodeDao)
+

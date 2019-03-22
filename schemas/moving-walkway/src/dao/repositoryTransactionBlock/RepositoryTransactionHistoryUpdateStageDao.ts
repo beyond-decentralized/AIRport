@@ -1,26 +1,17 @@
-import {
-	field,
-	IUtils,
-	UtilsToken
-}                             from "@airport/air-control";
-import {AirportDatabaseToken} from "@airport/air-control/lib/InjectionTokens";
-import {IAirportDatabase}     from "@airport/air-control/lib/lingo/AirportDatabase";
+import {field} from '@airport/air-control'
+import {DI}    from '@airport/di'
 import {
 	QRepositoryTransactionHistory,
 	RepositoryTransactionHistoryBlockId,
 	RepositoryTransactionHistoryId
-}                             from "@airport/holding-pattern";
-import {
-	Inject,
-	Service
-}                             from "typedi";
+}              from '@airport/holding-pattern'
 import {
 	BaseRepositoryTransactionHistoryUpdateStageDao,
 	IBaseRepositoryTransactionHistoryUpdateStageDao,
 	QRepositoryTransactionHistoryUpdateStage,
-	RepositoryTransactionHistoryUpdateStageDaoToken
-}                             from "../..";
-import {Q}                    from "../../generated/generated";
+	REPO_TRANS_HISTORY_UPDATE_STAGE_DAO
+}              from '../..'
+import {Q}     from '../../generated/generated'
 
 export type RepositoryTransactionHistoryUpdateStageValues = [
 	RepositoryTransactionHistoryId,
@@ -41,47 +32,37 @@ export interface IRepositoryTransactionHistoryUpdateStageDao
 
 }
 
-@Service(RepositoryTransactionHistoryUpdateStageDaoToken)
 export class RepositoryTransactionHistoryUpdateStageDao
 	extends BaseRepositoryTransactionHistoryUpdateStageDao
 	implements IRepositoryTransactionHistoryUpdateStageDao {
-
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
 
 	async insertValues(
 		values: RepositoryTransactionHistoryUpdateStageValues[]
 	): Promise<number> {
 
-		const dbEntity = Q.db.currentVersion.entityMapByName.RepositoryTransactionHistoryUpdateStage;
+		const dbEntity = Q.db.currentVersion.entityMapByName.RepositoryTransactionHistoryUpdateStage
 
-		let rthus: QRepositoryTransactionHistoryUpdateStage;
+		let rthus: QRepositoryTransactionHistoryUpdateStage
 
-		return await this.airportDb.db.insertValues(dbEntity, {
+		return await this.airDb.db.insertValues(dbEntity, {
 			insertInto: rthus = Q.RepositoryTransactionHistoryUpdateStage,
 			columns: [
 				rthus.repositoryTransactionHistoryId,
 				rthus.blockId
 			],
 			values
-		});
+		})
 	}
 
 	async updateRepositoryTransactionHistory(): Promise<number> {
-		const schemaName = '@airport/holding-pattern';
-		const dbEntity = this.airportDb.schemaMapByName[schemaName]
-			.currentVersion.entityMapByName['RepositoryTransactionHistory'];
+		const schemaName = '@airport/holding-pattern'
+		const dbEntity   = this.airDb.schemaMapByName[schemaName]
+			.currentVersion.entityMapByName['RepositoryTransactionHistory']
 		const rth: QRepositoryTransactionHistory
-			= this.airportDb.qSchemaMapByName[schemaName].RepositoryTransactionHistory;
-		let rthus: QRepositoryTransactionHistoryUpdateStage;
+		                 = this.airDb.qSchemaMapByName[schemaName].RepositoryTransactionHistory
+		let rthus: QRepositoryTransactionHistoryUpdateStage
 
-		return await this.airportDb.db.updateWhere(dbEntity, {
+		return await this.airDb.db.updateWhere(dbEntity, {
 			update: rth,
 			set: {
 				blockId: field({
@@ -92,14 +73,16 @@ export class RepositoryTransactionHistoryUpdateStageDao
 					where: rthus.repositoryTransactionHistoryId.equals(rth.id)
 				})
 			}
-		});
+		})
 	}
 
 	async delete( //
 	): Promise<number> {
 		return await this.db.deleteWhere({
 			deleteFrom: Q.RepositoryTransactionHistoryUpdateStage
-		});
+		})
 	}
 
 }
+
+DI.set(REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, RepositoryTransactionHistoryUpdateStageDao)

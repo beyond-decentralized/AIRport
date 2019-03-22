@@ -11,7 +11,10 @@ export interface ISharingNodeTerminal {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SharingNodeTerminalESelect extends IEntitySelectProperties, SharingNodeTerminalEOptionalId, SharingNodeTerminalEUpdateProperties {
+export interface SharingNodeTerminalESelect extends IEntitySelectProperties, SharingNodeTerminalEOptionalId {
+    agtTerminalId?: number | IQNumberField;
+    agtTerminalPassword?: string | IQStringField;
+    terminalSyncStatus?: number | IQNumberField;
     sharingNode?: SharingNodeESelect;
     terminal?: TerminalESelect;
 }

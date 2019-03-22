@@ -55,7 +55,10 @@ export interface IRepoTransBlockResponseStage {
  * SELECT - All fields and relations (optional).
  */
 export interface RepoTransBlockResponseStageESelect
-    extends IEntitySelectProperties, RepoTransBlockResponseStageEOptionalId, RepoTransBlockResponseStageEUpdateProperties {
+    extends IEntitySelectProperties, RepoTransBlockResponseStageEOptionalId {
+	// Non-Id Properties
+	syncOutcomeType?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

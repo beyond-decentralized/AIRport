@@ -39,7 +39,7 @@ import {
 	QRepositoryTransactionBlock,
 	QRepositoryTransactionBlockQId,
 	QRepositoryTransactionBlockQRelation,
-} from '../repositoryTransactionBlock/qrepositorytransactionblock';
+} from '../repositorytransactionblock/qrepositorytransactionblock';
 
 
 declare function require(moduleName: string): any;
@@ -75,7 +75,9 @@ export interface ISharingMessageRepoTransBlock {
  * SELECT - All fields and relations (optional).
  */
 export interface SharingMessageRepoTransBlockESelect
-    extends IEntitySelectProperties, SharingMessageRepoTransBlockEOptionalId, SharingMessageRepoTransBlockEUpdateProperties {
+    extends IEntitySelectProperties, SharingMessageRepoTransBlockEOptionalId {
+	// Non-Id Properties
+
 	// Id Relations - full property interfaces
 	sharingMessage?: SharingMessageESelect;
 	repositoryTransactionBlock?: RepositoryTransactionBlockESelect;

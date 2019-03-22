@@ -12,7 +12,8 @@ export interface ISynchronizationConflict {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SynchronizationConflictESelect extends IEntitySelectProperties, SynchronizationConflictEOptionalId, SynchronizationConflictEUpdateProperties {
+export interface SynchronizationConflictESelect extends IEntitySelectProperties, SynchronizationConflictEOptionalId {
+    type?: number | IQNumberField;
     repository?: RepositoryESelect;
     overwrittenRecordHistory?: RecordHistoryESelect;
     overwritingRecordHistory?: RecordHistoryESelect;

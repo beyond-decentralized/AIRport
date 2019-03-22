@@ -1,32 +1,19 @@
-import {
-	IUtils,
-	UtilsToken
-} from "@airport/air-control";
-import {
-	Inject,
-	Service
-} from "typedi";
+import {DI}                                   from '@airport/di'
+import {SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO} from '../../diTokens'
 import {
 	BaseSharingMessageRepoTransBlockDao,
 	IBaseSharingMessageRepoTransBlockDao,
-	SharingMessageRepoTransBlockDaoToken
-} from "../..";
+}                                             from '../../generated/generated'
 
 export interface ISharingMessageRepoTransBlockDao
 	extends IBaseSharingMessageRepoTransBlockDao {
 
 }
 
-@Service(SharingMessageRepoTransBlockDaoToken)
 export class SharingMessageRepoTransBlockDao
 	extends BaseSharingMessageRepoTransBlockDao
 	implements ISharingMessageRepoTransBlockDao {
 
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
-
 }
+
+DI.set(SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SharingMessageRepoTransBlockDao)

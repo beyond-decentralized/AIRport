@@ -1,7 +1,16 @@
-import { IAirportDatabase, IQEntityInternal, JoinTreeNode }                         from "@airport/air-control";
-import { JSONEntityFieldInOrderBy, JSONFieldInOrderBy, QueryResultType, SortOrder } from "@airport/ground-control";
-import {IValidator}                                                                 from '../validation/Validator'
-import { EntityOrderByParser }                                                      from "./EntityOrderByParser";
+import {
+	IAirportDatabase,
+	IQEntityInternal,
+	JoinTreeNode
+}                            from '@airport/air-control'
+import {
+	JSONEntityFieldInOrderBy,
+	JSONFieldInOrderBy,
+	QueryResultType,
+	SortOrder
+}                            from '@airport/ground-control'
+import {IValidator}          from '../validation/Validator'
+import {EntityOrderByParser} from './EntityOrderByParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -40,11 +49,11 @@ export abstract class AbstractEntityOrderByParser {
 		return orderByFields.map((orderByField) => {
 			switch (orderByField.so) {
 				case SortOrder.ASCENDING:
-					return `${orderByField.fa} ASC`;
+					return `${orderByField.fa} ASC`
 				case SortOrder.DESCENDING:
-					return `${orderByField.fa} DESC`;
+					return `${orderByField.fa} DESC`
 			}
-		}).join(', ');
+		}).join(', ')
 	}
 
 }
@@ -59,13 +68,14 @@ export function getOrderByParser(
 	switch (queryResultType) {
 		case QueryResultType.ENTITY_GRAPH:
 		case QueryResultType.ENTITY_TREE:
-			return new EntityOrderByParser(airportDb, selectClauseFragment, validator, orderBy);
+			return new EntityOrderByParser(airportDb, selectClauseFragment, validator, orderBy)
 //		case QueryResultType.FLAT:
 //		case QueryResultType.FIELD:
-//			return new ExactOrderByParser(rootQEntity, selectClauseFragment, qEntityMapByName, entitiesRelationPropertyMap, entitiesPropertyTypeMap, orderBy);
+//			return new ExactOrderByParser(rootQEntity, selectClauseFragment,
+// qEntityMapByName, entitiesRelationPropertyMap, entitiesPropertyTypeMap, orderBy);
 		case QueryResultType.RAW:
-			throw `Query parsing not supported for raw queries`;
+			throw `Query parsing not supported for raw queries`
 		default:
-			throw `Unexpected queryResultType for an Entity ORDER BY parser: ${queryResultType}`;
+			throw `Unexpected queryResultType for an Entity ORDER BY parser: ${queryResultType}`
 	}
 }

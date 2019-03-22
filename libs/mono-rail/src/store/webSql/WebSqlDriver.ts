@@ -1,5 +1,5 @@
-import {IAirportDatabase, IUtils, Utils}            from "../../../../../apis/air-control/lib/index";
-import { INVALID_TABLE_NAME, QueryType, StoreType } from "../../../../../apis/ground-control/lib/index";
+import {IAirportDatabase, IUtils, Utils}            from "@airport/air-control";
+import { INVALID_TABLE_NAME, QueryType, StoreType } from "@airport/ground-control";
 import { SQLDialect }                               from "../../query/sql/core/SQLQuery";
 import { SqLiteDriver }                             from "../sqLite/SqLiteDriver";
 import { ActiveQueries }                            from "../ActiveQueries";

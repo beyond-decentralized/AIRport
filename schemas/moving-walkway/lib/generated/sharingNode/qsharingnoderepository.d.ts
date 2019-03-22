@@ -11,7 +11,10 @@ export interface ISharingNodeRepository {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SharingNodeRepositoryESelect extends IEntitySelectProperties, SharingNodeRepositoryEOptionalId, SharingNodeRepositoryEUpdateProperties {
+export interface SharingNodeRepositoryESelect extends IEntitySelectProperties, SharingNodeRepositoryEOptionalId {
+    agtRepositoryId?: number | IQNumberField;
+    advisedSyncPriority?: number | IQNumberField;
+    repositorySyncStatus?: number | IQNumberField;
     sharingNode?: SharingNodeESelect;
     repository?: RepositoryESelect;
 }

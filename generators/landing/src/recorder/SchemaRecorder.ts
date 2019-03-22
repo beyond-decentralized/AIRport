@@ -73,7 +73,7 @@ export class SchemaRecorder
 	implements ISchemaRecorder {
 
 	constructor(
-		// @Inject(AIRPORT_DATABASE)
+		// @Inject(AIR_DB)
 		// private airDb: IAirportDatabase,
 		@Inject(DomainDaoToken)
 		private domainDao: IDomainDao,

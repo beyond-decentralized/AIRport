@@ -1,17 +1,18 @@
-import {Service}                            from "typedi";
+import {DI}                   from '@airport/di'
+import {REPO_TRANS_BLOCK_DMO} from '../../diTokens'
 import {
 	BaseRepositoryTransactionBlockDmo,
 	IBaseRepositoryTransactionBlockDmo
-}                                           from "../../generated/generated";
-import {RepositoryTransactionBlockDmoToken} from "../../InjectionTokens";
+}                             from '../../generated/generated'
 
 export interface IRepositoryTransactionBlockDmo
 	extends IBaseRepositoryTransactionBlockDmo {
 }
 
-@Service(RepositoryTransactionBlockDmoToken)
 export class RepositoryTransactionBlockDmo
 	extends BaseRepositoryTransactionBlockDmo
 	implements IRepositoryTransactionBlockDmo {
 
 }
+
+DI.set(REPO_TRANS_BLOCK_DMO, RepositoryTransactionBlockDmo)

@@ -1,19 +1,14 @@
-import {field}                             from "@airport/air-control";
-import {and}                               from "@airport/air-control/lib/impl/core/operation/LogicalOperation";
 import {
-	AirportDatabaseToken,
-	UtilsToken
-}                                          from "@airport/air-control/lib/InjectionTokens";
-import {IAirportDatabase}                  from "@airport/air-control/lib/lingo/AirportDatabase";
-import {IUtils}                            from "@airport/air-control/lib/lingo/utils/Utils";
+	and,
+	field
+}                                          from '@airport/air-control'
 import {
 	SharingNodeRepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
-}                                          from "@airport/arrivals-n-departures";
-import {BlockSyncStatus}                   from "@airport/ground-control";
-import {Inject}                            from "typedi/decorators/Inject";
-import {Service}                           from "typedi/decorators/Service";
-import {SharingNodeId}                     from "../../ddl/ddl";
+}                                          from '@airport/arrivals-n-departures'
+import {DI}                                from '@airport/di'
+import {SharingNodeId}                     from '../../ddl/ddl'
+import {SHARING_NODE_REPO_TRANS_BLOCK_DAO} from '../../diTokens'
 import {
 	BaseSharingNodeRepoTransBlockDao,
 	IBaseSharingNodeRepoTransBlockDao,
@@ -21,8 +16,7 @@ import {
 	Q,
 	QSharingNodeRepoTransBlock,
 	QSharingNodeRepoTransBlockStage,
-}                                          from "../../generated/generated";
-import {SharingNodeRepoTransBlockDaoToken} from "../../InjectionTokens";
+}                                          from '../../generated/generated'
 
 export type SharingNodeRepoTransBlockValues = [
 	SharingNodeId,
@@ -70,19 +64,9 @@ export interface ISharingNodeRepoTransBlockDao
 
 }
 
-@Service(SharingNodeRepoTransBlockDaoToken)
 export class SharingNodeRepoTransBlockDao
 	extends BaseSharingNodeRepoTransBlockDao
 	implements ISharingNodeRepoTransBlockDao {
-
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
 
 	async findMapBySharingNodeIdWhereSharingNodeIdInAndRepoTransBlockIdIn(
 		sharingNodeIds: SharingNodeId[],
@@ -90,9 +74,9 @@ export class SharingNodeRepoTransBlockDao
 	): Promise<Map<SharingNodeId,
 		Map<TmRepositoryTransactionBlockId, ISharingNodeRepoTransBlock>>> {
 		const mapBySharingNodeId: Map<SharingNodeId,
-			Map<TmRepositoryTransactionBlockId, ISharingNodeRepoTransBlock>> = new Map();
+			Map<TmRepositoryTransactionBlockId, ISharingNodeRepoTransBlock>> = new Map()
 
-		let snrtb: QSharingNodeRepoTransBlock;
+		let snrtb: QSharingNodeRepoTransBlock
 		const records = await this.db.find.tree({
 			select: {},
 			from: [
@@ -102,20 +86,20 @@ export class SharingNodeRepoTransBlockDao
 				snrtb.sharingNode.id.in(sharingNodeIds),
 				snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds)
 			)
-		});
+		})
 
 		for (const record of records) {
 			this.utils.ensureChildJsMap(mapBySharingNodeId, record.sharingNode.id)
-				.set(record.repositoryTransactionBlock.id, record);
+				.set(record.repositoryTransactionBlock.id, record)
 		}
 
-		return mapBySharingNodeId;
+		return mapBySharingNodeId
 	}
 
 	async updateFromResponseStage( //
 	): Promise<number> {
-		let snrtb: QSharingNodeRepoTransBlock;
-		let snrtbs: QSharingNodeRepoTransBlockStage;
+		let snrtb: QSharingNodeRepoTransBlock
+		let snrtbs: QSharingNodeRepoTransBlockStage
 		return await this.db.updateWhere({
 			update: snrtb = Q.SharingNodeRepoTransBlock,
 			set: {
@@ -130,7 +114,7 @@ export class SharingNodeRepoTransBlockDao
 					)
 				})
 			}
-		});
+		})
 	}
 
 	async updateBlockSyncStatus(
@@ -139,7 +123,7 @@ export class SharingNodeRepoTransBlockDao
 		existingSyncStatus: SharingNodeRepoTransBlockSyncStatus,
 		newSyncStatus: SharingNodeRepoTransBlockSyncStatus
 	): Promise<void> {
-		let snrtb: QSharingNodeRepoTransBlock;
+		let snrtb: QSharingNodeRepoTransBlock
 		await this.db.updateWhere({
 			update: snrtb = Q.SharingNodeRepoTransBlock,
 			set: {
@@ -150,17 +134,17 @@ export class SharingNodeRepoTransBlockDao
 				snrtb.sharingNode.id.in(sharingNodeIds),
 				snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds)
 			)
-		});
+		})
 	}
 
 	async insertValues(
 		values: SharingNodeRepoTransBlockValues[]
 	): Promise<number> {
-		const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock;
+		const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock
 
-		let snrtb: QSharingNodeRepoTransBlock;
+		let snrtb: QSharingNodeRepoTransBlock
 
-		return await this.airportDb.db.insertValues(dbEntity, {
+		return await this.airDb.db.insertValues(dbEntity, {
 			insertInto: snrtb = Q.SharingNodeRepoTransBlock,
 			columns: [
 				snrtb.sharingNode.id,
@@ -171,7 +155,7 @@ export class SharingNodeRepoTransBlockDao
 				snrtb.syncStatus
 			],
 			values
-		});
+		})
 
 	}
 
@@ -180,37 +164,39 @@ export class SharingNodeRepoTransBlockDao
 		syncStatus: SharingNodeRepoTransBlockSyncStatus
 	): Promise<RepoTransBlocksForSharingNodes> {
 		const repoTransBlocksBySharingNodeId
-			: Map<SharingNodeId, TmRepositoryTransactionBlockId[]> = new Map();
-		const repositoryTransactionBlockIds: Set<TmRepositoryTransactionBlockId> = new Set();
+			      : Map<SharingNodeId, TmRepositoryTransactionBlockId[]>           = new Map()
+		const repositoryTransactionBlockIds: Set<TmRepositoryTransactionBlockId> = new Set()
 
-		let snrtb: QSharingNodeRepoTransBlock;
+		let snrtb: QSharingNodeRepoTransBlock
 
-		const records = await this.airportDb.find.sheet({
-				from: [
-					snrtb = Q.SharingNodeRepoTransBlock,
-				],
-				select: [
-					snrtb.sharingNode.id,
-					snrtb.repositoryTransactionBlock.id
-				],
-				where: and(
-					snrtb.syncStatus.equals(syncStatus),
-					snrtb.sharingNode.id.in(sharingNodeIds)
-				)
-			})
-		;
+		const records = await this.airDb.find.sheet({
+			      from: [
+				      snrtb = Q.SharingNodeRepoTransBlock,
+			      ],
+			      select: [
+				      snrtb.sharingNode.id,
+				      snrtb.repositoryTransactionBlock.id
+			      ],
+			      where: and(
+				      snrtb.syncStatus.equals(syncStatus),
+				      snrtb.sharingNode.id.in(sharingNodeIds)
+			      )
+		      })
+
 
 		for (const record of records) {
-			const sharingNodeRepoTransBlockId = record[1];
+			const sharingNodeRepoTransBlockId = record[1]
 			this.utils.ensureChildArray(repoTransBlocksBySharingNodeId, record[0])
-				.push(sharingNodeRepoTransBlockId);
-			repositoryTransactionBlockIds.add(sharingNodeRepoTransBlockId);
+				.push(sharingNodeRepoTransBlockId)
+			repositoryTransactionBlockIds.add(sharingNodeRepoTransBlockId)
 		}
 
 		return {
 			repositoryTransactionBlockIds,
 			repoTransBlocksBySharingNodeId
-		};
+		}
 	}
 
 }
+
+DI.set(SHARING_NODE_REPO_TRANS_BLOCK_DAO, SharingNodeRepoTransBlockDao)

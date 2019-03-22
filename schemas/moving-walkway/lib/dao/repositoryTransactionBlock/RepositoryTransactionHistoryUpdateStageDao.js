@@ -1,28 +1,14 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const InjectionTokens_1 = require("@airport/air-control/lib/InjectionTokens");
-const typedi_1 = require("typedi");
+const di_1 = require("@airport/di");
 const __1 = require("../..");
 const generated_1 = require("../../generated/generated");
-let RepositoryTransactionHistoryUpdateStageDao = class RepositoryTransactionHistoryUpdateStageDao extends __1.BaseRepositoryTransactionHistoryUpdateStageDao {
-    constructor(airportDb, utils) {
-        super(utils);
-        this.airportDb = airportDb;
-    }
+class RepositoryTransactionHistoryUpdateStageDao extends __1.BaseRepositoryTransactionHistoryUpdateStageDao {
     async insertValues(values) {
         const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.RepositoryTransactionHistoryUpdateStage;
         let rthus;
-        return await this.airportDb.db.insertValues(dbEntity, {
+        return await this.airDb.db.insertValues(dbEntity, {
             insertInto: rthus = generated_1.Q.RepositoryTransactionHistoryUpdateStage,
             columns: [
                 rthus.repositoryTransactionHistoryId,
@@ -33,11 +19,11 @@ let RepositoryTransactionHistoryUpdateStageDao = class RepositoryTransactionHist
     }
     async updateRepositoryTransactionHistory() {
         const schemaName = '@airport/holding-pattern';
-        const dbEntity = this.airportDb.schemaMapByName[schemaName]
+        const dbEntity = this.airDb.schemaMapByName[schemaName]
             .currentVersion.entityMapByName['RepositoryTransactionHistory'];
-        const rth = this.airportDb.qSchemaMapByName[schemaName].RepositoryTransactionHistory;
+        const rth = this.airDb.qSchemaMapByName[schemaName].RepositoryTransactionHistory;
         let rthus;
-        return await this.airportDb.db.updateWhere(dbEntity, {
+        return await this.airDb.db.updateWhere(dbEntity, {
             update: rth,
             set: {
                 blockId: air_control_1.field({
@@ -56,11 +42,7 @@ let RepositoryTransactionHistoryUpdateStageDao = class RepositoryTransactionHist
             deleteFrom: generated_1.Q.RepositoryTransactionHistoryUpdateStage
         });
     }
-};
-RepositoryTransactionHistoryUpdateStageDao = __decorate([
-    typedi_1.Service(__1.RepositoryTransactionHistoryUpdateStageDaoToken),
-    __param(0, typedi_1.Inject(InjectionTokens_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(air_control_1.UtilsToken))
-], RepositoryTransactionHistoryUpdateStageDao);
+}
 exports.RepositoryTransactionHistoryUpdateStageDao = RepositoryTransactionHistoryUpdateStageDao;
+di_1.DI.set(__1.REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, RepositoryTransactionHistoryUpdateStageDao);
 //# sourceMappingURL=RepositoryTransactionHistoryUpdateStageDao.js.map

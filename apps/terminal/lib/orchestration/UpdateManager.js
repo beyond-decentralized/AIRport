@@ -5,20 +5,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
-const TransactionManager_1 = require("./TransactionManager");
 let UpdateManager = class UpdateManager {
     constructor(airportDb, utils, dataStore, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager) {
         this.airportDb = airportDb;
@@ -145,10 +140,7 @@ UpdateManager = __decorate([
     __param(7, typedi_1.Inject(_ => InjectionTokens_1.RepositoryManagerToken)),
     __param(8, typedi_1.Inject(_ => holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
     __param(9, typedi_1.Inject(_ => holding_pattern_1.TransactionHistoryDmoToken)),
-    __param(10, typedi_1.Inject(_ => InjectionTokens_1.TransactionManagerToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, holding_pattern_1.OperationHistoryDmo,
-        holding_pattern_1.RecordHistoryDmo, Object, holding_pattern_1.RepositoryTransactionHistoryDmo,
-        holding_pattern_1.TransactionHistoryDmo, typeof (_a = typeof TransactionManager_1.ITransactionManager !== "undefined" && TransactionManager_1.ITransactionManager) === "function" ? _a : Object])
+    __param(10, typedi_1.Inject(_ => InjectionTokens_1.TransactionManagerToken))
 ], UpdateManager);
 exports.UpdateManager = UpdateManager;
 //# sourceMappingURL=UpdateManager.js.map

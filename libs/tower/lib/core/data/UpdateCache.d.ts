@@ -1,5 +1,5 @@
-import { IUtils, UpdateCacheType } from "@airport/air-control";
-import { DbEntity } from "@airport/ground-control";
+import { UpdateCacheType } from '@airport/air-control';
+import { DbEntity } from '@airport/ground-control';
 /**
  * Created by Papa on 9/8/2016.
  */
@@ -15,10 +15,10 @@ export interface IUpdateCache {
     getEntityUpdateDiff(dbEntity: DbEntity, entity: any, failOnNoOriginalRecord?: boolean): any;
 }
 export declare class UpdateCache implements IUpdateCache {
-    private utils;
     private updateCache;
     private saveRun;
-    constructor(utils: IUtils);
+    private utils;
+    constructor();
     dropCache(): void;
     addToCache(cacheForUpdate: UpdateCacheType, dbEntity: DbEntity, ...entities: any[]): void;
     dropFromCache(cacheForUpdate: UpdateCacheType, dbEntity: DbEntity, ...entities: any[]): void;

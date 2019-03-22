@@ -87,7 +87,10 @@ export interface ISynchronizationConflict {
  * SELECT - All fields and relations (optional).
  */
 export interface SynchronizationConflictESelect
-    extends IEntitySelectProperties, SynchronizationConflictEOptionalId, SynchronizationConflictEUpdateProperties {
+    extends IEntitySelectProperties, SynchronizationConflictEOptionalId {
+	// Non-Id Properties
+	type?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

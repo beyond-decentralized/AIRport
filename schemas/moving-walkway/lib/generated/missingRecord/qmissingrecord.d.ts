@@ -13,7 +13,9 @@ export interface IMissingRecord {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface MissingRecordESelect extends IEntitySelectProperties, MissingRecordEOptionalId, MissingRecordEUpdateProperties {
+export interface MissingRecordESelect extends IEntitySelectProperties, MissingRecordEOptionalId {
+    actorRecordId?: number | IQNumberField;
+    status?: number | IQNumberField;
     schemaVersion?: SchemaVersionESelect;
     entity?: SchemaEntityESelect;
     repository?: RepositoryESelect;

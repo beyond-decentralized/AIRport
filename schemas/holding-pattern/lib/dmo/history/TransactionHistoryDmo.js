@@ -10,7 +10,7 @@ class TransactionHistoryDmo extends generated_1.BaseTransactionHistoryDmo {
         super();
         di_1.DI.get((repositoryTransactionHistoryDmo) => {
             this.repoTransHistoryDmo = repositoryTransactionHistoryDmo;
-        }, diTokens_1.REPOSITORY_TRANSACTION_HISTORY_DMO);
+        }, diTokens_1.REPO_TRANS_HISTORY_DMO);
     }
     getNewRecord(transactionType = ground_control_1.TransactionType.LOCAL) {
         let transaction = new ddl_1.TransactionHistory();
@@ -28,5 +28,5 @@ class TransactionHistoryDmo extends generated_1.BaseTransactionHistoryDmo {
     }
 }
 exports.TransactionHistoryDmo = TransactionHistoryDmo;
-di_1.DI.set(diTokens_1.TRANSACTION_HISTORY_DMO, TransactionHistoryDmo);
+di_1.DI.set(diTokens_1.TRANS_HISTORY_DMO, TransactionHistoryDmo);
 //# sourceMappingURL=TransactionHistoryDmo.js.map

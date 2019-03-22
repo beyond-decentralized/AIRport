@@ -1,46 +1,34 @@
-import {
-	AirportDatabaseToken,
-	and,
-	distinct,
-	field,
-	IAirportDatabase,
-	IUtils,
-	UtilsToken
-} from "@airport/air-control";
-import {AgtSharingMessageId, TmSharingMessageId} from "@airport/arrivals-n-departures";
+import {TmSharingMessageId}  from '@airport/arrivals-n-departures'
+import {DI}                  from '@airport/di'
 import {
 	IRecordHistoryNewValueDao,
 	IRecordHistoryOldValueDao,
 	IRepositoryTransactionHistoryDao,
-	RecordHistoryNewValueDaoToken,
-	RecordHistoryOldValueDaoToken,
-	RepositoryTransactionHistoryDaoToken
-} from "@airport/holding-pattern";
-import {Service} from "typedi";
-import {Inject} from "typedi/decorators/Inject";
-import {MissingRecordId, MissingRecordStatus, SharingNodeId} from "../../ddl/ddl";
+	REC_HIST_NEW_VALUE_DAO,
+	REC_HIST_OLD_VALUE_DAO,
+	REPO_TRANS_HISTORY_DAO
+}                            from '@airport/holding-pattern'
+import {SharingNodeId}       from '../../ddl/ddl'
+import {SHARING_MESSAGE_DAO} from '../../diTokens'
 import {
 	BaseSharingMessageDao,
 	IBaseSharingMessageDao,
-	ISharingMessage,
 	Q,
-	QMissingRecord,
 	QSharingMessage,
-} from "../../generated/generated";
-import {SharingMessageDaoToken} from "../../InjectionTokens";
+}                            from '../../generated/generated'
 
 export interface ISharingMessageDao
 	extends IBaseSharingMessageDao {
-/*
-	updateSyncStatusByAgtSharingMessageIds(
-		syncStatus: SyncStatus,
-		agtTerminalSyncLogIds: AgtSharingMessageId[]
-	): Promise<void>;
+	/*
+		updateSyncStatusByAgtSharingMessageIds(
+			syncStatus: SyncStatus,
+			agtTerminalSyncLogIds: AgtSharingMessageId[]
+		): Promise<void>;
 
-	updateSyncStatusByIds(
-		tmSharingMessageIds: TmSharingMessageId[]
-	): Promise<void>;
-*/
+		updateSyncStatusByIds(
+			tmSharingMessageIds: TmSharingMessageId[]
+		): Promise<void>;
+	*/
 
 	// updateFromResponseStage( //
 	// ): Promise<number>;
@@ -51,24 +39,28 @@ export interface ISharingMessageDao
 
 }
 
-@Service(SharingMessageDaoToken)
 export class SharingMessageDao
 	extends BaseSharingMessageDao
 	implements ISharingMessageDao {
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(RepositoryTransactionHistoryDaoToken)
-		private repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao,
-		@Inject(RecordHistoryNewValueDaoToken)
-		private recordHistoryNewValueDao: IRecordHistoryNewValueDao,
-		@Inject(RecordHistoryOldValueDaoToken)
-		private recordHistoryOldValueDao: IRecordHistoryOldValueDao,
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
+	private repoTransHistoryDao: IRepositoryTransactionHistoryDao
+	private recHistNewValueDao: IRecordHistoryNewValueDao
+	private recHistOldValueDao: IRecordHistoryOldValueDao
+
+	constructor() {
+		super()
+
+		DI.get((
+			repositoryTransactionHistoryDao,
+			recordHistoryNewValueDao,
+			recordHistoryOldValueDao
+		) => {
+			this.repoTransHistoryDao = repositoryTransactionHistoryDao
+			this.recHistNewValueDao  = recordHistoryNewValueDao
+			this.recHistOldValueDao  = recordHistoryOldValueDao
+		}, REPO_TRANS_HISTORY_DAO, REC_HIST_NEW_VALUE_DAO, REC_HIST_OLD_VALUE_DAO)
+
+
 	}
 
 	/*
@@ -86,42 +78,43 @@ export class SharingMessageDao
 		});
 	}
 */
-/*
-	async updateFromResponseStage( //
-	): Promise<number> {
-		let sm: QSharingMessage;
-		let smrs1: QSharingMessageResponseStage;
-		let smrs2: QSharingMessageResponseStage;
-		return await this.db.updateWhere({
-			update: sm = Q.SharingMessage,
-			set: {
-				agtTerminalSyncLogId: field({
-					from: [
-						smrs1 = Q.SharingMessageResponseStage
-					],
-					select: smrs1.agtTerminalSyncLogId,
-					where: smrs1.id.equals(sm.id)
-				}),
-				syncStatus: SyncStatus.SYNCHRONIZED,
-				syncTimestamp: field({
-					from: [
-						smrs2 = Q.SharingMessageResponseStage
-					],
-					select: smrs2.syncTimestamp,
-					where: smrs2.id.equals(sm.id)
-				})
-			}
-		});
-	}*/
+
+	/*
+		async updateFromResponseStage( //
+		): Promise<number> {
+			let sm: QSharingMessage;
+			let smrs1: QSharingMessageResponseStage;
+			let smrs2: QSharingMessageResponseStage;
+			return await this.db.updateWhere({
+				update: sm = Q.SharingMessage,
+				set: {
+					agtTerminalSyncLogId: field({
+						from: [
+							smrs1 = Q.SharingMessageResponseStage
+						],
+						select: smrs1.agtTerminalSyncLogId,
+						where: smrs1.id.equals(sm.id)
+					}),
+					syncStatus: SyncStatus.SYNCHRONIZED,
+					syncTimestamp: field({
+						from: [
+							smrs2 = Q.SharingMessageResponseStage
+						],
+						select: smrs2.syncTimestamp,
+						where: smrs2.id.equals(sm.id)
+					})
+				}
+			});
+		}*/
 
 	async findAllSyncedSharingMessageIdsForSharingNodes(
 		sharingNodeIds: SharingNodeId[]
 	): Promise<Map<SharingNodeId, TmSharingMessageId[]>> {
 		const sharingMessageIdsBySharingNodeId: Map<SharingNodeId, TmSharingMessageId[]>
-			= new Map();
+			      = new Map()
 
-		let sm: QSharingMessage;
-		const data = await this.airportDb.find.sheet({
+		let sm: QSharingMessage
+		const data = await this.airDb.find.sheet({
 			from: [
 				sm = Q.SharingMessage
 			],
@@ -130,14 +123,16 @@ export class SharingMessageDao
 				sm.id
 			],
 			where: sm.sharingNode.id.in(sharingNodeIds)
-		});
+		})
 
 		for (const record of data) {
 			this.utils.ensureChildArray(sharingMessageIdsBySharingNodeId, record[0])
-				.push(record[1]);
+				.push(record[1])
 		}
 
-		return sharingMessageIdsBySharingNodeId;
+		return sharingMessageIdsBySharingNodeId
 	}
 
 }
+
+DI.set(SHARING_MESSAGE_DAO, SharingMessageDao)

@@ -1,6 +1,12 @@
-import { DbEntity, ReferencedColumnData, Utils }           from "../../../../apis/air-control/lib/index";
-import { SQLDataType }                                     from "../../../../apis/ground-control/lib/index";
-import { AbstractObjectResultParser, IEntityResultParser } from "./entity/IEntityResultParser";
+import {
+	DbEntity,
+	ReferencedColumnData
+}                    from '@airport/air-control'
+import {SQLDataType} from '@airport/ground-control'
+import {
+	AbstractObjectResultParser,
+	IEntityResultParser
+}                    from './entity/IEntityResultParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -10,13 +16,13 @@ export class FlattenedResultParser
 	extends AbstractObjectResultParser
 	implements IEntityResultParser {
 
-	currentResultRow: any[] = [];
+	currentResultRow: any[] = []
 
 	addEntity(
 		entityAlias: string,
 		dbEntity: DbEntity
 	): any {
-		return this.currentResultRow;
+		return this.currentResultRow
 	}
 
 	addProperty(
@@ -26,8 +32,8 @@ export class FlattenedResultParser
 		propertyName: string,
 		propertyValue: any
 	): boolean {
-		resultObject.push(propertyValue);
-		return this.utils.objectExists(propertyValue);
+		resultObject.push(propertyValue)
+		return this.utils.objectExists(propertyValue)
 	}
 
 	bufferManyToOneStub(
@@ -38,7 +44,7 @@ export class FlattenedResultParser
 		relationDbEntity: DbEntity,
 		relationInfos: ReferencedColumnData[]
 	): void {
-		this.addManyToOneStub(resultObject, propertyName, relationInfos);
+		this.addManyToOneStub(resultObject, propertyName, relationInfos)
 	}
 
 	bufferBlankManyToOneStub(
@@ -48,8 +54,8 @@ export class FlattenedResultParser
 		relationInfos: ReferencedColumnData[]
 	): void {
 		relationInfos.forEach((relationInfo) => {
-			resultObject.push(null);
-		});
+			resultObject.push(null)
+		})
 	}
 
 	bufferManyToOneObject(
@@ -75,7 +81,7 @@ export class FlattenedResultParser
 		otmDbEntity: DbEntity,
 		otmPropertyName: string
 	): void {
-		throw `@OneToMany stubs not allowed in QueryResultType.PLAIN`;
+		throw `@OneToMany stubs not allowed in QueryResultType.PLAIN`
 	}
 
 	bufferOneToManyCollection(
@@ -107,11 +113,11 @@ export class FlattenedResultParser
 		resultObject: any
 	): any {
 		// Nothing to do, we are working with a flat result array
-		return resultObject;
+		return resultObject
 	}
 
 	flushRow(): void {
-		this.currentResultRow = [];
+		this.currentResultRow = []
 	}
 
 	bridge(
@@ -119,7 +125,7 @@ export class FlattenedResultParser
 		selectClauseFragment: any
 	): any[] {
 		// No bridging needed for ENTITY_FLATTENED Object queries
-		return parsedResults;
+		return parsedResults
 
 	}
 

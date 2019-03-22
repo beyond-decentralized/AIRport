@@ -6,7 +6,8 @@ export interface IRepositoryTransactionHistoryUpdateStage {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepositoryTransactionHistoryUpdateStageESelect extends IEntitySelectProperties, RepositoryTransactionHistoryUpdateStageEOptionalId, RepositoryTransactionHistoryUpdateStageEUpdateProperties {
+export interface RepositoryTransactionHistoryUpdateStageESelect extends IEntitySelectProperties, RepositoryTransactionHistoryUpdateStageEOptionalId {
+    blockId?: number | IQNumberField;
 }
 /**
  * DELETE - Ids fields and relations only (required).

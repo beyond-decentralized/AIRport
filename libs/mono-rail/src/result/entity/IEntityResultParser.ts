@@ -1,14 +1,17 @@
 import {
 	DbEntity,
-	isStub, IUtils,
+	isStub,
+	IUtils,
 	MappedEntityArray,
 	markAsStub,
-	ReferencedColumnData,
-	Utils
-}                                       from "../../../../../apis/air-control/lib/index";
-import { QueryResultType, SQLDataType } from "../../../../../apis/ground-control/lib/index";
-import { EntityGraphResultParser }      from "./EntityGraphResultParser";
-import { EntityTreeResultParser }       from "./EntityTreeResultParser";
+	ReferencedColumnData
+}                                from '@airport/air-control'
+import {
+	QueryResultType,
+	SQLDataType
+}                                from '@airport/ground-control'
+import {EntityGraphResultParser} from './EntityGraphResultParser'
+import {EntityTreeResultParser}  from './EntityTreeResultParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -18,8 +21,8 @@ declare function require(moduleName: string): any;
 
 export class GraphQueryConfiguration {
 	// This is for conflicts on OneToMany references
-	strict: boolean = true;
-	mapped: boolean = true;
+	strict: boolean = true
+	mapped: boolean = true
 	// Always fail on no ID - bridged entities must have IDs
 	// failOnNoId: boolean = true;
 	// Assume there are no conflicts on ManyToOneReferences
@@ -119,13 +122,13 @@ export function getObjectResultParser(
 ): IEntityResultParser {
 	switch (queryResultType) {
 		case QueryResultType.ENTITY_GRAPH:
-			let EntityGraphResultParserClass: typeof EntityGraphResultParser = require('./EntityGraphResultParser').EntityGraphResultParser;
-			return new EntityGraphResultParserClass(utils, config, rootDbEntity);
+			let EntityGraphResultParserClass: typeof EntityGraphResultParser = require('./EntityGraphResultParser').EntityGraphResultParser
+			return new EntityGraphResultParserClass(utils, config, rootDbEntity)
 		case QueryResultType.ENTITY_TREE:
-			let EntityTreeResultParserClass: typeof EntityTreeResultParser = require('./EntityTreeResultParser').EntityTreeResultParser;
-			return new EntityTreeResultParserClass(utils);
+			let EntityTreeResultParserClass: typeof EntityTreeResultParser = require('./EntityTreeResultParser').EntityTreeResultParser
+			return new EntityTreeResultParserClass(utils)
 		default:
-			throw `ObjectQueryParser not supported for QueryResultType: ${queryResultType}`;
+			throw `ObjectQueryParser not supported for QueryResultType: ${queryResultType}`
 	}
 }
 
@@ -141,39 +144,39 @@ export abstract class AbstractObjectResultParser {
 		propertyName: string,
 		relationInfos: ReferencedColumnData[]
 	): boolean {
-		let manyToOneStub = {};
-		isStub(manyToOneStub);
-		resultObject[propertyName] = manyToOneStub;
-		let haveAllIds = true;
+		let manyToOneStub = {}
+		isStub(manyToOneStub)
+		resultObject[propertyName] = manyToOneStub
+		let haveAllIds             = true
 		relationInfos.forEach((relationInfo) => {
 			if (this.utils.Schema.isIdEmpty(relationInfo.value)) {
-				haveAllIds = false;
-				return;
+				haveAllIds = false
+				return
 			}
-			let lastObject;
-			let currentObject = manyToOneStub;
-			let currentIndex = 0;
-			const propertyNameChain = relationInfo.propertyNameChains[0];
+			let lastObject
+			let currentObject       = manyToOneStub
+			let currentIndex        = 0
+			const propertyNameChain = relationInfo.propertyNameChains[0]
 			while (currentIndex < propertyNameChain.length) {
 				// If there is no object in context, create one
 				if (!currentObject) {
-					currentObject = {};
-					markAsStub(currentObject);
-					lastObject[propertyNameChain[currentIndex - 1]] = currentObject;
+					currentObject = {}
+					markAsStub(currentObject)
+					lastObject[propertyNameChain[currentIndex - 1]] = currentObject
 				}
 				// If it's not a leaf (more objects in the chain exist)
 				if (currentIndex < propertyNameChain.length - 1) {
-					lastObject = currentObject;
-					currentObject = lastObject[propertyNameChain[currentIndex]];
+					lastObject    = currentObject
+					currentObject = lastObject[propertyNameChain[currentIndex]]
 				} else {
 					// Otherwise, just assign the value
-					currentObject[propertyNameChain[currentIndex]] = relationInfo.value;
+					currentObject[propertyNameChain[currentIndex]] = relationInfo.value
 				}
-				currentIndex++;
+				currentIndex++
 			}
-		});
+		})
 
-		return haveAllIds;
+		return haveAllIds
 	}
 
 }

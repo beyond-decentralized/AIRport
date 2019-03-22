@@ -1,29 +1,18 @@
-import {
-	IUtils,
-	UtilsToken
-}                                              from "@airport/air-control";
-import {Inject}                                from "typedi";
-import {Service}                               from "typedi/decorators/Service";
+import {DI}                                    from '@airport/di'
+import {REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO} from '../../diTokens'
 import {
 	BaseRepoTransBlockSchemaToChangeDao,
 	IBaseRepoTransBlockSchemaToChangeDao
-}                                              from "../../generated/generated";
-import {RepoTransBlockSchemaToChangeDaoToken} from "../../InjectionTokens";
+}                                              from '../../generated/generated'
 
 export interface IRepoTransBlockSchemaToChangeDao
 	extends IBaseRepoTransBlockSchemaToChangeDao {
 
 }
 
-@Service(RepoTransBlockSchemaToChangeDaoToken)
 export class RepoTransBlockSchemaToChangeDao
 	extends BaseRepoTransBlockSchemaToChangeDao {
 
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
-
 }
+
+DI.set(REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO, RepoTransBlockSchemaToChangeDao)

@@ -17,7 +17,7 @@ class Utils extends ground_control_1.DatastructureUtils {
             this.Field = new FieldUtils_1.FieldUtils(this);
             this.Query = new QueryUtils_1.QueryUtils(this);
             this.Schema = new SchemaUtils_1.SchemaUtils(this.airportDb, this);
-        }, diTokens_1.AIRPORT_DATABASE, diTokens_1.Q_METADATA_UTILS);
+        }, diTokens_1.AIR_DB, diTokens_1.Q_METADATA_UTILS);
     }
     strsToNums(strings) {
         return strings.map(str => parseInt(str));

@@ -1,11 +1,11 @@
-import {QuerySubject}       from '@airport/air-control'
+import {QuerySubject}   from '@airport/air-control'
+import {DI}             from '@airport/di'
 import {
 	PortableQuery,
 	SyncSchemaMap
-}                           from "@airport/ground-control";
-import {Service}            from "typedi";
-import {ActiveQueriesToken} from '../InjectionTokens'
-import {SQLQuery}           from '../sql/core/SQLQuery'
+}                       from "@airport/ground-control";
+import {ACTIVE_QUERIES} from '../InjectionTokens'
+import {SQLQuery}       from '../sql/core/SQLQuery'
 
 /**
  * Created by shamsutdinov.artem on 8/8/2016.
@@ -32,7 +32,6 @@ export interface IActiveQueries {
 
 }
 
-@Service(ActiveQueriesToken)
 export class ActiveQueries
 	implements IActiveQueries {
 
@@ -75,6 +74,8 @@ export class ActiveQueries
 		}, 100);
 	}
 }
+
+DI.set(ACTIVE_QUERIES, ActiveQueries)
 
 export interface CachedSQLQuery {
 	parameters: any[],

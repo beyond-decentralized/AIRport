@@ -1,43 +1,35 @@
 import {
-	AirportDatabaseToken,
 	and,
 	field,
-	IAirportDatabase,
-	IUtils,
-	or,
-	UtilsToken
-}                                  from "@airport/air-control";
+	or
+}                                from '@airport/air-control'
+import {DI}                      from '@airport/di'
 import {
 	ColumnIndex,
 	JSONBaseOperation,
 	SchemaIndex,
 	SchemaVersionId,
 	TableIndex
-}                                  from "@airport/ground-control";
+}                                from '@airport/ground-control'
 import {
 	ActorId,
 	RecordHistoryActorRecordId,
 	RepositoryEntityActorRecordId,
 	RepositoryId
-}                                  from "@airport/holding-pattern";
-import {SchemaEntityIndex}         from "@airport/traffic-pattern";
-import {
-	Inject,
-	Service
-}                                  from "typedi";
+}                                from '@airport/holding-pattern'
+import {RECORD_UPDATE_STAGE_DAO} from '../diTokens'
 import {
 	BaseRecordUpdateStageDao,
 	IBaseRecordUpdateStageDao,
 	Q,
 	QRecordUpdateStage
-}                                  from "../generated/generated";
-import {RecordUpdateStageDaoToken} from "../InjectionTokens";
+}                                from '../generated/generated'
 
 export type RecordUpdateStageValue = any;
 
 export type RecordUpdateStageValues = [
 	SchemaVersionId,
-	SchemaEntityIndex,
+	TableIndex,
 	RepositoryId,
 	ActorId,
 	RecordHistoryActorRecordId,
@@ -65,7 +57,6 @@ export interface IRecordUpdateStageDao
 
 }
 
-@Service(RecordUpdateStageDaoToken)
 export class RecordUpdateStageDao
 	extends BaseRecordUpdateStageDao
 	implements IRecordUpdateStageDao {
@@ -74,7 +65,7 @@ export class RecordUpdateStageDao
 		values: RecordUpdateStageValues[]
 	): Promise<number> {
 
-		const rus: QRecordUpdateStage = Q.RecordUpdateStage;
+		const rus: QRecordUpdateStage = Q.RecordUpdateStage
 
 		const columns = [
 			rus.schemaVersion.id,
@@ -84,27 +75,18 @@ export class RecordUpdateStageDao
 			rus.actorRecordId,
 			rus.column.index,
 			rus.updatedValue
-		];
+		]
 
 		for (let i = 1; i <= 50; i++) {
-			columns.push(rus[`updatedColumn${i}Value`]);
+			columns.push(rus[`updatedColumn${i}Value`])
 		}
 
 		return await this.db.insertValues({
 			insertInto: rus,
 			columns,
 			values
-		});
+		})
 
-	}
-
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
 	}
 
 	async updateEntityWhereIds(
@@ -114,12 +96,12 @@ export class RecordUpdateStageDao
 		idMap: Map<RepositoryId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
 	): Promise<void> {
-		const dbEntity = this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
-		const qEntity = this.airportDb.qSchemas[schemaIndex][dbEntity.name];
+		const dbEntity = this.airDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
+		const qEntity  = this.airDb.qSchemas[schemaIndex][dbEntity.name]
 
-		const repositoryEquals: JSONBaseOperation[] = [];
+		const repositoryEquals: JSONBaseOperation[] = []
 		for (const [repositoryId, idsForRepository] of idMap) {
-			const actorEquals: JSONBaseOperation[] = [];
+			const actorEquals: JSONBaseOperation[] = []
 			for (const [actorId, idsForActor] of idsForRepository) {
 				actorEquals.push(and(
 					qEntity['actor'].id.equals(actorId),
@@ -132,10 +114,10 @@ export class RecordUpdateStageDao
 			))
 		}
 
-		const setClause = {};
+		const setClause = {}
 		for (const columnIndex of updatedColumnIndexes) {
-			let columnRus = Q.RecordUpdateStage;
-			let columnSetClause = field({
+			let columnRus           = Q.RecordUpdateStage
+			let columnSetClause     = field({
 				from: [
 					columnRus
 				],
@@ -149,24 +131,26 @@ export class RecordUpdateStageDao
 						columnRus.actorRecordId.equals(qEntity.actorRecordId),
 						columnRus.column.index.equals(columnIndex)
 					)
-			});
-			const propertyName = dbEntity.columns[columnIndex]
-				.propertyColumns[0].property.name;
-			setClause[propertyName] = columnSetClause;
+			})
+			const propertyName      = dbEntity.columns[columnIndex]
+				.propertyColumns[0].property.name
+			setClause[propertyName] = columnSetClause
 		}
 
 		await this.db.updateColumnsWhere({
 			update: qEntity,
 			set: setClause,
 			where: or(...repositoryEquals)
-		});
+		})
 	}
 
 	async delete( //
 	): Promise<number> {
 		return await this.db.deleteWhere({
 			deleteFrom: Q.RecordUpdateStage
-		});
+		})
 	}
 
 }
+
+DI.set(RECORD_UPDATE_STAGE_DAO, RecordUpdateStageDao)

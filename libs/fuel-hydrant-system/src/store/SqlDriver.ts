@@ -25,7 +25,7 @@ import {
 	Inject,
 	Service
 }                            from 'typedi'
-import {ActiveQueriesToken}  from '../InjectionTokens'
+import {ACTIVE_QUERIES}      from '../InjectionTokens'
 import {SQLDelete}           from '../sql/core/SQLDelete'
 import {SQLInsertValues}     from '../sql/core/SQLInsertValues'
 import {
@@ -56,7 +56,7 @@ export abstract class SqlDriver
 		protected airportDb: IAirportDatabase,
 		@Inject(UtilsToken)
 		protected utils: IUtils,
-		@Inject(ActiveQueriesToken)
+		@Inject(ACTIVE_QUERIES)
 		public queries: ActiveQueries
 	) {
 	}

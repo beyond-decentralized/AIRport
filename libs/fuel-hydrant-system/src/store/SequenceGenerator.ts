@@ -1,7 +1,7 @@
 import {
 	IUtils,
 	UtilsToken
-}                               from '@airport/air-control'
+}                           from '@airport/air-control'
 import {
 	IAbstractSequenceBlockDao,
 	IAbstractSequenceConsumerDao,
@@ -12,14 +12,14 @@ import {
 	SequenceBlockDaoToken,
 	SequenceConsumerDaoToken,
 	SequenceDaoToken
-}                               from '@airport/airport-code'
-import {DbColumn}               from '@airport/ground-control'
-import {IDomain}                from '@airport/territory'
+}                           from '@airport/airport-code'
+import {DbColumn}           from '@airport/ground-control'
+import {IDomain}            from '@airport/territory'
 import {
 	Inject,
 	Service
-}                               from 'typedi'
-import {SequenceGeneratorToken} from '../InjectionTokens'
+}                           from 'typedi'
+import {SEQUENCE_GENERATOR} from '../InjectionTokens'
 
 export interface ISequenceGenerator {
 
@@ -34,7 +34,7 @@ export interface ISequenceGenerator {
 
 }
 
-@Service(SequenceGeneratorToken)
+@Service(SEQUENCE_GENERATOR)
 export class SequenceGenerator
 	implements ISequenceGenerator {
 

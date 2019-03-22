@@ -7,7 +7,7 @@ export interface ISynchronizationConflictValues {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SynchronizationConflictValuesESelect extends IEntitySelectProperties, SynchronizationConflictValuesEOptionalId, SynchronizationConflictValuesEUpdateProperties {
+export interface SynchronizationConflictValuesESelect extends IEntitySelectProperties, SynchronizationConflictValuesEOptionalId {
     synchronizationConflict?: SynchronizationConflictESelect;
 }
 /**

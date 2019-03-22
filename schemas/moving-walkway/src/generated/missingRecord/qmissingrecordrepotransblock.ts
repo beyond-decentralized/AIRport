@@ -39,7 +39,7 @@ import {
 	QRepositoryTransactionBlock,
 	QRepositoryTransactionBlockQId,
 	QRepositoryTransactionBlockQRelation,
-} from '../repositoryTransactionBlock/qrepositorytransactionblock';
+} from '../repositorytransactionblock/qrepositorytransactionblock';
 
 
 declare function require(moduleName: string): any;
@@ -75,7 +75,9 @@ export interface IMissingRecordRepoTransBlock {
  * SELECT - All fields and relations (optional).
  */
 export interface MissingRecordRepoTransBlockESelect
-    extends IEntitySelectProperties, MissingRecordRepoTransBlockEOptionalId, MissingRecordRepoTransBlockEUpdateProperties {
+    extends IEntitySelectProperties, MissingRecordRepoTransBlockEOptionalId {
+	// Non-Id Properties
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

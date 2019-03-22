@@ -57,7 +57,7 @@ import {
 	QSharingNodeRepoTransBlock,
 	QSharingNodeRepoTransBlockQId,
 	QSharingNodeRepoTransBlockQRelation,
-} from '../sharingNode/qsharingnoderepotransblock';
+} from '../sharingnode/qsharingnoderepotransblock';
 import {
 	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockEId,
@@ -67,7 +67,7 @@ import {
 	QSharingMessageRepoTransBlock,
 	QSharingMessageRepoTransBlockQId,
 	QSharingMessageRepoTransBlockQRelation,
-} from '../sharingMessage/qsharingmessagerepotransblock';
+} from '../sharingmessage/qsharingmessagerepotransblock';
 import {
 	IMissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockEId,
@@ -77,7 +77,7 @@ import {
 	QMissingRecordRepoTransBlock,
 	QMissingRecordRepoTransBlockQId,
 	QMissingRecordRepoTransBlockQRelation,
-} from '../missingRecord/qmissingrecordrepotransblock';
+} from '../missingrecord/qmissingrecordrepotransblock';
 import {
 	IRepoTransBlockSchemaToChange,
 	RepoTransBlockSchemaToChangeEId,
@@ -133,7 +133,13 @@ export interface IRepositoryTransactionBlock {
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryTransactionBlockESelect
-    extends IEntitySelectProperties, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockEUpdateProperties {
+    extends IEntitySelectProperties, RepositoryTransactionBlockEOptionalId {
+	// Non-Id Properties
+	sourceId?: number | IQNumberField;
+	hash?: string | IQStringField;
+	syncOutcomeType?: number | IQNumberField;
+	contents?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

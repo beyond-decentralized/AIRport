@@ -8,8 +8,8 @@ import {
 	RepositoryTransactionHistory
 }                             from '../../ddl/ddl'
 import {
-	OPERATION_HISTORY_DMO,
-	REPOSITORY_TRANSACTION_HISTORY_DMO
+	OPER_HISTORY_DMO,
+	REPO_TRANS_HISTORY_DMO
 }                             from '../../diTokens'
 import {
 	BaseRepositoryTransactionHistoryDmo,
@@ -57,7 +57,7 @@ export class RepositoryTransactionHistoryDmo
 			operationHistoryDmo
 		) => {
 			this.operHistoryDmo = operationHistoryDmo
-		}, OPERATION_HISTORY_DMO)
+		}, OPER_HISTORY_DMO)
 	}
 
 	getNewRecord(
@@ -188,4 +188,4 @@ export class RepositoryTransactionHistoryDmo
 
 }
 
-DI.set(REPOSITORY_TRANSACTION_HISTORY_DMO, RepositoryTransactionHistoryDmo)
+DI.set(REPO_TRANS_HISTORY_DMO, RepositoryTransactionHistoryDmo)

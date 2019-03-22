@@ -1,5 +1,5 @@
-import { JSONClauseField }   from "../../../../apis/ground-control/lib/index";
-import { ISqlValueProvider } from "../adaptor/SQLQueryAdaptor";
+import {JSONClauseField}   from '@airport/ground-control'
+import {ISqlValueProvider} from '../adaptor/SQLQueryAdaptor'
 
 export interface ISqlFunctionField {
 
@@ -9,7 +9,8 @@ export interface ISqlFunctionField {
 
 }
 
-export class SqlFunctionField implements ISqlFunctionField {
+export class SqlFunctionField
+	implements ISqlFunctionField {
 
 	constructor(
 		public jsonClauseField: JSONClauseField,
@@ -20,7 +21,7 @@ export class SqlFunctionField implements ISqlFunctionField {
 	getValue(
 		sqlValueProvider: ISqlValueProvider
 	): string {
-		return sqlValueProvider.getFieldFunctionValue(this.jsonClauseField);
+		return sqlValueProvider.getFieldFunctionValue(this.jsonClauseField)
 	}
 
 }

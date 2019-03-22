@@ -1,27 +1,17 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
 const holding_pattern_1 = require("@airport/holding-pattern");
-const typedi_1 = require("typedi");
-const Inject_1 = require("typedi/decorators/Inject");
+const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
-const InjectionTokens_1 = require("../../InjectionTokens");
-let SharingMessageDao = class SharingMessageDao extends generated_1.BaseSharingMessageDao {
-    constructor(airportDb, repositoryTransactionHistoryDao, recordHistoryNewValueDao, recordHistoryOldValueDao, utils) {
-        super(utils);
-        this.airportDb = airportDb;
-        this.repositoryTransactionHistoryDao = repositoryTransactionHistoryDao;
-        this.recordHistoryNewValueDao = recordHistoryNewValueDao;
-        this.recordHistoryOldValueDao = recordHistoryOldValueDao;
+class SharingMessageDao extends generated_1.BaseSharingMessageDao {
+    constructor() {
+        super();
+        di_1.DI.get((repositoryTransactionHistoryDao, recordHistoryNewValueDao, recordHistoryOldValueDao) => {
+            this.repoTransHistoryDao = repositoryTransactionHistoryDao;
+            this.recHistNewValueDao = recordHistoryNewValueDao;
+            this.recHistOldValueDao = recordHistoryOldValueDao;
+        }, holding_pattern_1.REPO_TRANS_HISTORY_DAO, holding_pattern_1.REC_HIST_NEW_VALUE_DAO, holding_pattern_1.REC_HIST_OLD_VALUE_DAO);
     }
     /*
     async updateSyncStatusByAgtSharingMessageIds(
@@ -68,7 +58,7 @@ let SharingMessageDao = class SharingMessageDao extends generated_1.BaseSharingM
     async findAllSyncedSharingMessageIdsForSharingNodes(sharingNodeIds) {
         const sharingMessageIdsBySharingNodeId = new Map();
         let sm;
-        const data = await this.airportDb.find.sheet({
+        const data = await this.airDb.find.sheet({
             from: [
                 sm = generated_1.Q.SharingMessage
             ],
@@ -84,14 +74,7 @@ let SharingMessageDao = class SharingMessageDao extends generated_1.BaseSharingM
         }
         return sharingMessageIdsBySharingNodeId;
     }
-};
-SharingMessageDao = __decorate([
-    typedi_1.Service(InjectionTokens_1.SharingMessageDaoToken),
-    __param(0, Inject_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(1, Inject_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDaoToken)),
-    __param(2, Inject_1.Inject(holding_pattern_1.RecordHistoryNewValueDaoToken)),
-    __param(3, Inject_1.Inject(holding_pattern_1.RecordHistoryOldValueDaoToken)),
-    __param(4, Inject_1.Inject(air_control_1.UtilsToken))
-], SharingMessageDao);
+}
 exports.SharingMessageDao = SharingMessageDao;
+di_1.DI.set(diTokens_1.SHARING_MESSAGE_DAO, SharingMessageDao);
 //# sourceMappingURL=SharingMessageDao.js.map

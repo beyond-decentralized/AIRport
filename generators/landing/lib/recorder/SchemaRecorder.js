@@ -18,7 +18,7 @@ const typedi_1 = require("typedi");
 const InjectionTokens_1 = require("../InjectionTokens");
 let SchemaRecorder = class SchemaRecorder {
     constructor(
-    // @Inject(AIRPORT_DATABASE)
+    // @Inject(AIR_DB)
     // private airDb: IAirportDatabase,
     domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaLocator, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, dbSchemaUtils, schemaVersionDao, terminalStore, utils) {
         this.domainDao = domainDao;

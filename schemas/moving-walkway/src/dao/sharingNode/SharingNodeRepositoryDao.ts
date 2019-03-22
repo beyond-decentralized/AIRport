@@ -1,15 +1,12 @@
 import {
-	AirportDatabaseToken,
 	and,
 	distinct,
-	IAirportDatabase,
 	IQMetadataUtils,
-	IUtils,
-	UtilsToken,
+	Q_METADATA_UTILS,
 	Y
-}                                      from "@airport/air-control";
-import {QMetadataUtilsToken}                from "@airport/air-control";
-import {AgtRepositoryId}               from "@airport/arrivals-n-departures";
+}                                    from '@airport/air-control'
+import {AgtRepositoryId}             from '@airport/arrivals-n-departures'
+import {DI}                          from '@airport/di'
 import {
 	IRecordHistory,
 	IRecordHistoryNewValueDao,
@@ -18,25 +15,21 @@ import {
 	IRepositoryTransactionHistoryDao,
 	QRepository,
 	QRepositoryTransactionHistory,
+	REC_HIST_NEW_VALUE_DAO,
+	REC_HIST_OLD_VALUE_DAO,
 	RecordHistoryId,
-	RecordHistoryNewValueDaoToken,
-	RecordHistoryOldValueDaoToken,
+	REPO_TRANS_HISTORY_DAO,
 	RepositoryId,
-	RepositoryTransactionHistoryDaoToken,
 	RepositoryTransactionHistoryId
-}                                      from "@airport/holding-pattern";
-import {
-	Inject,
-	Service
-}                                      from "typedi";
-import {SharingNodeId}                 from "../../ddl/ddl";
+}                                    from '@airport/holding-pattern'
+import {SharingNodeId}               from '../../ddl/ddl'
+import {SHARING_NODE_REPOSITORY_DAO} from '../../diTokens'
 import {
 	BaseSharingNodeRepositoryDao,
 	ISharingNodeRepository,
 	Q,
 	QSharingNodeRepository,
-}                                      from "../../generated/generated";
-import {SharingNodeRepositoryDaoToken} from "../../InjectionTokens";
+}                                    from '../../generated/generated'
 
 export interface ISharingNodeRepositoryDao {
 
@@ -58,26 +51,30 @@ export interface ISharingNodeRepositoryDao {
 
 }
 
-@Service(SharingNodeRepositoryDaoToken)
 export class SharingNodeRepositoryDao
 	extends BaseSharingNodeRepositoryDao
 	implements ISharingNodeRepositoryDao {
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(QMetadataUtilsToken)
-		private qMetadataUtils: IQMetadataUtils,
-		@Inject(RepositoryTransactionHistoryDaoToken)
-		private repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao,
-		@Inject(RecordHistoryNewValueDaoToken)
-		private recordHistoryNewValueDao: IRecordHistoryNewValueDao,
-		@Inject(RecordHistoryOldValueDaoToken)
-		private recordHistoryOldValueDao: IRecordHistoryOldValueDao,
-		@Inject(UtilsToken)
-			utils: IUtils,
-	) {
-		super(utils);
+	private qMetadataUtils: IQMetadataUtils
+	private repoTransHistoryDao: IRepositoryTransactionHistoryDao
+	private recHistNewValueDao: IRecordHistoryNewValueDao
+	private recHistOldValueDao: IRecordHistoryOldValueDao
+
+	constructor() {
+		super()
+
+		DI.get((
+			qMetadataUtils,
+			repositoryTransactionHistoryDao,
+			recordHistoryNewValueDao,
+			recordHistoryOldValueDao
+			) => {
+				this.qMetadataUtils      = qMetadataUtils
+				this.repoTransHistoryDao = repositoryTransactionHistoryDao
+				this.recHistNewValueDao  = recordHistoryNewValueDao
+				this.recHistOldValueDao  = recordHistoryOldValueDao
+			}, Q_METADATA_UTILS, REPO_TRANS_HISTORY_DAO,
+			REC_HIST_NEW_VALUE_DAO, REC_HIST_OLD_VALUE_DAO)
 	}
 
 	async findRepositoryMapBySharingNodeAndRepositoryIds(
@@ -85,11 +82,11 @@ export class SharingNodeRepositoryDao
 		sharingNodeIds: SharingNodeId[]
 	): Promise<Map<SharingNodeId, Map<RepositoryId, ISharingNodeRepository>>> {
 		const repositoriesBySharingNodeIds: Map<SharingNodeId, Map<RepositoryId,
-			ISharingNodeRepository>> = new Map();
+			ISharingNodeRepository>> = new Map()
 
-		let snr: QSharingNodeRepository;
-		let r: QRepository;
-		const id = Y;
+		let snr: QSharingNodeRepository
+		let r: QRepository
+		const id = Y
 
 		const sharingNodeRepos = await this.db.find.tree({
 			select: {
@@ -114,15 +111,15 @@ export class SharingNodeRepositoryDao
 				snr.repository.id.in(repositoryIds),
 				snr.sharingNode.id.in(sharingNodeIds)
 			)
-		});
+		})
 
 		sharingNodeRepos.forEach(
 			sharingNodeRepo => {
 				this.utils.ensureChildJsMap(repositoriesBySharingNodeIds, sharingNodeRepo.sharingNode.id)
-					.set(sharingNodeRepo.repository.id, sharingNodeRepo);
-			});
+					.set(sharingNodeRepo.repository.id, sharingNodeRepo)
+			})
 
-		return repositoriesBySharingNodeIds;
+		return repositoriesBySharingNodeIds
 	}
 
 	async findBySharingNodeAndAgtRepositoryIds(
@@ -130,11 +127,11 @@ export class SharingNodeRepositoryDao
 		agtRepositoryIds: AgtRepositoryId[],
 	): Promise<Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>> {
 		const repositoryIdsBySharingNodeAndAgtRepositoryIds
-			: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
-			= new Map();
+			      : Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
+			      = new Map()
 
-		let snr: QSharingNodeRepository;
-		const id = Y;
+		let snr: QSharingNodeRepository
+		const id = Y
 
 		const sharingNodeRepos = await this.db.find.tree({
 			select: {
@@ -153,7 +150,7 @@ export class SharingNodeRepositoryDao
 				snr.sharingNode.id.in(sharingNodeIds),
 				snr.agtRepositoryId.in(agtRepositoryIds),
 			)
-		});
+		})
 
 		sharingNodeRepos.forEach(
 			sharingNodeRepo => {
@@ -161,10 +158,10 @@ export class SharingNodeRepositoryDao
 					sharingNodeRepo.sharingNode.id)
 					.set(
 						sharingNodeRepo.agtRepositoryId,
-						sharingNodeRepo.repository.id);
-			});
+						sharingNodeRepo.repository.id)
+			})
 
-		return repositoryIdsBySharingNodeAndAgtRepositoryIds;
+		return repositoryIdsBySharingNodeAndAgtRepositoryIds
 	}
 
 	async findNewRepoTransHistoriesForSharingNodes(
@@ -172,14 +169,14 @@ export class SharingNodeRepositoryDao
 	): Promise<[Map<RepositoryId, Set<SharingNodeId>>,
 		IRepositoryTransactionHistory[]]> {
 		const sharingNodeIdMapByRepositoryId
-			: Map<RepositoryId, Set<SharingNodeId>> = new Map();
+			      : Map<RepositoryId, Set<SharingNodeId>> = new Map()
 
-		let snr: QSharingNodeRepository = Q.SharingNodeRepository;
-		let r: QRepository;
-		let rth: QRepositoryTransactionHistory;
+		let snr: QSharingNodeRepository = Q.SharingNodeRepository
+		let r: QRepository
+		let rth: QRepositoryTransactionHistory
 
 		// const dbEntity = this.qMetadataUtils.getDbEntity(snr);
-		const sharingNodeIdsWithRepoTransHistoryIds = await this.airportDb.find.sheet({
+		const sharingNodeIdsWithRepoTransHistoryIds = await this.airDb.find.sheet({
 			from: [
 				snr,
 				r = snr.repository.innerJoin(),
@@ -194,52 +191,54 @@ export class SharingNodeRepositoryDao
 				snr.sharingNode.id.in(sharingNodeIds),
 				rth.blockId.isNull()
 			)
-		});
+		})
 
-		const repositoryTransactionHistoryIdSet: Set<RepositoryTransactionHistoryId> = new Set();
+		const repositoryTransactionHistoryIdSet: Set<RepositoryTransactionHistoryId> = new Set()
 		for (const sharingNodeIdWithRepoTransHistoryId of sharingNodeIdsWithRepoTransHistoryIds) {
 			const sharingNodeId: SharingNodeId = sharingNodeIdWithRepoTransHistoryId[0]
-			const repositoryId: RepositoryId = sharingNodeIdWithRepoTransHistoryId[1];
+			const repositoryId: RepositoryId   = sharingNodeIdWithRepoTransHistoryId[1]
 			this.utils.ensureChildJsSet(sharingNodeIdMapByRepositoryId,
 				repositoryId)
-				.add(sharingNodeId);
-			repositoryTransactionHistoryIdSet.add(sharingNodeIdWithRepoTransHistoryId[2]);
+				.add(sharingNodeId)
+			repositoryTransactionHistoryIdSet.add(sharingNodeIdWithRepoTransHistoryId[2])
 		}
 
-		const repositoryTransactionHistories = await this.repositoryTransactionHistoryDao
-			.findWhereIdsIn(Array.from(repositoryTransactionHistoryIdSet));
+		const repositoryTransactionHistories = await this.repoTransHistoryDao
+			.findWhereIdsIn(Array.from(repositoryTransactionHistoryIdSet))
 
-		const recordHistoryIds: RecordHistoryId[] = [];
-		const recordHistoryIdSet: Set<RecordHistoryId> = new Set();
-		const recordHistoryMapById: Map<RecordHistoryId, IRecordHistory> = new Map();
+		const recordHistoryIds: RecordHistoryId[]                        = []
+		const recordHistoryIdSet: Set<RecordHistoryId>                   = new Set()
+		const recordHistoryMapById: Map<RecordHistoryId, IRecordHistory> = new Map()
 
 		for (const repoTransHistory of repositoryTransactionHistories) {
 			for (const operationHistory of repoTransHistory.operationHistory) {
 				for (const recordHistory of operationHistory.recordHistory) {
-					recordHistory.newValues = [];
-					recordHistory.oldValues = [];
-					const recordHistoryId = recordHistory.id;
-					recordHistoryIdSet.add(recordHistoryId);
-					recordHistoryMapById.set(recordHistoryId, recordHistory);
+					recordHistory.newValues = []
+					recordHistory.oldValues = []
+					const recordHistoryId   = recordHistory.id
+					recordHistoryIdSet.add(recordHistoryId)
+					recordHistoryMapById.set(recordHistoryId, recordHistory)
 				}
 			}
 		}
 
 		const oldValues
-			= await this.recordHistoryOldValueDao.findByRecordHistoryIdIn(recordHistoryIds);
+			      = await this.recHistOldValueDao.findByRecordHistoryIdIn(recordHistoryIds)
 		for (const oldValue of oldValues) {
-			const recordHistoryId = oldValue.recordHistory.id;
-			recordHistoryMapById.get(recordHistoryId).oldValues.push(oldValue);
+			const recordHistoryId = oldValue.recordHistory.id
+			recordHistoryMapById.get(recordHistoryId).oldValues.push(oldValue)
 		}
 
 		const newValues
-			= await this.recordHistoryNewValueDao.findByRecordHistoryIdIn(recordHistoryIds);
+			      = await this.recHistNewValueDao.findByRecordHistoryIdIn(recordHistoryIds)
 		for (const newValue of newValues) {
-			const recordHistoryId = newValue.recordHistory.id;
-			recordHistoryMapById.get(recordHistoryId).newValues.push(newValue);
+			const recordHistoryId = newValue.recordHistory.id
+			recordHistoryMapById.get(recordHistoryId).newValues.push(newValue)
 		}
 
-		return [sharingNodeIdMapByRepositoryId, repositoryTransactionHistories];
+		return [sharingNodeIdMapByRepositoryId, repositoryTransactionHistories]
 	}
 
 }
+
+DI.set(SHARING_NODE_REPOSITORY_DAO, SharingNodeRepositoryDao)

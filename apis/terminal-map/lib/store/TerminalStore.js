@@ -4,7 +4,7 @@ const air_control_1 = require("@airport/air-control");
 const check_in_1 = require("@airport/check-in");
 const di_1 = require("@airport/di");
 const observe_1 = require("@airport/observe");
-const InjectionTokens_1 = require("../InjectionTokens");
+const diTokens_1 = require("../diTokens");
 class TerminalStore {
     constructor() {
         this.state = new observe_1.BehaviorSubject({
@@ -46,13 +46,13 @@ class TerminalStore {
             return latestSchemaVersionsByNames;
         });
         this.getSchemas = check_in_1.createSelector(this.getTerminalState, terminal => terminal.schemas);
-        di_1.DI.get(di => {
-            [this.utils] = di;
+        di_1.DI.get(utils => {
+            this.utils = utils;
         }, air_control_1.UTILS);
     }
     tearDown() {
     }
 }
 exports.TerminalStore = TerminalStore;
-di_1.DI.set(InjectionTokens_1.TERMINAL_STORE, TerminalStore);
+di_1.DI.set(diTokens_1.TERMINAL_STORE, TerminalStore);
 //# sourceMappingURL=TerminalStore.js.map

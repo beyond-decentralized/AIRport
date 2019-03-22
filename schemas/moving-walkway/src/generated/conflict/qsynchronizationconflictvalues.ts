@@ -65,7 +65,9 @@ export interface ISynchronizationConflictValues {
  * SELECT - All fields and relations (optional).
  */
 export interface SynchronizationConflictValuesESelect
-    extends IEntitySelectProperties, SynchronizationConflictValuesEOptionalId, SynchronizationConflictValuesEUpdateProperties {
+    extends IEntitySelectProperties, SynchronizationConflictValuesEOptionalId {
+	// Non-Id Properties
+
 	// Id Relations - full property interfaces
 	synchronizationConflict?: SynchronizationConflictESelect;
 

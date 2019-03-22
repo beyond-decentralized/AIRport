@@ -4,7 +4,7 @@ import {
 	JSONBaseOperation
 }                                from '@airport/ground-control'
 import {
-	AIRPORT_DATABASE,
+	AIR_DB,
 	Q_METADATA_UTILS,
 	UTILS
 }                                from '../../diTokens'
@@ -28,7 +28,7 @@ export class QMetadataUtils
 			) => {
 				this.airportDb = airportDb
 				this.utils     = utils
-			}, AIRPORT_DATABASE, UTILS)
+			}, AIR_DB, UTILS)
 	}
 
 	getAllColumns(

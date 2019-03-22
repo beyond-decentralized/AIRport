@@ -1,5 +1,5 @@
 import {SqLiteQueryAdaptor} from "./SqLiteQueryAdaptor";
-import {SQLDataType}        from "../../../../apis/ground-control/lib/index";
+import {SQLDataType}        from "@airport/ground-control";
 /**
  * Created by Papa on 2/8/2017.
  */

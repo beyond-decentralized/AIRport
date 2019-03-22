@@ -1,3 +1,3 @@
-export declare const QueryFacadeToken: any;
-export declare const UpdateCacheToken: any;
-export declare const EntityManagerToken: any;
+export declare const QUERY_FACADE: any;
+export declare const UPDATE_CACHE: any;
+export declare const ENTITY_MANAGER: any;

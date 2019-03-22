@@ -13,7 +13,7 @@ import {
 	MissingRecordEUpdateProperties,
 	MissingRecordEId,
 	QMissingRecord
-} from './missingRecord/qmissingrecord';
+} from './missingrecord/qmissingrecord';
 import {
 	IMissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockESelect,
@@ -23,7 +23,7 @@ import {
 	MissingRecordRepoTransBlockEUpdateProperties,
 	MissingRecordRepoTransBlockEId,
 	QMissingRecordRepoTransBlock
-} from './missingRecord/qmissingrecordrepotransblock';
+} from './missingrecord/qmissingrecordrepotransblock';
 import {
 	IRecordUpdateStage,
 	RecordUpdateStageESelect,
@@ -43,7 +43,7 @@ import {
 	RepoTransBlockResponseStageEUpdateProperties,
 	RepoTransBlockResponseStageEId,
 	QRepoTransBlockResponseStage
-} from './repositoryTransactionBlock/qrepotransblockresponsestage';
+} from './repositorytransactionblock/qrepotransblockresponsestage';
 import {
 	IRepoTransBlockSchemaToChange,
 	RepoTransBlockSchemaToChangeESelect,
@@ -53,7 +53,7 @@ import {
 	RepoTransBlockSchemaToChangeEUpdateProperties,
 	RepoTransBlockSchemaToChangeEId,
 	QRepoTransBlockSchemaToChange
-} from './repositoryTransactionBlock/qrepotransblockschematochange';
+} from './repositorytransactionblock/qrepotransblockschematochange';
 import {
 	IRepositoryTransactionBlock,
 	RepositoryTransactionBlockESelect,
@@ -63,7 +63,7 @@ import {
 	RepositoryTransactionBlockEUpdateProperties,
 	RepositoryTransactionBlockEId,
 	QRepositoryTransactionBlock
-} from './repositoryTransactionBlock/qrepositorytransactionblock';
+} from './repositorytransactionblock/qrepositorytransactionblock';
 import {
 	IRepositoryTransactionHistoryUpdateStage,
 	RepositoryTransactionHistoryUpdateStageESelect,
@@ -73,7 +73,7 @@ import {
 	RepositoryTransactionHistoryUpdateStageEUpdateProperties,
 	RepositoryTransactionHistoryUpdateStageEId,
 	QRepositoryTransactionHistoryUpdateStage
-} from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage';
+} from './repositorytransactionblock/qrepositorytransactionhistoryupdatestage';
 import {
 	ISharingMessage,
 	SharingMessageESelect,
@@ -83,7 +83,7 @@ import {
 	SharingMessageEUpdateProperties,
 	SharingMessageEId,
 	QSharingMessage
-} from './sharingMessage/qsharingmessage';
+} from './sharingmessage/qsharingmessage';
 import {
 	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockESelect,
@@ -93,7 +93,7 @@ import {
 	SharingMessageRepoTransBlockEUpdateProperties,
 	SharingMessageRepoTransBlockEId,
 	QSharingMessageRepoTransBlock
-} from './sharingMessage/qsharingmessagerepotransblock';
+} from './sharingmessage/qsharingmessagerepotransblock';
 import {
 	ISharingNode,
 	SharingNodeESelect,
@@ -103,7 +103,7 @@ import {
 	SharingNodeEUpdateProperties,
 	SharingNodeEId,
 	QSharingNode
-} from './sharingNode/qsharingnode';
+} from './sharingnode/qsharingnode';
 import {
 	ISharingNodeRepoTransBlock,
 	SharingNodeRepoTransBlockESelect,
@@ -113,7 +113,7 @@ import {
 	SharingNodeRepoTransBlockEUpdateProperties,
 	SharingNodeRepoTransBlockEId,
 	QSharingNodeRepoTransBlock
-} from './sharingNode/qsharingnoderepotransblock';
+} from './sharingnode/qsharingnoderepotransblock';
 import {
 	ISharingNodeRepoTransBlockStage,
 	SharingNodeRepoTransBlockStageESelect,
@@ -123,7 +123,7 @@ import {
 	SharingNodeRepoTransBlockStageEUpdateProperties,
 	SharingNodeRepoTransBlockStageEId,
 	QSharingNodeRepoTransBlockStage
-} from './sharingNode/qsharingnoderepotransblockstage';
+} from './sharingnode/qsharingnoderepotransblockstage';
 import {
 	ISharingNodeRepository,
 	SharingNodeRepositoryESelect,
@@ -133,7 +133,7 @@ import {
 	SharingNodeRepositoryEUpdateProperties,
 	SharingNodeRepositoryEId,
 	QSharingNodeRepository
-} from './sharingNode/qsharingnoderepository';
+} from './sharingnode/qsharingnoderepository';
 import {
 	ISharingNodeTerminal,
 	SharingNodeTerminalESelect,
@@ -143,7 +143,7 @@ import {
 	SharingNodeTerminalEUpdateProperties,
 	SharingNodeTerminalEId,
 	QSharingNodeTerminal
-} from './sharingNode/qsharingnodeterminal';
+} from './sharingnode/qsharingnodeterminal';
 import {
 	ISynchronizationConflict,
 	SynchronizationConflictESelect,
@@ -183,10 +183,8 @@ export interface IBaseMissingRecordDao
 export class BaseMissingRecordDao
   extends Dao<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateColumns, MissingRecordEUpdateProperties, MissingRecordEId, QMissingRecord>
 	implements IBaseMissingRecordDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['MissingRecord'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['MissingRecord'], Q)
 	}
 }
 
@@ -198,10 +196,8 @@ export interface IBaseMissingRecordRepoTransBlockDao
 export class BaseMissingRecordRepoTransBlockDao
   extends Dao<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateColumns, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, QMissingRecordRepoTransBlock>
 	implements IBaseMissingRecordRepoTransBlockDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['MissingRecordRepoTransBlock'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['MissingRecordRepoTransBlock'], Q)
 	}
 }
 
@@ -213,10 +209,8 @@ export interface IBaseRecordUpdateStageDao
 export class BaseRecordUpdateStageDao
   extends Dao<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, QRecordUpdateStage>
 	implements IBaseRecordUpdateStageDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RecordUpdateStage'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RecordUpdateStage'], Q)
 	}
 }
 
@@ -228,10 +222,8 @@ export interface IBaseRepoTransBlockResponseStageDao
 export class BaseRepoTransBlockResponseStageDao
   extends Dao<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateColumns, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, QRepoTransBlockResponseStage>
 	implements IBaseRepoTransBlockResponseStageDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RepoTransBlockResponseStage'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RepoTransBlockResponseStage'], Q)
 	}
 }
 
@@ -243,10 +235,8 @@ export interface IBaseRepoTransBlockSchemaToChangeDao
 export class BaseRepoTransBlockSchemaToChangeDao
   extends Dao<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateColumns, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, QRepoTransBlockSchemaToChange>
 	implements IBaseRepoTransBlockSchemaToChangeDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RepoTransBlockSchemaToChange'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RepoTransBlockSchemaToChange'], Q)
 	}
 }
 
@@ -258,10 +248,8 @@ export interface IBaseRepositoryTransactionBlockDao
 export class BaseRepositoryTransactionBlockDao
   extends Dao<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateColumns, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, QRepositoryTransactionBlock>
 	implements IBaseRepositoryTransactionBlockDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionBlock'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionBlock'], Q)
 	}
 }
 
@@ -273,10 +261,8 @@ export interface IBaseRepositoryTransactionHistoryUpdateStageDao
 export class BaseRepositoryTransactionHistoryUpdateStageDao
   extends Dao<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateColumns, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, QRepositoryTransactionHistoryUpdateStage>
 	implements IBaseRepositoryTransactionHistoryUpdateStageDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionHistoryUpdateStage'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionHistoryUpdateStage'], Q)
 	}
 }
 
@@ -288,10 +274,8 @@ export interface IBaseSharingMessageDao
 export class BaseSharingMessageDao
   extends Dao<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateColumns, SharingMessageEUpdateProperties, SharingMessageEId, QSharingMessage>
 	implements IBaseSharingMessageDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SharingMessage'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SharingMessage'], Q)
 	}
 }
 
@@ -303,10 +287,8 @@ export interface IBaseSharingMessageRepoTransBlockDao
 export class BaseSharingMessageRepoTransBlockDao
   extends Dao<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateColumns, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, QSharingMessageRepoTransBlock>
 	implements IBaseSharingMessageRepoTransBlockDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SharingMessageRepoTransBlock'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SharingMessageRepoTransBlock'], Q)
 	}
 }
 
@@ -318,10 +300,8 @@ export interface IBaseSharingNodeDao
 export class BaseSharingNodeDao
   extends Dao<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateColumns, SharingNodeEUpdateProperties, SharingNodeEId, QSharingNode>
 	implements IBaseSharingNodeDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SharingNode'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SharingNode'], Q)
 	}
 }
 
@@ -333,10 +313,8 @@ export interface IBaseSharingNodeRepoTransBlockDao
 export class BaseSharingNodeRepoTransBlockDao
   extends Dao<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateColumns, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock>
 	implements IBaseSharingNodeRepoTransBlockDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SharingNodeRepoTransBlock'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SharingNodeRepoTransBlock'], Q)
 	}
 }
 
@@ -348,10 +326,8 @@ export interface IBaseSharingNodeRepoTransBlockStageDao
 export class BaseSharingNodeRepoTransBlockStageDao
   extends Dao<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateColumns, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, QSharingNodeRepoTransBlockStage>
 	implements IBaseSharingNodeRepoTransBlockStageDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SharingNodeRepoTransBlockStage'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SharingNodeRepoTransBlockStage'], Q)
 	}
 }
 
@@ -363,10 +339,8 @@ export interface IBaseSharingNodeRepositoryDao
 export class BaseSharingNodeRepositoryDao
   extends Dao<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateColumns, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, QSharingNodeRepository>
 	implements IBaseSharingNodeRepositoryDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SharingNodeRepository'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SharingNodeRepository'], Q)
 	}
 }
 
@@ -378,10 +352,8 @@ export interface IBaseSharingNodeTerminalDao
 export class BaseSharingNodeTerminalDao
   extends Dao<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateColumns, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal>
 	implements IBaseSharingNodeTerminalDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SharingNodeTerminal'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SharingNodeTerminal'], Q)
 	}
 }
 
@@ -393,10 +365,8 @@ export interface IBaseSynchronizationConflictDao
 export class BaseSynchronizationConflictDao
   extends Dao<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, QSynchronizationConflict>
 	implements IBaseSynchronizationConflictDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SynchronizationConflict'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SynchronizationConflict'], Q)
 	}
 }
 
@@ -408,10 +378,8 @@ export interface IBaseSynchronizationConflictPendingNotificationDao
 export class BaseSynchronizationConflictPendingNotificationDao
   extends Dao<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, QSynchronizationConflictPendingNotification>
 	implements IBaseSynchronizationConflictPendingNotificationDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SynchronizationConflictPendingNotification'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SynchronizationConflictPendingNotification'], Q)
 	}
 }
 
@@ -423,9 +391,7 @@ export interface IBaseSynchronizationConflictValuesDao
 export class BaseSynchronizationConflictValuesDao
   extends Dao<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, QSynchronizationConflictValues>
 	implements IBaseSynchronizationConflictValuesDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SynchronizationConflictValues'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SynchronizationConflictValues'], Q)
 	}
 }

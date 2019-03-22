@@ -1,6 +1,9 @@
-import { DbEntity, ReferencedColumnData } from "../../../../../apis/air-control/lib/index";
-import { TreeResultParser }               from "../TreeResultParser";
-import { IEntityResultParser }            from "./IEntityResultParser";
+import {
+	DbEntity,
+	ReferencedColumnData
+}                            from '@airport/air-control'
+import {TreeResultParser}    from '../TreeResultParser'
+import {IEntityResultParser} from './IEntityResultParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -8,28 +11,31 @@ import { IEntityResultParser }            from "./IEntityResultParser";
 
 /**
  * The goal of this Parser is to determine which objects in the current row are the same
- * as they were in the previous row.  If the objects are the same this parser will merge them.
+ * as they were in the previous row.  If the objects are the same this parser will merge
+ * them.
  */
-export class EntityTreeResultParser extends TreeResultParser implements IEntityResultParser {
+export class EntityTreeResultParser
+	extends TreeResultParser
+	implements IEntityResultParser {
 
-	currentRowObjectMap: { [alias: string]: any } = {};
-	objectEqualityMap: { [alias: string]: boolean } = {};
+	currentRowObjectMap: { [alias: string]: any }   = {}
+	objectEqualityMap: { [alias: string]: boolean } = {}
 
-	lastRowObjectMap: { [alias: string]: any } = {};
+	lastRowObjectMap: { [alias: string]: any } = {}
 
-	currentObjectOneToManys: { [propertyName: string]: any[] } = {};
+	currentObjectOneToManys: { [propertyName: string]: any[] } = {}
 
 	addEntity(
 		entityAlias: string,
 		dbEntity: DbEntity
 	): any {
-		let resultObject = this.utils.Schema.getNewEntity(dbEntity);
-		this.currentRowObjectMap[entityAlias] = resultObject;
+		let resultObject                      = this.utils.Schema.getNewEntity(dbEntity)
+		this.currentRowObjectMap[entityAlias] = resultObject
 		if (this.objectEqualityMap[entityAlias] !== undefined) {
-			this.objectEqualityMap[entityAlias] = true;
+			this.objectEqualityMap[entityAlias] = true
 		}
 
-		return resultObject;
+		return resultObject
 	}
 
 	bufferManyToOneStub(
@@ -40,8 +46,8 @@ export class EntityTreeResultParser extends TreeResultParser implements IEntityR
 		relationDbEntity: DbEntity,
 		relationInfos: ReferencedColumnData[]
 	): void {
-		this.addManyToOneStub(resultObject, propertyName, relationInfos);
-		this.addManyToOneReference(entityAlias, resultObject, propertyName);
+		this.addManyToOneStub(resultObject, propertyName, relationInfos)
+		this.addManyToOneReference(entityAlias, resultObject, propertyName)
 	}
 
 	private addManyToOneReference(
@@ -50,13 +56,13 @@ export class EntityTreeResultParser extends TreeResultParser implements IEntityR
 		propertyName: string
 	): void {
 		if (this.isDifferentOrDoesntExist(entityAlias, resultObject, propertyName)) {
-			return;
+			return
 		}
 		// Both last and current objects must exist here
-		let lastMtoStub = this.lastRowObjectMap[entityAlias][propertyName];
+		let lastMtoStub = this.lastRowObjectMap[entityAlias][propertyName]
 
-		let currentMtoStub = resultObject[propertyName];
-		this.objectEqualityMap[entityAlias] = this.utils.valuesEqual(lastMtoStub, currentMtoStub, true);
+		let currentMtoStub                  = resultObject[propertyName]
+		this.objectEqualityMap[entityAlias] = this.utils.valuesEqual(lastMtoStub, currentMtoStub, true)
 	}
 
 	bufferBlankManyToOneStub(
@@ -64,8 +70,8 @@ export class EntityTreeResultParser extends TreeResultParser implements IEntityR
 		resultObject: any,
 		propertyName: string,
 	): void {
-		resultObject[propertyName] = null;
-		this.addManyToOneReference(entityAlias, resultObject, propertyName);
+		resultObject[propertyName] = null
+		this.addManyToOneReference(entityAlias, resultObject, propertyName)
 	}
 
 	bufferManyToOneObject(
@@ -76,14 +82,14 @@ export class EntityTreeResultParser extends TreeResultParser implements IEntityR
 		relationDbEntity: DbEntity,
 		childResultObject: any
 	): void {
-		resultObject[propertyName] = childResultObject;
+		resultObject[propertyName] = childResultObject
 		if (this.isDifferentOrDoesntExist(entityAlias, resultObject, propertyName)) {
-			return;
+			return
 		}
 		// Both last and current objects must exist here
-		let lastObject = this.lastRowObjectMap[entityAlias];
+		let lastObject                      = this.lastRowObjectMap[entityAlias]
 		// @ManyToOne objects will have been merged by now, just check if its the same facade
-		this.objectEqualityMap[entityAlias] = lastObject[propertyName] === resultObject[propertyName];
+		this.objectEqualityMap[entityAlias] = lastObject[propertyName] === resultObject[propertyName]
 	}
 
 	bufferBlankManyToOneObject(
@@ -91,15 +97,15 @@ export class EntityTreeResultParser extends TreeResultParser implements IEntityR
 		resultObject: any,
 		propertyName: string,
 	): void {
-		resultObject[propertyName] = null;
-		this.addManyToOneReference(entityAlias, null, propertyName);
+		resultObject[propertyName] = null
+		this.addManyToOneReference(entityAlias, null, propertyName)
 	}
 
 	bufferOneToManyStub(
 		otmDbEntity: DbEntity,
 		otmPropertyName: string
 	): void {
-		throw `@OneToMany stubs not allowed in QueryResultType.HIERARCHICAL`;
+		throw `@OneToMany stubs not allowed in QueryResultType.HIERARCHICAL`
 	}
 
 	bufferOneToManyCollection(
@@ -110,8 +116,8 @@ export class EntityTreeResultParser extends TreeResultParser implements IEntityR
 		relationDbEntity: DbEntity,
 		childResultObject: any
 	): void {
-		resultObject[propertyName] = [childResultObject];
-		this.addOneToManyCollection(entityAlias, resultObject, propertyName);
+		resultObject[propertyName] = [childResultObject]
+		this.addOneToManyCollection(entityAlias, resultObject, propertyName)
 	}
 
 	bufferBlankOneToMany(
@@ -121,8 +127,8 @@ export class EntityTreeResultParser extends TreeResultParser implements IEntityR
 		propertyName: string,
 		relationDbEntity: DbEntity,
 	): void {
-		resultObject[propertyName] = [];
-		this.addOneToManyCollection(entityAlias, resultObject, propertyName);
+		resultObject[propertyName] = []
+		this.addOneToManyCollection(entityAlias, resultObject, propertyName)
 	}
 
 	flushEntity(
@@ -132,7 +138,7 @@ export class EntityTreeResultParser extends TreeResultParser implements IEntityR
 		entityId: any,
 		resultObject: any
 	): any {
-		return this.mergeEntity(entityAlias, resultObject);
+		return this.mergeEntity(entityAlias, resultObject)
 	}
 
 	bridge(
@@ -140,7 +146,7 @@ export class EntityTreeResultParser extends TreeResultParser implements IEntityR
 		selectClauseFragment: any
 	): any[] {
 		// Nothing to be done, hierarchical queries are not bridged
-		return parsedResults;
+		return parsedResults
 	}
 
 }

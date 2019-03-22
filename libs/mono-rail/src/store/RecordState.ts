@@ -1,4 +1,4 @@
-import { ChangeRecord } from "../../../../apis/terminal-map/lib/index";
+import { ChangeRecord } from "@airport/terminal-map";
 
 /**
  * Created by Papa on 6/28/2016.

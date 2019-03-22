@@ -1,8 +1,6 @@
-import { IAirportDatabase } from "@airport/air-control/lib/lingo/AirportDatabase";
-import { IUtils } from "@airport/air-control/lib/lingo/utils/Utils";
-import { SharingNodeRepoTransBlockSyncStatus, TmRepositoryTransactionBlockId } from "@airport/arrivals-n-departures";
-import { SharingNodeId } from "../../ddl/ddl";
-import { BaseSharingNodeRepoTransBlockDao, IBaseSharingNodeRepoTransBlockDao, ISharingNodeRepoTransBlock } from "../../generated/generated";
+import { SharingNodeRepoTransBlockSyncStatus, TmRepositoryTransactionBlockId } from '@airport/arrivals-n-departures';
+import { SharingNodeId } from '../../ddl/ddl';
+import { BaseSharingNodeRepoTransBlockDao, IBaseSharingNodeRepoTransBlockDao, ISharingNodeRepoTransBlock } from '../../generated/generated';
 export declare type SharingNodeRepoTransBlockValues = [SharingNodeId, TmRepositoryTransactionBlockId, SharingNodeRepoTransBlockSyncStatus];
 export interface RepoTransBlocksForSharingNodes {
     repositoryTransactionBlockIds: Set<TmRepositoryTransactionBlockId>;
@@ -16,8 +14,6 @@ export interface ISharingNodeRepoTransBlockDao extends IBaseSharingNodeRepoTrans
     getForSharingNodeIdsAndBlockStatus(sharingNodeIds: SharingNodeId[], syncStatus: SharingNodeRepoTransBlockSyncStatus): Promise<RepoTransBlocksForSharingNodes>;
 }
 export declare class SharingNodeRepoTransBlockDao extends BaseSharingNodeRepoTransBlockDao implements ISharingNodeRepoTransBlockDao {
-    private airportDb;
-    constructor(airportDb: IAirportDatabase, utils: IUtils);
     findMapBySharingNodeIdWhereSharingNodeIdInAndRepoTransBlockIdIn(sharingNodeIds: SharingNodeId[], repoTransBlockIds: TmRepositoryTransactionBlockId[]): Promise<Map<SharingNodeId, Map<TmRepositoryTransactionBlockId, ISharingNodeRepoTransBlock>>>;
     updateFromResponseStage(): Promise<number>;
     updateBlockSyncStatus(sharingNodeIds: SharingNodeId[], repoTransBlockIds: TmRepositoryTransactionBlockId[], existingSyncStatus: SharingNodeRepoTransBlockSyncStatus, newSyncStatus: SharingNodeRepoTransBlockSyncStatus): Promise<void>;

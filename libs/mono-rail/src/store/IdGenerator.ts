@@ -1,22 +1,20 @@
 import {
-	AirportDatabaseToken,
+	AIR_DB,
 	DbEntity,
 	IAirportDatabase,
-	IQOrderableField, IUtils,
+	IQOrderableField,
+	IUtils,
 	max,
 	Primitive,
 	RawNonEntityQuery,
 	RawSheetQuery,
 	unionAll,
-	Utils,
-	UtilsToken,
-}                         from "../../../../apis/air-control/lib/index";
-import {Q}                from "../../../../schemas/holding-pattern/lib/index";
-import {
-	Inject,
-	Service
-}                         from "typedi";
-import {IdGeneratorToken} from "../../../../apps/terminal/src/InjectionTokens";
+	UTILS,
+}                         from '@airport/air-control'
+import {DI}               from '@airport/di'
+import {Q}                from '@airport/holding-pattern'
+import {IdGeneratorToken} from '@airport/terminal'
+import {ID_GENERATOR}     from '../diTokens'
 
 export interface IIdGenerator {
 
@@ -50,52 +48,54 @@ export interface IIdGenerator {
  * Created by Papa on 9/2/2016.
  */
 
-@Service(IdGeneratorToken)
 export class IdGenerator
 	implements IIdGenerator {
 
-	private lastIds: number[][];
+	private lastIds: number[][]
 
-	constructor(
-		@Inject(
-			_ => AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(
-			_ => UtilsToken)
-		private utils: IUtils
-	) {
+	private airDb: IAirportDatabase
+	private utils: IUtils
+
+	constructor() {
+		DI.get((
+			airportDatabase,
+			utils
+		) => {
+			this.airDb = airportDatabase
+			this.utils = utils
+		}, AIR_DB, UTILS)
 	}
 
 	generateTransHistoryId( //
 	): number {
 		return this.generateHoldingPatternEntityId(
-			'TransactionHistory');
+			'TransactionHistory')
 	}
 
 	generateRepoTransHistoryId( //
 	): number {
 		return this.generateHoldingPatternEntityId(
-			'RepositoryTransactionHistory');
+			'RepositoryTransactionHistory')
 	}
 
 	generateOperationHistoryId( //
 	): number {
 		return this.generateHoldingPatternEntityId(
-			'OperationHistory');
+			'OperationHistory')
 	}
 
 	generateRecordHistoryId( //
 	): number {
 		return this.generateHoldingPatternEntityId(
-			'RecordHistory');
+			'RecordHistory')
 	}
 
 	generateHoldingPatternEntityId(
 		holdingPatternEntityName: string
 	): number {
-		const dbEntity = Q.db.entityMapByName[holdingPatternEntityName];
+		const dbEntity = Q.db.entityMapByName[holdingPatternEntityName]
 
-		return this.generateEntityId(dbEntity);
+		return this.generateEntityId(dbEntity)
 	}
 
 	generateEntityId(
@@ -103,23 +103,23 @@ export class IdGenerator
 		entity: any = null,
 	): number {
 		if (!this.lastIds) {
-			throw `Id cache is not loaded.`;
+			throw `Id cache is not loaded.`
 			// await this.loadLatestIds();
 		}
-		let newId = ++this.lastIds[dbEntity.schema.index][dbEntity.index];
+		let newId = ++this.lastIds[dbEntity.schema.index][dbEntity.index]
 
 		if (!entity) {
-			return newId;
+			return newId
 		}
 
 		const recordWithId = {
 			...entity,
-		};
+		}
 
-		let columnName = dbEntity.idColumns[0].name;
-		recordWithId[columnName] = newId;
+		let columnName           = dbEntity.idColumns[0].name
+		recordWithId[columnName] = newId
 
-		return recordWithId;
+		return recordWithId
 	}
 
 	/**
@@ -131,53 +131,55 @@ export class IdGenerator
 	 */
 	async loadLatestIds( //
 	): Promise<void> {
-		const maxIdRecords = await this.airportDb.db.find.sheet(this.getMaxIdQueries());
+		const maxIdRecords = await this.airDb.db.find.sheet(this.getMaxIdQueries())
 
-		this.lastIds = [];
+		this.lastIds = []
 		for (const maxIdRecord of maxIdRecords) {
-			const schemaLastIds = this.utils.ensureChildArray(this.lastIds, maxIdRecord[0]);
-			let id = maxIdRecord[2];
+			const schemaLastIds = this.utils.ensureChildArray(this.lastIds, maxIdRecord[0])
+			let id              = maxIdRecord[2]
 			if (!id) {
-				id = 0;
+				id = 0
 			}
-			schemaLastIds[maxIdRecord[1]] = id;
+			schemaLastIds[maxIdRecord[1]] = id
 		}
 	}
 
 	private generateByHoldingPatternEntityName(
 		entityName: string
 	): Promise<number> {
-		const dbEntity = Q.db.entityMapByName[entityName];
+		const dbEntity = Q.db.entityMapByName[entityName]
 
-		return <any>this.generateEntityId(dbEntity);
+		return <any>this.generateEntityId(dbEntity)
 	}
 
 	private getMaxIdQueries(): RawNonEntityQuery {
-		const idQueries: RawSheetQuery[] = [];
-		for (const schema of this.airportDb.schemas) {
-			const qSchema = this.airportDb.qSchemas[schema.index];
+		const idQueries: RawSheetQuery[] = []
+		for (const schema of this.airDb.schemas) {
+			const qSchema = this.airDb.qSchemas[schema.index]
 			for (const entity of schema.entities) {
 				if (entity.idColumns.length > 1) {
-					continue;
+					continue
 				}
-				const idColumn = entity.idColumns[0];
+				const idColumn = entity.idColumns[0]
 				if (!idColumn.isGenerated) {
-					continue;
+					continue
 				}
-				const qEntity = qSchema[entity.name];
-				const select: (IQOrderableField<any> | Primitive)[] = [];
-				select.push(schema.index);
-				select.push(entity.index);
-				select.push(max(qEntity[idColumn.name]));
+				const qEntity                                       = qSchema[entity.name]
+				const select: (IQOrderableField<any> | Primitive)[] = []
+				select.push(schema.index)
+				select.push(entity.index)
+				select.push(max(qEntity[idColumn.name]))
 				let query: RawSheetQuery = {
 					select,
 					from: [qEntity],
-				};
-				idQueries.push(query);
+				}
+				idQueries.push(query)
 			}
 		}
 
-		return unionAll(...idQueries);
+		return unionAll(...idQueries)
 	};
 
 }
+
+DI.set(ID_GENERATOR, IdGenerator)

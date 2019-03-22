@@ -5,7 +5,7 @@ import {
 	IQEntityInternal, IUtils,
 	JoinTreeNode,
 	Utils
-}                       from "../../../../../apis/air-control/lib/index";
+}                       from "@airport/air-control";
 import {
 	EntityRelationType,
 	JSONEntityRelation,
@@ -13,9 +13,9 @@ import {
 	JSONRelation,
 	QueryResultType,
 	SqlOperator
-}                       from "../../../../../apis/ground-control/lib/index";
+}                       from "@airport/ground-control";
 import { SQLWhereBase } from "./SQLWhereBase";
-import { SchemaMap }    from "../../../../../apis/terminal-map/lib/index";
+import { SchemaMap }    from "@airport/terminal-map";
 
 /**
  * Created by Papa on 8/20/2016.

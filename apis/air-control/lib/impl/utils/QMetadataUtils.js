@@ -7,7 +7,7 @@ class QMetadataUtils {
         lib_1.DI.get((airportDb, utils) => {
             this.airportDb = airportDb;
             this.utils = utils;
-        }, diTokens_1.AIRPORT_DATABASE, diTokens_1.UTILS);
+        }, diTokens_1.AIR_DB, diTokens_1.UTILS);
     }
     getAllColumns(qEntity) {
         return qEntity.__driver__.allColumns;

@@ -70,6 +70,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/mono-rail",
+      "projectFolder": "libs/mono-rail",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/observe",
       "projectFolder": "libs/observe",
       "shouldPublish": true

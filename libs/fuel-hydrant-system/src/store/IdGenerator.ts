@@ -36,8 +36,8 @@ import {
 	Service
 }                             from 'typedi'
 import {
-	IdGeneratorToken,
-	SequenceGeneratorToken
+	ID_GENERATOR,
+	SEQUENCE_GENERATOR
 }                             from '../InjectionTokens'
 import {ISequenceGenerator}   from './SequenceGenerator'
 
@@ -73,7 +73,7 @@ export interface IIdGenerator {
  * Created by Papa on 9/2/2016.
  */
 
-@Service(IdGeneratorToken)
+@Service(ID_GENERATOR)
 export class IdGenerator
 	implements IIdGenerator {
 
@@ -82,7 +82,7 @@ export class IdGenerator
 	constructor(
 		@Inject(AirportDatabaseToken)
 		private airportDb: IAirportDatabase,
-		@Inject(SequenceGeneratorToken)
+		@Inject(SEQUENCE_GENERATOR)
 		private sequenceGenerator: ISequenceGenerator,
 		@Inject(UtilsToken)
 		private utils: IUtils

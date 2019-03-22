@@ -1,13 +1,13 @@
-import {DI}                           from '@airport/di'
-import {RecordHistoryId}              from '../../ddl/ddl'
-import {RECORD_HISTORY_NEW_VALUE_DAO} from '../../diTokens'
+import {DI}                     from '@airport/di'
+import {RecordHistoryId}        from '../../ddl/ddl'
+import {REC_HIST_NEW_VALUE_DAO} from '../../diTokens'
 import {
 	BaseRecordHistoryNewValueDao,
 	IBaseRecordHistoryNewValueDao,
 	IRecordHistoryNewValue,
 	Q,
 	QRecordHistoryNewValue
-}                                     from '../../generated/generated'
+}                               from '../../generated/generated'
 
 export interface IRecordHistoryNewValueDao
 	extends IBaseRecordHistoryNewValueDao {
@@ -39,4 +39,4 @@ export class RecordHistoryNewValueDao
 
 }
 
-DI.set(RECORD_HISTORY_NEW_VALUE_DAO, RecordHistoryNewValueDao)
+DI.set(REC_HIST_NEW_VALUE_DAO, RecordHistoryNewValueDao)

@@ -11,7 +11,7 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
         di_1.DI.get((operationHistoryDmo, recordHistoryDmo) => {
             this.operHistoryDmo = operationHistoryDmo;
             this.recHistoryDmo = recordHistoryDmo;
-        }, diTokens_1.OPERATION_HISTORY_DMO, diTokens_1.RECORD_HISTORY_DMO);
+        }, diTokens_1.OPER_HISTORY_DMO, diTokens_1.REC_HISTORY_DMO);
     }
     getSelectClauseWithRecordHistory() {
         const id = air_control_1.Y;
@@ -191,5 +191,5 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
     }
 }
 exports.RepositoryTransactionHistoryDao = RepositoryTransactionHistoryDao;
-di_1.DI.set(diTokens_1.REPOSITORY_TRANSACTION_HISTORY_DAO, RepositoryTransactionHistoryDao);
+di_1.DI.set(diTokens_1.REPO_TRANS_HISTORY_DAO, RepositoryTransactionHistoryDao);
 //# sourceMappingURL=RepositoryTransactionHistoryDao.js.map

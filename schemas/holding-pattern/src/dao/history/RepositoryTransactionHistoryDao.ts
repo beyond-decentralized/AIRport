@@ -26,9 +26,9 @@ import {
 	RepositoryTransactionHistoryId
 }           from '../../ddl/ddl'
 import {
-	OPERATION_HISTORY_DMO,
-	RECORD_HISTORY_DMO,
-	REPOSITORY_TRANSACTION_HISTORY_DAO,
+	OPER_HISTORY_DMO,
+	REC_HISTORY_DMO,
+	REPO_TRANS_HISTORY_DAO,
 }           from '../../diTokens'
 import {
 	BaseRepositoryTransactionHistoryDao,
@@ -107,7 +107,7 @@ export class RepositoryTransactionHistoryDao
 		) => {
 			this.operHistoryDmo = operationHistoryDmo
 			this.recHistoryDmo    = recordHistoryDmo
-		}, OPERATION_HISTORY_DMO, RECORD_HISTORY_DMO)
+		}, OPER_HISTORY_DMO, REC_HISTORY_DMO)
 	}
 
 	getSelectClauseWithRecordHistory(): RepositoryTransactionHistoryESelect {
@@ -390,4 +390,4 @@ export class RepositoryTransactionHistoryDao
 
 }
 
-DI.set(REPOSITORY_TRANSACTION_HISTORY_DAO, RepositoryTransactionHistoryDao)
+DI.set(REPO_TRANS_HISTORY_DAO, RepositoryTransactionHistoryDao)

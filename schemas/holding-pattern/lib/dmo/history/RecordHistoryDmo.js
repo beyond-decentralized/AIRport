@@ -10,7 +10,7 @@ class RecordHistoryDmo extends generated_1.BaseRecordHistoryDmo {
         di_1.DI.get((recordHistoryNewValueDmo, recordHistoryOldValueDmo) => {
             this.recHistoryNewValueDmo = recordHistoryNewValueDmo;
             this.recHistoryOldValueDmo = recordHistoryOldValueDmo;
-        }, diTokens_1.RECORD_HISTORY_NEW_VALUE_DMO, diTokens_1.RECORD_HISTORY_OLD_VALUE_DMO);
+        }, diTokens_1.REC_HIST_NEW_VALUE_DMO, diTokens_1.REC_HIST_OLD_VALUE_DMO);
     }
     getNewRecord(actorRecordId) {
         const recordHistory = new ddl_1.RecordHistory();
@@ -33,5 +33,5 @@ class RecordHistoryDmo extends generated_1.BaseRecordHistoryDmo {
     }
 }
 exports.RecordHistoryDmo = RecordHistoryDmo;
-di_1.DI.set(diTokens_1.RECORD_HISTORY_DMO, RecordHistoryDmo);
+di_1.DI.set(diTokens_1.REC_HISTORY_DMO, RecordHistoryDmo);
 //# sourceMappingURL=RecordHistoryDmo.js.map

@@ -1,22 +1,15 @@
-import {
-	and,
-	IUtils,
-	UtilsToken
-}                                    from '@airport/air-control'
-import {TerminalId}                  from '@airport/arrivals-n-departures'
-import {
-	Inject,
-	Service
-}                                    from 'typedi'
-import {SharingNodeId}               from '../../ddl/ddl'
+import {and}                       from '@airport/air-control'
+import {TerminalId}                from '@airport/arrivals-n-departures'
+import {DI}                        from '@airport/di'
+import {SharingNodeId}             from '../../ddl/ddl'
+import {SHARING_NODE_TERMINAL_DAO} from '../../diTokens'
 import {
 	BaseSharingNodeTerminalDao,
 	IBaseSharingNodeTerminalDao,
 	ISharingNodeTerminal,
 	Q,
 	QSharingNodeTerminal
-}                                    from '../../generated/generated'
-import {SharingNodeTerminalDaoToken} from '../../InjectionTokens'
+}                                  from '../../generated/generated'
 
 export interface ISharingNodeTerminalDao
 	extends IBaseSharingNodeTerminalDao {
@@ -28,17 +21,9 @@ export interface ISharingNodeTerminalDao
 
 }
 
-@Service(SharingNodeTerminalDaoToken)
 export class SharingNodeTerminalDao
 	extends BaseSharingNodeTerminalDao
 	implements ISharingNodeTerminalDao {
-
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils)
-	}
 
 	async findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(
 		terminalId: TerminalId,
@@ -64,3 +49,5 @@ export class SharingNodeTerminalDao
 	}
 
 }
+
+DI.set(SHARING_NODE_TERMINAL_DAO, SharingNodeTerminalDao)

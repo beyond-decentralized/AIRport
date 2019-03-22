@@ -1,7 +1,6 @@
-import { Token } from 'typedi';
 import { IActiveQueries } from './store/ActiveQueries';
 import { IIdGenerator } from './store/IdGenerator';
 import { ISequenceGenerator } from './store/SequenceGenerator';
-export declare const ActiveQueriesToken: Token<IActiveQueries>;
-export declare const IdGeneratorToken: Token<IIdGenerator>;
-export declare const SequenceGeneratorToken: Token<ISequenceGenerator>;
+export declare const ACTIVE_QUERIES: import("@airport/di").DiToken<IActiveQueries>;
+export declare const ID_GENERATOR: import("@airport/di").DiToken<IIdGenerator>;
+export declare const SEQUENCE_GENERATOR: import("@airport/di").DiToken<ISequenceGenerator>;

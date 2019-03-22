@@ -1,31 +1,18 @@
-import {
-	IUtils,
-	UtilsToken
-} from "@airport/air-control";
-import {
-	Inject,
-	Service
-} from "typedi";
+import {DI}                                     from '@airport/di'
+import {SYNC_CONFLICT_PENDING_NOTIFICATION_DAO} from '../../diTokens'
 import {
 	BaseSynchronizationConflictPendingNotificationDao,
 	IBaseSynchronizationConflictPendingNotificationDao
-}                                                           from "../../generated/generated";
-import {SynchronizationConflictPendingNotificationDaoToken} from "../../InjectionTokens";
+}                                               from '../../generated/generated'
 
 export interface ISynchronizationConflictPendingNotificationDao
 	extends IBaseSynchronizationConflictPendingNotificationDao {
 }
 
-@Service(SynchronizationConflictPendingNotificationDaoToken)
 export class SynchronizationConflictPendingNotificationDao
 	extends BaseSynchronizationConflictPendingNotificationDao
 	implements ISynchronizationConflictPendingNotificationDao {
 
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
-
 }
+
+DI.set(SYNC_CONFLICT_PENDING_NOTIFICATION_DAO, SynchronizationConflictPendingNotificationDao)

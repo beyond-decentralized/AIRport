@@ -1,28 +1,19 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const air_control_2 = require("@airport/air-control");
+const di_1 = require("@airport/di");
 const holding_pattern_1 = require("@airport/holding-pattern");
-const typedi_1 = require("typedi");
+const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
-const InjectionTokens_1 = require("../../InjectionTokens");
-let SharingNodeRepositoryDao = class SharingNodeRepositoryDao extends generated_1.BaseSharingNodeRepositoryDao {
-    constructor(airportDb, qMetadataUtils, repositoryTransactionHistoryDao, recordHistoryNewValueDao, recordHistoryOldValueDao, utils) {
-        super(utils);
-        this.airportDb = airportDb;
-        this.qMetadataUtils = qMetadataUtils;
-        this.repositoryTransactionHistoryDao = repositoryTransactionHistoryDao;
-        this.recordHistoryNewValueDao = recordHistoryNewValueDao;
-        this.recordHistoryOldValueDao = recordHistoryOldValueDao;
+class SharingNodeRepositoryDao extends generated_1.BaseSharingNodeRepositoryDao {
+    constructor() {
+        super();
+        di_1.DI.get((qMetadataUtils, repositoryTransactionHistoryDao, recordHistoryNewValueDao, recordHistoryOldValueDao) => {
+            this.qMetadataUtils = qMetadataUtils;
+            this.repoTransHistoryDao = repositoryTransactionHistoryDao;
+            this.recHistNewValueDao = recordHistoryNewValueDao;
+            this.recHistOldValueDao = recordHistoryOldValueDao;
+        }, air_control_1.Q_METADATA_UTILS, holding_pattern_1.REPO_TRANS_HISTORY_DAO, holding_pattern_1.REC_HIST_NEW_VALUE_DAO, holding_pattern_1.REC_HIST_OLD_VALUE_DAO);
     }
     async findRepositoryMapBySharingNodeAndRepositoryIds(repositoryIds, sharingNodeIds) {
         const repositoriesBySharingNodeIds = new Map();
@@ -87,7 +78,7 @@ let SharingNodeRepositoryDao = class SharingNodeRepositoryDao extends generated_
         let r;
         let rth;
         // const dbEntity = this.qMetadataUtils.getDbEntity(snr);
-        const sharingNodeIdsWithRepoTransHistoryIds = await this.airportDb.find.sheet({
+        const sharingNodeIdsWithRepoTransHistoryIds = await this.airDb.find.sheet({
             from: [
                 snr,
                 r = snr.repository.innerJoin(),
@@ -108,7 +99,7 @@ let SharingNodeRepositoryDao = class SharingNodeRepositoryDao extends generated_
                 .add(sharingNodeId);
             repositoryTransactionHistoryIdSet.add(sharingNodeIdWithRepoTransHistoryId[2]);
         }
-        const repositoryTransactionHistories = await this.repositoryTransactionHistoryDao
+        const repositoryTransactionHistories = await this.repoTransHistoryDao
             .findWhereIdsIn(Array.from(repositoryTransactionHistoryIdSet));
         const recordHistoryIds = [];
         const recordHistoryIdSet = new Set();
@@ -124,27 +115,19 @@ let SharingNodeRepositoryDao = class SharingNodeRepositoryDao extends generated_
                 }
             }
         }
-        const oldValues = await this.recordHistoryOldValueDao.findByRecordHistoryIdIn(recordHistoryIds);
+        const oldValues = await this.recHistOldValueDao.findByRecordHistoryIdIn(recordHistoryIds);
         for (const oldValue of oldValues) {
             const recordHistoryId = oldValue.recordHistory.id;
             recordHistoryMapById.get(recordHistoryId).oldValues.push(oldValue);
         }
-        const newValues = await this.recordHistoryNewValueDao.findByRecordHistoryIdIn(recordHistoryIds);
+        const newValues = await this.recHistNewValueDao.findByRecordHistoryIdIn(recordHistoryIds);
         for (const newValue of newValues) {
             const recordHistoryId = newValue.recordHistory.id;
             recordHistoryMapById.get(recordHistoryId).newValues.push(newValue);
         }
         return [sharingNodeIdMapByRepositoryId, repositoryTransactionHistories];
     }
-};
-SharingNodeRepositoryDao = __decorate([
-    typedi_1.Service(InjectionTokens_1.SharingNodeRepositoryDaoToken),
-    __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(air_control_2.QMetadataUtilsToken)),
-    __param(2, typedi_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDaoToken)),
-    __param(3, typedi_1.Inject(holding_pattern_1.RecordHistoryNewValueDaoToken)),
-    __param(4, typedi_1.Inject(holding_pattern_1.RecordHistoryOldValueDaoToken)),
-    __param(5, typedi_1.Inject(air_control_1.UtilsToken))
-], SharingNodeRepositoryDao);
+}
 exports.SharingNodeRepositoryDao = SharingNodeRepositoryDao;
+di_1.DI.set(diTokens_1.SHARING_NODE_REPOSITORY_DAO, SharingNodeRepositoryDao);
 //# sourceMappingURL=SharingNodeRepositoryDao.js.map

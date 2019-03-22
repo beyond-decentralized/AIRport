@@ -5,9 +5,9 @@ import {
 	RepositoryEntityActorRecordId
 }                                  from '../../ddl/ddl'
 import {
-	RECORD_HISTORY_DMO,
-	RECORD_HISTORY_NEW_VALUE_DMO,
-	RECORD_HISTORY_OLD_VALUE_DMO
+	REC_HISTORY_DMO,
+	REC_HIST_NEW_VALUE_DMO,
+	REC_HIST_OLD_VALUE_DMO
 }                                  from '../../diTokens'
 import {
 	BaseRecordHistoryDmo,
@@ -57,7 +57,7 @@ export class RecordHistoryDmo
 		) => {
 			this.recHistoryNewValueDmo = recordHistoryNewValueDmo
 			this.recHistoryOldValueDmo = recordHistoryOldValueDmo
-		}, RECORD_HISTORY_NEW_VALUE_DMO, RECORD_HISTORY_OLD_VALUE_DMO)
+		}, REC_HIST_NEW_VALUE_DMO, REC_HIST_OLD_VALUE_DMO)
 	}
 
 	getNewRecord(
@@ -104,4 +104,4 @@ export class RecordHistoryDmo
 
 }
 
-DI.set(RECORD_HISTORY_DMO, RecordHistoryDmo)
+DI.set(REC_HISTORY_DMO, RecordHistoryDmo)

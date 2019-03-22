@@ -29,7 +29,7 @@ import {
 	QSharingMessage,
 	QSharingMessageQId,
 	QSharingMessageQRelation,
-} from '../sharingMessage/qsharingmessage';
+} from '../sharingmessage/qsharingmessage';
 import {
 	ISharingNodeRepoTransBlock,
 	SharingNodeRepoTransBlockEId,
@@ -81,7 +81,14 @@ export interface ISharingNode {
  * SELECT - All fields and relations (optional).
  */
 export interface SharingNodeESelect
-    extends IEntitySelectProperties, SharingNodeEOptionalId, SharingNodeEUpdateProperties {
+    extends IEntitySelectProperties, SharingNodeEOptionalId {
+	// Non-Id Properties
+	sharingMechanism?: number | IQNumberField;
+	isActive?: boolean | IQBooleanField;
+	syncFrequency?: number | IQNumberField;
+	connectionProtocol?: number | IQNumberField;
+	connectionUrl?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

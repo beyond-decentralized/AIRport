@@ -56,7 +56,10 @@ export interface ISharingNodeRepoTransBlockStage {
  * SELECT - All fields and relations (optional).
  */
 export interface SharingNodeRepoTransBlockStageESelect
-    extends IEntitySelectProperties, SharingNodeRepoTransBlockStageEOptionalId, SharingNodeRepoTransBlockStageEUpdateProperties {
+    extends IEntitySelectProperties, SharingNodeRepoTransBlockStageEOptionalId {
+	// Non-Id Properties
+	syncStatus?: number | IQNumberField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

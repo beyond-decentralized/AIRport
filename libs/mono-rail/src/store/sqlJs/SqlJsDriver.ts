@@ -1,5 +1,5 @@
-import {IAirportDatabase, IUtils, Utils} from "../../../../../apis/air-control/lib/index";
-import { QueryType, StoreType }          from "../../../../../apis/ground-control/lib/index";
+import {IAirportDatabase, IUtils, Utils} from "@airport/air-control";
+import { QueryType, StoreType }          from "@airport/ground-control";
 import { Database }                      from "sql.js";
 import { SQLDialect }                    from "../../query/sql/core/SQLQuery";
 import { SqLiteDriver }                  from "../sqLite/SqLiteDriver";

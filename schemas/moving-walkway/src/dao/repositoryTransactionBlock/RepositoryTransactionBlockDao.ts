@@ -2,35 +2,29 @@ import {
 	and,
 	distinct,
 	field,
-	IUtils,
 	not,
-	UtilsToken
-}                                       from "@airport/air-control";
-import {TmRepositoryTransactionBlockId} from "@airport/arrivals-n-departures";
-import {
-	Inject,
-	Service
-}                                       from "typedi";
+}                                       from '@airport/air-control'
+import {TmRepositoryTransactionBlockId} from '@airport/arrivals-n-departures'
+import {DI}                             from '@airport/di'
 import {
 	MissingRecordId,
 	MissingRecordStatus
-}                                       from "../../ddl/ddl";
-import {IRepositoryTransactionBlockDmo} from "../../dmo/repositoryTransactionBlock/RepositoryTransactionBlockDmo";
+}                                       from '../../ddl/ddl'
+import {
+	REPO_TRANS_BLOCK_DAO,
+	REPO_TRANS_BLOCK_DMO
+}                                       from '../../diTokens'
+import {IRepositoryTransactionBlockDmo} from '../../dmo/repositoryTransactionBlock/RepositoryTransactionBlockDmo'
 import {
 	BaseRepositoryTransactionBlockDao,
 	IBaseRepositoryTransactionBlockDao,
 	IRepositoryTransactionBlock,
-	ISharingMessage,
 	Q,
 	QMissingRecord,
 	QMissingRecordRepoTransBlock,
 	QRepositoryTransactionBlock,
 	QRepoTransBlockResponseStage,
-} from "../../generated/generated";
-import {
-	RepositoryTransactionBlockDaoToken,
-	RepositoryTransactionBlockDmoToken
-}                                       from "../../InjectionTokens";
+}                                       from '../../generated/generated'
 
 export interface IRepositoryTransactionBlockDao
 	extends IBaseRepositoryTransactionBlockDao {
@@ -49,25 +43,27 @@ export interface IRepositoryTransactionBlockDao
 
 }
 
-@Service(RepositoryTransactionBlockDaoToken)
 export class RepositoryTransactionBlockDao
 	extends BaseRepositoryTransactionBlockDao
 	implements IRepositoryTransactionBlockDao {
 
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils,
-		@Inject(RepositoryTransactionBlockDmoToken)
-		private dmo: IRepositoryTransactionBlockDmo
-	) {
-		super(utils);
+	private dmo: IRepositoryTransactionBlockDmo
+
+	constructor() {
+		super()
+
+		DI.get((
+			dmo
+		) => {
+			this.dmo = dmo
+		}, REPO_TRANS_BLOCK_DMO)
 	}
 
 	async updateFromResponseStage( //
 	): Promise<number> {
-		let rtb: QRepositoryTransactionBlock;
+		let rtb: QRepositoryTransactionBlock
 		// let rtbrs1: QRepoTransBlockResponseStage;
-		let rtbrs2: QRepoTransBlockResponseStage;
+		let rtbrs2: QRepoTransBlockResponseStage
 		return await this.db.updateWhere({
 			update: rtb = Q.RepositoryTransactionBlock,
 			set: {
@@ -86,7 +82,7 @@ export class RepositoryTransactionBlockDao
 					where: rtbrs2.id.equals(rtb.id)
 				})
 			}
-		});
+		})
 	}
 
 	async findWithMissingRecordIdsAndNoMissingRecordsWithStatus(
@@ -94,8 +90,8 @@ export class RepositoryTransactionBlockDao
 		status: MissingRecordStatus
 	): Promise<IRepositoryTransactionBlock[]> {
 		let rtb: QRepositoryTransactionBlock,
-			mrrtb: QMissingRecordRepoTransBlock,
-			mr: QMissingRecord;
+		    mrrtb: QMissingRecordRepoTransBlock,
+		    mr: QMissingRecord
 		return await this.db.find.tree({
 			select: distinct({}),
 			from: [
@@ -107,20 +103,22 @@ export class RepositoryTransactionBlockDao
 				mr.id.in(missingRecordIds),
 				not(mr.status.equals(status))
 			)
-		});
+		})
 	}
 
 	async clearContentsWhereIdsIn(
 		repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[]
 	): Promise<void> {
-		const rtb: QRepositoryTransactionBlock = Q.QRepositoryTransactionBlock;
+		const rtb: QRepositoryTransactionBlock = Q.QRepositoryTransactionBlock
 		await this.db.updateWhere({
 			update: rtb,
 			set: {
 				contents: null
 			},
 			where: rtb.id.in(repositoryTransactionBlockIds)
-		});
+		})
 	}
 
 }
+
+DI.set(REPO_TRANS_BLOCK_DAO, RepositoryTransactionBlockDao)

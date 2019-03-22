@@ -28,7 +28,8 @@ function getOrderByParser(airportDb, queryResultType, selectClauseFragment, vali
             return new EntityOrderByParser_1.EntityOrderByParser(airportDb, selectClauseFragment, validator, orderBy);
         //		case QueryResultType.FLAT:
         //		case QueryResultType.FIELD:
-        //			return new ExactOrderByParser(rootQEntity, selectClauseFragment, qEntityMapByName, entitiesRelationPropertyMap, entitiesPropertyTypeMap, orderBy);
+        //			return new ExactOrderByParser(rootQEntity, selectClauseFragment,
+        // qEntityMapByName, entitiesRelationPropertyMap, entitiesPropertyTypeMap, orderBy);
         case ground_control_1.QueryResultType.RAW:
             throw `Query parsing not supported for raw queries`;
         default:

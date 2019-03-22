@@ -2,8 +2,8 @@ import {DI}                               from '@airport/di'
 import {TransactionType}                  from '@airport/ground-control'
 import {TransactionHistory}               from '../../ddl/ddl'
 import {
-	REPOSITORY_TRANSACTION_HISTORY_DMO,
-	TRANSACTION_HISTORY_DMO
+	REPO_TRANS_HISTORY_DMO,
+	TRANS_HISTORY_DMO
 }                                         from '../../diTokens'
 import {
 	BaseTransactionHistoryDmo,
@@ -41,7 +41,7 @@ export class TransactionHistoryDmo
 			repositoryTransactionHistoryDmo
 		) => {
 			this.repoTransHistoryDmo = repositoryTransactionHistoryDmo
-		}, REPOSITORY_TRANSACTION_HISTORY_DMO)
+		}, REPO_TRANS_HISTORY_DMO)
 	}
 
 	getNewRecord(
@@ -74,4 +74,4 @@ export class TransactionHistoryDmo
 
 }
 
-DI.set(TRANSACTION_HISTORY_DMO, TransactionHistoryDmo)
+DI.set(TRANS_HISTORY_DMO, TransactionHistoryDmo)

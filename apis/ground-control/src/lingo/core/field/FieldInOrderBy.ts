@@ -1,4 +1,3 @@
-
 /**
  * Order of a sorted field, as specified in the ORDER BY clause.
  */
@@ -18,7 +17,8 @@ export interface JSONFieldInGroupBy {
 /**
  * A serialized version of a query field as specified in the ORDER BY clause.
  */
-export interface JSONFieldInOrderBy extends JSONFieldInGroupBy {
+export interface JSONFieldInOrderBy
+	extends JSONFieldInGroupBy {
 	// Sort Order
 	so: SortOrder;
 }
@@ -26,7 +26,8 @@ export interface JSONFieldInOrderBy extends JSONFieldInGroupBy {
 /**
  * A serialized version of an entity field (column) as specified in the ORDER BY clause.
  */
-export interface JSONEntityFieldInOrderBy extends JSONFieldInOrderBy {
+export interface JSONEntityFieldInOrderBy
+	extends JSONFieldInOrderBy {
 	// Schema Version Id
 	si: number,
 	// Entity Type Index

@@ -32,4 +32,4 @@ RepoTransBlockSchemaToChange = __decorate([
     EntityDecorators_1.Table({ name: "REPO_TRANS_BLOCK_SCHEMAS_TO_CHANGE" })
 ], RepoTransBlockSchemaToChange);
 exports.RepoTransBlockSchemaToChange = RepoTransBlockSchemaToChange;
-//# sourceMappingURL=RepoTransBlockSchemaToChange.js.map
+//# sourceMappingURL=repotransblockschematochange.js.map

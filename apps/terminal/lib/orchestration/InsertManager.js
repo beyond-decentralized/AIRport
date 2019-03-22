@@ -5,9 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
@@ -226,10 +223,7 @@ InsertManager = __decorate([
     __param(7, typedi_1.Inject(InjectionTokens_1.RepositoryManagerToken)),
     __param(8, typedi_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
     __param(9, typedi_1.Inject(holding_pattern_1.TransactionHistoryDmoToken)),
-    __param(10, typedi_1.Inject(terminal_map_1.TransactionManagerToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, holding_pattern_1.OperationHistoryDmo,
-        holding_pattern_1.RecordHistoryDmo, Object, holding_pattern_1.RepositoryTransactionHistoryDmo,
-        holding_pattern_1.TransactionHistoryDmo, Object])
+    __param(10, typedi_1.Inject(terminal_map_1.TransactionManagerToken))
 ], InsertManager);
 exports.InsertManager = InsertManager;
 //# sourceMappingURL=InsertManager.js.map

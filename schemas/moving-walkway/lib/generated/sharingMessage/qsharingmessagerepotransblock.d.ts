@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, QEntity, QRelation } from '@airport/air-control';
 import { ISharingMessage, SharingMessageEId, SharingMessageEOptionalId, SharingMessageESelect, QSharingMessageQId, QSharingMessageQRelation } from './qsharingmessage';
-import { IRepositoryTransactionBlock, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from '../repositoryTransactionBlock/qrepositorytransactionblock';
+import { IRepositoryTransactionBlock, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from '../repositorytransactionblock/qrepositorytransactionblock';
 export interface ISharingMessageRepoTransBlock {
     sharingMessage?: ISharingMessage;
     repositoryTransactionBlock?: IRepositoryTransactionBlock;
@@ -8,7 +8,7 @@ export interface ISharingMessageRepoTransBlock {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SharingMessageRepoTransBlockESelect extends IEntitySelectProperties, SharingMessageRepoTransBlockEOptionalId, SharingMessageRepoTransBlockEUpdateProperties {
+export interface SharingMessageRepoTransBlockESelect extends IEntitySelectProperties, SharingMessageRepoTransBlockEOptionalId {
     sharingMessage?: SharingMessageESelect;
     repositoryTransactionBlock?: RepositoryTransactionBlockESelect;
 }

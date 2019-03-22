@@ -1,31 +1,18 @@
-import {
-	IUtils,
-	UtilsToken
-} from "@airport/air-control";
-import {
-	Inject,
-	Service
-}                                        from "typedi";
+import {DI}                from '@airport/di'
+import {SYNC_CONFLICT_DAO} from '../../diTokens'
 import {
 	BaseSynchronizationConflictDao,
 	IBaseSynchronizationConflictDao,
-}                                        from "../../generated/generated";
-import {SynchronizationConflictDaoToken} from "../../InjectionTokens";
+}                          from '../../generated/generated'
 
 export interface ISynchronizationConflictDao
 	extends IBaseSynchronizationConflictDao {
 }
 
-@Service(SynchronizationConflictDaoToken)
 export class SynchronizationConflictDao
 	extends BaseSynchronizationConflictDao
 	implements ISynchronizationConflictDao {
 
-	constructor(
-		@Inject(UtilsToken)
-		utils: IUtils
-	) {
-		super(utils);
-	}
-
 }
+
+DI.set(SYNC_CONFLICT_DAO, SynchronizationConflictDao)

@@ -1,21 +1,14 @@
 import {
-	IUtils,
-	UtilsToken
-}                                            from "@airport/air-control";
-import {AirportDatabaseToken}                from "@airport/air-control/lib/InjectionTokens";
-import {IAirportDatabase}                    from "@airport/air-control/lib/lingo/AirportDatabase";
-import {
 	RepoTransBlockSyncOutcomeType,
 	TmRepositoryTransactionBlockId
-}                                            from "@airport/arrivals-n-departures";
-import {Inject}                              from "typedi/decorators/Inject";
-import {Service}                             from "typedi/decorators/Service";
+}                                            from '@airport/arrivals-n-departures'
+import {DI}                                  from '@airport/di'
+import {REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO} from '../../diTokens'
 import {
 	BaseRepoTransBlockResponseStageDao,
 	Q,
 	QRepoTransBlockResponseStage
-}                                            from "../../generated/generated";
-import {RepoTransBlockResponseStageDaoToken} from "../../InjectionTokens";
+}                                            from '../../generated/generated'
 
 export type RepoTransBlockResponseStageValues = [
 	TmRepositoryTransactionBlockId,
@@ -34,31 +27,20 @@ export interface IRepoTransBlockResponseStageDao {
 
 }
 
-@Service(RepoTransBlockResponseStageDaoToken)
 export class RepoTransBlockResponseStageDao
 	extends BaseRepoTransBlockResponseStageDao
 	implements IRepoTransBlockResponseStageDao {
-
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		repoTransBlockResponseStageDao,
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
 
 	async insertValues(
 		values: RepoTransBlockResponseStageValues[]
 	): Promise<number> {
 
-		const dbEntity = Q.db.currentVersion.entityMapByName.RepoTransBlockResponseStage;
+		const dbEntity = Q.db.currentVersion.entityMapByName.RepoTransBlockResponseStage
 
-		let smrs: QRepoTransBlockResponseStage;
+		let smrs: QRepoTransBlockResponseStage
 
 		return await
-			this.airportDb.db.insertValues(dbEntity, {
+			this.airDb.db.insertValues(dbEntity, {
 				insertInto: smrs = Q.RepoTransBlockResponseStage,
 				columns: [
 					smrs.id,
@@ -66,7 +48,7 @@ export class RepoTransBlockResponseStageDao
 					smrs.syncOutcomeType
 				],
 				values
-			});
+			})
 	}
 
 	async delete( //
@@ -74,7 +56,9 @@ export class RepoTransBlockResponseStageDao
 		return await
 			this.db.deleteWhere({
 				deleteFrom: Q.RepoTransBlockResponseStage
-			});
+			})
 	}
 
 }
+
+DI.set(REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO, RepoTransBlockResponseStageDao)

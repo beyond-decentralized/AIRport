@@ -19,7 +19,7 @@ import {
 	ISchema,
 	ISchemaVersion
 }                        from '@airport/traffic-pattern'
-import {TERMINAL_STORE}  from '../InjectionTokens'
+import {TERMINAL_STORE}  from '../diTokens'
 import {ITerminalState}  from './TerminalState'
 
 export interface ITerminalStore {
@@ -51,8 +51,8 @@ export class TerminalStore
 
 	constructor() {
 		DI.get(
-			di => {
-				[this.utils] = di
+			utils => {
+				this.utils = utils
 			}, UTILS)
 	}
 

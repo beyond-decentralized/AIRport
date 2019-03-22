@@ -1,7 +1,7 @@
 import {DI} from '@airport/di'
 import {DatastructureUtils} from '@airport/ground-control'
 import {
-	AIRPORT_DATABASE,
+	AIR_DB,
 	Q_METADATA_UTILS,
 	UTILS
 } from '../diTokens'
@@ -42,7 +42,7 @@ export class Utils
 				this.Field     = new FieldUtils(this)
 				this.Query     = new QueryUtils(this)
 				this.Schema    = new SchemaUtils(this.airportDb, this)
-			}, AIRPORT_DATABASE, Q_METADATA_UTILS)
+			}, AIR_DB, Q_METADATA_UTILS)
 
 	}
 

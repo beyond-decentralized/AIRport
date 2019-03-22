@@ -49,7 +49,7 @@ let QueryFacade = class QueryFacade {
     }
 };
 QueryFacade = __decorate([
-    typedi_1.Service(InjectionTokens_1.QueryFacadeToken),
+    typedi_1.Service(InjectionTokens_1.QUERY_FACADE),
     __param(0, typedi_1.Inject(ground_control_1.TransactionalConnectorToken))
 ], QueryFacade);
 exports.QueryFacade = QueryFacade;

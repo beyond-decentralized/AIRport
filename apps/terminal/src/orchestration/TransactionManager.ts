@@ -1,33 +1,28 @@
 import {
-	IUtils,
-	UtilsToken
-}                      from "@airport/air-control";
+	IUtils
+}                           from "@airport/air-control";
+import {DI}                      from '@airport/di/lib/src'
 import {
 	ActiveQueries,
 	ActiveQueriesToken,
 	IdGeneratorToken,
 	IIdGenerator
-} from '@airport/fuel-hydrant-system'
+}                                from '@airport/fuel-hydrant-system'
 import {
 	IStoreDriver,
 	StoreType,
 	SyncSchemaMap
-}                      from "@airport/ground-control";
+}                                from "@airport/ground-control";
 import {
 	ITransactionHistory,
 	ITransactionHistoryDmo,
-	Q,
-	TransactionHistoryDmoToken
-}                      from "@airport/holding-pattern";
+	Q
+}                                from "@airport/holding-pattern";
 import {
-	ITransactionManager,
-	TransactionManagerToken
-}                      from "@airport/terminal-map";
-import {Transactional} from "@airport/tower";
-import {
-	Inject,
-	Service
-}                      from "typedi";
+	ITransactionManager
+}                                from "@airport/terminal-map";
+import {TRANSACTION_MANAGER}     from '@airport/terminal-map/lib/src'
+import {Transactional}           from "@airport/tower";
 import {IOfflineDeltaStore}      from "../data/OfflineDeltaStore";
 import {
 	OfflineDeltaStoreToken,
@@ -37,7 +32,6 @@ import {
 import {IOnlineManager}          from "../net/OnlineManager";
 import {AbstractMutationManager} from "./AbstractMutationManager";
 
-@Service(TransactionManagerToken)
 export class TransactionManager
 	extends AbstractMutationManager
 	implements ITransactionManager {
@@ -266,3 +260,5 @@ export class TransactionManager
 	}
 
 }
+
+DI.set(TRANSACTION_MANAGER, TransactionManager)

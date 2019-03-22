@@ -17,5 +17,5 @@ class RecordHistoryNewValueDmo extends generated_1.BaseRecordHistoryNewValueDmo 
     }
 }
 exports.RecordHistoryNewValueDmo = RecordHistoryNewValueDmo;
-di_1.DI.set(diTokens_1.RECORD_HISTORY_NEW_VALUE_DMO, RecordHistoryNewValueDmo);
+di_1.DI.set(diTokens_1.REC_HIST_NEW_VALUE_DMO, RecordHistoryNewValueDmo);
 //# sourceMappingURL=RecordHistoryNewValueDmo.js.map

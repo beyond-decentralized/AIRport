@@ -1,10 +1,11 @@
-import {PortableQuery}      from "../../../../apis/ground-control/lib/index";
+import {DI}                 from '@airport/di/lib/src'
+import {PortableQuery}      from "@airport/ground-control";
 import {
 	QuerySubject,
 	SyncSchemaMap
-}                           from "../../../../apis/terminal-map/lib/index";
-import {Service}            from "typedi";
-import {ActiveQueriesToken} from "../../../../apps/terminal/src/InjectionTokens";
+}                           from "@airport/terminal-map";
+import {ActiveQueriesToken} from "@airport/terminal";
+import {ACTIVE_QUERIES}     from '../diTokens'
 import {SQLQuery}           from "../query/sql/core/SQLQuery";
 
 /**
@@ -75,6 +76,8 @@ export class ActiveQueries
 		}, 100);
 	}
 }
+
+DI.set(ACTIVE_QUERIES, ActiveQueries)
 
 export interface CachedSQLQuery {
 	parameters: any[],

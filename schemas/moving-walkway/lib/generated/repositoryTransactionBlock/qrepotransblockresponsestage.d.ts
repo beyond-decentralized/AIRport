@@ -6,7 +6,8 @@ export interface IRepoTransBlockResponseStage {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepoTransBlockResponseStageESelect extends IEntitySelectProperties, RepoTransBlockResponseStageEOptionalId, RepoTransBlockResponseStageEUpdateProperties {
+export interface RepoTransBlockResponseStageESelect extends IEntitySelectProperties, RepoTransBlockResponseStageEOptionalId {
+    syncOutcomeType?: number | IQNumberField;
 }
 /**
  * DELETE - Ids fields and relations only (required).

@@ -1,5 +1,5 @@
-import { DbEntity, ReferencedColumnData }                  from "../../../../apis/air-control/lib/index";
-import { SQLDataType }                                     from "../../../../apis/ground-control/lib/index";
+import { DbEntity, ReferencedColumnData }                  from "@airport/air-control";
+import { SQLDataType }                                     from "@airport/ground-control";
 import { AbstractObjectResultParser, IEntityResultParser } from "./entity/IEntityResultParser";
 
 /**

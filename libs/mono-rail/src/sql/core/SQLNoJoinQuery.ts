@@ -1,20 +1,20 @@
 import {
-	IAirportDatabase,
 	DbEntity,
+	IAirportDatabase,
+	IUtils,
 	QEntity,
-	QRelation,
-	Utils,
-	IUtils
-}                             from "../../../../../apis/air-control/lib/index";
-import { JSONEntityRelation } from "../../../../../apis/ground-control/lib/index";
-import { SQLDialect }         from "./SQLQuery";
-import { SQLWhereBase }       from "./SQLWhereBase";
+	QRelation
+}                           from '@airport/air-control'
+import {JSONEntityRelation} from '@airport/ground-control'
+import {SQLDialect}         from './SQLQuery'
+import {SQLWhereBase}       from './SQLWhereBase'
 
 /**
  * Created by Papa on 10/2/2016.
  */
 
-export abstract class SQLNoJoinQuery extends SQLWhereBase {
+export abstract class SQLNoJoinQuery
+	extends SQLWhereBase {
 
 	constructor(
 		airportDb: IAirportDatabase,
@@ -22,31 +22,31 @@ export abstract class SQLNoJoinQuery extends SQLWhereBase {
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
 	) {
-		super(airportDb, utils, dbEntity, dialect);
+		super(airportDb, utils, dbEntity, dialect)
 	}
 
 	protected getTableFragment(
 		fromRelation: JSONEntityRelation,
 	): string {
 		if (!fromRelation) {
-			throw `Expecting exactly one table in UPDATE/DELETE clause`;
+			throw `Expecting exactly one table in UPDATE/DELETE clause`
 		}
 		if (fromRelation.ri || fromRelation.jt) {
-			throw `Table in UPDATE/DELETE clause cannot be joined`;
+			throw `Table in UPDATE/DELETE clause cannot be joined`
 		}
 
-		const firstDbEntity: DbEntity = this.airportDb.schemas[fromRelation.si][fromRelation.ti];
+		const firstDbEntity: DbEntity = this.airportDb.schemas[fromRelation.si][fromRelation.ti]
 		if (fromRelation.si !== this.dbEntity.schema.index
 			|| fromRelation.ti !== this.dbEntity.index) {
-			throw `Unexpected table in UPDATE/DELETE clause: '${firstDbEntity.schema.name}.${firstDbEntity.name}', expecting: '${this.dbEntity.schema.name}.${this.dbEntity.name}'`;
+			throw `Unexpected table in UPDATE/DELETE clause: '${firstDbEntity.schema.name}.${firstDbEntity.name}', expecting: '${this.dbEntity.schema.name}.${this.dbEntity.name}'`
 		}
 
-		const firstQEntity: QEntity = new QEntity(firstDbEntity);
+		const firstQEntity: QEntity = new QEntity(firstDbEntity)
 
-		const tableAlias = QRelation.getAlias(fromRelation);
-		this.qEntityMapByAlias[tableAlias] = firstQEntity;
-		const fromFragment = `\t${this.utils.Schema.getTableName(firstDbEntity)}`;
+		const tableAlias                   = QRelation.getAlias(fromRelation)
+		this.qEntityMapByAlias[tableAlias] = firstQEntity
+		const fromFragment                 = `\t${this.utils.Schema.getTableName(firstDbEntity)}`
 
-		return fromFragment;
+		return fromFragment
 	}
 }

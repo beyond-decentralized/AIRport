@@ -9,7 +9,7 @@ class RepositoryTransactionHistoryDmo extends generated_1.BaseRepositoryTransact
         super();
         di_1.DI.get((operationHistoryDmo) => {
             this.operHistoryDmo = operationHistoryDmo;
-        }, diTokens_1.OPERATION_HISTORY_DMO);
+        }, diTokens_1.OPER_HISTORY_DMO);
     }
     getNewRecord(repository, actor) {
         let transaction = new ddl_1.RepositoryTransactionHistory();
@@ -77,5 +77,5 @@ class RepositoryTransactionHistoryDmo extends generated_1.BaseRepositoryTransact
     }
 }
 exports.RepositoryTransactionHistoryDmo = RepositoryTransactionHistoryDmo;
-di_1.DI.set(diTokens_1.REPOSITORY_TRANSACTION_HISTORY_DMO, RepositoryTransactionHistoryDmo);
+di_1.DI.set(diTokens_1.REPO_TRANS_HISTORY_DMO, RepositoryTransactionHistoryDmo);
 //# sourceMappingURL=RepositoryTransactionHistoryDmo.js.map

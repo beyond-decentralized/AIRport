@@ -1,12 +1,12 @@
-import {DI}                           from '@airport/di'
-import {DbColumn}                     from '@airport/ground-control'
-import {RecordHistoryNewValue}        from '../../ddl/ddl'
-import {RECORD_HISTORY_NEW_VALUE_DMO} from '../../diTokens'
+import {DI}                     from '@airport/di'
+import {DbColumn}               from '@airport/ground-control'
+import {RecordHistoryNewValue}  from '../../ddl/ddl'
+import {REC_HIST_NEW_VALUE_DMO} from '../../diTokens'
 import {
 	BaseRecordHistoryNewValueDmo,
 	IRecordHistory,
 	IRecordHistoryNewValue
-}                                     from '../../generated/generated'
+}                               from '../../generated/generated'
 
 export interface IRecordHistoryNewValueDmo {
 
@@ -43,4 +43,4 @@ export class RecordHistoryNewValueDmo
 
 }
 
-DI.set(RECORD_HISTORY_NEW_VALUE_DMO, RecordHistoryNewValueDmo)
+DI.set(REC_HIST_NEW_VALUE_DMO, RecordHistoryNewValueDmo)

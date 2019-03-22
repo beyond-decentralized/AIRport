@@ -2,23 +2,25 @@ import {
 	Column,
 	DbNumber,
 	Entity,
+	GeneratedValue,
 	Id,
 	JoinColumn,
 	JoinColumns,
 	ManyToOne,
 	Table
-} from "@airport/air-control";
+} from '@airport/air-control'
 import {
 	IActor,
 	IRepository,
 	RecordHistoryActorRecordId
-} from "@airport/holding-pattern";
+} from '@airport/holding-pattern'
 import {
-	ISchema,
 	ISchemaColumn,
 	ISchemaEntity,
 	ISchemaVersion
-} from "@airport/traffic-pattern";
+} from '@airport/traffic-pattern'
+
+export type RecordUpdateStageId = number;
 
 /**
  * Used to temporarily store updates during application remotely synced updates
@@ -26,47 +28,45 @@ import {
  * are applied.
  */
 @Entity()
-@Table({name: "RECORD_UPDATE_STAGE"})
+@Table({name: 'RECORD_UPDATE_STAGE'})
 export class RecordUpdateStage {
 
 	@Id()
-	@ManyToOne()
-	@JoinColumn({name: "SCHEMA_VERSION_ID", referencedColumnName: "ID"})
-	schemaVersion: ISchemaVersion;
+	@GeneratedValue()
+	id: RecordUpdateStageId
 
-	@Id()
+	@ManyToOne()
+	@JoinColumn({name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID'})
+	schemaVersion: ISchemaVersion
+
 	@ManyToOne()
 	@JoinColumns([
-		{name: "SCHEMA_VERSION_ID"},
-		{name: "TABLE_INDEX", referencedColumnName: "INDEX"}
+		{name: 'SCHEMA_VERSION_ID'},
+		{name: 'TABLE_INDEX', referencedColumnName: 'INDEX'}
 	])
-	entity: ISchemaEntity;
+	entity: ISchemaEntity
 
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID"})
-	repository: IRepository;
+	@JoinColumn({name: 'REPOSITORY_ID', referencedColumnName: 'ID'})
+	repository: IRepository
 
-	@Id()
 	@ManyToOne()
-	@JoinColumn({name: "ACTOR_ID", referencedColumnName: "ID"})
-	actor: IActor;
+	@JoinColumn({name: 'ACTOR_ID', referencedColumnName: 'ID'})
+	actor: IActor
 
-	@Id()
-	@Column({name: "ACTOR_RECORD_ID"})
+	@Column({name: 'ACTOR_RECORD_ID'})
 	@DbNumber()
-	actorRecordId: RecordHistoryActorRecordId;
+	actorRecordId: RecordHistoryActorRecordId
 
-	@Id()
 	@ManyToOne()
 	@JoinColumns([
-		{name: "SCHEMA_VERSION_ID"},
-		{name: "TABLE_INDEX"},
-		{name: "COLUMN_INDEX", referencedColumnName: "INDEX"}
+		{name: 'SCHEMA_ENTITY_ID'},
+		{name: 'COLUMN_INDEX', referencedColumnName: 'INDEX'}
 	])
-	column: ISchemaColumn;
+	column: ISchemaColumn
 
 
-	@Column({name: "UPDATED_VALUE"})
-	updatedValue: any;
+	@Column({name: 'UPDATED_VALUE'})
+	updatedValue: any
 
 }

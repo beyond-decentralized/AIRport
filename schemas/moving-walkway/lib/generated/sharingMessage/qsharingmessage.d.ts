@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, QEntity, QRelation } from '@airport/air-control';
-import { ISharingNode, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from '../sharingNode/qsharingnode';
+import { ISharingNode, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from '../sharingnode/qsharingnode';
 import { ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, QSharingMessageRepoTransBlock } from './qsharingmessagerepotransblock';
 export interface ISharingMessage {
     id?: number;
@@ -12,7 +12,10 @@ export interface ISharingMessage {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SharingMessageESelect extends IEntitySelectProperties, SharingMessageEOptionalId, SharingMessageEUpdateProperties {
+export interface SharingMessageESelect extends IEntitySelectProperties, SharingMessageEOptionalId {
+    origin?: number | IQNumberField;
+    agtSharingMessageId?: number | IQNumberField;
+    syncTimestamp?: Date | IQDateField;
     sharingNode?: SharingNodeESelect;
     sharingMessageRepoTransBlocks?: SharingMessageRepoTransBlockESelect;
 }

@@ -44,15 +44,15 @@ import {IInternalTransactionalConnector} from "./core/data/IInternalTransactiona
 import {IUpdateCache}                    from "./core/data/UpdateCache";
 import {Transactional}                   from "./decorators";
 import {
-	EntityManagerToken,
-	UpdateCacheToken
+	ENTITY_MANAGER,
+	UPDATE_CACHE
 }                                        from "./InjectionTokens";
 import {OperationManager,}               from "./OperationManager";
 
 /**
  * Created by Papa on 5/23/2016.
  */
-@Service(EntityManagerToken)
+@Service(ENTITY_MANAGER)
 export class EntityManager
 	extends OperationManager
 	implements IDatabaseFacade {
@@ -72,7 +72,7 @@ export class EntityManager
 			coreUtils: IUtils,
 		@Inject(TransactionalConnectorToken)
 			transactionClient: IInternalTransactionalConnector,
-		@Inject(UpdateCacheToken)
+		@Inject(UPDATE_CACHE)
 			updateCache: IUpdateCache,
 	) {
 		super(airportDb, coreUtils, entity, transactionClient, updateCache);

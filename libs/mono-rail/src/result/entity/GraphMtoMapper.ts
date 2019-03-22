@@ -1,4 +1,7 @@
-import {DbEntity, IUtils} from "../../../../../apis/air-control/lib/index";
+import {
+	DbEntity,
+	IUtils
+} from '@airport/air-control'
 
 /**
  * Created by Papa on 10/15/2016.
@@ -25,7 +28,7 @@ export class GraphMtoMapper {
 			[mtoPropertyName: string]: // The stub reference
 				ManyToOneStubReference
 		}
-	}[][] = [];
+	}[][] = []
 
 	constructor(
 		private utils: IUtils,
@@ -36,39 +39,39 @@ export class GraphMtoMapper {
 		mtoStubReference: ManyToOneStubReference,
 		mtoEntityIdValue: string
 	) {
-		const mtoDbEntity = mtoStubReference.mtoDbEntity;
+		const mtoDbEntity = mtoStubReference.mtoDbEntity
 		let mtoEntitiesForTypeMap: {
 			[mtoEntityId: string]: { [mtoPropertyName: string]: ManyToOneStubReference }
-		} = this.utils.ensureChildMap(
+		}                 = this.utils.ensureChildMap(
 			this.utils.ensureChildArray(this.mtoStubReferenceMap, mtoDbEntity.schema.index),
 			mtoDbEntity.index
-		);
-		let mtosForEntity = this.utils.ensureChildMap(mtoEntitiesForTypeMap, mtoEntityIdValue);
+		)
+		let mtosForEntity = this.utils.ensureChildMap(mtoEntitiesForTypeMap, mtoEntityIdValue)
 
-		mtosForEntity[mtoStubReference.mtoRelationField] = mtoStubReference;
+		mtosForEntity[mtoStubReference.mtoRelationField] = mtoStubReference
 	}
 
 	populateMtos(
 		entityMap: { [entityId: string]: any }[][]
 	) {
 		for (const schemaIndex in this.mtoStubReferenceMap) {
-			const mtoEntitiesForSchemaMap = this.mtoStubReferenceMap[schemaIndex];
+			const mtoEntitiesForSchemaMap = this.mtoStubReferenceMap[schemaIndex]
 			for (const entityIndex in mtoEntitiesForSchemaMap) {
-				const mtoEntitiesForTypeMap = mtoEntitiesForSchemaMap[entityIndex];
+				const mtoEntitiesForTypeMap = mtoEntitiesForSchemaMap[entityIndex]
 
 				for (let mtoEntityId in mtoEntitiesForTypeMap) {
-					let mtosForEntity = mtoEntitiesForTypeMap[mtoEntityId];
+					let mtosForEntity = mtoEntitiesForTypeMap[mtoEntityId]
 					for (let mtoPropertyName in mtosForEntity) {
-						let mtoStubReference: ManyToOneStubReference = mtosForEntity[mtoPropertyName];
-						let otmEntitiesForTypeMap = entityMap[schemaIndex][entityIndex];
+						let mtoStubReference: ManyToOneStubReference = mtosForEntity[mtoPropertyName]
+						let otmEntitiesForTypeMap                    = entityMap[schemaIndex][entityIndex]
 						if (!otmEntitiesForTypeMap) {
-							continue;
+							continue
 						}
-						let otmEntity = otmEntitiesForTypeMap[mtoStubReference.otmEntityId];
+						let otmEntity = otmEntitiesForTypeMap[mtoStubReference.otmEntityId]
 						if (!otmEntity) {
-							continue;
+							continue
 						}
-						mtoStubReference.mtoParentObject[mtoStubReference.mtoRelationField] = otmEntity;
+						mtoStubReference.mtoParentObject[mtoStubReference.mtoRelationField] = otmEntity
 					}
 				}
 			}

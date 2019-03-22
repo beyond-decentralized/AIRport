@@ -1,9 +1,17 @@
-import { IQEntityInternal, Parameter }                                         from "../../../../apis/air-control/lib/index";
-import { JSONClauseField, JSONClauseObject, JSONSqlFunctionCall, SQLDataType } from "../../../../apis/ground-control/lib/index";
-import { SQLDialect }                                                          from "../sql/core/SQLQuery";
-import { OracleQueryAdaptor }                                                  from "./OracleQueryAdaptor";
-import { SqlJsQueryAdaptor }                                                   from "./SqlJsQueryAdaptor";
-import { WebSqlQueryAdaptor }                                                  from "./WebSqlQueryAdaptor";
+import {
+	IQEntityInternal,
+	Parameter
+}                           from '@airport/air-control'
+import {
+	JSONClauseField,
+	JSONClauseObject,
+	JSONSqlFunctionCall,
+	SQLDataType
+}                           from '@airport/ground-control'
+import {SQLDialect}         from '../sql/core/SQLQuery'
+import {OracleQueryAdaptor} from './OracleQueryAdaptor'
+import {SqlJsQueryAdaptor}  from './SqlJsQueryAdaptor'
+import {WebSqlQueryAdaptor} from './WebSqlQueryAdaptor'
 
 declare function require(moduleName: string): any;
 
@@ -67,7 +75,7 @@ export interface ISQLFunctionAdaptor {
 		clause: JSONClauseObject,
 		innerValue: string,
 		qEntityMapByAlias: { [alias: string]: IQEntityInternal }
-	): string ;
+	): string;
 
 	getFunctionCall(
 		jsonFunctionCall: JSONSqlFunctionCall,
@@ -84,16 +92,16 @@ export function getSQLAdaptor(
 
 	switch (sqlDialect) {
 		case SQLDialect.ORACLE:
-			let OracleQueryAdaptorClass: typeof OracleQueryAdaptor = require("./OracleQueryAdaptor").OracleQueryAdaptor;
-			return new OracleQueryAdaptorClass(sqlValueProvider);
+			let OracleQueryAdaptorClass: typeof OracleQueryAdaptor = require('./OracleQueryAdaptor').OracleQueryAdaptor
+			return new OracleQueryAdaptorClass(sqlValueProvider)
 		case SQLDialect.SQLITE_SQLJS:
-			let SqlJsQueryAdaptorClass: typeof SqlJsQueryAdaptor = require("./SqlJsQueryAdaptor").SqlJsQueryAdaptor;
-			return new SqlJsQueryAdaptorClass(sqlValueProvider);
+			let SqlJsQueryAdaptorClass: typeof SqlJsQueryAdaptor = require('./SqlJsQueryAdaptor').SqlJsQueryAdaptor
+			return new SqlJsQueryAdaptorClass(sqlValueProvider)
 		case SQLDialect.SQLITE_WEBSQL:
-			let WebSqlQueryAdaptorClass: typeof WebSqlQueryAdaptor = require("./WebSqlQueryAdaptor").WebSqlQueryAdaptor;
-			return new WebSqlQueryAdaptorClass(sqlValueProvider);
+			let WebSqlQueryAdaptorClass: typeof WebSqlQueryAdaptor = require('./WebSqlQueryAdaptor').WebSqlQueryAdaptor
+			return new WebSqlQueryAdaptorClass(sqlValueProvider)
 		default:
-			throw `Unknown SQL Dialect ${sqlDialect}`;
+			throw `Unknown SQL Dialect ${sqlDialect}`
 	}
 
 }
@@ -110,10 +118,10 @@ export abstract class AbstractFunctionAdaptor
 		qEntityMapByAlias: { [alias: string]: IQEntityInternal }
 	): string {
 		clause.af.forEach((appliedFunction) => {
-			innerValue = this.getFunctionCall(appliedFunction, innerValue, qEntityMapByAlias);
-		});
+			innerValue = this.getFunctionCall(appliedFunction, innerValue, qEntityMapByAlias)
+		})
 
-		return innerValue;
+		return innerValue
 	}
 
 	abstract getFunctionCall(

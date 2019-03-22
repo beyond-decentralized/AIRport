@@ -465,7 +465,7 @@ class SSchemaBuilder {
                 // if (entityCannotReferenceOtherColumns) {
                 // throw `ManyToOne relation without (R)JoinColumn(s) cannot be named as other columns.`;
                 throw `@Id & @ManyToOne relation columns cannot be named in multiple relations.
-			A @Id column can either be defined in only one relation.
+			A @Id column can be defined in only one relation.
 			Column: '${entity.name}.${ownColumnReference}'`;
             }
             if (entityCannotReferenceOtherColumns) {

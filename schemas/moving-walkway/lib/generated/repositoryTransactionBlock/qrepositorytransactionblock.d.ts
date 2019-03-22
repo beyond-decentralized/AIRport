@@ -1,9 +1,9 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation } from '@airport/air-control';
 import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
 import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '@airport/holding-pattern';
-import { ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from '../sharingNode/qsharingnoderepotransblock';
-import { ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, QSharingMessageRepoTransBlock } from '../sharingMessage/qsharingmessagerepotransblock';
-import { IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, QMissingRecordRepoTransBlock } from '../missingRecord/qmissingrecordrepotransblock';
+import { ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from '../sharingnode/qsharingnoderepotransblock';
+import { ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, QSharingMessageRepoTransBlock } from '../sharingmessage/qsharingmessagerepotransblock';
+import { IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, QMissingRecordRepoTransBlock } from '../missingrecord/qmissingrecordrepotransblock';
 import { IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, QRepoTransBlockSchemaToChange } from './qrepotransblockschematochange';
 export interface IRepositoryTransactionBlock {
     id?: number;
@@ -22,7 +22,11 @@ export interface IRepositoryTransactionBlock {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepositoryTransactionBlockESelect extends IEntitySelectProperties, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockEUpdateProperties {
+export interface RepositoryTransactionBlockESelect extends IEntitySelectProperties, RepositoryTransactionBlockEOptionalId {
+    sourceId?: number | IQNumberField;
+    hash?: string | IQStringField;
+    syncOutcomeType?: number | IQNumberField;
+    contents?: string | IQStringField;
     source?: TerminalESelect;
     repository?: RepositoryESelect;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;

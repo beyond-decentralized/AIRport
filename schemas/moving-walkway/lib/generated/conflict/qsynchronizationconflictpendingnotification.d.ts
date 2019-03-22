@@ -9,7 +9,8 @@ export interface ISynchronizationConflictPendingNotification {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SynchronizationConflictPendingNotificationESelect extends IEntitySelectProperties, SynchronizationConflictPendingNotificationEOptionalId, SynchronizationConflictPendingNotificationEUpdateProperties {
+export interface SynchronizationConflictPendingNotificationESelect extends IEntitySelectProperties, SynchronizationConflictPendingNotificationEOptionalId {
+    acknowledged?: boolean | IQBooleanField;
     synchronizationConflict?: SynchronizationConflictESelect;
     actor?: ActorESelect;
 }

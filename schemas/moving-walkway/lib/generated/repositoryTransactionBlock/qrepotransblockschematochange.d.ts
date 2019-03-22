@@ -9,7 +9,8 @@ export interface IRepoTransBlockSchemaToChange {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepoTransBlockSchemaToChangeESelect extends IEntitySelectProperties, RepoTransBlockSchemaToChangeEOptionalId, RepoTransBlockSchemaToChangeEUpdateProperties {
+export interface RepoTransBlockSchemaToChangeESelect extends IEntitySelectProperties, RepoTransBlockSchemaToChangeEOptionalId {
+    status?: number | IQNumberField;
     repositoryTransactionBlock?: RepositoryTransactionBlockESelect;
     schema?: SchemaESelect;
 }

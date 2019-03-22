@@ -1,14 +1,14 @@
 import {
 	and,
 	Y
-}                             from '@airport/air-control'
-import {DI}                   from '@airport/di'
-import {QTerminal}            from '@airport/travel-document-checkpoint'
+}                       from '@airport/air-control'
+import {DI}             from '@airport/di'
+import {QTerminal}      from '@airport/travel-document-checkpoint'
 import {
 	ActorId,
 	RepositoryId
-}                             from '../../ddl/ddl'
-import {REPOSITORY_ACTOR_DAO} from '../../diTokens'
+}                       from '../../ddl/ddl'
+import {REPO_ACTOR_DAO} from '../../diTokens'
 import {
 	BaseRepositoryActorDao,
 	IBaseRepositoryActorDao,
@@ -16,7 +16,7 @@ import {
 	Q,
 	QActor,
 	QRepositoryActor,
-}                             from '../../generated/generated'
+}                       from '../../generated/generated'
 
 export interface IRepositoryActorDao
 	extends IBaseRepositoryActorDao {
@@ -81,4 +81,4 @@ export class RepositoryActorDao
 
 }
 
-DI.set(REPOSITORY_ACTOR_DAO, RepositoryActorDao)
+DI.set(REPO_ACTOR_DAO, RepositoryActorDao)

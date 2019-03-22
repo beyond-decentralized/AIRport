@@ -1,6 +1,9 @@
-import { JSONFieldInOrderBy, SortOrder } from "../../../../apis/ground-control/lib/index";
-import { IValidator }                    from "../../../../apps/terminal/src/validation/Validator";
-import { INonEntityOrderByParser }       from "./AbstractEntityOrderByParser";
+import {
+	JSONFieldInOrderBy,
+	SortOrder
+}                                from '@airport/ground-control'
+import {IValidator}              from '@airport/terminal'
+import {INonEntityOrderByParser} from './AbstractEntityOrderByParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -8,7 +11,8 @@ import { INonEntityOrderByParser }       from "./AbstractEntityOrderByParser";
 /**
  * Will order the results exactly as specified in the Order By clause
  */
-export class ExactOrderByParser implements INonEntityOrderByParser {
+export class ExactOrderByParser
+	implements INonEntityOrderByParser {
 
 	constructor(private validator: IValidator) {
 	}
@@ -19,14 +23,14 @@ export class ExactOrderByParser implements INonEntityOrderByParser {
 	): string {
 		return orderBy.map(
 			(orderByField) => {
-				this.validator.validateAliasedFieldAccess(orderByField.fa);
+				this.validator.validateAliasedFieldAccess(orderByField.fa)
 				switch (orderByField.so) {
 					case SortOrder.ASCENDING:
-						return `${orderByField.fa} ASC`;
+						return `${orderByField.fa} ASC`
 					case SortOrder.DESCENDING:
-						return `${orderByField.fa} DESC`;
+						return `${orderByField.fa} DESC`
 				}
-			}).join(', ');
+			}).join(', ')
 	}
 
 }

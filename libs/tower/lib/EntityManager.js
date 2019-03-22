@@ -184,11 +184,11 @@ __decorate([
     decorators_1.Transactional()
 ], EntityManager.prototype, "updateWhere", null);
 EntityManager = __decorate([
-    typedi_1.Service(InjectionTokens_1.EntityManagerToken),
+    typedi_1.Service(InjectionTokens_1.ENTITY_MANAGER),
     __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
     __param(2, typedi_1.Inject(air_control_1.UtilsToken)),
     __param(3, typedi_1.Inject(ground_control_1.TransactionalConnectorToken)),
-    __param(4, typedi_1.Inject(InjectionTokens_1.UpdateCacheToken))
+    __param(4, typedi_1.Inject(InjectionTokens_1.UPDATE_CACHE))
 ], EntityManager);
 exports.EntityManager = EntityManager;
 class FunctionWrapper {

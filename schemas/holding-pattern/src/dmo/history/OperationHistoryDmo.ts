@@ -6,8 +6,8 @@ import {
 import {IBaseOperationHistoryDmo}      from '../../'
 import {RepositoryEntityActorRecordId} from '../../ddl/ddl'
 import {
-	OPERATION_HISTORY_DMO,
-	RECORD_HISTORY_DMO
+	OPER_HISTORY_DMO,
+	REC_HISTORY_DMO
 }                                      from '../../diTokens'
 import {
 	BaseOperationHistoryDmo,
@@ -51,7 +51,7 @@ export class OperationHistoryDmo
 			recordHistoryDmo
 		) => {
 			this.recHistoryDmo = recordHistoryDmo
-		}, RECORD_HISTORY_DMO)
+		}, REC_HISTORY_DMO)
 	}
 
 	getNewRecord(
@@ -101,4 +101,4 @@ export class OperationHistoryDmo
 
 }
 
-DI.set(OPERATION_HISTORY_DMO, OperationHistoryDmo)
+DI.set(OPER_HISTORY_DMO, OperationHistoryDmo)
