@@ -1,11 +1,10 @@
 import {
 	IAbstractSequenceConsumerDao,
-	SequenceConsumerDaoToken,
+	SEQUENCE_CONSUMER_DAO,
 	SequenceConsumerECreateProperties
-}                from '@airport/airport-code'
-import {Service} from 'typedi'
+}           from '@airport/airport-code'
+import {DI} from '@airport/di'
 
-@Service(SequenceConsumerDaoToken)
 export class SequenceConsumerDao
 	implements IAbstractSequenceConsumerDao {
 
@@ -16,3 +15,5 @@ export class SequenceConsumerDao
 	}
 
 }
+
+DI.set(SEQUENCE_CONSUMER_DAO, SequenceConsumerDao)

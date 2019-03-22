@@ -43,10 +43,8 @@ export interface IBaseSequenceDao
 export class BaseSequenceDao
   extends Dao<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, QSequence>
 	implements IBaseSequenceDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['Sequence'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['Sequence'], Q)
 	}
 }
 
@@ -58,10 +56,8 @@ export interface IBaseSequenceBlockDao
 export class BaseSequenceBlockDao
   extends Dao<ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateColumns, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock>
 	implements IBaseSequenceBlockDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SequenceBlock'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SequenceBlock'], Q)
 	}
 }
 
@@ -73,9 +69,7 @@ export interface IBaseSequenceConsumerDao
 export class BaseSequenceConsumerDao
   extends Dao<ISequenceConsumer, SequenceConsumerESelect, SequenceConsumerECreateProperties, SequenceConsumerEUpdateColumns, SequenceConsumerEUpdateProperties, SequenceConsumerEId, QSequenceConsumer>
 	implements IBaseSequenceConsumerDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['SequenceConsumer'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['SequenceConsumer'], Q)
 	}
 }

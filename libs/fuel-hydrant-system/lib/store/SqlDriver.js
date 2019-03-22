@@ -1,18 +1,10 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../InjectionTokens");
+const observe_1 = require("@airport/observe");
+const diTokens_1 = require("../diTokens");
 const SQLDelete_1 = require("../sql/core/SQLDelete");
 const SQLInsertValues_1 = require("../sql/core/SQLInsertValues");
 const SQLUpdate_1 = require("../sql/core/SQLUpdate");
@@ -23,11 +15,13 @@ const TreeSQLQuery_1 = require("../sql/TreeSQLQuery");
 /**
  * Created by Papa on 9/9/2016.
  */
-let SqlDriver = class SqlDriver {
-    constructor(airportDb, utils, queries) {
-        this.airportDb = airportDb;
-        this.utils = utils;
-        this.queries = queries;
+class SqlDriver {
+    constructor() {
+        di_1.DI.get((airportDatabase, activeQueries, utils) => {
+            this.airDb = airportDatabase;
+            this.queries = activeQueries;
+            this.utils = utils;
+        }, air_control_1.AIR_DB, diTokens_1.ACTIVE_QUERIES, air_control_1.UTILS);
     }
     supportsLocalTransactions() {
         return true;
@@ -36,14 +30,14 @@ let SqlDriver = class SqlDriver {
         this.queries.markQueriesToRerun(transaction.schemaMap);
     }
     async insertValues(portableQuery) {
-        let sqlInsertValues = new SQLInsertValues_1.SQLInsertValues(this.airportDb, this.utils, portableQuery.jsonQuery, this.getDialect());
+        let sqlInsertValues = new SQLInsertValues_1.SQLInsertValues(this.airDb, this.utils, portableQuery.jsonQuery, this.getDialect());
         let sql = sqlInsertValues.toSQL();
         let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap);
         return await this.executeNative(sql, parameters);
     }
     async deleteWhere(portableQuery) {
         let fieldMap = new ground_control_1.SyncSchemaMap();
-        let sqlDelete = new SQLDelete_1.SQLDelete(this.airportDb, this.utils, portableQuery.jsonQuery, this.getDialect());
+        let sqlDelete = new SQLDelete_1.SQLDelete(this.airDb, this.utils, portableQuery.jsonQuery, this.getDialect());
         let sql = sqlDelete.toSQL();
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters);
@@ -51,7 +45,7 @@ let SqlDriver = class SqlDriver {
         return numberOfAffectedRecords;
     }
     async updateWhere(portableQuery) {
-        let sqlUpdate = new SQLUpdate_1.SQLUpdate(this.airportDb, this.utils, portableQuery.jsonQuery, this.getDialect());
+        let sqlUpdate = new SQLUpdate_1.SQLUpdate(this.airDb, this.utils, portableQuery.jsonQuery, this.getDialect());
         let sql = sqlUpdate.toSQL();
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap);
         return await this.executeNative(sql, parameters);
@@ -72,15 +66,15 @@ let SqlDriver = class SqlDriver {
         switch (resultType) {
             case ground_control_1.QueryResultType.ENTITY_GRAPH:
             case ground_control_1.QueryResultType.ENTITY_TREE:
-                const dbEntity = this.airportDb.schemas[portableQuery.schemaIndex]
+                const dbEntity = this.airDb.schemas[portableQuery.schemaIndex]
                     .currentVersion.entities[portableQuery.tableIndex];
-                return new EntitySQLQuery_1.EntitySQLQuery(this.airportDb, this.utils, jsonQuery, dbEntity, dialect, resultType);
+                return new EntitySQLQuery_1.EntitySQLQuery(this.airDb, this.utils, jsonQuery, dbEntity, dialect, resultType);
             case ground_control_1.QueryResultType.FIELD:
-                return new FieldSQLQuery_1.FieldSQLQuery(this.airportDb, this.utils, jsonQuery, dialect);
+                return new FieldSQLQuery_1.FieldSQLQuery(this.airDb, this.utils, jsonQuery, dialect);
             case ground_control_1.QueryResultType.SHEET:
-                return new SheetSQLQuery_1.SheetSQLQuery(this.airportDb, this.utils, jsonQuery, dialect);
+                return new SheetSQLQuery_1.SheetSQLQuery(this.airDb, this.utils, jsonQuery, dialect);
             case ground_control_1.QueryResultType.TREE:
-                return new TreeSQLQuery_1.TreeSQLQuery(this.airportDb, this.utils, jsonQuery, dialect);
+                return new TreeSQLQuery_1.TreeSQLQuery(this.airDb, this.utils, jsonQuery, dialect);
             default:
                 throw `Unknown QueryResultType: ${resultType}`;
         }
@@ -96,8 +90,8 @@ let SqlDriver = class SqlDriver {
         return null;
     }
     search(portableQuery, cachedSqlQueryId) {
-        let resultsSubject = new air_control_1.QuerySubject(() => {
-            if (resultsSubject.observers.length < 1) {
+        let resultsSubject = new observe_1.Subject(() => {
+            if (resultsSubject.subscriptions.length < 1) {
                 // Remove the query for the list of cached queries, that are checked every time a
                 // mutation operation is run
                 this.queries.remove(portableQuery);
@@ -117,8 +111,8 @@ let SqlDriver = class SqlDriver {
         return resultsSubject;
     }
     searchOne(portableQuery, cachedSqlQueryId) {
-        let resultsSubject = new air_control_1.QuerySubject(() => {
-            if (resultsSubject.observers.length < 1) {
+        let resultsSubject = new observe_1.Subject(() => {
+            if (resultsSubject.subscriptions.length < 1) {
                 // Remove the query for the list of cached queries, that are checked every time a
                 // mutation operation is run
                 this.queries.remove(portableQuery);
@@ -139,11 +133,6 @@ let SqlDriver = class SqlDriver {
     warn(message) {
         console.log(message);
     }
-};
-SqlDriver = __decorate([
-    __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(air_control_1.UtilsToken)),
-    __param(2, typedi_1.Inject(InjectionTokens_1.ACTIVE_QUERIES))
-], SqlDriver);
+}
 exports.SqlDriver = SqlDriver;
 //# sourceMappingURL=SqlDriver.js.map

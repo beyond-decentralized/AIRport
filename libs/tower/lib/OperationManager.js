@@ -1,16 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
+const diTokens_1 = require("./diTokens");
 class OperationManager {
-    constructor(airportDb, utils, entity, transactionClient, updateCache) {
-        this.airportDb = airportDb;
-        this.utils = utils;
-        this.entity = entity;
-        this.transactionClient = transactionClient;
-        this.updateCache = updateCache;
-        this.transactionInProgress = false;
+    constructor() {
         this.higherOrderOpsYieldLength = 100;
+        this.transactionInProgress = false;
+        di_1.DI.get((airportDatabase, queryFacade, transConnector, updateCache, utils) => {
+            this.airDb = airportDatabase;
+            this.entity = queryFacade;
+            this.transactionClient = transConnector;
+            this.updateCache = updateCache;
+            this.utils = utils;
+        }, air_control_1.AIR_DB, diTokens_1.QUERY_FACADE, ground_control_1.TRANS_CONNECTOR, diTokens_1.UPDATE_CACHE, air_control_1.UTILS);
     }
     throwUnexpectedProperty(dbProperty, dbColumn, value) {
         throw `Unexpected property value '${value.toString()}' in property '${dbProperty.entity.name}.${dbProperty.name}'
@@ -42,7 +46,7 @@ class OperationManager {
         return result.numberOfAffectedRecords;
     }
     async internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, cascadeAlways = false) {
-        const qEntity = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
+        const qEntity = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         let rawInsert = {
             insertInto: qEntity,
             columns: this.utils.Medatada.getAllColumns(qEntity),
@@ -77,8 +81,8 @@ class OperationManager {
                                 this.columnProcessed(dbProperty, foundValues, dbColumn, columnValue);
                                 valuesFragment[dbColumn.index] = columnValue;
                             }, false);
-                            // Cascading on manyToOne is not currently implemented, nothing else needs to be
-                            // done
+                            // Cascading on manyToOne is not currently implemented, nothing else needs
+                            // to be done
                             continue;
                         case ground_control_1.EntityRelationType.ONE_TO_MANY:
                             this.assertOneToManyIsArray(newValue);
@@ -262,7 +266,8 @@ class OperationManager {
                             return;
                         }
                         // Don't know if the entity has been deleted or is a brand new one, create it
-                        // TODO: figure out if the entity has been deleted and if it has, throw an exception?
+                        // TODO: figure out if the entity has been deleted and if it has, throw an
+                        // exception?
                         await this.performCreate(dbEntity, entityToUpdate.newValue, alreadyModifiedEntityMap, entityToUpdate.idData, cascadeAlways);
                     }
                     else {
@@ -322,7 +327,7 @@ class OperationManager {
      *    Cascades do not travel across ManyToOne
      */
     async internalUpdate(dbEntity, entity, originalEntity, cascadeAlways = false) {
-        const qEntity = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
+        const qEntity = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         const cascadeRecords = [];
         const setFragment = {};
         const idWhereFragments = [];
@@ -338,8 +343,8 @@ class OperationManager {
                 }
                 const originalValue = originalEntity[dbColumn.name];
                 if (dbProperty.isId) {
-                    // For an id property, the value is guaranteed to be the same (and not empty) - cannot
-                    // entity-update id fields
+                    // For an id property, the value is guaranteed to be the same (and not empty) -
+                    // cannot entity-update id fields
                     idWhereFragments.push(qEntity[dbProperty.name].equals(updatedValue));
                 }
                 else if (!this.utils.valuesEqual(originalValue, updatedValue)) {
@@ -364,8 +369,8 @@ class OperationManager {
                             for (const propertyNameLink of propertyNameChains[0]) {
                                 idQProperty = idQProperty[propertyNameLink];
                             }
-                            // For an id property, the value is guaranteed to be the same (and not empty) -
-                            // cannot entity-update id fields
+                            // For an id property, the value is guaranteed to be the same (and not
+                            // empty) - cannot entity-update id fields
                             idWhereFragments.push(idQProperty.equals(value));
                         }
                         else if (!this.utils.valuesEqual(originalValue, value)) {
@@ -373,7 +378,8 @@ class OperationManager {
                             numUpdates++;
                         }
                     }, dbProperty.isId);
-                    // Cascading on manyToOne is not currently implemented, nothing else needs to be done
+                    // Cascading on manyToOne is not currently implemented, nothing else needs to
+                    // be done
                     continue;
                 case ground_control_1.EntityRelationType.ONE_TO_MANY:
                     this.assertOneToManyIsArray(updatedValue);
@@ -535,7 +541,7 @@ class OperationManager {
         return await this.transactionClient.deleteWhere(portableQuery);
     }
     async internalDelete(dbEntity, entity) {
-        const qEntity = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
+        const qEntity = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         const idWhereFragments = [];
         const valuesMapByColumn = [];
         for (let propertyName in entity) {
@@ -560,8 +566,8 @@ class OperationManager {
                     continue;
                 }
                 if (dbProperty.isId) {
-                    // For an id property, the value is guaranteed to be the same (and not empty) - cannot
-                    // entity-update id fields
+                    // For an id property, the value is guaranteed to be the same (and not empty) -
+                    // cannot entity-update id fields
                     idWhereFragments.push(qEntity[propertyName].equals(deletedValue));
                 }
                 continue;
@@ -580,13 +586,14 @@ class OperationManager {
                             for (const propertyNameLink of propertyNameChains[0]) {
                                 idQProperty = idQProperty[propertyNameLink];
                             }
-                            // For an id property, the value is guaranteed to be the same (and not empty) -
-                            // cannot entity-update id fields
+                            // For an id property, the value is guaranteed to be the same (and not
+                            // empty) - cannot entity-update id fields
                             idWhereFragments.push(idQProperty.equals(value));
                         }
                         this.columnProcessed(dbProperty, valuesMapByColumn, dbColumn, value);
                     }, false);
-                    // Cascading on manyToOne is not currently implemented, nothing else needs to be done
+                    // Cascading on manyToOne is not currently implemented, nothing else needs to
+                    // be done
                     break;
                 case ground_control_1.EntityRelationType.ONE_TO_MANY:
                     // One-to-Manys do not contain values for the object being deleted

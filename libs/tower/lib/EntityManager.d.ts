@@ -1,9 +1,7 @@
-import { IAirportDatabase, IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, IQueryFacade, IUtils, MappedEntityArray, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, UpdateCacheType, UpdateRecord } from "@airport/air-control";
-import { DbEntity } from "@airport/ground-control";
-import { DistributionStrategy, PlatformType } from "@airport/terminal-map";
-import { IInternalTransactionalConnector } from "./core/data/IInternalTransactionalConnector";
-import { IUpdateCache } from "./core/data/UpdateCache";
-import { OperationManager } from "./OperationManager";
+import { IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, MappedEntityArray, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, UpdateCacheType, UpdateRecord } from '@airport/air-control';
+import { DbEntity } from '@airport/ground-control';
+import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
+import { OperationManager } from './OperationManager';
 /**
  * Created by Papa on 5/23/2016.
  */
@@ -13,7 +11,7 @@ export declare class EntityManager extends OperationManager implements IDatabase
     findOne: any;
     search: any;
     searchOne: any;
-    constructor(airportDb: IAirportDatabase, entity: IQueryFacade, coreUtils: IUtils, transactionClient: IInternalTransactionalConnector, updateCache: IUpdateCache);
+    constructor();
     cacheForUpdate(cacheForUpdate: UpdateCacheType, dbEntity: DbEntity, ...entities: any[]): void;
     releaseCachedForUpdate(cacheForUpdate: UpdateCacheType, dbEntity: DbEntity, ...entities: any[]): void;
     dropUpdateCache(): void;

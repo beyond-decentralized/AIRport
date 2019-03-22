@@ -44,5 +44,5 @@ __export(require("./store/RecordState"));
 __export(require("./store/SqlDriver"));
 __export(require("./store/Store"));
 __export(require("./validation/Validator"));
-__export(require("./InjectionTokens"));
+__export(require("./diTokens"));
 //# sourceMappingURL=index.js.map

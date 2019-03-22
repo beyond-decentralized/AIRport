@@ -1,18 +1,11 @@
-import {
-	IUtils,
-	UtilsToken
-}                         from '@airport/air-control'
-import {
-	Inject,
-	Service
-}                         from 'typedi'
+import {DI}           from '@airport/di'
+import {SEQUENCE_DAO} from '../diTokens'
 import {
 	BaseSequenceDao,
 	IBaseSequenceDao,
 	ISequence,
 	SequenceEId
-} from '..'
-import {SequenceDaoToken} from '../InjectionTokens'
+}                     from '../generated/generated'
 
 export interface IAbstractSequenceDao {
 
@@ -24,20 +17,13 @@ export interface IAbstractSequenceDao {
 
 export interface ISequenceDao
 	extends IAbstractSequenceDao,
-					IBaseSequenceDao {
+	        IBaseSequenceDao {
 
 }
 
-@Service(SequenceDaoToken)
 export class SequenceDao
 	extends BaseSequenceDao
 	implements ISequenceDao {
-
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils)
-	}
-
 }
+
+DI.set(SEQUENCE_DAO, SequenceDao)

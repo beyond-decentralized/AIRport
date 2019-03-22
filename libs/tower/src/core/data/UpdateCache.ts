@@ -1,16 +1,16 @@
 import {
 	IUtils,
-	UpdateCacheType
+	UpdateCacheType,
+	UTILS
 }                     from '@airport/air-control'
-import {UTILS}        from '@airport/air-control/lib/src'
-import {DI}           from '@airport/di/lib/src'
+import {DI}           from '@airport/di'
 import {
 	DbColumn,
 	DbEntity,
 	EntityRelationType,
 	SQLDataType
 }                     from '@airport/ground-control'
-import {UPDATE_CACHE} from '../../InjectionTokens'
+import {UPDATE_CACHE} from '../../diTokens'
 
 /**
  * Created by Papa on 9/8/2016.

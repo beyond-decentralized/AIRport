@@ -1,10 +1,10 @@
-import {QuerySubject}   from '@airport/air-control'
 import {DI}             from '@airport/di'
 import {
 	PortableQuery,
 	SyncSchemaMap
-}                       from "@airport/ground-control";
-import {ACTIVE_QUERIES} from '../InjectionTokens'
+}                       from '@airport/ground-control'
+import {ISubject}       from '@airport/observe'
+import {ACTIVE_QUERIES} from '../diTokens'
 import {SQLQuery}       from '../sql/core/SQLQuery'
 
 /**
@@ -35,19 +35,19 @@ export interface IActiveQueries {
 export class ActiveQueries
 	implements IActiveQueries {
 
-	queries: Map<PortableQuery, CachedSQLQuery> = new Map<PortableQuery, CachedSQLQuery>();
+	queries: Map<PortableQuery, CachedSQLQuery> = new Map<PortableQuery, CachedSQLQuery>()
 
 	add(
 		portableQuery: PortableQuery,
 		cachedSqlQuery: CachedSQLQuery
 	): void {
-		this.queries.set(portableQuery, cachedSqlQuery);
+		this.queries.set(portableQuery, cachedSqlQuery)
 	}
 
 	remove(
 		portableQuery: PortableQuery
 	): void {
-		this.queries.delete(portableQuery);
+		this.queries.delete(portableQuery)
 	}
 
 	markQueriesToRerun(
@@ -55,9 +55,9 @@ export class ActiveQueries
 	): void {
 		this.queries.forEach((cachedSqlQuery) => {
 			if (schemaMap.intersects(cachedSqlQuery.sqlQuery.getFieldMap())) {
-				cachedSqlQuery.rerun = true;
+				cachedSqlQuery.rerun = true
 			}
-		});
+		})
 	}
 
 	rerunQueries( //
@@ -67,11 +67,11 @@ export class ActiveQueries
 		setTimeout(() => {
 			this.queries.forEach((cachedSqlQuery) => {
 				if (cachedSqlQuery.rerun) {
-					cachedSqlQuery.rerun = false;
-					cachedSqlQuery.runQuery();
+					cachedSqlQuery.rerun = false
+					cachedSqlQuery.runQuery()
 				}
-			});
-		}, 100);
+			})
+		}, 100)
 	}
 }
 
@@ -80,7 +80,7 @@ DI.set(ACTIVE_QUERIES, ActiveQueries)
 export interface CachedSQLQuery {
 	parameters: any[],
 	portableQuery: PortableQuery,
-	resultsSubject: QuerySubject<any>,
+	resultsSubject: ISubject<any>,
 	rerun: boolean;
 	runQuery: Function,
 	sqlQuery: SQLQuery<any>,

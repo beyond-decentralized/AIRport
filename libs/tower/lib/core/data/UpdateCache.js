@@ -1,17 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const src_1 = require("@airport/air-control/lib/src");
-const src_2 = require("@airport/di/lib/src");
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
-const InjectionTokens_1 = require("../../InjectionTokens");
+const diTokens_1 = require("../../diTokens");
 class UpdateCache {
     constructor() {
         this.updateCache = [];
         this.saveRun = 0;
-        src_2.DI.get(utils => {
+        di_1.DI.get(utils => {
             this.utils = utils;
-        }, src_1.UTILS);
+        }, air_control_1.UTILS);
     }
     dropCache() {
         this.updateCache = [];
@@ -199,5 +198,5 @@ class UpdateCache {
     }
 }
 exports.UpdateCache = UpdateCache;
-src_2.DI.set(InjectionTokens_1.UPDATE_CACHE, UpdateCache);
+di_1.DI.set(diTokens_1.UPDATE_CACHE, UpdateCache);
 //# sourceMappingURL=UpdateCache.js.map

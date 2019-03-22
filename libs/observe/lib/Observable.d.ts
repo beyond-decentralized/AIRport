@@ -13,7 +13,9 @@ export interface IObservable<V> {
     lastValue: V;
 }
 export declare class Observable<V> implements IObservable<V> {
+    private onUnsubscribe?;
     static from(sourceObservable: IObservable<any>): IObservable<any>;
+    constructor(onUnsubscribe?: () => void);
     callback: {
         (value: V, context: any): any;
     };

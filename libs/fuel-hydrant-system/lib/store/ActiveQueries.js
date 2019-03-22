@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
-const InjectionTokens_1 = require("../InjectionTokens");
+const diTokens_1 = require("../diTokens");
 class ActiveQueries {
     constructor() {
         this.queries = new Map();
@@ -34,5 +34,5 @@ class ActiveQueries {
     }
 }
 exports.ActiveQueries = ActiveQueries;
-di_1.DI.set(InjectionTokens_1.ACTIVE_QUERIES, ActiveQueries);
+di_1.DI.set(diTokens_1.ACTIVE_QUERIES, ActiveQueries);
 //# sourceMappingURL=ActiveQueries.js.map

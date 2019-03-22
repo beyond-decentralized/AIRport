@@ -50,5 +50,5 @@ class AirportDatabase {
     }
 }
 exports.AirportDatabase = AirportDatabase;
-di_1.DI.set(air_control_1.AIRPORT_DATABASE, AirportDatabase);
+di_1.DI.set(air_control_1.AIR_DB, AirportDatabase);
 //# sourceMappingURL=AirportDatabase.js.map

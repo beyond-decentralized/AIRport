@@ -1,7 +1,5 @@
-import { IAirportDatabase, IUtils } from '@airport/air-control';
 import { OperationHistoryId, RecordHistoryId, RepositoryTransactionHistoryId, TransactionHistoryId } from '@airport/holding-pattern';
 import { IDomain } from '@airport/territory';
-import { ISequenceGenerator } from './SequenceGenerator';
 export declare type NumRepositoryTransHistories = number;
 export declare type NumOperationTransHistories = number;
 export declare type NumRecordHistories = number;
@@ -19,11 +17,11 @@ export interface IIdGenerator {
  * Created by Papa on 9/2/2016.
  */
 export declare class IdGenerator implements IIdGenerator {
-    private airportDb;
+    private transactionHistoryIdColumns;
+    private airDb;
     private sequenceGenerator;
     private utils;
-    private transactionHistoryIdColumns;
-    constructor(airportDb: IAirportDatabase, sequenceGenerator: ISequenceGenerator, utils: IUtils);
+    constructor();
     init(domain: IDomain): Promise<void>;
     generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): Promise<TransactionHistoryIds>;
     generateEntityIds(): Promise<void>;

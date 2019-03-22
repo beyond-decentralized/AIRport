@@ -1,8 +1,6 @@
-import { IAirportDatabase, IUtils } from "@airport/air-control";
-import { QueryType } from "@airport/ground-control";
+import { QueryType } from '@airport/ground-control';
 import { SQLDialect } from '../../sql/core/SQLQuery';
-import { SqLiteDriver } from "../sqLite/SqLiteDriver";
-import { ActiveQueries } from "../ActiveQueries";
+import { SqLiteDriver } from '../sqLite/SqLiteDriver';
 /**
  * Created by Papa on 8/30/2016.
  */
@@ -12,7 +10,7 @@ export declare class CockroachdbDriver extends SqLiteDriver {
     static BACKUP_DOCUMENTS: number;
     private _db;
     private currentTransaction;
-    constructor(airportDb: IAirportDatabase, utils: IUtils, queries: ActiveQueries);
+    constructor();
     protected getDialect(): SQLDialect;
     private getBackupLocation;
     initialize(dbName: string): Promise<any>;

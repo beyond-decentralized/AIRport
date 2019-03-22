@@ -46,6 +46,11 @@ export class Observable<V>
 		return targetObservable
 	}
 
+	constructor(
+		private onUnsubscribe?: () => void
+	) {
+	}
+
 	callback: {
 		(
 			value: V,
@@ -128,7 +133,13 @@ export class Observable<V>
 		// 	throw 'Subjects can only be subscribed to with functions'
 		// }
 
-		const subscription = new Subscription(this, onNext, onError, onComplete)
+		const subscription = new Subscription(
+			this,
+			onNext,
+			onError,
+			onComplete,
+			this.onUnsubscribe
+		)
 
 		this.subscriptions.push(subscription)
 

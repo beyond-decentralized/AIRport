@@ -19,7 +19,8 @@ export class Subscription
 		private observable: Observable<any>,
 		public onNext: { (value: any): void },
 		public onError?: { (error: any): void },
-		public onComplete?: Function
+		public onComplete?: Function,
+		public onUnsubscribe?: { (value: any): void }
 	) {
 	}
 

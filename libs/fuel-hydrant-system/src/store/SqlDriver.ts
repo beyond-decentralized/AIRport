@@ -1,10 +1,10 @@
 import {
-	AirportDatabaseToken,
+	AIR_DB,
 	IAirportDatabase,
 	IUtils,
-	QuerySubject,
-	UtilsToken
+	UTILS,
 }                            from '@airport/air-control'
+import {DI}                  from '@airport/di'
 import {
 	IStoreDriver,
 	JsonDelete,
@@ -15,17 +15,15 @@ import {
 	JsonUpdate,
 	PortableQuery,
 	QueryResultType,
-	StoreDriverToken,
 	StoreType,
 	SyncSchemaMap
 }                            from '@airport/ground-control'
 import {ITransactionHistory} from '@airport/holding-pattern'
-import {Observable}          from 'rxjs'
 import {
-	Inject,
-	Service
-}                            from 'typedi'
-import {ACTIVE_QUERIES}      from '../InjectionTokens'
+	IObservable,
+	Subject
+}                            from '@airport/observe'
+import {ACTIVE_QUERIES}      from '../diTokens'
 import {SQLDelete}           from '../sql/core/SQLDelete'
 import {SQLInsertValues}     from '../sql/core/SQLInsertValues'
 import {
@@ -49,16 +47,21 @@ import {
 export abstract class SqlDriver
 	implements IStoreDriver {
 
+	protected airDb: IAirportDatabase
+	public queries: ActiveQueries
 	public type: StoreType
+	protected utils: IUtils
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		protected airportDb: IAirportDatabase,
-		@Inject(UtilsToken)
-		protected utils: IUtils,
-		@Inject(ACTIVE_QUERIES)
-		public queries: ActiveQueries
-	) {
+	constructor() {
+		DI.get((
+			airportDatabase,
+			activeQueries,
+			utils
+		) => {
+			this.airDb   = airportDatabase
+			this.queries = activeQueries
+			this.utils   = utils
+		}, AIR_DB, ACTIVE_QUERIES, UTILS)
 	}
 
 	supportsLocalTransactions(): boolean {
@@ -83,7 +86,7 @@ export abstract class SqlDriver
 		portableQuery: PortableQuery,
 		// repository?: IRepository
 	): Promise<number> {
-		let sqlInsertValues = new SQLInsertValues(this.airportDb, this.utils,
+		let sqlInsertValues = new SQLInsertValues(this.airDb, this.utils,
 			<JsonInsertValues>portableQuery.jsonQuery, this.getDialect())
 		let sql             = sqlInsertValues.toSQL()
 		let parameters      = sqlInsertValues.getParameters(portableQuery.parameterMap)
@@ -95,7 +98,7 @@ export abstract class SqlDriver
 		portableQuery: PortableQuery,
 	): Promise<number> {
 		let fieldMap                = new SyncSchemaMap()
-		let sqlDelete               = new SQLDelete(this.airportDb, this.utils, <JsonDelete>portableQuery.jsonQuery, this.getDialect())
+		let sqlDelete               = new SQLDelete(this.airDb, this.utils, <JsonDelete>portableQuery.jsonQuery, this.getDialect())
 		let sql                     = sqlDelete.toSQL()
 		let parameters              = sqlDelete.getParameters(portableQuery.parameterMap)
 		let numberOfAffectedRecords = await this.executeNative(sql, parameters)
@@ -107,7 +110,7 @@ export abstract class SqlDriver
 	async updateWhere(
 		portableQuery: PortableQuery,
 	): Promise<number> {
-		let sqlUpdate  = new SQLUpdate(this.airportDb, this.utils,
+		let sqlUpdate  = new SQLUpdate(this.airDb, this.utils,
 			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect())
 		let sql        = sqlUpdate.toSQL()
 		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap)
@@ -142,18 +145,18 @@ export abstract class SqlDriver
 		switch (resultType) {
 			case QueryResultType.ENTITY_GRAPH:
 			case QueryResultType.ENTITY_TREE:
-				const dbEntity = this.airportDb.schemas[portableQuery.schemaIndex]
+				const dbEntity = this.airDb.schemas[portableQuery.schemaIndex]
 					.currentVersion.entities[portableQuery.tableIndex]
-				return new EntitySQLQuery(this.airportDb, this.utils,
+				return new EntitySQLQuery(this.airDb, this.utils,
 					<JsonEntityQuery<any>>jsonQuery, dbEntity, dialect, resultType)
 			case QueryResultType.FIELD:
-				return new FieldSQLQuery(this.airportDb, this.utils,
+				return new FieldSQLQuery(this.airDb, this.utils,
 					<JsonFieldQuery>jsonQuery, dialect)
 			case QueryResultType.SHEET:
-				return new SheetSQLQuery(this.airportDb, this.utils,
+				return new SheetSQLQuery(this.airDb, this.utils,
 					<JsonSheetQuery>jsonQuery, dialect)
 			case QueryResultType.TREE:
-				return new TreeSQLQuery(this.airportDb, this.utils,
+				return new TreeSQLQuery(this.airDb, this.utils,
 					<JsonSheetQuery>jsonQuery, dialect)
 			default:
 				throw `Unknown QueryResultType: ${resultType}`
@@ -186,15 +189,15 @@ export abstract class SqlDriver
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): Observable<EntityArray> {
-		let resultsSubject                 = new QuerySubject<EntityArray>(() => {
-			if (resultsSubject.observers.length < 1) {
+	): IObservable<EntityArray> {
+		let resultsSubject                 = new Subject<EntityArray>(() => {
+			if (resultsSubject.subscriptions.length < 1) {
 				// Remove the query for the list of cached queries, that are checked every time a
 				// mutation operation is run
 				this.queries.remove(portableQuery)
 			}
 		})
-		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any> {
+		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any>{
 			resultsSubject: resultsSubject,
 			runQuery: () => {
 				this.find(portableQuery).then((results: E[]) => {
@@ -212,15 +215,15 @@ export abstract class SqlDriver
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): Observable<E> {
-		let resultsSubject                 = new QuerySubject<E>(() => {
-			if (resultsSubject.observers.length < 1) {
+	): IObservable<E> {
+		let resultsSubject                 = new Subject<E>(() => {
+			if (resultsSubject.subscriptions.length < 1) {
 				// Remove the query for the list of cached queries, that are checked every time a
 				// mutation operation is run
 				this.queries.remove(portableQuery)
 			}
 		})
-		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any> {
+		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any>{
 			resultsSubject: resultsSubject,
 			runQuery: () => {
 				this.findOne(portableQuery).then((result: E) => {

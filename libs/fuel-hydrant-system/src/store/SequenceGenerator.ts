@@ -1,7 +1,4 @@
-import {
-	IUtils,
-	UtilsToken
-}                           from '@airport/air-control'
+import {IUtils}             from '@airport/air-control'
 import {
 	IAbstractSequenceBlockDao,
 	IAbstractSequenceConsumerDao,
@@ -9,17 +6,14 @@ import {
 	ISequence,
 	ISequenceBlock,
 	ISequenceConsumer,
-	SequenceBlockDaoToken,
-	SequenceConsumerDaoToken,
-	SequenceDaoToken
+	SEQUENCE_BLOCK_DAO,
+	SEQUENCE_CONSUMER_DAO,
+	SEQUENCE_DAO
 }                           from '@airport/airport-code'
+import {DI}                 from '@airport/di'
 import {DbColumn}           from '@airport/ground-control'
 import {IDomain}            from '@airport/territory'
-import {
-	Inject,
-	Service
-}                           from 'typedi'
-import {SEQUENCE_GENERATOR} from '../InjectionTokens'
+import {SEQUENCE_GENERATOR} from '../diTokens'
 
 export interface ISequenceGenerator {
 
@@ -34,7 +28,6 @@ export interface ISequenceGenerator {
 
 }
 
-@Service(SEQUENCE_GENERATOR)
 export class SequenceGenerator
 	implements ISequenceGenerator {
 
@@ -42,16 +35,21 @@ export class SequenceGenerator
 	private sequenceBlocks: ISequenceBlock[][][] = []
 	private sequenceConsumer: ISequenceConsumer
 
-	constructor(
-		@Inject(SequenceBlockDaoToken)
-		private sequenceBlockDao: IAbstractSequenceBlockDao,
-		@Inject(SequenceConsumerDaoToken)
-		private sequenceConsumerDao: IAbstractSequenceConsumerDao,
-		@Inject(SequenceDaoToken)
-		private sequenceDao: IAbstractSequenceDao,
-		@Inject(UtilsToken)
-		private utils: IUtils
-	) {
+	private sequenceBlockDao: IAbstractSequenceBlockDao
+	private sequenceConsumerDao: IAbstractSequenceConsumerDao
+	private sequenceDao: IAbstractSequenceDao
+	private utils: IUtils
+
+	constructor() {
+		DI.get((
+			sequenceBlockDao,
+			sequenceConsumerDao,
+			sequenceDao
+		) => {
+			this.sequenceBlockDao = sequenceBlockDao
+			this.sequenceConsumer = sequenceConsumerDao
+			this.sequenceDao      = sequenceDao
+		}, SEQUENCE_BLOCK_DAO, SEQUENCE_CONSUMER_DAO, SEQUENCE_DAO)
 	}
 
 	async init(
@@ -197,3 +195,5 @@ export class SequenceGenerator
 	}
 
 }
+
+DI.set(SEQUENCE_GENERATOR, SequenceGenerator)

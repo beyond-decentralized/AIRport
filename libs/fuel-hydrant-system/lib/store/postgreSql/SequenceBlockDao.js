@@ -1,22 +1,15 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const airport_code_1 = require("@airport/airport-code");
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
-const typedi_1 = require("typedi");
-let SequenceBlockDao = class SequenceBlockDao {
-    constructor(storeDriver, terminalStore) {
-        this.storeDriver = storeDriver;
-        this.terminalStore = terminalStore;
+class SequenceBlockDao {
+    constructor() {
+        di_1.DI.get((storeDriver, terminalStore) => {
+            this.storeDriver = storeDriver;
+            this.terminalStore = terminalStore;
+        }, ground_control_1.STORE_DRIVER, terminal_map_1.TERMINAL_STORE);
     }
     async createNewBlocks(sequenceBlocks) {
         const latestSchemaVersionsByIndexes = this.terminalStore.getLatestSchemaVersionsByIndexes();
@@ -49,11 +42,7 @@ let SequenceBlockDao = class SequenceBlockDao {
         }
         return allNewBlocks;
     }
-};
-SequenceBlockDao = __decorate([
-    typedi_1.Service(airport_code_1.SequenceBlockDaoToken),
-    __param(0, typedi_1.Inject(ground_control_1.StoreDriverToken)),
-    __param(1, typedi_1.Inject(terminal_map_1.TerminalStoreToken))
-], SequenceBlockDao);
+}
 exports.SequenceBlockDao = SequenceBlockDao;
+di_1.DI.set(airport_code_1.SEQUENCE_BLOCK_DAO, SequenceBlockDao);
 //# sourceMappingURL=SequenceBlockDao.js.map

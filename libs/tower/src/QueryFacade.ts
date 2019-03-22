@@ -3,32 +3,31 @@ import {
 	IDatabaseFacade,
 	IQueryFacade,
 	UpdateCacheType
-}                     from "@airport/air-control";
+}                     from '@airport/air-control'
+import {DI}           from '@airport/di'
 import {
 	DbEntity,
 	ITransactionalConnector,
 	JsonQuery,
 	PortableQuery,
 	QueryResultType,
-	TransactionalConnectorToken
-}                     from "@airport/ground-control";
-import {Observable}   from "rxjs";
-import {
-	Inject,
-	Service
-}                     from "typedi";
-import {QUERY_FACADE} from "./InjectionTokens";
+	TRANS_CONNECTOR,
+}                     from '@airport/ground-control'
+import {IObservable}  from '@airport/observe'
+import {QUERY_FACADE} from './diTokens'
 
-@Service(QUERY_FACADE)
 export class QueryFacade
 	implements IQueryFacade {
 
-	public databaseFacade: IDatabaseFacade;
+	private connector: ITransactionalConnector
+	public databaseFacade: IDatabaseFacade
 
-	constructor(
-		@Inject(TransactionalConnectorToken)
-		private connector: ITransactionalConnector,
-	) {
+	constructor() {
+		DI.get((
+			transactionalConnector
+		) => {
+			this.connector = transactionalConnector
+		}, TRANS_CONNECTOR)
 	}
 
 	async find<E, EntityArray extends Array<E>>(
@@ -38,12 +37,12 @@ export class QueryFacade
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<EntityArray> {
 		const result = await this.connector.find<E, EntityArray>(
-			this.getPortableQuery(dbEntity, query, queryResultType));
+			this.getPortableQuery(dbEntity, query, queryResultType))
 		if (cacheForUpdate !== UpdateCacheType.NONE) {
-			this.databaseFacade.cacheForUpdate(cacheForUpdate, dbEntity, ...result);
+			this.databaseFacade.cacheForUpdate(cacheForUpdate, dbEntity, ...result)
 		}
 
-		return result;
+		return result
 	}
 
 	async findOne<E>(
@@ -52,12 +51,12 @@ export class QueryFacade
 		queryResultType: QueryResultType,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<E> {
-		const result = await this.connector.findOne<E>(this.getPortableQuery(dbEntity, query, queryResultType));
+		const result = await this.connector.findOne<E>(this.getPortableQuery(dbEntity, query, queryResultType))
 		if (cacheForUpdate !== UpdateCacheType.NONE) {
-			this.databaseFacade.cacheForUpdate(cacheForUpdate, dbEntity, result);
+			this.databaseFacade.cacheForUpdate(cacheForUpdate, dbEntity, result)
 		}
 
-		return result;
+		return result
 	}
 
 	search<E, EntityArray extends Array<E>>(
@@ -65,9 +64,9 @@ export class QueryFacade
 		query: AbstractQuery,
 		queryResultType: QueryResultType,
 		cacheForUpdate = UpdateCacheType.NONE,
-	): Observable<EntityArray> {
+	): IObservable<EntityArray> {
 		return this.connector.search<E, EntityArray>(
-			this.getPortableQuery(dbEntity, query, queryResultType));
+			this.getPortableQuery(dbEntity, query, queryResultType))
 	}
 
 	searchOne<E>(
@@ -75,9 +74,9 @@ export class QueryFacade
 		query: AbstractQuery,
 		queryResultType: QueryResultType,
 		cacheForUpdate = UpdateCacheType.NONE,
-	): Observable<E> {
+	): IObservable<E> {
 		return this.connector.searchOne<E>(
-			this.getPortableQuery(dbEntity, query, queryResultType));
+			this.getPortableQuery(dbEntity, query, queryResultType))
 	}
 
 	getPortableQuery<E>(
@@ -93,7 +92,9 @@ export class QueryFacade
 			schemaIndex: dbEntity.schemaVersion.schema.index,
 			tableIndex: dbEntity.index,
 			values: query.values
-		};
+		}
 	}
 
 }
+
+DI.set(QUERY_FACADE, QueryFacade)

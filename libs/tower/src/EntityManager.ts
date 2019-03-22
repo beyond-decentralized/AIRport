@@ -1,15 +1,11 @@
 import {
-	AirportDatabaseToken,
 	Delete,
 	EntityQuery,
-	IAirportDatabase,
 	IDatabaseFacade,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IFunctionWrapper,
 	IQEntity,
-	IQueryFacade,
-	IUtils,
 	MappedEntityArray,
 	NonEntityFind,
 	NonEntityFindOne,
@@ -25,58 +21,37 @@ import {
 	UpdateColumns,
 	UpdateProperties,
 	UpdateRecord,
-	UtilsToken
-}                                        from "@airport/air-control";
+}                          from '@airport/air-control'
+import {DI}                from '@airport/di'
 import {
 	DbEntity,
-	QueryResultType,
-	TransactionalConnectorToken
-}                                        from "@airport/ground-control";
+	QueryResultType
+}                          from '@airport/ground-control'
 import {
 	DistributionStrategy,
 	PlatformType
-}                                        from "@airport/terminal-map";
-import {
-	Inject,
-	Service
-}                                        from "typedi";
-import {IInternalTransactionalConnector} from "./core/data/IInternalTransactionalConnector";
-import {IUpdateCache}                    from "./core/data/UpdateCache";
-import {Transactional}                   from "./decorators";
-import {
-	ENTITY_MANAGER,
-	UPDATE_CACHE
-}                                        from "./InjectionTokens";
-import {OperationManager,}               from "./OperationManager";
+}                          from '@airport/terminal-map'
+import {Transactional}     from './decorators'
+import {ENTITY_MANAGER}    from './diTokens'
+import {OperationManager,} from './OperationManager'
 
 /**
  * Created by Papa on 5/23/2016.
  */
-@Service(ENTITY_MANAGER)
 export class EntityManager
 	extends OperationManager
 	implements IDatabaseFacade {
 
-	name: string;
+	name: string
 
-	find = new NonEntityFind(this, this.utils);
-	findOne = new NonEntityFindOne(this, this.utils);
-	search = new NonEntitySearch(this, this.utils);
-	searchOne = new NonEntitySearchOne(this, this.utils);
+	find      = new NonEntityFind(this, this.utils)
+	findOne   = new NonEntityFindOne(this, this.utils)
+	search    = new NonEntitySearch(this, this.utils)
+	searchOne = new NonEntitySearchOne(this, this.utils)
 
-
-	constructor(
-		@Inject(AirportDatabaseToken) airportDb: IAirportDatabase,
-		entity: IQueryFacade,
-		@Inject(UtilsToken)
-			coreUtils: IUtils,
-		@Inject(TransactionalConnectorToken)
-			transactionClient: IInternalTransactionalConnector,
-		@Inject(UPDATE_CACHE)
-			updateCache: IUpdateCache,
-	) {
-		super(airportDb, coreUtils, entity, transactionClient, updateCache);
-		(<any>this.updateCache).databaseFacade = this;
+	constructor() {
+		super();
+		(<any>this.updateCache).databaseFacade = this
 	}
 
 	cacheForUpdate(
@@ -84,7 +59,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		...entities: any[]
 	): void {
-		this.updateCache.addToCache(cacheForUpdate, dbEntity, ...entities);
+		this.updateCache.addToCache(cacheForUpdate, dbEntity, ...entities)
 	}
 
 	releaseCachedForUpdate(
@@ -92,22 +67,22 @@ export class EntityManager
 		dbEntity: DbEntity,
 		...entities: any[]
 	): void {
-		this.updateCache.dropFromCache(cacheForUpdate, dbEntity, ...entities);
+		this.updateCache.dropFromCache(cacheForUpdate, dbEntity, ...entities)
 	}
 
 	dropUpdateCache(): void {
-		this.updateCache.dropCache();
+		this.updateCache.dropCache()
 	}
 
 	async addRepository(
 		name: string,
-		url: string = null,
-		platform: PlatformType = PlatformType.GOOGLE_DOCS,
-		platformConfig: string = null,
+		url: string                                = null,
+		platform: PlatformType                     = PlatformType.GOOGLE_DOCS,
+		platformConfig: string                     = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
 	): Promise<number> {
 		return await this.transactionClient.addRepository(
-			name, url, platform, platformConfig, distributionStrategy);
+			name, url, platform, platformConfig, distributionStrategy)
 	}
 
 	@Transactional()
@@ -115,7 +90,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
-		return await this.performCreate(dbEntity, entity, []);
+		return await this.performCreate(dbEntity, entity, [])
 	}
 
 	@Transactional()
@@ -123,10 +98,10 @@ export class EntityManager
 		dbEntity: DbEntity,
 		entities: E[],
 		checkIfProcessed: boolean = true,
-		cascade: boolean = false
+		cascade: boolean          = false
 	): Promise<number> {
 		return await this.performBulkCreate(dbEntity, entities, [],
-			checkIfProcessed, cascade);
+			checkIfProcessed, cascade)
 	}
 
 	async insertColumnValues<IQE extends IQEntity>(
@@ -136,12 +111,12 @@ export class EntityManager
 		}
 	): Promise<number> {
 		if (rawInsertColumnValues instanceof Function) {
-			rawInsertColumnValues = rawInsertColumnValues();
+			rawInsertColumnValues = rawInsertColumnValues()
 		}
 
-		let numInsertedRows = await this.internalInsertColumnValues(dbEntity, rawInsertColumnValues);
+		let numInsertedRows = await this.internalInsertColumnValues(dbEntity, rawInsertColumnValues)
 
-		return numInsertedRows;
+		return numInsertedRows
 	}
 
 	@Transactional()
@@ -150,12 +125,12 @@ export class EntityManager
 		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> }
 	): Promise<number> {
 		if (rawInsertValues instanceof Function) {
-			rawInsertValues = rawInsertValues();
+			rawInsertValues = rawInsertValues()
 		}
 
-		let numInsertedRows = await this.internalInsertValues(dbEntity, rawInsertValues);
+		let numInsertedRows = await this.internalInsertValues(dbEntity, rawInsertValues)
 
-		return numInsertedRows;
+		return numInsertedRows
 	}
 
 	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
@@ -165,12 +140,12 @@ export class EntityManager
 		}
 	): Promise<number[] | string[]> {
 		if (rawInsertColumnValues instanceof Function) {
-			rawInsertColumnValues = rawInsertColumnValues();
+			rawInsertColumnValues = rawInsertColumnValues()
 		}
 
-		let ids = await this.internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues);
+		let ids = await this.internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues)
 
-		return ids;
+		return ids
 	}
 
 	@Transactional()
@@ -181,12 +156,12 @@ export class EntityManager
 		}
 	): Promise<number[] | string[]> {
 		if (rawInsertValues instanceof Function) {
-			rawInsertValues = rawInsertValues();
+			rawInsertValues = rawInsertValues()
 		}
 
-		let ids = await this.internalInsertValuesGetIds(dbEntity, rawInsertValues);
+		let ids = await this.internalInsertValuesGetIds(dbEntity, rawInsertValues)
 
-		return ids;
+		return ids
 
 	}
 
@@ -195,7 +170,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
-		return await this.performDelete(dbEntity, entity);
+		return await this.performDelete(dbEntity, entity)
 	}
 
 	@Transactional()
@@ -204,12 +179,12 @@ export class EntityManager
 		rawDelete: RawDelete<IQE> | { (...args: any[]): RawDelete<IQE> }
 	): Promise<number> {
 		if (rawDelete instanceof Function) {
-			rawDelete = rawDelete();
+			rawDelete = rawDelete()
 		}
 
-		let deleteWhere: Delete<IQE> = new Delete(rawDelete, this.utils);
+		let deleteWhere: Delete<IQE> = new Delete(rawDelete, this.utils)
 
-		return await this.internalDeleteWhere(dbEntity, deleteWhere);
+		return await this.internalDeleteWhere(dbEntity, deleteWhere)
 	}
 
 	@Transactional()
@@ -219,27 +194,27 @@ export class EntityManager
 	): Promise<number> {
 		if (!dbEntity.idColumns.length) {
 			throw `@Id is not defined for entity: '${dbEntity.name}'.
-			Cannot call save(entity) on entities with no ids.`;
+			Cannot call save(entity) on entities with no ids.`
 		}
 
-		let emptyIdCount = 0;
-		let nonEmptyIdCount = 0;
+		let emptyIdCount    = 0
+		let nonEmptyIdCount = 0
 		for (const dbColumn of dbEntity.idColumns) {
 
 			const [propertyNameChains, idValue] =
-				this.utils.Schema.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entity);
+				      this.utils.Schema.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entity)
 
-			this.utils.Schema.isIdEmpty(idValue) ? emptyIdCount++ : nonEmptyIdCount++;
+			this.utils.Schema.isIdEmpty(idValue) ? emptyIdCount++ : nonEmptyIdCount++
 		}
 		if (emptyIdCount && nonEmptyIdCount) {
 			throw `Cannot call save(entity) for instance of '${dbEntity.name}' which has
 			${nonEmptyIdCount} @Id values specified and ${emptyIdCount} @Id values not specified.
 			Please make sure that the entity instance either has all @Id values specified (to be
-			updated) or non of @Id values specified (to be created).`;
+			updated) or non of @Id values specified (to be created).`
 		} else if (emptyIdCount) {
-			return await this.create(dbEntity, entity);
+			return await this.create(dbEntity, entity)
 		} else {
-			return await this.update(dbEntity, entity);
+			return await this.update(dbEntity, entity)
 		}
 	}
 
@@ -248,7 +223,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
-		return await this.performUpdate(dbEntity, entity, []);
+		return await this.performUpdate(dbEntity, entity, [])
 	}
 
 	/**
@@ -263,13 +238,13 @@ export class EntityManager
 			| { (...args: any[]): RawUpdateColumns<IEUC, IQE> }
 	): Promise<number> {
 		if (rawUpdate instanceof Function) {
-			rawUpdate = rawUpdate();
+			rawUpdate = rawUpdate()
 		}
 
 		let update: UpdateColumns<any, IQE>
-			= new UpdateColumns(rawUpdate, this.utils);
+			    = new UpdateColumns(rawUpdate, this.utils)
 
-		return await this.internalUpdateColumnsWhere(dbEntity, update);
+		return await this.internalUpdateColumnsWhere(dbEntity, update)
 	}
 
 	@Transactional()
@@ -279,17 +254,17 @@ export class EntityManager
 		rawUpdate: RawUpdate<IEUP, IQE> | { (...args: any[]): RawUpdate<IEUP, IQE> }
 	): Promise<number> {
 		if (rawUpdate instanceof Function) {
-			rawUpdate = rawUpdate();
+			rawUpdate = rawUpdate()
 		}
 
 		let update: UpdateProperties<any, IQE>
-			= new UpdateProperties(rawUpdate, this.utils);
+			    = new UpdateProperties(rawUpdate, this.utils)
 
-		return await this.internalUpdateWhere(dbEntity, update);
+		return await this.internalUpdateWhere(dbEntity, update)
 	}
 
 	private ensureId<E>(entity: E) {
-		throw `Not Implemented`;
+		throw `Not Implemented`
 	}
 
 
@@ -297,39 +272,41 @@ export class EntityManager
 		dbEntity: DbEntity,
 		idKey: string,
 	): Promise<any> {
-		const originalRecord = this.updateCache.getOriginalRecord(dbEntity, idKey);
+		const originalRecord = this.updateCache.getOriginalRecord(dbEntity, idKey)
 
 		if (!originalRecord) {
 			throw `Cannot update '${dbEntity.name}' with composite id '${idKey}' - not found in update cache.
-			Did you forget to add .andCacheForUpdate() to the query you used to retrieve the original?`;
+			Did you forget to add .andCacheForUpdate() to the query you used to retrieve the original?`
 		}
 
-		return originalRecord;
+		return originalRecord
 	}
 
 	async getOriginalValues(
 		entitiesToUpdate: UpdateRecord[],
 		dbEntity: DbEntity,
 	): Promise<MappedEntityArray<any>> {
-		const qEntity = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
+		const qEntity                         = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
 		let rawTreeQuery: RawEntityQuery<any> = {
 			select: {},
 			from: [qEntity],
 			where: this.getIdsWhereClause(entitiesToUpdate, qEntity)
-		};
-		let entityQuery: EntityQuery<any> = new EntityQuery(rawTreeQuery, this.utils);
+		}
+		let entityQuery: EntityQuery<any>     = new EntityQuery(rawTreeQuery, this.utils)
 
 		return await this.entity.find<any, MappedEntityArray<any>>(
-			dbEntity, entityQuery, QueryResultType.MAPPED_ENTITY_TREE);
+			dbEntity, entityQuery, QueryResultType.MAPPED_ENTITY_TREE)
 	}
 
 	prepare<QF extends Function>(
 		queryFunction: QF
 	): IFunctionWrapper<QF> {
-		return <IFunctionWrapper<QF>><any>new FunctionWrapper<QF>(queryFunction);
+		return <IFunctionWrapper<QF>><any>new FunctionWrapper<QF>(queryFunction)
 	}
 
 }
+
+DI.set(ENTITY_MANAGER, EntityManager)
 
 export class FunctionWrapper<QF extends Function>
 	implements IFunctionWrapper<any> {

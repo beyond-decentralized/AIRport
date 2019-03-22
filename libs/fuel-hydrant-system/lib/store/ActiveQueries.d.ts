@@ -1,5 +1,5 @@
-import { QuerySubject } from '@airport/air-control';
-import { PortableQuery, SyncSchemaMap } from "@airport/ground-control";
+import { PortableQuery, SyncSchemaMap } from '@airport/ground-control';
+import { ISubject } from '@airport/observe';
 import { SQLQuery } from '../sql/core/SQLQuery';
 /**
  * Created by shamsutdinov.artem on 8/8/2016.
@@ -21,7 +21,7 @@ export declare class ActiveQueries implements IActiveQueries {
 export interface CachedSQLQuery {
     parameters: any[];
     portableQuery: PortableQuery;
-    resultsSubject: QuerySubject<any>;
+    resultsSubject: ISubject<any>;
     rerun: boolean;
     runQuery: Function;
     sqlQuery: SQLQuery<any>;

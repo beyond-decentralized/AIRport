@@ -1,12 +1,10 @@
-import { IAirportDatabase, IUtils } from "@airport/air-control";
-import { QueryType } from "@airport/ground-control";
+import { QueryType } from '@airport/ground-control';
 import { SQLDialect } from '../../sql/core/SQLQuery';
-import { SqLiteDriver } from "../sqLite/SqLiteDriver";
-import { ActiveQueries } from "../ActiveQueries";
+import { SqLiteDriver } from '../sqLite/SqLiteDriver';
 export declare class SqlJsDriver extends SqLiteDriver {
     private _db;
     private currentTransaction;
-    constructor(airportDb: IAirportDatabase, utils: IUtils, queries: ActiveQueries);
+    constructor();
     protected getDialect(): SQLDialect;
     initialize(): Promise<any>;
     startTransaction(): Promise<void>;

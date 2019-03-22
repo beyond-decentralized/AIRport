@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Subscription_1 = require("./Subscription");
 class Observable {
-    constructor() {
+    constructor(onUnsubscribe) {
+        this.onUnsubscribe = onUnsubscribe;
         this.children = [];
         this.subscriptions = [];
     }
@@ -57,7 +58,7 @@ class Observable {
         // if (!(observer instanceof Function)) {
         // 	throw 'Subjects can only be subscribed to with functions'
         // }
-        const subscription = new Subscription_1.Subscription(this, onNext, onError, onComplete);
+        const subscription = new Subscription_1.Subscription(this, onNext, onError, onComplete, this.onUnsubscribe);
         this.subscriptions.push(subscription);
         if (this.currentValue !== undefined) {
             this.exec(this.currentValue, 'onNext');

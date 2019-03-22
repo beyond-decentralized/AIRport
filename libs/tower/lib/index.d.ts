@@ -4,6 +4,6 @@ export * from './core/metadata/MetadataUtils';
 export * from './AirportDatabase';
 export * from './decorators';
 export * from './EntityManager';
-export * from './InjectionTokens';
+export * from './diTokens';
 export * from './OperationManager';
 export * from './QueryFacade';

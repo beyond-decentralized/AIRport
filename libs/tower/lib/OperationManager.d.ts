@@ -1,7 +1,7 @@
-import { Delete, EntityIdData, IAirportDatabase, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IQueryFacade, IUtils, MappedEntityArray, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties, UpdateRecord } from "@airport/air-control";
-import { DbColumn, DbEntity, DbProperty, DbRelation, JSONBaseOperation } from "@airport/ground-control";
-import { IInternalTransactionalConnector } from "./core/data/IInternalTransactionalConnector";
-import { IUpdateCache } from "./core/data/UpdateCache";
+import { Delete, EntityIdData, IAirportDatabase, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IQueryFacade, IUtils, MappedEntityArray, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties, UpdateRecord } from '@airport/air-control';
+import { DbColumn, DbEntity, DbProperty, DbRelation, JSONBaseOperation } from '@airport/ground-control';
+import { IInternalTransactionalConnector } from './core/data/IInternalTransactionalConnector';
+import { IUpdateCache } from './core/data/UpdateCache';
 /**
  * Created by Papa on 11/15/2016.
  */
@@ -18,14 +18,14 @@ export interface IOperationManager {
     throwUnexpectedProperty(dbProperty: DbProperty, dbColumn: DbColumn, value: any): any;
 }
 export declare abstract class OperationManager implements IOperationManager {
-    protected airportDb: IAirportDatabase;
-    utils: IUtils;
+    protected airDb: IAirportDatabase;
     entity: IQueryFacade;
-    transactionClient: IInternalTransactionalConnector;
-    updateCache: IUpdateCache;
-    transactionInProgress: boolean;
     higherOrderOpsYieldLength: number;
-    constructor(airportDb: IAirportDatabase, utils: IUtils, entity: IQueryFacade, transactionClient: IInternalTransactionalConnector, updateCache: IUpdateCache);
+    transactionClient: IInternalTransactionalConnector;
+    transactionInProgress: boolean;
+    updateCache: IUpdateCache;
+    utils: IUtils;
+    constructor();
     throwUnexpectedProperty(dbProperty: DbProperty, dbColumn: DbColumn, value: any): void;
     protected warn(message: string): void;
     /**

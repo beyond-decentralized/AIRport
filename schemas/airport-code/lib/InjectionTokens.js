@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
-exports.SequenceBlockDaoToken = new typedi_1.Token();
-exports.SequenceConsumerDaoToken = new typedi_1.Token();
-exports.SequenceDaoToken = new typedi_1.Token();
+const di_1 = require("@airport/di");
+exports.SEQUENCE_BLOCK_DAO = di_1.diToken();
+exports.SEQUENCE_CONSUMER_DAO = di_1.diToken();
+exports.SEQUENCE_DAO = di_1.diToken();
 //# sourceMappingURL=InjectionTokens.js.map

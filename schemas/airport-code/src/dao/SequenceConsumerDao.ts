@@ -1,17 +1,10 @@
-import {
-	IUtils,
-	UtilsToken
-}                                 from '@airport/air-control'
-import {
-	Inject,
-	Service
-}                                 from 'typedi'
+import {DI}                    from '@airport/di'
+import {SEQUENCE_CONSUMER_DAO} from '../diTokens'
 import {
 	BaseSequenceConsumerDao,
 	IBaseSequenceConsumerDao,
 	SequenceConsumerECreateProperties
-} from '..'
-import {SequenceConsumerDaoToken} from '../InjectionTokens'
+}                              from '../generated/generated'
 
 export interface IAbstractSequenceConsumerDao {
 
@@ -23,21 +16,15 @@ export interface IAbstractSequenceConsumerDao {
 
 export interface ISequenceConsumerDao
 	extends IAbstractSequenceConsumerDao,
-					IBaseSequenceConsumerDao {
+	        IBaseSequenceConsumerDao {
 
 
 }
 
-@Service(SequenceConsumerDaoToken)
 export class SequenceConsumerDao
 	extends BaseSequenceConsumerDao
 	implements ISequenceConsumerDao {
 
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils)
-	}
-
 }
+
+DI.set(SEQUENCE_CONSUMER_DAO, SequenceConsumerDao)

@@ -1,22 +1,15 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var WebSqlDriver_1;
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
-const typedi_1 = require("typedi");
 const SQLQuery_1 = require("../../sql/core/SQLQuery");
 const SqLiteDriver_1 = require("../sqLite/SqLiteDriver");
 /**
  * Created by Papa on 8/30/2016.
  */
-let WebSqlDriver = WebSqlDriver_1 = class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
-    constructor(airportDb, utils, queries) {
-        super(airportDb, utils, queries);
+class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
+    constructor() {
+        super();
         this.currentStatementId = 0;
         this.pendingStatements = [];
         this.executedResults = [];
@@ -27,11 +20,11 @@ let WebSqlDriver = WebSqlDriver_1 = class WebSqlDriver extends SqLiteDriver_1.Sq
     }
     getBackupLocation(dbFlag) {
         switch (dbFlag) {
-            case WebSqlDriver_1.BACKUP_LOCAL:
+            case WebSqlDriver.BACKUP_LOCAL:
                 return 2;
-            case WebSqlDriver_1.BACKUP_LIBRARY:
+            case WebSqlDriver.BACKUP_LIBRARY:
                 return 1;
-            case WebSqlDriver_1.BACKUP_DOCUMENTS:
+            case WebSqlDriver.BACKUP_DOCUMENTS:
                 return 0;
             default:
                 throw Error('Invalid backup flag: ' + dbFlag);
@@ -40,7 +33,7 @@ let WebSqlDriver = WebSqlDriver_1 = class WebSqlDriver extends SqLiteDriver_1.Sq
     async initialize(dbName) {
         let dbOptions = {
             name: dbName,
-            backupFlag: WebSqlDriver_1.BACKUP_LOCAL,
+            backupFlag: WebSqlDriver.BACKUP_LOCAL,
             existingDatabase: false
         };
         let win = window;
@@ -209,13 +202,10 @@ let WebSqlDriver = WebSqlDriver_1 = class WebSqlDriver extends SqLiteDriver_1.Sq
     handleError(error) {
         throw error;
     }
-};
+}
 WebSqlDriver.BACKUP_LOCAL = 2;
 WebSqlDriver.BACKUP_LIBRARY = 1;
 WebSqlDriver.BACKUP_DOCUMENTS = 0;
-WebSqlDriver = WebSqlDriver_1 = __decorate([
-    typedi_1.Service(ground_control_1.StoreDriverToken)
-], WebSqlDriver);
 exports.WebSqlDriver = WebSqlDriver;
 function runSqlSeries(tx, sqls, parameterss, fnum, callback) {
     if (typeof sqls === 'string') {
@@ -229,14 +219,14 @@ function runSqlSeries(tx, sqls, parameterss, fnum, callback) {
         sqlIndex = 0;
     }
     if (fnum >= totalNumber) {
-        callback(true, "success - ran " + fnum + " sql statements");
+        callback(true, 'success - ran ' + fnum + ' sql statements');
         return;
     }
     var successFn = function () {
         runSqlSeries(tx, sqls, parameterss, fnum + 1, callback);
     };
     var errorFn = function (tx, error) {
-        callback(false, "Error running function " + fnum + " " + error.message);
+        callback(false, 'Error running function ' + fnum + ' ' + error.message);
     };
     var parameters = [];
     if (parameterss) {
@@ -244,5 +234,5 @@ function runSqlSeries(tx, sqls, parameterss, fnum, callback) {
     }
     tx.executeSql(sqls[sqlIndex], parameters, successFn, errorFn);
 }
-;
+di_1.DI.set(ground_control_1.STORE_DRIVER, WebSqlDriver);
 //# sourceMappingURL=WebSqlDriver.js.map

@@ -1,45 +1,27 @@
 import {
-	AirportDatabaseToken,
+	AIR_DB,
 	IAirportDatabase,
-	IQOrderableField,
 	IUtils,
-	max,
-	RawNonEntityQuery,
-	RawSheetQuery,
-	unionAll,
-	UtilsToken,
-}                             from '@airport/air-control'
-import {
-	ISequence,
-	ISequenceBlock,
-	ISequenceBlockDao,
-	ISequenceConsumer,
-	SequenceBlockDaoToken,
-	SequenceConsumerDaoToken,
-	SequenceDaoToken
-}                             from '@airport/airport-code'
+	UTILS
+}                           from '@airport/air-control'
+import {DI}                 from '@airport/di'
 import {
 	DbColumn,
-	DbEntity,
-	Primitive
-}                             from '@airport/ground-control'
+	DbEntity
+}                           from '@airport/ground-control'
 import {
 	OperationHistoryId,
 	Q,
 	RecordHistoryId,
 	RepositoryTransactionHistoryId,
 	TransactionHistoryId
-}                             from '@airport/holding-pattern'
-import {IDomain}              from '@airport/territory'
-import {
-	Inject,
-	Service
-}                             from 'typedi'
+}                           from '@airport/holding-pattern'
+import {IDomain}            from '@airport/territory'
 import {
 	ID_GENERATOR,
 	SEQUENCE_GENERATOR
-}                             from '../InjectionTokens'
-import {ISequenceGenerator}   from './SequenceGenerator'
+}                           from '../diTokens'
+import {ISequenceGenerator} from './SequenceGenerator'
 
 export type NumRepositoryTransHistories = number
 export type NumOperationTransHistories = number
@@ -73,20 +55,25 @@ export interface IIdGenerator {
  * Created by Papa on 9/2/2016.
  */
 
-@Service(ID_GENERATOR)
 export class IdGenerator
 	implements IIdGenerator {
 
 	private transactionHistoryIdColumns: DbColumn[] = []
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(SEQUENCE_GENERATOR)
-		private sequenceGenerator: ISequenceGenerator,
-		@Inject(UtilsToken)
-		private utils: IUtils
-	) {
+	private airDb: IAirportDatabase
+	private sequenceGenerator: ISequenceGenerator
+	private utils: IUtils
+
+	constructor() {
+		DI.get((
+			airportDatabase,
+			sequenceGenerator,
+			utils
+		) => {
+			this.airDb             = airportDatabase
+			this.sequenceGenerator = sequenceGenerator
+			this.utils             = utils
+		}, AIR_DB, SEQUENCE_GENERATOR, UTILS)
 	}
 
 	async init(
@@ -95,13 +82,13 @@ export class IdGenerator
 		await this.sequenceGenerator.init(domain)
 
 		const transHistoryDbEntity     =
-			this.getHoldingPatternDbEntity('TransactionHistory')
+			      this.getHoldingPatternDbEntity('TransactionHistory')
 		const repoTransHistoryDbEntity =
-			this.getHoldingPatternDbEntity('RepositoryTransactionHistory')
+			      this.getHoldingPatternDbEntity('RepositoryTransactionHistory')
 		const operationHistoryDbEntity =
-			this.getHoldingPatternDbEntity('OperationHistory')
+			      this.getHoldingPatternDbEntity('OperationHistory')
 		const recordHistoryDbEntity    =
-			this.getHoldingPatternDbEntity('RecordHistory')
+			      this.getHoldingPatternDbEntity('RecordHistory')
 
 		this.transactionHistoryIdColumns.push(
 			transHistoryDbEntity.idColumns[0]
@@ -153,3 +140,5 @@ export class IdGenerator
 
 
 }
+
+DI.set(ID_GENERATOR, IdGenerator)

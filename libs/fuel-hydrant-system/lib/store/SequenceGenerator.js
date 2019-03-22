@@ -1,26 +1,17 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const airport_code_1 = require("@airport/airport-code");
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../InjectionTokens");
-let SequenceGenerator = class SequenceGenerator {
-    constructor(sequenceBlockDao, sequenceConsumerDao, sequenceDao, utils) {
-        this.sequenceBlockDao = sequenceBlockDao;
-        this.sequenceConsumerDao = sequenceConsumerDao;
-        this.sequenceDao = sequenceDao;
-        this.utils = utils;
+const di_1 = require("@airport/di");
+const diTokens_1 = require("../diTokens");
+class SequenceGenerator {
+    constructor() {
         this.sequences = [];
         this.sequenceBlocks = [];
+        di_1.DI.get((sequenceBlockDao, sequenceConsumerDao, sequenceDao) => {
+            this.sequenceBlockDao = sequenceBlockDao;
+            this.sequenceConsumer = sequenceConsumerDao;
+            this.sequenceDao = sequenceDao;
+        }, airport_code_1.SEQUENCE_BLOCK_DAO, airport_code_1.SEQUENCE_CONSUMER_DAO, airport_code_1.SEQUENCE_DAO);
     }
     async init(domain) {
         this.sequenceConsumer = {
@@ -118,13 +109,7 @@ let SequenceGenerator = class SequenceGenerator {
             sequenceBlock
         };
     }
-};
-SequenceGenerator = __decorate([
-    typedi_1.Service(InjectionTokens_1.SEQUENCE_GENERATOR),
-    __param(0, typedi_1.Inject(airport_code_1.SequenceBlockDaoToken)),
-    __param(1, typedi_1.Inject(airport_code_1.SequenceConsumerDaoToken)),
-    __param(2, typedi_1.Inject(airport_code_1.SequenceDaoToken)),
-    __param(3, typedi_1.Inject(air_control_1.UtilsToken))
-], SequenceGenerator);
+}
 exports.SequenceGenerator = SequenceGenerator;
+di_1.DI.set(diTokens_1.SEQUENCE_GENERATOR, SequenceGenerator);
 //# sourceMappingURL=SequenceGenerator.js.map

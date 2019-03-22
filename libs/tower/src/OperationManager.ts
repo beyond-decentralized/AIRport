@@ -1,4 +1,5 @@
 import {
+	AIR_DB,
 	and,
 	Delete,
 	EntityIdData,
@@ -18,8 +19,10 @@ import {
 	RawInsertValues,
 	UpdateColumns,
 	UpdateProperties,
-	UpdateRecord
-}                                        from "@airport/air-control";
+	UpdateRecord,
+	UTILS
+}                                        from '@airport/air-control'
+import {DI}                              from '@airport/di'
 import {
 	CascadeType,
 	CRUDOperation,
@@ -31,10 +34,15 @@ import {
 	JSONBaseOperation,
 	JSONValueOperation,
 	PortableQuery,
-	SQLDataType
-}                                        from "@airport/ground-control";
-import {IInternalTransactionalConnector} from "./core/data/IInternalTransactionalConnector";
-import {IUpdateCache}                    from "./core/data/UpdateCache";
+	SQLDataType,
+	TRANS_CONNECTOR
+}                                        from '@airport/ground-control'
+import {IInternalTransactionalConnector} from './core/data/IInternalTransactionalConnector'
+import {IUpdateCache}                    from './core/data/UpdateCache'
+import {
+	QUERY_FACADE,
+	UPDATE_CACHE
+}                                        from './diTokens'
 
 /**
  * Created by Papa on 11/15/2016.
@@ -64,16 +72,28 @@ export interface IOperationManager {
 export abstract class OperationManager
 	implements IOperationManager {
 
-	transactionInProgress: boolean = false;
-	higherOrderOpsYieldLength: number = 100;
+	protected airDb: IAirportDatabase
+	public entity: IQueryFacade
+	higherOrderOpsYieldLength: number = 100
+	public transactionClient: IInternalTransactionalConnector
+	transactionInProgress: boolean    = false
+	public updateCache: IUpdateCache
+	public utils: IUtils
 
-	constructor(
-		protected airportDb: IAirportDatabase,
-		public utils: IUtils,
-		public entity: IQueryFacade,
-		public transactionClient: IInternalTransactionalConnector,
-		public updateCache: IUpdateCache,
-	) {
+	constructor() {
+		DI.get((
+			airportDatabase,
+			queryFacade,
+			transConnector,
+			updateCache,
+			utils
+		) => {
+			this.airDb             = airportDatabase
+			this.entity            = queryFacade
+			this.transactionClient = transConnector
+			this.updateCache       = updateCache
+			this.utils             = utils
+		}, AIR_DB, QUERY_FACADE, TRANS_CONNECTOR, UPDATE_CACHE, UTILS)
 	}
 
 	throwUnexpectedProperty(
@@ -82,11 +102,11 @@ export abstract class OperationManager
 		value: any
 	) {
 		throw `Unexpected property value '${value.toString()}' in property '${dbProperty.entity.name}.${dbProperty.name}'
-		(column: '${dbColumn.name}').`;
+		(column: '${dbColumn.name}').`
 	}
 
 	protected warn(message: string) {
-		console.log(message);
+		console.log(message)
 	}
 
 	/**
@@ -103,12 +123,12 @@ export abstract class OperationManager
 		cascadeAlways = false,
 	): Promise<number> {
 		let result = await this.internalCreate(dbEntity, [entity],
-			createdEntityMap, !idData, cascadeAlways);
+			createdEntityMap, !idData, cascadeAlways)
 
 		await this.cascadeOnPersist(result.cascadeRecords, dbEntity,
-			createdEntityMap, cascadeAlways);
+			createdEntityMap, cascadeAlways)
 
-		return result.numberOfAffectedRecords;
+		return result.numberOfAffectedRecords
 	}
 
 	/**
@@ -122,14 +142,14 @@ export abstract class OperationManager
 		entities: E[],
 		createdEntityMap: { [entityId: string]: any }[][],
 		checkIfProcessed: boolean = true,
-		cascadeAlways: boolean = false
+		cascadeAlways: boolean    = false
 	): Promise<number> {
 		let result = await this.internalCreate(dbEntity, entities,
-			createdEntityMap, checkIfProcessed, cascadeAlways);
+			createdEntityMap, checkIfProcessed, cascadeAlways)
 		await this.cascadeOnPersist(result.cascadeRecords, dbEntity,
-			createdEntityMap, cascadeAlways);
+			createdEntityMap, cascadeAlways)
 
-		return result.numberOfAffectedRecords;
+		return result.numberOfAffectedRecords
 	}
 
 	private async internalCreate<E>(
@@ -139,30 +159,30 @@ export abstract class OperationManager
 		checkIfProcessed: boolean,
 		cascadeAlways = false
 	): Promise<ResultWithCascade> {
-		const qEntity = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
+		const qEntity = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
 
 		let rawInsert: RawInsertValues<any> = {
 			insertInto: qEntity,
 			columns: this.utils.Medatada.getAllColumns(qEntity),
 			values: []
-		};
-		let cascadeRecords: CascadeRecord[] = [];
+		}
+		let cascadeRecords: CascadeRecord[] = []
 
 		for (const entity of entities) {
 			if (checkIfProcessed && this.isProcessed(entity, createdEntityMap, dbEntity)[0] === true) {
-				return;
+				return
 			}
-			let foundValues = [];
-			let valuesFragment: any = [];
+			let foundValues         = []
+			let valuesFragment: any = []
 
 			for (const dbProperty of dbEntity.properties) {
-				const newValue: any = entity[dbProperty.name];
+				const newValue: any = entity[dbProperty.name]
 				if (dbProperty.relation.length) {
-					const dbRelation = dbProperty.relation[0];
-					this.assertRelationValueIsAnObject(newValue, dbProperty);
+					const dbRelation = dbProperty.relation[0]
+					this.assertRelationValueIsAnObject(newValue, dbProperty)
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
-							this.assertManyToOneNotArray(newValue);
+							this.assertManyToOneNotArray(newValue)
 							this.utils.Schema.forEachColumnOfRelation(dbRelation, entity, (
 								dbColumn: DbColumn,
 								columnValue: any,
@@ -170,76 +190,76 @@ export abstract class OperationManager
 							) => {
 								if (dbProperty.isId) {
 									if (this.utils.Schema.isIdEmpty(columnValue)) {
-										throw `non-@GeneratedValue() @Id() ${dbEntity.name}.${dbProperty.name} must have a value for 'create' operations.`;
+										throw `non-@GeneratedValue() @Id() ${dbEntity.name}.${dbProperty.name} must have a value for 'create' operations.`
 									}
 								}
 								if (this.utils.Schema.isRepositoryId(dbColumn.name)) {
 									if (this.utils.Schema.isEmpty(columnValue)) {
-										throw `Repository Id must be specified on an insert`;
+										throw `Repository Id must be specified on an insert`
 									}
 								}
-								this.columnProcessed(dbProperty, foundValues, dbColumn, columnValue);
-								valuesFragment[dbColumn.index] = columnValue;
-							}, false);
-							// Cascading on manyToOne is not currently implemented, nothing else needs to be
-							// done
-							continue;
+								this.columnProcessed(dbProperty, foundValues, dbColumn, columnValue)
+								valuesFragment[dbColumn.index] = columnValue
+							}, false)
+							// Cascading on manyToOne is not currently implemented, nothing else needs
+							// to be done
+							continue
 						case EntityRelationType.ONE_TO_MANY:
-							this.assertOneToManyIsArray(newValue);
+							this.assertOneToManyIsArray(newValue)
 							if (!cascadeAlways && !this.utils.Schema.doCascade(dbRelation, CRUDOperation.CREATE)) {
-								continue;
+								continue
 							}
 
 							cascadeRecords.push({
 								relation: dbRelation,
 								manyEntities: newValue,
-							});
-							break;
+							})
+							break
 					}
 				} else {
-					let column = dbProperty.propertyColumns[0].column;
-					this.ensureNonRelationalValue(dbProperty, column, newValue);
+					let column = dbProperty.propertyColumns[0].column
+					this.ensureNonRelationalValue(dbProperty, column, newValue)
 					if (this.utils.Schema.isRepositoryId(column.name)
 						&& this.utils.Schema.isEmpty(newValue)) {
-						throw `Repository Id must be specified on an insert`;
+						throw `Repository Id must be specified on an insert`
 					}
 					if (column.isGenerated && (newValue !== undefined && newValue !== null)) {
-						throw `@GeneratedValue() "${dbEntity.name}.${dbProperty.name}" cannot have a value for 'create' operations.`;
+						throw `@GeneratedValue() "${dbEntity.name}.${dbProperty.name}" cannot have a value for 'create' operations.`
 					}
 					if (dbProperty.isId) {
 						if (!column.isGenerated && this.utils.Schema.isIdEmpty(newValue)) {
-							throw `non-@GeneratedValue() @Id() "${dbEntity.name}.${dbProperty.name}" must have a value for 'create' operations.`;
+							throw `non-@GeneratedValue() @Id() "${dbEntity.name}.${dbProperty.name}" must have a value for 'create' operations.`
 						}
 					}
-					this.columnProcessed(dbProperty, foundValues, column, newValue);
-					valuesFragment[column.index] = newValue;
+					this.columnProcessed(dbProperty, foundValues, column, newValue)
+					valuesFragment[column.index] = newValue
 				}
 			}
-			rawInsert.values.push(valuesFragment);
+			rawInsert.values.push(valuesFragment)
 		}
 
-		let numberOfAffectedRecords = 0;
+		let numberOfAffectedRecords = 0
 
 
 		if (rawInsert.values.length) {
-			const generatedProperty = this.getGeneratedProperty(dbEntity);
+			const generatedProperty = this.getGeneratedProperty(dbEntity)
 			if (generatedProperty) {
-				const generatedIds = await this.internalInsertValuesGetIds(dbEntity, rawInsert);
+				const generatedIds = await this.internalInsertValuesGetIds(dbEntity, rawInsert)
 				for (let i = 0; i < entities.length; i++) {
-					const entity = entities[i];
-					entity[generatedProperty.name] = generatedIds[i];
-					numberOfAffectedRecords = generatedIds.length;
+					const entity                   = entities[i]
+					entity[generatedProperty.name] = generatedIds[i]
+					numberOfAffectedRecords        = generatedIds.length
 				}
 			} else {
 				numberOfAffectedRecords = await
-					this.internalInsertValues(dbEntity, rawInsert);
+					this.internalInsertValues(dbEntity, rawInsert)
 			}
 		}
 
 		return {
 			cascadeRecords: cascadeRecords,
 			numberOfAffectedRecords: numberOfAffectedRecords,
-		};
+		}
 	}
 
 	private getGeneratedProperty(
@@ -247,16 +267,16 @@ export abstract class OperationManager
 	): DbProperty | null {
 		const generatedColumns = dbEntity.idColumns.filter(
 			dbColumn => dbColumn.isGenerated
-		);
+		)
 		switch (generatedColumns.length) {
 			case 0:
-				return null;
+				return null
 			case 1:
-				return generatedColumns[0].propertyColumns[0].property;
+				return generatedColumns[0].propertyColumns[0].property
 			default:
 				throw `Multiple @GeneratedValue() columns are not supported,
 				entity: ${dbEntity.schemaVersion.schema.name}.${dbEntity.name}
-				(schema version: ${dbEntity.schemaVersion.versionString}`;
+				(schema version: ${dbEntity.schemaVersion.versionString}`
 		}
 	}
 
@@ -276,58 +296,58 @@ export abstract class OperationManager
 		// 	throw `Values cannot be undefined, please use null.`;
 		// }
 		if (foundValues[dbColumn.index] === undefined) {
-			foundValues[dbColumn.index] = value;
-			return false;
+			foundValues[dbColumn.index] = value
+			return false
 		}
 		if (!this.utils.valuesEqual(foundValues[dbColumn.index], value)) {
 			throw `Found value mismatch in '${dbProperty.entity.name}.${dbProperty.name}'
-			(column: '${dbColumn.name}'): ${foundValues[dbColumn.index]} !== ${value}`;
+			(column: '${dbColumn.name}'): ${foundValues[dbColumn.index]} !== ${value}`
 		}
-		return true;
+		return true
 	}
 
 	protected async internalInsertColumnValues<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawInsertColumnValues: RawInsertColumnValues<IQE>
 	): Promise<number> {
-		const insertColumnValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues);
+		const insertColumnValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
 
-		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertColumnValues, null);
+		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertColumnValues, null)
 
-		return await this.transactionClient.insertValues(portableQuery);
+		return await this.transactionClient.insertValues(portableQuery)
 	}
 
 	protected async internalInsertValues<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE>
 	): Promise<number> {
-		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues);
+		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 
-		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null);
+		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null)
 
-		return await this.transactionClient.insertValues(portableQuery);
+		return await this.transactionClient.insertValues(portableQuery)
 	}
 
 	protected async internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawInsertColumnValues: RawInsertColumnValues<IQE>
 	): Promise<number[] | string[]> {
-		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues);
+		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
 
-		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null);
+		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null)
 
-		return await this.transactionClient.insertValuesGetIds(portableQuery);
+		return await this.transactionClient.insertValuesGetIds(portableQuery)
 	}
 
 	protected async internalInsertValuesGetIds<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE>
 	): Promise<number[] | string[]> {
-		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues);
+		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 
-		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null);
+		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null)
 
-		return await this.transactionClient.insertValuesGetIds(portableQuery);
+		return await this.transactionClient.insertValuesGetIds(portableQuery)
 	}
 
 	/**
@@ -344,22 +364,22 @@ export abstract class OperationManager
 		cascadeAlways = false,
 	): Promise<number> {
 		if (!originalValue) {
-			let [isProcessed, entityIdData] = this.isProcessed(entity, updatedEntityMap, dbEntity);
+			let [isProcessed, entityIdData] = this.isProcessed(entity, updatedEntityMap, dbEntity)
 			if (isProcessed === true) {
-				return 0;
+				return 0
 			}
 			if (!entityIdData.idKey) {
-				throw `Cannot update ${dbEntity.name}, not all @Id(s) are set.`;
+				throw `Cannot update ${dbEntity.name}, not all @Id(s) are set.`
 			}
-			let originalValue = await this.getOriginalRecord(dbEntity, entityIdData.idKey);
+			let originalValue = await this.getOriginalRecord(dbEntity, entityIdData.idKey)
 			if (!originalValue) {
-				throw `Cannot update ${dbEntity.name}, entity not found.`;
+				throw `Cannot update ${dbEntity.name}, entity not found.`
 			}
 		}
-		let result = await this.internalUpdate(dbEntity, entity, originalValue, cascadeAlways);
-		await this.cascadeOnPersist(result.cascadeRecords, dbEntity, updatedEntityMap, cascadeAlways);
+		let result = await this.internalUpdate(dbEntity, entity, originalValue, cascadeAlways)
+		await this.cascadeOnPersist(result.cascadeRecords, dbEntity, updatedEntityMap, cascadeAlways)
 
-		return result.numberOfAffectedRecords;
+		return result.numberOfAffectedRecords
 	}
 
 	private async cascadeOnPersist(
@@ -369,73 +389,74 @@ export abstract class OperationManager
 		cascadeAlways: boolean = false,
 	): Promise<void> {
 		if (!cascadeRecords.length) {
-			return;
+			return
 		}
 		for (const cascadeRecord of cascadeRecords) {
 			if (!cascadeRecord.relation.oneToManyElems) {
-				continue;
+				continue
 			}
 
 			switch (cascadeRecord.relation.oneToManyElems.cascade) {
 				case CascadeType.ALL:
 				case CascadeType.PERSIST:
-					break;
+					break
 				// Do not cascade if its for REMOVE only
 				default:
-					continue;
+					continue
 			}
-			const entitiesWithIds: UpdateRecord[] = [];
-			const entitiesWithIdMap: { [idKey: string]: UpdateRecord } = {};
-			const entitiesWithoutIds: any[] = [];
-			const dbEntity = cascadeRecord.relation.relationEntity;
+			const entitiesWithIds: UpdateRecord[]                      = []
+			const entitiesWithIdMap: { [idKey: string]: UpdateRecord } = {}
+			const entitiesWithoutIds: any[]                            = []
+			const dbEntity                                             = cascadeRecord.relation.relationEntity
 			for (const manyEntity of cascadeRecord.manyEntities) {
 				const [isProcessed, entityIdData] = this.isProcessed(manyEntity,
-					alreadyModifiedEntityMap, dbEntity);
+					alreadyModifiedEntityMap, dbEntity)
 				if (isProcessed === true) {
-					return;
+					return
 				}
 				const record: UpdateRecord = {
 					newValue: manyEntity,
 					originalValue: null,
 					idData: entityIdData
-				};
+				}
 				if (entityIdData.idKey) {
-					entitiesWithIds.push(record);
-					entitiesWithIdMap[entityIdData.idKey] = record;
+					entitiesWithIds.push(record)
+					entitiesWithIdMap[entityIdData.idKey] = record
 				} else {
-					entitiesWithoutIds.push(record);
+					entitiesWithoutIds.push(record)
 				}
 			}
 			if (entitiesWithIds.length) {
-				const originalValues = await this.getOriginalValues(entitiesWithIds, dbEntity);
+				const originalValues = await this.getOriginalValues(entitiesWithIds, dbEntity)
 				for (const idKey in originalValues.dataMap) {
-					entitiesWithIdMap[idKey].originalValue = originalValues.dataMap[idKey];
+					entitiesWithIdMap[idKey].originalValue = originalValues.dataMap[idKey]
 				}
 				for (let i = 0; i < entitiesWithIds.length; i++) {
-					let entityToUpdate = entitiesWithIds[i];
+					let entityToUpdate = entitiesWithIds[i]
 					if (!entityToUpdate.originalValue) {
 						if (entityToUpdate.idData.idColumnValueData.length == 1) {
 							// Entity with a single Id always has the @Id generated
 							// hence, it must have since been deleted, skip it
-							return;
+							return
 						}
 						// Don't know if the entity has been deleted or is a brand new one, create it
-						// TODO: figure out if the entity has been deleted and if it has, throw an exception?
+						// TODO: figure out if the entity has been deleted and if it has, throw an
+						// exception?
 						await
 							this.performCreate(dbEntity, entityToUpdate.newValue,
-								alreadyModifiedEntityMap, entityToUpdate.idData, cascadeAlways);
+								alreadyModifiedEntityMap, entityToUpdate.idData, cascadeAlways)
 					} else {
 						await
 							this.performUpdate(dbEntity, entityToUpdate.newValue,
-								alreadyModifiedEntityMap, entityToUpdate.originalValue, cascadeAlways);
+								alreadyModifiedEntityMap, entityToUpdate.originalValue, cascadeAlways)
 					}
 				}
 			}
 			for (let i = 0; i < entitiesWithoutIds.length; i++) {
-				let entityToCreate = entitiesWithoutIds[i];
+				let entityToCreate = entitiesWithoutIds[i]
 				await
 					this.performCreate(dbEntity, entityToCreate,
-						alreadyModifiedEntityMap, entityToCreate.idData, cascadeAlways);
+						alreadyModifiedEntityMap, entityToCreate.idData, cascadeAlways)
 			}
 		}
 	}
@@ -454,7 +475,7 @@ export abstract class OperationManager
 		entitiesToUpdate: UpdateRecord[],
 		qEntity: IQEntity
 	): JSONBaseOperation {
-		let idsWhereClause: JSONBaseOperation;
+		let idsWhereClause: JSONBaseOperation
 		if (entitiesToUpdate[0].idData.idColumnValueData.length > 1) {
 			let idsWhereClauseFragments = entitiesToUpdate.map((entityToUpdate) => {
 				let singleIdWhereClauseFragments: JSONValueOperation[] = entityToUpdate.idData.idColumnValueData.map((
@@ -463,35 +484,35 @@ export abstract class OperationManager
 						idValue: number | string,
 						propertyNameChains: string[][],
 					}) => {
-					let currentQObject: any = qEntity;
+					let currentQObject: any = qEntity
 					for (const propertyName of referencedData.propertyNameChains[0]) {
-						currentQObject = currentQObject[propertyName];
+						currentQObject = currentQObject[propertyName]
 					}
-					return currentQObject.equals(referencedData.idValue);
-				});
-				return and(...singleIdWhereClauseFragments);
-			});
+					return currentQObject.equals(referencedData.idValue)
+				})
+				return and(...singleIdWhereClauseFragments)
+			})
 			if (entitiesToUpdate.length > 1) {
-				idsWhereClause = or(...idsWhereClauseFragments);
+				idsWhereClause = or(...idsWhereClauseFragments)
 			} else {
-				return idsWhereClauseFragments[0];
+				return idsWhereClauseFragments[0]
 			}
 		} else {
 			let idsWhereClauseFragments = entitiesToUpdate.map((entityToUpdate) => {
-				return entityToUpdate.idData.idColumnValueData[0].idValue;
-			});
-			let currentQObject: any = qEntity;
+				return entityToUpdate.idData.idColumnValueData[0].idValue
+			})
+			let currentQObject: any     = qEntity
 			for (const propertyName of entitiesToUpdate[0].idData.idColumnValueData[0].propertyNameChains[0]) {
-				currentQObject = currentQObject[propertyName];
+				currentQObject = currentQObject[propertyName]
 			}
 			if (entitiesToUpdate.length > 1) {
-				idsWhereClause = currentQObject.in(...idsWhereClauseFragments);
+				idsWhereClause = currentQObject.in(...idsWhereClauseFragments)
 			} else {
-				idsWhereClause = currentQObject.equals(idsWhereClauseFragments[0]);
+				idsWhereClause = currentQObject.equals(idsWhereClauseFragments[0])
 			}
 		}
 
-		return idsWhereClause;
+		return idsWhereClause
 	}
 
 	/**
@@ -508,97 +529,98 @@ export abstract class OperationManager
 		originalEntity: E,
 		cascadeAlways = false
 	): Promise<ResultWithCascade> {
-		const qEntity = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
-		const cascadeRecords: CascadeRecord[] = [];
-		const setFragment: any = {};
-		const idWhereFragments: JSONValueOperation[] = [];
-		let numUpdates = 0;
-		const valuesMapByColumn: any[] = [];
+		const qEntity                                = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
+		const cascadeRecords: CascadeRecord[]        = []
+		const setFragment: any                       = {}
+		const idWhereFragments: JSONValueOperation[] = []
+		let numUpdates                               = 0
+		const valuesMapByColumn: any[]               = []
 
 		for (const dbProperty of dbEntity.properties) {
-			const updatedValue = entity[dbProperty.name];
+			const updatedValue = entity[dbProperty.name]
 			if (!dbProperty.relation || !dbProperty.relation.length) {
-				const dbColumn = dbProperty.propertyColumns[0].column;
-				this.ensureNonRelationalValue(dbProperty, dbColumn, updatedValue);
+				const dbColumn = dbProperty.propertyColumns[0].column
+				this.ensureNonRelationalValue(dbProperty, dbColumn, updatedValue)
 				if (this.columnProcessed(dbProperty, valuesMapByColumn, dbColumn, updatedValue)) {
-					continue;
+					continue
 				}
-				const originalValue = originalEntity[dbColumn.name];
+				const originalValue = originalEntity[dbColumn.name]
 				if (dbProperty.isId) {
-					// For an id property, the value is guaranteed to be the same (and not empty) - cannot
-					// entity-update id fields
-					idWhereFragments.push((<any>qEntity)[dbProperty.name].equals(updatedValue));
+					// For an id property, the value is guaranteed to be the same (and not empty) -
+					// cannot entity-update id fields
+					idWhereFragments.push((<any>qEntity)[dbProperty.name].equals(updatedValue))
 				} else if (!this.utils.valuesEqual(originalValue, updatedValue)) {
-					setFragment[dbColumn.name] = updatedValue;
-					numUpdates++;
+					setFragment[dbColumn.name] = updatedValue
+					numUpdates++
 				}
-				continue;
+				continue
 			}
 			// It's a relation property
-			this.assertRelationValueIsAnObject(updatedValue, dbProperty);
-			const dbRelation = dbProperty.relation[0];
+			this.assertRelationValueIsAnObject(updatedValue, dbProperty)
+			const dbRelation = dbProperty.relation[0]
 			switch (dbRelation.relationType) {
 				case EntityRelationType.MANY_TO_ONE:
-					this.assertManyToOneNotArray(updatedValue);
+					this.assertManyToOneNotArray(updatedValue)
 					this.utils.Schema.forEachColumnOfRelation(dbRelation, entity, (
 						dbColumn: DbColumn,
 						value: any,
 						propertyNameChains: string[][],
 					) => {
 						if (this.columnProcessed(dbProperty, valuesMapByColumn, dbColumn, value)) {
-							return;
+							return
 						}
-						let originalValue = originalEntity[dbColumn.name];
+						let originalValue = originalEntity[dbColumn.name]
 						if (dbProperty.isId) {
-							let idQProperty = qEntity;
+							let idQProperty = qEntity
 							for (const propertyNameLink of propertyNameChains[0]) {
-								idQProperty = idQProperty[propertyNameLink];
+								idQProperty = idQProperty[propertyNameLink]
 							}
-							// For an id property, the value is guaranteed to be the same (and not empty) -
-							// cannot entity-update id fields
-							idWhereFragments.push(idQProperty.equals(value));
+							// For an id property, the value is guaranteed to be the same (and not
+							// empty) - cannot entity-update id fields
+							idWhereFragments.push(idQProperty.equals(value))
 						} else if (!this.utils.valuesEqual(originalValue, value)) {
-							setFragment[dbColumn.name] = value;
-							numUpdates++;
+							setFragment[dbColumn.name] = value
+							numUpdates++
 						}
-					}, dbProperty.isId);
-					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
-					continue;
+					}, dbProperty.isId)
+					// Cascading on manyToOne is not currently implemented, nothing else needs to
+					// be done
+					continue
 				case EntityRelationType.ONE_TO_MANY:
-					this.assertOneToManyIsArray(updatedValue);
+					this.assertOneToManyIsArray(updatedValue)
 					if (!cascadeAlways && !this.utils.Schema.doCascade(dbRelation, CRUDOperation.UPDATE)) {
-						continue;
+						continue
 					}
 					cascadeRecords.push({
 						relation: dbRelation,
 						manyEntities: updatedValue,
-					});
-					break;
+					})
+					break
 			}
 		}
 
-		let numberOfAffectedRecords = 0;
+		let numberOfAffectedRecords = 0
 		if (numUpdates) {
-			let whereFragment;
+			let whereFragment
 			if (idWhereFragments.length > 1) {
-				whereFragment = and(...idWhereFragments);
+				whereFragment = and(...idWhereFragments)
 			} else {
-				whereFragment = idWhereFragments[0];
+				whereFragment = idWhereFragments[0]
 			}
-			let rawUpdate = {
+			let rawUpdate                          = {
 				update: qEntity,
 				set: setFragment,
 				where: whereFragment
-			};
-			let update: UpdateProperties<any, any> = new UpdateProperties(rawUpdate, this.utils);
+			}
+			let update: UpdateProperties<any, any> = new UpdateProperties(rawUpdate, this.utils)
 
-			numberOfAffectedRecords = await this.internalUpdateWhere(dbEntity, update);
+			numberOfAffectedRecords = await this.internalUpdateWhere(dbEntity, update)
 		}
 		return {
 			recordChanged: !!numUpdates,
 			numberOfAffectedRecords: numberOfAffectedRecords,
 			cascadeRecords: cascadeRecords
-		};
+		}
 	}
 
 	private ensureNonRelationalValue(
@@ -607,36 +629,36 @@ export abstract class OperationManager
 		value: any
 	) {
 		if (value === undefined || value === null) {
-			return;
+			return
 		}
 		switch (dbColumn.type) {
 			case SQLDataType.ANY:
-				break;
+				break
 			case SQLDataType.BOOLEAN:
 				if (typeof value !== 'boolean') {
-					this.throwUnexpectedProperty(dbProperty, dbColumn, value);
+					this.throwUnexpectedProperty(dbProperty, dbColumn, value)
 				}
-				break;
+				break
 			case SQLDataType.DATE:
 				if (typeof value !== 'object' || !(value instanceof Date)) {
-					this.throwUnexpectedProperty(dbProperty, dbColumn, value);
+					this.throwUnexpectedProperty(dbProperty, dbColumn, value)
 				}
-				break;
+				break
 			case SQLDataType.JSON:
 				if (typeof value !== 'object' || value instanceof Date) {
-					this.throwUnexpectedProperty(dbProperty, dbColumn, value);
+					this.throwUnexpectedProperty(dbProperty, dbColumn, value)
 				}
-				break;
+				break
 			case SQLDataType.NUMBER:
 				if (typeof value !== 'number') {
-					this.throwUnexpectedProperty(dbProperty, dbColumn, value);
+					this.throwUnexpectedProperty(dbProperty, dbColumn, value)
 				}
-				break;
+				break
 			case SQLDataType.STRING:
 				if (typeof value !== 'string') {
-					this.throwUnexpectedProperty(dbProperty, dbColumn, value);
+					this.throwUnexpectedProperty(dbProperty, dbColumn, value)
 				}
-				break;
+				break
 		}
 	}
 
@@ -647,21 +669,21 @@ export abstract class OperationManager
 		if (relationValue !== null && relationValue !== undefined &&
 			(typeof relationValue != 'object' || relationValue instanceof Date)
 		) {
-			throw `Unexpected value in relation property: ${dbProperty.name}, of entity ${dbProperty.entity.name}`;
+			throw `Unexpected value in relation property: ${dbProperty.name}, of entity ${dbProperty.entity.name}`
 		}
 	}
 
 	private assertManyToOneNotArray(relationValue: any
 	): void {
 		if (relationValue instanceof Array) {
-			throw `@ManyToOne relation cannot be an array`;
+			throw `@ManyToOne relation cannot be an array`
 		}
 	}
 
 	private assertOneToManyIsArray(relationValue: any
 	): void {
 		if (!(relationValue instanceof Array)) {
-			throw `@OneToMany relation must be an array`;
+			throw `@OneToMany relation must be an array`
 		}
 	}
 
@@ -671,9 +693,9 @@ export abstract class OperationManager
 		updateColumns: UpdateColumns<IEUC, IQE>
 	): Promise<number> {
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(
-			dbEntity, updateColumns, null);
+			dbEntity, updateColumns, null)
 
-		return await  this.transactionClient.updateValues(portableQuery);
+		return await this.transactionClient.updateValues(portableQuery)
 	}
 
 	protected async internalUpdateWhere<E, IEUP extends IEntityUpdateProperties,
@@ -682,9 +704,9 @@ export abstract class OperationManager
 		update: UpdateProperties<IEUP, IQE>
 	): Promise<number> {
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(
-			dbEntity, update, null);
+			dbEntity, update, null)
 
-		return await  this.transactionClient.updateValues(portableQuery);
+		return await this.transactionClient.updateValues(portableQuery)
 	}
 
 	/**
@@ -696,7 +718,7 @@ export abstract class OperationManager
 		dbEntity: DbEntity,
 		entity: E,
 	): Promise<number> {
-		return await this.internalDelete(dbEntity, entity);
+		return await this.internalDelete(dbEntity, entity)
 	}
 
 	private isProcessed<E>(
@@ -706,22 +728,22 @@ export abstract class OperationManager
 		dbEntity: DbEntity,
 	): [boolean, EntityIdData] {
 		if (markAsStub(entity)) {
-			return [true, null];
+			return [true, null]
 		}
 
 		if (!dbEntity.idColumns.length) {
 			throw `Cannot run 'create'|'bulkCreate'|'update' for entity '${dbEntity.name}' with no @Id(s).
-			Please use 'insert'|'updateWhere' instead.`;
+			Please use 'insert'|'updateWhere' instead.`
 		}
 
 		const entityIdData: EntityIdData = {
 			idColumnValueData: [],
 			idKey: null
-		};
+		}
 
 		// Attempt to get the id, allowing for non-ided entities,
 		// fail if (part of) an id is empty.
-		const idKey = this.utils.Schema.getIdKey(entity, dbEntity,
+		const idKey        = this.utils.Schema.getIdKey(entity, dbEntity,
 			false, (
 				idColumn: DbColumn,
 				idValue: number | string,
@@ -732,95 +754,95 @@ export abstract class OperationManager
 					idValue,
 					propertyNameChains,
 				})
-			});
-		entityIdData.idKey = idKey;
+			})
+		entityIdData.idKey = idKey
 		if (!idKey) {
-			return [false, entityIdData];
+			return [false, entityIdData]
 		}
 
-		const mapForSchema = this.utils.ensureChildArray(
-			operatedOnEntityMap, dbEntity.schemaVersion.schema.index);
-		const mapForEntityType = this.utils.ensureChildMap(mapForSchema, dbEntity.index);
-		const alreadyOperatedOnEntity = mapForEntityType[idKey];
+		const mapForSchema            = this.utils.ensureChildArray(
+			operatedOnEntityMap, dbEntity.schemaVersion.schema.index)
+		const mapForEntityType        = this.utils.ensureChildMap(mapForSchema, dbEntity.index)
+		const alreadyOperatedOnEntity = mapForEntityType[idKey]
 
 		if (!alreadyOperatedOnEntity) {
-			mapForEntityType[idKey] = entity;
-			return [false, entityIdData];
+			mapForEntityType[idKey] = entity
+			return [false, entityIdData]
 		}
 
 		if (alreadyOperatedOnEntity === entity) {
 			// The Update operation for this entity was already recorded, nothing to do
-			return [true, null];
+			return [true, null]
 		}
 
 		// If it's new entity, not in cache
-		let hasNonIdProperties = false;
+		let hasNonIdProperties = false
 		for (let propertyName in entity) {
 			if (!dbEntity.idColumnMap[propertyName]
 				&& entity.hasOwnProperty(propertyName)) {
-				hasNonIdProperties = true;
-				break;
+				hasNonIdProperties = true
+				break
 			}
 		}
 		// If there is at least one non-id property set, then it's not an id-stub
 		if (hasNonIdProperties) {
-			throw `More than one non-id-stub instance of '${dbEntity.name}' with @Id(s) value '${entityIdData.idKey}' during mutation operation`;
+			throw `More than one non-id-stub instance of '${dbEntity.name}' with @Id(s) value '${entityIdData.idKey}' during mutation operation`
 		}
 
 		// The Update operation for this entity was already recorded, nothing to do
-		return [true, null];
+		return [true, null]
 	}
 
 	protected async internalDeleteWhere<E, IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		aDelete: Delete<IQE>,
 	): Promise<number> {
-		let portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, aDelete, null);
+		let portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, aDelete, null)
 
-		return await this.transactionClient.deleteWhere(portableQuery);
+		return await this.transactionClient.deleteWhere(portableQuery)
 	}
 
 	private async internalDelete(
 		dbEntity: DbEntity,
 		entity: any,
 	): Promise<number> {
-		const qEntity = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
-		const idWhereFragments: JSONValueOperation[] = [];
-		const valuesMapByColumn: any[] = [];
+		const qEntity                                = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
+		const idWhereFragments: JSONValueOperation[] = []
+		const valuesMapByColumn: any[]               = []
 		for (let propertyName in entity) {
 			if (!entity.hasOwnProperty(propertyName)) {
-				continue;
+				continue
 			}
-			const dbProperty = dbEntity.propertyMap[propertyName];
+			const dbProperty = dbEntity.propertyMap[propertyName]
 			// Skip transient fields
 			if (!dbProperty) {
-				continue;
+				continue
 			}
-			const deletedValue = entity[propertyName];
+			const deletedValue = entity[propertyName]
 
-			let dbRelation;
+			let dbRelation
 			if (dbProperty.relation && dbProperty.relation.length) {
-				dbRelation = dbProperty.relation[0];
+				dbRelation = dbProperty.relation[0]
 			}
 			if (!dbRelation) {
 				// If the property is not a transient field and not a relation
-				const dbColumn = dbProperty.propertyColumns[0].column;
-				this.ensureNonRelationalValue(dbProperty, dbColumn, deletedValue);
+				const dbColumn = dbProperty.propertyColumns[0].column
+				this.ensureNonRelationalValue(dbProperty, dbColumn, deletedValue)
 				if (this.columnProcessed(dbProperty, valuesMapByColumn, dbColumn, deletedValue)) {
-					continue;
+					continue
 				}
 				if (dbProperty.isId) {
-					// For an id property, the value is guaranteed to be the same (and not empty) - cannot
-					// entity-update id fields
-					idWhereFragments.push((<any>qEntity)[propertyName].equals(deletedValue));
+					// For an id property, the value is guaranteed to be the same (and not empty) -
+					// cannot entity-update id fields
+					idWhereFragments.push((<any>qEntity)[propertyName].equals(deletedValue))
 				}
-				continue;
+				continue
 			}
 
-			this.assertRelationValueIsAnObject(deletedValue, dbProperty);
+			this.assertRelationValueIsAnObject(deletedValue, dbProperty)
 			switch (dbRelation.relationType) {
 				case EntityRelationType.MANY_TO_ONE:
-					this.assertManyToOneNotArray(deletedValue);
+					this.assertManyToOneNotArray(deletedValue)
 					this.utils.Schema.forEachColumnOfRelation(dbRelation, dbEntity, (
 						dbColumn: DbColumn,
 						value: any,
@@ -829,41 +851,42 @@ export abstract class OperationManager
 						if (dbProperty.isId && valuesMapByColumn[dbColumn.index] === undefined) {
 							if (this.utils.Schema.isIdEmpty(value)) {
 								throw `Required Id value is missing in:
-								'${dbEntity.name}.${propertyNameChains.join('.')}'`;
+								'${dbEntity.name}.${propertyNameChains.join('.')}'`
 							}
-							let idQProperty = qEntity;
+							let idQProperty = qEntity
 							for (const propertyNameLink of propertyNameChains[0]) {
-								idQProperty = idQProperty[propertyNameLink];
+								idQProperty = idQProperty[propertyNameLink]
 							}
-							// For an id property, the value is guaranteed to be the same (and not empty) -
-							// cannot entity-update id fields
-							idWhereFragments.push(idQProperty.equals(value));
+							// For an id property, the value is guaranteed to be the same (and not
+							// empty) - cannot entity-update id fields
+							idWhereFragments.push(idQProperty.equals(value))
 						}
-						this.columnProcessed(dbProperty, valuesMapByColumn, dbColumn, value);
-					}, false);
-					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
-					break;
+						this.columnProcessed(dbProperty, valuesMapByColumn, dbColumn, value)
+					}, false)
+					// Cascading on manyToOne is not currently implemented, nothing else needs to
+					// be done
+					break
 				case EntityRelationType.ONE_TO_MANY:
 					// One-to-Manys do not contain values for the object being deleted
-					break;
+					break
 				default:
-					throw `Unknown relationType '${dbRelation.relationType}' for '${dbEntity.name}.${dbProperty.name}'.`;
+					throw `Unknown relationType '${dbRelation.relationType}' for '${dbEntity.name}.${dbProperty.name}'.`
 			}
 		}
 
-		let idWhereClause;
+		let idWhereClause
 		if (idWhereFragments.length > 1) {
-			idWhereClause = and(...idWhereFragments);
+			idWhereClause = and(...idWhereFragments)
 		} else {
-			idWhereClause = idWhereFragments[0];
+			idWhereClause = idWhereFragments[0]
 		}
 
 		let rawDelete: RawDelete<any> = {
 			deleteFrom: qEntity,
 			where: idWhereClause
-		};
-		let deleteWhere: Delete<any> = new Delete(rawDelete, this.utils);
-		return await this.internalDeleteWhere(dbEntity, deleteWhere);
+		}
+		let deleteWhere: Delete<any>  = new Delete(rawDelete, this.utils)
+		return await this.internalDeleteWhere(dbEntity, deleteWhere)
 	}
 
 }

@@ -1,6 +1,5 @@
 import {
-	AIRPORT_DATABASE,
-	AirportDatabaseToken,
+	AIR_DB,
 	dbConst,
 	FunctionsAndOperators,
 	IAirportDatabase,
@@ -97,4 +96,4 @@ export class AirportDatabase
 
 }
 
-DI.set(AIRPORT_DATABASE, AirportDatabase)
+DI.set(AIR_DB, AirportDatabase)

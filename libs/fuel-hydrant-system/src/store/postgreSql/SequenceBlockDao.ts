@@ -1,32 +1,33 @@
 import {
 	IAbstractSequenceBlockDao,
 	ISequenceBlock,
-	SequenceBlockDaoToken
+	SEQUENCE_BLOCK_DAO
 }                       from '@airport/airport-code'
+import {DI}             from '@airport/di'
 import {
 	IStoreDriver,
-	StoreDriverToken
+	STORE_DRIVER,
 }                       from '@airport/ground-control'
 import {
 	ITerminalStore,
-	TerminalStoreToken
+	TERMINAL_STORE,
 }                       from '@airport/terminal-map'
 import {ISchemaVersion} from '@airport/traffic-pattern'
-import {
-	Inject,
-	Service
-}                       from 'typedi'
 
-@Service(SequenceBlockDaoToken)
 export class SequenceBlockDao
 	implements IAbstractSequenceBlockDao {
 
-	constructor(
-		@Inject(StoreDriverToken)
-		private storeDriver: IStoreDriver,
-		@Inject(TerminalStoreToken)
-		private terminalStore: ITerminalStore
-	) {
+	private storeDriver: IStoreDriver
+	private terminalStore: ITerminalStore
+
+	constructor() {
+		DI.get((
+			storeDriver,
+			terminalStore
+		) => {
+			this.storeDriver   = storeDriver
+			this.terminalStore = terminalStore
+		}, STORE_DRIVER, TERMINAL_STORE)
 	}
 
 	async createNewBlocks(
@@ -79,3 +80,5 @@ export class SequenceBlockDao
 	}
 
 }
+
+DI.set(SEQUENCE_BLOCK_DAO, SequenceBlockDao)

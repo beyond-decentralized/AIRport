@@ -5,23 +5,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
-const typedi_1 = require("typedi");
 const decorators_1 = require("./decorators");
-const InjectionTokens_1 = require("./InjectionTokens");
+const diTokens_1 = require("./diTokens");
 const OperationManager_1 = require("./OperationManager");
 /**
  * Created by Papa on 5/23/2016.
  */
-let EntityManager = class EntityManager extends OperationManager_1.OperationManager {
-    constructor(airportDb, entity, coreUtils, transactionClient, updateCache) {
-        super(airportDb, coreUtils, entity, transactionClient, updateCache);
+class EntityManager extends OperationManager_1.OperationManager {
+    constructor() {
+        super();
         this.find = new air_control_1.NonEntityFind(this, this.utils);
         this.findOne = new air_control_1.NonEntityFindOne(this, this.utils);
         this.search = new air_control_1.NonEntitySearch(this, this.utils);
@@ -143,7 +140,7 @@ let EntityManager = class EntityManager extends OperationManager_1.OperationMana
         return originalRecord;
     }
     async getOriginalValues(entitiesToUpdate, dbEntity) {
-        const qEntity = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
+        const qEntity = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         let rawTreeQuery = {
             select: {},
             from: [qEntity],
@@ -155,7 +152,7 @@ let EntityManager = class EntityManager extends OperationManager_1.OperationMana
     prepare(queryFunction) {
         return new FunctionWrapper(queryFunction);
     }
-};
+}
 __decorate([
     decorators_1.Transactional()
 ], EntityManager.prototype, "create", null);
@@ -183,14 +180,8 @@ __decorate([
 __decorate([
     decorators_1.Transactional()
 ], EntityManager.prototype, "updateWhere", null);
-EntityManager = __decorate([
-    typedi_1.Service(InjectionTokens_1.ENTITY_MANAGER),
-    __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(2, typedi_1.Inject(air_control_1.UtilsToken)),
-    __param(3, typedi_1.Inject(ground_control_1.TransactionalConnectorToken)),
-    __param(4, typedi_1.Inject(InjectionTokens_1.UPDATE_CACHE))
-], EntityManager);
 exports.EntityManager = EntityManager;
+di_1.DI.set(diTokens_1.ENTITY_MANAGER, EntityManager);
 class FunctionWrapper {
     constructor(queryFunction) {
     }

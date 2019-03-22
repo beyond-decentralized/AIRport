@@ -1,21 +1,13 @@
 import {
-	AirportDatabaseToken,
 	and,
 	coalesce,
 	field,
-	IAirportDatabase,
 	IQNumberField,
-	IUtils,
 	max,
 	plus,
-	RawFieldQuery,
-	UtilsToken
+	RawFieldQuery
 }                                       from '@airport/air-control'
-import {index}                          from '@airport/ground-control'
-import {
-	Inject,
-	Service
-}                                       from 'typedi'
+import {DI}                             from '@airport/di'
 import {SequenceBlockReservationMillis} from '../ddl/ddl'
 import {
 	BaseSequenceBlockDao,
@@ -23,7 +15,7 @@ import {
 	ISequenceBlock,
 	Q,
 }                                       from '../generated/generated'
-import {SequenceBlockDaoToken}          from '../InjectionTokens'
+import {SEQUENCE_BLOCK_DAO}             from '../diTokens'
 
 export interface IAbstractSequenceBlockDao {
 
@@ -39,19 +31,9 @@ export interface ISequenceBlockDao
 
 }
 
-@Service(SequenceBlockDaoToken)
 export class SequenceBlockDao
 	extends BaseSequenceBlockDao
 	implements ISequenceBlockDao {
-
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils)
-	}
 
 	async createNewBlocks(
 		sequenceBlocks: ISequenceBlock[]
@@ -125,3 +107,4 @@ export class SequenceBlockDao
 	}
 
 }
+DI.set(SEQUENCE_BLOCK_DAO, SequenceBlockDao)

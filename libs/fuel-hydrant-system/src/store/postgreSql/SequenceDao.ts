@@ -1,31 +1,31 @@
 import {
 	IAbstractSequenceDao,
 	ISequence,
-	SequenceDaoToken,
+	SEQUENCE_DAO,
 	SequenceEId
 }                       from '@airport/airport-code'
+import {DI}             from '@airport/di'
 import {
 	DomainName,
 	SchemaName
 }                       from '@airport/ground-control'
 import {
 	ITerminalStore,
-	TerminalStoreToken
+	TERMINAL_STORE
 }                       from '@airport/terminal-map'
 import {ISchemaVersion} from '@airport/traffic-pattern'
-import {
-	Inject,
-	Service
-}                       from 'typedi'
 
-@Service(SequenceDaoToken)
 export class SequenceDao
 	implements IAbstractSequenceDao {
 
-	constructor(
-		@Inject(TerminalStoreToken)
-		private terminalStore: ITerminalStore
-	) {
+	private terminalStore: ITerminalStore
+
+	constructor() {
+		DI.get((
+			terminalStore
+		) => {
+			this.terminalStore = terminalStore
+		}, TERMINAL_STORE)
 	}
 
 
@@ -60,3 +60,5 @@ export class SequenceDao
 	}
 
 }
+
+DI.set(SEQUENCE_DAO, SequenceDao)

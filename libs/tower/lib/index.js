@@ -7,7 +7,7 @@ __export(require("./core/data/UpdateCache"));
 __export(require("./AirportDatabase"));
 __export(require("./decorators"));
 __export(require("./EntityManager"));
-__export(require("./InjectionTokens"));
+__export(require("./diTokens"));
 __export(require("./OperationManager"));
 __export(require("./QueryFacade"));
 //# sourceMappingURL=index.js.map
