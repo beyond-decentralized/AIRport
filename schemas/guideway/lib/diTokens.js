@@ -8,4 +8,4 @@ exports.REPOSITORY_DAO = di_1.diToken();
 exports.SYNC_LOG_DAO = di_1.diToken();
 exports.AGT_SHARING_MESSAGE_DAO = di_1.diToken();
 exports.AGT_REPO_TRANS_BLOCK_DAO = di_1.diToken();
-//# sourceMappingURL=InjectionTokens.js.map
+//# sourceMappingURL=diTokens.js.map

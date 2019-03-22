@@ -43,10 +43,8 @@ export interface IBaseDailySyncLogDao
 export class BaseDailySyncLogDao
   extends Dao<IDailySyncLog, DailySyncLogESelect, DailySyncLogECreateProperties, DailySyncLogEUpdateColumns, DailySyncLogEUpdateProperties, DailySyncLogEId, QDailySyncLog>
 	implements IBaseDailySyncLogDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['DailySyncLog'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['DailySyncLog'], Q)
 	}
 }
 
@@ -58,10 +56,8 @@ export interface IBaseLogDao
 export class BaseLogDao
   extends Dao<ILog, LogESelect, LogECreateProperties, LogEUpdateColumns, LogEUpdateProperties, LogEId, QLog>
 	implements IBaseLogDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['Log'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['Log'], Q)
 	}
 }
 
@@ -73,9 +69,7 @@ export interface IBaseMonthlySyncLogDao
 export class BaseMonthlySyncLogDao
   extends Dao<IMonthlySyncLog, MonthlySyncLogESelect, MonthlySyncLogECreateProperties, MonthlySyncLogEUpdateColumns, MonthlySyncLogEUpdateProperties, MonthlySyncLogEId, QMonthlySyncLog>
 	implements IBaseMonthlySyncLogDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['MonthlySyncLog'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['MonthlySyncLog'], Q)
 	}
 }

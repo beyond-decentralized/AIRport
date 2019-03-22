@@ -1,25 +1,20 @@
 import {
-	AirportDatabaseToken,
 	and,
 	distinct,
 	exists,
 	IAirportDatabase,
 	IUtils,
-	not,
-	UtilsToken
-}                                              from "@airport/air-control";
+	not
+}                                 from '@airport/air-control'
 import {
 	AgtRepositoryId,
 	MessageToTMContentType,
 	RepositoryTransactionBlockContents,
+	RepoTransBlockMessageToTM,
 	TerminalId,
 	TmRepositoryTransactionBlockId
-}                                              from "@airport/arrivals-n-departures";
-import {RepoTransBlockMessageToTM}             from "@airport/arrivals-n-departures/lib/lingo/message/MessageToTM";
-import {
-	Inject,
-	Service
-}                                              from "typedi";
+}                                 from '@airport/arrivals-n-departures'
+import {DI}                       from '@airport/di/lib/src'
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtRepositoryTransactionBlockArchivingStatus,
@@ -28,7 +23,8 @@ import {
 	AgtSharingMessageAcknowledged,
 	ArchivingStatus,
 	ServerId,
-}                                              from "../../ddl/ddl";
+}                                 from '../../ddl/ddl'
+import {AGT_REPO_TRANS_BLOCK_DAO} from '../../diTokens'
 import {
 	BaseAgtRepositoryTransactionBlockDao,
 	IBaseAgtRepositoryTransactionBlockDao,
@@ -38,8 +34,7 @@ import {
 	QRepository,
 	QSyncLog,
 	QTerminalRepository
-}                                              from "../../generated/generated";
-import {AgtRepositoryTransactionBlockDaoToken} from "../../InjectionTokens";
+}                                 from '../../generated/generated'
 
 export type ArchiveBatchRecord = [
 	AgtRepositoryTransactionBlockId,
@@ -136,19 +131,9 @@ export interface IAgtRepositoryTransactionBlockDao
 
 }
 
-@Service(AgtRepositoryTransactionBlockDaoToken)
 export class AgtRepositoryTransactionBlockDao
 	extends BaseAgtRepositoryTransactionBlockDao
 	implements IAgtRepositoryTransactionBlockDao {
-
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(UtilsToken)
-			utils: IUtils,
-	) {
-		super(utils);
-	}
 
 	async findExistingDataIdMap(
 		terminalIds: TerminalId[] | Set<TerminalId>,
@@ -157,16 +142,16 @@ export class AgtRepositoryTransactionBlockDao
 		AgtRepositoryTransactionBlockId, AgtRepositoryTransactionBlockAddDatetime]>>> {
 		const existingDataIdMap: Map<TerminalId, Map<TmRepositoryTransactionBlockId, [
 			AgtRepositoryTransactionBlockId, AgtRepositoryTransactionBlockAddDatetime]>>
-			      = new Map();
+			      = new Map()
 
 		if (terminalIds instanceof Set) {
-			terminalIds = Array.from(terminalIds);
+			terminalIds = Array.from(terminalIds)
 		}
 		if (tmTransactionLogIds instanceof Set) {
-			tmTransactionLogIds = Array.from(tmTransactionLogIds);
+			tmTransactionLogIds = Array.from(tmTransactionLogIds)
 		}
 
-		let rtb: QAgtRepositoryTransactionBlock;
+		let rtb: QAgtRepositoryTransactionBlock
 		const records = await this.airportDb.db.find.sheet({
 			from: [
 				rtb = Q.AgtRepositoryTransactionBlock
@@ -181,21 +166,21 @@ export class AgtRepositoryTransactionBlockDao
 				rtb.terminal.id.in(terminalIds),
 				rtb.tmRepositoryTransactionBlockId.in(tmTransactionLogIds)
 			)
-		});
+		})
 
 		for (const record of records) {
-			this.utils.ensureChildJsMap(existingDataIdMap, record[1]).set(record[2], [record[0], record[2]]);
+			this.utils.ensureChildJsMap(existingDataIdMap, record[1]).set(record[2], [record[0], record[2]])
 		}
 
-		return existingDataIdMap;
+		return existingDataIdMap
 	}
 
 	async insertValues(
 		// values must be sorted by TerminalId [1]
 		values: InsertAgtRepositoryTransactionBlock[]
 	): Promise<AgtRepositoryTransactionBlockId[]> {
-		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeAgtRepositoryTransactionBlock;
-		let rtb: QAgtRepositoryTransactionBlock;
+		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeAgtRepositoryTransactionBlock
+		let rtb: QAgtRepositoryTransactionBlock
 
 		return <AgtRepositoryTransactionBlockId[]>await this.airportDb.db
 			.insertValuesGenerateIds(dbEntity, {
@@ -209,19 +194,19 @@ export class AgtRepositoryTransactionBlockDao
 					rtb.contents
 				],
 				values
-			});
+			})
 	}
 
 	async getAllAgtRepositoryTransactionBlocksToSend(
 		terminalIds: TerminalId[],
 	): Promise<Map<TerminalId, AugmentedRepoTransBlockMessageToTM[]>> {
 		const rtbToSendMapByTerminalId: Map<TerminalId,
-			AugmentedRepoTransBlockMessageToTM[]> = new Map();
+			AugmentedRepoTransBlockMessageToTM[]> = new Map()
 
 		let rtb: QAgtRepositoryTransactionBlock,
 		    tr: QTerminalRepository,
 		    sl: QSyncLog,
-		    sm: QAgtSharingMessage;
+		    sm: QAgtSharingMessage
 		// TODO: once CockroachDb supports optimized (non-nested loop) correlated
 		// query, test against NOT EXISTS and see which is faster
 		const rtbsToSend = await this.airportDb.find.tree({
@@ -248,26 +233,27 @@ export class AgtRepositoryTransactionBlockDao
 					],
 					select: sl.repositoryTransactionBlock.id,
 					where: and(
-						// TODO: Need the fromDate to limit the number of partitions used in the query
+						// TODO: Need the fromDate to limit the number of partitions used in the
+						// query
 						// sl.repositoryTransactionBlockAddDatetime.greaterThanOrEquals(fromDateInclusive),
 						sm.terminal.id.in(terminalIds),
 						sm.acknowledged.equals(AgtSharingMessageAcknowledged.ACKNOWLEDGED)
 					)
 				}])
 			)
-		});
+		})
 
 		for (const rtbToSend of rtbsToSend) {
-			const terminalIdToSendTo: TerminalId = <any>rtbToSend.terminalId;
-			let rbsForTerminalId                 = rtbToSendMapByTerminalId.get(terminalIdToSendTo);
+			const terminalIdToSendTo: TerminalId = <any>rtbToSend.terminalId
+			let rbsForTerminalId                 = rtbToSendMapByTerminalId.get(terminalIdToSendTo)
 			if (!rbsForTerminalId) {
-				rbsForTerminalId = <AugmentedRepoTransBlockMessageToTM[]>[];
-				rtbToSendMapByTerminalId.set(terminalIdToSendTo, rbsForTerminalId);
+				rbsForTerminalId = <AugmentedRepoTransBlockMessageToTM[]>[]
+				rtbToSendMapByTerminalId.set(terminalIdToSendTo, rbsForTerminalId)
 			}
-			rbsForTerminalId.push(<AugmentedRepoTransBlockMessageToTM><any>rtbToSend);
+			rbsForTerminalId.push(<AugmentedRepoTransBlockMessageToTM><any>rtbToSend)
 		}
 
-		return rtbToSendMapByTerminalId;
+		return rtbToSendMapByTerminalId
 	}
 
 	async getAllUnreadChangesNotExists(
@@ -284,7 +270,7 @@ export class AgtRepositoryTransactionBlockDao
 		    r: QRepository,
 		    dr: QTerminalRepository,
 		    sl: QSyncLog,
-		    dsl: QAgtSharingMessage;
+		    dsl: QAgtSharingMessage
 		// TODO: verify correctness of NOT EXISTS
 		// TODO: test performance on CockroachDb vs TiDB for NOT EXISTS vs
 		// NOT IN vs EXCEPT
@@ -325,8 +311,8 @@ export class AgtRepositoryTransactionBlockDao
 			batchData: [TerminalId, AgtRepositoryId,
 				AgtRepositoryTransactionBlockAddDatetime, RepositoryTransactionBlockContents][]
 		) => {
-			callback(batchData);
-		});
+			callback(batchData)
+		})
 	}
 
 	async reserveToArchive(
@@ -337,7 +323,7 @@ export class AgtRepositoryTransactionBlockDao
 		numRepositoriesToReserve: number
 	): Promise<NumberOfRTBsReservedToArchive> {
 		let rtb: QAgtRepositoryTransactionBlock,
-		    rtb2: QAgtRepositoryTransactionBlock;
+		    rtb2: QAgtRepositoryTransactionBlock
 		return await this.db.updateWhere({
 			update: rtb = Q.AgtRepositoryTransactionBlock,
 			set: {
@@ -360,7 +346,7 @@ export class AgtRepositoryTransactionBlockDao
 					where: rtb2.archivingStatus.equals(archivingStatus),
 					limit: numRepositoriesToReserve
 				}))
-		});
+		})
 	}
 
 	async getAgtRepositoryTransactionBlocksToArchive(
@@ -368,10 +354,10 @@ export class AgtRepositoryTransactionBlockDao
 		toDateExclusive: AgtRepositoryTransactionBlockAddDatetime,
 		serverId: ServerId
 	): Promise<AgtRepositoryTransactionBlocksToArchiveResult> {
-		const results: RepositoryAgtRepoTransBlocksToArchive[]                 = [];
-		const repositoryTransactionBlockIds: AgtRepositoryTransactionBlockId[] = [];
+		const results: RepositoryAgtRepoTransBlocksToArchive[]                 = []
+		const repositoryTransactionBlockIds: AgtRepositoryTransactionBlockId[] = []
 
-		let rtb: QAgtRepositoryTransactionBlock;
+		let rtb: QAgtRepositoryTransactionBlock
 		const rtbsToArchive = await this.airportDb.find.sheet({
 			from: [
 				rtb = Q.AgtRepositoryTransactionBlock,
@@ -393,25 +379,25 @@ export class AgtRepositoryTransactionBlockDao
 				rtb.repository.id.asc(),
 				rtb.addDatetime.asc()
 			]
-		});
+		})
 
-		let lastAgtRepositoryId   = rtbsToArchive[0][0];
-		let currentRepositoryRtbs = [];
+		let lastAgtRepositoryId   = rtbsToArchive[0][0]
+		let currentRepositoryRtbs = []
 		for (const rtbToArchive of rtbsToArchive) {
-			const currentAgtRepositoryId = rtbToArchive[0];
+			const currentAgtRepositoryId = rtbToArchive[0]
 			if (lastAgtRepositoryId !== currentAgtRepositoryId) {
-				results.push([lastAgtRepositoryId, currentRepositoryRtbs]);
-				currentRepositoryRtbs = [];
-				lastAgtRepositoryId   = currentAgtRepositoryId;
+				results.push([lastAgtRepositoryId, currentRepositoryRtbs])
+				currentRepositoryRtbs = []
+				lastAgtRepositoryId   = currentAgtRepositoryId
 			}
-			repositoryTransactionBlockIds.push(rtbToArchive[2]);
-			currentRepositoryRtbs.push(rtbToArchive.slice(1));
+			repositoryTransactionBlockIds.push(rtbToArchive[2])
+			currentRepositoryRtbs.push(rtbToArchive.slice(1))
 		}
 		if (currentRepositoryRtbs.length) {
-			results.push([lastAgtRepositoryId, currentRepositoryRtbs]);
+			results.push([lastAgtRepositoryId, currentRepositoryRtbs])
 		}
 
-		return [results, repositoryTransactionBlockIds];
+		return [results, repositoryTransactionBlockIds]
 	}
 
 
@@ -423,7 +409,7 @@ export class AgtRepositoryTransactionBlockDao
 				AgtRepositoryTransactionBlockAddDatetime, RepositoryTransactionBlockContents][]
 		) => void,
 	): Promise<void> {
-		let rtb: QAgtRepositoryTransactionBlock;
+		let rtb: QAgtRepositoryTransactionBlock
 		await this.airportDb.find.sheet({
 			from: [
 				rtb = Q.AgtRepositoryTransactionBlock,
@@ -442,7 +428,7 @@ export class AgtRepositoryTransactionBlockDao
 				rtb.repository.id.asc(),
 				rtb.addDatetime.asc()
 			]
-		});
+		})
 	}
 
 	async markAllChangesAsArchived(
@@ -450,7 +436,7 @@ export class AgtRepositoryTransactionBlockDao
 		toDateExclusive: AgtRepositoryTransactionBlockAddDatetime,
 		repositoryIds: AgtRepositoryId[],
 	): Promise<void> {
-		let rtb: QAgtRepositoryTransactionBlock;
+		let rtb: QAgtRepositoryTransactionBlock
 		await this.db.updateWhere({
 			update: rtb = Q.AgtRepositoryTransactionBlock,
 			set: {
@@ -462,13 +448,13 @@ export class AgtRepositoryTransactionBlockDao
 				rtb.archivingStatus.equals(ArchivingStatus.ARCHIVING_IN_PROGRESS),
 				rtb.repository.id.in(repositoryIds)
 			)
-		});
+		})
 	}
 
 	async markChangesAsArchived(
 		repositoryTransactionBlockIds: AgtRepositoryTransactionBlockId[],
 	): Promise<void> {
-		let rtb: QAgtRepositoryTransactionBlock;
+		let rtb: QAgtRepositoryTransactionBlock
 
 		await this.db.updateWhere({
 			update: rtb = Q.AgtRepositoryTransactionBlock,
@@ -476,18 +462,20 @@ export class AgtRepositoryTransactionBlockDao
 				archivingStatus: ArchivingStatus.ARCHIVING_COMPLETE,
 			},
 			where: rtb.id.in(repositoryTransactionBlockIds)
-		});
+		})
 	}
 
 	async deleteByIds(
 		repositoryTransactionBlockIds: AgtRepositoryTransactionBlockId[],
 	): Promise<number> {
-		let rtb: QAgtRepositoryTransactionBlock;
+		let rtb: QAgtRepositoryTransactionBlock
 
 		return await this.db.deleteWhere({
 			deleteFrom: rtb = Q.AgtRepositoryTransactionBlock,
 			where: rtb.id.in(repositoryTransactionBlockIds)
-		});
+		})
 	}
 
 }
+
+DI.set(AGT_REPO_TRANS_BLOCK_DAO, AgtRepositoryTransactionBlockDao)

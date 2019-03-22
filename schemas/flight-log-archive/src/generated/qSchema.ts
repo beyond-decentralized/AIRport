@@ -1,10 +1,10 @@
 import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
-import { DailySyncLog } from '../ddl/DailySyncLog';
+import { DailySyncLog } from '../ddl/dailysynclog';
 import { QDailySyncLog } from './qdailysynclog';
-import { Log } from '../ddl/log/Log';
+import { Log } from '../ddl/log/log';
 import { QLog } from './log/qlog';
-import { MonthlySyncLog } from '../ddl/MonthlySyncLog';
+import { MonthlySyncLog } from '../ddl/monthlysynclog';
 import { QMonthlySyncLog } from './qmonthlysynclog';
 
 import {

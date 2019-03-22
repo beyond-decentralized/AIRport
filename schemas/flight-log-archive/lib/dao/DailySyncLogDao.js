@@ -1,17 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const diTokens_1 = require("../diTokens");
 const baseDaos_1 = require("../generated/baseDaos");
 const qSchema_1 = require("../generated/qSchema");
 class DailySyncLogDao extends baseDaos_1.BaseDailySyncLogDao {
-    constructor(airportDb, utils) {
-        super(utils);
-        this.airportDb = airportDb;
-    }
     async insertValues(values) {
         const dbEntity = qSchema_1.Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
         let dsl;
-        await this.airportDb.db.insertValues(dbEntity, {
+        await this.airDb.db.insertValues(dbEntity, {
             insertInto: dsl = qSchema_1.Q.DailySyncLog,
             columns: [
                 dsl.databaseId,
@@ -24,7 +22,7 @@ class DailySyncLogDao extends baseDaos_1.BaseDailySyncLogDao {
     }
     async findAllForDatabase(databaseId, synced, callback) {
         let dsl;
-        await this.airportDb.find.sheet({
+        await this.airDb.find.sheet({
             from: [
                 dsl = qSchema_1.Q.DailySyncLog
             ],
@@ -50,7 +48,7 @@ class DailySyncLogDao extends baseDaos_1.BaseDailySyncLogDao {
     }
     async findMonthlyResults(databaseIds, fromDateInclusive, toDateExclusive) {
         let dsl;
-        return await this.airportDb.find.sheet({
+        return await this.airDb.find.sheet({
             from: [
                 dsl = qSchema_1.Q.DailySyncLog
             ],
@@ -67,4 +65,5 @@ class DailySyncLogDao extends baseDaos_1.BaseDailySyncLogDao {
     }
 }
 exports.DailySyncLogDao = DailySyncLogDao;
+di_1.DI.set(diTokens_1.DAILY_SYNC_LOG_DAO, DailySyncLogDao);
 //# sourceMappingURL=DailySyncLogDao.js.map

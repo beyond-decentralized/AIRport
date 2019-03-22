@@ -12,16 +12,16 @@ import {
 	AgtRepositoryId,
 	AgtSharingMessageId,
 	TerminalId,
-}                        from "@airport/arrivals-n-departures";
+}                     from "@airport/arrivals-n-departures";
 import {
 	Inject,
 	Service
-}                        from "typedi";
+}                     from "typedi";
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtRepositoryTransactionBlockId,
 	AgtSharingMessageAcknowledged
-}                        from "../../ddl/ddl";
+}                     from "../../ddl/ddl";
 import {
 	BaseSyncLogDao,
 	IBaseSyncLogDao,
@@ -29,8 +29,8 @@ import {
 	QAgtRepositoryTransactionBlock,
 	QAgtSharingMessage,
 	QSyncLog
-}                        from "../../generated/generated";
-import {SyncLogDaoToken} from "../../InjectionTokens";
+}                     from "../../generated/generated";
+import {SYNC_LOG_DAO} from "../../diTokens";
 
 export type SyncedTerminalRepository = [TerminalId, AgtRepositoryId];
 export type TerminalSyncStatus = [TerminalId, AgtRepositoryId, AgtSharingMessageAcknowledged];
@@ -62,7 +62,7 @@ export interface ISyncLogDao
 
 }
 
-@Service(SyncLogDaoToken)
+@Service(SYNC_LOG_DAO)
 export class SyncLogDao
 	extends BaseSyncLogDao
 	implements ISyncLogDao {

@@ -19,7 +19,7 @@ import {
 	QTerminalRepository
 }                                     from "../../generated/generated";
 import {Q}                            from "../../generated/qSchema";
-import {TerminalRepositoryDaoToken}   from "../../InjectionTokens";
+import {TERMINAL_REPOSITORY_DAO}      from "../../diTokens";
 
 export interface ITerminalRepositoryDao {
 
@@ -30,7 +30,7 @@ export interface ITerminalRepositoryDao {
 
 }
 
-@Service(TerminalRepositoryDaoToken)
+@Service(TERMINAL_REPOSITORY_DAO)
 export class TerminalRepositoryDao
 	extends BaseTerminalRepositoryDao
 	implements ITerminalRepositoryDao {

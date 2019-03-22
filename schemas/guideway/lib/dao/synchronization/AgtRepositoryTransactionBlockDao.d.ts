@@ -1,8 +1,6 @@
-import { IAirportDatabase, IUtils } from "@airport/air-control";
-import { AgtRepositoryId, RepositoryTransactionBlockContents, TerminalId, TmRepositoryTransactionBlockId } from "@airport/arrivals-n-departures";
-import { RepoTransBlockMessageToTM } from "@airport/arrivals-n-departures/lib/lingo/message/MessageToTM";
-import { AgtRepositoryTransactionBlockAddDatetime, AgtRepositoryTransactionBlockArchivingStatus, AgtRepositoryTransactionBlockId, AgtRepositoryTransactionBlockIsRecent, ServerId } from "../../ddl/ddl";
-import { BaseAgtRepositoryTransactionBlockDao, IBaseAgtRepositoryTransactionBlockDao } from "../../generated/generated";
+import { AgtRepositoryId, RepositoryTransactionBlockContents, RepoTransBlockMessageToTM, TerminalId, TmRepositoryTransactionBlockId } from '@airport/arrivals-n-departures';
+import { AgtRepositoryTransactionBlockAddDatetime, AgtRepositoryTransactionBlockArchivingStatus, AgtRepositoryTransactionBlockId, AgtRepositoryTransactionBlockIsRecent, ServerId } from '../../ddl/ddl';
+import { BaseAgtRepositoryTransactionBlockDao, IBaseAgtRepositoryTransactionBlockDao } from '../../generated/generated';
 export declare type ArchiveBatchRecord = [AgtRepositoryTransactionBlockId, AgtRepositoryId, RepositoryTransactionBlockContents];
 export declare type InsertAgtRepositoryTransactionBlock = [AgtRepositoryId, TerminalId, AgtRepositoryTransactionBlockArchivingStatus, AgtRepositoryTransactionBlockAddDatetime, AgtRepositoryTransactionBlockIsRecent, TmRepositoryTransactionBlockId, RepositoryTransactionBlockContents];
 export declare type AgtRepositoryTransactionBlockToArchive = [AgtRepositoryTransactionBlockAddDatetime, AgtRepositoryTransactionBlockId, RepositoryTransactionBlockContents];
@@ -24,8 +22,6 @@ export interface IAgtRepositoryTransactionBlockDao extends IBaseAgtRepositoryTra
     deleteByIds(repositoryTransactionBlockIds: AgtRepositoryTransactionBlockId[]): Promise<number>;
 }
 export declare class AgtRepositoryTransactionBlockDao extends BaseAgtRepositoryTransactionBlockDao implements IAgtRepositoryTransactionBlockDao {
-    private airportDb;
-    constructor(airportDb: IAirportDatabase, utils: IUtils);
     findExistingDataIdMap(terminalIds: TerminalId[] | Set<TerminalId>, tmTransactionLogIds: TmRepositoryTransactionBlockId[] | Set<TmRepositoryTransactionBlockId>): Promise<Map<TerminalId, Map<TmRepositoryTransactionBlockId, [AgtRepositoryTransactionBlockId, AgtRepositoryTransactionBlockAddDatetime]>>>;
     insertValues(values: InsertAgtRepositoryTransactionBlock[]): Promise<AgtRepositoryTransactionBlockId[]>;
     getAllAgtRepositoryTransactionBlocksToSend(terminalIds: TerminalId[]): Promise<Map<TerminalId, AugmentedRepoTransBlockMessageToTM[]>>;

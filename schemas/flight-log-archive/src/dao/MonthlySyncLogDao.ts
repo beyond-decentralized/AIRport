@@ -1,14 +1,15 @@
-import { and, IAirportDatabase } from "@airport/air-control";
-import {IUtils}                            from "@airport/air-control";
+import {and}                   from '@airport/air-control'
+import {DI}                    from '@airport/di'
 import {
 	MonthlySyncLogDatabaseId,
 	MonthlySyncLogDate,
 	MonthlySyncLogRepositoryId,
 	MonthlySyncLogSynced
-} from "../ddl/MonthlySyncLog";
-import { BaseMonthlySyncLogDao } from "../generated/baseDaos";
-import { QMonthlySyncLog } from "../generated/qmonthlysynclog";
-import { Q } from "../generated/qSchema";
+}                              from '../ddl/MonthlySyncLog'
+import {MONTHLY_SYNC_LOG_DAO}  from '../diTokens'
+import {BaseMonthlySyncLogDao} from '../generated/baseDaos'
+import {QMonthlySyncLog}       from '../generated/qmonthlysynclog'
+import {Q}                     from '../generated/qSchema'
 
 export interface IMonthlySyncLogDao {
 
@@ -32,13 +33,6 @@ export class MonthlySyncLogDao
 	extends BaseMonthlySyncLogDao
 	implements IMonthlySyncLogDao {
 
-	constructor(
-		private airportDb: IAirportDatabase,
-		utils: IUtils
-	) {
-		super(utils);
-	}
-
 	async findAllForDatabase(
 		databaseId: MonthlySyncLogDatabaseId,
 		synced: MonthlySyncLogSynced,
@@ -46,8 +40,8 @@ export class MonthlySyncLogDao
 			syncSyncLogRows: [MonthlySyncLogRepositoryId, MonthlySyncLogDate][]
 		) => void,
 	): Promise<void> {
-		let dsl: QMonthlySyncLog;
-		await this.airportDb.find.sheet({
+		let dsl: QMonthlySyncLog
+		await this.airDb.find.sheet({
 			from: [
 				dsl = Q.MonthlySyncLog
 			],
@@ -62,8 +56,8 @@ export class MonthlySyncLogDao
 		}, 1000, (
 			syncSyncLogRows: [MonthlySyncLogRepositoryId, MonthlySyncLogDate][]
 		) => {
-			callback(syncSyncLogRows);
-		});
+			callback(syncSyncLogRows)
+		})
 	}
 
 	async updateSyncStatus(
@@ -71,7 +65,7 @@ export class MonthlySyncLogDao
 		repositoryIds: MonthlySyncLogRepositoryId[],
 		synced: MonthlySyncLogSynced,
 	): Promise<void> {
-		let dsl: QMonthlySyncLog;
+		let dsl: QMonthlySyncLog
 
 		await this.db.updateWhere({
 			update: dsl = Q.MonthlySyncLog,
@@ -82,7 +76,9 @@ export class MonthlySyncLogDao
 				dsl.databaseId.equals(databaseId),
 				dsl.repositoryId.in(repositoryIds)
 			)
-		});
+		})
 	}
 
 }
+
+DI.set(MONTHLY_SYNC_LOG_DAO, MonthlySyncLogDao)

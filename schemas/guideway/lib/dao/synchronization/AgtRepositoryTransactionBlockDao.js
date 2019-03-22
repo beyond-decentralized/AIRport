@@ -1,28 +1,12 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
-const typedi_1 = require("typedi");
+const src_1 = require("@airport/di/lib/src");
 const ddl_1 = require("../../ddl/ddl");
+const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
-const InjectionTokens_1 = require("../../InjectionTokens");
-let AgtRepositoryTransactionBlockDao = class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTransactionBlockDao {
-    constructor(airportDb, utils) {
-        super(utils);
-        this.airportDb = airportDb;
-    }
+class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTransactionBlockDao {
     async findExistingDataIdMap(terminalIds, tmTransactionLogIds) {
         const existingDataIdMap = new Map();
         if (terminalIds instanceof Set) {
@@ -96,7 +80,8 @@ let AgtRepositoryTransactionBlockDao = class AgtRepositoryTransactionBlockDao ex
                     ],
                     select: sl.repositoryTransactionBlock.id,
                     where: air_control_1.and(
-                    // TODO: Need the fromDate to limit the number of partitions used in the query
+                    // TODO: Need the fromDate to limit the number of partitions used in the
+                    // query
                     // sl.repositoryTransactionBlockAddDatetime.greaterThanOrEquals(fromDateInclusive),
                     sm.terminal.id.in(terminalIds), sm.acknowledged.equals(ddl_1.AgtSharingMessageAcknowledged.ACKNOWLEDGED))
                 }]))
@@ -256,12 +241,7 @@ let AgtRepositoryTransactionBlockDao = class AgtRepositoryTransactionBlockDao ex
             where: rtb.id.in(repositoryTransactionBlockIds)
         });
     }
-};
-AgtRepositoryTransactionBlockDao = __decorate([
-    typedi_1.Service(InjectionTokens_1.AgtRepositoryTransactionBlockDaoToken),
-    __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object])
-], AgtRepositoryTransactionBlockDao);
+}
 exports.AgtRepositoryTransactionBlockDao = AgtRepositoryTransactionBlockDao;
+src_1.DI.set(diTokens_1.AGT_REPO_TRANS_BLOCK_DAO, AgtRepositoryTransactionBlockDao);
 //# sourceMappingURL=AgtRepositoryTransactionBlockDao.js.map

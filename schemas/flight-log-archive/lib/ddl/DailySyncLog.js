@@ -5,9 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 // export type DailySyncLogDatabaseDateRepositoryKey = string;
@@ -55,20 +52,17 @@ let DailySyncLog = class DailySyncLog {
 __decorate([
     air_control_1.Id(),
     air_control_1.Column({ name: "DATABASE_ID", nullable: false }),
-    air_control_1.DbNumber(),
-    __metadata("design:type", Number)
+    air_control_1.DbNumber()
 ], DailySyncLog.prototype, "databaseId", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.Column({ name: "DATE_NUMBER", nullable: false }),
-    air_control_1.DbNumber(),
-    __metadata("design:type", Number)
+    air_control_1.DbNumber()
 ], DailySyncLog.prototype, "date", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.Column({ name: "REPOSITORY_ID", nullable: false }),
-    air_control_1.DbNumber(),
-    __metadata("design:type", Number)
+    air_control_1.DbNumber()
 ], DailySyncLog.prototype, "repositoryId", void 0);
 DailySyncLog = __decorate([
     air_control_1.Entity(),

@@ -10,22 +10,22 @@ import {
 	AgtSharingMessageId,
 	TerminalId,
 	TmSharingMessageId,
-}                                  from "@airport/arrivals-n-departures";
+}                                from "@airport/arrivals-n-departures";
 import {
 	Inject,
 	Service
-}                                  from "typedi";
+}                                from "typedi";
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtSharingMessageAcknowledged
-}                                  from "../../ddl/ddl";
+}                                from "../../ddl/ddl";
 import {
 	BaseAgtSharingMessageDao,
 	IBaseAgtSharingMessageDao,
 	Q,
 	QAgtSharingMessage
-}                                  from "../../generated/generated";
-import {AgtSharingMessageDaoToken} from "../../InjectionTokens";
+}                                from "../../generated/generated";
+import {AGT_SHARING_MESSAGE_DAO} from "../../diTokens";
 
 export type InsertAgtSharingMessage = [
 	TerminalId, TmSharingMessageId, AgtSharingMessageAcknowledged
@@ -53,7 +53,7 @@ export interface IAgtSharingMessageDao
 
 }
 
-@Service(AgtSharingMessageDaoToken)
+@Service(AGT_SHARING_MESSAGE_DAO)
 export class AgtSharingMessageDao
 	extends BaseAgtSharingMessageDao
 	implements IAgtSharingMessageDao {

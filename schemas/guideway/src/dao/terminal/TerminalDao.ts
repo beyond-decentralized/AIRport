@@ -26,7 +26,7 @@ import {
 	QTerminal
 }                                            from "../../generated/terminal/qterminal";
 import {QTerminalRepository}                 from "../../generated/terminal/qterminalrepository";
-import {TerminalDaoToken}                    from "../../InjectionTokens";
+import {TERMINAL_DAO}                        from "../../diTokens";
 
 export type TerminalKey = string;
 
@@ -67,7 +67,7 @@ export interface ITerminalDao
 
 }
 
-@Service(TerminalDaoToken)
+@Service(TERMINAL_DAO)
 export class TerminalDao
 	extends BaseTerminalDao
 	implements ITerminalDao {

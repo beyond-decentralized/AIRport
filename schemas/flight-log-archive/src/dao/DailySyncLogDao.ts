@@ -1,20 +1,23 @@
-import { and, distinct, IAirportDatabase } from "@airport/air-control";
-import {IUtils}                            from "@airport/air-control";
+import {
+	and,
+	distinct
+}                            from '@airport/air-control'
+import {DI}                  from '@airport/di'
 import {
 	DailySyncLogDatabaseId,
 	DailySyncLogDateNumber,
 	DailySyncLogRepositoryId,
 	DailySyncLogSynced,
 	DailySyncLogValues
-}                                          from "../ddl/DailySyncLog";
-import { BaseDailySyncLogDao }             from "../generated/baseDaos";
-import { QDailySyncLog }                   from "../generated/qdailysynclog";
-import { Q }                               from "../generated/qSchema";
+}                            from '../ddl/DailySyncLog'
+import {DAILY_SYNC_LOG_DAO}  from '../diTokens'
+import {BaseDailySyncLogDao} from '../generated/baseDaos'
+import {QDailySyncLog}       from '../generated/qdailysynclog'
+import {Q}                   from '../generated/qSchema'
 
 export type DailyToMonthlyResult = [
 	DailySyncLogDatabaseId,
 	DailySyncLogRepositoryId
-	// DailySyncLogSynced
 	];
 
 export interface IDailySyncLogDao {
@@ -49,20 +52,13 @@ export class DailySyncLogDao
 	extends BaseDailySyncLogDao
 	implements IDailySyncLogDao {
 
-	constructor(
-		private airportDb: IAirportDatabase,
-		utils: IUtils
-	) {
-		super(utils);
-	}
-
 	async insertValues(
 		values: DailySyncLogValues[]
 	): Promise<void> {
-		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
-		let dsl: QDailySyncLog;
+		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog
+		let dsl: QDailySyncLog
 
-		await this.airportDb.db.insertValues(dbEntity, {
+		await this.airDb.db.insertValues(dbEntity, {
 			insertInto: dsl = Q.DailySyncLog,
 			columns: [
 				dsl.databaseId,
@@ -71,7 +67,7 @@ export class DailySyncLogDao
 				dsl.date
 			],
 			values
-		});
+		})
 	}
 
 	async findAllForDatabase(
@@ -81,8 +77,8 @@ export class DailySyncLogDao
 			syncSyncLogRows: [DailySyncLogRepositoryId, DailySyncLogDateNumber][]
 		) => void,
 	): Promise<void> {
-		let dsl: QDailySyncLog;
-		await this.airportDb.find.sheet({
+		let dsl: QDailySyncLog
+		await this.airDb.find.sheet({
 			from: [
 				dsl = Q.DailySyncLog
 			],
@@ -92,13 +88,13 @@ export class DailySyncLogDao
 			],
 			where: // and(
 				dsl.databaseId.equals(databaseId),
-				// dsl.synced.equals(synced)
+			// dsl.synced.equals(synced)
 			// )
 		}, 1000, (
 			syncSyncLogRows: [DailySyncLogRepositoryId, DailySyncLogDateNumber][]
 		) => {
-			callback(syncSyncLogRows);
-		});
+			callback(syncSyncLogRows)
+		})
 	}
 
 	async updateSyncStatus(
@@ -106,7 +102,7 @@ export class DailySyncLogDao
 		repositoryIds: DailySyncLogRepositoryId[],
 		synced: DailySyncLogSynced,
 	): Promise<void> {
-		let dsl: QDailySyncLog;
+		let dsl: QDailySyncLog
 
 		await this.db.updateWhere({
 			update: dsl = Q.DailySyncLog,
@@ -117,7 +113,7 @@ export class DailySyncLogDao
 				dsl.databaseId.equals(databaseId),
 				dsl.repositoryId.in(repositoryIds)
 			)
-		});
+		})
 	}
 
 	async findMonthlyResults(
@@ -125,9 +121,9 @@ export class DailySyncLogDao
 		fromDateInclusive: DailySyncLogDateNumber,
 		toDateExclusive: DailySyncLogDateNumber
 	): Promise<DailyToMonthlyResult[]> {
-		let dsl: QDailySyncLog;
+		let dsl: QDailySyncLog
 
-		return <DailyToMonthlyResult[]>await this.airportDb.find.sheet({
+		return <DailyToMonthlyResult[]>await this.airDb.find.sheet({
 			from: [
 				dsl = Q.DailySyncLog
 			],
@@ -145,7 +141,9 @@ export class DailySyncLogDao
 				dsl.databaseId.asc(),
 				dsl.repositoryId.asc()
 			]
-		});
+		})
 	}
 
 }
+
+DI.set(DAILY_SYNC_LOG_DAO, DailySyncLogDao)

@@ -1,16 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const diTokens_1 = require("../diTokens");
 const baseDaos_1 = require("../generated/baseDaos");
 const qSchema_1 = require("../generated/qSchema");
 class MonthlySyncLogDao extends baseDaos_1.BaseMonthlySyncLogDao {
-    constructor(airportDb, utils) {
-        super(utils);
-        this.airportDb = airportDb;
-    }
     async findAllForDatabase(databaseId, synced, callback) {
         let dsl;
-        await this.airportDb.find.sheet({
+        await this.airDb.find.sheet({
             from: [
                 dsl = qSchema_1.Q.MonthlySyncLog
             ],
@@ -35,4 +33,5 @@ class MonthlySyncLogDao extends baseDaos_1.BaseMonthlySyncLogDao {
     }
 }
 exports.MonthlySyncLogDao = MonthlySyncLogDao;
+di_1.DI.set(diTokens_1.MONTHLY_SYNC_LOG_DAO, MonthlySyncLogDao);
 //# sourceMappingURL=MonthlySyncLogDao.js.map

@@ -5,9 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
@@ -17,7 +14,7 @@ const InjectionTokens_1 = require("@airport/air-control/lib/InjectionTokens");
 const typedi_1 = require("typedi");
 const ddl_1 = require("../../ddl/ddl");
 const generated_1 = require("../../generated/generated");
-const InjectionTokens_2 = require("../../InjectionTokens");
+const diTokens_1 = require("../../diTokens");
 let AgtSharingMessageDao = class AgtSharingMessageDao extends generated_1.BaseAgtSharingMessageDao {
     constructor(airportDb, utils) {
         super(utils);
@@ -131,10 +128,9 @@ let AgtSharingMessageDao = class AgtSharingMessageDao extends generated_1.BaseAg
     }
 };
 AgtSharingMessageDao = __decorate([
-    typedi_1.Service(InjectionTokens_2.AgtSharingMessageDaoToken),
+    typedi_1.Service(diTokens_1.AGT_SHARING_MESSAGE_DAO),
     __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(InjectionTokens_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object])
+    __param(1, typedi_1.Inject(InjectionTokens_1.UtilsToken))
 ], AgtSharingMessageDao);
 exports.AgtSharingMessageDao = AgtSharingMessageDao;
 //# sourceMappingURL=AgtSharingMessageDao.js.map

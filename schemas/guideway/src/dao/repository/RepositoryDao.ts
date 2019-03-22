@@ -1,30 +1,15 @@
-import {IUtils}             from "@airport/air-control";
-import {IAirportDatabase}   from "@airport/air-control/lib/index";
-import {
-	AirportDatabaseToken,
-	UtilsToken
-}                           from "@airport/air-control/lib/InjectionTokens";
-import {Inject}             from "typedi/decorators/Inject";
-import {Service}            from "typedi/decorators/Service";
-import {BaseRepositoryDao}  from "../../generated/baseDaos";
-import {RepositoryDaoToken} from "../../InjectionTokens";
+import {DI}                from '@airport/di'
+import {REPOSITORY_DAO}    from '../../diTokens'
+import {BaseRepositoryDao} from '../../generated/baseDaos'
 
 export interface IRepositoryDao {
 
 }
 
-@Service(RepositoryDaoToken)
 export class RepositoryDao
 	extends BaseRepositoryDao
 	implements IRepositoryDao {
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
-
 }
+
+DI.set(REPOSITORY_DAO, RepositoryDao)

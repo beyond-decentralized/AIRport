@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const DailySyncLog_1 = require("../ddl/DailySyncLog");
-const Log_1 = require("../ddl/log/Log");
-const MonthlySyncLog_1 = require("../ddl/MonthlySyncLog");
+const dailysynclog_1 = require("../ddl/dailysynclog");
+const log_1 = require("../ddl/log/log");
+const monthlysynclog_1 = require("../ddl/monthlysynclog");
 const __constructors__ = {
-    DailySyncLog: DailySyncLog_1.DailySyncLog,
-    Log: Log_1.Log,
-    MonthlySyncLog: MonthlySyncLog_1.MonthlySyncLog
+    DailySyncLog: dailysynclog_1.DailySyncLog,
+    Log: log_1.Log,
+    MonthlySyncLog: monthlysynclog_1.MonthlySyncLog
 };
 exports.Q_SCHEMA = {
     __constructors__
