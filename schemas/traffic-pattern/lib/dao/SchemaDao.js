@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
-const generated_1 = require("../generated/generated");
 const diTokens_1 = require("../diTokens");
+const generated_1 = require("../generated/generated");
 class SchemaDao extends generated_1.BaseSchemaDao {
     findAllActive() {
         return __awaiter(this, void 0, void 0, function* () {

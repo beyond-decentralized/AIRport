@@ -63,10 +63,8 @@ export interface IBaseLogEntryDao
 export class BaseLogEntryDao
   extends Dao<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateColumns, LogEntryEUpdateProperties, LogEntryEId, QLogEntry>
 	implements IBaseLogEntryDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['LogEntry'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['LogEntry'], Q)
 	}
 }
 
@@ -78,10 +76,8 @@ export interface IBaseLogEntryTypeDao
 export class BaseLogEntryTypeDao
   extends Dao<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateColumns, LogEntryTypeEUpdateProperties, LogEntryTypeEId, QLogEntryType>
 	implements IBaseLogEntryTypeDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['LogEntryType'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['LogEntryType'], Q)
 	}
 }
 
@@ -93,10 +89,8 @@ export interface IBaseLogEntryValueDao
 export class BaseLogEntryValueDao
   extends Dao<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateColumns, LogEntryValueEUpdateProperties, LogEntryValueEId, QLogEntryValue>
 	implements IBaseLogEntryValueDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['LogEntryValue'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['LogEntryValue'], Q)
 	}
 }
 
@@ -108,10 +102,8 @@ export interface IBaseLoggedErrorDao
 export class BaseLoggedErrorDao
   extends Dao<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateColumns, LoggedErrorEUpdateProperties, LoggedErrorEId, QLoggedError>
 	implements IBaseLoggedErrorDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['LoggedError'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['LoggedError'], Q)
 	}
 }
 
@@ -123,9 +115,7 @@ export interface IBaseLoggedErrorStackTraceDao
 export class BaseLoggedErrorStackTraceDao
   extends Dao<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateColumns, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, QLoggedErrorStackTrace>
 	implements IBaseLoggedErrorStackTraceDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['LoggedErrorStackTrace'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['LoggedErrorStackTrace'], Q)
 	}
 }

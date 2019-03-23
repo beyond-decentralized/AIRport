@@ -1,5 +1,10 @@
-export declare const APPLICATION_DAO: any;
-export declare const APPLICATION_PACKAGE_DAO: any;
-export declare const DOMAIN_DAO: any;
-export declare const PACKAGE_DAO: any;
-export declare const PACKAGE_UNIT_DAO: any;
+import { IApplicationDao } from './dao/ApplicationDao';
+import { IApplicationPackageDao } from './dao/ApplicationPackageDao';
+import { IDomainDao } from './dao/DomainDao';
+import { IPackageDao } from './dao/PackageDao';
+import { IPackagedUnitDao } from './dao/PackagedUnitDao';
+export declare const APPLICATION_DAO: import("@airport/di").DiToken<IApplicationDao>;
+export declare const APPLICATION_PACKAGE_DAO: import("@airport/di").DiToken<IApplicationPackageDao>;
+export declare const DOMAIN_DAO: import("@airport/di").DiToken<IDomainDao>;
+export declare const PACKAGE_DAO: import("@airport/di").DiToken<IPackageDao>;
+export declare const PACKAGE_UNIT_DAO: import("@airport/di").DiToken<IPackagedUnitDao>;

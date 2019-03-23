@@ -7,7 +7,9 @@ export interface ILoggedErrorStackTrace {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface LoggedErrorStackTraceESelect extends IEntitySelectProperties, LoggedErrorStackTraceEOptionalId, LoggedErrorStackTraceEUpdateProperties {
+export interface LoggedErrorStackTraceESelect extends IEntitySelectProperties, LoggedErrorStackTraceEOptionalId {
+    stackHash?: string | IQStringField;
+    stack?: string | IQStringField;
 }
 /**
  * DELETE - Ids fields and relations only (required).

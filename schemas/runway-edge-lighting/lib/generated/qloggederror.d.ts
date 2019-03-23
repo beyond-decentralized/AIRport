@@ -8,7 +8,7 @@ export interface ILoggedError {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface LoggedErrorESelect extends IEntitySelectProperties, LoggedErrorEOptionalId, LoggedErrorEUpdateProperties {
+export interface LoggedErrorESelect extends IEntitySelectProperties, LoggedErrorEOptionalId {
     logEntry?: LogEntryESelect;
     stackTrace?: LoggedErrorStackTraceESelect;
 }

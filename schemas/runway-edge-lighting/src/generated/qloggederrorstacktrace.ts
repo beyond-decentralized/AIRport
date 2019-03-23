@@ -56,7 +56,11 @@ export interface ILoggedErrorStackTrace {
  * SELECT - All fields and relations (optional).
  */
 export interface LoggedErrorStackTraceESelect
-    extends IEntitySelectProperties, LoggedErrorStackTraceEOptionalId, LoggedErrorStackTraceEUpdateProperties {
+    extends IEntitySelectProperties, LoggedErrorStackTraceEOptionalId {
+	// Non-Id Properties
+	stackHash?: string | IQStringField;
+	stack?: string | IQStringField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

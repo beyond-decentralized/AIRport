@@ -26,7 +26,6 @@ export type DailyArchiveValues =
 @Table({name: "DAILY_ARCHIVES"})
 export class DailyArchive {
 
-	@Id()
 	@ManyToOne()
 	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID"})
 	repository: Repository;

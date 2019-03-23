@@ -1,27 +1,21 @@
 import {
-	AirportDatabaseToken,
 	and,
-	IAirportDatabase,
-	IUtils,
 	max,
 	min,
 	tree
-}                        from "@airport/air-control";
-import {UtilsToken}      from "@airport/air-control/lib/InjectionTokens";
+}                     from '@airport/air-control'
 import {
 	AgtRepositoryId,
 	AgtSharingMessageId,
 	TerminalId,
-}                     from "@airport/arrivals-n-departures";
-import {
-	Inject,
-	Service
-}                     from "typedi";
+}                     from '@airport/arrivals-n-departures'
+import {DI}           from '@airport/di'
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtRepositoryTransactionBlockId,
 	AgtSharingMessageAcknowledged
-}                     from "../../ddl/ddl";
+}                     from '../../ddl/ddl'
+import {SYNC_LOG_DAO} from '../../diTokens'
 import {
 	BaseSyncLogDao,
 	IBaseSyncLogDao,
@@ -29,8 +23,7 @@ import {
 	QAgtRepositoryTransactionBlock,
 	QAgtSharingMessage,
 	QSyncLog
-}                     from "../../generated/generated";
-import {SYNC_LOG_DAO} from "../../diTokens";
+}                     from '../../generated/generated'
 
 export type SyncedTerminalRepository = [TerminalId, AgtRepositoryId];
 export type TerminalSyncStatus = [TerminalId, AgtRepositoryId, AgtSharingMessageAcknowledged];
@@ -62,27 +55,17 @@ export interface ISyncLogDao
 
 }
 
-@Service(SYNC_LOG_DAO)
 export class SyncLogDao
 	extends BaseSyncLogDao
 	implements ISyncLogDao {
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
-
 	async insertValues(
 		values: InsertSyncLog[]
 	): Promise<void> {
-		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
-		let sl: QSyncLog;
+		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog
+		let sl: QSyncLog
 
-		await this.airportDb.db.insertValues(dbEntity, {
+		await this.airDb.db.insertValues(dbEntity, {
 			insertInto: sl = Q.SyncLog,
 			columns: [
 				sl.repositoryTransactionBlock.id,
@@ -90,7 +73,7 @@ export class SyncLogDao
 				sl.sharingMessage.id,
 			],
 			values
-		});
+		})
 	}
 
 	async selectSyncedTerminalRepositories(
@@ -98,21 +81,21 @@ export class SyncLogDao
 		toDateExlusive: AgtRepositoryTransactionBlockAddDatetime,
 		repositoryIds: AgtRepositoryId[],
 	): Promise<SyncedTerminalRepository[]> {
-		const syncedTerminalRepositories: SyncedTerminalRepository[] = [];
+		const syncedTerminalRepositories: SyncedTerminalRepository[] = []
 
 		const dbSyncStatuses = await this.selectTmSyncStatusForAgtRepositoryIds(
 			fromDateInclusive,
 			toDateExlusive,
 			repositoryIds
-		);
+		)
 
 		for (const dbSyncStatus of dbSyncStatuses) {
 			if (dbSyncStatus[2] === AgtSharingMessageAcknowledged.ACKNOWLEDGED) {
-				syncedTerminalRepositories.push([dbSyncStatus[0], dbSyncStatus[1]]);
+				syncedTerminalRepositories.push([dbSyncStatus[0], dbSyncStatus[1]])
 			}
 		}
 
-		return syncedTerminalRepositories;
+		return syncedTerminalRepositories
 	}
 
 	/**
@@ -134,7 +117,7 @@ export class SyncLogDao
 	): Promise<TerminalSyncStatus[]> {
 		let sl: QSyncLog,
 		    sm: QAgtSharingMessage,
-		    rtb: QAgtRepositoryTransactionBlock;
+		    rtb: QAgtRepositoryTransactionBlock
 
 		// AgtRepositoryTransactionBlock Sub-Query
 		const smrtb = tree({
@@ -166,9 +149,9 @@ export class SyncLogDao
 				rtb.repository.id.asc(),
 				sm.terminal.id.asc(),
 			]
-		});
+		})
 
-		return <TerminalSyncStatus[]>await this.airportDb.find.sheet({
+		return <TerminalSyncStatus[]>await this.airDb.find.sheet({
 			from: [
 				smrtb
 			],
@@ -181,8 +164,10 @@ export class SyncLogDao
 				smrtb.terminalId,
 				smrtb.repositoryId
 			]
-		});
+		})
 
 	}
 
 }
+
+DI.set(SYNC_LOG_DAO, SyncLogDao)

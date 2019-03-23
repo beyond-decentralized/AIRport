@@ -1,32 +1,25 @@
 import {
-	AirportDatabaseToken,
 	and,
-	IAirportDatabase,
-	IUtils,
 	Y
-}                                            from "@airport/air-control";
-import {UtilsToken}                          from "@airport/air-control/lib/InjectionTokens";
+}                                            from '@airport/air-control'
 import {
 	AgtRepositoryId,
 	TerminalId,
 	TerminalPassword,
-}                                            from "@airport/arrivals-n-departures";
-import {
-	Inject,
-	Service
-}                                            from "typedi";
-import {TerminalLastPollConnectionDatetime,} from "../../ddl/ddl";
+}                                            from '@airport/arrivals-n-departures'
+import {DI}                                  from '@airport/di'
+import {TerminalLastPollConnectionDatetime,} from '../../ddl/ddl'
+import {TERMINAL_DAO}                        from '../../diTokens'
 import {
 	BaseTerminalDao,
 	IBaseTerminalDao
-}                                            from "../../generated/baseDaos";
-import {Q}                                   from "../../generated/qSchema";
+}                                            from '../../generated/baseDaos'
+import {Q}                                   from '../../generated/qSchema'
 import {
 	ITerminal,
 	QTerminal
-}                                            from "../../generated/terminal/qterminal";
-import {QTerminalRepository}                 from "../../generated/terminal/qterminalrepository";
-import {TERMINAL_DAO}                        from "../../diTokens";
+}                                            from '../../generated/terminal/qterminal'
+import {QTerminalRepository}                 from '../../generated/terminal/qterminalrepository'
 
 export type TerminalKey = string;
 
@@ -67,19 +60,9 @@ export interface ITerminalDao
 
 }
 
-@Service(TERMINAL_DAO)
 export class TerminalDao
 	extends BaseTerminalDao
 	implements ITerminalDao {
-
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
 
 	async findTerminalVerificationRecords(
 		terminalIds: TerminalId[],
@@ -87,10 +70,10 @@ export class TerminalDao
 		TerminalLastPollConnectionDatetime, TerminalId]>> {
 		const resultMapByTerminalId: Map<TerminalId, [TerminalPassword,
 			TerminalLastPollConnectionDatetime, TerminalId]>
-			      = new Map();
+			      = new Map()
 
-		let t: QTerminal;
-		const results = await this.airportDb.find.sheet({
+		let t: QTerminal
+		const results = await this.airDb.find.sheet({
 			from: [
 				t = Q.Terminal
 			],
@@ -100,15 +83,15 @@ export class TerminalDao
 				t.id,
 			],
 			where: t.id.in(terminalIds)
-		});
+		})
 
 		for (const result of results) {
 			resultMapByTerminalId.set(result[2],
 				<[TerminalPassword, TerminalLastPollConnectionDatetime,
-					TerminalId]>result);
+					TerminalId]>result)
 		}
 
-		return resultMapByTerminalId;
+		return resultMapByTerminalId
 	}
 
 	async findTerminalRepositoryVerificationRecords(
@@ -116,10 +99,10 @@ export class TerminalDao
 		// Superset of all of repository ids received for all of the above terminals
 		repositoryIds: AgtRepositoryId[],
 	): Promise<Map<TerminalId, AgtRepositoryId>> {
-		const resultMapByTerminalId: Map<TerminalId, AgtRepositoryId> = new Map();
+		const resultMapByTerminalId: Map<TerminalId, AgtRepositoryId> = new Map()
 
-		let tr: QTerminalRepository;
-		const results = await this.airportDb.find.sheet({
+		let tr: QTerminalRepository
+		const results = await this.airDb.find.sheet({
 			from: [
 				tr = Q.TerminalRepository,
 			],
@@ -133,23 +116,23 @@ export class TerminalDao
 				// all needed records and possibly additional ones
 				tr.repository.id.in(repositoryIds)
 			)
-		});
+		})
 
 		for (const result of results) {
-			resultMapByTerminalId.set(result[0], result[1]);
+			resultMapByTerminalId.set(result[0], result[1])
 		}
 
-		return resultMapByTerminalId;
+		return resultMapByTerminalId
 	}
 
 	async findSseLoginVerificationRecords(
 		terminalPasswords: TerminalPassword[],
 	): Promise<Map<TerminalPassword, ITerminal>> {
-		const resultMapByPassword: Map<TerminalPassword, ITerminal> = new Map();
+		const resultMapByPassword: Map<TerminalPassword, ITerminal> = new Map()
 
 		let t: QTerminal,
-		    tr: QTerminalRepository;
-		const id      = Y, password = Y, lastConnectionDatetime = Y;
+		    tr: QTerminalRepository
+		const id      = Y, password = Y, lastConnectionDatetime = Y
 		const results = await this.db.find.tree({
 			select: {
 				id,
@@ -161,40 +144,42 @@ export class TerminalDao
 			],
 			where:
 				t.password.in(terminalPasswords),
-		});
+		})
 
 		for (const result of results) {
-			resultMapByPassword.set(result.password, result);
+			resultMapByPassword.set(result.password, result)
 		}
 
-		return resultMapByPassword;
+		return resultMapByPassword
 	}
 
 	async updateLastPollConnectionDatetime(
 		terminalIds: TerminalId[],
 		lastPollConnectionDatetime: TerminalLastPollConnectionDatetime
 	): Promise<void> {
-		let t: QTerminal;
+		let t: QTerminal
 		await this.db.updateWhere({
 			update: t = Q.Terminal,
 			set: {
 				lastPollConnectionDatetime
 			},
 			where: t.id.in(terminalIds)
-		});
+		})
 	}
 
 	async updateLastSseConnectionDatetime(
 		terminalPasswords: TerminalPassword[]
 	): Promise<void> {
-		let t: QTerminal;
+		let t: QTerminal
 		await this.db.updateWhere({
 			update: t = Q.Terminal,
 			set: {
 				lastSseConnectionDatetime: new Date().getTime()
 			},
 			where: t.password.in(terminalPasswords)
-		});
+		})
 	}
 
 }
+
+DI.set(TERMINAL_DAO, TerminalDao)

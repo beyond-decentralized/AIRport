@@ -33,24 +33,6 @@ export declare const SCHEMA: {
                 "sinceVersion": number;
                 "type": number;
                 "isGenerated"?: undefined;
-            } | {
-                "index": number;
-                "manyRelationColumnRefs": {
-                    "manyRelationIndex": number;
-                    "oneSchemaIndex": any;
-                    "oneTableIndex": number;
-                    "oneRelationIndex": number;
-                    "oneColumnIndex": number;
-                    "sinceVersion": number;
-                }[];
-                "name": string;
-                "notNull": boolean;
-                "propertyRefs": {
-                    "index": number;
-                }[];
-                "sinceVersion": number;
-                "type": number;
-                "isGenerated"?: undefined;
             })[];
             "idColumnRefs": {
                 "index": number;

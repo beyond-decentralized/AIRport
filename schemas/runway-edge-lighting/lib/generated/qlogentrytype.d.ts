@@ -12,7 +12,9 @@ export interface ILogEntryType {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface LogEntryTypeESelect extends IEntitySelectProperties, LogEntryTypeEOptionalId, LogEntryTypeEUpdateProperties {
+export interface LogEntryTypeESelect extends IEntitySelectProperties, LogEntryTypeEOptionalId {
+    level?: number | IQNumberField;
+    text?: string | IQStringField;
     applicationPackage?: ApplicationPackageESelect;
     packagedUnit?: PackagedUnitESelect;
     logEntries?: LogEntryESelect;

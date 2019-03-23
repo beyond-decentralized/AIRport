@@ -15,11 +15,11 @@ __export(require("./generated/generated"));
 __export(require("./diTokens"));
 class AtAirport_TrafficPattern_QSchema {
     constructor() {
-        di_1.DI.get((airDb, dao, dbSchemaUtils, dmo) => {
+        di_1.DI.get((airportDatabase, dao, dbSchemaUtils, dmo) => {
             this.dao = dao;
             this.dmo = dmo;
-            this.init(airDb, dbSchemaUtils);
-        }, air_control_1.AIRPORT_DATABASE, diTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS, ground_control_1.DB_SCHEMA_UTILS, diTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS);
+            this.init(airportDatabase, dbSchemaUtils);
+        }, air_control_1.AIR_DB, diTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS, ground_control_1.DB_SCHEMA_UTILS, diTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS);
     }
     init(airDb, dbSchemaUtils) {
         const schemaName = dbSchemaUtils.getSchemaName(schema_1.SCHEMA);

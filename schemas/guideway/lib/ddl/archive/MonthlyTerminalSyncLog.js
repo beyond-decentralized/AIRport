@@ -38,4 +38,4 @@ MonthlyTerminalSyncLog = __decorate([
     // TODO: partition on each node by date
 ], MonthlyTerminalSyncLog);
 exports.MonthlyTerminalSyncLog = MonthlyTerminalSyncLog;
-//# sourceMappingURL=MonthlyTerminalSyncLog.js.map
+//# sourceMappingURL=monthlyterminalsynclog.js.map

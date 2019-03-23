@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
-const src_1 = require("@airport/di/lib/src");
+const di_1 = require("@airport/di");
 const ddl_1 = require("../../ddl/ddl");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
@@ -16,7 +16,7 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
             tmTransactionLogIds = Array.from(tmTransactionLogIds);
         }
         let rtb;
-        const records = await this.airportDb.db.find.sheet({
+        const records = await this.airDb.db.find.sheet({
             from: [
                 rtb = generated_1.Q.AgtRepositoryTransactionBlock
             ],
@@ -38,7 +38,7 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
     values) {
         const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.RealtimeAgtRepositoryTransactionBlock;
         let rtb;
-        return await this.airportDb.db
+        return await this.airDb.db
             .insertValuesGenerateIds(dbEntity, {
             insertInto: rtb = generated_1.Q.AgtRepositoryTransactionBlock,
             columns: [
@@ -57,7 +57,7 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
         let rtb, tr, sl, sm;
         // TODO: once CockroachDb supports optimized (non-nested loop) correlated
         // query, test against NOT EXISTS and see which is faster
-        const rtbsToSend = await this.airportDb.find.tree({
+        const rtbsToSend = await this.airDb.find.tree({
             from: [
                 rtb = generated_1.Q.AgtRepositoryTransactionBlock,
                 tr = rtb.terminalRepositories.innerJoin()
@@ -102,7 +102,7 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
         // TODO: verify correctness of NOT EXISTS
         // TODO: test performance on CockroachDb vs TiDB for NOT EXISTS vs
         // NOT IN vs EXCEPT
-        await this.airportDb.find.sheet({
+        await this.airDb.find.sheet({
             from: [
                 sr = generated_1.Q.AgtRepositoryTransactionBlock,
                 r = sr.repository.innerJoin(),
@@ -161,7 +161,7 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
         const results = [];
         const repositoryTransactionBlockIds = [];
         let rtb;
-        const rtbsToArchive = await this.airportDb.find.sheet({
+        const rtbsToArchive = await this.airDb.find.sheet({
             from: [
                 rtb = generated_1.Q.AgtRepositoryTransactionBlock,
             ],
@@ -197,7 +197,7 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
     }
     async getAllStuckChangesToArchive(toDateExclusive, cursorSize, callback) {
         let rtb;
-        await this.airportDb.find.sheet({
+        await this.airDb.find.sheet({
             from: [
                 rtb = generated_1.Q.AgtRepositoryTransactionBlock,
             ],
@@ -243,5 +243,5 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
     }
 }
 exports.AgtRepositoryTransactionBlockDao = AgtRepositoryTransactionBlockDao;
-src_1.DI.set(diTokens_1.AGT_REPO_TRANS_BLOCK_DAO, AgtRepositoryTransactionBlockDao);
+di_1.DI.set(diTokens_1.AGT_REPO_TRANS_BLOCK_DAO, AgtRepositoryTransactionBlockDao);
 //# sourceMappingURL=AgtRepositoryTransactionBlockDao.js.map

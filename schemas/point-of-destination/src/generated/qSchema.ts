@@ -1,6 +1,6 @@
 import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
-import { DailyArchive } from '../ddl/DailyArchive';
+import { DailyArchive } from '../ddl/dailyarchive';
 import { QDailyArchive } from './qdailyarchive';
 
 import {

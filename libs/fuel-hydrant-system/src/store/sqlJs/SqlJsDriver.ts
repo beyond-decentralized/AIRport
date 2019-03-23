@@ -6,7 +6,6 @@ import {
 }                      from '@airport/ground-control'
 import {Database}      from 'sql.js'
 import {SQLDialect}    from '../../sql/core/SQLQuery'
-import {ActiveQueries} from '../ActiveQueries'
 import {SqLiteDriver}  from '../sqLite/SqLiteDriver'
 
 declare function require(moduleName: string): any;

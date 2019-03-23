@@ -1,25 +1,16 @@
+import {and}                          from '@airport/air-control'
 import {
-	AirportDatabaseToken,
-	and,
-	IAirportDatabase,
-	IUtils
-}                                     from "@airport/air-control";
-import {UtilsToken}                   from "@airport/air-control/lib/InjectionTokens";
-import {
-	TerminalId,
-	AgtRepositoryId
-}                                     from "@airport/arrivals-n-departures";
-import {
-	Inject,
-	Service
-}                                     from "typedi";
-import {TerminalRepositoryPermission} from "../../ddl/ddl";
+	AgtRepositoryId,
+	TerminalId
+}                                     from '@airport/arrivals-n-departures'
+import {DI}                           from '@airport/di'
+import {TerminalRepositoryPermission} from '../../ddl/ddl'
+import {TERMINAL_REPOSITORY_DAO}      from '../../diTokens'
 import {
 	BaseTerminalRepositoryDao,
 	QTerminalRepository
-}                                     from "../../generated/generated";
-import {Q}                            from "../../generated/qSchema";
-import {TERMINAL_REPOSITORY_DAO}      from "../../diTokens";
+}                                     from '../../generated/generated'
+import {Q}                            from '../../generated/qSchema'
 
 export interface ITerminalRepositoryDao {
 
@@ -30,29 +21,19 @@ export interface ITerminalRepositoryDao {
 
 }
 
-@Service(TERMINAL_REPOSITORY_DAO)
 export class TerminalRepositoryDao
 	extends BaseTerminalRepositoryDao
 	implements ITerminalRepositoryDao {
-
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
 
 	async findByTerminalIdInAndRepositoryIdIn(
 		terminalIds: TerminalId[],
 		repositoryIds: AgtRepositoryId[]
 	): Promise<Map<TerminalId, Map<AgtRepositoryId, TerminalRepositoryPermission>>> {
 		const resultMapByTerminalId: Map<TerminalId, Map<AgtRepositoryId, TerminalRepositoryPermission>>
-			      = new Map();
+			      = new Map()
 
-		let tr: QTerminalRepository;
-		const results = await this.airportDb.find.sheet({
+		let tr: QTerminalRepository
+		const results = await this.airDb.find.sheet({
 			from: [
 				tr = Q.TerminalRepository
 			],
@@ -65,19 +46,21 @@ export class TerminalRepositoryDao
 				tr.terminal.id.in(terminalIds),
 				tr.repository.id.in(repositoryIds)
 			)
-		});
+		})
 
 		for (const result of results) {
-			const terminalId = result[0];
-			let repoMapForTerminal = resultMapByTerminalId.get(terminalId);
+			const terminalId       = result[0]
+			let repoMapForTerminal = resultMapByTerminalId.get(terminalId)
 			if (!repoMapForTerminal) {
-				repoMapForTerminal = new Map();
-				resultMapByTerminalId.set(terminalId, repoMapForTerminal);
+				repoMapForTerminal = new Map()
+				resultMapByTerminalId.set(terminalId, repoMapForTerminal)
 			}
-			repoMapForTerminal.set(result[1], result[2]);
+			repoMapForTerminal.set(result[1], result[2])
 		}
 
-		return resultMapByTerminalId;
+		return resultMapByTerminalId
 	}
 
 }
+
+DI.set(TERMINAL_REPOSITORY_DAO, TerminalRepositoryDao)

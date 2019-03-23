@@ -1,29 +1,15 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const InjectionTokens_1 = require("@airport/air-control/lib/InjectionTokens");
-const typedi_1 = require("typedi");
+const di_1 = require("@airport/di");
 const ddl_1 = require("../../ddl/ddl");
-const generated_1 = require("../../generated/generated");
 const diTokens_1 = require("../../diTokens");
-let SyncLogDao = class SyncLogDao extends generated_1.BaseSyncLogDao {
-    constructor(airportDb, utils) {
-        super(utils);
-        this.airportDb = airportDb;
-    }
+const generated_1 = require("../../generated/generated");
+class SyncLogDao extends generated_1.BaseSyncLogDao {
     async insertValues(values) {
         const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
         let sl;
-        await this.airportDb.db.insertValues(dbEntity, {
+        await this.airDb.db.insertValues(dbEntity, {
             insertInto: sl = generated_1.Q.SyncLog,
             columns: [
                 sl.repositoryTransactionBlock.id,
@@ -84,7 +70,7 @@ let SyncLogDao = class SyncLogDao extends generated_1.BaseSyncLogDao {
                 sm.terminal.id.asc(),
             ]
         });
-        return await this.airportDb.find.sheet({
+        return await this.airDb.find.sheet({
             from: [
                 smrtb
             ],
@@ -99,11 +85,7 @@ let SyncLogDao = class SyncLogDao extends generated_1.BaseSyncLogDao {
             ]
         });
     }
-};
-SyncLogDao = __decorate([
-    typedi_1.Service(diTokens_1.SYNC_LOG_DAO),
-    __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(InjectionTokens_1.UtilsToken))
-], SyncLogDao);
+}
 exports.SyncLogDao = SyncLogDao;
+di_1.DI.set(diTokens_1.SYNC_LOG_DAO, SyncLogDao);
 //# sourceMappingURL=SyncLogDao.js.map

@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const DailyArchive_1 = require("../ddl/DailyArchive");
+const dailyarchive_1 = require("../ddl/dailyarchive");
 const __constructors__ = {
-    DailyArchive: DailyArchive_1.DailyArchive
+    DailyArchive: dailyarchive_1.DailyArchive
 };
 exports.Q_SCHEMA = {
     __constructors__

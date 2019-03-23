@@ -75,7 +75,9 @@ export interface ILoggedError {
  * SELECT - All fields and relations (optional).
  */
 export interface LoggedErrorESelect
-    extends IEntitySelectProperties, LoggedErrorEOptionalId, LoggedErrorEUpdateProperties {
+    extends IEntitySelectProperties, LoggedErrorEOptionalId {
+	// Non-Id Properties
+
 	// Id Relations - full property interfaces
 	logEntry?: LogEntryESelect;
 

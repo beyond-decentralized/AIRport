@@ -2,6 +2,7 @@ export declare const SCHEMA: {
     "domain": string;
     "index": any;
     "name": string;
+    "sinceVersion": number;
     "versions": {
         "entities": {
             "columns": ({
@@ -9,9 +10,11 @@ export declare const SCHEMA: {
                 "isGenerated": boolean;
                 "manyRelationColumnRefs": any[];
                 "name": string;
+                "notNull": boolean;
                 "propertyRefs": {
                     "index": number;
                 }[];
+                "sinceVersion": number;
                 "type": number;
             } | {
                 "index": number;
@@ -20,11 +23,14 @@ export declare const SCHEMA: {
                     "oneSchemaIndex": number;
                     "oneTableIndex": number;
                     "oneColumnIndex": number;
+                    "sinceVersion": number;
                 }[];
                 "name": string;
+                "notNull": boolean;
                 "propertyRefs": {
                     "index": number;
                 }[];
+                "sinceVersion": number;
                 "type": number;
                 "isGenerated"?: undefined;
             })[];
@@ -42,6 +48,7 @@ export declare const SCHEMA: {
                 "relationRef": {
                     "index": number;
                 };
+                "sinceVersion": number;
                 "columnRef"?: undefined;
             } | {
                 "columnRef": {
@@ -50,6 +57,7 @@ export declare const SCHEMA: {
                 "index": number;
                 "isId": boolean;
                 "name": string;
+                "sinceVersion": number;
                 "relationRef"?: undefined;
             })[];
             "relations": {
@@ -61,12 +69,26 @@ export declare const SCHEMA: {
                 };
                 "relationTableIndex": number;
                 "relationTableSchemaIndex": number;
+                "sinceVersion": number;
             }[];
+            "sinceVersion": number;
             "tableConfig": {
                 "name": string;
             };
         }[];
-        "referencedSchemas": any[];
+        "integerVersion": number;
+        "referencedSchemas": {
+            "domain": string;
+            "index": number;
+            "name": string;
+            "sinceVersion": number;
+            "versions": {
+                "entities": any;
+                "integerVersion": number;
+                "referencedSchemas": any;
+                "versionString": string;
+            }[];
+        }[];
         "versionString": string;
     }[];
 };

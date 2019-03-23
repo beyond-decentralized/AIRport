@@ -1,29 +1,28 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, QEntity, QRelation } from '@airport/air-control';
-import { IRepository, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation, IDailyArchiveLog, DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation } from '@airport/guideway';
+import { IDailyArchiveLog, DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation, IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '@airport/guideway';
 export interface IDailyArchive {
-    repository?: IRepository;
     dailyArchiveLog?: IDailyArchiveLog;
     repositoryData?: string;
+    repository?: IRepository;
 }
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface DailyArchiveESelect extends IEntitySelectProperties, DailyArchiveEOptionalId, DailyArchiveEUpdateProperties {
-    repository?: RepositoryESelect;
+export interface DailyArchiveESelect extends IEntitySelectProperties, DailyArchiveEOptionalId {
+    repositoryData?: string | IQStringField;
     dailyArchiveLog?: DailyArchiveLogESelect;
+    repository?: RepositoryESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
  */
 export interface DailyArchiveEId extends IEntityIdProperties {
-    repository: RepositoryEId;
     dailyArchiveLog: DailyArchiveLogEId;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface DailyArchiveEOptionalId {
-    repository?: RepositoryEOptionalId;
     dailyArchiveLog?: DailyArchiveLogEOptionalId;
 }
 /**
@@ -31,6 +30,7 @@ export interface DailyArchiveEOptionalId {
  */
 export interface DailyArchiveEUpdateProperties extends IEntityUpdateProperties {
     repositoryData?: string | IQStringField;
+    repository?: RepositoryEOptionalId;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -52,12 +52,11 @@ export interface DailyArchiveECreateColumns extends DailyArchiveEId, DailyArchiv
  * Query Entity Query Definition (used for Q.EntityName).
  */
 export interface QDailyArchive extends QEntity {
-    repository: QRepositoryQRelation;
     dailyArchiveLog: QDailyArchiveLogQRelation;
     repositoryData: IQStringField;
+    repository: QRepositoryQRelation;
 }
 export interface QDailyArchiveQId {
-    repository: QRepositoryQId;
     dailyArchiveLog: QDailyArchiveLogQId;
 }
 export interface QDailyArchiveQRelation extends QRelation<QDailyArchive>, QDailyArchiveQId {

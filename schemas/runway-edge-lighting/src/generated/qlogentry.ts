@@ -77,7 +77,10 @@ export interface ILogEntry {
  * SELECT - All fields and relations (optional).
  */
 export interface LogEntryESelect
-    extends IEntitySelectProperties, LogEntryEOptionalId, LogEntryEUpdateProperties {
+    extends IEntitySelectProperties, LogEntryEOptionalId {
+	// Non-Id Properties
+	timestamp?: Date | IQDateField;
+
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)

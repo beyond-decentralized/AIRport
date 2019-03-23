@@ -23,9 +23,7 @@ export interface IBaseDailyArchiveDao
 export class BaseDailyArchiveDao
   extends Dao<IDailyArchive, DailyArchiveESelect, DailyArchiveECreateProperties, DailyArchiveEUpdateColumns, DailyArchiveEUpdateProperties, DailyArchiveEId, QDailyArchive>
 	implements IBaseDailyArchiveDao {
-	constructor(
-		utils: IUtils
-	) {
-		super(Q.db.currentVersion.entityMapByName['DailyArchive'], Q, utils);
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['DailyArchive'], Q)
 	}
 }

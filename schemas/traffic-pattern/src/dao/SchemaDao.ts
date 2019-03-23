@@ -1,7 +1,5 @@
 import {
-	AIRPORT_DATABASE,
 	and,
-	IAirportDatabase,
 	max,
 	tree,
 	Y
@@ -15,6 +13,7 @@ import {
 	SchemaVersionId
 }                   from '@airport/ground-control'
 import {QDomain}    from '@airport/territory'
+import {SCHEMA_DAO} from '../diTokens'
 import {
 	BaseSchemaDao,
 	IBaseSchemaDao,
@@ -23,7 +22,6 @@ import {
 	QSchema,
 	QSchemaVersion
 }                   from '../generated/generated'
-import {SCHEMA_DAO} from '../diTokens'
 
 
 export interface ISchemaDao

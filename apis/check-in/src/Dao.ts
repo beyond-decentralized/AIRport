@@ -1,5 +1,5 @@
 import {
-	AIRPORT_DATABASE,
+	AIR_DB,
 	IAirportDatabase,
 	IDao,
 	IEntityCreateProperties,
@@ -56,7 +56,7 @@ export abstract class Dao<Entity,
 					EntitySelect, EntityCreate,
 					EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>(
 					dbEntity, Q, this.utils)
-			}, AIRPORT_DATABASE, UTILS)
+			}, AIR_DB, UTILS)
 	}
 
 	get find(): IEntityFind<Entity, Array<Entity>, EntitySelect> {

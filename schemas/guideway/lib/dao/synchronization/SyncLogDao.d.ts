@@ -1,7 +1,6 @@
-import { IAirportDatabase, IUtils } from "@airport/air-control";
-import { AgtRepositoryId, AgtSharingMessageId, TerminalId } from "@airport/arrivals-n-departures";
-import { AgtRepositoryTransactionBlockAddDatetime, AgtRepositoryTransactionBlockId, AgtSharingMessageAcknowledged } from "../../ddl/ddl";
-import { BaseSyncLogDao, IBaseSyncLogDao } from "../../generated/generated";
+import { AgtRepositoryId, AgtSharingMessageId, TerminalId } from '@airport/arrivals-n-departures';
+import { AgtRepositoryTransactionBlockAddDatetime, AgtRepositoryTransactionBlockId, AgtSharingMessageAcknowledged } from '../../ddl/ddl';
+import { BaseSyncLogDao, IBaseSyncLogDao } from '../../generated/generated';
 export declare type SyncedTerminalRepository = [TerminalId, AgtRepositoryId];
 export declare type TerminalSyncStatus = [TerminalId, AgtRepositoryId, AgtSharingMessageAcknowledged];
 export declare type InsertSyncLog = [AgtRepositoryTransactionBlockId, AgtSharingMessageId];
@@ -11,8 +10,6 @@ export interface ISyncLogDao extends IBaseSyncLogDao {
     selectTmSyncStatusForAgtRepositoryIds(fromDateInclusive: AgtRepositoryTransactionBlockAddDatetime, toDateExlusive: AgtRepositoryTransactionBlockAddDatetime, repositoryIds: AgtRepositoryId[]): Promise<TerminalSyncStatus[]>;
 }
 export declare class SyncLogDao extends BaseSyncLogDao implements ISyncLogDao {
-    private airportDb;
-    constructor(airportDb: IAirportDatabase, utils: IUtils);
     insertValues(values: InsertSyncLog[]): Promise<void>;
     selectSyncedTerminalRepositories(fromDateInclusive: AgtRepositoryTransactionBlockAddDatetime, toDateExlusive: AgtRepositoryTransactionBlockAddDatetime, repositoryIds: AgtRepositoryId[]): Promise<SyncedTerminalRepository[]>;
     /**

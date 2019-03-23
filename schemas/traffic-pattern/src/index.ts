@@ -1,5 +1,5 @@
 import {
-	AIRPORT_DATABASE,
+	AIR_DB,
 	IAirportDatabase,
 	QSchemaInternal,
 	setQSchemaEntities
@@ -69,15 +69,15 @@ export class AtAirport_TrafficPattern_QSchema
 
 	constructor() {
 		DI.get((
-			airDb,
+			airportDatabase,
 			dao,
 			dbSchemaUtils,
 			dmo
 			) => {
 				this.dao = dao
 				this.dmo = dmo
-				this.init(airDb, dbSchemaUtils)
-			}, AIRPORT_DATABASE,
+				this.init(airportDatabase, dbSchemaUtils)
+			}, AIR_DB,
 			NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS,
 			DB_SCHEMA_UTILS,
 			NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS
@@ -114,8 +114,8 @@ export class AtAirport_TrafficPattern_QSchema
 			setQSchemaEntities(existingQSchema.__dbSchema__, this, airDb.qSchemas)
 			setQSchemaEntities(existingQSchema.__dbSchema__, Q_SCHEMA, airDb.qSchemas)
 		} else {
-			Q_SCHEMA.__created__                         = Q_SCHEMA
-			this.__created__                             = Q_SCHEMA
+			Q_SCHEMA.__created__               = Q_SCHEMA
+			this.__created__                   = Q_SCHEMA
 			airDb.qSchemaMapByName[schemaName] = Q_SCHEMA
 		}
 	}

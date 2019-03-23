@@ -21,14 +21,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IRepository,
-	RepositoryEId,
-	RepositoryEOptionalId,
-	RepositoryEUpdateProperties,
-	RepositoryESelect,
-	QRepository,
-	QRepositoryQId,
-	QRepositoryQRelation,
 	IDailyArchiveLog,
 	DailyArchiveLogEId,
 	DailyArchiveLogEOptionalId,
@@ -37,6 +29,14 @@ import {
 	QDailyArchiveLog,
 	QDailyArchiveLogQId,
 	QDailyArchiveLogQRelation,
+	IRepository,
+	RepositoryEId,
+	RepositoryEOptionalId,
+	RepositoryEUpdateProperties,
+	RepositoryESelect,
+	QRepository,
+	QRepositoryQId,
+	QRepositoryQRelation,
 } from '@airport/guideway';
 
 
@@ -52,13 +52,13 @@ export interface IDailyArchive {
 	// Id Properties
 
 	// Id Relations
-	repository?: IRepository;
 	dailyArchiveLog?: IDailyArchiveLog;
 
 	// Non-Id Properties
 	repositoryData?: string;
 
 	// Non-Id Relations
+	repository?: IRepository;
 
 	// Transient Properties
 
@@ -74,12 +74,15 @@ export interface IDailyArchive {
  * SELECT - All fields and relations (optional).
  */
 export interface DailyArchiveESelect
-    extends IEntitySelectProperties, DailyArchiveEOptionalId, DailyArchiveEUpdateProperties {
+    extends IEntitySelectProperties, DailyArchiveEOptionalId {
+	// Non-Id Properties
+	repositoryData?: string | IQStringField;
+
 	// Id Relations - full property interfaces
-	repository?: RepositoryESelect;
 	dailyArchiveLog?: DailyArchiveLogESelect;
 
   // Non-Id relations (including OneToMany's)
+	repository?: RepositoryESelect;
 
 }
 
@@ -91,7 +94,6 @@ export interface DailyArchiveEId
 	// Id Properties
 
 	// Id Relations - Ids only
-	repository: RepositoryEId;
 	dailyArchiveLog: DailyArchiveLogEId;
 
 }
@@ -103,7 +105,6 @@ export interface DailyArchiveEOptionalId {
 	// Id Properties
 
 	// Id Relations - Ids only
-	repository?: RepositoryEOptionalId;
 	dailyArchiveLog?: DailyArchiveLogEOptionalId;
 
 }
@@ -117,6 +118,7 @@ export interface DailyArchiveEUpdateProperties
 	repositoryData?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+	repository?: RepositoryEOptionalId;
 
 }
 
@@ -159,13 +161,13 @@ export interface QDailyArchive extends QEntity
 	// Id Fields
 
 	// Id Relations
-	repository: QRepositoryQRelation;
 	dailyArchiveLog: QDailyArchiveLogQRelation;
 
 	// Non-Id Fields
 	repositoryData: IQStringField;
 
 	// Non-Id Relations
+	repository: QRepositoryQRelation;
 
 }
 
@@ -177,7 +179,6 @@ export interface QDailyArchiveQId
 	// Id Fields
 
 	// Id Relations
-	repository: QRepositoryQId;
 	dailyArchiveLog: QDailyArchiveLogQId;
 
 

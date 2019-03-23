@@ -1,17 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const diTokens_1 = require("../diTokens");
 const baseDaos_1 = require("../generated/baseDaos");
 const qSchema_1 = require("../generated/qSchema");
 class DailyArchiveDao extends baseDaos_1.BaseDailyArchiveDao {
-    constructor(airportDb, utils) {
-        super(utils);
-        this.airportDb = airportDb;
-    }
     async addRecords(values) {
         const dbEntity = qSchema_1.Q.db.currentVersion.entityMapByName.DailyArchive;
         let da;
-        await this.airportDb.db.insertValues(dbEntity, {
+        await this.airDb.db.insertValues(dbEntity, {
             insertInto: da = qSchema_1.Q.DailyArchive,
             columns: [
                 da.repository.id,
@@ -29,7 +27,7 @@ class DailyArchiveDao extends baseDaos_1.BaseDailyArchiveDao {
             const repositoryDates = dates[++i];
             whereClauseFragments.push(air_control_1.and(dsl.repository.id.equals(repositoryId), dsl.dailyArchiveLog.dateNumber.in(repositoryDates)));
         }
-        return await this.airportDb.find.sheet({
+        return await this.airDb.find.sheet({
             from: [
                 dsl
             ],
@@ -43,4 +41,5 @@ class DailyArchiveDao extends baseDaos_1.BaseDailyArchiveDao {
     }
 }
 exports.DailyArchiveDao = DailyArchiveDao;
+di_1.DI.set(diTokens_1.DAILY_ARCHIVE_DAO, DailyArchiveDao);
 //# sourceMappingURL=DailyArchiveDao.js.map

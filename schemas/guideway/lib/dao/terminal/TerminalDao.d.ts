@@ -1,8 +1,7 @@
-import { IAirportDatabase, IUtils } from "@airport/air-control";
-import { AgtRepositoryId, TerminalId, TerminalPassword } from "@airport/arrivals-n-departures";
-import { TerminalLastPollConnectionDatetime } from "../../ddl/ddl";
-import { BaseTerminalDao, IBaseTerminalDao } from "../../generated/baseDaos";
-import { ITerminal } from "../../generated/terminal/qterminal";
+import { AgtRepositoryId, TerminalId, TerminalPassword } from '@airport/arrivals-n-departures';
+import { TerminalLastPollConnectionDatetime } from '../../ddl/ddl';
+import { BaseTerminalDao, IBaseTerminalDao } from '../../generated/baseDaos';
+import { ITerminal } from '../../generated/terminal/qterminal';
 export declare type TerminalKey = string;
 export interface ITerminalDao extends IBaseTerminalDao {
     findTerminalVerificationRecords(terminalIds: TerminalId[]): Promise<Map<TerminalId, [TerminalPassword, TerminalLastPollConnectionDatetime, TerminalId]>>;
@@ -20,8 +19,6 @@ export interface ITerminalDao extends IBaseTerminalDao {
     updateLastSseConnectionDatetime(terminalPasswords: TerminalPassword[]): Promise<void>;
 }
 export declare class TerminalDao extends BaseTerminalDao implements ITerminalDao {
-    private airportDb;
-    constructor(airportDb: IAirportDatabase, utils: IUtils);
     findTerminalVerificationRecords(terminalIds: TerminalId[]): Promise<Map<TerminalId, [TerminalPassword, TerminalLastPollConnectionDatetime, TerminalId]>>;
     findTerminalRepositoryVerificationRecords(terminalIds: TerminalId[], repositoryIds: AgtRepositoryId[]): Promise<Map<TerminalId, AgtRepositoryId>>;
     findSseLoginVerificationRecords(terminalPasswords: TerminalPassword[]): Promise<Map<TerminalPassword, ITerminal>>;

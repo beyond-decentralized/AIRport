@@ -1,32 +1,19 @@
-import {
-	IUtils,
-	UtilsToken
-}                              from "@airport/air-control";
-import {
-	Inject,
-	Service
-}                              from "typedi";
+import {DI}                  from '@airport/di'
+import {LOG_ENTRY_VALUE_DAO} from '../diTokens'
 import {
 	BaseLogEntryValueDao,
 	IBaseLogEntryValueDao
-}                              from "../generated/baseDaos";
-import {LogEntryValueDaoToken} from "../InjectionTokens";
+}                            from '../generated/baseDaos'
 
 export interface ILogEntryValueDao
 	extends IBaseLogEntryValueDao {
 
 }
 
-@Service(LogEntryValueDaoToken)
 export class LogEntryValueDao
 	extends BaseLogEntryValueDao
 	implements ILogEntryValueDao {
 
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils
-	) {
-		super(utils);
-	}
-
 }
+
+DI.set(LOG_ENTRY_VALUE_DAO, LogEntryValueDao)

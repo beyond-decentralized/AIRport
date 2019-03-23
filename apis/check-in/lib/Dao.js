@@ -12,7 +12,7 @@ class Dao {
             this.airDb = airportDatabase;
             this.utils = utils;
             this.db = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q, this.utils);
-        }, air_control_1.AIRPORT_DATABASE, air_control_1.UTILS);
+        }, air_control_1.AIR_DB, air_control_1.UTILS);
     }
     get find() {
         return this.db.find;

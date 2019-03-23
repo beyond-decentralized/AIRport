@@ -4,6 +4,7 @@ exports.SCHEMA = {
     "domain": "public",
     "index": null,
     "name": "@airport/runway-edge-lighting",
+    "sinceVersion": 1,
     "versions": [
         {
             "entities": [
@@ -14,71 +15,63 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "LEVEL",
+                            "name": "POSITION",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 1
+                                    "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
                             "index": 2,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "TEXT",
+                            "name": "VALUE",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 4
+                                    "index": 3
                                 }
                             ],
-                            "type": 5
+                            "sinceVersion": 1,
+                            "type": 0
                         },
                         {
                             "index": 3,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneSchemaIndex": 0,
+                                    "oneSchemaIndex": null,
                                     "oneTableIndex": 1,
-                                    "oneColumnIndex": 0
+                                    "oneRelationIndex": 1,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_PACKAGE_ID",
+                            "name": "LOG_ENTRY_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 2
+                                    "index": 1
                                 }
                             ],
-                            "type": 4
-                        },
-                        {
-                            "index": 4,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 0,
-                                    "oneTableIndex": 4,
-                                    "oneColumnIndex": 0
-                                }
-                            ],
-                            "name": "PACKAGED_UNIT_ID",
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -90,161 +83,6 @@ exports.SCHEMA = {
                     "index": 0,
                     "isLocal": true,
                     "isRepositoryEntity": false,
-                    "name": "LogEntryType",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "id"
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "level"
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "name": "applicationPackage",
-                            "relationRef": {
-                                "index": 0
-                            }
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "packagedUnit",
-                            "relationRef": {
-                                "index": 1
-                            }
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "text"
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "logEntries",
-                            "relationRef": {
-                                "index": 2
-                            }
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 1,
-                            "relationTableSchemaIndex": 0
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 4,
-                            "relationTableSchemaIndex": 0
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "logEntryType"
-                            },
-                            "relationType": 0,
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 2
-                        }
-                    ],
-                    "tableConfig": {
-                        "name": "LOG_ENTRIES"
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "ID",
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "POSITION",
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "VALUE",
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "type": 0
-                        },
-                        {
-                            "index": 3,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 2,
-                                    "oneRelationIndex": 1,
-                                    "oneColumnIndex": 0
-                                }
-                            ],
-                            "name": "LOG_ENTRY_ID",
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 1,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
                     "name": "LogEntryValue",
                     "properties": [
                         {
@@ -253,7 +91,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -261,7 +100,8 @@ exports.SCHEMA = {
                             "name": "logEntry",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -269,7 +109,8 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "position"
+                            "name": "position",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -277,7 +118,8 @@ exports.SCHEMA = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "value"
+                            "name": "value",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -288,9 +130,11 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 2
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "LOG_ENTRY_VALUES"
                     }
@@ -302,11 +146,13 @@ exports.SCHEMA = {
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -314,11 +160,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "TIMESTAMP",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 2
                         },
                         {
@@ -327,17 +175,19 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 0,
-                                    "oneRelationIndex": 2,
-                                    "oneColumnIndex": 0
+                                    "oneTableIndex": 2,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "LOG_ENTRY_TYPE_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -346,7 +196,7 @@ exports.SCHEMA = {
                             "index": 0
                         }
                     ],
-                    "index": 2,
+                    "index": 1,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "LogEntry",
@@ -357,7 +207,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -365,7 +216,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "timestamp"
+                            "name": "timestamp",
+                            "sinceVersion": 1
                         },
                         {
                             "index": 2,
@@ -373,7 +225,8 @@ exports.SCHEMA = {
                             "name": "type",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 3,
@@ -381,7 +234,8 @@ exports.SCHEMA = {
                             "name": "values",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -392,7 +246,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 0
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -404,11 +259,207 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 1
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "LOG_ENTRY"
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "LEVEL",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "TEXT",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 5
+                        },
+                        {
+                            "index": 3,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": 0,
+                                    "oneTableIndex": 1,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "APPLICATION_PACKAGE_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 4,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": 0,
+                                    "oneTableIndex": 4,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "PACKAGED_UNIT_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 2,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "LogEntryType",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "id",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "level",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "applicationPackage",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "packagedUnit",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 4,
+                            "isId": false,
+                            "name": "text",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "name": "logEntries",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 1,
+                            "relationTableSchemaIndex": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 4,
+                            "relationTableSchemaIndex": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "logEntryType"
+                            },
+                            "relationType": 0,
+                            "propertyRef": {
+                                "index": 5
+                            },
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "LOG_ENTRIES"
                     }
                 },
                 {
@@ -418,11 +469,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -430,11 +483,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "STACK_HASH",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         },
                         {
@@ -442,11 +497,13 @@ exports.SCHEMA = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "STACK",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 2
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 5
                         }
                     ],
@@ -466,7 +523,8 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id"
+                            "name": "id",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -474,7 +532,8 @@ exports.SCHEMA = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "stackHash"
+                            "name": "stackHash",
+                            "sinceVersion": 1
                         },
                         {
                             "columnRef": {
@@ -482,10 +541,12 @@ exports.SCHEMA = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "stack"
+                            "name": "stack",
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "LOGGED_ERROR_STACK_TRACE"
                     }
@@ -498,16 +559,19 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 2,
-                                    "oneColumnIndex": 0
+                                    "oneTableIndex": 1,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "LOG_ENTRY_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         },
                         {
@@ -517,15 +581,18 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 3,
-                                    "oneColumnIndex": 0
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "LOGGED_ERROR_STACK_TRACE_ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
+                            "sinceVersion": 1,
                             "type": 4
                         }
                     ],
@@ -545,7 +612,8 @@ exports.SCHEMA = {
                             "name": "logEntry",
                             "relationRef": {
                                 "index": 0
-                            }
+                            },
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -553,7 +621,8 @@ exports.SCHEMA = {
                             "name": "stackTrace",
                             "relationRef": {
                                 "index": 1
-                            }
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -564,7 +633,8 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 2
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
                         },
                         {
                             "index": 1,
@@ -573,15 +643,33 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 3
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
                         }
                     ],
+                    "sinceVersion": 1,
                     "tableConfig": {
                         "name": "LOGGED_ERROR"
                     }
                 }
             ],
-            "referencedSchemas": [],
+            "integerVersion": 1,
+            "referencedSchemas": [
+                {
+                    "domain": "npmjs.org",
+                    "index": 0,
+                    "name": "@airport/territory",
+                    "sinceVersion": 1,
+                    "versions": [
+                        {
+                            "entities": null,
+                            "integerVersion": 1,
+                            "referencedSchemas": null,
+                            "versionString": "1.0.0"
+                        }
+                    ]
+                }
+            ],
             "versionString": "1.0.0"
         }
     ]

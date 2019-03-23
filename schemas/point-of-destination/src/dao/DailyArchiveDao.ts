@@ -1,19 +1,19 @@
 import {
 	and,
-	IAirportDatabase,
-	IUtils,
 	JSONLogicalOperation,
 	or
-}                            from "@airport/air-control";
+}                            from '@airport/air-control'
+import {DI}                  from '@airport/di'
 import {
 	DailyArchiveDate,
 	DailyArchiveRepositoryData,
 	DailyArchiveRepositoryId,
 	DailyArchiveValues
-}                            from "../ddl/DailyArchive";
-import {BaseDailyArchiveDao} from "../generated/baseDaos";
-import {QDailyArchive}       from "../generated/qdailyarchive";
-import {Q}                   from "../generated/qSchema";
+}                            from '../ddl/DailyArchive'
+import {DAILY_ARCHIVE_DAO}   from '../diTokens'
+import {BaseDailyArchiveDao} from '../generated/baseDaos'
+import {QDailyArchive}       from '../generated/qdailyarchive'
+import {Q}                   from '../generated/qSchema'
 
 export type FlatDailyArchive =
 	[DailyArchiveRepositoryId, DailyArchiveDate, DailyArchiveRepositoryData];
@@ -35,19 +35,12 @@ export class DailyArchiveDao
 	extends BaseDailyArchiveDao
 	implements IDailyArchiveDao {
 
-	constructor(
-		private airportDb: IAirportDatabase,
-		utils: IUtils
-	) {
-		super(utils);
-	}
-
 	async addRecords(
 		values: DailyArchiveValues[]
 	): Promise<void> {
-		const dbEntity = Q.db.currentVersion.entityMapByName.DailyArchive;
-		let da: QDailyArchive;
-		await this.airportDb.db.insertValues(dbEntity, {
+		const dbEntity = Q.db.currentVersion.entityMapByName.DailyArchive
+		let da: QDailyArchive
+		await this.airDb.db.insertValues(dbEntity, {
 			insertInto: da = Q.DailyArchive,
 			columns: [
 				da.repository.id,
@@ -55,25 +48,25 @@ export class DailyArchiveDao
 				da.repositoryData
 			],
 			values
-		});
+		})
 	}
 
 	async findForRepositoryIdsOnDates(
 		repositoryIds: DailyArchiveRepositoryId[],
 		dates: DailyArchiveDate[][],
 	): Promise<FlatDailyArchive[]> {
-		const whereClauseFragments: JSONLogicalOperation[] = [];
-		let i = -1;
-		let dsl: QDailyArchive = Q.DailyArchive;
+		const whereClauseFragments: JSONLogicalOperation[] = []
+		let i                                              = -1
+		let dsl: QDailyArchive                             = Q.DailyArchive
 		for (const repositoryId of repositoryIds) {
-			const repositoryDates = dates[++i];
+			const repositoryDates = dates[++i]
 			whereClauseFragments.push(
 				and(
 					dsl.repository.id.equals(repositoryId),
 					dsl.dailyArchiveLog.dateNumber.in(repositoryDates)
-				));
+				))
 		}
-		return <FlatDailyArchive[]> await this.airportDb.find.sheet({
+		return <FlatDailyArchive[]>await this.airDb.find.sheet({
 			from: [
 				dsl
 			],
@@ -85,7 +78,9 @@ export class DailyArchiveDao
 			where: or(
 				...whereClauseFragments
 			)
-		});
+		})
 	}
 
 }
+
+DI.set(DAILY_ARCHIVE_DAO, DailyArchiveDao)
