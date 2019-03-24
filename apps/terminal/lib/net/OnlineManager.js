@@ -14,7 +14,7 @@ const terminal_map_1 = require("@airport/terminal-map");
 const tower_1 = require("@airport/tower");
 const typedi_1 = require("typedi");
 const UpdateState_1 = require("../core/UpdateState");
-const InjectionTokens_1 = require("../InjectionTokens");
+const diTokens_1 = require("../diTokens");
 let OnlineManager = class OnlineManager {
     constructor(offlineDeltaStore, repositoryManager, repositoryDao, repoTransHistory) {
         this.offlineDeltaStore = offlineDeltaStore;
@@ -171,9 +171,9 @@ __decorate([
     tower_1.Transactional()
 ], OnlineManager.prototype, "goOnline", null);
 OnlineManager = __decorate([
-    typedi_1.Service(InjectionTokens_1.OnlineManagerToken),
-    __param(0, typedi_1.Inject(_ => InjectionTokens_1.OfflineDeltaStoreToken)),
-    __param(1, typedi_1.Inject(_ => InjectionTokens_1.RepositoryManagerToken)),
+    typedi_1.Service(diTokens_1.ONLINE_MANAGER),
+    __param(0, typedi_1.Inject(_ => diTokens_1.OFFLINE_DELTA_STORE)),
+    __param(1, typedi_1.Inject(_ => diTokens_1.REPOSITORY_MANAGER)),
     __param(2, typedi_1.Inject(_ => holding_pattern_1.RepositoryDaoToken)),
     __param(3, typedi_1.Inject(_ => holding_pattern_1.RepositoryTransactionHistoryDaoToken))
 ], OnlineManager);

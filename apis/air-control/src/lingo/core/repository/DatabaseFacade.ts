@@ -49,7 +49,7 @@ export interface IFunctionWrapper<QF extends Function> {
 export interface IDatabaseFacade {
 
 	/**
-	 * Name of the database
+	 * Name of the terminal
 	 */
 	name: string;
 

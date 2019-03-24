@@ -20,9 +20,9 @@ const win: any = window;
  *
  * The `SqlStorage` service supports these options:
  * {
- *   name: the name of the database (__ionicstorage by default)
+ *   name: the name of the terminal (__ionicstorage by default)
  *   backupFlag: // where to store the file, default is BACKUP_LOCAL which DOES NOT store to iCloud. Other options: BACKUP_LIBRARY, BACKUP_DOCUMENTS
- *   existingDatabase: whether to load this as an existing database (default is false)
+ *   existingDatabase: whether to load this as an existing terminal (default is false)
  * }
  *
  */
@@ -52,7 +52,7 @@ export class SqlStorage {
 		} else {
 			console.warn('Storage: SQLite plugin not installed, falling back to WebSQL. Make sure to install cordova-sqlite-storage in production!');
 
-			this._db = win.openDatabase(dbOptions.name, '1.0', 'database', 5 * 1024 * 1024);
+			this._db = win.openDatabase(dbOptions.name, '1.0', 'terminal', 5 * 1024 * 1024);
 		}
 		this._tryInit();
 	}

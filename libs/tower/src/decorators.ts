@@ -6,9 +6,9 @@ import { Airport } from "./core/Airport";
  */
 
 /**
- * Transactional context talks to a database.  In a multi-database setup the same
+ * Transactional context talks to a terminal.  In a multi-terminal setup the same
  * transactional method might be used to talk to different databases.  The most strait
- * forward way to specify which database to talk to is to pass in an argument to the method
+ * forward way to specify which terminal to talk to is to pass in an argument to the method
  * that provides the transactional client.  However is very clumbersome from the API point
  * of view.
  *
@@ -38,7 +38,7 @@ export const Transactional: TransactionalDecorator = function (): MethodDecorato
 
 		//editing the descriptor/value parameter
 		methodDescriptor.value = async function (...args: any[]): Promise<any> {
-			// TODO: Current database should be controlled by setting TQ.setDb()
+			// TODO: Current terminal should be controlled by setting TQ.setDb()
 			const globalTransactionId = Airport.startTransaction();
 
 			// let transactionIndex; // = client.getCurrentTransactionIndex();

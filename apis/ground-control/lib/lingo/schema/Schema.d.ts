@@ -128,12 +128,12 @@ export interface DbSchemaVersion extends DbSchemaVersionReference {
         [entityName: string]: DbEntity;
     };
     /**
-     * Schemas referenced in this schema, by database index.
+     * Schemas referenced in this schema, by terminal index.
      *
      */
     references: DbSchemaReference[];
     /**
-     * Schemas referencing in this schema, by database index.
+     * Schemas referencing in this schema, by terminal index.
      *
      */
     referencedBy: DbSchemaReference[];
@@ -162,16 +162,16 @@ export interface DbSchemaReference extends DatabaseObject {
     referencedSchemaVersion: DbSchemaVersion;
 }
 /**
- * A physical database on a given device.  A device can
+ * A physical terminal on a given device.  A device can
  * have multiple databases.  For example when loading an old repository
  * that went though a number of incompatible schema upgrades, that
- * repository will have to be loaded in a different database and then
+ * repository will have to be loaded in a different terminal and then
  * upgraded.
  *
- * The default database keeps track of all databases on a device.  Each
- * other database will have only itself as the entry this this table.
+ * The default terminal keeps track of all databases on a device.  Each
+ * other terminal will have only itself as the entry this this table.
  *
- * Each database can have different set of schemas.
+ * Each terminal can have different set of schemas.
  *
  * @externs
  */

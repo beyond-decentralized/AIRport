@@ -13,6 +13,7 @@
     "@airport/terminal-map": "0.0.1",
     "@airport/tower": "0.0.1",
     "@airport/traffic-pattern": "0.0.1",
+    "@airport/travel-document-checkpoint": "0.0.1",
     "zipson": "^0.2.7"
   },
   "main": "lib/index.js",

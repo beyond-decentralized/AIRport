@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const holding_pattern_1 = require("@airport/holding-pattern");
 const TransactionType_1 = require("@airport/terminal-map/lib/TransactionType");
 const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../InjectionTokens");
+const diTokens_1 = require("../diTokens");
 let HistoryManager = class HistoryManager {
     constructor(operationHistoryDmo, recordHistoryDmo, repositoryTransactionHistoryDmo, transactionHistoryDmo) {
         this.operationHistoryDmo = operationHistoryDmo;
@@ -30,7 +30,7 @@ let HistoryManager = class HistoryManager {
     }
 };
 HistoryManager = __decorate([
-    typedi_1.Service(InjectionTokens_1.HistoryManagerToken),
+    typedi_1.Service(diTokens_1.HISTORY_MANAGER),
     __param(0, typedi_1.Inject(_ => holding_pattern_1.OperationHistoryDmoToken)),
     __param(1, typedi_1.Inject(_ => holding_pattern_1.RecordHistoryDmoToken)),
     __param(2, typedi_1.Inject(_ => holding_pattern_1.RepositoryTransactionHistoryDmoToken)),

@@ -44,6 +44,13 @@
           </resourceRoots>
         </entryData>
       </entry>
+      <entry url="file://$PROJECT_DIR$/../../apps/pedestrian-terminal-connector">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../apps/pedestrian-terminal-connector/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
       <entry url="file://$PROJECT_DIR$/../../apps/tarmaq">
         <entryData>
           <resourceRoots>

@@ -13,7 +13,7 @@ const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../InjectionTokens");
+const diTokens_1 = require("../diTokens");
 let UpdateManager = class UpdateManager {
     constructor(airportDb, utils, dataStore, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager) {
         this.airportDb = airportDb;
@@ -129,18 +129,18 @@ let UpdateManager = class UpdateManager {
     }
 };
 UpdateManager = __decorate([
-    typedi_1.Service(InjectionTokens_1.UpdateManagerToken),
+    typedi_1.Service(diTokens_1.UPDATE_MANAGER),
     __param(0, typedi_1.Inject(_ => air_control_1.AirportDatabaseToken)),
     __param(1, typedi_1.Inject(_ => air_control_1.UtilsToken)),
-    __param(2, typedi_1.Inject(_ => InjectionTokens_1.StoreDriverToken)),
-    __param(3, typedi_1.Inject(_ => InjectionTokens_1.HistoryManagerToken)),
-    __param(4, typedi_1.Inject(_ => InjectionTokens_1.OfflineDeltaStoreToken)),
+    __param(2, typedi_1.Inject(_ => diTokens_1.STORE_DRIVER)),
+    __param(3, typedi_1.Inject(_ => diTokens_1.HISTORY_MANAGER)),
+    __param(4, typedi_1.Inject(_ => diTokens_1.OFFLINE_DELTA_STORE)),
     __param(5, typedi_1.Inject(_ => holding_pattern_1.OperationHistoryDmoToken)),
     __param(6, typedi_1.Inject(_ => holding_pattern_1.RecordHistoryDmoToken)),
-    __param(7, typedi_1.Inject(_ => InjectionTokens_1.RepositoryManagerToken)),
+    __param(7, typedi_1.Inject(_ => diTokens_1.REPOSITORY_MANAGER)),
     __param(8, typedi_1.Inject(_ => holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
     __param(9, typedi_1.Inject(_ => holding_pattern_1.TransactionHistoryDmoToken)),
-    __param(10, typedi_1.Inject(_ => InjectionTokens_1.TransactionManagerToken))
+    __param(10, typedi_1.Inject(_ => diTokens_1.TransactionManagerToken))
 ], UpdateManager);
 exports.UpdateManager = UpdateManager;
 //# sourceMappingURL=UpdateManager.js.map

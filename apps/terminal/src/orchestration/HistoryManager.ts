@@ -11,11 +11,11 @@ import {
 	RepositoryTransactionHistoryDmoToken,
 	TransactionHistoryDmo,
 	TransactionHistoryDmoToken
-} from "@airport/holding-pattern";
-import {TransactionType} from "@airport/terminal-map/lib/TransactionType";
-import {Inject, Service} from "typedi";
-import {HistoryManagerToken, IdGeneratorToken} from "../InjectionTokens";
-import {IdGenerator} from "../store/IdGenerator";
+}                                          from "@airport/holding-pattern";
+import {TransactionType}                   from "@airport/terminal-map/lib/TransactionType";
+import {Inject, Service}                   from "typedi";
+import {HISTORY_MANAGER, IdGeneratorToken} from "../diTokens";
+import {IdGenerator}                       from "../store/IdGenerator";
 
 export interface IHistoryManager {
 
@@ -31,7 +31,7 @@ export interface IHistoryManager {
 
 }
 
-@Service(HistoryManagerToken)
+@Service(HISTORY_MANAGER)
 export class HistoryManager implements IHistoryManager {
 
 	constructor(

@@ -62,7 +62,7 @@ export class WebSqlDriver
 			this._db                     = win.sqlitePlugin.openDatabase(dbOptions)
 		} else {
 			console.warn('Storage: SQLite plugin not installed, falling back to WebSQL. Make sure to install cordova-sqlite-storage in production!')
-			this._db = win.openDatabase(dbOptions.name, '1.0', 'database', 5 * 1024 * 1024)
+			this._db = win.openDatabase(dbOptions.name, '1.0', 'terminal', 5 * 1024 * 1024)
 		}
 
 		return await this.initAllTables()

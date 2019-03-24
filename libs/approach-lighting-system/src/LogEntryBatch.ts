@@ -4,7 +4,7 @@ import {
 } from "@airport/runway-edge-lighting";
 
 /**
- * TODO: When inserting log records into database, first collect all of them
+ * TODO: When inserting log records into terminal, first collect all of them
  * and then insert at transaction commit time.
  *
  * We may also provide a flush() method, if messages are not generated

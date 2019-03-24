@@ -5,9 +5,9 @@ const Airport_1 = require("./core/Airport");
  * Created by Papa on 4/17/2016.
  */
 /**
- * Transactional context talks to a database.  In a multi-database setup the same
+ * Transactional context talks to a terminal.  In a multi-terminal setup the same
  * transactional method might be used to talk to different databases.  The most strait
- * forward way to specify which database to talk to is to pass in an argument to the method
+ * forward way to specify which terminal to talk to is to pass in an argument to the method
  * that provides the transactional client.  However is very clumbersome from the API point
  * of view.
  *
@@ -32,7 +32,7 @@ exports.Transactional = function () {
         let originalMethod = methodDescriptor.value;
         //editing the descriptor/value parameter
         methodDescriptor.value = async function (...args) {
-            // TODO: Current database should be controlled by setting TQ.setDb()
+            // TODO: Current terminal should be controlled by setting TQ.setDb()
             const globalTransactionId = Airport_1.Airport.startTransaction();
             // let transactionIndex; // = client.getCurrentTransactionIndex();
             if (!globalTransactionId) {

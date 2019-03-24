@@ -22,7 +22,7 @@ export interface ColumnConfiguration {
 	// columnDefinition?: string;
 	// Name of column
 	name: string;
-	// (Optional) Whether the database column is nullable.
+	// (Optional) Whether the terminal column is nullable.
 	nullable?: boolean;
 }
 

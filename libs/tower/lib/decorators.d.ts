@@ -3,9 +3,9 @@ import { TransactionalDecorator } from "@airport/air-control";
  * Created by Papa on 4/17/2016.
  */
 /**
- * Transactional context talks to a database.  In a multi-database setup the same
+ * Transactional context talks to a terminal.  In a multi-terminal setup the same
  * transactional method might be used to talk to different databases.  The most strait
- * forward way to specify which database to talk to is to pass in an argument to the method
+ * forward way to specify which terminal to talk to is to pass in an argument to the method
  * that provides the transactional client.  However is very clumbersome from the API point
  * of view.
  *

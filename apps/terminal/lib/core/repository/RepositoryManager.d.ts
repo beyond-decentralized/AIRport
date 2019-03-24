@@ -1,9 +1,10 @@
-import { IDatabaseFacade, IEntityUpdateProperties, IQEntityInternal, IUtils, MappedEntityArray, RawDelete, RawInsertValues, RawUpdate } from "@airport/air-control";
-import { StoreType } from "@airport/ground-control";
-import { IActor, IDatabase, IRepository, IRepositoryDao, IRepositoryTransactionHistory } from "@airport/holding-pattern";
-import { DistributionStrategy, PlatformType } from "@airport/terminal-map";
-import { IDeltaStore } from "../../data/DeltaStore";
-import { UpdateState } from "../UpdateState";
+import { IDatabaseFacade, IEntityUpdateProperties, IQEntityInternal, IUtils, MappedEntityArray, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
+import { StoreType } from '@airport/ground-control';
+import { IActor, IRepository, IRepositoryDao, IRepositoryTransactionHistory } from '@airport/holding-pattern';
+import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
+import { ITerminal } from '@airport/travel-document-checkpoint';
+import { IDeltaStore } from '../../data/DeltaStore';
+import { UpdateState } from '../UpdateState';
 /**
  * Created by Papa on 2/12/2017.
  */
@@ -44,7 +45,7 @@ export declare class RepositoryManager implements IRepositoryManager {
     repositoriesById: {
         [repositoryId: string]: IRepository;
     };
-    database: IDatabase;
+    terminal: ITerminal;
     userEmail: string;
     constructor(utils: IUtils, databaseFacade: IDatabaseFacade, repositoryDao: IRepositoryDao);
     initialize(): Promise<void>;

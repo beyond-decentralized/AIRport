@@ -118,7 +118,7 @@ export class PollServer
 			= await this.loginVerifier.verifyPendingClaims(
 			serverId, this.minMillisSinceLastConnection);
 
-		// Wait for acked database sync logging so that it doesn't show up in returned results
+		// Wait for acked terminal sync logging so that it doesn't show up in returned results
 		await this.logAckedDatabaseSyncs(serverId, verificationResults[0]);
 		// Adding of incoming changes does not block further processing
 		this.addRepositoryChanges(verificationResults[1], verificationResults[2], verificationResults[5]).then();

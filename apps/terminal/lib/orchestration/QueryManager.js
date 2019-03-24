@@ -10,7 +10,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../InjectionTokens");
+const diTokens_1 = require("../diTokens");
 let QueryManager = class QueryManager {
     constructor(dataStore) {
         this.dataStore = dataStore;
@@ -29,8 +29,8 @@ let QueryManager = class QueryManager {
     }
 };
 QueryManager = __decorate([
-    typedi_1.Service(InjectionTokens_1.QueryManagerToken),
-    __param(0, typedi_1.Inject(_ => InjectionTokens_1.StoreDriverToken))
+    typedi_1.Service(diTokens_1.QUERY_MANAGER),
+    __param(0, typedi_1.Inject(_ => diTokens_1.STORE_DRIVER))
 ], QueryManager);
 exports.QueryManager = QueryManager;
 //# sourceMappingURL=QueryManager.js.map

@@ -5,15 +5,15 @@ export declare type DailySyncLogSynced = number;
 export declare type DailySyncLogDateNumber = number;
 export declare type DailySyncLogValues = [DailySyncLogDatabaseId, DailySyncLogRepositoryId, DailySyncLogDateNumber];
 /**
- * Sync log is used to determine which archive records a database still has not synced.
+ * Sync log is used to determine which archive records a terminal still has not synced.
  *
  * With Citus we can partition the table across boxes by a particular field.
  *
  * That presents two search scenarios:
  *
- * 1) Find all SyncLogs for a database that have not been synced yet.
+ * 1) Find all SyncLogs for a terminal that have not been synced yet.
  * Here if we partition by the databaseId then all of the data for a given
- * database will be on a single node.
+ * terminal will be on a single node.
  *
  * 2) Find all daily archives for a given repository: here we need to partition
  * by repositoryId and then all records for  given repository will be on a given
@@ -23,7 +23,7 @@ export declare type DailySyncLogValues = [DailySyncLogDatabaseId, DailySyncLogRe
  * distribution of repositories).
  *
  * So, perhaps what we need is two separate schemas.  One for SyncLogs (daily and monthly),
- * partitioned by the database id.  And one for Archives, partitioned by repositoryId.
+ * partitioned by the terminal id.  And one for Archives, partitioned by repositoryId.
  *
  * There are other NewSql systems out there that automate data partitioning.  Using those
  * would allow to efficiently join between DailySyncLogs and Daily Archives, but how

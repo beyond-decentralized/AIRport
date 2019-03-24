@@ -8,9 +8,9 @@ import {
 	Service
 }                   from "typedi";
 import {
-	QueryManagerToken,
-	StoreDriverToken
-}                   from "../InjectionTokens";
+	QUERY_MANAGER,
+	STORE_DRIVER
+}                   from "../diTokens";
 
 export interface IQueryManager {
 
@@ -35,13 +35,13 @@ export interface IQueryManager {
 
 }
 
-@Service(QueryManagerToken)
+@Service(QUERY_MANAGER)
 export class QueryManager
 	implements IQueryManager {
 
 	constructor(
 		@Inject(
-			_ => StoreDriverToken)
+			_ => STORE_DRIVER)
 		private dataStore: IStoreDriver,
 	) {
 	}

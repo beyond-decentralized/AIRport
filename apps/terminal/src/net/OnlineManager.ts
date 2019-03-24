@@ -17,10 +17,10 @@ import {IRepositoryManager} from "../core/repository/RepositoryManager";
 import {UpdateState}        from "../core/UpdateState";
 import {IOfflineDeltaStore} from "../data/OfflineDeltaStore";
 import {
-	OfflineDeltaStoreToken,
-	OnlineManagerToken,
-	RepositoryManagerToken
-}                           from "../InjectionTokens";
+	OFFLINE_DELTA_STORE,
+	ONLINE_MANAGER,
+	REPOSITORY_MANAGER
+}                           from "../diTokens";
 
 export interface IOnlineManager {
 
@@ -32,7 +32,7 @@ export interface IOnlineManager {
 
 }
 
-@Service(OnlineManagerToken)
+@Service(ONLINE_MANAGER)
 export class OnlineManager
 	implements IOnlineManager {
 
@@ -45,10 +45,10 @@ export class OnlineManager
 
 	constructor(
 		@Inject(
-			_ => OfflineDeltaStoreToken)
+			_ => OFFLINE_DELTA_STORE)
 		private offlineDeltaStore: IOfflineDeltaStore,
 		@Inject(
-			_ => RepositoryManagerToken)
+			_ => REPOSITORY_MANAGER)
 		private repositoryManager: IRepositoryManager,
 		@Inject(
 			_ => RepositoryDaoToken)

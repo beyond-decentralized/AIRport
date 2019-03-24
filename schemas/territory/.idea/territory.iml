@@ -19,6 +19,7 @@
     <content url="file://$MODULE_DIR$/../../apps/automated-guideway-transit">
       <excludeFolder url="file://$MODULE_DIR$/../../apps/automated-guideway-transit/lib" />
     </content>
+    <content url="file://$MODULE_DIR$/../../apps/pedestrian-terminal-connector" />
     <content url="file://$MODULE_DIR$/../../apps/tarmaq">
       <excludeFolder url="file://$MODULE_DIR$/../../apps/tarmaq/lib" />
     </content>

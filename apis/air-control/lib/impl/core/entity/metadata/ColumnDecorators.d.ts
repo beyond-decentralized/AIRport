@@ -41,7 +41,7 @@ export declare const Json: JsonDecorator;
 /**
  * Non-JPA decorator.
  *
- * Marks the column as a "any" database type.
+ * Marks the column as a "any" terminal type.
  */
 export interface DbAnyDecorator {
     (): PropertyDecorator;

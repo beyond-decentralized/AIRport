@@ -13,7 +13,7 @@ export interface DatabaseForeignKey {
 	 * The foreign key constraint definition.
 	 *
 	 * The syntax used in the foreignKeyDefinition element should
-	 * follow the SQL syntax used by the target database for foreign
+	 * follow the SQL syntax used by the target terminal for foreign
 	 * key constraints. For example, this may be similar the following:
 	 *
 	 FOREIGN KEY

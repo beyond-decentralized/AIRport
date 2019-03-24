@@ -15,11 +15,11 @@ const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const src_2 = require("@airport/terminal-map/lib/src");
 const tower_1 = require("@airport/tower");
-const InjectionTokens_1 = require("../InjectionTokens");
+const diTokens_1 = require("../diTokens");
 const AbstractMutationManager_1 = require("./AbstractMutationManager");
 let TransactionManager = class TransactionManager extends AbstractMutationManager_1.AbstractMutationManager {
     constructor(utils, dataStore, idGenerator, offlineDeltaStore, onlineManager, 
-    // @Inject(RepositoryManagerToken)
+    // @Inject(REPOSITORY_MANAGER)
     // private repositoryManager: IRepositoryManager,
     queries, transactionHistoryDmo) {
         super(utils, dataStore);
@@ -173,10 +173,10 @@ __decorate([
 ], TransactionManager.prototype, "initialize", null);
 TransactionManager = __decorate([
     __param(0, Inject(UtilsToken)),
-    __param(1, Inject(InjectionTokens_1.StoreDriverToken)),
+    __param(1, Inject(diTokens_1.STORE_DRIVER)),
     __param(2, Inject(fuel_hydrant_system_1.IdGeneratorToken)),
-    __param(3, Inject(InjectionTokens_1.OfflineDeltaStoreToken)),
-    __param(4, Inject(InjectionTokens_1.OnlineManagerToken)),
+    __param(3, Inject(diTokens_1.OFFLINE_DELTA_STORE)),
+    __param(4, Inject(diTokens_1.ONLINE_MANAGER)),
     __param(5, Inject(fuel_hydrant_system_1.ActiveQueriesToken)),
     __param(6, Inject(TransactionHistoryDmoToken))
 ], TransactionManager);

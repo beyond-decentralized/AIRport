@@ -138,7 +138,7 @@ export const Json: JsonDecorator = function () {
 /**
  * Non-JPA decorator.
  *
- * Marks the column as a "any" database type.
+ * Marks the column as a "any" terminal type.
  */
 export interface DbAnyDecorator {
 	(): PropertyDecorator;

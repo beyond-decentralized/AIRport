@@ -2,13 +2,13 @@ import {
 	AirportDatabaseToken,
 	dbConst,
 	IAirportDatabase,
-}                             from "@airport/air-control";
-import {StoreType}            from "@airport/terminal-map";
+}                         from "@airport/air-control";
+import {StoreType}        from "@airport/terminal-map";
 import {
 	Inject,
 	Service
-}                             from "typedi";
-import {DatabaseManagerToken} from "../InjectionTokens";
+}                         from "typedi";
+import {DATABASE_MANAGER} from "../diTokens";
 
 export interface IDatabaseManager {
 
@@ -32,7 +32,7 @@ export interface IDatabaseManager {
 
 }
 
-@Service(DatabaseManagerToken)
+@Service(DATABASE_MANAGER)
 export class DatabaseManager
 	implements IDatabaseManager {
 
@@ -79,11 +79,11 @@ export class DatabaseManager
 		terminalName: string
 	): boolean {
 		throw `Implement!`;
-		/*		let database = this.databaseMap[terminalName];
-				if (!database) {
+		/*		let terminal = this.databaseMap[terminalName];
+				if (!terminal) {
 					return false;
 				}
-				return !!database.entityManager;*/
+				return !!terminal.entityManager;*/
 	}
 
 	async init(

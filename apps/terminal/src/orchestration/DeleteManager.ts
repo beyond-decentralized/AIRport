@@ -33,20 +33,20 @@ import {
 	RepositoryId,
 	RepositoryTransactionHistoryDmoToken,
 	TransactionHistoryDmoToken
-} from "@airport/holding-pattern";
-import {SchemaEntityIndex} from "@airport/traffic-pattern";
-import {Inject, Service} from "typedi";
-import {IRepositoryManager} from "../core/repository/RepositoryManager";
-import {IOfflineDeltaStore} from "../data/OfflineDeltaStore";
+}                            from "@airport/holding-pattern";
+import {SchemaEntityIndex}   from "@airport/traffic-pattern";
+import {Inject, Service}     from "typedi";
+import {IRepositoryManager}  from "../core/repository/RepositoryManager";
+import {IOfflineDeltaStore}  from "../data/OfflineDeltaStore";
 import {
-	DeleteManagerToken,
-	HistoryManagerToken,
-	OfflineDeltaStoreToken,
-	RepositoryManagerToken,
-	StoreDriverToken,
+	DELETE_MANAGER,
+	HISTORY_MANAGER,
+	OFFLINE_DELTA_STORE,
+	REPOSITORY_MANAGER,
+	STORE_DRIVER,
 	TransactionManagerToken
-} from "../InjectionTokens";
-import {IHistoryManager} from "./HistoryManager";
+}                            from "../diTokens";
+import {IHistoryManager}     from "./HistoryManager";
 import {ITransactionManager} from "./TransactionManager";
 
 export interface IDeleteManager {
@@ -61,24 +61,24 @@ export interface IDeleteManager {
 type RecordsToDelete =
 	Map<SchemaIndex, Map<SchemaEntityIndex, Map<RepositoryId, AbstractRepositoryEntity[]>>>;
 
-@Service(DeleteManagerToken)
+@Service(DELETE_MANAGER)
 export class DeleteManager
 	implements IDeleteManager {
 
 	constructor(
 		@Inject(AirportDatabaseToken)
 		private airportDb: IAirportDatabase,
-		@Inject(StoreDriverToken)
+		@Inject(STORE_DRIVER)
 		private dataStore: IStoreDriver,
-		@Inject(HistoryManagerToken)
+		@Inject(HISTORY_MANAGER)
 		private historyManager: IHistoryManager,
-		@Inject(OfflineDeltaStoreToken)
+		@Inject(OFFLINE_DELTA_STORE)
 		private offlineDataStore: IOfflineDeltaStore,
 		@Inject(OperationHistoryDmoToken)
 		private operationHistoryDmo: IOperationHistoryDmo,
 		@Inject(RecordHistoryDmoToken)
 		private recordHistoryDmo: IRecordHistoryDmo,
-		@Inject(RepositoryManagerToken)
+		@Inject(REPOSITORY_MANAGER)
 		private repositoryManager: IRepositoryManager,
 		@Inject(RepositoryTransactionHistoryDmoToken)
 		private repositoryTransactionHistoryDmo: IRepositoryTransactionHistoryDmo,

@@ -10,12 +10,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const holding_pattern_1 = require("@airport/holding-pattern");
+const di_1 = require("@airport/di");
 const terminal_map_1 = require("@airport/terminal-map");
-const tower_1 = require("@airport/tower");
-const typedi_1 = require("typedi");
 const DeltaStore_1 = require("../../data/DeltaStore");
-const InjectionTokens_1 = require("../../InjectionTokens");
+const diTokens_1 = require("../../diTokens");
 let RepositoryManager = class RepositoryManager {
     constructor(utils, databaseFacade, repositoryDao) {
         this.utils = utils;
@@ -32,7 +30,7 @@ let RepositoryManager = class RepositoryManager {
         }
     }
     async findReposWithDetailsByIds(...repositoryIds) {
-        return await this.repositoryDao.findReposWithDetailsByIds(repositoryIds, this.database.name, this.userEmail);
+        return await this.repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail);
     }
     async createRepository(appName, distributionStrategy, offlineStoreType, platformType, platformConfig, recordIdField) {
         let repository = await this.createRepositoryRecord(appName, distributionStrategy, platformType, platformConfig);
@@ -133,8 +131,8 @@ let RepositoryManager = class RepositoryManager {
         });
     }
     startEnsureGraphInSingleRepository(transaction) {
-        // TODO: add to transaction for remote execution (EntityChangeType.QUERY_UNIQUE_RECORD)
-        // transaction.addNewFindOneVerify();
+        // TODO: add to transaction for remote execution
+        // (EntityChangeType.QUERY_UNIQUE_RECORD) transaction.addNewFindOneVerify();
     }
     getOnlyRepositoryInDatabase() {
         if (this.repositories.length !== 1) {
@@ -187,10 +185,10 @@ let RepositoryManager = class RepositoryManager {
     }
 };
 RepositoryManager = __decorate([
-    typedi_1.Service(InjectionTokens_1.RepositoryManagerToken),
-    __param(0, typedi_1.Inject(_ => air_control_1.UtilsToken)),
-    __param(1, typedi_1.Inject(_ => tower_1.EntityManagerToken)),
-    __param(2, typedi_1.Inject(_ => holding_pattern_1.RepositoryDaoToken))
+    __param(0, Inject(_ => UtilsToken)),
+    __param(1, Inject(_ => EntityManagerToken)),
+    __param(2, Inject(_ => RepositoryDaoToken))
 ], RepositoryManager);
 exports.RepositoryManager = RepositoryManager;
+di_1.DI.set(diTokens_1.REPOSITORY_MANAGER, RepositoryManager);
 //# sourceMappingURL=RepositoryManager.js.map

@@ -30,22 +30,22 @@ import {
 	ITransactionManager,
 	PlatformType,
 	TransactionManagerToken
-}                               from '@airport/terminal-map'
+}                           from '@airport/terminal-map'
 import {
 	Inject,
 	Service
-}                               from 'typedi'
-import {ISequenceGenerator}     from '../../node_modules/@airport/fuel-hydrant-system/lib/store/SequenceGenerator'
-import {IRepositoryManager}     from '../core/repository/RepositoryManager'
-import {IOfflineDeltaStore}     from '../data/OfflineDeltaStore'
+}                           from 'typedi'
+import {ISequenceGenerator} from '../../node_modules/@airport/fuel-hydrant-system/lib/store/SequenceGenerator'
+import {IRepositoryManager} from '../core/repository/RepositoryManager'
+import {IOfflineDeltaStore} from '../data/OfflineDeltaStore'
 import {
-	HistoryManagerToken,
-	InsertManagerToken,
-	OfflineDeltaStoreToken,
-	RepositoryManagerToken,
-	StoreDriverToken,
-}                               from '../InjectionTokens'
-import {IHistoryManager}        from './HistoryManager'
+	HISTORY_MANAGER,
+	INSERT_MANAGER,
+	OFFLINE_DELTA_STORE,
+	REPOSITORY_MANAGER,
+	STORE_DRIVER,
+}                           from '../diTokens'
+import {IHistoryManager}    from './HistoryManager'
 
 export type RecordId = number;
 
@@ -71,26 +71,26 @@ export interface IInsertManager {
 
 }
 
-@Service(InsertManagerToken)
+@Service(INSERT_MANAGER)
 export class InsertManager
 	implements IInsertManager {
 
 	constructor(
 		@Inject(AirportDatabaseToken)
 		private airportDb: IAirportDatabase,
-		@Inject(StoreDriverToken)
+		@Inject(STORE_DRIVER)
 		private dataStore: IStoreDriver,
 		@Inject(SequenceGeneratorToken)
 		private sequenceGenerator: ISequenceGenerator,
-		@Inject(HistoryManagerToken)
+		@Inject(HISTORY_MANAGER)
 		private historyManager: IHistoryManager,
-		@Inject(OfflineDeltaStoreToken)
+		@Inject(OFFLINE_DELTA_STORE)
 		private offlineDataStore: IOfflineDeltaStore,
 		@Inject(OperationHistoryDmoToken)
 		private operationHistoryDmo: OperationHistoryDmo,
 		@Inject(RecordHistoryDmoToken)
 		private recordHistoryDmo: RecordHistoryDmo,
-		@Inject(RepositoryManagerToken)
+		@Inject(REPOSITORY_MANAGER)
 		private repositoryManager: IRepositoryManager,
 		@Inject(RepositoryTransactionHistoryDmoToken)
 		private repositoryTransactionHistoryDmo: RepositoryTransactionHistoryDmo,

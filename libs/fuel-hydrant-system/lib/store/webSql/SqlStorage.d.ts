@@ -16,9 +16,9 @@
  *
  * The `SqlStorage` service supports these options:
  * {
- *   name: the name of the database (__ionicstorage by default)
+ *   name: the name of the terminal (__ionicstorage by default)
  *   backupFlag: // where to store the file, default is BACKUP_LOCAL which DOES NOT store to iCloud. Other options: BACKUP_LIBRARY, BACKUP_DOCUMENTS
- *   existingDatabase: whether to load this as an existing database (default is false)
+ *   existingDatabase: whether to load this as an existing terminal (default is false)
  * }
  *
  */

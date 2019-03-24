@@ -25,10 +25,10 @@ import {TRANSACTION_MANAGER}     from '@airport/terminal-map/lib/src'
 import {Transactional}           from "@airport/tower";
 import {IOfflineDeltaStore}      from "../data/OfflineDeltaStore";
 import {
-	OfflineDeltaStoreToken,
-	OnlineManagerToken,
-	StoreDriverToken,
-}                                from "../InjectionTokens";
+	OFFLINE_DELTA_STORE,
+	ONLINE_MANAGER,
+	STORE_DRIVER,
+}                                from "../diTokens";
 import {IOnlineManager}          from "../net/OnlineManager";
 import {AbstractMutationManager} from "./AbstractMutationManager";
 
@@ -49,15 +49,15 @@ export class TransactionManager
 	constructor(
 		@Inject(UtilsToken)
 			utils: IUtils,
-		@Inject(StoreDriverToken)
+		@Inject(STORE_DRIVER)
 			dataStore: IStoreDriver,
 		@Inject(IdGeneratorToken)
 		private idGenerator: IIdGenerator,
-		@Inject(OfflineDeltaStoreToken)
+		@Inject(OFFLINE_DELTA_STORE)
 		private offlineDeltaStore: IOfflineDeltaStore,
-		@Inject(OnlineManagerToken)
+		@Inject(ONLINE_MANAGER)
 		private onlineManager: IOnlineManager,
-		// @Inject(RepositoryManagerToken)
+		// @Inject(REPOSITORY_MANAGER)
 		// private repositoryManager: IRepositoryManager,
 		@Inject(ActiveQueriesToken)
 		private queries: ActiveQueries,

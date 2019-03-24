@@ -11,7 +11,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../InjectionTokens");
+const diTokens_1 = require("../diTokens");
 let DatabaseManager = class DatabaseManager {
     constructor(airportDb) {
         this.airportDb = airportDb;
@@ -39,11 +39,11 @@ let DatabaseManager = class DatabaseManager {
     }
     isInitialized(terminalName) {
         throw `Implement!`;
-        /*		let database = this.databaseMap[terminalName];
-                if (!database) {
+        /*		let terminal = this.databaseMap[terminalName];
+                if (!terminal) {
                     return false;
                 }
-                return !!database.entityManager;*/
+                return !!terminal.entityManager;*/
     }
     async init(storeType, terminalName) {
         throw `Implement!`;
@@ -96,7 +96,7 @@ let DatabaseManager = class DatabaseManager {
     }
 };
 DatabaseManager = __decorate([
-    typedi_1.Service(InjectionTokens_1.DatabaseManagerToken),
+    typedi_1.Service(diTokens_1.DATABASE_MANAGER),
     __param(0, typedi_1.Inject(_ => air_control_1.AirportDatabaseToken))
 ], DatabaseManager);
 exports.DatabaseManager = DatabaseManager;

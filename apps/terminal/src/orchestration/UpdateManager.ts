@@ -27,19 +27,19 @@ import {
 	RepositoryTransactionHistoryDmoToken,
 	TransactionHistoryDmo,
 	TransactionHistoryDmoToken
-} from "@airport/holding-pattern";
-import {Inject, Service} from "typedi";
-import {IRepositoryManager} from "../core/repository/RepositoryManager";
-import {IOfflineDeltaStore} from "../data/OfflineDeltaStore";
+}                            from "@airport/holding-pattern";
+import {Inject, Service}     from "typedi";
+import {IRepositoryManager}  from "../core/repository/RepositoryManager";
+import {IOfflineDeltaStore}  from "../data/OfflineDeltaStore";
 import {
-	HistoryManagerToken,
-	OfflineDeltaStoreToken,
-	RepositoryManagerToken,
-	StoreDriverToken,
+	HISTORY_MANAGER,
+	OFFLINE_DELTA_STORE,
+	REPOSITORY_MANAGER,
+	STORE_DRIVER,
 	TransactionManagerToken,
-	UpdateManagerToken
-} from "../InjectionTokens";
-import {IHistoryManager} from "./HistoryManager";
+	UPDATE_MANAGER
+}                            from "../diTokens";
+import {IHistoryManager}     from "./HistoryManager";
 import {ITransactionManager} from "./TransactionManager";
 
 export interface IUpdateManager {
@@ -59,7 +59,7 @@ interface RecordHistoryMap {
 	};
 }
 
-@Service(UpdateManagerToken)
+@Service(UPDATE_MANAGER)
 export class UpdateManager implements IUpdateManager {
 
 	constructor(
@@ -70,13 +70,13 @@ export class UpdateManager implements IUpdateManager {
 			_ => UtilsToken)
 		private utils: IUtils,
 		@Inject(
-			_ => StoreDriverToken)
+			_ => STORE_DRIVER)
 		private dataStore: IStoreDriver,
 		@Inject(
-			_ => HistoryManagerToken)
+			_ => HISTORY_MANAGER)
 		private historyManager: IHistoryManager,
 		@Inject(
-			_ => OfflineDeltaStoreToken)
+			_ => OFFLINE_DELTA_STORE)
 		private offlineDataStore: IOfflineDeltaStore,
 		@Inject(
 			_ => OperationHistoryDmoToken)
@@ -85,7 +85,7 @@ export class UpdateManager implements IUpdateManager {
 			_ => RecordHistoryDmoToken)
 		private recordHistoryDmo: RecordHistoryDmo,
 		@Inject(
-			_ => RepositoryManagerToken)
+			_ => REPOSITORY_MANAGER)
 		private repositoryManager: IRepositoryManager,
 		@Inject(
 			_ => RepositoryTransactionHistoryDmoToken)

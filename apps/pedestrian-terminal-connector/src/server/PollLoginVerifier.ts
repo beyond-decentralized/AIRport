@@ -86,7 +86,7 @@ export class PollLoginVerifier
 	 * request before it is recorded into the Database Repository staging table.
 	 *
 	 * b) Record a single record into a Database staging table only for databases where multiple
-	 * requests per database are present.  Then find the correct database request via the provided
+	 * requests per terminal are present.  Then find the correct terminal request via the provided
 	 * hash and disallow the remaining ones.
 	 *
 	 * Implementing the second option, since a the priority is to have the server still syncing (in
@@ -129,7 +129,7 @@ export class PollLoginVerifier
 		);
 
 		// At this point we are guaranteed that in the present batch there are no duplicate
-		// database requests
+		// terminal requests
 
 		let repositoryVerificationRecords: InsertDatabaseRepositoryVerificationStage[] = [];
 		// build a flat array of RepositoryVerification records
@@ -152,7 +152,7 @@ export class PollLoginVerifier
 		const earliestAllowedLastConnectionDatetime
 			= syncRecordAddDatetime - minMillisSinceLastConnection;
 		VERIFICATION_RECORD:
-			// For every verified database record
+			// For every verified terminal record
 			for (const [databaseKey, database] of loginVerificationRecords) {
 				const pendingLoginClaim = pendingLoginClaimsMap.get(databaseKey);
 				const connectionDataCallback = pendingLoginClaim[1];
@@ -182,7 +182,7 @@ export class PollLoginVerifier
 					continue VERIFICATION_RECORD;
 				}
 
-				// If the database got moved to a different shard (due to shard splitting)
+				// If the terminal got moved to a different shard (due to shard splitting)
 				if (database.currentShard.id != this.shard.id) {
 					// Forward the request to that shard
 					const shardAddress = database.currentShard.address;
@@ -280,8 +280,8 @@ export class PollLoginVerifier
 				// Hence, current query covers only the happy path.
 				syncRecordInserts = syncRecordInserts.concat(syncRecordInsertsForDatabase);
 
-				// At this point only the verification of database sync ACKs is left
-				// the database is assumed to be valid and any sync acks it might have
+				// At this point only the verification of terminal sync ACKs is left
+				// the terminal is assumed to be valid and any sync acks it might have
 				// affect only itself.  So verification of sync ACKs is passive, a
 				// connection is not invalidated if it sends back invalid sync ACKs.
 				// NOTE: for ACKs all invalid ACK requests simply get dropped and
@@ -292,7 +292,7 @@ export class PollLoginVerifier
 				databaseKeys.add(databaseKey);
 
 				const databasesSyncAcks: DatabaseSyncAck[] = message[3];
-				// For every incoming database sync ack
+				// For every incoming terminal sync ack
 				for (const databaseSyncAck of databasesSyncAcks) {
 					databaseSyncLogVerificationStageInserts.push([
 						this.shard.id, this.server.id, this.runId,
@@ -310,7 +310,7 @@ export class PollLoginVerifier
 				connectionDataCallback(databaseId, true, null);
 			}
 
-		// For every database that wasn't in the DATABASES table (probably a hack or an attack)
+		// For every terminal that wasn't in the DATABASES table (probably a hack or an attack)
 		for (const [databaseKey, pendingLoginClaim] of pendingLoginClaimsMap) {
 			const clientInMessage: ClientInMessage = pendingLoginClaim[0];
 			this.errorLogger.logError(
@@ -345,9 +345,9 @@ export class PollLoginVerifier
 			const databaseOriginalShardId = databaseInfo[0];
 			const databaseId = databaseInfo[1];
 			const databaseKey = getDatabaseKey(databaseOriginalShardId, databaseId);
-			// If a request from the same database came more than once (probably a hack or an attack)
+			// If a request from the same terminal came more than once (probably a hack or an attack)
 			// NOTE: These attacks are most likely random, since there is no way for an attacker to know
-			// which database id belongs to which user (this is most likely a DDOS attack)
+			// which terminal id belongs to which user (this is most likely a DDOS attack)
 			if (databaseKeys.has(databaseKey)) {
 				const previousLoginClaim = pendingLoginClaimsMap.get(databaseKey);
 				let duplicatePendingLoginClaimsMapForDatabase: PendingLoginClaim[]
@@ -388,7 +388,7 @@ export class PollLoginVerifier
 
 		}
 
-		// If there where duplicate requests per database
+		// If there where duplicate requests per terminal
 		if (databaseVerificationStageInserts.length) {
 			await this.filterDuplicateRequestsPerDatabase(
 				databaseVerificationStageInserts,
@@ -444,11 +444,11 @@ export class PollLoginVerifier
 		await this.dbVerificationStageDao.insertValues(databaseVerificationStageInserts);
 		const dbHashMapByDbKey = await this.databaseDao.findDatabaseVerificationRecords(
 			this.shard.id, this.server.id, this.runId);
-		// For every set of duplicate requests per database
+		// For every set of duplicate requests per terminal
 		for (const [databaseKey, duplicateLoginClaimsForDatabase] of duplicatePendingLoginClaimsMap) {
 			const databaseHash = dbHashMapByDbKey.get(databaseKey);
 
-			// If no database was found for duplicate requests
+			// If no terminal was found for duplicate requests
 			if (!databaseHash) {
 				continue;
 			}
@@ -457,7 +457,7 @@ export class PollLoginVerifier
 			let loginClaimWithMatchingHash: PendingLoginClaim;
 			let foundMultipleWithCorrectHash = false;
 			let foundClaimsWithIncorrectHash = false;
-			// For every duplicate login claim for a given database
+			// For every duplicate login claim for a given terminal
 			for (const dulplicateLoginClaimForDatabase of duplicateLoginClaimsForDatabase) {
 				const claimedDatabaseHash = dulplicateLoginClaimForDatabase[0][1][2];
 				// If the claims databaseHash is correct
@@ -506,7 +506,7 @@ export class PollLoginVerifier
 			}
 		}
 
-		// For any remaining duplicate requests (that had no matching database record)
+		// For any remaining duplicate requests (that had no matching terminal record)
 		for (const [databaseKey, loginClaimsForDatabase] of duplicatePendingLoginClaimsMap) {
 			this.errorLogger.logError(
 				ServerErrorType.DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_NO_MATCHING_DATABASE,
