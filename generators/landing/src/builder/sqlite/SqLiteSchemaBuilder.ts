@@ -1,32 +1,15 @@
+import {DI}               from '@airport/di'
 import {
-	IDbSchemaUtils,
-	IStoreDriver,
 	JsonSchema,
 	JsonSchemaColumn,
 	JsonSchemaEntity,
-	DbSchemaUtilsToken,
-	SQLDataType,
-	StoreDriverToken
-}                           from '@airport/ground-control'
-import {
-	Inject,
-	Service
-}                           from 'typedi'
-import {SchemaBuilderToken} from '../../InjectionTokens'
-import {SqlSchemaBuilder}   from '../SqlSchemaBuilder'
+	SQLDataType
+}                         from '@airport/ground-control'
+import {SCHEMA_BUILDER}   from '../../diTokens'
+import {SqlSchemaBuilder} from '../SqlSchemaBuilder'
 
-@Service(SchemaBuilderToken)
 export class SqLiteSchemaBuilder
 	extends SqlSchemaBuilder {
-
-	constructor(
-		@Inject(DbSchemaUtilsToken)
-		dbSchemaUtils: IDbSchemaUtils,
-		@Inject(StoreDriverToken)
-		storeDriver: IStoreDriver
-	) {
-		super(dbSchemaUtils, storeDriver)
-	}
 
 	async createSchema(
 		jsonSchema: JsonSchema
@@ -94,3 +77,5 @@ export class SqLiteSchemaBuilder
 	}
 
 }
+
+DI.set(SCHEMA_BUILDER, SqLiteSchemaBuilder)

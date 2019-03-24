@@ -1,17 +1,17 @@
+import {DI}                              from '@airport/di/lib/src'
 import {
 	DataOrigin,
 	ISharingMessage,
 	ISharingNode,
 	SharingMessageSyncTimestamp
-}                  from "@airport/moving-walkway";
-import {Service}   from "typedi";
-import {IDataToTM} from "../SyncInUtils";
+}                                        from '@airport/moving-walkway'
+import {SYNC_IN_SHARING_MESSAGE_CREATOR} from '../../../diTokens'
+import {IDataToTM}                       from '../SyncInUtils'
 
 export interface ISyncInSharingMessageCreator {
 
 }
 
-@Service(SyncInSharingMessageCreator)
 export class SyncInSharingMessageCreator
 	implements ISyncInSharingMessageCreator {
 
@@ -29,10 +29,12 @@ export class SyncInSharingMessageCreator
 	async saveIncoming(
 		dataMessages: IDataToTM[]
 	): Promise<void> {
-		const sharingMessages: ISharingMessage[] = [];
+		const sharingMessages: ISharingMessage[] = []
 
 		for (const dataMessage of dataMessages) {
-			sharingMessages.push({});
+			sharingMessages.push({})
 		}
 	}
 }
+
+DI.set(SYNC_IN_SHARING_MESSAGE_CREATOR, SyncInSharingMessageCreator)

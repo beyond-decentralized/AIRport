@@ -1,7 +1,4 @@
-import { IUtils } from "@airport/air-control";
-import { TerminalId, AgtRepositoryId, SyncConnectionClaim, VerifiedMessagesFromTM } from "@airport/arrivals-n-departures";
-import { ITerminalDao, ITerminalRepositoryDao, IAgtSharingMessageDao, ISyncLogDao, IAgtRepositoryTransactionBlockDao } from "@airport/guideway";
-import { IErrorLogger } from "../common/ErrorLogger";
+import { AgtRepositoryId, SyncConnectionClaim, TerminalId, VerifiedMessagesFromTM } from '@airport/arrivals-n-departures';
 export interface ISyncConnectionProcessor {
     processConnections(verifiedMessagesFromTM: VerifiedMessagesFromTM): Promise<void>;
 }
@@ -11,9 +8,9 @@ export declare class SyncConnectionProcessor implements ISyncConnectionProcessor
     private agtSharingMessageDao;
     private errorLogger;
     private syncLogDao;
-    private agtRepositoryTransactionBlockDao;
+    private agtRepoTransBlockDao;
     private utils;
-    constructor(terminalDao: ITerminalDao, terminalRepositoryDao: ITerminalRepositoryDao, agtSharingMessageDao: IAgtSharingMessageDao, errorLogger: IErrorLogger, syncLogDao: ISyncLogDao, agtRepositoryTransactionBlockDao: IAgtRepositoryTransactionBlockDao, utils: IUtils);
+    constructor();
     processConnections(verifiedMessagesFromTM: VerifiedMessagesFromTM): Promise<void>;
     updateLastSyncConnectionDatetime(verifiedTerminalIds: TerminalId[]): Promise<void>;
     private insertRepositoryTransactionBlocks;

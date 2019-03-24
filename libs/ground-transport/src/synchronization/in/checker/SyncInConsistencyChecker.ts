@@ -1,14 +1,16 @@
-import {Service}               from "typedi";
-import {GroundTransportLogger} from "../../../InjectionTokens";
-import {IDataToTM}             from "../SyncInUtils";
+import {DI}                      from '@airport/di'
+import {GROUND_TRANSPORT_LOGGER} from '../../../Constants'
+import {
+	SYNC_IN_CONSISTENCY_CHECKER
+}                                from "../../../diTokens";
+import {IDataToTM}               from "../SyncInUtils";
 
 export interface ISyncInConsistencyChecker {
 
 }
 
-const log = GroundTransportLogger.add("SyncInConsistencyChecker");
+const log = GROUND_TRANSPORT_LOGGER.add("SyncInConsistencyChecker");
 
-@Service(SyncInConsistencyCheckerToken)
 export class SyncInConsistencyChecker
 	implements ISyncInConsistencyChecker {
 
@@ -34,3 +36,5 @@ export class SyncInConsistencyChecker
 	}
 
 }
+
+DI.set(SYNC_IN_CONSISTENCY_CHECKER, SyncInConsistencyChecker)

@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const runway_edge_lighting_1 = require("@airport/runway-edge-lighting");
-const InjectionTokens_1 = require("./InjectionTokens");
+const Constants_1 = require("./Constants");
 const Logged_1 = require("./Logged");
-const log = InjectionTokens_1.ApproachLightingSystemLogger.add('Logger');
+const log = Constants_1.APPROACH_LIGHTING_SYSTEM_LOGGER.add('Logger');
 const debugTraceApiErrorMessage = `Invalid Logger.debug|trace call,
 				call does not adhere to to the API:
 	debug(

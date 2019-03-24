@@ -1,5 +1,5 @@
-import {Service}              from "typedi/decorators/Service";
-import {TunningSettingsToken} from "../InjectionTokens";
+import {DI}               from '@airport/di'
+import {TUNNING_SETTINGS} from '../diTokens'
 
 export interface ITuningSettings {
 	archiving: IArchivingTuningParams;
@@ -26,15 +26,14 @@ export interface IRecentTuningParams {
 }
 
 
-@Service(TunningSettingsToken)
 export class TuningSettings
 	implements ITuningSettings {
 
 	archiving = {
 		numRepositoriesToProcessAtATime: 20
-	};
+	}
 
-	daily = {};
+	daily = {}
 
 	recent = {
 		incomingBatchFrequencyMillis: 300000,
@@ -42,6 +41,8 @@ export class TuningSettings
 		maxIncomingSharingMessageBatchSize: Number.MAX_SAFE_INTEGER,
 		maxToSaveSyncLogBatchSize: Number.MAX_SAFE_INTEGER,
 		minMillisSinceLastConnection: 300000,
-	};
+	}
 
 }
+
+DI.set(TUNNING_SETTINGS, TuningSettings)

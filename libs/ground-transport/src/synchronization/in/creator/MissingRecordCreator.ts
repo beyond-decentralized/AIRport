@@ -1,34 +1,28 @@
-import {TableIndex}                from "@airport/air-control";
-import {SchemaVersionId}           from "@airport/ground-control";
+import {TableIndex}             from '@airport/air-control'
+import {DI}                     from '@airport/di'
 import {
-	ActorId,
-	RecordHistoryActorRecordId,
-	RepositoryEntityActorRecordId,
-	RepositoryId
-}                                  from "@airport/holding-pattern";
-import {
-	IMissingRecord,
 	IMissingRecordDao,
-	IMissingRecordRepoTransBlock,
-	MissingRecordDaoToken,
-	MissingRecordStatus
-}                                  from "@airport/moving-walkway";
-import {Inject}                    from "typedi";
-import {MissingRecordCreatorToken} from "../../../InjectionTokens";
-import {IDataToTM}                 from "../SyncInUtils";
+	MISSING_RECORD_DAO
+}                               from '@airport/moving-walkway'
+import {MISSING_RECORD_CREATOR} from '../../../diTokens'
 
 export interface IMissingRecordCreator {
 
 }
 
-@Inject(MissingRecordCreatorToken)
 export class MissingRecordCreator
 	implements IMissingRecordCreator {
 
-	constructor(
-		@Inject(MissingRecordDaoToken)
-		private missingRecordDao: IMissingRecordDao
-	) {
+	private missingRecordDao: IMissingRecordDao
+
+	constructor() {
+		DI.get((
+			missingRecordDao
+		) => {
+			this.missingRecordDao = missingRecordDao
+		}, MISSING_RECORD_DAO)
 	}
 
 }
+
+DI.set(MISSING_RECORD_CREATOR, MissingRecordCreator)

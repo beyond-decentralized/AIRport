@@ -1,31 +1,20 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
 const guideway_1 = require("@airport/guideway");
-const Inject_1 = require("typedi/decorators/Inject");
-const Service_1 = require("typedi/decorators/Service");
-const InjectionTokens_1 = require("../../InjectionTokens");
+const diTokens_1 = require("../../diTokens");
 const ServerErrorType_1 = require("../../model/ServerErrorType");
-const log = InjectionTokens_1.AGTLogger.add('SyncConnectionVerifier');
-let SyncConnectionVerifier = class SyncConnectionVerifier {
-    constructor(blacklist, terminalDao, terminalRepositoryDao, agtSharingMessageDao, errorLogger) {
-        this.blacklist = blacklist;
-        this.terminalDao = terminalDao;
-        this.terminalRepositoryDao = terminalRepositoryDao;
-        this.agtSharingMessageDao = agtSharingMessageDao;
-        this.errorLogger = errorLogger;
+const log = diTokens_1.AGTLogger.add('SyncConnectionVerifier');
+class SyncConnectionVerifier {
+    constructor() {
         this.pendingConnectionClaims = [];
+        di_1.DI.get((blacklist, terminalDao, terminalRepositoryDao, agtSharingMessageDao, errorLogger) => {
+            this.blacklist = blacklist;
+            this.terminalDao = terminalDao;
+            this.terminalRepositoryDao = terminalRepositoryDao;
+            this.agtSharingMessageDao = agtSharingMessageDao;
+            this.errorLogger = errorLogger;
+        }, diTokens_1.BLACKLIST, guideway_1.TERMINAL_DAO, guideway_1.TERMINAL_REPOSITORY_DAO, guideway_1.AGT_SHARING_MESSAGE_DAO, diTokens_1.ERROR_LOGGER);
     }
     queueConnectionClaim(pendingConnectionClaim) {
         this.pendingConnectionClaims.push(pendingConnectionClaim);
@@ -35,17 +24,17 @@ let SyncConnectionVerifier = class SyncConnectionVerifier {
      *
      * Concerns:
      *
-     * 1) How to handle valid user connections when a DDOS attack is randomly using their Terminal
-     * Original Shard Id and Terminal Id:
+     * 1) How to handle valid user connections when a DDOS attack is randomly using their
+     * Terminal Original Shard Id and Terminal Id:
      *
-     * a) When multiple Connection requests for the same Terminal credentials are detected, deny the
-     * request before it is recorded into the Terminal Repository staging table.
+     * a) When multiple Connection requests for the same Terminal credentials are detected,
+     * deny the request before it is recorded into the Terminal Repository staging table.
      *
-     * b) Then find the correct terminal request via the provided hash and disallow the remaining
-     * ones.
+     * b) Then find the correct terminal request via the provided hash and disallow the
+     * remaining ones.
      *
-     * Implementing the second option, since a the priority is to have the server still syncing (in
-     * the presence of a DDOS attack).
+     * Implementing the second option, since a the priority is to have the server still
+     * syncing (in the presence of a DDOS attack).
      *
      *
      * @param {number} serverId
@@ -84,10 +73,10 @@ let SyncConnectionVerifier = class SyncConnectionVerifier {
             const message = currentConnectionClaim.messageFromTM;
             const terminalCredentials = message.terminalCredentials;
             const terminalId = terminalCredentials.terminalId;
-            // If a request from the same terminal came more than once (probably a hack or an attack)
-            // NOTE: Thes
-            // e attacks are most likely random, since there is no way for an attacker to know
-            // which terminal id belongs to which user (this is most likely a DDOS attack)
+            // If a request from the same terminal came more than once (probably a hack or an
+            // attack) NOTE: Thes e attacks are most likely random, since there is no way for
+            // an attacker to know which terminal id belongs to which user (this is most likely
+            // a DDOS attack)
             if (terminalIdSet.has(terminalId)) {
                 const previousConnectionClaim = syncConnectionClaimsByTmId.get(terminalId);
                 let duplicatePendingConnectionClaimsMapForTerminal = duplicatePendingConnectionClaimsMap.get(terminalId);
@@ -224,15 +213,7 @@ let SyncConnectionVerifier = class SyncConnectionVerifier {
             }
         }
     }
-};
-SyncConnectionVerifier = __decorate([
-    Service_1.Service(InjectionTokens_1.SyncConnectionVerifierToken),
-    __param(0, Inject_1.Inject(InjectionTokens_1.BlacklistToken)),
-    __param(1, Inject_1.Inject(guideway_1.TerminalDaoToken)),
-    __param(2, Inject_1.Inject(guideway_1.TerminalRepositoryDaoToken)),
-    __param(3, Inject_1.Inject(guideway_1.AgtSharingMessageDaoToken)),
-    __param(4, Inject_1.Inject(InjectionTokens_1.ErrorLoggerToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
-], SyncConnectionVerifier);
+}
 exports.SyncConnectionVerifier = SyncConnectionVerifier;
+di_1.DI.set(diTokens_1.SYNC_CONNECTION_VERIFIER, SyncConnectionVerifier);
 //# sourceMappingURL=SyncConnectionVerifier.js.map

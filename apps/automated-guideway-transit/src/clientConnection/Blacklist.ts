@@ -1,8 +1,7 @@
-import {IBlacklist}     from '@airport/arrivals-n-departures';
-import {Service}        from "typedi/decorators/Service";
-import {BlacklistToken} from "../InjectionTokens";
+import {IBlacklist} from '@airport/arrivals-n-departures';
+import {DI}         from '@airport/di'
+import {BLACKLIST}  from "../diTokens";
 
-@Service(BlacklistToken)
 export class Blacklist<Key>
 	implements IBlacklist<Key> {
 
@@ -67,3 +66,5 @@ export class Blacklist<Key>
 	}
 
 }
+
+DI.set(BLACKLIST, Blacklist)

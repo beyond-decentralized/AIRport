@@ -1,25 +1,22 @@
 import {
 	IUtils,
-	UtilsToken
-}                           from '@airport/air-control'
+	UTILS
+}                       from '@airport/air-control'
+import {DI}             from '@airport/di'
 import {
-	DbSchemaUtilsToken,
+	DB_SCHEMA_UTILS,
 	DomainName,
 	IDbSchemaUtils,
 	JsonSchema,
 	JsonSchemaName,
 	SchemaName,
-} from '@airport/ground-control'
+}                       from '@airport/ground-control'
 import {
 	ISchema,
 	ISchemaDao,
-	SchemaDaoToken
-}                           from '@airport/traffic-pattern'
-import {
-	Inject,
-	Service
-}                           from 'typedi'
-import {SchemaCheckerToken} from '../InjectionTokens'
+	SCHEMA_DAO
+}                       from '@airport/traffic-pattern'
+import {SCHEMA_CHECKER} from '../diTokens'
 
 
 export interface CoreDomainAndSchemaNames {
@@ -54,18 +51,22 @@ export interface ISchemaChecker {
 
 }
 
-@Service(SchemaCheckerToken)
 export class SchemaChecker {
 
-	constructor(
-		@Inject(SchemaDaoToken)
-		private schemaDao: ISchemaDao,
-		@Inject(DbSchemaUtilsToken)
-		private dbSchemaUtils: IDbSchemaUtils,
-		@Inject(UtilsToken)
-		private utils: IUtils
-	) {
+	private schemaDao: ISchemaDao
+	private dbSchemaUtils: IDbSchemaUtils
+	private utils: IUtils
 
+	constructor() {
+		DI.get((
+			schemaDao,
+			dbSchemaUtils,
+			utils
+		) => {
+			this.schemaDao     = schemaDao
+			this.dbSchemaUtils = dbSchemaUtils
+			this.utils         = utils
+		}, SCHEMA_DAO, DB_SCHEMA_UTILS, UTILS)
 	}
 
 	async check(
@@ -246,3 +247,5 @@ export class SchemaChecker {
 	}
 
 }
+
+DI.set(SCHEMA_CHECKER, SchemaChecker)

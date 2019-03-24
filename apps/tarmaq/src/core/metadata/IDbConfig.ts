@@ -1,8 +1,8 @@
-import {CascadeType} from "@airport/air-control";
-
 /**
  * Created by papa on 7/12/17.
  */
+import {CascadeType} from '@airport/ground-control'
+
 
 export interface IDbConfig {
 	name: string;
@@ -28,7 +28,8 @@ export interface IDbObject {
 	oldName?: string;
 }
 
-export interface IDbTable extends IDbObject {
+export interface IDbTable
+	extends IDbObject {
 	columns?: IDbColumn[];
 	ids?: string[];
 	indexes?: IDbIndex[];
@@ -38,17 +39,20 @@ export interface IDbTable extends IDbObject {
 	relations?: IDbRelation[];
 }
 
-export interface IDbIndex extends IDbObject {
+export interface IDbIndex
+	extends IDbObject {
 	columns?: string[];
 	name: string;
 	unique?: boolean;
 }
 
-export interface IDbColumn extends IDbObject {
+export interface IDbColumn
+	extends IDbObject {
 	name: string;
 }
 
-export interface IDbRelation extends IDbObject {
+export interface IDbRelation
+	extends IDbObject {
 	cascade: CascadeType;
 	columns?: IDbRelationColumn[];
 	foreignKey?: string;

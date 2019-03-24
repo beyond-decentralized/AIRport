@@ -1,24 +1,17 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../InjectionTokens");
-let SchemaChecker = class SchemaChecker {
-    constructor(schemaDao, dbSchemaUtils, utils) {
-        this.schemaDao = schemaDao;
-        this.dbSchemaUtils = dbSchemaUtils;
-        this.utils = utils;
+const diTokens_1 = require("../diTokens");
+class SchemaChecker {
+    constructor() {
+        di_1.DI.get((schemaDao, dbSchemaUtils, utils) => {
+            this.schemaDao = schemaDao;
+            this.dbSchemaUtils = dbSchemaUtils;
+            this.utils = utils;
+        }, traffic_pattern_1.SCHEMA_DAO, ground_control_1.DB_SCHEMA_UTILS, air_control_1.UTILS);
     }
     async check(jsonSchema) {
         if (!jsonSchema) {
@@ -141,12 +134,7 @@ let SchemaChecker = class SchemaChecker {
         }
         return false;
     }
-};
-SchemaChecker = __decorate([
-    typedi_1.Service(InjectionTokens_1.SchemaCheckerToken),
-    __param(0, typedi_1.Inject(traffic_pattern_1.SchemaDaoToken)),
-    __param(1, typedi_1.Inject(ground_control_1.DbSchemaUtilsToken)),
-    __param(2, typedi_1.Inject(air_control_1.UtilsToken))
-], SchemaChecker);
+}
 exports.SchemaChecker = SchemaChecker;
+di_1.DI.set(diTokens_1.SCHEMA_CHECKER, SchemaChecker);
 //# sourceMappingURL=SchemaChecker.js.map

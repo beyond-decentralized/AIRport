@@ -1,24 +1,21 @@
 import {
-	AirportDatabaseToken,
+	AIR_DB,
 	IAirportDatabase,
 	IUtils,
 	orderSchemasInOrderOfPrecedence,
 	QSchema,
 	QSchemaInternal,
 	setQSchemaEntities,
-	UtilsToken
-}                                     from '@airport/air-control'
+	UTILS
+}                                   from '@airport/air-control'
+import {DI}                         from '@airport/di'
 import {
+	DB_SCHEMA_UTILS,
 	DbSchema,
-	DbSchemaUtilsToken,
 	IDbSchemaUtils
-}                                     from '@airport/ground-control'
-import {ISchema}                      from '@airport/traffic-pattern'
-import {
-	Inject,
-	Service
-}                                     from 'typedi'
-import {QueryEntityClassCreatorToken} from './InjectionTokens'
+}                                   from '@airport/ground-control'
+import {ISchema}                    from '@airport/traffic-pattern'
+import {QUERY_ENTITY_CLASS_CREATOR} from './diTokens'
 
 // https://github.com/russoturisto/tarmaq/blob/master/src/generated/data/schema/qRepositorySchema.ts
 
@@ -30,18 +27,23 @@ export interface IQueryEntityClassCreator {
 
 }
 
-@Service(QueryEntityClassCreatorToken)
 export class QueryEntityClassCreator
 	implements IQueryEntityClassCreator {
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDatabase: IAirportDatabase,
-		@Inject(UtilsToken)
-		private utils: IUtils,
-		@Inject(DbSchemaUtilsToken)
-		private dbSchemaUtils: IDbSchemaUtils
-	) {
+	private airDb: IAirportDatabase
+	private utils: IUtils
+	private dbSchemaUtils: IDbSchemaUtils
+
+	constructor() {
+		DI.get((
+			airportDatabase,
+			utils,
+			dbSchemaUtils
+		) => {
+			this.airDb         = airportDatabase
+			this.utils         = utils
+			this.dbSchemaUtils = dbSchemaUtils
+		}, AIR_DB, UTILS, DB_SCHEMA_UTILS)
 	}
 
 	createAll(
@@ -55,24 +57,26 @@ export class QueryEntityClassCreator
 	create(
 		dbSchema: DbSchema
 	): QSchema {
-		let qSchema: QSchemaInternal = this.airportDatabase.qSchemaMapByName[dbSchema.name]
+		let qSchema: QSchemaInternal = this.airDb.qSchemaMapByName[dbSchema.name]
 		// If the Schema API source has already been loaded
 		if (qSchema) {
 			qSchema.__dbSchema__              = dbSchema
 			qSchema.__injected__.__dbSchema__ = dbSchema
-			setQSchemaEntities(dbSchema, qSchema.__injected__, this.airportDatabase.qSchemas)
+			setQSchemaEntities(dbSchema, qSchema.__injected__, this.airDb.qSchemas)
 		} else {
-			qSchema                                              = {
+			qSchema                                    = {
 				__constructors__: {},
 				__qConstructors__: {},
 				__dbSchema__: dbSchema
 			}
-			this.airportDatabase.qSchemaMapByName[dbSchema.name] = qSchema
+			this.airDb.qSchemaMapByName[dbSchema.name] = qSchema
 		}
-		this.airportDatabase.qSchemas[dbSchema.index] = qSchema
-		setQSchemaEntities(dbSchema, qSchema, this.airportDatabase.qSchemas)
+		this.airDb.qSchemas[dbSchema.index] = qSchema
+		setQSchemaEntities(dbSchema, qSchema, this.airDb.qSchemas)
 
 		return qSchema
 	}
 
 }
+
+DI.set(QUERY_ENTITY_CLASS_CREATOR, QueryEntityClassCreator)

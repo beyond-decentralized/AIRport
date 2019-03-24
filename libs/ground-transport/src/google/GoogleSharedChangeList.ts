@@ -2,6 +2,10 @@
  * Created by Papa on 1/10/2016.
  */
 import {
+	ISubject,
+	Subject
+}                       from '@airport/observe'
+import {
 	ArrayChangeRecordIterator,
 	ChangeError,
 	ChangeRecord,
@@ -10,7 +14,6 @@ import {
 	SharedChangeList,
 	SharingPlatformSetupInfo
 }                       from '@airport/terminal-map';
-import {Subject}        from 'rxjs';
 import {DocumentHandle} from './realtime/DocumentHandle';
 
 export class GoogleSharedChangeList implements SharedChangeList {
@@ -51,7 +54,7 @@ export class GoogleSharedChangeList implements SharedChangeList {
 		await this.handle.addChangeRecords(changeRecords);
 	}
 
-	errorSubject(): Subject<ChangeError> {
+	errorSubject(): ISubject<ChangeError> {
 		let errorSubject = new Subject<ChangeError>();
 
 		this.handle.otherChangesSubject.subscribe((otherChange) => {
@@ -64,7 +67,7 @@ export class GoogleSharedChangeList implements SharedChangeList {
 		return errorSubject;
 	}
 
-	changesAddedRemotelySubject(): Subject<ChangeRecordIterator> {
+	changesAddedRemotelySubject(): ISubject<ChangeRecordIterator> {
 		return this.handle.valuesAddedSubject;
 	}
 

@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Token_1 = require("typedi/Token");
-exports.SchemaBuilderToken = new Token_1.Token();
-exports.SchemaCheckerToken = new Token_1.Token();
-exports.SchemaInitializerToken = new Token_1.Token();
-exports.SchemaLocatorToken = new Token_1.Token();
-exports.SchemaRecorderToken = new Token_1.Token();
+const di_1 = require("@airport/di");
+exports.SCHEMA_BUILDER = di_1.diToken();
+exports.SCHEMA_CHECKER = di_1.diToken();
+exports.SCHEMA_INITIALIZER = di_1.diToken();
+exports.SCHEMA_LOCATOR = di_1.diToken();
+exports.SCHEMA_RECORDER = di_1.diToken();
 //# sourceMappingURL=InjectionTokens.js.map

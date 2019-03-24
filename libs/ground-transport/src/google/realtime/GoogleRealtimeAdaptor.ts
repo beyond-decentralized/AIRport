@@ -1,8 +1,11 @@
 import {
+	ISubject,
+	Subject
+}                       from '@airport/observe'
+import {
 	ChangeRecord,
 	ChangeRecordIterator
 }                       from '@airport/terminal-map';
-import {Subject}        from 'rxjs';
 import {DocumentHandle} from './DocumentHandle';
 import {GoogleRealtime} from './GoogleRealtime';
 
@@ -28,7 +31,8 @@ export class GoogleRealtimeAdaptorException {
 
 }
 
-export class GoogleChangeRecordIterator implements ChangeRecordIterator {
+export class GoogleChangeRecordIterator
+	implements ChangeRecordIterator {
 
 	private nextValue: ChangeRecord;
 
@@ -118,7 +122,7 @@ export class GoogleRealtimeAdaptor {
 
 	private subscribeToChangesAddedByOthers(
 		document: gapi.drive.realtime.Document
-	): Subject<GoogleChangeRecordIterator> {
+	): ISubject<GoogleChangeRecordIterator> {
 		let valuesAddedSubject = new Subject<gapi.drive.realtime.ValuesAddedEvent<ChangeRecord>>();
 		let changeList = this.googleRealtime.getChangeList(document);
 		this.googleRealtime.subscribeToValuesAdded(changeList, valuesAddedSubject);

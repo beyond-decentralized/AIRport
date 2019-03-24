@@ -1,36 +1,24 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
+const di_1 = require("@airport/di");
 const guideway_1 = require("@airport/guideway");
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../../InjectionTokens");
-const log = InjectionTokens_1.AGTLogger.add('SyncConnectionServer');
-let SyncConnectionServer = class SyncConnectionServer {
-    constructor(ipBlacklist, agtSharingMessageDao, messageFromTMVerifier, messageFromTMDeserializer, messageToTMSerializer, syncConnectionProcessor, syncConnectionVerifier, 
-    // private server: IServer,
-    agtRepositoryTransactionBlockDao, syncLogDao, tuningSettings) {
-        this.ipBlacklist = ipBlacklist;
-        this.agtSharingMessageDao = agtSharingMessageDao;
-        this.messageFromTMVerifier = messageFromTMVerifier;
-        this.messageFromTMDeserializer = messageFromTMDeserializer;
-        this.messageToTMSerializer = messageToTMSerializer;
-        this.syncConnectionProcessor = syncConnectionProcessor;
-        this.syncConnectionVerifier = syncConnectionVerifier;
-        this.agtRepositoryTransactionBlockDao = agtRepositoryTransactionBlockDao;
-        this.syncLogDao = syncLogDao;
-        this.tuningSettings = tuningSettings;
+const diTokens_1 = require("../../diTokens");
+const log = diTokens_1.AGTLogger.add('SyncConnectionServer');
+class SyncConnectionServer {
+    constructor() {
+        di_1.DI.get((ipBlacklist, agtSharingMessageDao, messageFromTMVerifier, messageFromTMDeserializer, messageToTMSerializer, syncConnectionProcessor, syncConnectionVerifier, agtRepositoryTransactionBlockDao, syncLogDao, tuningSettings) => {
+            this.ipBlacklist = ipBlacklist;
+            this.agtSharingMessageDao = agtSharingMessageDao;
+            this.messageFromTMVerifier = messageFromTMVerifier;
+            this.messageFromTMDeserializer = messageFromTMDeserializer;
+            this.messageToTMSerializer = messageToTMSerializer;
+            this.syncConnectionProcessor = syncConnectionProcessor;
+            this.syncConnectionVerifier = syncConnectionVerifier;
+            this.agtRepositoryTransactionBlockDao = agtRepositoryTransactionBlockDao;
+            this.syncLogDao = syncLogDao;
+            this.tuningSettings = tuningSettings;
+        }, diTokens_1.BLACKLIST, guideway_1.AGT_SHARING_MESSAGE_DAO, arrivals_n_departures_1.MESSAGE_FROM_TM_VERIFIER, arrivals_n_departures_1.MESSAGE_FROM_TM_DESERIALIZER, arrivals_n_departures_1.MESSAGE_TO_TM_SERIALIZER, diTokens_1.SYNC_CONNECTION_PROCESSOR, diTokens_1.SYNC_CONNECTION_VERIFIER, guideway_1.AGT_REPO_TRANS_BLOCK_DAO, guideway_1.SYNC_LOG_DAO, diTokens_1.TUNNING_SETTINGS);
     }
     async initialize() {
     }
@@ -71,7 +59,8 @@ let SyncConnectionServer = class SyncConnectionServer {
     stopProcessing( //
     ) {
     }
-    // TODO: implement kicking off a new batch if max records counts are over the configured values.
+    // TODO: implement kicking off a new batch if max records counts are over the
+    // configured values.
     handleConnect(req, res, ip) {
         this.handleConnection(req, res, (message) => {
             const connectionDataCallback = (terminalId, 
@@ -222,20 +211,7 @@ let SyncConnectionServer = class SyncConnectionServer {
         res.statusCode = 555;
         res.end();
     }
-};
-SyncConnectionServer = __decorate([
-    typedi_1.Service(arrivals_n_departures_1.SyncConnectionServerToken),
-    __param(0, typedi_1.Inject(InjectionTokens_1.BlacklistToken)),
-    __param(1, typedi_1.Inject(guideway_1.AgtSharingMessageDaoToken)),
-    __param(2, typedi_1.Inject(arrivals_n_departures_1.MessageFromTMVerifierToken)),
-    __param(3, typedi_1.Inject(arrivals_n_departures_1.MessageFromTMDeserializerToken)),
-    __param(4, typedi_1.Inject(arrivals_n_departures_1.MessageToTMSerializerToken)),
-    __param(5, typedi_1.Inject(InjectionTokens_1.SyncConnectionProcessorToken)),
-    __param(6, typedi_1.Inject(InjectionTokens_1.SyncConnectionVerifierToken)),
-    __param(7, typedi_1.Inject(guideway_1.AgtRepositoryTransactionBlockDaoToken)),
-    __param(8, typedi_1.Inject(guideway_1.SyncLogDaoToken)),
-    __param(9, typedi_1.Inject(InjectionTokens_1.TunningSettingsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
-], SyncConnectionServer);
+}
 exports.SyncConnectionServer = SyncConnectionServer;
+di_1.DI.set(arrivals_n_departures_1.SYNC_CONNECTION_SERVER, SyncConnectionServer);
 //# sourceMappingURL=SyncConnectionServer.js.map

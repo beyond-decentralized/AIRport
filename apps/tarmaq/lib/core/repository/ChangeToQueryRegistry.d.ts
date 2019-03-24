@@ -1,15 +1,15 @@
-import { Subject } from "rxjs";
-import { TableMap } from "@airport/terminal-map";
+import { TableMap } from '@airport/ground-control';
+import { ISubject } from '@airport/observe';
 /**
  * Created by Papa on 9/10/2016.
  */
 export declare class Query {
-    subject: Subject<any>;
+    subject: ISubject<any>;
     fieldMap: TableMap;
 }
 export declare class ChangeToQueryRegistry {
     activeQueries: Query[];
-    addQuery(subject: Subject<any>, fieldMap: TableMap): void;
-    removeQuery(subject: Subject<any>): void;
+    addQuery(subject: ISubject<any>, fieldMap: TableMap): void;
+    removeQuery(subject: ISubject<any>): void;
     findAffectedQueries(changeRecords: any[]): Query[];
 }

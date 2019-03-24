@@ -1,6 +1,7 @@
+import {DI}                       from '@airport/di'
 import {
 	ITerminalStore,
-	TerminalStoreToken
+	TERMINAL_STORE
 }                                 from '@airport/terminal-map'
 import {IDomain}                  from '@airport/territory'
 import {
@@ -14,18 +15,14 @@ import {
 	ISchemaRelationColumn,
 	ISchemaVersion
 }                                 from '@airport/traffic-pattern'
+import {IDdlObjectLinker}         from './DdlObjectLinker'
+import {IDdlObjectRetriever}      from './DdlObjectRetriever'
 import {
-	Inject,
-	Service
-}                                 from 'typedi'
-import {DdlObjectLinker}          from './DdlObjectLinker'
-import {DdlObjectRetriever}       from './DdlObjectRetriever'
-import {
-	DdlObjectLinkerToken,
-	DdlObjectRetrieverToken,
-	QueryEntityClassCreatorToken,
-	QueryObjectInitializerToken
-}                                 from './InjectionTokens'
+	DDL_OBJECT_LINKER,
+	DDL_OBJECT_RETRIEVER,
+	QUERY_ENTITY_CLASS_CREATOR,
+	QUERY_OBJECT_INITIALIZER
+}                                 from './diTokens'
 import {IQueryEntityClassCreator} from './QueryEntityClassCreator'
 
 export interface IQueryObjectInitializer {
@@ -53,20 +50,27 @@ export interface DdlObjects {
 
 }
 
-@Service(QueryObjectInitializerToken)
 export class QueryObjectInitializer
 	implements IQueryObjectInitializer {
 
-	constructor(
-		@Inject(DdlObjectLinkerToken)
-		private ddlObjectLinker: DdlObjectLinker,
-		@Inject(DdlObjectRetrieverToken)
-		private ddlObjectRetriever: DdlObjectRetriever,
-		@Inject(QueryEntityClassCreatorToken)
-		private queryEntityClassCreator: IQueryEntityClassCreator,
-		@Inject(TerminalStoreToken)
-		private terminalStore: ITerminalStore,
-	) {
+	private ddlObjectLinker: IDdlObjectLinker
+	private ddlObjectRetriever: IDdlObjectRetriever
+	private queryEntityClassCreator: IQueryEntityClassCreator
+	private terminalStore: ITerminalStore
+
+	constructor() {
+		DI.get((
+			ddlObjectLinker,
+			ddlObjectRetriever,
+			queryEntityClassCreator,
+			terminalStore
+			) => {
+				this.ddlObjectLinker         = ddlObjectLinker
+				this.ddlObjectRetriever      = ddlObjectRetriever
+				this.queryEntityClassCreator = queryEntityClassCreator
+				this.terminalStore           = terminalStore
+			}, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
+			QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE)
 	}
 
 
@@ -91,3 +95,5 @@ export class QueryObjectInitializer
 	}
 
 }
+
+DI.set(QUERY_OBJECT_INITIALIZER, QueryObjectInitializer)

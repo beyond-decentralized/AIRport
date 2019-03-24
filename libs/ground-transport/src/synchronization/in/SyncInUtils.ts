@@ -1,15 +1,14 @@
 import {
 	IUtils,
-	UtilsToken
-}                                      from "@airport/air-control";
-import {RepoTransBlockSyncOutcomeType} from "@airport/arrivals-n-departures";
+	UTILS,
+}                      from '@airport/air-control'
+import {DI}            from '@airport/di'
 import {
 	ColumnIndex,
+	EntityId,
 	SchemaIndex,
-	SchemaName,
-	SchemaVersionId,
-	EntityId
-}                                      from "@airport/ground-control";
+	SchemaVersionId
+}                      from '@airport/ground-control'
 import {
 	ActorId,
 	IOperationHistory,
@@ -19,22 +18,15 @@ import {
 	RecordHistoryId,
 	RepositoryEntityActorRecordId,
 	RepositoryId
-}                                      from "@airport/holding-pattern";
+}                      from '@airport/holding-pattern'
 import {
 	IRepositoryTransactionBlock,
-	IRepositoryTransactionBlockDao,
 	ISharingMessage,
 	ISynchronizationConflict,
-	RepositoryTransactionBlockDaoToken,
 	RepositoryTransactionBlockData,
 	SharingNodeRepoTransBlock,
-}                                      from "@airport/moving-walkway";
-import {
-	Inject,
-	Service
-}                                      from "typedi";
-import {stringify}                     from "zipson/lib";
-import {SyncInUtilsToken}              from "../../InjectionTokens";
+}                      from '@airport/moving-walkway'
+import {SYNC_IN_UTILS} from '../../diTokens'
 
 export type RemoteSchemaIndex = SchemaIndex;
 export type RemoteSchemaVersionId = SchemaVersionId;
@@ -61,11 +53,14 @@ export interface IDataToTM {
  * Result of comparing to versions of a given schema.
  */
 export enum SchemaComparisonResult {
-	// Version specified in the message is lower than it's version in the receiving Terminal (TM)
-	MESSAGE_SCHEMA_VERSION_IS_LOWER = -1,
-	// Version of the schema used i the message is the same as that in the receiving Terminal (TM)
-	MESSAGE_SCHEMA_VERSION_IS_EQUAL = 0,
-	// Version specified in the message in higher than it's version in the receiving Terminal (TM)
+	// Version specified in the message is lower than it's version in the receiving
+	// Terminal (TM)
+	MESSAGE_SCHEMA_VERSION_IS_LOWER  = -1,
+	// Version of the schema used i the message is the same as that in the receiving
+	// Terminal (TM)
+	MESSAGE_SCHEMA_VERSION_IS_EQUAL  = 0,
+	// Version specified in the message in higher than it's version in the receiving
+	// Terminal (TM)
 	MESSAGE_SCHEMA_VERSION_IS_HIGHER = 1,
 }
 
@@ -126,14 +121,17 @@ export interface Stage1SyncedInDataProcessingResult {
 	syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>
 }
 
-@Service(SyncInUtilsToken)
 export class SyncInUtils
 	implements ISyncInUtils {
 
 	constructor(
-		@Inject(UtilsToken)
 		private utils: IUtils
 	) {
+		DI.get((
+			utils
+		) => {
+			this.utils = utils
+		}, UTILS)
 	}
 
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
@@ -147,7 +145,7 @@ export class SyncInUtils
 			this.utils.ensureChildJsMap(
 				this.utils.ensureChildJsMap(
 					recordMapBySchemaTableAndRepository, operationHistory.schemaVersion.id),
-				operationHistory.entity.id), repositoryId);
+				operationHistory.entity.id), repositoryId)
 	}
 
 	// createSharingMessage(
@@ -173,7 +171,9 @@ export class SyncInUtils
 
 	private async recordSharingNodeRepoTransBlocks() {
 
-		let snrtb: SharingNodeRepoTransBlock;
+		let snrtb: SharingNodeRepoTransBlock
 	}
 
 }
+
+DI.set(SYNC_IN_UTILS, SyncInUtils)

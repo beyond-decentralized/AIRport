@@ -1,20 +1,17 @@
 import {
 	IUtils,
-	UtilsToken
-}                                     from "@airport/air-control";
-import {AgtRepositoryId}              from "@airport/arrivals-n-departures";
-import {RepositoryId}                 from "@airport/holding-pattern";
+	UTILS
+}                             from '@airport/air-control'
+import {AgtRepositoryId}      from '@airport/arrivals-n-departures'
+import {DI}                   from '@airport/di'
+import {RepositoryId}         from '@airport/holding-pattern'
 import {
 	ISharingNodeRepositoryDao,
-	SharingNodeId,
-	SharingNodeRepositoryDaoToken
-}                                     from "@airport/moving-walkway";
-import {
-	Inject,
-	Service
-}                                     from "typedi";
-import {SyncInRepositoryCheckerToken} from "../../../InjectionTokens";
-import {IDataToTM}                    from "../SyncInUtils";
+	SHARING_NODE_REPO_TRANS_BLOCK_DAO,
+	SharingNodeId
+}                             from '@airport/moving-walkway'
+import {SYNC_IN_REPO_CHECKER} from '../../../diTokens'
+import {IDataToTM}            from '../SyncInUtils'
 
 export interface RepositoryCheckResults {
 	consistentMessages: IDataToTM[];
@@ -31,43 +28,46 @@ export interface ISyncInRepositoryChecker {
 
 }
 
-@Service(SyncInRepositoryCheckerToken)
 export class SyncInRepositoryChecker
 	implements ISyncInRepositoryChecker {
 
-	constructor(
-		@Inject(SharingNodeRepositoryDaoToken)
-		private sharingNodeRepositoryDao: ISharingNodeRepositoryDao,
-		@Inject(UtilsToken)
-		private utils: IUtils,
-	) {
+	private sharingNodeRepositoryDao: ISharingNodeRepositoryDao
+	private utils: IUtils
 
+	constructor() {
+		DI.get((
+			sharingNodeRepositoryDao,
+			utils
+		) => {
+			this.sharingNodeRepositoryDao = sharingNodeRepositoryDao
+			this.utils                    = utils
+		}, SHARING_NODE_REPO_TRANS_BLOCK_DAO, UTILS)
 	}
 
 	async ensureRepositories(
 		incomingMessages: IDataToTM[],
 		dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<RepositoryCheckResults> {
-		const consistentMessages: IDataToTM[] = [];
+		const consistentMessages: IDataToTM[] = []
 
 		// const dataMessageMapBySharingNodeAndAgtRepositoryId:
 		// 	Map<SharingNodeId, Map<AgtRepositoryId, IDataToTM[]>>
 		// 	= new Map();
 		const dataMessageMapBySharingNodeId:
-			Map<SharingNodeId, Map<AgtRepositoryId, IDataToTM[]>>
-			= new Map();
+			      Map<SharingNodeId, Map<AgtRepositoryId, IDataToTM[]>>
+			                                       = new Map()
 		// const agtRepositoryIds: Set<AgtRepositoryId> = new Set();
-		const sharingNodeIds: Set<SharingNodeId> = new Set();
+		const sharingNodeIds: Set<SharingNodeId> = new Set()
 
-		const sharingNodeRepositoryMap: Map<SharingNodeId, Set<RepositoryId>> = new Map();
+		const sharingNodeRepositoryMap: Map<SharingNodeId, Set<RepositoryId>> = new Map()
 
 
 		for (const message of incomingMessages) {
 			if (this.areRepositoryIdsConsistentInMessage(message)) {
-				const sharingNodeId = message.sharingMessage.sharingNode.id;
+				const sharingNodeId = message.sharingMessage.sharingNode.id
 				// const agtRepositoryId = message.agtRepositoryId;
 
-				sharingNodeIds.add(sharingNodeId);
+				sharingNodeIds.add(sharingNodeId)
 				// agtRepositoryIds.add(agtRepositoryId);
 				// Add the Data message from AGT into the datastructure
 				// this.utils.ensureChildArray(
@@ -75,12 +75,12 @@ export class SyncInRepositoryChecker
 				// 		dataMessageMapBySharingNodeAndAgtRepositoryId,
 				// 		sharingNodeId), agtRepositoryId).push();
 				this.utils.ensureChildArray(dataMessageMapBySharingNodeId, sharingNodeId)
-					.push(message);
+					.push(message)
 				this.utils.ensureChildJsSet(sharingNodeRepositoryMap, sharingNodeId)
-					.add(message.data.repository.id);
-				consistentMessages.push(message);
+					.add(message.data.repository.id)
+				consistentMessages.push(message)
 			} else {
-				dataMessagesWithInvalidData.push(message);
+				dataMessagesWithInvalidData.push(message)
 			}
 		}
 
@@ -98,26 +98,26 @@ export class SyncInRepositoryChecker
 	private areRepositoryIdsConsistentInMessage(
 		message: IDataToTM
 	): boolean {
-		const data = message.data;
-		const repositoryId = data.repository.id;
-		const referencedRepositorySet: Set<RepositoryId> = new Set();
-		for(const repository of data.referencedRepositories) {
-			if(referencedRepositorySet.has(repositoryId)) {
-				return false;
+		const data                                       = message.data
+		const repositoryId                               = data.repository.id
+		const referencedRepositorySet: Set<RepositoryId> = new Set()
+		for (const repository of data.referencedRepositories) {
+			if (referencedRepositorySet.has(repositoryId)) {
+				return false
 			}
-			referencedRepositorySet.add(repository.id);
+			referencedRepositorySet.add(repository.id)
 		}
 
 		for (const repoTransHistory of data.repoTransHistories) {
 			if (repositoryId != repoTransHistory.repository.id) {
-				return false;
+				return false
 			}
-			for(const operationHistory of repoTransHistory.operationHistory) {
+			for (const operationHistory of repoTransHistory.operationHistory) {
 				operationHistory.
 			}
 		}
 
-		return true;
+		return true
 	}
 
 	/*  NOT needed - AgtRepositoryIds are not sent FROM Agt, only TO Agt
@@ -173,3 +173,5 @@ export class SyncInRepositoryChecker
 	*/
 
 }
+
+DI.set(SYNC_IN_REPO_CHECKER, SyncInRepositoryChecker)

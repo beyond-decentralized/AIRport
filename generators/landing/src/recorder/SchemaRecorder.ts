@@ -1,26 +1,27 @@
 import {
 	IUtils,
-	UtilsToken
-}                            from '@airport/air-control'
+	UTILS
+}                       from '@airport/air-control'
+import {DI}             from '@airport/di'
 import {
-	DbSchemaUtilsToken,
+	DB_SCHEMA_UTILS,
 	DomainName,
 	IDbSchemaUtils,
 	IdColumnOnlyIndex,
 	JsonSchema,
 	SchemaName,
 	SchemaStatus,
-} from '@airport/ground-control'
-import {DdlObjects} from '@airport/takeoff'
+}                       from '@airport/ground-control'
+import {DdlObjects}     from '@airport/takeoff'
 import {
 	ITerminalStore,
-	TerminalStoreToken
-}                            from '@airport/terminal-map'
+	TERMINAL_STORE
+}                       from '@airport/terminal-map'
 import {
-	DomainDaoToken,
+	DOMAIN_DAO,
 	IDomain,
 	IDomainDao
-}                            from '@airport/territory'
+}                       from '@airport/territory'
 import {
 	ISchema,
 	ISchemaColumn,
@@ -40,24 +41,20 @@ import {
 	ISchemaRelationDao,
 	ISchemaVersion,
 	ISchemaVersionDao,
-	SchemaColumnDaoToken,
-	SchemaDaoToken,
-	SchemaEntityDaoToken,
-	SchemaPropertyColumnDaoToken,
-	SchemaPropertyDaoToken,
-	SchemaReferenceDaoToken,
-	SchemaRelationColumnDaoToken,
-	SchemaRelationDaoToken,
-	SchemaVersionDaoToken
+	SCHEMA_COLUMN_DAO,
+	SCHEMA_DAO,
+	SCHEMA_ENTITY_DAO,
+	SCHEMA_PROPERTY_COLUMN_DAO,
+	SCHEMA_PROPERTY_DAO,
+	SCHEMA_REFERENCE_DAO,
+	SCHEMA_RELATION_COLUMN_DAO,
+	SCHEMA_RELATION_DAO,
+	SCHEMA_VERSION_DAO
 }                       from '@airport/traffic-pattern'
 import {
-	Inject,
-	Service
-}                       from 'typedi'
-import {
-	SchemaLocatorToken,
-	SchemaRecorderToken
-}                       from '../InjectionTokens'
+	SCHEMA_LOCATOR,
+	SCHEMA_RECORDER
+}                       from '../diTokens'
 import {ISchemaLocator} from '../locator/SchemaLocator'
 
 export interface ISchemaRecorder {
@@ -68,42 +65,59 @@ export interface ISchemaRecorder {
 
 }
 
-@Service(SchemaRecorderToken)
 export class SchemaRecorder
 	implements ISchemaRecorder {
 
-	constructor(
-		// @Inject(AIR_DB)
-		// private airDb: IAirportDatabase,
-		@Inject(DomainDaoToken)
-		private domainDao: IDomainDao,
-		@Inject(SchemaColumnDaoToken)
-		private schemaColumnDao: ISchemaColumnDao,
-		@Inject(SchemaDaoToken)
-		private schemaDao: ISchemaDao,
-		@Inject(SchemaEntityDaoToken)
-		private schemaEntityDao: ISchemaEntityDao,
-		@Inject(SchemaLocatorToken)
-		private schemaLocator: ISchemaLocator,
-		@Inject(SchemaPropertyColumnDaoToken)
-		private schemaPropertyColumnDao: ISchemaPropertyColumnDao,
-		@Inject(SchemaPropertyDaoToken)
-		private schemaPropertyDao: ISchemaPropertyDao,
-		@Inject(SchemaReferenceDaoToken)
-		private schemaReferenceDao: ISchemaReferenceDao,
-		@Inject(SchemaRelationColumnDaoToken)
-		private schemaRelationColumnDao: ISchemaRelationColumnDao,
-		@Inject(SchemaRelationDaoToken)
-		private schemaRelationDao: ISchemaRelationDao,
-		@Inject(DbSchemaUtilsToken)
-		private dbSchemaUtils: IDbSchemaUtils,
-		@Inject(SchemaVersionDaoToken)
-		private schemaVersionDao: ISchemaVersionDao,
-		@Inject(TerminalStoreToken)
-		private terminalStore: ITerminalStore,
-		@Inject(UtilsToken)
-		private utils: IUtils
-	) {
+	private domainDao: IDomainDao
+	private schemaColumnDao: ISchemaColumnDao
+	private schemaDao: ISchemaDao
+	private schemaEntityDao: ISchemaEntityDao
+	private schemaLocator: ISchemaLocator
+	private schemaPropertyColumnDao: ISchemaPropertyColumnDao
+	private schemaPropertyDao: ISchemaPropertyDao
+	private schemaReferenceDao: ISchemaReferenceDao
+	private schemaRelationColumnDao: ISchemaRelationColumnDao
+	private schemaRelationDao: ISchemaRelationDao
+	private dbSchemaUtils: IDbSchemaUtils
+	private schemaVersionDao: ISchemaVersionDao
+	private terminalStore: ITerminalStore
+	private utils: IUtils
+
+	constructor() {
+		DI.get((
+			domainDao,
+			schemaColumnDao,
+			schemaDao,
+			schemaEntityDao,
+			schemaLocator,
+			schemaPropertyColumnDao,
+			schemaPropertyDao,
+			schemaReferenceDao,
+			schemaRelationColumnDao,
+			schemaRelationDao,
+			dbSchemaUtils,
+			schemaVersionDao,
+			terminalStore,
+			utils
+			) => {
+				this.domainDao               = domainDao
+				this.schemaColumnDao         = schemaColumnDao
+				this.schemaEntityDao         = schemaEntityDao
+				this.schemaLocator           = schemaLocator
+				this.schemaPropertyColumnDao = schemaPropertyColumnDao
+				this.schemaPropertyDao       = schemaPropertyDao
+				this.schemaReferenceDao      = schemaReferenceDao
+				this.schemaRelationColumnDao = schemaRelationColumnDao
+				this.schemaRelationDao       = schemaRelationDao
+				this.dbSchemaUtils           = dbSchemaUtils
+				this.schemaVersionDao        = schemaVersionDao
+				this.terminalStore           = terminalStore
+				this.utils                   = utils
+			}, DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO,
+			SCHEMA_ENTITY_DAO, SCHEMA_LOCATOR, SCHEMA_PROPERTY_COLUMN_DAO,
+			SCHEMA_PROPERTY_DAO, SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO,
+			SCHEMA_RELATION_DAO, DB_SCHEMA_UTILS, SCHEMA_VERSION_DAO,
+			TERMINAL_STORE, UTILS)
 	}
 
 	async record(
@@ -118,44 +132,44 @@ export class SchemaRecorder
 		}
 
 		const {
-						domainMapByName,
-						domains
-					} = await this.recordDomains(domainSet)
+			      domainMapByName,
+			      domains
+		      } = await this.recordDomains(domainSet)
 		const {
-						newSchemaMapByName,
-						newSchemas
-					} = await this.recordSchemas(
+			      newSchemaMapByName,
+			      newSchemas
+		      } = await this.recordSchemas(
 			domainMapByName, jsonSchemaMapByName)
 		const {
-						newSchemaVersionMapBySchemaName,
-						newSchemaVersions
-					} = await this.recordSchemaVersions(
+			      newSchemaVersionMapBySchemaName,
+			      newSchemaVersions
+		      } = await this.recordSchemaVersions(
 			jsonSchemaMapByName, newSchemaMapByName)
 		const {
-						newSchemaReferenceMap,
-						newSchemaReferences
-					} = await this.generateSchemaReferences(
+			      newSchemaReferenceMap,
+			      newSchemaReferences
+		      } = await this.generateSchemaReferences(
 			jsonSchemaMapByName, newSchemaVersionMapBySchemaName)
 		const {
-						newEntitiesMapBySchemaName,
-						newEntities
-					} = await this.generateSchemaEntities(
+			      newEntitiesMapBySchemaName,
+			      newEntities
+		      } = await this.generateSchemaEntities(
 			jsonSchemaMapByName, newSchemaVersionMapBySchemaName)
 		const {
-						newProperties,
-						newPropertiesMap
-					} = await this.generateSchemaProperties(
+			      newProperties,
+			      newPropertiesMap
+		      } = await this.generateSchemaProperties(
 			jsonSchemaMapByName, newEntitiesMapBySchemaName)
 		const {
-						newRelations,
-						newRelationsMap
-					} = await this.generateSchemaRelations(
+			      newRelations,
+			      newRelationsMap
+		      } = await this.generateSchemaRelations(
 			jsonSchemaMapByName, newEntitiesMapBySchemaName, newPropertiesMap, newSchemaReferenceMap)
 		const {
-						newColumns,
-						newColumnsMap,
-						newPropertyColumns
-					} = await this.generateSchemaColumns(
+			      newColumns,
+			      newColumnsMap,
+			      newPropertyColumns
+		      } = await this.generateSchemaColumns(
 			jsonSchemaMapByName, newEntitiesMapBySchemaName, newPropertiesMap)
 
 		const newRelationColumns = await this.generateSchemaRelationColumns(
@@ -319,9 +333,9 @@ export class SchemaRecorder
 			const schema     = ownSchemaVersion.schema
 			const jsonSchema = jsonSchemaMapByName.get(schema.name)
 			const lastJsonSchemaVersion
-											 = jsonSchema.versions[jsonSchema.versions.length - 1]
+			                 = jsonSchema.versions[jsonSchema.versions.length - 1]
 			const schemaReferences: ISchemaReference[]
-											 = this.utils.ensureChildArray(newSchemaReferenceMap, schemaName)
+			                 = this.utils.ensureChildArray(newSchemaReferenceMap, schemaName)
 
 			for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
 				const referencedSchemaName  = this.dbSchemaUtils.getSchemaName(jsonReferencedSchema)
@@ -412,16 +426,16 @@ export class SchemaRecorder
 			const jsonEntities         = currentSchemaVersion.entities
 			const entities             = newEntitiesMapBySchemaName.get(schemaName)
 			const propertiesByEntityIndex
-																 = this.utils.ensureChildArray(newPropertiesMap, schemaName)
+			                           = this.utils.ensureChildArray(newPropertiesMap, schemaName)
 			jsonEntities.forEach((
 				jsonEntity,
 				tableIndex
 			) => {
 				const entity = entities[tableIndex]
 				const propertiesForEntity
-										 = []
+				             = []
 				propertiesByEntityIndex[tableIndex]
-										 = propertiesForEntity
+				             = propertiesForEntity
 				let index    = 0
 
 				for (const jsonProperty of jsonEntity.properties) {
@@ -465,9 +479,9 @@ export class SchemaRecorder
 			const jsonEntities         = currentSchemaVersion.entities
 			const entitiesForSchema    = newEntitiesMapBySchemaName.get(schemaName)
 			const propertiesByEntityIndex
-																 = newPropertiesMap.get(schemaName)
+			                           = newPropertiesMap.get(schemaName)
 			const relationsByEntityIndex
-																 = this.utils.ensureChildArray(newRelationsMap, schemaName)
+			                           = this.utils.ensureChildArray(newRelationsMap, schemaName)
 			const referencesForSchema  = newSchemaReferenceMap.get(schemaName)
 
 			jsonEntities.forEach((
@@ -475,11 +489,11 @@ export class SchemaRecorder
 				tableIndex
 			) => {
 				const propertiesForEntity
-									= propertiesByEntityIndex[tableIndex]
+					        = propertiesByEntityIndex[tableIndex]
 				const relationsForEntity
-									= []
+					        = []
 				relationsByEntityIndex[tableIndex]
-									= relationsForEntity
+					        = relationsForEntity
 				let index = 0
 
 				const relations: ISchemaRelation[] = []
@@ -640,7 +654,7 @@ export class SchemaRecorder
 				) => {
 					const manyColumn = columnsForEntity[index]
 					const relationColumns: ISchemaRelationColumn[]
-													 = []
+					                 = []
 
 					jsonColumn.manyRelationColumnRefs.forEach((
 						jsonRelationColumn
@@ -697,3 +711,5 @@ export class SchemaRecorder
 	}
 
 }
+
+DI.set(SCHEMA_RECORDER, SchemaRecorder)

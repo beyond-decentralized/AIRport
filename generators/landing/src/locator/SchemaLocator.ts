@@ -1,15 +1,11 @@
-import {JsonSchema}         from '@airport/ground-control'
+import {DI}             from '@airport/di'
+import {JsonSchema}     from '@airport/ground-control'
 import {
 	ITerminalStore,
-	TerminalStoreToken
-}                           from '@airport/terminal-map'
-import {
-	ISchemaVersion,
-	ISchemaVersionDao,
-	SchemaVersionDaoToken
-}                           from '@airport/traffic-pattern'
-import {Inject}             from 'typedi'
-import {SchemaLocatorToken} from '../InjectionTokens'
+	TERMINAL_STORE
+}                       from '@airport/terminal-map'
+import {ISchemaVersion} from '@airport/traffic-pattern'
+import {SCHEMA_LOCATOR} from '../diTokens'
 
 export interface ISchemaLocator {
 
@@ -23,14 +19,17 @@ export interface ISchemaLocator {
 
 }
 
-@Inject(SchemaLocatorToken)
 export class SchemaLocator
 	implements ISchemaLocator {
 
-	constructor(
-		@Inject(TerminalStoreToken)
-		private terminalStore: ITerminalStore
-	) {
+	private terminalStore: ITerminalStore
+
+	constructor() {
+		DI.get((
+			terminalStore
+		) => {
+			this.terminalStore = terminalStore
+		}, TERMINAL_STORE)
 	}
 
 	locateExistingSchemaVersionRecord(
@@ -60,3 +59,5 @@ export class SchemaLocator
 	}
 
 }
+
+DI.set(SCHEMA_LOCATOR, SchemaLocator)

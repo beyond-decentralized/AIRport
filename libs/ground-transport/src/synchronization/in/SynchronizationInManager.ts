@@ -6,7 +6,8 @@ import {
 	RepoTransBlockSyncStatus,
 	SyncNotificationMessageToTM,
 	TmSharingMessageId
-}                                       from "@airport/arrivals-n-departures";
+}                                       from '@airport/arrivals-n-departures'
+import {DI}                             from '@airport/di'
 import {
 	DataOrigin,
 	ISharingMessage,
@@ -14,25 +15,23 @@ import {
 	ISharingNode,
 	ISharingNodeTerminal,
 	RepositoryTransactionBlockData,
-	SharingMessageDaoToken,
+	SHARING_MESSAGE_DAO,
 	SharingNodeId
-}                                       from "@airport/moving-walkway";
-import {Transactional}                  from "@airport/tower";
-import {Inject}                         from "typedi/decorators/Inject";
-import {Service}                        from "typedi/decorators/Service";
-import {parse}                          from "zipson/lib";
+}                                       from '@airport/moving-walkway'
+import {Transactional}                  from '@airport/tower'
+import {parse}                          from 'zipson/lib'
+import {GROUND_TRANSPORT_LOGGER}        from '../../Constants'
 import {
-	GroundTransportLogger,
-	SynchronizationInManagerToken,
-	SyncInCheckerToken,
-	SyncLogMessageProcessorToken,
-	TwoStageSyncedInDataProcessorToken
-} from "../../InjectionTokens";
-import {ISyncInChecker}                 from "./checker/SyncInChecker";
-import {SyncInMessageWithContent}       from "./model/SyncInMessageWithContent";
-import {IDataToTM}                      from "./SyncInUtils";
-import {ISyncLogMessageProcessor}       from "./SyncLogMessageProcessor";
-import {ITwoStageSyncedInDataProcessor} from "./TwoStageSyncedInDataProcessor";
+	SYNC_IN_CHECKER,
+	SYNC_IN_MANAGER,
+	SYNC_LOG_MESSAGE_PROCESSOR,
+	TWO_STAGE_SYNCED_IN_DATA_PROCESSOR
+}                                       from '../../diTokens'
+import {ISyncInChecker}                 from './checker/SyncInChecker'
+import {SyncInMessageWithContent}       from './model/SyncInMessageWithContent'
+import {IDataToTM}                      from './SyncInUtils'
+import {ISyncLogMessageProcessor}       from './SyncLogMessageProcessor'
+import {ITwoStageSyncedInDataProcessor} from './TwoStageSyncedInDataProcessor'
 
 /**
  * Synchronization Log part of the Message from AGT to Terminal (TM)
@@ -65,34 +64,42 @@ export interface ISharingMessageWithData {
 
 export type LastRemoteChangeMillis = number;
 
-const log = GroundTransportLogger.add('SynchronizationInManager');
+const log = GROUND_TRANSPORT_LOGGER.add('SynchronizationInManager')
 
 /**
  * Synchronization in Manager implementation.
  */
-@Service(SynchronizationInManagerToken)
 export class SynchronizationInManager
 	implements ISynchronizationInManager {
 
-	constructor(
-		@Inject(SharingMessageDaoToken)
-		private sharingMessageDao: ISharingMessageDao,
-		@Inject(SyncInCheckerToken)
-		private syncInChecker: ISyncInChecker,
-		@Inject(SyncLogMessageProcessorToken)
-		private syncLogMessageProcessor: ISyncLogMessageProcessor,
-		@Inject(TwoStageSyncedInDataProcessorToken)
-		private twoStageSyncedInDataProcessor: ITwoStageSyncedInDataProcessor,
-	) {
+	private sharingMessageDao: ISharingMessageDao
+	private syncInChecker: ISyncInChecker
+	private syncLogMessageProcessor: ISyncLogMessageProcessor
+	private twoStageSyncedInDataProcessor: ITwoStageSyncedInDataProcessor
+
+	constructor() {
+		DI.get((
+			sharingMessageDao,
+			syncInChecker,
+			syncLogMessageProcessor,
+			twoStageSyncedInDataProcessor
+			) => {
+				this.sharingMessageDao             = sharingMessageDao
+				this.syncInChecker                 = syncInChecker
+				this.syncLogMessageProcessor       = syncLogMessageProcessor
+				this.twoStageSyncedInDataProcessor = twoStageSyncedInDataProcessor
+			}, SHARING_MESSAGE_DAO, SYNC_IN_CHECKER,
+			SYNC_LOG_MESSAGE_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
 	}
 
 	/**
 	 * ASSUMPTION: all of the messages are intended for this TM.
 	 *
-	 * @param {ISharingNode[]} sharingNodes   All of the sharing associated with incoming messages
+	 * @param {ISharingNode[]} sharingNodes   All of the sharing associated with incoming
+	 *   messages
 	 *      (in same order as messages)
-	 * @param {MessageToTM[][]} incomingMessages    All of the incoming messages, grouped into
-	 *      arrays by sharing node
+	 * @param {MessageToTM[][]} incomingMessages    All of the incoming messages, grouped
+	 *   into arrays by sharing node
 	 * @returns {Promise<void>}   Return when all of the messages have been processed
 	 */
 	@Transactional()
@@ -101,28 +108,28 @@ export class SynchronizationInManager
 		incomingMessages: BatchedMessagesToTM[],
 		sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>
 	): Promise<void> {
-		const syncTimestamp = new Date();
-		const allSyncLogMessages: ISyncLogToTM[] = [];
-		const allDataMessages: IDataToTM[] = [];
+		const syncTimestamp                      = new Date()
+		const allSyncLogMessages: ISyncLogToTM[] = []
+		const allDataMessages: IDataToTM[]       = []
 
-		const messagesToContent: SyncInMessageWithContent[] = [];
-		const sharingMessages: ISharingMessage[] = [];
+		const messagesToContent: SyncInMessageWithContent[] = []
+		const sharingMessages: ISharingMessage[]            = []
 
 		// Split up messages by type
 		for (let i = 0; i < incomingMessages.length; i++) {
 
-			const sharingNode = sharingNodes[i];
+			const sharingNode = sharingNodes[i]
 			const sharingNodeTerminal: ISharingNodeTerminal
-				= sharingNodeTerminalMap.get(sharingNode.id);
+			                  = sharingNodeTerminalMap.get(sharingNode.id)
 
-			const batchedMessagesToTM = incomingMessages[i];
+			const batchedMessagesToTM = incomingMessages[i]
 
 			const isMessageForThisTerminal = batchedMessagesToTM.targetAgtTerminalIds.some(
 				agtTerminalId =>
-					agtTerminalId === sharingNodeTerminal.agtTerminalId);
+					agtTerminalId === sharingNodeTerminal.agtTerminalId)
 			if (!isMessageForThisTerminal) {
 				// TODO: handle messages for other terminals (?forward them?)
-				continue;
+				continue
 			}
 
 			const sharingMessage: ISharingMessage = {
@@ -130,46 +137,47 @@ export class SynchronizationInManager
 				agtSharingMessageId: batchedMessagesToTM.agtSharingMessageId,
 				sharingNode,
 				syncTimestamp
-			};
-			sharingMessages.push(sharingMessage);
+			}
+			sharingMessages.push(sharingMessage)
 			const messageWithContent: SyncInMessageWithContent = {
 				sharingMessage,
 				dataMessages: [],
 				syncLogMessages: []
-			};
-			messagesToContent.push(messageWithContent);
+			}
+			messagesToContent.push(messageWithContent)
 			for (const incomingMessage of batchedMessagesToTM.messages) {
 				switch (incomingMessage.contentType) {
-					// Terminal sync log messages are responses from AGT on which messages coming form this
-					// TM have been synced (or not)
+					// Terminal sync log messages are responses from AGT on which messages coming
+					// form this TM have been synced (or not)
 					case MessageToTMContentType.SYNC_NOTIFICATION: {
-						const syncNotificationMessage = <SyncNotificationMessageToTM>incomingMessage;
+						const syncNotificationMessage              = <SyncNotificationMessageToTM>incomingMessage
 						const syncLogMessageToClient: ISyncLogToTM = {
 							// agtTerminalSyncLogId: syncNotificationMessage.agtTerminalSyncLogId,
 							outcomes: syncNotificationMessage.syncOutcomes,
 							sharingNode: sharingNode,
-							// syncDatetime: syncTimestamp, // syncNotificationMessage.agtSyncRecordAddDatetime,
+							// syncDatetime: syncTimestamp, //
+							// syncNotificationMessage.agtSyncRecordAddDatetime,
 							tmSharingMessageId: syncNotificationMessage.tmSharingMessageId
-						};
+						}
 						// if (!this.isValidLastChangeTime(syncTimestamp,
 						// 	syncLogMessageToClient.syncDatetime, incomingMessage)) {
 						// 	break;
 						// }
-						messageWithContent.syncLogMessages.push(syncLogMessageToClient);
-						allSyncLogMessages.push(syncLogMessageToClient);
-						break;
+						messageWithContent.syncLogMessages.push(syncLogMessageToClient)
+						allSyncLogMessages.push(syncLogMessageToClient)
+						break
 					}
 					// Sync Record messages are synced via AGT to this TM from other TMs
 					case MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK: {
-						const repoTransBlockMessage = <RepoTransBlockMessageToTM>incomingMessage;
-						const serializedData = repoTransBlockMessage.repositoryTransactionBlock;
-						const data: RepositoryTransactionBlockData = parse(serializedData);
+						const repoTransBlockMessage                = <RepoTransBlockMessageToTM>incomingMessage
+						const serializedData                       = repoTransBlockMessage.repositoryTransactionBlock
+						const data: RepositoryTransactionBlockData = parse(serializedData)
 
 						const lastChangeTimeMillis = this.getLastChangeMillisFromRepoTransBlock(
-							data);
+							data)
 
 						if (!this.isValidLastChangeTime(syncTimestamp, lastChangeTimeMillis)) {
-							break;
+							break
 						}
 						const dataMessage: IDataToTM = {
 							// sourceAgtTerminalId: repoTransBlockMessage.sourceAgtTerminalId,
@@ -179,30 +187,30 @@ export class SynchronizationInManager
 							serializedData,
 							sharingMessage,
 							// syncDatetime: syncTimestamp,
-						};
-						messageWithContent.dataMessages.push(dataMessage);
-						allDataMessages.push(dataMessage);
-						break;
+						}
+						messageWithContent.dataMessages.push(dataMessage)
+						allDataMessages.push(dataMessage)
+						break
 					}
 					case MessageToTMContentType.ALIVE_ACK:
-						throw new Error('Not Implemented');
+						throw new Error('Not Implemented')
 					default:
-						log.error(`Unsupported ClientInMessage type: {1}`, (<MessageToTM>incomingMessage).contentType);
-						break;
+						log.error(`Unsupported ClientInMessage type: {1}`, (<MessageToTM>incomingMessage).contentType)
+						break
 				}
 			}
 		}
 
 		await this.sharingMessageDao.bulkCreate(
-			sharingMessages, false, false);
+			sharingMessages, false, false)
 
 
 		// These messages are responses to already sent messages
 		// no need to check for existence of repositories
-		await this.syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages);
+		await this.syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages)
 
 
-		await this.twoStageSyncedInDataProcessor.syncDataMessages(allDataMessages);
+		await this.twoStageSyncedInDataProcessor.syncDataMessages(allDataMessages)
 
 	}
 
@@ -211,7 +219,7 @@ export class SynchronizationInManager
 		lastChangeTimeMillis: LastRemoteChangeMillis,
 		// messageToTM: MessageToTM
 	): boolean {
-		const receptionTimeMillis = syncTimestamp.getTime();
+		const receptionTimeMillis = syncTimestamp.getTime()
 		if (receptionTimeMillis < lastChangeTimeMillis) {
 			// switch (messageToTM.contentType) {
 			// 	case MessageToTMContentType.SYNC_NOTIFICATION: {
@@ -238,7 +246,7 @@ export class SynchronizationInManager
 				Reception Time:                 {1}
 				Last Received Change Time:      {2}
 			`, receptionTimeMillis,
-				lastChangeTimeMillis);
+				lastChangeTimeMillis)
 			// 		break;
 			// 	}
 			// 	case MessageToTMContentType.ALIVE_ACK: {
@@ -246,31 +254,33 @@ export class SynchronizationInManager
 			// 		throw new Error('Not implemented');
 			// 	}
 			// 	default:
-			// 		log.throw(`Unsupported MessageToTMContentType: {1}`, (<any>messageToTM).contentType);
-			// }
-			return false;
+			// 		log.throw(`Unsupported MessageToTMContentType: {1}`,
+			// (<any>messageToTM).contentType); }
+			return false
 		}
 
-		return true;
+		return true
 	}
 
 	private getLastChangeMillisFromRepoTransBlock(
 		data: RepositoryTransactionBlockData
 	): LastRemoteChangeMillis {
-		let lastChangeTimeMillis: LastRemoteChangeMillis;
+		let lastChangeTimeMillis: LastRemoteChangeMillis
 		for (const repoTransHistory of data.repoTransHistories) {
-			const saveTimestampMillis: LastRemoteChangeMillis = <any>repoTransHistory.saveTimestamp;
+			const saveTimestampMillis: LastRemoteChangeMillis = <any>repoTransHistory.saveTimestamp
 
 			// Deserialize save timestamp
-			repoTransHistory.saveTimestamp = new Date(repoTransHistory.saveTimestamp);
+			repoTransHistory.saveTimestamp = new Date(repoTransHistory.saveTimestamp)
 			if (!lastChangeTimeMillis) {
-				lastChangeTimeMillis = saveTimestampMillis;
+				lastChangeTimeMillis = saveTimestampMillis
 			} else if (lastChangeTimeMillis < saveTimestampMillis) {
-				lastChangeTimeMillis = saveTimestampMillis;
+				lastChangeTimeMillis = saveTimestampMillis
 			}
 		}
 
-		return lastChangeTimeMillis;
+		return lastChangeTimeMillis
 	}
 
 }
+
+DI.set(SYNC_IN_MANAGER, SynchronizationInManager)

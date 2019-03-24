@@ -1,4 +1,4 @@
-export * from './InjectionTokens';
+export * from './Constants';
 export * from './LogEntryBatch';
 export * from './Logged';
 export * from './LoggedApplication';

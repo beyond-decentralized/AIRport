@@ -1,4 +1,6 @@
+import {DI}             from '@airport/di'
 import {
+	DB_SCHEMA_UTILS,
 	IDbSchemaUtils,
 	IStoreDriver,
 	JsonSchema,
@@ -6,16 +8,24 @@ import {
 	JsonSchemaEntity,
 	PropertyReference,
 	QueryType,
-} from '@airport/ground-control'
+	STORE_DRIVER,
+}                       from '@airport/ground-control'
 import {ISchemaBuilder} from './ISchemaBuilder'
 
 export abstract class SqlSchemaBuilder
 	implements ISchemaBuilder {
 
-	constructor(
-		protected dbSchemaUtils: IDbSchemaUtils,
-		protected storeDriver: IStoreDriver
-	) {
+	protected dbSchemaUtils: IDbSchemaUtils
+	protected storeDriver: IStoreDriver
+
+	constructor() {
+		DI.get((
+			dbSchemaUtils,
+			storeDriver
+		) => {
+			this.dbSchemaUtils = dbSchemaUtils
+			this.storeDriver   = storeDriver
+		}, DB_SCHEMA_UTILS, STORE_DRIVER)
 	}
 
 	async build(

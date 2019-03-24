@@ -47,7 +47,7 @@ export class SequenceGenerator
 			sequenceDao
 		) => {
 			this.sequenceBlockDao = sequenceBlockDao
-			this.sequenceConsumer = sequenceConsumerDao
+			this.sequenceConsumerDao = sequenceConsumerDao
 			this.sequenceDao      = sequenceDao
 		}, SEQUENCE_BLOCK_DAO, SEQUENCE_CONSUMER_DAO, SEQUENCE_DAO)
 	}

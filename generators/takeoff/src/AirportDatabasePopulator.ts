@@ -1,12 +1,9 @@
 import {
-	AirportDatabaseToken,
+	AIR_DB,
 	IAirportDatabase
-}                                      from '@airport/air-control'
-import {
-	Inject,
-	Service
-}                                      from 'typedi'
-import {AirportDatabasePopulatorToken} from './InjectionTokens'
+}                         from '@airport/air-control'
+import {DI}               from '@airport/di'
+import {AIR_DB_POPULATOR} from './diTokens'
 
 export interface IAirportDatabasePopulator {
 
@@ -14,20 +11,26 @@ export interface IAirportDatabasePopulator {
 
 }
 
-@Service(AirportDatabasePopulatorToken)
 export class AirportDatabasePopulator
 	implements IAirportDatabasePopulator {
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDatabase: IAirportDatabase,
-	) {}
+	private airDb: IAirportDatabase
+
+	constructor() {
+		DI.get((
+			airportDatabase
+		) => {
+			this.airDb = airportDatabase
+		}, AIR_DB)
+	}
 
 	populate(): void {
-		this.airportDatabase.schemas
-		this.airportDatabase.schemaMapByName
-		this.airportDatabase.qSchemas
-		this.airportDatabase.qSchemaMapByName
+		this.airDb.schemas
+		this.airDb.schemaMapByName
+		this.airDb.qSchemas
+		this.airDb.qSchemaMapByName
 	}
 
 }
+
+DI.set(AIR_DB_POPULATOR, AirportDatabasePopulator)

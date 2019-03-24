@@ -6,30 +6,28 @@ import {
 	or,
 	RawFieldQuery,
 	Y
-}           from '@airport/air-control'
-import {DI} from '@airport/di'
+}                             from '@airport/air-control'
+import {DI}                   from '@airport/di'
 import {
 	ChangeType,
 	EntityId,
 	JSONBaseOperation,
 	TransactionType
-}           from '@airport/ground-control'
-import {
-	IOperationHistoryDmo,
-	IRecordHistoryDmo
-}           from '../..'
+}                             from '@airport/ground-control'
 import {
 	ActorId,
 	RecordHistoryActorRecordId,
 	RepositoryEntityActorRecordId,
 	RepositoryId,
 	RepositoryTransactionHistoryId
-}           from '../../ddl/ddl'
+}                             from '../../ddl/ddl'
 import {
 	OPER_HISTORY_DMO,
 	REC_HISTORY_DMO,
 	REPO_TRANS_HISTORY_DAO,
-}           from '../../diTokens'
+}                             from '../../diTokens'
+import {IOperationHistoryDmo} from '../../dmo/history/OperationHistoryDmo'
+import {IRecordHistoryDmo}    from '../../dmo/history/RecordHistoryDmo'
 import {
 	BaseRepositoryTransactionHistoryDao,
 	IOperationHistory,
@@ -43,7 +41,7 @@ import {
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
 	RepositoryTransactionHistoryESelect
-}           from '../../generated/generated'
+}                             from '../../generated/generated'
 
 export interface IRepositoryTransactionHistoryDao {
 
@@ -106,7 +104,7 @@ export class RepositoryTransactionHistoryDao
 			recordHistoryDmo
 		) => {
 			this.operHistoryDmo = operationHistoryDmo
-			this.recHistoryDmo    = recordHistoryDmo
+			this.recHistoryDmo  = recordHistoryDmo
 		}, OPER_HISTORY_DMO, REC_HISTORY_DMO)
 	}
 

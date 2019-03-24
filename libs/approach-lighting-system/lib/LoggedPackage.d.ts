@@ -1,8 +1,7 @@
-import { SetLogLevel } from "@airport/runway-edge-lighting";
-import { PackagedUnitName } from "@airport/territory";
-import { IApplicationPackage } from "@airport/territory/lib/generated/qapplicationpackage";
-import { ILogged, Logged } from "./Logged";
-import { ILogger } from "./Logger";
+import { SetLogLevel } from '@airport/runway-edge-lighting';
+import { IApplicationPackage, PackagedUnitName } from '@airport/territory';
+import { ILogged, Logged } from './Logged';
+import { ILogger } from './Logger';
 export interface ILoggedPackage extends ILogged {
     loggerMap: Map<PackagedUnitName, ILogger>;
     applicationPackage: IApplicationPackage;

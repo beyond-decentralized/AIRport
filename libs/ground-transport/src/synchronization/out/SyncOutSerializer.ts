@@ -1,7 +1,7 @@
 import {
 	IUtils,
-	UtilsToken
-}                               from '@airport/air-control'
+	UTILS
+}                            from '@airport/air-control'
 import {
 	AgtRepositoryId,
 	DataTransferMessageFromTM,
@@ -9,12 +9,14 @@ import {
 	MessageFromTMContentType,
 	RepositoryUpdateRequest,
 	TerminalCredentials
-}                               from '@airport/arrivals-n-departures'
+}                            from '@airport/arrivals-n-departures'
+import {DI}                  from '@airport/di'
 import {
 	IRepository,
+	REPO_TRANS_HISTORY_DAO,
 	RepositoryId,
 	RepositoryTransactionHistoryId
-}                               from '@airport/holding-pattern'
+}                            from '@airport/holding-pattern'
 import {
 	IRepositoryTransactionBlock,
 	IRepositoryTransactionBlockDao,
@@ -24,19 +26,16 @@ import {
 	ISharingMessageRepoTransBlockDao,
 	ISharingNode,
 	ISharingNodeTerminal,
-	RepositoryTransactionBlockDaoToken,
+	REPO_TRANS_BLOCK_DAO,
 	RepositoryTransactionBlockData,
-	SharingMessageDaoToken,
-	SharingMessageRepoTransBlockDaoToken,
+	SHARING_MESSAGE_DAO,
+	SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
 	SharingNodeId
-}                               from '@airport/moving-walkway'
-import {Transactional}          from '@airport/tower'
-import {
-	Inject,
-	Service
-}                               from 'typedi'
-import {stringify}              from 'zipson/lib'
-import {SyncOutSerializerToken} from '../../InjectionTokens'
+}                            from '@airport/moving-walkway'
+import {Transactional}       from '@airport/tower'
+import {ITerminal}           from '@airport/travel-document-checkpoint'
+import {stringify}           from 'zipson/lib'
+import {SYNC_OUT_SERIALIZER} from '../../diTokens'
 
 export interface ISyncOutSerializer {
 
@@ -52,22 +51,30 @@ export interface ISyncOutSerializer {
 
 }
 
-@Service(SyncOutSerializerToken)
 export class SyncOutSerializer
 	implements ISyncOutSerializer {
 
-	constructor(
-		@Inject(UtilsToken)
-		private utils: IUtils,
-		@Inject(RepositoryTransactionBlockDaoToken)
-		private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
-		@Inject(RepoTransBlockRepoTransHistoryDaoToken)
-		private repoTransBlockRepoTransHistoryDao: IRepoTransBlockRepoTransHistoryDao,
-		@Inject(SharingMessageRepoTransBlockDaoToken)
-		private sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao,
-		@Inject(SharingMessageDaoToken)
-		private sharingMessageDao: ISharingMessageDao
-	) {
+	private repoTransBlockDao: IRepositoryTransactionBlockDao
+	private repoTransBlockRepoTransHistoryDao: IRepoTransBlockRepoTransHistoryDao
+	private sharingMessageDao: ISharingMessageDao
+	private sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao
+	private utils: IUtils
+
+	constructor() {
+		DI.get((
+			repoTransBlockDao,
+			repoTransBlockRepoTransHistoryDao,
+			sharingMessageDao,
+			sharingMessageRepoTransBlockDao,
+			utils
+			) => {
+				this.repoTransBlockDao                 = repoTransBlockDao
+				this.repoTransBlockRepoTransHistoryDao = repoTransBlockRepoTransHistoryDao
+				this.sharingMessageDao                 = sharingMessageDao
+				this.sharingMessageRepoTransBlockDao   = sharingMessageRepoTransBlockDao
+			}, REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_DAO,
+			null, SHARING_MESSAGE_DAO,
+			SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, UTILS)
 	}
 
 
@@ -124,7 +131,7 @@ export class SyncOutSerializer
 			repositoryTransactionBlocks.push(repositoryTransactionBlock)
 		}
 
-		await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false)
+		await this.repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, false, false)
 		await this.repoTransBlockRepoTransHistoryDao
 			.bulkCreate(allTransLogRepoTransHistories, false, false)
 
@@ -192,3 +199,5 @@ export class SyncOutSerializer
 
 
 }
+
+DI.set(SYNC_OUT_SERIALIZER, SyncOutSerializer)

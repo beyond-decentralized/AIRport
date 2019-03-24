@@ -1,5 +1,5 @@
 import {ChangeRecord} from '@airport/terminal-map';
-import {Subject}      from 'rxjs';
+import {ISubject}     from '@airport/observe'
 import {
 	GoogleChangeRecordIterator,
 	GoogleRealtimeAdaptorException
@@ -14,9 +14,9 @@ export class DocumentHandle {
 	constructor(
 		private document: gapi.drive.realtime.Document,
 		public changeList: gapi.drive.realtime.CollaborativeList<any>,
-		public valuesAddedSubject: Subject<GoogleChangeRecordIterator>,
-		private valuesArchivedSubject: Subject<GoogleChangeRecordIterator>,
-		public otherChangesSubject: Subject<GoogleRealtimeAdaptorException>
+		public valuesAddedSubject: ISubject<GoogleChangeRecordIterator>,
+		private valuesArchivedSubject: ISubject<GoogleChangeRecordIterator>,
+		public otherChangesSubject: ISubject<GoogleRealtimeAdaptorException>
 	) {
 	}
 

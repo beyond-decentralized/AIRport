@@ -3,17 +3,17 @@ import {
 	LogEntryValueValue,
 	LogLevel,
 	SetLogLevel
-}                                     from "@airport/runway-edge-lighting";
+}                                        from "@airport/runway-edge-lighting";
 import {
 	IPackagedUnit,
 	PackagedUnitName
-}                                     from "@airport/territory";
-import {ApproachLightingSystemLogger} from "./InjectionTokens";
+}                                        from "@airport/territory";
+import {APPROACH_LIGHTING_SYSTEM_LOGGER} from "./Constants";
 import {
 	ILogged,
 	Logged
-}                                     from "./Logged";
-import {ILoggedPackage}               from "./LoggedPackage";
+}                                        from "./Logged";
+import {ILoggedPackage}                  from "./LoggedPackage";
 
 export interface ILogger
 	extends ILogged {
@@ -93,7 +93,7 @@ export interface ILogger
 
 }
 
-const log = ApproachLightingSystemLogger.add('Logger');
+const log = APPROACH_LIGHTING_SYSTEM_LOGGER.add('Logger');
 
 const debugTraceApiErrorMessage = `Invalid Logger.debug|trace call,
 				call does not adhere to to the API:

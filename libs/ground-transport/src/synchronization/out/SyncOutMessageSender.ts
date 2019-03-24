@@ -1,7 +1,10 @@
-import {MessageFromTM}               from '@airport/arrivals-n-departures'
-import {Service}                     from "typedi";
-import {ISharingNode, SharingNodeId} from "@airport/moving-walkway";
-import {SyncOutMessageSenderToken}   from '../../InjectionTokens'
+import {MessageFromTM}       from '@airport/arrivals-n-departures'
+import {DI}                  from '@airport/di'
+import {
+	ISharingNode,
+	SharingNodeId
+}                            from '@airport/moving-walkway'
+import {SYNC_OUT_MSG_SENDER} from '../../diTokens'
 
 export interface ISyncOutMessageSender {
 
@@ -12,7 +15,6 @@ export interface ISyncOutMessageSender {
 
 }
 
-@Service(SyncOutMessageSenderToken)
 export class SyncOutMessageSender
 	implements ISyncOutMessageSender {
 
@@ -24,3 +26,5 @@ export class SyncOutMessageSender
 	}
 
 }
+
+DI.set(SYNC_OUT_MSG_SENDER, SyncOutMessageSender)

@@ -130,6 +130,256 @@ export class Container {
 		tokenD: DiToken<D>,
 		tokenE: DiToken<E>
 	): void
+	get<A, B, C, D, E, F>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+			objE: E,
+			objF: F
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>,
+		tokenE: DiToken<E>,
+		tokenF: DiToken<F>
+	): void
+	get<A, B, C, D, E, F, G>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+			objE: E,
+			objF: F,
+			objG: G
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>,
+		tokenE: DiToken<E>,
+		tokenF: DiToken<F>,
+		tokenG: DiToken<G>
+	): void
+	get<A, B, C, D, E, F, G, H>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+			objE: E,
+			objF: F,
+			objG: G,
+			objH: H
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>,
+		tokenE: DiToken<E>,
+		tokenF: DiToken<F>,
+		tokenG: DiToken<G>,
+		tokenH: DiToken<H>
+	): void
+	get<A, B, C, D, E, F, G, H, I>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+			objE: E,
+			objF: F,
+			objG: G,
+			objH: H,
+			objI: I
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>,
+		tokenE: DiToken<E>,
+		tokenF: DiToken<F>,
+		tokenG: DiToken<G>,
+		tokenH: DiToken<H>,
+		tokenI: DiToken<I>
+	): void
+	get<A, B, C, D, E, F, G, H, I, J>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+			objE: E,
+			objF: F,
+			objG: G,
+			objH: H,
+			objI: I,
+			objJ: J
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>,
+		tokenE: DiToken<E>,
+		tokenF: DiToken<F>,
+		tokenG: DiToken<G>,
+		tokenH: DiToken<H>,
+		tokenI: DiToken<I>,
+		tokenJ: DiToken<J>
+	): void
+	get<A, B, C, D, E, F, G, H, I, J, K>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+			objE: E,
+			objF: F,
+			objG: G,
+			objH: H,
+			objI: I,
+			objJ: J,
+			objK: K
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>,
+		tokenE: DiToken<E>,
+		tokenF: DiToken<F>,
+		tokenG: DiToken<G>,
+		tokenH: DiToken<H>,
+		tokenI: DiToken<I>,
+		tokenJ: DiToken<J>,
+		tokenK: DiToken<K>
+	): void
+	get<A, B, C, D, E, F, G, H, I, J, K, L>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+			objE: E,
+			objF: F,
+			objG: G,
+			objH: H,
+			objI: I,
+			objJ: J,
+			objK: K,
+			objL: L
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>,
+		tokenE: DiToken<E>,
+		tokenF: DiToken<F>,
+		tokenG: DiToken<G>,
+		tokenH: DiToken<H>,
+		tokenI: DiToken<I>,
+		tokenJ: DiToken<J>,
+		tokenK: DiToken<K>,
+		tokenL: DiToken<L>
+	): void
+	get<A, B, C, D, E, F, G, H, I, J, K, L, M>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+			objE: E,
+			objF: F,
+			objG: G,
+			objH: H,
+			objI: I,
+			objJ: J,
+			objK: K,
+			objL: L,
+			objM: M
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>,
+		tokenE: DiToken<E>,
+		tokenF: DiToken<F>,
+		tokenG: DiToken<G>,
+		tokenH: DiToken<H>,
+		tokenI: DiToken<I>,
+		tokenJ: DiToken<J>,
+		tokenK: DiToken<K>,
+		tokenL: DiToken<L>,
+		tokenM: DiToken<M>
+	): void
+	get<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+			objE: E,
+			objF: F,
+			objG: G,
+			objH: H,
+			objI: I,
+			objJ: J,
+			objK: K,
+			objL: L,
+			objM: M,
+			objN: N
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>,
+		tokenE: DiToken<E>,
+		tokenF: DiToken<F>,
+		tokenG: DiToken<G>,
+		tokenH: DiToken<H>,
+		tokenI: DiToken<I>,
+		tokenJ: DiToken<J>,
+		tokenK: DiToken<K>,
+		tokenL: DiToken<L>,
+		tokenM: DiToken<M>,
+		tokenN: DiToken<N>
+	): void
+	get<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(
+		callback: (
+			objA: A,
+			objB: B,
+			objC: C,
+			objD: D,
+			objE: E,
+			objF: F,
+			objG: G,
+			objH: H,
+			objI: I,
+			objJ: J,
+			objK: K,
+			objL: L,
+			objM: M,
+			objN: N,
+			objO: O
+		) => void,
+		tokenA: DiToken<A>,
+		tokenB: DiToken<B>,
+		tokenC: DiToken<C>,
+		tokenD: DiToken<D>,
+		tokenE: DiToken<E>,
+		tokenF: DiToken<F>,
+		tokenG: DiToken<G>,
+		tokenH: DiToken<H>,
+		tokenI: DiToken<I>,
+		tokenJ: DiToken<J>,
+		tokenK: DiToken<K>,
+		tokenL: DiToken<L>,
+		tokenM: DiToken<M>,
+		tokenN: DiToken<N>,
+		tokenO: DiToken<O>
+	): void
 	get(
 		callback: (...objects: any[]) => void,
 		...tokens: DiToken<any>[]

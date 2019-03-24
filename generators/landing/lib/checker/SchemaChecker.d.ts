@@ -1,6 +1,5 @@
-import { IUtils } from '@airport/air-control';
-import { IDbSchemaUtils, JsonSchema, SchemaName } from '@airport/ground-control';
-import { ISchema, ISchemaDao } from '@airport/traffic-pattern';
+import { JsonSchema, SchemaName } from '@airport/ground-control';
+import { ISchema } from '@airport/traffic-pattern';
 export interface CoreDomainAndSchemaNames {
     domain: string;
     schema: string;
@@ -22,7 +21,7 @@ export declare class SchemaChecker {
     private schemaDao;
     private dbSchemaUtils;
     private utils;
-    constructor(schemaDao: ISchemaDao, dbSchemaUtils: IDbSchemaUtils, utils: IUtils);
+    constructor();
     check(jsonSchema: JsonSchema): Promise<void>;
     checkDomain(jsonSchema: JsonSchema): Promise<void>;
     checkDependencies(jsonSchemas: JsonSchema[]): Promise<SchemaReferenceCheckResults>;

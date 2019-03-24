@@ -1,7 +1,7 @@
-import { CascadeType } from "@airport/air-control";
 /**
  * Created by papa on 7/12/17.
  */
+import { CascadeType } from '@airport/ground-control';
 export interface IDbConfig {
     name: string;
     currentVersion: string;

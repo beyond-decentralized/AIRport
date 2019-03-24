@@ -1,18 +1,23 @@
-import {Inject, Service}            from "typedi";
 import {
-	TerminalDaoToken,
+	IUtils,
+	UTILS
+}                                 from '@airport/air-control'
+import {
 	TerminalName,
-	TerminalSecondId,
+	TerminalSecondId
+}                                 from '@airport/arrivals-n-departures'
+import {DI}                       from '@airport/di'
+import {
 	ITerminal,
 	ITerminalDao,
 	IUser,
+	TERMINAL_DAO,
 	UserId,
 	UserUniqueId
-}                                   from "@airport/holding-pattern";
-import {IUtils, UtilsToken}         from "@airport/air-control";
-import {SyncInTerminalCheckerToken} from "../../../InjectionTokens";
-import {IDataToTM}                  from "../SyncInUtils";
-import {UserCheckResults}           from "./SyncInUserChecker";
+}                                 from '@airport/travel-document-checkpoint'
+import {SYNC_IN_TERMINAL_CHECKER} from '../../../diTokens'
+import {IDataToTM}                from '../SyncInUtils'
+import {UserCheckResults}         from './SyncInUserChecker'
 
 export interface TerminalCheckResults {
 	mapByMessageIndex: ITerminal[];
@@ -24,16 +29,16 @@ export interface ISyncInTerminalChecker {
 
 }
 
-@Service(SyncInTerminalCheckerToken)
 export class SyncInTerminalChecker
 	implements ISyncInTerminalChecker {
 
-	constructor(
-		@Inject(TerminalDaoToken)
-		private terminalDao: ITerminalDao,
-		@Inject(UtilsToken)
-		private utils: IUtils,
-	) {
+	private terminalDao: ITerminalDao
+	private utils: IUtils
+
+	constructor() {
+		DI.get(() => {
+
+		}, TERMINAL_DAO, UTILS)
 	}
 
 	async ensureTerminalsAndGetAsMaps(
@@ -42,14 +47,14 @@ export class SyncInTerminalChecker
 		userCheckResults: UserCheckResults
 	): Promise<TerminalCheckResults> {
 		const remoteTerminalMapByUniqueIds: Map<UserUniqueId,
-			Map<TerminalName, Map<TerminalSecondId, ITerminal>>> = new Map();
-		const terminalNameSet: Set<TerminalName> = new Set();
-		const terminalSecondIdSet: Set<TerminalSecondId> = new Set();
-		const ownerIdSet: Set<UserId> = new Set();
-		const mapByMessageIndex: ITerminal[] = [];
+			Map<TerminalName, Map<TerminalSecondId, ITerminal>>> = new Map()
+		const terminalNameSet: Set<TerminalName>               = new Set()
+		const terminalSecondIdSet: Set<TerminalSecondId>       = new Set()
+		const ownerIdSet: Set<UserId>                          = new Set()
+		const mapByMessageIndex: ITerminal[]                   = []
 
-		const consistentMessages: IDataToTM[] = [];
-		const inconsistentMessages: IDataToTM[] = [];
+		const consistentMessages: IDataToTM[]   = []
+		const inconsistentMessages: IDataToTM[] = []
 		// record terminal information
 		dataMessages.forEach((
 			message,
@@ -58,24 +63,24 @@ export class SyncInTerminalChecker
 			this.recordTerminalCredentials(message, index, userCheckResults,
 				localTerminal, consistentMessages, inconsistentMessages,
 				terminalNameSet, terminalSecondIdSet, ownerIdSet,
-				remoteTerminalMapByUniqueIds, mapByMessageIndex);
-		});
+				remoteTerminalMapByUniqueIds, mapByMessageIndex)
+		})
 
 
 		const terminalMapByIds = await this.terminalDao.findMapByIds(
 			Array.from(ownerIdSet),
 			Array.from(terminalNameSet),
 			Array.from(terminalSecondIdSet)
-		);
+		)
 
 		await this.addMissingTerminals(remoteTerminalMapByUniqueIds, terminalMapByIds,
-			userCheckResults);
+			userCheckResults)
 
 		return {
 			mapByMessageIndex,
 			consistentMessages,
 			inconsistentMessages
-		};
+		}
 	}
 
 	private recordTerminalCredentials(
@@ -92,33 +97,33 @@ export class SyncInTerminalChecker
 			Map<TerminalName, Map<TerminalSecondId, ITerminal>>>,
 		mapByMessageIndex: ITerminal[]
 	) {
-		let terminal = message.data.terminal;
+		let terminal = message.data.terminal
 		const userMapForMessageByRemoteUserId
-			= userCheckResults.mapByMessageIndexAndRemoteUserId[index];
+		             = userCheckResults.mapByMessageIndexAndRemoteUserId[index]
 
-		const owner = userMapForMessageByRemoteUserId.get(terminal.owner.id);
+		const owner = userMapForMessageByRemoteUserId.get(terminal.owner.id)
 		if (!this.areTerminalIdsConsistentInMessageData(
 			terminal, localTerminal, owner)) {
-			inconsistentMessages.push(message);
-			userCheckResults.mapByMessageIndexAndRemoteUserId.splice(index);
-			return;
+			inconsistentMessages.push(message)
+			userCheckResults.mapByMessageIndexAndRemoteUserId.splice(index)
+			return
 		}
 		terminal = {
 			...terminal,
 			owner
-		};
-		terminalNameSet.add(terminal.name);
-		terminalSecondIdSet.add(terminal.secondId);
-		ownerIdSet.add(owner.id);
+		}
+		terminalNameSet.add(terminal.name)
+		terminalSecondIdSet.add(terminal.secondId)
+		ownerIdSet.add(owner.id)
 
 		this.utils.ensureChildJsMap(
 			this.utils.ensureChildJsMap(remoteTerminalMapByUniqueIds,
 				owner.uniqueId),
 			terminal.name)
-			.set(terminal.secondId, terminal);
+			.set(terminal.secondId, terminal)
 
-		mapByMessageIndex.push(terminal);
-		consistentMessages.push(message);
+		mapByMessageIndex.push(terminal)
+		consistentMessages.push(message)
 	}
 
 	private areTerminalIdsConsistentInMessageData(
@@ -130,10 +135,10 @@ export class SyncInTerminalChecker
 			&& localTerminal.name === terminal.name
 			&& localTerminal.secondId === terminal.secondId) {
 			// Terminal should never receive messages from itself
-			return false;
+			return false
 		}
 
-		return true;
+		return true
 	}
 
 	private async addMissingTerminals(
@@ -142,39 +147,41 @@ export class SyncInTerminalChecker
 		terminalMapByIds: Map<UserId, Map<TerminalName, Map<TerminalSecondId, ITerminal>>>,
 		userCheckResults: UserCheckResults
 	): Promise<void> {
-		const userMap = userCheckResults.map;
-		const newTerminals: ITerminal[] = [];
+		const userMap                   = userCheckResults.map
+		const newTerminals: ITerminal[] = []
 		for (const [userUniqueId, remoteTerminalMapByDbUniqueIds] of remoteTerminalMapByUniqueIds) {
 
-			const owner = userMap.get(userUniqueId);
-			const terminalMapByDbUniqueIds = terminalMapByIds.get(owner.id);
+			const owner                    = userMap.get(userUniqueId)
+			const terminalMapByDbUniqueIds = terminalMapByIds.get(owner.id)
 
 			for (const [name, remoteTerminalMapBySecondId] of remoteTerminalMapByDbUniqueIds) {
-				let terminalMapBySecondId: Map<TerminalSecondId, ITerminal>;
+				let terminalMapBySecondId: Map<TerminalSecondId, ITerminal>
 				if (terminalMapByDbUniqueIds) {
-					terminalMapBySecondId = terminalMapByDbUniqueIds.get(name);
+					terminalMapBySecondId = terminalMapByDbUniqueIds.get(name)
 				}
 
 				for (const [secondId, remoteTerminal] of remoteTerminalMapBySecondId) {
-					let terminal: ITerminal;
+					let terminal: ITerminal
 					if (terminalMapBySecondId) {
-						terminal = terminalMapBySecondId.get(secondId);
+						terminal = terminalMapBySecondId.get(secondId)
 					}
 
 					if (!terminal) {
-						delete remoteTerminal.id;
-						remoteTerminal.isLocal = false;
-						newTerminals.push(remoteTerminal);
+						delete remoteTerminal.id
+						remoteTerminal.isLocal = false
+						newTerminals.push(remoteTerminal)
 					} else {
-						remoteTerminal.id = terminal.id;
+						remoteTerminal.id = terminal.id
 					}
 				}
 			}
 		}
 
 		if (newTerminals.length) {
-			await this.terminalDao.bulkCreate(newTerminals, false, false);
+			await this.terminalDao.bulkCreate(newTerminals, false, false)
 		}
 	}
 
 }
+
+DI.set(SYNC_IN_TERMINAL_CHECKER, SyncInTerminalChecker)

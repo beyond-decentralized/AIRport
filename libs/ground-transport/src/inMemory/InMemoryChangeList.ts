@@ -1,3 +1,4 @@
+import {Subject}             from '@airport/observe'
 import {
 	ArrayChangeRecordIterator,
 	ChangeError,
@@ -7,7 +8,6 @@ import {
 	SharedChangeList,
 	SharingPlatformSetupInfo
 }                            from "@airport/terminal-map";
-import {Subject}             from 'rxjs';
 import {InMemoryChangeStore} from "./InMemoryChangeStore";
 
 /**

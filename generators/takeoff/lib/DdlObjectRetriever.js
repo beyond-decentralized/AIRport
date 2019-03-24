@@ -1,33 +1,23 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
 const territory_1 = require("@airport/territory");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("./InjectionTokens");
-let DdlObjectRetriever = class DdlObjectRetriever {
-    constructor(domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaVersionDao) {
-        this.domainDao = domainDao;
-        this.schemaColumnDao = schemaColumnDao;
-        this.schemaDao = schemaDao;
-        this.schemaEntityDao = schemaEntityDao;
-        this.schemaPropertyColumnDao = schemaPropertyColumnDao;
-        this.schemaPropertyDao = schemaPropertyDao;
-        this.schemaReferenceDao = schemaReferenceDao;
-        this.schemaRelationColumnDao = schemaRelationColumnDao;
-        this.schemaRelationDao = schemaRelationDao;
-        this.schemaVersionDao = schemaVersionDao;
+const diTokens_1 = require("./diTokens");
+class DdlObjectRetriever {
+    constructor() {
+        di_1.DI.get((domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaVersionDao) => {
+            this.domainDao = domainDao;
+            this.schemaColumnDao = schemaColumnDao;
+            this.schemaDao = schemaDao;
+            this.schemaEntityDao = schemaEntityDao;
+            this.schemaPropertyColumnDao = schemaPropertyColumnDao;
+            this.schemaPropertyDao = schemaPropertyDao;
+            this.schemaReferenceDao = schemaReferenceDao;
+            this.schemaRelationColumnDao = schemaRelationColumnDao;
+            this.schemaRelationDao = schemaRelationDao;
+            this.schemaVersionDao = schemaVersionDao;
+        }, territory_1.DOMAIN_DAO, traffic_pattern_1.SCHEMA_COLUMN_DAO, traffic_pattern_1.SCHEMA_DAO, traffic_pattern_1.SCHEMA_ENTITY_DAO, traffic_pattern_1.SCHEMA_PROPERTY_COLUMN_DAO, traffic_pattern_1.SCHEMA_PROPERTY_DAO, traffic_pattern_1.SCHEMA_REFERENCE_DAO, traffic_pattern_1.SCHEMA_RELATION_COLUMN_DAO, traffic_pattern_1.SCHEMA_RELATION_DAO, traffic_pattern_1.SCHEMA_VERSION_DAO);
     }
     async retrieveDdlObjects() {
         const schemas = await this.schemaDao
@@ -76,20 +66,7 @@ let DdlObjectRetriever = class DdlObjectRetriever {
             schemas
         };
     }
-};
-DdlObjectRetriever = __decorate([
-    typedi_1.Service(InjectionTokens_1.DdlObjectRetrieverToken),
-    __param(0, typedi_1.Inject(territory_1.DomainDaoToken)),
-    __param(1, typedi_1.Inject(traffic_pattern_1.SchemaColumnDaoToken)),
-    __param(2, typedi_1.Inject(traffic_pattern_1.SchemaDaoToken)),
-    __param(3, typedi_1.Inject(traffic_pattern_1.SchemaEntityDaoToken)),
-    __param(4, typedi_1.Inject(traffic_pattern_1.SchemaPropertyColumnDaoToken)),
-    __param(5, typedi_1.Inject(traffic_pattern_1.SchemaPropertyDaoToken)),
-    __param(6, typedi_1.Inject(traffic_pattern_1.SchemaReferenceDaoToken)),
-    __param(7, typedi_1.Inject(traffic_pattern_1.SchemaRelationColumnDaoToken)),
-    __param(8, typedi_1.Inject(traffic_pattern_1.SchemaRelationDaoToken)),
-    __param(9, typedi_1.Inject(traffic_pattern_1.SchemaVersionDaoToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
-], DdlObjectRetriever);
+}
 exports.DdlObjectRetriever = DdlObjectRetriever;
+di_1.DI.set(diTokens_1.DDL_OBJECT_RETRIEVER, DdlObjectRetriever);
 //# sourceMappingURL=DdlObjectRetriever.js.map

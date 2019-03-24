@@ -5,31 +5,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
+const di_1 = require("@airport/di");
 const guideway_1 = require("@airport/guideway");
 const tower_1 = require("@airport/tower");
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../../InjectionTokens");
-const log = InjectionTokens_1.AGTLogger.add('SyncConnectionProcessor');
-let SyncConnectionProcessor = class SyncConnectionProcessor {
-    constructor(terminalDao, terminalRepositoryDao, agtSharingMessageDao, 
-    // private tunningParameters: TuningParameters,
-    errorLogger, syncLogDao, agtRepositoryTransactionBlockDao, utils) {
-        this.terminalDao = terminalDao;
-        this.terminalRepositoryDao = terminalRepositoryDao;
-        this.agtSharingMessageDao = agtSharingMessageDao;
-        this.errorLogger = errorLogger;
-        this.syncLogDao = syncLogDao;
-        this.agtRepositoryTransactionBlockDao = agtRepositoryTransactionBlockDao;
-        this.utils = utils;
+const diTokens_1 = require("../../diTokens");
+const log = diTokens_1.AGTLogger.add('SyncConnectionProcessor');
+class SyncConnectionProcessor {
+    constructor() {
+        di_1.DI.get((terminalDao, terminalRepositoryDao, agtSharingMessageDao, errorLogger, syncLogDao, agtRepositoryTransactionBlockDao, utils) => {
+            this.terminalDao = terminalDao;
+            this.terminalRepositoryDao = terminalRepositoryDao;
+            this.agtSharingMessageDao = agtSharingMessageDao;
+            this.errorLogger = errorLogger;
+            this.syncLogDao = syncLogDao;
+            this.agtRepoTransBlockDao = agtRepositoryTransactionBlockDao;
+            this.utils = utils;
+        }, guideway_1.TERMINAL_DAO, guideway_1.TERMINAL_REPOSITORY_DAO, guideway_1.AGT_SHARING_MESSAGE_DAO, diTokens_1.ERROR_LOGGER, guideway_1.SYNC_LOG_DAO, guideway_1.AGT_REPO_TRANS_BLOCK_DAO, air_control_1.UTILS);
     }
     async processConnections(verifiedMessagesFromTM) {
         const verifiedTerminalIds = Array.from(verifiedMessagesFromTM.terminalIds);
@@ -59,8 +53,8 @@ let SyncConnectionProcessor = class SyncConnectionProcessor {
         await this.tryToInsertAgtRepositoryTransactionBlocks(verifiedTerminalIds, repositoryIdSet, verifiedConnectionClaimMap);
     }
     async tryToInsertAgtRepositoryTransactionBlocks(verifiedTerminalIds, repositoryIdSet, verifiedConnectionClaimMap) {
-        // Query TerminalRepositories to verify that the incoming repository change records exist
-        // and get the permissions a given terminal has in a particular repository
+        // Query TerminalRepositories to verify that the incoming repository change records
+        // exist and get the permissions a given terminal has in a particular repository
         const terminalRepositoryMapByTerminalId = await this.terminalRepositoryDao.findByTerminalIdInAndRepositoryIdIn(verifiedTerminalIds, Array.from(repositoryIdSet));
         const repoTransBlockSyncOutcomeMap = new Map();
         const { terminalIds, tmRepositoryTransactionBlockIds } = this.ensureRepositoryPermissions(terminalRepositoryMapByTerminalId, verifiedConnectionClaimMap, repoTransBlockSyncOutcomeMap);
@@ -179,7 +173,7 @@ let SyncConnectionProcessor = class SyncConnectionProcessor {
         }
     }
     async addRepositoryTransactionBlocks(terminalIds, tmRepositoryTransactionBlockIds, permissionMapByTerminalAndRepositoryIds, verifiedConnectionClaimMap, alreadySyncedInMessageTerminalIds, alreadySyncedInMessageTmSharingMessageIds, alreadySyncedMessageMapByTerminalIdAndTmSharingMessageId, repoTransBlockSyncOutcomeMap, successTransSyncOutcomes, agtRepositoryTransactionBlockInserts) {
-        const existingAgtRepoTransBlockInfoMap = await this.agtRepositoryTransactionBlockDao
+        const existingAgtRepoTransBlockInfoMap = await this.agtRepoTransBlockDao
             .findExistingDataIdMap(terminalIds, tmRepositoryTransactionBlockIds);
         // For every found terminal repository map, make sure that the sent record
         // hasn't already been received
@@ -282,14 +276,15 @@ let SyncConnectionProcessor = class SyncConnectionProcessor {
         ]);
         const [agtSharingMessageIdMapByTerminalId, agtRepositoryTransactionBlockIds] = await Promise.all([
             this.agtSharingMessageDao.insertValues(agtSharingMessageInserts),
-            this.agtRepositoryTransactionBlockDao.insertValues(agtRepositoryTransactionBlockInserts)
+            this.agtRepoTransBlockDao.insertValues(agtRepositoryTransactionBlockInserts)
         ]);
         const syncLogInserts = [];
         for (let i = 0; i < agtRepositoryTransactionBlockIds.length; i++) {
             // Populate AgtRepositoryTransactionBlockId in outgoing TransLogSyncOutcome
             const agtRepositoryTransactionBlockId = agtRepositoryTransactionBlockIds[i];
-            // successTransSyncOutcomes[i].agtRepositoryTransactionBlockId = agtRepositoryTransactionBlockId;
-            // Add AgtSharingMessageId to new SyncLog insert record
+            // successTransSyncOutcomes[i].agtRepositoryTransactionBlockId =
+            // agtRepositoryTransactionBlockId; Add AgtSharingMessageId to new SyncLog insert
+            // record
             const terminalId = agtRepositoryTransactionBlockInserts[i][1];
             const agtSharingMessageId = agtSharingMessageIdMapByTerminalId[terminalId];
             syncLogInserts.push([
@@ -326,13 +321,13 @@ let SyncConnectionProcessor = class SyncConnectionProcessor {
         await this.tryToSendRecentChangesToVerifiedConnections(verifiedTerminalIds, verifiedConnectionClaimMap, new Date().getTime());
     }
     async tryToSendRecentChangesToVerifiedConnections(verifiedTerminalIds, verifiedConnectionClaimMap, addDateTime) {
-        const repoTransBlocksToSendByTerminalId = await this.agtRepositoryTransactionBlockDao.getAllAgtRepositoryTransactionBlocksToSend(verifiedTerminalIds);
+        const repoTransBlocksToSendByTerminalId = await this.agtRepoTransBlockDao.getAllAgtRepositoryTransactionBlocksToSend(verifiedTerminalIds);
         // Sync Logs to insert for the sent records
         const syncLogsByTerminalIdMap = new Map();
         // Agt Sharing Messages to insert for the sent records
         const agtSharingMessagesToInsert = [];
-        // For every terminal's set of RepositoryTransactionBlocks to send (not yet acknowledged by the
-        // terminal as having been received).
+        // For every terminal's set of RepositoryTransactionBlocks to send (not yet
+        // acknowledged by the terminal as having been received).
         for (const [terminalId, repoTransBlocksToSend] of repoTransBlocksToSendByTerminalId) {
             const connectionClaim = verifiedConnectionClaimMap.get(terminalId);
             const tmSharingMessageId = connectionClaim.messageFromTM
@@ -372,54 +367,27 @@ let SyncConnectionProcessor = class SyncConnectionProcessor {
             // // Agt Sharing Message id
             //
             // const tmSharingMessageId: TmSharingMessageId       = connectionClaim[0][2];
-            // const agtRepoTransBlockAddDatetime: AgtRepositoryTransactionBlockAddDatetime      = null;
-            // const transactionLogSyncOutcomes: RepoTransBlockSyncOutcome[] = [
-            // 	null, agtSharingMessageId, null];
-            //
-            // /*RepoTransBlockSyncOutcome = [
-            // 	TmRepositoryTransactionBlockId,
-            // 	AgtSharingMessageId,
-            // 	RepoTransBlockSyncOutcomeType
-            // ];*/
-            //
-            // const createdTerminalRepoTransBlockMessage: SyncLogNotification = [
-            // 	OutClientMessageType.DATABASE_SYNC_LOG,
-            // 	tmSharingMessageId,
-            // 	addDatetime,
-            // 	transactionLogSyncOutcomes
-            // ];
-            // const callback                                          = connectionClaim[1];
-            // // Also send back a Agt Sharing Message notification for the corresponding data
-            // // that was received from this connection
-            // callback(terminalId, false, createdTerminalRepoTransBlockMessage);
+            // const agtRepoTransBlockAddDatetime: AgtRepositoryTransactionBlockAddDatetime
+            //  = null; const transactionLogSyncOutcomes: RepoTransBlockSyncOutcome[] = [ null,
+            // agtSharingMessageId, null];  /*RepoTransBlockSyncOutcome = [
+            // TmRepositoryTransactionBlockId, AgtSharingMessageId,
+            // RepoTransBlockSyncOutcomeType ];*/  const createdTerminalRepoTransBlockMessage:
+            // SyncLogNotification = [ OutClientMessageType.DATABASE_SYNC_LOG,
+            // tmSharingMessageId, addDatetime, transactionLogSyncOutcomes ]; const callback
+            //                                       = connectionClaim[1]; // Also send back a
+            // Agt Sharing Message notification for the corresponding data // that was received
+            // from this connection callback(terminalId, false,
+            // createdTerminalRepoTransBlockMessage);
         }
         await this.syncLogDao.insertValues(syncLogInserts);
     }
-};
+}
 __decorate([
-    tower_1.Transactional(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Array, Set,
-        Map]),
-    __metadata("design:returntype", Promise)
+    tower_1.Transactional()
 ], SyncConnectionProcessor.prototype, "tryToInsertAgtRepositoryTransactionBlocks", null);
 __decorate([
-    tower_1.Transactional(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Set,
-        Map]),
-    __metadata("design:returntype", Promise)
+    tower_1.Transactional()
 ], SyncConnectionProcessor.prototype, "tryToUpdateAgtSharingMessages", null);
-SyncConnectionProcessor = __decorate([
-    typedi_1.Service(InjectionTokens_1.SyncConnectionProcessorToken),
-    __param(0, typedi_1.Inject(guideway_1.TerminalDaoToken)),
-    __param(1, typedi_1.Inject(guideway_1.TerminalRepositoryDaoToken)),
-    __param(2, typedi_1.Inject(guideway_1.AgtSharingMessageDaoToken)),
-    __param(3, typedi_1.Inject(InjectionTokens_1.ErrorLoggerToken)),
-    __param(4, typedi_1.Inject(guideway_1.SyncLogDaoToken)),
-    __param(5, typedi_1.Inject(guideway_1.AgtRepositoryTransactionBlockDaoToken)),
-    __param(6, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object])
-], SyncConnectionProcessor);
 exports.SyncConnectionProcessor = SyncConnectionProcessor;
+di_1.DI.set(diTokens_1.SYNC_CONNECTION_PROCESSOR, SyncConnectionProcessor);
 //# sourceMappingURL=SyncConnectionProcessor.js.map

@@ -9,6 +9,6 @@ __export(require("./builder/SqlSchemaBuilder"));
 __export(require("./checker/SchemaChecker"));
 __export(require("./locator/SchemaLocator"));
 __export(require("./recorder/SchemaRecorder"));
-__export(require("./InjectionTokens"));
+__export(require("./diTokens"));
 __export(require("./SchemaInitializer"));
 //# sourceMappingURL=index.js.map

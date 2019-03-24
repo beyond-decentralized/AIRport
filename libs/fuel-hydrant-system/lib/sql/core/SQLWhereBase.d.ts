@@ -1,8 +1,8 @@
-import { IAirportDatabase, IQEntityInternal, IUtils, Parameter } from "@airport/air-control";
+import { IAirportDatabase, IQEntityInternal, IUtils, Parameter } from '@airport/air-control';
 import { ColumnIndex, DbColumn, DbEntity, JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONEntityRelation, JsonFieldQuery, SchemaMap, SchemaVersionId, SqlOperator, TableIndex } from '@airport/ground-control';
-import { ISQLQueryAdaptor, ISqlValueProvider } from "../../adaptor/SQLQueryAdaptor";
+import { ISQLQueryAdaptor, ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor';
 import { IValidator } from '../../validation/Validator';
-import { SQLDialect } from "./SQLQuery";
+import { SQLDialect } from './SQLQuery';
 /**
  * Created by Papa on 10/2/2016.
  */

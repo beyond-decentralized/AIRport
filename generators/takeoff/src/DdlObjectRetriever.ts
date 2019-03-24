@@ -1,11 +1,12 @@
+import {DI}                   from '@airport/di'
 import {
 	DomainId,
 	SchemaIndex,
-}                                from '@airport/ground-control'
+}                             from '@airport/ground-control'
 import {
-	DomainDaoToken,
+	DOMAIN_DAO,
 	IDomainDao
-}                                from '@airport/territory'
+}                             from '@airport/territory'
 import {
 	ISchema,
 	ISchemaColumnDao,
@@ -17,22 +18,18 @@ import {
 	ISchemaRelationColumnDao,
 	ISchemaRelationDao,
 	ISchemaVersionDao,
-	SchemaColumnDaoToken,
-	SchemaDaoToken,
-	SchemaEntityDaoToken,
-	SchemaPropertyColumnDaoToken,
-	SchemaPropertyDaoToken,
-	SchemaReferenceDaoToken,
-	SchemaRelationColumnDaoToken,
-	SchemaRelationDaoToken,
-	SchemaVersionDaoToken
-}                                from '@airport/traffic-pattern'
-import {
-	Inject,
-	Service
-}                                from 'typedi'
-import {DdlObjectRetrieverToken} from './InjectionTokens'
-import {DdlObjects}              from './QueryObjectInitializer'
+	SCHEMA_COLUMN_DAO,
+	SCHEMA_DAO,
+	SCHEMA_ENTITY_DAO,
+	SCHEMA_PROPERTY_COLUMN_DAO,
+	SCHEMA_PROPERTY_DAO,
+	SCHEMA_REFERENCE_DAO,
+	SCHEMA_RELATION_COLUMN_DAO,
+	SCHEMA_RELATION_DAO,
+	SCHEMA_VERSION_DAO
+}                             from '@airport/traffic-pattern'
+import {DDL_OBJECT_RETRIEVER} from './diTokens'
+import {DdlObjects}           from './QueryObjectInitializer'
 
 export interface IDdlObjectRetriever {
 
@@ -41,32 +38,48 @@ export interface IDdlObjectRetriever {
 
 }
 
-@Service(DdlObjectRetrieverToken)
 export class DdlObjectRetriever
 	implements IDdlObjectRetriever {
 
-	constructor(
-		@Inject(DomainDaoToken)
-		private domainDao: IDomainDao,
-		@Inject(SchemaColumnDaoToken)
-		private schemaColumnDao: ISchemaColumnDao,
-		@Inject(SchemaDaoToken)
-		private schemaDao: ISchemaDao,
-		@Inject(SchemaEntityDaoToken)
-		private schemaEntityDao: ISchemaEntityDao,
-		@Inject(SchemaPropertyColumnDaoToken)
-		private schemaPropertyColumnDao: ISchemaPropertyColumnDao,
-		@Inject(SchemaPropertyDaoToken)
-		private schemaPropertyDao: ISchemaPropertyDao,
-		@Inject(SchemaReferenceDaoToken)
-		private schemaReferenceDao: ISchemaReferenceDao,
-		@Inject(SchemaRelationColumnDaoToken)
-		private schemaRelationColumnDao: ISchemaRelationColumnDao,
-		@Inject(SchemaRelationDaoToken)
-		private schemaRelationDao: ISchemaRelationDao,
-		@Inject(SchemaVersionDaoToken)
-		private schemaVersionDao: ISchemaVersionDao
-	) {
+	private domainDao: IDomainDao
+	private schemaColumnDao: ISchemaColumnDao
+	private schemaDao: ISchemaDao
+	private schemaEntityDao: ISchemaEntityDao
+	private schemaPropertyColumnDao: ISchemaPropertyColumnDao
+	private schemaPropertyDao: ISchemaPropertyDao
+	private schemaReferenceDao: ISchemaReferenceDao
+	private schemaRelationColumnDao: ISchemaRelationColumnDao
+	private schemaRelationDao: ISchemaRelationDao
+	private schemaVersionDao: ISchemaVersionDao
+
+	constructor() {
+		DI.get((
+			domainDao,
+			schemaColumnDao,
+			schemaDao,
+			schemaEntityDao,
+			schemaPropertyColumnDao,
+			schemaPropertyDao,
+			schemaReferenceDao,
+			schemaRelationColumnDao,
+			schemaRelationDao,
+			schemaVersionDao
+			) => {
+				this.domainDao               = domainDao
+				this.schemaColumnDao         = schemaColumnDao
+				this.schemaDao               = schemaDao
+				this.schemaEntityDao         = schemaEntityDao
+				this.schemaPropertyColumnDao = schemaPropertyColumnDao
+				this.schemaPropertyDao       = schemaPropertyDao
+				this.schemaReferenceDao      = schemaReferenceDao
+				this.schemaRelationColumnDao = schemaRelationColumnDao
+				this.schemaRelationDao       = schemaRelationDao
+				this.schemaVersionDao        = schemaVersionDao
+			}, DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO,
+			SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO,
+			SCHEMA_PROPERTY_DAO, SCHEMA_REFERENCE_DAO,
+			SCHEMA_RELATION_COLUMN_DAO, SCHEMA_RELATION_DAO,
+			SCHEMA_VERSION_DAO)
 	}
 
 	async retrieveDdlObjects()
@@ -137,3 +150,5 @@ export class DdlObjectRetriever
 	}
 
 }
+
+DI.set(DDL_OBJECT_RETRIEVER, DdlObjectRetriever)

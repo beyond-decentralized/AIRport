@@ -197,10 +197,10 @@ class SQLWhereBase {
             throw `Invalid query value: ${value}`;
         }
         switch (typeof value) {
-            case "boolean":
-            case "number":
+            case 'boolean':
+            case 'number':
                 throw `Unexpected primitive instance, expecting parameter alias.`;
-            case "string":
+            case 'string':
                 return true;
         }
         if (value instanceof Date) {

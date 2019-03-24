@@ -1,21 +1,22 @@
 import {
 	IUtils,
-	UtilsToken
+	UTILS
 }                                                 from '@airport/air-control'
+import {DI}                                       from '@airport/di'
 import {
 	ChangeType,
 	EntityId,
 	SchemaVersionId,
 	TableIndex
-} from '@airport/ground-control'
+}                                                 from '@airport/ground-control'
 import {
 	ActorId,
 	IRecordHistory,
 	IRepositoryTransactionHistoryDao,
 	RecordHistoryActorRecordId,
+	REPO_TRANS_HISTORY_DAO,
 	RepositoryEntityActorRecordId,
-	RepositoryId,
-	RepositoryTransactionHistoryDaoToken
+	RepositoryId
 }                                                 from '@airport/holding-pattern'
 import {
 	IMissingRecord,
@@ -24,26 +25,22 @@ import {
 	IRepositoryTransactionBlock,
 	IRepositoryTransactionBlockDao,
 	ISharingMessageDao,
-	MissingRecordDaoToken,
+	MISSING_RECORD_DAO,
+	MISSING_RECORD_REPO_TRANS_BLOCK_DAO,
 	MissingRecordId,
-	MissingRecordRepoTransBlockDaoToken,
 	MissingRecordStatus,
-	RepositoryTransactionBlockDaoToken,
-	SharingMessageDaoToken
+	REPO_TRANS_BLOCK_DAO,
+	SHARING_MESSAGE_DAO
 }                                                 from '@airport/moving-walkway'
 import {
 	ITerminalStore,
-	TerminalStoreToken
+	TERMINAL_STORE
 }                                                 from '@airport/terminal-map'
 import {
-	Inject,
-	Service
-}                                                 from 'typedi'
-import {
-	SyncInDataCheckerToken,
-	SyncInRepositoryTransactionBlockCreatorToken,
-	SyncInUtilsToken
-}                                                 from '../../../InjectionTokens'
+	SYNC_IN_DATA_CHECKER,
+	SYNC_IN_REPO_TRANS_BLOCK_CREATOR,
+	SYNC_IN_UTILS
+}                                                 from '../../../diTokens'
 import {ISyncInRepositoryTransactionBlockCreator} from '../creator/SyncInRepositoryTransactionBlockCreator'
 import {
 	IDataToTM,
@@ -83,30 +80,44 @@ export interface ISyncInDataChecker {
 
 }
 
-@Service(SyncInDataCheckerToken)
 export class SyncInDataChecker
 	implements ISyncInDataChecker {
 
-	constructor(
-		@Inject(MissingRecordDaoToken)
-		private missingRecordDao: IMissingRecordDao,
-		@Inject(MissingRecordRepoTransBlockDaoToken)
-		private missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao,
-		@Inject(RepositoryTransactionBlockDaoToken)
-		private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
-		@Inject(RepositoryTransactionHistoryDaoToken)
-		private repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao,
-		@Inject(SharingMessageDaoToken)
-		private sharingMessageDao: ISharingMessageDao,
-		@Inject(SyncInRepositoryTransactionBlockCreatorToken)
-		private syncInRepositoryTransactionBlockCreator: ISyncInRepositoryTransactionBlockCreator,
-		@Inject(SyncInUtilsToken)
-		private syncInUtils: ISyncInUtils,
-		@Inject(TerminalStoreToken)
-		private terminalStore: ITerminalStore,
-		@Inject(UtilsToken)
-		private utils: IUtils,
-	) {
+	private missingRecordDao: IMissingRecordDao
+	private missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao
+	private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao
+	private repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+	private sharingMessageDao: ISharingMessageDao
+	private syncInRepositoryTransactionBlockCreator: ISyncInRepositoryTransactionBlockCreator
+	private syncInUtils: ISyncInUtils
+	private terminalStore: ITerminalStore
+	private utils: IUtils
+
+	constructor() {
+		DI.get((
+			missingRecordDao,
+			missingRecordRepoTransBlockDao,
+			repositoryTransactionBlockDao,
+			repositoryTransactionHistoryDao,
+			sharingMessageDao,
+			syncInRepositoryTransactionBlockCreator,
+			syncInUtils,
+			terminalStore,
+			utils
+			) => {
+				this.missingRecordDao                        = missingRecordDao
+				this.missingRecordRepoTransBlockDao          = missingRecordRepoTransBlockDao
+				this.repositoryTransactionBlockDao           = repositoryTransactionBlockDao
+				this.repositoryTransactionHistoryDao         = repositoryTransactionHistoryDao
+				this.sharingMessageDao                       = sharingMessageDao
+				this.syncInRepositoryTransactionBlockCreator = syncInRepositoryTransactionBlockCreator
+				this.syncInUtils                             = syncInUtils
+				this.terminalStore                           = terminalStore
+				this.utils                                   = utils
+			}, MISSING_RECORD_DAO, MISSING_RECORD_REPO_TRANS_BLOCK_DAO,
+			REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_DAO,
+			SHARING_MESSAGE_DAO, SYNC_IN_REPO_TRANS_BLOCK_CREATOR,
+			SYNC_IN_UTILS, TERMINAL_STORE, UTILS)
 	}
 
 	/**
@@ -121,19 +132,19 @@ export class SyncInDataChecker
 		// actorMapById: Map<ActorId, IActor>
 	): Promise<DataCheckResults> {
 		const {
-			messageIndexMapByRecordToUpdateIds,
-			recordsToUpdateMap
-		} = this.getDataStructuresForChanges(dataMessagesWithCompatibleSchemas)
+			      messageIndexMapByRecordToUpdateIds,
+			      recordsToUpdateMap
+		      } = this.getDataStructuresForChanges(dataMessagesWithCompatibleSchemas)
 
 		const existingRecordIdMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
-			= await this.repositoryTransactionHistoryDao.findExistingRecordIdMap(recordsToUpdateMap)
+			      = await this.repositoryTransactionHistoryDao.findExistingRecordIdMap(recordsToUpdateMap)
 
 		const dataMessagesWithIncompatibleData: IDataToTM[] = []
 		const {
-			compatibleDataMessageFlags,
-			missingRecordDataToTMs,
-		} = await this.determineMissingRecords(dataMessagesWithCompatibleSchemas,
+			      compatibleDataMessageFlags,
+			      missingRecordDataToTMs,
+		      }                                             = await this.determineMissingRecords(dataMessagesWithCompatibleSchemas,
 			dataMessagesWithIncompatibleData, recordsToUpdateMap,
 			existingRecordIdMap, messageIndexMapByRecordToUpdateIds)
 
@@ -149,15 +160,15 @@ export class SyncInDataChecker
 
 		const toBeInsertedRecordMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
-			= this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemasAndData)
+			      = this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemasAndData)
 
 		const foundMissingRecordIds =
-			await this.missingRecordDao.setStatusWhereIdsInAndReturnIds(
-				toBeInsertedRecordMap, MissingRecordStatus.MISSING)
+			      await this.missingRecordDao.setStatusWhereIdsInAndReturnIds(
+				      toBeInsertedRecordMap, MissingRecordStatus.MISSING)
 
 		// Find repository transaction blocks that now can be processed
 		const existingRepoTransBlocksWithCompatibleSchemasAndData
-			= await this.getExistingRepoTransBlocksWithCompatibleSchemasAndData(foundMissingRecordIds)
+			      = await this.getExistingRepoTransBlocksWithCompatibleSchemasAndData(foundMissingRecordIds)
 
 		return {
 			dataMessagesWithCompatibleSchemasAndData,
@@ -172,14 +183,14 @@ export class SyncInDataChecker
 	): DataStructuresForChanges {
 		const recordsToInsertMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
-			= this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemas)
+			      = this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemas)
 
 		const recordsToUpdateMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
-			= new Map()
+			      = new Map()
 		const messageIndexMapByRecordToUpdateIds: Map<RepositoryId, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Map<RepositoryEntityActorRecordId, Set<number>>>>>>
-			= new Map()
+			      = new Map()
 
 
 		for (let i = 0; i < dataMessagesWithCompatibleSchemas.length; i++) {
@@ -189,7 +200,7 @@ export class SyncInDataChecker
 				repoTransHistory2,
 			) => repoTransHistory1.saveTimestamp.getTime() - repoTransHistory2.saveTimestamp.getTime())
 			for (const repoTransHistory of dataMessages.data.repoTransHistories) {
-				const repositoryId = repoTransHistory.repository.id
+				const repositoryId             = repoTransHistory.repository.id
 				const recordToInsertMapForRepo = recordsToInsertMap.get(repositoryId)
 				repoTransHistory.operationHistory.sort((
 					operationHistory1,
@@ -199,7 +210,7 @@ export class SyncInDataChecker
 					let recordToInsertMapForEntityInRepo
 					if (recordToInsertMapForRepo) {
 						const recordToInsertMapForSchemaInRepo
-							= recordToInsertMapForRepo.get(operationHistory.schemaVersion.id)
+							      = recordToInsertMapForRepo.get(operationHistory.schemaVersion.id)
 						if (recordToInsertMapForSchemaInRepo) {
 							recordToInsertMapForEntityInRepo
 								= recordToInsertMapForSchemaInRepo.get(operationHistory.entity.id)
@@ -258,19 +269,19 @@ export class SyncInDataChecker
 			Map<EntityId, Map<ActorId, Map<RepositoryEntityActorRecordId, Set<number>>>>>>
 	): Promise<MissingRecordResults> {
 		const compatibleDataMessageFlags: boolean[]
-			= dataMessagesWithCompatibleSchemas.map(
+			                                                        = dataMessagesWithCompatibleSchemas.map(
 			_ => true)
-		const missingRecords: IMissingRecord[] = []
-		const missingRecordDataToTMs: IMissingRecordDataToTM[] = []
+		const missingRecords: IMissingRecord[]                    = []
+		const missingRecordDataToTMs: IMissingRecordDataToTM[]    = []
 		const sparseDataMessagesWithIncompatibleData: IDataToTM[] = []
 
 		for (const [repositoryId, updatedRecordMapForRepository] of recordToUpdateMap) {
 			const existingRecordMapForRepository: Map<SchemaVersionId, Map<TableIndex,
 				Map<ActorId, Set<RepositoryEntityActorRecordId>>>>
-				= existingRecordIdMap.get(repositoryId)
+				      = existingRecordIdMap.get(repositoryId)
 			const messageIndexMapForRepository: Map<SchemaVersionId, Map<TableIndex,
 				Map<ActorId, Map<RepositoryEntityActorRecordId, Set<number>>>>>
-				= messageIndexMapByRecordToUpdateIds.get(repositoryId)
+				      = messageIndexMapByRecordToUpdateIds.get(repositoryId)
 
 			for (const [schemaIndex, updatedRecordMapForSchemaInRepo] of updatedRecordMapForRepository) {
 				let existingRecordMapForSchemaInRepo: Map<EntityId,
@@ -280,7 +291,7 @@ export class SyncInDataChecker
 				}
 				const messageIndexMapForSchemaIndRepo: Map<EntityId, Map<ActorId,
 					Map<RepositoryEntityActorRecordId, Set<number>>>>
-					= messageIndexMapForRepository.get(schemaIndex)
+					      = messageIndexMapForRepository.get(schemaIndex)
 
 				for (const [entityId, updatedRecordMapForTableInRepo] of updatedRecordMapForSchemaInRepo) {
 					let existingRecordMapForTableInSchema: Map<ActorId, Set<RepositoryEntityActorRecordId>>
@@ -289,7 +300,7 @@ export class SyncInDataChecker
 					}
 					const messageIndexMapForTableInSchema: Map<ActorId,
 						Map<RepositoryEntityActorRecordId, Set<number>>>
-						= messageIndexMapForSchemaIndRepo.get(entityId)
+						      = messageIndexMapForSchemaIndRepo.get(entityId)
 
 					for (const [actorId, actorRecordIds] of updatedRecordMapForTableInRepo) {
 						let existingRecordIdSetForActor: Set<RepositoryEntityActorRecordId>
@@ -297,7 +308,7 @@ export class SyncInDataChecker
 							existingRecordIdSetForActor = existingRecordMapForTableInSchema.get(actorId)
 						}
 						const messageIndexMapForActor: Map<RepositoryEntityActorRecordId, Set<number>>
-							= messageIndexMapForTableInSchema.get(actorId)
+							      = messageIndexMapForTableInSchema.get(actorId)
 						if (existingRecordIdSetForActor) {
 							for (const actorRecordId of actorRecordIds) {
 								if (!existingRecordIdSetForActor.has(actorRecordId)) {
@@ -356,7 +367,7 @@ export class SyncInDataChecker
 		Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>> {
 		const recordsToInsertMap: Map<RepositoryId, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
-			= new Map()
+			      = new Map()
 
 		for (let i = 0; i < dataMessages.length; i++) {
 			const dataMessage = dataMessages[i]
@@ -415,7 +426,7 @@ export class SyncInDataChecker
 			if (compatibleDataMessageFlags[messageIndex]) {
 				const dataMessage = dataMessagesWithCompatibleSchemas[messageIndex]
 				sparseDataMessagesWithIncompatibleData[messageIndex]
-					= dataMessage
+				                  = dataMessage
 				dataMessagesWithIncompatibleData.push(dataMessage)
 				compatibleDataMessageFlags[messageIndex] = false
 			} else {
@@ -461,10 +472,10 @@ export class SyncInDataChecker
 			return []
 		}
 		const existingRepoTransBlocksWithCompatibleSchemasAndData =
-			await this.repositoryTransactionBlockDao.findWithMissingRecordIdsAndNoMissingRecordsWithStatus(
-				foundMissingRecordIds,
-				MissingRecordStatus.MISSING
-			)
+			      await this.repositoryTransactionBlockDao.findWithMissingRecordIdsAndNoMissingRecordsWithStatus(
+				      foundMissingRecordIds,
+				      MissingRecordStatus.MISSING
+			      )
 
 		await this.missingRecordRepoTransBlockDao.deleteWhereMissingRecordIdsIn(foundMissingRecordIds)
 		await this.missingRecordDao.deleteWhereIdsIn(foundMissingRecordIds)
@@ -473,3 +484,5 @@ export class SyncInDataChecker
 	}
 
 }
+
+DI.set(SYNC_IN_DATA_CHECKER, SyncInDataChecker)

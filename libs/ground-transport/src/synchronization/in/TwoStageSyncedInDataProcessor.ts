@@ -1,62 +1,65 @@
 import {
 	IUtils,
-	UtilsToken
-}                        from "@airport/air-control";
-import {AgtRepositoryId} from "@airport/arrivals-n-departures";
-import {SchemaVersionId} from "@airport/ground-control";
+	UTILS
+}                                     from '@airport/air-control'
+import {
+	AgtRepositoryId,
+	RepoTransBlockSyncOutcomeType,
+	TmSharingMessageId
+}                                     from '@airport/arrivals-n-departures'
+import {DI}                           from '@airport/di'
+import {
+	SchemaVersionId,
+	TransactionType
+}                                     from '@airport/ground-control'
 import {
 	ActorId,
 	IActor,
 	IRepositoryActorDao,
 	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDmo,
-	RepositoryActorDaoToken,
+	REPO_ACTOR_DAO,
+	REPO_TRANS_HISTORY_DMO,
 	RepositoryId,
-	RepositoryTransactionHistoryDmoToken,
 	RepositoryTransactionType
-}                        from "@airport/holding-pattern";
+}                                     from '@airport/holding-pattern'
 import {
 	IRepositoryTransactionBlock,
 	IRepositoryTransactionBlockDao,
 	ISharingMessage,
 	ISharingMessageDao,
-	ISharingMessageRepoTransBlock,
 	ISharingMessageRepoTransBlockDao,
 	ISynchronizationConflict,
 	ISynchronizationConflictDao,
 	ISynchronizationConflictPendingNotification,
 	ISynchronizationConflictPendingNotificationDao,
-	RepositoryTransactionBlockDaoToken,
+	REPO_TRANS_BLOCK_DAO,
 	RepositoryTransactionBlockData,
-	SharingMessageDaoToken,
-	SharingMessageRepoTransBlockDaoToken,
+	SHARING_MESSAGE_DAO,
+	SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
 	SharingNodeId,
-	SynchronizationConflictPendingNotificationDaoToken
-}                        from "@airport/moving-walkway";
+	SYNC_CONFLICT_DAO,
+	SYNC_CONFLICT_PENDING_NOTIFICATION_DAO
+}                                     from '@airport/moving-walkway'
 import {
 	ITransactionManager,
-	TransactionManagerToken
-}                                     from "@airport/terminal-map";
-import {ISchema}                      from "@airport/traffic-pattern";
+	TRANSACTION_MANAGER
+}                                     from '@airport/terminal-map'
+import {ISchema}                      from '@airport/traffic-pattern'
+import {parse}                        from 'zipson/lib'
 import {
-	Inject,
-	Service
-}                                     from "typedi";
-import {parse}                        from "zipson/lib";
-import {
-	Stage1SyncedInDataProcessorToken,
-	Stage2SyncedInDataProcessorToken,
-	SyncInCheckerToken,
-	TwoStageSyncedInDataProcessorToken
-}                                     from "../../InjectionTokens";
-import {ISyncInChecker}               from "./checker/SyncInChecker";
-import {TerminalCheckResults}         from "./checker/SyncInTerminalChecker";
-import {IStage1SyncedInDataProcessor} from "./Stage1SyncedInDataProcessor";
-import {IStage2SyncedInDataProcessor} from "./Stage2SyncedInDataProcessor";
+	STAGE1_SYNCED_IN_DATA_PROCESSOR,
+	STAGE2_SYNCED_IN_DATA_PROCESSOR,
+	SYNC_IN_CHECKER,
+	TWO_STAGE_SYNCED_IN_DATA_PROCESSOR
+}                                     from '../../diTokens'
+import {ISyncInChecker}               from './checker/SyncInChecker'
+import {IStage1SyncedInDataProcessor} from './Stage1SyncedInDataProcessor'
+import {IStage2SyncedInDataProcessor} from './Stage2SyncedInDataProcessor'
 import {
 	IDataToTM,
 	ISyncRepoTransHistory
-}                                     from "./SyncInUtils";
+}                                     from './SyncInUtils'
 
 /**
  * Synchronizes incoming data and records message conflicts in two processing stages.
@@ -71,46 +74,64 @@ export interface ITwoStageSyncedInDataProcessor {
 
 }
 
-@Service(TwoStageSyncedInDataProcessorToken)
 export class TwoStageSyncedInDataProcessor
 	implements ITwoStageSyncedInDataProcessor {
 
 	constructor(
-		@Inject(RepositoryActorDaoToken)
 		private repositoryActorDao: IRepositoryActorDao,
-		@Inject(RepositoryTransactionHistoryDmoToken)
 		private repositoryTransactionHistoryDmo: IRepositoryTransactionHistoryDmo,
-		@Inject(SharingMessageDaoToken)
 		private sharingMessageDao: ISharingMessageDao,
-		@Inject(SharingMessageRepoTransBlockDaoToken)
 		private sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao,
-		@Inject(Stage1SyncedInDataProcessorToken)
 		private stage1SyncedInDataProcessor: IStage1SyncedInDataProcessor,
-		@Inject(Stage2SyncedInDataProcessorToken)
 		private stage2SyncedInDataProcessor: IStage2SyncedInDataProcessor,
 		private synchronizationConflictDao: ISynchronizationConflictDao,
-		@Inject(SynchronizationConflictPendingNotificationDaoToken)
 		private synchronizationConflictPendingNotificationDao
 			: ISynchronizationConflictPendingNotificationDao,
-		@Inject(SyncInCheckerToken)
 		private syncInChecker: ISyncInChecker,
-		@Inject(RepositoryTransactionBlockDaoToken)
 		private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
-		// @Inject(RepoTransBlockRepoTransHistoryDaoToken)
 		// private repoTransBlockRepoTransHistoryDao: IRepoTransBlockRepoTransHistoryDao,
-		@Inject(TransactionManagerToken)
 		private transactionManager: ITransactionManager,
-		@Inject(UtilsToken)
 		private utils: IUtils,
 	) {
-
+		DI.get((
+			repositoryActorDao,
+			repositoryTransactionHistoryDmo,
+			sharingMessageDao,
+			sharingMessageRepoTransBlockDao,
+			stage1SyncedInDataProcessor,
+			stage2SyncedInDataProcessor,
+			synchronizationConflictDao,
+			synchronizationConflictPendingNotificationDao,
+			syncInChecker,
+			repositoryTransactionBlockDao,
+			transactionManager,
+			utils
+			) => {
+				this.repositoryActorDao                            = repositoryActorDao
+				this.repositoryTransactionHistoryDmo               = repositoryTransactionHistoryDmo
+				this.sharingMessageDao                             = sharingMessageDao
+				this.sharingMessageRepoTransBlockDao               = sharingMessageRepoTransBlockDao
+				this.stage1SyncedInDataProcessor                   = stage1SyncedInDataProcessor
+				this.stage2SyncedInDataProcessor                   = stage2SyncedInDataProcessor
+				this.synchronizationConflictDao                    = synchronizationConflictDao
+				this.synchronizationConflictPendingNotificationDao = synchronizationConflictPendingNotificationDao
+				this.syncInChecker                                 = syncInChecker
+				this.repositoryTransactionBlockDao                 = repositoryTransactionBlockDao
+				this.transactionManager                            = transactionManager
+				this.utils                                         = utils
+			}, REPO_ACTOR_DAO, REPO_TRANS_HISTORY_DMO,
+			SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
+			STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR,
+			SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO,
+			SYNC_IN_CHECKER, REPO_TRANS_BLOCK_DAO,
+			TRANSACTION_MANAGER, UTILS)
 	}
 
 	/**
 	 * Synchronize the data messages coming from AGT (new data for this TM).
 	 * @param {IDataToTM[]} dataMessages  Incoming data messages.
-	 * @param {Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>} sharingNodeRepositoryMap
-	 *      Local (TM) repository Id Map.
+	 * @param {Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>}
+	 *   sharingNodeRepositoryMap Local (TM) repository Id Map.
 	 * @returns {Promise<void>}
 	 */
 	async syncDataMessages(
@@ -120,26 +141,26 @@ export class TwoStageSyncedInDataProcessor
 		// dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<void> {
 		const [
-			actorMapById,
-			existingRepoTransBlocksWithCompatibleSchemasAndData,
-			dataMessagesWithCompatibleSchemas,
-			sharingMessagesWithCompatibleSchemasAndData,
-			// usedSchemaVersionIdSet
-		] = await this.syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(
+			      actorMapById,
+			      existingRepoTransBlocksWithCompatibleSchemasAndData,
+			      dataMessagesWithCompatibleSchemas,
+			      sharingMessagesWithCompatibleSchemasAndData,
+			      // usedSchemaVersionIdSet
+		      ] = await this.syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(
 			// consistentMessages, actorMap, sharingNodeRepositoryMap,
 			// dataMessagesWithInvalidData
 			dataMessages
-		);
+		)
 
 		const repoTransHistoryMapByRepositoryId
-			= await this.recordSharingMessageToHistoryRecords(
+			      = await this.recordSharingMessageToHistoryRecords(
 			sharingMessagesWithCompatibleSchemasAndData,
 			existingRepoTransBlocksWithCompatibleSchemasAndData,
 			dataMessagesWithCompatibleSchemas,
-			actorMapById);
+			actorMapById)
 
 
-		await this.updateLocalData(repoTransHistoryMapByRepositoryId, actorMapById);
+		await this.updateLocalData(repoTransHistoryMapByRepositoryId, actorMapById)
 	}
 
 	private async recordSharingMessageToHistoryRecords(
@@ -149,65 +170,65 @@ export class TwoStageSyncedInDataProcessor
 		actorMapById: Map<ActorId, IActor>
 	): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>> {
 		const repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>
-			= await this.getRepoTransHistoryMapByRepoId(dataMessages,
-			existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
+			      = await this.getRepoTransHistoryMapByRepoId(dataMessages,
+			existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById)
 
-		const repositoryTransactionBlocks: IRepositoryTransactionBlock[] = [];
-		const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = [];
+		const repositoryTransactionBlocks: IRepositoryTransactionBlock[]          = []
+		const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = []
 
-		const transactionHistory = this.transactionManager.currentTransHistory;
-		transactionHistory.transactionType = TransactionType.REMOTE_SYNC;
+		const transactionHistory           = this.transactionManager.currentTransHistory
+		transactionHistory.transactionType = TransactionType.REMOTE_SYNC
 
 		// split messages by repository and record actor information
 		for (let i = 0; i < dataMessages.length; i++) {
-			const sharingMessage = sharingMessages[i];
-			const dataMessage = dataMessages[i];
-			const data = dataMessage.data;
+			const sharingMessage                                          = sharingMessages[i]
+			const dataMessage                                             = dataMessages[i]
+			const data                                                    = dataMessage.data
 			const repositoryTransactionBlock: IRepositoryTransactionBlock = {
 				repository: data.repository,
 				syncOutcomeType: RepoTransBlockSyncOutcomeType.SYNC_SUCCESSFUL
-			};
-			repositoryTransactionBlocks.push(repositoryTransactionBlock);
+			}
+			repositoryTransactionBlocks.push(repositoryTransactionBlock)
 			sharingMessageRepoTransBlocks.push({
 				sharingMessage,
 				repositoryTransactionBlock
-			});
+			})
 			transactionHistory.repositoryTransactionHistories
-				= transactionHistory.repositoryTransactionHistories.concat(data.repoTransHistories);
+				= transactionHistory.repositoryTransactionHistories.concat(data.repoTransHistories)
 			data.repoTransHistories.forEach((
 				repositoryTransactionHistory
 			) => {
-				repositoryTransactionHistory.repositoryTransactionType = RepositoryTransactionType.REMOTE;
+				repositoryTransactionHistory.repositoryTransactionType = RepositoryTransactionType.REMOTE
 				repoTransBlockRepoTransHistories.push({
 					repositoryTransactionHistory,
 					repositoryTransactionBlock
-				});
+				})
 				transactionHistory.allOperationHistory = transactionHistory
-					.allOperationHistory.concat(repositoryTransactionHistory.operationHistory);
+					.allOperationHistory.concat(repositoryTransactionHistory.operationHistory)
 				repositoryTransactionHistory.operationHistory.forEach((
 					operationHistory
 				) => {
 					transactionHistory.allRecordHistory = transactionHistory
-						.allRecordHistory.concat(operationHistory.recordHistory);
+						.allRecordHistory.concat(operationHistory.recordHistory)
 					operationHistory.recordHistory.forEach((
 						recordHistory
 					) => {
 						transactionHistory.allRecordHistoryNewValues = transactionHistory
-							.allRecordHistoryNewValues.concat(recordHistory.newValues);
+							.allRecordHistoryNewValues.concat(recordHistory.newValues)
 						transactionHistory.allRecordHistoryOldValues = transactionHistory
-							.allRecordHistoryOldValues.concat(recordHistory.oldValues);
-					});
-				});
+							.allRecordHistoryOldValues.concat(recordHistory.oldValues)
+					})
+				})
 
-			});
+			})
 		}
 
-		await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
+		await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false)
 
 		await this.repoTransBlockRepoTransHistoryDao.bulkCreate(
-			repoTransBlockRepoTransHistories, false, false);
+			repoTransBlockRepoTransHistories, false, false)
 
-		return repoTransHistoryMapByRepositoryId;
+		return repoTransHistoryMapByRepositoryId
 	}
 
 	private async getRepoTransHistoryMapByRepoId(
@@ -216,32 +237,32 @@ export class TwoStageSyncedInDataProcessor
 		actorMapById: Map<ActorId, IActor>
 	): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>> {
 		const repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>
-			= new Map();
+			      = new Map()
 		for (const dataMessage of dataMessages) {
-			const data = dataMessage.data;
-			this.addRepoTransHistoriesToMapFromData(repoTransHistoryMapByRepositoryId, data);
+			const data = dataMessage.data
+			this.addRepoTransHistoriesToMapFromData(repoTransHistoryMapByRepositoryId, data)
 		}
 
-		const repositoryTransactionBlockIds: TmSharingMessageId[] = [];
+		const repositoryTransactionBlockIds: TmSharingMessageId[] = []
 		for (const repositoryTransactionBlock
 			of existingRepoTransBlocksWithCompatibleSchemasAndData) {
-			const data: RepositoryTransactionBlockData = parse(repositoryTransactionBlock.contents);
-			this.addRepoTransHistoriesToMapFromData(repoTransHistoryMapByRepositoryId, data);
+			const data: RepositoryTransactionBlockData = parse(repositoryTransactionBlock.contents)
+			this.addRepoTransHistoriesToMapFromData(repoTransHistoryMapByRepositoryId, data)
 			for (const actor of data.actors) {
-				actorMapById.set(actor.id, actor);
+				actorMapById.set(actor.id, actor)
 			}
-			repositoryTransactionBlockIds.push(repositoryTransactionBlock.id);
+			repositoryTransactionBlockIds.push(repositoryTransactionBlock.id)
 		}
 		if (repositoryTransactionBlockIds.length) {
-			await this.repositoryTransactionBlockDao.clearContentsWhereIdsIn(repositoryTransactionBlockIds);
+			await this.repositoryTransactionBlockDao.clearContentsWhereIdsIn(repositoryTransactionBlockIds)
 		}
 
 		for (const [repositoryId, repoTransHistories] of repoTransHistoryMapByRepositoryId) {
 			this.repositoryTransactionHistoryDmo
-				.sortRepoTransHistories(repoTransHistories, actorMapById);
+				.sortRepoTransHistories(repoTransHistories, actorMapById)
 		}
 
-		return repoTransHistoryMapByRepositoryId;
+		return repoTransHistoryMapByRepositoryId
 	}
 
 	private addRepoTransHistoriesToMapFromData(
@@ -249,9 +270,9 @@ export class TwoStageSyncedInDataProcessor
 		data: RepositoryTransactionBlockData
 	): void {
 		let repoTransHistories
-			= this.utils.ensureChildArray(repoTransHistoryMapByRepositoryId, data.repository.id);
-		repoTransHistories = repoTransHistories.concat(data.repoTransHistories);
-		repoTransHistoryMapByRepositoryId.set(data.repository.id, repoTransHistories);
+			                 = this.utils.ensureChildArray(repoTransHistoryMapByRepositoryId, data.repository.id)
+		repoTransHistories = repoTransHistories.concat(data.repoTransHistories)
+		repoTransHistoryMapByRepositoryId.set(data.repository.id, repoTransHistories)
 	}
 
 
@@ -261,19 +282,19 @@ export class TwoStageSyncedInDataProcessor
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
 	): Promise<void> {
 		const stage1Result
-			= await this.stage1SyncedInDataProcessor.performStage1DataProcessing(
-			repoTransHistoryMapByRepositoryId, actorMayById);
+			      = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(
+			repoTransHistoryMapByRepositoryId, actorMayById)
 
 		const actorIdMapByRepositoryId = await this.repositoryActorDao
 			.findActorIdMapByRepositoryIdForLocalActorsWhereRepositoryIdIn(
 				Array.from(stage1Result.syncConflictMapByRepoId.keys())
-			);
+			)
 
-		let allSyncConflicts: ISynchronizationConflict[] = [];
-		const syncConflictPendingNotifications: ISynchronizationConflictPendingNotification[] = [];
+		let allSyncConflicts: ISynchronizationConflict[]                                      = []
+		const syncConflictPendingNotifications: ISynchronizationConflictPendingNotification[] = []
 		for (const [repositoryId, repoSyncConflicts] of stage1Result.syncConflictMapByRepoId) {
-			allSyncConflicts = allSyncConflicts.concat(repoSyncConflicts);
-			const actorIdSetForRepository = actorIdMapByRepositoryId.get(repositoryId);
+			allSyncConflicts              = allSyncConflicts.concat(repoSyncConflicts)
+			const actorIdSetForRepository = actorIdMapByRepositoryId.get(repositoryId)
 
 			for (const synchronizationConflict of repoSyncConflicts) {
 				for (const actorId of actorIdSetForRepository) {
@@ -283,17 +304,19 @@ export class TwoStageSyncedInDataProcessor
 							id: actorId,
 						},
 						synchronizationConflict
-					});
+					})
 				}
 			}
 		}
 
 		await this.synchronizationConflictDao
-			.bulkCreate(allSyncConflicts, false, false);
+			.bulkCreate(allSyncConflicts, false, false)
 		await this.synchronizationConflictPendingNotificationDao
-			.bulkCreate(syncConflictPendingNotifications, false, false);
+			.bulkCreate(syncConflictPendingNotifications, false, false)
 
-		await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap);
+		await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap)
 	}
 
 }
+
+DI.set(TWO_STAGE_SYNCED_IN_DATA_PROCESSOR, TwoStageSyncedInDataProcessor)

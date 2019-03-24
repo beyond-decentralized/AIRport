@@ -1,17 +1,8 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Service_1 = require("typedi/decorators/Service");
-const InjectionTokens_1 = require("../InjectionTokens");
-let Blacklist = class Blacklist {
+const di_1 = require("@airport/di");
+const diTokens_1 = require("../diTokens");
+class Blacklist {
     constructor() {
         this.enabled = false;
         this.map = new Map();
@@ -50,10 +41,7 @@ let Blacklist = class Blacklist {
         }
         this.map.set(key, until);
     }
-};
-Blacklist = __decorate([
-    Service_1.Service(InjectionTokens_1.BlacklistToken),
-    __metadata("design:paramtypes", [])
-], Blacklist);
+}
 exports.Blacklist = Blacklist;
+di_1.DI.set(diTokens_1.BLACKLIST, Blacklist);
 //# sourceMappingURL=Blacklist.js.map

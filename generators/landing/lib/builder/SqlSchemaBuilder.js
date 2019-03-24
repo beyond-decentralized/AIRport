@@ -1,10 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 class SqlSchemaBuilder {
-    constructor(dbSchemaUtils, storeDriver) {
-        this.dbSchemaUtils = dbSchemaUtils;
-        this.storeDriver = storeDriver;
+    constructor() {
+        di_1.DI.get((dbSchemaUtils, storeDriver) => {
+            this.dbSchemaUtils = dbSchemaUtils;
+            this.storeDriver = storeDriver;
+        }, ground_control_1.DB_SCHEMA_UTILS, ground_control_1.STORE_DRIVER);
     }
     async build(jsonSchema) {
         await this.createSchema(jsonSchema);

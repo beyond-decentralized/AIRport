@@ -9,7 +9,7 @@ class SequenceGenerator {
         this.sequenceBlocks = [];
         di_1.DI.get((sequenceBlockDao, sequenceConsumerDao, sequenceDao) => {
             this.sequenceBlockDao = sequenceBlockDao;
-            this.sequenceConsumer = sequenceConsumerDao;
+            this.sequenceConsumerDao = sequenceConsumerDao;
             this.sequenceDao = sequenceDao;
         }, airport_code_1.SEQUENCE_BLOCK_DAO, airport_code_1.SEQUENCE_CONSUMER_DAO, airport_code_1.SEQUENCE_DAO);
     }

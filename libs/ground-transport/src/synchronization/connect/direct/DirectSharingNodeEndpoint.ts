@@ -1,29 +1,29 @@
 import {
 	ISyncConnectionServer,
 	MessageFromTM,
-	MessageToTM,
-	SyncConnectionServerToken
-}                                       from "@airport/arrivals-n-departures";
-import {ISharingNode}                   from "@airport/moving-walkway";
-import {
-	Container,
-	Service
-}                                       from "typedi";
-import {DirectSharingNodeEndpointToken} from "../../../InjectionTokens";
-import {ISharingNodeEndpoint}           from "../SharingNodeEndpoint";
-import {DirectResponse}                 from "./DirectResonse";
+	MessageToTM
+}                                     from "@airport/arrivals-n-departures";
+import {SYNC_CONNECTION_SERVER}       from '@airport/arrivals-n-departures'
+import {DI}                           from '@airport/di'
+import {ISharingNode}                 from "@airport/moving-walkway";
+import {DIRECT_SHARING_NODE_ENDPOINT} from "../../../diTokens";
+import {ISharingNodeEndpoint}         from "../SharingNodeEndpoint";
+import {DirectResponse}               from "./DirectResonse";
 
 /**
  * P2P endpoint to a built-in AGT
  */
-@Service(DirectSharingNodeEndpointToken)
 export class DirectSharingNodeEndpoint
 	implements ISharingNodeEndpoint {
 
 	recentConnectionServer: ISyncConnectionServer<MessageFromTM, any, any, any>;
 
 	constructor() {
-		this.recentConnectionServer = Container.get(SyncConnectionServerToken);
+		DI.get((
+			recentConnectionServer
+		) => {
+			this.recentConnectionServer = recentConnectionServer
+		}, SYNC_CONNECTION_SERVER);
 	}
 
 	async communicateWithAGT(
@@ -49,3 +49,5 @@ export class DirectSharingNodeEndpoint
 	}
 
 }
+
+DI.set(DIRECT_SHARING_NODE_ENDPOINT, DirectSharingNodeEndpoint)

@@ -1,21 +1,20 @@
-import {JsonSchema}                  from '@airport/ground-control'
-import {IQueryObjectInitializer}     from '@airport/takeoff'
-import {QueryObjectInitializerToken} from '@airport/takeoff/lib/InjectionTokens'
+import {DI}              from '@airport/di'
+import {JsonSchema}      from '@airport/ground-control'
 import {
-	Inject,
-	Service
-}                                    from 'typedi'
-import {ISchemaBuilder}              from './builder/ISchemaBuilder'
-import {ISchemaChecker}              from './checker/SchemaChecker'
+	IQueryObjectInitializer,
+	QUERY_OBJECT_INITIALIZER
+}                        from '@airport/takeoff'
+import {ISchemaBuilder}  from './builder/ISchemaBuilder'
+import {ISchemaChecker}  from './checker/SchemaChecker'
 import {
-	SchemaBuilderToken,
-	SchemaCheckerToken,
-	SchemaInitializerToken,
-	SchemaLocatorToken,
-	SchemaRecorderToken
-}                                    from './InjectionTokens'
-import {ISchemaLocator}              from './locator/SchemaLocator'
-import {ISchemaRecorder}             from './recorder/SchemaRecorder'
+	SCHEMA_BUILDER,
+	SCHEMA_CHECKER,
+	SCHEMA_INITIALIZER,
+	SCHEMA_LOCATOR,
+	SCHEMA_RECORDER
+}                        from './diTokens'
+import {ISchemaLocator}  from './locator/SchemaLocator'
+import {ISchemaRecorder} from './recorder/SchemaRecorder'
 
 export interface ISchemaInitializer {
 
@@ -25,22 +24,30 @@ export interface ISchemaInitializer {
 
 }
 
-@Service(SchemaInitializerToken)
 export class SchemaInitializer
 	implements ISchemaInitializer {
 
-	constructor(
-		@Inject(QueryObjectInitializerToken)
-		private queryObjectInitializer: IQueryObjectInitializer,
-		@Inject(SchemaBuilderToken)
-		private schemaBuilder: ISchemaBuilder,
-		@Inject(SchemaCheckerToken)
-		private schemaChecker: ISchemaChecker,
-		@Inject(SchemaLocatorToken)
-		private schemaLocator: ISchemaLocator,
-		@Inject(SchemaRecorderToken)
-		private schemaRecorder: ISchemaRecorder
-	) {
+	private queryObjectInitializer: IQueryObjectInitializer
+	private schemaBuilder: ISchemaBuilder
+	private schemaChecker: ISchemaChecker
+	private schemaLocator: ISchemaLocator
+	private schemaRecorder: ISchemaRecorder
+
+	constructor() {
+		DI.get((
+			queryObjectInitializer,
+			schemaBuilder,
+			schemaChecker,
+			schemaLocator,
+			schemaRecorder
+			) => {
+				this.queryObjectInitializer = queryObjectInitializer
+				this.schemaBuilder          = schemaBuilder
+				this.schemaChecker          = schemaChecker
+				this.schemaLocator          = schemaLocator
+				this.schemaRecorder         = schemaRecorder
+			}, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER, SCHEMA_CHECKER,
+			SCHEMA_LOCATOR, SCHEMA_RECORDER)
 	}
 
 	async initialize(
@@ -79,3 +86,5 @@ export class SchemaInitializer
 	}
 
 }
+
+DI.set(SCHEMA_INITIALIZER, SchemaInitializer)

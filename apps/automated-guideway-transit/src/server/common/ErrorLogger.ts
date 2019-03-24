@@ -1,7 +1,7 @@
 import {ILogger}             from "@airport/approach-lighting-system";
 import {TerminalCredentials} from "@airport/arrivals-n-departures";
-import {Service}             from "typedi";
-import {ErrorLoggerToken}    from "../../InjectionTokens";
+import {DI}                  from '@airport/di'
+import {ERROR_LOGGER}        from "../../diTokens";
 import {ServerErrorType}     from "../../model/ServerErrorType";
 
 export type ErroneousEntityInfo = string | number;
@@ -17,7 +17,6 @@ export interface IErrorLogger {
 
 }
 
-@Service(ErrorLoggerToken)
 export class ErrorLogger
 	implements IErrorLogger {
 
@@ -36,3 +35,5 @@ export class ErrorLogger
 	}
 
 }
+
+DI.set(ERROR_LOGGER, ErrorLogger)

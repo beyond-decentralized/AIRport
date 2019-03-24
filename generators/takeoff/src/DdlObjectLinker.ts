@@ -1,3 +1,4 @@
+import {DI}                from '@airport/di'
 import {
 	ColumnId,
 	DomainId,
@@ -6,8 +7,8 @@ import {
 	RelationId,
 	SchemaIndex,
 	SchemaVersionId
-}                             from '@airport/ground-control'
-import {IDomain}              from '@airport/territory'
+}                          from '@airport/ground-control'
+import {IDomain}           from '@airport/territory'
 import {
 	ISchema,
 	ISchemaColumn,
@@ -18,10 +19,9 @@ import {
 	ISchemaRelation,
 	ISchemaRelationColumn,
 	ISchemaVersion
-}                             from '@airport/traffic-pattern'
-import {Service}              from 'typedi'
-import {DdlObjectLinkerToken} from './InjectionTokens'
-import {DdlObjects}           from './QueryObjectInitializer'
+}                          from '@airport/traffic-pattern'
+import {DDL_OBJECT_LINKER} from './diTokens'
+import {DdlObjects}        from './QueryObjectInitializer'
 
 export interface IDdlObjectLinker {
 
@@ -31,7 +31,6 @@ export interface IDdlObjectLinker {
 
 }
 
-@Service(DdlObjectLinkerToken)
 export class DdlObjectLinker
 	implements IDdlObjectLinker {
 
@@ -39,17 +38,17 @@ export class DdlObjectLinker
 		ddlObjects: DdlObjects
 	): void {
 		const {
-						columns,
-						domains,
-						entities,
-						latestSchemaVersions,
-						properties,
-						propertyColumns,
-						relationColumns,
-						relations,
-						schemaReferences,
-						schemas
-					} = ddlObjects
+			      columns,
+			      domains,
+			      entities,
+			      latestSchemaVersions,
+			      properties,
+			      propertyColumns,
+			      relationColumns,
+			      relations,
+			      schemaReferences,
+			      schemas
+		      } = ddlObjects
 
 		const schemaVersionMapById = this.linkDomainsAndSchemasAndVersions(
 			domains, schemas, latestSchemaVersions, schemaReferences)
@@ -58,9 +57,9 @@ export class DdlObjectLinker
 			schemaVersionMapById, entities)
 
 		const {
-						propertyMapById,
-						relationMapById
-					} = this.linkPropertiesAndRelations(
+			      propertyMapById,
+			      relationMapById
+		      } = this.linkPropertiesAndRelations(
 			entityMapById, properties, relations)
 
 		this.linkColumns(entityMapById, propertyMapById, relationMapById,
@@ -121,7 +120,7 @@ export class DdlObjectLinker
 
 			ownSchemaVersion.references[schemaReference.index] = schemaReference
 			ownSchemaVersion.referencesMapByName[referencedSchemaVersion.schema.name]
-																												 = schemaReference
+			                                                   = schemaReference
 
 			referencedSchemaVersion.referencedBy.push(schemaReference)
 			referencedSchemaVersion.referencedByMapByName[ownSchemaVersion.schema.name]
@@ -146,9 +145,9 @@ export class DdlObjectLinker
 			const schemaVersion  = schemaVersionMapById.get(entity.schemaVersion.id)
 			entity.schemaVersion = schemaVersion
 			schemaVersion.entities[entity.index]
-													 = entity
+			                     = entity
 			schemaVersion.entityMapByName[entity.name]
-													 = entity
+			                     = entity
 
 			entity.columns            = []
 			entity.properties         = []
@@ -229,13 +228,13 @@ export class DdlObjectLinker
 		) => {
 			columnMapById.set(column.id, column)
 
-			const entity = entityMapById.get(column.entity.id)
-			entity.columns[column.index] = column
+			const entity                  = entityMapById.get(column.entity.id)
+			entity.columns[column.index]  = column
 			entity.columnMap[column.name] = column
 
-			if(column.idIndex || column.idIndex === 0) {
+			if (column.idIndex || column.idIndex === 0) {
 				entity.idColumns[column.idIndex] = column
-				entity.idColumnMap[column.name] = column
+				entity.idColumnMap[column.name]  = column
 			}
 
 			column.entity = entity
@@ -245,13 +244,13 @@ export class DdlObjectLinker
 		propertyColumns.forEach((
 			propertyColumn: ISchemaPropertyColumn
 		) => {
-			const column = columnMapById.get(propertyColumn.column.id);
+			const column = columnMapById.get(propertyColumn.column.id)
 			column.propertyColumns.push(propertyColumn)
 
 			const property = propertyMapById.get(propertyColumn.property.id)
 			property.propertyColumns.push(propertyColumn)
 
-			propertyColumn.column = column
+			propertyColumn.column   = column
 			propertyColumn.property = property
 		})
 
@@ -270,11 +269,13 @@ export class DdlObjectLinker
 			const oneRelation = relationMapById.get(relationColumn.oneRelation.id)
 			oneRelation.oneRelationColumns.push(relationColumn)
 
-			relationColumn.manyColumn = manyColumn
+			relationColumn.manyColumn   = manyColumn
 			relationColumn.manyRelation = manyRelation
-			relationColumn.oneColumn = oneColumn
-			relationColumn.oneRelation = oneRelation
+			relationColumn.oneColumn    = oneColumn
+			relationColumn.oneRelation  = oneRelation
 		})
 	}
 
 }
+
+DI.set(DDL_OBJECT_LINKER, DdlObjectLinker)

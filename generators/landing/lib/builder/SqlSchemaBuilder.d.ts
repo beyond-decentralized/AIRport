@@ -3,7 +3,7 @@ import { ISchemaBuilder } from './ISchemaBuilder';
 export declare abstract class SqlSchemaBuilder implements ISchemaBuilder {
     protected dbSchemaUtils: IDbSchemaUtils;
     protected storeDriver: IStoreDriver;
-    constructor(dbSchemaUtils: IDbSchemaUtils, storeDriver: IStoreDriver);
+    constructor();
     build(jsonSchema: JsonSchema): Promise<void>;
     abstract createSchema(jsonSchema: JsonSchema): Promise<void>;
     buildTable(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): Promise<void>;

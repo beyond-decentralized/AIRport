@@ -4,64 +4,69 @@ import {
 	IMessageToTMDeserializer,
 	IMessageToTMVerifier,
 	MessageFromTM,
-	MessageFromTMSerializerToken,
-	MessageToTMDeserializerToken,
-	MessageToTMVerifierToken,
 	SerializedBatchedMessagesToTM
-}                             from "@airport/arrivals-n-departures";
-import {ISharingNode}         from "@airport/moving-walkway";
+}                                from '@airport/arrivals-n-departures'
 import {
-	Inject,
-	Service
-}                             from "typedi";
+	MESSAGE_FROM_TM_SERIALIZER,
+	MESSAGE_TO_TM_DESERIALIZER,
+	MESSAGE_TO_TM_VERIFIER
+}                                from '@airport/arrivals-n-departures/lib/src'
+import {DI}                      from '@airport/di'
+import {ISharingNode}            from '@airport/moving-walkway'
+import {GROUND_TRANSPORT_LOGGER} from '../../../Constants'
 import {
-	GroundTransportLogger,
-	HttpSharingNodeEndpointToken,
-}                             from "../../../InjectionTokens";
-import {ISharingNodeEndpoint} from "../SharingNodeEndpoint";
+	HTTP_SHARING_NODE_ENDPOINT,
+}                                from '../../../diTokens'
+import {ISharingNodeEndpoint}    from '../SharingNodeEndpoint'
 
-const log = GroundTransportLogger.add('HttpSharingNodeEndpoint');
+const log = GROUND_TRANSPORT_LOGGER.add('HttpSharingNodeEndpoint')
 
 /**
  * P2P endpoint to a built-in AGT
  */
-@Service(HttpSharingNodeEndpointToken)
 export class HttpSharingNodeEndpoint
 	implements ISharingNodeEndpoint {
 
-	xhr = new XMLHttpRequest();
-	agtUrl: string;
+	xhr = new XMLHttpRequest()
+	agtUrl: string
 
-	constructor(
-		@Inject(MessageFromTMSerializerToken)
-		private messageFromTMSerializer: IMessageFromTMSerializer,
-		@Inject(MessageToTMDeserializerToken)
-		private messageToTMDeserializer: IMessageToTMDeserializer,
-		@Inject(MessageToTMVerifierToken)
-		private messageToTMVerifier: IMessageToTMVerifier,
-	) {
+	private messageFromTMSerializer: IMessageFromTMSerializer
+	private messageToTMDeserializer: IMessageToTMDeserializer
+	private messageToTMVerifier: IMessageToTMVerifier
+
+	constructor() {
+		DI.get((
+			messageFromTMSerializer,
+			messageToTMDeserializer,
+			messageToTMVerifier
+			) => {
+				this.messageFromTMSerializer = messageFromTMSerializer
+				this.messageToTMDeserializer = messageToTMDeserializer
+				this.messageToTMVerifier     = messageToTMVerifier
+			}, MESSAGE_FROM_TM_SERIALIZER, MESSAGE_TO_TM_DESERIALIZER,
+			MESSAGE_TO_TM_VERIFIER)
 	}
 
 	async communicateWithAGT(
 		sharingNode: ISharingNode,
 		message: MessageFromTM
 	): Promise<BatchedMessagesToTM> {
-		const serializedMessageFromTM = this.messageFromTMSerializer.serialize(message);
+		const serializedMessageFromTM = this.messageFromTMSerializer.serialize(message)
 
 		return new Promise<BatchedMessagesToTM>((
 			resolve: (batchedMessages: BatchedMessagesToTM) => void,
 			reject
 		) => {
-			this.xhr.open('PUT', this.agtUrl, true);
-			const _self = this;
+			this.xhr.open('PUT', this.agtUrl, true)
+			const _self     = this
 			this.xhr.onload = function () {
-				const stringBatchedMessagesToTM = this.responseText;
+				const stringBatchedMessagesToTM = this.responseText
 				try {
 					const serializedBatchedMessagesToTM: SerializedBatchedMessagesToTM
-						= JSON.parse(stringBatchedMessagesToTM);
-					const schemaValidationResult = _self.messageToTMVerifier.verifyMessagesBatch(serializedBatchedMessagesToTM);
+						                           = JSON.parse(stringBatchedMessagesToTM)
+					const schemaValidationResult = _self.messageToTMVerifier.verifyMessagesBatch(serializedBatchedMessagesToTM)
 
-					const connectionDataError = schemaValidationResult[0];
+					const connectionDataError = schemaValidationResult[0]
 					if (connectionDataError) {
 						log.error(`
 	Message to TM validation error:
@@ -74,17 +79,19 @@ export class HttpSharingNodeEndpoint
 							connectionDataError,
 							schemaValidationResult[1],
 							schemaValidationResult[2]
-						);
-						reject(new Error('Message to TM validation error:\n\t\tInvalid sync message data schema'));
+						)
+						reject(new Error('Message to TM validation error:\n\t\tInvalid sync message data schema'))
 					}
-					const batchedMessagesToTM = _self.messageToTMDeserializer.deserialize(serializedBatchedMessagesToTM);
-					resolve(batchedMessagesToTM);
+					const batchedMessagesToTM = _self.messageToTMDeserializer.deserialize(serializedBatchedMessagesToTM)
+					resolve(batchedMessagesToTM)
 				} catch (e) {
-					reject(e);
+					reject(e)
 				}
-			};
-			this.xhr.send(serializedMessageFromTM);
-		});
+			}
+			this.xhr.send(serializedMessageFromTM)
+		})
 	}
 
 }
+
+DI.set(HTTP_SHARING_NODE_ENDPOINT, HttpSharingNodeEndpoint)
