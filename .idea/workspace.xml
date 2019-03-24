@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/terminal-map/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/apis/" />
@@ -19,104 +20,22 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-2023080075">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="14" />
-          <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.12" value="2" />
-          <entry key="project.open.time.16" value="1" />
-          <entry key="project.open.time.3" value="1" />
-          <entry key="project.open.time.4" value="3" />
-          <entry key="project.open.time.5" value="3" />
-          <entry key="project.open.time.8" value="1" />
-          <entry key="project.opened" value="14" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="js" value="2" />
-          <entry key="json" value="7" />
-          <entry key="ts" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="JSON" value="7" />
-          <entry key="JavaScript" value="2" />
-          <entry key="TypeScript" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="js" value="2" />
-          <entry key="txt" value="204" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="JavaScript" value="2" />
-          <entry key="PLAIN_TEXT" value="204" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.js.language.service.starts">
-        <counts>
-          <entry key="TypeScriptServerServiceImpl" value="1" />
-        </counts>
-      </usages-collector>
-    </session>
-    <session id="-1608385056">
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="js" value="1" />
-          <entry key="json" value="6" />
-          <entry key="ts" value="9" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="JSON" value="6" />
-          <entry key="JavaScript" value="1" />
-          <entry key="TypeScript" value="9" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="ts" value="31" />
-          <entry key="txt" value="101" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="PLAIN_TEXT" value="101" />
-          <entry key="TypeScript" value="31" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="4" />
-          <entry key="project.open.time.17" value="1" />
-          <entry key="project.open.time.8" value="2" />
-          <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="4" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.js.language.service.starts">
-        <counts>
-          <entry key="TypeScriptServerServiceImpl" value="3" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/rush.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="304">
               <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="152">
+              <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -132,6 +51,7 @@
       <dir>C:\Users\Papa\dac\airport\generators\runway\src</dir>
     </dirStrings>
   </component>
+  <component name="GOROOT" path="/snap/go/3417" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -192,33 +112,21 @@
       </list>
     </option>
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
-    <package-json value="$PROJECT_DIR$/package.json" />
-  </component>
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
-  </component>
-  <component name="NodePackageJsonFileManager">
-    <packageJsonPaths>
-      <path value="$PROJECT_DIR$/package.json" />
-    </packageJsonPaths>
-  </component>
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1920" />
-    <option name="y" value="-2" />
+    <option name="x" value="3840" />
+    <option name="y" value="25" />
     <option name="width" value="1920" />
-    <option name="height" value="1082" />
+    <option name="height" value="1055" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -226,42 +134,17 @@
               <item name="airport" type="b2602c69:ProjectViewProjectNode" />
               <item name="airport" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport" type="462c0819:PsiDirectoryNode" />
-              <item name="schemas" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport" type="462c0819:PsiDirectoryNode" />
-              <item name="schemas" type="462c0819:PsiDirectoryNode" />
-              <item name="travel-document-checkpoint" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport" type="462c0819:PsiDirectoryNode" />
-              <item name="schemas" type="462c0819:PsiDirectoryNode" />
-              <item name="travel-document-checkpoint" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="airport" type="b2602c69:ProjectViewProjectNode" />
-              <item name="airport" type="462c0819:PsiDirectoryNode" />
-              <item name="schemas" type="462c0819:PsiDirectoryNode" />
-              <item name="travel-document-checkpoint" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ddl" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="go.gopath.indexing.explicitly.defined" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/schemas/territory" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
@@ -277,7 +160,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Node.js.traffic-pattern">
+  <component name="RunManager">
     <configuration name="holding-pattern" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/holding-pattern">
       <method v="2" />
     </configuration>
@@ -287,11 +170,6 @@
     <configuration name="traffic-pattern" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/traffic-pattern">
       <method v="2" />
     </configuration>
-    <list>
-      <item itemvalue="Node.js.territory" />
-      <item itemvalue="Node.js.traffic-pattern" />
-      <item itemvalue="Node.js.holding-pattern" />
-    </list>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -321,6 +199,10 @@
       <workItem from="1536239069971" duration="159000" />
       <workItem from="1536239253066" duration="233000" />
       <workItem from="1536239510826" duration="164000" />
+      <workItem from="1536240102449" duration="93000" />
+      <workItem from="1539352081334" duration="614000" />
+      <workItem from="1539354406505" duration="1212000" />
+      <workItem from="1539565089620" duration="2000" />
     </task>
     <task id="LOCAL-00001" summary="adding not null constraints">
       <created>1535641136191</created>
@@ -399,20 +281,27 @@
       <option name="project" value="LOCAL" />
       <updated>1536239666461</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="moved Selector to 'check-in'">
+      <created>1536240165379</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1536240165379</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27986000" />
+    <option name="totallyTimeSpent" value="29907000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
-    <editor active="true" />
+    <frame x="3840" y="25" width="1920" height="1055" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15314835" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49947312" weight="0.33945945" />
@@ -424,7 +313,8 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="TypeScript" order="9" weight="0.32983193" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50052685" side_tool="true" weight="0.39875388" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.32983193" />
+      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.33909288" />
+      <window_info anchor="right" id="Database" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.2265625" />
@@ -432,9 +322,6 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
@@ -444,7 +331,8 @@
     <MESSAGE value="finished in-memory ddl for 'takeoff', started adding datastructure setup for 'landing'" />
     <MESSAGE value="working on Q Object generation 'takeoff' (and related changes to schema&#10;generation)" />
     <MESSAGE value="adjustments to 'runway' needed by 'bumperpoll'" />
-    <option name="LAST_COMMIT_MESSAGE" value="adjustments to 'runway' needed by 'bumperpoll'" />
+    <MESSAGE value="moved Selector to 'check-in'" />
+    <option name="LAST_COMMIT_MESSAGE" value="moved Selector to 'check-in'" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -583,6 +471,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
           <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
         </state>
       </provider>
     </entry>

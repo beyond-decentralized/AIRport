@@ -1,25 +1,20 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const holding_pattern_1 = require("@airport/holding-pattern");
 const terminal_map_1 = require("@airport/terminal-map");
+const tower_1 = require("@airport/tower");
 const DeltaStore_1 = require("../../data/DeltaStore");
 const diTokens_1 = require("../../diTokens");
-let RepositoryManager = class RepositoryManager {
-    constructor(utils, databaseFacade, repositoryDao) {
-        this.utils = utils;
-        this.databaseFacade = databaseFacade;
-        this.repositoryDao = repositoryDao;
+class RepositoryManager {
+    constructor() {
         this.repositoriesById = {};
+        di_1.DI.get((databaseFacade, repositoryDao, utils) => {
+            this.dbFacade = databaseFacade;
+            this.repositoryDao = repositoryDao;
+            this.utils = utils;
+        }, tower_1.ENTITY_MANAGER, holding_pattern_1.REPOSITORY_DAO, air_control_1.UTILS);
     }
     async initialize() {
         await this.ensureRepositoryRecords();
@@ -70,29 +65,26 @@ let RepositoryManager = class RepositoryManager {
             select: {}
         });
         /*
-                if (!this.repositories.length) {
-                    let deltaStoreConfig = config.deltaStoreConfig;
-                    if (!deltaStoreConfig) {
-                        throw `Delta store is not configured`;
-                    }
-                    let repository = await this.createRepositoryRecord(config.appName,
-                        deltaStoreConfig.changeListConfig.distributionStrategy,
-                        deltaStoreConfig.offlineDeltaStore.type,
-                        deltaStoreConfig.setupInfo.platformType);
-                }
-                */
+                        if (!this.repositories.length) {
+                                let deltaStoreConfig = config.deltaStoreConfig;
+                                if (!deltaStoreConfig) {
+                                        throw `Delta store is not configured`;
+                                }
+                                let repository = await this.createRepositoryRecord(config.appName,
+                                        deltaStoreConfig.changeListConfig.distributionStrategy,
+                                        deltaStoreConfig.offlineDeltaStore.type,
+                                        deltaStoreConfig.setupInfo.platformType);
+                        }
+                        */
     }
     addDeltaStore(repository) {
         let sharingAdaptor = DeltaStore_1.getSharingAdaptor(repository.platform);
         let jsonDeltaStoreConfig = {
             changeList: {
                 distributionStrategy: repository.distributionStrategy
-            },
-            offlineDeltaStore: {
-                type: this.databaseFacade.storeType
-            },
-            recordIdField: 'id',
-            platform: repository.platform
+            }, offlineDeltaStore: {
+                type: this.dbFacade.storeType
+            }, recordIdField: 'id', platform: repository.platform
         };
         if (repository.platformConfig) {
             let platformConfig = JSON.parse(repository.platformConfig);
@@ -100,7 +92,7 @@ let RepositoryManager = class RepositoryManager {
         }
         let deltaStoreConfig = new terminal_map_1.DeltaStoreConfig(jsonDeltaStoreConfig);
         let deltaStore = new DeltaStore_1.DeltaStore(deltaStoreConfig, sharingAdaptor);
-        deltaStore.config.changeListConfig.changeListInfo.dbId = this.databaseFacade.name;
+        deltaStore.config.changeListConfig.changeListInfo.dbId = this.dbFacade.name;
         this.deltaStore[repository.id] = deltaStore;
         return deltaStore;
     }
@@ -147,11 +139,11 @@ let RepositoryManager = class RepositoryManager {
         }
         let columns = rawInsertValues.columns.slice();
         if (columns.some((column, index) => {
-            return column.fieldName === REPOSITORY_FIELD;
+            return column.fieldName === terminal_map_1.REPOSITORY_FIELD;
         })) {
             return rawInsertValues;
         }
-        columns.push(qEntity[REPOSITORY_FIELD]);
+        columns.push(qEntity[terminal_map_1.REPOSITORY_FIELD]);
         let values = rawInsertValues.values.slice();
         for (let i = 0; i < values.length; i++) {
             let row = values[i].slice();
@@ -159,9 +151,7 @@ let RepositoryManager = class RepositoryManager {
             row.push(repository.id);
         }
         return {
-            insertInto: qEntity,
-            columns: columns,
-            values: values
+            insertInto: qEntity, columns: columns, values: values
         };
     }
     ensureRepositoryLinkOnUpdateWhere(qEntity, repository, rawUpdate) {
@@ -183,12 +173,7 @@ let RepositoryManager = class RepositoryManager {
             where: air_control_1.and(rawDelete.where, qEntity.repository.id.equals(repository.id))
         };
     }
-};
-RepositoryManager = __decorate([
-    __param(0, Inject(_ => UtilsToken)),
-    __param(1, Inject(_ => EntityManagerToken)),
-    __param(2, Inject(_ => RepositoryDaoToken))
-], RepositoryManager);
+}
 exports.RepositoryManager = RepositoryManager;
 di_1.DI.set(diTokens_1.REPOSITORY_MANAGER, RepositoryManager);
 //# sourceMappingURL=RepositoryManager.js.map

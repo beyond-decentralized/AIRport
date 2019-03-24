@@ -1,13 +1,14 @@
 import {DI}                         from '@airport/di'
 import {
-	ISharingNode,
 	SharingNodeSyncFrequency
 }                                   from '@airport/moving-walkway'
+import {withLatestFrom}             from '@airport/observe'
 import {
 	ITerminalStore,
 	TERMINAL_STORE,
 }                                   from '@airport/terminal-map'
 import {ITerminal}                  from '@airport/travel-document-checkpoint'
+import {AbstractCompletable}        from '../../AbstractCompletable'
 import {
 	SYNC_NODE_MANAGER,
 	SYNC_OUT_COORDINATOR,

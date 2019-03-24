@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
+const observe_1 = require("@airport/observe");
 const terminal_map_1 = require("@airport/terminal-map");
+const AbstractCompletable_1 = require("../../AbstractCompletable");
 const diTokens_1 = require("../../diTokens");
-class SynchronizationOutCoordinator extends AbstractCompletable {
+class SynchronizationOutCoordinator extends AbstractCompletable_1.AbstractCompletable {
     constructor() {
         super();
         this.nodesBySyncFrequency = new Map();
@@ -12,7 +14,7 @@ class SynchronizationOutCoordinator extends AbstractCompletable {
     }
     async initialize() {
         await this.syncNodeManager.initialize();
-        this.record(this.terminalStore.nodesBySyncFrequency.pipe(withLatestFrom(this.terminalStore.terminal)).subscribe(([nodesBySyncFrequency, terminal]) => {
+        this.record(this.terminalStore.nodesBySyncFrequency.pipe(observe_1.withLatestFrom(this.terminalStore.terminal)).subscribe(([nodesBySyncFrequency, terminal]) => {
             if (!terminal) {
                 return;
             }

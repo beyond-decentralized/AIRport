@@ -9,6 +9,7 @@ import {
 	RawDelete,
 	RawInsertValues,
 	RawUpdate,
+	UTILS,
 }                           from '@airport/air-control'
 import {DI}                 from '@airport/di'
 import {StoreType}          from '@airport/ground-control'
@@ -16,14 +17,18 @@ import {
 	IActor,
 	IRepository,
 	IRepositoryDao,
-	IRepositoryTransactionHistory
+	IRepositoryTransactionHistory,
+	QAbstractRepositoryEntity,
+	REPOSITORY_DAO
 }                           from '@airport/holding-pattern'
 import {
 	DeltaStoreConfig,
 	DistributionStrategy,
 	JsonDeltaStoreConfig,
 	PlatformType,
+	REPOSITORY_FIELD,
 }                           from '@airport/terminal-map'
+import {ENTITY_MANAGER}     from '@airport/tower'
 import {ITerminal}          from '@airport/travel-document-checkpoint'
 import {
 	DeltaStore,
@@ -63,23 +68,15 @@ export interface IRepositoryManager {
 		recordIdField: string
 	): Promise<IRepository>;
 
-	getRepository(
-		repositoryId: number
-	): Promise<IRepository>;
+	getRepository(repositoryId: number): Promise<IRepository>;
 
-	getActor(
-		actorId: number
-	): Promise<IActor>;
+	getActor(actorId: number): Promise<IActor>;
 
 	goOffline(): void;
 
-	getUpdateState(
-		repository: IRepository
-	): UpdateState;
+	getUpdateState(repository: IRepository): UpdateState;
 
-	setUpdateStateForAll(
-		updateState: UpdateState
-	): void;
+	setUpdateStateForAll(updateState: UpdateState): void;
 
 	setUpdateState(
 		repository: IRepository,
@@ -107,31 +104,31 @@ export interface IRepositoryManager {
 		rawDelete: RawDelete<IQE>
 	): RawDelete<IQE>;
 
-	findReposWithDetailsByIds(
-		...repositoryIds: number[]
-	): Promise<MappedEntityArray<IRepository>>;
+	findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>>;
 }
 
 export class RepositoryManager
 	implements IRepositoryManager {
 
+	private dbFacade: IDatabaseFacade
 	deltaStore: IDeltaStore
 	repositories: IRepository[]
 	repositoriesById: { [repositoryId: string]: IRepository } = {}
+	private repositoryDao: IRepositoryDao
 	terminal: ITerminal
 	userEmail: string
+	private utils: IUtils
 
-	constructor(
-		@Inject(
-			_ => UtilsToken)
-		private utils: IUtils,
-		@Inject(
-			_ => EntityManagerToken)
-		private databaseFacade: IDatabaseFacade,
-		@Inject(
-			_ => RepositoryDaoToken)
-		private repositoryDao: IRepositoryDao,
-	) {
+	constructor() {
+		DI.get((
+			databaseFacade,
+			repositoryDao,
+			utils
+		) => {
+			this.dbFacade      = databaseFacade
+			this.repositoryDao = repositoryDao
+			this.utils         = utils
+		}, ENTITY_MANAGER, REPOSITORY_DAO, UTILS)
 	}
 
 	async initialize(): Promise<void> {
@@ -143,11 +140,8 @@ export class RepositoryManager
 		}
 	}
 
-	async findReposWithDetailsByIds(
-		...repositoryIds: number[],
-	): Promise<MappedEntityArray<IRepository>> {
-		return await this.repositoryDao.findReposWithDetailsByIds(
-			repositoryIds, this.terminal.name, this.userEmail)
+	async findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>> {
+		return await this.repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail)
 	}
 
 	async createRepository(
@@ -164,15 +158,11 @@ export class RepositoryManager
 		return repository
 	}
 
-	async getRepository(
-		repositoryId: number
-	): Promise<IRepository> {
+	async getRepository(repositoryId: number): Promise<IRepository> {
 		throw `not implemented`
 	}
 
-	getActor(
-		actorId: number
-	): Promise<IActor> {
+	getActor(actorId: number): Promise<IActor> {
 		throw `not implemented`
 	}
 
@@ -183,15 +173,11 @@ export class RepositoryManager
 		}
 	}
 
-	getUpdateState(
-		repository: IRepository
-	): UpdateState {
+	getUpdateState(repository: IRepository): UpdateState {
 		return this.deltaStore[repository.id].updateState
 	}
 
-	setUpdateStateForAll(
-		updateState: UpdateState
-	): void {
+	setUpdateStateForAll(updateState: UpdateState): void {
 		for (let repositoryId in this.deltaStore) {
 			let deltaStore         = this.deltaStore[repositoryId]
 			deltaStore.updateState = updateState
@@ -215,32 +201,27 @@ export class RepositoryManager
 			select: {}
 		})
 		/*
-				if (!this.repositories.length) {
-					let deltaStoreConfig = config.deltaStoreConfig;
-					if (!deltaStoreConfig) {
-						throw `Delta store is not configured`;
-					}
-					let repository = await this.createRepositoryRecord(config.appName,
-						deltaStoreConfig.changeListConfig.distributionStrategy,
-						deltaStoreConfig.offlineDeltaStore.type,
-						deltaStoreConfig.setupInfo.platformType);
-				}
-				*/
+						if (!this.repositories.length) {
+								let deltaStoreConfig = config.deltaStoreConfig;
+								if (!deltaStoreConfig) {
+										throw `Delta store is not configured`;
+								}
+								let repository = await this.createRepositoryRecord(config.appName,
+										deltaStoreConfig.changeListConfig.distributionStrategy,
+										deltaStoreConfig.offlineDeltaStore.type,
+										deltaStoreConfig.setupInfo.platformType);
+						}
+						*/
 	}
 
-	private addDeltaStore(
-		repository: IRepository
-	): IDeltaStore {
+	private addDeltaStore(repository: IRepository): IDeltaStore {
 		let sharingAdaptor                             = getSharingAdaptor(repository.platform)
 		let jsonDeltaStoreConfig: JsonDeltaStoreConfig = {
 			changeList: {
 				distributionStrategy: repository.distributionStrategy
-			},
-			offlineDeltaStore: {
-				type: this.databaseFacade.storeType
-			},
-			recordIdField: 'id',
-			platform: repository.platform
+			}, offlineDeltaStore: {
+				type: this.dbFacade.storeType
+			}, recordIdField: 'id', platform: repository.platform
 		}
 
 		if (repository.platformConfig) {
@@ -249,7 +230,7 @@ export class RepositoryManager
 		}
 		let deltaStoreConfig                                   = new DeltaStoreConfig(jsonDeltaStoreConfig)
 		let deltaStore                                         = new DeltaStore(deltaStoreConfig, sharingAdaptor)
-		deltaStore.config.changeListConfig.changeListInfo.dbId = this.databaseFacade.name
+		deltaStore.config.changeListConfig.changeListInfo.dbId = this.dbFacade.name
 		this.deltaStore[repository.id]                         = deltaStore
 
 		return deltaStore
@@ -284,16 +265,12 @@ export class RepositoryManager
 		this.repositories = await this.repositoryDao.find.tree({
 			select: {}
 		})
-		this.repositories.forEach((
-			repository
-		) => {
+		this.repositories.forEach((repository) => {
 			this.repositoriesById[repository.id] = repository
 		})
 	}
 
-	startEnsureGraphInSingleRepository(
-		transaction: IRepositoryTransactionHistory
-	): void {
+	startEnsureGraphInSingleRepository(transaction: IRepositoryTransactionHistory): void {
 		// TODO: add to transaction for remote execution
 		// (EntityChangeType.QUERY_UNIQUE_RECORD) transaction.addNewFindOneVerify();
 	}
@@ -333,14 +310,11 @@ export class RepositoryManager
 		}
 
 		return {
-			insertInto: qEntity,
-			columns: columns,
-			values: values
+			insertInto: qEntity, columns: columns, values: values
 		}
 	}
 
-	ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties,
-		IQE extends IQEntityInternal>(
+	ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal>(
 		qEntity: IQEntityInternal,
 		repository: IRepository,
 		rawUpdate: RawUpdate<IEUP, IQE>
@@ -351,10 +325,7 @@ export class RepositoryManager
 		return {
 			update: rawUpdate.update,
 			set: rawUpdate.set,
-			where: and(
-				rawUpdate.where,
-				(<QRepositoryEntity><any>qEntity).repository.id.equals(repository.id)
-			)
+			where: and(rawUpdate.where, (<QAbstractRepositoryEntity><any>qEntity).repository.id.equals(repository.id))
 		}
 	}
 
@@ -368,10 +339,7 @@ export class RepositoryManager
 		}
 		return {
 			deleteFrom: rawDelete.deleteFrom,
-			where: and(
-				rawDelete.where,
-				(<QRepositoryEntity><any>qEntity).repository.id.equals(repository.id)
-			)
+			where: and(rawDelete.where, (<QAbstractRepositoryEntity><any>qEntity).repository.id.equals(repository.id))
 		}
 	}
 
