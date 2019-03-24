@@ -1,5 +1,5 @@
+import { ISyncConnectionServer, MessageFromTM, MessageToTM } from "@airport/arrivals-n-departures";
 import { ISharingNode } from "@airport/moving-walkway";
-import { ISyncConnectionServer, MessageFromTM, MessageToTM } from "@airport/ground-control";
 import { ISharingNodeEndpoint } from "../SharingNodeEndpoint";
 /**
  * P2P endpoint to a built-in AGT

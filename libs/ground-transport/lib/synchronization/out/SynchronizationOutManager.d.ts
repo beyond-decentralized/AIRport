@@ -1,15 +1,16 @@
-import { IUtils } from "@airport/air-control";
-import { IDatabase, IRepositoryDao, IRepositoryTransactionHistoryDao } from "@airport/holding-pattern";
-import { IRepositoryTransactionBlockDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISharingNode, ISharingNodeDao, ISharingNodeDatabaseDao, ISharingNodeRepositoryDao, ISharingNodeRepoTransBlockDao } from "@airport/moving-walkway";
-import { ISchemaDao } from "@airport/traffic-pattern";
-import { ISyncOutSerializer } from "./SyncOutSerializer";
-import { ISyncOutMessageSender } from "./SyncOutMessageSender";
-import { ISyncOutRepositoryTransactionBlockCreator } from "./SyncOutRepositoryTransactionBlockCreator";
+import { IUtils } from '@airport/air-control';
+import { IRepositoryDao, IRepositoryTransactionHistoryDao } from '@airport/holding-pattern';
+import { IRepositoryTransactionBlockDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISharingNode, ISharingNodeDao, ISharingNodeRepositoryDao, ISharingNodeRepoTransBlockDao, ISharingNodeTerminalDao } from '@airport/moving-walkway';
+import { ISchemaDao } from '@airport/traffic-pattern';
+import { ITerminal } from '@airport/travel-document-checkpoint';
+import { ISyncOutMessageSender } from './SyncOutMessageSender';
+import { ISyncOutRepositoryTransactionBlockCreator } from './SyncOutRepositoryTransactionBlockCreator';
+import { ISyncOutSerializer } from './SyncOutSerializer';
 export interface ISynchronizationOutManager {
-    synchronize(sharingNodes: ISharingNode[], database: IDatabase): Promise<void>;
+    synchronize(sharingNodes: ISharingNode[], terminal: ITerminal): Promise<void>;
 }
 /**
- * Synchronization manager is in charge of maintaining the AIR Database in sync.
+ * Synchronization manager is in charge of maintaining the AIR Terminal in sync.
  *
  * Any number of sync nodes can be configured to communicate
  * over any periods of time.  At any given point in time all pending Repository
@@ -23,7 +24,7 @@ export declare class SynchronizationOutManager implements ISynchronizationOutMan
     private sharingMessageDao;
     private sharingMessageRepoTransBlockDao;
     private sharingNodeDao;
-    private sharingNodeDatabaseDao;
+    private sharingNodeTerminalDao;
     private sharingNodeRepositoryDao;
     private sharingNodeRepoTransBlockDao;
     private repositoryTransactionBlockCreator;
@@ -31,8 +32,8 @@ export declare class SynchronizationOutManager implements ISynchronizationOutMan
     private syncOutMessageSender;
     private syncOutSerializer;
     private utils;
-    constructor(repositoryDao: IRepositoryDao, repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao, schemaDao: ISchemaDao, sharingMessageDao: ISharingMessageDao, sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao, sharingNodeDao: ISharingNodeDao, sharingNodeDatabaseDao: ISharingNodeDatabaseDao, sharingNodeRepositoryDao: ISharingNodeRepositoryDao, sharingNodeRepoTransBlockDao: ISharingNodeRepoTransBlockDao, repositoryTransactionBlockCreator: ISyncOutRepositoryTransactionBlockCreator, repositoryTransactionBlockDao: IRepositoryTransactionBlockDao, syncOutMessageSender: ISyncOutMessageSender, syncOutSerializer: ISyncOutSerializer, utils: IUtils);
-    synchronize(sharingNodes: ISharingNode[], database: IDatabase): Promise<void>;
+    constructor(repositoryDao: IRepositoryDao, repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao, schemaDao: ISchemaDao, sharingMessageDao: ISharingMessageDao, sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao, sharingNodeDao: ISharingNodeDao, sharingNodeTerminalDao: ISharingNodeTerminalDao, sharingNodeRepositoryDao: ISharingNodeRepositoryDao, sharingNodeRepoTransBlockDao: ISharingNodeRepoTransBlockDao, repositoryTransactionBlockCreator: ISyncOutRepositoryTransactionBlockCreator, repositoryTransactionBlockDao: IRepositoryTransactionBlockDao, syncOutMessageSender: ISyncOutMessageSender, syncOutSerializer: ISyncOutSerializer, utils: IUtils);
+    synchronize(sharingNodes: ISharingNode[], terminal: ITerminal): Promise<void>;
     /**
      *
      * @param {SharingNodeId[]} sharingNodeIds

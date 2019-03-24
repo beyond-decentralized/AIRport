@@ -1,16 +1,10 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../../../../../apps/terminal/src/InjectionTokens");
-const Logger_1 = require("@airport/approach-lighting-system/lib/Logger");
-const log = new Logger_1.Logger(InjectionTokens_1.Terminal, "SyncInConsistencyChecker");
-let SyncInConsistencyChecker = class SyncInConsistencyChecker {
+const di_1 = require("@airport/di");
+const Constants_1 = require("../../../Constants");
+const diTokens_1 = require("../../../diTokens");
+const log = Constants_1.GROUND_TRANSPORT_LOGGER.add("SyncInConsistencyChecker");
+class SyncInConsistencyChecker {
     ensureConsistency(message) {
     }
     isRepositoryConsistent() {
@@ -19,9 +13,7 @@ let SyncInConsistencyChecker = class SyncInConsistencyChecker {
     }
     areSchemasConsistent() {
     }
-};
-SyncInConsistencyChecker = __decorate([
-    typedi_1.Service(InjectionTokens_1.SyncInConsistencyCheckerToken)
-], SyncInConsistencyChecker);
+}
 exports.SyncInConsistencyChecker = SyncInConsistencyChecker;
+di_1.DI.set(diTokens_1.SYNC_IN_CONSISTENCY_CHECKER, SyncInConsistencyChecker);
 //# sourceMappingURL=SyncInConsistencyChecker.js.map

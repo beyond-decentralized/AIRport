@@ -1,78 +1,124 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
-const terminal_map_1 = require("@airport/terminal-map");
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../../../InjectionTokens");
-let SyncInRepositoryTransactionBlockCreator = class SyncInRepositoryTransactionBlockCreator {
-    recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const repoTransHistoryMapByRepositoryId = yield this.getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
-            const repositoryTransactionBlocks = [];
-            const sharingMessageRepoTransBlocks = [];
-            const repoTransBlockRepoTransHistories = [];
-            const transactionHistory = this.transactionManager.currentTransHistory;
-            transactionHistory.transactionType = terminal_map_1.TransactionType.REMOTE_SYNC;
-            // split messages by repository and record actor information
-            for (let i = 0; i < dataMessages.length; i++) {
-                const sharingMessage = sharingMessages[i];
-                const dataMessage = dataMessages[i];
-                const data = dataMessage.data;
-                const repositoryTransactionBlock = {
-                    repository: data.repository,
-                    syncOutcomeType: ground_control_1.RepoTransBlockSyncOutcomeType.SYNC_SUCCESSFUL
-                };
-                repositoryTransactionBlocks.push(repositoryTransactionBlock);
-                sharingMessageRepoTransBlocks.push({
-                    sharingMessage,
+const moving_walkway_1 = require("@airport/moving-walkway");
+const lib_1 = require("zipson/lib");
+const diTokens_1 = require("../../../diTokens");
+class SyncInRepositoryTransactionBlockCreator {
+    constructor() {
+        di_1.DI.get((repositoryTransactionBlockDao, missingRecordRepoTransBlockDao, sharingMessageRepoTransBlockDao) => {
+            this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
+            this.missingRecordRepoTransBlockDao = missingRecordRepoTransBlockDao;
+            this.sharingMessageRepoTransBlockDao = sharingMessageRepoTransBlockDao;
+        }, moving_walkway_1.REPO_TRANS_BLOCK_DAO, moving_walkway_1.MISSING_RECORD_REPO_TRANS_BLOCK_DAO, moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO);
+    }
+    async createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas, dataMessagesWithIncompatibleData, dataMessagesToBeUpgraded, dataMessagesWithCompatibleSchemasAndData, dataMessagesWithInvalidData) {
+        let allRepositoryTransactionBlocks = [];
+        const repoTransBlocksNeedingSchemaChanges = this.createRepositoryTransactionBlocks(dataMessagesWithIncompatibleSchemas, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_SCHEMA_CHANGES, true);
+        allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksNeedingSchemaChanges);
+        const repoTransBlocksNeedingDataUpgrades = this.createRepositoryTransactionBlocks(dataMessagesToBeUpgraded, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_DATA_UPGRADES, true);
+        allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksNeedingDataUpgrades);
+        const repoTransBlocksNeedingAdditionalData = this.createRepositoryTransactionBlocks(dataMessagesWithIncompatibleData, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_ADDITIONAL_DATA, true);
+        allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksNeedingAdditionalData);
+        const repoTransBlocksWithInvalidData = this.createRepositoryTransactionBlocks(dataMessagesWithInvalidData, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_INVALID_DATA);
+        allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksWithInvalidData);
+        const repoTransBlocksWithValidDataAndSchemas = this.createRepositoryTransactionBlocks(dataMessagesWithCompatibleSchemasAndData, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_SUCCESSFUL);
+        allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksWithValidDataAndSchemas);
+        await this.repositoryTransactionBlockDao.bulkCreate(allRepositoryTransactionBlocks, false, false);
+        let allDataToTM = [];
+        allDataToTM = allDataToTM.concat(dataMessagesWithIncompatibleSchemas);
+        allDataToTM = allDataToTM.concat(dataMessagesWithIncompatibleData);
+        allDataToTM = allDataToTM.concat(dataMessagesToBeUpgraded);
+        allDataToTM = allDataToTM.concat(dataMessagesWithCompatibleSchemasAndData);
+        allDataToTM = allDataToTM.concat(dataMessagesWithInvalidData);
+        return allDataToTM;
+    }
+    createRepositoryTransactionBlocks(dataMessages, syncOutcomeType, recordContents = false) {
+        const repositoryTransactionBlocks = [];
+        for (const dataMessage of dataMessages) {
+            const data = dataMessage.data;
+            const repositoryTransactionBlock = {
+                contents: recordContents ? lib_1.stringify(data) : null,
+                hash: null,
+                repository: data.repository,
+                source: data.terminal,
+                syncOutcomeType,
+            };
+            dataMessage.repositoryTransactionBlock = repositoryTransactionBlock;
+            repositoryTransactionBlocks.push(repositoryTransactionBlock);
+        }
+        return repositoryTransactionBlocks;
+    }
+    async createMissingRecordRepoTransBlocks(missingRecordDataToTMs) {
+        const missingRecordRepoTransBlocks = missingRecordDataToTMs.map(missingRecordDataToTM => ({
+            missingRecord: missingRecordDataToTM.missingRecord,
+            repositoryTransactionBlock: missingRecordDataToTM
+                .dataMessage.repositoryTransactionBlock
+        }));
+        if (missingRecordRepoTransBlocks.length) {
+            await this.missingRecordRepoTransBlockDao.bulkCreate(missingRecordRepoTransBlocks, false, false);
+        }
+    }
+    async createSharingMessageRepoTransBlocks(allDataToTM) {
+        const sharingMessageRepoTransBlocks = allDataToTM.map(dataToTM => ({
+            sharingMessage: dataToTM.sharingMessage,
+            repositoryTransactionBlock: dataToTM.repositoryTransactionBlock
+        }));
+        await this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
+    }
+    async recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById) {
+        const repoTransHistoryMapByRepositoryId = await this.getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
+        const repositoryTransactionBlocks = [];
+        const sharingMessageRepoTransBlocks = [];
+        // const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = [];
+        const transactionHistory = this.transactionManager.currentTransHistory;
+        transactionHistory.transactionType = ground_control_1.TransactionType.REMOTE_SYNC;
+        // split messages by repository and record actor information
+        for (let i = 0; i < dataMessages.length; i++) {
+            const sharingMessage = sharingMessages[i];
+            const dataMessage = dataMessages[i];
+            const data = dataMessage.data;
+            const repositoryTransactionBlock = {
+                repository: data.repository,
+                syncOutcomeType: arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_SUCCESSFUL
+            };
+            repositoryTransactionBlocks.push(repositoryTransactionBlock);
+            sharingMessageRepoTransBlocks.push({
+                sharingMessage,
+                repositoryTransactionBlock
+            });
+            transactionHistory.repositoryTransactionHistories
+                = transactionHistory.repositoryTransactionHistories.concat(data.repoTransHistories);
+            data.repoTransHistories.forEach((repositoryTransactionHistory) => {
+                repositoryTransactionHistory.repositoryTransactionType = holding_pattern_1.RepositoryTransactionType.REMOTE;
+                repoTransBlockRepoTransHistories.push({
+                    repositoryTransactionHistory,
                     repositoryTransactionBlock
                 });
-                transactionHistory.repositoryTransactionHistories
-                    = transactionHistory.repositoryTransactionHistories.concat(data.repoTransHistories);
-                data.repoTransHistories.forEach((repositoryTransactionHistory) => {
-                    repositoryTransactionHistory.repositoryTransactionType = holding_pattern_1.RepositoryTransactionType.REMOTE;
-                    repoTransBlockRepoTransHistories.push({
-                        repositoryTransactionHistory,
-                        repositoryTransactionBlock
-                    });
-                    transactionHistory.allOperationHistory = transactionHistory
-                        .allOperationHistory.concat(repositoryTransactionHistory.operationHistory);
-                    repositoryTransactionHistory.operationHistory.forEach((operationHistory) => {
-                        transactionHistory.allRecordHistory = transactionHistory
-                            .allRecordHistory.concat(operationHistory.recordHistory);
-                        operationHistory.recordHistory.forEach((recordHistory) => {
-                            transactionHistory.allRecordHistoryNewValues = transactionHistory
-                                .allRecordHistoryNewValues.concat(recordHistory.newValues);
-                            transactionHistory.allRecordHistoryOldValues = transactionHistory
-                                .allRecordHistoryOldValues.concat(recordHistory.oldValues);
-                        });
+                transactionHistory.allOperationHistory = transactionHistory
+                    .allOperationHistory.concat(repositoryTransactionHistory.operationHistory);
+                repositoryTransactionHistory.operationHistory.forEach((operationHistory) => {
+                    transactionHistory.allRecordHistory = transactionHistory
+                        .allRecordHistory.concat(operationHistory.recordHistory);
+                    operationHistory.recordHistory.forEach((recordHistory) => {
+                        transactionHistory.allRecordHistoryNewValues = transactionHistory
+                            .allRecordHistoryNewValues.concat(recordHistory.newValues);
+                        transactionHistory.allRecordHistoryOldValues = transactionHistory
+                            .allRecordHistoryOldValues.concat(recordHistory.oldValues);
                     });
                 });
-            }
-            yield this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
-            yield this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
-            yield this.repoTransBlockRepoTransHistoryDao.bulkCreate(repoTransBlockRepoTransHistories, false, false);
-            return repoTransHistoryMapByRepositoryId;
-        });
+            });
+        }
+        await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
+        await this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
+        // await this.repoTransBlockRepoTransHistoryDao.bulkCreate(
+        // 	repoTransBlockRepoTransHistories, false, false);
+        return repoTransHistoryMapByRepositoryId;
     }
-};
-SyncInRepositoryTransactionBlockCreator = __decorate([
-    typedi_1.Service(InjectionTokens_1.SyncInRepositoryTransactionBlockCreatorToken)
-], SyncInRepositoryTransactionBlockCreator);
+}
 exports.SyncInRepositoryTransactionBlockCreator = SyncInRepositoryTransactionBlockCreator;
+di_1.DI.get(diTokens_1.SYNC_IN_REPO_TRANS_BLOCK_CREATOR, SyncInRepositoryTransactionBlockCreator);
 //# sourceMappingURL=SyncInRepositoryTransactionBlockCreator.js.map

@@ -1,7 +1,7 @@
-import { MessageToTM } from "@airport/ground-control";
 /**
  * Response handler for a built-in AGT (in P2P setup)
  */
+import { MessageToTM } from "@airport/arrivals-n-departures";
 export declare class DirectResponse {
     private callback;
     statusCode: number;

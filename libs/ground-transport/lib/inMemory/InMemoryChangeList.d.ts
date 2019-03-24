@@ -1,5 +1,5 @@
-import { ChangeRecord, ChangeRecordIterator, ChangeError, ChangeListShareInfo, SharedChangeList, SharingPlatformSetupInfo } from "@airport/terminal-map";
-import { Subject } from 'rxjs/Subject';
+import { Subject } from '@airport/observe';
+import { ChangeError, ChangeListShareInfo, ChangeRecord, ChangeRecordIterator, SharedChangeList, SharingPlatformSetupInfo } from "@airport/terminal-map";
 import { InMemoryChangeStore } from "./InMemoryChangeStore";
 /**
  * Created by Papa on 11/26/2016.

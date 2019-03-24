@@ -1,23 +1,21 @@
-import { MessageFromClient } from "@airport/ground-control";
-import { MessageToClient } from "@airport/ground-control/lib/lingo/sync/MessageToClient";
-import { ISharingNode, ISharingNodeDao, SharingNodeId } from "@airport/moving-walkway";
-import { ITerminalStore } from "../../../apps/terminal/src/+state/TerminalStore";
-import { ISharingNodeEndpoint } from "./connect/SharingNodeEndpoint";
-import { ISynchronizationInManager } from "./in/SynchronizationInManager";
+import { BatchedMessagesToTM, MessageFromTM } from '@airport/arrivals-n-departures';
+import { ISharingNode, SharingNodeId } from '@airport/moving-walkway';
+import { ISharingNodeEndpoint } from './connect/SharingNodeEndpoint';
 export interface ISyncNodeManager {
     sharingNodeEndPoint: ISharingNodeEndpoint;
     initialize(): Promise<void>;
-    sendMessages(sharingNodeMap: Map<SharingNodeId, ISharingNode>, messagesBySharingNode: Map<SharingNodeId, MessageFromClient>): Promise<void>;
+    sendMessages(sharingNodeMap: Map<SharingNodeId, ISharingNode>, messagesBySharingNode: Map<SharingNodeId, MessageFromTM>): Promise<void>;
 }
 export declare class SyncNodeManager implements ISyncNodeManager {
+    sharingNodeEndPoint: ISharingNodeEndpoint;
     private sharingNodeDao;
+    private sharingNodeTerminalDao;
     private synchronizationInManager;
     private terminalStore;
-    sharingNodeEndPoint: ISharingNodeEndpoint;
-    constructor(sharingNodeDao: ISharingNodeDao, synchronizationInManager: ISynchronizationInManager, terminalStore: ITerminalStore);
+    constructor();
     initialize(): Promise<void>;
-    sendMessages(sharingNodeMap: Map<SharingNodeId, ISharingNode>, messagesBySharingNode: Map<SharingNodeId, MessageFromClient>): Promise<void>;
-    sendMessage(sharingNode: ISharingNode, message: MessageFromClient): Promise<MessageToClient[]>;
+    sendMessages(sharingNodeMap: Map<SharingNodeId, ISharingNode>, messagesBySharingNode: Map<SharingNodeId, MessageFromTM>): Promise<void>;
+    sendMessage(sharingNode: ISharingNode, message: MessageFromTM): Promise<BatchedMessagesToTM>;
     private serializeMessageDates;
     private deserializeMessageDates;
 }

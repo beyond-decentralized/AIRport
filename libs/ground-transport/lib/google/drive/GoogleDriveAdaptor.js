@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const GoogleApi_1 = require("../GoogleApi");
 const GoogleDriveModel_1 = require("./GoogleDriveModel");
-const GoogleDriveModel_2 = require("./GoogleDriveModel");
 /**
  * Created by Papa on 1/3/2016.
  */
@@ -47,7 +46,7 @@ class GoogleDriveAdaptor {
                 return changeListInfo;
             }
             files.forEach((file) => {
-                if (file.mimeType.indexOf(GoogleDriveModel_2.MimeTypes.REALTIME) === 0) {
+                if (file.mimeType.indexOf(GoogleDriveModel_1.MimeTypes.REALTIME) === 0) {
                     if (changeListInfo.realtimeFileId) {
                         throw `Multiple Realtime files found for Change List: ${changeListInfo.name}`;
                     }

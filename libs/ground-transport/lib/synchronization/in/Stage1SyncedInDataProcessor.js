@@ -1,40 +1,20 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b, _c, _d;
-const typedi_1 = require("typedi");
 const air_control_1 = require("@airport/air-control");
-const moving_walkway_1 = require("@airport/moving-walkway");
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
-const Inject_1 = require("typedi/decorators/Inject");
-const InjectionTokens_1 = require("../../../../apps/terminal/src/InjectionTokens");
-let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
-    constructor(actorDao, repositoryTransactionHistoryDao, repositoryTransactionHistoryDmo, syncInUtils, utils) {
-        this.actorDao = actorDao;
-        this.repositoryTransactionHistoryDao = repositoryTransactionHistoryDao;
-        this.repositoryTransactionHistoryDmo = repositoryTransactionHistoryDmo;
-        this.syncInUtils = syncInUtils;
-        this.utils = utils;
+const moving_walkway_1 = require("@airport/moving-walkway");
+const diTokens_1 = require("../../diTokens");
+class Stage1SyncedInDataProcessor {
+    constructor() {
+        di_1.DI.get((actorDao, repositoryTransactionHistoryDao, repositoryTransactionHistoryDmo, syncInUtils, utils) => {
+            this.actorDao = actorDao;
+            this.repoTransHistoryDao = repositoryTransactionHistoryDao;
+            this.repoTransHistoryDmo = repositoryTransactionHistoryDmo;
+            this.syncInUtils = syncInUtils;
+            this.utils = utils;
+        }, holding_pattern_1.ACTOR_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DMO, diTokens_1.SYNC_IN_UTILS, air_control_1.UTILS);
     }
     /**
      * In stage one:
@@ -46,104 +26,105 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
      * @param {Map<ActorId, IActor>} actorMayById
      * @returns {Promise<void>}
      */
-    performStage1DataProcessing(repoTransHistoryMapByRepositoryId, actorMayById) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // query for all local operations on records in a repository (since the earliest
-            // received change time).  Get the
-            // changes by repository ids or by the actual tables and records in those tables
-            // that will be updated or deleted.
-            const changedRecordIds = new Map();
-            for (const [repositoryId, repoTransHistoriesForRepo] of repoTransHistoryMapByRepositoryId) {
-                const changedRecordsForRepo = {
-                    ids: new Map(),
-                    firstChangeTime: new Date(new Date().getTime() + 10000000000),
-                };
-                changedRecordIds.set(repositoryId, changedRecordsForRepo);
-                for (const repoTransHistory of repoTransHistoriesForRepo) {
-                    // determine the earliest change time of incoming history records
-                    const saveMillis = repoTransHistory.saveTimestamp.getTime();
-                    if (saveMillis
-                        < changedRecordsForRepo.firstChangeTime.getTime()) {
-                        changedRecordsForRepo.firstChangeTime = repoTransHistory.saveTimestamp;
-                    }
-                    for (const operationHistory of repoTransHistory.operationHistory) {
-                        // Collect the Actor related ids
-                        const idsForEntity = this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(changedRecordsForRepo.ids, operationHistory.schema.index), operationHistory.entity.index);
-                        for (const recordHistory of operationHistory.recordHistory) {
-                            // Collect the Actor related ids
-                            this.utils.ensureChildJsSet(idsForEntity, recordHistory.actor.id)
-                                .add(recordHistory.actorRecordId);
-                            // add a map of new values
-                            const newValueMap = new Map();
-                            recordHistory.newValueMap = newValueMap;
-                            for (const newValue of recordHistory.newValues) {
-                                newValueMap.set(newValue.columnIndex, newValue);
-                            }
-                        }
-                    }
-                }
-            }
-            const allRepoTransHistoryMapByRepoId = new Map();
-            const allRemoteRecordDeletions = this.getDeletedRecordIds(allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepositoryId);
-            // find local history for the matching repositories and corresponding time period
-            const localRepoTransHistoryMapByRepositoryId = yield this.repositoryTransactionHistoryDao
-                .findAllLocalChangesForRecordIds(changedRecordIds);
-            const allLocalRecordDeletions = this.getDeletedRecordIds(allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByRepositoryId, true);
-            // Find all actors that modified the locally recorded history, which are not already in the
-            // actorMapById
-            // collect actors not already in cache
-            const newlyFoundActorSet = new Set();
-            for (const [repositoryId, repoTransHistoriesForRepository] of localRepoTransHistoryMapByRepositoryId) {
-                for (const repoTransHistory of repoTransHistoriesForRepository) {
-                    const actorId = repoTransHistory.actor.id;
-                    if (actorMayById.get(actorId) === undefined) {
-                        newlyFoundActorSet.add(actorId);
-                    }
-                }
-            }
-            if (newlyFoundActorSet.size) {
-                // cache remaining actors
-                const newActors = yield this.actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(newlyFoundActorSet));
-                for (const newActor of newActors) {
-                    actorMayById.set(newActor.id, newActor);
-                }
-            }
-            // sort all repository histories in processing order
-            for (const [repositoryId, repoTransHistoriesForRepository] of allRepoTransHistoryMapByRepoId) {
-                this.repositoryTransactionHistoryDmo
-                    .sortRepoTransHistories(repoTransHistoriesForRepository, actorMayById);
-            }
-            const recordCreations = new Map();
-            const recordUpdates = new Map();
-            const recordDeletions = new Map();
-            const syncConflictMapByRepoId = new Map();
-            // FIXME: add code to ensure that remote records coming in are performed only
-            // by the actors that claim the operation AND that the records created are
-            // created only by the actors that perform the operation (actorIds match)
-            for (const [repositoryId, repoTransHistoriesForRepo] of allRepoTransHistoryMapByRepoId) {
-                for (const repoTransHistory of repoTransHistoriesForRepo) {
-                    for (const operationHistory of repoTransHistory.operationHistory) {
-                        switch (operationHistory.changeType) {
-                            case ground_control_1.ChangeType.INSERT_VALUES:
-                                this.processCreation(repositoryId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, recordDeletions, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId);
-                                break;
-                            case ground_control_1.ChangeType.UPDATE_ROWS:
-                                this.processUpdate(repositoryId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId);
-                                break;
-                            case ground_control_1.ChangeType.DELETE_ROWS:
-                                this.processDeletion(repositoryId, operationHistory, recordCreations, recordUpdates, recordDeletions, allLocalRecordDeletions);
-                                break;
-                        }
-                    }
-                }
-            }
-            return {
-                recordCreations,
-                recordDeletions,
-                recordUpdates,
-                syncConflictMapByRepoId
+    async performStage1DataProcessing(repoTransHistoryMapByRepositoryId, actorMayById) {
+        // query for all local operations on records in a repository (since the earliest
+        // received change time).  Get the
+        // changes by repository ids or by the actual tables and records in those tables
+        // that will be updated or deleted.
+        const changedRecordIds = new Map();
+        for (const [repositoryId, repoTransHistoriesForRepo] of repoTransHistoryMapByRepositoryId) {
+            const changedRecordsForRepo = {
+                ids: new Map(),
+                firstChangeTime: new Date(new Date().getTime() + 10000000000),
             };
-        });
+            changedRecordIds.set(repositoryId, changedRecordsForRepo);
+            for (const repoTransHistory of repoTransHistoriesForRepo) {
+                // determine the earliest change time of incoming history records
+                const saveMillis = repoTransHistory.saveTimestamp.getTime();
+                if (saveMillis
+                    < changedRecordsForRepo.firstChangeTime.getTime()) {
+                    changedRecordsForRepo.firstChangeTime = repoTransHistory.saveTimestamp;
+                }
+                for (const operationHistory of repoTransHistory.operationHistory) {
+                    // Collect the Actor related ids
+                    const idsForEntity = this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(changedRecordsForRepo.ids, operationHistory.schemaVersion.id), operationHistory.entity.id);
+                    for (const recordHistory of operationHistory.recordHistory) {
+                        // Collect the Actor related ids
+                        this.utils.ensureChildJsSet(idsForEntity, recordHistory.actor.id)
+                            .add(recordHistory.actorRecordId);
+                        // add a map of new values
+                        const newValueMap = new Map();
+                        recordHistory.newValueMap = newValueMap;
+                        for (const newValue of recordHistory.newValues) {
+                            newValueMap.set(newValue.columnIndex, newValue);
+                        }
+                    }
+                }
+            }
+        }
+        const allRepoTransHistoryMapByRepoId = new Map();
+        const allRemoteRecordDeletions = this.getDeletedRecordIds(allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepositoryId);
+        // find local history for the matching repositories and corresponding time period
+        const localRepoTransHistoryMapByRepositoryId = await this.repoTransHistoryDao
+            .findAllLocalChangesForRecordIds(changedRecordIds);
+        const allLocalRecordDeletions = this.getDeletedRecordIds(allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByRepositoryId, true);
+        // Find all actors that modified the locally recorded history, which are not already
+        // in the actorMapById collect actors not already in cache
+        const newlyFoundActorSet = new Set();
+        for (const [repositoryId, repoTransHistoriesForRepository] of localRepoTransHistoryMapByRepositoryId) {
+            for (const repoTransHistory of repoTransHistoriesForRepository) {
+                const actorId = repoTransHistory.actor.id;
+                if (actorMayById.get(actorId) === undefined) {
+                    newlyFoundActorSet.add(actorId);
+                }
+            }
+        }
+        if (newlyFoundActorSet.size) {
+            // cache remaining actors
+            const newActors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(newlyFoundActorSet));
+            for (const newActor of newActors) {
+                actorMayById.set(newActor.id, newActor);
+            }
+        }
+        // sort all repository histories in processing order
+        for (const [repositoryId, repoTransHistoriesForRepository] of allRepoTransHistoryMapByRepoId) {
+            this.repoTransHistoryDmo
+                .sortRepoTransHistories(repoTransHistoriesForRepository, actorMayById);
+        }
+        const recordCreations = new Map();
+        const recordUpdates = new Map();
+        const recordDeletions = new Map();
+        const syncConflictMapByRepoId = new Map();
+        // FIXME: add code to ensure that remote records coming in are performed only
+        // by the actors that claim the operation AND that the records created are
+        // created only by the actors that perform the operation (actorIds match)
+        for (const [repositoryId, repoTransHistoriesForRepo] of allRepoTransHistoryMapByRepoId) {
+            for (const repoTransHistory of repoTransHistoriesForRepo) {
+                for (const operationHistory of repoTransHistory.operationHistory) {
+                    switch (operationHistory.changeType) {
+                        case ground_control_1.ChangeType.INSERT_VALUES:
+                            this.processCreation(repositoryId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, recordDeletions, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId);
+                            break;
+                        case ground_control_1.ChangeType.UPDATE_ROWS:
+                            this.processUpdate(repositoryId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId);
+                            break;
+                        case ground_control_1.ChangeType.DELETE_ROWS:
+                            this.processDeletion(repositoryId, operationHistory, recordCreations, recordUpdates, recordDeletions, allLocalRecordDeletions);
+                            break;
+                    }
+                }
+            }
+        }
+        return {
+            recordCreations,
+            recordDeletions,
+            recordUpdates,
+            syncConflictMapByRepoId
+        };
+    }
+    ensureRecordHistoryId(recordHistory, actorRecordIdSetByActor, actorRecordId = recordHistory.actorRecordId) {
+        this.utils.ensureChildJsMap(actorRecordIdSetByActor, recordHistory.actor.id)
+            .set(actorRecordId, recordHistory.id);
     }
     getDeletedRecordIds(allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepoId, isLocal = false) {
         const recordDeletions = new Map();
@@ -359,10 +340,10 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
     }
     getRecordsForRepoInTable(repositoryId, operationHistory, recordMapBySchemaTableAndRepository) {
         const recordMapForSchema = recordMapBySchemaTableAndRepository
-            .get(operationHistory.schema.index);
+            .get(operationHistory.schemaVersion.id);
         let recordMapForTable;
         if (recordMapForSchema) {
-            recordMapForTable = recordMapForSchema.get(operationHistory.entity.index);
+            recordMapForTable = recordMapForSchema.get(operationHistory.entity.id);
         }
         let recordMapForRepoInTable;
         if (recordMapForTable) {
@@ -398,17 +379,13 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
         }
         return recordsForActor;
     }
-    ensureRecordHistoryId(recordHistory, actorRecordIdSetByActor, actorRecordId = recordHistory.actorRecordId) {
-        this.utils.ensureChildJsMap(actorRecordIdSetByActor, recordHistory.actor.id)
-            .set(actorRecordId, recordHistory.id);
-    }
     getRecordInfo(repositoryId, operationHistory, recordHistory) {
         return `
-		Schema Index:     ${operationHistory.schema.index}
-		Table Index:      ${operationHistory.entity.index}
-		Repository ID:    ${repositoryId}
-		Actor ID:         ${recordHistory.actor.id}
-		Actor Record ID:  ${recordHistory.actorRecordId}
+		Schema Version ID: ${operationHistory.schemaVersion.id}
+		Entity ID:         ${operationHistory.entity.id}
+		Repository ID:     ${repositoryId}
+		Actor ID:          ${recordHistory.actor.id}
+		Actor Record ID:   ${recordHistory.actorRecordId}
 		`;
     }
     addSyncConflict(synchronizationConflictType, repositoryId, overwrittenRecordHistory, overwritingRecordHistory, syncConflictMapByRepoId) {
@@ -432,14 +409,7 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
     ensureRecord(recordHistory, recordMapByActor) {
         return this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(recordMapByActor, recordHistory.actor.id), recordHistory.actorRecordId);
     }
-};
-Stage1SyncedInDataProcessor = __decorate([
-    typedi_1.Service(InjectionTokens_1.Stage1SyncedInDataProcessorToken),
-    __param(1, Inject_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDaoToken)),
-    __param(2, Inject_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
-    __param(3, Inject_1.Inject(InjectionTokens_1.SyncInUtilsToken)),
-    __param(4, Inject_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [typeof (_a = typeof holding_pattern_1.IActorDao !== "undefined" && holding_pattern_1.IActorDao) === "function" ? _a : Object, typeof (_b = typeof holding_pattern_1.IRepositoryTransactionHistoryDao !== "undefined" && holding_pattern_1.IRepositoryTransactionHistoryDao) === "function" ? _b : Object, typeof (_c = typeof holding_pattern_1.IRepositoryTransactionHistoryDmo !== "undefined" && holding_pattern_1.IRepositoryTransactionHistoryDmo) === "function" ? _c : Object, Object, typeof (_d = typeof air_control_1.IUtils !== "undefined" && air_control_1.IUtils) === "function" ? _d : Object])
-], Stage1SyncedInDataProcessor);
+}
 exports.Stage1SyncedInDataProcessor = Stage1SyncedInDataProcessor;
+di_1.DI.set(diTokens_1.STAGE1_SYNCED_IN_DATA_PROCESSOR, Stage1SyncedInDataProcessor);
 //# sourceMappingURL=Stage1SyncedInDataProcessor.js.map

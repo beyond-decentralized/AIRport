@@ -1,4 +1,4 @@
-import { PromiseHttp } from './../../PromiseHttp';
+import { PromiseHttp } from "../../PromiseHttp";
 import { GoogleApi } from '../GoogleApi';
 export declare class GoogleSheets {
     private googleApi;

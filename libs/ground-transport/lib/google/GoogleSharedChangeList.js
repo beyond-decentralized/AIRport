@@ -1,18 +1,10 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 1/10/2016.
  */
+const observe_1 = require("@airport/observe");
 const terminal_map_1 = require("@airport/terminal-map");
-const rxjs_1 = require("rxjs");
 class GoogleSharedChangeList {
     constructor(platformInfo, shareInfo, handle) {
         this.platformInfo = platformInfo;
@@ -35,13 +27,11 @@ class GoogleSharedChangeList {
             reject(`Change record not found. ID: ${changeRecord[id]}.`);
         });
     }
-    addChanges(changeRecords) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.handle.addChangeRecords(changeRecords);
-        });
+    async addChanges(changeRecords) {
+        await this.handle.addChangeRecords(changeRecords);
     }
     errorSubject() {
-        let errorSubject = new rxjs_1.Subject();
+        let errorSubject = new observe_1.Subject();
         this.handle.otherChangesSubject.subscribe((otherChange) => {
             errorSubject.next({
                 fatal: true,

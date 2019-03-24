@@ -1,13 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * Response handler for a built-in AGT (in P2P setup)
- */
 class DirectResponse {
     constructor(callback) {
         this.callback = callback;
         this.data = {
+            agtSharingMessageId: null,
             protocolVersion: 0,
+            targetAgtTerminalIds: [],
             messages: []
         };
     }

@@ -1,86 +1,64 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b, _c;
-const typedi_1 = require("typedi");
-const InjectionTokens_1 = require("../../../../../apps/terminal/src/InjectionTokens");
-const holding_pattern_1 = require("@airport/holding-pattern");
 const air_control_1 = require("@airport/air-control");
-let SyncInActorChecker = class SyncInActorChecker {
-    constructor(actorDao, databaseDao, utils) {
-        this.actorDao = actorDao;
-        this.databaseDao = databaseDao;
-        this.utils = utils;
+const di_1 = require("@airport/di");
+const holding_pattern_1 = require("@airport/holding-pattern");
+const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
+const diTokens_1 = require("../../../diTokens");
+class SyncInActorChecker {
+    constructor() {
+        di_1.DI.get((actorDao, terminalDao, utils) => {
+            this.actorDao = actorDao;
+            this.terminalDao = terminalDao;
+            this.utils = utils;
+        }, holding_pattern_1.ACTOR_DAO, travel_document_checkpoint_1.TERMINAL_DAO, air_control_1.UTILS);
     }
-    ensureActorsAndGetAsMaps(dataMessages, actorMap, actorMapById, userCheckResults, databaseCheckResults) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const actorRandomIdSet = new Set();
-            const userUniqueIdsSet = new Set();
-            const databaseNameSet = new Set();
-            const databaseSecondIdSet = new Set();
-            const ownerUniqueIdSet = new Set();
-            const consistentMessages = [];
-            const inconsistentMessages = [];
-            // split messages by repository and record actor information
-            for (const message of dataMessages) {
-                if (!this.areActorIdsConsistentInMessage(message)) {
-                    inconsistentMessages.push(message);
-                    continue;
-                }
-                const data = message.data;
-                databaseNameSet.add(data.database.name);
-                databaseSecondIdSet.add(data.database.secondId);
-                ownerUniqueIdSet.add(data.database.owner.uniqueId);
-                consistentMessages.push(message);
-                for (const actor of data.actors) {
-                    actorRandomIdSet.add(actor.randomId);
-                    userUniqueIdsSet.add(actor.user.uniqueId);
-                }
+    async ensureActorsAndGetAsMaps(dataMessages, actorMap, actorMapById, userCheckResults, terminalCheckResults, dataMessagesWithInvalidData) {
+        const actorRandomIdSet = new Set();
+        const userUniqueIdsSet = new Set();
+        const terminalNameSet = new Set();
+        const terminalSecondIdSet = new Set();
+        const ownerUniqueIdSet = new Set();
+        const consistentMessages = [];
+        // split messages by repository and record actor information
+        for (const message of dataMessages) {
+            if (!this.areActorIdsConsistentInMessage(message)) {
+                dataMessagesWithInvalidData.push(message);
+                continue;
             }
-            const databaseMapByGlobalIds = yield this.databaseDao.findMapByGlobalIds(Array.from(ownerUniqueIdSet), Array.from(databaseNameSet), Array.from(databaseSecondIdSet));
-            const databaseIdSet = new Set();
-            for (const message of dataMessages) {
-                const database = message.data.database;
-                const databaseId = databaseMapByGlobalIds
-                    .get(database.owner.uniqueId)
-                    .get(database.name).get(database.secondId).id;
-                databaseIdSet.add(databaseId);
+            const data = message.data;
+            terminalNameSet.add(data.terminal.name);
+            terminalSecondIdSet.add(data.terminal.secondId);
+            ownerUniqueIdSet.add(data.terminal.owner.uniqueId);
+            consistentMessages.push(message);
+            for (const actor of data.actors) {
+                actorRandomIdSet.add(actor.randomId);
+                userUniqueIdsSet.add(actor.user.uniqueId);
             }
-            // NOTE: remote actors should not contain database info, it should be populated here
-            // this is because a given RTB is always generated in one and only one database
-            yield this.actorDao.findMapsWithDetailsByGlobalIds(Array.from(actorRandomIdSet), Array.from(userUniqueIdsSet), Array.from(databaseIdSet), actorMap, actorMapById);
-            const newActors = this.getNewActors(consistentMessages, actorMap);
-            yield this.actorDao.bulkCreate(newActors, false, false);
-            for (const newActor of newActors) {
-                actorMapById.set(newActor.id, newActor);
-            }
-            this.updateActorIdsInMessages(actorMap, consistentMessages);
-            return {
-                actorMap,
-                actorMapById,
-                consistentMessages,
-                inconsistentMessages
-            };
-        });
+        }
+        const terminalMapByGlobalIds = await this.terminalDao.findMapByGlobalIds(Array.from(ownerUniqueIdSet), Array.from(terminalNameSet), Array.from(terminalSecondIdSet));
+        const terminalIdSet = new Set();
+        for (const message of dataMessages) {
+            const terminal = message.data.terminal;
+            const terminalId = terminalMapByGlobalIds
+                .get(terminal.owner.uniqueId)
+                .get(terminal.name).get(terminal.secondId).id;
+            terminalIdSet.add(terminalId);
+        }
+        // NOTE: remote actors should not contain terminal info, it should be populated here
+        // this is because a given RTB is always generated in one and only one terminal
+        await this.actorDao.findMapsWithDetailsByGlobalIds(Array.from(actorRandomIdSet), Array.from(userUniqueIdsSet), Array.from(terminalIdSet), actorMap, actorMapById);
+        const newActors = this.getNewActors(consistentMessages, actorMap);
+        await this.actorDao.bulkCreate(newActors, false, false);
+        for (const newActor of newActors) {
+            actorMapById.set(newActor.id, newActor);
+        }
+        this.updateActorIdsInMessages(actorMap, consistentMessages);
+        return {
+            actorMap,
+            actorMapById,
+            consistentMessages
+        };
     }
     areActorIdsConsistentInMessage(message) {
         const actorIdSet = new Set();
@@ -115,9 +93,9 @@ let SyncInActorChecker = class SyncInActorChecker {
                 const localActor = actorMap
                     .get(actor.randomId)
                     .get(actor.user.uniqueId)
-                    .get(actor.database.name)
-                    .get(actor.database.secondId)
-                    .get(actor.database.owner.uniqueId);
+                    .get(actor.terminal.name)
+                    .get(actor.terminal.secondId)
+                    .get(actor.terminal.owner.uniqueId);
                 updatedActors.push(localActor);
                 messageActorMapByRemoteId.set(actor.id, localActor);
             }
@@ -142,7 +120,10 @@ let SyncInActorChecker = class SyncInActorChecker {
         // split messages by repository
         for (const message of dataMessages) {
             for (let actor of message.data.actors) {
-                actor = Object.assign({ id: undefined }, actor);
+                actor = {
+                    id: undefined,
+                    ...actor,
+                };
                 const actorsForRandomId = actorMap.get(actor.randomId);
                 if (!actorsForRandomId) {
                     this.addActorToMap(actor, newActorMap);
@@ -155,19 +136,19 @@ let SyncInActorChecker = class SyncInActorChecker {
                     this.addActorToMap(actor, actorMap);
                     break;
                 }
-                const actorsForDatabaseName = actorsForUserUniqueId.get(actor.database.name);
-                if (!actorsForDatabaseName) {
+                const actorsForTerminalName = actorsForUserUniqueId.get(actor.terminal.name);
+                if (!actorsForTerminalName) {
                     this.addActorToMap(actor, newActorMap);
                     this.addActorToMap(actor, actorMap);
                     break;
                 }
-                const actorsForDatabaseSecondId = actorsForDatabaseName.get(actor.database.secondId);
-                if (!actorsForDatabaseSecondId) {
+                const actorsForTerminalSecondId = actorsForTerminalName.get(actor.terminal.secondId);
+                if (!actorsForTerminalSecondId) {
                     this.addActorToMap(actor, newActorMap);
                     this.addActorToMap(actor, actorMap);
                     break;
                 }
-                const existingActor = actorsForDatabaseSecondId.get(actor.database.owner.uniqueId);
+                const existingActor = actorsForTerminalSecondId.get(actor.terminal.owner.uniqueId);
                 if (!existingActor) {
                     this.addActorToMap(actor, newActorMap);
                     this.addActorToMap(actor, actorMap);
@@ -178,9 +159,9 @@ let SyncInActorChecker = class SyncInActorChecker {
         const newActors = [];
         for (const [actorRandomId, actorsForRandomId] of newActorMap) {
             for (const [userUniqueId, actorsForUserUniqueId] of actorsForRandomId) {
-                for (const [databaseName, actorsForDatabaseName] of actorsForUserUniqueId) {
-                    for (const [databaseSecondId, actorsForDatabaseSecondId] of actorsForDatabaseName) {
-                        for (const [databaseOwnerUniqueId, actor] of actorsForDatabaseSecondId) {
+                for (const [terminalName, actorsForTerminalName] of actorsForUserUniqueId) {
+                    for (const [terminalSecondId, actorsForTerminalSecondId] of actorsForTerminalName) {
+                        for (const [terminalOwnerUniqueId, actor] of actorsForTerminalSecondId) {
                             newActors.push(actor);
                         }
                     }
@@ -190,15 +171,9 @@ let SyncInActorChecker = class SyncInActorChecker {
         return newActors;
     }
     addActorToMap(actor, actorMap) {
-        this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(actorMap, actor.randomId), actor.user.uniqueId), actor.database.name), actor.database.secondId).set(actor.database.owner.uniqueId, actor);
+        this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(actorMap, actor.randomId), actor.user.uniqueId), actor.terminal.name), actor.terminal.secondId).set(actor.terminal.owner.uniqueId, actor);
     }
-};
-SyncInActorChecker = __decorate([
-    typedi_1.Service(InjectionTokens_1.SyncInActorCheckerToken),
-    __param(0, typedi_1.Inject(holding_pattern_1.ActorDaoToken)),
-    __param(1, typedi_1.Inject(holding_pattern_1.DatabaseDaoToken)),
-    __param(2, typedi_1.Inject(air_control_1.UtilsToken)),
-    __metadata("design:paramtypes", [typeof (_a = typeof holding_pattern_1.IActorDao !== "undefined" && holding_pattern_1.IActorDao) === "function" ? _a : Object, typeof (_b = typeof holding_pattern_1.IDatabaseDao !== "undefined" && holding_pattern_1.IDatabaseDao) === "function" ? _b : Object, typeof (_c = typeof air_control_1.IUtils !== "undefined" && air_control_1.IUtils) === "function" ? _c : Object])
-], SyncInActorChecker);
+}
 exports.SyncInActorChecker = SyncInActorChecker;
+di_1.DI.set(diTokens_1.SYNC_IN_ACTOR_CHECKER, SyncInActorChecker);
 //# sourceMappingURL=SyncInActorChecker.js.map
