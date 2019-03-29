@@ -7,21 +7,12 @@ class Container {
         this.numPendingInits = 0;
     }
     get(callback, ...tokens) {
-        this.numPendingInits++;
-        setTimeout(() => {
-            callback(tokens.map(token => {
-                let object = this.objects[token];
-                if (!object) {
-                    object = new this.classes[token]();
-                    this.objects[token] = object;
-                }
-                return object;
-            }));
-            setTimeout(() => {
-                if (this.numPendingInits === 0) {
-                    this.onInitCallback();
-                }
-            });
+        this.doGet(tokens, false, callback, () => {
+        });
+    }
+    getP(...tokens) {
+        return new Promise((resolve, reject) => {
+            this.doGet(tokens, true, resolve, reject);
         });
     }
     onInit(callback) {
@@ -29,6 +20,45 @@ class Container {
     }
     set(token, clazz) {
         this.classes[token] = clazz;
+    }
+    doGet(tokens, returnArray, successCallback, errorCallback) {
+        this.numPendingInits++;
+        let firstErrorClass;
+        setTimeout(() => {
+            const objects = tokens.map(token => {
+                if (firstErrorClass) {
+                    return;
+                }
+                let object = this.objects[token];
+                if (!object) {
+                    const clazz = this.classes[token];
+                    if (!clazz) {
+                        firstErrorClass = clazz;
+                        return;
+                    }
+                    object = new this.classes[token]();
+                    this.objects[token] = object;
+                }
+                return object;
+            });
+            this.numPendingInits--;
+            if (firstErrorClass) {
+                console.log('Dependency Injection (DI) could not find class: '
+                    + firstErrorClass.name);
+                errorCallback(firstErrorClass);
+            }
+            else {
+                returnArray ?
+                    successCallback(returnArray)
+                    :
+                        successCallback(...objects);
+                setTimeout(() => {
+                    if (this.numPendingInits === 0) {
+                        this.onInitCallback();
+                    }
+                });
+            }
+        });
     }
 }
 exports.Container = Container;
