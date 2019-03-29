@@ -1,4 +1,3 @@
-import { OfflineSqlDeltaStore } from "./offline/sql/OfflineSqlDeltaStore";
 import { IStoreDriver } from "@airport/ground-control";
 import {
 	IRepository,

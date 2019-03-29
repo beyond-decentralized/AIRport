@@ -2,12 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-class BaseAbstractRepositoryEntityDao extends check_in_1.Dao {
-    constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['AbstractRepositoryEntity'], qSchema_1.Q);
-    }
-}
-exports.BaseAbstractRepositoryEntityDao = BaseAbstractRepositoryEntityDao;
 class BaseActorDao extends check_in_1.Dao {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['Actor'], qSchema_1.Q);
@@ -26,6 +20,42 @@ class BaseApplicationDao extends check_in_1.Dao {
     }
 }
 exports.BaseApplicationDao = BaseApplicationDao;
+class BaseChildRepoRowDao extends check_in_1.Dao {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['ChildRepoRow'], qSchema_1.Q);
+    }
+}
+exports.BaseChildRepoRowDao = BaseChildRepoRowDao;
+class BaseChildRowDao extends check_in_1.Dao {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['ChildRow'], qSchema_1.Q);
+    }
+}
+exports.BaseChildRowDao = BaseChildRowDao;
+class BaseImmutableRepoRowDao extends check_in_1.Dao {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['ImmutableRepoRow'], qSchema_1.Q);
+    }
+}
+exports.BaseImmutableRepoRowDao = BaseImmutableRepoRowDao;
+class BaseImmutableRowDao extends check_in_1.Dao {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['ImmutableRow'], qSchema_1.Q);
+    }
+}
+exports.BaseImmutableRowDao = BaseImmutableRowDao;
+class BaseMutableRepoRowDao extends check_in_1.Dao {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['MutableRepoRow'], qSchema_1.Q);
+    }
+}
+exports.BaseMutableRepoRowDao = BaseMutableRepoRowDao;
+class BaseMutableRowDao extends check_in_1.Dao {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['MutableRow'], qSchema_1.Q);
+    }
+}
+exports.BaseMutableRowDao = BaseMutableRowDao;
 class BaseOperationHistoryDao extends check_in_1.Dao {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['OperationHistory'], qSchema_1.Q);
@@ -50,6 +80,12 @@ class BaseRecordHistoryOldValueDao extends check_in_1.Dao {
     }
 }
 exports.BaseRecordHistoryOldValueDao = BaseRecordHistoryOldValueDao;
+class BaseReferenceRowDao extends check_in_1.Dao {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['ReferenceRow'], qSchema_1.Q);
+    }
+}
+exports.BaseReferenceRowDao = BaseReferenceRowDao;
 class BaseRepoTransHistoryChangedRepositoryActorDao extends check_in_1.Dao {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['RepoTransHistoryChangedRepositoryActor'], qSchema_1.Q);
@@ -74,6 +110,12 @@ class BaseRepositoryApplicationDao extends check_in_1.Dao {
     }
 }
 exports.BaseRepositoryApplicationDao = BaseRepositoryApplicationDao;
+class BaseRepositoryEntityDao extends check_in_1.Dao {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositoryEntity'], qSchema_1.Q);
+    }
+}
+exports.BaseRepositoryEntityDao = BaseRepositoryEntityDao;
 class BaseRepositorySchemaDao extends check_in_1.Dao {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositorySchema'], qSchema_1.Q);

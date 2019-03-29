@@ -1,14 +1,11 @@
 import {
-	AirportDatabaseToken,
+	AIR_DB,
 	dbConst,
 	IAirportDatabase,
-}                         from "@airport/air-control";
-import {StoreType}        from "@airport/terminal-map";
-import {
-	Inject,
-	Service
-}                         from "typedi";
-import {DATABASE_MANAGER} from "../diTokens";
+}                         from '@airport/air-control'
+import {DI}               from '@airport/di'
+import {StoreType}        from '@airport/terminal-map'
+import {DATABASE_MANAGER} from '../diTokens'
 
 export interface IDatabaseManager {
 
@@ -19,7 +16,7 @@ export interface IDatabaseManager {
 
 	initializeAll(
 		defaultStoreType: StoreType
-	): void;
+	): Promise<void>;
 
 	isInitialized(
 		terminalName: string
@@ -32,34 +29,36 @@ export interface IDatabaseManager {
 
 }
 
-@Service(DATABASE_MANAGER)
 export class DatabaseManager
 	implements IDatabaseManager {
 
-	constructor(
-		@Inject(
-			_ => AirportDatabaseToken)
-		private airportDb: IAirportDatabase
-	) {
+	private airDb: IAirportDatabase
+
+	constructor() {
+		DI.get((
+			airportDatabase
+		) => {
+			this.airDb = airportDatabase
+		}, AIR_DB)
 	}
 
 	async ensureInitialized(
 		terminalName: string = dbConst.DEFAULT_DB,
-		timeout: number = 5000
+		timeout: number      = 5000
 	): Promise<void> {
 		return new Promise((
 			resolve,
 			reject
 		) => {
-			this.doEnsureInitialized(terminalName, resolve, reject, timeout);
-		});
+			this.doEnsureInitialized(terminalName, resolve, reject, timeout)
+		})
 	}
 
 
 	async initializeAll(
 		defaultStoreType: StoreType
-	): void {
-		throw `Implement!`;
+	): Promise<void> {
+		throw `Implement!`
 		/*		const db = TQ.db(dbConst.DEFAULT_DB);
 				if (!TQ.isInitialized(dbConst.DEFAULT_DB)) {
 					await TQ.addDataStore(defaultStoreType, dbConst.DEFAULT_DB);
@@ -78,7 +77,7 @@ export class DatabaseManager
 	isInitialized(
 		terminalName: string
 	): boolean {
-		throw `Implement!`;
+		throw `Implement!`
 		/*		let terminal = this.databaseMap[terminalName];
 				if (!terminal) {
 					return false;
@@ -90,7 +89,7 @@ export class DatabaseManager
 		storeType: StoreType,
 		terminalName: string
 	): Promise<void> {
-		throw `Implement!`;
+		throw `Implement!`
 		/*		let dbFacade: IDatabaseFacadeInternal = this.databaseMap[terminalName];
 				if (!dbFacade) {
 					dbFacade = new DatabaseFacade(terminalName);
@@ -135,14 +134,16 @@ export class DatabaseManager
 		remainingTimeout: number
 	): void {
 		if (this.isInitialized(terminalName)) {
-			resolve();
+			resolve()
 		}
 		if (remainingTimeout <= 0) {
-			reject(`Timeout out waiting for initialization of DB: [${terminalName}]`);
+			reject(`Timeout out waiting for initialization of DB: [${terminalName}]`)
 		}
-		remainingTimeout -= 100;
+		remainingTimeout -= 100
 		setTimeout(() => {
-			this.doEnsureInitialized(terminalName, resolve, reject, remainingTimeout);
-		}, 100);
+			this.doEnsureInitialized(terminalName, resolve, reject, remainingTimeout)
+		}, 100)
 	}
 }
+
+DI.set(DATABASE_MANAGER, DatabaseManager)

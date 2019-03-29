@@ -1,21 +1,20 @@
+import {DI}              from '@airport/di'
+import {TransactionType} from '@airport/ground-control'
 import {
 	IActor,
+	IOperationHistoryDmo,
+	IRecordHistoryDmo,
 	IRepository,
 	IRepositoryTransactionHistory,
+	IRepositoryTransactionHistoryDmo,
 	ITransactionHistory,
-	OperationHistoryDmo,
-	OperationHistoryDmoToken,
-	RecordHistoryDmo,
-	RecordHistoryDmoToken,
-	RepositoryTransactionHistoryDmo,
-	RepositoryTransactionHistoryDmoToken,
-	TransactionHistoryDmo,
-	TransactionHistoryDmoToken
-}                                          from "@airport/holding-pattern";
-import {TransactionType}                   from "@airport/terminal-map/lib/TransactionType";
-import {Inject, Service}                   from "typedi";
-import {HISTORY_MANAGER, IdGeneratorToken} from "../diTokens";
-import {IdGenerator}                       from "../store/IdGenerator";
+	ITransactionHistoryDmo,
+	OPER_HISTORY_DMO,
+	REC_HISTORY_DMO,
+	REPO_TRANS_HISTORY_DMO,
+	TRANS_HISTORY_DMO
+}                        from '@airport/holding-pattern'
+import {HISTORY_MANAGER} from '../diTokens'
 
 export interface IHistoryManager {
 
@@ -31,31 +30,35 @@ export interface IHistoryManager {
 
 }
 
-@Service(HISTORY_MANAGER)
-export class HistoryManager implements IHistoryManager {
+export class HistoryManager
+	implements IHistoryManager {
 
-	constructor(
-		@Inject(
-			_ => OperationHistoryDmoToken)
-		private operationHistoryDmo: OperationHistoryDmo,
-		@Inject(
-			_ => RecordHistoryDmoToken)
-		private recordHistoryDmo: RecordHistoryDmo,
-		@Inject(
-			_ => RepositoryTransactionHistoryDmoToken)
-		private repositoryTransactionHistoryDmo: RepositoryTransactionHistoryDmo,
-		@Inject(
-			_ => TransactionHistoryDmoToken)
-		private transactionHistoryDmo: TransactionHistoryDmo,
-	) {
+	private operHistoryDmo: IOperationHistoryDmo
+	private recHistoryDmo: IRecordHistoryDmo
+	private repoTransHistoryDmo: IRepositoryTransactionHistoryDmo
+	private transHistoryDmo: ITransactionHistoryDmo
+
+	constructor() {
+		DI.get((
+			operationHistoryDmo,
+			recordHistoryDmo,
+			repositoryTransactionHistoryDmo,
+			transactionHistoryDmo
+			) => {
+				this.operHistoryDmo      = operationHistoryDmo
+				this.recHistoryDmo       = recordHistoryDmo
+				this.repoTransHistoryDmo = repositoryTransactionHistoryDmo
+				this.transHistoryDmo     = transactionHistoryDmo
+			}, OPER_HISTORY_DMO, REC_HISTORY_DMO,
+			REPO_TRANS_HISTORY_DMO, TRANS_HISTORY_DMO)
 	}
 
 	getNewTransHistory(
 		transactionType: TransactionType = TransactionType.LOCAL
 	): ITransactionHistory {
-		const transactionHistory = this.transactionHistoryDmo.getNewRecord(transactionType);
+		const transactionHistory = this.transHistoryDmo.getNewRecord(transactionType)
 
-		return transactionHistory;
+		return transactionHistory
 	}
 
 	getNewRepoTransHistory(
@@ -63,10 +66,12 @@ export class HistoryManager implements IHistoryManager {
 		repository: IRepository,
 		actor: IActor
 	): IRepositoryTransactionHistory {
-		const repoTransHistory = this.transactionHistoryDmo.getRepositoryTransaction(
-			transactionHistory, repository, actor);
+		const repoTransHistory = this.transHistoryDmo.getRepositoryTransaction(
+			transactionHistory, repository, actor)
 
-		return repoTransHistory;
+		return repoTransHistory
 	}
 
 }
+
+DI.set(HISTORY_MANAGER, HistoryManager)

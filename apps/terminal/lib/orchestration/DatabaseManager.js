@@ -1,20 +1,13 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const typedi_1 = require("typedi");
+const di_1 = require("@airport/di");
 const diTokens_1 = require("../diTokens");
-let DatabaseManager = class DatabaseManager {
-    constructor(airportDb) {
-        this.airportDb = airportDb;
+class DatabaseManager {
+    constructor() {
+        di_1.DI.get((airportDatabase) => {
+            this.airDb = airportDatabase;
+        }, air_control_1.AIR_DB);
     }
     async ensureInitialized(terminalName = air_control_1.dbConst.DEFAULT_DB, timeout = 5000) {
         return new Promise((resolve, reject) => {
@@ -94,10 +87,7 @@ let DatabaseManager = class DatabaseManager {
             this.doEnsureInitialized(terminalName, resolve, reject, remainingTimeout);
         }, 100);
     }
-};
-DatabaseManager = __decorate([
-    typedi_1.Service(diTokens_1.DATABASE_MANAGER),
-    __param(0, typedi_1.Inject(_ => air_control_1.AirportDatabaseToken))
-], DatabaseManager);
+}
 exports.DatabaseManager = DatabaseManager;
+di_1.DI.set(diTokens_1.DATABASE_MANAGER, DatabaseManager);
 //# sourceMappingURL=DatabaseManager.js.map

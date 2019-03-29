@@ -5,31 +5,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const src_1 = require("@airport/di/lib/src");
+const di_1 = require("@airport/di");
 const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
-const src_2 = require("@airport/terminal-map/lib/src");
+const terminal_map_1 = require("@airport/terminal-map");
 const tower_1 = require("@airport/tower");
 const diTokens_1 = require("../diTokens");
 const AbstractMutationManager_1 = require("./AbstractMutationManager");
-let TransactionManager = class TransactionManager extends AbstractMutationManager_1.AbstractMutationManager {
-    constructor(utils, dataStore, idGenerator, offlineDeltaStore, onlineManager, 
-    // @Inject(REPOSITORY_MANAGER)
-    // private repositoryManager: IRepositoryManager,
-    queries, transactionHistoryDmo) {
-        super(utils, dataStore);
-        this.idGenerator = idGenerator;
-        this.offlineDeltaStore = offlineDeltaStore;
-        this.onlineManager = onlineManager;
-        this.queries = queries;
-        this.transactionHistoryDmo = transactionHistoryDmo;
+class TransactionManager extends AbstractMutationManager_1.AbstractMutationManager {
+    constructor() {
+        super();
         this.transactionInProgress = null;
         this.yieldToRunningTransaction = 100;
+        di_1.DI.get((idGenerator, offlineDeltaStore, onlineManager, queries, transactionHistoryDmo) => {
+            this.idGenerator = idGenerator;
+            this.offlineDeltaStore = offlineDeltaStore;
+            this.onlineManager = onlineManager;
+            this.queries = queries;
+            this.transactionHistoryDmo = transactionHistoryDmo;
+        }, fuel_hydrant_system_1.ID_GENERATOR, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.ONLINE_MANAGER, fuel_hydrant_system_1.ACTIVE_QUERIES, holding_pattern_1.TRANS_HISTORY_DMO);
     }
     /**
      * Initializes the EntityManager at server load time.
@@ -102,11 +98,9 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
     // 		transaction.deserialize(
     // 			// repository
     // 		);
-    // 		await this.offlineDeltaStore.markChangesAsSynced(transaction.repository, [transaction]);
-    //
-    // 		this.queries.markQueriesToRerun(transaction.transactionHistory.schemaMap);
-    // 	}
-    // }
+    // 		await this.offlineDeltaStore.markChangesAsSynced(transaction.repository,
+    // [transaction]);
+    // this.queries.markQueriesToRerun(transaction.transactionHistory.schemaMap); } }
     clearTransaction() {
         this.currentTransHistory = null;
         this.transactionInProgress = null;
@@ -167,19 +161,10 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
         return this.transactionIndexQueue[this.transactionIndexQueue.length - 1]
             === transactionIndex;
     }
-};
+}
 __decorate([
     tower_1.Transactional()
 ], TransactionManager.prototype, "initialize", null);
-TransactionManager = __decorate([
-    __param(0, Inject(UtilsToken)),
-    __param(1, Inject(diTokens_1.STORE_DRIVER)),
-    __param(2, Inject(fuel_hydrant_system_1.IdGeneratorToken)),
-    __param(3, Inject(diTokens_1.OFFLINE_DELTA_STORE)),
-    __param(4, Inject(diTokens_1.ONLINE_MANAGER)),
-    __param(5, Inject(fuel_hydrant_system_1.ActiveQueriesToken)),
-    __param(6, Inject(TransactionHistoryDmoToken))
-], TransactionManager);
 exports.TransactionManager = TransactionManager;
-src_1.DI.set(src_2.TRANSACTION_MANAGER, TransactionManager);
+di_1.DI.set(terminal_map_1.TRANSACTION_MANAGER, TransactionManager);
 //# sourceMappingURL=TransactionManager.js.map

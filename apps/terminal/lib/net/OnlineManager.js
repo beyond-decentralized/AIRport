@@ -5,23 +5,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
-const terminal_map_1 = require("@airport/terminal-map");
 const tower_1 = require("@airport/tower");
-const typedi_1 = require("typedi");
 const UpdateState_1 = require("../core/UpdateState");
 const diTokens_1 = require("../diTokens");
-let OnlineManager = class OnlineManager {
-    constructor(offlineDeltaStore, repositoryManager, repositoryDao, repoTransHistory) {
-        this.offlineDeltaStore = offlineDeltaStore;
-        this.repositoryManager = repositoryManager;
-        this.repositoryDao = repositoryDao;
-        this.repoTransHistory = repoTransHistory;
+class OnlineManager {
+    constructor() {
         this.online = false;
+        di_1.DI.get((offlineDeltaStore, repositoryDao, repoTransHistoryDao, repositoryManager) => {
+            this.offlineDeltaStore = offlineDeltaStore;
+            this.repositoryDao = repositoryDao;
+            this.repoTransHistoryDao = repoTransHistoryDao;
+            this.repositoryManager = repositoryManager;
+        }, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.REPOSITORY_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DAO, diTokens_1.REPOSITORY_MANAGER);
     }
     goOffline() {
         this.repositoryManager.goOffline();
@@ -32,12 +31,9 @@ let OnlineManager = class OnlineManager {
      LOCAL            0
      REMOTE_CHANGES   1
      GO_ONLINE        2
-
      Mutation operations of lower order type are blocked until the higher order operation finishes.
      Blocking prevents conflicts in remove transaction application.
-
      Go-Online logic
-
      1)  Flip update state to GO_ONLINE
      2)  Find the lastSyncedTransaction recorded locally
      3)  Go Online and start listening for new transactions coming in
@@ -60,7 +56,6 @@ let OnlineManager = class OnlineManager {
      Add them to local store
      9)  Flip the online state to true
      Finally, always flip update state to LOCAL
-
      * @returns {Promise<void>}
      */
     async goOnline() {
@@ -100,8 +95,8 @@ let OnlineManager = class OnlineManager {
                 repoTransaction.deserialize(repository);
                 return repoTransaction;
             });
-            // a) While Go-Online is in progress continue gathering all remote transactions that come in
-            // and add them to remoteChangesSinceInitialGoOffline
+            // a) While Go-Online is in progress continue gathering all remote transactions
+            // that come in and add them to remoteChangesSinceInitialGoOffline
             if (this.repositoryManager.getUpdateState(repository) === UpdateState_1.UpdateState.GO_ONLINE) {
                 remoteChangesSinceInitialGoOnline.push(transactions);
             }
@@ -141,11 +136,11 @@ let OnlineManager = class OnlineManager {
             await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
         }
         // 7)  Find all local unsynced transactions
-        let unsyncedChanges = await this.repoTransHistory.findUnsyncedTransactions(repository);
+        let unsyncedChanges = await this.repoTransHistoryDao.findUnsyncedTransactions(repository);
         if (unsyncedChanges.length) {
             unsyncedChanges.forEach((transaction) => {
                 // a)  Mark them as synchronized
-                transaction.syncStatus = terminal_map_1.SyncStatus.SYNCHRONIZED;
+                transaction.syncStatus = ground_control_1.BlockSyncStatus.SYNCHRONIZED;
             });
             // b)  add them to deltaStore
             await deltaStore.addChanges(deltaStore.config.changeListConfig, unsyncedChanges);
@@ -166,16 +161,10 @@ let OnlineManager = class OnlineManager {
     isOnline() {
         return this.online;
     }
-};
+}
 __decorate([
     tower_1.Transactional()
 ], OnlineManager.prototype, "goOnline", null);
-OnlineManager = __decorate([
-    typedi_1.Service(diTokens_1.ONLINE_MANAGER),
-    __param(0, typedi_1.Inject(_ => diTokens_1.OFFLINE_DELTA_STORE)),
-    __param(1, typedi_1.Inject(_ => diTokens_1.REPOSITORY_MANAGER)),
-    __param(2, typedi_1.Inject(_ => holding_pattern_1.RepositoryDaoToken)),
-    __param(3, typedi_1.Inject(_ => holding_pattern_1.RepositoryTransactionHistoryDaoToken))
-], OnlineManager);
 exports.OnlineManager = OnlineManager;
+di_1.DI.set(diTokens_1.ONLINE_MANAGER, OnlineManager);
 //# sourceMappingURL=OnlineManager.js.map

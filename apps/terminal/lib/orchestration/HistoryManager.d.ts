@@ -1,15 +1,15 @@
-import { IActor, IRepository, IRepositoryTransactionHistory, ITransactionHistory, OperationHistoryDmo, RecordHistoryDmo, RepositoryTransactionHistoryDmo, TransactionHistoryDmo } from "@airport/holding-pattern";
-import { TransactionType } from "@airport/terminal-map/lib/TransactionType";
+import { TransactionType } from '@airport/ground-control';
+import { IActor, IRepository, IRepositoryTransactionHistory, ITransactionHistory } from '@airport/holding-pattern';
 export interface IHistoryManager {
     getNewTransHistory(transactionType: TransactionType): ITransactionHistory;
     getNewRepoTransHistory(transactionHistory: ITransactionHistory, repository: IRepository, actor: IActor): IRepositoryTransactionHistory;
 }
 export declare class HistoryManager implements IHistoryManager {
-    private operationHistoryDmo;
-    private recordHistoryDmo;
-    private repositoryTransactionHistoryDmo;
-    private transactionHistoryDmo;
-    constructor(operationHistoryDmo: OperationHistoryDmo, recordHistoryDmo: RecordHistoryDmo, repositoryTransactionHistoryDmo: RepositoryTransactionHistoryDmo, transactionHistoryDmo: TransactionHistoryDmo);
+    private operHistoryDmo;
+    private recHistoryDmo;
+    private repoTransHistoryDmo;
+    private transHistoryDmo;
+    constructor();
     getNewTransHistory(transactionType?: TransactionType): ITransactionHistory;
     getNewRepoTransHistory(transactionHistory: ITransactionHistory, repository: IRepository, actor: IActor): IRepositoryTransactionHistory;
 }

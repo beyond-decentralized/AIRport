@@ -1,17 +1,8 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
-const typedi_1 = require("typedi");
 const diTokens_1 = require("../diTokens");
 /**
  * Keeps track of transactions, per client and validates that a given
@@ -37,15 +28,17 @@ const diTokens_1 = require("../diTokens");
  * A single transactional queue should be enough.
  *
  */
-let TransactionalServer = class TransactionalServer {
-    constructor(deleteManager, insertManager, queryManager, transactionManager, updateManager) {
-        this.deleteManager = deleteManager;
-        this.insertManager = insertManager;
-        this.queryManager = queryManager;
-        this.transactionManager = transactionManager;
-        this.updateManager = updateManager;
+class TransactionalServer {
+    constructor() {
         this.activeTransactions = {};
         this.lastTransactionIndex = 0;
+        di_1.DI.get((deleteManager, insertManager, queryManager, transactionManager, updateManager) => {
+            this.deleteManager = deleteManager;
+            this.insertManager = insertManager;
+            this.queryManager = queryManager;
+            this.transactionManager = transactionManager;
+            this.updateManager = updateManager;
+        }, diTokens_1.DELETE_MANAGER, diTokens_1.INSERT_MANAGER, diTokens_1.QUERY_MANAGER, terminal_map_1.TRANSACTION_MANAGER, diTokens_1.UPDATE_MANAGER);
     }
     async startTransaction() {
         this.lastTransactionIndex++;
@@ -120,14 +113,7 @@ let TransactionalServer = class TransactionalServer {
             throw error;
         }
     }
-};
-TransactionalServer = __decorate([
-    typedi_1.Service(ground_control_1.TransactionalConnectorToken),
-    __param(0, typedi_1.Inject(diTokens_1.DELETE_MANAGER)),
-    __param(1, typedi_1.Inject(diTokens_1.INSERT_MANAGER)),
-    __param(2, typedi_1.Inject(diTokens_1.QUERY_MANAGER)),
-    __param(3, typedi_1.Inject(terminal_map_1.TransactionManagerToken)),
-    __param(4, typedi_1.Inject(diTokens_1.UPDATE_MANAGER))
-], TransactionalServer);
+}
 exports.TransactionalServer = TransactionalServer;
+di_1.DI.set(ground_control_1.TRANS_CONNECTOR, TransactionalServer);
 //# sourceMappingURL=TransactionalServer.js.map

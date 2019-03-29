@@ -1,8 +1,12 @@
-import {DI}                from '@airport/di'
-import {REPOSITORY_DAO}    from '../../diTokens'
-import {BaseRepositoryDao} from '../../generated/baseDaos'
+import {DI}             from '@airport/di'
+import {REPOSITORY_DAO} from '../../diTokens'
+import {
+	BaseRepositoryDao,
+	IBaseRepositoryDao
+}                       from '../../generated/baseDaos'
 
-export interface IRepositoryDao {
+export interface IRepositoryDao
+	extends IBaseRepositoryDao {
 
 }
 

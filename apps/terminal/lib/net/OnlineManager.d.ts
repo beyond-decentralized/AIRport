@@ -1,30 +1,25 @@
-import { IRepository, IRepositoryDao, IRepositoryTransactionHistoryDao } from "@airport/holding-pattern";
-import { IRepositoryManager } from "../core/repository/RepositoryManager";
-import { IOfflineDeltaStore } from "../data/OfflineDeltaStore";
+import { IRepository } from '@airport/holding-pattern';
 export interface IOnlineManager {
     goOffline(): void;
     goOnline(): Promise<void>;
     isOnline(): boolean;
 }
 export declare class OnlineManager implements IOnlineManager {
+    goOffline(): void;
+    private online;
     private offlineDeltaStore;
     private repositoryManager;
     private repositoryDao;
-    private repoTransHistory;
-    goOffline(): void;
-    private online;
-    constructor(offlineDeltaStore: IOfflineDeltaStore, repositoryManager: IRepositoryManager, repositoryDao: IRepositoryDao, repoTransHistory: IRepositoryTransactionHistoryDao);
+    private repoTransHistoryDao;
+    constructor();
     /**
      There are tree update states:
      LOCAL            0
      REMOTE_CHANGES   1
      GO_ONLINE        2
-
      Mutation operations of lower order type are blocked until the higher order operation finishes.
      Blocking prevents conflicts in remove transaction application.
-
      Go-Online logic
-
      1)  Flip update state to GO_ONLINE
      2)  Find the lastSyncedTransaction recorded locally
      3)  Go Online and start listening for new transactions coming in
@@ -47,7 +42,6 @@ export declare class OnlineManager implements IOnlineManager {
      Add them to local store
      9)  Flip the online state to true
      Finally, always flip update state to LOCAL
-
      * @returns {Promise<void>}
      */
     goOnline(): Promise<void>;

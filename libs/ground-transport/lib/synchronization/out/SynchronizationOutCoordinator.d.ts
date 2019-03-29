@@ -4,7 +4,7 @@ export interface ISynchronizationOutCoordinator {
 }
 export declare class SynchronizationOutCoordinator extends AbstractCompletable implements ISynchronizationOutCoordinator {
     private nodesBySyncFrequency;
-    private synchronizationOutManager;
+    private syncOutManager;
     private syncNodeManager;
     private terminalStore;
     constructor();

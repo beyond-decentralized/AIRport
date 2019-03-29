@@ -5,10 +5,9 @@ import {
 	JoinColumn,
 	ManyToOne,
 	MappedSuperclass
-}                                   from '@airport/air-control'
-import {IActor,}                    from '../../generated/infrastructure/qactor'
-import {IAbstractRepositoryEntity,} from '../../generated/repository/qabstractrepositoryentity'
-import {IRepository}                from '../../generated/repository/qrepository'
+}                    from '@airport/air-control'
+import {IActor}      from '../../generated/infrastructure/qactor'
+import {IRepository} from '../../generated/repository/qrepository'
 
 /**
  * Created by Papa on 2/17/2017.
@@ -17,19 +16,22 @@ import {IRepository}                from '../../generated/repository/qrepository
 export type RepositoryEntityActorRecordId = number;
 
 @MappedSuperclass()
-export abstract class AbstractRepositoryEntity
-	implements IAbstractRepositoryEntity {
+export abstract class RepositoryEntity {
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'REPOSITORY_ID', referencedColumnName: 'ID',
-		nullable: false})
+	@JoinColumn({
+		name: 'REPOSITORY_ID', referencedColumnName: 'ID',
+		nullable: false
+	})
 	repository: IRepository
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'ACTOR_ID', referencedColumnName: 'ID',
-		nullable: false})
+	@JoinColumn({
+		name: 'ACTOR_ID', referencedColumnName: 'ID',
+		nullable: false
+	})
 	actor: IActor
 
 	@Id()

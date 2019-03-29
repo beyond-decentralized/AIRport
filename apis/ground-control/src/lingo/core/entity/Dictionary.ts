@@ -110,7 +110,7 @@ export namespace table {
  * @type {string}
  */
 export namespace repositoryEntity {
-	export const ENTITY_NAME       = 'AbstractRepositoryEntity';
+	export const ENTITY_NAME       = 'RepositoryEntity';
 	export const FOREIGN_KEY       = 'REPOSITORY_ID';
 	export const REPOSITORY_ID     = 'REPOSITORY_ID';
 	export const ACTOR_ID          = 'ACTOR_ID';

@@ -1,34 +1,31 @@
+import {DI}                              from '@airport/di'
 import {
 	IStoreDriver,
 	PortableQuery,
-	TransactionalConnectorToken
-}                                        from "@airport/ground-control";
+	TRANS_CONNECTOR
+}                                        from '@airport/ground-control'
 import {
 	IActor,
 	ITransactionHistory
-}                                        from "@airport/holding-pattern";
+}                                        from '@airport/holding-pattern'
+import {IObservable}                     from '@airport/observe'
 import {
 	DistributionStrategy,
 	ITransactionManager,
 	PlatformType,
-	TransactionManagerToken
+	TRANSACTION_MANAGER
 }                                        from '@airport/terminal-map'
-import {IInternalTransactionalConnector} from "@airport/tower";
-import {Observable}                      from 'rxjs';
-import {
-	Inject,
-	Service
-}                                        from "typedi";
+import {IInternalTransactionalConnector} from '@airport/tower'
 import {
 	DELETE_MANAGER,
 	INSERT_MANAGER,
 	QUERY_MANAGER,
 	UPDATE_MANAGER
-}                                        from "../diTokens";
-import {IDeleteManager}                  from "../orchestration/DeleteManager";
-import {IInsertManager,}                 from "../orchestration/InsertManager";
-import {IQueryManager}                   from "../orchestration/QueryManager";
-import {IUpdateManager}                  from "../orchestration/UpdateManager";
+}                                        from '../diTokens'
+import {IDeleteManager}                  from '../orchestration/DeleteManager'
+import {IInsertManager,}                 from '../orchestration/InsertManager'
+import {IQueryManager}                   from '../orchestration/QueryManager'
+import {IUpdateManager}                  from '../orchestration/UpdateManager'
 
 /**
  * Keeps track of transactions, per client and validates that a given
@@ -54,78 +51,86 @@ import {IUpdateManager}                  from "../orchestration/UpdateManager";
  * A single transactional queue should be enough.
  *
  */
-@Service(TransactionalConnectorToken)
 export class TransactionalServer
 	implements IInternalTransactionalConnector {
 
-	activeTransactions: { [index: number]: ITransactionHistory } = {};
-	lastTransactionIndex = 0;
-	currentTransactionIndex;
+	activeTransactions: { [index: number]: ITransactionHistory } = {}
+	lastTransactionIndex                                         = 0
+	currentTransactionIndex
 	//
-	dataStore: IStoreDriver;
+	dataStore: IStoreDriver
+	private deleteManager: IDeleteManager
+	private insertManager: IInsertManager
+	private queryManager: IQueryManager
+	private transactionManager: ITransactionManager
+	private updateManager: IUpdateManager
 
-	constructor(
-		@Inject(DELETE_MANAGER)
-		private deleteManager: IDeleteManager,
-		@Inject(INSERT_MANAGER)
-		private insertManager: IInsertManager,
-		@Inject(QUERY_MANAGER)
-		private queryManager: IQueryManager,
-		@Inject(TransactionManagerToken)
-		private transactionManager: ITransactionManager,
-		@Inject(UPDATE_MANAGER)
-		private updateManager: IUpdateManager,
-	) {
+	constructor() {
+		DI.get((
+			deleteManager,
+			insertManager,
+			queryManager,
+			transactionManager,
+			updateManager
+			) => {
+				this.deleteManager      = deleteManager
+				this.insertManager      = insertManager
+				this.queryManager       = queryManager
+				this.transactionManager = transactionManager
+				this.updateManager      = updateManager
+			}, DELETE_MANAGER, INSERT_MANAGER,
+			QUERY_MANAGER, TRANSACTION_MANAGER,
+			UPDATE_MANAGER)
 	}
 
 	async startTransaction(): Promise<number> {
-		this.lastTransactionIndex++;
-		await this.transactionManager.startTransaction(this.lastTransactionIndex);
-		this.currentTransactionIndex = this.lastTransactionIndex;
+		this.lastTransactionIndex++
+		await this.transactionManager.startTransaction(this.lastTransactionIndex)
+		this.currentTransactionIndex = this.lastTransactionIndex
 
-		return this.lastTransactionIndex;
+		return this.lastTransactionIndex
 	}
 
 	async rollbackTransaction(
 		transactionIndex: number
 	): Promise<void> {
-		await this.transactionManager.rollbackTransaction(transactionIndex);
-		this.currentTransactionIndex = null;
+		await this.transactionManager.rollbackTransaction(transactionIndex)
+		this.currentTransactionIndex = null
 	}
 
 	async commitTransaction(
 		transactionIndex: number
 	): Promise<void> {
-		await this.transactionManager.commitTransaction(transactionIndex);
-		this.currentTransactionIndex = null;
+		await this.transactionManager.commitTransaction(transactionIndex)
+		this.currentTransactionIndex = null
 	}
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		return await this.queryManager.find<E, EntityArray>(portableQuery, cachedSqlQueryId);
+		return await this.queryManager.find<E, EntityArray>(portableQuery, cachedSqlQueryId)
 	}
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		return await this.queryManager.findOne<E>(portableQuery, cachedSqlQueryId);
+		return await this.queryManager.findOne<E>(portableQuery, cachedSqlQueryId)
 	}
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): Observable<EntityArray> {
-		return this.queryManager.search<E, EntityArray>(portableQuery);
+	): IObservable<EntityArray> {
+		return this.queryManager.search<E, EntityArray>(portableQuery)
 	}
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): Observable<E> {
-		return this.queryManager.searchOne<E>(portableQuery);
+	): IObservable<E> {
+		return this.queryManager.searchOne<E>(portableQuery)
 	}
 
 	async addRepository(
@@ -135,54 +140,54 @@ export class TransactionalServer
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
 	): Promise<number> {
-		return this.insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy);
+		return this.insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy)
 	}
 
 	async insertValues(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
 	): Promise<number> {
-		const actor = await this.getActor(portableQuery);
+		const actor = await this.getActor(portableQuery)
 		return await this.wrapInTransaction(async () =>
 				await this.insertManager.insertValues(portableQuery, actor)
-			, 'INSERT', transactionIndex);
+			, 'INSERT', transactionIndex)
 	}
 
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
 	): Promise<number[] | string[]> {
-		const actor = await this.getActor(portableQuery);
+		const actor = await this.getActor(portableQuery)
 		return await this.wrapInTransaction<number[] | string[]>(async () =>
 				await this.insertManager.insertValuesGetIds(portableQuery, actor)
-			, 'INSERT GET IDS', transactionIndex);
+			, 'INSERT GET IDS', transactionIndex)
 	}
 
 	async updateValues(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
 	): Promise<number> {
-		const actor = await this.getActor(portableQuery);
+		const actor = await this.getActor(portableQuery)
 		return await this.wrapInTransaction(async () =>
 				await this.updateManager.updateValues(portableQuery, actor)
-			, 'UPDATE', transactionIndex);
+			, 'UPDATE', transactionIndex)
 	}
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
 	): Promise<number> {
-		const actor = await this.getActor(portableQuery);
+		const actor = await this.getActor(portableQuery)
 		return await this.wrapInTransaction(async () =>
 				await this.deleteManager.deleteWhere(portableQuery, actor)
-			, 'DELETE', transactionIndex);
+			, 'DELETE', transactionIndex)
 	}
 
 
 	private async getActor(
 		portableQuery: PortableQuery
 	): Promise<IActor> {
-		throw `Not Implemented`;
+		throw `Not Implemented`
 	}
 
 	private async wrapInTransaction<T>(
@@ -190,27 +195,29 @@ export class TransactionalServer
 		operationName: string,
 		transactionIndex?: number,
 	): Promise<T> {
-		const attachToTransaction = !transactionIndex;
+		const attachToTransaction = !transactionIndex
 		if (attachToTransaction) {
-			transactionIndex = await this.startTransaction();
+			transactionIndex = await this.startTransaction()
 		} else {
 			if (transactionIndex !== this.currentTransactionIndex) {
 				throw `${operationName}: provided Transaction Index: ${transactionIndex} 
-				does not match current Transaction Index.`;
+				does not match current Transaction Index.`
 			}
 		}
 		try {
-			const returnValue = await callback();
+			const returnValue = await callback()
 			if (attachToTransaction) {
-				await this.commitTransaction(transactionIndex);
+				await this.commitTransaction(transactionIndex)
 			}
-			return returnValue;
+			return returnValue
 		} catch (error) {
 			// if (attachToTransaction) {
-			await this.rollbackTransaction(transactionIndex);
+			await this.rollbackTransaction(transactionIndex)
 			// }
-			throw error;
+			throw error
 		}
 	}
 
 }
+
+DI.set(TRANS_CONNECTOR, TransactionalServer)

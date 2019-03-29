@@ -1,12 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const src_1 = require("@airport/air-control/lib/src");
-const src_2 = require("@airport/di/lib/src");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 class AbstractMutationManager {
     constructor() {
-        src_2.DI.set((utils, dataStore) => {
-        }, src_1.UTILS, STORE_DRIVER);
+        di_1.DI.get((dataStore, utils) => {
+            this.dataStore = dataStore;
+            this.utils = utils;
+        }, ground_control_1.STORE_DRIVER, air_control_1.UTILS);
     }
     getPortableQuery(schemaIndex, tableIndex, query, queryResultType) {
         return {

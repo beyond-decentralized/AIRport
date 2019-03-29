@@ -1,10 +1,9 @@
 import { IQNumberField, MappedEntityArray, RawFieldQuery } from '@airport/air-control';
 import { TerminalName, TerminalSecondId } from '@airport/arrivals-n-departures';
 import { UserUniqueId } from '@airport/travel-document-checkpoint';
-import { RepositoryId } from '../../ddl/ddl';
-import { BaseRepositoryDao, IRepository } from '../../generated/generated';
-import { ActorRandomId, RepositoryOrderedId, RepositoryRandomId, RepositoryTransactionHistoryId } from '../../index';
-export interface IRepositoryDao {
+import { ActorRandomId, RepositoryId, RepositoryOrderedId, RepositoryRandomId, RepositoryTransactionHistoryId } from '../../ddl/ddl';
+import { BaseRepositoryDao, IBaseRepositoryDao, IRepository } from '../../generated/generated';
+export interface IRepositoryDao extends IBaseRepositoryDao {
     findReposWithDetailsByIds(repositoryIdsInClause: RepositoryTransactionHistoryId[] | RawFieldQuery<IQNumberField> | {
         (...args: any[]): RawFieldQuery<IQNumberField>;
     }, dbName: TerminalName, userEmail: UserUniqueId): Promise<MappedEntityArray<IRepository>>;

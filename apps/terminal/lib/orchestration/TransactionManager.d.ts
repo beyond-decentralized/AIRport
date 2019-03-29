@@ -1,23 +1,19 @@
-import { IUtils } from "@airport/air-control";
-import { ActiveQueries, IIdGenerator } from '@airport/fuel-hydrant-system';
-import { IStoreDriver, StoreType } from "@airport/ground-control";
-import { ITransactionHistory, ITransactionHistoryDmo } from "@airport/holding-pattern";
-import { ITransactionManager } from "@airport/terminal-map";
-import { IOfflineDeltaStore } from "../data/OfflineDeltaStore";
-import { IOnlineManager } from "../net/OnlineManager";
-import { AbstractMutationManager } from "./AbstractMutationManager";
+import { StoreType } from '@airport/ground-control';
+import { ITransactionHistory } from '@airport/holding-pattern';
+import { ITransactionManager } from '@airport/terminal-map';
+import { AbstractMutationManager } from './AbstractMutationManager';
 export declare class TransactionManager extends AbstractMutationManager implements ITransactionManager {
+    currentTransHistory: ITransactionHistory;
     private idGenerator;
     private offlineDeltaStore;
     private onlineManager;
     private queries;
+    storeType: StoreType;
     private transactionHistoryDmo;
-    currentTransHistory: ITransactionHistory;
     transactionIndexQueue: number[];
     transactionInProgress: number;
     yieldToRunningTransaction: number;
-    storeType: StoreType;
-    constructor(utils: IUtils, dataStore: IStoreDriver, idGenerator: IIdGenerator, offlineDeltaStore: IOfflineDeltaStore, onlineManager: IOnlineManager, queries: ActiveQueries, transactionHistoryDmo: ITransactionHistoryDmo);
+    constructor();
     /**
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}

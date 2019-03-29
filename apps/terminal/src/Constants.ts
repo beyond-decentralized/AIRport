@@ -6,10 +6,10 @@ import {
 }                 from '@airport/approach-lighting-system'
 import {LogLevel} from '@airport/runway-edge-lighting'
 
-
-export const TerminalLogger: ILoggedPackage
+export const TERMINAL_LOG: ILoggedPackage
 	             = new LoggedPackage('terminal', LogLevel.TRACE)
 
-export const TerminalAppLogger: ILoggedApplication
+export const TERMINAL_APP_LOG: ILoggedApplication
 	             = new LoggedApplication('Airport')
-TerminalAppLogger.addPackage(TerminalLogger)
+
+TERMINAL_APP_LOG.addPackage(TERMINAL_LOG)

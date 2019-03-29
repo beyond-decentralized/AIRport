@@ -12,8 +12,12 @@ __export(require("./history/RepositoryTransactionType"));
 __export(require("./history/TransactionHistory"));
 __export(require("./infrastructure/Actor"));
 __export(require("./infrastructure/Application"));
-__export(require("./repository/AbstractRepositoryEntity"));
+__export(require("./repository/RepositoryEntity"));
 __export(require("./repository/Repository"));
 __export(require("./repository/RepositoryActor"));
 __export(require("./repository/RepositorySchema"));
+__export(require("./traditional/ImmutableRepoRow"));
+__export(require("./traditional/ImmutableRow"));
+__export(require("./traditional/MutableRepoRow"));
+__export(require("./traditional/MutableRow"));
 //# sourceMappingURL=ddl.js.map

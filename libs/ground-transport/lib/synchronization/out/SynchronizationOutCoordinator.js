@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
-const observe_1 = require("@airport/observe");
 const terminal_map_1 = require("@airport/terminal-map");
 const AbstractCompletable_1 = require("../../AbstractCompletable");
 const diTokens_1 = require("../../diTokens");
@@ -9,16 +8,25 @@ class SynchronizationOutCoordinator extends AbstractCompletable_1.AbstractComple
     constructor() {
         super();
         this.nodesBySyncFrequency = new Map();
-        di_1.DI.get(() => {
-        }, diTokens_1.SYNC_OUT_MANAGER, diTokens_1.SYNC_NODE_MANAGER, terminal_map_1.TERMINAL_STORE);
+        di_1.DI.get((syncNodeManager, synchronizationOutManager, terminalStore) => {
+            this.syncNodeManager = syncNodeManager;
+            this.syncOutManager = synchronizationOutManager;
+            this.terminalStore = terminalStore;
+        }, diTokens_1.SYNC_NODE_MANAGER, diTokens_1.SYNC_OUT_MANAGER, terminal_map_1.TERMINAL_STORE);
     }
     async initialize() {
         await this.syncNodeManager.initialize();
-        this.record(this.terminalStore.nodesBySyncFrequency.pipe(observe_1.withLatestFrom(this.terminalStore.terminal)).subscribe(([nodesBySyncFrequency, terminal]) => {
-            if (!terminal) {
+        /*
+                pipe(this.terminalStore.getTerminalState.observable, (
+                    terminalState: ITerminalState,
+                    context: any
+                ) => withLatestFrom([]))
+                */
+        this.record(this.terminalStore.getTerminalState.observable.subscribe((terminalState) => {
+            if (!terminalState.terminal) {
                 return;
             }
-            this.updateSyncPool(nodesBySyncFrequency, terminal);
+            this.updateSyncPool(terminalState.nodesBySyncFrequency, terminalState.terminal);
         }));
     }
     updateSyncPool(nodesBySyncFrequency, terminal) {
@@ -41,7 +49,7 @@ class SynchronizationOutCoordinator extends AbstractCompletable_1.AbstractComple
     }
     scheduleSyncsForFrequency(frequency, sharingNodes, terminal) {
         setTimeout(async () => {
-            await this.synchronizationOutManager.synchronize(sharingNodes, terminal).then();
+            await this.syncOutManager.synchronize(sharingNodes, terminal).then();
             this.returnToSyncPool(frequency, terminal);
         }, frequency);
     }

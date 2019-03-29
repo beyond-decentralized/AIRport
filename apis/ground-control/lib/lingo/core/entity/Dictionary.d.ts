@@ -91,7 +91,7 @@ export declare namespace table {
  * @type {string}
  */
 export declare namespace repositoryEntity {
-    const ENTITY_NAME = "AbstractRepositoryEntity";
+    const ENTITY_NAME = "RepositoryEntity";
     const FOREIGN_KEY = "REPOSITORY_ID";
     const REPOSITORY_ID = "REPOSITORY_ID";
     const ACTOR_ID = "ACTOR_ID";

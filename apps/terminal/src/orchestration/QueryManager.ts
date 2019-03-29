@@ -1,16 +1,13 @@
+import {DI}          from '@airport/di'
 import {
 	IStoreDriver,
 	PortableQuery
-}                   from "@airport/ground-control";
-import {Observable} from 'rxjs';
-import {
-	Inject,
-	Service
-}                   from "typedi";
+}                    from '@airport/ground-control'
+import {IObservable} from '@airport/observe'
 import {
 	QUERY_MANAGER,
 	STORE_DRIVER
-}                   from "../diTokens";
+}                    from '../diTokens'
 
 export interface IQueryManager {
 
@@ -27,51 +24,55 @@ export interface IQueryManager {
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery
-	): Observable<EntityArray>;
+	): IObservable<EntityArray>;
 
 	searchOne<E>(
 		portableQuery: PortableQuery
-	): Observable<E>;
+	): IObservable<E>;
 
 }
 
-@Service(QUERY_MANAGER)
 export class QueryManager
 	implements IQueryManager {
 
-	constructor(
-		@Inject(
-			_ => STORE_DRIVER)
-		private dataStore: IStoreDriver,
-	) {
+	private dataStore: IStoreDriver
+
+	constructor() {
+		DI.get((
+			dataStore
+		) => {
+			this.dataStore = dataStore
+		}, STORE_DRIVER)
 	}
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number
 	): Promise<EntityArray> {
-		return await this.dataStore.find<E, EntityArray>(portableQuery, cachedSqlQueryId);
+		return await this.dataStore.find<E, EntityArray>(portableQuery, cachedSqlQueryId)
 	}
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number
 	): Promise<E> {
-		return await this.dataStore.findOne<E>(portableQuery, cachedSqlQueryId);
+		return await this.dataStore.findOne<E>(portableQuery, cachedSqlQueryId)
 	}
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): Observable<EntityArray> {
-		return this.dataStore.search<E, EntityArray>(portableQuery, cachedSqlQueryId);
+	): IObservable<EntityArray> {
+		return this.dataStore.search<E, EntityArray>(portableQuery, cachedSqlQueryId)
 	}
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): Observable<E> {
-		return this.dataStore.searchOne<E>(portableQuery, cachedSqlQueryId);
+	): IObservable<E> {
+		return this.dataStore.searchOne<E>(portableQuery, cachedSqlQueryId)
 	}
 
 }
+
+DI.set(QUERY_MANAGER, QueryManager)

@@ -1,26 +1,26 @@
-import { IAirportDatabase, IUtils } from "@airport/air-control";
-import { IStoreDriver, PortableQuery } from "@airport/ground-control";
-import { IActor, OperationHistoryDmo, RecordHistoryDmo, RepositoryTransactionHistoryDmo, TransactionHistoryDmo } from "@airport/holding-pattern";
-import { IRepositoryManager } from "../core/repository/RepositoryManager";
-import { IOfflineDeltaStore } from "../data/OfflineDeltaStore";
-import { IHistoryManager } from "./HistoryManager";
-import { ITransactionManager } from "./TransactionManager";
+import { IAirportDatabase, IUtils } from '@airport/air-control';
+import { IStoreDriver, PortableQuery } from '@airport/ground-control';
+import { IActor, IOperationHistoryDmo, IRecordHistoryDmo, IRepositoryTransactionHistoryDmo, ITransactionHistoryDmo } from '@airport/holding-pattern';
+import { ITransactionManager } from '@airport/terminal-map';
+import { IRepositoryManager } from '../core/repository/RepositoryManager';
+import { IOfflineDeltaStore } from '../data/OfflineDeltaStore';
+import { IHistoryManager } from './HistoryManager';
 export interface IUpdateManager {
     updateValues(portableQuery: PortableQuery, actor: IActor): Promise<number>;
 }
 export declare class UpdateManager implements IUpdateManager {
-    private airportDb;
-    private utils;
+    private airDb;
     private dataStore;
-    private historyManager;
+    private histManager;
     private offlineDataStore;
-    private operationHistoryDmo;
-    private recordHistoryDmo;
-    private repositoryManager;
-    private repositoryTransactionHistoryDmo;
-    private transactionHistoryDmo;
-    private transactionManager;
-    constructor(airportDb: IAirportDatabase, utils: IUtils, dataStore: IStoreDriver, historyManager: IHistoryManager, offlineDataStore: IOfflineDeltaStore, operationHistoryDmo: OperationHistoryDmo, recordHistoryDmo: RecordHistoryDmo, repositoryManager: IRepositoryManager, repositoryTransactionHistoryDmo: RepositoryTransactionHistoryDmo, transactionHistoryDmo: TransactionHistoryDmo, transactionManager: ITransactionManager);
+    private operHistoryDmo;
+    private recHistoryDmo;
+    private repoManager;
+    private repoTransHistoryDmo;
+    private transHistoryDmo;
+    private transManager;
+    private utils;
+    constructor(airDb: IAirportDatabase, dataStore: IStoreDriver, histManager: IHistoryManager, offlineDataStore: IOfflineDeltaStore, operHistoryDmo: IOperationHistoryDmo, recHistoryDmo: IRecordHistoryDmo, repoManager: IRepositoryManager, repoTransHistoryDmo: IRepositoryTransactionHistoryDmo, transHistoryDmo: ITransactionHistoryDmo, transManager: ITransactionManager, utils: IUtils);
     updateValues(portableQuery: PortableQuery, actor: IActor): Promise<number>;
     private addUpdateHistory;
     private addNewValueHistory;

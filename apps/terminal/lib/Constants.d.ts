@@ -1,3 +1,3 @@
 import { ILoggedApplication, ILoggedPackage } from '@airport/approach-lighting-system';
-export declare const TerminalLogger: ILoggedPackage;
-export declare const TerminalAppLogger: ILoggedApplication;
+export declare const TERMINAL_LOG: ILoggedPackage;
+export declare const TERMINAL_APP_LOG: ILoggedApplication;

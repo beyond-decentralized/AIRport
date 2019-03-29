@@ -1,9 +1,10 @@
 import {DI}                         from '@airport/di'
 import {
+	ISharingNode,
 	SharingNodeSyncFrequency
 }                                   from '@airport/moving-walkway'
-import {withLatestFrom}             from '@airport/observe'
 import {
+	ITerminalState,
 	ITerminalStore,
 	TERMINAL_STORE,
 }                                   from '@airport/terminal-map'
@@ -30,15 +31,21 @@ export class SynchronizationOutCoordinator
 	private nodesBySyncFrequency: Map<SharingNodeSyncFrequency, ISharingNode[]>
 		        = new Map()
 
-	private synchronizationOutManager: ISynchronizationOutManager
+	private syncOutManager: ISynchronizationOutManager
 	private syncNodeManager: ISyncNodeManager
 	private terminalStore: ITerminalStore
 
 	constructor() {
 		super()
-		DI.get(() => {
-
-			}, SYNC_OUT_MANAGER, SYNC_NODE_MANAGER,
+		DI.get((
+			syncNodeManager,
+			synchronizationOutManager,
+			terminalStore
+			) => {
+				this.syncNodeManager = syncNodeManager
+				this.syncOutManager  = synchronizationOutManager
+				this.terminalStore   = terminalStore
+			}, SYNC_NODE_MANAGER, SYNC_OUT_MANAGER,
 			TERMINAL_STORE)
 	}
 
@@ -46,15 +53,20 @@ export class SynchronizationOutCoordinator
 	async initialize(): Promise<void> {
 		await this.syncNodeManager.initialize()
 
-		this.record(this.terminalStore.nodesBySyncFrequency.pipe(
-			withLatestFrom(this.terminalStore.terminal),
-		).subscribe((
-			[nodesBySyncFrequency, terminal]
+		/*
+				pipe(this.terminalStore.getTerminalState.observable, (
+					terminalState: ITerminalState,
+					context: any
+				) => withLatestFrom([]))
+				*/
+
+		this.record(this.terminalStore.getTerminalState.observable.subscribe((
+			terminalState: ITerminalState
 		) => {
-			if (!terminal) {
+			if (!terminalState.terminal) {
 				return
 			}
-			this.updateSyncPool(nodesBySyncFrequency, terminal)
+			this.updateSyncPool(terminalState.nodesBySyncFrequency, terminalState.terminal)
 		}))
 	}
 
@@ -91,7 +103,7 @@ export class SynchronizationOutCoordinator
 		terminal: ITerminal,
 	): void {
 		setTimeout(async () => {
-			await this.synchronizationOutManager.synchronize(sharingNodes, terminal).then()
+			await this.syncOutManager.synchronize(sharingNodes, terminal).then()
 			this.returnToSyncPool(frequency, terminal)
 		}, frequency)
 	}

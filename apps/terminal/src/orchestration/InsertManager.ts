@@ -1,8 +1,12 @@
 import {
-	AirportDatabaseToken,
+	AIR_DB,
 	IAirportDatabase
-}                               from '@airport/air-control'
-import {SequenceGeneratorToken} from '@airport/fuel-hydrant-system'
+}                           from '@airport/air-control'
+import {DI}                 from '@airport/di'
+import {
+	ISequenceGenerator,
+	SEQUENCE_GENERATOR
+}                             from '@airport/fuel-hydrant-system'
 import {
 	ChangeType,
 	DbEntity,
@@ -10,32 +14,33 @@ import {
 	JsonInsertValues,
 	PortableQuery,
 	repositoryEntity
-}                               from '@airport/ground-control'
+}                           from '@airport/ground-control'
 import {
 	IActor,
 	IOperationHistory,
 	IRepositoryTransactionHistory,
 	ITransactionHistory,
+	OPER_HISTORY_DMO,
 	OperationHistoryDmo,
-	OperationHistoryDmoToken,
+	REC_HISTORY_DMO,
 	RecordHistoryDmo,
-	RecordHistoryDmoToken,
+	REPO_TRANS_HISTORY_DMO,
 	RepositoryTransactionHistoryDmo,
-	RepositoryTransactionHistoryDmoToken,
-	TransactionHistoryDmo,
-	TransactionHistoryDmoToken
-}                               from '@airport/holding-pattern'
+	TRANS_HISTORY_DMO,
+	TransactionHistoryDmo
+}                           from '@airport/holding-pattern'
+import {
+	IOperationHistoryDmo,
+	IRecordHistoryDmo,
+	IRepositoryTransactionHistoryDmo,
+	ITransactionHistoryDmo
+} from '@airport/holding-pattern/lib/src'
 import {
 	DistributionStrategy,
 	ITransactionManager,
 	PlatformType,
-	TransactionManagerToken
+	TRANSACTION_MANAGER
 }                           from '@airport/terminal-map'
-import {
-	Inject,
-	Service
-}                           from 'typedi'
-import {ISequenceGenerator} from '../../node_modules/@airport/fuel-hydrant-system/lib/store/SequenceGenerator'
 import {IRepositoryManager} from '../core/repository/RepositoryManager'
 import {IOfflineDeltaStore} from '../data/OfflineDeltaStore'
 import {
@@ -71,38 +76,56 @@ export interface IInsertManager {
 
 }
 
-@Service(INSERT_MANAGER)
 export class InsertManager
 	implements IInsertManager {
 
-	constructor(
-		@Inject(AirportDatabaseToken)
-		private airportDb: IAirportDatabase,
-		@Inject(STORE_DRIVER)
-		private dataStore: IStoreDriver,
-		@Inject(SequenceGeneratorToken)
-		private sequenceGenerator: ISequenceGenerator,
-		@Inject(HISTORY_MANAGER)
-		private historyManager: IHistoryManager,
-		@Inject(OFFLINE_DELTA_STORE)
-		private offlineDataStore: IOfflineDeltaStore,
-		@Inject(OperationHistoryDmoToken)
-		private operationHistoryDmo: OperationHistoryDmo,
-		@Inject(RecordHistoryDmoToken)
-		private recordHistoryDmo: RecordHistoryDmo,
-		@Inject(REPOSITORY_MANAGER)
-		private repositoryManager: IRepositoryManager,
-		@Inject(RepositoryTransactionHistoryDmoToken)
-		private repositoryTransactionHistoryDmo: RepositoryTransactionHistoryDmo,
-		@Inject(TransactionHistoryDmoToken)
-		private transactionHistoryDmo: TransactionHistoryDmo,
-		@Inject(TransactionManagerToken)
-		private transactionManager: ITransactionManager,
-	) {
+	private airDb: IAirportDatabase
+	private dataStore: IStoreDriver
+	private seqGenerator: ISequenceGenerator
+	private histManager: IHistoryManager
+	private offlineDataStore: IOfflineDeltaStore
+	private operHistoryDmo: IOperationHistoryDmo
+	private recHistoryDmo: IRecordHistoryDmo
+	private repoManager: IRepositoryManager
+	private repoTransHistoryDmo: IRepositoryTransactionHistoryDmo
+	private transHistoryDmo: ITransactionHistoryDmo
+	private transManager: ITransactionManager
+
+	constructor() {
+		DI.get((
+			airportDatabase,
+			dataStore,
+			sequenceGenerator,
+			historyManager,
+			offlineDataStore,
+			operationHistoryDmo,
+			recordHistoryDmo,
+			repositoryManager,
+			repositoryTransactionHistoryDmo,
+			transactionHistoryDmo,
+			transactionManager
+			) => {
+				this.airDb                           = airportDatabase
+				this.dataStore                       = dataStore
+				this.seqGenerator               = sequenceGenerator
+				this.histManager                  = historyManager
+				this.offlineDataStore                = offlineDataStore
+				this.operHistoryDmo             = operationHistoryDmo
+				this.recHistoryDmo                = recordHistoryDmo
+				this.repoManager               = repositoryManager
+				this.repoTransHistoryDmo = repositoryTransactionHistoryDmo
+				this.transHistoryDmo           = transactionHistoryDmo
+				this.transManager              = transactionManager
+			}, AIR_DB, STORE_DRIVER,
+			SEQUENCE_GENERATOR, HISTORY_MANAGER,
+			OFFLINE_DELTA_STORE, OPER_HISTORY_DMO,
+			REC_HISTORY_DMO, REPOSITORY_MANAGER,
+			REPO_TRANS_HISTORY_DMO, TRANS_HISTORY_DMO,
+			TRANSACTION_MANAGER)
 	}
 
 	get currentTransHistory(): ITransactionHistory {
-		return this.transactionManager.currentTransHistory
+		return this.transManager.currentTransHistory
 	}
 
 	async insertValues(
@@ -125,7 +148,7 @@ export class InsertManager
 		actor: IActor,
 		getIds: boolean = false
 	): Promise<number | RecordId[]> {
-		const dbEntity = this.airportDb.schemas[portableQuery.schemaIndex]
+		const dbEntity = this.airDb.schemas[portableQuery.schemaIndex]
 			.currentVersion.entities[portableQuery.tableIndex]
 
 		if (dbEntity.isRepositoryEntity) {
@@ -151,8 +174,8 @@ export class InsertManager
 		platformConfig: string                     = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
 	): Promise<number> {
-		const repository = await this.repositoryManager.createRepository(
-			name, distributionStrategy, this.transactionManager.storeType,
+		const repository = await this.repoManager.createRepository(
+			name, distributionStrategy, this.transManager.storeType,
 			platform, platformConfig, 'id')
 
 		return repository.id
@@ -168,7 +191,7 @@ export class InsertManager
 		const idColumns = dbEntity.idColumns
 
 		for (const idColumn of idColumns) {
-			if(idColumn.isGenerated) {
+			if (idColumn.isGenerated) {
 				continue
 			}
 			for (const entityValues of values) {
@@ -214,7 +237,7 @@ export class InsertManager
 
 		const numSequencesNeeded      = generatedColumns.map(
 			_ => values.length)
-		const generatedSequenceValues = this.sequenceGenerator.generateSequenceNumbers(
+		const generatedSequenceValues = this.seqGenerator.generateSequenceNumbers(
 			generatedColumns, numSequencesNeeded)
 
 
@@ -245,7 +268,7 @@ export class InsertManager
 		jsonInsertValues: JsonInsertValues
 	): void {
 		// const actorRecordIds: RepositoryEntityActorRecordId[] = []
-		const actorIdColumn      = dbEntity.idColumnMap['ACTOR_ID']
+		const actorIdColumn = dbEntity.idColumnMap['ACTOR_ID']
 		// const actorRecordIdColumn                             =
 		// dbEntity.idColumnMap['ACTOR_RECORD_ID']
 		const repositoryIdColumn = dbEntity.idColumnMap['REPOSITORY_ID']
@@ -256,10 +279,11 @@ export class InsertManager
 				on insert for @Id '${dbEntity.name}.${actorIdColumn.name}'.
 				You cannot explicitly provide a value for ACTOR_ID on Repository row inserts.`
 			}
-			// if (entityValues[actorRecordIdColumn.index] || entityValues[actorRecordIdColumn.index]
-			// === 0) { throw `Already provided value '${entityValues[actorRecordIdColumn.index]}' on
-			// insert for @Id @GeneratedValue '${dbEntity.name}.${actorRecordIdColumn.name}'. You
-			// cannot explicitly provide values for generated ids.` }
+			// if (entityValues[actorRecordIdColumn.index] ||
+			// entityValues[actorRecordIdColumn.index] === 0) { throw `Already provided value
+			// '${entityValues[actorRecordIdColumn.index]}' on insert for @Id @GeneratedValue
+			// '${dbEntity.name}.${actorRecordIdColumn.name}'. You cannot explicitly provide
+			// values for generated ids.` }
 			if (!entityValues[repositoryIdColumn.index]) {
 				throw `Did not provide a positive integer value 
 				(instead provided '${entityValues[repositoryIdColumn.index]}')
@@ -292,7 +316,7 @@ export class InsertManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 	) {
-		const jsonInsertValues = <JsonInsertValues> portableQuery.jsonQuery
+		const jsonInsertValues = <JsonInsertValues>portableQuery.jsonQuery
 
 		let operationsByRepo: IOperationHistory[]               = []
 		let repoTransHistories: IRepositoryTransactionHistory[] = []
@@ -322,22 +346,22 @@ export class InsertManager
 		// Rows may belong to different repositories
 		for (const row of jsonInsertValues.V) {
 			const repositoryId   = row[repositoryIdColumnNumber]
-			const repo           = await this.repositoryManager.getRepository(repositoryId)
+			const repo           = await this.repoManager.getRepository(repositoryId)
 			let repoTransHistory = repoTransHistories[repositoryId]
 			if (!repoTransHistory) {
-				repoTransHistory = this.historyManager
+				repoTransHistory = this.histManager
 					.getNewRepoTransHistory(this.currentTransHistory, repo, actor)
 			}
 
 			let operationHistory = operationsByRepo[repositoryId]
 			if (!operationHistory) {
-				operationHistory               = this.repositoryTransactionHistoryDmo.startOperation(
+				operationHistory               = this.repoTransHistoryDmo.startOperation(
 					repoTransHistory, ChangeType.INSERT_VALUES, dbEntity)
 				operationsByRepo[repositoryId] = operationHistory
 			}
 
 			const actorRecordId = row[actorRecordIdColumnNumber]
-			const recordHistory = this.operationHistoryDmo.startRecordHistory(
+			const recordHistory = this.operHistoryDmo.startRecordHistory(
 				operationHistory, actorRecordId)
 
 			for (const columnNumber in jsonInsertValues.C) {
@@ -349,7 +373,7 @@ export class InsertManager
 				const columnIndex = jsonInsertValues.C[columnNumber]
 				const dbColumn    = dbEntity.columns[columnIndex]
 				const newValue    = row[columnNumber]
-				this.recordHistoryDmo.addNewValue(recordHistory, dbColumn, newValue)
+				this.recHistoryDmo.addNewValue(recordHistory, dbColumn, newValue)
 			}
 		}
 
@@ -362,3 +386,5 @@ export class InsertManager
 	}
 
 }
+
+DI.set(INSERT_MANAGER, InsertManager)

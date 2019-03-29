@@ -13,8 +13,8 @@ import {
 } from "@airport/ground-control";
 */
 const ground_control_1 = require("@airport/ground-control");
-const UpdateState_1 = require("../core/UpdateState");
 const ground_transport_1 = require("@airport/ground-transport");
+const UpdateState_1 = require("../core/UpdateState");
 class DeltaStore {
     constructor(config, sharingAdaptor = null) {
         this.config = config;

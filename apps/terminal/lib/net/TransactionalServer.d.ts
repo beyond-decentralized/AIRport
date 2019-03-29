@@ -1,12 +1,8 @@
-import { IStoreDriver, PortableQuery } from "@airport/ground-control";
-import { ITransactionHistory } from "@airport/holding-pattern";
-import { DistributionStrategy, ITransactionManager, PlatformType } from '@airport/terminal-map';
-import { IInternalTransactionalConnector } from "@airport/tower";
-import { Observable } from 'rxjs';
-import { IDeleteManager } from "../orchestration/DeleteManager";
-import { IInsertManager } from "../orchestration/InsertManager";
-import { IQueryManager } from "../orchestration/QueryManager";
-import { IUpdateManager } from "../orchestration/UpdateManager";
+import { IStoreDriver, PortableQuery } from '@airport/ground-control';
+import { ITransactionHistory } from '@airport/holding-pattern';
+import { IObservable } from '@airport/observe';
+import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
+import { IInternalTransactionalConnector } from '@airport/tower';
 /**
  * Keeps track of transactions, per client and validates that a given
  * transaction belongs to the provided client.  If the connection
@@ -32,25 +28,25 @@ import { IUpdateManager } from "../orchestration/UpdateManager";
  *
  */
 export declare class TransactionalServer implements IInternalTransactionalConnector {
-    private deleteManager;
-    private insertManager;
-    private queryManager;
-    private transactionManager;
-    private updateManager;
     activeTransactions: {
         [index: number]: ITransactionHistory;
     };
     lastTransactionIndex: number;
     currentTransactionIndex: any;
     dataStore: IStoreDriver;
-    constructor(deleteManager: IDeleteManager, insertManager: IInsertManager, queryManager: IQueryManager, transactionManager: ITransactionManager, updateManager: IUpdateManager);
+    private deleteManager;
+    private insertManager;
+    private queryManager;
+    private transactionManager;
+    private updateManager;
+    constructor();
     startTransaction(): Promise<number>;
     rollbackTransaction(transactionIndex: number): Promise<void>;
     commitTransaction(transactionIndex: number): Promise<void>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<E>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Observable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Observable<E>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<EntityArray>;
+    searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<E>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy): Promise<number>;
     insertValues(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, transactionIndex?: number): Promise<number[] | string[]>;

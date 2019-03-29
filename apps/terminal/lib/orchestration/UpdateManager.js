@@ -1,35 +1,40 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
-const typedi_1 = require("typedi");
+const terminal_map_1 = require("@airport/terminal-map");
 const diTokens_1 = require("../diTokens");
-let UpdateManager = class UpdateManager {
-    constructor(airportDb, utils, dataStore, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager) {
-        this.airportDb = airportDb;
-        this.utils = utils;
+class UpdateManager {
+    constructor(airDb, dataStore, histManager, offlineDataStore, operHistoryDmo, recHistoryDmo, repoManager, repoTransHistoryDmo, transHistoryDmo, transManager, utils) {
+        this.airDb = airDb;
         this.dataStore = dataStore;
-        this.historyManager = historyManager;
+        this.histManager = histManager;
         this.offlineDataStore = offlineDataStore;
-        this.operationHistoryDmo = operationHistoryDmo;
-        this.recordHistoryDmo = recordHistoryDmo;
-        this.repositoryManager = repositoryManager;
-        this.repositoryTransactionHistoryDmo = repositoryTransactionHistoryDmo;
-        this.transactionHistoryDmo = transactionHistoryDmo;
-        this.transactionManager = transactionManager;
+        this.operHistoryDmo = operHistoryDmo;
+        this.recHistoryDmo = recHistoryDmo;
+        this.repoManager = repoManager;
+        this.repoTransHistoryDmo = repoTransHistoryDmo;
+        this.transHistoryDmo = transHistoryDmo;
+        this.transManager = transManager;
+        this.utils = utils;
+        di_1.DI.get((airportDb, dataStore, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager, utils) => {
+            this.airDb = airportDb;
+            this.dataStore = dataStore;
+            this.histManager = historyManager;
+            this.offlineDataStore = offlineDataStore;
+            this.operHistoryDmo = operationHistoryDmo;
+            this.recHistoryDmo = recordHistoryDmo;
+            this.repoManager = repositoryManager;
+            this.repoTransHistoryDmo = repositoryTransactionHistoryDmo;
+            this.transHistoryDmo = transactionHistoryDmo;
+            this.transManager = transactionManager;
+            this.utils = utils;
+        }, air_control_1.AIR_DB, diTokens_1.STORE_DRIVER, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DMO, holding_pattern_1.REC_HISTORY_DMO, diTokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DMO, holding_pattern_1.TRANS_HISTORY_DMO, terminal_map_1.TRANSACTION_MANAGER, air_control_1.UTILS);
     }
     async updateValues(portableQuery, actor) {
-        const dbEntity = this.airportDb.schemas[portableQuery.schemaIndex].entities[portableQuery.tableIndex];
+        const dbEntity = this.airDb.schemas[portableQuery.schemaIndex].entities[portableQuery.tableIndex];
         let valueSelect;
         let recordHistoryMap;
         if (!dbEntity.isLocal) {
@@ -46,7 +51,7 @@ let UpdateManager = class UpdateManager {
         if (!dbEntity.isRepositoryEntity) {
             throw `Cannot add update history for a non-RepositoryEntity`;
         }
-        const qEntity = this.airportDb.qSchemas[dbEntity.schema.index][dbEntity.name];
+        const qEntity = this.airDb.qSchemas[dbEntity.schema.index][dbEntity.name];
         const jsonUpdate = portableQuery.jsonQuery;
         const selectClause = this.utils.Schema.getSheetSelectFromSetClause(dbEntity, qEntity, jsonUpdate.S);
         const jsonSelect = {
@@ -65,25 +70,25 @@ let UpdateManager = class UpdateManager {
         const recordsToUpdate = await this.dataStore.find(portableSelect);
         const { repositoryIdColumnIndex, actorIdColumnIndex, actorRecordIdColumnIndex, recordsByRepositoryId, repositoryIdSet } = this.groupRecordsByRepository(dbEntity, recordsToUpdate);
         const repositoryIds = Array.from(repositoryIdSet);
-        const repositories = await this.repositoryManager.findReposWithDetailsByIds(...repositoryIds);
+        const repositories = await this.repoManager.findReposWithDetailsByIds(...repositoryIds);
         const recordHistoryMapByRecordId = {};
         for (const repositoryId of repositoryIds) {
             const repository = repositories.get(repositoryId);
             const recordHistoryMapForRepository = {};
             recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository;
-            const repoTransHistory = this.historyManager.getNewRepoTransHistory(this.transactionManager.currentTransHistory, repository, actor);
-            const operationHistory = this.repositoryTransactionHistoryDmo.startOperation(repoTransHistory, ground_control_1.ChangeType.UPDATE_ROWS, dbEntity);
+            const repoTransHistory = this.histManager.getNewRepoTransHistory(this.transManager.currentTransHistory, repository, actor);
+            const operationHistory = this.repoTransHistoryDmo.startOperation(repoTransHistory, ground_control_1.ChangeType.UPDATE_ROWS, dbEntity);
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
             for (const recordToUpdate of recordsForRepositoryId) {
                 const actorId = recordToUpdate[actorIdColumnIndex];
                 const recordHistoryMapForActor = this.utils.ensureChildMap(recordHistoryMapForRepository, actorId);
                 const actorRecordId = recordToUpdate[actorRecordIdColumnIndex];
-                const recordHistory = this.operationHistoryDmo.startRecordHistory(operationHistory, actorRecordId);
+                const recordHistory = this.operHistoryDmo.startRecordHistory(operationHistory, actorRecordId);
                 recordHistoryMapForActor[actorRecordId] = recordHistory;
                 for (const columnName in jsonUpdate.S) {
                     const dbColumn = dbEntity.columnMap[columnName];
                     const value = recordToUpdate[dbColumn.index];
-                    this.recordHistoryDmo.addOldValue(recordHistory, dbColumn, value);
+                    this.recHistoryDmo.addOldValue(recordHistory, dbColumn, value);
                 }
             }
         }
@@ -102,15 +107,15 @@ let UpdateManager = class UpdateManager {
                 for (const columnName in jsonUpdate.S) {
                     const dbColumn = dbEntity.columnMap[columnName];
                     const value = updatedRecord[dbColumn.index];
-                    this.recordHistoryDmo.addNewValue(recordHistory, dbColumn, value);
+                    this.recHistoryDmo.addNewValue(recordHistory, dbColumn, value);
                 }
             }
         }
     }
     groupRecordsByRepository(dbEntity, records) {
-        const repositoryIdColumnIndex = dbEntity.columnMap[air_control_1.repositoryEntity.REPOSITORY_ID].index;
-        const actorIdColumnIndex = dbEntity.columnMap[air_control_1.repositoryEntity.ACTOR_ID].index;
-        const actorRecordIdColumnIndex = dbEntity.columnMap[air_control_1.repositoryEntity.ACTOR_RECORD_ID].index;
+        const repositoryIdColumnIndex = dbEntity.columnMap[ground_control_1.repositoryEntity.REPOSITORY_ID].index;
+        const actorIdColumnIndex = dbEntity.columnMap[ground_control_1.repositoryEntity.ACTOR_ID].index;
+        const actorRecordIdColumnIndex = dbEntity.columnMap[ground_control_1.repositoryEntity.ACTOR_RECORD_ID].index;
         const recordsByRepositoryId = {};
         const repositoryIdSet = new Set();
         for (const recordToUpdate of records) {
@@ -127,20 +132,7 @@ let UpdateManager = class UpdateManager {
             repositoryIdSet
         };
     }
-};
-UpdateManager = __decorate([
-    typedi_1.Service(diTokens_1.UPDATE_MANAGER),
-    __param(0, typedi_1.Inject(_ => air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(_ => air_control_1.UtilsToken)),
-    __param(2, typedi_1.Inject(_ => diTokens_1.STORE_DRIVER)),
-    __param(3, typedi_1.Inject(_ => diTokens_1.HISTORY_MANAGER)),
-    __param(4, typedi_1.Inject(_ => diTokens_1.OFFLINE_DELTA_STORE)),
-    __param(5, typedi_1.Inject(_ => holding_pattern_1.OperationHistoryDmoToken)),
-    __param(6, typedi_1.Inject(_ => holding_pattern_1.RecordHistoryDmoToken)),
-    __param(7, typedi_1.Inject(_ => diTokens_1.REPOSITORY_MANAGER)),
-    __param(8, typedi_1.Inject(_ => holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
-    __param(9, typedi_1.Inject(_ => holding_pattern_1.TransactionHistoryDmoToken)),
-    __param(10, typedi_1.Inject(_ => diTokens_1.TransactionManagerToken))
-], UpdateManager);
+}
 exports.UpdateManager = UpdateManager;
+di_1.DI.set(diTokens_1.UPDATE_MANAGER, UpdateManager);
 //# sourceMappingURL=UpdateManager.js.map

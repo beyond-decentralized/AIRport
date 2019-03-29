@@ -1,70 +1,67 @@
+import {DI}                      from '@airport/di'
 import {
-	IUtils
-}                           from "@airport/air-control";
-import {DI}                      from '@airport/di/lib/src'
-import {
+	ACTIVE_QUERIES,
 	ActiveQueries,
-	ActiveQueriesToken,
-	IdGeneratorToken,
+	ID_GENERATOR,
 	IIdGenerator
 }                                from '@airport/fuel-hydrant-system'
 import {
-	IStoreDriver,
 	StoreType,
 	SyncSchemaMap
-}                                from "@airport/ground-control";
+}                                from '@airport/ground-control'
 import {
 	ITransactionHistory,
 	ITransactionHistoryDmo,
-	Q
-}                                from "@airport/holding-pattern";
+	Q,
+	TRANS_HISTORY_DMO
+}                                from '@airport/holding-pattern'
 import {
-	ITransactionManager
-}                                from "@airport/terminal-map";
-import {TRANSACTION_MANAGER}     from '@airport/terminal-map/lib/src'
-import {Transactional}           from "@airport/tower";
-import {IOfflineDeltaStore}      from "../data/OfflineDeltaStore";
+	ITransactionManager,
+	TRANSACTION_MANAGER
+}                                from '@airport/terminal-map'
+import {Transactional}           from '@airport/tower'
+import {IOfflineDeltaStore}      from '../data/OfflineDeltaStore'
 import {
 	OFFLINE_DELTA_STORE,
 	ONLINE_MANAGER,
-	STORE_DRIVER,
-}                                from "../diTokens";
-import {IOnlineManager}          from "../net/OnlineManager";
-import {AbstractMutationManager} from "./AbstractMutationManager";
+}                                from '../diTokens'
+import {IOnlineManager}          from '../net/OnlineManager'
+import {AbstractMutationManager} from './AbstractMutationManager'
 
 export class TransactionManager
 	extends AbstractMutationManager
 	implements ITransactionManager {
 
 	// Keyed by repository index
-	currentTransHistory: ITransactionHistory;
+	currentTransHistory: ITransactionHistory
+	private idGenerator: IIdGenerator
+	private offlineDeltaStore: IOfflineDeltaStore
+	private onlineManager: IOnlineManager
+	// private repositoryManager: IRepositoryManager
+	private queries: ActiveQueries
+	storeType: StoreType
+	private transactionHistoryDmo: ITransactionHistoryDmo
+	transactionIndexQueue: number[]
+	transactionInProgress: number     = null
+	yieldToRunningTransaction: number = 100
 
-	transactionIndexQueue: number[];
-
-	transactionInProgress: number = null;
-	yieldToRunningTransaction: number = 100;
-
-	storeType: StoreType;
-
-	constructor(
-		@Inject(UtilsToken)
-			utils: IUtils,
-		@Inject(STORE_DRIVER)
-			dataStore: IStoreDriver,
-		@Inject(IdGeneratorToken)
-		private idGenerator: IIdGenerator,
-		@Inject(OFFLINE_DELTA_STORE)
-		private offlineDeltaStore: IOfflineDeltaStore,
-		@Inject(ONLINE_MANAGER)
-		private onlineManager: IOnlineManager,
-		// @Inject(REPOSITORY_MANAGER)
-		// private repositoryManager: IRepositoryManager,
-		@Inject(ActiveQueriesToken)
-		private queries: ActiveQueries,
-		@Inject(TransactionHistoryDmoToken)
-		private transactionHistoryDmo: ITransactionHistoryDmo
-	) {
-		super(utils, dataStore);
+	constructor() {
+		super()
+		DI.get((
+			idGenerator,
+			offlineDeltaStore,
+			onlineManager,
+			queries,
+			transactionHistoryDmo
+			) => {
+				this.idGenerator           = idGenerator
+				this.offlineDeltaStore     = offlineDeltaStore
+				this.onlineManager         = onlineManager
+				this.queries               = queries
+				this.transactionHistoryDmo = transactionHistoryDmo
+			}, ID_GENERATOR, OFFLINE_DELTA_STORE,
+			ONLINE_MANAGER, ACTIVE_QUERIES,
+			TRANS_HISTORY_DMO)
 	}
 
 
@@ -76,7 +73,7 @@ export class TransactionManager
 	async initialize(
 		dbName: string
 	): Promise<void> {
-		await this.dataStore.initialize(dbName);
+		await this.dataStore.initialize(dbName)
 		// await this.repositoryManager.initialize();
 	}
 
@@ -84,41 +81,41 @@ export class TransactionManager
 		transactionIndex: number
 	): Promise<void> {
 		if (this.transactionInProgress) {
-			this.transactionIndexQueue.push(transactionIndex);
+			this.transactionIndexQueue.push(transactionIndex)
 		}
 		while (!this.canRunTransaction(transactionIndex)) {
-			await this.wait(this.yieldToRunningTransaction);
+			await this.wait(this.yieldToRunningTransaction)
 		}
-		this.transactionInProgress = transactionIndex;
-		let fieldMap = new SyncSchemaMap();
+		this.transactionInProgress = transactionIndex
+		let fieldMap               = new SyncSchemaMap()
 
-		this.currentTransHistory = this.transactionHistoryDmo.getNewRecord();
+		this.currentTransHistory = this.transactionHistoryDmo.getNewRecord()
 
-		await this.dataStore.startTransaction();
+		await this.dataStore.startTransaction()
 	}
 
 	async rollbackTransaction(
 		transactionIndex: number
 	): Promise<void> {
 		if (this.transactionInProgress !== transactionIndex) {
-			let foundTransactionInQueue = false;
+			let foundTransactionInQueue = false
 			this.transactionIndexQueue.filter(
 				transIndex => {
 					if (transIndex === transactionIndex) {
-						foundTransactionInQueue = true;
-						return false;
+						foundTransactionInQueue = true
+						return false
 					}
-					return true;
-				});
+					return true
+				})
 			if (!foundTransactionInQueue) {
 				throw `Could not find transaction '${transactionIndex}' is not found`
 			}
-			return;
+			return
 		}
 		try {
-			await this.dataStore.rollbackTransaction();
+			await this.dataStore.rollbackTransaction()
 		} finally {
-			this.clearTransaction();
+			this.clearTransaction()
 		}
 	}
 
@@ -126,19 +123,19 @@ export class TransactionManager
 		transactionIndex: number
 	): Promise<void> {
 		if (this.transactionInProgress !== transactionIndex) {
-			throw `Cannot commit inactive transaction '${transactionIndex}'.`;
+			throw `Cannot commit inactive transaction '${transactionIndex}'.`
 		}
-		let transaction = this.currentTransHistory;
+		let transaction = this.currentTransHistory
 
 		try {
-			await this.saveRepositoryHistory(transaction);
+			await this.saveRepositoryHistory(transaction)
 
-			await this.dataStore.saveTransaction(transaction);
+			await this.dataStore.saveTransaction(transaction)
 
-			this.queries.rerunQueries();
-			await this.dataStore.commitTransaction();
+			this.queries.rerunQueries()
+			await this.dataStore.commitTransaction()
 		} finally {
-			this.clearTransaction();
+			this.clearTransaction()
 		}
 
 	}
@@ -157,18 +154,16 @@ export class TransactionManager
 	// 		transaction.deserialize(
 	// 			// repository
 	// 		);
-	// 		await this.offlineDeltaStore.markChangesAsSynced(transaction.repository, [transaction]);
-	//
-	// 		this.queries.markQueriesToRerun(transaction.transactionHistory.schemaMap);
-	// 	}
-	// }
+	// 		await this.offlineDeltaStore.markChangesAsSynced(transaction.repository,
+	// [transaction]);
+	// this.queries.markQueriesToRerun(transaction.transactionHistory.schemaMap); } }
 
 
 	private clearTransaction() {
-		this.currentTransHistory = null;
-		this.transactionInProgress = null;
+		this.currentTransHistory   = null
+		this.transactionInProgress = null
 		if (this.transactionIndexQueue.length) {
-			this.transactionInProgress = this.transactionIndexQueue.shift();
+			this.transactionInProgress = this.transactionIndexQueue.shift()
 		}
 	}
 
@@ -176,9 +171,9 @@ export class TransactionManager
 		transaction: ITransactionHistory
 	): Promise<boolean> {
 		if (!transaction.allRecordHistory.length) {
-			return false;
+			return false
 		}
-		let schemaMap = transaction.schemaMap;
+		let schemaMap = transaction.schemaMap
 
 		const transHistoryIds = await this.idGenerator.generateTransactionHistoryIds(
 			transaction.repositoryTransactionHistories.length,
@@ -186,49 +181,49 @@ export class TransactionManager
 			transaction.allRecordHistory.length
 		)
 
-		schemaMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true);
-		transaction.id = transHistoryIds.transactionHistoryId;
-		await this.doInsertValues(Q.TransactionHistory, [transaction]);
+		schemaMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true)
+		transaction.id = transHistoryIds.transactionHistoryId
+		await this.doInsertValues(Q.TransactionHistory, [transaction])
 
-		schemaMap.ensureEntity(Q.RepositoryTransactionHistory.__driver__.dbEntity, true);
+		schemaMap.ensureEntity(Q.RepositoryTransactionHistory.__driver__.dbEntity, true)
 		transaction.repositoryTransactionHistories.forEach((
 			repositoryTransactionHistory,
 			index
 		) => {
-			repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index];
-		});
-		await this.doInsertValues(Q.RepositoryTransactionHistory, transaction.repositoryTransactionHistories);
+			repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index]
+		})
+		await this.doInsertValues(Q.RepositoryTransactionHistory, transaction.repositoryTransactionHistories)
 
-		schemaMap.ensureEntity(Q.OperationHistory.__driver__.dbEntity, true);
+		schemaMap.ensureEntity(Q.OperationHistory.__driver__.dbEntity, true)
 		transaction.allOperationHistory.forEach((
 			operationHistory,
 			index
 		) => {
-			operationHistory.id = transHistoryIds.operationHistoryIds[index];
-		});
-		await this.doInsertValues(Q.OperationHistory, transaction.allOperationHistory);
+			operationHistory.id = transHistoryIds.operationHistoryIds[index]
+		})
+		await this.doInsertValues(Q.OperationHistory, transaction.allOperationHistory)
 
-		schemaMap.ensureEntity(Q.RecordHistory.__driver__.dbEntity, true);
+		schemaMap.ensureEntity(Q.RecordHistory.__driver__.dbEntity, true)
 		transaction.allRecordHistory.forEach((
 			recordHistory,
 			index
 		) => {
-			recordHistory.id = transHistoryIds.recordHistoryIds[index];
-		});
-		await this.doInsertValues(Q.RecordHistory, transaction.allRecordHistory);
+			recordHistory.id = transHistoryIds.recordHistoryIds[index]
+		})
+		await this.doInsertValues(Q.RecordHistory, transaction.allRecordHistory)
 
 		if (transaction.allRecordHistoryNewValues.length) {
-			schemaMap.ensureEntity(Q.RecordHistoryNewValue.__driver__.dbEntity, true);
-			await this.doInsertValues(Q.RecordHistoryNewValue, transaction.allRecordHistoryNewValues);
+			schemaMap.ensureEntity(Q.RecordHistoryNewValue.__driver__.dbEntity, true)
+			await this.doInsertValues(Q.RecordHistoryNewValue, transaction.allRecordHistoryNewValues)
 		}
 
 		if (transaction.allRecordHistoryOldValues.length) {
-			schemaMap.ensureEntity(Q.RecordHistoryOldValue.__driver__.dbEntity, true);
-			await this.doInsertValues(Q.RecordHistoryOldValue, transaction.allRecordHistoryOldValues);
+			schemaMap.ensureEntity(Q.RecordHistoryOldValue.__driver__.dbEntity, true)
+			await this.doInsertValues(Q.RecordHistoryOldValue, transaction.allRecordHistoryOldValues)
 		}
 
 
-		return true;
+		return true
 	}
 
 
@@ -240,23 +235,23 @@ export class TransactionManager
 		) => {
 			try {
 				setTimeout(() => {
-					resolve();
-				}, timeoutMillis);
+					resolve()
+				}, timeoutMillis)
 			} catch (error) {
-				reject(error);
+				reject(error)
 			}
-		});
+		})
 	}
 
 	private canRunTransaction(
 		transactionIndex: number
 	): boolean {
 		if (this.transactionInProgress) {
-			return false;
+			return false
 		}
 
 		return this.transactionIndexQueue[this.transactionIndexQueue.length - 1]
-			=== transactionIndex;
+			=== transactionIndex
 	}
 
 }

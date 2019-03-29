@@ -5,16 +5,6 @@ import {
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
 import {
-	IAbstractRepositoryEntity,
-	AbstractRepositoryEntityESelect,
-	AbstractRepositoryEntityECreateColumns,
-	AbstractRepositoryEntityECreateProperties,
-	AbstractRepositoryEntityEUpdateColumns,
-	AbstractRepositoryEntityEUpdateProperties,
-	AbstractRepositoryEntityEId,
-	QAbstractRepositoryEntity
-} from './repository/qabstractrepositoryentity';
-import {
 	IActor,
 	ActorESelect,
 	ActorECreateColumns,
@@ -44,6 +34,66 @@ import {
 	ApplicationEId,
 	QApplication
 } from './infrastructure/qapplication';
+import {
+	IChildRepoRow,
+	ChildRepoRowESelect,
+	ChildRepoRowECreateColumns,
+	ChildRepoRowECreateProperties,
+	ChildRepoRowEUpdateColumns,
+	ChildRepoRowEUpdateProperties,
+	ChildRepoRowEId,
+	QChildRepoRow
+} from './traditional/qchildreporow';
+import {
+	IChildRow,
+	ChildRowESelect,
+	ChildRowECreateColumns,
+	ChildRowECreateProperties,
+	ChildRowEUpdateColumns,
+	ChildRowEUpdateProperties,
+	ChildRowEId,
+	QChildRow
+} from './traditional/qchildrow';
+import {
+	IImmutableRepoRow,
+	ImmutableRepoRowESelect,
+	ImmutableRepoRowECreateColumns,
+	ImmutableRepoRowECreateProperties,
+	ImmutableRepoRowEUpdateColumns,
+	ImmutableRepoRowEUpdateProperties,
+	ImmutableRepoRowEId,
+	QImmutableRepoRow
+} from './traditional/qimmutablereporow';
+import {
+	IImmutableRow,
+	ImmutableRowESelect,
+	ImmutableRowECreateColumns,
+	ImmutableRowECreateProperties,
+	ImmutableRowEUpdateColumns,
+	ImmutableRowEUpdateProperties,
+	ImmutableRowEId,
+	QImmutableRow
+} from './traditional/qimmutablerow';
+import {
+	IMutableRepoRow,
+	MutableRepoRowESelect,
+	MutableRepoRowECreateColumns,
+	MutableRepoRowECreateProperties,
+	MutableRepoRowEUpdateColumns,
+	MutableRepoRowEUpdateProperties,
+	MutableRepoRowEId,
+	QMutableRepoRow
+} from './traditional/qmutablereporow';
+import {
+	IMutableRow,
+	MutableRowESelect,
+	MutableRowECreateColumns,
+	MutableRowECreateProperties,
+	MutableRowEUpdateColumns,
+	MutableRowEUpdateProperties,
+	MutableRowEId,
+	QMutableRow
+} from './traditional/qmutablerow';
 import {
 	IOperationHistory,
 	OperationHistoryESelect,
@@ -85,6 +135,16 @@ import {
 	QRecordHistoryOldValue
 } from './history/qrecordhistoryoldvalue';
 import {
+	IReferenceRow,
+	ReferenceRowESelect,
+	ReferenceRowECreateColumns,
+	ReferenceRowECreateProperties,
+	ReferenceRowEUpdateColumns,
+	ReferenceRowEUpdateProperties,
+	ReferenceRowEId,
+	QReferenceRow
+} from './traditional/qreferencerow';
+import {
 	IRepoTransHistoryChangedRepositoryActor,
 	RepoTransHistoryChangedRepositoryActorESelect,
 	RepoTransHistoryChangedRepositoryActorECreateColumns,
@@ -125,6 +185,16 @@ import {
 	QRepositoryApplication
 } from './repository/qrepositoryapplication';
 import {
+	IRepositoryEntity,
+	RepositoryEntityESelect,
+	RepositoryEntityECreateColumns,
+	RepositoryEntityECreateProperties,
+	RepositoryEntityEUpdateColumns,
+	RepositoryEntityEUpdateProperties,
+	RepositoryEntityEId,
+	QRepositoryEntity
+} from './repository/qrepositoryentity';
+import {
 	IRepositorySchema,
 	RepositorySchemaESelect,
 	RepositorySchemaECreateColumns,
@@ -154,19 +224,6 @@ import {
 	TransactionHistoryEId,
 	QTransactionHistory
 } from './history/qtransactionhistory';
-
-
-export interface IBaseAbstractRepositoryEntityDao
-  extends IDao<IAbstractRepositoryEntity, AbstractRepositoryEntityESelect, AbstractRepositoryEntityECreateProperties, AbstractRepositoryEntityEUpdateColumns, AbstractRepositoryEntityEUpdateProperties, AbstractRepositoryEntityEId, QAbstractRepositoryEntity> {
-}
-
-export class BaseAbstractRepositoryEntityDao
-  extends Dao<IAbstractRepositoryEntity, AbstractRepositoryEntityESelect, AbstractRepositoryEntityECreateProperties, AbstractRepositoryEntityEUpdateColumns, AbstractRepositoryEntityEUpdateProperties, AbstractRepositoryEntityEId, QAbstractRepositoryEntity>
-	implements IBaseAbstractRepositoryEntityDao {
-	constructor() {
-		super(Q.db.currentVersion.entityMapByName['AbstractRepositoryEntity'], Q)
-	}
-}
 
 
 export interface IBaseActorDao
@@ -204,6 +261,84 @@ export class BaseApplicationDao
 	implements IBaseApplicationDao {
 	constructor() {
 		super(Q.db.currentVersion.entityMapByName['Application'], Q)
+	}
+}
+
+
+export interface IBaseChildRepoRowDao
+  extends IDao<IChildRepoRow, ChildRepoRowESelect, ChildRepoRowECreateProperties, ChildRepoRowEUpdateColumns, ChildRepoRowEUpdateProperties, ChildRepoRowEId, QChildRepoRow> {
+}
+
+export class BaseChildRepoRowDao
+  extends Dao<IChildRepoRow, ChildRepoRowESelect, ChildRepoRowECreateProperties, ChildRepoRowEUpdateColumns, ChildRepoRowEUpdateProperties, ChildRepoRowEId, QChildRepoRow>
+	implements IBaseChildRepoRowDao {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['ChildRepoRow'], Q)
+	}
+}
+
+
+export interface IBaseChildRowDao
+  extends IDao<IChildRow, ChildRowESelect, ChildRowECreateProperties, ChildRowEUpdateColumns, ChildRowEUpdateProperties, ChildRowEId, QChildRow> {
+}
+
+export class BaseChildRowDao
+  extends Dao<IChildRow, ChildRowESelect, ChildRowECreateProperties, ChildRowEUpdateColumns, ChildRowEUpdateProperties, ChildRowEId, QChildRow>
+	implements IBaseChildRowDao {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['ChildRow'], Q)
+	}
+}
+
+
+export interface IBaseImmutableRepoRowDao
+  extends IDao<IImmutableRepoRow, ImmutableRepoRowESelect, ImmutableRepoRowECreateProperties, ImmutableRepoRowEUpdateColumns, ImmutableRepoRowEUpdateProperties, ImmutableRepoRowEId, QImmutableRepoRow> {
+}
+
+export class BaseImmutableRepoRowDao
+  extends Dao<IImmutableRepoRow, ImmutableRepoRowESelect, ImmutableRepoRowECreateProperties, ImmutableRepoRowEUpdateColumns, ImmutableRepoRowEUpdateProperties, ImmutableRepoRowEId, QImmutableRepoRow>
+	implements IBaseImmutableRepoRowDao {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['ImmutableRepoRow'], Q)
+	}
+}
+
+
+export interface IBaseImmutableRowDao
+  extends IDao<IImmutableRow, ImmutableRowESelect, ImmutableRowECreateProperties, ImmutableRowEUpdateColumns, ImmutableRowEUpdateProperties, ImmutableRowEId, QImmutableRow> {
+}
+
+export class BaseImmutableRowDao
+  extends Dao<IImmutableRow, ImmutableRowESelect, ImmutableRowECreateProperties, ImmutableRowEUpdateColumns, ImmutableRowEUpdateProperties, ImmutableRowEId, QImmutableRow>
+	implements IBaseImmutableRowDao {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['ImmutableRow'], Q)
+	}
+}
+
+
+export interface IBaseMutableRepoRowDao
+  extends IDao<IMutableRepoRow, MutableRepoRowESelect, MutableRepoRowECreateProperties, MutableRepoRowEUpdateColumns, MutableRepoRowEUpdateProperties, MutableRepoRowEId, QMutableRepoRow> {
+}
+
+export class BaseMutableRepoRowDao
+  extends Dao<IMutableRepoRow, MutableRepoRowESelect, MutableRepoRowECreateProperties, MutableRepoRowEUpdateColumns, MutableRepoRowEUpdateProperties, MutableRepoRowEId, QMutableRepoRow>
+	implements IBaseMutableRepoRowDao {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['MutableRepoRow'], Q)
+	}
+}
+
+
+export interface IBaseMutableRowDao
+  extends IDao<IMutableRow, MutableRowESelect, MutableRowECreateProperties, MutableRowEUpdateColumns, MutableRowEUpdateProperties, MutableRowEId, QMutableRow> {
+}
+
+export class BaseMutableRowDao
+  extends Dao<IMutableRow, MutableRowESelect, MutableRowECreateProperties, MutableRowEUpdateColumns, MutableRowEUpdateProperties, MutableRowEId, QMutableRow>
+	implements IBaseMutableRowDao {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['MutableRow'], Q)
 	}
 }
 
@@ -260,6 +395,19 @@ export class BaseRecordHistoryOldValueDao
 }
 
 
+export interface IBaseReferenceRowDao
+  extends IDao<IReferenceRow, ReferenceRowESelect, ReferenceRowECreateProperties, ReferenceRowEUpdateColumns, ReferenceRowEUpdateProperties, ReferenceRowEId, QReferenceRow> {
+}
+
+export class BaseReferenceRowDao
+  extends Dao<IReferenceRow, ReferenceRowESelect, ReferenceRowECreateProperties, ReferenceRowEUpdateColumns, ReferenceRowEUpdateProperties, ReferenceRowEId, QReferenceRow>
+	implements IBaseReferenceRowDao {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['ReferenceRow'], Q)
+	}
+}
+
+
 export interface IBaseRepoTransHistoryChangedRepositoryActorDao
   extends IDao<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateColumns, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, QRepoTransHistoryChangedRepositoryActor> {
 }
@@ -308,6 +456,19 @@ export class BaseRepositoryApplicationDao
 	implements IBaseRepositoryApplicationDao {
 	constructor() {
 		super(Q.db.currentVersion.entityMapByName['RepositoryApplication'], Q)
+	}
+}
+
+
+export interface IBaseRepositoryEntityDao
+  extends IDao<IRepositoryEntity, RepositoryEntityESelect, RepositoryEntityECreateProperties, RepositoryEntityEUpdateColumns, RepositoryEntityEUpdateProperties, RepositoryEntityEId, QRepositoryEntity> {
+}
+
+export class BaseRepositoryEntityDao
+  extends Dao<IRepositoryEntity, RepositoryEntityESelect, RepositoryEntityECreateProperties, RepositoryEntityEUpdateColumns, RepositoryEntityEUpdateProperties, RepositoryEntityEId, QRepositoryEntity>
+	implements IBaseRepositoryEntityDao {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['RepositoryEntity'], Q)
 	}
 }
 

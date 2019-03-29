@@ -2,12 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-class BaseAbstractRepositoryEntityDmo extends check_in_1.Dmo {
-    constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['AbstractRepositoryEntity']);
-    }
-}
-exports.BaseAbstractRepositoryEntityDmo = BaseAbstractRepositoryEntityDmo;
 class BaseActorDmo extends check_in_1.Dmo {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['Actor']);
@@ -26,6 +20,42 @@ class BaseApplicationDmo extends check_in_1.Dmo {
     }
 }
 exports.BaseApplicationDmo = BaseApplicationDmo;
+class BaseChildRepoRowDmo extends check_in_1.Dmo {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['ChildRepoRow']);
+    }
+}
+exports.BaseChildRepoRowDmo = BaseChildRepoRowDmo;
+class BaseChildRowDmo extends check_in_1.Dmo {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['ChildRow']);
+    }
+}
+exports.BaseChildRowDmo = BaseChildRowDmo;
+class BaseImmutableRepoRowDmo extends check_in_1.Dmo {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['ImmutableRepoRow']);
+    }
+}
+exports.BaseImmutableRepoRowDmo = BaseImmutableRepoRowDmo;
+class BaseImmutableRowDmo extends check_in_1.Dmo {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['ImmutableRow']);
+    }
+}
+exports.BaseImmutableRowDmo = BaseImmutableRowDmo;
+class BaseMutableRepoRowDmo extends check_in_1.Dmo {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['MutableRepoRow']);
+    }
+}
+exports.BaseMutableRepoRowDmo = BaseMutableRepoRowDmo;
+class BaseMutableRowDmo extends check_in_1.Dmo {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['MutableRow']);
+    }
+}
+exports.BaseMutableRowDmo = BaseMutableRowDmo;
 class BaseOperationHistoryDmo extends check_in_1.Dmo {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['OperationHistory']);
@@ -50,6 +80,12 @@ class BaseRecordHistoryOldValueDmo extends check_in_1.Dmo {
     }
 }
 exports.BaseRecordHistoryOldValueDmo = BaseRecordHistoryOldValueDmo;
+class BaseReferenceRowDmo extends check_in_1.Dmo {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['ReferenceRow']);
+    }
+}
+exports.BaseReferenceRowDmo = BaseReferenceRowDmo;
 class BaseRepoTransHistoryChangedRepositoryActorDmo extends check_in_1.Dmo {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['RepoTransHistoryChangedRepositoryActor']);
@@ -74,6 +110,12 @@ class BaseRepositoryApplicationDmo extends check_in_1.Dmo {
     }
 }
 exports.BaseRepositoryApplicationDmo = BaseRepositoryApplicationDmo;
+class BaseRepositoryEntityDmo extends check_in_1.Dmo {
+    constructor() {
+        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositoryEntity']);
+    }
+}
+exports.BaseRepositoryEntityDmo = BaseRepositoryEntityDmo;
 class BaseRepositorySchemaDmo extends check_in_1.Dmo {
     constructor() {
         super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositorySchema']);

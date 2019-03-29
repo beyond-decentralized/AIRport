@@ -108,7 +108,7 @@ var table;
  */
 var repositoryEntity;
 (function (repositoryEntity) {
-    repositoryEntity.ENTITY_NAME = 'AbstractRepositoryEntity';
+    repositoryEntity.ENTITY_NAME = 'RepositoryEntity';
     repositoryEntity.FOREIGN_KEY = 'REPOSITORY_ID';
     repositoryEntity.REPOSITORY_ID = 'REPOSITORY_ID';
     repositoryEntity.ACTOR_ID = 'ACTOR_ID';

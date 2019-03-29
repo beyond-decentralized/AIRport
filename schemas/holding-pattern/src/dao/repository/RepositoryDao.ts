@@ -15,24 +15,26 @@ import {
 	QUser,
 	UserUniqueId
 }                       from '@airport/travel-document-checkpoint'
-import {RepositoryId,}  from '../../ddl/ddl'
+import {
+	ActorRandomId,
+	RepositoryId,
+	RepositoryOrderedId,
+	RepositoryRandomId,
+	RepositoryTransactionHistoryId,
+}                       from '../../ddl/ddl'
 import {REPOSITORY_DAO} from '../../diTokens'
 import {
 	BaseRepositoryDao,
+	IBaseRepositoryDao,
 	IRepository,
 	Q,
-	QRepository,
-}                       from '../../generated/generated'
-import {
-	ActorRandomId,
 	QActor,
+	QRepository,
 	QRepositoryActor,
-	RepositoryOrderedId,
-	RepositoryRandomId,
-	RepositoryTransactionHistoryId
-}                       from '../../index'
+}                       from '../../generated/generated'
 
-export interface IRepositoryDao {
+export interface IRepositoryDao
+	extends IBaseRepositoryDao {
 
 	findReposWithDetailsByIds(
 		repositoryIdsInClause: RepositoryTransactionHistoryId[]

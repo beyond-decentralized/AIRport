@@ -1,20 +1,21 @@
 import {
 	AbstractQuery,
-	DbColumn,
 	InsertValues,
 	IQEntity,
 	IUtils,
 	QEntity,
-	RawInsertValues
-}              from '@airport/air-control'
-import {UTILS} from '@airport/air-control/lib/src'
-import {DI}    from '@airport/di/lib/src'
+	RawInsertValues,
+	UTILS
+}           from '@airport/air-control'
+import {DI} from '@airport/di'
 import {
+	DbColumn,
 	IStoreDriver,
 	JsonQuery,
 	PortableQuery,
-	QueryResultType
-}              from '@airport/ground-control'
+	QueryResultType,
+	STORE_DRIVER
+}           from '@airport/ground-control'
 
 export class AbstractMutationManager {
 
@@ -22,9 +23,13 @@ export class AbstractMutationManager {
 	protected dataStore: IStoreDriver
 
 	constructor() {
-		DI.set((utils, dataStore) => {
-
-		}, UTILS, STORE_DRIVER)
+		DI.get((
+			dataStore,
+			utils
+		) => {
+			this.dataStore = dataStore
+			this.utils     = utils
+		}, STORE_DRIVER, UTILS)
 	}
 
 	protected getPortableQuery(
@@ -106,7 +111,7 @@ export class AbstractMutationManager {
 			columns: null,
 			values,
 		}
-		let insertValues: InsertValues<any, any>    = new InsertValues(rawInsertValues, columnIndexes)
+		let insertValues: InsertValues<any>         = new InsertValues(rawInsertValues, columnIndexes)
 		let portableQuery: PortableQuery            = this.getPortableQuery(dbEntity.schema.index, dbEntity.index, insertValues, null)
 
 		return await this.dataStore.insertValues(portableQuery)

@@ -7,7 +7,6 @@ import {
 	Id,
 	OneToMany
 }                         from '@airport/air-control'
-import {TerminalPassword} from '@airport/arrivals-n-departures'
 import {UserTerminal}     from './UserTerminal'
 import {UserTerminalAgt}  from './UserTerminalAgt'
 

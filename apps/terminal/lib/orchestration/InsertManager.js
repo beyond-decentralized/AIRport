@@ -1,37 +1,30 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
 const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const terminal_map_1 = require("@airport/terminal-map");
-const typedi_1 = require("typedi");
 const diTokens_1 = require("../diTokens");
-let InsertManager = class InsertManager {
-    constructor(airportDb, dataStore, sequenceGenerator, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager) {
-        this.airportDb = airportDb;
-        this.dataStore = dataStore;
-        this.sequenceGenerator = sequenceGenerator;
-        this.historyManager = historyManager;
-        this.offlineDataStore = offlineDataStore;
-        this.operationHistoryDmo = operationHistoryDmo;
-        this.recordHistoryDmo = recordHistoryDmo;
-        this.repositoryManager = repositoryManager;
-        this.repositoryTransactionHistoryDmo = repositoryTransactionHistoryDmo;
-        this.transactionHistoryDmo = transactionHistoryDmo;
-        this.transactionManager = transactionManager;
+class InsertManager {
+    constructor() {
+        di_1.DI.get((airportDatabase, dataStore, sequenceGenerator, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager) => {
+            this.airDb = airportDatabase;
+            this.dataStore = dataStore;
+            this.seqGenerator = sequenceGenerator;
+            this.histManager = historyManager;
+            this.offlineDataStore = offlineDataStore;
+            this.operHistoryDmo = operationHistoryDmo;
+            this.recHistoryDmo = recordHistoryDmo;
+            this.repoManager = repositoryManager;
+            this.repoTransHistoryDmo = repositoryTransactionHistoryDmo;
+            this.transHistoryDmo = transactionHistoryDmo;
+            this.transManager = transactionManager;
+        }, air_control_1.AIR_DB, diTokens_1.STORE_DRIVER, fuel_hydrant_system_1.SEQUENCE_GENERATOR, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DMO, holding_pattern_1.REC_HISTORY_DMO, diTokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DMO, holding_pattern_1.TRANS_HISTORY_DMO, terminal_map_1.TRANSACTION_MANAGER);
     }
     get currentTransHistory() {
-        return this.transactionManager.currentTransHistory;
+        return this.transManager.currentTransHistory;
     }
     async insertValues(portableQuery, actor) {
         return this.internalInsertValues(portableQuery, actor, false);
@@ -40,7 +33,7 @@ let InsertManager = class InsertManager {
         return this.internalInsertValues(portableQuery, actor, true);
     }
     async internalInsertValues(portableQuery, actor, getIds = false) {
-        const dbEntity = this.airportDb.schemas[portableQuery.schemaIndex]
+        const dbEntity = this.airDb.schemas[portableQuery.schemaIndex]
             .currentVersion.entities[portableQuery.tableIndex];
         if (dbEntity.isRepositoryEntity) {
             this.ensureRepositoryEntityIdValues(actor, dbEntity, portableQuery.jsonQuery);
@@ -53,7 +46,7 @@ let InsertManager = class InsertManager {
         return getIds ? ids : numberOfInsertedRecords;
     }
     async addRepository(name, url = null, platform = terminal_map_1.PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = terminal_map_1.DistributionStrategy.S3_DISTIBUTED_PUSH) {
-        const repository = await this.repositoryManager.createRepository(name, distributionStrategy, this.transactionManager.storeType, platform, platformConfig, 'id');
+        const repository = await this.repoManager.createRepository(name, distributionStrategy, this.transManager.storeType, platform, platformConfig, 'id');
         return repository.id;
     }
     async ensureGeneratedValues(dbEntity, jsonInsertValues) {
@@ -99,7 +92,7 @@ let InsertManager = class InsertManager {
             });
         }
         const numSequencesNeeded = generatedColumns.map(_ => values.length);
-        const generatedSequenceValues = this.sequenceGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
+        const generatedSequenceValues = this.seqGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
         generatedColumns.forEach((dbColumn, generatedColumnIndex) => {
             const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex];
             values.forEach((entityValues, index) => {
@@ -123,10 +116,11 @@ let InsertManager = class InsertManager {
 				on insert for @Id '${dbEntity.name}.${actorIdColumn.name}'.
 				You cannot explicitly provide a value for ACTOR_ID on Repository row inserts.`;
             }
-            // if (entityValues[actorRecordIdColumn.index] || entityValues[actorRecordIdColumn.index]
-            // === 0) { throw `Already provided value '${entityValues[actorRecordIdColumn.index]}' on
-            // insert for @Id @GeneratedValue '${dbEntity.name}.${actorRecordIdColumn.name}'. You
-            // cannot explicitly provide values for generated ids.` }
+            // if (entityValues[actorRecordIdColumn.index] ||
+            // entityValues[actorRecordIdColumn.index] === 0) { throw `Already provided value
+            // '${entityValues[actorRecordIdColumn.index]}' on insert for @Id @GeneratedValue
+            // '${dbEntity.name}.${actorRecordIdColumn.name}'. You cannot explicitly provide
+            // values for generated ids.` }
             if (!entityValues[repositoryIdColumn.index]) {
                 throw `Did not provide a positive integer value 
 				(instead provided '${entityValues[repositoryIdColumn.index]}')
@@ -178,19 +172,19 @@ let InsertManager = class InsertManager {
         // Rows may belong to different repositories
         for (const row of jsonInsertValues.V) {
             const repositoryId = row[repositoryIdColumnNumber];
-            const repo = await this.repositoryManager.getRepository(repositoryId);
+            const repo = await this.repoManager.getRepository(repositoryId);
             let repoTransHistory = repoTransHistories[repositoryId];
             if (!repoTransHistory) {
-                repoTransHistory = this.historyManager
+                repoTransHistory = this.histManager
                     .getNewRepoTransHistory(this.currentTransHistory, repo, actor);
             }
             let operationHistory = operationsByRepo[repositoryId];
             if (!operationHistory) {
-                operationHistory = this.repositoryTransactionHistoryDmo.startOperation(repoTransHistory, ground_control_1.ChangeType.INSERT_VALUES, dbEntity);
+                operationHistory = this.repoTransHistoryDmo.startOperation(repoTransHistory, ground_control_1.ChangeType.INSERT_VALUES, dbEntity);
                 operationsByRepo[repositoryId] = operationHistory;
             }
             const actorRecordId = row[actorRecordIdColumnNumber];
-            const recordHistory = this.operationHistoryDmo.startRecordHistory(operationHistory, actorRecordId);
+            const recordHistory = this.operHistoryDmo.startRecordHistory(operationHistory, actorRecordId);
             for (const columnNumber in jsonInsertValues.C) {
                 if (columnNumber === repositoryIdColumnNumber
                     || columnNumber === actorIdColumnNumber
@@ -200,7 +194,7 @@ let InsertManager = class InsertManager {
                 const columnIndex = jsonInsertValues.C[columnNumber];
                 const dbColumn = dbEntity.columns[columnIndex];
                 const newValue = row[columnNumber];
-                this.recordHistoryDmo.addNewValue(recordHistory, dbColumn, newValue);
+                this.recHistoryDmo.addNewValue(recordHistory, dbColumn, newValue);
             }
         }
         // for (const repositoryId in operationsByRepo) {
@@ -210,20 +204,7 @@ let InsertManager = class InsertManager {
         // 	repoTransHistory.endGroupMutation(operationsByRepo[repositoryId]);
         // }
     }
-};
-InsertManager = __decorate([
-    typedi_1.Service(diTokens_1.INSERT_MANAGER),
-    __param(0, typedi_1.Inject(air_control_1.AirportDatabaseToken)),
-    __param(1, typedi_1.Inject(diTokens_1.STORE_DRIVER)),
-    __param(2, typedi_1.Inject(fuel_hydrant_system_1.SequenceGeneratorToken)),
-    __param(3, typedi_1.Inject(diTokens_1.HISTORY_MANAGER)),
-    __param(4, typedi_1.Inject(diTokens_1.OFFLINE_DELTA_STORE)),
-    __param(5, typedi_1.Inject(holding_pattern_1.OperationHistoryDmoToken)),
-    __param(6, typedi_1.Inject(holding_pattern_1.RecordHistoryDmoToken)),
-    __param(7, typedi_1.Inject(diTokens_1.REPOSITORY_MANAGER)),
-    __param(8, typedi_1.Inject(holding_pattern_1.RepositoryTransactionHistoryDmoToken)),
-    __param(9, typedi_1.Inject(holding_pattern_1.TransactionHistoryDmoToken)),
-    __param(10, typedi_1.Inject(terminal_map_1.TransactionManagerToken))
-], InsertManager);
+}
 exports.InsertManager = InsertManager;
+di_1.DI.set(diTokens_1.INSERT_MANAGER, InsertManager);
 //# sourceMappingURL=InsertManager.js.map
