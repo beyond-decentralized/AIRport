@@ -86,6 +86,14 @@ class Dao {
             return await this.db.save(entity);
         }
     }
+    async stage(entity) {
+        if (entity instanceof Array) {
+            throw `Not Implemented`;
+        }
+        else {
+            throw `Not Implemented`;
+        }
+    }
     async update(entityInfo) {
         if (entityInfo instanceof Array) {
             throw `Not Implemented`;

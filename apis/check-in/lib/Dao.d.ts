@@ -23,5 +23,6 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     findAllAsTrees(entityIds?: EntityId[], cacheForUpdate?: boolean): Promise<Entity[]>;
     findById(entityId: EntityId, cacheForUpdate?: boolean): Promise<Entity>;
     save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo): Promise<number>;
+    stage<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo): Promise<number>;
     update(entityInfo: EntityCreate | EntityCreate[]): Promise<number>;
 }

@@ -5,13 +5,13 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-}                          from "../core/entity/Entity";
-import {IEntityFind}       from "./api/EntityFind";
-import {IEntityFindOne}    from "./api/EntityFindOne";
-import {UpdateCacheType}   from "./api/EntityLookup";
-import {IEntitySearch}     from "./api/EntitySearch";
-import {IEntitySearchOne}  from "./api/EntitySearchOne";
-import {MappedEntityArray} from "./MappedEntityArray";
+}                          from '../core/entity/Entity'
+import {IEntityFind}       from './api/EntityFind'
+import {IEntityFindOne}    from './api/EntityFindOne'
+import {UpdateCacheType}   from './api/EntityLookup'
+import {IEntitySearch}     from './api/EntitySearch'
+import {IEntitySearchOne}  from './api/EntitySearchOne'
+import {MappedEntityArray} from './MappedEntityArray'
 
 /**
  * Data access object.
@@ -84,6 +84,17 @@ export interface IDao<Entity,
 	save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entityInfo: EntityInfo,
 	): Promise<number>;
+
+	/**
+	 * Stages/caches the entity for later modifications (modifications
+	 * are not saved and are just stored in memory).
+	 *
+	 * @param entity
+	 * @returns {Promise<number>}
+	 */
+	stage<EntityInfo extends EntityCreate | EntityCreate[]>(
+		entity: EntityInfo,
+	): Promise<number>
 
 	/**
 	 * Does not cascade?

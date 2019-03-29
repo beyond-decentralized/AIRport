@@ -1,1 +1,1 @@
-{"version":3,"file":"referencerow.js","sourceRoot":"","sources":["../../../src/ddl/traditional/referencerow.ts"],"names":[],"mappings":";;;;;;;;AAAA,sDAAqD;AAGrD,IAAsB,YAAY,GAAlC,MAAsB,YAAY;CAEjC,CAAA;AAFqB,YAAY;IADjC,8BAAgB,EAAE;GACG,YAAY,CAEjC;AAFqB,oCAAY"}
+{"version":3,"file":"ReferenceRow.js","sourceRoot":"","sources":["../../../src/ddl/traditional/ReferenceRow.ts"],"names":[],"mappings":";;;;;;;;AAAA,sDAAqD;AAGrD,IAAsB,YAAY,GAAlC,MAAsB,YAAY;CAEjC,CAAA;AAFqB,YAAY;IADjC,8BAAgB,EAAE;GACG,YAAY,CAEjC;AAFqB,oCAAY"}

@@ -165,6 +165,16 @@ export abstract class Dao<Entity,
 		}
 	}
 
+	async stage<EntityInfo extends EntityCreate | EntityCreate[]>(
+		entity: EntityInfo,
+	): Promise<number> {
+		if (entity instanceof Array) {
+			throw `Not Implemented`
+		} else {
+			throw `Not Implemented`
+		}
+	}
+
 	async update(
 		entityInfo: EntityCreate | EntityCreate[]
 	): Promise<number> {

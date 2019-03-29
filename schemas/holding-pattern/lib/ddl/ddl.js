@@ -16,8 +16,11 @@ __export(require("./repository/RepositoryEntity"));
 __export(require("./repository/Repository"));
 __export(require("./repository/RepositoryActor"));
 __export(require("./repository/RepositorySchema"));
+__export(require("./traditional/ChildRepoRow"));
+__export(require("./traditional/ChildRow"));
 __export(require("./traditional/ImmutableRepoRow"));
 __export(require("./traditional/ImmutableRow"));
 __export(require("./traditional/MutableRepoRow"));
 __export(require("./traditional/MutableRow"));
+__export(require("./traditional/ReferenceRow"));
 //# sourceMappingURL=ddl.js.map
