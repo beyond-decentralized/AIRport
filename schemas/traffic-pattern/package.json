@@ -3,12 +3,6 @@
     "domain": "npmjs.org",
     "ddlDir": "src/ddl",
     "generatedDir": "src/generated",
-    "node_modulesLinks": {
-      "pathToProject": "schemas/traffic-pattern",
-      "pathsToReferencedSchemas": {
-        "@airport/territory": "schemas/territory"
-      }
-    },
     "tablePrefix": "AP"
   },
   "dependencies": {

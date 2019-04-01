@@ -3,13 +3,6 @@
     "domain": "public",
     "ddlDir": "src/ddl",
     "generatedDir": "src/generated",
-    "node_modulesLinks": {
-      "pathToProject": "schemas/guideway",
-      "pathsToReferencedSchemas": {
-        "@airport/airport-code": "schemas/airport-code",
-        "@airport/travel-document-checkpoint": "schemas/travel-document-checkpoint"
-      }
-    },
     "tablePrefix": "AP"
   },
   "dependencies": {
@@ -17,8 +10,7 @@
     "@airport/di": "0.0.1",
     "@airport/arrivals-n-departures": "0.0.1",
     "@airport/check-in": "0.0.1",
-    "@airport/ground-control": "0.0.1",
-    "@airport/travel-document-checkpoint": "0.0.1"
+    "@airport/ground-control": "0.0.1"
   },
   "devDependencies": {
     "@airport/runway": "0.0.1"

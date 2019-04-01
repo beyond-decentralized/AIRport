@@ -3,9 +3,6 @@
     "domain": "public",
     "ddlDir": "src/ddl",
     "generatedDir": "src/generated",
-    "node_modulesLinks": {
-      "pathToProject": "schemas/flight-log-archive"
-    },
     "tablePrefix": "AP"
   },
   "dependencies": {

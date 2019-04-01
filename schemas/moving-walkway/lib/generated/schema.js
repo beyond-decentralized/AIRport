@@ -131,7 +131,7 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": 0,
-                                    "oneTableIndex": 9,
+                                    "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -262,7 +262,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 10,
                             "relationTableSchemaIndex": 0,
                             "sinceVersion": 1
                         },
@@ -538,7 +538,7 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneSchemaIndex": 0,
-                                    "oneTableIndex": 9,
+                                    "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -679,7 +679,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 10,
                             "relationTableSchemaIndex": 0,
                             "sinceVersion": 1
                         },
@@ -900,7 +900,7 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneSchemaIndex": 0,
-                                    "oneTableIndex": 9,
+                                    "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -1092,7 +1092,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 10,
                             "relationTableSchemaIndex": 0,
                             "sinceVersion": 1
                         },
@@ -1880,7 +1880,7 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": 0,
-                                    "oneTableIndex": 9,
+                                    "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -1973,7 +1973,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 10,
                             "relationTableSchemaIndex": 0,
                             "sinceVersion": 1
                         }
@@ -2545,7 +2545,7 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": 0,
-                                    "oneTableIndex": 9,
+                                    "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -2699,7 +2699,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 10,
                             "relationTableSchemaIndex": 0,
                             "sinceVersion": 1
                         },

@@ -3,12 +3,7 @@
     "domain": "public",
     "ddlDir": "src/ddl",
     "generatedDir": "src/generated",
-    "node_modulesLinks": {
-      "pathToProject": "schemas/point-of-destination",
-      "pathsToReferencedSchemas": {
-        "@airport/guideway": "schemas/guideway"
-      }
-    }
+    "tablePrefix": "AP"
   },
   "dependencies": {
     "@airport/air-control": "0.0.1",
