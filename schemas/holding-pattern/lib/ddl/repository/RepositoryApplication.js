@@ -36,4 +36,4 @@ RepositoryApplication = __decorate([
     air_control_1.Table({ name: "REPOSITORY_APPLICATION" })
 ], RepositoryApplication);
 exports.RepositoryApplication = RepositoryApplication;
-//# sourceMappingURL=repositoryapplication.js.map
+//# sourceMappingURL=RepositoryApplication.js.map

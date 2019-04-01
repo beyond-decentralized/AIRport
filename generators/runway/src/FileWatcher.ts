@@ -3,14 +3,15 @@ import * as fs                     from "fs";
 import * as ts                     from "typescript";
 import {QEntityFileBuilder}        from "./builder/entity/QEntityFileBuilder";
 import {PathBuilder}               from "./builder/PathBuilder";
+import {MappedSuperclassBuilder}   from './builder/superclass/MappedSuperclassBuilder'
 import {Configuration}             from "./options/Options";
 import {EntityCandidate}           from "./parser/EntityCandidate";
 import {generateEntityDefinitions} from "./parser/EntityDefinitionGenerator";
 import {JsonSchemaBuilder}         from "./builder/schema/JsonSchemaBuilder";
 import {GeneratedSummaryBuilder}   from "./builder/GeneratedSummaryBuilder";
-import {DaoBuilder} from "./builder/DaoBuilder";
-import {DmoBuilder} from "./builder/DmoBuilder";
-import {QSchemaBuilder} from "./builder/QSchemaBuilder";
+import {DaoBuilder}                from "./builder/DaoBuilder";
+import {DmoBuilder}                from "./builder/DmoBuilder";
+import {QSchemaBuilder}            from "./builder/QSchemaBuilder";
 
 /**
  * Created by Papa on 3/30/2016.
@@ -139,6 +140,12 @@ export function watchFiles(
 		fs.writeFileSync(dmoBuilder.daoListingFilePath, dmoBuilder.build());
 		fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build());
 		fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
+
+		const mappedSuperclassBuilder = new MappedSuperclassBuilder(
+			configuration, entityMapByName)
+
+		const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
+		fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
 	}
 
 	function emitFile(

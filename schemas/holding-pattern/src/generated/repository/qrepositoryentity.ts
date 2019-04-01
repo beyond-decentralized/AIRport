@@ -21,6 +21,16 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
+	IStageable,
+	StageableEId,
+	StageableEUpdateColumns,
+	StageableEUpdateProperties,
+	StageableESelect,
+	QStageableQId,
+	QStageableQRelation,
+	QStageable,
+} from '../infrastructure/qstageable';
+import {
 	IRepository,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -49,7 +59,7 @@ declare function require(moduleName: string): any;
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface IRepositoryEntity {
+export interface IRepositoryEntity extends IStageable {
 	
 	// Id Properties
 	actorRecordId?: number;
@@ -76,7 +86,7 @@ export interface IRepositoryEntity {
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryEntityESelect
-    extends IEntitySelectProperties, RepositoryEntityEOptionalId {
+    extends StageableESelect, RepositoryEntityEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
@@ -91,7 +101,7 @@ export interface RepositoryEntityESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface RepositoryEntityEId
-    extends IEntityIdProperties {
+    extends StageableEId {
 	// Id Properties
 	actorRecordId: number | IQNumberField;
 
@@ -118,7 +128,7 @@ export interface RepositoryEntityEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RepositoryEntityEUpdateProperties
-	extends IEntityUpdateProperties {
+	extends StageableEUpdateProperties {
 	// Non-Id Properties
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -129,7 +139,7 @@ export interface RepositoryEntityEUpdateProperties
  * UPDATE - non-id columns (optional).
  */
 export interface RepositoryEntityEUpdateColumns
-	extends IEntityUpdateColumns {
+	extends StageableEUpdateColumns {
 	// Non-Id Columns
 
 }
@@ -158,7 +168,7 @@ extends RepositoryEntityEId, RepositoryEntityEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryEntity extends QEntity
+export interface QRepositoryEntity extends QStageable
 {
 	// Id Fields
 	actorRecordId: IQNumberField;
@@ -175,7 +185,7 @@ export interface QRepositoryEntity extends QEntity
 
 
 // Entity Id Interface
-export interface QRepositoryEntityQId
+export interface QRepositoryEntityQId extends QStageableQId
 {
 	
 	// Id Fields
@@ -190,6 +200,6 @@ export interface QRepositoryEntityQId
 
 // Entity Relation Interface
 export interface QRepositoryEntityQRelation<SubType extends IQEntityInternal>
-	extends QRelation<SubType>, QRepositoryEntityQId {
+	extends QStageableQRelation<QRepositoryEntity>, QRepositoryEntityQId {
 }
 

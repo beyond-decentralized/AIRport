@@ -85,6 +85,7 @@ export function buildIndexedSSchema(
 				relations[property.relation.index] = property.relation;
 			}
 		}
+
 		const indexedEntity = {
 			columnMap,
 			columns,

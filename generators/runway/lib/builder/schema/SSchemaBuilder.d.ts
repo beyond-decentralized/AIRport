@@ -1,6 +1,7 @@
 import { DbSchema } from '@airport/ground-control';
 import { Configuration } from '../../options/Options';
 import { EntityCandidate } from '../../parser/EntityCandidate';
+import { SEntity } from './SEntity';
 import { SIndexedSchema } from './SSchema';
 export declare class SSchemaBuilder {
     private config;
@@ -15,6 +16,8 @@ export declare class SSchemaBuilder {
     private buildColumnsWithParentEntities;
     private buildColumns;
     private processRelationProperty;
+    private getTableNameFromEntity;
+    private isManyToOnePropertyNotNull;
     private entityExtendsRepositoryEntity;
     private processPrimitiveColumns;
     private processPrimitiveColumn;
@@ -37,5 +40,6 @@ export declare class SSchemaBuilder {
      * @returns {SColumn}
      */
     private processRelationColumn;
-    private getIdColumnIndex;
+    getIdColumnIndex(entity: SEntity, columnName: string): number;
+    getColumnIndex(entity: SEntity, idIndex: number | undefined): number;
 }

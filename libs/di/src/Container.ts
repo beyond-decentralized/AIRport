@@ -1,7 +1,4 @@
-import {
-	DiToken,
-	Token
-} from './Token'
+import {DiToken} from './Token'
 
 export interface IContainer {
 
@@ -498,9 +495,9 @@ export interface IContainer {
 		callback: () => void
 	): void
 
-	set(
-		token: Token,
-		clazz: any
+	set<I>(
+		token: DiToken<I>,
+		clazz: new() => I
 	): void
 
 }

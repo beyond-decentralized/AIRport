@@ -1,4 +1,5 @@
-import * as ts from "typescript";
+import * as ts from 'typescript'
+
 /**
  * Created by Papa on 3/27/2016.
  */
@@ -11,162 +12,163 @@ export function isDecoratedAsEntity(
 	decorators: ts.NodeArray<ts.Decorator>
 ): EntityDecorator {
 	if (!decorators || !decorators.length) {
-		return null;
+		return null
 	}
-	let isDecoratedAsEntity: EntityDecorator;
+	let isDecoratedAsEntity: EntityDecorator
 	decorators.some((
 		decorator: ts.Decorator
 	) => {
-		let expression: ts.Identifier = <any>decorator.expression;
+		let expression: ts.Identifier = <any>decorator.expression
 		if (!expression) {
-			return false;
+			return false
 		}
 		if (<any>expression.kind === ts.SyntaxKind.CallExpression) {
-			expression = <ts.Identifier>(<ts.CallExpression><any>expression).expression;
+			expression = <ts.Identifier>(<ts.CallExpression><any>expression).expression
 		}
 		if (expression.kind !== ts.SyntaxKind.Identifier) {
-			return false;
+			return false
 		}
-		let decoratorName = expression.text;
+		let decoratorName = expression.text
 
 		if (decoratorName === 'Entity') {
 			isDecoratedAsEntity = {
 				isSuperclass: false
-			};
-			return true;
+			}
+			return true
 		} else if (decoratorName === 'MappedSuperclass') {
 			isDecoratedAsEntity = {
 				isSuperclass: true
-			};
-			return true;
+			}
+			return true
 		}
-	});
+	})
 
-	return isDecoratedAsEntity;
+	return isDecoratedAsEntity
 }
 
 export function getClassPath(
 	sourceFile: ts.SourceFile
 ): string {
-	if(!sourceFile) {
-		return null;
+	if (!sourceFile) {
+		return null
 	}
 
 	if (!sourceFile || sourceFile.kind !== ts.SyntaxKind.SourceFile) {
-		return null;
+		return null
 	}
 
-	return (<any>sourceFile).path;
+	return (<any>sourceFile).path
 }
 
 export function getImplementedInterfaces(
 	classSymbol: ts.Symbol
 ): string[] {
-	let valueDeclaration: ts.ClassLikeDeclaration = <ts.ClassLikeDeclaration>classSymbol.valueDeclaration;
-	if(!valueDeclaration.heritageClauses) {
-		return [];
+	let valueDeclaration: ts.ClassLikeDeclaration = <ts.ClassLikeDeclaration>classSymbol.valueDeclaration
+	if (!valueDeclaration.heritageClauses) {
+		return []
 	}
-	let interfaces: string[] = [];
-	valueDeclaration.heritageClauses.forEach(( heritageClause: ts.HeritageClause ) => {
-		if(heritageClause.token != ts.SyntaxKind.ImplementsKeyword) {
-			return;
+	let interfaces: string[] = []
+	valueDeclaration.heritageClauses.forEach((heritageClause: ts.HeritageClause) => {
+		if (heritageClause.token != ts.SyntaxKind.ImplementsKeyword) {
+			return
 		}
-		heritageClause.types.forEach(type => {
-			interfaces.push((<ts.Identifier>type.expression).text);
-		});
-	});
+		heritageClause.types.forEach(
+			type => {
+				interfaces.push((<ts.Identifier>type.expression).text)
+			})
+	})
 
 
-	return interfaces;
+	return interfaces
 }
 
 export function getParentClassImport(
 	classSymbol: ts.Node,
 	parentClassName: string
 ): string {
-	let parentClassImport: string = null;
+	let parentClassImport: string = null
 
-	let parent = <ts.Symbol><any>classSymbol.parent;
+	let parent = <ts.Symbol><any>classSymbol.parent
 	if (!parent) {
-		return parentClassImport;
+		return parentClassImport
 	}
-	let valueDeclaration: ts.SourceFile = <ts.SourceFile>parent.valueDeclaration;
+	let valueDeclaration: ts.SourceFile = <ts.SourceFile>parent.valueDeclaration
 	if (!valueDeclaration || valueDeclaration.kind !== ts.SyntaxKind.SourceFile) {
-		return parentClassImport;
+		return parentClassImport
 	}
-	const imports: ts.Identifier[] = (<any>valueDeclaration)['imports'];
+	const imports: ts.Identifier[] = (<any>valueDeclaration)['imports']
 	if (!imports || !imports.length) {
-		return parentClassImport;
+		return parentClassImport
 	}
 	imports.some((
 		anImport: ts.Identifier
 	) => {
 		if (<any>anImport.kind !== ts.SyntaxKind.StringLiteral) {
-			return false;
+			return false
 		}
-		let parent = anImport.parent;
+		let parent = anImport.parent
 		if (!parent || parent.kind !== ts.SyntaxKind.ImportDeclaration) {
-			return false;
+			return false
 		}
-		let nameMatches = endsWith(anImport.text, parentClassName);
+		let nameMatches = endsWith(anImport.text, parentClassName)
 		if (nameMatches && anImport.text.length > parentClassName.length) {
-			nameMatches = endsWith(anImport.text, `/${parentClassName}`);
+			nameMatches = endsWith(anImport.text, `/${parentClassName}`)
 		}
 		if (nameMatches) {
-			parentClassImport = anImport.text;
-			return true;
+			parentClassImport = anImport.text
+			return true
 		}
-	});
+	})
 
-	return parentClassImport;
+	return parentClassImport
 }
 
 export function getParentClassName(
 	classSymbol: ts.Symbol
 ): string {
-	let parentEntityName: string = null;
+	let parentEntityName: string = null
 
 	if (!classSymbol.declarations || !classSymbol.declarations.length) {
-		return parentEntityName;
+		return parentEntityName
 	}
 
 	classSymbol.declarations.some((
 		declaration: ts.ClassLikeDeclaration
 	) => {
 		if (declaration.kind !== ts.SyntaxKind.ClassDeclaration) {
-			return false;
+			return false
 		}
-		let heritageClauses = declaration.heritageClauses;
+		let heritageClauses = declaration.heritageClauses
 		if (!heritageClauses || !heritageClauses.length) {
-			return false;
+			return false
 		}
 		return heritageClauses.some((
 			heritageClause: ts.HeritageClause
 		) => {
 			if (heritageClause.kind !== ts.SyntaxKind.HeritageClause) {
-				return false;
+				return false
 			}
 			if (heritageClause.token !== ts.SyntaxKind.ExtendsKeyword) {
-				return false;
+				return false
 			}
-			let types = heritageClause.types;
+			let types = heritageClause.types
 			if (!types || !types.length) {
-				return false;
+				return false
 			}
 			return types.some((
 				type: ts.ExpressionWithTypeArguments
 			) => {
-				let expression: ts.Identifier = <any>type.expression;
+				let expression: ts.Identifier = <any>type.expression
 				if (!expression || expression.kind !== ts.SyntaxKind.Identifier) {
-					return false;
+					return false
 				}
-				parentEntityName = expression.text;
-				return true;
-			});
-		});
-	});
+				parentEntityName = expression.text
+				return true
+			})
+		})
+	})
 
-	return parentEntityName;
+	return parentEntityName
 }
 
 export function isPrimitive(
@@ -178,21 +180,21 @@ export function isPrimitive(
 		case 'string':
 		case 'Date':
 		case 'any':
-			return true;
+			return true
 	}
-	return false;
+	return false
 }
 
 export function endsWith(
 	target: string,
 	suffix: string
 ) {
-	return target.indexOf(suffix, target.length - suffix.length) !== -1;
+	return target.indexOf(suffix, target.length - suffix.length) !== -1
 }
 
 export function startsWith(
 	target: string,
 	suffix: string
 ) {
-	return target.indexOf(suffix) === 0;
+	return target.indexOf(suffix) === 0
 }

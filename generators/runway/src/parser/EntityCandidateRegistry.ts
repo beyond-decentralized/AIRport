@@ -12,12 +12,16 @@ import {
 	getFullPathFromRelativePath,
 	getImplNameFromInterfaceName
 }                                      from '../resolve/pathResolver'
-import {PropertyDocEntry}              from './DocEntry'
+import {
+	EntityReference,
+	PropertyDocEntry
+}                                      from './DocEntry'
 import {
 	EntityCandidate,
 	Interface
 }                                      from './EntityCandidate'
 import {globalCandidateInheritanceMap} from './EntityDefinitionGenerator'
+import {FileImports}                   from './FileImports'
 import {
 	endsWith,
 	isPrimitive,
@@ -34,9 +38,15 @@ export class EntityCandidateRegistry {
 	allInterfacesMap: Map<string, Interface[]>       = new Map<string, Interface[]>()
 	configuration: Configuration
 
-	dbSchemaBuilder: IDbSchemaBuilder              = new DbSchemaBuilder(new DatastructureUtils())
-	allSchemas: DbSchema[]                         = []
-	schemaMap: { [projectName: string]: DbSchema } = {}
+	dbSchemaBuilder: IDbSchemaBuilder                                                                   = new DbSchemaBuilder(new DatastructureUtils())
+	allSchemas: DbSchema[]                                                                              = []
+	schemaMap: { [projectName: string]: DbSchema }                                                      = {}
+	mappedSuperClassMap: { [projectName: string]: { [mappedSuperClassName: string]: EntityCandidate } } = {}
+
+	dictionary = {
+		dbColumnRelationMapByManySide: {},
+		dbColumnRelationMapByOneSide: {}
+	}
 
 	constructor(
 		private enumMap?: Map<string, string>
@@ -74,6 +84,12 @@ export class EntityCandidateRegistry {
 				}
 				parentType = globalCandidateInheritanceMap[parentType]
 			}
+			if (targetCandidate.parentEntity) {
+				continue
+			}
+
+			targetCandidate.parentEntity = this.getMappedSuperclassFromProject(
+				targetCandidate.docEntry.fileImports, targetCandidate.parentClassName)
 		}
 
 		let entityInterfaceMap: { [interfaceName: string]: Interface } = {}
@@ -100,10 +116,6 @@ export class EntityCandidateRegistry {
 
 	classifyEntityProperties(entityInterfaceMap: { [interfaceName: string]: Interface }): Set<EntityCandidate> {
 		let classifiedEntitySet: Set<EntityCandidate> = new Set<EntityCandidate>()
-		let dictionary                                = {
-			dbColumnRelationMapByManySide: {},
-			dbColumnRelationMapByOneSide: {}
-		}
 
 		for (let [candidateType, candidate] of this.entityCandidateMap) {
 			classifiedEntitySet.add(candidate)
@@ -227,37 +239,7 @@ export class EntityCandidateRegistry {
 				if (moduleImport && !moduleImport.isLocal) {
 					const projectName    = this.getProjectReferenceFromPath(moduleImport.path)
 					property.fromProject = projectName
-					const projectSchema  = this.schemaMap[projectName]
-					if (projectSchema) {
-						property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, projectSchema, property)
-						return
-					}
-					const pathsToReferencedSchemas = this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas
-					let relatedSchemaProject
-					if (pathsToReferencedSchemas && pathsToReferencedSchemas[projectName]) {
-						let referencedSchemaRelativePath = '../../' + pathsToReferencedSchemas[projectName]
-						for (let i = 0; i < 10; i++) {
-							referencedSchemaRelativePath = '../' + referencedSchemaRelativePath
-							let pathToSchema             = getFullPathFromRelativePath(referencedSchemaRelativePath, __filename)
-							if (fs.existsSync(pathToSchema)
-								&& fs.lstatSync(pathToSchema).isDirectory()) {
-								relatedSchemaProject = require(pathToSchema)
-								break
-							}
-						}
-					} else {
-						relatedSchemaProject = require(projectName)
-					}
-					if (!relatedSchemaProject) {
-						throw `Could not find related schema project '${projectName}'`
-					}
-					if (!relatedSchemaProject.SCHEMA) {
-						throw `Could not find related schema in project '${projectName}'`
-					}
-					const dbSchema               = this.dbSchemaBuilder.buildDbSchemaWithoutReferences(
-						relatedSchemaProject.SCHEMA, this.allSchemas, dictionary)
-					this.schemaMap[projectName]  = dbSchema
-					property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, dbSchema, property)
+					this.getReferencedSchema(projectName, property)
 				} else {
 					let verifiedEntity: EntityCandidate = this.entityCandidateMap.get(type)
 					if (verifiedEntity) {
@@ -293,6 +275,105 @@ export class EntityCandidateRegistry {
 		}
 
 		return classifiedEntitySet
+	}
+
+	getReferencedSchema(
+		projectName: string,
+		property: EntityReference,
+	): DbSchema {
+		const projectSchema = this.schemaMap[projectName]
+		if (projectSchema) {
+			property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, projectSchema, property)
+			return projectSchema
+		}
+		// const pathsToReferencedSchemas = this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas
+		let relatedSchemaProject
+		// if (pathsToReferencedSchemas && pathsToReferencedSchemas[projectName]) {
+		// 	let referencedSchemaRelativePath = '../../' + pathsToReferencedSchemas[projectName]
+		// 	for (let i = 0; i < 10; i++) {
+		// 		referencedSchemaRelativePath = '../' + referencedSchemaRelativePath
+		// 		let pathToSchema             = getFullPathFromRelativePath(referencedSchemaRelativePath, __filename)
+		// 		if (fs.existsSync(pathToSchema)
+		// 			&& fs.lstatSync(pathToSchema).isDirectory()) {
+		// 			relatedSchemaProject = require(pathToSchema)
+		// 			break
+		// 		}
+		// 	}
+		// } else {
+			relatedSchemaProject = require(process.cwd() + '/node_modules/' + projectName)
+		// }
+		if (!relatedSchemaProject) {
+			throw `Could not find related schema project '${projectName}'`
+		}
+		if (!relatedSchemaProject.SCHEMA) {
+			throw `Could not find related schema in project '${projectName}'`
+		}
+		const dbSchema              = this.dbSchemaBuilder.buildDbSchemaWithoutReferences(
+			relatedSchemaProject.SCHEMA, this.allSchemas, this.dictionary)
+		this.schemaMap[projectName] = dbSchema
+		property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, dbSchema, property)
+
+		return dbSchema
+	}
+
+	private getMappedSuperclassFromProject(
+		fileImports: FileImports,
+		type: string
+	): EntityCandidate {
+		const moduleImport = fileImports.importMapByObjectAsName[type]
+		if (!moduleImport || moduleImport.isLocal) {
+			return null
+		}
+		const projectName               = this.getProjectReferenceFromPath(moduleImport.path)
+		const projectMappedSuperclasses = this.mappedSuperClassMap[projectName]
+		if (projectMappedSuperclasses) {
+			return projectMappedSuperclasses[type]
+		}
+		// const pathsToReferencedSchemas = this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas
+		let relatedMappedSuperclassesProject
+		// if (pathsToReferencedSchemas && pathsToReferencedSchemas[projectName]) {
+		// 	let referencedSchemaRelativePath = '../../' + pathsToReferencedSchemas[projectName]
+		// 	for (let i = 0; i < 10; i++) {
+		// 		referencedSchemaRelativePath = '../' + referencedSchemaRelativePath
+		// 		let pathToMappedSuperclasses = getFullPathFromRelativePath(referencedSchemaRelativePath, __filename)
+		// 		if (fs.existsSync(pathToMappedSuperclasses)
+		// 			&& fs.lstatSync(pathToMappedSuperclasses).isDirectory()) {
+		// 			relatedMappedSuperclassesProject = require(pathToMappedSuperclasses)
+		// 			break
+		// 		}
+		// 	}
+		// } else {
+			relatedMappedSuperclassesProject = require(process.cwd() + '/node_modules/' + projectName)
+		// }
+		if (!relatedMappedSuperclassesProject) {
+			throw `Could not find related schema project '${projectName}'`
+		}
+		if (!relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
+			throw `Could not find related Mapped Superclasses in project '${projectName}'`
+		}
+		const mappedSuperClassMapForProject: { [mappedSuperclasName: string]: EntityCandidate } = {}
+		for (const mappedSuperclass of relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
+			const entityCandidate                                = this.deserializeEntityCandidate(mappedSuperclass)
+			mappedSuperClassMapForProject[mappedSuperclass.type] = entityCandidate
+		}
+		this.mappedSuperClassMap[projectName] = mappedSuperClassMapForProject
+
+		return mappedSuperClassMapForProject[type]
+	}
+
+	private deserializeEntityCandidate(
+		serializedEntityCandidate
+	): EntityCandidate {
+		const entityCandidate = new EntityCandidate(null, null, null)
+		for (let key in serializedEntityCandidate) {
+			entityCandidate[key] = serializedEntityCandidate[key]
+		}
+
+		if (entityCandidate.parentEntity) {
+			entityCandidate.parentEntity = this.deserializeEntityCandidate(entityCandidate.parentEntity)
+		}
+
+		return entityCandidate
 	}
 
 	private getOtherSchemaEntity(

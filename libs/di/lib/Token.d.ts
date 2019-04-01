@@ -1,4 +1,3 @@
-export declare type Token = number;
 export interface DiToken<Injectable> {
 }
 export interface GenericDependencyInjectionError {

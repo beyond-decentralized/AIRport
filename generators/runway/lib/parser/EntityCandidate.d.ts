@@ -1,4 +1,4 @@
-import { ClassDocEntry, DocEntry, PropertyDocEntry } from "./DocEntry";
+import { ClassDocEntry, DocEntry, PropertyDocEntry } from './DocEntry';
 /**
  * Created by Papa on 3/27/2016.
  */
@@ -15,9 +15,10 @@ export declare class EntityCandidate {
     private location?;
     private verified?;
     isSuperclass?: boolean;
-    ids: DocEntry[];
     docEntry: ClassDocEntry;
+    ids: DocEntry[];
     implementedInterfaceNames: string[];
+    project: string;
     static create(type: string, path: string, parentClass: string, parentImport: string, isSuperClass: boolean): EntityCandidate;
     parentEntity: EntityCandidate;
     constructor(type: string, path: string, parentClassName: string, location?: string, verified?: boolean, isSuperclass?: boolean);

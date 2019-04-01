@@ -1,4 +1,4 @@
-import { ColumnDecorator, GeneratedValueDecorator, IdDecorator, JoinColumnConfiguration, JoinColumnDecorator, JoinColumnsDecorator, ManyToOneDecorator, OneToManyDecorator, SequenceGeneratorDecorator, SubQueryDecorator, TransientDecorator } from '../../../../lingo/core/entity/metadata/ColumnDecorators';
+import { ColumnDecorator, GeneratedValueDecorator, IdDecorator, JoinColumnConfiguration, JoinColumnDecorator, JoinColumnsDecorator, ManyToOneDecorator, OneToManyDecorator, SequenceGeneratorDecorator, SubQueryDecorator, TraditionalServerSeqDecorator, TransientDecorator } from '../../../../lingo/core/entity/metadata/ColumnDecorators';
 /**
  * Created by Papa on 8/20/2016.
  */
@@ -88,3 +88,4 @@ export declare const ManyToOne: ManyToOneDecorator;
 export declare const OneToMany: OneToManyDecorator;
 export declare const GeneratedValue: GeneratedValueDecorator;
 export declare const SequenceGenerator: SequenceGeneratorDecorator;
+export declare const TraditionalServerSeq: TraditionalServerSeqDecorator;

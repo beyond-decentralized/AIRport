@@ -1,4 +1,4 @@
-import { DiToken, Token } from './Token';
+import { DiToken } from './Token';
 export interface IContainer {
     get<A>(callback: (objA: A) => void, tokenA: DiToken<A>): void;
     get<A, B>(callback: (objA: A, objB: B) => void, tokenA: DiToken<A>, tokenB: DiToken<B>): void;
@@ -33,7 +33,7 @@ export interface IContainer {
     getP<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>, tokenO: DiToken<O>): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]>;
     getP(...tokens: DiToken<any>[]): Promise<any[]>;
     onInit(callback: () => void): void;
-    set(token: Token, clazz: any): void;
+    set<I>(token: DiToken<I>, clazz: new () => I): void;
 }
 export declare class Container implements IContainer {
     objects: any[];

@@ -212,6 +212,16 @@ import {
 	QRepositoryTransactionHistory
 } from './history/qrepositorytransactionhistory';
 import {
+	IStageable,
+	StageableESelect,
+	StageableECreateColumns,
+	StageableECreateProperties,
+	StageableEUpdateColumns,
+	StageableEUpdateProperties,
+	StageableEId,
+	QStageable
+} from './infrastructure/qstageable';
+import {
 	ITransactionHistory,
 	TransactionHistoryESelect,
 	TransactionHistoryECreateColumns,
@@ -492,6 +502,19 @@ export class BaseRepositoryTransactionHistoryDmo
 	implements IBaseRepositoryTransactionHistoryDmo {
 	constructor() {
 		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionHistory']);
+	}
+}
+
+
+export interface IBaseStageableDmo
+  extends IDmo<IStageable, StageableESelect, StageableECreateProperties, StageableEUpdateProperties, StageableEId, QStageable> {
+}
+
+export class BaseStageableDmo
+  extends Dmo<IStageable, StageableESelect, StageableECreateProperties, StageableEUpdateProperties, StageableEId, QStageable>
+	implements IBaseStageableDmo {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['Stageable']);
 	}
 }
 

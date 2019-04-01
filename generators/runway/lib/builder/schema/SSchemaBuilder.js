@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
+const EntityDefinitionGenerator_1 = require("../../parser/EntityDefinitionGenerator");
 const pathResolver_1 = require("../../resolve/pathResolver");
 const SchemaRelationResolver_1 = require("./SchemaRelationResolver");
 const SSchema_1 = require("./SSchema");
@@ -11,6 +12,7 @@ class SSchemaBuilder {
     }
     build(schemaMapByProjectName) {
         const referencedSchemasByProjectName = {};
+        const originalReferencedSchemasByProjectName = {};
         const referencedSchemas = [];
         let schemaReferenceIndex = 0;
         for (let projectName in schemaMapByProjectName) {
@@ -20,6 +22,7 @@ class SSchemaBuilder {
             };
             referencedSchemas.push(sSchemaReference);
             referencedSchemasByProjectName[projectName] = sSchemaReference;
+            originalReferencedSchemasByProjectName[projectName] = sSchemaReference;
             schemaReferenceIndex++;
         }
         const schema = {
@@ -28,16 +31,22 @@ class SSchemaBuilder {
             name: this.config.name,
             referencedSchemas,
         };
-        const iEntityMapByName = {};
+        const sEntityMapByName = {};
         for (const entityName in this.entityMapByName) {
             const entityCandidate = this.entityMapByName[entityName];
             const tableIndex = schema.entities.length;
             const entity = this.buildEntity(entityCandidate, tableIndex, referencedSchemasByProjectName);
             if (entity) {
                 schema.entities.push(entity);
-                iEntityMapByName[entityName] = entity;
+                sEntityMapByName[entityName] = entity;
             }
         }
+        for (const projectName in referencedSchemasByProjectName) {
+            if (!originalReferencedSchemasByProjectName[projectName]) {
+                referencedSchemas.push(referencedSchemasByProjectName[projectName]);
+            }
+        }
+        referencedSchemas.sort((a, b) => a.index - b.index);
         const indexedSchema = SSchema_1.buildIndexedSSchema(schema, referencedSchemasByProjectName);
         new SchemaRelationResolver_1.SchemaRelationResolver().resolveAllRelationLinks(indexedSchema);
         return indexedSchema;
@@ -76,26 +85,40 @@ class SSchemaBuilder {
             return prop1.index - prop2.index;
         });
         if (entity.isRepositoryEntity) {
-            if (entity.numIdColumns < 1 || entity.numIdColumns > 5) {
-                throw `Repository entity '${entity.name}' must have between 1 and 5 id columns and has ${entity.numIdColumns}.`;
+            if (entity.numIdColumns !== 3) {
+                throw `Repository entity '${entity.name}' must have 3 id columns and has ${entity.numIdColumns}.`;
             }
         }
         return entity;
     }
-    buildColumnsWithParentEntities(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, referencedSchemasByProjectName) {
+    buildColumnsWithParentEntities(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, referencedSchemasByProjectName, project) {
         let parentEntity = entityCandidate.parentEntity;
         let numParentProperties = 0;
         if (parentEntity) {
-            numParentProperties = this.buildColumnsWithParentEntities(parentEntity, entity, primitiveColumnMapByName, relationColumnMapByName, referencedSchemasByProjectName);
+            let parentProject = project;
+            if (parentEntity.project) {
+                parentProject = parentEntity.project;
+            }
+            numParentProperties = this.buildColumnsWithParentEntities(parentEntity, entity, primitiveColumnMapByName, relationColumnMapByName, referencedSchemasByProjectName, parentProject);
         }
-        return this.buildColumns(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, numParentProperties, referencedSchemasByProjectName);
+        return this.buildColumns(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, numParentProperties, referencedSchemasByProjectName, project);
     }
-    buildColumns(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, numParentProperties, referencedSchemasByProjectName) {
+    buildColumns(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, numParentProperties, referencedSchemasByProjectName, project) {
         const idProperties = entityCandidate.getIdProperties();
-        const primitiveIdProperties = idProperties.filter(aProperty => aProperty.primitive);
+        const primitiveIdProperties = idProperties.filter(aProperty => {
+            if (!aProperty.fromProject) {
+                aProperty.fromProject = project;
+            }
+            return aProperty.primitive;
+        });
         this.processPrimitiveColumns(primitiveIdProperties, true, entity, primitiveColumnMapByName, numParentProperties);
         const nonIdProperties = entityCandidate.getNonIdProperties();
-        const primitiveNonIdProperties = nonIdProperties.filter(aProperty => aProperty.primitive);
+        const primitiveNonIdProperties = nonIdProperties.filter(aProperty => {
+            if (!aProperty.fromProject) {
+                aProperty.fromProject = project;
+            }
+            return aProperty.primitive;
+        });
         this.processPrimitiveColumns(primitiveNonIdProperties, false, entity, primitiveColumnMapByName, numParentProperties);
         const relationIdProperties = idProperties.filter(aProperty => !aProperty.primitive);
         for (const aProperty of relationIdProperties) {
@@ -126,9 +149,8 @@ class SSchemaBuilder {
                 // case property.R_JOIN_COLUMN:
                 // 	if (!entity.isRepositoryEntity) {
                 // 		throw `${entity.name}.${aProperty.name} cannot be @RJoinColumn `
-                // 		+ `- ${entity.name} does not extend RepositoryEntity or LocalRepositoryEntity.`;
-                // 	}
-                // 	repositoryJoin = true;
+                // 		+ `- ${entity.name} does not extend RepositoryEntity or
+                // LocalRepositoryEntity.`; } repositoryJoin = true;
                 case ground_control_1.property.JOIN_COLUMN:
                     if (columnsDefined) {
                         throw `Columns are defined more than once for ${entity.name}.${aProperty.name}`;
@@ -140,9 +162,8 @@ class SSchemaBuilder {
                 // case property.R_JOIN_COLUMNS:
                 // 	if (!entity.isRepositoryEntity) {
                 // 		throw `${entity.name}.${aProperty.name} cannot be @RJoinColumns `
-                // 		+ `- ${entity.name} does not extend RepositoryEntity or LocalRepositoryEntity.`;
-                // 	}
-                // 	repositoryJoin = true;
+                // 		+ `- ${entity.name} does not extend RepositoryEntity or
+                // LocalRepositoryEntity.`; } repositoryJoin = true;
                 case ground_control_1.property.JOIN_COLUMNS:
                     if (columnsDefined) {
                         throw `Columns are defined more than once for ${entity.name}.${aProperty.name}`;
@@ -208,7 +229,7 @@ class SSchemaBuilder {
                     name = name.toUpperCase();
                 }
                 else {
-                    throw `"name" is not defined in for a (R)JoinColumn(s) configuration of ${entity.name}.${aProperty.name}`;
+                    throw `"name" is not defined in for a JoinColumn(s) configuration of ${entity.name}.${aProperty.name}`;
                 }
                 if (columnRelationDef.nullable === false) {
                     notNull = true;
@@ -245,9 +266,22 @@ class SSchemaBuilder {
         }
         else {
             switch (relationType) {
-                case ground_control_1.EntityRelationType.MANY_TO_ONE:
-                    throw new Error(`@JoinColumn(s) must be specified for @ManyToOne
-					in ${entity.name}.${aProperty.name}.`);
+                case ground_control_1.EntityRelationType.MANY_TO_ONE: {
+                    if (!this.entityExtendsRepositoryEntity(aProperty.entity)) {
+                        throw new Error(`@JoinColumn(s) must be specified for @ManyToOne
+					in ${entity.name}.${aProperty.name} (if the related entity does not extend RepositoryEntity).`);
+                    }
+                    const relatedTableName = this.getTableNameFromEntity(aProperty.entity);
+                    const notNull = this.isManyToOnePropertyNotNull(aProperty);
+                    const relationColumnReferences = ['REPOSITORY_ID', 'ACTOR_ID', 'ACTOR_RECORD_ID'];
+                    ['_RID', '_AID', '_ARID'].forEach((suffix, index) => {
+                        const [sRelationColumn, sColumn] = this.processRelationColumn(relatedTableName + suffix, relationColumnReferences[index], true, isIdProperty, propertyIndex, entity, relationColumnMapByName, primitiveColumnMapByName, notNull);
+                        sRelationColumns.push(sRelationColumn);
+                        if (sColumn) {
+                            columns.push(sColumn);
+                        }
+                    });
+                }
                 // relationMustBeSingleIdEntity = true
                 // const [sRelationColumn, sColumn] = this.processRelationColumn(
                 // 	aProperty.name.toUpperCase(), 'IdColumnIndex.ONE', true,
@@ -270,9 +304,17 @@ class SSchemaBuilder {
             if (!aProperty.fromProject) {
                 throw `Neither entity nor source project was specified for for ${entity.name}.${aProperty.name}`;
             }
-            const schemaReference = referencedSchemasByProjectName[aProperty.fromProject];
+            let schemaReference = referencedSchemasByProjectName[aProperty.fromProject];
             if (!schemaReference) {
-                throw `Could not find related project '${aProperty.fromProject}' for ${entity.name}.${aProperty.name}`;
+                const dbSchema = EntityDefinitionGenerator_1.globalCandidateRegistry.getReferencedSchema(aProperty.fromProject, aProperty);
+                if (!dbSchema) {
+                    throw `Could not find related project '${aProperty.fromProject}' for ${entity.name}.${aProperty.name}`;
+                }
+                schemaReference = {
+                    index: Object.keys(referencedSchemasByProjectName).length,
+                    dbSchema
+                };
+                referencedSchemasByProjectName[aProperty.fromProject] = schemaReference;
             }
             referencedSchemaIndex = schemaReference.index;
             const propertyType = aProperty.nonArrayType;
@@ -320,6 +362,20 @@ class SSchemaBuilder {
             name: aProperty.name,
             relation
         });
+    }
+    getTableNameFromEntity(entityCandidate) {
+        const tableDecorators = entityCandidate.docEntry.decorators.filter(decorator => decorator.name === 'Table');
+        if (!tableDecorators.length) {
+            return entityCandidate.docEntry.name.toUpperCase();
+        }
+        return tableDecorators[0].values[0].name;
+    }
+    isManyToOnePropertyNotNull(aProperty) {
+        const manyToOneDecoratorValues = aProperty.decorators.filter(decorator => decorator.name === 'ManyToOne')[0].values;
+        if (!manyToOneDecoratorValues.length) {
+            return false;
+        }
+        return manyToOneDecoratorValues[0].optional === false;
     }
     entityExtendsRepositoryEntity(//
     entityCandidate //
@@ -388,11 +444,15 @@ class SSchemaBuilder {
             throw `Column '${columnName}' defined in "${entity.name}" is a @GeneratedValue()
 			but isn't of type "number" or "string"`;
         }
+        let idIndex = undefined;
+        if (isIdProperty) {
+            idIndex = this.getIdColumnIndex(entity, columnName);
+        }
         const column = {
             allocationSize: aProperty.allocationSize,
             columnDefinition: aProperty.columnDefinition,
-            idIndex: isIdProperty ? entity.numIdColumns++ : undefined,
-            index: entity.numColumns++,
+            idIndex,
+            index: this.getColumnIndex(entity, idIndex),
             isGenerated: aProperty.isGenerated,
             name: columnName,
             notNull,
@@ -421,30 +481,27 @@ class SSchemaBuilder {
      * @returns {SColumn}
      */
     processRelationColumn(ownColumnReference, relationColumnReference, manyToOne, isIdProperty, propertyIndex, entity, relationColumnMapByName, primitiveColumnMapByName, notNull, entityCannotReferenceOtherColumns = false) {
-        const ownColumnIdIndex = this.getIdColumnIndex(ownColumnReference);
-        const relationColumnIdIndex = this.getIdColumnIndex(relationColumnReference);
+        // const ownColumnIdIndex                 = this.getIdColumnIndex(ownColumnReference)
+        // const relationColumnIdIndex            =
+        // this.getIdColumnIndex(relationColumnReference)
         const sRelationColumn = {
             manyToOne,
             oneSideRelationIndex: null,
-            ownColumnIdIndex,
+            // ownColumnIdIndex,
             ownColumnReference,
-            relationColumnIdIndex,
+            // relationColumnIdIndex,
             relationColumnReference
         };
-        if (ownColumnIdIndex) {
-            if (isIdProperty) {
-                throw `ManyToOne/OneToMany relation cannot be @Id and reference Id columns at the same time.`;
-            }
-            return [
-                sRelationColumn,
-                null
-            ];
-        }
+        // if (ownColumnIdIndex) {
+        // 	if (isIdProperty) {
+        // 		throw `ManyToOne/OneToMany relation cannot be @Id and reference Id columns at
+        // the same time.` }  return [ sRelationColumn, null ] }
         const existingPrimitiveColumn = primitiveColumnMapByName[ownColumnReference];
         if (existingPrimitiveColumn) {
             if (manyToOne && isIdProperty) {
                 // if (entityCannotReferenceOtherColumns) {
-                // throw `ManyToOne relation without (R)JoinColumn(s) cannot be named as other columns.`;
+                // throw `ManyToOne relation without (R)JoinColumn(s) cannot be named as other
+                // columns.`;
                 throw `@Id & @ManyToOne relation columns cannot be named as other non-relational columns.
 			A column can either be defined as a non-relational column
 			OR as a relation.
@@ -463,13 +520,14 @@ class SSchemaBuilder {
         if (existingRelationColumn) {
             if (manyToOne && isIdProperty) {
                 // if (entityCannotReferenceOtherColumns) {
-                // throw `ManyToOne relation without (R)JoinColumn(s) cannot be named as other columns.`;
+                // throw `ManyToOne relation without (R)JoinColumn(s) cannot be named as other
+                // columns.`;
                 throw `@Id & @ManyToOne relation columns cannot be named in multiple relations.
 			A @Id column can be defined in only one relation.
 			Column: '${entity.name}.${ownColumnReference}'`;
             }
             if (entityCannotReferenceOtherColumns) {
-                throw `ManyToOne relation without (R)JoinColumn(s) cannot be named as other columns.`;
+                throw `ManyToOne relation without JoinColumn(s) cannot be named as other columns.`;
             }
             if ((existingRelationColumn.notNull && !notNull)
                 || (!existingRelationColumn.notNull && notNull)) {
@@ -481,9 +539,13 @@ class SSchemaBuilder {
                 existingRelationColumn
             ];
         }
+        let idIndex = undefined;
+        if (isIdProperty) {
+            idIndex = this.getIdColumnIndex(entity, ownColumnReference);
+        }
         const column = {
-            idIndex: isIdProperty ? entity.numIdColumns++ : undefined,
-            index: entity.numColumns++,
+            idIndex,
+            index: this.getColumnIndex(entity, idIndex),
             name: ownColumnReference,
             notNull,
             propertyRefs: [propertyIndex],
@@ -495,35 +557,33 @@ class SSchemaBuilder {
             column
         ];
     }
-    getIdColumnIndex(columnName, throwIfNotFound) {
-        let idColumnIndex;
-        switch (columnName) {
-            case 'IdColumnIndex.ONE':
-            case '1':
-                idColumnIndex = 0;
-                break;
-            case 'IdColumnIndex.TWO':
-            case '2':
-                idColumnIndex = 1;
-                break;
-            case 'IdColumnIndex.THREE':
-            case '3':
-                idColumnIndex = 2;
-                break;
-            case 'IdColumnIndex.FOUR':
-            case '4':
-                idColumnIndex = 3;
-                break;
-            case 'IdColumnIndex.FIVE':
-            case '5':
-                idColumnIndex = 4;
-                break;
-            default:
-                if (throwIfNotFound) {
-                    throw throwIfNotFound;
-                }
+    getIdColumnIndex(entity, columnName) {
+        if (!entity.isRepositoryEntity) {
+            return entity.numIdColumns++;
         }
-        return idColumnIndex;
+        entity.numIdColumns = 3;
+        switch (columnName) {
+            case 'REPOSITORY_ID':
+                return 0;
+            case 'ACTOR_ID':
+                return 1;
+            case 'ACTOR_RECORD_ID':
+                return 2;
+            default:
+                throw `Repository Entity @Id columns must be 'REPOSITORY_ID', 'ACTOR_ID' and 'ACTOR_RECORD_ID'`;
+        }
+    }
+    getColumnIndex(entity, idIndex) {
+        if (!entity.isRepositoryEntity) {
+            return entity.numColumns++;
+        }
+        if (!entity.numColumns) {
+            entity.numColumns = 3;
+        }
+        if (idIndex !== undefined) {
+            return idIndex;
+        }
+        return entity.numColumns++;
     }
 }
 exports.SSchemaBuilder = SSchemaBuilder;

@@ -66,6 +66,7 @@ export interface TransientDecorator {
  * Many-To-One relation configuration.
  */
 export interface ManyToOneElements extends DatabaseOneToManyElements {
+    optional?: boolean;
 }
 /**
  * Marks an object property as a Many-To-One relation.
@@ -125,4 +126,7 @@ export interface AddToJoinFunction<QOtm extends IQEntity, QMto extends IQEntity>
  */
 export interface SubQueryDecorator<QOtm extends IQEntity, QMto extends IQEntity> {
     (addToJoinFunction: AddToJoinFunction<QOtm, QMto>): PropertyDecorator;
+}
+export interface TraditionalServerSeqDecorator {
+    (): PropertyDecorator;
 }

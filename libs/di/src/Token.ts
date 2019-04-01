@@ -1,5 +1,3 @@
-export type Token = number
-
 export interface DiToken<Injectable> {
 }
 

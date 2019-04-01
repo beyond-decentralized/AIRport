@@ -107,4 +107,9 @@ exports.SequenceGenerator = function () {
         // No runtime logic required.
     };
 };
+exports.TraditionalServerSeq = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
 //# sourceMappingURL=ColumnDecorators.js.map

@@ -31,8 +31,8 @@ import {
  * Created by Papa on 3/26/2016.
  */
 
-const enumMap: Map<string, string> = new Map<string, string>()
-export const globalCandidateRegistry = new EntityCandidateRegistry(enumMap)
+const enumMap: Map<string, string>                              = new Map<string, string>()
+export const globalCandidateRegistry                            = new EntityCandidateRegistry(enumMap)
 export const globalCandidateInheritanceMap: Map<string, string> = new Map<string, string>()
 
 enum TsObjectType {
@@ -53,21 +53,23 @@ export function generateEntityDefinitions(
 	let program = ts.createProgram(fileNames, options)
 
 	// Get the checker, we will use it to find more about classes
-	let checker = program.getTypeChecker()
+	let checker                           = program.getTypeChecker()
 	globalCandidateRegistry.configuration = configuration
-	globalCandidateRegistry.schemaMap = schemaMapByProjectName
-	const processedCandidateRegistry = new EntityCandidateRegistry(enumMap)
+	globalCandidateRegistry.schemaMap     = schemaMapByProjectName
+	const processedCandidateRegistry      = new EntityCandidateRegistry(enumMap)
 
-	const output: DocEntry[] = []
+	// const output: DocEntry[] = []
 
 	const fileImportsMapByFilePath: { [path: string]: FileImports } = {}
-	const fileMap: { [classPath: string]: EntityFile } = {}
+	const fileMap: { [classPath: string]: EntityFile }              = {}
 
 	let currentSourceFile
 	let currentFileImports
 
+	const sourceFiles = program.getSourceFiles()
+
 	// Visit every sourceFile in the program
-	for (const sourceFile of program.getSourceFiles()) {
+	for (const sourceFile of sourceFiles) {
 		currentSourceFile = sourceFile
 		// Walk the tree to search for classes
 		ts.forEachChild(sourceFile, visit)
@@ -96,7 +98,7 @@ export function generateEntityDefinitions(
 
 		let file = fileMap[path]
 		if (!file) {
-			file = {
+			file          = {
 				path,
 				hasEntityCandidate: false,
 				hasEnums: false,
@@ -120,17 +122,17 @@ export function generateEntityDefinitions(
 
 			let fileImports = fileImportsMapByFilePath[path]
 			if (!fileImports) {
-				fileImports = ImportManager.resolveImports(node.parent, file.path)
+				fileImports                    = ImportManager.resolveImports(node.parent, file.path)
 				fileImportsMapByFilePath[path] = fileImports
 			}
 			currentFileImports = fileImports
 
 			// This is a top level class, get its symbol
-			let symbol = checker.getSymbolAtLocation((<ts.ClassDeclaration>node).name)
+			let symbol          = checker.getSymbolAtLocation((<ts.ClassDeclaration>node).name)
 			let serializedClass = serializeClass(symbol, node.decorators, path, fileImports, node.parent)
-			if (serializedClass) {
-				output.push(serializedClass)
-			}
+			// if (serializedClass) {
+			// 	output.push(serializedClass)
+			// }
 			// No need to walk any further, class expressions/inner declarations
 			// cannot be exported
 		} else if (node.kind === ts.SyntaxKind.InterfaceDeclaration) {
@@ -139,7 +141,7 @@ export function generateEntityDefinitions(
 			}
 			file.hasInterfaces = true
 			// This is a top level interface, get its symbol
-			let symbol = checker.getSymbolAtLocation((<ts.ClassDeclaration>node).name)
+			let symbol         = checker.getSymbolAtLocation((<ts.ClassDeclaration>node).name)
 			registerInterface(symbol, path)
 		} else if (node.kind === ts.SyntaxKind.ModuleDeclaration) {
 			// This is a namespace, visit its children
@@ -150,24 +152,27 @@ export function generateEntityDefinitions(
 				throw onlyClassInFileError
 			}
 			file.hasEnums = true
-			let symbol = checker.getSymbolAtLocation((<ts.EnumDeclaration>node).name)
+			let symbol    = checker.getSymbolAtLocation((<ts.EnumDeclaration>node).name)
 			enumMap.set(symbol.name, path)
 		}
 	}
 
 
 	/** Serialize a symbol into a json object */
-	function serializeSymbol(symbol: ts.Symbol, parent = (<any>symbol).parent): DocEntry {
-		const declarations = symbol.declarations
-		let isGenerated = false
-		let allocationSize = undefined
-		let isId = false
+	function serializeSymbol(
+		symbol: ts.Symbol,
+		parent = (<any>symbol).parent
+	): DocEntry {
+		const declarations     = symbol.declarations
+		let isGenerated        = false
+		let allocationSize     = undefined
+		let isId               = false
 		let isMappedSuperclass = false
-		let isTransient = false
-		const decorators = []
+		let isTransient        = false
+		const decorators       = []
 		let declaration
 		if (declarations && declarations.length === 1) {
-			declaration = symbol.declarations[0]
+			declaration        = symbol.declarations[0]
 			const tsDecorators = declaration.decorators
 			if (tsDecorators) {
 				for (const tsDecorator of tsDecorators) {
@@ -250,7 +255,8 @@ export function generateEntityDefinitions(
 			isMappedSuperclass,
 			isTransient,
 			name: symbol.getName(),
-			// documentation: ts.displayPartsToString(symbol.getDocumentationComment(undefined)),
+			// documentation:
+			// ts.displayPartsToString(symbol.getDocumentationComment(undefined)),
 			type
 		}
 	}
@@ -258,21 +264,21 @@ export function generateEntityDefinitions(
 	function serializeMethodDefinition(
 		symbol: ts.Symbol
 	): MethodSignatureDocEntry {
-		const name = symbol.getName()
+		const name                              = symbol.getName()
 		const parameters: TypeOrParamDocEntry[] = []
 
 		const signature = <ts.SignatureDeclaration>symbol.valueDeclaration
-		const tsParams = signature.parameters
+		const tsParams  = signature.parameters
 
 		for (const tsParam of tsParams) {
 			const typeInfo = getType(tsParam.type, 0)
-			const name = <string>(<ts.Identifier>tsParam.name).escapedText
+			const name     = <string>(<ts.Identifier>tsParam.name).escapedText
 			const optional = (<ts.ParameterDeclaration>tsParam).questionToken ? true : false
 			parameters.push({...typeInfo, name, optional})
 		}
 
-		const typeInfo = getType(signature.type, 0)
-		const optional = (<ts.FunctionLikeDeclarationBase>signature).questionToken ? true : false
+		const typeInfo   = getType(signature.type, 0)
+		const optional   = (<ts.FunctionLikeDeclarationBase>signature).questionToken ? true : false
 		const returnType = {...typeInfo, name, optional}
 
 		return {
@@ -286,10 +292,10 @@ export function generateEntityDefinitions(
 		tsType: ts.TypeNode,
 		arrayDepth: number
 	): TypeOrParamDocEntry {
-		let type = 'any'
-		let primitive = null
+		let type          = 'any'
+		let primitive     = null
 		let genericParams = []
-		const typeInfo = {
+		const typeInfo    = {
 			type,
 			primitive,
 			arrayDepth,
@@ -317,7 +323,7 @@ export function generateEntityDefinitions(
 				return {...typeInfo, type}
 			case ts.SyntaxKind.TypeReference:
 				const typeName: ts.Identifier = <ts.Identifier>(<ts.TypeReferenceNode>tsType).typeName
-				const typeArguments = (<ts.TypeReferenceNode>tsType).typeArguments
+				const typeArguments           = (<ts.TypeReferenceNode>tsType).typeArguments
 				if (typeArguments && typeArguments.length) {
 					genericParams = typeArguments.map(
 						genericParam => getType(genericParam, 0))
@@ -366,9 +372,9 @@ export function generateEntityDefinitions(
 			objLitExpr.properties.forEach((
 				property: ts.PropertyAssignment
 			) => {
-				const propertyName = (<ts.Identifier>property.name).text
-				const initializer = property.initializer
-				const value = parseObjectProperty(initializer, TsObjectType.OBJECT_LITERAL, propertyName)
+				const propertyName   = (<ts.Identifier>property.name).text
+				const initializer    = property.initializer
+				const value          = parseObjectProperty(initializer, TsObjectType.OBJECT_LITERAL, propertyName)
 				object[propertyName] = value
 			})
 		}
@@ -403,7 +409,7 @@ export function generateEntityDefinitions(
 				break
 			case ts.SyntaxKind.RegularExpressionLiteral:
 				let regExp = <ts.Identifier>initializer
-				value = convertRegExpStringToObject(regExp.text)
+				value      = convertRegExpStringToObject(regExp.text)
 				break
 			case ts.SyntaxKind.StringLiteral:
 			case ts.SyntaxKind.NoSubstitutionTemplateLiteral:
@@ -425,14 +431,14 @@ export function generateEntityDefinitions(
 				break
 			case ts.SyntaxKind.NewExpression:
 				let newExpression = <ts.NewExpression>initializer
-				let type = (<ts.Identifier>newExpression.expression).text
-				value = 'new ' + type
+				let type          = (<ts.Identifier>newExpression.expression).text
+				value             = 'new ' + type
 				break
 			case ts.SyntaxKind.ObjectLiteralExpression:
 				value = parseObjectLiteralExpression(<ts.ObjectLiteralExpression>initializer)
 				break
 			case ts.SyntaxKind.ArrayLiteralExpression:
-				value = []
+				value            = []
 				let arrayLiteral = <ts.ArrayLiteralExpression>initializer
 				arrayLiteral.elements.forEach((
 					element: ts.Node
@@ -506,12 +512,12 @@ export default WhereJoinTableFunction`;
 					// For now allow only and, or & not functions and everything from
 					// airport reference (and nothing else)
 					const typescriptDefinition = printer.printNode(ts.EmitHint.Expression, initializer, currentSourceFile)
-					const compilerOptions = {module: ts.ModuleKind.CommonJS}
-					const transpilationResult = ts.transpileModule(typescriptDefinition, {
+					const compilerOptions      = {module: ts.ModuleKind.CommonJS}
+					const transpilationResult  = ts.transpileModule(typescriptDefinition, {
 						compilerOptions: compilerOptions,
 						moduleName: 'WhereJoinTableModule'
 					})
-					value = transpilationResult.outputText
+					value                      = transpilationResult.outputText
 					break
 				}
 			default:
@@ -590,11 +596,11 @@ export default WhereJoinTableFunction`;
 		file
 	): ClassDocEntry {
 		const details: ClassDocEntry = serializeSymbol(symbol, file)
-		details.fileImports = fileImports
+		details.fileImports          = fileImports
 
-		let properties: PropertyDocEntry[] = []
+		let properties: PropertyDocEntry[]              = []
 		let methodSignatures: MethodSignatureDocEntry[] = []
-		let ids: DocEntry[] = []
+		let ids: DocEntry[]                             = []
 
 		forEach(symbol.members, (
 			memberName,
@@ -638,11 +644,11 @@ export default WhereJoinTableFunction`;
 				throw 'Not implemented'
 			}
 		})
-		details.properties = properties
+		details.properties       = properties
 		details.methodSignatures = methodSignatures
 
 		// Get the construct signatures
-		let constructorType = checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration)
+		let constructorType  = checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration)
 		details.constructors = constructorType.getConstructSignatures().map(serializeSignature)
 
 		let parentClassName = getParentClassName(symbol)
@@ -659,15 +665,16 @@ export default WhereJoinTableFunction`;
 		}
 
 		if (entityDecorator) {
-			let entityCandidate = EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport, entityDecorator.isSuperclass)
+			let entityCandidate      = EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport, entityDecorator.isSuperclass)
 			entityCandidate.docEntry = details
+			entityCandidate.ids = ids
+
+			entityCandidate.implementedInterfaceNames = getImplementedInterfaces(symbol)
+
 			details.properties.forEach(
 				property => {
 					property.ownerEntity = entityCandidate
 				})
-			entityCandidate.ids = ids
-
-			entityCandidate.implementedInterfaceNames = getImplementedInterfaces(symbol)
 
 			globalCandidateRegistry.addCandidate(entityCandidate)
 			processedCandidateRegistry.addCandidate(entityCandidate)
@@ -688,7 +695,7 @@ export default WhereJoinTableFunction`;
 		classPath: string
 	) {
 		let anInterface = new Interface(classPath, symbol.name)
-		let interfaces = globalCandidateRegistry.allInterfacesMap.get(symbol.name)
+		let interfaces  = globalCandidateRegistry.allInterfacesMap.get(symbol.name)
 		if (!interfaces) {
 			interfaces = []
 			globalCandidateRegistry.allInterfacesMap.set(symbol.name, interfaces)
@@ -702,7 +709,8 @@ export default WhereJoinTableFunction`;
 		return {
 			parameters: signature.parameters.map(serializeSymbol),
 			returnType: checker.typeToString(signature.getReturnType()),
-			// documentation: ts.displayPartsToString(signature.getDocumentationComment(undefined))
+			// documentation:
+			// ts.displayPartsToString(signature.getDocumentationComment(undefined))
 		}
 	}
 

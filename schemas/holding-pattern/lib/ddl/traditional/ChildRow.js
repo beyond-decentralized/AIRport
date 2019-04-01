@@ -7,7 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-let ChildRow = class ChildRow {
+const Stageable_1 = require("../infrastructure/Stageable");
+let ChildRow = class ChildRow extends Stageable_1.Stageable {
 };
 ChildRow = __decorate([
     air_control_1.MappedSuperclass()

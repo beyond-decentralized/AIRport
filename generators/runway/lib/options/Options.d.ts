@@ -10,9 +10,6 @@ export interface Configuration {
         generatedDir: string;
         node_modulesLinks?: {
             pathToProject: string;
-            pathsToReferencedSchemas: {
-                [projectName: string]: string;
-            };
         };
     };
 }

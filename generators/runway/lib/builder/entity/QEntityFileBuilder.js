@@ -40,8 +40,14 @@ class QEntityFileBuilder {
         ], '@airport/air-control');
         // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);
         if (entity.parentEntity) {
-            let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path);
-            let parentQEntityRelativePath = pathResolver_1.resolveRelativePath(fullGenerationPath, parentFullGenerationPath);
+            let parentQEntityRelativePath;
+            if (entity.parentEntity.project) {
+                parentQEntityRelativePath = entity.parentEntity.project;
+            }
+            else {
+                let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path);
+                parentQEntityRelativePath = pathResolver_1.resolveRelativePath(fullGenerationPath, parentFullGenerationPath);
+            }
             let parentEntityType = entity.parentEntity.type;
             this.addImport([
                 `I${parentEntityType}`,

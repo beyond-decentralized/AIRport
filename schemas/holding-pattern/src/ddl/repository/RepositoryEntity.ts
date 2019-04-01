@@ -8,6 +8,7 @@ import {
 }                    from '@airport/air-control'
 import {IActor}      from '../../generated/infrastructure/qactor'
 import {IRepository} from '../../generated/repository/qrepository'
+import {Stageable}   from '../infrastructure/Stageable'
 
 /**
  * Created by Papa on 2/17/2017.
@@ -16,7 +17,8 @@ import {IRepository} from '../../generated/repository/qrepository'
 export type RepositoryEntityActorRecordId = number;
 
 @MappedSuperclass()
-export abstract class RepositoryEntity {
+export abstract class RepositoryEntity
+	extends Stageable {
 
 	@Id()
 	@ManyToOne()

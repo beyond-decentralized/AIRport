@@ -11,10 +11,6 @@ const RepositoryEntity_1 = require("../repository/RepositoryEntity");
 let ImmutableRepoRow = class ImmutableRepoRow extends RepositoryEntity_1.RepositoryEntity {
 };
 __decorate([
-    air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'USER_ACCOUNT_ID' })
-], ImmutableRepoRow.prototype, "user", void 0);
-__decorate([
     air_control_1.Column({ name: 'CREATED_AT' })
 ], ImmutableRepoRow.prototype, "createdAt", void 0);
 ImmutableRepoRow = __decorate([

@@ -1,3 +1,4 @@
+export * from './mappedSuperclass'
 export * from './schema';
 export * from './qSchema';
 export * from './baseDaos';
@@ -12,6 +13,7 @@ export * from './history/qtransactionhistory';
 export * from './infrastructure/qactor';
 export * from './infrastructure/qactorapplication';
 export * from './infrastructure/qapplication';
+export * from './infrastructure/qstageable';
 export * from './repository/qrepository';
 export * from './repository/qrepositoryactor';
 export * from './repository/qrepositoryapplication';

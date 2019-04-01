@@ -183,7 +183,7 @@ export interface SRelationColumn {
 	/**
 	 * Id index in own table (if available)
 	 */
-	ownColumnIdIndex: number;
+	// ownColumnIdIndex: number;
 	/**
 	 * Name of the column in own table (if available), or id index encoded definition
 	 */
@@ -193,7 +193,7 @@ export interface SRelationColumn {
 	/**
 	 * Id index in related table (if available)
 	 */
-	relationColumnIdIndex: number;
+	// relationColumnIdIndex: number;
 
 	/**
 	 * Name of the column in related table (if available), or id index encoded definition

@@ -42,6 +42,8 @@ import { RepositorySchema } from '../ddl/repository/repositoryschema';
 import { QRepositorySchema } from './repository/qrepositoryschema';
 import { RepositoryTransactionHistory } from '../ddl/history/repositorytransactionhistory';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
+import { Stageable } from '../ddl/infrastructure/stageable';
+import { QStageable } from './infrastructure/qstageable';
 import { TransactionHistory } from '../ddl/history/transactionhistory';
 import { QTransactionHistory } from './history/qtransactionhistory';
 
@@ -67,6 +69,7 @@ import {
 	IBaseRepositoryEntityDmo,
 	IBaseRepositorySchemaDmo,
 	IBaseRepositoryTransactionHistoryDmo,
+	IBaseStageableDmo,
 	IBaseTransactionHistoryDmo
 } from './baseDmos';
 
@@ -92,6 +95,7 @@ import {
 	IBaseRepositoryEntityDao,
 	IBaseRepositorySchemaDao,
 	IBaseRepositoryTransactionHistoryDao,
+	IBaseStageableDao,
 	IBaseTransactionHistoryDao
 } from './baseDaos';
 
@@ -121,6 +125,7 @@ export interface LocalQSchema extends AirportQSchema {
 		RepositoryEntity: IBaseRepositoryEntityDmo;
 		RepositorySchema: IBaseRepositorySchemaDmo;
 		RepositoryTransactionHistory: IBaseRepositoryTransactionHistoryDmo;
+		Stageable: IBaseStageableDmo;
 		TransactionHistory: IBaseTransactionHistoryDmo;
 	}
 
@@ -146,6 +151,7 @@ export interface LocalQSchema extends AirportQSchema {
 		RepositoryEntity: IBaseRepositoryEntityDao;
 		RepositorySchema: IBaseRepositorySchemaDao;
 		RepositoryTransactionHistory: IBaseRepositoryTransactionHistoryDao;
+		Stageable: IBaseStageableDao;
 		TransactionHistory: IBaseTransactionHistoryDao;
 	}
 	
@@ -170,6 +176,7 @@ export interface LocalQSchema extends AirportQSchema {
 	RepositoryEntity: QRepositoryEntity;
 	RepositorySchema: QRepositorySchema;
 	RepositoryTransactionHistory: QRepositoryTransactionHistory;
+	Stageable: QStageable;
 	TransactionHistory: QTransactionHistory;
 
 }
@@ -196,6 +203,7 @@ const __constructors__ = {
 	RepositoryEntity: RepositoryEntity,
 	RepositorySchema: RepositorySchema,
 	RepositoryTransactionHistory: RepositoryTransactionHistory,
+	Stageable: Stageable,
 	TransactionHistory: TransactionHistory
 };
 

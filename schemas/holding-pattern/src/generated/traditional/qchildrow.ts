@@ -20,6 +20,16 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	IStageable,
+	StageableEId,
+	StageableEUpdateColumns,
+	StageableEUpdateProperties,
+	StageableESelect,
+	QStageableQId,
+	QStageableQRelation,
+	QStageable,
+} from '../infrastructure/qstageable';
 
 
 declare function require(moduleName: string): any;
@@ -29,7 +39,7 @@ declare function require(moduleName: string): any;
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface IChildRow {
+export interface IChildRow extends IStageable {
 	
 	// Id Properties
 
@@ -53,7 +63,7 @@ export interface IChildRow {
  * SELECT - All fields and relations (optional).
  */
 export interface ChildRowESelect
-    extends IEntitySelectProperties, ChildRowEOptionalId {
+    extends StageableESelect, ChildRowEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
@@ -66,7 +76,7 @@ export interface ChildRowESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface ChildRowEId
-    extends IEntityIdProperties {
+    extends StageableEId {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -87,7 +97,7 @@ export interface ChildRowEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface ChildRowEUpdateProperties
-	extends IEntityUpdateProperties {
+	extends StageableEUpdateProperties {
 	// Non-Id Properties
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -98,7 +108,7 @@ export interface ChildRowEUpdateProperties
  * UPDATE - non-id columns (optional).
  */
 export interface ChildRowEUpdateColumns
-	extends IEntityUpdateColumns {
+	extends StageableEUpdateColumns {
 	// Non-Id Columns
 
 }
@@ -127,7 +137,7 @@ extends ChildRowEId, ChildRowEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QChildRow extends QEntity
+export interface QChildRow extends QStageable
 {
 	// Id Fields
 
@@ -141,7 +151,7 @@ export interface QChildRow extends QEntity
 
 
 // Entity Id Interface
-export interface QChildRowQId
+export interface QChildRowQId extends QStageableQId
 {
 	
 	// Id Fields
@@ -153,6 +163,6 @@ export interface QChildRowQId
 
 // Entity Relation Interface
 export interface QChildRowQRelation<SubType extends IQEntityInternal>
-	extends QRelation<SubType>, QChildRowQId {
+	extends QStageableQRelation<QChildRow>, QChildRowQId {
 }
 

@@ -4,17 +4,17 @@
 
 export interface Configuration {
 
-	name: string;
+	name: string
 
 	airport: {
-		cacheGeneratedPaths: boolean;
-		ddlDir: string;
-		domain: 'private' | string;
-		generatedDir: string;
+		cacheGeneratedPaths: boolean
+		ddlDir: string
+		domain: 'private' | string
+		generatedDir: string
 		node_modulesLinks?: {
 			pathToProject: string,
-			pathsToReferencedSchemas: { [projectName: string]: string }
-		};
+			// pathsToReferencedSchemas: { [projectName: string]: string }
+		}
 	}
 
 }

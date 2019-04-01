@@ -3,13 +3,6 @@
     "domain": "public",
     "ddlDir": "src/ddl",
     "generatedDir": "src/generated",
-    "node_modulesLinks": {
-      "pathToProject": "schemas/holding-pattern",
-      "pathsToReferencedSchemas": {
-        "@airport/traffic-pattern": "schemas/traffic-pattern",
-        "@airport/travel-document-checkpoint": "schemas/travel-document-checkpoint"
-      }
-    },
     "tablePrefix": "AP"
   },
   "dependencies": {

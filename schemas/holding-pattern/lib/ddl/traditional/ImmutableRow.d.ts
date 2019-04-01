@@ -1,5 +1,6 @@
 import { IUser } from '@airport/travel-document-checkpoint';
-export declare abstract class ImmutableRow {
+import { Stageable } from '../infrastructure/Stageable';
+export declare abstract class ImmutableRow extends Stageable {
     user: IUser;
     createdAt: Date;
 }

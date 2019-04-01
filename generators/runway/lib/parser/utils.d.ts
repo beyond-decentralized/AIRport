@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 /**
  * Created by Papa on 3/27/2016.
  */

@@ -27,13 +27,14 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
     exports.globalCandidateRegistry.configuration = configuration;
     exports.globalCandidateRegistry.schemaMap = schemaMapByProjectName;
     const processedCandidateRegistry = new EntityCandidateRegistry_1.EntityCandidateRegistry(enumMap);
-    const output = [];
+    // const output: DocEntry[] = []
     const fileImportsMapByFilePath = {};
     const fileMap = {};
     let currentSourceFile;
     let currentFileImports;
+    const sourceFiles = program.getSourceFiles();
     // Visit every sourceFile in the program
-    for (const sourceFile of program.getSourceFiles()) {
+    for (const sourceFile of sourceFiles) {
         currentSourceFile = sourceFile;
         // Walk the tree to search for classes
         ts.forEachChild(sourceFile, visit);
@@ -86,9 +87,9 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
             // This is a top level class, get its symbol
             let symbol = checker.getSymbolAtLocation(node.name);
             let serializedClass = serializeClass(symbol, node.decorators, path, fileImports, node.parent);
-            if (serializedClass) {
-                output.push(serializedClass);
-            }
+            // if (serializedClass) {
+            // 	output.push(serializedClass)
+            // }
             // No need to walk any further, class expressions/inner declarations
             // cannot be exported
         }
@@ -207,7 +208,8 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
             isMappedSuperclass,
             isTransient,
             name: symbol.getName(),
-            // documentation: ts.displayPartsToString(symbol.getDocumentationComment(undefined)),
+            // documentation:
+            // ts.displayPartsToString(symbol.getDocumentationComment(undefined)),
             type
         };
     }
@@ -554,11 +556,11 @@ export default WhereJoinTableFunction`;
         if (entityDecorator) {
             let entityCandidate = EntityCandidate_1.EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport, entityDecorator.isSuperclass);
             entityCandidate.docEntry = details;
+            entityCandidate.ids = ids;
+            entityCandidate.implementedInterfaceNames = utils_1.getImplementedInterfaces(symbol);
             details.properties.forEach(property => {
                 property.ownerEntity = entityCandidate;
             });
-            entityCandidate.ids = ids;
-            entityCandidate.implementedInterfaceNames = utils_1.getImplementedInterfaces(symbol);
             exports.globalCandidateRegistry.addCandidate(entityCandidate);
             processedCandidateRegistry.addCandidate(entityCandidate);
             exports.globalCandidateInheritanceMap[details.name] = parentClassName;

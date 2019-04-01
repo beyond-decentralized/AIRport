@@ -19,6 +19,9 @@ class EntityCandidate {
         this.verified = verified;
         this.isSuperclass = isSuperclass;
         this.ids = [];
+        if (!type) {
+            return;
+        }
         console.log(`\tcreating entity: ${type}, parent: ${parentClassName}, isSuperclass: ${isSuperclass}`);
     }
     static create(type, path, parentClass, parentImport, isSuperClass) {

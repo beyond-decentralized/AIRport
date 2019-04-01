@@ -15,8 +15,9 @@ import {
 	OneToManyElements,
 	SequenceGeneratorDecorator,
 	SubQueryDecorator,
+	TraditionalServerSeqDecorator,
 	TransientDecorator
-}                         from '../../../../lingo/core/entity/metadata/ColumnDecorators'
+} from '../../../../lingo/core/entity/metadata/ColumnDecorators'
 
 /**
  * Created by Papa on 8/20/2016.
@@ -273,3 +274,11 @@ export const SequenceGenerator: SequenceGeneratorDecorator = function () {
 	}
 }
 
+export const TraditionalServerSeq: TraditionalServerSeqDecorator = function () {
+	return function (
+		targetObject: any,
+		propertyKey: string
+	) {
+		// No runtime logic required.
+	}
+}

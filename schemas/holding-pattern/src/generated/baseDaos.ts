@@ -215,6 +215,16 @@ import {
 	QRepositoryTransactionHistory
 } from './history/qrepositorytransactionhistory';
 import {
+	IStageable,
+	StageableESelect,
+	StageableECreateColumns,
+	StageableECreateProperties,
+	StageableEUpdateColumns,
+	StageableEUpdateProperties,
+	StageableEId,
+	QStageable
+} from './infrastructure/qstageable';
+import {
 	ITransactionHistory,
 	TransactionHistoryESelect,
 	TransactionHistoryECreateColumns,
@@ -495,6 +505,19 @@ export class BaseRepositoryTransactionHistoryDao
 	implements IBaseRepositoryTransactionHistoryDao {
 	constructor() {
 		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionHistory'], Q)
+	}
+}
+
+
+export interface IBaseStageableDao
+  extends IDao<IStageable, StageableESelect, StageableECreateProperties, StageableEUpdateColumns, StageableEUpdateProperties, StageableEId, QStageable> {
+}
+
+export class BaseStageableDao
+  extends Dao<IStageable, StageableESelect, StageableECreateProperties, StageableEUpdateColumns, StageableEUpdateProperties, StageableEId, QStageable>
+	implements IBaseStageableDao {
+	constructor() {
+		super(Q.db.currentVersion.entityMapByName['Stageable'], Q)
 	}
 }
 

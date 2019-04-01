@@ -259,18 +259,18 @@ export class JsonSchemaBuilder {
 					return
 				}
 				let ownColumnIndex
-				if (sRelationColumn.ownColumnIdIndex) {
-					ownColumnIndex = sIndexedEntity.idColumns[sRelationColumn.ownColumnIdIndex].index
-				} else {
+				// if (sRelationColumn.ownColumnIdIndex) {
+				// 	ownColumnIndex = sIndexedEntity.idColumns[sRelationColumn.ownColumnIdIndex].index
+				// } else {
 					ownColumnIndex = sIndexedEntity.columnMap[sRelationColumn.ownColumnReference].index
-				}
+				// }
 				let relationColumnIndex
-				if (sRelationColumn.relationColumnIdIndex
-					|| sRelationColumn.relationColumnIdIndex == 0) {
-					relationColumnIndex = relatedIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex].index
-				} else {
+				// if (sRelationColumn.relationColumnIdIndex
+				// 	|| sRelationColumn.relationColumnIdIndex == 0) {
+				// 	relationColumnIndex = relatedIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex].index
+				// } else {
 					relationColumnIndex = relatedIndexedEntity.columnMap[sRelationColumn.relationColumnReference].index
-				}
+				// }
 
 				const column = columns[ownColumnIndex]
 

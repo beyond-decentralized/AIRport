@@ -35,4 +35,4 @@ ActorApplication = __decorate([
     air_control_1.Table({ name: "ACTOR_APPLICATION" })
 ], ActorApplication);
 exports.ActorApplication = ActorApplication;
-//# sourceMappingURL=actorapplication.js.map
+//# sourceMappingURL=ActorApplication.js.map

@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
-const fs = require("fs");
 const pathResolver_1 = require("../resolve/pathResolver");
 const EntityCandidate_1 = require("./EntityCandidate");
 const EntityDefinitionGenerator_1 = require("./EntityDefinitionGenerator");
@@ -17,6 +16,11 @@ class EntityCandidateRegistry {
         this.dbSchemaBuilder = new ground_control_1.DbSchemaBuilder(new ground_control_1.DatastructureUtils());
         this.allSchemas = [];
         this.schemaMap = {};
+        this.mappedSuperClassMap = {};
+        this.dictionary = {
+            dbColumnRelationMapByManySide: {},
+            dbColumnRelationMapByOneSide: {}
+        };
     }
     addCandidate(candidate) {
         let matchesExisting = this.matchToExistingEntity(candidate);
@@ -48,6 +52,10 @@ class EntityCandidateRegistry {
                 }
                 parentType = EntityDefinitionGenerator_1.globalCandidateInheritanceMap[parentType];
             }
+            if (targetCandidate.parentEntity) {
+                continue;
+            }
+            targetCandidate.parentEntity = this.getMappedSuperclassFromProject(targetCandidate.docEntry.fileImports, targetCandidate.parentClassName);
         }
         let entityInterfaceMap = {};
         for (let className in entityMapByName) {
@@ -70,10 +78,6 @@ class EntityCandidateRegistry {
     }
     classifyEntityProperties(entityInterfaceMap) {
         let classifiedEntitySet = new Set();
-        let dictionary = {
-            dbColumnRelationMapByManySide: {},
-            dbColumnRelationMapByOneSide: {}
-        };
         for (let [candidateType, candidate] of this.entityCandidateMap) {
             classifiedEntitySet.add(candidate);
             let properties = candidate.docEntry.properties;
@@ -181,37 +185,7 @@ class EntityCandidateRegistry {
                 if (moduleImport && !moduleImport.isLocal) {
                     const projectName = this.getProjectReferenceFromPath(moduleImport.path);
                     property.fromProject = projectName;
-                    const projectSchema = this.schemaMap[projectName];
-                    if (projectSchema) {
-                        property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, projectSchema, property);
-                        return;
-                    }
-                    const pathsToReferencedSchemas = this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas;
-                    let relatedSchemaProject;
-                    if (pathsToReferencedSchemas && pathsToReferencedSchemas[projectName]) {
-                        let referencedSchemaRelativePath = '../../' + pathsToReferencedSchemas[projectName];
-                        for (let i = 0; i < 10; i++) {
-                            referencedSchemaRelativePath = '../' + referencedSchemaRelativePath;
-                            let pathToSchema = pathResolver_1.getFullPathFromRelativePath(referencedSchemaRelativePath, __filename);
-                            if (fs.existsSync(pathToSchema)
-                                && fs.lstatSync(pathToSchema).isDirectory()) {
-                                relatedSchemaProject = require(pathToSchema);
-                                break;
-                            }
-                        }
-                    }
-                    else {
-                        relatedSchemaProject = require(projectName);
-                    }
-                    if (!relatedSchemaProject) {
-                        throw `Could not find related schema project '${projectName}'`;
-                    }
-                    if (!relatedSchemaProject.SCHEMA) {
-                        throw `Could not find related schema in project '${projectName}'`;
-                    }
-                    const dbSchema = this.dbSchemaBuilder.buildDbSchemaWithoutReferences(relatedSchemaProject.SCHEMA, this.allSchemas, dictionary);
-                    this.schemaMap[projectName] = dbSchema;
-                    property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, dbSchema, property);
+                    this.getReferencedSchema(projectName, property);
                 }
                 else {
                     let verifiedEntity = this.entityCandidateMap.get(type);
@@ -249,6 +223,89 @@ class EntityCandidateRegistry {
             });
         }
         return classifiedEntitySet;
+    }
+    getReferencedSchema(projectName, property) {
+        const projectSchema = this.schemaMap[projectName];
+        if (projectSchema) {
+            property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, projectSchema, property);
+            return projectSchema;
+        }
+        // const pathsToReferencedSchemas = this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas
+        let relatedSchemaProject;
+        // if (pathsToReferencedSchemas && pathsToReferencedSchemas[projectName]) {
+        // 	let referencedSchemaRelativePath = '../../' + pathsToReferencedSchemas[projectName]
+        // 	for (let i = 0; i < 10; i++) {
+        // 		referencedSchemaRelativePath = '../' + referencedSchemaRelativePath
+        // 		let pathToSchema             = getFullPathFromRelativePath(referencedSchemaRelativePath, __filename)
+        // 		if (fs.existsSync(pathToSchema)
+        // 			&& fs.lstatSync(pathToSchema).isDirectory()) {
+        // 			relatedSchemaProject = require(pathToSchema)
+        // 			break
+        // 		}
+        // 	}
+        // } else {
+        relatedSchemaProject = require(process.cwd() + '/node_modules/' + projectName);
+        // }
+        if (!relatedSchemaProject) {
+            throw `Could not find related schema project '${projectName}'`;
+        }
+        if (!relatedSchemaProject.SCHEMA) {
+            throw `Could not find related schema in project '${projectName}'`;
+        }
+        const dbSchema = this.dbSchemaBuilder.buildDbSchemaWithoutReferences(relatedSchemaProject.SCHEMA, this.allSchemas, this.dictionary);
+        this.schemaMap[projectName] = dbSchema;
+        property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, dbSchema, property);
+        return dbSchema;
+    }
+    getMappedSuperclassFromProject(fileImports, type) {
+        const moduleImport = fileImports.importMapByObjectAsName[type];
+        if (!moduleImport || moduleImport.isLocal) {
+            return null;
+        }
+        const projectName = this.getProjectReferenceFromPath(moduleImport.path);
+        const projectMappedSuperclasses = this.mappedSuperClassMap[projectName];
+        if (projectMappedSuperclasses) {
+            return projectMappedSuperclasses[type];
+        }
+        // const pathsToReferencedSchemas = this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas
+        let relatedMappedSuperclassesProject;
+        // if (pathsToReferencedSchemas && pathsToReferencedSchemas[projectName]) {
+        // 	let referencedSchemaRelativePath = '../../' + pathsToReferencedSchemas[projectName]
+        // 	for (let i = 0; i < 10; i++) {
+        // 		referencedSchemaRelativePath = '../' + referencedSchemaRelativePath
+        // 		let pathToMappedSuperclasses = getFullPathFromRelativePath(referencedSchemaRelativePath, __filename)
+        // 		if (fs.existsSync(pathToMappedSuperclasses)
+        // 			&& fs.lstatSync(pathToMappedSuperclasses).isDirectory()) {
+        // 			relatedMappedSuperclassesProject = require(pathToMappedSuperclasses)
+        // 			break
+        // 		}
+        // 	}
+        // } else {
+        relatedMappedSuperclassesProject = require(process.cwd() + '/node_modules/' + projectName);
+        // }
+        if (!relatedMappedSuperclassesProject) {
+            throw `Could not find related schema project '${projectName}'`;
+        }
+        if (!relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
+            throw `Could not find related Mapped Superclasses in project '${projectName}'`;
+        }
+        const mappedSuperClassMapForProject = {};
+        for (const mappedSuperclass of relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
+            const entityCandidate = this.deserializeEntityCandidate(mappedSuperclass);
+            mappedSuperClassMapForProject[mappedSuperclass.type] = entityCandidate;
+        }
+        this.mappedSuperClassMap[projectName] = mappedSuperClassMapForProject;
+        return mappedSuperClassMapForProject[type];
+    }
+    deserializeEntityCandidate(serializedEntityCandidate) {
+        const entityCandidate = new EntityCandidate_1.EntityCandidate(null, null, null);
+        for (let key in serializedEntityCandidate) {
+            entityCandidate[key] = serializedEntityCandidate[key];
+        }
+        if (entityCandidate.parentEntity) {
+            entityCandidate.parentEntity = this.deserializeEntityCandidate(entityCandidate.parentEntity);
+        }
+        return entityCandidate;
     }
     getOtherSchemaEntity(projectName, dbSchema, property) {
         const type = property.nonArrayType;

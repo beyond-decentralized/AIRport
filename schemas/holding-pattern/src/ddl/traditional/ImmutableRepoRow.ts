@@ -11,10 +11,6 @@ import {RepositoryEntity} from '../repository/RepositoryEntity'
 export abstract class ImmutableRepoRow
 	extends RepositoryEntity {
 
-	@ManyToOne()
-	@JoinColumn({name: 'USER_ACCOUNT_ID'})
-	user: IUser
-
 	@Column({name: 'CREATED_AT'})
 	createdAt: Date
 

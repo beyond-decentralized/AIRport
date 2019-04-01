@@ -4,6 +4,7 @@ const fs = require("fs");
 const ts = require("typescript");
 const QEntityFileBuilder_1 = require("./builder/entity/QEntityFileBuilder");
 const PathBuilder_1 = require("./builder/PathBuilder");
+const MappedSuperclassBuilder_1 = require("./builder/superclass/MappedSuperclassBuilder");
 const EntityDefinitionGenerator_1 = require("./parser/EntityDefinitionGenerator");
 const JsonSchemaBuilder_1 = require("./builder/schema/JsonSchemaBuilder");
 const GeneratedSummaryBuilder_1 = require("./builder/GeneratedSummaryBuilder");
@@ -95,6 +96,9 @@ function watchFiles(configuration, options, rootFileNames) {
         fs.writeFileSync(dmoBuilder.daoListingFilePath, dmoBuilder.build());
         fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build());
         fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
+        const mappedSuperclassBuilder = new MappedSuperclassBuilder_1.MappedSuperclassBuilder(configuration, entityMapByName);
+        const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
+        fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
     }
     function emitFile(fileName) {
         let output = services.getEmitOutput(fileName);

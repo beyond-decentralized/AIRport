@@ -39,7 +39,8 @@ export interface ColumnDecorator {
 	(columnConfiguration: ColumnConfiguration): PropertyDecorator;
 }
 
-export interface ForeignKey extends DatabaseForeignKey {
+export interface ForeignKey
+	extends DatabaseForeignKey {
 }
 
 /**
@@ -95,6 +96,10 @@ export interface ManyToOneElements
 	// cascade?:CascadeType;
 	// Fetch isn't implemented - all objects are explicitly retrieved
 	// fetch?: FetchType;
+
+	// Whether the association is optional. If set to false then a non-null relationship
+	// must always exist.
+	optional?: boolean
 }
 
 /**
@@ -166,12 +171,10 @@ export interface AddToJoinFunction<QOtm extends IQEntity, QMto extends IQEntity>
 /**
  * Modified equivalent of Hibernate Annotation
  */
-// export interface WhereJoinTableDecorator<QOtm extends IQEntity, QMto extends IQEntity> {
-// 	(
-// 		addToJoinFunction: AddToJoinFunction<QOtm, QMto>, // Function to add to the join
-// 		joinFunctionWithOperator?: andOperator | orOperator // How to add the function to the join
-// 	): PropertyDecorator;
-// }
+// export interface WhereJoinTableDecorator<QOtm extends IQEntity, QMto extends IQEntity>
+// { ( addToJoinFunction: AddToJoinFunction<QOtm, QMto>, // Function to add to the join
+// joinFunctionWithOperator?: andOperator | orOperator // How to add the function to the
+// join ): PropertyDecorator; }
 
 
 /**
@@ -181,4 +184,8 @@ export interface SubQueryDecorator<QOtm extends IQEntity, QMto extends IQEntity>
 	(
 		addToJoinFunction: AddToJoinFunction<QOtm, QMto>, // Function to add to the join
 	): PropertyDecorator;
+}
+
+export interface TraditionalServerSeqDecorator {
+	(): PropertyDecorator
 }

@@ -115,30 +115,27 @@ class SchemaRelationResolver {
             for (const sRelationColumn of aRelation.sRelationColumns) {
                 sRelationColumn.oneSideRelationIndex = oneSideRelationIndex;
                 let ownColumn;
-                if (sRelationColumn.ownColumnIdIndex) {
-                    ownColumn = indexedEntity.idColumns[sRelationColumn.ownColumnIdIndex];
-                    if (!ownColumn) {
-                        throw `Did not find @Id column of ${anEntity.name} at index ${sRelationColumn.ownColumnIdIndex} `
-                            + `(via the ${anEntity.name}.${aProperty.name} relation).`;
-                    }
+                // if (sRelationColumn.ownColumnIdIndex) {
+                // 	ownColumn = indexedEntity.idColumns[sRelationColumn.ownColumnIdIndex]
+                // 	if (!ownColumn) {
+                // 		throw `Did not find @Id column of ${anEntity.name} at index
+                // ${sRelationColumn.ownColumnIdIndex} ` + `(via the
+                // ${anEntity.name}.${aProperty.name} relation).` } } else {
+                ownColumn = indexedEntity.columnMap[sRelationColumn.ownColumnReference];
+                if (!ownColumn) {
+                    throw `Did not find column ${anEntity.name}.${sRelationColumn.ownColumnReference} `
+                        + `(via the ${anEntity.name}.${aProperty.name} relation).`;
                 }
-                else {
-                    ownColumn = indexedEntity.columnMap[sRelationColumn.ownColumnReference];
-                    if (!ownColumn) {
-                        throw `Did not find column ${anEntity.name}.${sRelationColumn.ownColumnReference} `
-                            + `(via the ${anEntity.name}.${aProperty.name} relation).`;
-                    }
-                }
+                // }
                 let relatedColumn;
-                if (sRelationColumn.relationColumnIdIndex
-                    || sRelationColumn.relationColumnIdIndex == 0) {
-                    relatedColumn = relationIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex];
-                    if (!relatedColumn) {
-                        throw `Did not find @Id column of ${relationEntityName} at index ${sRelationColumn.relationColumnIdIndex} `
-                            + `(via the ${anEntity.name}.${aProperty.name} relation).`;
-                    }
-                }
-                else if (sRelationColumn.relationColumnReference) {
+                // if (sRelationColumn.relationColumnIdIndex
+                // 	|| sRelationColumn.relationColumnIdIndex == 0) {
+                // 	relatedColumn =
+                // relationIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex] if
+                // (!relatedColumn) { throw `Did not find @Id column of ${relationEntityName} at
+                // index ${sRelationColumn.relationColumnIdIndex} ` + `(via the
+                // ${anEntity.name}.${aProperty.name} relation).` } } else
+                if (sRelationColumn.relationColumnReference) {
                     relatedColumn = relationIndexedEntity.columnMap[sRelationColumn.relationColumnReference];
                     if (!relatedColumn) {
                         throw `Did not find column ${relationEntityName}.${sRelationColumn.relationColumnReference} `

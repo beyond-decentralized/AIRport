@@ -30,16 +30,6 @@ import {
 	QRepositoryEntityQRelation,
 	QRepositoryEntity,
 } from '../repository/qrepositoryentity';
-import {
-	IUser,
-	UserEId,
-	UserEOptionalId,
-	UserEUpdateProperties,
-	UserESelect,
-	QUser,
-	QUserQId,
-	QUserQRelation,
-} from '@airport/travel-document-checkpoint';
 
 
 declare function require(moduleName: string): any;
@@ -59,7 +49,6 @@ export interface IImmutableRepoRow extends IRepositoryEntity {
 	createdAt?: Date;
 
 	// Non-Id Relations
-	user?: IUser;
 
 	// Transient Properties
 
@@ -82,7 +71,6 @@ export interface ImmutableRepoRowESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	user?: UserESelect;
 
 }
 
@@ -116,7 +104,6 @@ export interface ImmutableRepoRowEUpdateProperties
 	createdAt?: Date | IQDateField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	user?: UserEOptionalId;
 
 }
 
@@ -163,7 +150,6 @@ export interface QImmutableRepoRow extends QRepositoryEntity
 	createdAt: IQDateField;
 
 	// Non-Id Relations
-	user: QUserQRelation;
 
 }
 

@@ -1,13 +1,13 @@
-import { Configuration } from "../../options/Options";
-import { EntityCandidate } from "../../parser/EntityCandidate";
-import { PathBuilder } from "../PathBuilder";
-import { IQBuilder } from "../QBuilder";
-import { SIndexedEntity } from "../schema/SEntity";
-import { IQEntityInterfaceBuilder } from "./IQEntityInterfaceBuilder";
-import { QEntityBuilder } from "./QEntityBuilder";
-import { QEntityIdBuilder } from "./QEntityIdBuilder";
-import { QEntityRelationBuilder } from "./QEntityRelationBuilder";
-import { QRelationBuilder } from "./QRelationBuilder";
+import { Configuration } from '../../options/Options';
+import { EntityCandidate } from '../../parser/EntityCandidate';
+import { PathBuilder } from '../PathBuilder';
+import { IQBuilder } from '../QBuilder';
+import { SIndexedEntity } from '../schema/SEntity';
+import { IQEntityInterfaceBuilder } from './IQEntityInterfaceBuilder';
+import { QEntityBuilder } from './QEntityBuilder';
+import { QEntityIdBuilder } from './QEntityIdBuilder';
+import { QEntityRelationBuilder } from './QEntityRelationBuilder';
+import { QRelationBuilder } from './QRelationBuilder';
 /**
  * Created by Papa on 4/26/2016.
  */

@@ -28,11 +28,14 @@ export interface DocEntry {
 	type?: string;
 }
 
-export interface PropertyDocEntry extends DocEntry {
-	columnDefinition?: string;
+export interface EntityReference {
 	entity?: EntityCandidate;
 	fromProject?: string;
 	otherSchemaDbEntity?: DbEntity;
+}
+
+export interface PropertyDocEntry extends DocEntry, EntityReference {
+	columnDefinition?: string;
 	optional?: boolean;
 	ownerEntity?: EntityCandidate;
 	primitive?: 'any' | 'boolean' | 'Date' | 'number' | 'string' | 'Json';
