@@ -1,4 +1,11 @@
-import { IDmo } from "@airport/air-control";
+import {
+	IDmo,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateProperties,
+	IQEntity
+} from '@airport/air-control';
 import { Dmo } from "@airport/check-in";
 import { Q } from './qSchema';
 import {
@@ -53,15 +60,41 @@ import {
 } from './qloggederrorstacktrace';
 
 
+// Schema Q object Dependency Injection readiness detection DAO
+export class SQDIDmo<Entity,
+	EntitySelect extends IEntitySelectProperties,
+	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateProperties extends IEntityUpdateProperties,
+	EntityId extends IEntityIdProperties,
+	IQE extends IQEntity>
+	extends Dmo<Entity,
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateProperties,
+		EntityId,
+		IQE> {
+
+	static diSet(): boolean {
+		return Q.db as any
+	}
+
+	constructor(
+		dbEntityName: string
+	) {
+		super(dbEntityName, Q)
+	}
+}
+
+
 export interface IBaseLogEntryDmo
   extends IDmo<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateProperties, LogEntryEId, QLogEntry> {
 }
 
 export class BaseLogEntryDmo
-  extends Dmo<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateProperties, LogEntryEId, QLogEntry>
+  extends SQDIDmo<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateProperties, LogEntryEId, QLogEntry>
 	implements IBaseLogEntryDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['LogEntry']);
+		super('LogEntry');
 	}
 }
 
@@ -71,10 +104,10 @@ export interface IBaseLogEntryTypeDmo
 }
 
 export class BaseLogEntryTypeDmo
-  extends Dmo<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateProperties, LogEntryTypeEId, QLogEntryType>
+  extends SQDIDmo<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateProperties, LogEntryTypeEId, QLogEntryType>
 	implements IBaseLogEntryTypeDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['LogEntryType']);
+		super('LogEntryType');
 	}
 }
 
@@ -84,10 +117,10 @@ export interface IBaseLogEntryValueDmo
 }
 
 export class BaseLogEntryValueDmo
-  extends Dmo<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateProperties, LogEntryValueEId, QLogEntryValue>
+  extends SQDIDmo<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateProperties, LogEntryValueEId, QLogEntryValue>
 	implements IBaseLogEntryValueDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['LogEntryValue']);
+		super('LogEntryValue');
 	}
 }
 
@@ -97,10 +130,10 @@ export interface IBaseLoggedErrorDmo
 }
 
 export class BaseLoggedErrorDmo
-  extends Dmo<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateProperties, LoggedErrorEId, QLoggedError>
+  extends SQDIDmo<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateProperties, LoggedErrorEId, QLoggedError>
 	implements IBaseLoggedErrorDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['LoggedError']);
+		super('LoggedError');
 	}
 }
 
@@ -110,9 +143,9 @@ export interface IBaseLoggedErrorStackTraceDmo
 }
 
 export class BaseLoggedErrorStackTraceDmo
-  extends Dmo<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, QLoggedErrorStackTrace>
+  extends SQDIDmo<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, QLoggedErrorStackTrace>
 	implements IBaseLoggedErrorStackTraceDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['LoggedErrorStackTrace']);
+		super('LoggedErrorStackTrace');
 	}
 }

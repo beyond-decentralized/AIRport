@@ -5,9 +5,7 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	IQEntity,
-	IUtils,
-	QSchema as ACQSchema
+	IQEntity
 } from '@airport/air-control';
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
@@ -83,10 +81,9 @@ export class SQDIDao<Entity,
 	}
 
 	constructor(
-		dbEntityName: string,
-		qSchema: ACQSchema
+		dbEntityName: string
 	) {
-		super(dbEntityName, qSchema)
+		super(dbEntityName, Q)
 	}
 }
 
@@ -99,7 +96,7 @@ export class BaseApplicationDao
   extends SQDIDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, QApplication>
 	implements IBaseApplicationDao {
 	constructor() {
-		super('Application', Q)
+		super('Application')
 	}
 }
 
@@ -112,7 +109,7 @@ export class BaseApplicationPackageDao
   extends SQDIDao<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateColumns, ApplicationPackageEUpdateProperties, ApplicationPackageEId, QApplicationPackage>
 	implements IBaseApplicationPackageDao {
 	constructor() {
-		super('ApplicationPackage', Q)
+		super('ApplicationPackage')
 	}
 }
 
@@ -125,7 +122,7 @@ export class BaseDomainDao
   extends SQDIDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, QDomain>
 	implements IBaseDomainDao {
 	constructor() {
-		super('Domain', Q)
+		super('Domain')
 	}
 }
 
@@ -138,7 +135,7 @@ export class BasePackageDao
   extends SQDIDao<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateColumns, PackageEUpdateProperties, PackageEId, QPackage>
 	implements IBasePackageDao {
 	constructor() {
-		super('Package', Q)
+		super('Package')
 	}
 }
 
@@ -151,6 +148,6 @@ export class BasePackagedUnitDao
   extends SQDIDao<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateColumns, PackagedUnitEUpdateProperties, PackagedUnitEId, QPackagedUnit>
 	implements IBasePackagedUnitDao {
 	constructor() {
-		super('PackagedUnit', Q)
+		super('PackagedUnit')
 	}
 }

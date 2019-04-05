@@ -69,20 +69,6 @@ export abstract class SqLiteDriver
 		saveTransaction?: boolean
 	): Promise<any>;
 
-	async initAllTables(): Promise<any> {
-		let createOperations
-		let createQueries: Promise<any>[] = []
-		let createSql                     = DDLManager.getCreateDDL()
-		await transactional(async () => {
-			for (const createSqlStatement of createSql) {
-				const createTablePromise = this.query(QueryType.DDL, createSqlStatement, [], false)
-				createQueries.push(createTablePromise)
-			}
-
-			await this.initTables(createQueries)
-		})
-	}
-
 	async initTables(
 		createQueries: Promise<any>[]
 	): Promise<void> {

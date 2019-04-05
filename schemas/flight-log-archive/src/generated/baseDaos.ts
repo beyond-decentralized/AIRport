@@ -5,9 +5,7 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	IQEntity,
-	IUtils,
-	QSchema as ACQSchema
+	IQEntity
 } from '@airport/air-control';
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
@@ -63,10 +61,9 @@ export class SQDIDao<Entity,
 	}
 
 	constructor(
-		dbEntityName: string,
-		qSchema: ACQSchema
+		dbEntityName: string
 	) {
-		super(dbEntityName, qSchema)
+		super(dbEntityName, Q)
 	}
 }
 
@@ -79,7 +76,7 @@ export class BaseDailySyncLogDao
   extends SQDIDao<IDailySyncLog, DailySyncLogESelect, DailySyncLogECreateProperties, DailySyncLogEUpdateColumns, DailySyncLogEUpdateProperties, DailySyncLogEId, QDailySyncLog>
 	implements IBaseDailySyncLogDao {
 	constructor() {
-		super('DailySyncLog', Q)
+		super('DailySyncLog')
 	}
 }
 
@@ -92,7 +89,7 @@ export class BaseLogDao
   extends SQDIDao<ILog, LogESelect, LogECreateProperties, LogEUpdateColumns, LogEUpdateProperties, LogEId, QLog>
 	implements IBaseLogDao {
 	constructor() {
-		super('Log', Q)
+		super('Log')
 	}
 }
 
@@ -105,6 +102,6 @@ export class BaseMonthlySyncLogDao
   extends SQDIDao<IMonthlySyncLog, MonthlySyncLogESelect, MonthlySyncLogECreateProperties, MonthlySyncLogEUpdateColumns, MonthlySyncLogEUpdateProperties, MonthlySyncLogEId, QMonthlySyncLog>
 	implements IBaseMonthlySyncLogDao {
 	constructor() {
-		super('MonthlySyncLog', Q)
+		super('MonthlySyncLog')
 	}
 }

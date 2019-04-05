@@ -44,7 +44,7 @@ export class Base${entityName}Dao
   extends SQDIDao<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, Q${entityName}>
 	implements IBase${entityName}Dao {
 	constructor() {
-		super('${entityName}', Q)
+		super('${entityName}')
 	}
 }
 `).join('\n');
@@ -69,9 +69,7 @@ export class Base${entityName}Dao
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	IQEntity,
-	IUtils,
-	QSchema as ACQSchema
+	IQEntity
 } from '@airport/air-control';
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
@@ -98,10 +96,9 @@ export class SQDIDao<Entity,
 	}
 
 	constructor(
-		dbEntityName: string,
-		qSchema: ACQSchema
+		dbEntityName: string
 	) {
-		super(dbEntityName, qSchema)
+		super(dbEntityName, Q)
 	}
 }
 

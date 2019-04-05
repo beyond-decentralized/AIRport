@@ -2,33 +2,43 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-class BaseLogEntryDmo extends check_in_1.Dmo {
+// Schema Q object Dependency Injection readiness detection DAO
+class SQDIDmo extends check_in_1.Dmo {
+    constructor(dbEntityName) {
+        super(dbEntityName, qSchema_1.Q);
+    }
+    static diSet() {
+        return qSchema_1.Q.db;
+    }
+}
+exports.SQDIDmo = SQDIDmo;
+class BaseLogEntryDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['LogEntry']);
+        super('LogEntry');
     }
 }
 exports.BaseLogEntryDmo = BaseLogEntryDmo;
-class BaseLogEntryTypeDmo extends check_in_1.Dmo {
+class BaseLogEntryTypeDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['LogEntryType']);
+        super('LogEntryType');
     }
 }
 exports.BaseLogEntryTypeDmo = BaseLogEntryTypeDmo;
-class BaseLogEntryValueDmo extends check_in_1.Dmo {
+class BaseLogEntryValueDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['LogEntryValue']);
+        super('LogEntryValue');
     }
 }
 exports.BaseLogEntryValueDmo = BaseLogEntryValueDmo;
-class BaseLoggedErrorDmo extends check_in_1.Dmo {
+class BaseLoggedErrorDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['LoggedError']);
+        super('LoggedError');
     }
 }
 exports.BaseLoggedErrorDmo = BaseLoggedErrorDmo;
-class BaseLoggedErrorStackTraceDmo extends check_in_1.Dmo {
+class BaseLoggedErrorStackTraceDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['LoggedErrorStackTrace']);
+        super('LoggedErrorStackTrace');
     }
 }
 exports.BaseLoggedErrorStackTraceDmo = BaseLoggedErrorStackTraceDmo;

@@ -65,15 +65,17 @@ export function createSelector<V, SV>(
 	switch (args.length) {
 		case 0:
 		case 1:
-			throw new Error(`Invalid createSelector call.`)
+			throw new Error(`Invalid createSelector call, too few input selectors.
+			Expecting 1 to 3.`)
 		case 2:
 		case 3:
 		case 4:
 			numInputSelectors = args.length - 1
+			break
 		default:
 			throw new Error(`
 			Invalid createSelector call, too many input selectors.
-			Expecting 0 to 3.
+			Expecting 1 to 3.
 			`)
 	}
 
@@ -152,7 +154,7 @@ function getCurrentValue<V>(
 	observable: IObservable<V>
 ) {
 	let currentValue
-	this.observable.subscribe(
+	observable.subscribe(
 		value =>
 			currentValue = value
 	).unsubscribe()

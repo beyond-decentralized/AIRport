@@ -1,4 +1,11 @@
-import { IDmo } from "@airport/air-control";
+import {
+	IDmo,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateProperties,
+	IQEntity
+} from '@airport/air-control';
 import { Dmo } from "@airport/check-in";
 import { Q } from './qSchema';
 import {
@@ -193,15 +200,41 @@ import {
 } from './user/quserrepository';
 
 
+// Schema Q object Dependency Injection readiness detection DAO
+export class SQDIDmo<Entity,
+	EntitySelect extends IEntitySelectProperties,
+	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateProperties extends IEntityUpdateProperties,
+	EntityId extends IEntityIdProperties,
+	IQE extends IQEntity>
+	extends Dmo<Entity,
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateProperties,
+		EntityId,
+		IQE> {
+
+	static diSet(): boolean {
+		return Q.db as any
+	}
+
+	constructor(
+		dbEntityName: string
+	) {
+		super(dbEntityName, Q)
+	}
+}
+
+
 export interface IBaseAgtRepositoryTransactionBlockDmo
   extends IDmo<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, QAgtRepositoryTransactionBlock> {
 }
 
 export class BaseAgtRepositoryTransactionBlockDmo
-  extends Dmo<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, QAgtRepositoryTransactionBlock>
+  extends SQDIDmo<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, QAgtRepositoryTransactionBlock>
 	implements IBaseAgtRepositoryTransactionBlockDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['AgtRepositoryTransactionBlock']);
+		super('AgtRepositoryTransactionBlock');
 	}
 }
 
@@ -211,10 +244,10 @@ export interface IBaseAgtSharingMessageDmo
 }
 
 export class BaseAgtSharingMessageDmo
-  extends Dmo<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, QAgtSharingMessage>
+  extends SQDIDmo<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, QAgtSharingMessage>
 	implements IBaseAgtSharingMessageDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['AgtSharingMessage']);
+		super('AgtSharingMessage');
 	}
 }
 
@@ -224,10 +257,10 @@ export interface IBaseArchiveDmo
 }
 
 export class BaseArchiveDmo
-  extends Dmo<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateProperties, ArchiveEId, QArchive>
+  extends SQDIDmo<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateProperties, ArchiveEId, QArchive>
 	implements IBaseArchiveDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Archive']);
+		super('Archive');
 	}
 }
 
@@ -237,10 +270,10 @@ export interface IBaseDailyArchiveLogDmo
 }
 
 export class BaseDailyArchiveLogDmo
-  extends Dmo<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, QDailyArchiveLog>
+  extends SQDIDmo<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, QDailyArchiveLog>
 	implements IBaseDailyArchiveLogDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['DailyArchiveLog']);
+		super('DailyArchiveLog');
 	}
 }
 
@@ -250,10 +283,10 @@ export interface IBaseDailyTerminalSyncLogDmo
 }
 
 export class BaseDailyTerminalSyncLogDmo
-  extends Dmo<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, QDailyTerminalSyncLog>
+  extends SQDIDmo<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, QDailyTerminalSyncLog>
 	implements IBaseDailyTerminalSyncLogDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['DailyTerminalSyncLog']);
+		super('DailyTerminalSyncLog');
 	}
 }
 
@@ -263,10 +296,10 @@ export interface IBaseMonthlyArchiveLogDmo
 }
 
 export class BaseMonthlyArchiveLogDmo
-  extends Dmo<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, QMonthlyArchiveLog>
+  extends SQDIDmo<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, QMonthlyArchiveLog>
 	implements IBaseMonthlyArchiveLogDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['MonthlyArchiveLog']);
+		super('MonthlyArchiveLog');
 	}
 }
 
@@ -276,10 +309,10 @@ export interface IBaseMonthlyTerminalSyncLogDmo
 }
 
 export class BaseMonthlyTerminalSyncLogDmo
-  extends Dmo<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, QMonthlyTerminalSyncLog>
+  extends SQDIDmo<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, QMonthlyTerminalSyncLog>
 	implements IBaseMonthlyTerminalSyncLogDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['MonthlyTerminalSyncLog']);
+		super('MonthlyTerminalSyncLog');
 	}
 }
 
@@ -289,10 +322,10 @@ export interface IBaseRepositoryDmo
 }
 
 export class BaseRepositoryDmo
-  extends Dmo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, QRepository>
+  extends SQDIDmo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, QRepository>
 	implements IBaseRepositoryDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Repository']);
+		super('Repository');
 	}
 }
 
@@ -302,10 +335,10 @@ export interface IBaseRepositoryArchiveDmo
 }
 
 export class BaseRepositoryArchiveDmo
-  extends Dmo<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, QRepositoryArchive>
+  extends SQDIDmo<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, QRepositoryArchive>
 	implements IBaseRepositoryArchiveDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepositoryArchive']);
+		super('RepositoryArchive');
 	}
 }
 
@@ -315,10 +348,10 @@ export interface IBaseSecurityAnswerDmo
 }
 
 export class BaseSecurityAnswerDmo
-  extends Dmo<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateProperties, SecurityAnswerEId, QSecurityAnswer>
+  extends SQDIDmo<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateProperties, SecurityAnswerEId, QSecurityAnswer>
 	implements IBaseSecurityAnswerDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SecurityAnswer']);
+		super('SecurityAnswer');
 	}
 }
 
@@ -328,10 +361,10 @@ export interface IBaseSecurityQuestionDmo
 }
 
 export class BaseSecurityQuestionDmo
-  extends Dmo<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateProperties, SecurityQuestionEId, QSecurityQuestion>
+  extends SQDIDmo<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateProperties, SecurityQuestionEId, QSecurityQuestion>
 	implements IBaseSecurityQuestionDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SecurityQuestion']);
+		super('SecurityQuestion');
 	}
 }
 
@@ -341,10 +374,10 @@ export interface IBaseServerDmo
 }
 
 export class BaseServerDmo
-  extends Dmo<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateProperties, ServerEId, QServer>
+  extends SQDIDmo<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateProperties, ServerEId, QServer>
 	implements IBaseServerDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Server']);
+		super('Server');
 	}
 }
 
@@ -354,10 +387,10 @@ export interface IBaseServerSyncLogDmo
 }
 
 export class BaseServerSyncLogDmo
-  extends Dmo<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateProperties, ServerSyncLogEId, QServerSyncLog>
+  extends SQDIDmo<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateProperties, ServerSyncLogEId, QServerSyncLog>
 	implements IBaseServerSyncLogDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['ServerSyncLog']);
+		super('ServerSyncLog');
 	}
 }
 
@@ -367,10 +400,10 @@ export interface IBaseSyncLogDmo
 }
 
 export class BaseSyncLogDmo
-  extends Dmo<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateProperties, SyncLogEId, QSyncLog>
+  extends SQDIDmo<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateProperties, SyncLogEId, QSyncLog>
 	implements IBaseSyncLogDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SyncLog']);
+		super('SyncLog');
 	}
 }
 
@@ -380,10 +413,10 @@ export interface IBaseTerminalDmo
 }
 
 export class BaseTerminalDmo
-  extends Dmo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, QTerminal>
+  extends SQDIDmo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, QTerminal>
 	implements IBaseTerminalDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Terminal']);
+		super('Terminal');
 	}
 }
 
@@ -393,10 +426,10 @@ export interface IBaseTerminalRepositoryDmo
 }
 
 export class BaseTerminalRepositoryDmo
-  extends Dmo<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, QTerminalRepository>
+  extends SQDIDmo<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, QTerminalRepository>
 	implements IBaseTerminalRepositoryDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['TerminalRepository']);
+		super('TerminalRepository');
 	}
 }
 
@@ -406,10 +439,10 @@ export interface IBaseTuningParametersDmo
 }
 
 export class BaseTuningParametersDmo
-  extends Dmo<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateProperties, TuningParametersEId, QTuningParameters>
+  extends SQDIDmo<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateProperties, TuningParametersEId, QTuningParameters>
 	implements IBaseTuningParametersDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['TuningParameters']);
+		super('TuningParameters');
 	}
 }
 
@@ -419,10 +452,10 @@ export interface IBaseUserDmo
 }
 
 export class BaseUserDmo
-  extends Dmo<IUser, UserESelect, UserECreateProperties, UserEUpdateProperties, UserEId, QUser>
+  extends SQDIDmo<IUser, UserESelect, UserECreateProperties, UserEUpdateProperties, UserEId, QUser>
 	implements IBaseUserDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['User']);
+		super('User');
 	}
 }
 
@@ -432,9 +465,9 @@ export interface IBaseUserRepositoryDmo
 }
 
 export class BaseUserRepositoryDmo
-  extends Dmo<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateProperties, UserRepositoryEId, QUserRepository>
+  extends SQDIDmo<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateProperties, UserRepositoryEId, QUserRepository>
 	implements IBaseUserRepositoryDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['UserRepository']);
+		super('UserRepository');
 	}
 }

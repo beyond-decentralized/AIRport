@@ -2,39 +2,49 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-class BaseAgtDmo extends check_in_1.Dmo {
+// Schema Q object Dependency Injection readiness detection DAO
+class SQDIDmo extends check_in_1.Dmo {
+    constructor(dbEntityName) {
+        super(dbEntityName, qSchema_1.Q);
+    }
+    static diSet() {
+        return qSchema_1.Q.db;
+    }
+}
+exports.SQDIDmo = SQDIDmo;
+class BaseAgtDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Agt']);
+        super('Agt');
     }
 }
 exports.BaseAgtDmo = BaseAgtDmo;
-class BaseTerminalDmo extends check_in_1.Dmo {
+class BaseTerminalDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Terminal']);
+        super('Terminal');
     }
 }
 exports.BaseTerminalDmo = BaseTerminalDmo;
-class BaseTerminalAgtDmo extends check_in_1.Dmo {
+class BaseTerminalAgtDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['TerminalAgt']);
+        super('TerminalAgt');
     }
 }
 exports.BaseTerminalAgtDmo = BaseTerminalAgtDmo;
-class BaseUserDmo extends check_in_1.Dmo {
+class BaseUserDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['User']);
+        super('User');
     }
 }
 exports.BaseUserDmo = BaseUserDmo;
-class BaseUserTerminalDmo extends check_in_1.Dmo {
+class BaseUserTerminalDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['UserTerminal']);
+        super('UserTerminal');
     }
 }
 exports.BaseUserTerminalDmo = BaseUserTerminalDmo;
-class BaseUserTerminalAgtDmo extends check_in_1.Dmo {
+class BaseUserTerminalAgtDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['UserTerminalAgt']);
+        super('UserTerminalAgt');
     }
 }
 exports.BaseUserTerminalAgtDmo = BaseUserTerminalAgtDmo;

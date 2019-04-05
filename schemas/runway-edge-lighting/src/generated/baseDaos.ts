@@ -5,9 +5,7 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	IQEntity,
-	IUtils,
-	QSchema as ACQSchema
+	IQEntity
 } from '@airport/air-control';
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
@@ -83,10 +81,9 @@ export class SQDIDao<Entity,
 	}
 
 	constructor(
-		dbEntityName: string,
-		qSchema: ACQSchema
+		dbEntityName: string
 	) {
-		super(dbEntityName, qSchema)
+		super(dbEntityName, Q)
 	}
 }
 
@@ -99,7 +96,7 @@ export class BaseLogEntryDao
   extends SQDIDao<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateColumns, LogEntryEUpdateProperties, LogEntryEId, QLogEntry>
 	implements IBaseLogEntryDao {
 	constructor() {
-		super('LogEntry', Q)
+		super('LogEntry')
 	}
 }
 
@@ -112,7 +109,7 @@ export class BaseLogEntryTypeDao
   extends SQDIDao<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateColumns, LogEntryTypeEUpdateProperties, LogEntryTypeEId, QLogEntryType>
 	implements IBaseLogEntryTypeDao {
 	constructor() {
-		super('LogEntryType', Q)
+		super('LogEntryType')
 	}
 }
 
@@ -125,7 +122,7 @@ export class BaseLogEntryValueDao
   extends SQDIDao<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateColumns, LogEntryValueEUpdateProperties, LogEntryValueEId, QLogEntryValue>
 	implements IBaseLogEntryValueDao {
 	constructor() {
-		super('LogEntryValue', Q)
+		super('LogEntryValue')
 	}
 }
 
@@ -138,7 +135,7 @@ export class BaseLoggedErrorDao
   extends SQDIDao<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateColumns, LoggedErrorEUpdateProperties, LoggedErrorEId, QLoggedError>
 	implements IBaseLoggedErrorDao {
 	constructor() {
-		super('LoggedError', Q)
+		super('LoggedError')
 	}
 }
 
@@ -151,6 +148,6 @@ export class BaseLoggedErrorStackTraceDao
   extends SQDIDao<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateColumns, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, QLoggedErrorStackTrace>
 	implements IBaseLoggedErrorStackTraceDao {
 	constructor() {
-		super('LoggedErrorStackTrace', Q)
+		super('LoggedErrorStackTrace')
 	}
 }

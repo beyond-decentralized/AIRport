@@ -2,117 +2,127 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-class BaseAgtRepositoryTransactionBlockDmo extends check_in_1.Dmo {
+// Schema Q object Dependency Injection readiness detection DAO
+class SQDIDmo extends check_in_1.Dmo {
+    constructor(dbEntityName) {
+        super(dbEntityName, qSchema_1.Q);
+    }
+    static diSet() {
+        return qSchema_1.Q.db;
+    }
+}
+exports.SQDIDmo = SQDIDmo;
+class BaseAgtRepositoryTransactionBlockDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['AgtRepositoryTransactionBlock']);
+        super('AgtRepositoryTransactionBlock');
     }
 }
 exports.BaseAgtRepositoryTransactionBlockDmo = BaseAgtRepositoryTransactionBlockDmo;
-class BaseAgtSharingMessageDmo extends check_in_1.Dmo {
+class BaseAgtSharingMessageDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['AgtSharingMessage']);
+        super('AgtSharingMessage');
     }
 }
 exports.BaseAgtSharingMessageDmo = BaseAgtSharingMessageDmo;
-class BaseArchiveDmo extends check_in_1.Dmo {
+class BaseArchiveDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Archive']);
+        super('Archive');
     }
 }
 exports.BaseArchiveDmo = BaseArchiveDmo;
-class BaseDailyArchiveLogDmo extends check_in_1.Dmo {
+class BaseDailyArchiveLogDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['DailyArchiveLog']);
+        super('DailyArchiveLog');
     }
 }
 exports.BaseDailyArchiveLogDmo = BaseDailyArchiveLogDmo;
-class BaseDailyTerminalSyncLogDmo extends check_in_1.Dmo {
+class BaseDailyTerminalSyncLogDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['DailyTerminalSyncLog']);
+        super('DailyTerminalSyncLog');
     }
 }
 exports.BaseDailyTerminalSyncLogDmo = BaseDailyTerminalSyncLogDmo;
-class BaseMonthlyArchiveLogDmo extends check_in_1.Dmo {
+class BaseMonthlyArchiveLogDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['MonthlyArchiveLog']);
+        super('MonthlyArchiveLog');
     }
 }
 exports.BaseMonthlyArchiveLogDmo = BaseMonthlyArchiveLogDmo;
-class BaseMonthlyTerminalSyncLogDmo extends check_in_1.Dmo {
+class BaseMonthlyTerminalSyncLogDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['MonthlyTerminalSyncLog']);
+        super('MonthlyTerminalSyncLog');
     }
 }
 exports.BaseMonthlyTerminalSyncLogDmo = BaseMonthlyTerminalSyncLogDmo;
-class BaseRepositoryDmo extends check_in_1.Dmo {
+class BaseRepositoryDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Repository']);
+        super('Repository');
     }
 }
 exports.BaseRepositoryDmo = BaseRepositoryDmo;
-class BaseRepositoryArchiveDmo extends check_in_1.Dmo {
+class BaseRepositoryArchiveDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositoryArchive']);
+        super('RepositoryArchive');
     }
 }
 exports.BaseRepositoryArchiveDmo = BaseRepositoryArchiveDmo;
-class BaseSecurityAnswerDmo extends check_in_1.Dmo {
+class BaseSecurityAnswerDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SecurityAnswer']);
+        super('SecurityAnswer');
     }
 }
 exports.BaseSecurityAnswerDmo = BaseSecurityAnswerDmo;
-class BaseSecurityQuestionDmo extends check_in_1.Dmo {
+class BaseSecurityQuestionDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SecurityQuestion']);
+        super('SecurityQuestion');
     }
 }
 exports.BaseSecurityQuestionDmo = BaseSecurityQuestionDmo;
-class BaseServerDmo extends check_in_1.Dmo {
+class BaseServerDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Server']);
+        super('Server');
     }
 }
 exports.BaseServerDmo = BaseServerDmo;
-class BaseServerSyncLogDmo extends check_in_1.Dmo {
+class BaseServerSyncLogDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['ServerSyncLog']);
+        super('ServerSyncLog');
     }
 }
 exports.BaseServerSyncLogDmo = BaseServerSyncLogDmo;
-class BaseSyncLogDmo extends check_in_1.Dmo {
+class BaseSyncLogDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SyncLog']);
+        super('SyncLog');
     }
 }
 exports.BaseSyncLogDmo = BaseSyncLogDmo;
-class BaseTerminalDmo extends check_in_1.Dmo {
+class BaseTerminalDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Terminal']);
+        super('Terminal');
     }
 }
 exports.BaseTerminalDmo = BaseTerminalDmo;
-class BaseTerminalRepositoryDmo extends check_in_1.Dmo {
+class BaseTerminalRepositoryDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['TerminalRepository']);
+        super('TerminalRepository');
     }
 }
 exports.BaseTerminalRepositoryDmo = BaseTerminalRepositoryDmo;
-class BaseTuningParametersDmo extends check_in_1.Dmo {
+class BaseTuningParametersDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['TuningParameters']);
+        super('TuningParameters');
     }
 }
 exports.BaseTuningParametersDmo = BaseTuningParametersDmo;
-class BaseUserDmo extends check_in_1.Dmo {
+class BaseUserDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['User']);
+        super('User');
     }
 }
 exports.BaseUserDmo = BaseUserDmo;
-class BaseUserRepositoryDmo extends check_in_1.Dmo {
+class BaseUserRepositoryDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['UserRepository']);
+        super('UserRepository');
     }
 }
 exports.BaseUserRepositoryDmo = BaseUserRepositoryDmo;

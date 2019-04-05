@@ -5,9 +5,7 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	IQEntity,
-	IUtils,
-	QSchema as ACQSchema
+	IQEntity
 } from '@airport/air-control';
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
@@ -263,10 +261,9 @@ export class SQDIDao<Entity,
 	}
 
 	constructor(
-		dbEntityName: string,
-		qSchema: ACQSchema
+		dbEntityName: string
 	) {
-		super(dbEntityName, qSchema)
+		super(dbEntityName, Q)
 	}
 }
 
@@ -279,7 +276,7 @@ export class BaseActorDao
   extends SQDIDao<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateColumns, ActorEUpdateProperties, ActorEId, QActor>
 	implements IBaseActorDao {
 	constructor() {
-		super('Actor', Q)
+		super('Actor')
 	}
 }
 
@@ -292,7 +289,7 @@ export class BaseActorApplicationDao
   extends SQDIDao<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateColumns, ActorApplicationEUpdateProperties, ActorApplicationEId, QActorApplication>
 	implements IBaseActorApplicationDao {
 	constructor() {
-		super('ActorApplication', Q)
+		super('ActorApplication')
 	}
 }
 
@@ -305,7 +302,7 @@ export class BaseApplicationDao
   extends SQDIDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, QApplication>
 	implements IBaseApplicationDao {
 	constructor() {
-		super('Application', Q)
+		super('Application')
 	}
 }
 
@@ -318,7 +315,7 @@ export class BaseChildRepoRowDao
   extends SQDIDao<IChildRepoRow, ChildRepoRowESelect, ChildRepoRowECreateProperties, ChildRepoRowEUpdateColumns, ChildRepoRowEUpdateProperties, ChildRepoRowEId, QChildRepoRow>
 	implements IBaseChildRepoRowDao {
 	constructor() {
-		super('ChildRepoRow', Q)
+		super('ChildRepoRow')
 	}
 }
 
@@ -331,7 +328,7 @@ export class BaseChildRowDao
   extends SQDIDao<IChildRow, ChildRowESelect, ChildRowECreateProperties, ChildRowEUpdateColumns, ChildRowEUpdateProperties, ChildRowEId, QChildRow>
 	implements IBaseChildRowDao {
 	constructor() {
-		super('ChildRow', Q)
+		super('ChildRow')
 	}
 }
 
@@ -344,7 +341,7 @@ export class BaseImmutableRepoRowDao
   extends SQDIDao<IImmutableRepoRow, ImmutableRepoRowESelect, ImmutableRepoRowECreateProperties, ImmutableRepoRowEUpdateColumns, ImmutableRepoRowEUpdateProperties, ImmutableRepoRowEId, QImmutableRepoRow>
 	implements IBaseImmutableRepoRowDao {
 	constructor() {
-		super('ImmutableRepoRow', Q)
+		super('ImmutableRepoRow')
 	}
 }
 
@@ -357,7 +354,7 @@ export class BaseImmutableRowDao
   extends SQDIDao<IImmutableRow, ImmutableRowESelect, ImmutableRowECreateProperties, ImmutableRowEUpdateColumns, ImmutableRowEUpdateProperties, ImmutableRowEId, QImmutableRow>
 	implements IBaseImmutableRowDao {
 	constructor() {
-		super('ImmutableRow', Q)
+		super('ImmutableRow')
 	}
 }
 
@@ -370,7 +367,7 @@ export class BaseMutableRepoRowDao
   extends SQDIDao<IMutableRepoRow, MutableRepoRowESelect, MutableRepoRowECreateProperties, MutableRepoRowEUpdateColumns, MutableRepoRowEUpdateProperties, MutableRepoRowEId, QMutableRepoRow>
 	implements IBaseMutableRepoRowDao {
 	constructor() {
-		super('MutableRepoRow', Q)
+		super('MutableRepoRow')
 	}
 }
 
@@ -383,7 +380,7 @@ export class BaseMutableRowDao
   extends SQDIDao<IMutableRow, MutableRowESelect, MutableRowECreateProperties, MutableRowEUpdateColumns, MutableRowEUpdateProperties, MutableRowEId, QMutableRow>
 	implements IBaseMutableRowDao {
 	constructor() {
-		super('MutableRow', Q)
+		super('MutableRow')
 	}
 }
 
@@ -396,7 +393,7 @@ export class BaseOperationHistoryDao
   extends SQDIDao<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateColumns, OperationHistoryEUpdateProperties, OperationHistoryEId, QOperationHistory>
 	implements IBaseOperationHistoryDao {
 	constructor() {
-		super('OperationHistory', Q)
+		super('OperationHistory')
 	}
 }
 
@@ -409,7 +406,7 @@ export class BaseRecordHistoryDao
   extends SQDIDao<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateColumns, RecordHistoryEUpdateProperties, RecordHistoryEId, QRecordHistory>
 	implements IBaseRecordHistoryDao {
 	constructor() {
-		super('RecordHistory', Q)
+		super('RecordHistory')
 	}
 }
 
@@ -422,7 +419,7 @@ export class BaseRecordHistoryNewValueDao
   extends SQDIDao<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateColumns, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, QRecordHistoryNewValue>
 	implements IBaseRecordHistoryNewValueDao {
 	constructor() {
-		super('RecordHistoryNewValue', Q)
+		super('RecordHistoryNewValue')
 	}
 }
 
@@ -435,7 +432,7 @@ export class BaseRecordHistoryOldValueDao
   extends SQDIDao<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, QRecordHistoryOldValue>
 	implements IBaseRecordHistoryOldValueDao {
 	constructor() {
-		super('RecordHistoryOldValue', Q)
+		super('RecordHistoryOldValue')
 	}
 }
 
@@ -448,7 +445,7 @@ export class BaseReferenceRowDao
   extends SQDIDao<IReferenceRow, ReferenceRowESelect, ReferenceRowECreateProperties, ReferenceRowEUpdateColumns, ReferenceRowEUpdateProperties, ReferenceRowEId, QReferenceRow>
 	implements IBaseReferenceRowDao {
 	constructor() {
-		super('ReferenceRow', Q)
+		super('ReferenceRow')
 	}
 }
 
@@ -461,7 +458,7 @@ export class BaseRepoTransHistoryChangedRepositoryActorDao
   extends SQDIDao<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateColumns, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, QRepoTransHistoryChangedRepositoryActor>
 	implements IBaseRepoTransHistoryChangedRepositoryActorDao {
 	constructor() {
-		super('RepoTransHistoryChangedRepositoryActor', Q)
+		super('RepoTransHistoryChangedRepositoryActor')
 	}
 }
 
@@ -474,7 +471,7 @@ export class BaseRepositoryDao
   extends SQDIDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, QRepository>
 	implements IBaseRepositoryDao {
 	constructor() {
-		super('Repository', Q)
+		super('Repository')
 	}
 }
 
@@ -487,7 +484,7 @@ export class BaseRepositoryActorDao
   extends SQDIDao<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, QRepositoryActor>
 	implements IBaseRepositoryActorDao {
 	constructor() {
-		super('RepositoryActor', Q)
+		super('RepositoryActor')
 	}
 }
 
@@ -500,7 +497,7 @@ export class BaseRepositoryApplicationDao
   extends SQDIDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, QRepositoryApplication>
 	implements IBaseRepositoryApplicationDao {
 	constructor() {
-		super('RepositoryApplication', Q)
+		super('RepositoryApplication')
 	}
 }
 
@@ -513,7 +510,7 @@ export class BaseRepositoryEntityDao
   extends SQDIDao<IRepositoryEntity, RepositoryEntityESelect, RepositoryEntityECreateProperties, RepositoryEntityEUpdateColumns, RepositoryEntityEUpdateProperties, RepositoryEntityEId, QRepositoryEntity>
 	implements IBaseRepositoryEntityDao {
 	constructor() {
-		super('RepositoryEntity', Q)
+		super('RepositoryEntity')
 	}
 }
 
@@ -526,7 +523,7 @@ export class BaseRepositorySchemaDao
   extends SQDIDao<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, QRepositorySchema>
 	implements IBaseRepositorySchemaDao {
 	constructor() {
-		super('RepositorySchema', Q)
+		super('RepositorySchema')
 	}
 }
 
@@ -539,7 +536,7 @@ export class BaseRepositoryTransactionHistoryDao
   extends SQDIDao<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, QRepositoryTransactionHistory>
 	implements IBaseRepositoryTransactionHistoryDao {
 	constructor() {
-		super('RepositoryTransactionHistory', Q)
+		super('RepositoryTransactionHistory')
 	}
 }
 
@@ -552,7 +549,7 @@ export class BaseStageableDao
   extends SQDIDao<IStageable, StageableESelect, StageableECreateProperties, StageableEUpdateColumns, StageableEUpdateProperties, StageableEId, QStageable>
 	implements IBaseStageableDao {
 	constructor() {
-		super('Stageable', Q)
+		super('Stageable')
 	}
 }
 
@@ -565,6 +562,6 @@ export class BaseTransactionHistoryDao
   extends SQDIDao<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, QTransactionHistory>
 	implements IBaseTransactionHistoryDao {
 	constructor() {
-		super('TransactionHistory', Q)
+		super('TransactionHistory')
 	}
 }

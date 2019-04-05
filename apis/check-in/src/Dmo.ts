@@ -4,9 +4,10 @@ import {
 	IEntityIdProperties,
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
-	IQEntity
-}                 from "@airport/air-control";
-import {DbEntity} from "@airport/ground-control";
+	IQEntity,
+	QSchema
+}                 from '@airport/air-control'
+import {DbEntity} from '@airport/ground-control'
 
 /**
  * Created by Papa on 8/26/2017.
@@ -24,53 +25,61 @@ export class Dmo<Entity,
 	IQE extends IQEntity>
 	implements IDmo<Entity, EntitySelect, EntityCreate, EntityUpdate, EntityId, IQE> {
 
+	private dbEntity: DbEntity
+
 	constructor(
-		private dbEntity: DbEntity
+		dbEntityName: string | DbEntity,
+		qSchema?: QSchema
 	) {
+		if (typeof dbEntityName === 'string') {
+			this.dbEntity = qSchema.db.currentVersion.entityMapByName[dbEntityName]
+		} else {
+			this.dbEntity = dbEntityName
+		}
 	}
 
 	getIdStub(
 		ids: number | string | number[] | string[]
 	): EntityId {
-		throw `Not Implemented.`;
+		throw `Not Implemented.`
 	}
 
 	getIdStubs(
 		ids: number[] | string[] | number[][] | string[][]
 	): EntityId[] {
-		throw `Not Implemented.`;
+		throw `Not Implemented.`
 	}
 
 	getAllFieldsSelect(): EntitySelect {
-		throw `Not Implemented.`;
+		throw `Not Implemented.`
 	}
 
 	getIdFieldsSelect(): EntityId {
-		throw `Not Implemented.`;
+		throw `Not Implemented.`
 	}
 
 	getNonIdFieldsSelect(): EntityUpdate {
-		throw `Not Implemented.`;
+		throw `Not Implemented.`
 	}
 
 	getMaxIdsSelectPerRepository() {
-		throw `Not implemented`;
+		throw `Not implemented`
 	}
 
 	getMaxIdSelect() {
-		throw `Not implemented`;
+		throw `Not implemented`
 	}
 
 	getAllManyToOnesSelect(): EntitySelect {
-		throw `Not implemented`;
+		throw `Not implemented`
 	}
 
 	getAllManyToOneIdStubsSelect(): EntitySelect {
-		throw `Not implemented`;
+		throw `Not implemented`
 	}
 
 	getAllOneToManysSelect(): EntitySelect {
-		throw `Not implemented`;
+		throw `Not implemented`
 	}
 
 }
@@ -78,10 +87,10 @@ export class Dmo<Entity,
 export function getAllFieldsSelect(
 	dbEntity: DbEntity
 ): IEntitySelectProperties {
-	throw `Not implemented`;
+	throw `Not implemented`
 }
 
 
 export const DMO = {
 	getAllFieldsSelect: getAllFieldsSelect
-};
+}

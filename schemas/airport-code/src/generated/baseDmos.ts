@@ -1,4 +1,11 @@
-import { IDmo } from "@airport/air-control";
+import {
+	IDmo,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateProperties,
+	IQEntity
+} from '@airport/air-control';
 import { Dmo } from "@airport/check-in";
 import { Q } from './qSchema';
 import {
@@ -33,15 +40,41 @@ import {
 } from './qsequenceconsumer';
 
 
+// Schema Q object Dependency Injection readiness detection DAO
+export class SQDIDmo<Entity,
+	EntitySelect extends IEntitySelectProperties,
+	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateProperties extends IEntityUpdateProperties,
+	EntityId extends IEntityIdProperties,
+	IQE extends IQEntity>
+	extends Dmo<Entity,
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateProperties,
+		EntityId,
+		IQE> {
+
+	static diSet(): boolean {
+		return Q.db as any
+	}
+
+	constructor(
+		dbEntityName: string
+	) {
+		super(dbEntityName, Q)
+	}
+}
+
+
 export interface IBaseSequenceDmo
   extends IDmo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, QSequence> {
 }
 
 export class BaseSequenceDmo
-  extends Dmo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, QSequence>
+  extends SQDIDmo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, QSequence>
 	implements IBaseSequenceDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Sequence']);
+		super('Sequence');
 	}
 }
 
@@ -51,10 +84,10 @@ export interface IBaseSequenceBlockDmo
 }
 
 export class BaseSequenceBlockDmo
-  extends Dmo<ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock>
+  extends SQDIDmo<ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock>
 	implements IBaseSequenceBlockDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SequenceBlock']);
+		super('SequenceBlock');
 	}
 }
 
@@ -64,9 +97,9 @@ export interface IBaseSequenceConsumerDmo
 }
 
 export class BaseSequenceConsumerDmo
-  extends Dmo<ISequenceConsumer, SequenceConsumerESelect, SequenceConsumerECreateProperties, SequenceConsumerEUpdateProperties, SequenceConsumerEId, QSequenceConsumer>
+  extends SQDIDmo<ISequenceConsumer, SequenceConsumerESelect, SequenceConsumerECreateProperties, SequenceConsumerEUpdateProperties, SequenceConsumerEId, QSequenceConsumer>
 	implements IBaseSequenceConsumerDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SequenceConsumer']);
+		super('SequenceConsumer');
 	}
 }

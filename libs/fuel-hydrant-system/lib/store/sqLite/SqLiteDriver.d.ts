@@ -9,6 +9,5 @@ export declare abstract class SqLiteDriver extends SqlDriver {
     protected executeNative(sql: string, parameters: any[]): Promise<number>;
     protected convertValueIn(value: any): number | string;
     abstract query(queryType: QueryType, query: string, params: any, saveTransaction?: boolean): Promise<any>;
-    initAllTables(): Promise<any>;
     initTables(createQueries: Promise<any>[]): Promise<void>;
 }

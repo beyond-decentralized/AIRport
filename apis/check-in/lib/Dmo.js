@@ -7,8 +7,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Data Manipulation object.
  */
 class Dmo {
-    constructor(dbEntity) {
-        this.dbEntity = dbEntity;
+    constructor(dbEntityName, qSchema) {
+        if (typeof dbEntityName === 'string') {
+            this.dbEntity = qSchema.db.currentVersion.entityMapByName[dbEntityName];
+        }
+        else {
+            this.dbEntity = dbEntityName;
+        }
     }
     getIdStub(ids) {
         throw `Not Implemented.`;

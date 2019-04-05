@@ -1,4 +1,11 @@
-import { IDmo } from "@airport/air-control";
+import {
+	IDmo,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateProperties,
+	IQEntity
+} from '@airport/air-control';
 import { Dmo } from "@airport/check-in";
 import { Q } from './qSchema';
 import {
@@ -103,15 +110,41 @@ import {
 } from './schema/qversionedschemaobject';
 
 
+// Schema Q object Dependency Injection readiness detection DAO
+export class SQDIDmo<Entity,
+	EntitySelect extends IEntitySelectProperties,
+	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateProperties extends IEntityUpdateProperties,
+	EntityId extends IEntityIdProperties,
+	IQE extends IQEntity>
+	extends Dmo<Entity,
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateProperties,
+		EntityId,
+		IQE> {
+
+	static diSet(): boolean {
+		return Q.db as any
+	}
+
+	constructor(
+		dbEntityName: string
+	) {
+		super(dbEntityName, Q)
+	}
+}
+
+
 export interface IBaseSchemaDmo
   extends IDmo<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateProperties, SchemaEId, QSchema> {
 }
 
 export class BaseSchemaDmo
-  extends Dmo<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateProperties, SchemaEId, QSchema>
+  extends SQDIDmo<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateProperties, SchemaEId, QSchema>
 	implements IBaseSchemaDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Schema']);
+		super('Schema');
 	}
 }
 
@@ -121,10 +154,10 @@ export interface IBaseSchemaColumnDmo
 }
 
 export class BaseSchemaColumnDmo
-  extends Dmo<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateProperties, SchemaColumnEId, QSchemaColumn>
+  extends SQDIDmo<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateProperties, SchemaColumnEId, QSchemaColumn>
 	implements IBaseSchemaColumnDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SchemaColumn']);
+		super('SchemaColumn');
 	}
 }
 
@@ -134,10 +167,10 @@ export interface IBaseSchemaEntityDmo
 }
 
 export class BaseSchemaEntityDmo
-  extends Dmo<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateProperties, SchemaEntityEId, QSchemaEntity>
+  extends SQDIDmo<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateProperties, SchemaEntityEId, QSchemaEntity>
 	implements IBaseSchemaEntityDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SchemaEntity']);
+		super('SchemaEntity');
 	}
 }
 
@@ -147,10 +180,10 @@ export interface IBaseSchemaPropertyDmo
 }
 
 export class BaseSchemaPropertyDmo
-  extends Dmo<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateProperties, SchemaPropertyEId, QSchemaProperty>
+  extends SQDIDmo<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateProperties, SchemaPropertyEId, QSchemaProperty>
 	implements IBaseSchemaPropertyDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SchemaProperty']);
+		super('SchemaProperty');
 	}
 }
 
@@ -160,10 +193,10 @@ export interface IBaseSchemaPropertyColumnDmo
 }
 
 export class BaseSchemaPropertyColumnDmo
-  extends Dmo<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, QSchemaPropertyColumn>
+  extends SQDIDmo<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, QSchemaPropertyColumn>
 	implements IBaseSchemaPropertyColumnDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SchemaPropertyColumn']);
+		super('SchemaPropertyColumn');
 	}
 }
 
@@ -173,10 +206,10 @@ export interface IBaseSchemaReferenceDmo
 }
 
 export class BaseSchemaReferenceDmo
-  extends Dmo<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateProperties, SchemaReferenceEId, QSchemaReference>
+  extends SQDIDmo<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateProperties, SchemaReferenceEId, QSchemaReference>
 	implements IBaseSchemaReferenceDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SchemaReference']);
+		super('SchemaReference');
 	}
 }
 
@@ -186,10 +219,10 @@ export interface IBaseSchemaRelationDmo
 }
 
 export class BaseSchemaRelationDmo
-  extends Dmo<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateProperties, SchemaRelationEId, QSchemaRelation>
+  extends SQDIDmo<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateProperties, SchemaRelationEId, QSchemaRelation>
 	implements IBaseSchemaRelationDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SchemaRelation']);
+		super('SchemaRelation');
 	}
 }
 
@@ -199,10 +232,10 @@ export interface IBaseSchemaRelationColumnDmo
 }
 
 export class BaseSchemaRelationColumnDmo
-  extends Dmo<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, QSchemaRelationColumn>
+  extends SQDIDmo<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, QSchemaRelationColumn>
 	implements IBaseSchemaRelationColumnDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SchemaRelationColumn']);
+		super('SchemaRelationColumn');
 	}
 }
 
@@ -212,10 +245,10 @@ export interface IBaseSchemaVersionDmo
 }
 
 export class BaseSchemaVersionDmo
-  extends Dmo<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion>
+  extends SQDIDmo<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion>
 	implements IBaseSchemaVersionDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SchemaVersion']);
+		super('SchemaVersion');
 	}
 }
 
@@ -225,9 +258,9 @@ export interface IBaseVersionedSchemaObjectDmo
 }
 
 export class BaseVersionedSchemaObjectDmo
-  extends Dmo<IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject>
+  extends SQDIDmo<IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject>
 	implements IBaseVersionedSchemaObjectDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['VersionedSchemaObject']);
+		super('VersionedSchemaObject');
 	}
 }

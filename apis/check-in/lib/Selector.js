@@ -6,15 +6,17 @@ function createSelector(...args) {
     switch (args.length) {
         case 0:
         case 1:
-            throw new Error(`Invalid createSelector call.`);
+            throw new Error(`Invalid createSelector call, too few input selectors.
+			Expecting 1 to 3.`);
         case 2:
         case 3:
         case 4:
             numInputSelectors = args.length - 1;
+            break;
         default:
             throw new Error(`
 			Invalid createSelector call, too many input selectors.
-			Expecting 0 to 3.
+			Expecting 1 to 3.
 			`);
     }
     const inputSelectors = args.slice(0, args.length);
@@ -65,7 +67,7 @@ function createRootSelector(stateObservable) {
 exports.createRootSelector = createRootSelector;
 function getCurrentValue(observable) {
     let currentValue;
-    this.observable.subscribe(value => currentValue = value).unsubscribe();
+    observable.subscribe(value => currentValue = value).unsubscribe();
     return currentValue;
 }
 //# sourceMappingURL=Selector.js.map

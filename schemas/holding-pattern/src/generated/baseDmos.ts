@@ -1,4 +1,11 @@
-import { IDmo } from "@airport/air-control";
+import {
+	IDmo,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateProperties,
+	IQEntity
+} from '@airport/air-control';
 import { Dmo } from "@airport/check-in";
 import { Q } from './qSchema';
 import {
@@ -233,15 +240,41 @@ import {
 } from './history/qtransactionhistory';
 
 
+// Schema Q object Dependency Injection readiness detection DAO
+export class SQDIDmo<Entity,
+	EntitySelect extends IEntitySelectProperties,
+	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateProperties extends IEntityUpdateProperties,
+	EntityId extends IEntityIdProperties,
+	IQE extends IQEntity>
+	extends Dmo<Entity,
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateProperties,
+		EntityId,
+		IQE> {
+
+	static diSet(): boolean {
+		return Q.db as any
+	}
+
+	constructor(
+		dbEntityName: string
+	) {
+		super(dbEntityName, Q)
+	}
+}
+
+
 export interface IBaseActorDmo
   extends IDmo<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateProperties, ActorEId, QActor> {
 }
 
 export class BaseActorDmo
-  extends Dmo<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateProperties, ActorEId, QActor>
+  extends SQDIDmo<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateProperties, ActorEId, QActor>
 	implements IBaseActorDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Actor']);
+		super('Actor');
 	}
 }
 
@@ -251,10 +284,10 @@ export interface IBaseActorApplicationDmo
 }
 
 export class BaseActorApplicationDmo
-  extends Dmo<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateProperties, ActorApplicationEId, QActorApplication>
+  extends SQDIDmo<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateProperties, ActorApplicationEId, QActorApplication>
 	implements IBaseActorApplicationDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['ActorApplication']);
+		super('ActorApplication');
 	}
 }
 
@@ -264,10 +297,10 @@ export interface IBaseApplicationDmo
 }
 
 export class BaseApplicationDmo
-  extends Dmo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateProperties, ApplicationEId, QApplication>
+  extends SQDIDmo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateProperties, ApplicationEId, QApplication>
 	implements IBaseApplicationDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Application']);
+		super('Application');
 	}
 }
 
@@ -277,10 +310,10 @@ export interface IBaseChildRepoRowDmo
 }
 
 export class BaseChildRepoRowDmo
-  extends Dmo<IChildRepoRow, ChildRepoRowESelect, ChildRepoRowECreateProperties, ChildRepoRowEUpdateProperties, ChildRepoRowEId, QChildRepoRow>
+  extends SQDIDmo<IChildRepoRow, ChildRepoRowESelect, ChildRepoRowECreateProperties, ChildRepoRowEUpdateProperties, ChildRepoRowEId, QChildRepoRow>
 	implements IBaseChildRepoRowDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['ChildRepoRow']);
+		super('ChildRepoRow');
 	}
 }
 
@@ -290,10 +323,10 @@ export interface IBaseChildRowDmo
 }
 
 export class BaseChildRowDmo
-  extends Dmo<IChildRow, ChildRowESelect, ChildRowECreateProperties, ChildRowEUpdateProperties, ChildRowEId, QChildRow>
+  extends SQDIDmo<IChildRow, ChildRowESelect, ChildRowECreateProperties, ChildRowEUpdateProperties, ChildRowEId, QChildRow>
 	implements IBaseChildRowDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['ChildRow']);
+		super('ChildRow');
 	}
 }
 
@@ -303,10 +336,10 @@ export interface IBaseImmutableRepoRowDmo
 }
 
 export class BaseImmutableRepoRowDmo
-  extends Dmo<IImmutableRepoRow, ImmutableRepoRowESelect, ImmutableRepoRowECreateProperties, ImmutableRepoRowEUpdateProperties, ImmutableRepoRowEId, QImmutableRepoRow>
+  extends SQDIDmo<IImmutableRepoRow, ImmutableRepoRowESelect, ImmutableRepoRowECreateProperties, ImmutableRepoRowEUpdateProperties, ImmutableRepoRowEId, QImmutableRepoRow>
 	implements IBaseImmutableRepoRowDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['ImmutableRepoRow']);
+		super('ImmutableRepoRow');
 	}
 }
 
@@ -316,10 +349,10 @@ export interface IBaseImmutableRowDmo
 }
 
 export class BaseImmutableRowDmo
-  extends Dmo<IImmutableRow, ImmutableRowESelect, ImmutableRowECreateProperties, ImmutableRowEUpdateProperties, ImmutableRowEId, QImmutableRow>
+  extends SQDIDmo<IImmutableRow, ImmutableRowESelect, ImmutableRowECreateProperties, ImmutableRowEUpdateProperties, ImmutableRowEId, QImmutableRow>
 	implements IBaseImmutableRowDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['ImmutableRow']);
+		super('ImmutableRow');
 	}
 }
 
@@ -329,10 +362,10 @@ export interface IBaseMutableRepoRowDmo
 }
 
 export class BaseMutableRepoRowDmo
-  extends Dmo<IMutableRepoRow, MutableRepoRowESelect, MutableRepoRowECreateProperties, MutableRepoRowEUpdateProperties, MutableRepoRowEId, QMutableRepoRow>
+  extends SQDIDmo<IMutableRepoRow, MutableRepoRowESelect, MutableRepoRowECreateProperties, MutableRepoRowEUpdateProperties, MutableRepoRowEId, QMutableRepoRow>
 	implements IBaseMutableRepoRowDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['MutableRepoRow']);
+		super('MutableRepoRow');
 	}
 }
 
@@ -342,10 +375,10 @@ export interface IBaseMutableRowDmo
 }
 
 export class BaseMutableRowDmo
-  extends Dmo<IMutableRow, MutableRowESelect, MutableRowECreateProperties, MutableRowEUpdateProperties, MutableRowEId, QMutableRow>
+  extends SQDIDmo<IMutableRow, MutableRowESelect, MutableRowECreateProperties, MutableRowEUpdateProperties, MutableRowEId, QMutableRow>
 	implements IBaseMutableRowDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['MutableRow']);
+		super('MutableRow');
 	}
 }
 
@@ -355,10 +388,10 @@ export interface IBaseOperationHistoryDmo
 }
 
 export class BaseOperationHistoryDmo
-  extends Dmo<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateProperties, OperationHistoryEId, QOperationHistory>
+  extends SQDIDmo<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateProperties, OperationHistoryEId, QOperationHistory>
 	implements IBaseOperationHistoryDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['OperationHistory']);
+		super('OperationHistory');
 	}
 }
 
@@ -368,10 +401,10 @@ export interface IBaseRecordHistoryDmo
 }
 
 export class BaseRecordHistoryDmo
-  extends Dmo<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateProperties, RecordHistoryEId, QRecordHistory>
+  extends SQDIDmo<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateProperties, RecordHistoryEId, QRecordHistory>
 	implements IBaseRecordHistoryDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RecordHistory']);
+		super('RecordHistory');
 	}
 }
 
@@ -381,10 +414,10 @@ export interface IBaseRecordHistoryNewValueDmo
 }
 
 export class BaseRecordHistoryNewValueDmo
-  extends Dmo<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, QRecordHistoryNewValue>
+  extends SQDIDmo<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, QRecordHistoryNewValue>
 	implements IBaseRecordHistoryNewValueDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RecordHistoryNewValue']);
+		super('RecordHistoryNewValue');
 	}
 }
 
@@ -394,10 +427,10 @@ export interface IBaseRecordHistoryOldValueDmo
 }
 
 export class BaseRecordHistoryOldValueDmo
-  extends Dmo<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, QRecordHistoryOldValue>
+  extends SQDIDmo<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, QRecordHistoryOldValue>
 	implements IBaseRecordHistoryOldValueDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RecordHistoryOldValue']);
+		super('RecordHistoryOldValue');
 	}
 }
 
@@ -407,10 +440,10 @@ export interface IBaseReferenceRowDmo
 }
 
 export class BaseReferenceRowDmo
-  extends Dmo<IReferenceRow, ReferenceRowESelect, ReferenceRowECreateProperties, ReferenceRowEUpdateProperties, ReferenceRowEId, QReferenceRow>
+  extends SQDIDmo<IReferenceRow, ReferenceRowESelect, ReferenceRowECreateProperties, ReferenceRowEUpdateProperties, ReferenceRowEId, QReferenceRow>
 	implements IBaseReferenceRowDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['ReferenceRow']);
+		super('ReferenceRow');
 	}
 }
 
@@ -420,10 +453,10 @@ export interface IBaseRepoTransHistoryChangedRepositoryActorDmo
 }
 
 export class BaseRepoTransHistoryChangedRepositoryActorDmo
-  extends Dmo<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, QRepoTransHistoryChangedRepositoryActor>
+  extends SQDIDmo<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, QRepoTransHistoryChangedRepositoryActor>
 	implements IBaseRepoTransHistoryChangedRepositoryActorDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepoTransHistoryChangedRepositoryActor']);
+		super('RepoTransHistoryChangedRepositoryActor');
 	}
 }
 
@@ -433,10 +466,10 @@ export interface IBaseRepositoryDmo
 }
 
 export class BaseRepositoryDmo
-  extends Dmo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, QRepository>
+  extends SQDIDmo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, QRepository>
 	implements IBaseRepositoryDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Repository']);
+		super('Repository');
 	}
 }
 
@@ -446,10 +479,10 @@ export interface IBaseRepositoryActorDmo
 }
 
 export class BaseRepositoryActorDmo
-  extends Dmo<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateProperties, RepositoryActorEId, QRepositoryActor>
+  extends SQDIDmo<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateProperties, RepositoryActorEId, QRepositoryActor>
 	implements IBaseRepositoryActorDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepositoryActor']);
+		super('RepositoryActor');
 	}
 }
 
@@ -459,10 +492,10 @@ export interface IBaseRepositoryApplicationDmo
 }
 
 export class BaseRepositoryApplicationDmo
-  extends Dmo<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, QRepositoryApplication>
+  extends SQDIDmo<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, QRepositoryApplication>
 	implements IBaseRepositoryApplicationDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepositoryApplication']);
+		super('RepositoryApplication');
 	}
 }
 
@@ -472,10 +505,10 @@ export interface IBaseRepositoryEntityDmo
 }
 
 export class BaseRepositoryEntityDmo
-  extends Dmo<IRepositoryEntity, RepositoryEntityESelect, RepositoryEntityECreateProperties, RepositoryEntityEUpdateProperties, RepositoryEntityEId, QRepositoryEntity>
+  extends SQDIDmo<IRepositoryEntity, RepositoryEntityESelect, RepositoryEntityECreateProperties, RepositoryEntityEUpdateProperties, RepositoryEntityEId, QRepositoryEntity>
 	implements IBaseRepositoryEntityDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepositoryEntity']);
+		super('RepositoryEntity');
 	}
 }
 
@@ -485,10 +518,10 @@ export interface IBaseRepositorySchemaDmo
 }
 
 export class BaseRepositorySchemaDmo
-  extends Dmo<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateProperties, RepositorySchemaEId, QRepositorySchema>
+  extends SQDIDmo<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateProperties, RepositorySchemaEId, QRepositorySchema>
 	implements IBaseRepositorySchemaDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepositorySchema']);
+		super('RepositorySchema');
 	}
 }
 
@@ -498,10 +531,10 @@ export interface IBaseRepositoryTransactionHistoryDmo
 }
 
 export class BaseRepositoryTransactionHistoryDmo
-  extends Dmo<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, QRepositoryTransactionHistory>
+  extends SQDIDmo<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, QRepositoryTransactionHistory>
 	implements IBaseRepositoryTransactionHistoryDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionHistory']);
+		super('RepositoryTransactionHistory');
 	}
 }
 
@@ -511,10 +544,10 @@ export interface IBaseStageableDmo
 }
 
 export class BaseStageableDmo
-  extends Dmo<IStageable, StageableESelect, StageableECreateProperties, StageableEUpdateProperties, StageableEId, QStageable>
+  extends SQDIDmo<IStageable, StageableESelect, StageableECreateProperties, StageableEUpdateProperties, StageableEId, QStageable>
 	implements IBaseStageableDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Stageable']);
+		super('Stageable');
 	}
 }
 
@@ -524,9 +557,9 @@ export interface IBaseTransactionHistoryDmo
 }
 
 export class BaseTransactionHistoryDmo
-  extends Dmo<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateProperties, TransactionHistoryEId, QTransactionHistory>
+  extends SQDIDmo<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateProperties, TransactionHistoryEId, QTransactionHistory>
 	implements IBaseTransactionHistoryDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['TransactionHistory']);
+		super('TransactionHistory');
 	}
 }

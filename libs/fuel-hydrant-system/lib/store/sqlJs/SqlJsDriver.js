@@ -23,7 +23,6 @@ class SqlJsDriver extends SqLiteDriver_1.SqLiteDriver {
             // this._db = new sql.Database()
             throw 'Not implemented';
         }
-        return await this.initAllTables();
     }
     async transact() {
         this._db.exec('BEGIN TRANSACTION;');

@@ -5,9 +5,7 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	IQEntity,
-	IUtils,
-	QSchema as ACQSchema
+	IQEntity
 } from '@airport/air-control';
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
@@ -93,10 +91,9 @@ export class SQDIDao<Entity,
 	}
 
 	constructor(
-		dbEntityName: string,
-		qSchema: ACQSchema
+		dbEntityName: string
 	) {
-		super(dbEntityName, qSchema)
+		super(dbEntityName, Q)
 	}
 }
 
@@ -109,7 +106,7 @@ export class BaseAgtDao
   extends SQDIDao<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, QAgt>
 	implements IBaseAgtDao {
 	constructor() {
-		super('Agt', Q)
+		super('Agt')
 	}
 }
 
@@ -122,7 +119,7 @@ export class BaseTerminalDao
   extends SQDIDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, QTerminal>
 	implements IBaseTerminalDao {
 	constructor() {
-		super('Terminal', Q)
+		super('Terminal')
 	}
 }
 
@@ -135,7 +132,7 @@ export class BaseTerminalAgtDao
   extends SQDIDao<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, QTerminalAgt>
 	implements IBaseTerminalAgtDao {
 	constructor() {
-		super('TerminalAgt', Q)
+		super('TerminalAgt')
 	}
 }
 
@@ -148,7 +145,7 @@ export class BaseUserDao
   extends SQDIDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, QUser>
 	implements IBaseUserDao {
 	constructor() {
-		super('User', Q)
+		super('User')
 	}
 }
 
@@ -161,7 +158,7 @@ export class BaseUserTerminalDao
   extends SQDIDao<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, QUserTerminal>
 	implements IBaseUserTerminalDao {
 	constructor() {
-		super('UserTerminal', Q)
+		super('UserTerminal')
 	}
 }
 
@@ -174,6 +171,6 @@ export class BaseUserTerminalAgtDao
   extends SQDIDao<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, QUserTerminalAgt>
 	implements IBaseUserTerminalAgtDao {
 	constructor() {
-		super('UserTerminalAgt', Q)
+		super('UserTerminalAgt')
 	}
 }

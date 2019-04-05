@@ -1,4 +1,11 @@
-import { IDmo } from "@airport/air-control";
+import {
+	IDmo,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateProperties,
+	IQEntity
+} from '@airport/air-control';
 import { Dmo } from "@airport/check-in";
 import { Q } from './qSchema';
 import {
@@ -173,15 +180,41 @@ import {
 } from './conflict/qsynchronizationconflictvalues';
 
 
+// Schema Q object Dependency Injection readiness detection DAO
+export class SQDIDmo<Entity,
+	EntitySelect extends IEntitySelectProperties,
+	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateProperties extends IEntityUpdateProperties,
+	EntityId extends IEntityIdProperties,
+	IQE extends IQEntity>
+	extends Dmo<Entity,
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateProperties,
+		EntityId,
+		IQE> {
+
+	static diSet(): boolean {
+		return Q.db as any
+	}
+
+	constructor(
+		dbEntityName: string
+	) {
+		super(dbEntityName, Q)
+	}
+}
+
+
 export interface IBaseMissingRecordDmo
   extends IDmo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateProperties, MissingRecordEId, QMissingRecord> {
 }
 
 export class BaseMissingRecordDmo
-  extends Dmo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateProperties, MissingRecordEId, QMissingRecord>
+  extends SQDIDmo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateProperties, MissingRecordEId, QMissingRecord>
 	implements IBaseMissingRecordDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['MissingRecord']);
+		super('MissingRecord');
 	}
 }
 
@@ -191,10 +224,10 @@ export interface IBaseMissingRecordRepoTransBlockDmo
 }
 
 export class BaseMissingRecordRepoTransBlockDmo
-  extends Dmo<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, QMissingRecordRepoTransBlock>
+  extends SQDIDmo<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, QMissingRecordRepoTransBlock>
 	implements IBaseMissingRecordRepoTransBlockDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['MissingRecordRepoTransBlock']);
+		super('MissingRecordRepoTransBlock');
 	}
 }
 
@@ -204,10 +237,10 @@ export interface IBaseRecordUpdateStageDmo
 }
 
 export class BaseRecordUpdateStageDmo
-  extends Dmo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, QRecordUpdateStage>
+  extends SQDIDmo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, QRecordUpdateStage>
 	implements IBaseRecordUpdateStageDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RecordUpdateStage']);
+		super('RecordUpdateStage');
 	}
 }
 
@@ -217,10 +250,10 @@ export interface IBaseRepoTransBlockResponseStageDmo
 }
 
 export class BaseRepoTransBlockResponseStageDmo
-  extends Dmo<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, QRepoTransBlockResponseStage>
+  extends SQDIDmo<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, QRepoTransBlockResponseStage>
 	implements IBaseRepoTransBlockResponseStageDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepoTransBlockResponseStage']);
+		super('RepoTransBlockResponseStage');
 	}
 }
 
@@ -230,10 +263,10 @@ export interface IBaseRepoTransBlockSchemaToChangeDmo
 }
 
 export class BaseRepoTransBlockSchemaToChangeDmo
-  extends Dmo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, QRepoTransBlockSchemaToChange>
+  extends SQDIDmo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, QRepoTransBlockSchemaToChange>
 	implements IBaseRepoTransBlockSchemaToChangeDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepoTransBlockSchemaToChange']);
+		super('RepoTransBlockSchemaToChange');
 	}
 }
 
@@ -243,10 +276,10 @@ export interface IBaseRepositoryTransactionBlockDmo
 }
 
 export class BaseRepositoryTransactionBlockDmo
-  extends Dmo<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, QRepositoryTransactionBlock>
+  extends SQDIDmo<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, QRepositoryTransactionBlock>
 	implements IBaseRepositoryTransactionBlockDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionBlock']);
+		super('RepositoryTransactionBlock');
 	}
 }
 
@@ -256,10 +289,10 @@ export interface IBaseRepositoryTransactionHistoryUpdateStageDmo
 }
 
 export class BaseRepositoryTransactionHistoryUpdateStageDmo
-  extends Dmo<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, QRepositoryTransactionHistoryUpdateStage>
+  extends SQDIDmo<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, QRepositoryTransactionHistoryUpdateStage>
 	implements IBaseRepositoryTransactionHistoryUpdateStageDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepositoryTransactionHistoryUpdateStage']);
+		super('RepositoryTransactionHistoryUpdateStage');
 	}
 }
 
@@ -269,10 +302,10 @@ export interface IBaseSharingMessageDmo
 }
 
 export class BaseSharingMessageDmo
-  extends Dmo<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateProperties, SharingMessageEId, QSharingMessage>
+  extends SQDIDmo<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateProperties, SharingMessageEId, QSharingMessage>
 	implements IBaseSharingMessageDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SharingMessage']);
+		super('SharingMessage');
 	}
 }
 
@@ -282,10 +315,10 @@ export interface IBaseSharingMessageRepoTransBlockDmo
 }
 
 export class BaseSharingMessageRepoTransBlockDmo
-  extends Dmo<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, QSharingMessageRepoTransBlock>
+  extends SQDIDmo<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, QSharingMessageRepoTransBlock>
 	implements IBaseSharingMessageRepoTransBlockDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SharingMessageRepoTransBlock']);
+		super('SharingMessageRepoTransBlock');
 	}
 }
 
@@ -295,10 +328,10 @@ export interface IBaseSharingNodeDmo
 }
 
 export class BaseSharingNodeDmo
-  extends Dmo<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateProperties, SharingNodeEId, QSharingNode>
+  extends SQDIDmo<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateProperties, SharingNodeEId, QSharingNode>
 	implements IBaseSharingNodeDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SharingNode']);
+		super('SharingNode');
 	}
 }
 
@@ -308,10 +341,10 @@ export interface IBaseSharingNodeRepoTransBlockDmo
 }
 
 export class BaseSharingNodeRepoTransBlockDmo
-  extends Dmo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock>
+  extends SQDIDmo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock>
 	implements IBaseSharingNodeRepoTransBlockDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SharingNodeRepoTransBlock']);
+		super('SharingNodeRepoTransBlock');
 	}
 }
 
@@ -321,10 +354,10 @@ export interface IBaseSharingNodeRepoTransBlockStageDmo
 }
 
 export class BaseSharingNodeRepoTransBlockStageDmo
-  extends Dmo<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, QSharingNodeRepoTransBlockStage>
+  extends SQDIDmo<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, QSharingNodeRepoTransBlockStage>
 	implements IBaseSharingNodeRepoTransBlockStageDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SharingNodeRepoTransBlockStage']);
+		super('SharingNodeRepoTransBlockStage');
 	}
 }
 
@@ -334,10 +367,10 @@ export interface IBaseSharingNodeRepositoryDmo
 }
 
 export class BaseSharingNodeRepositoryDmo
-  extends Dmo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, QSharingNodeRepository>
+  extends SQDIDmo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, QSharingNodeRepository>
 	implements IBaseSharingNodeRepositoryDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SharingNodeRepository']);
+		super('SharingNodeRepository');
 	}
 }
 
@@ -347,10 +380,10 @@ export interface IBaseSharingNodeTerminalDmo
 }
 
 export class BaseSharingNodeTerminalDmo
-  extends Dmo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal>
+  extends SQDIDmo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal>
 	implements IBaseSharingNodeTerminalDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SharingNodeTerminal']);
+		super('SharingNodeTerminal');
 	}
 }
 
@@ -360,10 +393,10 @@ export interface IBaseSynchronizationConflictDmo
 }
 
 export class BaseSynchronizationConflictDmo
-  extends Dmo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, QSynchronizationConflict>
+  extends SQDIDmo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, QSynchronizationConflict>
 	implements IBaseSynchronizationConflictDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SynchronizationConflict']);
+		super('SynchronizationConflict');
 	}
 }
 
@@ -373,10 +406,10 @@ export interface IBaseSynchronizationConflictPendingNotificationDmo
 }
 
 export class BaseSynchronizationConflictPendingNotificationDmo
-  extends Dmo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, QSynchronizationConflictPendingNotification>
+  extends SQDIDmo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, QSynchronizationConflictPendingNotification>
 	implements IBaseSynchronizationConflictPendingNotificationDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SynchronizationConflictPendingNotification']);
+		super('SynchronizationConflictPendingNotification');
 	}
 }
 
@@ -386,9 +419,9 @@ export interface IBaseSynchronizationConflictValuesDmo
 }
 
 export class BaseSynchronizationConflictValuesDmo
-  extends Dmo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, QSynchronizationConflictValues>
+  extends SQDIDmo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, QSynchronizationConflictValues>
 	implements IBaseSynchronizationConflictValuesDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SynchronizationConflictValues']);
+		super('SynchronizationConflictValues');
 	}
 }

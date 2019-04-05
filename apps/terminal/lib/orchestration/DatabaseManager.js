@@ -6,6 +6,7 @@ const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 const ground_control_1 = require("@airport/ground-control");
 const landing_1 = require("@airport/landing");
 const takeoff_1 = require("@airport/takeoff");
+const terminal_map_1 = require("@airport/terminal-map");
 const diTokens_1 = require("../diTokens");
 class DatabaseManager {
     constructor() {
@@ -51,13 +52,15 @@ class DatabaseManager {
         await fuel_hydrant_system_1.setStoreDriver(storeType);
         const [airDb] = await di_1.DI.getP(air_control_1.AIR_DB);
         this.airDb = airDb;
+        const [transManager] = await di_1.DI.getP(terminal_map_1.TRANSACTION_MANAGER);
+        await transManager.initialize('airport');
         const [storeDriver] = await di_1.DI.getP(ground_control_1.STORE_DRIVER);
         if (await storeDriver.doesTableExist('AP__TERRITORY__APPLICATION_PACKAGES')) {
-            await this.installAirportSchema();
-        }
-        else {
             const [queryObjectInitializer] = await di_1.DI.getP(takeoff_1.QUERY_OBJECT_INITIALIZER);
             await queryObjectInitializer.initialize();
+        }
+        else {
+            await this.installAirportSchema();
         }
         /*
                 throw `Implement!`

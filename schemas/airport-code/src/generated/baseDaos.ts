@@ -5,9 +5,7 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	IQEntity,
-	IUtils,
-	QSchema as ACQSchema
+	IQEntity
 } from '@airport/air-control';
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
@@ -63,10 +61,9 @@ export class SQDIDao<Entity,
 	}
 
 	constructor(
-		dbEntityName: string,
-		qSchema: ACQSchema
+		dbEntityName: string
 	) {
-		super(dbEntityName, qSchema)
+		super(dbEntityName, Q)
 	}
 }
 
@@ -79,7 +76,7 @@ export class BaseSequenceDao
   extends SQDIDao<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, QSequence>
 	implements IBaseSequenceDao {
 	constructor() {
-		super('Sequence', Q)
+		super('Sequence')
 	}
 }
 
@@ -92,7 +89,7 @@ export class BaseSequenceBlockDao
   extends SQDIDao<ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateColumns, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock>
 	implements IBaseSequenceBlockDao {
 	constructor() {
-		super('SequenceBlock', Q)
+		super('SequenceBlock')
 	}
 }
 
@@ -105,6 +102,6 @@ export class BaseSequenceConsumerDao
   extends SQDIDao<ISequenceConsumer, SequenceConsumerESelect, SequenceConsumerECreateProperties, SequenceConsumerEUpdateColumns, SequenceConsumerEUpdateProperties, SequenceConsumerEId, QSequenceConsumer>
 	implements IBaseSequenceConsumerDao {
 	constructor() {
-		super('SequenceConsumer', Q)
+		super('SequenceConsumer')
 	}
 }

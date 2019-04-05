@@ -1,5 +1,5 @@
-import { IDmo, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateProperties, IQEntity } from "@airport/air-control";
-import { DbEntity } from "@airport/ground-control";
+import { IDmo, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateProperties, IQEntity, QSchema } from '@airport/air-control';
+import { DbEntity } from '@airport/ground-control';
 /**
  * Created by Papa on 8/26/2017.
  */
@@ -8,7 +8,7 @@ import { DbEntity } from "@airport/ground-control";
  */
 export declare class Dmo<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdate extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, IQE extends IQEntity> implements IDmo<Entity, EntitySelect, EntityCreate, EntityUpdate, EntityId, IQE> {
     private dbEntity;
-    constructor(dbEntity: DbEntity);
+    constructor(dbEntityName: string | DbEntity, qSchema?: QSchema);
     getIdStub(ids: number | string | number[] | string[]): EntityId;
     getIdStubs(ids: number[] | string[] | number[][] | string[][]): EntityId[];
     getAllFieldsSelect(): EntitySelect;

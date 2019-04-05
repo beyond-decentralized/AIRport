@@ -1,4 +1,11 @@
-import { IDmo } from "@airport/air-control";
+import {
+	IDmo,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateProperties,
+	IQEntity
+} from '@airport/air-control';
 import { Dmo } from "@airport/check-in";
 import { Q } from './qSchema';
 import {
@@ -53,15 +60,41 @@ import {
 } from './qpackagedunit';
 
 
+// Schema Q object Dependency Injection readiness detection DAO
+export class SQDIDmo<Entity,
+	EntitySelect extends IEntitySelectProperties,
+	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateProperties extends IEntityUpdateProperties,
+	EntityId extends IEntityIdProperties,
+	IQE extends IQEntity>
+	extends Dmo<Entity,
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateProperties,
+		EntityId,
+		IQE> {
+
+	static diSet(): boolean {
+		return Q.db as any
+	}
+
+	constructor(
+		dbEntityName: string
+	) {
+		super(dbEntityName, Q)
+	}
+}
+
+
 export interface IBaseApplicationDmo
   extends IDmo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateProperties, ApplicationEId, QApplication> {
 }
 
 export class BaseApplicationDmo
-  extends Dmo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateProperties, ApplicationEId, QApplication>
+  extends SQDIDmo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateProperties, ApplicationEId, QApplication>
 	implements IBaseApplicationDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Application']);
+		super('Application');
 	}
 }
 
@@ -71,10 +104,10 @@ export interface IBaseApplicationPackageDmo
 }
 
 export class BaseApplicationPackageDmo
-  extends Dmo<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateProperties, ApplicationPackageEId, QApplicationPackage>
+  extends SQDIDmo<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateProperties, ApplicationPackageEId, QApplicationPackage>
 	implements IBaseApplicationPackageDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['ApplicationPackage']);
+		super('ApplicationPackage');
 	}
 }
 
@@ -84,10 +117,10 @@ export interface IBaseDomainDmo
 }
 
 export class BaseDomainDmo
-  extends Dmo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateProperties, DomainEId, QDomain>
+  extends SQDIDmo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateProperties, DomainEId, QDomain>
 	implements IBaseDomainDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Domain']);
+		super('Domain');
 	}
 }
 
@@ -97,10 +130,10 @@ export interface IBasePackageDmo
 }
 
 export class BasePackageDmo
-  extends Dmo<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateProperties, PackageEId, QPackage>
+  extends SQDIDmo<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateProperties, PackageEId, QPackage>
 	implements IBasePackageDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Package']);
+		super('Package');
 	}
 }
 
@@ -110,9 +143,9 @@ export interface IBasePackagedUnitDmo
 }
 
 export class BasePackagedUnitDmo
-  extends Dmo<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateProperties, PackagedUnitEId, QPackagedUnit>
+  extends SQDIDmo<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateProperties, PackagedUnitEId, QPackagedUnit>
 	implements IBasePackagedUnitDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['PackagedUnit']);
+		super('PackagedUnit');
 	}
 }

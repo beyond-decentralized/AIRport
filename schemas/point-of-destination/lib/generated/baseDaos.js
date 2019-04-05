@@ -4,8 +4,8 @@ const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
 // Schema Q object Dependency Injection readiness detection DAO
 class SQDIDao extends check_in_1.Dao {
-    constructor(dbEntityName, qSchema) {
-        super(dbEntityName, qSchema);
+    constructor(dbEntityName) {
+        super(dbEntityName, qSchema_1.Q);
     }
     static diSet() {
         return qSchema_1.Q.db;
@@ -14,7 +14,7 @@ class SQDIDao extends check_in_1.Dao {
 exports.SQDIDao = SQDIDao;
 class BaseDailyArchiveDao extends SQDIDao {
     constructor() {
-        super('DailyArchive', qSchema_1.Q);
+        super('DailyArchive');
     }
 }
 exports.BaseDailyArchiveDao = BaseDailyArchiveDao;

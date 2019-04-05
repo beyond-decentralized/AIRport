@@ -42,7 +42,6 @@ export class SqlJsDriver
 			// this._db = new sql.Database()
 			throw 'Not implemented'
 		}
-		return await this.initAllTables()
 	}
 
 	async transact(): Promise<void> {

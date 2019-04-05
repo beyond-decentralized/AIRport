@@ -27,10 +27,10 @@ export interface IBase${entityName}Dmo
 }
 
 export class Base${entityName}Dmo
-  extends Dmo<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateProperties, ${entityName}EId, Q${entityName}>
+  extends SQDIDmo<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateProperties, ${entityName}EId, Q${entityName}>
 	implements IBase${entityName}Dmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['${entityName}']);
+		super('${entityName}');
 	}
 }
 `).join('\n');
@@ -44,10 +44,43 @@ export class Base${entityName}Dmo
 	${entityName}EId,
 	Q${entityName}
 } from '${this.generatedPathMapByEntityName[entityName]}';`).join('\n');
-        return `import { IDmo } from "@airport/air-control";
+        return `import {
+	IDmo,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateProperties,
+	IQEntity
+} from '@airport/air-control';
 import { Dmo } from "@airport/check-in";
 import { Q } from './qSchema';
 ${imports}
+
+
+// Schema Q object Dependency Injection readiness detection DAO
+export class SQDIDmo<Entity,
+	EntitySelect extends IEntitySelectProperties,
+	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateProperties extends IEntityUpdateProperties,
+	EntityId extends IEntityIdProperties,
+	IQE extends IQEntity>
+	extends Dmo<Entity,
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateProperties,
+		EntityId,
+		IQE> {
+
+	static diSet(): boolean {
+		return Q.db as any
+	}
+
+	constructor(
+		dbEntityName: string
+	) {
+		super(dbEntityName, Q)
+	}
+}
 
 ${daoDefinitions}`;
     }

@@ -5,9 +5,7 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	IQEntity,
-	IUtils,
-	QSchema as ACQSchema
+	IQEntity
 } from '@airport/air-control';
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
@@ -133,10 +131,9 @@ export class SQDIDao<Entity,
 	}
 
 	constructor(
-		dbEntityName: string,
-		qSchema: ACQSchema
+		dbEntityName: string
 	) {
-		super(dbEntityName, qSchema)
+		super(dbEntityName, Q)
 	}
 }
 
@@ -149,7 +146,7 @@ export class BaseSchemaDao
   extends SQDIDao<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, QSchema>
 	implements IBaseSchemaDao {
 	constructor() {
-		super('Schema', Q)
+		super('Schema')
 	}
 }
 
@@ -162,7 +159,7 @@ export class BaseSchemaColumnDao
   extends SQDIDao<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, QSchemaColumn>
 	implements IBaseSchemaColumnDao {
 	constructor() {
-		super('SchemaColumn', Q)
+		super('SchemaColumn')
 	}
 }
 
@@ -175,7 +172,7 @@ export class BaseSchemaEntityDao
   extends SQDIDao<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, QSchemaEntity>
 	implements IBaseSchemaEntityDao {
 	constructor() {
-		super('SchemaEntity', Q)
+		super('SchemaEntity')
 	}
 }
 
@@ -188,7 +185,7 @@ export class BaseSchemaPropertyDao
   extends SQDIDao<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, QSchemaProperty>
 	implements IBaseSchemaPropertyDao {
 	constructor() {
-		super('SchemaProperty', Q)
+		super('SchemaProperty')
 	}
 }
 
@@ -201,7 +198,7 @@ export class BaseSchemaPropertyColumnDao
   extends SQDIDao<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, QSchemaPropertyColumn>
 	implements IBaseSchemaPropertyColumnDao {
 	constructor() {
-		super('SchemaPropertyColumn', Q)
+		super('SchemaPropertyColumn')
 	}
 }
 
@@ -214,7 +211,7 @@ export class BaseSchemaReferenceDao
   extends SQDIDao<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, QSchemaReference>
 	implements IBaseSchemaReferenceDao {
 	constructor() {
-		super('SchemaReference', Q)
+		super('SchemaReference')
 	}
 }
 
@@ -227,7 +224,7 @@ export class BaseSchemaRelationDao
   extends SQDIDao<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, QSchemaRelation>
 	implements IBaseSchemaRelationDao {
 	constructor() {
-		super('SchemaRelation', Q)
+		super('SchemaRelation')
 	}
 }
 
@@ -240,7 +237,7 @@ export class BaseSchemaRelationColumnDao
   extends SQDIDao<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, QSchemaRelationColumn>
 	implements IBaseSchemaRelationColumnDao {
 	constructor() {
-		super('SchemaRelationColumn', Q)
+		super('SchemaRelationColumn')
 	}
 }
 
@@ -253,7 +250,7 @@ export class BaseSchemaVersionDao
   extends SQDIDao<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion>
 	implements IBaseSchemaVersionDao {
 	constructor() {
-		super('SchemaVersion', Q)
+		super('SchemaVersion')
 	}
 }
 
@@ -266,6 +263,6 @@ export class BaseVersionedSchemaObjectDao
   extends SQDIDao<IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject>
 	implements IBaseVersionedSchemaObjectDao {
 	constructor() {
-		super('VersionedSchemaObject', Q)
+		super('VersionedSchemaObject')
 	}
 }

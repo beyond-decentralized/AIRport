@@ -2,21 +2,31 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-class BaseDailySyncLogDmo extends check_in_1.Dmo {
+// Schema Q object Dependency Injection readiness detection DAO
+class SQDIDmo extends check_in_1.Dmo {
+    constructor(dbEntityName) {
+        super(dbEntityName, qSchema_1.Q);
+    }
+    static diSet() {
+        return qSchema_1.Q.db;
+    }
+}
+exports.SQDIDmo = SQDIDmo;
+class BaseDailySyncLogDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['DailySyncLog']);
+        super('DailySyncLog');
     }
 }
 exports.BaseDailySyncLogDmo = BaseDailySyncLogDmo;
-class BaseLogDmo extends check_in_1.Dmo {
+class BaseLogDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Log']);
+        super('Log');
     }
 }
 exports.BaseLogDmo = BaseLogDmo;
-class BaseMonthlySyncLogDmo extends check_in_1.Dmo {
+class BaseMonthlySyncLogDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['MonthlySyncLog']);
+        super('MonthlySyncLog');
     }
 }
 exports.BaseMonthlySyncLogDmo = BaseMonthlySyncLogDmo;

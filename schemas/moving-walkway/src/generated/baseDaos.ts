@@ -5,9 +5,7 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	IQEntity,
-	IUtils,
-	QSchema as ACQSchema
+	IQEntity
 } from '@airport/air-control';
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
@@ -203,10 +201,9 @@ export class SQDIDao<Entity,
 	}
 
 	constructor(
-		dbEntityName: string,
-		qSchema: ACQSchema
+		dbEntityName: string
 	) {
-		super(dbEntityName, qSchema)
+		super(dbEntityName, Q)
 	}
 }
 
@@ -219,7 +216,7 @@ export class BaseMissingRecordDao
   extends SQDIDao<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateColumns, MissingRecordEUpdateProperties, MissingRecordEId, QMissingRecord>
 	implements IBaseMissingRecordDao {
 	constructor() {
-		super('MissingRecord', Q)
+		super('MissingRecord')
 	}
 }
 
@@ -232,7 +229,7 @@ export class BaseMissingRecordRepoTransBlockDao
   extends SQDIDao<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateColumns, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, QMissingRecordRepoTransBlock>
 	implements IBaseMissingRecordRepoTransBlockDao {
 	constructor() {
-		super('MissingRecordRepoTransBlock', Q)
+		super('MissingRecordRepoTransBlock')
 	}
 }
 
@@ -245,7 +242,7 @@ export class BaseRecordUpdateStageDao
   extends SQDIDao<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, QRecordUpdateStage>
 	implements IBaseRecordUpdateStageDao {
 	constructor() {
-		super('RecordUpdateStage', Q)
+		super('RecordUpdateStage')
 	}
 }
 
@@ -258,7 +255,7 @@ export class BaseRepoTransBlockResponseStageDao
   extends SQDIDao<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateColumns, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, QRepoTransBlockResponseStage>
 	implements IBaseRepoTransBlockResponseStageDao {
 	constructor() {
-		super('RepoTransBlockResponseStage', Q)
+		super('RepoTransBlockResponseStage')
 	}
 }
 
@@ -271,7 +268,7 @@ export class BaseRepoTransBlockSchemaToChangeDao
   extends SQDIDao<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateColumns, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, QRepoTransBlockSchemaToChange>
 	implements IBaseRepoTransBlockSchemaToChangeDao {
 	constructor() {
-		super('RepoTransBlockSchemaToChange', Q)
+		super('RepoTransBlockSchemaToChange')
 	}
 }
 
@@ -284,7 +281,7 @@ export class BaseRepositoryTransactionBlockDao
   extends SQDIDao<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateColumns, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, QRepositoryTransactionBlock>
 	implements IBaseRepositoryTransactionBlockDao {
 	constructor() {
-		super('RepositoryTransactionBlock', Q)
+		super('RepositoryTransactionBlock')
 	}
 }
 
@@ -297,7 +294,7 @@ export class BaseRepositoryTransactionHistoryUpdateStageDao
   extends SQDIDao<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateColumns, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, QRepositoryTransactionHistoryUpdateStage>
 	implements IBaseRepositoryTransactionHistoryUpdateStageDao {
 	constructor() {
-		super('RepositoryTransactionHistoryUpdateStage', Q)
+		super('RepositoryTransactionHistoryUpdateStage')
 	}
 }
 
@@ -310,7 +307,7 @@ export class BaseSharingMessageDao
   extends SQDIDao<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateColumns, SharingMessageEUpdateProperties, SharingMessageEId, QSharingMessage>
 	implements IBaseSharingMessageDao {
 	constructor() {
-		super('SharingMessage', Q)
+		super('SharingMessage')
 	}
 }
 
@@ -323,7 +320,7 @@ export class BaseSharingMessageRepoTransBlockDao
   extends SQDIDao<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateColumns, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, QSharingMessageRepoTransBlock>
 	implements IBaseSharingMessageRepoTransBlockDao {
 	constructor() {
-		super('SharingMessageRepoTransBlock', Q)
+		super('SharingMessageRepoTransBlock')
 	}
 }
 
@@ -336,7 +333,7 @@ export class BaseSharingNodeDao
   extends SQDIDao<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateColumns, SharingNodeEUpdateProperties, SharingNodeEId, QSharingNode>
 	implements IBaseSharingNodeDao {
 	constructor() {
-		super('SharingNode', Q)
+		super('SharingNode')
 	}
 }
 
@@ -349,7 +346,7 @@ export class BaseSharingNodeRepoTransBlockDao
   extends SQDIDao<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateColumns, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock>
 	implements IBaseSharingNodeRepoTransBlockDao {
 	constructor() {
-		super('SharingNodeRepoTransBlock', Q)
+		super('SharingNodeRepoTransBlock')
 	}
 }
 
@@ -362,7 +359,7 @@ export class BaseSharingNodeRepoTransBlockStageDao
   extends SQDIDao<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateColumns, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, QSharingNodeRepoTransBlockStage>
 	implements IBaseSharingNodeRepoTransBlockStageDao {
 	constructor() {
-		super('SharingNodeRepoTransBlockStage', Q)
+		super('SharingNodeRepoTransBlockStage')
 	}
 }
 
@@ -375,7 +372,7 @@ export class BaseSharingNodeRepositoryDao
   extends SQDIDao<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateColumns, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, QSharingNodeRepository>
 	implements IBaseSharingNodeRepositoryDao {
 	constructor() {
-		super('SharingNodeRepository', Q)
+		super('SharingNodeRepository')
 	}
 }
 
@@ -388,7 +385,7 @@ export class BaseSharingNodeTerminalDao
   extends SQDIDao<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateColumns, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal>
 	implements IBaseSharingNodeTerminalDao {
 	constructor() {
-		super('SharingNodeTerminal', Q)
+		super('SharingNodeTerminal')
 	}
 }
 
@@ -401,7 +398,7 @@ export class BaseSynchronizationConflictDao
   extends SQDIDao<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, QSynchronizationConflict>
 	implements IBaseSynchronizationConflictDao {
 	constructor() {
-		super('SynchronizationConflict', Q)
+		super('SynchronizationConflict')
 	}
 }
 
@@ -414,7 +411,7 @@ export class BaseSynchronizationConflictPendingNotificationDao
   extends SQDIDao<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, QSynchronizationConflictPendingNotification>
 	implements IBaseSynchronizationConflictPendingNotificationDao {
 	constructor() {
-		super('SynchronizationConflictPendingNotification', Q)
+		super('SynchronizationConflictPendingNotification')
 	}
 }
 
@@ -427,6 +424,6 @@ export class BaseSynchronizationConflictValuesDao
   extends SQDIDao<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, QSynchronizationConflictValues>
 	implements IBaseSynchronizationConflictValuesDao {
 	constructor() {
-		super('SynchronizationConflictValues', Q)
+		super('SynchronizationConflictValues')
 	}
 }

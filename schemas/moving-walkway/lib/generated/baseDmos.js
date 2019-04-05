@@ -2,105 +2,115 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-class BaseMissingRecordDmo extends check_in_1.Dmo {
+// Schema Q object Dependency Injection readiness detection DAO
+class SQDIDmo extends check_in_1.Dmo {
+    constructor(dbEntityName) {
+        super(dbEntityName, qSchema_1.Q);
+    }
+    static diSet() {
+        return qSchema_1.Q.db;
+    }
+}
+exports.SQDIDmo = SQDIDmo;
+class BaseMissingRecordDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['MissingRecord']);
+        super('MissingRecord');
     }
 }
 exports.BaseMissingRecordDmo = BaseMissingRecordDmo;
-class BaseMissingRecordRepoTransBlockDmo extends check_in_1.Dmo {
+class BaseMissingRecordRepoTransBlockDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['MissingRecordRepoTransBlock']);
+        super('MissingRecordRepoTransBlock');
     }
 }
 exports.BaseMissingRecordRepoTransBlockDmo = BaseMissingRecordRepoTransBlockDmo;
-class BaseRecordUpdateStageDmo extends check_in_1.Dmo {
+class BaseRecordUpdateStageDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RecordUpdateStage']);
+        super('RecordUpdateStage');
     }
 }
 exports.BaseRecordUpdateStageDmo = BaseRecordUpdateStageDmo;
-class BaseRepoTransBlockResponseStageDmo extends check_in_1.Dmo {
+class BaseRepoTransBlockResponseStageDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepoTransBlockResponseStage']);
+        super('RepoTransBlockResponseStage');
     }
 }
 exports.BaseRepoTransBlockResponseStageDmo = BaseRepoTransBlockResponseStageDmo;
-class BaseRepoTransBlockSchemaToChangeDmo extends check_in_1.Dmo {
+class BaseRepoTransBlockSchemaToChangeDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepoTransBlockSchemaToChange']);
+        super('RepoTransBlockSchemaToChange');
     }
 }
 exports.BaseRepoTransBlockSchemaToChangeDmo = BaseRepoTransBlockSchemaToChangeDmo;
-class BaseRepositoryTransactionBlockDmo extends check_in_1.Dmo {
+class BaseRepositoryTransactionBlockDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositoryTransactionBlock']);
+        super('RepositoryTransactionBlock');
     }
 }
 exports.BaseRepositoryTransactionBlockDmo = BaseRepositoryTransactionBlockDmo;
-class BaseRepositoryTransactionHistoryUpdateStageDmo extends check_in_1.Dmo {
+class BaseRepositoryTransactionHistoryUpdateStageDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositoryTransactionHistoryUpdateStage']);
+        super('RepositoryTransactionHistoryUpdateStage');
     }
 }
 exports.BaseRepositoryTransactionHistoryUpdateStageDmo = BaseRepositoryTransactionHistoryUpdateStageDmo;
-class BaseSharingMessageDmo extends check_in_1.Dmo {
+class BaseSharingMessageDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingMessage']);
+        super('SharingMessage');
     }
 }
 exports.BaseSharingMessageDmo = BaseSharingMessageDmo;
-class BaseSharingMessageRepoTransBlockDmo extends check_in_1.Dmo {
+class BaseSharingMessageRepoTransBlockDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingMessageRepoTransBlock']);
+        super('SharingMessageRepoTransBlock');
     }
 }
 exports.BaseSharingMessageRepoTransBlockDmo = BaseSharingMessageRepoTransBlockDmo;
-class BaseSharingNodeDmo extends check_in_1.Dmo {
+class BaseSharingNodeDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingNode']);
+        super('SharingNode');
     }
 }
 exports.BaseSharingNodeDmo = BaseSharingNodeDmo;
-class BaseSharingNodeRepoTransBlockDmo extends check_in_1.Dmo {
+class BaseSharingNodeRepoTransBlockDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingNodeRepoTransBlock']);
+        super('SharingNodeRepoTransBlock');
     }
 }
 exports.BaseSharingNodeRepoTransBlockDmo = BaseSharingNodeRepoTransBlockDmo;
-class BaseSharingNodeRepoTransBlockStageDmo extends check_in_1.Dmo {
+class BaseSharingNodeRepoTransBlockStageDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingNodeRepoTransBlockStage']);
+        super('SharingNodeRepoTransBlockStage');
     }
 }
 exports.BaseSharingNodeRepoTransBlockStageDmo = BaseSharingNodeRepoTransBlockStageDmo;
-class BaseSharingNodeRepositoryDmo extends check_in_1.Dmo {
+class BaseSharingNodeRepositoryDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingNodeRepository']);
+        super('SharingNodeRepository');
     }
 }
 exports.BaseSharingNodeRepositoryDmo = BaseSharingNodeRepositoryDmo;
-class BaseSharingNodeTerminalDmo extends check_in_1.Dmo {
+class BaseSharingNodeTerminalDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SharingNodeTerminal']);
+        super('SharingNodeTerminal');
     }
 }
 exports.BaseSharingNodeTerminalDmo = BaseSharingNodeTerminalDmo;
-class BaseSynchronizationConflictDmo extends check_in_1.Dmo {
+class BaseSynchronizationConflictDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SynchronizationConflict']);
+        super('SynchronizationConflict');
     }
 }
 exports.BaseSynchronizationConflictDmo = BaseSynchronizationConflictDmo;
-class BaseSynchronizationConflictPendingNotificationDmo extends check_in_1.Dmo {
+class BaseSynchronizationConflictPendingNotificationDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SynchronizationConflictPendingNotification']);
+        super('SynchronizationConflictPendingNotification');
     }
 }
 exports.BaseSynchronizationConflictPendingNotificationDmo = BaseSynchronizationConflictPendingNotificationDmo;
-class BaseSynchronizationConflictValuesDmo extends check_in_1.Dmo {
+class BaseSynchronizationConflictValuesDmo extends SQDIDmo {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SynchronizationConflictValues']);
+        super('SynchronizationConflictValues');
     }
 }
 exports.BaseSynchronizationConflictValuesDmo = BaseSynchronizationConflictValuesDmo;

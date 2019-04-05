@@ -1,4 +1,11 @@
-import { IDmo } from "@airport/air-control";
+import {
+	IDmo,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateProperties,
+	IQEntity
+} from '@airport/air-control';
 import { Dmo } from "@airport/check-in";
 import { Q } from './qSchema';
 import {
@@ -63,15 +70,41 @@ import {
 } from './quserterminalagt';
 
 
+// Schema Q object Dependency Injection readiness detection DAO
+export class SQDIDmo<Entity,
+	EntitySelect extends IEntitySelectProperties,
+	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateProperties extends IEntityUpdateProperties,
+	EntityId extends IEntityIdProperties,
+	IQE extends IQEntity>
+	extends Dmo<Entity,
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateProperties,
+		EntityId,
+		IQE> {
+
+	static diSet(): boolean {
+		return Q.db as any
+	}
+
+	constructor(
+		dbEntityName: string
+	) {
+		super(dbEntityName, Q)
+	}
+}
+
+
 export interface IBaseAgtDmo
   extends IDmo<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateProperties, AgtEId, QAgt> {
 }
 
 export class BaseAgtDmo
-  extends Dmo<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateProperties, AgtEId, QAgt>
+  extends SQDIDmo<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateProperties, AgtEId, QAgt>
 	implements IBaseAgtDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Agt']);
+		super('Agt');
 	}
 }
 
@@ -81,10 +114,10 @@ export interface IBaseTerminalDmo
 }
 
 export class BaseTerminalDmo
-  extends Dmo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, QTerminal>
+  extends SQDIDmo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, QTerminal>
 	implements IBaseTerminalDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Terminal']);
+		super('Terminal');
 	}
 }
 
@@ -94,10 +127,10 @@ export interface IBaseTerminalAgtDmo
 }
 
 export class BaseTerminalAgtDmo
-  extends Dmo<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateProperties, TerminalAgtEId, QTerminalAgt>
+  extends SQDIDmo<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateProperties, TerminalAgtEId, QTerminalAgt>
 	implements IBaseTerminalAgtDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['TerminalAgt']);
+		super('TerminalAgt');
 	}
 }
 
@@ -107,10 +140,10 @@ export interface IBaseUserDmo
 }
 
 export class BaseUserDmo
-  extends Dmo<IUser, UserESelect, UserECreateProperties, UserEUpdateProperties, UserEId, QUser>
+  extends SQDIDmo<IUser, UserESelect, UserECreateProperties, UserEUpdateProperties, UserEId, QUser>
 	implements IBaseUserDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['User']);
+		super('User');
 	}
 }
 
@@ -120,10 +153,10 @@ export interface IBaseUserTerminalDmo
 }
 
 export class BaseUserTerminalDmo
-  extends Dmo<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateProperties, UserTerminalEId, QUserTerminal>
+  extends SQDIDmo<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateProperties, UserTerminalEId, QUserTerminal>
 	implements IBaseUserTerminalDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['UserTerminal']);
+		super('UserTerminal');
 	}
 }
 
@@ -133,9 +166,9 @@ export interface IBaseUserTerminalAgtDmo
 }
 
 export class BaseUserTerminalAgtDmo
-  extends Dmo<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, QUserTerminalAgt>
+  extends SQDIDmo<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, QUserTerminalAgt>
 	implements IBaseUserTerminalAgtDmo {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['UserTerminalAgt']);
+		super('UserTerminalAgt');
 	}
 }

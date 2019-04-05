@@ -7,7 +7,10 @@ import {setStoreDriver}           from '@airport/fuel-hydrant-system'
 import {STORE_DRIVER}             from '@airport/ground-control'
 import {SCHEMA_INITIALIZER}       from '@airport/landing'
 import {QUERY_OBJECT_INITIALIZER} from '@airport/takeoff'
-import {StoreType}                from '@airport/terminal-map'
+import {
+	StoreType,
+	TRANSACTION_MANAGER
+}                                 from '@airport/terminal-map'
 import {DATABASE_MANAGER}         from '../diTokens'
 
 export interface IDatabaseManager {
@@ -83,13 +86,15 @@ export class DatabaseManager
 		const [airDb] = await DI.getP(AIR_DB)
 		this.airDb    = airDb
 
-		const [storeDriver] = await DI.getP(STORE_DRIVER)
+		const [transManager] = await DI.getP(TRANSACTION_MANAGER)
+		await transManager.initialize('airport')
 
+		const [storeDriver] = await DI.getP(STORE_DRIVER)
 		if (await storeDriver.doesTableExist('AP__TERRITORY__APPLICATION_PACKAGES')) {
-			await this.installAirportSchema()
-		} else {
 			const [queryObjectInitializer] = await DI.getP(QUERY_OBJECT_INITIALIZER)
 			await queryObjectInitializer.initialize()
+		} else {
+			await this.installAirportSchema()
 		}
 		/*
 				throw `Implement!`
