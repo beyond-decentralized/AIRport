@@ -4,10 +4,9 @@ const lib_1 = require("@airport/di/lib");
 const diTokens_1 = require("../../diTokens");
 class QMetadataUtils {
     constructor() {
-        lib_1.DI.get((airportDb, utils) => {
+        lib_1.DI.get((airportDb) => {
             this.airportDb = airportDb;
-            this.utils = utils;
-        }, diTokens_1.AIR_DB, diTokens_1.UTILS);
+        }, diTokens_1.AIR_DB);
     }
     getAllColumns(qEntity) {
         return qEntity.__driver__.allColumns;

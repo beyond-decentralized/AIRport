@@ -2,33 +2,43 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-class BaseLogEntryDao extends check_in_1.Dao {
+// Schema Q object Dependency Injection readiness detection DAO
+class SQDIDao extends check_in_1.Dao {
+    constructor(dbEntityName, qSchema) {
+        super(dbEntityName, qSchema);
+    }
+    static diSet() {
+        return qSchema_1.Q.db;
+    }
+}
+exports.SQDIDao = SQDIDao;
+class BaseLogEntryDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['LogEntry'], qSchema_1.Q);
+        super('LogEntry', qSchema_1.Q);
     }
 }
 exports.BaseLogEntryDao = BaseLogEntryDao;
-class BaseLogEntryTypeDao extends check_in_1.Dao {
+class BaseLogEntryTypeDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['LogEntryType'], qSchema_1.Q);
+        super('LogEntryType', qSchema_1.Q);
     }
 }
 exports.BaseLogEntryTypeDao = BaseLogEntryTypeDao;
-class BaseLogEntryValueDao extends check_in_1.Dao {
+class BaseLogEntryValueDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['LogEntryValue'], qSchema_1.Q);
+        super('LogEntryValue', qSchema_1.Q);
     }
 }
 exports.BaseLogEntryValueDao = BaseLogEntryValueDao;
-class BaseLoggedErrorDao extends check_in_1.Dao {
+class BaseLoggedErrorDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['LoggedError'], qSchema_1.Q);
+        super('LoggedError', qSchema_1.Q);
     }
 }
 exports.BaseLoggedErrorDao = BaseLoggedErrorDao;
-class BaseLoggedErrorStackTraceDao extends check_in_1.Dao {
+class BaseLoggedErrorStackTraceDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['LoggedErrorStackTrace'], qSchema_1.Q);
+        super('LoggedErrorStackTrace', qSchema_1.Q);
     }
 }
 exports.BaseLoggedErrorStackTraceDao = BaseLoggedErrorStackTraceDao;

@@ -1,13 +1,11 @@
-import {DI}          from '@airport/di'
+import {DI}            from '@airport/di'
 import {
 	IStoreDriver,
-	PortableQuery
-}                    from '@airport/ground-control'
-import {IObservable} from '@airport/observe'
-import {
-	QUERY_MANAGER,
+	PortableQuery,
 	STORE_DRIVER
-}                    from '../diTokens'
+}                      from '@airport/ground-control'
+import {IObservable}   from '@airport/observe'
+import {QUERY_MANAGER} from '../diTokens'
 
 export interface IQueryManager {
 

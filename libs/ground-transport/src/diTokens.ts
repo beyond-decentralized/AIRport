@@ -30,7 +30,6 @@ export const HTTP_SHARING_NODE_ENDPOINT         = diToken<ISharingNodeEndpoint>(
 export const MISSING_RECORD_CREATOR             = diToken<IMissingRecordCreator>()
 export const STAGE1_SYNCED_IN_DATA_PROCESSOR    = diToken<IStage1SyncedInDataProcessor>()
 export const STAGE2_SYNCED_IN_DATA_PROCESSOR    = diToken<IStage2SyncedInDataProcessor>()
-export const STORE_DRIVER                       = diToken<IStoreDriver>()
 export const SYNC_IN_ACTOR_CHECKER              = diToken<ISyncInActorChecker>()
 export const SYNC_IN_CHECKER                    = diToken<ISyncInChecker>()
 export const SYNC_IN_CONSISTENCY_CHECKER        = diToken<ISyncInConsistencyChecker>()

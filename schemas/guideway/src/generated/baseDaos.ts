@@ -1,6 +1,13 @@
 import {
-	IDao, 
-	IUtils 
+	IDao,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+	IUtils,
+	QSchema as ACQSchema
 } from '@airport/air-control';
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
@@ -195,16 +202,44 @@ import {
 	QUserRepository
 } from './user/quserrepository';
 
+// Schema Q object Dependency Injection readiness detection DAO
+export class SQDIDao<Entity,
+	EntitySelect extends IEntitySelectProperties,
+	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateColumns extends IEntityUpdateColumns,
+	EntityUpdateProperties extends IEntityUpdateProperties,
+	EntityId extends IEntityIdProperties,
+	IQE extends IQEntity>
+	extends Dao<Entity,
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateColumns,
+		EntityUpdateProperties,
+		EntityId,
+		IQE> {
+
+	static diSet(): boolean {
+		return Q.db as any
+	}
+
+	constructor(
+		dbEntityName: string,
+		qSchema: ACQSchema
+	) {
+		super(dbEntityName, qSchema)
+	}
+}
+
 
 export interface IBaseAgtRepositoryTransactionBlockDao
   extends IDao<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateColumns, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, QAgtRepositoryTransactionBlock> {
 }
 
 export class BaseAgtRepositoryTransactionBlockDao
-  extends Dao<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateColumns, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, QAgtRepositoryTransactionBlock>
+  extends SQDIDao<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateColumns, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, QAgtRepositoryTransactionBlock>
 	implements IBaseAgtRepositoryTransactionBlockDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['AgtRepositoryTransactionBlock'], Q)
+		super('AgtRepositoryTransactionBlock', Q)
 	}
 }
 
@@ -214,10 +249,10 @@ export interface IBaseAgtSharingMessageDao
 }
 
 export class BaseAgtSharingMessageDao
-  extends Dao<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateColumns, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, QAgtSharingMessage>
+  extends SQDIDao<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateColumns, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, QAgtSharingMessage>
 	implements IBaseAgtSharingMessageDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['AgtSharingMessage'], Q)
+		super('AgtSharingMessage', Q)
 	}
 }
 
@@ -227,10 +262,10 @@ export interface IBaseArchiveDao
 }
 
 export class BaseArchiveDao
-  extends Dao<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateColumns, ArchiveEUpdateProperties, ArchiveEId, QArchive>
+  extends SQDIDao<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateColumns, ArchiveEUpdateProperties, ArchiveEId, QArchive>
 	implements IBaseArchiveDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Archive'], Q)
+		super('Archive', Q)
 	}
 }
 
@@ -240,10 +275,10 @@ export interface IBaseDailyArchiveLogDao
 }
 
 export class BaseDailyArchiveLogDao
-  extends Dao<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateColumns, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, QDailyArchiveLog>
+  extends SQDIDao<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateColumns, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, QDailyArchiveLog>
 	implements IBaseDailyArchiveLogDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['DailyArchiveLog'], Q)
+		super('DailyArchiveLog', Q)
 	}
 }
 
@@ -253,10 +288,10 @@ export interface IBaseDailyTerminalSyncLogDao
 }
 
 export class BaseDailyTerminalSyncLogDao
-  extends Dao<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateColumns, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, QDailyTerminalSyncLog>
+  extends SQDIDao<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateColumns, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, QDailyTerminalSyncLog>
 	implements IBaseDailyTerminalSyncLogDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['DailyTerminalSyncLog'], Q)
+		super('DailyTerminalSyncLog', Q)
 	}
 }
 
@@ -266,10 +301,10 @@ export interface IBaseMonthlyArchiveLogDao
 }
 
 export class BaseMonthlyArchiveLogDao
-  extends Dao<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateColumns, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, QMonthlyArchiveLog>
+  extends SQDIDao<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateColumns, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, QMonthlyArchiveLog>
 	implements IBaseMonthlyArchiveLogDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['MonthlyArchiveLog'], Q)
+		super('MonthlyArchiveLog', Q)
 	}
 }
 
@@ -279,10 +314,10 @@ export interface IBaseMonthlyTerminalSyncLogDao
 }
 
 export class BaseMonthlyTerminalSyncLogDao
-  extends Dao<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateColumns, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, QMonthlyTerminalSyncLog>
+  extends SQDIDao<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateColumns, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, QMonthlyTerminalSyncLog>
 	implements IBaseMonthlyTerminalSyncLogDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['MonthlyTerminalSyncLog'], Q)
+		super('MonthlyTerminalSyncLog', Q)
 	}
 }
 
@@ -292,10 +327,10 @@ export interface IBaseRepositoryDao
 }
 
 export class BaseRepositoryDao
-  extends Dao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, QRepository>
+  extends SQDIDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, QRepository>
 	implements IBaseRepositoryDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Repository'], Q)
+		super('Repository', Q)
 	}
 }
 
@@ -305,10 +340,10 @@ export interface IBaseRepositoryArchiveDao
 }
 
 export class BaseRepositoryArchiveDao
-  extends Dao<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateColumns, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, QRepositoryArchive>
+  extends SQDIDao<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateColumns, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, QRepositoryArchive>
 	implements IBaseRepositoryArchiveDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['RepositoryArchive'], Q)
+		super('RepositoryArchive', Q)
 	}
 }
 
@@ -318,10 +353,10 @@ export interface IBaseSecurityAnswerDao
 }
 
 export class BaseSecurityAnswerDao
-  extends Dao<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateColumns, SecurityAnswerEUpdateProperties, SecurityAnswerEId, QSecurityAnswer>
+  extends SQDIDao<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateColumns, SecurityAnswerEUpdateProperties, SecurityAnswerEId, QSecurityAnswer>
 	implements IBaseSecurityAnswerDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SecurityAnswer'], Q)
+		super('SecurityAnswer', Q)
 	}
 }
 
@@ -331,10 +366,10 @@ export interface IBaseSecurityQuestionDao
 }
 
 export class BaseSecurityQuestionDao
-  extends Dao<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateColumns, SecurityQuestionEUpdateProperties, SecurityQuestionEId, QSecurityQuestion>
+  extends SQDIDao<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateColumns, SecurityQuestionEUpdateProperties, SecurityQuestionEId, QSecurityQuestion>
 	implements IBaseSecurityQuestionDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SecurityQuestion'], Q)
+		super('SecurityQuestion', Q)
 	}
 }
 
@@ -344,10 +379,10 @@ export interface IBaseServerDao
 }
 
 export class BaseServerDao
-  extends Dao<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateColumns, ServerEUpdateProperties, ServerEId, QServer>
+  extends SQDIDao<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateColumns, ServerEUpdateProperties, ServerEId, QServer>
 	implements IBaseServerDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Server'], Q)
+		super('Server', Q)
 	}
 }
 
@@ -357,10 +392,10 @@ export interface IBaseServerSyncLogDao
 }
 
 export class BaseServerSyncLogDao
-  extends Dao<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateColumns, ServerSyncLogEUpdateProperties, ServerSyncLogEId, QServerSyncLog>
+  extends SQDIDao<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateColumns, ServerSyncLogEUpdateProperties, ServerSyncLogEId, QServerSyncLog>
 	implements IBaseServerSyncLogDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['ServerSyncLog'], Q)
+		super('ServerSyncLog', Q)
 	}
 }
 
@@ -370,10 +405,10 @@ export interface IBaseSyncLogDao
 }
 
 export class BaseSyncLogDao
-  extends Dao<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateColumns, SyncLogEUpdateProperties, SyncLogEId, QSyncLog>
+  extends SQDIDao<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateColumns, SyncLogEUpdateProperties, SyncLogEId, QSyncLog>
 	implements IBaseSyncLogDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['SyncLog'], Q)
+		super('SyncLog', Q)
 	}
 }
 
@@ -383,10 +418,10 @@ export interface IBaseTerminalDao
 }
 
 export class BaseTerminalDao
-  extends Dao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, QTerminal>
+  extends SQDIDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, QTerminal>
 	implements IBaseTerminalDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Terminal'], Q)
+		super('Terminal', Q)
 	}
 }
 
@@ -396,10 +431,10 @@ export interface IBaseTerminalRepositoryDao
 }
 
 export class BaseTerminalRepositoryDao
-  extends Dao<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateColumns, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, QTerminalRepository>
+  extends SQDIDao<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateColumns, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, QTerminalRepository>
 	implements IBaseTerminalRepositoryDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['TerminalRepository'], Q)
+		super('TerminalRepository', Q)
 	}
 }
 
@@ -409,10 +444,10 @@ export interface IBaseTuningParametersDao
 }
 
 export class BaseTuningParametersDao
-  extends Dao<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateColumns, TuningParametersEUpdateProperties, TuningParametersEId, QTuningParameters>
+  extends SQDIDao<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateColumns, TuningParametersEUpdateProperties, TuningParametersEId, QTuningParameters>
 	implements IBaseTuningParametersDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['TuningParameters'], Q)
+		super('TuningParameters', Q)
 	}
 }
 
@@ -422,10 +457,10 @@ export interface IBaseUserDao
 }
 
 export class BaseUserDao
-  extends Dao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, QUser>
+  extends SQDIDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, QUser>
 	implements IBaseUserDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['User'], Q)
+		super('User', Q)
 	}
 }
 
@@ -435,9 +470,9 @@ export interface IBaseUserRepositoryDao
 }
 
 export class BaseUserRepositoryDao
-  extends Dao<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateColumns, UserRepositoryEUpdateProperties, UserRepositoryEId, QUserRepository>
+  extends SQDIDao<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateColumns, UserRepositoryEUpdateProperties, UserRepositoryEId, QUserRepository>
 	implements IBaseUserRepositoryDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['UserRepository'], Q)
+		super('UserRepository', Q)
 	}
 }

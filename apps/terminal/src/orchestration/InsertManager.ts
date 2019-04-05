@@ -13,7 +13,8 @@ import {
 	IStoreDriver,
 	JsonInsertValues,
 	PortableQuery,
-	repositoryEntity
+	repositoryEntity,
+	STORE_DRIVER
 }                           from '@airport/ground-control'
 import {
 	IActor,
@@ -41,8 +42,7 @@ import {
 	HISTORY_MANAGER,
 	INSERT_MANAGER,
 	OFFLINE_DELTA_STORE,
-	REPOSITORY_MANAGER,
-	STORE_DRIVER,
+	REPOSITORY_MANAGER
 }                           from '../diTokens'
 import {IHistoryManager}    from './HistoryManager'
 

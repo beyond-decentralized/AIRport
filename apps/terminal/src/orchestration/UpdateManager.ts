@@ -15,6 +15,7 @@ import {
 	PortableQuery,
 	QueryResultType,
 	repositoryEntity,
+	STORE_DRIVER,
 }                           from '@airport/ground-control'
 import {
 	IActor,
@@ -39,7 +40,6 @@ import {
 	HISTORY_MANAGER,
 	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER,
-	STORE_DRIVER,
 	UPDATE_MANAGER
 }                           from '../diTokens'
 import {IHistoryManager}    from './HistoryManager'

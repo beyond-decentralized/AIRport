@@ -2,63 +2,73 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-class BaseSchemaDao extends check_in_1.Dao {
+// Schema Q object Dependency Injection readiness detection DAO
+class SQDIDao extends check_in_1.Dao {
+    constructor(dbEntityName, qSchema) {
+        super(dbEntityName, qSchema);
+    }
+    static diSet() {
+        return qSchema_1.Q.db;
+    }
+}
+exports.SQDIDao = SQDIDao;
+class BaseSchemaDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Schema'], qSchema_1.Q);
+        super('Schema', qSchema_1.Q);
     }
 }
 exports.BaseSchemaDao = BaseSchemaDao;
-class BaseSchemaColumnDao extends check_in_1.Dao {
+class BaseSchemaColumnDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SchemaColumn'], qSchema_1.Q);
+        super('SchemaColumn', qSchema_1.Q);
     }
 }
 exports.BaseSchemaColumnDao = BaseSchemaColumnDao;
-class BaseSchemaEntityDao extends check_in_1.Dao {
+class BaseSchemaEntityDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SchemaEntity'], qSchema_1.Q);
+        super('SchemaEntity', qSchema_1.Q);
     }
 }
 exports.BaseSchemaEntityDao = BaseSchemaEntityDao;
-class BaseSchemaPropertyDao extends check_in_1.Dao {
+class BaseSchemaPropertyDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SchemaProperty'], qSchema_1.Q);
+        super('SchemaProperty', qSchema_1.Q);
     }
 }
 exports.BaseSchemaPropertyDao = BaseSchemaPropertyDao;
-class BaseSchemaPropertyColumnDao extends check_in_1.Dao {
+class BaseSchemaPropertyColumnDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SchemaPropertyColumn'], qSchema_1.Q);
+        super('SchemaPropertyColumn', qSchema_1.Q);
     }
 }
 exports.BaseSchemaPropertyColumnDao = BaseSchemaPropertyColumnDao;
-class BaseSchemaReferenceDao extends check_in_1.Dao {
+class BaseSchemaReferenceDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SchemaReference'], qSchema_1.Q);
+        super('SchemaReference', qSchema_1.Q);
     }
 }
 exports.BaseSchemaReferenceDao = BaseSchemaReferenceDao;
-class BaseSchemaRelationDao extends check_in_1.Dao {
+class BaseSchemaRelationDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SchemaRelation'], qSchema_1.Q);
+        super('SchemaRelation', qSchema_1.Q);
     }
 }
 exports.BaseSchemaRelationDao = BaseSchemaRelationDao;
-class BaseSchemaRelationColumnDao extends check_in_1.Dao {
+class BaseSchemaRelationColumnDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SchemaRelationColumn'], qSchema_1.Q);
+        super('SchemaRelationColumn', qSchema_1.Q);
     }
 }
 exports.BaseSchemaRelationColumnDao = BaseSchemaRelationColumnDao;
-class BaseSchemaVersionDao extends check_in_1.Dao {
+class BaseSchemaVersionDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SchemaVersion'], qSchema_1.Q);
+        super('SchemaVersion', qSchema_1.Q);
     }
 }
 exports.BaseSchemaVersionDao = BaseSchemaVersionDao;
-class BaseVersionedSchemaObjectDao extends check_in_1.Dao {
+class BaseVersionedSchemaObjectDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['VersionedSchemaObject'], qSchema_1.Q);
+        super('VersionedSchemaObject', qSchema_1.Q);
     }
 }
 exports.BaseVersionedSchemaObjectDao = BaseVersionedSchemaObjectDao;

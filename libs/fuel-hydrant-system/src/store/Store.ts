@@ -17,11 +17,11 @@ export async function setStoreDriver(
 	switch (storeType) {
 		case StoreType.SQLITE_CORDOVA:
 			const webSqlDriverFile = await import('./webSql/WebSqlDriver')
-			StoreDriver            = new webSqlDriverFile.WebSqlDriver
+			StoreDriver            = webSqlDriverFile.WebSqlDriver
 			break
 		case StoreType.SQLJS:
 			const sqlJsDriverFile = await import('./sqlJs/SqlJsDriver')
-			StoreDriver           = new sqlJsDriverFile.SqlJsDriver
+			StoreDriver           = sqlJsDriverFile.SqlJsDriver
 			break
 		default:
 			throw `Unsupported StoreType: ${storeType}`

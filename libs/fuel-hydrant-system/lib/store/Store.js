@@ -10,11 +10,11 @@ async function setStoreDriver(storeType) {
     switch (storeType) {
         case ground_control_1.StoreType.SQLITE_CORDOVA:
             const webSqlDriverFile = await Promise.resolve().then(() => require('./webSql/WebSqlDriver'));
-            StoreDriver = new webSqlDriverFile.WebSqlDriver;
+            StoreDriver = webSqlDriverFile.WebSqlDriver;
             break;
         case ground_control_1.StoreType.SQLJS:
             const sqlJsDriverFile = await Promise.resolve().then(() => require('./sqlJs/SqlJsDriver'));
-            StoreDriver = new sqlJsDriverFile.SqlJsDriver;
+            StoreDriver = sqlJsDriverFile.SqlJsDriver;
             break;
         default:
             throw `Unsupported StoreType: ${storeType}`;

@@ -2,141 +2,151 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-class BaseActorDao extends check_in_1.Dao {
+// Schema Q object Dependency Injection readiness detection DAO
+class SQDIDao extends check_in_1.Dao {
+    constructor(dbEntityName, qSchema) {
+        super(dbEntityName, qSchema);
+    }
+    static diSet() {
+        return qSchema_1.Q.db;
+    }
+}
+exports.SQDIDao = SQDIDao;
+class BaseActorDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Actor'], qSchema_1.Q);
+        super('Actor', qSchema_1.Q);
     }
 }
 exports.BaseActorDao = BaseActorDao;
-class BaseActorApplicationDao extends check_in_1.Dao {
+class BaseActorApplicationDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['ActorApplication'], qSchema_1.Q);
+        super('ActorApplication', qSchema_1.Q);
     }
 }
 exports.BaseActorApplicationDao = BaseActorApplicationDao;
-class BaseApplicationDao extends check_in_1.Dao {
+class BaseApplicationDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Application'], qSchema_1.Q);
+        super('Application', qSchema_1.Q);
     }
 }
 exports.BaseApplicationDao = BaseApplicationDao;
-class BaseChildRepoRowDao extends check_in_1.Dao {
+class BaseChildRepoRowDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['ChildRepoRow'], qSchema_1.Q);
+        super('ChildRepoRow', qSchema_1.Q);
     }
 }
 exports.BaseChildRepoRowDao = BaseChildRepoRowDao;
-class BaseChildRowDao extends check_in_1.Dao {
+class BaseChildRowDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['ChildRow'], qSchema_1.Q);
+        super('ChildRow', qSchema_1.Q);
     }
 }
 exports.BaseChildRowDao = BaseChildRowDao;
-class BaseImmutableRepoRowDao extends check_in_1.Dao {
+class BaseImmutableRepoRowDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['ImmutableRepoRow'], qSchema_1.Q);
+        super('ImmutableRepoRow', qSchema_1.Q);
     }
 }
 exports.BaseImmutableRepoRowDao = BaseImmutableRepoRowDao;
-class BaseImmutableRowDao extends check_in_1.Dao {
+class BaseImmutableRowDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['ImmutableRow'], qSchema_1.Q);
+        super('ImmutableRow', qSchema_1.Q);
     }
 }
 exports.BaseImmutableRowDao = BaseImmutableRowDao;
-class BaseMutableRepoRowDao extends check_in_1.Dao {
+class BaseMutableRepoRowDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['MutableRepoRow'], qSchema_1.Q);
+        super('MutableRepoRow', qSchema_1.Q);
     }
 }
 exports.BaseMutableRepoRowDao = BaseMutableRepoRowDao;
-class BaseMutableRowDao extends check_in_1.Dao {
+class BaseMutableRowDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['MutableRow'], qSchema_1.Q);
+        super('MutableRow', qSchema_1.Q);
     }
 }
 exports.BaseMutableRowDao = BaseMutableRowDao;
-class BaseOperationHistoryDao extends check_in_1.Dao {
+class BaseOperationHistoryDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['OperationHistory'], qSchema_1.Q);
+        super('OperationHistory', qSchema_1.Q);
     }
 }
 exports.BaseOperationHistoryDao = BaseOperationHistoryDao;
-class BaseRecordHistoryDao extends check_in_1.Dao {
+class BaseRecordHistoryDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RecordHistory'], qSchema_1.Q);
+        super('RecordHistory', qSchema_1.Q);
     }
 }
 exports.BaseRecordHistoryDao = BaseRecordHistoryDao;
-class BaseRecordHistoryNewValueDao extends check_in_1.Dao {
+class BaseRecordHistoryNewValueDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RecordHistoryNewValue'], qSchema_1.Q);
+        super('RecordHistoryNewValue', qSchema_1.Q);
     }
 }
 exports.BaseRecordHistoryNewValueDao = BaseRecordHistoryNewValueDao;
-class BaseRecordHistoryOldValueDao extends check_in_1.Dao {
+class BaseRecordHistoryOldValueDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RecordHistoryOldValue'], qSchema_1.Q);
+        super('RecordHistoryOldValue', qSchema_1.Q);
     }
 }
 exports.BaseRecordHistoryOldValueDao = BaseRecordHistoryOldValueDao;
-class BaseReferenceRowDao extends check_in_1.Dao {
+class BaseReferenceRowDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['ReferenceRow'], qSchema_1.Q);
+        super('ReferenceRow', qSchema_1.Q);
     }
 }
 exports.BaseReferenceRowDao = BaseReferenceRowDao;
-class BaseRepoTransHistoryChangedRepositoryActorDao extends check_in_1.Dao {
+class BaseRepoTransHistoryChangedRepositoryActorDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepoTransHistoryChangedRepositoryActor'], qSchema_1.Q);
+        super('RepoTransHistoryChangedRepositoryActor', qSchema_1.Q);
     }
 }
 exports.BaseRepoTransHistoryChangedRepositoryActorDao = BaseRepoTransHistoryChangedRepositoryActorDao;
-class BaseRepositoryDao extends check_in_1.Dao {
+class BaseRepositoryDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Repository'], qSchema_1.Q);
+        super('Repository', qSchema_1.Q);
     }
 }
 exports.BaseRepositoryDao = BaseRepositoryDao;
-class BaseRepositoryActorDao extends check_in_1.Dao {
+class BaseRepositoryActorDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositoryActor'], qSchema_1.Q);
+        super('RepositoryActor', qSchema_1.Q);
     }
 }
 exports.BaseRepositoryActorDao = BaseRepositoryActorDao;
-class BaseRepositoryApplicationDao extends check_in_1.Dao {
+class BaseRepositoryApplicationDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositoryApplication'], qSchema_1.Q);
+        super('RepositoryApplication', qSchema_1.Q);
     }
 }
 exports.BaseRepositoryApplicationDao = BaseRepositoryApplicationDao;
-class BaseRepositoryEntityDao extends check_in_1.Dao {
+class BaseRepositoryEntityDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositoryEntity'], qSchema_1.Q);
+        super('RepositoryEntity', qSchema_1.Q);
     }
 }
 exports.BaseRepositoryEntityDao = BaseRepositoryEntityDao;
-class BaseRepositorySchemaDao extends check_in_1.Dao {
+class BaseRepositorySchemaDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositorySchema'], qSchema_1.Q);
+        super('RepositorySchema', qSchema_1.Q);
     }
 }
 exports.BaseRepositorySchemaDao = BaseRepositorySchemaDao;
-class BaseRepositoryTransactionHistoryDao extends check_in_1.Dao {
+class BaseRepositoryTransactionHistoryDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['RepositoryTransactionHistory'], qSchema_1.Q);
+        super('RepositoryTransactionHistory', qSchema_1.Q);
     }
 }
 exports.BaseRepositoryTransactionHistoryDao = BaseRepositoryTransactionHistoryDao;
-class BaseStageableDao extends check_in_1.Dao {
+class BaseStageableDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Stageable'], qSchema_1.Q);
+        super('Stageable', qSchema_1.Q);
     }
 }
 exports.BaseStageableDao = BaseStageableDao;
-class BaseTransactionHistoryDao extends check_in_1.Dao {
+class BaseTransactionHistoryDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['TransactionHistory'], qSchema_1.Q);
+        super('TransactionHistory', qSchema_1.Q);
     }
 }
 exports.BaseTransactionHistoryDao = BaseTransactionHistoryDao;

@@ -1,6 +1,13 @@
 import {
-	IDao, 
-	IUtils 
+	IDao,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+	IUtils,
+	QSchema as ACQSchema
 } from '@airport/air-control';
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
@@ -65,16 +72,44 @@ import {
 	QUserTerminalAgt
 } from './quserterminalagt';
 
+// Schema Q object Dependency Injection readiness detection DAO
+export class SQDIDao<Entity,
+	EntitySelect extends IEntitySelectProperties,
+	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateColumns extends IEntityUpdateColumns,
+	EntityUpdateProperties extends IEntityUpdateProperties,
+	EntityId extends IEntityIdProperties,
+	IQE extends IQEntity>
+	extends Dao<Entity,
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateColumns,
+		EntityUpdateProperties,
+		EntityId,
+		IQE> {
+
+	static diSet(): boolean {
+		return Q.db as any
+	}
+
+	constructor(
+		dbEntityName: string,
+		qSchema: ACQSchema
+	) {
+		super(dbEntityName, qSchema)
+	}
+}
+
 
 export interface IBaseAgtDao
   extends IDao<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, QAgt> {
 }
 
 export class BaseAgtDao
-  extends Dao<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, QAgt>
+  extends SQDIDao<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, QAgt>
 	implements IBaseAgtDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Agt'], Q)
+		super('Agt', Q)
 	}
 }
 
@@ -84,10 +119,10 @@ export interface IBaseTerminalDao
 }
 
 export class BaseTerminalDao
-  extends Dao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, QTerminal>
+  extends SQDIDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, QTerminal>
 	implements IBaseTerminalDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['Terminal'], Q)
+		super('Terminal', Q)
 	}
 }
 
@@ -97,10 +132,10 @@ export interface IBaseTerminalAgtDao
 }
 
 export class BaseTerminalAgtDao
-  extends Dao<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, QTerminalAgt>
+  extends SQDIDao<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, QTerminalAgt>
 	implements IBaseTerminalAgtDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['TerminalAgt'], Q)
+		super('TerminalAgt', Q)
 	}
 }
 
@@ -110,10 +145,10 @@ export interface IBaseUserDao
 }
 
 export class BaseUserDao
-  extends Dao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, QUser>
+  extends SQDIDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, QUser>
 	implements IBaseUserDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['User'], Q)
+		super('User', Q)
 	}
 }
 
@@ -123,10 +158,10 @@ export interface IBaseUserTerminalDao
 }
 
 export class BaseUserTerminalDao
-  extends Dao<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, QUserTerminal>
+  extends SQDIDao<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, QUserTerminal>
 	implements IBaseUserTerminalDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['UserTerminal'], Q)
+		super('UserTerminal', Q)
 	}
 }
 
@@ -136,9 +171,9 @@ export interface IBaseUserTerminalAgtDao
 }
 
 export class BaseUserTerminalAgtDao
-  extends Dao<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, QUserTerminalAgt>
+  extends SQDIDao<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, QUserTerminalAgt>
 	implements IBaseUserTerminalAgtDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['UserTerminalAgt'], Q)
+		super('UserTerminalAgt', Q)
 	}
 }

@@ -6,7 +6,6 @@ exports.HTTP_SHARING_NODE_ENDPOINT = di_1.diToken();
 exports.MISSING_RECORD_CREATOR = di_1.diToken();
 exports.STAGE1_SYNCED_IN_DATA_PROCESSOR = di_1.diToken();
 exports.STAGE2_SYNCED_IN_DATA_PROCESSOR = di_1.diToken();
-exports.STORE_DRIVER = di_1.diToken();
 exports.SYNC_IN_ACTOR_CHECKER = di_1.diToken();
 exports.SYNC_IN_CHECKER = di_1.diToken();
 exports.SYNC_IN_CONSISTENCY_CHECKER = di_1.diToken();

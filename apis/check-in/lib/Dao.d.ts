@@ -1,5 +1,4 @@
 import { IAirportDatabase, IDao, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUtils, QSchema, UpdateCacheType } from '@airport/air-control';
-import { DbEntity } from '@airport/ground-control';
 /**
  * Created by Papa on 8/26/2017.
  */
@@ -7,7 +6,7 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     protected db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>;
     protected utils: IUtils;
     protected airDb: IAirportDatabase;
-    constructor(dbEntity: DbEntity, Q: QSchema);
+    constructor(dbEntityName: string, Q: QSchema);
     readonly find: IEntityFind<Entity, Array<Entity>, EntitySelect>;
     readonly findOne: IEntityFindOne<Entity, EntitySelect>;
     readonly search: IEntitySearch<Entity, Array<Entity>, EntitySelect>;

@@ -15,15 +15,14 @@ class Container {
             this.doGet(tokens, true, resolve, reject);
         });
     }
-    onInit(callback) {
-        this.onInitCallback = callback;
-    }
     set(token, clazz) {
         this.classes[token] = clazz;
     }
     doGet(tokens, returnArray, successCallback, errorCallback) {
-        this.numPendingInits++;
-        if (tokens.every(token => this.classes[token])) {
+        if (tokens.every(token => {
+            const clazz = this.classes[token];
+            return clazz && (!clazz.diSet || clazz.diSet());
+        })) {
             this.getSync(tokens, returnArray, successCallback, errorCallback);
         }
         else {
@@ -34,8 +33,9 @@ class Container {
     }
     getSync(tokens, returnArray, successCallback, errorCallback) {
         let firstErrorClass;
+        let firstDiNotSetClass;
         const objects = tokens.map(token => {
-            if (firstErrorClass) {
+            if (firstErrorClass || firstDiNotSetClass) {
                 return;
             }
             let object = this.objects[token];
@@ -45,27 +45,32 @@ class Container {
                     firstErrorClass = clazz;
                     return;
                 }
-                object = new this.classes[token]();
+                if (clazz.diSet && !clazz.diSet()) {
+                    firstDiNotSetClass = clazz;
+                    return;
+                }
+                object = new clazz();
                 this.objects[token] = object;
             }
             return object;
         });
-        this.numPendingInits--;
         if (firstErrorClass) {
-            console.log('Dependency Injection (DI) could not find class: '
+            console.log('Dependency Injection could not find class: '
                 + firstErrorClass.name);
             errorCallback(firstErrorClass);
+        }
+        else if (firstDiNotSetClass) {
+            console.log('Dependency Injection is not ready for class: '
+                + firstDiNotSetClass.name + '. Delaying injection by 100ms');
+            setTimeout(() => {
+                this.getSync(tokens, returnArray, successCallback, errorCallback);
+            }, 100);
         }
         else {
             returnArray ?
                 successCallback(objects)
                 :
                     successCallback(...objects);
-            setTimeout(() => {
-                if (this.numPendingInits === 0) {
-                    this.onInitCallback();
-                }
-            });
         }
     }
 }

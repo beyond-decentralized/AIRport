@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../diTokens");
 class QueryManager {
     constructor() {
         di_1.DI.get((dataStore) => {
             this.dataStore = dataStore;
-        }, diTokens_1.STORE_DRIVER);
+        }, ground_control_1.STORE_DRIVER);
     }
     async find(portableQuery, cachedSqlQueryId) {
         return await this.dataStore.find(portableQuery, cachedSqlQueryId);

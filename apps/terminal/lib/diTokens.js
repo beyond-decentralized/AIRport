@@ -9,6 +9,5 @@ exports.OFFLINE_DELTA_STORE = di_1.diToken();
 exports.ONLINE_MANAGER = di_1.diToken();
 exports.QUERY_MANAGER = di_1.diToken();
 exports.REPOSITORY_MANAGER = di_1.diToken();
-exports.STORE_DRIVER = di_1.diToken();
 exports.UPDATE_MANAGER = di_1.diToken();
 //# sourceMappingURL=diTokens.js.map

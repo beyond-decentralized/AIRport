@@ -2,21 +2,31 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-class BaseSequenceDao extends check_in_1.Dao {
+// Schema Q object Dependency Injection readiness detection DAO
+class SQDIDao extends check_in_1.Dao {
+    constructor(dbEntityName, qSchema) {
+        super(dbEntityName, qSchema);
+    }
+    static diSet() {
+        return qSchema_1.Q.db;
+    }
+}
+exports.SQDIDao = SQDIDao;
+class BaseSequenceDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Sequence'], qSchema_1.Q);
+        super('Sequence', qSchema_1.Q);
     }
 }
 exports.BaseSequenceDao = BaseSequenceDao;
-class BaseSequenceBlockDao extends check_in_1.Dao {
+class BaseSequenceBlockDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SequenceBlock'], qSchema_1.Q);
+        super('SequenceBlock', qSchema_1.Q);
     }
 }
 exports.BaseSequenceBlockDao = BaseSequenceBlockDao;
-class BaseSequenceConsumerDao extends check_in_1.Dao {
+class BaseSequenceConsumerDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['SequenceConsumer'], qSchema_1.Q);
+        super('SequenceConsumer', qSchema_1.Q);
     }
 }
 exports.BaseSequenceConsumerDao = BaseSequenceConsumerDao;

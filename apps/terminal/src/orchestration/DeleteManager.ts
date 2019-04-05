@@ -20,7 +20,8 @@ import {
 	JsonEntityQuery,
 	PortableQuery,
 	QueryResultType,
-	SchemaIndex
+	SchemaIndex,
+	STORE_DRIVER
 }                           from '@airport/ground-control'
 import {
 	IActor,
@@ -46,8 +47,7 @@ import {
 	DELETE_MANAGER,
 	HISTORY_MANAGER,
 	OFFLINE_DELTA_STORE,
-	REPOSITORY_MANAGER,
-	STORE_DRIVER
+	REPOSITORY_MANAGER
 }                           from '../diTokens'
 import {IHistoryManager}    from './HistoryManager'
 

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
+const ground_control_1 = require("@airport/ground-control");
 const landing_1 = require("@airport/landing");
 const takeoff_1 = require("@airport/takeoff");
 const diTokens_1 = require("../diTokens");
@@ -50,7 +51,7 @@ class DatabaseManager {
         await fuel_hydrant_system_1.setStoreDriver(storeType);
         const [airDb] = await di_1.DI.getP(air_control_1.AIR_DB);
         this.airDb = airDb;
-        const [storeDriver] = await di_1.DI.getP(diTokens_1.STORE_DRIVER);
+        const [storeDriver] = await di_1.DI.getP(ground_control_1.STORE_DRIVER);
         if (await storeDriver.doesTableExist('AP__TERRITORY__APPLICATION_PACKAGES')) {
             await this.installAirportSchema();
         }

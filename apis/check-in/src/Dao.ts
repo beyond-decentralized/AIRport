@@ -19,7 +19,6 @@ import {
 	UTILS
 }                             from '@airport/air-control'
 import {DI}                   from '@airport/di'
-import {DbEntity}             from '@airport/ground-control'
 import {EntityDatabaseFacade} from './EntityDatabaseFacade'
 
 /**
@@ -42,7 +41,7 @@ export abstract class Dao<Entity,
 	protected airDb: IAirportDatabase
 
 	constructor(
-		dbEntity: DbEntity,
+		dbEntityName: string,
 		Q: QSchema
 	) {
 		DI.get(
@@ -50,9 +49,10 @@ export abstract class Dao<Entity,
 				airportDatabase,
 				utils
 			) => {
-				this.airDb = airportDatabase
-				this.utils = utils
-				this.db    = new EntityDatabaseFacade<Entity,
+				this.airDb     = airportDatabase
+				this.utils     = utils
+				const dbEntity = Q.db.currentVersion.entityMapByName[dbEntityName]
+				this.db        = new EntityDatabaseFacade<Entity,
 					EntitySelect, EntityCreate,
 					EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>(
 					dbEntity, Q, this.utils)

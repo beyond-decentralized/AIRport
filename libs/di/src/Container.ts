@@ -491,10 +491,6 @@ export interface IContainer {
 		...tokens: DiToken<any>[]
 	): Promise<any[]>
 
-	onInit(
-		callback: () => void
-	): void
-
 	set<I>(
 		token: DiToken<I>,
 		clazz: new() => I
@@ -507,7 +503,6 @@ export class Container
 
 	objects: any[]  = []
 	classes: any[]  = []
-	onInitCallback: () => void
 	numPendingInits = 0
 
 	get<A>(
@@ -990,12 +985,6 @@ export class Container
 		})
 	}
 
-	onInit(
-		callback: () => void
-	): void {
-		this.onInitCallback = callback
-	}
-
 	set<I>(
 		token: DiToken<I>,
 		clazz: new() => I
@@ -1009,10 +998,13 @@ export class Container
 		successCallback,
 		errorCallback,
 	): void {
-		this.numPendingInits++
 
 		if (tokens.every(
-			token => this.classes[token as any])) {
+			token => {
+				const clazz = this.classes[token as any]
+				return clazz && (!clazz.diSet || clazz.diSet())
+			}
+		)) {
 			this.getSync(tokens, returnArray, successCallback, errorCallback)
 		} else {
 			setTimeout(() => {
@@ -1029,9 +1021,10 @@ export class Container
 		errorCallback,
 	) {
 		let firstErrorClass
+		let firstDiNotSetClass
 		const objects = tokens.map(
 			token => {
-				if (firstErrorClass) {
+				if (firstErrorClass || firstDiNotSetClass) {
 					return
 				}
 				let object = this.objects[token as any]
@@ -1041,28 +1034,36 @@ export class Container
 						firstErrorClass = clazz
 						return
 					}
-					object                     = new this.classes[token as any]()
+					if (clazz.diSet && !clazz.diSet()) {
+						firstDiNotSetClass = clazz
+						return
+					}
+					object                     = new clazz()
 					this.objects[token as any] = object
 				}
 
 				return object
 			})
-		this.numPendingInits--
 		if (firstErrorClass) {
-			console.log('Dependency Injection (DI) could not find class: '
+			console.log('Dependency Injection could not find class: '
 				+ firstErrorClass.name)
 			errorCallback(firstErrorClass)
+		} else if (firstDiNotSetClass) {
+			console.log('Dependency Injection is not ready for class: '
+				+ firstDiNotSetClass.name + '. Delaying injection by 100ms')
+			setTimeout(() => {
+				this.getSync(
+					tokens,
+					returnArray,
+					successCallback,
+					errorCallback,
+				)
+			}, 100)
 		} else {
 			returnArray ?
 				successCallback(objects)
 				:
 				successCallback(...objects)
-
-			setTimeout(() => {
-				if (this.numPendingInits === 0) {
-					this.onInitCallback()
-				}
-			})
 		}
 	}
 

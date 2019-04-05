@@ -20,7 +20,7 @@ class DeleteManager {
             this.transHistoryDmo = transactionHistoryDmo;
             this.transManager = transactionManager;
             this.utils = utils;
-        }, air_control_1.AIR_DB, diTokens_1.STORE_DRIVER, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DMO, holding_pattern_1.REC_HISTORY_DMO, diTokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DMO, holding_pattern_1.TRANS_HISTORY_DMO, terminal_map_1.TRANSACTION_MANAGER, air_control_1.UTILS);
+        }, air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DMO, holding_pattern_1.REC_HISTORY_DMO, diTokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DMO, holding_pattern_1.TRANS_HISTORY_DMO, terminal_map_1.TRANSACTION_MANAGER, air_control_1.UTILS);
     }
     async deleteWhere(portableQuery, actor) {
         const dbEntity = this.airDb

@@ -1,4 +1,3 @@
-import { IStoreDriver } from '@airport/ground-control';
 import { IRepositoryManager } from './core/repository/RepositoryManager';
 import { IOfflineDeltaStore } from './data/OfflineDeltaStore';
 import { IOnlineManager } from './net/OnlineManager';
@@ -16,5 +15,4 @@ export declare const OFFLINE_DELTA_STORE: import("@airport/di").DiToken<IOffline
 export declare const ONLINE_MANAGER: import("@airport/di").DiToken<IOnlineManager>;
 export declare const QUERY_MANAGER: import("@airport/di").DiToken<IQueryManager>;
 export declare const REPOSITORY_MANAGER: import("@airport/di").DiToken<IRepositoryManager>;
-export declare const STORE_DRIVER: import("@airport/di").DiToken<IStoreDriver>;
 export declare const UPDATE_MANAGER: import("@airport/di").DiToken<IUpdateManager>;

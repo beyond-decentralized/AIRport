@@ -1,4 +1,3 @@
-import { IStoreDriver } from '@airport/ground-control';
 import { ISharingNodeEndpoint } from './synchronization/connect/SharingNodeEndpoint';
 import { ISyncInActorChecker } from './synchronization/in/checker/SyncInActorChecker';
 import { ISyncInChecker } from './synchronization/in/checker/SyncInChecker';
@@ -28,7 +27,6 @@ export declare const HTTP_SHARING_NODE_ENDPOINT: import("@airport/di").DiToken<I
 export declare const MISSING_RECORD_CREATOR: import("@airport/di").DiToken<IMissingRecordCreator>;
 export declare const STAGE1_SYNCED_IN_DATA_PROCESSOR: import("@airport/di").DiToken<IStage1SyncedInDataProcessor>;
 export declare const STAGE2_SYNCED_IN_DATA_PROCESSOR: import("@airport/di").DiToken<IStage2SyncedInDataProcessor>;
-export declare const STORE_DRIVER: import("@airport/di").DiToken<IStoreDriver>;
 export declare const SYNC_IN_ACTOR_CHECKER: import("@airport/di").DiToken<ISyncInActorChecker>;
 export declare const SYNC_IN_CHECKER: import("@airport/di").DiToken<ISyncInChecker>;
 export declare const SYNC_IN_CONSISTENCY_CHECKER: import("@airport/di").DiToken<ISyncInConsistencyChecker>;

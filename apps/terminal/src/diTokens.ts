@@ -18,6 +18,5 @@ export const OFFLINE_DELTA_STORE = diToken<IOfflineDeltaStore>()
 export const ONLINE_MANAGER      = diToken<IOnlineManager>()
 export const QUERY_MANAGER       = diToken<IQueryManager>()
 export const REPOSITORY_MANAGER  = diToken<IRepositoryManager>()
-export const STORE_DRIVER        = diToken<IStoreDriver>()
 export const UPDATE_MANAGER      = diToken<IUpdateManager>()
 

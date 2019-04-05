@@ -2,33 +2,43 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-class BaseApplicationDao extends check_in_1.Dao {
+// Schema Q object Dependency Injection readiness detection DAO
+class SQDIDao extends check_in_1.Dao {
+    constructor(dbEntityName, qSchema) {
+        super(dbEntityName, qSchema);
+    }
+    static diSet() {
+        return qSchema_1.Q.db;
+    }
+}
+exports.SQDIDao = SQDIDao;
+class BaseApplicationDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Application'], qSchema_1.Q);
+        super('Application', qSchema_1.Q);
     }
 }
 exports.BaseApplicationDao = BaseApplicationDao;
-class BaseApplicationPackageDao extends check_in_1.Dao {
+class BaseApplicationPackageDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['ApplicationPackage'], qSchema_1.Q);
+        super('ApplicationPackage', qSchema_1.Q);
     }
 }
 exports.BaseApplicationPackageDao = BaseApplicationPackageDao;
-class BaseDomainDao extends check_in_1.Dao {
+class BaseDomainDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Domain'], qSchema_1.Q);
+        super('Domain', qSchema_1.Q);
     }
 }
 exports.BaseDomainDao = BaseDomainDao;
-class BasePackageDao extends check_in_1.Dao {
+class BasePackageDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['Package'], qSchema_1.Q);
+        super('Package', qSchema_1.Q);
     }
 }
 exports.BasePackageDao = BasePackageDao;
-class BasePackagedUnitDao extends check_in_1.Dao {
+class BasePackagedUnitDao extends SQDIDao {
     constructor() {
-        super(qSchema_1.Q.db.currentVersion.entityMapByName['PackagedUnit'], qSchema_1.Q);
+        super('PackagedUnit', qSchema_1.Q);
     }
 }
 exports.BasePackagedUnitDao = BasePackagedUnitDao;

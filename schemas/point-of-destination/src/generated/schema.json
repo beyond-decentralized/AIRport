@@ -1,4 +1,4 @@
-export const SCHEMA = {
+{
 	"domain": "github.com",
 	"index": null,
 	"name": "@airport/point-of-destination",
@@ -166,4 +166,4 @@ export const SCHEMA = {
 			"versionString": "1.0.0"
 		}
 	]
-};
+}

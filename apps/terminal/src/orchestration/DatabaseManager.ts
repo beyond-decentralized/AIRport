@@ -4,13 +4,11 @@ import {
 }                                 from '@airport/air-control'
 import {DI}                       from '@airport/di'
 import {setStoreDriver}           from '@airport/fuel-hydrant-system'
-import {StoreType}                from '@airport/terminal-map'
+import {STORE_DRIVER}             from '@airport/ground-control'
 import {SCHEMA_INITIALIZER}       from '@airport/landing'
 import {QUERY_OBJECT_INITIALIZER} from '@airport/takeoff'
-import {
-	DATABASE_MANAGER,
-	STORE_DRIVER
-}                                 from '../diTokens'
+import {StoreType}                from '@airport/terminal-map'
+import {DATABASE_MANAGER}         from '../diTokens'
 
 export interface IDatabaseManager {
 	/*

@@ -1,6 +1,13 @@
 import {
-	IDao, 
-	IUtils 
+	IDao,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+	IUtils,
+	QSchema as ACQSchema
 } from '@airport/air-control';
 import { Dao } from '@airport/check-in';
 import { Q } from './qSchema';
@@ -55,16 +62,44 @@ import {
 	QLoggedErrorStackTrace
 } from './qloggederrorstacktrace';
 
+// Schema Q object Dependency Injection readiness detection DAO
+export class SQDIDao<Entity,
+	EntitySelect extends IEntitySelectProperties,
+	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateColumns extends IEntityUpdateColumns,
+	EntityUpdateProperties extends IEntityUpdateProperties,
+	EntityId extends IEntityIdProperties,
+	IQE extends IQEntity>
+	extends Dao<Entity,
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateColumns,
+		EntityUpdateProperties,
+		EntityId,
+		IQE> {
+
+	static diSet(): boolean {
+		return Q.db as any
+	}
+
+	constructor(
+		dbEntityName: string,
+		qSchema: ACQSchema
+	) {
+		super(dbEntityName, qSchema)
+	}
+}
+
 
 export interface IBaseLogEntryDao
   extends IDao<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateColumns, LogEntryEUpdateProperties, LogEntryEId, QLogEntry> {
 }
 
 export class BaseLogEntryDao
-  extends Dao<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateColumns, LogEntryEUpdateProperties, LogEntryEId, QLogEntry>
+  extends SQDIDao<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateColumns, LogEntryEUpdateProperties, LogEntryEId, QLogEntry>
 	implements IBaseLogEntryDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['LogEntry'], Q)
+		super('LogEntry', Q)
 	}
 }
 
@@ -74,10 +109,10 @@ export interface IBaseLogEntryTypeDao
 }
 
 export class BaseLogEntryTypeDao
-  extends Dao<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateColumns, LogEntryTypeEUpdateProperties, LogEntryTypeEId, QLogEntryType>
+  extends SQDIDao<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateColumns, LogEntryTypeEUpdateProperties, LogEntryTypeEId, QLogEntryType>
 	implements IBaseLogEntryTypeDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['LogEntryType'], Q)
+		super('LogEntryType', Q)
 	}
 }
 
@@ -87,10 +122,10 @@ export interface IBaseLogEntryValueDao
 }
 
 export class BaseLogEntryValueDao
-  extends Dao<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateColumns, LogEntryValueEUpdateProperties, LogEntryValueEId, QLogEntryValue>
+  extends SQDIDao<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateColumns, LogEntryValueEUpdateProperties, LogEntryValueEId, QLogEntryValue>
 	implements IBaseLogEntryValueDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['LogEntryValue'], Q)
+		super('LogEntryValue', Q)
 	}
 }
 
@@ -100,10 +135,10 @@ export interface IBaseLoggedErrorDao
 }
 
 export class BaseLoggedErrorDao
-  extends Dao<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateColumns, LoggedErrorEUpdateProperties, LoggedErrorEId, QLoggedError>
+  extends SQDIDao<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateColumns, LoggedErrorEUpdateProperties, LoggedErrorEId, QLoggedError>
 	implements IBaseLoggedErrorDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['LoggedError'], Q)
+		super('LoggedError', Q)
 	}
 }
 
@@ -113,9 +148,9 @@ export interface IBaseLoggedErrorStackTraceDao
 }
 
 export class BaseLoggedErrorStackTraceDao
-  extends Dao<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateColumns, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, QLoggedErrorStackTrace>
+  extends SQDIDao<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateColumns, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, QLoggedErrorStackTrace>
 	implements IBaseLoggedErrorStackTraceDao {
 	constructor() {
-		super(Q.db.currentVersion.entityMapByName['LoggedErrorStackTrace'], Q)
+		super('LoggedErrorStackTrace', Q)
 	}
 }

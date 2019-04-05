@@ -18,17 +18,14 @@ export class QMetadataUtils
 	implements IQMetadataUtils {
 
 	private airportDb: IAirportDatabase
-	private utils: IUtils
 
 	constructor() {
 		DI.get(
 			(
-				airportDb,
-				utils
+				airportDb
 			) => {
 				this.airportDb = airportDb
-				this.utils     = utils
-			}, AIR_DB, UTILS)
+			}, AIR_DB)
 	}
 
 	getAllColumns(
