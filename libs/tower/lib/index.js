@@ -5,9 +5,9 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./core/data/UpdateCache"));
 __export(require("./AirportDatabase"));
-__export(require("./decorators"));
-__export(require("./EntityManager"));
 __export(require("./diTokens"));
+__export(require("./EntityManager"));
+__export(require("./transactional"));
 __export(require("./OperationManager"));
 __export(require("./QueryFacade"));
 //# sourceMappingURL=index.js.map

@@ -1,6 +1,6 @@
-import { IObservable } from "@airport/observe";
-import { PortableQuery } from "../query/PortableQuery";
-import { StoreType } from "./storeInfo";
+import {IObservable}   from '@airport/observe'
+import {PortableQuery} from '../query/PortableQuery'
+import {StoreType}     from './storeInfo'
 
 /**
  * Created by Papa on 6/10/2016.
@@ -16,7 +16,7 @@ export interface ATransactionHistory {
 
 }
 
-export const INVALID_TABLE_NAME = 'A0ZA2vKHIAeI9506rYzCSFKYcSbSuLy5sRieHPnd2NevufFEx9CxuZsAdXieZBbRj5mPYypr3TGYwb6limMcTTWHOnsk7F6991890';
+export const INVALID_TABLE_NAME = 'A0ZA2vKHIAeI9506rYzCSFKYcSbSuLy5sRieHPnd2NevufFEx9CxuZsAdXieZBbRj5mPYypr3TGYwb6limMcTTWHOnsk7F6991890'
 
 export interface IStoreDriver {
 
@@ -25,6 +25,10 @@ export interface IStoreDriver {
 	deleteWhere(
 		portableQuery: PortableQuery,
 	): Promise<number>;
+
+	doesTableExist(
+		tableName: string
+	): Promise<boolean>
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
@@ -75,10 +79,12 @@ export interface IStoreDriver {
 		portableQuery: PortableQuery,
 	): Promise<number>;
 
-	startTransaction(): Promise<void>;
+	transact(
+		keepAlive?: boolean
+	): Promise<void>;
 
-	commitTransaction(): Promise<void>;
+	commit(): Promise<void>;
 
-	rollbackTransaction(): Promise<void>;
+	rollback(): Promise<void>;
 
 }

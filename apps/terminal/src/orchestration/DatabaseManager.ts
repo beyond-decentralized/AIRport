@@ -1,30 +1,33 @@
 import {
 	AIR_DB,
-	dbConst,
 	IAirportDatabase,
-}                         from '@airport/air-control'
-import {DI}               from '@airport/di'
-import {StoreType}        from '@airport/terminal-map'
-import {DATABASE_MANAGER} from '../diTokens'
+}                                 from '@airport/air-control'
+import {DI}                       from '@airport/di'
+import {setStoreDriver}           from '@airport/fuel-hydrant-system'
+import {StoreType}                from '@airport/terminal-map'
+import {SCHEMA_INITIALIZER}       from '@airport/landing'
+import {QUERY_OBJECT_INITIALIZER} from '@airport/takeoff'
+import {
+	DATABASE_MANAGER,
+	STORE_DRIVER
+}                                 from '../diTokens'
 
 export interface IDatabaseManager {
+	/*
+		ensureInitialized(
+			terminalName: string,
+			timeout: number
+		): Promise<void>;
 
-	ensureInitialized(
-		terminalName: string,
-		timeout: number
-	): Promise<void>;
+		initializeAll(
+			defaultStoreType: StoreType
+		): Promise<void>;
+	*/
 
-	initializeAll(
-		defaultStoreType: StoreType
-	): Promise<void>;
-
-	isInitialized(
-		terminalName: string
-	): boolean;
+	isInitialized(): boolean;
 
 	init(
-		storeType: StoreType,
-		terminalName: string
+		storeType: StoreType
 	): Promise<void>;
 
 }
@@ -35,80 +38,89 @@ export class DatabaseManager
 	private airDb: IAirportDatabase
 
 	constructor() {
-		DI.get((
-			airportDatabase
-		) => {
-			this.airDb = airportDatabase
-		}, AIR_DB)
 	}
 
-	async ensureInitialized(
-		terminalName: string = dbConst.DEFAULT_DB,
-		timeout: number      = 5000
-	): Promise<void> {
-		return new Promise((
-			resolve,
-			reject
-		) => {
-			this.doEnsureInitialized(terminalName, resolve, reject, timeout)
-		})
-	}
+	/*
+		async ensureInitialized(
+			terminalName: string = dbConst.DEFAULT_DB,
+			timeout: number      = 5000
+		): Promise<void> {
+			return new Promise((
+				resolve,
+				reject
+			) => {
+				this.doEnsureInitialized(terminalName, resolve, reject, timeout)
+			})
+		}
 
 
-	async initializeAll(
-		defaultStoreType: StoreType
-	): Promise<void> {
-		throw `Implement!`
-		/*		const db = TQ.db(dbConst.DEFAULT_DB);
-				if (!TQ.isInitialized(dbConst.DEFAULT_DB)) {
-					await TQ.addDataStore(defaultStoreType, dbConst.DEFAULT_DB);
-					await db.entityManager.goOnline();
-				}
-
-				const dataStores = await db.dao.dataStore.findAsGraph();
-				for (let dataStore of dataStores) {
-					if (!TQ.isInitialized(dataStore.name)) {
-						await TQ.init(dataStore.storeType, dataStore.name);
-						await TQ.db(dataStore.name).entityManager.goOnline();
+		async initializeAll(
+			defaultStoreType: StoreType
+		): Promise<void> {
+			AIR_DB
+			throw `Implement!`
+					const db = TQ.db(dbConst.DEFAULT_DB);
+					if (!TQ.isInitialized(dbConst.DEFAULT_DB)) {
+						await TQ.addDataStore(defaultStoreType, dbConst.DEFAULT_DB);
+						await db.entityManager.goOnline();
 					}
-				}*/
-	}
 
-	isInitialized(
-		terminalName: string
-	): boolean {
-		throw `Implement!`
-		/*		let terminal = this.databaseMap[terminalName];
-				if (!terminal) {
-					return false;
-				}
-				return !!terminal.entityManager;*/
+					const dataStores = await db.dao.dataStore.findAsGraph();
+					for (let dataStore of dataStores) {
+						if (!TQ.isInitialized(dataStore.name)) {
+							await TQ.init(dataStore.storeType, dataStore.name);
+							await TQ.db(dataStore.name).entityManager.goOnline();
+						}
+					}
+	}
+*/
+	isInitialized(): boolean {
+		return !!this.airDb
 	}
 
 	async init(
-		storeType: StoreType,
-		terminalName: string
+		storeType: StoreType
 	): Promise<void> {
-		throw `Implement!`
-		/*		let dbFacade: IDatabaseFacadeInternal = this.databaseMap[terminalName];
+		await setStoreDriver(storeType)
+		const [airDb] = await DI.getP(AIR_DB)
+		this.airDb    = airDb
+
+		const [storeDriver] = await DI.getP(STORE_DRIVER)
+
+		if (await storeDriver.doesTableExist('AP__TERRITORY__APPLICATION_PACKAGES')) {
+			await this.installAirportSchema()
+		} else {
+			const [queryObjectInitializer] = await DI.getP(QUERY_OBJECT_INITIALIZER)
+			await queryObjectInitializer.initialize()
+		}
+		/*
+				throw `Implement!`
+				let dbFacade: IDatabaseFacade = this.databaseMap[terminalName]
 				if (!dbFacade) {
-					dbFacade = new DatabaseFacade(terminalName);
-					this.databaseMap[terminalName] = dbFacade;
-					this.dbNames.push(terminalName);
-					this.dbNameSet[terminalName] = true;
+					dbFacade                       = new DatabaseFacade(terminalName)
+					this.databaseMap[terminalName] = dbFacade
+					this.dbNames.push(terminalName)
+					this.dbNameSet[terminalName] = true
 				}
 				if (this.isInitialized(terminalName)) {
-					throw `Database '${terminalName}' is already initialized`;
+					throw `Database '${terminalName}' is already initialized`
 				}
 				this.allDbsEntityData.forEach(
 					entityData => {
-						let entityName = MetadataStore.getEntityName(entityData.entityConstructor);
+						let entityName = MetadataStore.getEntityName(entityData.entityConstructor)
 						if (!dbFacade.qEntityMap[entityName]) {
-							let qEntity = new entityData.qEntityConstructor(entityData.qEntityConstructor, entityData.entityConstructor, entityName);
-							dbFacade.qEntityMap[entityName] = qEntity;
+							let qEntity                     = new entityData.qEntityConstructor(entityData.qEntityConstructor, entityData.entityConstructor, entityName)
+							dbFacade.qEntityMap[entityName] = qEntity
 						}
-					});
-				await dbFacade.init(storeType);*/
+					})
+				await dbFacade.init(storeType)
+				*/
+	}
+
+	private async installAirportSchema() {
+		const blueprintFile       = await import('@airport/blueprint')
+		const [schemaInitializer] = await DI.getP(SCHEMA_INITIALIZER)
+		await schemaInitializer.initialize(blueprintFile.BLUEPRINT as any)
 	}
 
 	/*
@@ -125,7 +137,6 @@ export class DatabaseManager
 		});
 		await TQ.init(storeType, terminalName);
 	}
-	*/
 
 	private doEnsureInitialized(
 		terminalName: string,
@@ -144,6 +155,7 @@ export class DatabaseManager
 			this.doEnsureInitialized(terminalName, resolve, reject, remainingTimeout)
 		}, 100)
 	}
+	*/
 }
 
 DI.set(DATABASE_MANAGER, DatabaseManager)

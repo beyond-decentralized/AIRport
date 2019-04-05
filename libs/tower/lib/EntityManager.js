@@ -1,18 +1,12 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
-const decorators_1 = require("./decorators");
 const diTokens_1 = require("./diTokens");
 const OperationManager_1 = require("./OperationManager");
+const transactional_1 = require("./transactional");
 /**
  * Created by Papa on 5/23/2016.
  */
@@ -38,10 +32,10 @@ class EntityManager extends OperationManager_1.OperationManager {
         return await this.transactionClient.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
     async create(dbEntity, entity) {
-        return await this.performCreate(dbEntity, entity, []);
+        return await transactional_1.transactional(async () => await this.performCreate(dbEntity, entity, []));
     }
     async bulkCreate(dbEntity, entities, checkIfProcessed = true, cascade = false) {
-        return await this.performBulkCreate(dbEntity, entities, [], checkIfProcessed, cascade);
+        return await transactional_1.transactional(async () => await this.performBulkCreate(dbEntity, entities, [], checkIfProcessed, cascade));
     }
     async insertColumnValues(dbEntity, rawInsertColumnValues) {
         if (rawInsertColumnValues instanceof Function) {
@@ -54,8 +48,7 @@ class EntityManager extends OperationManager_1.OperationManager {
         if (rawInsertValues instanceof Function) {
             rawInsertValues = rawInsertValues();
         }
-        let numInsertedRows = await this.internalInsertValues(dbEntity, rawInsertValues);
-        return numInsertedRows;
+        return await transactional_1.transactional(async () => await this.internalInsertValues(dbEntity, rawInsertValues));
     }
     async insertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues) {
         if (rawInsertColumnValues instanceof Function) {
@@ -68,18 +61,17 @@ class EntityManager extends OperationManager_1.OperationManager {
         if (rawInsertValues instanceof Function) {
             rawInsertValues = rawInsertValues();
         }
-        let ids = await this.internalInsertValuesGetIds(dbEntity, rawInsertValues);
-        return ids;
+        return await transactional_1.transactional(async () => await this.internalInsertValuesGetIds(dbEntity, rawInsertValues));
     }
     async delete(dbEntity, entity) {
-        return await this.performDelete(dbEntity, entity);
+        return await transactional_1.transactional(async () => await this.performDelete(dbEntity, entity));
     }
     async deleteWhere(dbEntity, rawDelete) {
         if (rawDelete instanceof Function) {
             rawDelete = rawDelete();
         }
         let deleteWhere = new air_control_1.Delete(rawDelete, this.utils);
-        return await this.internalDeleteWhere(dbEntity, deleteWhere);
+        return await transactional_1.transactional(async () => await this.internalDeleteWhere(dbEntity, deleteWhere));
     }
     async save(dbEntity, entity) {
         if (!dbEntity.idColumns.length) {
@@ -92,21 +84,23 @@ class EntityManager extends OperationManager_1.OperationManager {
             const [propertyNameChains, idValue] = this.utils.Schema.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entity);
             this.utils.Schema.isIdEmpty(idValue) ? emptyIdCount++ : nonEmptyIdCount++;
         }
-        if (emptyIdCount && nonEmptyIdCount) {
-            throw `Cannot call save(entity) for instance of '${dbEntity.name}' which has
+        return await transactional_1.transactional(async () => {
+            if (emptyIdCount && nonEmptyIdCount) {
+                throw `Cannot call save(entity) for instance of '${dbEntity.name}' which has
 			${nonEmptyIdCount} @Id values specified and ${emptyIdCount} @Id values not specified.
 			Please make sure that the entity instance either has all @Id values specified (to be
 			updated) or non of @Id values specified (to be created).`;
-        }
-        else if (emptyIdCount) {
-            return await this.create(dbEntity, entity);
-        }
-        else {
-            return await this.update(dbEntity, entity);
-        }
+            }
+            else if (emptyIdCount) {
+                return await this.create(dbEntity, entity);
+            }
+            else {
+                return await this.update(dbEntity, entity);
+            }
+        });
     }
     async update(dbEntity, entity) {
-        return await this.performUpdate(dbEntity, entity, []);
+        return await transactional_1.transactional(async () => await this.performUpdate(dbEntity, entity, []));
     }
     /**
      * Updates an entity with a where clause, using a column based set clause
@@ -126,7 +120,7 @@ class EntityManager extends OperationManager_1.OperationManager {
             rawUpdate = rawUpdate();
         }
         let update = new air_control_1.UpdateProperties(rawUpdate, this.utils);
-        return await this.internalUpdateWhere(dbEntity, update);
+        return await transactional_1.transactional(async () => await this.internalUpdateWhere(dbEntity, update));
     }
     ensureId(entity) {
         throw `Not Implemented`;
@@ -153,33 +147,6 @@ class EntityManager extends OperationManager_1.OperationManager {
         return new FunctionWrapper(queryFunction);
     }
 }
-__decorate([
-    decorators_1.Transactional()
-], EntityManager.prototype, "create", null);
-__decorate([
-    decorators_1.Transactional()
-], EntityManager.prototype, "bulkCreate", null);
-__decorate([
-    decorators_1.Transactional()
-], EntityManager.prototype, "insertValues", null);
-__decorate([
-    decorators_1.Transactional()
-], EntityManager.prototype, "insertValuesGenerateIds", null);
-__decorate([
-    decorators_1.Transactional()
-], EntityManager.prototype, "delete", null);
-__decorate([
-    decorators_1.Transactional()
-], EntityManager.prototype, "deleteWhere", null);
-__decorate([
-    decorators_1.Transactional()
-], EntityManager.prototype, "save", null);
-__decorate([
-    decorators_1.Transactional()
-], EntityManager.prototype, "update", null);
-__decorate([
-    decorators_1.Transactional()
-], EntityManager.prototype, "updateWhere", null);
 exports.EntityManager = EntityManager;
 di_1.DI.set(diTokens_1.ENTITY_MANAGER, EntityManager);
 class FunctionWrapper {

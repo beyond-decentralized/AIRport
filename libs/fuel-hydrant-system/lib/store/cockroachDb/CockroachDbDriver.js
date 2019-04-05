@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const SQLQuery_1 = require("../../sql/core/SQLQuery");
 const SqLiteDriver_1 = require("../sqLite/SqLiteDriver");
@@ -49,7 +48,7 @@ class CockroachdbDriver extends SqLiteDriver_1.SqLiteDriver {
         }
         return await this.initAllTables();
     }
-    async startTransaction() {
+    async transact() {
         return new Promise((resolve, reject) => {
             let failed = false;
             try {
@@ -82,12 +81,12 @@ class CockroachdbDriver extends SqLiteDriver_1.SqLiteDriver {
             }
         });
     }
-    async rollbackTransaction() {
+    async rollback() {
         if (this.currentTransaction) {
             this.currentTransaction.executeSql('SELECT count(*) FROM ' + ground_control_1.INVALID_TABLE_NAME, []);
         }
     }
-    async commitTransaction() {
+    async commit() {
         this.currentTransaction = null;
     }
     keepTransactionAlive(tx) {
@@ -234,5 +233,4 @@ function runSqlSeries(tx, sqls, parameterss, fnum, callback) {
     }
     tx.executeSql(sqls[sqlIndex], parameters, successFn, errorFn);
 }
-di_1.DI.set(ground_control_1.STORE_DRIVER, CockroachdbDriver);
 //# sourceMappingURL=CockroachDbDriver.js.map

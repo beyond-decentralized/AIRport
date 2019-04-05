@@ -1,6 +1,6 @@
-import { IObservable } from "@airport/observe";
-import { PortableQuery } from "../query/PortableQuery";
-import { StoreType } from "./storeInfo";
+import { IObservable } from '@airport/observe';
+import { PortableQuery } from '../query/PortableQuery';
+import { StoreType } from './storeInfo';
 /**
  * Created by Papa on 6/10/2016.
  */
@@ -15,6 +15,7 @@ export declare const INVALID_TABLE_NAME = "A0ZA2vKHIAeI9506rYzCSFKYcSbSuLy5sRieH
 export interface IStoreDriver {
     type: StoreType;
     deleteWhere(portableQuery: PortableQuery): Promise<number>;
+    doesTableExist(tableName: string): Promise<boolean>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<E>;
     findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
@@ -25,7 +26,7 @@ export interface IStoreDriver {
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<E>;
     updateWhere(portableQuery: PortableQuery): Promise<number>;
-    startTransaction(): Promise<void>;
-    commitTransaction(): Promise<void>;
-    rollbackTransaction(): Promise<void>;
+    transact(keepAlive?: boolean): Promise<void>;
+    commit(): Promise<void>;
+    rollback(): Promise<void>;
 }

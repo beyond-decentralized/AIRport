@@ -14,9 +14,9 @@ export declare class CockroachdbDriver extends SqLiteDriver {
     protected getDialect(): SQLDialect;
     private getBackupLocation;
     initialize(dbName: string): Promise<any>;
-    startTransaction(): Promise<any>;
-    rollbackTransaction(): Promise<void>;
-    commitTransaction(): Promise<void>;
+    transact(): Promise<any>;
+    rollback(): Promise<void>;
+    commit(): Promise<void>;
     keepTransactionAlive(tx: any): void;
     havePendingStatements(): boolean;
     executePendingStatements(tx: any): void;

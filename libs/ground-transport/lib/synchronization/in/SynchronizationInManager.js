@@ -1,10 +1,4 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
 const di_1 = require("@airport/di");
@@ -116,11 +110,13 @@ class SynchronizationInManager {
                 }
             }
         }
-        await this.sharingMessageDao.bulkCreate(sharingMessages, false, false);
-        // These messages are responses to already sent messages
-        // no need to check for existence of repositories
-        await this.syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages);
-        await this.twoStageSyncedInDataProcessor.syncDataMessages(allDataMessages);
+        await tower_1.transactional(async () => {
+            await this.sharingMessageDao.bulkCreate(sharingMessages, false, false);
+            // These messages are responses to already sent messages
+            // no need to check for existence of repositories
+            await this.syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages);
+            await this.twoStageSyncedInDataProcessor.syncDataMessages(allDataMessages);
+        });
     }
     isValidLastChangeTime(syncTimestamp, lastChangeTimeMillis) {
         const receptionTimeMillis = syncTimestamp.getTime();
@@ -179,9 +175,6 @@ class SynchronizationInManager {
         return lastChangeTimeMillis;
     }
 }
-__decorate([
-    tower_1.Transactional()
-], SynchronizationInManager.prototype, "receiveMessages", null);
 exports.SynchronizationInManager = SynchronizationInManager;
 di_1.DI.set(diTokens_1.SYNC_IN_MANAGER, SynchronizationInManager);
 //# sourceMappingURL=SynchronizationInManager.js.map

@@ -1,10 +1,4 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
 const tower_1 = require("@airport/tower");
@@ -14,6 +8,9 @@ const DDLManager_1 = require("./DDLManager");
  * Created by Papa on 11/27/2016.
  */
 class PostgreSqlDriver extends SqlDriver_1.SqlDriver {
+    async doesTableExist(tableName) {
+        throw `Not implemented`;
+    }
     async findNative(sqlQuery, parameters) {
         let nativeParameters = parameters.map((value) => this.convertValueIn(value));
         return await this.query(ground_control_1.QueryType.SELECT, sqlQuery, nativeParameters);
@@ -48,11 +45,13 @@ class PostgreSqlDriver extends SqlDriver_1.SqlDriver {
         let createOperations;
         let createQueries = [];
         let createSql = DDLManager_1.DDLManager.getCreateDDL();
-        for (const createSqlStatement of createSql) {
-            const createTablePromise = this.query(ground_control_1.QueryType.DDL, createSqlStatement, [], false);
-            createQueries.push(createTablePromise);
-        }
-        await this.initTables(createQueries);
+        await tower_1.transactional(async () => {
+            for (const createSqlStatement of createSql) {
+                const createTablePromise = this.query(ground_control_1.QueryType.DDL, createSqlStatement, [], false);
+                createQueries.push(createTablePromise);
+            }
+            await this.initTables(createQueries);
+        });
     }
     async initTables(createQueries) {
         for (let i = 0; i < createQueries.length; i++) {
@@ -61,8 +60,5 @@ class PostgreSqlDriver extends SqlDriver_1.SqlDriver {
         }
     }
 }
-__decorate([
-    tower_1.Transactional()
-], PostgreSqlDriver.prototype, "initAllTables", null);
 exports.PostgreSqlDriver = PostgreSqlDriver;
 //# sourceMappingURL=PostgreSqlDriver.js.map

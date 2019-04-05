@@ -6,7 +6,6 @@ export declare class JsonSchemaBuilder {
     private config;
     private entityMapByName;
     existingSchema: JsonSchema;
-    schemaVarName: string;
     constructor(config: Configuration, entityMapByName: {
         [entityName: string]: EntityCandidate;
     }, existingSchemaString: string);

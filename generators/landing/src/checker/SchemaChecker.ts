@@ -51,7 +51,8 @@ export interface ISchemaChecker {
 
 }
 
-export class SchemaChecker {
+export class SchemaChecker
+	implements ISchemaChecker {
 
 	private schemaDao: ISchemaDao
 	private dbSchemaUtils: IDbSchemaUtils

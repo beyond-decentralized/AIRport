@@ -18,7 +18,7 @@ import {
 	IRepository,
 	IRepositoryDao,
 	IRepositoryTransactionHistory,
-	QAbstractRepositoryEntity,
+	QRepositoryEntity,
 	REPOSITORY_DAO
 }                           from '@airport/holding-pattern'
 import {
@@ -215,13 +215,21 @@ export class RepositoryManager
 	}
 
 	private addDeltaStore(repository: IRepository): IDeltaStore {
-		let sharingAdaptor                             = getSharingAdaptor(repository.platform)
+		// TODO: revisit configuration (instead of hard-coding
+		// let sharingAdaptor                             = getSharingAdaptor(repository.platform)
+		let sharingAdaptor                             = getSharingAdaptor(PlatformType.OFFLINE)
 		let jsonDeltaStoreConfig: JsonDeltaStoreConfig = {
 			changeList: {
-				distributionStrategy: repository.distributionStrategy
-			}, offlineDeltaStore: {
-				type: this.dbFacade.storeType
-			}, recordIdField: 'id', platform: repository.platform
+				// distributionStrategy: repository.distributionStrategy
+				distributionStrategy: DistributionStrategy.S3_SECURE_POLL
+			},
+			offlineDeltaStore: {
+				// type: this.dbFacade.storeType
+				type: StoreType.SQLITE_CORDOVA
+			},
+			recordIdField: 'id',
+			// platform: repository.platform
+			platform: PlatformType.OFFLINE
 		}
 
 		if (repository.platformConfig) {
@@ -296,7 +304,8 @@ export class RepositoryManager
 			column: IQOperableFieldInternal<any, any, any, any>,
 			index
 		) => {
-			return column.fieldName === REPOSITORY_FIELD
+			// return column.fieldName === REPOSITORY_FIELD
+			return column.dbProperty.name === REPOSITORY_FIELD
 		})) {
 			return rawInsertValues
 		}
@@ -325,7 +334,7 @@ export class RepositoryManager
 		return {
 			update: rawUpdate.update,
 			set: rawUpdate.set,
-			where: and(rawUpdate.where, (<QAbstractRepositoryEntity><any>qEntity).repository.id.equals(repository.id))
+			where: and(rawUpdate.where, (<QRepositoryEntity><any>qEntity).repository.id.equals(repository.id))
 		}
 	}
 
@@ -339,7 +348,7 @@ export class RepositoryManager
 		}
 		return {
 			deleteFrom: rawDelete.deleteFrom,
-			where: and(rawDelete.where, (<QAbstractRepositoryEntity><any>qEntity).repository.id.equals(repository.id))
+			where: and(rawDelete.where, (<QRepositoryEntity><any>qEntity).repository.id.equals(repository.id))
 		}
 	}
 

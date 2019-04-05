@@ -1,5 +1,5 @@
 export const SCHEMA = {
-	"domain": "public",
+	"domain": "github.com",
 	"index": null,
 	"name": "@airport/travel-document-checkpoint",
 	"sinceVersion": 1,

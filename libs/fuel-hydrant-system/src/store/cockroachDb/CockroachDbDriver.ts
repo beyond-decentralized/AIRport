@@ -68,7 +68,7 @@ export class CockroachdbDriver
 		return await this.initAllTables()
 	}
 
-	async startTransaction(): Promise<any> {
+	async transact(): Promise<any> {
 		return new Promise((
 			resolve,
 			reject
@@ -104,13 +104,13 @@ export class CockroachdbDriver
 		})
 	}
 
-	async rollbackTransaction(): Promise<void> {
+	async rollback(): Promise<void> {
 		if (this.currentTransaction) {
 			this.currentTransaction.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, [])
 		}
 	}
 
-	async commitTransaction(): Promise<void> {
+	async commit(): Promise<void> {
 		this.currentTransaction = null
 	}
 
@@ -312,5 +312,3 @@ function runSqlSeries(
 
 	tx.executeSql(sqls[sqlIndex], parameters, successFn, errorFn)
 }
-
-DI.set(STORE_DRIVER, CockroachdbDriver)

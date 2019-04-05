@@ -6,7 +6,7 @@ import {DI}                 from '@airport/di'
 import {
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
-}                             from '@airport/fuel-hydrant-system'
+}                           from '@airport/fuel-hydrant-system'
 import {
 	ChangeType,
 	DbEntity,
@@ -18,23 +18,17 @@ import {
 import {
 	IActor,
 	IOperationHistory,
-	IRepositoryTransactionHistory,
-	ITransactionHistory,
-	OPER_HISTORY_DMO,
-	OperationHistoryDmo,
-	REC_HISTORY_DMO,
-	RecordHistoryDmo,
-	REPO_TRANS_HISTORY_DMO,
-	RepositoryTransactionHistoryDmo,
-	TRANS_HISTORY_DMO,
-	TransactionHistoryDmo
-}                           from '@airport/holding-pattern'
-import {
 	IOperationHistoryDmo,
 	IRecordHistoryDmo,
+	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDmo,
-	ITransactionHistoryDmo
-} from '@airport/holding-pattern/lib/src'
+	ITransactionHistory,
+	ITransactionHistoryDmo,
+	OPER_HISTORY_DMO,
+	REC_HISTORY_DMO,
+	REPO_TRANS_HISTORY_DMO,
+	TRANS_HISTORY_DMO
+}                           from '@airport/holding-pattern'
 import {
 	DistributionStrategy,
 	ITransactionManager,
@@ -105,17 +99,17 @@ export class InsertManager
 			transactionHistoryDmo,
 			transactionManager
 			) => {
-				this.airDb                           = airportDatabase
-				this.dataStore                       = dataStore
-				this.seqGenerator               = sequenceGenerator
-				this.histManager                  = historyManager
-				this.offlineDataStore                = offlineDataStore
-				this.operHistoryDmo             = operationHistoryDmo
-				this.recHistoryDmo                = recordHistoryDmo
-				this.repoManager               = repositoryManager
+				this.airDb               = airportDatabase
+				this.dataStore           = dataStore
+				this.seqGenerator        = sequenceGenerator
+				this.histManager         = historyManager
+				this.offlineDataStore    = offlineDataStore
+				this.operHistoryDmo      = operationHistoryDmo
+				this.recHistoryDmo       = recordHistoryDmo
+				this.repoManager         = repositoryManager
 				this.repoTransHistoryDmo = repositoryTransactionHistoryDmo
-				this.transHistoryDmo           = transactionHistoryDmo
-				this.transManager              = transactionManager
+				this.transHistoryDmo     = transactionHistoryDmo
+				this.transManager        = transactionManager
 			}, AIR_DB, STORE_DRIVER,
 			SEQUENCE_GENERATOR, HISTORY_MANAGER,
 			OFFLINE_DELTA_STORE, OPER_HISTORY_DMO,

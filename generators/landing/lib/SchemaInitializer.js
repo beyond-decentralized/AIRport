@@ -13,6 +13,8 @@ class SchemaInitializer {
             this.schemaRecorder = schemaRecorder;
         }, takeoff_1.QUERY_OBJECT_INITIALIZER, diTokens_1.SCHEMA_BUILDER, diTokens_1.SCHEMA_CHECKER, diTokens_1.SCHEMA_LOCATOR, diTokens_1.SCHEMA_RECORDER);
     }
+    async ensureBaseSchemas() {
+    }
     async initialize(jsonSchemas) {
         const jsonSchemasToInstall = [];
         for (const jsonSchema of jsonSchemas) {

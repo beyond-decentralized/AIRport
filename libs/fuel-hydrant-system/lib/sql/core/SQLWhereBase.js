@@ -102,7 +102,7 @@ class SQLWhereBase {
         return `( ${whereFragment} )`;
     }
     getEntityPropertyColumnName(qEntity, columnIndex) {
-        const dbEntity = this.utils.Medatada.getDbEntity(qEntity);
+        const dbEntity = this.utils.Metadata.getDbEntity(qEntity);
         return dbEntity.columns[columnIndex].name;
     }
     addFieldFromColumn(dbColumn) {

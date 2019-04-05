@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const SQLQuery_1 = require("../../sql/core/SQLQuery");
 const SqLiteDriver_1 = require("../sqLite/SqLiteDriver");
@@ -10,6 +9,7 @@ const SqLiteDriver_1 = require("../sqLite/SqLiteDriver");
 class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
     constructor() {
         super();
+        this.keepAlive = false;
         this.currentStatementId = 0;
         this.pendingStatements = [];
         this.executedResults = [];
@@ -49,46 +49,47 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
         }
         return await this.initAllTables();
     }
-    async startTransaction() {
+    async transact(keepAlive = true) {
         return new Promise((resolve, reject) => {
-            let failed = false;
+            // let failed = false
             try {
-                let completed = false;
-                let retunValue;
-                if (this.currentTransaction) {
-                    throw `Another transaction is already in progress.`;
+                // let completed = false
+                // let returnValue
+                if (this.transaction) {
+                    console.warn(`Another transaction is already in progress, using the parent transaction`);
+                    return;
                 }
                 this._db.transaction((tx) => {
-                    this.currentTransaction = tx;
-                    this.keepTransactionAlive(tx);
+                    this.transaction = tx;
+                    resolve();
+                    // this.keepTransactionAlive(tx)
                 }, (err) => {
                     reject(err);
                 }, (done) => {
-                    if (failed) {
-                        return;
-                    }
-                    if (!completed) {
-                        reject('Transaction finished before method completion.');
-                    }
-                    else {
-                        resolve(retunValue);
-                    }
+                    // if (failed) {
+                    // 	return
+                    // }
+                    // if (!completed) {
+                    // 	reject('Transaction finished before method completion.')
+                    // } else {
+                    // 	resolve(retunValue)
+                    // }
                 });
             }
             catch (err) {
-                this.currentTransaction = null;
-                failed = true;
+                this.transaction = null;
+                // failed           = true
                 reject(err);
             }
         });
     }
-    async rollbackTransaction() {
-        if (this.currentTransaction) {
-            this.currentTransaction.executeSql('SELECT count(*) FROM ' + ground_control_1.INVALID_TABLE_NAME, []);
+    async rollback() {
+        if (this.transaction) {
+            this.transaction.executeSql('SELECT count(*) FROM ' + ground_control_1.INVALID_TABLE_NAME, []);
         }
     }
-    async commitTransaction() {
-        this.currentTransaction = null;
+    async commit() {
+        this.transaction = null;
     }
     keepTransactionAlive(tx) {
         tx.executeSql('SELECT count(*) FROM AP_SCHEMAS', [], function (tx, results) {
@@ -108,7 +109,7 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
             let statement = this.pendingStatements.shift();
             console.log(statement.query);
             console.log(statement.params);
-            this.currentTransaction.executeSql(statement.query, statement.params, (tx, res) => {
+            this.transaction.executeSql(statement.query, statement.params, (tx, res) => {
                 let response = this.getReturnValue(statement.queryType, res);
                 console.log(response);
                 this.executedResults.push({
@@ -124,7 +125,7 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
         }
     }
     isTransactionDone() {
-        return this.currentTransaction === null;
+        return this.transaction === null;
     }
     getExecutedResult(id) {
         for (const result of this.executedResults) {
@@ -153,7 +154,7 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
     async query(queryType, query, params = [], saveTransaction = false) {
         return new Promise((resolve, reject) => {
             try {
-                if (this.currentTransaction) {
+                if (this.transaction) {
                     let id = ++this.currentStatementId;
                     this.pendingStatements.push({
                         id,
@@ -167,7 +168,7 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
                     let response;
                     this._db.transaction((tx) => {
                         if (saveTransaction) {
-                            this.currentTransaction = tx;
+                            this.transaction = tx;
                         }
                         console.log(query);
                         console.log(params);
@@ -234,5 +235,4 @@ function runSqlSeries(tx, sqls, parameterss, fnum, callback) {
     }
     tx.executeSql(sqls[sqlIndex], parameters, successFn, errorFn);
 }
-di_1.DI.set(ground_control_1.STORE_DRIVER, WebSqlDriver);
 //# sourceMappingURL=WebSqlDriver.js.map

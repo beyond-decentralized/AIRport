@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const terminal_map_1 = require("@airport/terminal-map");
 const tower_1 = require("@airport/tower");
@@ -78,13 +79,21 @@ class RepositoryManager {
                         */
     }
     addDeltaStore(repository) {
-        let sharingAdaptor = DeltaStore_1.getSharingAdaptor(repository.platform);
+        // TODO: revisit configuration (instead of hard-coding
+        // let sharingAdaptor                             = getSharingAdaptor(repository.platform)
+        let sharingAdaptor = DeltaStore_1.getSharingAdaptor(terminal_map_1.PlatformType.OFFLINE);
         let jsonDeltaStoreConfig = {
             changeList: {
-                distributionStrategy: repository.distributionStrategy
-            }, offlineDeltaStore: {
-                type: this.dbFacade.storeType
-            }, recordIdField: 'id', platform: repository.platform
+                // distributionStrategy: repository.distributionStrategy
+                distributionStrategy: terminal_map_1.DistributionStrategy.S3_SECURE_POLL
+            },
+            offlineDeltaStore: {
+                // type: this.dbFacade.storeType
+                type: ground_control_1.StoreType.SQLITE_CORDOVA
+            },
+            recordIdField: 'id',
+            // platform: repository.platform
+            platform: terminal_map_1.PlatformType.OFFLINE
         };
         if (repository.platformConfig) {
             let platformConfig = JSON.parse(repository.platformConfig);
@@ -139,7 +148,8 @@ class RepositoryManager {
         }
         let columns = rawInsertValues.columns.slice();
         if (columns.some((column, index) => {
-            return column.fieldName === terminal_map_1.REPOSITORY_FIELD;
+            // return column.fieldName === REPOSITORY_FIELD
+            return column.dbProperty.name === terminal_map_1.REPOSITORY_FIELD;
         })) {
             return rawInsertValues;
         }

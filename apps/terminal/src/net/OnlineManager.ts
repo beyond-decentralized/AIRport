@@ -9,7 +9,7 @@ import {
 	REPOSITORY_DAO,
 	RepositoryTransactionHistory
 }                           from '@airport/holding-pattern'
-import {Transactional}      from '@airport/tower'
+import {transactional}      from '@airport/tower'
 import {IRepositoryManager} from '../core/repository/RepositoryManager'
 import {UpdateState}        from '../core/UpdateState'
 import {IOfflineDeltaStore} from '../data/OfflineDeltaStore'
@@ -90,30 +90,32 @@ export class OnlineManager
 	 Finally, always flip update state to LOCAL
 	 * @returns {Promise<void>}
 	 */
-	@Transactional()
 	async goOnline(): Promise<void> {
-		try {
-			// 1)  Flip update state to GO_ONLINE
-			this.repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE)
-			// 2)  Find repositories
-			const repoRecords = await this.repositoryDao.findWithTransaction()
+		await transactional(async () => {
+			try {
+				// 1)  Flip update state to GO_ONLINE
+				this.repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE)
+				// 2)  Find repositories
+				// const repoRecords = await this.repositoryDao.findWithTransaction()
+				const repoRecords = await this.repositoryDao.findReposWithDetailsByIds()
 
-			// 3) make each repository go Online
-			let goOnlineCalls: Promise<void>[] = []
-			repoRecords.forEach((repository) => {
-				goOnlineCalls.push(this.repositoryGoOnline(repository))
-			})
-			await Promise.all(goOnlineCalls)
+				// 3) make each repository go Online
+				let goOnlineCalls: Promise<void>[] = []
+				repoRecords.forEach((repository) => {
+					goOnlineCalls.push(this.repositoryGoOnline(repository))
+				})
+				await Promise.all(goOnlineCalls)
 
-			// 9)  Flip the online state to true
-			this.online = true
-		} catch (error) {
-			// TODO: notify of error
-			throw error
-		} finally {
-			// Finally, always flip update state to LOCAL
-			this.repositoryManager.setUpdateStateForAll(UpdateState.LOCAL)
-		}
+				// 9)  Flip the online state to true
+				this.online = true
+			} catch (error) {
+				// TODO: notify of error
+				throw error
+			} finally {
+				// Finally, always flip update state to LOCAL
+				this.repositoryManager.setUpdateStateForAll(UpdateState.LOCAL)
+			}
+		})
 	}
 
 	async repositoryGoOnline(repository: IRepository): Promise<void> {
@@ -128,7 +130,8 @@ export class OnlineManager
 			}
 			transactions = transactions.map((repoTransaction) => {
 				repoTransaction = new RepositoryTransactionHistory(repoTransaction)
-				repoTransaction.deserialize(repository)
+				// TODO: ?is the following needed?
+				// repoTransaction.deserialize(repository)
 
 				return repoTransaction
 			})

@@ -1,8 +1,9 @@
-import {Observable} from 'rxjs';
+import {IObservable} from '@airport/observe'
 
 /**
  * Created by Papa on 1/5/2016.
  */
+
 export abstract class PromiseHttp {
 
 	constructor(
@@ -32,17 +33,25 @@ export abstract class PromiseHttp {
 	// }
 
 	private asPromise<T>(
-		observable: Observable<T>
+		observable: IObservable<T>
 	): Promise<any> {
 		return new Promise((
 			resolve,
 			reject
 		) => {
-			observable.subscribe((response) => {
-				resolve(response);
+			let completed      = false
+			const subscription = observable.subscribe((response) => {
+				completed = true
+				if (subscription) {
+					subscription.unsubscribe()
+				}
+				resolve(response)
 			}, (error) => {
-				reject(error);
-			});
-		});
+				reject(error)
+			})
+			if (completed) {
+				subscription.unsubscribe()
+			}
+		})
 	}
 }

@@ -7,9 +7,9 @@ export declare class SqlJsDriver extends SqLiteDriver {
     constructor();
     protected getDialect(): SQLDialect;
     initialize(): Promise<any>;
-    startTransaction(): Promise<void>;
-    commitTransaction(): Promise<void>;
-    rollbackTransaction(): Promise<void>;
+    transact(): Promise<void>;
+    commit(): Promise<void>;
+    rollback(): Promise<void>;
     query(queryType: QueryType, query: string, params?: any[], saveTransaction?: boolean): Promise<any>;
     private getReturnValue;
     handleError(error: any): void;

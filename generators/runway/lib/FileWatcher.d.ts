@@ -1,5 +1,5 @@
-import * as ts from "typescript";
-import { Configuration } from "./options/Options";
+import * as ts from 'typescript';
+import { Configuration } from './options/Options';
 /**
  * Created by Papa on 3/30/2016.
  */

@@ -112,7 +112,7 @@ export class AbstractMutationManager {
 			values,
 		}
 		let insertValues: InsertValues<any>         = new InsertValues(rawInsertValues, columnIndexes)
-		let portableQuery: PortableQuery            = this.getPortableQuery(dbEntity.schema.index, dbEntity.index, insertValues, null)
+		let portableQuery: PortableQuery            = this.getPortableQuery(dbEntity.schemaVersion.schema.index, dbEntity.index, insertValues, null)
 
 		return await this.dataStore.insertValues(portableQuery)
 	}

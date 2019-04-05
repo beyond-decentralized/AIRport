@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SCHEMA = {
-    "domain": "public",
+    "domain": "github.com",
     "index": null,
     "name": "@airport/travel-document-checkpoint",
     "sinceVersion": 1,

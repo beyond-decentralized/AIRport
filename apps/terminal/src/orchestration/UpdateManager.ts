@@ -114,7 +114,7 @@ export class UpdateManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 	): Promise<number> {
-		const dbEntity = this.airDb.schemas[portableQuery.schemaIndex].entities[portableQuery.tableIndex]
+		const dbEntity = this.airDb.schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex]
 
 		let valueSelect: PortableQuery
 		let recordHistoryMap: RecordHistoryMap
@@ -146,7 +146,8 @@ export class UpdateManager
 			throw `Cannot add update history for a non-RepositoryEntity`
 		}
 
-		const qEntity                       = this.airDb.qSchemas[dbEntity.schema.index][dbEntity.name]
+		const qEntity                       = this.airDb
+			.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
 		const jsonUpdate: JsonUpdate<any>   = <JsonUpdate<any>>portableQuery.jsonQuery
 		const selectClause                  = this.utils.Schema.getSheetSelectFromSetClause(
 			dbEntity, qEntity, jsonUpdate.S)

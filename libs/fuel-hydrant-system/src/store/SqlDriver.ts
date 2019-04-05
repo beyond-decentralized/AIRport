@@ -15,6 +15,7 @@ import {
 	JsonUpdate,
 	PortableQuery,
 	QueryResultType,
+	QueryType,
 	StoreType,
 	SyncSchemaMap
 }                            from '@airport/ground-control'
@@ -72,11 +73,13 @@ export abstract class SqlDriver
 		dbName: string
 	): Promise<any>;
 
-	async abstract startTransaction(): Promise<void>;
+	async abstract transact(
+		keepAlive?: boolean
+	): Promise<void>;
 
-	async abstract commitTransaction(): Promise<void>;
+	async abstract commit(): Promise<void>;
 
-	async abstract rollbackTransaction(): Promise<void>;
+	async abstract rollback(): Promise<void>;
 
 	async saveTransaction(transaction: ITransactionHistory): Promise<any> {
 		this.queries.markQueriesToRerun(transaction.schemaMap)
@@ -240,5 +243,14 @@ export abstract class SqlDriver
 	warn(message: string) {
 		console.log(message)
 	}
+
+	abstract doesTableExist(tableName: string): Promise<boolean>;
+
+	abstract query(
+		queryType: QueryType,
+		query: string,
+		params: any,
+		saveTransaction?: boolean
+	): Promise<any>;
 
 }

@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const SQLQuery_1 = require("../../sql/core/SQLQuery");
 const SqLiteDriver_1 = require("../sqLite/SqLiteDriver");
@@ -22,11 +21,11 @@ class SqlJsDriver extends SqLiteDriver_1.SqLiteDriver {
         }
         return await this.initAllTables();
     }
-    async startTransaction() {
+    async transact() {
         this._db.exec('BEGIN TRANSACTION;');
         this.currentTransaction = true;
     }
-    async commitTransaction() {
+    async commit() {
         try {
             this._db.exec('COMMIT;');
         }
@@ -34,7 +33,7 @@ class SqlJsDriver extends SqLiteDriver_1.SqLiteDriver {
             this.currentTransaction = false;
         }
     }
-    async rollbackTransaction() {
+    async rollback() {
         try {
             this._db.exec('ROLLBACK;');
         }
@@ -86,5 +85,4 @@ class SqlJsDriver extends SqLiteDriver_1.SqLiteDriver {
     }
 }
 exports.SqlJsDriver = SqlJsDriver;
-di_1.DI.set(ground_control_1.STORE_DRIVER, SqlJsDriver);
 //# sourceMappingURL=SqlJsDriver.js.map

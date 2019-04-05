@@ -1,4 +1,4 @@
-import {IShard} from "@airport/airport-code";
+import {IShard}             from '@airport/airport-code'
 import {
 	DatabaseId,
 	IDatabaseSyncLogDao,
@@ -13,23 +13,26 @@ import {
 	RepositoryId,
 	SyncRecordAddDatetime,
 	SyncRecordTransactionData
-} from "@airport/guideway";
-import {Transactional} from "@airport/tower";
-import * as http from "http";
-import * as https from 'https';
-import {IBlacklist} from "../clientConnection/Blacklist";
+}                           from '@airport/guideway'
+import * as http            from 'http'
+import * as https           from 'https'
+import {transactional}      from '@airport/tower'
+import {IBlacklist}         from '../clientConnection/Blacklist'
 import {
 	ClientInMessage,
 	DatabaseInfo,
 	DatabaseSyncAck,
 	RepositoryUpdateRequest,
 	VerifiedClientPollMessages,
-} from "../model/ClientInMessage";
-import {ConnectionDataCallback, MILLIS_IN_DAY} from "../model/ClientOutMessage";
-import {ITuningSettings} from "../model/TuningSettings";
-import {IDataProcessor} from "./DataProcessor";
-import {IPollLoginVerifier} from "./PollLoginVerifier";
-import {IShardCache} from "./ShardCache";
+}                           from '../model/ClientInMessage'
+import {
+	ConnectionDataCallback,
+	MILLIS_IN_DAY
+}                           from '../model/ClientOutMessage'
+import {ITuningSettings}    from '../model/TuningSettings'
+import {IDataProcessor}     from './DataProcessor'
+import {IPollLoginVerifier} from './PollLoginVerifier'
+import {IShardCache}        from './ShardCache'
 
 export interface IPollServer {
 
@@ -41,7 +44,10 @@ export interface IPollServer {
 			) => void
 		) => http.Server,
 		portNumberToListenOn: number,
-		setInterval: (callback: (...args: any[]) => void, ms: number) => NodeJS.Timer,
+		setInterval: (
+			callback: (...args: any[]) => void,
+			ms: number
+		) => NodeJS.Timer,
 		intervalFrequencyMillis: number,
 	): void;
 
@@ -53,7 +59,7 @@ export interface IPollServer {
 export class PollServer
 	implements IPollServer {
 
-	minMillisSinceLastConnection: number = 300000;
+	minMillisSinceLastConnection: number = 300000
 
 	constructor(
 		private ipBlacklist: IBlacklist<string>,
@@ -78,113 +84,117 @@ export class PollServer
 			) => void
 		) => http.Server,
 		portNumberToListenOn: number,
-		setInterval: (callback: (...args: any[]) => void, ms: number) => NodeJS.Timer,
+		setInterval: (
+			callback: (...args: any[]) => void,
+			ms: number
+		) => NodeJS.Timer,
 		intervalFrequencyMillis: number,
 	): void {
 		createServer((
 			req: http.IncomingMessage,
 			res: http.ServerResponse
 		) => {
-			const ip = this.getIP(req);
+			const ip = this.getIP(req)
 			if (this.connectionBlocked(req, res, ip)) {
-				return;
+				return
 			}
 
 			switch (req.url) {
 				case '/connect':
-					this.handleConnect(req, res, ip);
-					break;
+					this.handleConnect(req, res, ip)
+					break
 				case '/refreshShards':
 					// TODO: implement security checks
-					this.shardCache.reloadShards().then();
-					break;
+					this.shardCache.reloadShards().then()
+					break
 				default:
-					this.ipBlacklist.blacklist(ip);
-					this.block(res);
+					this.ipBlacklist.blacklist(ip)
+					this.block(res)
 			}
-		}).listen(portNumberToListenOn);
+		}).listen(portNumberToListenOn)
 		// this.jwtTokenProcessorClient.startProcessing();
 
 		setInterval(() => {
-			this.processBatchedConnections().then();
-		}, this.tuningSettings.realtime.processingIntervalFrequencyMillis);
+			this.processBatchedConnections().then()
+		}, this.tuningSettings.realtime.processingIntervalFrequencyMillis)
 
 	}
 
 	async processBatchedConnections( //
 	): Promise<void> {
-		const serverId = this.server.id;
+		const serverId = this.server.id
 		const verificationResults: VerifiedClientPollMessages
-			= await this.loginVerifier.verifyPendingClaims(
-			serverId, this.minMillisSinceLastConnection);
+		               = await this.loginVerifier.verifyPendingClaims(
+			serverId, this.minMillisSinceLastConnection)
 
 		// Wait for acked terminal sync logging so that it doesn't show up in returned results
-		await this.logAckedDatabaseSyncs(serverId, verificationResults[0]);
+		await this.logAckedDatabaseSyncs(serverId, verificationResults[0])
 		// Adding of incoming changes does not block further processing
-		this.addRepositoryChanges(verificationResults[1], verificationResults[2], verificationResults[5]).then();
+		this.addRepositoryChanges(verificationResults[1], verificationResults[2], verificationResults[5]).then()
 
-		const connectionDataCallbackMapByDatabaseId: Map<DatabaseId, ConnectionDataCallback> = null;
+		const connectionDataCallbackMapByDatabaseId: Map<DatabaseId, ConnectionDataCallback> = null
 
-		await this.sendAllNewRealtimeChanges(verificationResults[3], verificationResults[4]);
+		await this.sendAllNewRealtimeChanges(verificationResults[3], verificationResults[4])
 
 		// Close all remaining (valid) connections
 		for (const [databaseId, connectionDataCallback] of connectionDataCallbackMapByDatabaseId) {
-			connectionDataCallback(databaseId, false, null);
+			connectionDataCallback(databaseId, false, null)
 		}
 	}
 
-	@Transactional()
 	async logAckedDatabaseSyncs(
 		serverId: number,
 		databaseSyncLogVerificationStageDataInserts: InsertDatabaseSyncLogVerificationStage[]
 	): Promise<void> {
-
-		await this.databaseSyncLogVerificationStageDao.insertValues(
-			databaseSyncLogVerificationStageDataInserts);
-		await this.databaseSyncLogDao.updateToAckedForServer(serverId);
-		await this.databaseSyncLogVerificationStageDao.deleteForServer(serverId);
+		await transactional(async () => {
+			await this.databaseSyncLogVerificationStageDao.insertValues(
+				databaseSyncLogVerificationStageDataInserts)
+			await this.databaseSyncLogDao.updateToAckedForServer(serverId)
+			await this.databaseSyncLogVerificationStageDao.deleteForServer(serverId)
+		})
 	}
 
-	@Transactional()
 	async addRepositoryChanges(
 		// values must be sorted by DatabaseId [1]
 		syncRecordInserts: InsertSyncRecord[],
 		databaseSyncLogInserts: InsertDatabaseSyncLog[],
 		syncRecordAddDatetime: SyncRecordAddDatetime,
 	): Promise<void> {
-		const results = await Promise.all([
-			this.syncRecordDao.insertValues(syncRecordInserts),
-			this.databaseSyncLogDao.insertValues(databaseSyncLogInserts)
-		]);
-		const syncRecordMapByDatabaseId: Map<number, number[]> = results[0];
-		const dbSyncLogMapByDatabaseId: Map<number, number> = results[1];
-		// const syncRecordMapByDatabaseId = await
-		// this.realtimeSyncDao.insertValues(changes); const dbSyncLogMapByDatabaseId =
-		// await this.dbSyncLogDao.insertValues(dbSyncEntries);
-		const realtimeSyncLogs: InsertSyncLog[] = [];
-		for (const [databaseId, dbSyncLogId] of dbSyncLogMapByDatabaseId) {
-			for (const syncRecordId of syncRecordMapByDatabaseId[databaseId]) {
-				realtimeSyncLogs.push([dbSyncLogId, syncRecordId, syncRecordAddDatetime]);
+		await transactional(async () => {
+			const results                                          = await Promise.all([
+				this.syncRecordDao.insertValues(syncRecordInserts),
+				this.databaseSyncLogDao.insertValues(databaseSyncLogInserts)
+			])
+			const syncRecordMapByDatabaseId: Map<number, number[]> = results[0]
+			const dbSyncLogMapByDatabaseId: Map<number, number>    = results[1]
+			// const syncRecordMapByDatabaseId = await
+			// this.realtimeSyncDao.insertValues(changes); const dbSyncLogMapByDatabaseId =
+			// await this.dbSyncLogDao.insertValues(dbSyncEntries);
+			const realtimeSyncLogs: InsertSyncLog[] = []
+			for (const [databaseId, dbSyncLogId] of dbSyncLogMapByDatabaseId) {
+				for (const syncRecordId of syncRecordMapByDatabaseId[databaseId]) {
+					realtimeSyncLogs.push([dbSyncLogId, syncRecordId, syncRecordAddDatetime])
+				}
 			}
-		}
-		await this.syncLogDao.insertValues(realtimeSyncLogs);
+			await this.syncLogDao.insertValues(realtimeSyncLogs)
+		})
 	}
 
 	async sendAllNewRealtimeChanges(
 		databaseIds: DatabaseId[],
 		connectionDataCallbackMapByDatabaseId: Map<DatabaseId, ConnectionDataCallback>,
 	): Promise<void> {
-		const partitionLimitingFromTime = new Date().getTime() - MILLIS_IN_DAY;
+		const partitionLimitingFromTime = new Date().getTime() - MILLIS_IN_DAY
 		await this.syncRecordDao.getAllUnreadChanges(
 			partitionLimitingFromTime, databaseIds, true,
 			this.tuningSettings.realtime.numSyncRecordsToReturnInCursor, (
 				batchData: [DatabaseId, RepositoryId, SyncRecordAddDatetime, SyncRecordTransactionData][]
 			) => {
 				for (const unreadChange of batchData) {
-					const databaseId = unreadChange[0];
+					const databaseId = unreadChange[0]
 					connectionDataCallbackMapByDatabaseId.get(databaseId)(databaseId, false, [
 						unreadChange[1], unreadChange[2], unreadChange[3]
-					]);
+					])
 				}
 			}
 		)
@@ -211,45 +221,48 @@ export class PollServer
 				mesageIn?: ClientInMessage,
 			) => {
 				this.writeToConnection(
-					res, databaseId, writeHeaders, data, forwardToServerAddress, mesageIn);
-			};
-			let databaseInfo: DatabaseInfo;
-			let repositoryChanges: RepositoryUpdateRequest[];
-			let syncedDatabases: DatabaseSyncAck[];
+					res, databaseId, writeHeaders, data, forwardToServerAddress, mesageIn)
+			}
+			let databaseInfo: DatabaseInfo
+			let repositoryChanges: RepositoryUpdateRequest[]
+			let syncedDatabases: DatabaseSyncAck[]
 			// Verify input
 			if (!(message instanceof Array)
 				|| message.length !== 4
 				|| typeof message[0] !== 'number'
 				|| !((databaseInfo = message[1]) instanceof Array)
 				|| databaseInfo.length != 3
-				|| databaseInfo.some(databaseInfoField =>
-					typeof databaseInfo !== 'number'
-					|| typeof databaseInfo !== 'number'
-					|| typeof databaseInfo !== 'string'
+				|| databaseInfo.some(
+					databaseInfoField =>
+						typeof databaseInfo !== 'number'
+						|| typeof databaseInfo !== 'number'
+						|| typeof databaseInfo !== 'string'
 				)
 				|| !((repositoryChanges = message[2]) instanceof Array)
 				|| repositoryChanges.length > 1000
-				|| repositoryChanges.some(repoData =>
-					!(repoData instanceof Array)
-					|| repoData.length !== 3
-					|| typeof repoData[0] !== 'number'
-					|| typeof repoData[1] !== 'number'
-					|| typeof repoData[2] !== 'string'
+				|| repositoryChanges.some(
+					repoData =>
+						!(repoData instanceof Array)
+						|| repoData.length !== 3
+						|| typeof repoData[0] !== 'number'
+						|| typeof repoData[1] !== 'number'
+						|| typeof repoData[2] !== 'string'
 				)
 				|| !((syncedDatabases = message[3]) instanceof Array)
 				|| syncedDatabases.length > 10000
-				|| !syncedDatabases.some(databaseSyncData =>
-					!(databaseSyncData instanceof Array)
-					|| databaseSyncData.length !== 2
-					|| typeof databaseSyncData[0] !== 'number'
-					|| typeof databaseSyncData[1] !== 'number'
+				|| !syncedDatabases.some(
+					databaseSyncData =>
+						!(databaseSyncData instanceof Array)
+						|| databaseSyncData.length !== 2
+						|| typeof databaseSyncData[0] !== 'number'
+						|| typeof databaseSyncData[1] !== 'number'
 				)) {
-				connectionDataCallback(null, false, null);
+				connectionDataCallback(null, false, null)
 			}
 			this.loginVerifier.queueLoginClaim([
 				message, connectionDataCallback, new Date().getTime()
-			]);
-		});
+			])
+		})
 	}
 
 	private writeToConnection(
@@ -262,21 +275,21 @@ export class PollServer
 		mesageIn?: ClientInMessage,
 	): void {
 		if (!databaseId) {
-			this.block(res);
+			this.block(res)
 		}
 		if (writeHeaders) {
 			res.writeHead(200, {
 				// "Set-Cookie": token + ", HTTP Only, Secure"
-			});
+			})
 		} else if (data) {
-			res.write(data);
+			res.write(data)
 		} else if (forwardToServerAddress) {
 			res.writeHead(200, {
 				// "Set-Cookie": token + ", HTTP Only, Secure"
-			});
-			data = JSON.stringify(mesageIn);
+			})
+			data              = JSON.stringify(mesageIn)
 			// TODO: implement authentication between server shards
-			var options = {
+			var options       = {
 				hostname: forwardToServerAddress,
 				port: 443,
 				path: '/connect',
@@ -284,22 +297,22 @@ export class PollServer
 				auth: this.shard.id + ':' + this.shard.secret,
 				'Content-Type': 'application/x-www-form-urlencoded',
 				'Content-Length': data.length,
-			};
+			}
 			const postRequest = https.request(options, (resp) => {
 				resp.on('data', (chunk) => {
-					res.write(chunk);
-				});
+					res.write(chunk)
+				})
 				resp.on('end', () => {
-					res.end();
-				});
-			}).on("error", (err) => {
-				console.log("Error: " + err.message);
-				res.end();
-			});
-			postRequest.write(data);
-			postRequest.end();
+					res.end()
+				})
+			}).on('error', (err) => {
+				console.log('Error: ' + err.message)
+				res.end()
+			})
+			postRequest.write(data)
+			postRequest.end()
 		} else {
-			res.end();
+			res.end()
 		}
 	}
 
@@ -310,26 +323,26 @@ export class PollServer
 			message: ClientInMessage
 		) => void,
 	): void {
-		const body = [];
-		let bodyString;
+		const body = []
+		let bodyString
 		req.on('error', (err) => {
 			// This prints the error message and stack trace to `stderr`.
-			console.error(err.stack);
+			console.error(err.stack)
 		}).on('data', (chunk) => {
-			body.push(chunk);
+			body.push(chunk)
 		}).on('end', () => {
 			res.on('error', (err) => {
 				// This prints the error message and stack trace to `stderr`.
-				console.error(err.stack);
-			});
+				console.error(err.stack)
+			})
 			try {
-				bodyString = Buffer.concat(body).toString();
-				const message: ClientInMessage = JSON.parse(bodyString);
-				callback(message);
+				bodyString                     = Buffer.concat(body).toString()
+				const message: ClientInMessage = JSON.parse(bodyString)
+				callback(message)
 			} catch (err) {
-				console.error(err.stack);
+				console.error(err.stack)
 			}
-		});
+		})
 	}
 
 	/*
@@ -355,14 +368,14 @@ export class PollServer
 		ip: string
 	) {
 		if (this.blockBlacklisted(ip, res)) {
-			return true;
+			return true
 		}
 		if (req.method !== 'PUT') {
-			this.ipBlacklist.blacklist(ip);
-			this.block(res);
-			return true;
+			this.ipBlacklist.blacklist(ip)
+			this.block(res)
+			return true
 		}
-		return false;
+		return false
 	}
 
 	private getIP(
@@ -370,11 +383,11 @@ export class PollServer
 	): string {
 		// https://stackoverflow.com/questions/38621921/best-way-to-get-the-ip-address-of-client-is-req-ip-or-req-connection-remoteaddre
 		// req.ip || req.connection.remoteAddress;
-		const ip = req.connection.remoteAddress;
+		const ip = req.connection.remoteAddress
 		// If the server is behind a proxy
 		// ip = request.headers['x-forwarded-for']
 
-		return ip;
+		return ip
 	}
 
 	private blockBlacklisted(
@@ -382,17 +395,17 @@ export class PollServer
 		res: http.ServerResponse,
 	): boolean {
 		if (this.ipBlacklist.isBlacklisted(ip)) {
-			this.block(res);
-			return true;
+			this.block(res)
+			return true
 		}
-		return false;
+		return false
 	}
 
 	private block(
 		res: http.ServerResponse,
 	) {
-		res.statusCode = 555;
-		res.end();
+		res.statusCode = 555
+		res.end()
 	}
 
 	/*

@@ -77,7 +77,7 @@ class AbstractMutationManager {
             values,
         };
         let insertValues = new air_control_1.InsertValues(rawInsertValues, columnIndexes);
-        let portableQuery = this.getPortableQuery(dbEntity.schema.index, dbEntity.index, insertValues, null);
+        let portableQuery = this.getPortableQuery(dbEntity.schemaVersion.schema.index, dbEntity.index, insertValues, null);
         return await this.dataStore.insertValues(portableQuery);
     }
 }

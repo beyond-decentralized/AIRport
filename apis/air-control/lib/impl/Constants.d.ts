@@ -7,8 +7,8 @@ export declare namespace deltaConst {
 }
 export declare namespace dbConst {
     const CURRENT_DB: any;
-    const DEFAULT_DB = "tq-default_db";
-    const ALL_DBS = "tq-all_dbs";
-    const OWN_DB_FACADE = "tq-own_db_facade";
+    const DEFAULT_DB = "air-default_db";
+    const ALL_DBS = "air-all_dbs";
+    const OWN_DB_FACADE = "air-own_db_facade";
 }
 export declare function getDbIndex(dbName: string): DatabaseIndex;

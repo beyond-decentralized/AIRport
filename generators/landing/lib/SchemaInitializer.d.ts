@@ -9,5 +9,6 @@ export declare class SchemaInitializer implements ISchemaInitializer {
     private schemaLocator;
     private schemaRecorder;
     constructor();
+    ensureBaseSchemas(): Promise<void>;
     initialize(jsonSchemas: JsonSchema[]): Promise<void>;
 }

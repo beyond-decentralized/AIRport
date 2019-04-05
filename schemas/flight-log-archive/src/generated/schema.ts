@@ -1,5 +1,5 @@
 export const SCHEMA = {
-	"domain": "public",
+	"domain": "github.com",
 	"index": null,
 	"name": "@airport/flight-log-archive",
 	"sinceVersion": 1,

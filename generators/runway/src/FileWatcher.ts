@@ -1,17 +1,17 @@
 import {DbSchema}                  from '@airport/ground-control'
-import * as fs                     from "fs";
-import * as ts                     from "typescript";
-import {QEntityFileBuilder}        from "./builder/entity/QEntityFileBuilder";
-import {PathBuilder}               from "./builder/PathBuilder";
+import * as fs                     from 'fs'
+import * as ts                     from 'typescript'
+import {DaoBuilder}                from './builder/DaoBuilder'
+import {DmoBuilder}                from './builder/DmoBuilder'
+import {QEntityFileBuilder}        from './builder/entity/QEntityFileBuilder'
+import {GeneratedSummaryBuilder}   from './builder/GeneratedSummaryBuilder'
+import {PathBuilder}               from './builder/PathBuilder'
+import {QSchemaBuilder}            from './builder/QSchemaBuilder'
+import {JsonSchemaBuilder}         from './builder/schema/JsonSchemaBuilder'
 import {MappedSuperclassBuilder}   from './builder/superclass/MappedSuperclassBuilder'
-import {Configuration}             from "./options/Options";
-import {EntityCandidate}           from "./parser/EntityCandidate";
-import {generateEntityDefinitions} from "./parser/EntityDefinitionGenerator";
-import {JsonSchemaBuilder}         from "./builder/schema/JsonSchemaBuilder";
-import {GeneratedSummaryBuilder}   from "./builder/GeneratedSummaryBuilder";
-import {DaoBuilder}                from "./builder/DaoBuilder";
-import {DmoBuilder}                from "./builder/DmoBuilder";
-import {QSchemaBuilder}            from "./builder/QSchemaBuilder";
+import {Configuration}             from './options/Options'
+import {EntityCandidate}           from './parser/EntityCandidate'
+import {generateEntityDefinitions} from './parser/EntityDefinitionGenerator'
 
 /**
  * Created by Papa on 3/30/2016.
@@ -22,14 +22,14 @@ export function watchFiles(
 	options: ts.CompilerOptions,
 	rootFileNames: string[]
 ) {
-	const files: { [fileName: string]: { version: number } } = {};
-	const pathBuilder = new PathBuilder(configuration);
+	const files: { [fileName: string]: { version: number } } = {}
+	const pathBuilder                                        = new PathBuilder(configuration)
 
 	// initialize the list of files
 	rootFileNames.forEach(
 		fileName => {
-			files[fileName] = {version: 0};
-		});
+			files[fileName] = {version: 0}
+		})
 
 	// Create the language service host to allow the LS to communicate with the host
 	const servicesHost: ts.LanguageServiceHost = {
@@ -38,20 +38,20 @@ export function watchFiles(
 		getScriptVersion: (fileName) => files[fileName] && files[fileName].version.toString(),
 		getScriptSnapshot: (fileName) => {
 			if (!fs.existsSync(fileName)) {
-				return undefined;
+				return undefined
 			}
 
-			return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
+			return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString())
 		},
 		getCurrentDirectory: () => process.cwd(),
 		getDefaultLibFileName: (options) => ts.getDefaultLibFilePath(options)
-	};
+	}
 
 	// Create the language service files
-	const services = ts.createLanguageService(servicesHost, ts.createDocumentRegistry());
+	const services = ts.createLanguageService(servicesHost, ts.createDocumentRegistry())
 
 	// First time around, process all files
-	processFiles(rootFileNames, options, configuration);
+	processFiles(rootFileNames, options, configuration)
 
 	// Now let's watch the files
 	rootFileNames.forEach(
@@ -65,27 +65,27 @@ export function watchFiles(
 				) => {
 					// Check timestamp
 					if (+curr.mtime <= +prev.mtime) {
-						return;
+						return
 					}
 
 					// Update the version to signal a change in the file
-					files[fileName].version++;
+					files[fileName].version++
 
 					// process file
 					processFiles(
-						[fileName], options, configuration);
-				});
-		});
+						[fileName], options, configuration)
+				})
+		})
 
 	function processFiles(
 		rootFileNames: string[],
 		options: ts.CompilerOptions,
 		configuration: Configuration
 	): void {
-		options.target = ts.ScriptTarget.ES5;
-		const schemaMapByProjectName: { [projectName: string]: DbSchema } = {};
-		let entityMapByName = generateEntityDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
-		emitFiles(entityMapByName, configuration, schemaMapByProjectName);
+		options.target                                                    = ts.ScriptTarget.ES5
+		const schemaMapByProjectName: { [projectName: string]: DbSchema } = {}
+		let entityMapByName                                               = generateEntityDefinitions(rootFileNames, options, configuration, schemaMapByProjectName)
+		emitFiles(entityMapByName, configuration, schemaMapByProjectName)
 	}
 
 	function emitFiles(
@@ -93,78 +93,83 @@ export function watchFiles(
 		configuration: Configuration,
 		schemaMapByProjectName: { [projectName: string]: DbSchema },
 	): void {
-		const generatedDirPath = pathBuilder.workingDirPath + '/' + pathBuilder.generatedDirPath;
-		const schemaPath = generatedDirPath + '/schema.ts';
+		const generatedDirPath = pathBuilder.workingDirPath + '/' + pathBuilder.generatedDirPath
+		const schemaPath       = generatedDirPath + '/schema.json'
+		const schemaSourcePath = generatedDirPath + '/schema.ts'
 
 		if (!fs.existsSync(generatedDirPath)) {
-			fs.mkdirSync(generatedDirPath);
+			fs.mkdirSync(generatedDirPath)
 		}
 
-		let schemaString;
+		let schemaString
 		if (fs.existsSync(schemaPath)) {
-			schemaString = fs.readFileSync(schemaPath, 'utf8');
+			schemaString = fs.readFileSync(schemaPath, 'utf8')
 		}
 
-		const schemaBuilder = new JsonSchemaBuilder(
-			configuration, entityMapByName, schemaString);
-		const [schemaSourceString, indexedSchema] =
-						schemaBuilder.build(configuration.airport.domain, schemaMapByProjectName);
-		fs.writeFileSync(schemaPath, schemaSourceString);
+		const schemaBuilder                     = new JsonSchemaBuilder(
+			configuration, entityMapByName, schemaString)
+		const [schemaJsonString, indexedSchema] =
+			      schemaBuilder.build(configuration.airport.domain, schemaMapByProjectName)
 
-		const entityFileReference: { [entityName: string]: string } = {};
+		const schemaSourceString = `export const SCHEMA = `
+			+ schemaJsonString + ';'
 
-		const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder);
-		const qSchemaBuilder = new QSchemaBuilder(pathBuilder);
-		const daoBuilder = new DaoBuilder(pathBuilder);
-		const dmoBuilder = new DmoBuilder(pathBuilder);
+		fs.writeFileSync(schemaPath, schemaJsonString)
+		fs.writeFileSync(schemaSourcePath, schemaSourceString)
+
+		const entityFileReference: { [entityName: string]: string } = {}
+
+		const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder)
+		const qSchemaBuilder          = new QSchemaBuilder(pathBuilder)
+		const daoBuilder              = new DaoBuilder(pathBuilder)
+		const dmoBuilder              = new DmoBuilder(pathBuilder)
 
 		for (const entityName in entityMapByName) {
-			const entity: EntityCandidate = entityMapByName[entityName];
+			const entity: EntityCandidate = entityMapByName[entityName]
 
-			const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
-			const entityFileBuilder = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
-				entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
+			const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path)
+			const entityFileBuilder  = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
+				entityMapByName, configuration, indexedSchema.entityMapByName[entityName])
 
 			if (!entity.isSuperclass) {
-				entityFileReference[entity.docEntry.name, fullGenerationPath];
+				entityFileReference[entity.docEntry.name, fullGenerationPath]
 			}
-			generatedSummaryBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
-			qSchemaBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
-			daoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
-			dmoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
-			const generationPath = pathBuilder.setupFileForGeneration(entity.path);
-			const entitySourceString = entityFileBuilder.build();
-			fs.writeFileSync(generationPath, entitySourceString);
+			generatedSummaryBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
+			qSchemaBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
+			daoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
+			dmoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
+			const generationPath     = pathBuilder.setupFileForGeneration(entity.path)
+			const entitySourceString = entityFileBuilder.build()
+			fs.writeFileSync(generationPath, entitySourceString)
 		}
-		fs.writeFileSync(daoBuilder.daoListingFilePath, daoBuilder.build());
-		fs.writeFileSync(dmoBuilder.daoListingFilePath, dmoBuilder.build());
-		fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build());
-		fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
+		fs.writeFileSync(daoBuilder.daoListingFilePath, daoBuilder.build())
+		fs.writeFileSync(dmoBuilder.daoListingFilePath, dmoBuilder.build())
+		fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build())
+		fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build())
 
 		const mappedSuperclassBuilder = new MappedSuperclassBuilder(
 			configuration, entityMapByName)
 
-		const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
-		fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
+		const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts'
+		fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build())
 	}
 
 	function emitFile(
 		fileName: string
 	) {
-		let output = services.getEmitOutput(fileName);
+		let output = services.getEmitOutput(fileName)
 
 		if (!output.emitSkipped) {
-			console.log(`Emitting ${fileName}`);
-		}
-		else {
-			console.log(`Emitting ${fileName} failed`);
-			logErrors(fileName);
+			console.log(`Emitting ${fileName}`)
+		} else {
+			console.log(`Emitting ${fileName} failed`)
+			logErrors(fileName)
 		}
 
 		output.outputFiles.forEach(
 			o => {
-				fs.writeFileSync(o.name, o.text, "utf8");
-			});
+				fs.writeFileSync(o.name, o.text, 'utf8')
+			})
 	}
 
 	function logErrors(
@@ -172,18 +177,17 @@ export function watchFiles(
 	) {
 		let allDiagnostics = services.getCompilerOptionsDiagnostics()
 			.concat(services.getSyntacticDiagnostics(fileName))
-			.concat(services.getSemanticDiagnostics(fileName));
+			.concat(services.getSemanticDiagnostics(fileName))
 
 		allDiagnostics.forEach(
 			diagnostic => {
-				let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+				let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')
 				if (diagnostic.file) {
-					let {line, character} = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
-					console.log(`  Error ${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
+					let {line, character} = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start)
+					console.log(`  Error ${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`)
+				} else {
+					console.log(`  Error: ${message}`)
 				}
-				else {
-					console.log(`  Error: ${message}`);
-				}
-			});
+			})
 	}
 }

@@ -58,7 +58,7 @@ export class TerminalStore
 
 	state = new BehaviorSubject<ITerminalState>({
 		domains: [],
-		// nodesBySyncFrequency: new Map(),
+		nodesBySyncFrequency: new Map(),
 		schemas: [],
 		terminal: null,
 	})

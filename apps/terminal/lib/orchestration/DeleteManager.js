@@ -24,7 +24,7 @@ class DeleteManager {
     }
     async deleteWhere(portableQuery, actor) {
         const dbEntity = this.airDb
-            .schemas[portableQuery.schemaIndex].entities[portableQuery.tableIndex];
+            .schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex];
         const deleteCommand = this.dataStore.deleteWhere(portableQuery);
         if (dbEntity.isLocal) {
             return await deleteCommand;
@@ -58,10 +58,11 @@ class DeleteManager {
     recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet) {
         const repositoryId = treeToDelete.repository.id;
         repositoryIdSet.add(repositoryId);
-        const recordsToDeleteForSchema = this.utils.ensureChildJsMap(recordsToDelete, dbEntity.schema.index);
+        const recordsToDeleteForSchema = this.utils.ensureChildJsMap(recordsToDelete, dbEntity.schemaVersion.schema.index);
         const recordsToDeleteForTable = this.utils.ensureChildJsMap(recordsToDeleteForSchema, dbEntity.index);
         const recordsToDeleteForRepository = this.utils.ensureChildArray(recordsToDeleteForTable, repositoryId);
         const recordToDelete = {};
+        // FIXME: implement
         recordsToDeleteForRepository.push(recordToDelete);
         for (const dbProperty of dbEntity.properties) {
             if (dbProperty.relation && dbProperty.relation.length) {
@@ -128,7 +129,7 @@ class DeleteManager {
     async recordTreeToDelete(recordsToDelete, repositories, actor) {
         for (const [schemaIndex, schemaRecordsToDelete] of recordsToDelete) {
             for (const [entityIndex, entityRecordsToDelete] of schemaRecordsToDelete) {
-                const dbEntity = this.airDb.schemas[schemaIndex].entities[entityIndex];
+                const dbEntity = this.airDb.schemas[schemaIndex].currentVersion.entities[entityIndex];
                 for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
                     const repository = repositories.get(repositoryId);
                     const repoTransHistory = this.historyManager.getNewRepoTransHistory(this.transManager.currentTransHistory, repository, actor);

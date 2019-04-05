@@ -1,8 +1,8 @@
-import {AgtRepositoryId} from "@airport/arrivals-n-departures";
+import {AgtRepositoryId} from '@airport/arrivals-n-departures'
 import {
 	DailySyncLogValues,
 	IDailySyncLogDao
-}                        from "@airport/flight-log-archive";
+}                        from '@airport/flight-log-archive'
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtRepositoryTransactionBlockToArchive,
@@ -14,15 +14,15 @@ import {
 	IServer,
 	ISyncLogDao,
 	SyncedTerminalRepository
-}                        from "@airport/guideway";
+}                        from '@airport/guideway'
 import {
 	DailyArchiveValues,
 	IDailyArchiveDao
-}                        from "@airport/point-of-destination";
-import {Transactional}   from "@airport/tower";
-import {MILLIS_IN_DAY}   from "../../../model/Constaints";
-import {ITuningSettings} from "../../../model/TuningSettings";
-import {ICloudArchiver}  from "./CloudArchiver";
+}                        from '@airport/point-of-destination'
+import {transactional}   from '@airport/tower'
+import {MILLIS_IN_DAY}   from '../../../model/Constaints'
+import {ITuningSettings} from '../../../model/TuningSettings'
+import {ICloudArchiver}  from './CloudArchiver'
 
 
 export interface IArchivingServer {
@@ -36,10 +36,11 @@ export interface IArchivingServer {
 }
 
 /**
- * Current approach to archiving previous day's records is to start 12 hours into any given UTC
- * date. Create batches of records for a small groups of Terminals, archive and delete them.
- * Eventually, when crdb implements partitioning we may no longer want to delete the records right
- * away to to delete them after all of archiving for the previous day is done.
+ * Current approach to archiving previous day's records is to start 12 hours into any
+ * given UTC date. Create batches of records for a small groups of Terminals, archive and
+ * delete them. Eventually, when crdb implements partitioning we may no longer want to
+ * delete the records right away to to delete them after all of archiving for the
+ * previous day is done.
  *
  *
  */
@@ -79,90 +80,95 @@ export class ArchivingServer
 	 * Process records for one repository at a time, aggregate the results
 	 * and save the metadata. This should be doable from the original table due
 	 * to partitioning.
-	 * Perform grouping records by repository to allow for processing by multiple processes:
+	 * Perform grouping records by repository to allow for processing by multiple
+	 * processes:
 	 * Add repository Ids into the where clause with a LIMIT of X. Query
 	 * performance can then be optimized by db indexing.  And add a flag for the currently
 	 * processed records.
 	 *
-	 * ?Should repositories be grouped by Cloud Account? - can be done as a future optimization.
-	 * ?Should db vs cloud archival config be provided by on per repo basis? - future feature
+	 * ?Should repositories be grouped by Cloud Account? - can be done as a future
+	 * optimization.
+	 * ?Should db vs cloud archival config be provided by on per repo basis? - future
+	 * feature
 	 *
 	 * @param {number} onDate
 	 * @returns {Promise<void>}
 	 */
-	@Transactional()
 	async archiveRepositoryTransactionBlocks(
 		onDate: AgtRepositoryTransactionBlockAddDatetime,
 		archiveInTerminal: boolean,
 		dateNumber: DailyArchiveLogDate
 	): Promise<void> {
-		const toDateObject                                     = new Date(onDate + MILLIS_IN_DAY + MILLIS_IN_DAY / 2);
-		const toDate: AgtRepositoryTransactionBlockAddDatetime = Date.UTC(toDateObject.getUTCFullYear(),
-			toDateObject.getUTCMonth(), toDateObject.getUTCDate());
+		await transactional(async () => {
 
-		let numRecordsReserved: number;
-		while ((numRecordsReserved = await this.agtRepositoryTransactionBlockDao.reserveToArchive(
-			onDate, toDate, this.server.id,
-			ArchivingStatus.NOT_ARCHIVING,
-			this.tuningSettings.archiving.numRepositoriesToProcessAtATime,
-		)) > 0) {
+			const toDateObject                                     = new Date(onDate + MILLIS_IN_DAY + MILLIS_IN_DAY / 2)
+			const toDate: AgtRepositoryTransactionBlockAddDatetime = Date.UTC(toDateObject.getUTCFullYear(),
+				toDateObject.getUTCMonth(), toDateObject.getUTCDate())
 
-			const dailyArchiveValues: DailyArchiveValues[]     = [];
-			let dailyArchiveLogValues: DailyArchiveLogValues[] = [];
-			let repositoryIds: AgtRepositoryId[]               = [];
+			let numRecordsReserved: number
+			while ((numRecordsReserved = await this.agtRepositoryTransactionBlockDao.reserveToArchive(
+				onDate, toDate, this.server.id,
+				ArchivingStatus.NOT_ARCHIVING,
+				this.tuningSettings.archiving.numRepositoriesToProcessAtATime,
+			)) > 0) {
 
-			let [repositoryTransactionBlocksToArchive, archivedRepositoryTransactionBlockIds] =
-				    await this.agtRepositoryTransactionBlockDao.getAgtRepositoryTransactionBlocksToArchive(
-					    onDate, toDate, this.server.id);
+				const dailyArchiveValues: DailyArchiveValues[]     = []
+				let dailyArchiveLogValues: DailyArchiveLogValues[] = []
+				let repositoryIds: AgtRepositoryId[]               = []
 
-			for (const repositoryRecord of repositoryTransactionBlocksToArchive) {
-				const currentAgtRepositoryId: AgtRepositoryId = repositoryRecord[0];
-				const repositoryTransactionBlocksToArchive: AgtRepositoryTransactionBlockToArchive[]
-				                                              = repositoryRecord[1];
-				dailyArchiveValues.push([
-					currentAgtRepositoryId,
-					dateNumber,
-					JSON.stringify(repositoryTransactionBlocksToArchive)
-				]);
-				dailyArchiveLogValues.push([
-					currentAgtRepositoryId,
-					dateNumber,
-					repositoryTransactionBlocksToArchive.length
-				]);
-				repositoryIds.push(currentAgtRepositoryId);
+				let [repositoryTransactionBlocksToArchive, archivedRepositoryTransactionBlockIds] =
+					    await this.agtRepositoryTransactionBlockDao.getAgtRepositoryTransactionBlocksToArchive(
+						    onDate, toDate, this.server.id)
+
+				for (const repositoryRecord of repositoryTransactionBlocksToArchive) {
+					const currentAgtRepositoryId: AgtRepositoryId = repositoryRecord[0]
+					const repositoryTransactionBlocksToArchive: AgtRepositoryTransactionBlockToArchive[]
+					                                              = repositoryRecord[1]
+					dailyArchiveValues.push([
+						currentAgtRepositoryId,
+						dateNumber,
+						JSON.stringify(repositoryTransactionBlocksToArchive)
+					])
+					dailyArchiveLogValues.push([
+						currentAgtRepositoryId,
+						dateNumber,
+						repositoryTransactionBlocksToArchive.length
+					])
+					repositoryIds.push(currentAgtRepositoryId)
+				}
+
+				if (archiveInTerminal) {
+					await this.dailyArchiveDao.addRecords(dailyArchiveValues)
+				} else {
+					[archivedRepositoryTransactionBlockIds, dailyArchiveLogValues, repositoryIds]
+						= await this.cloudArchiver.archive(
+						dailyArchiveValues,
+						dailyArchiveLogValues,
+						onDate
+					)
+				}
+
+				const syncedTerminalRepositories: SyncedTerminalRepository[] =
+					      await this.syncLogDao.selectSyncedTerminalRepositories(
+						      onDate,
+						      toDate,
+						      repositoryIds
+					      )
+
+				// Add archive records
+				await this.dailyArchiveLogDao.insertValues(dailyArchiveLogValues)
+				const dailySyncLogValues: DailySyncLogValues[] = <DailySyncLogValues[]><any>syncedTerminalRepositories
+				dailySyncLogValues.forEach(
+					syncLogValues => syncLogValues.push(dateNumber))
+
+				// Add terminal sync records
+				await this.dailySyncLogDao.insertValues(dailySyncLogValues)
+
+				// Delete cascades to all related records
+				// await
+				// this.agtRepositoryTransactionBlockDao.deleteByIds(archivedRepoTransBlockIds);
 			}
-
-			if (archiveInTerminal) {
-				await this.dailyArchiveDao.addRecords(dailyArchiveValues);
-			} else {
-				[archivedRepositoryTransactionBlockIds, dailyArchiveLogValues, repositoryIds]
-					= await this.cloudArchiver.archive(
-					dailyArchiveValues,
-					dailyArchiveLogValues,
-					onDate
-				);
-			}
-
-			const syncedTerminalRepositories: SyncedTerminalRepository[] =
-				      await this.syncLogDao.selectSyncedTerminalRepositories(
-					      onDate,
-					      toDate,
-					      repositoryIds
-				      );
-
-			// Add archive records
-			await this.dailyArchiveLogDao.insertValues(dailyArchiveLogValues);
-			const dailySyncLogValues: DailySyncLogValues[] = <DailySyncLogValues[]><any>syncedTerminalRepositories;
-			dailySyncLogValues.forEach(
-				syncLogValues => syncLogValues.push(dateNumber));
-
-			// Add terminal sync records
-			await this.dailySyncLogDao.insertValues(dailySyncLogValues);
-
-			// Delete cascades to all related records
-			// await this.agtRepositoryTransactionBlockDao.deleteByIds(archivedRepoTransBlockIds);
-		}
-
+		})
 	}
 
 }

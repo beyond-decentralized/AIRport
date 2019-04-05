@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SCHEMA = {
-    "domain": "public",
+    "domain": "github.com",
     "index": null,
     "name": "@airport/holding-pattern",
     "sinceVersion": 1,
@@ -2338,7 +2338,7 @@ exports.SCHEMA = {
             "integerVersion": 1,
             "referencedSchemas": [
                 {
-                    "domain": "npmjs.org",
+                    "domain": "github.com",
                     "index": 0,
                     "name": "@airport/traffic-pattern",
                     "sinceVersion": 1,
@@ -2352,7 +2352,7 @@ exports.SCHEMA = {
                     ]
                 },
                 {
-                    "domain": "public",
+                    "domain": "github.com",
                     "index": 1,
                     "name": "@airport/travel-document-checkpoint",
                     "sinceVersion": 1,

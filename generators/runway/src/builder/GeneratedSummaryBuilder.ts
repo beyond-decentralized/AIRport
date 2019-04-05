@@ -32,7 +32,6 @@ export class GeneratedSummaryBuilder
 			.join('\n')
 
 		return `export * from './mappedSuperclass'
-export * from './schema';
 export * from './qSchema';
 export * from './baseDaos';
 export * from './baseDmos';

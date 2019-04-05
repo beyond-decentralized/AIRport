@@ -14,11 +14,19 @@ class PromiseHttp {
     // }
     asPromise(observable) {
         return new Promise((resolve, reject) => {
-            observable.subscribe((response) => {
+            let completed = false;
+            const subscription = observable.subscribe((response) => {
+                completed = true;
+                if (subscription) {
+                    subscription.unsubscribe();
+                }
                 resolve(response);
             }, (error) => {
                 reject(error);
             });
+            if (completed) {
+                subscription.unsubscribe();
+            }
         });
     }
 }

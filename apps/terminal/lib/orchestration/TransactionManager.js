@@ -1,17 +1,10 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
 const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const terminal_map_1 = require("@airport/terminal-map");
-const tower_1 = require("@airport/tower");
 const diTokens_1 = require("../diTokens");
 const AbstractMutationManager_1 = require("./AbstractMutationManager");
 class TransactionManager extends AbstractMutationManager_1.AbstractMutationManager {
@@ -45,7 +38,7 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
         this.transactionInProgress = transactionIndex;
         let fieldMap = new ground_control_1.SyncSchemaMap();
         this.currentTransHistory = this.transactionHistoryDmo.getNewRecord();
-        await this.dataStore.startTransaction();
+        await this.dataStore.transact();
     }
     async rollbackTransaction(transactionIndex) {
         if (this.transactionInProgress !== transactionIndex) {
@@ -63,7 +56,7 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
             return;
         }
         try {
-            await this.dataStore.rollbackTransaction();
+            await this.dataStore.rollback();
         }
         finally {
             this.clearTransaction();
@@ -78,7 +71,7 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
             await this.saveRepositoryHistory(transaction);
             await this.dataStore.saveTransaction(transaction);
             this.queries.rerunQueries();
-            await this.dataStore.commitTransaction();
+            await this.dataStore.commit();
         }
         finally {
             this.clearTransaction();
@@ -162,9 +155,6 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
             === transactionIndex;
     }
 }
-__decorate([
-    tower_1.Transactional()
-], TransactionManager.prototype, "initialize", null);
 exports.TransactionManager = TransactionManager;
 di_1.DI.set(terminal_map_1.TRANSACTION_MANAGER, TransactionManager);
 //# sourceMappingURL=TransactionManager.js.map

@@ -9,7 +9,6 @@ import * as fs                         from 'fs'
 import {Configuration}                 from '../options/Options'
 import {
 	canBeInterface,
-	getFullPathFromRelativePath,
 	getImplNameFromInterfaceName
 }                                      from '../resolve/pathResolver'
 import {
@@ -286,31 +285,31 @@ export class EntityCandidateRegistry {
 			property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, projectSchema, property)
 			return projectSchema
 		}
-		// const pathsToReferencedSchemas = this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas
-		let relatedSchemaProject
-		// if (pathsToReferencedSchemas && pathsToReferencedSchemas[projectName]) {
-		// 	let referencedSchemaRelativePath = '../../' + pathsToReferencedSchemas[projectName]
-		// 	for (let i = 0; i < 10; i++) {
-		// 		referencedSchemaRelativePath = '../' + referencedSchemaRelativePath
-		// 		let pathToSchema             = getFullPathFromRelativePath(referencedSchemaRelativePath, __filename)
-		// 		if (fs.existsSync(pathToSchema)
-		// 			&& fs.lstatSync(pathToSchema).isDirectory()) {
-		// 			relatedSchemaProject = require(pathToSchema)
-		// 			break
-		// 		}
-		// 	}
-		// } else {
-			relatedSchemaProject = require(process.cwd() + '/node_modules/' + projectName)
+		// const pathsToReferencedSchemas =
+		// this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas let
+		// relatedSchemaProject if (pathsToReferencedSchemas &&
+		// pathsToReferencedSchemas[projectName]) { let referencedSchemaRelativePath =
+		// '../../' + pathsToReferencedSchemas[projectName] for (let i = 0; i < 10; i++) {
+		// referencedSchemaRelativePath = '../' + referencedSchemaRelativePath let
+		// pathToSchema             =
+		// getFullPathFromRelativePath(referencedSchemaRelativePath, __filename) if
+		// (fs.existsSync(pathToSchema) && fs.lstatSync(pathToSchema).isDirectory()) {
+		// relatedSchemaProject = require(pathToSchema) break } } } else {
+		// relatedSchemaProject = require(process.cwd() + '/node_modules/' + projectName) }
+		const relatedSchemaJson: any = fs.readFileSync(process.cwd() + '/node_modules/' + projectName + '/src/generated/schema.json')
+		// if (!relatedSchemaProject) {
+		// 	throw `Could not find related schema project '${projectName}'`
 		// }
-		if (!relatedSchemaProject) {
-			throw `Could not find related schema project '${projectName}'`
-		}
-		if (!relatedSchemaProject.SCHEMA) {
+		// if (!relatedSchemaProject.SCHEMA) {
+		// 	throw `Could not find related schema in project '${projectName}'`
+		// }
+		if (!relatedSchemaJson) {
 			throw `Could not find related schema in project '${projectName}'`
 		}
-		const dbSchema              = this.dbSchemaBuilder.buildDbSchemaWithoutReferences(
-			relatedSchemaProject.SCHEMA, this.allSchemas, this.dictionary)
-		this.schemaMap[projectName] = dbSchema
+		const relatedSchema          = JSON.parse(relatedSchemaJson)
+		const dbSchema               = this.dbSchemaBuilder.buildDbSchemaWithoutReferences(
+			relatedSchema, this.allSchemas, this.dictionary)
+		this.schemaMap[projectName]  = dbSchema
 		property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, dbSchema, property)
 
 		return dbSchema
@@ -329,21 +328,20 @@ export class EntityCandidateRegistry {
 		if (projectMappedSuperclasses) {
 			return projectMappedSuperclasses[type]
 		}
-		// const pathsToReferencedSchemas = this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas
+		// const pathsToReferencedSchemas =
+		// this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas
 		let relatedMappedSuperclassesProject
 		// if (pathsToReferencedSchemas && pathsToReferencedSchemas[projectName]) {
-		// 	let referencedSchemaRelativePath = '../../' + pathsToReferencedSchemas[projectName]
-		// 	for (let i = 0; i < 10; i++) {
-		// 		referencedSchemaRelativePath = '../' + referencedSchemaRelativePath
-		// 		let pathToMappedSuperclasses = getFullPathFromRelativePath(referencedSchemaRelativePath, __filename)
-		// 		if (fs.existsSync(pathToMappedSuperclasses)
-		// 			&& fs.lstatSync(pathToMappedSuperclasses).isDirectory()) {
-		// 			relatedMappedSuperclassesProject = require(pathToMappedSuperclasses)
-		// 			break
-		// 		}
-		// 	}
-		// } else {
-			relatedMappedSuperclassesProject = require(process.cwd() + '/node_modules/' + projectName)
+		// 	let referencedSchemaRelativePath = '../../' +
+		// pathsToReferencedSchemas[projectName] for (let i = 0; i < 10; i++) {
+		// referencedSchemaRelativePath = '../' + referencedSchemaRelativePath let
+		// pathToMappedSuperclasses =
+		// getFullPathFromRelativePath(referencedSchemaRelativePath, __filename) if
+		// (fs.existsSync(pathToMappedSuperclasses) &&
+		// fs.lstatSync(pathToMappedSuperclasses).isDirectory()) {
+		// relatedMappedSuperclassesProject = require(pathToMappedSuperclasses) break } } }
+		// else {
+		relatedMappedSuperclassesProject = require(process.cwd() + '/node_modules/' + projectName)
 		// }
 		if (!relatedMappedSuperclassesProject) {
 			throw `Could not find related schema project '${projectName}'`

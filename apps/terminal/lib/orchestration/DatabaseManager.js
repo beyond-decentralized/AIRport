@@ -2,90 +2,89 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
+const landing_1 = require("@airport/landing");
+const takeoff_1 = require("@airport/takeoff");
 const diTokens_1 = require("../diTokens");
 class DatabaseManager {
     constructor() {
-        di_1.DI.get((airportDatabase) => {
-            this.airDb = airportDatabase;
-        }, air_control_1.AIR_DB);
     }
-    async ensureInitialized(terminalName = air_control_1.dbConst.DEFAULT_DB, timeout = 5000) {
-        return new Promise((resolve, reject) => {
-            this.doEnsureInitialized(terminalName, resolve, reject, timeout);
-        });
-    }
-    async initializeAll(defaultStoreType) {
-        throw `Implement!`;
-        /*		const db = TQ.db(dbConst.DEFAULT_DB);
-                if (!TQ.isInitialized(dbConst.DEFAULT_DB)) {
-                    await TQ.addDataStore(defaultStoreType, dbConst.DEFAULT_DB);
-                    await db.entityManager.goOnline();
-                }
+    /*
+        async ensureInitialized(
+            terminalName: string = dbConst.DEFAULT_DB,
+            timeout: number      = 5000
+        ): Promise<void> {
+            return new Promise((
+                resolve,
+                reject
+            ) => {
+                this.doEnsureInitialized(terminalName, resolve, reject, timeout)
+            })
+        }
 
-                const dataStores = await db.dao.dataStore.findAsGraph();
-                for (let dataStore of dataStores) {
-                    if (!TQ.isInitialized(dataStore.name)) {
-                        await TQ.init(dataStore.storeType, dataStore.name);
-                        await TQ.db(dataStore.name).entityManager.goOnline();
+
+        async initializeAll(
+            defaultStoreType: StoreType
+        ): Promise<void> {
+            AIR_DB
+            throw `Implement!`
+                    const db = TQ.db(dbConst.DEFAULT_DB);
+                    if (!TQ.isInitialized(dbConst.DEFAULT_DB)) {
+                        await TQ.addDataStore(defaultStoreType, dbConst.DEFAULT_DB);
+                        await db.entityManager.goOnline();
                     }
-                }*/
+
+                    const dataStores = await db.dao.dataStore.findAsGraph();
+                    for (let dataStore of dataStores) {
+                        if (!TQ.isInitialized(dataStore.name)) {
+                            await TQ.init(dataStore.storeType, dataStore.name);
+                            await TQ.db(dataStore.name).entityManager.goOnline();
+                        }
+                    }
     }
-    isInitialized(terminalName) {
-        throw `Implement!`;
-        /*		let terminal = this.databaseMap[terminalName];
-                if (!terminal) {
-                    return false;
-                }
-                return !!terminal.entityManager;*/
+*/
+    isInitialized() {
+        return !!this.airDb;
     }
-    async init(storeType, terminalName) {
-        throw `Implement!`;
-        /*		let dbFacade: IDatabaseFacadeInternal = this.databaseMap[terminalName];
+    async init(storeType) {
+        await fuel_hydrant_system_1.setStoreDriver(storeType);
+        const [airDb] = await di_1.DI.getP(air_control_1.AIR_DB);
+        this.airDb = airDb;
+        const [storeDriver] = await di_1.DI.getP(diTokens_1.STORE_DRIVER);
+        if (await storeDriver.doesTableExist('AP__TERRITORY__APPLICATION_PACKAGES')) {
+            await this.installAirportSchema();
+        }
+        else {
+            const [queryObjectInitializer] = await di_1.DI.getP(takeoff_1.QUERY_OBJECT_INITIALIZER);
+            await queryObjectInitializer.initialize();
+        }
+        /*
+                throw `Implement!`
+                let dbFacade: IDatabaseFacade = this.databaseMap[terminalName]
                 if (!dbFacade) {
-                    dbFacade = new DatabaseFacade(terminalName);
-                    this.databaseMap[terminalName] = dbFacade;
-                    this.dbNames.push(terminalName);
-                    this.dbNameSet[terminalName] = true;
+                    dbFacade                       = new DatabaseFacade(terminalName)
+                    this.databaseMap[terminalName] = dbFacade
+                    this.dbNames.push(terminalName)
+                    this.dbNameSet[terminalName] = true
                 }
                 if (this.isInitialized(terminalName)) {
-                    throw `Database '${terminalName}' is already initialized`;
+                    throw `Database '${terminalName}' is already initialized`
                 }
                 this.allDbsEntityData.forEach(
                     entityData => {
-                        let entityName = MetadataStore.getEntityName(entityData.entityConstructor);
+                        let entityName = MetadataStore.getEntityName(entityData.entityConstructor)
                         if (!dbFacade.qEntityMap[entityName]) {
-                            let qEntity = new entityData.qEntityConstructor(entityData.qEntityConstructor, entityData.entityConstructor, entityName);
-                            dbFacade.qEntityMap[entityName] = qEntity;
+                            let qEntity                     = new entityData.qEntityConstructor(entityData.qEntityConstructor, entityData.entityConstructor, entityName)
+                            dbFacade.qEntityMap[entityName] = qEntity
                         }
-                    });
-                await dbFacade.init(storeType);*/
+                    })
+                await dbFacade.init(storeType)
+                */
     }
-    /*
-    static async addDataStore(
-        storeType: StoreType,
-        terminalName: string
-    ): Promise<void> {
-        if (this.isInitialized(terminalName)) {
-            throw `Database '${terminalName}' is already initialized`;
-        }
-        const newDataStore = await QDataStore.db(dbConst.DEFAULT_DB).save({
-            name: terminalName,
-            storeType: storeType
-        });
-        await TQ.init(storeType, terminalName);
-    }
-    */
-    doEnsureInitialized(terminalName, resolve, reject, remainingTimeout) {
-        if (this.isInitialized(terminalName)) {
-            resolve();
-        }
-        if (remainingTimeout <= 0) {
-            reject(`Timeout out waiting for initialization of DB: [${terminalName}]`);
-        }
-        remainingTimeout -= 100;
-        setTimeout(() => {
-            this.doEnsureInitialized(terminalName, resolve, reject, remainingTimeout);
-        }, 100);
+    async installAirportSchema() {
+        const blueprintFile = await Promise.resolve().then(() => require('@airport/blueprint'));
+        const [schemaInitializer] = await di_1.DI.getP(landing_1.SCHEMA_INITIALIZER);
+        await schemaInitializer.initialize(blueprintFile.BLUEPRINT);
     }
 }
 exports.DatabaseManager = DatabaseManager;

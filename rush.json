@@ -55,6 +55,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/blueprint",
+      "projectFolder": "libs/blueprint",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/di",
       "projectFolder": "libs/di",
       "shouldPublish": true

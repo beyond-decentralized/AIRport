@@ -28,7 +28,7 @@ import {SSchemaBuilder}  from './SSchemaBuilder'
 export class JsonSchemaBuilder {
 
 	existingSchema: JsonSchema
-	schemaVarName = 'SCHEMA'
+	// schemaVarName = 'SCHEMA'
 
 	constructor(
 		private config: Configuration,
@@ -36,22 +36,22 @@ export class JsonSchemaBuilder {
 		existingSchemaString: string
 	) {
 		if (existingSchemaString) {
-			const indexOfAssignment = existingSchemaString.indexOf(this.schemaVarName + ' = {')
-
-			const errorMessage = `Could not parse existing schema, make sure file starts with with:
-				 "export const ${this.schemaVarName} = {"
-				 where "{" marks the start of the schema definition, and ends with:
-				 "};"
-				 where "}" marks the end of the schema definition.`
-
-			if (indexOfAssignment < 0) {
-				throw errorMessage
-			}
-			if (existingSchemaString.indexOf('};') !== existingSchemaString.length - 2) {
-				throw errorMessage
-			}
-
-			existingSchemaString = existingSchemaString.substring(indexOfAssignment + 9, existingSchemaString.length - 1)
+			// const indexOfAssignment = existingSchemaString.indexOf(this.schemaVarName + ' = {')
+			//
+			// const errorMessage = `Could not parse existing schema, make sure file starts with with:
+			// 	 "export const ${this.schemaVarName} = {"
+			// 	 where "{" marks the start of the schema definition, and ends with:
+			// 	 "};"
+			// 	 where "}" marks the end of the schema definition.`
+			//
+			// if (indexOfAssignment < 0) {
+			// 	throw errorMessage
+			// }
+			// if (existingSchemaString.indexOf('};') !== existingSchemaString.length - 2) {
+			// 	throw errorMessage
+			// }
+			//
+			// existingSchemaString = existingSchemaString.substring(indexOfAssignment + 9, existingSchemaString.length - 1)
 
 			this.existingSchema = JSON.parse(existingSchemaString)
 		}
@@ -69,8 +69,7 @@ export class JsonSchemaBuilder {
 
 		// TODO: reset table and column and relation indexes based on existing schema
 
-		const schemaString = `export const ${this.schemaVarName} = `
-			+ JSON.stringify(jsonSchema, null, '\t') + ';'
+		const schemaString = JSON.stringify(jsonSchema, null, '\t')
 
 		return [schemaString, sIndexedSchema]
 	}

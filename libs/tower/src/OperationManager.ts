@@ -90,7 +90,7 @@ export abstract class OperationManager
 		) => {
 			this.airDb             = airportDatabase
 			this.entity            = queryFacade
-			this.transactionClient = transConnector
+			this.transactionClient = transConnector as IInternalTransactionalConnector
 			this.updateCache       = updateCache
 			this.utils             = utils
 		}, AIR_DB, QUERY_FACADE, TRANS_CONNECTOR, UPDATE_CACHE, UTILS)
@@ -163,7 +163,7 @@ export abstract class OperationManager
 
 		let rawInsert: RawInsertValues<any> = {
 			insertInto: qEntity,
-			columns: this.utils.Medatada.getAllColumns(qEntity),
+			columns: this.utils.Metadata.getAllColumns(qEntity),
 			values: []
 		}
 		let cascadeRecords: CascadeRecord[] = []

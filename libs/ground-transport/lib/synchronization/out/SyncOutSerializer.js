@@ -1,10 +1,4 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
@@ -59,60 +53,59 @@ class SyncOutSerializer {
                 = allTransLogRepoTransHistories.concat(repoTransBlockRepoTransHistories);
             repositoryTransactionBlocks.push(repositoryTransactionBlock);
         }
-        await this.repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
-        await this.repoTransBlockRepoTransHistoryDao
-            .bulkCreate(allTransLogRepoTransHistories, false, false);
-        const sharingMessages = [];
-        const sharingMessageRepoTransBlocks = [];
-        for (const [sharingNodeId, repositoryMapById] of repoMapBySharingNodeAndRepoIds) {
-            const repositoryUpdateRequests = [];
-            const sharingNodeDb = sharingNodeDbMap.get(sharingNodeId);
-            const terminalCredentials = {
-                terminalId: sharingNodeDb.agtTerminalId,
-                terminalPassword: sharingNodeDb.agtTerminalPassword
-            };
-            // FIXME: add sync ACKS
-            const message = {
-                protocolVersion: 0,
-                contentType: arrivals_n_departures_1.MessageFromTMContentType.DATA_TRANSFER,
-                terminalCredentials,
-                tmSharingMessageId: null,
-                repositoryUpdateRequests,
-                terminalSyncAcks: []
-            };
-            messageMap.set(sharingNodeId, message);
-            const sharingMessage = {
-                sharingNode: sharingNodeMap.get(sharingNodeId)
-            };
-            sharingMessages.push(sharingMessage);
-            for (const [repositoryId, repositoryAndAgtRepositoryId] of repositoryMapById) {
-                const repositoryTransactionBlock = repoTransBlocksByRepositoryId.get(repositoryId);
-                repositoryUpdateRequests.push({
-                    agtRepositoryId: repositoryAndAgtRepositoryId[1],
-                    tmRepositoryTransactionBlockId: repositoryTransactionBlock.id,
-                    repositoryTransactionBlockContents: repositoryTransactionBlock.contents
-                });
-                const sharingMessageRepoTransBlock = {
-                    sharingMessage,
-                    repositoryTransactionBlock,
+        await tower_1.transactional(async () => {
+            await this.repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
+            await this.repoTransBlockRepoTransHistoryDao
+                .bulkCreate(allTransLogRepoTransHistories, false, false);
+            const sharingMessages = [];
+            const sharingMessageRepoTransBlocks = [];
+            for (const [sharingNodeId, repositoryMapById] of repoMapBySharingNodeAndRepoIds) {
+                const repositoryUpdateRequests = [];
+                const sharingNodeDb = sharingNodeDbMap.get(sharingNodeId);
+                const terminalCredentials = {
+                    terminalId: sharingNodeDb.agtTerminalId,
+                    terminalPassword: sharingNodeDb.agtTerminalPassword
                 };
-                sharingMessageRepoTransBlocks.push(sharingMessageRepoTransBlock);
+                // FIXME: add sync ACKS
+                const message = {
+                    protocolVersion: 0,
+                    contentType: arrivals_n_departures_1.MessageFromTMContentType.DATA_TRANSFER,
+                    terminalCredentials,
+                    tmSharingMessageId: null,
+                    repositoryUpdateRequests,
+                    terminalSyncAcks: []
+                };
+                messageMap.set(sharingNodeId, message);
+                const sharingMessage = {
+                    sharingNode: sharingNodeMap.get(sharingNodeId)
+                };
+                sharingMessages.push(sharingMessage);
+                for (const [repositoryId, repositoryAndAgtRepositoryId] of repositoryMapById) {
+                    const repositoryTransactionBlock = repoTransBlocksByRepositoryId.get(repositoryId);
+                    repositoryUpdateRequests.push({
+                        agtRepositoryId: repositoryAndAgtRepositoryId[1],
+                        tmRepositoryTransactionBlockId: repositoryTransactionBlock.id,
+                        repositoryTransactionBlockContents: repositoryTransactionBlock.contents
+                    });
+                    const sharingMessageRepoTransBlock = {
+                        sharingMessage,
+                        repositoryTransactionBlock,
+                    };
+                    sharingMessageRepoTransBlocks.push(sharingMessageRepoTransBlock);
+                }
             }
-        }
-        await this.sharingMessageDao.bulkCreate(sharingMessages, false, false);
-        for (const sharingMessage of sharingMessages) {
-            messageMap.get(sharingMessage.sharingNode.id)[2] = sharingMessage.id;
-        }
-        await this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
+            await this.sharingMessageDao.bulkCreate(sharingMessages, false, false);
+            for (const sharingMessage of sharingMessages) {
+                messageMap.get(sharingMessage.sharingNode.id)[2] = sharingMessage.id;
+            }
+            await this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
+        });
         // await this.repositoryTransactionHistoryDao.updateSyncStatusHistory(
         // 	SyncStatus.SYNCHRONIZING, Array.from(repoTransHistoryIds)
         // );
         return messageMap;
     }
 }
-__decorate([
-    tower_1.Transactional()
-], SyncOutSerializer.prototype, "serializeMessages", null);
 exports.SyncOutSerializer = SyncOutSerializer;
 di_1.DI.set(diTokens_1.SYNC_OUT_SERIALIZER, SyncOutSerializer);
 //# sourceMappingURL=SyncOutSerializer.js.map

@@ -49,7 +49,7 @@ class OperationManager {
         const qEntity = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         let rawInsert = {
             insertInto: qEntity,
-            columns: this.utils.Medatada.getAllColumns(qEntity),
+            columns: this.utils.Metadata.getAllColumns(qEntity),
             values: []
         };
         let cascadeRecords = [];

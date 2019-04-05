@@ -13,6 +13,7 @@ import {
 	DbColumn,
 	DbEntity,
 	DbProperty,
+	EntityId,
 	EntityRelationType,
 	IStoreDriver,
 	JsonDelete,
@@ -22,7 +23,6 @@ import {
 	SchemaIndex
 }                           from '@airport/ground-control'
 import {
-	AbstractRepositoryEntity,
 	IActor,
 	IOperationHistoryDmo,
 	IRecordHistoryDmo,
@@ -32,6 +32,7 @@ import {
 	OPER_HISTORY_DMO,
 	REC_HISTORY_DMO,
 	REPO_TRANS_HISTORY_DMO,
+	RepositoryEntity,
 	RepositoryId,
 	TRANS_HISTORY_DMO
 }                           from '@airport/holding-pattern'
@@ -60,7 +61,7 @@ export interface IDeleteManager {
 }
 
 type RecordsToDelete =
-	Map<SchemaIndex, Map<SchemaEntityIndex, Map<RepositoryId, AbstractRepositoryEntity[]>>>;
+	Map<SchemaIndex, Map<EntityId, Map<RepositoryId, RepositoryEntity[]>>>;
 
 export class DeleteManager
 	implements IDeleteManager {
@@ -115,7 +116,7 @@ export class DeleteManager
 		actor: IActor,
 	): Promise<number> {
 		const dbEntity = this.airDb
-			.schemas[portableQuery.schemaIndex].entities[portableQuery.tableIndex]
+			.schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex]
 
 		const deleteCommand = this.dataStore.deleteWhere(portableQuery)
 		if (dbEntity.isLocal) {
@@ -164,7 +165,7 @@ export class DeleteManager
 		repositoryIdSet.add(repositoryId)
 
 		const recordsToDeleteForSchema
-			      = this.utils.ensureChildJsMap(recordsToDelete, dbEntity.schema.index)
+			      = this.utils.ensureChildJsMap(recordsToDelete, dbEntity.schemaVersion.schema.index)
 		const recordsToDeleteForTable
 			      = this.utils.ensureChildJsMap(recordsToDeleteForSchema, dbEntity.index)
 		const recordsToDeleteForRepository
@@ -172,7 +173,8 @@ export class DeleteManager
 
 
 		const recordToDelete = {}
-		recordsToDeleteForRepository.push(recordToDelete)
+		// FIXME: implement
+		recordsToDeleteForRepository.push(recordToDelete as any)
 
 		for (const dbProperty of dbEntity.properties) {
 			if (dbProperty.relation && dbProperty.relation.length) {
@@ -259,7 +261,7 @@ export class DeleteManager
 
 		for (const [schemaIndex, schemaRecordsToDelete] of recordsToDelete) {
 			for (const [entityIndex, entityRecordsToDelete] of schemaRecordsToDelete) {
-				const dbEntity = this.airDb.schemas[schemaIndex].entities[entityIndex]
+				const dbEntity = this.airDb.schemas[schemaIndex].currentVersion.entities[entityIndex]
 				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
 					const repository = repositories.get(repositoryId)
 

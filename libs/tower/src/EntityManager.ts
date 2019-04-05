@@ -31,9 +31,9 @@ import {
 	DistributionStrategy,
 	PlatformType
 }                          from '@airport/terminal-map'
-import {Transactional}     from './decorators'
 import {ENTITY_MANAGER}    from './diTokens'
 import {OperationManager,} from './OperationManager'
+import {transactional}     from './transactional'
 
 /**
  * Created by Papa on 5/23/2016.
@@ -85,23 +85,25 @@ export class EntityManager
 			name, url, platform, platformConfig, distributionStrategy)
 	}
 
-	@Transactional()
 	async create<E>(
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
-		return await this.performCreate(dbEntity, entity, [])
+		return await transactional(async () =>
+			await this.performCreate(dbEntity, entity, [])
+		)
 	}
 
-	@Transactional()
 	async bulkCreate<E>(
 		dbEntity: DbEntity,
 		entities: E[],
 		checkIfProcessed: boolean = true,
 		cascade: boolean          = false
 	): Promise<number> {
-		return await this.performBulkCreate(dbEntity, entities, [],
-			checkIfProcessed, cascade)
+		return await transactional(async () =>
+			await this.performBulkCreate(dbEntity, entities, [],
+				checkIfProcessed, cascade)
+		)
 	}
 
 	async insertColumnValues<IQE extends IQEntity>(
@@ -119,7 +121,6 @@ export class EntityManager
 		return numInsertedRows
 	}
 
-	@Transactional()
 	async insertValues<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> }
@@ -128,9 +129,10 @@ export class EntityManager
 			rawInsertValues = rawInsertValues()
 		}
 
-		let numInsertedRows = await this.internalInsertValues(dbEntity, rawInsertValues)
-
-		return numInsertedRows
+		return await transactional(async () =>
+			await this.internalInsertValues(
+				dbEntity, rawInsertValues as RawInsertValues<IQE>)
+		)
 	}
 
 	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
@@ -148,7 +150,6 @@ export class EntityManager
 		return ids
 	}
 
-	@Transactional()
 	async insertValuesGenerateIds<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE> | {
@@ -159,21 +160,22 @@ export class EntityManager
 			rawInsertValues = rawInsertValues()
 		}
 
-		let ids = await this.internalInsertValuesGetIds(dbEntity, rawInsertValues)
-
-		return ids
+		return await transactional(async () =>
+			await this.internalInsertValuesGetIds(
+				dbEntity, rawInsertValues as RawInsertValues<IQE>)
+		)
 
 	}
 
-	@Transactional()
 	async delete<E>(
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
-		return await this.performDelete(dbEntity, entity)
+		return await transactional(async () =>
+			await this.performDelete(dbEntity, entity)
+		)
 	}
 
-	@Transactional()
 	async deleteWhere<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawDelete: RawDelete<IQE> | { (...args: any[]): RawDelete<IQE> }
@@ -184,10 +186,11 @@ export class EntityManager
 
 		let deleteWhere: Delete<IQE> = new Delete(rawDelete, this.utils)
 
-		return await this.internalDeleteWhere(dbEntity, deleteWhere)
+		return await transactional(async () =>
+			await this.internalDeleteWhere(dbEntity, deleteWhere)
+		)
 	}
 
-	@Transactional()
 	async save<E>(
 		dbEntity: DbEntity,
 		entity: E
@@ -206,24 +209,28 @@ export class EntityManager
 
 			this.utils.Schema.isIdEmpty(idValue) ? emptyIdCount++ : nonEmptyIdCount++
 		}
-		if (emptyIdCount && nonEmptyIdCount) {
-			throw `Cannot call save(entity) for instance of '${dbEntity.name}' which has
+
+		return await transactional(async () => {
+			if (emptyIdCount && nonEmptyIdCount) {
+				throw `Cannot call save(entity) for instance of '${dbEntity.name}' which has
 			${nonEmptyIdCount} @Id values specified and ${emptyIdCount} @Id values not specified.
 			Please make sure that the entity instance either has all @Id values specified (to be
 			updated) or non of @Id values specified (to be created).`
-		} else if (emptyIdCount) {
-			return await this.create(dbEntity, entity)
-		} else {
-			return await this.update(dbEntity, entity)
-		}
+			} else if (emptyIdCount) {
+				return await this.create(dbEntity, entity)
+			} else {
+				return await this.update(dbEntity, entity)
+			}
+		})
 	}
 
-	@Transactional()
 	async update<E>(
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
-		return await this.performUpdate(dbEntity, entity, [])
+		return await transactional(async () =>
+			await this.performUpdate(dbEntity, entity, [])
+		)
 	}
 
 	/**
@@ -247,7 +254,6 @@ export class EntityManager
 		return await this.internalUpdateColumnsWhere(dbEntity, update)
 	}
 
-	@Transactional()
 	async updateWhere<IEUP extends IEntityUpdateProperties,
 		IQE extends IQEntity>(
 		dbEntity: DbEntity,
@@ -260,7 +266,9 @@ export class EntityManager
 		let update: UpdateProperties<any, IQE>
 			    = new UpdateProperties(rawUpdate, this.utils)
 
-		return await this.internalUpdateWhere(dbEntity, update)
+		return await transactional(async () =>
+			await this.internalUpdateWhere(dbEntity, update)
+		)
 	}
 
 	private ensureId<E>(entity: E) {

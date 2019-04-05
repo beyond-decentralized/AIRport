@@ -1,10 +1,4 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
@@ -59,28 +53,31 @@ class OnlineManager {
      * @returns {Promise<void>}
      */
     async goOnline() {
-        try {
-            // 1)  Flip update state to GO_ONLINE
-            this.repositoryManager.setUpdateStateForAll(UpdateState_1.UpdateState.GO_ONLINE);
-            // 2)  Find repositories
-            const repoRecords = await this.repositoryDao.findWithTransaction();
-            // 3) make each repository go Online
-            let goOnlineCalls = [];
-            repoRecords.forEach((repository) => {
-                goOnlineCalls.push(this.repositoryGoOnline(repository));
-            });
-            await Promise.all(goOnlineCalls);
-            // 9)  Flip the online state to true
-            this.online = true;
-        }
-        catch (error) {
-            // TODO: notify of error
-            throw error;
-        }
-        finally {
-            // Finally, always flip update state to LOCAL
-            this.repositoryManager.setUpdateStateForAll(UpdateState_1.UpdateState.LOCAL);
-        }
+        await tower_1.transactional(async () => {
+            try {
+                // 1)  Flip update state to GO_ONLINE
+                this.repositoryManager.setUpdateStateForAll(UpdateState_1.UpdateState.GO_ONLINE);
+                // 2)  Find repositories
+                // const repoRecords = await this.repositoryDao.findWithTransaction()
+                const repoRecords = await this.repositoryDao.findReposWithDetailsByIds();
+                // 3) make each repository go Online
+                let goOnlineCalls = [];
+                repoRecords.forEach((repository) => {
+                    goOnlineCalls.push(this.repositoryGoOnline(repository));
+                });
+                await Promise.all(goOnlineCalls);
+                // 9)  Flip the online state to true
+                this.online = true;
+            }
+            catch (error) {
+                // TODO: notify of error
+                throw error;
+            }
+            finally {
+                // Finally, always flip update state to LOCAL
+                this.repositoryManager.setUpdateStateForAll(UpdateState_1.UpdateState.LOCAL);
+            }
+        });
     }
     async repositoryGoOnline(repository) {
         let deltaStore = this.repositoryManager.deltaStore[repository.id];
@@ -92,7 +89,8 @@ class OnlineManager {
             }
             transactions = transactions.map((repoTransaction) => {
                 repoTransaction = new holding_pattern_1.RepositoryTransactionHistory(repoTransaction);
-                repoTransaction.deserialize(repository);
+                // TODO: ?is the following needed?
+                // repoTransaction.deserialize(repository)
                 return repoTransaction;
             });
             // a) While Go-Online is in progress continue gathering all remote transactions
@@ -162,9 +160,6 @@ class OnlineManager {
         return this.online;
     }
 }
-__decorate([
-    tower_1.Transactional()
-], OnlineManager.prototype, "goOnline", null);
 exports.OnlineManager = OnlineManager;
 di_1.DI.set(diTokens_1.ONLINE_MANAGER, OnlineManager);
 //# sourceMappingURL=OnlineManager.js.map

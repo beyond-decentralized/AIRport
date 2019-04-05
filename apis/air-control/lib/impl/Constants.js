@@ -7,9 +7,9 @@ var deltaConst;
 var dbConst;
 (function (dbConst) {
     dbConst.CURRENT_DB = undefined;
-    dbConst.DEFAULT_DB = 'tq-default_db';
-    dbConst.ALL_DBS = 'tq-all_dbs';
-    dbConst.OWN_DB_FACADE = 'tq-own_db_facade';
+    dbConst.DEFAULT_DB = 'air-default_db';
+    dbConst.ALL_DBS = 'air-all_dbs';
+    dbConst.OWN_DB_FACADE = 'air-own_db_facade';
 })(dbConst = exports.dbConst || (exports.dbConst = {}));
 function getDbIndex(dbName) {
     if (dbName === dbConst.CURRENT_DB) {

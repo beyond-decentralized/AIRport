@@ -34,7 +34,7 @@ class UpdateManager {
         }, air_control_1.AIR_DB, diTokens_1.STORE_DRIVER, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DMO, holding_pattern_1.REC_HISTORY_DMO, diTokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DMO, holding_pattern_1.TRANS_HISTORY_DMO, terminal_map_1.TRANSACTION_MANAGER, air_control_1.UTILS);
     }
     async updateValues(portableQuery, actor) {
-        const dbEntity = this.airDb.schemas[portableQuery.schemaIndex].entities[portableQuery.tableIndex];
+        const dbEntity = this.airDb.schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex];
         let valueSelect;
         let recordHistoryMap;
         if (!dbEntity.isLocal) {
@@ -51,7 +51,8 @@ class UpdateManager {
         if (!dbEntity.isRepositoryEntity) {
             throw `Cannot add update history for a non-RepositoryEntity`;
         }
-        const qEntity = this.airDb.qSchemas[dbEntity.schema.index][dbEntity.name];
+        const qEntity = this.airDb
+            .qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         const jsonUpdate = portableQuery.jsonQuery;
         const selectClause = this.utils.Schema.getSheetSelectFromSetClause(dbEntity, qEntity, jsonUpdate.S);
         const jsonSelect = {

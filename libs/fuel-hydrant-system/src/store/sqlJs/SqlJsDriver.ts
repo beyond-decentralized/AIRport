@@ -43,12 +43,12 @@ export class SqlJsDriver
 		return await this.initAllTables()
 	}
 
-	async startTransaction(): Promise<void> {
+	async transact(): Promise<void> {
 		this._db.exec('BEGIN TRANSACTION;')
 		this.currentTransaction = true
 	}
 
-	async commitTransaction(): Promise<void> {
+	async commit(): Promise<void> {
 		try {
 			this._db.exec('COMMIT;')
 		} finally {
@@ -56,7 +56,7 @@ export class SqlJsDriver
 		}
 	}
 
-	async rollbackTransaction(): Promise<void> {
+	async rollback(): Promise<void> {
 		try {
 			this._db.exec('ROLLBACK;')
 		} finally {
@@ -121,4 +121,3 @@ export class SqlJsDriver
 
 }
 
-DI.set(STORE_DRIVER, SqlJsDriver)

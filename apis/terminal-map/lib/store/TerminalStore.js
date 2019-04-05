@@ -9,7 +9,7 @@ class TerminalStore {
     constructor() {
         this.state = new observe_1.BehaviorSubject({
             domains: [],
-            // nodesBySyncFrequency: new Map(),
+            nodesBySyncFrequency: new Map(),
             schemas: [],
             terminal: null,
         });

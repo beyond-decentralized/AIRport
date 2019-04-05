@@ -38,6 +38,7 @@
     <content url="file://$MODULE_DIR$/../../libs/approach-lighting-system">
       <excludeFolder url="file://$MODULE_DIR$/../../libs/approach-lighting-system/lib" />
     </content>
+    <content url="file://$MODULE_DIR$/../../libs/blueprint" />
     <content url="file://$MODULE_DIR$/../../libs/di">
       <excludeFolder url="file://$MODULE_DIR$/../../libs/di/lib" />
     </content>

@@ -17,7 +17,6 @@ class GeneratedSummaryBuilder {
         const exports = this.generatedFilePaths.map(filePath => `export * from '${filePath}';`)
             .join('\n');
         return `export * from './mappedSuperclass'
-export * from './schema';
 export * from './qSchema';
 export * from './baseDaos';
 export * from './baseDmos';

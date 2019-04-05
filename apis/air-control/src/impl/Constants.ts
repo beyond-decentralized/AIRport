@@ -10,9 +10,9 @@ export namespace deltaConst {
 
 export namespace dbConst {
 	export const CURRENT_DB    = undefined;
-	export const DEFAULT_DB    = 'tq-default_db';
-	export const ALL_DBS       = 'tq-all_dbs';
-	export const OWN_DB_FACADE = 'tq-own_db_facade';
+	export const DEFAULT_DB    = 'air-default_db';
+	export const ALL_DBS       = 'air-all_dbs';
+	export const OWN_DB_FACADE = 'air-own_db_facade';
 }
 
 export function getDbIndex(

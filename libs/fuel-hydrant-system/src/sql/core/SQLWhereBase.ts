@@ -164,7 +164,7 @@ export abstract class SQLWhereBase
 		qEntity: IQEntityInternal,
 		columnIndex: number
 	): string {
-		const dbEntity = this.utils.Medatada.getDbEntity(qEntity)
+		const dbEntity = this.utils.Metadata.getDbEntity(qEntity)
 
 		return dbEntity.columns[columnIndex].name
 	}

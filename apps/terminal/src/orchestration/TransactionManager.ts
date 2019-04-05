@@ -19,7 +19,6 @@ import {
 	ITransactionManager,
 	TRANSACTION_MANAGER
 }                                from '@airport/terminal-map'
-import {Transactional}           from '@airport/tower'
 import {IOfflineDeltaStore}      from '../data/OfflineDeltaStore'
 import {
 	OFFLINE_DELTA_STORE,
@@ -69,7 +68,6 @@ export class TransactionManager
 	 * Initializes the EntityManager at server load time.
 	 * @returns {Promise<void>}
 	 */
-	@Transactional()
 	async initialize(
 		dbName: string
 	): Promise<void> {
@@ -91,7 +89,7 @@ export class TransactionManager
 
 		this.currentTransHistory = this.transactionHistoryDmo.getNewRecord()
 
-		await this.dataStore.startTransaction()
+		await this.dataStore.transact()
 	}
 
 	async rollbackTransaction(
@@ -113,7 +111,7 @@ export class TransactionManager
 			return
 		}
 		try {
-			await this.dataStore.rollbackTransaction()
+			await this.dataStore.rollback()
 		} finally {
 			this.clearTransaction()
 		}
@@ -133,7 +131,7 @@ export class TransactionManager
 			await this.dataStore.saveTransaction(transaction)
 
 			this.queries.rerunQueries()
-			await this.dataStore.commitTransaction()
+			await this.dataStore.commit()
 		} finally {
 			this.clearTransaction()
 		}

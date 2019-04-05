@@ -2,15 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const ts = require("typescript");
-const QEntityFileBuilder_1 = require("./builder/entity/QEntityFileBuilder");
-const PathBuilder_1 = require("./builder/PathBuilder");
-const MappedSuperclassBuilder_1 = require("./builder/superclass/MappedSuperclassBuilder");
-const EntityDefinitionGenerator_1 = require("./parser/EntityDefinitionGenerator");
-const JsonSchemaBuilder_1 = require("./builder/schema/JsonSchemaBuilder");
-const GeneratedSummaryBuilder_1 = require("./builder/GeneratedSummaryBuilder");
 const DaoBuilder_1 = require("./builder/DaoBuilder");
 const DmoBuilder_1 = require("./builder/DmoBuilder");
+const QEntityFileBuilder_1 = require("./builder/entity/QEntityFileBuilder");
+const GeneratedSummaryBuilder_1 = require("./builder/GeneratedSummaryBuilder");
+const PathBuilder_1 = require("./builder/PathBuilder");
 const QSchemaBuilder_1 = require("./builder/QSchemaBuilder");
+const JsonSchemaBuilder_1 = require("./builder/schema/JsonSchemaBuilder");
+const MappedSuperclassBuilder_1 = require("./builder/superclass/MappedSuperclassBuilder");
+const EntityDefinitionGenerator_1 = require("./parser/EntityDefinitionGenerator");
 /**
  * Created by Papa on 3/30/2016.
  */
@@ -61,7 +61,8 @@ function watchFiles(configuration, options, rootFileNames) {
     }
     function emitFiles(entityMapByName, configuration, schemaMapByProjectName) {
         const generatedDirPath = pathBuilder.workingDirPath + '/' + pathBuilder.generatedDirPath;
-        const schemaPath = generatedDirPath + '/schema.ts';
+        const schemaPath = generatedDirPath + '/schema.json';
+        const schemaSourcePath = generatedDirPath + '/schema.ts';
         if (!fs.existsSync(generatedDirPath)) {
             fs.mkdirSync(generatedDirPath);
         }
@@ -70,8 +71,11 @@ function watchFiles(configuration, options, rootFileNames) {
             schemaString = fs.readFileSync(schemaPath, 'utf8');
         }
         const schemaBuilder = new JsonSchemaBuilder_1.JsonSchemaBuilder(configuration, entityMapByName, schemaString);
-        const [schemaSourceString, indexedSchema] = schemaBuilder.build(configuration.airport.domain, schemaMapByProjectName);
-        fs.writeFileSync(schemaPath, schemaSourceString);
+        const [schemaJsonString, indexedSchema] = schemaBuilder.build(configuration.airport.domain, schemaMapByProjectName);
+        const schemaSourceString = `export const SCHEMA = `
+            + schemaJsonString + ';';
+        fs.writeFileSync(schemaPath, schemaJsonString);
+        fs.writeFileSync(schemaSourcePath, schemaSourceString);
         const entityFileReference = {};
         const generatedSummaryBuilder = new GeneratedSummaryBuilder_1.GeneratedSummaryBuilder(pathBuilder);
         const qSchemaBuilder = new QSchemaBuilder_1.QSchemaBuilder(pathBuilder);
@@ -110,7 +114,7 @@ function watchFiles(configuration, options, rootFileNames) {
             logErrors(fileName);
         }
         output.outputFiles.forEach(o => {
-            fs.writeFileSync(o.name, o.text, "utf8");
+            fs.writeFileSync(o.name, o.text, 'utf8');
         });
     }
     function logErrors(fileName) {
@@ -118,7 +122,7 @@ function watchFiles(configuration, options, rootFileNames) {
             .concat(services.getSyntacticDiagnostics(fileName))
             .concat(services.getSemanticDiagnostics(fileName));
         allDiagnostics.forEach(diagnostic => {
-            let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+            let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
             if (diagnostic.file) {
                 let { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
                 console.log(`  Error ${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);

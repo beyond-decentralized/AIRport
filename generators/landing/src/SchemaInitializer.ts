@@ -50,10 +50,13 @@ export class SchemaInitializer
 			SCHEMA_LOCATOR, SCHEMA_RECORDER)
 	}
 
+	async ensureBaseSchemas(): Promise<void> {
+
+	}
+
 	async initialize(
 		jsonSchemas: JsonSchema[]
 	): Promise<void> {
-
 		const jsonSchemasToInstall: JsonSchema[] = []
 
 		for (const jsonSchema of jsonSchemas) {

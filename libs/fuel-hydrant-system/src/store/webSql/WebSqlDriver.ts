@@ -1,8 +1,6 @@
-import {DI}           from '@airport/di'
 import {
 	INVALID_TABLE_NAME,
 	QueryType,
-	STORE_DRIVER,
 	StoreType
 }                     from '@airport/ground-control'
 import {SQLDialect}   from '../../sql/core/SQLQuery'
@@ -20,8 +18,8 @@ export class WebSqlDriver
 
 	private _db: any
 
-	private currentTransaction
-
+	private keepAlive = false
+	private transaction
 
 	constructor() {
 		super()
@@ -68,50 +66,54 @@ export class WebSqlDriver
 		return await this.initAllTables()
 	}
 
-	async startTransaction(): Promise<any> {
+	async transact(
+		keepAlive = true
+	): Promise<any> {
 		return new Promise((
 			resolve,
 			reject
 		) => {
-			let failed = false
+			// let failed = false
 			try {
-				let completed = false
-				let retunValue
-				if (this.currentTransaction) {
-					throw `Another transaction is already in progress.`
+				// let completed = false
+				// let returnValue
+				if (this.transaction) {
+					console.warn(`Another transaction is already in progress, using the parent transaction`)
+					return
 				}
 				this._db.transaction((tx) => {
-						this.currentTransaction = tx
-						this.keepTransactionAlive(tx)
+						this.transaction = tx
+						resolve()
+						// this.keepTransactionAlive(tx)
 					},
 					(err) => {
 						reject(err)
 					}, (done) => {
-						if (failed) {
-							return
-						}
-						if (!completed) {
-							reject('Transaction finished before method completion.')
-						} else {
-							resolve(retunValue)
-						}
+						// if (failed) {
+						// 	return
+						// }
+						// if (!completed) {
+						// 	reject('Transaction finished before method completion.')
+						// } else {
+						// 	resolve(retunValue)
+						// }
 					})
 			} catch (err) {
-				this.currentTransaction = null
-				failed                  = true
+				this.transaction = null
+				// failed           = true
 				reject(err)
 			}
 		})
 	}
 
-	async rollbackTransaction(): Promise<void> {
-		if (this.currentTransaction) {
-			this.currentTransaction.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, [])
+	async rollback(): Promise<void> {
+		if (this.transaction) {
+			this.transaction.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, [])
 		}
 	}
 
-	async commitTransaction(): Promise<void> {
-		this.currentTransaction = null
+	async commit(): Promise<void> {
+		this.transaction = null
 	}
 
 	keepTransactionAlive(tx): void {
@@ -137,7 +139,7 @@ export class WebSqlDriver
 
 			console.log(statement.query)
 			console.log(statement.params)
-			this.currentTransaction.executeSql(statement.query, statement.params,
+			this.transaction.executeSql(statement.query, statement.params,
 				(
 					tx,
 					res
@@ -162,7 +164,7 @@ export class WebSqlDriver
 	}
 
 	isTransactionDone(): boolean {
-		return this.currentTransaction === null
+		return this.transaction === null
 	}
 
 	getExecutedResult(
@@ -210,7 +212,7 @@ export class WebSqlDriver
 			reject
 		) => {
 			try {
-				if (this.currentTransaction) {
+				if (this.transaction) {
 					let id = ++this.currentStatementId
 					this.pendingStatements.push({
 						id,
@@ -223,7 +225,7 @@ export class WebSqlDriver
 					let response
 					this._db.transaction((tx) => {
 							if (saveTransaction) {
-								this.currentTransaction = tx
+								this.transaction = tx
 							}
 							console.log(query)
 							console.log(params)
@@ -312,5 +314,3 @@ function runSqlSeries(
 
 	tx.executeSql(sqls[sqlIndex], parameters, successFn, errorFn)
 }
-
-DI.set(STORE_DRIVER, WebSqlDriver)

@@ -18,7 +18,7 @@ import {
 	SHARING_MESSAGE_DAO,
 	SharingNodeId
 }                                       from '@airport/moving-walkway'
-import {Transactional}                  from '@airport/tower'
+import {transactional}                  from '@airport/tower'
 import {parse}                          from 'zipson/lib'
 import {GROUND_TRANSPORT_LOGGER}        from '../../Constants'
 import {
@@ -102,7 +102,6 @@ export class SynchronizationInManager
 	 *   into arrays by sharing node
 	 * @returns {Promise<void>}   Return when all of the messages have been processed
 	 */
-	@Transactional()
 	async receiveMessages(
 		sharingNodes: ISharingNode[],
 		incomingMessages: BatchedMessagesToTM[],
@@ -201,17 +200,18 @@ export class SynchronizationInManager
 			}
 		}
 
-		await this.sharingMessageDao.bulkCreate(
-			sharingMessages, false, false)
+		await transactional(async () => {
+			await this.sharingMessageDao.bulkCreate(
+				sharingMessages, false, false)
 
 
-		// These messages are responses to already sent messages
-		// no need to check for existence of repositories
-		await this.syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages)
+			// These messages are responses to already sent messages
+			// no need to check for existence of repositories
+			await this.syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages)
 
 
-		await this.twoStageSyncedInDataProcessor.syncDataMessages(allDataMessages)
-
+			await this.twoStageSyncedInDataProcessor.syncDataMessages(allDataMessages)
+		})
 	}
 
 	private isValidLastChangeTime(

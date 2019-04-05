@@ -1,4 +1,7 @@
-import { InsertDailySyncLog, IDailySyncLogDao } from "@airport/flight-log-archive";
+import {
+	IDailySyncLogDao,
+	InsertDailySyncLog
+}                        from '@airport/flight-log-archive'
 import {
 	ArchiveBatchRecord,
 	IServer,
@@ -7,11 +10,14 @@ import {
 	RepositoryId,
 	SyncRecordAddDatetime,
 	SyncRecordTransactionData
-} from "@airport/guideway";
-import { DailyArchive, IDailyArchiveDao } from "@airport/point-of-destination";
-import { Transactional } from "@airport/tower";
-import { MILLIS_IN_DAY } from "../model/ClientOutMessage";
-import { ITuningSettings } from "../model/TuningSettings";
+}                        from '@airport/guideway'
+import {
+	DailyArchive,
+	IDailyArchiveDao
+}                        from '@airport/point-of-destination'
+import {transactional}   from '@airport/tower'
+import {MILLIS_IN_DAY}   from '../model/ClientOutMessage'
+import {ITuningSettings} from '../model/TuningSettings'
 
 
 export interface IArchivingServer {
@@ -25,7 +31,8 @@ export interface IArchivingServer {
  * table partitions for that day.  Once the indexes are added then the batch process
  * of extracting and grouping daily data can begin.
  */
-export class ArchivingServer implements IArchivingServer {
+export class ArchivingServer
+	implements IArchivingServer {
 
 	constructor(
 		private dailyArchiveDao: IDailyArchiveDao,
@@ -66,61 +73,62 @@ export class ArchivingServer implements IArchivingServer {
 	 * @param {number} onDate
 	 * @returns {Promise<void>}
 	 */
-	@Transactional()
 	async archiveSyncRecords(
 		onDate: SyncRecordAddDatetime
 	): Promise<void> {
-		const toDateObject = new Date(onDate + MILLIS_IN_DAY + MILLIS_IN_DAY / 2);
-		const toDate: SyncRecordAddDatetime = Date.UTC(toDateObject.getUTCFullYear(),
-			toDateObject.getUTCMonth(), toDateObject.getUTCDate());
+		await transactional(async () => {
+			const toDateObject                  = new Date(onDate + MILLIS_IN_DAY + MILLIS_IN_DAY / 2)
+			const toDate: SyncRecordAddDatetime = Date.UTC(toDateObject.getUTCFullYear(),
+				toDateObject.getUTCMonth(), toDateObject.getUTCDate())
 
-		await this.syncRecordDao.reserveToArchive(
-			onDate, toDate, this.server.id,
-			this.tuningSettings.archiving.numRepositoriesToProcessAtATime);
+			await this.syncRecordDao.reserveToArchive(
+				onDate, toDate, this.server.id,
+				this.tuningSettings.archiving.numRepositoriesToProcessAtATime)
 
-		let lastRepositoryId: RepositoryId;
-		let repositoryIds: RepositoryId[];
-		let dailyArchives: DailyArchive[] = [];
-		let dailyRepositorySyncRecords: SyncRecordTransactionData[] = [];
-		const onDayObject = new Date(onDate);
+			let lastRepositoryId: RepositoryId
+			let repositoryIds: RepositoryId[]
+			let dailyArchives: DailyArchive[]                           = []
+			let dailyRepositorySyncRecords: SyncRecordTransactionData[] = []
+			const onDayObject                                           = new Date(onDate)
 
-		await this.syncRecordDao.getAllChangesToArchive(
-			onDate, toDate, this.server.id,
-			this.tuningSettings.archiving.numSyncRecordsToReturnInCursor, (
-				batchData: ArchiveBatchRecord[]
-			) => {
-				for (const repositoryRecord of batchData) {
-					const currentRepositoryId = repositoryRecord[1];
-					if (!lastRepositoryId) {
-						lastRepositoryId = currentRepositoryId;
+			await this.syncRecordDao.getAllChangesToArchive(
+				onDate, toDate, this.server.id,
+				this.tuningSettings.archiving.numSyncRecordsToReturnInCursor, (
+					batchData: ArchiveBatchRecord[]
+				) => {
+					for (const repositoryRecord of batchData) {
+						const currentRepositoryId = repositoryRecord[1]
+						if (!lastRepositoryId) {
+							lastRepositoryId = currentRepositoryId
+						}
+						const syncRecordTransactionData = repositoryRecord[2]
+						if (lastRepositoryId === currentRepositoryId) {
+							dailyRepositorySyncRecords.push(syncRecordTransactionData)
+						} else {
+							dailyArchives.push({
+								repositoryId: lastRepositoryId,
+								date: onDayObject,
+								repositoryData: JSON.stringify(dailyRepositorySyncRecords)
+							})
+							lastRepositoryId           = currentRepositoryId
+							repositoryIds              = []
+							dailyRepositorySyncRecords = []
+							repositoryIds.push(currentRepositoryId)
+							dailyRepositorySyncRecords.push(syncRecordTransactionData)
+						}
 					}
-					const syncRecordTransactionData = repositoryRecord[2];
-					if (lastRepositoryId === currentRepositoryId) {
-						dailyRepositorySyncRecords.push(syncRecordTransactionData)
-					} else {
-						dailyArchives.push({
-							repositoryId: lastRepositoryId,
-							date: onDayObject,
-							repositoryData: JSON.stringify(dailyRepositorySyncRecords)
-						});
-						lastRepositoryId = currentRepositoryId;
-						repositoryIds = [];
-						dailyRepositorySyncRecords = [];
-						repositoryIds.push(currentRepositoryId);
-						dailyRepositorySyncRecords.push(syncRecordTransactionData);
-					}
-				}
-			});
+				})
 
-		if (dailyRepositorySyncRecords.length) {
-			dailyArchives.push({
-				repositoryId: lastRepositoryId,
-				date: onDayObject,
-				repositoryData: JSON.stringify(dailyRepositorySyncRecords)
-			});
-		}
+			if (dailyRepositorySyncRecords.length) {
+				dailyArchives.push({
+					repositoryId: lastRepositoryId,
+					date: onDayObject,
+					repositoryData: JSON.stringify(dailyRepositorySyncRecords)
+				})
+			}
 
-		await this.dailyArchiveDao.addRecords(dailyArchives);
+			await this.dailyArchiveDao.addRecords(dailyArchives)
+		})
 	}
 
 	async archiveSyncLogs(
@@ -128,18 +136,19 @@ export class ArchivingServer implements IArchivingServer {
 		toDateExclusive: SyncRecordAddDatetime,
 		repositoryIds: RepositoryId[]
 	): Promise<void> {
-		const dailyDbSyncStatuses = await this.syncLogDao.selectDbSyncStatusForRepositoryIds(
+		const dailyDbSyncStatuses                       = await this.syncLogDao.selectDbSyncStatusForRepositoryIds(
 			onDate,
 			toDateExclusive,
 			repositoryIds
-		);
+		)
 		const databaseIds:
 		const InsertDailySyncLogs: InsertDailySyncLog[] = <InsertDailySyncLog[]>
-			dailyDbSyncStatuses.map(dailyDbSyncStatus => {
-				dailyDbSyncStatus.push(onDate);
-				return dailyDbSyncStatus;
-			});
-		await this.dailySyncLogDao.insertValues(InsertDailySyncLogs);
+			dailyDbSyncStatuses.map(
+				dailyDbSyncStatus => {
+					dailyDbSyncStatus.push(onDate)
+					return dailyDbSyncStatus
+				})
+		await this.dailySyncLogDao.insertValues(InsertDailySyncLogs)
 		await
 	}
 }

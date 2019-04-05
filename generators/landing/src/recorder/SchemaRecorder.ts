@@ -49,7 +49,10 @@ import {
 	SCHEMA_REFERENCE_DAO,
 	SCHEMA_RELATION_COLUMN_DAO,
 	SCHEMA_RELATION_DAO,
-	SCHEMA_VERSION_DAO
+	SCHEMA_VERSION_DAO,
+	SchemaPropertyColumnECreateProperties,
+	SchemaReferenceECreateProperties,
+	SchemaRelationColumnECreateProperties
 }                       from '@airport/traffic-pattern'
 import {
 	SCHEMA_LOCATOR,
@@ -358,7 +361,9 @@ export class SchemaRecorder
 			}
 		}
 
-		await this.schemaReferenceDao.bulkCreate(newSchemaReferences, false, false)
+		await this.schemaReferenceDao.bulkCreate(
+			newSchemaReferences as SchemaReferenceECreateProperties[],
+			false, false)
 
 		return {
 			newSchemaReferenceMap,
@@ -616,7 +621,9 @@ export class SchemaRecorder
 		}
 
 		await this.schemaColumnDao.bulkCreate(newColumns, false, false)
-		await this.schemaPropertyColumnDao.bulkCreate(newPropertyColumns, false, false)
+		await this.schemaPropertyColumnDao.bulkCreate(
+			newPropertyColumns as SchemaPropertyColumnECreateProperties[],
+			false, false)
 
 		return {
 			newColumns,
@@ -704,7 +711,9 @@ export class SchemaRecorder
 		}
 
 		if (newRelationColumns.length) {
-			await this.schemaRelationColumnDao.bulkCreate(newRelationColumns, false, false)
+			await this.schemaRelationColumnDao.bulkCreate(
+				newRelationColumns as SchemaRelationColumnECreateProperties[],
+				false, false)
 		}
 
 		return newRelationColumns

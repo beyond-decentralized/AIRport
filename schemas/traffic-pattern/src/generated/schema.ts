@@ -1,5 +1,5 @@
 export const SCHEMA = {
-	"domain": "npmjs.org",
+	"domain": "github.com",
 	"index": null,
 	"name": "@airport/traffic-pattern",
 	"sinceVersion": 1,
@@ -3035,7 +3035,7 @@ export const SCHEMA = {
 			"integerVersion": 1,
 			"referencedSchemas": [
 				{
-					"domain": "npmjs.org",
+					"domain": "github.com",
 					"index": 0,
 					"name": "@airport/territory",
 					"sinceVersion": 1,

@@ -113,7 +113,8 @@ export class SyncInRepositoryChecker
 				return false
 			}
 			for (const operationHistory of repoTransHistory.operationHistory) {
-				operationHistory.
+				// FIXME: implement
+				//operationHistory.
 			}
 		}
 
