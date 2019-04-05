@@ -1,10 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const src_1 = require("@airport/arrivals-n-departures/lib/src");
+const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
 const di_1 = require("@airport/di");
-const Constants_1 = require("../../../Constants");
 const diTokens_1 = require("../../../diTokens");
-const log = Constants_1.GROUND_TRANSPORT_LOGGER.add('HttpSharingNodeEndpoint');
+// const log = GROUND_TRANSPORT_LOGGER.add('HttpSharingNodeEndpoint')
 /**
  * P2P endpoint to a built-in AGT
  */
@@ -15,7 +14,7 @@ class HttpSharingNodeEndpoint {
             this.messageFromTMSerializer = messageFromTMSerializer;
             this.messageToTMDeserializer = messageToTMDeserializer;
             this.messageToTMVerifier = messageToTMVerifier;
-        }, src_1.MESSAGE_FROM_TM_SERIALIZER, src_1.MESSAGE_TO_TM_DESERIALIZER, src_1.MESSAGE_TO_TM_VERIFIER);
+        }, arrivals_n_departures_1.MESSAGE_FROM_TM_SERIALIZER, arrivals_n_departures_1.MESSAGE_TO_TM_DESERIALIZER, arrivals_n_departures_1.MESSAGE_TO_TM_VERIFIER);
     }
     async communicateWithAGT(sharingNode, message) {
         const serializedMessageFromTM = this.messageFromTMSerializer.serialize(message);
@@ -29,14 +28,14 @@ class HttpSharingNodeEndpoint {
                     const schemaValidationResult = _self.messageToTMVerifier.verifyMessagesBatch(serializedBatchedMessagesToTM);
                     const connectionDataError = schemaValidationResult[0];
                     if (connectionDataError) {
-                        log.error(`
+                        console.error(`
 	Message to TM validation error:
 		Invalid sync message data schema:
-				Error Code:    {1}
-				Evaluation:    {2}
-				Message index: {3}
-				Data index:    {4}
-				`, connectionDataError, schemaValidationResult[1], schemaValidationResult[2]);
+				Error Code:    ${connectionDataError},
+				Evaluation:    ${schemaValidationResult[1]}
+				Message index: ${schemaValidationResult[2]}
+				Data index:    ${schemaValidationResult[3]}
+				`);
                         reject(new Error('Message to TM validation error:\n\t\tInvalid sync message data schema'));
                     }
                     const batchedMessagesToTM = _self.messageToTMDeserializer.deserialize(serializedBatchedMessagesToTM);

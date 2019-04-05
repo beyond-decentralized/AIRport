@@ -37,8 +37,6 @@ import {
 	SCHEMA_DAO
 }                                                  from '@airport/traffic-pattern'
 import {ITerminal}                                 from '@airport/travel-document-checkpoint'
-import {stringify}                                 from 'zipson'
-import {GROUND_TRANSPORT_LOGGER}                   from '../../Constants'
 import {
 	SYNC_IN_REPO_TRANS_BLOCK_CREATOR,
 	SYNC_OUT_MANAGER,
@@ -61,7 +59,7 @@ export interface ISynchronizationOutManager {
 const maxSingleRepoChangeLength = 1048576
 const maxAllRepoChangesLength   = 10485760
 
-const log = GROUND_TRANSPORT_LOGGER.add('SynchronizationOutManager')
+// const log = GROUND_TRANSPORT_LOGGER.add('SynchronizationOutManager')
 
 /**
  * Synchronization manager is in charge of maintaining the AIR Terminal in sync.

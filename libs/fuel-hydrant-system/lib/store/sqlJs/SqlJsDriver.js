@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
+// FIXME: add support, in future, if needed
+// import {Database}      from 'sql.js'
 const SQLQuery_1 = require("../../sql/core/SQLQuery");
 const SqLiteDriver_1 = require("../sqLite/SqLiteDriver");
 class SqlJsDriver extends SqLiteDriver_1.SqLiteDriver {
@@ -16,8 +18,10 @@ class SqlJsDriver extends SqLiteDriver_1.SqLiteDriver {
             this._db = new SQL.Database();
         }
         else {
-            let sql = require('sql.js');
-            this._db = new sql.Database();
+            // FIXME: add support, in future, if needed
+            // let sql  = require('sql.js')
+            // this._db = new sql.Database()
+            throw 'Not implemented';
         }
         return await this.initAllTables();
     }

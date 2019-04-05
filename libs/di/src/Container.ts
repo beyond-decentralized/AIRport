@@ -1010,44 +1010,60 @@ export class Container
 		errorCallback,
 	): void {
 		this.numPendingInits++
+
+		if (tokens.every(
+			token => this.classes[token as any])) {
+			this.getSync(tokens, returnArray, successCallback, errorCallback)
+		} else {
+			setTimeout(() => {
+				this.getSync(tokens, returnArray, successCallback, errorCallback)
+			})
+		}
+
+	}
+
+	private getSync(
+		tokens: DiToken<any>[],
+		returnArray: boolean,
+		successCallback,
+		errorCallback,
+	) {
 		let firstErrorClass
-		setTimeout(() => {
-			const objects = tokens.map(
-				token => {
-					if (firstErrorClass) {
+		const objects = tokens.map(
+			token => {
+				if (firstErrorClass) {
+					return
+				}
+				let object = this.objects[token as any]
+				if (!object) {
+					const clazz = this.classes[token as any]
+					if (!clazz) {
+						firstErrorClass = clazz
 						return
 					}
-					let object = this.objects[token as any]
-					if (!object) {
-						const clazz = this.classes[token as any]
-						if (!clazz) {
-							firstErrorClass = clazz
-							return
-						}
-						object                     = new this.classes[token as any]()
-						this.objects[token as any] = object
-					}
+					object                     = new this.classes[token as any]()
+					this.objects[token as any] = object
+				}
 
-					return object
-				})
-			this.numPendingInits--
-			if (firstErrorClass) {
-				console.log('Dependency Injection (DI) could not find class: '
-					+ firstErrorClass.name)
-				errorCallback(firstErrorClass)
-			} else {
-				returnArray ?
-					successCallback(returnArray)
-					:
-					successCallback(...objects)
+				return object
+			})
+		this.numPendingInits--
+		if (firstErrorClass) {
+			console.log('Dependency Injection (DI) could not find class: '
+				+ firstErrorClass.name)
+			errorCallback(firstErrorClass)
+		} else {
+			returnArray ?
+				successCallback(objects)
+				:
+				successCallback(...objects)
 
-				setTimeout(() => {
-					if (this.numPendingInits === 0) {
-						this.onInitCallback()
-					}
-				})
-			}
-		})
+			setTimeout(() => {
+				if (this.numPendingInits === 0) {
+					this.onInitCallback()
+				}
+			})
+		}
 	}
 
 }

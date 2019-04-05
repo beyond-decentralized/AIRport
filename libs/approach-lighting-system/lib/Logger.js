@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const runway_edge_lighting_1 = require("@airport/runway-edge-lighting");
 const Constants_1 = require("./Constants");
 const Logged_1 = require("./Logged");
-const log = Constants_1.APPROACH_LIGHTING_SYSTEM_LOGGER.add('Logger');
+var log;
 const debugTraceApiErrorMessage = `Invalid Logger.debug|trace call,
 				call does not adhere to to the API:
 	debug(
@@ -27,6 +27,9 @@ class Logger extends Logged_1.Logged {
             package: loggedPackage.applicationPackage.package
         };
         loggedPackage.addLogger(this);
+        setTimeout(() => {
+            log = Constants_1.APPROACH_LIGHTING_SYSTEM_LOGGER.add('Logger');
+        });
     }
     safeThrow(message) {
         this.throw(message);

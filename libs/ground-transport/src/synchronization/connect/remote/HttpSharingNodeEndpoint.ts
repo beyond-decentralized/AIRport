@@ -3,23 +3,18 @@ import {
 	IMessageFromTMSerializer,
 	IMessageToTMDeserializer,
 	IMessageToTMVerifier,
-	MessageFromTM,
-	SerializedBatchedMessagesToTM
-}                                from '@airport/arrivals-n-departures'
-import {
 	MESSAGE_FROM_TM_SERIALIZER,
 	MESSAGE_TO_TM_DESERIALIZER,
-	MESSAGE_TO_TM_VERIFIER
-}                                from '@airport/arrivals-n-departures/lib/src'
-import {DI}                      from '@airport/di'
-import {ISharingNode}            from '@airport/moving-walkway'
-import {GROUND_TRANSPORT_LOGGER} from '../../../Constants'
-import {
-	HTTP_SHARING_NODE_ENDPOINT,
-}                                from '../../../diTokens'
-import {ISharingNodeEndpoint}    from '../SharingNodeEndpoint'
+	MESSAGE_TO_TM_VERIFIER,
+	MessageFromTM,
+	SerializedBatchedMessagesToTM
+}                                    from '@airport/arrivals-n-departures'
+import {DI}                          from '@airport/di'
+import {ISharingNode}                from '@airport/moving-walkway'
+import {HTTP_SHARING_NODE_ENDPOINT,} from '../../../diTokens'
+import {ISharingNodeEndpoint}        from '../SharingNodeEndpoint'
 
-const log = GROUND_TRANSPORT_LOGGER.add('HttpSharingNodeEndpoint')
+// const log = GROUND_TRANSPORT_LOGGER.add('HttpSharingNodeEndpoint')
 
 /**
  * P2P endpoint to a built-in AGT
@@ -68,18 +63,14 @@ export class HttpSharingNodeEndpoint
 
 					const connectionDataError = schemaValidationResult[0]
 					if (connectionDataError) {
-						log.error(`
+						console.error(`
 	Message to TM validation error:
 		Invalid sync message data schema:
-				Error Code:    {1}
-				Evaluation:    {2}
-				Message index: {3}
-				Data index:    {4}
-				`,
-							connectionDataError,
-							schemaValidationResult[1],
-							schemaValidationResult[2]
-						)
+				Error Code:    ${connectionDataError},
+				Evaluation:    ${schemaValidationResult[1]}
+				Message index: ${schemaValidationResult[2]}
+				Data index:    ${schemaValidationResult[3]}
+				`)
 						reject(new Error('Message to TM validation error:\n\t\tInvalid sync message data schema'))
 					}
 					const batchedMessagesToTM = _self.messageToTMDeserializer.deserialize(serializedBatchedMessagesToTM)

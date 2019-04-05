@@ -3,17 +3,17 @@ import {
 	LogEntryValueValue,
 	LogLevel,
 	SetLogLevel
-}                                        from "@airport/runway-edge-lighting";
+}                                        from '@airport/runway-edge-lighting'
 import {
 	IPackagedUnit,
 	PackagedUnitName
-}                                        from "@airport/territory";
-import {APPROACH_LIGHTING_SYSTEM_LOGGER} from "./Constants";
+}                                        from '@airport/territory'
+import {APPROACH_LIGHTING_SYSTEM_LOGGER} from './Constants'
 import {
 	ILogged,
 	Logged
-}                                        from "./Logged";
-import {ILoggedPackage}                  from "./LoggedPackage";
+}                                        from './Logged'
+import {ILoggedPackage}                  from './LoggedPackage'
 
 export interface ILogger
 	extends ILogged {
@@ -93,7 +93,7 @@ export interface ILogger
 
 }
 
-const log = APPROACH_LIGHTING_SYSTEM_LOGGER.add('Logger');
+var log
 
 const debugTraceApiErrorMessage = `Invalid Logger.debug|trace call,
 				call does not adhere to to the API:
@@ -108,91 +108,95 @@ const debugTraceApiErrorMessage = `Invalid Logger.debug|trace call,
 		message: LogEntryTypeText,
 		...values: LogEntryValueValue[]
 	): string;
-					`;
+					`
 
 export class Logger
 	extends Logged
 	implements ILogger {
 
-	unit: IPackagedUnit;
+	unit: IPackagedUnit
 
 	constructor(
 		public loggedPackage: ILoggedPackage,
 		name: PackagedUnitName,
 		level: SetLogLevel = LogLevel.INFO
 	) {
-		super(level);
+		super(level)
 		this.unit = {
 			name,
 			package: loggedPackage.applicationPackage.package
-		};
-		loggedPackage.addLogger(this);
+		}
+		loggedPackage.addLogger(this)
+
+		setTimeout(() => {
+			log = APPROACH_LIGHTING_SYSTEM_LOGGER.add('Logger')
+		})
 	}
 
 	safeThrow(
 		message: LogEntryTypeText
 	): void {
-		this.throw(message);
+		this.throw(message)
 	}
 
 	throw(
 		message: LogEntryTypeText,
 		...values: LogEntryValueValue[]
 	): void {
-		message = this.error(message, ...values);
-		throw new Error(message);
+		message = this.error(message, ...values)
+		throw new Error(message)
 	}
 
 	safeFatal(
 		message: LogEntryTypeText
 	): string {
-		return this.fatal(message);
+		return this.fatal(message)
 	}
 
 	fatal(
 		message: LogEntryTypeText,
 		...values: LogEntryValueValue[]
 	): string {
-		return this.log(LogLevel.FATAL, message, ...values);
+		return this.log(LogLevel.FATAL, message, ...values)
 	}
 
 	safeError(
 		message: LogEntryTypeText
 	): string {
-		return this.error(message);
+		return this.error(message)
 	}
 
 	error(
 		message: LogEntryTypeText,
 		...values: LogEntryValueValue[]
 	): string {
-		return this.log(LogLevel.ERROR, message, ...values);
+		return this.log(LogLevel.ERROR, message, ...values)
 	}
 
 	safeWarn(
 		message: LogEntryTypeText
 	): string {
-		return this.warn(message);
+		return this.warn(message)
 	}
 
 	warn(
 		message: LogEntryTypeText,
 		...values: LogEntryValueValue[]
 	): string {
-		return this.log(LogLevel.WARNING, message, ...values);
+		return this.log(LogLevel.WARNING, message, ...values)
 	}
 
 	safeInfo(
 		message: LogEntryTypeText
 	): string {
-		return this.info(message);
+		return this.info(message)
 	}
 
 	info(
 		message: LogEntryTypeText,
 		...values: LogEntryValueValue[]
 	): string {
-		return this.log(LogLevel.INFO, message, ...values);
+		return this.log(LogLevel.INFO, message, ...values)
 	}
 
 
@@ -210,7 +214,7 @@ export class Logger
 		callbackOrMessage,
 		...values: LogEntryValueValue[]
 	) {
-		return this.debugOrTrace(LogLevel.DEBUG, callbackOrMessage, values);
+		return this.debugOrTrace(LogLevel.DEBUG, callbackOrMessage, values)
 	}
 
 	trace(
@@ -227,7 +231,7 @@ export class Logger
 		callbackOrMessage,
 		...values: LogEntryValueValue[]
 	) {
-		return this.debugOrTrace(LogLevel.TRACE, callbackOrMessage, values);
+		return this.debugOrTrace(LogLevel.TRACE, callbackOrMessage, values)
 	}
 
 	private debugOrTrace(
@@ -240,36 +244,36 @@ export class Logger
 		values: LogEntryValueValue[]
 	): string {
 		if (this.level < atLevel) {
-			return '';
+			return ''
 		}
-		let message;
+		let message
 		if (typeof callbackOrMessage === 'function') {
 			if (arguments.length !== 1) {
-				log.throw(debugTraceApiErrorMessage);
+				log.throw(debugTraceApiErrorMessage)
 			}
-			const result = callbackOrMessage();
-			let params;
+			const result = callbackOrMessage()
+			let params
 			if (typeof result === 'string') {
-				message = result;
-				values = [];
+				message = result
+				values  = []
 			} else if (result instanceof Array) {
 				if (result.length != 2) {
-					log.throw(debugTraceApiErrorMessage);
+					log.throw(debugTraceApiErrorMessage)
 				}
-				message = result[0];
+				message = result[0]
 				if (result[1] instanceof Array) {
-					values = <any>result[1];
+					values = <any>result[1]
 				} else {
-					values = <any>[result[1]];
+					values = <any>[result[1]]
 				}
 			} else {
-				log.throw(debugTraceApiErrorMessage);
+				log.throw(debugTraceApiErrorMessage)
 			}
 		} else {
-			message = callbackOrMessage;
+			message = callbackOrMessage
 		}
 
-		this.log(LogLevel.TRACE, message, ...values);
+		this.log(LogLevel.TRACE, message, ...values)
 	}
 
 	private log(
@@ -277,15 +281,15 @@ export class Logger
 		message: LogEntryTypeText,
 		...values: LogEntryValueValue[]
 	): string {
-		const now = new Date();
-		let finalMessage = message;
+		const now        = new Date()
+		let finalMessage = message
 		if (values && values.length) {
 			for (let i = 0; i < values.length; i++) {
-				const value = values[i];
+				const value            = values[i]
 				const valueString: any = (value !== null && value !== undefined) ?
-					values[i].toString() : value;
-				const previousMessage = finalMessage;
-				finalMessage = finalMessage.replace(`{${i + 1}}`, valueString);
+					values[i].toString() : value
+				const previousMessage  = finalMessage
+				finalMessage           = finalMessage.replace(`{${i + 1}}`, valueString)
 				if (previousMessage === finalMessage) {
 					const parameters = values.map((
 						value,
@@ -293,7 +297,7 @@ export class Logger
 					) => {
 						return `{${index + 1}}:  ${value}
 `
-					});
+					})
 					this.throw(`Did not find {${i + 1}} in "${message}"
 	expecting {X} for every parameter passed in to a logging function (X >= 1)
 	
@@ -302,19 +306,19 @@ ${message}
 
 	parameters:
 ${parameters}
-`);
+`)
 				}
 			}
 		}
 		// FIXME: record messages to the database
 		// TODO: do not record undefined values - their absence is their record
 
-		const [logFunction, lvl] = this.getLevelInfo(level);
+		const [logFunction, lvl] = this.getLevelInfo(level)
 
-		const unitHierarchy = `${this.unit.package.name}:${this.unit.name}`;
-		logFunction(`${lvl}${now.toISOString()} [${unitHierarchy}]: ${finalMessage}`);
+		const unitHierarchy = `${this.unit.package.name}:${this.unit.name}`
+		logFunction(`${lvl}${now.toISOString()} [${unitHierarchy}]: ${finalMessage}`)
 
-		return finalMessage;
+		return finalMessage
 	}
 
 	private getLevelInfo(
@@ -322,19 +326,19 @@ ${parameters}
 	): [Function, string] {
 		switch (level) {
 			case LogLevel.DEBUG:
-				return [console.debug, 'DEBUG: '];
+				return [console.debug, 'DEBUG: ']
 			case LogLevel.ERROR:
-				return [console.error, 'FATAL: '];
+				return [console.error, 'FATAL: ']
 			case LogLevel.FATAL:
-				return [console.error, 'ERROR: '];
+				return [console.error, 'ERROR: ']
 			case LogLevel.INFO:
-				return [console.info, 'INFO:  '];
+				return [console.info, 'INFO:  ']
 			case LogLevel.TRACE:
-				return [console.trace, 'TRACE: '];
+				return [console.trace, 'TRACE: ']
 			case LogLevel.WARNING:
-				return [console.warn, 'WARN:  '];
+				return [console.warn, 'WARN:  ']
 			default:
-				this.throw('Unexpected LogLevel ${1}', level);
+				this.throw('Unexpected LogLevel ${1}', level)
 		}
 	}
 

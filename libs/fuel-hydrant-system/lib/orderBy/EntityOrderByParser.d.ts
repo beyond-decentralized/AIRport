@@ -1,12 +1,13 @@
-import { IQEntityInternal, JoinTreeNode } from "@airport/air-control";
+import { IQEntityInternal, JoinTreeNode } from '@airport/air-control';
 import { JSONEntityFieldInOrderBy } from '@airport/ground-control';
-import { AbstractEntityOrderByParser, IEntityOrderByParser } from "./AbstractEntityOrderByParser";
+import { AbstractEntityOrderByParser, IEntityOrderByParser } from './AbstractEntityOrderByParser';
 /**
  * Created by Papa on 10/16/2016.
  */
 /**
- * Will hierarchically order the results of the query using breadth-first processing. Within a given entity will take
- * into account the sort order specified in the Order By clause.
+ * Will hierarchically order the results of the query using breadth-first processing.
+ * Within a given entity will take into account the sort order specified in the Order By
+ * clause.
  */
 export declare class EntityOrderByParser extends AbstractEntityOrderByParser implements IEntityOrderByParser {
     /**
@@ -17,10 +18,8 @@ export declare class EntityOrderByParser extends AbstractEntityOrderByParser imp
       var result = '',
       queue = [],
       current = this.root;
-
       if (!current) return null;
       queue.push(current);
-
       while (current = queue.shift()) {
             result += current.value + ' ';
             current.left && queue.push(current.left);

@@ -33,7 +33,7 @@ export interface ILoggedPackage
 
 }
 
-const log = APPROACH_LIGHTING_SYSTEM_LOGGER.add('LoggedPackage')
+var log
 
 export class LoggedPackage
 	extends Logged
@@ -52,6 +52,11 @@ export class LoggedPackage
 			name: packageName,
 			applicationPackages: []
 		}
+
+		setTimeout(() => {
+			log = APPROACH_LIGHTING_SYSTEM_LOGGER.add('LoggedPackage')
+		})
+
 		// loggedApplication.addPackage(this);
 	}
 

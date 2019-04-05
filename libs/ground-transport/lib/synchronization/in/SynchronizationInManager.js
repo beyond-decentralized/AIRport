@@ -5,9 +5,8 @@ const di_1 = require("@airport/di");
 const moving_walkway_1 = require("@airport/moving-walkway");
 const tower_1 = require("@airport/tower");
 const lib_1 = require("zipson/lib");
-const Constants_1 = require("../../Constants");
 const diTokens_1 = require("../../diTokens");
-const log = Constants_1.GROUND_TRANSPORT_LOGGER.add('SynchronizationInManager');
+// const log = GROUND_TRANSPORT_LOGGER.add('SynchronizationInManager')
 /**
  * Synchronization in Manager implementation.
  */
@@ -105,7 +104,7 @@ class SynchronizationInManager {
                     case arrivals_n_departures_1.MessageToTMContentType.ALIVE_ACK:
                         throw new Error('Not Implemented');
                     default:
-                        log.error(`Unsupported ClientInMessage type: {1}`, incomingMessage.contentType);
+                        console.error(`Unsupported ClientInMessage type: ${incomingMessage.contentType}`);
                         break;
                 }
             }
@@ -141,11 +140,11 @@ class SynchronizationInManager {
             // SourceAgtTerminalId:            {3}
             // AgtRepositoryId:                {4}
             // TmRepositoryTransactionBlockId: {5}
-            log.error(`MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK
+            console.error(`MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK
 			Message reception time is less than last Change Time in received message:
-				Reception Time:                 {1}
-				Last Received Change Time:      {2}
-			`, receptionTimeMillis, lastChangeTimeMillis);
+				Reception Time:                 ${receptionTimeMillis}
+				Last Received Change Time:      ${lastChangeTimeMillis}
+			`);
             // 		break;
             // 	}
             // 	case MessageToTMContentType.ALIVE_ACK: {

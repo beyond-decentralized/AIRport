@@ -73,5 +73,6 @@ export declare class Container implements IContainer {
     onInit(callback: () => void): void;
     set<I>(token: DiToken<I>, clazz: new () => I): void;
     private doGet;
+    private getSync;
 }
 export declare const DI: IContainer;

@@ -7,6 +7,7 @@ export * from './orderBy/AbstractEntityOrderByParser';
 export * from './orderBy/EntityOrderByParser';
 export * from './orderBy/ExactOrderByParser';
 export * from './orderBy/MappedOrderByParser';
+export * from './orderBy/parserFactory';
 export * from './result/entity/EntityGraphResultParser';
 export * from './result/entity/EntityTreeResultParser';
 export * from './result/entity/GraphMtoMapper';

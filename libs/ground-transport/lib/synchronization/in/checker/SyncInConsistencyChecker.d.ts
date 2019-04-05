@@ -1,4 +1,4 @@
-import { IDataToTM } from "../SyncInUtils";
+import { IDataToTM } from '../SyncInUtils';
 export interface ISyncInConsistencyChecker {
 }
 export declare class SyncInConsistencyChecker implements ISyncInConsistencyChecker {

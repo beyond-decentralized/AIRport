@@ -4,7 +4,7 @@ const runway_edge_lighting_1 = require("@airport/runway-edge-lighting");
 const Constants_1 = require("./Constants");
 const Logged_1 = require("./Logged");
 const Logger_1 = require("./Logger");
-const log = Constants_1.APPROACH_LIGHTING_SYSTEM_LOGGER.add('LoggedPackage');
+var log;
 class LoggedPackage extends Logged_1.Logged {
     constructor(packageName, level = runway_edge_lighting_1.LogLevel.INFO) {
         super(level);
@@ -14,6 +14,9 @@ class LoggedPackage extends Logged_1.Logged {
             name: packageName,
             applicationPackages: []
         };
+        setTimeout(() => {
+            log = Constants_1.APPROACH_LIGHTING_SYSTEM_LOGGER.add('LoggedPackage');
+        });
         // loggedApplication.addPackage(this);
     }
     get applicationPackage() {

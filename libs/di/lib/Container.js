@@ -23,42 +23,50 @@ class Container {
     }
     doGet(tokens, returnArray, successCallback, errorCallback) {
         this.numPendingInits++;
+        if (tokens.every(token => this.classes[token])) {
+            this.getSync(tokens, returnArray, successCallback, errorCallback);
+        }
+        else {
+            setTimeout(() => {
+                this.getSync(tokens, returnArray, successCallback, errorCallback);
+            });
+        }
+    }
+    getSync(tokens, returnArray, successCallback, errorCallback) {
         let firstErrorClass;
-        setTimeout(() => {
-            const objects = tokens.map(token => {
-                if (firstErrorClass) {
+        const objects = tokens.map(token => {
+            if (firstErrorClass) {
+                return;
+            }
+            let object = this.objects[token];
+            if (!object) {
+                const clazz = this.classes[token];
+                if (!clazz) {
+                    firstErrorClass = clazz;
                     return;
                 }
-                let object = this.objects[token];
-                if (!object) {
-                    const clazz = this.classes[token];
-                    if (!clazz) {
-                        firstErrorClass = clazz;
-                        return;
-                    }
-                    object = new this.classes[token]();
-                    this.objects[token] = object;
-                }
-                return object;
-            });
-            this.numPendingInits--;
-            if (firstErrorClass) {
-                console.log('Dependency Injection (DI) could not find class: '
-                    + firstErrorClass.name);
-                errorCallback(firstErrorClass);
+                object = new this.classes[token]();
+                this.objects[token] = object;
             }
-            else {
-                returnArray ?
-                    successCallback(returnArray)
-                    :
-                        successCallback(...objects);
-                setTimeout(() => {
-                    if (this.numPendingInits === 0) {
-                        this.onInitCallback();
-                    }
-                });
-            }
+            return object;
         });
+        this.numPendingInits--;
+        if (firstErrorClass) {
+            console.log('Dependency Injection (DI) could not find class: '
+                + firstErrorClass.name);
+            errorCallback(firstErrorClass);
+        }
+        else {
+            returnArray ?
+                successCallback(objects)
+                :
+                    successCallback(...objects);
+            setTimeout(() => {
+                if (this.numPendingInits === 0) {
+                    this.onInitCallback();
+                }
+            });
+        }
     }
 }
 exports.Container = Container;

@@ -6,11 +6,10 @@ const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const moving_walkway_1 = require("@airport/moving-walkway");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
-const Constants_1 = require("../../Constants");
 const diTokens_1 = require("../../diTokens");
 const maxSingleRepoChangeLength = 1048576;
 const maxAllRepoChangesLength = 10485760;
-const log = Constants_1.GROUND_TRANSPORT_LOGGER.add('SynchronizationOutManager');
+// const log = GROUND_TRANSPORT_LOGGER.add('SynchronizationOutManager')
 /**
  * Synchronization manager is in charge of maintaining the AIR Terminal in sync.
  *

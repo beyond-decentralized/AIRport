@@ -1,7 +1,7 @@
-import { LogEntryTypeText, LogEntryValueValue, SetLogLevel } from "@airport/runway-edge-lighting";
-import { IPackagedUnit, PackagedUnitName } from "@airport/territory";
-import { ILogged, Logged } from "./Logged";
-import { ILoggedPackage } from "./LoggedPackage";
+import { LogEntryTypeText, LogEntryValueValue, SetLogLevel } from '@airport/runway-edge-lighting';
+import { IPackagedUnit, PackagedUnitName } from '@airport/territory';
+import { ILogged, Logged } from './Logged';
+import { ILoggedPackage } from './LoggedPackage';
 export interface ILogger extends ILogged {
     loggedPackage: ILoggedPackage;
     unit: IPackagedUnit;

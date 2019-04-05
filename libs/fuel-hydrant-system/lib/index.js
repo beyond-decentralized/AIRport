@@ -12,6 +12,7 @@ __export(require("./orderBy/AbstractEntityOrderByParser"));
 __export(require("./orderBy/EntityOrderByParser"));
 __export(require("./orderBy/ExactOrderByParser"));
 __export(require("./orderBy/MappedOrderByParser"));
+__export(require("./orderBy/parserFactory"));
 __export(require("./result/entity/EntityGraphResultParser"));
 __export(require("./result/entity/EntityTreeResultParser"));
 __export(require("./result/entity/GraphMtoMapper"));

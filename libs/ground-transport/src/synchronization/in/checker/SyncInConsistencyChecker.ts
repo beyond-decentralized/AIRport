@@ -1,15 +1,12 @@
-import {DI}                      from '@airport/di'
-import {GROUND_TRANSPORT_LOGGER} from '../../../Constants'
-import {
-	SYNC_IN_CONSISTENCY_CHECKER
-}                                from "../../../diTokens";
-import {IDataToTM}               from "../SyncInUtils";
+import {DI}                          from '@airport/di'
+import {SYNC_IN_CONSISTENCY_CHECKER} from '../../../diTokens'
+import {IDataToTM}                   from '../SyncInUtils'
 
 export interface ISyncInConsistencyChecker {
 
 }
 
-const log = GROUND_TRANSPORT_LOGGER.add("SyncInConsistencyChecker");
+// const log = GROUND_TRANSPORT_LOGGER.add("SyncInConsistencyChecker");
 
 export class SyncInConsistencyChecker
 	implements ISyncInConsistencyChecker {

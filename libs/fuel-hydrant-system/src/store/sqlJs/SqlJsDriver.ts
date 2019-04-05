@@ -1,12 +1,11 @@
-import {DI}            from '@airport/di'
 import {
 	QueryType,
-	STORE_DRIVER,
 	StoreType
-}                      from '@airport/ground-control'
-import {Database}      from 'sql.js'
-import {SQLDialect}    from '../../sql/core/SQLQuery'
-import {SqLiteDriver}  from '../sqLite/SqLiteDriver'
+}                     from '@airport/ground-control'
+// FIXME: add support, in future, if needed
+// import {Database}      from 'sql.js'
+import {SQLDialect}   from '../../sql/core/SQLQuery'
+import {SqLiteDriver} from '../sqLite/SqLiteDriver'
 
 declare function require(moduleName: string): any;
 
@@ -19,12 +18,13 @@ declare var SQL
 export class SqlJsDriver
 	extends SqLiteDriver {
 
-	private _db: Database
+	// FIXME: add support, in future, if needed
+	// private _db: Database
+	private _db: any
 
 	private currentTransaction
 
-	constructor(
-	) {
+	constructor() {
 		super()
 		this.type = StoreType.SQLJS
 	}
@@ -37,8 +37,10 @@ export class SqlJsDriver
 		if (typeof SQL !== 'undefined') {
 			this._db = new SQL.Database()
 		} else {
-			let sql  = require('sql.js')
-			this._db = new sql.Database()
+			// FIXME: add support, in future, if needed
+			// let sql  = require('sql.js')
+			// this._db = new sql.Database()
+			throw 'Not implemented'
 		}
 		return await this.initAllTables()
 	}

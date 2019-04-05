@@ -7,8 +7,9 @@ const AbstractEntityOrderByParser_1 = require("./AbstractEntityOrderByParser");
  * Created by Papa on 10/16/2016.
  */
 /**
- * Will hierarchically order the results of the query using breadth-first processing. Within a given entity will take
- * into account the sort order specified in the Order By clause.
+ * Will hierarchically order the results of the query using breadth-first processing.
+ * Within a given entity will take into account the sort order specified in the Order By
+ * clause.
  */
 class EntityOrderByParser extends AbstractEntityOrderByParser_1.AbstractEntityOrderByParser {
     /**
@@ -19,10 +20,8 @@ class EntityOrderByParser extends AbstractEntityOrderByParser_1.AbstractEntityOr
       var result = '',
       queue = [],
       current = this.root;
-
       if (!current) return null;
       queue.push(current);
-
       while (current = queue.shift()) {
             result += current.value + ' ';
             current.left && queue.push(current.left);

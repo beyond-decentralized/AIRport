@@ -20,7 +20,6 @@ import {
 }                                       from '@airport/moving-walkway'
 import {transactional}                  from '@airport/tower'
 import {parse}                          from 'zipson/lib'
-import {GROUND_TRANSPORT_LOGGER}        from '../../Constants'
 import {
 	SYNC_IN_CHECKER,
 	SYNC_IN_MANAGER,
@@ -64,7 +63,7 @@ export interface ISharingMessageWithData {
 
 export type LastRemoteChangeMillis = number;
 
-const log = GROUND_TRANSPORT_LOGGER.add('SynchronizationInManager')
+// const log = GROUND_TRANSPORT_LOGGER.add('SynchronizationInManager')
 
 /**
  * Synchronization in Manager implementation.
@@ -194,7 +193,7 @@ export class SynchronizationInManager
 					case MessageToTMContentType.ALIVE_ACK:
 						throw new Error('Not Implemented')
 					default:
-						log.error(`Unsupported ClientInMessage type: {1}`, (<MessageToTM>incomingMessage).contentType)
+						console.error(`Unsupported ClientInMessage type: ${(<MessageToTM>incomingMessage).contentType}`)
 						break
 				}
 			}
@@ -241,12 +240,11 @@ export class SynchronizationInManager
 			// SourceAgtTerminalId:            {3}
 			// AgtRepositoryId:                {4}
 			// TmRepositoryTransactionBlockId: {5}
-			log.error(`MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK
+			console.error(`MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK
 			Message reception time is less than last Change Time in received message:
-				Reception Time:                 {1}
-				Last Received Change Time:      {2}
-			`, receptionTimeMillis,
-				lastChangeTimeMillis)
+				Reception Time:                 ${receptionTimeMillis}
+				Last Received Change Time:      ${lastChangeTimeMillis}
+			`)
 			// 		break;
 			// 	}
 			// 	case MessageToTMContentType.ALIVE_ACK: {
