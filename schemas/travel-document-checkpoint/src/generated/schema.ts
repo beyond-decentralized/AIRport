@@ -53,7 +53,14 @@ export const SCHEMA = {
 							"type": 4
 						}
 					],
-					"idColumnRefs": [],
+					"idColumnRefs": [
+						{
+							"index": 0
+						},
+						{
+							"index": 1
+						}
+					],
 					"index": 0,
 					"isLocal": true,
 					"isRepositoryEntity": false,
@@ -61,7 +68,7 @@ export const SCHEMA = {
 					"properties": [
 						{
 							"index": 0,
-							"isId": false,
+							"isId": true,
 							"name": "user",
 							"relationRef": {
 								"index": 0
@@ -70,7 +77,7 @@ export const SCHEMA = {
 						},
 						{
 							"index": 1,
-							"isId": false,
+							"isId": true,
 							"name": "terminal",
 							"relationRef": {
 								"index": 1
@@ -81,7 +88,7 @@ export const SCHEMA = {
 					"relations": [
 						{
 							"index": 0,
-							"isId": false,
+							"isId": true,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 0
@@ -91,7 +98,7 @@ export const SCHEMA = {
 						},
 						{
 							"index": 1,
-							"isId": false,
+							"isId": true,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1
@@ -102,7 +109,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "USER_TERMINAL"
+						"name": "USER_TERMINAL",
+						"indexes": []
 					}
 				},
 				{
@@ -343,7 +351,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "USER_TERMINAL_AGT"
+						"name": "USER_TERMINAL_AGT",
+						"indexes": []
 					}
 				},
 				{
@@ -544,7 +553,10 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						}
 					],
-					"sinceVersion": 1
+					"sinceVersion": 1,
+					"tableConfig": {
+						"indexes": []
+					}
 				},
 				{
 					"columns": [
@@ -760,7 +772,10 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						}
 					],
-					"sinceVersion": 1
+					"sinceVersion": 1,
+					"tableConfig": {
+						"indexes": []
+					}
 				},
 				{
 					"columns": [
@@ -910,7 +925,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "TERMINAL_AGTS"
+						"name": "TERMINAL_AGTS",
+						"indexes": []
 					}
 				},
 				{
@@ -1019,7 +1035,10 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						}
 					],
-					"sinceVersion": 1
+					"sinceVersion": 1,
+					"tableConfig": {
+						"indexes": []
+					}
 				}
 			],
 			"integerVersion": 1,

@@ -16,6 +16,7 @@ export interface IStoreDriver {
     type: StoreType;
     deleteWhere(portableQuery: PortableQuery): Promise<number>;
     doesTableExist(tableName: string): Promise<boolean>;
+    dropTable(tableName: string): Promise<boolean>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<E>;
     findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;

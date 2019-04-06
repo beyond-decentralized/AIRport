@@ -34,7 +34,7 @@ export abstract class Dao<Entity,
 	implements IDao<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE> {
 
-	protected db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
+	public db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>
 
 	protected utils: IUtils

@@ -49,7 +49,7 @@ export class EntityDatabaseFacade<Entity,
 	searchOne: IEntitySearchOne<Entity, EntitySelect>;
 
 	constructor(
-		private dbEntity: DbEntity,
+		public dbEntity: DbEntity,
 		private Q: QSchema,
 		private utils: IUtils
 	) {

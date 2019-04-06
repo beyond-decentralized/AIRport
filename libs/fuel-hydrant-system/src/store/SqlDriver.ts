@@ -244,7 +244,11 @@ export abstract class SqlDriver
 		console.log(message)
 	}
 
-	abstract doesTableExist(tableName: string): Promise<boolean>;
+	abstract doesTableExist(tableName: string): Promise<boolean>
+
+	abstract dropTable(
+		tableName: string
+	): Promise<boolean>
 
 	abstract query(
 		queryType: QueryType,

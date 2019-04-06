@@ -180,7 +180,7 @@ export interface SchemaRelationEUpdateColumns
 	DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
 	REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
 	SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-	INDEX?: number | IQNumberField;
+	RELATION_INDEX?: number | IQNumberField;
 	FOREIGN_KEY?: string | IQStringField;
 	MANY_TO_ONE_ELEMENTS?: string | IQStringField;
 	ONE_TO_MANY_ELEMENTS?: string | IQStringField;

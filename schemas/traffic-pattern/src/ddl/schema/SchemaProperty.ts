@@ -31,6 +31,7 @@ export class SchemaProperty
 	@GeneratedValue()
 	id: PropertyId
 
+	@Column({name: 'PROPERTY_INDEX', nullable: false})
 	index: PropertyIndex
 
 	@ManyToOne()

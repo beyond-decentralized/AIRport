@@ -4,7 +4,7 @@ import { DbEntity } from "@airport/ground-control";
  * Created by Papa on 12/11/2016.
  */
 export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, IQ extends IQEntity> implements IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, IQ> {
-    private dbEntity;
+    dbEntity: DbEntity;
     private Q;
     private utils;
     common: IDatabaseFacade;

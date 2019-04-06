@@ -69,7 +69,8 @@ export const SCHEMA = {
 					"relations": [],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "ARCHIVES"
+						"name": "ARCHIVES",
+						"indexes": []
 					}
 				},
 				{
@@ -220,7 +221,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "DAILY_TERMINAL_SYNC_LOG"
+						"name": "DAILY_TERMINAL_SYNC_LOG",
+						"indexes": []
 					}
 				},
 				{
@@ -353,7 +355,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "MONTHLY_ARCHIVE_LOG"
+						"name": "MONTHLY_ARCHIVE_LOG",
+						"indexes": []
 					}
 				},
 				{
@@ -527,7 +530,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "MONTHLY_TERMINAL_SYNC_LOG"
+						"name": "MONTHLY_TERMINAL_SYNC_LOG",
+						"indexes": []
 					}
 				},
 				{
@@ -631,7 +635,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "REPOSITORY_ARCHIVE"
+						"name": "REPOSITORY_ARCHIVE",
+						"indexes": []
 					}
 				},
 				{
@@ -758,7 +763,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_USER_REPOSITORIES"
+						"name": "AGT_USER_REPOSITORIES",
+						"indexes": []
 					}
 				},
 				{
@@ -947,7 +953,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_USERS"
+						"name": "AGT_USERS",
+						"indexes": []
 					}
 				},
 				{
@@ -1013,7 +1020,8 @@ export const SCHEMA = {
 					"relations": [],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_SECURITY_QUESTIONS"
+						"name": "AGT_SECURITY_QUESTIONS",
+						"indexes": []
 					}
 				},
 				{
@@ -1140,7 +1148,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_SECURITY_ANSWERS"
+						"name": "AGT_SECURITY_ANSWERS",
+						"indexes": []
 					}
 				},
 				{
@@ -1362,7 +1371,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_SERVER_SYNC_LOG"
+						"name": "AGT_SERVER_SYNC_LOG",
+						"indexes": []
 					}
 				},
 				{
@@ -1448,7 +1458,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_SERVERS"
+						"name": "AGT_SERVERS",
+						"indexes": []
 					}
 				},
 				{
@@ -1552,7 +1563,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_SYNC_LOG"
+						"name": "AGT_SYNC_LOG",
+						"indexes": []
 					}
 				},
 				{
@@ -1679,7 +1691,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_TERMINAL_REPOSITORIES"
+						"name": "AGT_TERMINAL_REPOSITORIES",
+						"indexes": []
 					}
 				},
 				{
@@ -1797,7 +1810,8 @@ export const SCHEMA = {
 					"relations": [],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_TUNING_PARAMETERS"
+						"name": "AGT_TUNING_PARAMETERS",
+						"indexes": []
 					}
 				},
 				{
@@ -1946,7 +1960,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_SHARING_MESSAGES"
+						"name": "AGT_SHARING_MESSAGES",
+						"indexes": []
 					}
 				},
 				{
@@ -2183,7 +2198,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_TERMINALS"
+						"name": "AGT_TERMINALS",
+						"indexes": []
 					}
 				},
 				{
@@ -2480,7 +2496,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_REPOSITORY_TRANSACTION_BLOCKS"
+						"name": "AGT_REPOSITORY_TRANSACTION_BLOCKS",
+						"indexes": []
 					}
 				},
 				{
@@ -2631,7 +2648,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "AGT_REPOSITORIES"
+						"name": "AGT_REPOSITORIES",
+						"indexes": []
 					}
 				},
 				{
@@ -2741,7 +2759,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "DAILY_ARCHIVE_LOG"
+						"name": "DAILY_ARCHIVE_LOG",
+						"indexes": []
 					}
 				}
 			],

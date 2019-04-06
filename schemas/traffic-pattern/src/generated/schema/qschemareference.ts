@@ -134,7 +134,7 @@ export interface SchemaReferenceEUpdateColumns
 	DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
 	REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
 	SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-	INDEX?: number | IQNumberField;
+	SCHEMA_REFERENCE_INDEX?: number | IQNumberField;
 
 }
 

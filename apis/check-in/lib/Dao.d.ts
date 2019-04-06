@@ -3,7 +3,7 @@ import { IAirportDatabase, IDao, IEntityCreateProperties, IEntityDatabaseFacade,
  * Created by Papa on 8/26/2017.
  */
 export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, QE extends IQEntity> implements IDao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, QE> {
-    protected db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>;
+    db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>;
     protected utils: IUtils;
     protected airDb: IAirportDatabase;
     constructor(dbEntityName: string, Q: QSchema);

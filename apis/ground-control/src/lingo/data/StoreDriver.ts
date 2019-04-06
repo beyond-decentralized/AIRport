@@ -30,6 +30,10 @@ export interface IStoreDriver {
 		tableName: string
 	): Promise<boolean>
 
+	dropTable(
+		tableName: string
+	): Promise<boolean>
+
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,

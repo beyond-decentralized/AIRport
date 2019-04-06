@@ -49,7 +49,7 @@ export class SchemaEntity
 	//
 	// Non-Id columns
 	//
-	@Column({name: 'INDEX', nullable: false})
+	@Column({name: 'TABLE_INDEX', nullable: false})
 	@DbNumber()
 	index: TableIndex
 

@@ -65,7 +65,7 @@ export interface SchemaColumnEUpdateColumns extends VersionedSchemaObjectEUpdate
     DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
     REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
     SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-    INDEX?: number | IQNumberField;
+    COLUMN_INDEX?: number | IQNumberField;
     ID_INDEX?: number | IQNumberField;
     IS_GENERATED?: boolean | IQBooleanField;
     ALLOCATION_SIZE?: number | IQNumberField;

@@ -1,6 +1,6 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
-import { IUser, UserEOptionalId, UserESelect, QUserQRelation } from './quser';
-import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from './qterminal';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, QEntity, QRelation } from '@airport/air-control';
+import { IUser, UserEId, UserEOptionalId, UserESelect, QUserQId, QUserQRelation } from './quser';
+import { ITerminal, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from './qterminal';
 export interface IUserTerminal {
     user?: IUser;
     terminal?: ITerminal;
@@ -16,25 +16,25 @@ export interface UserTerminalESelect extends IEntitySelectProperties, UserTermin
  * DELETE - Ids fields and relations only (required).
  */
 export interface UserTerminalEId extends IEntityIdProperties {
+    user: UserEId;
+    terminal: TerminalEId;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface UserTerminalEOptionalId {
+    user?: UserEOptionalId;
+    terminal?: TerminalEOptionalId;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
  */
 export interface UserTerminalEUpdateProperties extends IEntityUpdateProperties {
-    user?: UserEOptionalId;
-    terminal?: TerminalEOptionalId;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
 export interface UserTerminalEUpdateColumns extends IEntityUpdateColumns {
-    USER_ID?: number | IQNumberField;
-    TERMINAL_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -54,6 +54,8 @@ export interface QUserTerminal extends QEntity {
     terminal: QTerminalQRelation;
 }
 export interface QUserTerminalQId {
+    user: QUserQId;
+    terminal: QTerminalQId;
 }
 export interface QUserTerminalQRelation extends QRelation<QUserTerminal>, QUserTerminalQId {
 }

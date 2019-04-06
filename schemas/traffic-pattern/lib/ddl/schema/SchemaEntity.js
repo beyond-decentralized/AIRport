@@ -22,7 +22,7 @@ __decorate([
     __metadata("design:type", Number)
 ], SchemaEntity.prototype, "id", void 0);
 __decorate([
-    air_control_1.Column({ name: 'INDEX', nullable: false }),
+    air_control_1.Column({ name: 'TABLE_INDEX', nullable: false }),
     air_control_2.DbNumber(),
     __metadata("design:type", Number)
 ], SchemaEntity.prototype, "index", void 0);

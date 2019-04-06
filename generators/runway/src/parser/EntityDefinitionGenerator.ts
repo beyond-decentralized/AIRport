@@ -82,7 +82,7 @@ export function generateEntityDefinitions(
 
 	/** visit nodes finding exported classes */
 	function visit(node: ts.Node) {
-		let path = getClassPath((<any>node).upstream)
+		let path = getClassPath((<any>node).parent)
 		// Only top level entities are supported
 		if (!path) {
 			return
@@ -161,7 +161,7 @@ export function generateEntityDefinitions(
 	/** Serialize a symbol into a json object */
 	function serializeSymbol(
 		symbol: ts.Symbol,
-		parent = (<any>symbol).upstream
+		parent = (<any>symbol).parent
 	): DocEntry {
 		const declarations     = symbol.declarations
 		let isGenerated        = false

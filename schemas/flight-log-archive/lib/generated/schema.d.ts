@@ -37,6 +37,7 @@ export declare const SCHEMA: {
             "sinceVersion": number;
             "tableConfig": {
                 "name": string;
+                "indexes": any[];
             };
         } | {
             "columns": any[];

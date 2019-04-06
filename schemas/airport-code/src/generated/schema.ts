@@ -138,7 +138,8 @@ export const SCHEMA = {
 					"relations": [],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SEQUENCES"
+						"name": "SEQUENCES",
+						"indexes": []
 					}
 				},
 				{
@@ -270,7 +271,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SEQUENCE_CONSUMERS"
+						"name": "SEQUENCE_CONSUMERS",
+						"indexes": []
 					}
 				},
 				{
@@ -467,7 +469,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SEQUENCE_BLOCKS"
+						"name": "SEQUENCE_BLOCKS",
+						"indexes": []
 					}
 				}
 			],

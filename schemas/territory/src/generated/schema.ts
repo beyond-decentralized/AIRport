@@ -92,7 +92,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "PACKAGES"
+						"name": "PACKAGES",
+						"indexes": []
 					}
 				},
 				{
@@ -217,7 +218,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "APPLICATION_PACKAGES"
+						"name": "APPLICATION_PACKAGES",
+						"indexes": []
 					}
 				},
 				{
@@ -306,7 +308,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "DOMAINS"
+						"name": "DOMAINS",
+						"indexes": []
 					}
 				},
 				{
@@ -436,7 +439,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "APPLICATIONS"
+						"name": "APPLICATIONS",
+						"indexes": []
 					}
 				},
 				{
@@ -543,7 +547,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "PACKAGED_UNITS"
+						"name": "PACKAGED_UNITS",
+						"indexes": []
 					}
 				}
 			],

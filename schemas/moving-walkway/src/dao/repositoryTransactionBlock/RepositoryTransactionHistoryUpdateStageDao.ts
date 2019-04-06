@@ -1,17 +1,24 @@
-import {field} from '@airport/air-control'
-import {DI}    from '@airport/di'
 import {
-	QRepositoryTransactionHistory,
+	field,
+	IQNumberField
+}          from '@airport/air-control'
+import {
+	DI,
+	ICachedPromise
+}          from '@airport/di'
+import {
+	IRepositoryTransactionHistoryDao,
+	REPO_TRANS_HISTORY_DAO,
 	RepositoryTransactionHistoryBlockId,
 	RepositoryTransactionHistoryId
-}              from '@airport/holding-pattern'
+}          from '@airport/holding-pattern'
 import {
 	BaseRepositoryTransactionHistoryUpdateStageDao,
 	IBaseRepositoryTransactionHistoryUpdateStageDao,
 	QRepositoryTransactionHistoryUpdateStage,
 	REPO_TRANS_HISTORY_UPDATE_STAGE_DAO
-}              from '../..'
-import {Q}     from '../../generated/generated'
+}          from '../..'
+import {Q} from '../../generated/generated'
 
 export type RepositoryTransactionHistoryUpdateStageValues = [
 	RepositoryTransactionHistoryId,
@@ -36,16 +43,20 @@ export class RepositoryTransactionHistoryUpdateStageDao
 	extends BaseRepositoryTransactionHistoryUpdateStageDao
 	implements IRepositoryTransactionHistoryUpdateStageDao {
 
+	repoTransHistoryDao: ICachedPromise<IRepositoryTransactionHistoryDao>
+
+	constructor() {
+		super()
+		this.repoTransHistoryDao = DI.cache(REPO_TRANS_HISTORY_DAO)
+	}
+
 	async insertValues(
 		values: RepositoryTransactionHistoryUpdateStageValues[]
 	): Promise<number> {
+		const rthus: QRepositoryTransactionHistoryUpdateStage = this.db.from
 
-		const dbEntity = Q.db.currentVersion.entityMapByName.RepositoryTransactionHistoryUpdateStage
-
-		let rthus: QRepositoryTransactionHistoryUpdateStage
-
-		return await this.airDb.db.insertValues(dbEntity, {
-			insertInto: rthus = Q.RepositoryTransactionHistoryUpdateStage,
+		return await this.db.insertValues({
+			insertInto: rthus,
 			columns: [
 				rthus.repositoryTransactionHistoryId,
 				rthus.blockId
@@ -55,24 +66,18 @@ export class RepositoryTransactionHistoryUpdateStageDao
 	}
 
 	async updateRepositoryTransactionHistory(): Promise<number> {
-		const schemaName = '@airport/holding-pattern'
-		const dbEntity   = this.airDb.schemaMapByName[schemaName]
-			.currentVersion.entityMapByName['RepositoryTransactionHistory']
-		const rth: QRepositoryTransactionHistory
-		                 = this.airDb.qSchemaMapByName[schemaName].RepositoryTransactionHistory
-		let rthus: QRepositoryTransactionHistoryUpdateStage
+		const rthus = this.db.from
 
-		return await this.airDb.db.updateWhere(dbEntity, {
-			update: rth,
-			set: {
-				blockId: field({
-					from: [
-						rthus = Q.RepositoryTransactionHistoryUpdateStage
-					],
-					select: rthus.blockId,
-					where: rthus.repositoryTransactionHistoryId.equals(rth.id)
-				})
-			}
+		return await (await this.repoTransHistoryDao.get()).setBlockIdWhereId((
+			idField: IQNumberField
+		) => {
+			field({
+				from: [
+					rthus
+				],
+				select: rthus.blockId,
+				where: rthus.repositoryTransactionHistoryId.equals(idField)
+			})
 		})
 	}
 

@@ -1981,7 +1981,8 @@ export const MAPPED_SUPERCLASS = [
 							}
 						],
 						"schemaVersion": null,
-						"sinceVersion": null
+						"sinceVersion": null,
+						"tableConfig": null
 					},
 					"index": 0
 				},
@@ -3193,7 +3194,8 @@ export const MAPPED_SUPERCLASS = [
 								}
 							],
 							"schemaVersion": null,
-							"sinceVersion": null
+							"sinceVersion": null,
+							"tableConfig": null
 						},
 						"index": 0
 					},

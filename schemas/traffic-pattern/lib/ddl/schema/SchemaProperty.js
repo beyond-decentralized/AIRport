@@ -21,6 +21,10 @@ __decorate([
     __metadata("design:type", Number)
 ], SchemaProperty.prototype, "id", void 0);
 __decorate([
+    air_control_1.Column({ name: 'PROPERTY_INDEX', nullable: false }),
+    __metadata("design:type", Number)
+], SchemaProperty.prototype, "index", void 0);
+__decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", SchemaEntity_1.SchemaEntity)

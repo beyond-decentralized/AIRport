@@ -27,7 +27,7 @@ export interface IArchivedPartitionManagementServer {
  * to the SyncRecord and SyncLog tables.
  * Once archiving has finished, drop the archived partitions.
  * Then delete all DatabaseSyncLog records that no longer have any SyncLog
- * downstream.
+ * children.
  */
 export class ArchivedPartitionManagementServer
 	implements IArchivedPartitionManagementServer {

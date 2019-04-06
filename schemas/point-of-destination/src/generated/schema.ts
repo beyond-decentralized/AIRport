@@ -142,7 +142,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "DAILY_ARCHIVES"
+						"name": "DAILY_ARCHIVES",
+						"indexes": []
 					}
 				}
 			],

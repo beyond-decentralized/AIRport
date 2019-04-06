@@ -59,7 +59,7 @@ export class SchemaVersion {
 	patchVersion: SchemaVersionPatch
 
 	@ManyToOne()
-	@JoinColumn({name: 'SCHEMA_INDEX', referencedColumnName: 'INDEX', nullable: false})
+	@JoinColumn({name: 'SCHEMA_INDEX', nullable: false})
 	schema: Schema
 
 	@OneToMany({mappedBy: 'schemaVersion'})

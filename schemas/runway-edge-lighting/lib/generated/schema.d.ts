@@ -74,6 +74,7 @@ export declare const SCHEMA: {
             "sinceVersion": number;
             "tableConfig": {
                 "name": string;
+                "indexes": any[];
             };
         } | {
             "columns": ({
@@ -157,6 +158,7 @@ export declare const SCHEMA: {
             "sinceVersion": number;
             "tableConfig": {
                 "name": string;
+                "indexes": any[];
             };
         } | {
             "columns": ({
@@ -242,6 +244,7 @@ export declare const SCHEMA: {
             "sinceVersion": number;
             "tableConfig": {
                 "name": string;
+                "indexes": any[];
             };
         })[];
         "integerVersion": number;

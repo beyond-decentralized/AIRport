@@ -21,6 +21,7 @@ __decorate([
     air_control_1.GeneratedValue(),
     air_control_1.SequenceGenerator({ allocationSize: 1 }),
     air_control_1.DbNumber(),
+    air_control_1.Column({ name: 'SCHEMA_INDEX', nullable: false }),
     __metadata("design:type", Number)
 ], Schema.prototype, "index", void 0);
 __decorate([

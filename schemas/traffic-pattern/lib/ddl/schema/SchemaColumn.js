@@ -21,7 +21,7 @@ __decorate([
     __metadata("design:type", Number)
 ], SchemaColumn.prototype, "id", void 0);
 __decorate([
-    air_control_1.Column({ name: 'INDEX', nullable: false }),
+    air_control_1.Column({ name: 'COLUMN_INDEX', nullable: false }),
     __metadata("design:type", Number)
 ], SchemaColumn.prototype, "index", void 0);
 __decorate([

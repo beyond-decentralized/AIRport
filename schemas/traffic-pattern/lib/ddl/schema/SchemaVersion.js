@@ -45,7 +45,7 @@ __decorate([
 ], SchemaVersion.prototype, "patchVersion", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'SCHEMA_INDEX', referencedColumnName: 'INDEX', nullable: false }),
+    air_control_1.JoinColumn({ name: 'SCHEMA_INDEX', nullable: false }),
     __metadata("design:type", Schema_1.Schema)
 ], SchemaVersion.prototype, "schema", void 0);
 __decorate([

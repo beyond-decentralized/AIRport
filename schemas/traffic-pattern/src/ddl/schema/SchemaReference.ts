@@ -27,7 +27,7 @@ export class SchemaReference
 	@JoinColumn({name: 'REFERENCED_SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false})
 	referencedSchemaVersion: SchemaVersion
 
-	@Column({name: 'INDEX', nullable: false})
+	@Column({name: 'SCHEMA_REFERENCE_INDEX', nullable: false})
 	index: SchemaReferenceIndex
 
 }

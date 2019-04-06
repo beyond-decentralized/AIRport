@@ -92,7 +92,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SYNCHRONIZATION_CONFLICT_VALUES"
+                        "name": "SYNCHRONIZATION_CONFLICT_VALUES",
+                        "indexes": []
                     }
                 },
                 {
@@ -305,7 +306,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SYNCHRONIZATION_CONFLICT"
+                        "name": "SYNCHRONIZATION_CONFLICT",
+                        "indexes": []
                     }
                 },
                 {
@@ -433,7 +435,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SYNC_CONFLICT_PENDING_NOTIFICATION"
+                        "name": "SYNC_CONFLICT_PENDING_NOTIFICATION",
+                        "indexes": []
                     }
                 },
                 {
@@ -697,7 +700,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "MISSING_RECORDS"
+                        "name": "MISSING_RECORDS",
+                        "indexes": []
                     }
                 },
                 {
@@ -795,7 +799,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "MISSING_RECORD_REPO_TRANS_BLOCKS"
+                        "name": "MISSING_RECORD_REPO_TRANS_BLOCKS",
+                        "indexes": []
                     }
                 },
                 {
@@ -1121,7 +1126,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "RECORD_UPDATE_STAGE"
+                        "name": "RECORD_UPDATE_STAGE",
+                        "indexes": []
                     }
                 },
                 {
@@ -1187,7 +1193,8 @@ exports.SCHEMA = {
                     "relations": [],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "REPO_TRANS_BLOCK_RESPONSE_STAGE"
+                        "name": "REPO_TRANS_BLOCK_RESPONSE_STAGE",
+                        "indexes": []
                     }
                 },
                 {
@@ -1316,7 +1323,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "REPO_TRANS_BLOCK_SCHEMAS_TO_CHANGE"
+                        "name": "REPO_TRANS_BLOCK_SCHEMAS_TO_CHANGE",
+                        "indexes": []
                     }
                 },
                 {
@@ -1382,7 +1390,8 @@ exports.SCHEMA = {
                     "relations": [],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "REPOSITORY_TRANSACTION_HISTORY_UPDATE_STAGE"
+                        "name": "REPOSITORY_TRANSACTION_HISTORY_UPDATE_STAGE",
+                        "indexes": []
                     }
                 },
                 {
@@ -1511,7 +1520,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SHARING_NODE_REPO_TRANS_BLOCKS"
+                        "name": "SHARING_NODE_REPO_TRANS_BLOCKS",
+                        "indexes": []
                     }
                 },
                 {
@@ -1714,7 +1724,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SHARING_NODES"
+                        "name": "SHARING_NODES",
+                        "indexes": []
                     }
                 },
                 {
@@ -1806,7 +1817,8 @@ exports.SCHEMA = {
                     "relations": [],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SHARING_NODE_REPO_TRANS_BLOCK_STAGE"
+                        "name": "SHARING_NODE_REPO_TRANS_BLOCK_STAGE",
+                        "indexes": []
                     }
                 },
                 {
@@ -1984,7 +1996,8 @@ exports.SCHEMA = {
                         "primaryKey": [
                             "SHARING_NODE_ID",
                             "REPOSITORY_ID"
-                        ]
+                        ],
+                        "indexes": []
                     }
                 },
                 {
@@ -2158,7 +2171,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SHARING_NODE_TERMINAL"
+                        "name": "SHARING_NODE_TERMINAL",
+                        "indexes": []
                     }
                 },
                 {
@@ -2337,7 +2351,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SHARING_MESSAGES"
+                        "name": "SHARING_MESSAGES",
+                        "indexes": []
                     }
                 },
                 {
@@ -2443,7 +2458,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SHARING_MESSAGE_REPO_TRANS_BLOCKS"
+                        "name": "SHARING_MESSAGE_REPO_TRANS_BLOCKS",
+                        "indexes": []
                     }
                 },
                 {
@@ -2769,7 +2785,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "REPOSITORY_TRANSACTION_BLOCKS"
+                        "name": "REPOSITORY_TRANSACTION_BLOCKS",
+                        "indexes": []
                     }
                 }
             ],

@@ -91,7 +91,7 @@ exports.SCHEMA = {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "INDEX",
+                            "name": "COLUMN_INDEX",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -437,7 +437,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SCHEMA_COLUMNS"
+                        "name": "SCHEMA_COLUMNS",
+                        "indexes": []
                     }
                 },
                 {
@@ -663,7 +664,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SCHEMA_COLUMN_PROPERTIES"
+                        "name": "SCHEMA_COLUMN_PROPERTIES",
+                        "indexes": []
                     }
                 },
                 {
@@ -977,7 +979,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SCHEMA_RELATION_COLUMNS"
+                        "name": "SCHEMA_RELATION_COLUMNS",
+                        "indexes": []
                     }
                 },
                 {
@@ -1063,7 +1066,7 @@ exports.SCHEMA = {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "INDEX",
+                            "name": "RELATION_INDEX",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -1448,7 +1451,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SCHEMA_RELATIONS"
+                        "name": "SCHEMA_RELATIONS",
+                        "indexes": []
                     }
                 },
                 {
@@ -1534,8 +1538,8 @@ exports.SCHEMA = {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "INDEX",
-                            "notNull": false,
+                            "name": "PROPERTY_INDEX",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 4
@@ -1768,7 +1772,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SCHEMA_PROPERTIES"
+                        "name": "SCHEMA_PROPERTIES",
+                        "indexes": []
                     }
                 },
                 {
@@ -1854,7 +1859,7 @@ exports.SCHEMA = {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "INDEX",
+                            "name": "TABLE_INDEX",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -2177,7 +2182,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SCHEMA_ENTITIES"
+                        "name": "SCHEMA_ENTITIES",
+                        "indexes": []
                     }
                 },
                 {
@@ -2249,7 +2255,7 @@ exports.SCHEMA = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "INDEX",
+                            "name": "SCHEMA_REFERENCE_INDEX",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -2426,7 +2432,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SCHEMA_REFERENCES"
+                        "name": "SCHEMA_REFERENCES",
+                        "indexes": []
                     }
                 },
                 {
@@ -2693,7 +2700,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SCHEMA_VERSIONS"
+                        "name": "SCHEMA_VERSIONS",
+                        "indexes": []
                     }
                 },
                 {
@@ -2766,8 +2774,8 @@ exports.SCHEMA = {
                             "index": 3,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
-                            "name": "INDEX",
-                            "notNull": false,
+                            "name": "SCHEMA_INDEX",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 3
@@ -3030,7 +3038,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SCHEMAS"
+                        "name": "SCHEMAS",
+                        "indexes": []
                     }
                 }
             ],

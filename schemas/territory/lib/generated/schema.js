@@ -94,7 +94,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "PACKAGES"
+                        "name": "PACKAGES",
+                        "indexes": []
                     }
                 },
                 {
@@ -219,7 +220,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "APPLICATION_PACKAGES"
+                        "name": "APPLICATION_PACKAGES",
+                        "indexes": []
                     }
                 },
                 {
@@ -308,7 +310,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "DOMAINS"
+                        "name": "DOMAINS",
+                        "indexes": []
                     }
                 },
                 {
@@ -438,7 +441,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "APPLICATIONS"
+                        "name": "APPLICATIONS",
+                        "indexes": []
                     }
                 },
                 {
@@ -545,7 +549,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "PACKAGED_UNITS"
+                        "name": "PACKAGED_UNITS",
+                        "indexes": []
                     }
                 }
             ],

@@ -22,6 +22,17 @@ export abstract class SqLiteDriver
 		return matchingTableNames.length === 1
 	}
 
+	async dropTable(
+		tableName: string
+	): Promise<boolean> {
+		const matchingTableNames = await this.findNative(
+			`DROP TABLE '${tableName}'`,
+			[]
+		)
+
+		return matchingTableNames.length === 1
+	}
+
 	async findNative(
 		sqlQuery: string,
 		parameters: any[]

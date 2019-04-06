@@ -134,7 +134,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "LOG_ENTRY_VALUES"
+						"name": "LOG_ENTRY_VALUES",
+						"indexes": []
 					}
 				},
 				{
@@ -263,7 +264,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "LOG_ENTRY"
+						"name": "LOG_ENTRY",
+						"indexes": []
 					}
 				},
 				{
@@ -457,7 +459,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "LOG_ENTRIES"
+						"name": "LOG_ENTRIES",
+						"indexes": []
 					}
 				},
 				{
@@ -546,7 +549,8 @@ export const SCHEMA = {
 					"relations": [],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "LOGGED_ERROR_STACK_TRACE"
+						"name": "LOGGED_ERROR_STACK_TRACE",
+						"indexes": []
 					}
 				},
 				{
@@ -647,7 +651,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "LOGGED_ERROR"
+						"name": "LOGGED_ERROR",
+						"indexes": []
 					}
 				}
 			],

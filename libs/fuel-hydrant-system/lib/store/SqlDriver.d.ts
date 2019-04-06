@@ -32,5 +32,6 @@ export declare abstract class SqlDriver implements IStoreDriver {
     searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<E>;
     warn(message: string): void;
     abstract doesTableExist(tableName: string): Promise<boolean>;
+    abstract dropTable(tableName: string): Promise<boolean>;
     abstract query(queryType: QueryType, query: string, params: any, saveTransaction?: boolean): Promise<any>;
 }

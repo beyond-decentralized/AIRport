@@ -511,7 +511,6 @@ export const MAPPED_SUPERCLASS = [
 											"values": [
 												{
 													"name": "SCHEMA_INDEX",
-													"referencedColumnName": "INDEX",
 													"nullable": false
 												}
 											]
@@ -554,6 +553,15 @@ export const MAPPED_SUPERCLASS = [
 													{
 														"name": "DbNumber",
 														"values": []
+													},
+													{
+														"name": "Column",
+														"values": [
+															{
+																"name": "SCHEMA_INDEX",
+																"nullable": false
+															}
+														]
 													}
 												],
 												"isGenerated": true,
@@ -761,6 +769,15 @@ export const MAPPED_SUPERCLASS = [
 														{
 															"name": "DbNumber",
 															"values": []
+														},
+														{
+															"name": "Column",
+															"values": [
+																{
+																	"name": "SCHEMA_INDEX",
+																	"nullable": false
+																}
+															]
 														}
 													],
 													"isGenerated": true,
@@ -1409,7 +1426,7 @@ export const MAPPED_SUPERCLASS = [
 															"name": "Column",
 															"values": [
 																{
-																	"name": "INDEX",
+																	"name": "TABLE_INDEX",
 																	"nullable": false
 																}
 															]
@@ -1828,7 +1845,7 @@ export const MAPPED_SUPERCLASS = [
 																			"name": "Column",
 																			"values": [
 																				{
-																					"name": "INDEX",
+																					"name": "COLUMN_INDEX",
 																					"nullable": false
 																				}
 																			]
@@ -2783,7 +2800,7 @@ export const MAPPED_SUPERCLASS = [
 															"name": "Column",
 															"values": [
 																{
-																	"name": "INDEX",
+																	"name": "SCHEMA_REFERENCE_INDEX",
 																	"nullable": false
 																}
 															]

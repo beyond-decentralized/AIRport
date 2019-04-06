@@ -187,7 +187,7 @@ export interface SchemaEntityEUpdateColumns
 	DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
 	REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
 	SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-	INDEX?: number | IQNumberField;
+	TABLE_INDEX?: number | IQNumberField;
 	IS_LOCAL?: boolean | IQBooleanField;
 	IS_REPOSITORY_ENTITY?: boolean | IQBooleanField;
 	NAME?: string | IQStringField;

@@ -189,6 +189,15 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
         }
         return existingRecordIdMap;
     }
+    async setBlockIdWhereId(getSetClause) {
+        const rth = this.db.from;
+        return await this.db.updateWhere({
+            update: rth,
+            set: {
+                blockId: getSetClause(rth.id)
+            }
+        });
+    }
 }
 exports.RepositoryTransactionHistoryDao = RepositoryTransactionHistoryDao;
 di_1.DI.set(diTokens_1.REPO_TRANS_HISTORY_DAO, RepositoryTransactionHistoryDao);

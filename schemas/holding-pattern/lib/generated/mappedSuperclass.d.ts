@@ -1524,6 +1524,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 }[];
                 "schemaVersion": any;
                 "sinceVersion": any;
+                "tableConfig": any;
             };
             "index": number;
             "primitive"?: undefined;
@@ -2437,6 +2438,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     }[];
                     "schemaVersion": any;
                     "sinceVersion": any;
+                    "tableConfig": any;
                 };
                 "index": number;
                 "primitive"?: undefined;

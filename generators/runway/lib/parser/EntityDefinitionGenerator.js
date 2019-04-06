@@ -44,7 +44,7 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
     return exports.globalCandidateRegistry.matchVerifiedEntities(processedCandidateRegistry);
     /** visit nodes finding exported classes */
     function visit(node) {
-        let path = utils_1.getClassPath(node.upstream);
+        let path = utils_1.getClassPath(node.parent);
         // Only top level entities are supported
         if (!path) {
             return;
@@ -117,7 +117,7 @@ function generateEntityDefinitions(fileNames, options, configuration, schemaMapB
         }
     }
     /** Serialize a symbol into a json object */
-    function serializeSymbol(symbol, parent = symbol.upstream) {
+    function serializeSymbol(symbol, parent = symbol.parent) {
         const declarations = symbol.declarations;
         let isGenerated = false;
         let allocationSize = undefined;

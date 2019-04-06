@@ -51,7 +51,7 @@ export interface SchemaPropertyEUpdateColumns extends VersionedSchemaObjectEUpda
     DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
     REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
     SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-    INDEX?: number | IQNumberField;
+    PROPERTY_INDEX?: number | IQNumberField;
     NAME?: string | IQStringField;
     IS_ID?: boolean | IQBooleanField;
     SCHEMA_ENTITY_ID?: number | IQNumberField;

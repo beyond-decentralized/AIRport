@@ -12,6 +12,10 @@ class SqLiteDriver extends SqlDriver_1.SqlDriver {
         `SELECT tbl_name from sqlite_master WHERE type = '${tableName}'`, []);
         return matchingTableNames.length === 1;
     }
+    async dropTable(tableName) {
+        const matchingTableNames = await this.findNative(`DROP TABLE '${tableName}'`, []);
+        return matchingTableNames.length === 1;
+    }
     async findNative(sqlQuery, parameters) {
         let nativeParameters = parameters.map((value) => this.convertValueIn(value));
         return await this.query(ground_control_1.QueryType.SELECT, sqlQuery, nativeParameters);

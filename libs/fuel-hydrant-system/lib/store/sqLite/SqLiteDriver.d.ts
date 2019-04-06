@@ -5,6 +5,7 @@ import { SqlDriver } from '../SqlDriver';
  */
 export declare abstract class SqLiteDriver extends SqlDriver {
     doesTableExist(tableName: string): Promise<boolean>;
+    dropTable(tableName: string): Promise<boolean>;
     findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
     protected executeNative(sql: string, parameters: any[]): Promise<number>;
     protected convertValueIn(value: any): number | string;

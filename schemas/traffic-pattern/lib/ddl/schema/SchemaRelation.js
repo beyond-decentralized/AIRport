@@ -22,7 +22,7 @@ __decorate([
     __metadata("design:type", Number)
 ], SchemaRelation.prototype, "id", void 0);
 __decorate([
-    air_control_1.Column({ name: 'INDEX', nullable: false }),
+    air_control_1.Column({ name: 'RELATION_INDEX', nullable: false }),
     __metadata("design:type", Number)
 ], SchemaRelation.prototype, "index", void 0);
 __decorate([

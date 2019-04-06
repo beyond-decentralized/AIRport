@@ -1,19 +1,20 @@
-import {IEntityFind}       from '../../query/api/EntityFind';
-import {IEntityFindOne}    from '../../query/api/EntityFindOne';
-import {UpdateCacheType}   from "../../query/api/EntityLookup";
-import {IEntitySearch}     from '../../query/api/EntitySearch';
-import {IEntitySearchOne}  from '../../query/api/EntitySearchOne';
-import {IDmo}              from "../../query/Dmo";
-import {RawDelete}         from '../../query/facade/Delete';
+import {DbEntity}          from '@airport/ground-control'
+import {IEntityFind}       from '../../query/api/EntityFind'
+import {IEntityFindOne}    from '../../query/api/EntityFindOne'
+import {UpdateCacheType}   from '../../query/api/EntityLookup'
+import {IEntitySearch}     from '../../query/api/EntitySearch'
+import {IEntitySearchOne}  from '../../query/api/EntitySearchOne'
+import {IDmo}              from '../../query/Dmo'
+import {RawDelete}         from '../../query/facade/Delete'
 import {
 	RawInsertColumnValues,
 	RawInsertValues
-}                          from "../../query/facade/InsertValues";
+}                          from '../../query/facade/InsertValues'
 import {
 	RawUpdate,
 	RawUpdateColumns
-}                          from '../../query/facade/Update';
-import {MappedEntityArray} from "../../query/MappedEntityArray";
+}                          from '../../query/facade/Update'
+import {MappedEntityArray} from '../../query/MappedEntityArray'
 import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -21,8 +22,8 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-}                          from '../entity/Entity';
-import {IDatabaseFacade}   from "./DatabaseFacade";
+}                          from '../entity/Entity'
+import {IDatabaseFacade}   from './DatabaseFacade'
 
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -36,6 +37,8 @@ export interface IEntityDatabaseFacade<Entity,
 	IQ extends IQEntity> {
 
 	common: IDatabaseFacade;
+
+	dbEntity: DbEntity;
 
 	dmo: IDmo<Entity, EntitySelect, EntityCreateProperties, EntityUpdateProperties, EntityId, IQ>;
 

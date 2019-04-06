@@ -55,7 +55,14 @@ exports.SCHEMA = {
                             "type": 4
                         }
                     ],
-                    "idColumnRefs": [],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
                     "index": 0,
                     "isLocal": true,
                     "isRepositoryEntity": false,
@@ -63,7 +70,7 @@ exports.SCHEMA = {
                     "properties": [
                         {
                             "index": 0,
-                            "isId": false,
+                            "isId": true,
                             "name": "user",
                             "relationRef": {
                                 "index": 0
@@ -72,7 +79,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 1,
-                            "isId": false,
+                            "isId": true,
                             "name": "terminal",
                             "relationRef": {
                                 "index": 1
@@ -83,7 +90,7 @@ exports.SCHEMA = {
                     "relations": [
                         {
                             "index": 0,
-                            "isId": false,
+                            "isId": true,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 0
@@ -93,7 +100,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 1,
-                            "isId": false,
+                            "isId": true,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 1
@@ -104,7 +111,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "USER_TERMINAL"
+                        "name": "USER_TERMINAL",
+                        "indexes": []
                     }
                 },
                 {
@@ -345,7 +353,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "USER_TERMINAL_AGT"
+                        "name": "USER_TERMINAL_AGT",
+                        "indexes": []
                     }
                 },
                 {
@@ -546,7 +555,10 @@ exports.SCHEMA = {
                             "sinceVersion": 1
                         }
                     ],
-                    "sinceVersion": 1
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "indexes": []
+                    }
                 },
                 {
                     "columns": [
@@ -762,7 +774,10 @@ exports.SCHEMA = {
                             "sinceVersion": 1
                         }
                     ],
-                    "sinceVersion": 1
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "indexes": []
+                    }
                 },
                 {
                     "columns": [
@@ -912,7 +927,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "TERMINAL_AGTS"
+                        "name": "TERMINAL_AGTS",
+                        "indexes": []
                     }
                 },
                 {
@@ -1021,7 +1037,10 @@ exports.SCHEMA = {
                             "sinceVersion": 1
                         }
                     ],
-                    "sinceVersion": 1
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "indexes": []
+                    }
                 }
             ],
             "integerVersion": 1,

@@ -54,12 +54,12 @@ export interface IUserTerminal {
 	// Id Properties
 
 	// Id Relations
+	user?: IUser;
+	terminal?: ITerminal;
 
 	// Non-Id Properties
 
 	// Non-Id Relations
-	user?: IUser;
-	terminal?: ITerminal;
 
 	// Transient Properties
 
@@ -79,10 +79,10 @@ export interface UserTerminalESelect
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
-
-  // Non-Id relations (including OneToMany's)
 	user?: UserESelect;
 	terminal?: TerminalESelect;
+
+  // Non-Id relations (including OneToMany's)
 
 }
 
@@ -94,6 +94,8 @@ export interface UserTerminalEId
 	// Id Properties
 
 	// Id Relations - Ids only
+	user: UserEId;
+	terminal: TerminalEId;
 
 }
 
@@ -104,6 +106,8 @@ export interface UserTerminalEOptionalId {
 	// Id Properties
 
 	// Id Relations - Ids only
+	user?: UserEOptionalId;
+	terminal?: TerminalEOptionalId;
 
 }
 
@@ -115,8 +119,6 @@ export interface UserTerminalEUpdateProperties
 	// Non-Id Properties
 
 	// Non-Id Relations - ids only & no OneToMany's
-	user?: UserEOptionalId;
-	terminal?: TerminalEOptionalId;
 
 }
 
@@ -126,8 +128,6 @@ export interface UserTerminalEUpdateProperties
 export interface UserTerminalEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	USER_ID?: number | IQNumberField;
-	TERMINAL_ID?: number | IQNumberField;
 
 }
 
@@ -160,12 +160,12 @@ export interface QUserTerminal extends QEntity
 	// Id Fields
 
 	// Id Relations
+	user: QUserQRelation;
+	terminal: QTerminalQRelation;
 
 	// Non-Id Fields
 
 	// Non-Id Relations
-	user: QUserQRelation;
-	terminal: QTerminalQRelation;
 
 }
 
@@ -177,6 +177,8 @@ export interface QUserTerminalQId
 	// Id Fields
 
 	// Id Relations
+	user: QUserQId;
+	terminal: QTerminalQId;
 
 
 }

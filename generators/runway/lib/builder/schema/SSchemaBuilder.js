@@ -56,15 +56,28 @@ class SSchemaBuilder {
         let tableConfig;
         for (const decorator of entityCandidate.docEntry.decorators) {
             switch (decorator.name) {
-                case ground_control_1.file.ENTITY:
+                case ground_control_1.file.ENTITY: {
                     foundEntityDecorator = true;
                     break;
-                case ground_control_1.file.TABLE:
-                    tableConfig = decorator.values[0];
+                }
+                case ground_control_1.file.TABLE: {
+                    tableConfig = {
+                        ...decorator.values[0]
+                    };
+                    if (!tableConfig.indexes) {
+                        tableConfig.indexes = [];
+                    }
+                    break;
+                }
             }
         }
         if (!foundEntityDecorator) {
             return null;
+        }
+        if (!tableConfig) {
+            tableConfig = {
+                indexes: []
+            };
         }
         const [isRepositoryEntity, isLocal] = this.entityExtendsRepositoryEntity(entityCandidate);
         let entity = {

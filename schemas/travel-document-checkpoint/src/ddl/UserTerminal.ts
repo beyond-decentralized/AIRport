@@ -1,5 +1,6 @@
 import {
 	Entity,
+	Id,
 	JoinColumn,
 	ManyToOne,
 	Table
@@ -11,10 +12,12 @@ import {User}     from './User'
 @Table({name: 'USER_TERMINAL'})
 export class UserTerminal {
 
+	@Id()
 	@ManyToOne()
 	@JoinColumn({name: 'USER_ID', referencedColumnName: 'ID'})
 	user: User
 
+	@Id()
 	@ManyToOne()
 	@JoinColumn({name: 'TERMINAL_ID', referencedColumnName: 'ID'})
 	terminal: Terminal

@@ -21,7 +21,7 @@ export enum UpdateCacheType {
 }
 
 /**
- * Common upstream for all entity retrieval operations.
+ * Common parent for all entity retrieval operations.
  */
 export interface IEntityLookup<Child, MappedChild> {
 

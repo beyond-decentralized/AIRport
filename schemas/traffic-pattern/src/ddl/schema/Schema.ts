@@ -16,7 +16,7 @@ import {
 	SchemaName,
 	SchemaScope,
 	SchemaStatus
-} from '@airport/ground-control'
+}                              from '@airport/ground-control'
 import {Domain}                from '@airport/territory'
 import {SchemaVersion}         from './SchemaVersion'
 import {VersionedSchemaObject} from './VersionedSchemaObject'
@@ -32,6 +32,7 @@ export class Schema
 	@GeneratedValue()
 	@SequenceGenerator({allocationSize: 1})
 	@DbNumber()
+	@Column({name: 'SCHEMA_INDEX', nullable: false})
 	index: SchemaIndex
 
 	@ManyToOne()

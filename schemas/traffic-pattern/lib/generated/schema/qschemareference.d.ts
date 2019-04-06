@@ -41,7 +41,7 @@ export interface SchemaReferenceEUpdateColumns extends VersionedSchemaObjectEUpd
     DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
     REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
     SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-    INDEX?: number | IQNumberField;
+    SCHEMA_REFERENCE_INDEX?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).

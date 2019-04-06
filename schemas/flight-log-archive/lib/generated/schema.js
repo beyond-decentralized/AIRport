@@ -100,7 +100,8 @@ exports.SCHEMA = {
                     "relations": [],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "DAILY_SYNC_LOG"
+                        "name": "DAILY_SYNC_LOG",
+                        "indexes": []
                     }
                 },
                 {
@@ -218,7 +219,8 @@ exports.SCHEMA = {
                     "relations": [],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "MONTHLY_SYNC_LOG"
+                        "name": "MONTHLY_SYNC_LOG",
+                        "indexes": []
                     }
                 },
                 {

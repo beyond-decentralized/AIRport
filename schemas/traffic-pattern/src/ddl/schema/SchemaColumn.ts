@@ -38,7 +38,8 @@ export class SchemaColumn
 	/**
 	 * Overall column index (within the entity).
 	 */
-	@Column({name: 'INDEX', nullable: false})
+		// FIXME: disallow SQL keywords in names (for columns, etc.), like 'INDEX', etc.
+	@Column({name: 'COLUMN_INDEX', nullable: false})
 	index: ColumnIndex
 
 	@ManyToOne()

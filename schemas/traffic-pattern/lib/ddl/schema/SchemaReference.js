@@ -27,7 +27,7 @@ __decorate([
     __metadata("design:type", SchemaVersion_1.SchemaVersion)
 ], SchemaReference.prototype, "referencedSchemaVersion", void 0);
 __decorate([
-    air_control_1.Column({ name: 'INDEX', nullable: false }),
+    air_control_1.Column({ name: 'SCHEMA_REFERENCE_INDEX', nullable: false }),
     __metadata("design:type", Number)
 ], SchemaReference.prototype, "index", void 0);
 SchemaReference = __decorate([

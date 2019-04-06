@@ -355,7 +355,6 @@ export declare const MAPPED_SUPERCLASS: {
                             "name": string;
                             "values": {
                                 "name": string;
-                                "referencedColumnName": string;
                                 "nullable": boolean;
                             }[];
                         }[];
@@ -375,12 +374,18 @@ export declare const MAPPED_SUPERCLASS: {
                             "isSuperclass": boolean;
                             "ids": {
                                 "allocationSize": number;
-                                "decorators": {
+                                "decorators": ({
                                     "name": string;
                                     "values": {
                                         "allocationSize": number;
                                     }[];
-                                }[];
+                                } | {
+                                    "name": string;
+                                    "values": {
+                                        "name": string;
+                                        "nullable": boolean;
+                                    }[];
+                                })[];
                                 "isGenerated": boolean;
                                 "isId": boolean;
                                 "isMappedSuperclass": boolean;
@@ -579,12 +584,18 @@ export declare const MAPPED_SUPERCLASS: {
                                 };
                                 "properties": ({
                                     "allocationSize": number;
-                                    "decorators": {
+                                    "decorators": ({
                                         "name": string;
                                         "values": {
                                             "allocationSize": number;
                                         }[];
-                                    }[];
+                                    } | {
+                                        "name": string;
+                                        "values": {
+                                            "name": string;
+                                            "nullable": boolean;
+                                        }[];
+                                    })[];
                                     "isGenerated": boolean;
                                     "isId": boolean;
                                     "isMappedSuperclass": boolean;

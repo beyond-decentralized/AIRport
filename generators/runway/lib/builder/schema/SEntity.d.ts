@@ -26,7 +26,7 @@ export interface SEntity {
      */
     numRelations: number;
     /**
-     * Properties of the entity (upstream properties included).
+     * Properties of the entity (parent properties included).
      */
     properties: SProperty[];
     /**

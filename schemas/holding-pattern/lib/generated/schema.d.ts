@@ -133,7 +133,7 @@ export declare const SCHEMA: {
             "sinceVersion": number;
             "tableConfig": {
                 "name": string;
-                "indexes"?: undefined;
+                "indexes": any[];
                 "primaryKey"?: undefined;
             };
         } | {
@@ -330,7 +330,7 @@ export declare const SCHEMA: {
             "tableConfig": {
                 "name": string;
                 "primaryKey": string[];
-                "indexes"?: undefined;
+                "indexes": any[];
             };
         } | {
             "columns": ({
@@ -461,7 +461,7 @@ export declare const SCHEMA: {
             "sinceVersion": number;
             "tableConfig": {
                 "name": string;
-                "indexes"?: undefined;
+                "indexes": any[];
                 "primaryKey"?: undefined;
             };
         } | {
@@ -547,7 +547,11 @@ export declare const SCHEMA: {
                 "relationTableSchemaIndex"?: undefined;
             })[];
             "sinceVersion": number;
-            "tableConfig"?: undefined;
+            "tableConfig": {
+                "indexes": any[];
+                "name"?: undefined;
+                "primaryKey"?: undefined;
+            };
         })[];
         "integerVersion": number;
         "referencedSchemas": {

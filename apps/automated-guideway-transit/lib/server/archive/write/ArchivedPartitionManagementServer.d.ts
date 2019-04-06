@@ -12,7 +12,7 @@ export interface IArchivedPartitionManagementServer {
  * to the AgtRepositoryTransactionBlock and SyncLog tables.
  * Once archiving has finished, drop the archived partitions.
  * Then delete all AgtSharingMessage records that no longer have any SyncLog
- * downstream.
+ * children.
  */
 export declare class ArchivedPartitionManagementServer implements IArchivedPartitionManagementServer {
     indexRTBPartitionToBeArchived(dateOfPartition: number): Promise<void>;

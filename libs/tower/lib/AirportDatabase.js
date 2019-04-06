@@ -4,11 +4,14 @@ const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 class AirportDatabase {
     constructor() {
+        this.schemas = [];
+        this.qSchemas = [];
         this.databaseMap = {};
         this.dbNames = [];
         this.dbNameSet = {};
-        this.schemaTuples = [];
         this.currentDbName = air_control_1.dbConst.DEFAULT_DB;
+        this.S = this.schemas;
+        this.Q = this.qSchemas;
     }
     registerDatabase(facade) {
         if (!this.dbNameSet[facade.name]) {
@@ -17,7 +20,7 @@ class AirportDatabase {
         this.databaseMap[facade.name] = facade;
         this.dbNameSet[facade.name] = true;
     }
-    registerSchema(schema, qSchema) {
+    registerSchema(qSchema) {
         this.schemaTuples.push([schema, qSchema]);
     }
     setCurrentDb(dbName = air_control_1.dbConst.DEFAULT_DB) {

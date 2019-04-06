@@ -202,7 +202,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "REPOSITORY_OPERATION_HISTORY"
+						"name": "REPOSITORY_OPERATION_HISTORY",
+						"indexes": []
 					}
 				},
 				{
@@ -521,7 +522,8 @@ export const SCHEMA = {
 						"primaryKey": [
 							"REPOSITORY_RECORD_HISTORY_ID",
 							"COLUMN_INDEX"
-						]
+						],
+						"indexes": []
 					}
 				},
 				{
@@ -636,7 +638,8 @@ export const SCHEMA = {
 						"primaryKey": [
 							"REPOSITORY_RECORD_HISTORY_ID",
 							"COLUMN_INDEX"
-						]
+						],
+						"indexes": []
 					}
 				},
 				{
@@ -824,7 +827,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "REPO_TRANS_HISTORY_CHANGED_REPOSITORY_ACTORS"
+						"name": "REPO_TRANS_HISTORY_CHANGED_REPOSITORY_ACTORS",
+						"indexes": []
 					}
 				},
 				{
@@ -1127,7 +1131,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "REPOSITORY_TRANSACTION_HISTORY"
+						"name": "REPOSITORY_TRANSACTION_HISTORY",
+						"indexes": []
 					}
 				},
 				{
@@ -1217,7 +1222,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "TRANSACTION_HISTORY"
+						"name": "TRANSACTION_HISTORY",
+						"indexes": []
 					}
 				},
 				{
@@ -1410,7 +1416,10 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						}
 					],
-					"sinceVersion": 1
+					"sinceVersion": 1,
+					"tableConfig": {
+						"indexes": []
+					}
 				},
 				{
 					"columns": [
@@ -1538,7 +1547,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "ACTOR_APPLICATION"
+						"name": "ACTOR_APPLICATION",
+						"indexes": []
 					}
 				},
 				{
@@ -1672,7 +1682,10 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						}
 					],
-					"sinceVersion": 1
+					"sinceVersion": 1,
+					"tableConfig": {
+						"indexes": []
+					}
 				},
 				{
 					"columns": [
@@ -1962,7 +1975,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "REPOSITORY"
+						"name": "REPOSITORY",
+						"indexes": []
 					}
 				},
 				{
@@ -2090,7 +2104,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "REPOSITORY_ACTORS"
+						"name": "REPOSITORY_ACTORS",
+						"indexes": []
 					}
 				},
 				{
@@ -2219,7 +2234,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "REPOSITORY_APPLICATION"
+						"name": "REPOSITORY_APPLICATION",
+						"indexes": []
 					}
 				},
 				{
@@ -2329,7 +2345,8 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "REPOSITORY_SCHEMAS"
+						"name": "REPOSITORY_SCHEMAS",
+						"indexes": []
 					}
 				}
 			],

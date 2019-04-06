@@ -36,7 +36,7 @@ export class SchemaRelation
 	@GeneratedValue()
 	id: RelationId
 
-	@Column({name: 'INDEX', nullable: false})
+	@Column({name: 'RELATION_INDEX', nullable: false})
 	index: RelationIndex
 
 	@ManyToOne()

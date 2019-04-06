@@ -2,6 +2,7 @@ import {
 	and,
 	distinct,
 	IQNumberField,
+	IQOrderableField,
 	JSONLogicalOperation,
 	or,
 	RawFieldQuery,
@@ -81,6 +82,14 @@ export interface IRepositoryTransactionHistoryDao {
 	findAllLocalChangesForRecordIds(
 		changedRecordIds: Map<RepositoryId, IChangedRecordIdsForRepository>
 	): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>>;
+
+	setBlockIdWhereId(
+		getSetClause: {
+			(
+				id: IQNumberField
+			): IQOrderableField<IQNumberField>
+		}
+	): Promise<number>
 
 }
 
@@ -384,6 +393,23 @@ export class RepositoryTransactionHistoryDao
 		}
 
 		return existingRecordIdMap
+	}
+
+	async setBlockIdWhereId(
+		getSetClause: {
+			(
+				id: IQNumberField
+			): IQOrderableField<IQNumberField>
+		}
+	): Promise<number> {
+		const rth: QRepositoryTransactionHistory = this.db.from
+
+		return await this.db.updateWhere({
+			update: rth,
+			set: {
+				blockId: getSetClause(rth.id)
+			}
+		})
 	}
 
 }

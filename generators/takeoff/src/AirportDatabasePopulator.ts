@@ -26,9 +26,7 @@ export class AirportDatabasePopulator
 
 	populate(): void {
 		this.airDb.schemas
-		this.airDb.schemaMapByName
 		this.airDb.qSchemas
-		this.airDb.qSchemaMapByName
 	}
 
 }

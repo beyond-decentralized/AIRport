@@ -105,16 +105,30 @@ export class SSchemaBuilder {
 		let tableConfig
 		for (const decorator of entityCandidate.docEntry.decorators) {
 			switch (decorator.name) {
-				case file.ENTITY:
+				case file.ENTITY: {
 					foundEntityDecorator = true
 					break
-				case file.TABLE:
-					tableConfig = decorator.values[0]
+				}
+				case file.TABLE: {
+					tableConfig = {
+						...decorator.values[0]
+					}
+					if(!tableConfig.indexes) {
+						tableConfig.indexes = []
+					}
+					break
+				}
 			}
 		}
 
 		if (!foundEntityDecorator) {
 			return null
+		}
+
+		if(!tableConfig) {
+			tableConfig = {
+				indexes: []
+			}
 		}
 
 		const [isRepositoryEntity, isLocal]

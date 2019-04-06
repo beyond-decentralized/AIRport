@@ -10,10 +10,12 @@ const air_control_1 = require("@airport/air-control");
 let UserTerminal = class UserTerminal {
 };
 __decorate([
+    air_control_1.Id(),
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: 'USER_ID', referencedColumnName: 'ID' })
 ], UserTerminal.prototype, "user", void 0);
 __decorate([
+    air_control_1.Id(),
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID' })
 ], UserTerminal.prototype, "terminal", void 0);

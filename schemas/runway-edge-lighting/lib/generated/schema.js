@@ -136,7 +136,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "LOG_ENTRY_VALUES"
+                        "name": "LOG_ENTRY_VALUES",
+                        "indexes": []
                     }
                 },
                 {
@@ -265,7 +266,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "LOG_ENTRY"
+                        "name": "LOG_ENTRY",
+                        "indexes": []
                     }
                 },
                 {
@@ -459,7 +461,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "LOG_ENTRIES"
+                        "name": "LOG_ENTRIES",
+                        "indexes": []
                     }
                 },
                 {
@@ -548,7 +551,8 @@ exports.SCHEMA = {
                     "relations": [],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "LOGGED_ERROR_STACK_TRACE"
+                        "name": "LOGGED_ERROR_STACK_TRACE",
+                        "indexes": []
                     }
                 },
                 {
@@ -649,7 +653,8 @@ exports.SCHEMA = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "LOGGED_ERROR"
+                        "name": "LOGGED_ERROR",
+                        "indexes": []
                     }
                 }
             ],

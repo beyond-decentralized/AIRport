@@ -9,12 +9,9 @@ import {
 	INonEntitySearch,
 	INonEntitySearchOne,
 	QSchema
-}           from '@airport/air-control'
-import {DI} from '@airport/di'
-import {
-	DbSchema,
-	JsonSchema
-}           from '@airport/ground-control'
+}                 from '@airport/air-control'
+import {DI}       from '@airport/di'
+import {DbSchema} from '@airport/ground-control'
 
 export class AirportDatabase
 	implements IAirportDatabase {
@@ -22,22 +19,22 @@ export class AirportDatabase
 	functions: FunctionsAndOperators
 	F: FunctionsAndOperators
 
-	schemas: DbSchema[]
+	schemas: DbSchema[] = []
 	S: DbSchema[]
-	schemaMapByName: { [name: string]: DbSchema }
-	SM: { [name: string]: DbSchema }
 
-	qSchemas: QSchema[]
+	qSchemas: QSchema[] = []
 	Q: QSchema[]
-	qSchemaMapByName: { [name: string]: QSchema }
-	QM: { [name: string]: QSchema }
 
 	private databaseMap: { [databaseName: string]: IDatabaseFacade } = {}
 	private dbNames: string[]                                        = []
 	private dbNameSet: { [databaseName: string]: boolean }           = {}
-	private schemaTuples: [JsonSchema, QSchema][]                    = []
 
 	private currentDbName = dbConst.DEFAULT_DB
+
+	constructor() {
+		this.S = this.schemas
+		this.Q = this.qSchemas
+	}
 
 	registerDatabase(
 		facade: IDatabaseFacade
@@ -50,7 +47,6 @@ export class AirportDatabase
 	}
 
 	registerSchema(
-		schema: JsonSchema,
 		qSchema: QSchema
 	): void {
 		this.schemaTuples.push([schema, qSchema])
