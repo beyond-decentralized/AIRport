@@ -55,7 +55,7 @@ export interface JsonSchemaEntity
 	name: EntityName;
 
 	/**
-	 * Properties of the entity (parent properties included)
+	 * Properties of the entity (upstream properties included)
 	 */
 	properties: JsonSchemaProperty[];
 

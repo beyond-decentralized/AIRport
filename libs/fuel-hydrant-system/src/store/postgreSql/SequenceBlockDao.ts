@@ -81,4 +81,4 @@ export class SequenceBlockDao
 
 }
 
-DI.set(SEQUENCE_BLOCK_DAO, SequenceBlockDao)
+// DI.set(SEQUENCE_BLOCK_DAO, SequenceBlockDao)

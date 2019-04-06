@@ -2,7 +2,10 @@ import {
 	AIR_DB,
 	IAirportDatabase
 }                           from '@airport/air-control'
-import {DI}                 from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                           from '@airport/di'
 import {
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
@@ -78,12 +81,13 @@ export class InsertManager
 	private seqGenerator: ISequenceGenerator
 	private histManager: IHistoryManager
 	private offlineDataStore: IOfflineDeltaStore
-	private operHistoryDmo: IOperationHistoryDmo
-	private recHistoryDmo: IRecordHistoryDmo
+	private operHistoryDmo: ICachedPromise<IOperationHistoryDmo>
+	private recHistoryDmo: ICachedPromise<IRecordHistoryDmo>
 	private repoManager: IRepositoryManager
-	private repoTransHistoryDmo: IRepositoryTransactionHistoryDmo
-	private transHistoryDmo: ITransactionHistoryDmo
+	private repoTransHistoryDmo: ICachedPromise<IRepositoryTransactionHistoryDmo>
+	// private transHistoryDmo: ICachedPromise<ITransactionHistoryDmo>
 	private transManager: ITransactionManager
+
 
 	constructor() {
 		DI.get((
@@ -92,30 +96,25 @@ export class InsertManager
 			sequenceGenerator,
 			historyManager,
 			offlineDataStore,
-			operationHistoryDmo,
-			recordHistoryDmo,
 			repositoryManager,
-			repositoryTransactionHistoryDmo,
-			transactionHistoryDmo,
 			transactionManager
 			) => {
-				this.airDb               = airportDatabase
-				this.dataStore           = dataStore
-				this.seqGenerator        = sequenceGenerator
-				this.histManager         = historyManager
-				this.offlineDataStore    = offlineDataStore
-				this.operHistoryDmo      = operationHistoryDmo
-				this.recHistoryDmo       = recordHistoryDmo
-				this.repoManager         = repositoryManager
-				this.repoTransHistoryDmo = repositoryTransactionHistoryDmo
-				this.transHistoryDmo     = transactionHistoryDmo
-				this.transManager        = transactionManager
+				this.airDb            = airportDatabase
+				this.dataStore        = dataStore
+				this.seqGenerator     = sequenceGenerator
+				this.histManager      = historyManager
+				this.offlineDataStore = offlineDataStore
+				this.repoManager      = repositoryManager
+				this.transManager     = transactionManager
 			}, AIR_DB, STORE_DRIVER,
 			SEQUENCE_GENERATOR, HISTORY_MANAGER,
-			OFFLINE_DELTA_STORE, OPER_HISTORY_DMO,
-			REC_HISTORY_DMO, REPOSITORY_MANAGER,
-			REPO_TRANS_HISTORY_DMO, TRANS_HISTORY_DMO,
+			OFFLINE_DELTA_STORE, REPOSITORY_MANAGER,
 			TRANSACTION_MANAGER)
+
+		this.operHistoryDmo      = DI.cache(OPER_HISTORY_DMO,)
+		this.recHistoryDmo       = DI.cache(REC_HISTORY_DMO)
+		this.repoTransHistoryDmo = DI.cache(REPO_TRANS_HISTORY_DMO)
+		// this.transHistoryDmo     = DI.cache(TRANS_HISTORY_DMO)
 	}
 
 	get currentTransHistory(): ITransactionHistory {
@@ -337,25 +336,29 @@ export class InsertManager
 			}
 		}
 
+		const repoTransHistoryDmo = await this.repoTransHistoryDmo.get()
+		const operHistoryDmo      = await this.operHistoryDmo.get()
+		const recHistoryDmo       = await this.recHistoryDmo.get()
+
 		// Rows may belong to different repositories
 		for (const row of jsonInsertValues.V) {
 			const repositoryId   = row[repositoryIdColumnNumber]
 			const repo           = await this.repoManager.getRepository(repositoryId)
 			let repoTransHistory = repoTransHistories[repositoryId]
 			if (!repoTransHistory) {
-				repoTransHistory = this.histManager
+				repoTransHistory = await this.histManager
 					.getNewRepoTransHistory(this.currentTransHistory, repo, actor)
 			}
 
 			let operationHistory = operationsByRepo[repositoryId]
 			if (!operationHistory) {
-				operationHistory               = this.repoTransHistoryDmo.startOperation(
+				operationHistory               = repoTransHistoryDmo.startOperation(
 					repoTransHistory, ChangeType.INSERT_VALUES, dbEntity)
 				operationsByRepo[repositoryId] = operationHistory
 			}
 
 			const actorRecordId = row[actorRecordIdColumnNumber]
-			const recordHistory = this.operHistoryDmo.startRecordHistory(
+			const recordHistory = operHistoryDmo.startRecordHistory(
 				operationHistory, actorRecordId)
 
 			for (const columnNumber in jsonInsertValues.C) {
@@ -367,7 +370,7 @@ export class InsertManager
 				const columnIndex = jsonInsertValues.C[columnNumber]
 				const dbColumn    = dbEntity.columns[columnIndex]
 				const newValue    = row[columnNumber]
-				this.recHistoryDmo.addNewValue(recordHistory, dbColumn, newValue)
+				recHistoryDmo.addNewValue(recordHistory, dbColumn, newValue)
 			}
 		}
 

@@ -1,4 +1,7 @@
-import {DI}              from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                        from '@airport/di'
 import {JsonSchema}      from '@airport/ground-control'
 import {
 	IQueryObjectInitializer,
@@ -19,7 +22,8 @@ import {ISchemaRecorder} from './recorder/SchemaRecorder'
 export interface ISchemaInitializer {
 
 	initialize(
-		jsonSchemas: JsonSchema[]
+		jsonSchemas: JsonSchema[],
+		checkDependencies?: boolean
 	): Promise<void>
 
 }
@@ -27,41 +31,31 @@ export interface ISchemaInitializer {
 export class SchemaInitializer
 	implements ISchemaInitializer {
 
-	private queryObjectInitializer: IQueryObjectInitializer
-	private schemaBuilder: ISchemaBuilder
-	private schemaChecker: ISchemaChecker
-	private schemaLocator: ISchemaLocator
-	private schemaRecorder: ISchemaRecorder
+	private queryObjectInitializer: ICachedPromise<IQueryObjectInitializer>
+	private schemaBuilder: ICachedPromise<ISchemaBuilder>
+	private schemaChecker: ICachedPromise<ISchemaChecker>
+	private schemaLocator: ICachedPromise<ISchemaLocator>
+	private schemaRecorder: ICachedPromise<ISchemaRecorder>
 
 	constructor() {
-		DI.get((
-			queryObjectInitializer,
-			schemaBuilder,
-			schemaChecker,
-			schemaLocator,
-			schemaRecorder
-			) => {
-				this.queryObjectInitializer = queryObjectInitializer
-				this.schemaBuilder          = schemaBuilder
-				this.schemaChecker          = schemaChecker
-				this.schemaLocator          = schemaLocator
-				this.schemaRecorder         = schemaRecorder
-			}, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER, SCHEMA_CHECKER,
-			SCHEMA_LOCATOR, SCHEMA_RECORDER)
-	}
-
-	async ensureBaseSchemas(): Promise<void> {
-
+		this.queryObjectInitializer = DI.cache(QUERY_OBJECT_INITIALIZER)
+		this.schemaBuilder          = DI.cache(SCHEMA_BUILDER)
+		this.schemaChecker          = DI.cache(SCHEMA_CHECKER)
+		this.schemaLocator          = DI.cache(SCHEMA_LOCATOR)
+		this.schemaRecorder         = DI.cache(SCHEMA_RECORDER)
 	}
 
 	async initialize(
-		jsonSchemas: JsonSchema[]
+		jsonSchemas: JsonSchema[],
+		checkDependencies: boolean = false
 	): Promise<void> {
 		const jsonSchemasToInstall: JsonSchema[] = []
 
+		const schemaChecker = await this.schemaChecker.get()
+
 		for (const jsonSchema of jsonSchemas) {
-			await this.schemaChecker.check(jsonSchema)
-			const existingSchema = this.schemaLocator.locateExistingSchemaVersionRecord(jsonSchema)
+			await schemaChecker.check(jsonSchema)
+			const existingSchema = (await this.schemaLocator.get()).locateExistingSchemaVersionRecord(jsonSchema)
 
 			if (existingSchema) {
 				// Nothing needs to be done, we already have this schema version
@@ -70,22 +64,30 @@ export class SchemaInitializer
 			jsonSchemasToInstall.push(jsonSchema)
 		}
 
-		const schemaReferenceCheckResults = await this.schemaChecker
-			.checkDependencies(jsonSchemasToInstall)
+		let schemasWithValidDependencies
 
-		if (schemaReferenceCheckResults.neededDependencies.length
-			|| schemaReferenceCheckResults.schemasInNeedOfAdditionalDependencies.length) {
-			throw new Error(`Installing schemas with external dependencies
+		if (checkDependencies) {
+			const schemaReferenceCheckResults = await schemaChecker
+				.checkDependencies(jsonSchemasToInstall)
+
+			if (schemaReferenceCheckResults.neededDependencies.length
+				|| schemaReferenceCheckResults.schemasInNeedOfAdditionalDependencies.length) {
+				throw new Error(`Installing schemas with external dependencies
 			is not currently supported.`)
+			}
+			schemasWithValidDependencies = schemaReferenceCheckResults.schemasWithValidDependencies
+		} else {
+			schemasWithValidDependencies = jsonSchemasToInstall
 		}
 
-		for (const jsonSchema of schemaReferenceCheckResults.schemasWithValidDependencies) {
-			await this.schemaBuilder.build(jsonSchema)
+		for (const jsonSchema of schemasWithValidDependencies) {
+			await (await this.schemaBuilder.get()).build(jsonSchema)
 		}
 
-		const ddlObjects = await this.schemaRecorder.record(schemaReferenceCheckResults.schemasWithValidDependencies)
+		const ddlObjects = await (await this.schemaRecorder.get())
+			.record(schemasWithValidDependencies);
 
-		this.queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects)
+		(await this.queryObjectInitializer.get()).generateQObjectsAndPopulateStore(ddlObjects)
 	}
 
 }

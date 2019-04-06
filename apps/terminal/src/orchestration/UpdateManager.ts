@@ -5,7 +5,10 @@ import {
 	MappedEntityArray,
 	UTILS
 }                           from '@airport/air-control'
-import {DI}                 from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                           from '@airport/di'
 import {
 	ChangeType,
 	DbEntity,
@@ -64,50 +67,44 @@ interface RecordHistoryMap {
 export class UpdateManager
 	implements IUpdateManager {
 
-	constructor(
-		private airDb: IAirportDatabase,
-		private dataStore: IStoreDriver,
-		private histManager: IHistoryManager,
-		private offlineDataStore: IOfflineDeltaStore,
-		private operHistoryDmo: IOperationHistoryDmo,
-		private recHistoryDmo: IRecordHistoryDmo,
-		private repoManager: IRepositoryManager,
-		private repoTransHistoryDmo: IRepositoryTransactionHistoryDmo,
-		private transHistoryDmo: ITransactionHistoryDmo,
-		private transManager: ITransactionManager,
-		private utils: IUtils,
-	) {
+	private airDb: IAirportDatabase
+	private dataStore: IStoreDriver
+	private histManager: IHistoryManager
+	private offlineDataStore: IOfflineDeltaStore
+	private operHistoryDmo: ICachedPromise<IOperationHistoryDmo>
+	private recHistoryDmo: ICachedPromise<IRecordHistoryDmo>
+	private repoManager: IRepositoryManager
+	private repoTransHistoryDmo: ICachedPromise<IRepositoryTransactionHistoryDmo>
+	// private transHistoryDmo: ICachedPromise<ITransactionHistoryDmo>
+	private transManager: ITransactionManager
+	private utils: IUtils
+
+	constructor() {
 
 		DI.get((
 			airportDb,
 			dataStore,
 			historyManager,
 			offlineDataStore,
-			operationHistoryDmo,
-			recordHistoryDmo,
 			repositoryManager,
-			repositoryTransactionHistoryDmo,
-			transactionHistoryDmo,
 			transactionManager,
 			utils
 			) => {
-				this.airDb               = airportDb
-				this.dataStore           = dataStore
-				this.histManager         = historyManager
-				this.offlineDataStore    = offlineDataStore
-				this.operHistoryDmo      = operationHistoryDmo
-				this.recHistoryDmo       = recordHistoryDmo
-				this.repoManager         = repositoryManager
-				this.repoTransHistoryDmo = repositoryTransactionHistoryDmo
-				this.transHistoryDmo     = transactionHistoryDmo
-				this.transManager        = transactionManager
-				this.utils               = utils
+				this.airDb            = airportDb
+				this.dataStore        = dataStore
+				this.histManager      = historyManager
+				this.offlineDataStore = offlineDataStore
+				this.repoManager      = repositoryManager
+				this.transManager     = transactionManager
+				this.utils            = utils
 			}, AIR_DB, STORE_DRIVER,
 			HISTORY_MANAGER, OFFLINE_DELTA_STORE,
-			OPER_HISTORY_DMO, REC_HISTORY_DMO,
-			REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DMO,
-			TRANS_HISTORY_DMO, TRANSACTION_MANAGER,
+			REPOSITORY_MANAGER, TRANSACTION_MANAGER,
 			UTILS)
+		this.operHistoryDmo      = DI.cache(OPER_HISTORY_DMO,)
+		this.recHistoryDmo       = DI.cache(REC_HISTORY_DMO)
+		this.repoTransHistoryDmo = DI.cache(REPO_TRANS_HISTORY_DMO)
+		// this.transHistoryDmo     = DI.cache(TRANS_HISTORY_DMO)
 	}
 
 	async updateValues(
@@ -180,14 +177,18 @@ export class UpdateManager
 
 		const recordHistoryMapByRecordId: RecordHistoryMap = {}
 
+		const repoTransHistoryDmo = await this.repoTransHistoryDmo.get()
+		const operHistoryDmo = await this.operHistoryDmo.get()
+		const recHistoryDmo = await this.recHistoryDmo.get()
+
 		for (const repositoryId of repositoryIds) {
 			const repository                         = repositories.get(repositoryId)
 			const recordHistoryMapForRepository      = {}
 			recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository
-			const repoTransHistory                   = this.histManager.getNewRepoTransHistory(
+			const repoTransHistory                   = await this.histManager.getNewRepoTransHistory(
 				this.transManager.currentTransHistory, repository, actor
 			)
-			const operationHistory                   = this.repoTransHistoryDmo.startOperation(
+			const operationHistory                   = repoTransHistoryDmo.startOperation(
 				repoTransHistory, ChangeType.UPDATE_ROWS, dbEntity)
 
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
@@ -197,14 +198,14 @@ export class UpdateManager
 					      this.utils.ensureChildMap(recordHistoryMapForRepository, actorId)
 
 				const actorRecordId                     = recordToUpdate[actorRecordIdColumnIndex]
-				const recordHistory                     = this.operHistoryDmo.startRecordHistory(
+				const recordHistory                     = operHistoryDmo.startRecordHistory(
 					operationHistory, actorRecordId)
 				recordHistoryMapForActor[actorRecordId] = recordHistory
 
 				for (const columnName in jsonUpdate.S) {
 					const dbColumn = dbEntity.columnMap[columnName]
 					const value    = recordToUpdate[dbColumn.index]
-					this.recHistoryDmo.addOldValue(recordHistory, dbColumn, value)
+					recHistoryDmo.addOldValue(recordHistory, dbColumn, value)
 				}
 			}
 
@@ -229,6 +230,8 @@ export class UpdateManager
 			      repositoryIdSet
 		      } = this.groupRecordsByRepository(dbEntity, updatedRecords)
 
+		const recHistoryDmo = await this.recHistoryDmo.get()
+
 		for (const repositoryId of repositoryIdSet) {
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
 			for (const updatedRecord of recordsForRepositoryId) {
@@ -240,7 +243,7 @@ export class UpdateManager
 				for (const columnName in jsonUpdate.S) {
 					const dbColumn = dbEntity.columnMap[columnName]
 					const value    = updatedRecord[dbColumn.index]
-					this.recHistoryDmo.addNewValue(recordHistory, dbColumn, value)
+					recHistoryDmo.addNewValue(recordHistory, dbColumn, value)
 				}
 			}
 

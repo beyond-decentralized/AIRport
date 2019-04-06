@@ -7,27 +7,30 @@ export interface IObservable<V> {
         (value: V): void;
     }, onError?: Function, onComplete?: Function): ISubscription;
     exec(value: V, callbackName: 'onError' | 'onNext', context: any): void;
-    parent: Observable<any>;
-    children: IObservable<any>[];
+    upstream: IObservable<any>[];
+    downstream: IObservable<any>[];
     currentValue: V;
     lastValue: V;
 }
 export declare class Observable<V> implements IObservable<V> {
     private onUnsubscribe?;
-    static from(sourceObservable: IObservable<any>): IObservable<any>;
+    static from(...sourceObservables: IObservable<any>[]): IObservable<any>;
     constructor(onUnsubscribe?: () => void);
-    callback: {
-        (value: V, context: any): any;
-    };
-    parent: Observable<any>;
-    children: IObservable<any>[];
+    callback: any;
+    upstream: Observable<any>[];
+    downstream: Observable<any>[];
     currentValue: V;
     lastValue: V;
+    numDownstreamSubscriptions: number;
     subscriptions: Subscription[];
-    exec(value: V, callbackName: 'onError' | 'onNext', context?: any): void;
+    exec(value: V, callbackName: 'onError' | 'onNext', upstreamObservable?: Observable<any>, context?: any): void;
     subscribe(onNext: {
-        (value: V): void;
+        (value: any): void;
     }, onError?: {
         (value: any): void;
     }, onComplete?: Function): ISubscription;
+    unsubscribeUpstream(): void;
+    private valueFromUpstream;
+    private getDefaultContext;
+    private subscribeUpstream;
 }

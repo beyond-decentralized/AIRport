@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * to the AgtRepositoryTransactionBlock and SyncLog tables.
  * Once archiving has finished, drop the archived partitions.
  * Then delete all AgtSharingMessage records that no longer have any SyncLog
- * children.
+ * downstream.
  */
 class ArchivedPartitionManagementServer {
     async indexRTBPartitionToBeArchived(dateOfPartition) {

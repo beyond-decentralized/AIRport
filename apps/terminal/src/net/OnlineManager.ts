@@ -1,4 +1,7 @@
-import {DI}                 from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                           from '@airport/di'
 import {BlockSyncStatus}    from '@airport/ground-control'
 import {
 	IRepository,
@@ -40,8 +43,8 @@ export class OnlineManager
 	private online = false
 	private offlineDeltaStore: IOfflineDeltaStore
 	private repositoryManager: IRepositoryManager
-	private repositoryDao: IRepositoryDao
-	private repoTransHistoryDao: IRepositoryTransactionHistoryDao
+	private repositoryDao: ICachedPromise<IRepositoryDao>
+	private repoTransHistoryDao: ICachedPromise<IRepositoryTransactionHistoryDao>
 
 	constructor() {
 		DI.get((
@@ -49,13 +52,12 @@ export class OnlineManager
 			repositoryDao,
 			repoTransHistoryDao,
 			repositoryManager
-			) => {
-				this.offlineDeltaStore   = offlineDeltaStore
-				this.repositoryDao       = repositoryDao
-				this.repoTransHistoryDao = repoTransHistoryDao
-				this.repositoryManager   = repositoryManager
-			}, OFFLINE_DELTA_STORE, REPOSITORY_DAO,
-			REPO_TRANS_HISTORY_DAO, REPOSITORY_MANAGER)
+		) => {
+			this.offlineDeltaStore = offlineDeltaStore
+			this.repositoryManager = repositoryManager
+		}, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER)
+		this.repositoryDao       = DI.cache(REPOSITORY_DAO)
+		this.repoTransHistoryDao = DI.cache(REPO_TRANS_HISTORY_DAO)
 	}
 
 	/**
@@ -97,7 +99,7 @@ export class OnlineManager
 				this.repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE)
 				// 2)  Find repositories
 				// const repoRecords = await this.repositoryDao.findWithTransaction()
-				const repoRecords = await this.repositoryDao.findReposWithDetailsByIds()
+				const repoRecords = await (await this.repositoryDao.get()).findReposWithDetailsByIds()
 
 				// 3) make each repository go Online
 				let goOnlineCalls: Promise<void>[] = []
@@ -178,7 +180,7 @@ export class OnlineManager
 		}
 
 		// 7)  Find all local unsynced transactions
-		let unsyncedChanges = await this.repoTransHistoryDao.findUnsyncedTransactions(repository)
+		let unsyncedChanges = await (await this.repoTransHistoryDao.get()).findUnsyncedTransactions(repository)
 		if (unsyncedChanges.length) {
 			unsyncedChanges.forEach((transaction) => {
 				// a)  Mark them as synchronized

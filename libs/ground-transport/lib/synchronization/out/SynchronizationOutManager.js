@@ -19,37 +19,23 @@ const maxAllRepoChangesLength = 10485760;
  *
  */
 class SynchronizationOutManager {
-    constructor(repositoryDao, repositoryTransactionHistoryDao, schemaDao, sharingMessageDao, sharingMessageRepoTransBlockDao, sharingNodeDao, sharingNodeTerminalDao, sharingNodeRepositoryDao, sharingNodeRepoTransBlockDao, repositoryTransactionBlockCreator, repositoryTransactionBlockDao, syncOutMessageSender, syncOutSerializer, utils) {
-        this.repositoryDao = repositoryDao;
-        this.repositoryTransactionHistoryDao = repositoryTransactionHistoryDao;
-        this.schemaDao = schemaDao;
-        this.sharingMessageDao = sharingMessageDao;
-        this.sharingMessageRepoTransBlockDao = sharingMessageRepoTransBlockDao;
-        this.sharingNodeDao = sharingNodeDao;
-        this.sharingNodeTerminalDao = sharingNodeTerminalDao;
-        this.sharingNodeRepositoryDao = sharingNodeRepositoryDao;
-        this.sharingNodeRepoTransBlockDao = sharingNodeRepoTransBlockDao;
-        this.repositoryTransactionBlockCreator = repositoryTransactionBlockCreator;
-        this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
-        this.syncOutMessageSender = syncOutMessageSender;
-        this.syncOutSerializer = syncOutSerializer;
-        this.utils = utils;
-        di_1.DI.get((repositoryDao, repositoryTransactionHistoryDao, schemaDao, sharingMessageDao, sharingMessageRepoTransBlockDao, sharingNodeDao, sharingNodeTerminalDao, sharingNodeRepositoryDao, sharingNodeRepoTransBlockDao, repositoryTransactionBlockCreator, repositoryTransactionBlockDao, syncOutMessageSender, syncOutSerializer, utils) => {
-            this.repositoryDao = repositoryDao;
-            this.repositoryTransactionHistoryDao = repositoryTransactionHistoryDao;
-            this.schemaDao = schemaDao;
-            this.sharingMessageDao = sharingMessageDao;
-            this.sharingMessageRepoTransBlockDao = sharingMessageRepoTransBlockDao;
-            this.sharingNodeDao = sharingNodeDao;
-            this.sharingNodeTerminalDao = sharingNodeTerminalDao;
-            this.sharingNodeRepositoryDao = sharingNodeRepositoryDao;
-            this.sharingNodeRepoTransBlockDao = sharingNodeRepoTransBlockDao;
+    constructor() {
+        di_1.DI.get((repositoryTransactionBlockCreator, syncOutMessageSender, syncOutSerializer, utils) => {
             this.repositoryTransactionBlockCreator = repositoryTransactionBlockCreator;
-            this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
             this.syncOutMessageSender = syncOutMessageSender;
             this.syncOutSerializer = syncOutSerializer;
             this.utils = utils;
-        }, holding_pattern_1.REPOSITORY_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DAO, traffic_pattern_1.SCHEMA_DAO, moving_walkway_1.SHARING_MESSAGE_DAO, moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, moving_walkway_1.SHARING_NODE_DAO, moving_walkway_1.SHARING_NODE_TERMINAL_DAO, moving_walkway_1.SHARING_NODE_REPOSITORY_DAO, moving_walkway_1.SHARING_NODE_REPO_TRANS_BLOCK_DAO, diTokens_1.SYNC_IN_REPO_TRANS_BLOCK_CREATOR, moving_walkway_1.REPO_TRANS_BLOCK_DAO, diTokens_1.SYNC_OUT_MSG_SENDER, diTokens_1.SYNC_OUT_SERIALIZER, air_control_1.UTILS);
+        }, diTokens_1.SYNC_OUT_REPO_TRANS_BLOCK_CREATOR, diTokens_1.SYNC_OUT_MSG_SENDER, diTokens_1.SYNC_OUT_SERIALIZER, air_control_1.UTILS);
+        this.repositoryDao = di_1.DI.cache(holding_pattern_1.REPOSITORY_DAO);
+        this.repositoryTransactionHistoryDao = di_1.DI.cache(holding_pattern_1.REPO_TRANS_HISTORY_DAO);
+        this.schemaDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_DAO);
+        this.sharingMessageDao = di_1.DI.cache(moving_walkway_1.SHARING_MESSAGE_DAO);
+        this.sharingMessageRepoTransBlockDao = di_1.DI.cache(moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO);
+        this.sharingNodeDao = di_1.DI.cache(moving_walkway_1.SHARING_NODE_DAO);
+        this.sharingNodeTerminalDao = di_1.DI.cache(moving_walkway_1.SHARING_NODE_TERMINAL_DAO);
+        this.sharingNodeRepositoryDao = di_1.DI.cache(moving_walkway_1.SHARING_NODE_REPOSITORY_DAO);
+        this.sharingNodeRepoTransBlockDao = di_1.DI.cache(moving_walkway_1.SHARING_NODE_REPO_TRANS_BLOCK_DAO);
+        this.repositoryTransactionBlockDao = di_1.DI.cache(moving_walkway_1.REPO_TRANS_BLOCK_DAO);
     }
     async synchronize(sharingNodes, terminal) {
         const sharingNodeMap = new Map();
@@ -109,7 +95,7 @@ class SynchronizationOutManager {
                 .createNewBlocks(Array.from(sharingNodeMap.keys()), terminal);
             await this.addNewSharingMessages(newReposTransHistoryBlocksBySharingNodeId, terminal);
         }
-        const sharingMessageIdsBySharingNodeId = await this.sharingMessageDao
+        const sharingMessageIdsBySharingNodeId = await (await this.sharingMessageDao.get())
             .findAllSyncedSharingMessageIdsForSharingNodes(sharingNodeIds);
         // FIXME: check RepoTransBlocks that were denied sync due to no Write Permission
         // if it is determined that AGT did not yet have the up-to-date repo permissions
@@ -123,13 +109,13 @@ class SynchronizationOutManager {
      */
     async getNotAcknowledgedRTBs(sharingNodeMap) {
         const startingSharingNodeIds = Array.from(sharingNodeMap.keys());
-        const { syncStatusRepositoryTransactionBlockIds, syncStatusRepoTransBlockIdsBySharingNodeId } = await this.sharingNodeRepoTransBlockDao.getForSharingNodeIdsAndBlockStatus(startingSharingNodeIds, ground_control_1.BlockSyncStatus.REQUESTING_SYNC_STATUS);
+        const { syncStatusRepositoryTransactionBlockIds, syncStatusRepoTransBlockIdsBySharingNodeId } = await (await this.sharingNodeRepoTransBlockDao.get()).getForSharingNodeIdsAndBlockStatus(startingSharingNodeIds, ground_control_1.BlockSyncStatus.REQUESTING_SYNC_STATUS);
         // If server did not respond to Sync Status requests
         if (syncStatusRepositoryTransactionBlockIds.length) {
             // scale down to keep-alive request
             const inactiveSharingNodeIds = Array.from(syncStatusRepoTransBlockIdsBySharingNodeId.keys());
             // Keep the RTB Sync Status in Requesting and update the SharingNode status
-            await this.sharingNodeDao.updateIsActive(inactiveSharingNodeIds, false);
+            await (await this.sharingNodeDao.get()).updateIsActive(inactiveSharingNodeIds, false);
             // TODO: add keep alive requests
             // Remove inactive Sharing Nodes from further message processing
             for (const inactiveSharingNodeId of inactiveSharingNodeIds) {
@@ -139,11 +125,11 @@ class SynchronizationOutManager {
         if (!sharingNodeMap.size) {
             // None of the nodes to sync to are active
         }
-        const { syncingRepositoryTransactionBlockIds, syncingRepoTransBlockIdsBySharingNodeIds } = await this.sharingNodeRepoTransBlockDao.getForSharingNodeIdsAndBlockStatus(startingSharingNodeIds, ground_control_1.BlockSyncStatus.SYNCHRONIZING);
+        const { syncingRepositoryTransactionBlockIds, syncingRepoTransBlockIdsBySharingNodeIds } = (await await this.sharingNodeRepoTransBlockDao.get()).getForSharingNodeIdsAndBlockStatus(startingSharingNodeIds, ground_control_1.BlockSyncStatus.SYNCHRONIZING);
         if (syncingRepositoryTransactionBlockIds.length) {
             // scale down to sync status requests
             const syncAckSharingNodeIds = Array.from(syncingRepoTransBlockIdsBySharingNodeIds.keys());
-            await this.sharingNodeRepoTransBlockDao.updateBlockSyncStatus(syncAckSharingNodeIds, syncingRepositoryTransactionBlockIds, ground_control_1.BlockSyncStatus.SYNCHRONIZING, ground_control_1.BlockSyncStatus.REQUESTING_SYNC_STATUS);
+            await (await this.sharingNodeRepoTransBlockDao.get()).updateBlockSyncStatus(syncAckSharingNodeIds, syncingRepositoryTransactionBlockIds, ground_control_1.BlockSyncStatus.SYNCHRONIZING, ground_control_1.BlockSyncStatus.REQUESTING_SYNC_STATUS);
             // Todo add sync ack requests
             for (const sharingNodeId in sharingNodeMap.keys()) {
             }
@@ -237,8 +223,8 @@ class SynchronizationOutManager {
                 });
             }
         }
-        await this.sharingMessageDao.bulkCreate(sharingMessages, false, false);
-        await this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
+        await (await this.sharingMessageDao.get()).bulkCreate(sharingMessages, false, false);
+        await (await this.sharingMessageRepoTransBlockDao.get()).bulkCreate(sharingMessageRepoTransBlocks, false, false);
     }
 }
 exports.SynchronizationOutManager = SynchronizationOutManager;

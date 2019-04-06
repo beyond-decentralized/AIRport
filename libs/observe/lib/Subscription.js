@@ -16,7 +16,8 @@ class Subscription {
         }
         this._closed = true;
         this.observable.subscriptions = this.observable.subscriptions.filter(subscription => subscription !== this);
-        onUnsubscribe();
+        this.observable.unsubscribeUpstream();
+        onUnsubscribe && onUnsubscribe();
     }
     // A boolean value indicating whether the subscription is closed
     get closed() {

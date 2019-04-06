@@ -2,7 +2,10 @@ import {
 	IUtils,
 	UTILS
 }                                          from '@airport/air-control'
-import {DI}                                from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                                          from '@airport/di'
 import {
 	SchemaIndex,
 	SchemaVersionId
@@ -51,36 +54,27 @@ export interface ISyncOutRepositoryTransactionBlockCreator {
 export class SyncOutRepositoryTransactionBlockCreator
 	implements ISyncOutRepositoryTransactionBlockCreator {
 
-	private actorDao: IActorDao
-	private repositoryDao: IRepositoryDao
-	private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao
+	private actorDao: ICachedPromise<IActorDao>
+	private repositoryDao: ICachedPromise<IRepositoryDao>
+	private repositoryTransactionBlockDao: ICachedPromise<IRepositoryTransactionBlockDao>
 	private repositoryTransactionHistoryUpdateStageDao
-		        : IRepositoryTransactionHistoryUpdateStageDao
-	private schemaDao: ISchemaDao
-	private sharingNodeRepositoryDao: ISharingNodeRepositoryDao
+		        : ICachedPromise<IRepositoryTransactionHistoryUpdateStageDao>
+	private schemaDao: ICachedPromise<ISchemaDao>
+	private sharingNodeRepositoryDao: ICachedPromise<ISharingNodeRepositoryDao>
 	private utils: IUtils
 
 	constructor() {
 		DI.get((
-			actorDao,
-			repositoryDao,
-			repositoryTransactionBlockDao,
-			repositoryTransactionHistoryUpdateStageDao,
-			schemaDao,
-			sharingNodeRepositoryDao,
 			utils
 			) => {
-				this.actorDao                                   = actorDao
-				this.repositoryDao                              = repositoryDao
-				this.repositoryTransactionBlockDao              = repositoryTransactionBlockDao
-				this.repositoryTransactionHistoryUpdateStageDao = repositoryTransactionHistoryUpdateStageDao
-				this.schemaDao                                  = schemaDao
-				this.sharingNodeRepositoryDao                   = sharingNodeRepositoryDao
 				this.utils                                      = utils
-			}, ACTOR_DAO, REPOSITORY_DAO,
-			REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_UPDATE_STAGE_DAO,
-			SCHEMA_DAO, SHARING_NODE_REPOSITORY_DAO,
-			UTILS)
+			}, UTILS)
+		this.actorDao                                   = DI.cache(ACTOR_DAO)
+		this.repositoryDao                              = DI.cache(REPOSITORY_DAO)
+		this.repositoryTransactionBlockDao              = DI.cache(REPO_TRANS_BLOCK_DAO)
+		this.repositoryTransactionHistoryUpdateStageDao = DI.cache(REPO_TRANS_HISTORY_UPDATE_STAGE_DAO)
+		this.schemaDao                                  = DI.cache(SCHEMA_DAO)
+		this.sharingNodeRepositoryDao                   = DI.cache(SHARING_NODE_REPOSITORY_DAO)
 	}
 
 	// Get new repository transaction histories not yet in RepoTransBlocks
@@ -90,7 +84,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 	): Promise<Map<SharingNodeId, IRepositoryTransactionBlock[]>> {
 
 		const [sharingNodeIdMapByRepositoryId,
-			      repoTransHistoriesToSync] = await this.sharingNodeRepositoryDao
+			      repoTransHistoriesToSync] = await (await this.sharingNodeRepositoryDao.get())
 			.findNewRepoTransHistoriesForSharingNodes(sharingNodeIds)
 
 		const repositoryIdSet: Set<RepositoryId>                      = new Set<RepositoryId>()
@@ -225,7 +219,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 		const repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>
 			      = new Map()
 
-		const repositoryMapById = await this.repositoryDao.findReposWithGlobalIds(
+		const repositoryMapById = await (await this.repositoryDao.get()).findReposWithGlobalIds(
 			Array.from(repositoryIdSet))
 
 		const repositoryTransactionBlocks: IRepositoryTransactionBlock[] = []
@@ -267,7 +261,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 		const schemasByRepositoryIdMap: Map<RepositoryId, ISchema[]>
 			      = new Map()
 
-		const schemaMapByVersionId = await this.schemaDao
+		const schemaMapByVersionId = (await await this.schemaDao.get())
 			.findMapByVersionIds(Array.from(schemaVersionIds))
 		for (const [repositoryId, schemaVersionIdSetForRepo] of schemaVersionIdSetsByRepository) {
 			const schemasForRepository = this.utils.ensureChildArray(
@@ -368,7 +362,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 		repositoryTransactionBlocks: IRepositoryTransactionBlock[]
 	): Promise<void> {
 		const actors = await
-			this.actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(actorIdSet))
+			(await this.actorDao.get()).findWithDetailsAndGlobalIdsByIds(Array.from(actorIdSet))
 
 		for (const actor of actors) {
 			const repositoryIdsForActorId = repositoryIdsByActorId.get(actor.id)
@@ -383,7 +377,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 			repositoryTransactionBlock.contents = JSON.stringify(repoTransBlockData)
 		}
 
-		await this.repositoryTransactionBlockDao.bulkCreate(
+		await (await this.repositoryTransactionBlockDao.get()).bulkCreate(
 			repositoryTransactionBlocks, false, false)
 	}
 
@@ -399,11 +393,11 @@ export class SyncOutRepositoryTransactionBlockCreator
 					repoTransHistoryUpdateStageValuesRecord[1] = repositoryTransactionBlock.id
 			)
 		}
-		await this.repositoryTransactionHistoryUpdateStageDao
+		await (await this.repositoryTransactionHistoryUpdateStageDao.get())
 			.insertValues(repoTransHistoryUpdateStageValues)
 
-		await this.repositoryTransactionHistoryUpdateStageDao.updateRepositoryTransactionHistory()
-		await this.repositoryTransactionHistoryUpdateStageDao.delete()
+		await (await this.repositoryTransactionHistoryUpdateStageDao.get()).updateRepositoryTransactionHistory()
+		await (await this.repositoryTransactionHistoryUpdateStageDao.get()).delete()
 	}
 
 	private groupRepoTransBlocksBySharingNode(

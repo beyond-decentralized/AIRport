@@ -1,6 +1,6 @@
 import { JsonSchema } from '@airport/ground-control';
 export interface ISchemaInitializer {
-    initialize(jsonSchemas: JsonSchema[]): Promise<void>;
+    initialize(jsonSchemas: JsonSchema[], checkDependencies?: boolean): Promise<void>;
 }
 export declare class SchemaInitializer implements ISchemaInitializer {
     private queryObjectInitializer;
@@ -9,6 +9,5 @@ export declare class SchemaInitializer implements ISchemaInitializer {
     private schemaLocator;
     private schemaRecorder;
     constructor();
-    ensureBaseSchemas(): Promise<void>;
-    initialize(jsonSchemas: JsonSchema[]): Promise<void>;
+    initialize(jsonSchemas: JsonSchema[], checkDependencies?: boolean): Promise<void>;
 }

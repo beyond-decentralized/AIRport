@@ -2,7 +2,10 @@ import {
 	IUtils,
 	UTILS
 }                       from '@airport/air-control'
-import {DI}             from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                       from '@airport/di'
 import {
 	DB_SCHEMA_UTILS,
 	DomainName,
@@ -54,20 +57,20 @@ export interface ISchemaChecker {
 export class SchemaChecker
 	implements ISchemaChecker {
 
-	private schemaDao: ISchemaDao
+	private schemaDao: ICachedPromise<ISchemaDao>
 	private dbSchemaUtils: IDbSchemaUtils
 	private utils: IUtils
 
 	constructor() {
+		this.schemaDao = DI.cache(SCHEMA_DAO)
+
 		DI.get((
-			schemaDao,
 			dbSchemaUtils,
 			utils
 		) => {
-			this.schemaDao     = schemaDao
 			this.dbSchemaUtils = dbSchemaUtils
 			this.utils         = utils
-		}, SCHEMA_DAO, DB_SCHEMA_UTILS, UTILS)
+		}, DB_SCHEMA_UTILS, UTILS)
 	}
 
 	async check(
@@ -225,7 +228,7 @@ export class SchemaChecker
 		if (schemaNames.length) {
 			existingSchemaMapByName = new Map()
 		} else {
-			existingSchemaMapByName = await this.schemaDao.findMapByNames(schemaNames)
+			existingSchemaMapByName = await (await this.schemaDao.get()).findMapByNames(schemaNames)
 
 		}
 

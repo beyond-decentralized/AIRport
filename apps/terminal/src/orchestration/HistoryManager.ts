@@ -1,17 +1,14 @@
-import {DI}              from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                        from '@airport/di'
 import {TransactionType} from '@airport/ground-control'
 import {
 	IActor,
-	IOperationHistoryDmo,
-	IRecordHistoryDmo,
 	IRepository,
 	IRepositoryTransactionHistory,
-	IRepositoryTransactionHistoryDmo,
 	ITransactionHistory,
 	ITransactionHistoryDmo,
-	OPER_HISTORY_DMO,
-	REC_HISTORY_DMO,
-	REPO_TRANS_HISTORY_DMO,
 	TRANS_HISTORY_DMO
 }                        from '@airport/holding-pattern'
 import {HISTORY_MANAGER} from '../diTokens'
@@ -20,53 +17,45 @@ export interface IHistoryManager {
 
 	getNewTransHistory(
 		transactionType: TransactionType
-	): ITransactionHistory;
+	): Promise<ITransactionHistory>;
 
 	getNewRepoTransHistory(
 		transactionHistory: ITransactionHistory,
 		repository: IRepository,
 		actor: IActor
-	): IRepositoryTransactionHistory;
+	): Promise<IRepositoryTransactionHistory>;
 
 }
 
 export class HistoryManager
 	implements IHistoryManager {
 
-	private operHistoryDmo: IOperationHistoryDmo
-	private recHistoryDmo: IRecordHistoryDmo
-	private repoTransHistoryDmo: IRepositoryTransactionHistoryDmo
-	private transHistoryDmo: ITransactionHistoryDmo
+	// private operHistoryDmo: ICachedPromise<IOperationHistoryDmo>
+	// private recHistoryDmo: ICachedPromise<IRecordHistoryDmo>
+	// private repoTransHistoryDmo: ICachedPromise<IRepositoryTransactionHistoryDmo>
+	private transHistoryDmo: ICachedPromise<ITransactionHistoryDmo>
 
 	constructor() {
-		DI.get((
-			operationHistoryDmo,
-			recordHistoryDmo,
-			repositoryTransactionHistoryDmo,
-			transactionHistoryDmo
-			) => {
-				this.operHistoryDmo      = operationHistoryDmo
-				this.recHistoryDmo       = recordHistoryDmo
-				this.repoTransHistoryDmo = repositoryTransactionHistoryDmo
-				this.transHistoryDmo     = transactionHistoryDmo
-			}, OPER_HISTORY_DMO, REC_HISTORY_DMO,
-			REPO_TRANS_HISTORY_DMO, TRANS_HISTORY_DMO)
+		// this.operHistoryDmo      = DI.cache(OPER_HISTORY_DMO,)
+		// this.recHistoryDmo       = DI.cache(REC_HISTORY_DMO)
+		// this.repoTransHistoryDmo = DI.cache(REPO_TRANS_HISTORY_DMO)
+		this.transHistoryDmo = DI.cache(TRANS_HISTORY_DMO)
 	}
 
-	getNewTransHistory(
+	async getNewTransHistory(
 		transactionType: TransactionType = TransactionType.LOCAL
-	): ITransactionHistory {
-		const transactionHistory = this.transHistoryDmo.getNewRecord(transactionType)
+	): Promise<ITransactionHistory> {
+		const transactionHistory = (await this.transHistoryDmo.get()).getNewRecord(transactionType)
 
 		return transactionHistory
 	}
 
-	getNewRepoTransHistory(
+	async getNewRepoTransHistory(
 		transactionHistory: ITransactionHistory,
 		repository: IRepository,
 		actor: IActor
-	): IRepositoryTransactionHistory {
-		const repoTransHistory = this.transHistoryDmo.getRepositoryTransaction(
+	): Promise<IRepositoryTransactionHistory> {
+		const repoTransHistory = (await this.transHistoryDmo.get()).getRepositoryTransaction(
 			transactionHistory, repository, actor)
 
 		return repoTransHistory

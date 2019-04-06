@@ -7,31 +7,20 @@ const holding_pattern_1 = require("@airport/holding-pattern");
 const terminal_map_1 = require("@airport/terminal-map");
 const diTokens_1 = require("../diTokens");
 class UpdateManager {
-    constructor(airDb, dataStore, histManager, offlineDataStore, operHistoryDmo, recHistoryDmo, repoManager, repoTransHistoryDmo, transHistoryDmo, transManager, utils) {
-        this.airDb = airDb;
-        this.dataStore = dataStore;
-        this.histManager = histManager;
-        this.offlineDataStore = offlineDataStore;
-        this.operHistoryDmo = operHistoryDmo;
-        this.recHistoryDmo = recHistoryDmo;
-        this.repoManager = repoManager;
-        this.repoTransHistoryDmo = repoTransHistoryDmo;
-        this.transHistoryDmo = transHistoryDmo;
-        this.transManager = transManager;
-        this.utils = utils;
-        di_1.DI.get((airportDb, dataStore, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager, utils) => {
+    constructor() {
+        di_1.DI.get((airportDb, dataStore, historyManager, offlineDataStore, repositoryManager, transactionManager, utils) => {
             this.airDb = airportDb;
             this.dataStore = dataStore;
             this.histManager = historyManager;
             this.offlineDataStore = offlineDataStore;
-            this.operHistoryDmo = operationHistoryDmo;
-            this.recHistoryDmo = recordHistoryDmo;
             this.repoManager = repositoryManager;
-            this.repoTransHistoryDmo = repositoryTransactionHistoryDmo;
-            this.transHistoryDmo = transactionHistoryDmo;
             this.transManager = transactionManager;
             this.utils = utils;
-        }, air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DMO, holding_pattern_1.REC_HISTORY_DMO, diTokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DMO, holding_pattern_1.TRANS_HISTORY_DMO, terminal_map_1.TRANSACTION_MANAGER, air_control_1.UTILS);
+        }, air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.REPOSITORY_MANAGER, terminal_map_1.TRANSACTION_MANAGER, air_control_1.UTILS);
+        this.operHistoryDmo = di_1.DI.cache(holding_pattern_1.OPER_HISTORY_DMO);
+        this.recHistoryDmo = di_1.DI.cache(holding_pattern_1.REC_HISTORY_DMO);
+        this.repoTransHistoryDmo = di_1.DI.cache(holding_pattern_1.REPO_TRANS_HISTORY_DMO);
+        // this.transHistoryDmo     = DI.cache(TRANS_HISTORY_DMO)
     }
     async updateValues(portableQuery, actor) {
         const dbEntity = this.airDb.schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex];
@@ -73,23 +62,26 @@ class UpdateManager {
         const repositoryIds = Array.from(repositoryIdSet);
         const repositories = await this.repoManager.findReposWithDetailsByIds(...repositoryIds);
         const recordHistoryMapByRecordId = {};
+        const repoTransHistoryDmo = await this.repoTransHistoryDmo.get();
+        const operHistoryDmo = await this.operHistoryDmo.get();
+        const recHistoryDmo = await this.recHistoryDmo.get();
         for (const repositoryId of repositoryIds) {
             const repository = repositories.get(repositoryId);
             const recordHistoryMapForRepository = {};
             recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository;
-            const repoTransHistory = this.histManager.getNewRepoTransHistory(this.transManager.currentTransHistory, repository, actor);
-            const operationHistory = this.repoTransHistoryDmo.startOperation(repoTransHistory, ground_control_1.ChangeType.UPDATE_ROWS, dbEntity);
+            const repoTransHistory = await this.histManager.getNewRepoTransHistory(this.transManager.currentTransHistory, repository, actor);
+            const operationHistory = repoTransHistoryDmo.startOperation(repoTransHistory, ground_control_1.ChangeType.UPDATE_ROWS, dbEntity);
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
             for (const recordToUpdate of recordsForRepositoryId) {
                 const actorId = recordToUpdate[actorIdColumnIndex];
                 const recordHistoryMapForActor = this.utils.ensureChildMap(recordHistoryMapForRepository, actorId);
                 const actorRecordId = recordToUpdate[actorRecordIdColumnIndex];
-                const recordHistory = this.operHistoryDmo.startRecordHistory(operationHistory, actorRecordId);
+                const recordHistory = operHistoryDmo.startRecordHistory(operationHistory, actorRecordId);
                 recordHistoryMapForActor[actorRecordId] = recordHistory;
                 for (const columnName in jsonUpdate.S) {
                     const dbColumn = dbEntity.columnMap[columnName];
                     const value = recordToUpdate[dbColumn.index];
-                    this.recHistoryDmo.addOldValue(recordHistory, dbColumn, value);
+                    recHistoryDmo.addOldValue(recordHistory, dbColumn, value);
                 }
             }
         }
@@ -98,6 +90,7 @@ class UpdateManager {
     async addNewValueHistory(jsonUpdate, dbEntity, portableSelect, recordHistoryMapByRecordId) {
         const updatedRecords = await this.dataStore.find(portableSelect);
         const { repositoryIdColumnIndex, actorIdColumnIndex, actorRecordIdColumnIndex, recordsByRepositoryId, repositoryIdSet } = this.groupRecordsByRepository(dbEntity, updatedRecords);
+        const recHistoryDmo = await this.recHistoryDmo.get();
         for (const repositoryId of repositoryIdSet) {
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
             for (const updatedRecord of recordsForRepositoryId) {
@@ -108,7 +101,7 @@ class UpdateManager {
                 for (const columnName in jsonUpdate.S) {
                     const dbColumn = dbEntity.columnMap[columnName];
                     const value = updatedRecord[dbColumn.index];
-                    this.recHistoryDmo.addNewValue(recordHistory, dbColumn, value);
+                    recHistoryDmo.addNewValue(recordHistory, dbColumn, value);
                 }
             }
         }

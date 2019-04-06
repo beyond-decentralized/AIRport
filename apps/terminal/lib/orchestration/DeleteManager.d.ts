@@ -12,7 +12,6 @@ export declare class DeleteManager implements IDeleteManager {
     private recHistoryDmo;
     private repoManager;
     private repoTransHistoryDmo;
-    private transHistoryDmo;
     private transManager;
     private utils;
     constructor();

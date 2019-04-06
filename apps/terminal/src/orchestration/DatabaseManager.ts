@@ -83,15 +83,20 @@ export class DatabaseManager
 		storeType: StoreType
 	): Promise<void> {
 		await setStoreDriver(storeType)
-		const [airDb] = await DI.getP(AIR_DB)
-		this.airDb    = airDb
+		const airDb = await DI.getP(AIR_DB)
+		this.airDb  = airDb
 
-		const [transManager] = await DI.getP(TRANSACTION_MANAGER)
+		const transManager = await DI.getP(TRANSACTION_MANAGER)
 		await transManager.initialize('airport')
 
-		const [storeDriver] = await DI.getP(STORE_DRIVER)
-		if (await storeDriver.doesTableExist('AP__TERRITORY__APPLICATION_PACKAGES')) {
-			const [queryObjectInitializer] = await DI.getP(QUERY_OBJECT_INITIALIZER)
+		const storeDriver = await DI.getP(STORE_DRIVER)
+			.findNative(
+				// ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
+				`SELECT tbl_name from sqlite_master WHERE type = '${tableName}'`,
+				[]
+			)
+		if (await storeDriver.doesTableExist('github_com___airport_territory__Package')) {
+			const queryObjectInitializer = await DI.getP(QUERY_OBJECT_INITIALIZER)
 			await queryObjectInitializer.initialize()
 		} else {
 			await this.installAirportSchema()
@@ -121,9 +126,9 @@ export class DatabaseManager
 	}
 
 	private async installAirportSchema() {
-		const blueprintFile       = await import('@airport/blueprint')
-		const [schemaInitializer] = await DI.getP(SCHEMA_INITIALIZER)
-		await schemaInitializer.initialize(blueprintFile.BLUEPRINT as any)
+		const blueprintFile     = await import('@airport/blueprint')
+		const schemaInitializer = await DI.getP(SCHEMA_INITIALIZER)
+		await schemaInitializer.initialize(blueprintFile.BLUEPRINT as any, false)
 	}
 
 	/*

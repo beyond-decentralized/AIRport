@@ -531,7 +531,7 @@
 // 			let referencedColumnName = joinColumnConfig.referencedColumnName;
 //
 // 			if (!referencedColumnName) {
-// 				// get the parent object's id
+// 				// get the upstream object's id
 // 				referencedData = this.getUniqueIdValueAndType(entityField, relationValue, relationQEntity, failOnNoValue);
 // 			} else {
 // 				referencedData = this.getColumnAndValueData(entityField, relationValue, <string>referencedColumnName, relationQEntity, dbFacade, failOnNoValue);

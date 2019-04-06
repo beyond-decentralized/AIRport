@@ -6,7 +6,10 @@ import {
 	UTILS,
 	Y
 }                           from '@airport/air-control'
-import {DI}                 from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                           from '@airport/di'
 import {
 	CascadeType,
 	ChangeType,
@@ -29,13 +32,11 @@ import {
 	IRecordHistoryDmo,
 	IRepository,
 	IRepositoryTransactionHistoryDmo,
-	ITransactionHistoryDmo,
 	OPER_HISTORY_DMO,
 	REC_HISTORY_DMO,
 	REPO_TRANS_HISTORY_DMO,
 	RepositoryEntity,
-	RepositoryId,
-	TRANS_HISTORY_DMO
+	RepositoryId
 }                           from '@airport/holding-pattern'
 import {
 	ITransactionManager,
@@ -70,11 +71,11 @@ export class DeleteManager
 	private dataStore: IStoreDriver
 	private historyManager: IHistoryManager
 	private offlineDataStore: IOfflineDeltaStore
-	private operHistoryDmo: IOperationHistoryDmo
-	private recHistoryDmo: IRecordHistoryDmo
+	private operHistoryDmo: ICachedPromise<IOperationHistoryDmo>
+	private recHistoryDmo: ICachedPromise<IRecordHistoryDmo>
 	private repoManager: IRepositoryManager
-	private repoTransHistoryDmo: IRepositoryTransactionHistoryDmo
-	private transHistoryDmo: ITransactionHistoryDmo
+	private repoTransHistoryDmo: ICachedPromise<IRepositoryTransactionHistoryDmo>
+	// private transHistoryDmo: ICachedPromise<ITransactionHistoryDmo>
 	private transManager: ITransactionManager
 	private utils: IUtils
 
@@ -84,31 +85,25 @@ export class DeleteManager
 			dataStore,
 			historyManager,
 			offlineDataStore,
-			operationHistoryDmo,
-			recordHistoryDmo,
 			repositoryManager,
-			repositoryTransactionHistoryDmo,
-			transactionHistoryDmo,
 			transactionManager,
 			utils
 			) => {
-				this.airDb               = airportDatabase
-				this.dataStore           = dataStore
-				this.historyManager      = historyManager
-				this.offlineDataStore    = offlineDataStore
-				this.operHistoryDmo      = operationHistoryDmo
-				this.recHistoryDmo       = recordHistoryDmo
-				this.repoManager         = repositoryManager
-				this.repoTransHistoryDmo = repositoryTransactionHistoryDmo
-				this.transHistoryDmo     = transactionHistoryDmo
-				this.transManager        = transactionManager
-				this.utils               = utils
+				this.airDb            = airportDatabase
+				this.dataStore        = dataStore
+				this.historyManager   = historyManager
+				this.offlineDataStore = offlineDataStore
+				this.repoManager      = repositoryManager
+				this.transManager     = transactionManager
+				this.utils            = utils
 			}, AIR_DB, STORE_DRIVER,
 			HISTORY_MANAGER, OFFLINE_DELTA_STORE,
-			OPER_HISTORY_DMO, REC_HISTORY_DMO,
-			REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DMO,
-			TRANS_HISTORY_DMO, TRANSACTION_MANAGER,
+			REPOSITORY_MANAGER, TRANSACTION_MANAGER,
 			UTILS)
+		this.operHistoryDmo      = DI.cache(OPER_HISTORY_DMO,)
+		this.recHistoryDmo       = DI.cache(REC_HISTORY_DMO)
+		this.repoTransHistoryDmo = DI.cache(REPO_TRANS_HISTORY_DMO)
+		// this.transHistoryDmo     = DI.cache(TRANS_HISTORY_DMO)
 	}
 
 	async deleteWhere(
@@ -259,22 +254,26 @@ export class DeleteManager
 		actor: IActor,
 	): Promise<void> {
 
+		const operHistoryDmo      = await this.operHistoryDmo.get()
+		const recHistoryDmo       = await this.recHistoryDmo.get()
+		const repoTransHistoryDmo = await this.repoTransHistoryDmo.get()
+
 		for (const [schemaIndex, schemaRecordsToDelete] of recordsToDelete) {
 			for (const [entityIndex, entityRecordsToDelete] of schemaRecordsToDelete) {
 				const dbEntity = this.airDb.schemas[schemaIndex].currentVersion.entities[entityIndex]
 				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
 					const repository = repositories.get(repositoryId)
 
-					const repoTransHistory = this.historyManager.getNewRepoTransHistory(
+					const repoTransHistory = await this.historyManager.getNewRepoTransHistory(
 						this.transManager.currentTransHistory, repository, actor
 					)
 
-					const operationHistory = this.repoTransHistoryDmo.startOperation(
+					const operationHistory = repoTransHistoryDmo.startOperation(
 						repoTransHistory, ChangeType.DELETE_ROWS, dbEntity)
 
 
 					for (const recordToDelete of entityRecordsToDeleteForRepo) {
-						const recordHistory = this.operHistoryDmo.startRecordHistory(
+						const recordHistory = operHistoryDmo.startRecordHistory(
 							operationHistory, recordToDelete.actorRecordId)
 						for (const dbProperty of dbEntity.properties) {
 							if (dbProperty.relation && dbProperty.relation.length) {
@@ -287,7 +286,7 @@ export class DeleteManager
 												value: any,
 												propertyNameChains: string[][]
 											) => {
-												this.recHistoryDmo.addOldValue(recordHistory, dbColumn, value)
+												recHistoryDmo.addOldValue(recordHistory, dbColumn, value)
 											})
 										break
 									case EntityRelationType.ONE_TO_MANY:
@@ -299,7 +298,7 @@ export class DeleteManager
 								}
 							} else {
 								const dbColumn = dbProperty.propertyColumns[0].column
-								this.recHistoryDmo
+								recHistoryDmo
 									.addOldValue(recordHistory, dbColumn, recordToDelete[dbProperty.name])
 							}
 						}

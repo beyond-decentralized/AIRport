@@ -1,3 +1,4 @@
+import { ICachedPromise } from './CachedPromise';
 import { DiToken } from './Token';
 export interface IContainer {
     get<A>(callback: (objA: A) => void, tokenA: DiToken<A>): void;
@@ -16,7 +17,8 @@ export interface IContainer {
     get<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(callback: (objA: A, objB: B, objC: C, objD: D, objE: E, objF: F, objG: G, objH: H, objI: I, objJ: J, objK: K, objL: L, objM: M, objN: N) => void, tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>): void;
     get<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(callback: (objA: A, objB: B, objC: C, objD: D, objE: E, objF: F, objG: G, objH: H, objI: I, objJ: J, objK: K, objL: L, objM: M, objN: N, objO: O) => void, tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>, tokenO: DiToken<O>): void;
     get(callback: (...objects: any[]) => void, ...tokens: DiToken<any>[]): void;
-    getP<A>(tokenA: DiToken<A>): Promise<[A]>;
+    cache<A>(tokenA: DiToken<A>): ICachedPromise<A>;
+    getP<A>(tokenA: DiToken<A>): Promise<A>;
     getP<A, B>(tokenA: DiToken<A>, tokenB: DiToken<B>): Promise<[A, B]>;
     getP<A, B, C>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>): Promise<[A, B, C]>;
     getP<A, B, C, D>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>): Promise<[A, B, C, D]>;
@@ -53,7 +55,8 @@ export declare class Container implements IContainer {
     get<A, B, C, D, E, F, G, H, I, J, K, L, M>(callback: (objA: A, objB: B, objC: C, objD: D, objE: E, objF: F, objG: G, objH: H, objI: I, objJ: J, objK: K, objL: L, objM: M) => void, tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>): void;
     get<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(callback: (objA: A, objB: B, objC: C, objD: D, objE: E, objF: F, objG: G, objH: H, objI: I, objJ: J, objK: K, objL: L, objM: M, objN: N) => void, tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>): void;
     get<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(callback: (objA: A, objB: B, objC: C, objD: D, objE: E, objF: F, objG: G, objH: H, objI: I, objJ: J, objK: K, objL: L, objM: M, objN: N, objO: O) => void, tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>, tokenO: DiToken<O>): void;
-    getP<A>(tokenA: DiToken<A>): Promise<[A]>;
+    cache<A>(tokenA: DiToken<A>): ICachedPromise<A>;
+    getP<A>(tokenA: DiToken<A>): Promise<A>;
     getP<A, B>(tokenA: DiToken<A>, tokenB: DiToken<B>): Promise<[A, B]>;
     getP<A, B, C>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>): Promise<[A, B, C]>;
     getP<A, B, C, D>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>): Promise<[A, B, C, D]>;

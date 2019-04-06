@@ -2,7 +2,10 @@ import {
 	IUtils,
 	UTILS
 }                       from '@airport/air-control'
-import {DI}             from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                       from '@airport/di'
 import {
 	DB_SCHEMA_UTILS,
 	DomainName,
@@ -71,56 +74,45 @@ export interface ISchemaRecorder {
 export class SchemaRecorder
 	implements ISchemaRecorder {
 
-	private domainDao: IDomainDao
-	private schemaColumnDao: ISchemaColumnDao
-	private schemaDao: ISchemaDao
-	private schemaEntityDao: ISchemaEntityDao
+	private domainDao: ICachedPromise<IDomainDao>
+	private schemaColumnDao: ICachedPromise<ISchemaColumnDao>
+	private schemaDao: ICachedPromise<ISchemaDao>
+	private schemaEntityDao: ICachedPromise<ISchemaEntityDao>
 	private schemaLocator: ISchemaLocator
-	private schemaPropertyColumnDao: ISchemaPropertyColumnDao
-	private schemaPropertyDao: ISchemaPropertyDao
-	private schemaReferenceDao: ISchemaReferenceDao
-	private schemaRelationColumnDao: ISchemaRelationColumnDao
-	private schemaRelationDao: ISchemaRelationDao
+	private schemaPropertyColumnDao: ICachedPromise<ISchemaPropertyColumnDao>
+	private schemaPropertyDao: ICachedPromise<ISchemaPropertyDao>
+	private schemaReferenceDao: ICachedPromise<ISchemaReferenceDao>
+	private schemaRelationColumnDao: ICachedPromise<ISchemaRelationColumnDao>
+	private schemaRelationDao: ICachedPromise<ISchemaRelationDao>
 	private dbSchemaUtils: IDbSchemaUtils
-	private schemaVersionDao: ISchemaVersionDao
+	private schemaVersionDao: ICachedPromise<ISchemaVersionDao>
 	private terminalStore: ITerminalStore
 	private utils: IUtils
 
 	constructor() {
 		DI.get((
-			domainDao,
-			schemaColumnDao,
-			schemaDao,
-			schemaEntityDao,
 			schemaLocator,
-			schemaPropertyColumnDao,
-			schemaPropertyDao,
-			schemaReferenceDao,
-			schemaRelationColumnDao,
-			schemaRelationDao,
 			dbSchemaUtils,
-			schemaVersionDao,
 			terminalStore,
 			utils
 			) => {
-				this.domainDao               = domainDao
-				this.schemaColumnDao         = schemaColumnDao
-				this.schemaEntityDao         = schemaEntityDao
-				this.schemaLocator           = schemaLocator
-				this.schemaPropertyColumnDao = schemaPropertyColumnDao
-				this.schemaPropertyDao       = schemaPropertyDao
-				this.schemaReferenceDao      = schemaReferenceDao
-				this.schemaRelationColumnDao = schemaRelationColumnDao
-				this.schemaRelationDao       = schemaRelationDao
-				this.dbSchemaUtils           = dbSchemaUtils
-				this.schemaVersionDao        = schemaVersionDao
-				this.terminalStore           = terminalStore
-				this.utils                   = utils
-			}, DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO,
-			SCHEMA_ENTITY_DAO, SCHEMA_LOCATOR, SCHEMA_PROPERTY_COLUMN_DAO,
-			SCHEMA_PROPERTY_DAO, SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO,
-			SCHEMA_RELATION_DAO, DB_SCHEMA_UTILS, SCHEMA_VERSION_DAO,
+				this.schemaLocator = schemaLocator
+				this.dbSchemaUtils = dbSchemaUtils
+				this.terminalStore = terminalStore
+				this.utils         = utils
+			}, SCHEMA_LOCATOR, DB_SCHEMA_UTILS,
 			TERMINAL_STORE, UTILS)
+
+		this.domainDao               = DI.cache(DOMAIN_DAO)
+		this.schemaColumnDao         = DI.cache(SCHEMA_COLUMN_DAO)
+		this.schemaDao               = DI.cache(SCHEMA_DAO)
+		this.schemaEntityDao         = DI.cache(SCHEMA_ENTITY_DAO)
+		this.schemaPropertyColumnDao = DI.cache(SCHEMA_PROPERTY_COLUMN_DAO)
+		this.schemaPropertyDao       = DI.cache(SCHEMA_PROPERTY_DAO)
+		this.schemaReferenceDao      = DI.cache(SCHEMA_REFERENCE_DAO)
+		this.schemaRelationColumnDao = DI.cache(SCHEMA_RELATION_COLUMN_DAO)
+		this.schemaRelationDao       = DI.cache(SCHEMA_RELATION_DAO)
+		this.schemaVersionDao        = DI.cache(SCHEMA_VERSION_DAO)
 	}
 
 	async record(
@@ -224,7 +216,7 @@ export class SchemaRecorder
 		}
 
 		if (newDomains.length) {
-			await this.domainDao.bulkCreate(newDomains, false, false)
+			await (await this.domainDao.get()).bulkCreate(newDomains, false, false)
 
 			for (const domain of newDomains) {
 				domainMapByName.set(domain.name, domain)
@@ -267,7 +259,7 @@ export class SchemaRecorder
 		}
 
 		if (newSchemas.length) {
-			await this.schemaDao.bulkCreate(newSchemas, false, false)
+			await (await this.schemaDao.get()).bulkCreate(newSchemas, false, false)
 
 			for (const schema of newSchemas) {
 				newSchemaMapByName.set(schema.name, schema)
@@ -314,7 +306,7 @@ export class SchemaRecorder
 			newSchemaVersionMapBySchemaName.set(schemaName, newSchemaVersion)
 		}
 
-		await this.schemaVersionDao.bulkCreate(newSchemaVersions, false, false)
+		await (await this.schemaVersionDao.get()).bulkCreate(newSchemaVersions, false, false)
 
 		return {
 			newSchemaVersionMapBySchemaName,
@@ -361,7 +353,7 @@ export class SchemaRecorder
 			}
 		}
 
-		await this.schemaReferenceDao.bulkCreate(
+		await (await this.schemaReferenceDao.get()).bulkCreate(
 			newSchemaReferences as SchemaReferenceECreateProperties[],
 			false, false)
 
@@ -408,7 +400,7 @@ export class SchemaRecorder
 			newEntitiesMapBySchemaName.set(schemaName, schemaVersion.entities)
 		}
 
-		await this.schemaEntityDao.bulkCreate(newEntities, false, false)
+		await (await this.schemaEntityDao.get()).bulkCreate(newEntities, false, false)
 
 		return {
 			newEntitiesMapBySchemaName,
@@ -459,7 +451,7 @@ export class SchemaRecorder
 			})
 		}
 
-		await this.schemaPropertyDao.bulkCreate(newProperties, false, false)
+		await (await this.schemaPropertyDao.get()).bulkCreate(newProperties, false, false)
 
 		return {
 			newProperties,
@@ -535,7 +527,7 @@ export class SchemaRecorder
 			})
 		}
 
-		await this.schemaRelationDao.bulkCreate(newRelations, false, false)
+		await (await this.schemaRelationDao.get()).bulkCreate(newRelations, false, false)
 
 		return {
 			newRelations,
@@ -620,8 +612,8 @@ export class SchemaRecorder
 			})
 		}
 
-		await this.schemaColumnDao.bulkCreate(newColumns, false, false)
-		await this.schemaPropertyColumnDao.bulkCreate(
+		await (await this.schemaColumnDao.get()).bulkCreate(newColumns, false, false)
+		await (await this.schemaPropertyColumnDao.get()).bulkCreate(
 			newPropertyColumns as SchemaPropertyColumnECreateProperties[],
 			false, false)
 
@@ -711,7 +703,7 @@ export class SchemaRecorder
 		}
 
 		if (newRelationColumns.length) {
-			await this.schemaRelationColumnDao.bulkCreate(
+			await (await this.schemaRelationColumnDao.get()).bulkCreate(
 				newRelationColumns as SchemaRelationColumnECreateProperties[],
 				false, false)
 		}

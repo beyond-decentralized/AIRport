@@ -37,7 +37,7 @@ export interface JSONRelation {
     cci: number;
     /**
      * Table Index
-     * Table Index of the parent entity in relation
+     * Table Index of the upstream entity in relation
      */
     ti?: number;
     /**
@@ -62,7 +62,7 @@ export interface JSONRelation {
     rep: string;
     /**
      *  Schema Version Id
-     * Schema Version Id of the parent entity in relation
+     * Schema Version Id of the upstream entity in relation
      */
     si?: number;
 }

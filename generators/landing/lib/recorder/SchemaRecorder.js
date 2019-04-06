@@ -9,21 +9,22 @@ const traffic_pattern_1 = require("@airport/traffic-pattern");
 const diTokens_1 = require("../diTokens");
 class SchemaRecorder {
     constructor() {
-        di_1.DI.get((domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaLocator, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, dbSchemaUtils, schemaVersionDao, terminalStore, utils) => {
-            this.domainDao = domainDao;
-            this.schemaColumnDao = schemaColumnDao;
-            this.schemaEntityDao = schemaEntityDao;
+        di_1.DI.get((schemaLocator, dbSchemaUtils, terminalStore, utils) => {
             this.schemaLocator = schemaLocator;
-            this.schemaPropertyColumnDao = schemaPropertyColumnDao;
-            this.schemaPropertyDao = schemaPropertyDao;
-            this.schemaReferenceDao = schemaReferenceDao;
-            this.schemaRelationColumnDao = schemaRelationColumnDao;
-            this.schemaRelationDao = schemaRelationDao;
             this.dbSchemaUtils = dbSchemaUtils;
-            this.schemaVersionDao = schemaVersionDao;
             this.terminalStore = terminalStore;
             this.utils = utils;
-        }, territory_1.DOMAIN_DAO, traffic_pattern_1.SCHEMA_COLUMN_DAO, traffic_pattern_1.SCHEMA_DAO, traffic_pattern_1.SCHEMA_ENTITY_DAO, diTokens_1.SCHEMA_LOCATOR, traffic_pattern_1.SCHEMA_PROPERTY_COLUMN_DAO, traffic_pattern_1.SCHEMA_PROPERTY_DAO, traffic_pattern_1.SCHEMA_REFERENCE_DAO, traffic_pattern_1.SCHEMA_RELATION_COLUMN_DAO, traffic_pattern_1.SCHEMA_RELATION_DAO, ground_control_1.DB_SCHEMA_UTILS, traffic_pattern_1.SCHEMA_VERSION_DAO, terminal_map_1.TERMINAL_STORE, air_control_1.UTILS);
+        }, diTokens_1.SCHEMA_LOCATOR, ground_control_1.DB_SCHEMA_UTILS, terminal_map_1.TERMINAL_STORE, air_control_1.UTILS);
+        this.domainDao = di_1.DI.cache(territory_1.DOMAIN_DAO);
+        this.schemaColumnDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_COLUMN_DAO);
+        this.schemaDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_DAO);
+        this.schemaEntityDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_ENTITY_DAO);
+        this.schemaPropertyColumnDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_PROPERTY_COLUMN_DAO);
+        this.schemaPropertyDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_PROPERTY_DAO);
+        this.schemaReferenceDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_REFERENCE_DAO);
+        this.schemaRelationColumnDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_RELATION_COLUMN_DAO);
+        this.schemaRelationDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_RELATION_DAO);
+        this.schemaVersionDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_VERSION_DAO);
     }
     async record(jsonSchemas) {
         const domainSet = new Set();
@@ -78,7 +79,7 @@ class SchemaRecorder {
             domains.push(domain);
         }
         if (newDomains.length) {
-            await this.domainDao.bulkCreate(newDomains, false, false);
+            await (await this.domainDao.get()).bulkCreate(newDomains, false, false);
             for (const domain of newDomains) {
                 domainMapByName.set(domain.name, domain);
             }
@@ -110,7 +111,7 @@ class SchemaRecorder {
             newSchemas.push(schema);
         }
         if (newSchemas.length) {
-            await this.schemaDao.bulkCreate(newSchemas, false, false);
+            await (await this.schemaDao.get()).bulkCreate(newSchemas, false, false);
             for (const schema of newSchemas) {
                 newSchemaMapByName.set(schema.name, schema);
             }
@@ -141,7 +142,7 @@ class SchemaRecorder {
             newSchemaVersions.push(newSchemaVersion);
             newSchemaVersionMapBySchemaName.set(schemaName, newSchemaVersion);
         }
-        await this.schemaVersionDao.bulkCreate(newSchemaVersions, false, false);
+        await (await this.schemaVersionDao.get()).bulkCreate(newSchemaVersions, false, false);
         return {
             newSchemaVersionMapBySchemaName,
             newSchemaVersions
@@ -175,7 +176,7 @@ class SchemaRecorder {
                 schemaReferences.push(schemaReference);
             }
         }
-        await this.schemaReferenceDao.bulkCreate(newSchemaReferences, false, false);
+        await (await this.schemaReferenceDao.get()).bulkCreate(newSchemaReferences, false, false);
         return {
             newSchemaReferenceMap,
             newSchemaReferences
@@ -203,7 +204,7 @@ class SchemaRecorder {
             }
             newEntitiesMapBySchemaName.set(schemaName, schemaVersion.entities);
         }
-        await this.schemaEntityDao.bulkCreate(newEntities, false, false);
+        await (await this.schemaEntityDao.get()).bulkCreate(newEntities, false, false);
         return {
             newEntitiesMapBySchemaName,
             newEntities
@@ -237,7 +238,7 @@ class SchemaRecorder {
                 }
             });
         }
-        await this.schemaPropertyDao.bulkCreate(newProperties, false, false);
+        await (await this.schemaPropertyDao.get()).bulkCreate(newProperties, false, false);
         return {
             newProperties,
             newPropertiesMap
@@ -287,7 +288,7 @@ class SchemaRecorder {
                 }
             });
         }
-        await this.schemaRelationDao.bulkCreate(newRelations, false, false);
+        await (await this.schemaRelationDao.get()).bulkCreate(newRelations, false, false);
         return {
             newRelations,
             newRelationsMap
@@ -341,8 +342,8 @@ class SchemaRecorder {
                 });
             });
         }
-        await this.schemaColumnDao.bulkCreate(newColumns, false, false);
-        await this.schemaPropertyColumnDao.bulkCreate(newPropertyColumns, false, false);
+        await (await this.schemaColumnDao.get()).bulkCreate(newColumns, false, false);
+        await (await this.schemaPropertyColumnDao.get()).bulkCreate(newPropertyColumns, false, false);
         return {
             newColumns,
             newColumnsMap,
@@ -407,7 +408,7 @@ class SchemaRecorder {
             });
         }
         if (newRelationColumns.length) {
-            await this.schemaRelationColumnDao.bulkCreate(newRelationColumns, false, false);
+            await (await this.schemaRelationColumnDao.get()).bulkCreate(newRelationColumns, false, false);
         }
         return newRelationColumns;
     }

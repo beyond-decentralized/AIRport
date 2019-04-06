@@ -17,7 +17,6 @@ export declare class InsertManager implements IInsertManager {
     private recHistoryDmo;
     private repoManager;
     private repoTransHistoryDmo;
-    private transHistoryDmo;
     private transManager;
     constructor();
     readonly currentTransHistory: ITransactionHistory;

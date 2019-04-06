@@ -1,4 +1,7 @@
-import {DI}                      from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                                from '@airport/di'
 import {
 	ACTIVE_QUERIES,
 	ActiveQueries,
@@ -39,7 +42,7 @@ export class TransactionManager
 	// private repositoryManager: IRepositoryManager
 	private queries: ActiveQueries
 	storeType: StoreType
-	private transactionHistoryDmo: ITransactionHistoryDmo
+	private transHistoryDmo: ICachedPromise<ITransactionHistoryDmo>
 	transactionIndexQueue: number[]
 	transactionInProgress: number     = null
 	yieldToRunningTransaction: number = 100
@@ -51,16 +54,15 @@ export class TransactionManager
 			offlineDeltaStore,
 			onlineManager,
 			queries,
-			transactionHistoryDmo
 			) => {
-				this.idGenerator           = idGenerator
-				this.offlineDeltaStore     = offlineDeltaStore
-				this.onlineManager         = onlineManager
-				this.queries               = queries
-				this.transactionHistoryDmo = transactionHistoryDmo
+				this.idGenerator       = idGenerator
+				this.offlineDeltaStore = offlineDeltaStore
+				this.onlineManager     = onlineManager
+				this.queries           = queries
 			}, ID_GENERATOR, OFFLINE_DELTA_STORE,
-			ONLINE_MANAGER, ACTIVE_QUERIES,
-			TRANS_HISTORY_DMO)
+			ONLINE_MANAGER, ACTIVE_QUERIES)
+
+		this.transHistoryDmo = DI.cache(TRANS_HISTORY_DMO)
 	}
 
 
@@ -87,7 +89,7 @@ export class TransactionManager
 		this.transactionInProgress = transactionIndex
 		let fieldMap               = new SyncSchemaMap()
 
-		this.currentTransHistory = this.transactionHistoryDmo.getNewRecord()
+		this.currentTransHistory = (await this.transHistoryDmo.get()).getNewRecord()
 
 		await this.dataStore.transact()
 	}

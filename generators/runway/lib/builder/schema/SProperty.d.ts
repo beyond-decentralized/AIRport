@@ -8,7 +8,7 @@ export interface SProperty {
      */
     columns: SColumn[];
     /**
-     * Index of the the property for the entity (parent properties included).
+     * Index of the the property for the entity (upstream properties included).
      */
     index: number;
     /**

@@ -35,8 +35,9 @@ export class Subscription
 		this.observable.subscriptions = this.observable.subscriptions.filter(
 			subscription => subscription !== this
 		)
+		this.observable.unsubscribeUpstream()
 
-		onUnsubscribe()
+		onUnsubscribe && onUnsubscribe()
 	}
 
 	// A boolean value indicating whether the subscription is closed

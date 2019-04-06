@@ -10,7 +10,10 @@ import {
 	SEQUENCE_CONSUMER_DAO,
 	SEQUENCE_DAO
 }                           from '@airport/airport-code'
-import {DI}                 from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                           from '@airport/di'
 import {DbColumn}           from '@airport/ground-control'
 import {IDomain}            from '@airport/territory'
 import {SEQUENCE_GENERATOR} from '../diTokens'
@@ -35,21 +38,15 @@ export class SequenceGenerator
 	private sequenceBlocks: ISequenceBlock[][][] = []
 	private sequenceConsumer: ISequenceConsumer
 
-	private sequenceBlockDao: IAbstractSequenceBlockDao
-	private sequenceConsumerDao: IAbstractSequenceConsumerDao
-	private sequenceDao: IAbstractSequenceDao
+	private sequenceBlockDao: ICachedPromise<IAbstractSequenceBlockDao>
+	private sequenceConsumerDao: ICachedPromise<IAbstractSequenceConsumerDao>
+	private sequenceDao: ICachedPromise<IAbstractSequenceDao>
 	private utils: IUtils
 
 	constructor() {
-		DI.get((
-			sequenceBlockDao,
-			sequenceConsumerDao,
-			sequenceDao
-		) => {
-			this.sequenceBlockDao = sequenceBlockDao
-			this.sequenceConsumerDao = sequenceConsumerDao
-			this.sequenceDao      = sequenceDao
-		}, SEQUENCE_BLOCK_DAO, SEQUENCE_CONSUMER_DAO, SEQUENCE_DAO)
+		this.sequenceBlockDao    = DI.cache(SEQUENCE_BLOCK_DAO)
+		this.sequenceConsumerDao = DI.cache(SEQUENCE_CONSUMER_DAO)
+		this.sequenceDao         = DI.cache(SEQUENCE_DAO)
 	}
 
 	async init(
@@ -61,8 +58,8 @@ export class SequenceGenerator
 			randomNumber: Math.random()
 		}
 
-		await this.sequenceConsumerDao.create(this.sequenceConsumer)
-		const sequences = await this.sequenceDao.findAll()
+		await (await this.sequenceConsumerDao.get()).create(this.sequenceConsumer)
+		const sequences = await (await this.sequenceDao.get()).findAll()
 
 		for (const sequence of sequences) {
 			this.utils.ensureChildArray(
@@ -117,7 +114,7 @@ export class SequenceGenerator
 				newBlocksToCreate.push(newBlock)
 			}
 			const newBlocks
-				      = await this.sequenceBlockDao.createNewBlocks(newBlocksToCreate)
+				      = await (await this.sequenceBlockDao.get()).createNewBlocks(newBlocksToCreate)
 			newBlocks.forEach((
 				newBlocksForColumn: ISequenceBlock[],
 				index: number

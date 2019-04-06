@@ -2,7 +2,10 @@ import {
 	IUtils,
 	UTILS,
 }                                                  from '@airport/air-control'
-import {DI}                                        from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                                                  from '@airport/di'
 import {BlockSyncStatus}                           from '@airport/ground-control'
 import {
 	IRepositoryDao,
@@ -38,9 +41,9 @@ import {
 }                                                  from '@airport/traffic-pattern'
 import {ITerminal}                                 from '@airport/travel-document-checkpoint'
 import {
-	SYNC_IN_REPO_TRANS_BLOCK_CREATOR,
 	SYNC_OUT_MANAGER,
 	SYNC_OUT_MSG_SENDER,
+	SYNC_OUT_REPO_TRANS_BLOCK_CREATOR,
 	SYNC_OUT_SERIALIZER,
 }                                                  from '../../diTokens'
 import {ISyncOutMessageSender}                     from './SyncOutMessageSender'
@@ -72,59 +75,46 @@ const maxAllRepoChangesLength   = 10485760
 export class SynchronizationOutManager
 	implements ISynchronizationOutManager {
 
-	constructor(
-		private repositoryDao: IRepositoryDao,
-		private repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao,
-		private schemaDao: ISchemaDao,
-		private sharingMessageDao: ISharingMessageDao,
-		private sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao,
-		private sharingNodeDao: ISharingNodeDao,
-		private sharingNodeTerminalDao: ISharingNodeTerminalDao,
-		private sharingNodeRepositoryDao: ISharingNodeRepositoryDao,
-		private sharingNodeRepoTransBlockDao: ISharingNodeRepoTransBlockDao,
-		private repositoryTransactionBlockCreator: ISyncOutRepositoryTransactionBlockCreator,
-		private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
-		private syncOutMessageSender: ISyncOutMessageSender,
-		private syncOutSerializer: ISyncOutSerializer,
-		private utils: IUtils,
-	) {
+
+	private repositoryDao: ICachedPromise<IRepositoryDao>
+	private repositoryTransactionHistoryDao: ICachedPromise<IRepositoryTransactionHistoryDao>
+	private schemaDao: ICachedPromise<ISchemaDao>
+	private sharingMessageDao: ICachedPromise<ISharingMessageDao>
+	private sharingMessageRepoTransBlockDao: ICachedPromise<ISharingMessageRepoTransBlockDao>
+	private sharingNodeDao: ICachedPromise<ISharingNodeDao>
+	private sharingNodeTerminalDao: ICachedPromise<ISharingNodeTerminalDao>
+	private sharingNodeRepositoryDao: ICachedPromise<ISharingNodeRepositoryDao>
+	private sharingNodeRepoTransBlockDao: ICachedPromise<ISharingNodeRepoTransBlockDao>
+	private repositoryTransactionBlockCreator: ISyncOutRepositoryTransactionBlockCreator
+	private repositoryTransactionBlockDao: ICachedPromise<IRepositoryTransactionBlockDao>
+	private syncOutMessageSender: ISyncOutMessageSender
+	private syncOutSerializer: ISyncOutSerializer
+	private utils: IUtils
+
+	constructor() {
 		DI.get((
-			repositoryDao,
-			repositoryTransactionHistoryDao,
-			schemaDao,
-			sharingMessageDao,
-			sharingMessageRepoTransBlockDao,
-			sharingNodeDao,
-			sharingNodeTerminalDao,
-			sharingNodeRepositoryDao,
-			sharingNodeRepoTransBlockDao,
 			repositoryTransactionBlockCreator,
-			repositoryTransactionBlockDao,
 			syncOutMessageSender,
 			syncOutSerializer,
 			utils
 			) => {
-				this.repositoryDao                     = repositoryDao
-				this.repositoryTransactionHistoryDao   = repositoryTransactionHistoryDao
-				this.schemaDao                         = schemaDao
-				this.sharingMessageDao                 = sharingMessageDao
-				this.sharingMessageRepoTransBlockDao   = sharingMessageRepoTransBlockDao
-				this.sharingNodeDao                    = sharingNodeDao
-				this.sharingNodeTerminalDao            = sharingNodeTerminalDao
-				this.sharingNodeRepositoryDao          = sharingNodeRepositoryDao
-				this.sharingNodeRepoTransBlockDao      = sharingNodeRepoTransBlockDao
 				this.repositoryTransactionBlockCreator = repositoryTransactionBlockCreator
-				this.repositoryTransactionBlockDao     = repositoryTransactionBlockDao
 				this.syncOutMessageSender              = syncOutMessageSender
 				this.syncOutSerializer                 = syncOutSerializer
 				this.utils                             = utils
-			}, REPOSITORY_DAO, REPO_TRANS_HISTORY_DAO,
-			SCHEMA_DAO, SHARING_MESSAGE_DAO,
-			SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SHARING_NODE_DAO,
-			SHARING_NODE_TERMINAL_DAO, SHARING_NODE_REPOSITORY_DAO,
-			SHARING_NODE_REPO_TRANS_BLOCK_DAO, SYNC_IN_REPO_TRANS_BLOCK_CREATOR,
-			REPO_TRANS_BLOCK_DAO, SYNC_OUT_MSG_SENDER,
+			}, SYNC_OUT_REPO_TRANS_BLOCK_CREATOR, SYNC_OUT_MSG_SENDER,
 			SYNC_OUT_SERIALIZER, UTILS)
+
+		this.repositoryDao                   = DI.cache(REPOSITORY_DAO)
+		this.repositoryTransactionHistoryDao = DI.cache(REPO_TRANS_HISTORY_DAO)
+		this.schemaDao                       = DI.cache(SCHEMA_DAO)
+		this.sharingMessageDao               = DI.cache(SHARING_MESSAGE_DAO)
+		this.sharingMessageRepoTransBlockDao = DI.cache(SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO)
+		this.sharingNodeDao                  = DI.cache(SHARING_NODE_DAO)
+		this.sharingNodeTerminalDao          = DI.cache(SHARING_NODE_TERMINAL_DAO)
+		this.sharingNodeRepositoryDao        = DI.cache(SHARING_NODE_REPOSITORY_DAO)
+		this.sharingNodeRepoTransBlockDao    = DI.cache(SHARING_NODE_REPO_TRANS_BLOCK_DAO)
+		this.repositoryTransactionBlockDao   = DI.cache(REPO_TRANS_BLOCK_DAO)
 	}
 
 	async synchronize(
@@ -194,7 +184,7 @@ export class SynchronizationOutManager
 			await this.addNewSharingMessages(newReposTransHistoryBlocksBySharingNodeId, terminal)
 		}
 
-		const sharingMessageIdsBySharingNodeId = await this.sharingMessageDao
+		const sharingMessageIdsBySharingNodeId = await (await this.sharingMessageDao.get())
 			.findAllSyncedSharingMessageIdsForSharingNodes(sharingNodeIds)
 
 
@@ -220,7 +210,7 @@ export class SynchronizationOutManager
 		const {
 			      syncStatusRepositoryTransactionBlockIds,
 			      syncStatusRepoTransBlockIdsBySharingNodeId
-		      }                      = await this.sharingNodeRepoTransBlockDao.getForSharingNodeIdsAndBlockStatus(
+		      }                      = await (await this.sharingNodeRepoTransBlockDao.get()).getForSharingNodeIdsAndBlockStatus(
 			startingSharingNodeIds, BlockSyncStatus.REQUESTING_SYNC_STATUS)
 
 		// If server did not respond to Sync Status requests
@@ -229,7 +219,7 @@ export class SynchronizationOutManager
 			const inactiveSharingNodeIds: SharingNodeId[] = Array.from(
 				syncStatusRepoTransBlockIdsBySharingNodeId.keys())
 			// Keep the RTB Sync Status in Requesting and update the SharingNode status
-			await this.sharingNodeDao.updateIsActive(inactiveSharingNodeIds, false)
+			await (await this.sharingNodeDao.get()).updateIsActive(inactiveSharingNodeIds, false)
 
 			// TODO: add keep alive requests
 
@@ -246,14 +236,14 @@ export class SynchronizationOutManager
 		const {
 			      syncingRepositoryTransactionBlockIds,
 			      syncingRepoTransBlockIdsBySharingNodeIds
-		      } = await this.sharingNodeRepoTransBlockDao.getForSharingNodeIdsAndBlockStatus(
+		      } = (await await this.sharingNodeRepoTransBlockDao.get()).getForSharingNodeIdsAndBlockStatus(
 			startingSharingNodeIds, BlockSyncStatus.SYNCHRONIZING)
 
 		if (syncingRepositoryTransactionBlockIds.length) {
 			// scale down to sync status requests
 			const syncAckSharingNodeIds: SharingNodeId[] = Array.from(
 				syncingRepoTransBlockIdsBySharingNodeIds.keys())
-			await this.sharingNodeRepoTransBlockDao.updateBlockSyncStatus(syncAckSharingNodeIds,
+			await (await this.sharingNodeRepoTransBlockDao.get()).updateBlockSyncStatus(syncAckSharingNodeIds,
 				syncingRepositoryTransactionBlockIds,
 				BlockSyncStatus.SYNCHRONIZING,
 				BlockSyncStatus.REQUESTING_SYNC_STATUS)
@@ -367,9 +357,9 @@ export class SynchronizationOutManager
 			}
 		}
 
-		await this.sharingMessageDao.bulkCreate(sharingMessages, false, false)
+		await (await this.sharingMessageDao.get()).bulkCreate(sharingMessages, false, false)
 
-		await this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks,
+		await (await this.sharingMessageRepoTransBlockDao.get()).bulkCreate(sharingMessageRepoTransBlocks,
 			false, false)
 	}
 

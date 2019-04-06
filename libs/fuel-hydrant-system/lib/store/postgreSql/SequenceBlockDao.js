@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const airport_code_1 = require("@airport/airport-code");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
@@ -44,5 +43,5 @@ class SequenceBlockDao {
     }
 }
 exports.SequenceBlockDao = SequenceBlockDao;
-di_1.DI.set(airport_code_1.SEQUENCE_BLOCK_DAO, SequenceBlockDao);
+// DI.set(SEQUENCE_BLOCK_DAO, SequenceBlockDao)
 //# sourceMappingURL=SequenceBlockDao.js.map

@@ -9,19 +9,19 @@ const terminal_map_1 = require("@airport/terminal-map");
 const diTokens_1 = require("../diTokens");
 class InsertManager {
     constructor() {
-        di_1.DI.get((airportDatabase, dataStore, sequenceGenerator, historyManager, offlineDataStore, operationHistoryDmo, recordHistoryDmo, repositoryManager, repositoryTransactionHistoryDmo, transactionHistoryDmo, transactionManager) => {
+        di_1.DI.get((airportDatabase, dataStore, sequenceGenerator, historyManager, offlineDataStore, repositoryManager, transactionManager) => {
             this.airDb = airportDatabase;
             this.dataStore = dataStore;
             this.seqGenerator = sequenceGenerator;
             this.histManager = historyManager;
             this.offlineDataStore = offlineDataStore;
-            this.operHistoryDmo = operationHistoryDmo;
-            this.recHistoryDmo = recordHistoryDmo;
             this.repoManager = repositoryManager;
-            this.repoTransHistoryDmo = repositoryTransactionHistoryDmo;
-            this.transHistoryDmo = transactionHistoryDmo;
             this.transManager = transactionManager;
-        }, air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, fuel_hydrant_system_1.SEQUENCE_GENERATOR, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DMO, holding_pattern_1.REC_HISTORY_DMO, diTokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DMO, holding_pattern_1.TRANS_HISTORY_DMO, terminal_map_1.TRANSACTION_MANAGER);
+        }, air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, fuel_hydrant_system_1.SEQUENCE_GENERATOR, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.REPOSITORY_MANAGER, terminal_map_1.TRANSACTION_MANAGER);
+        this.operHistoryDmo = di_1.DI.cache(holding_pattern_1.OPER_HISTORY_DMO);
+        this.recHistoryDmo = di_1.DI.cache(holding_pattern_1.REC_HISTORY_DMO);
+        this.repoTransHistoryDmo = di_1.DI.cache(holding_pattern_1.REPO_TRANS_HISTORY_DMO);
+        // this.transHistoryDmo     = DI.cache(TRANS_HISTORY_DMO)
     }
     get currentTransHistory() {
         return this.transManager.currentTransHistory;
@@ -169,22 +169,25 @@ class InsertManager {
                     break;
             }
         }
+        const repoTransHistoryDmo = await this.repoTransHistoryDmo.get();
+        const operHistoryDmo = await this.operHistoryDmo.get();
+        const recHistoryDmo = await this.recHistoryDmo.get();
         // Rows may belong to different repositories
         for (const row of jsonInsertValues.V) {
             const repositoryId = row[repositoryIdColumnNumber];
             const repo = await this.repoManager.getRepository(repositoryId);
             let repoTransHistory = repoTransHistories[repositoryId];
             if (!repoTransHistory) {
-                repoTransHistory = this.histManager
+                repoTransHistory = await this.histManager
                     .getNewRepoTransHistory(this.currentTransHistory, repo, actor);
             }
             let operationHistory = operationsByRepo[repositoryId];
             if (!operationHistory) {
-                operationHistory = this.repoTransHistoryDmo.startOperation(repoTransHistory, ground_control_1.ChangeType.INSERT_VALUES, dbEntity);
+                operationHistory = repoTransHistoryDmo.startOperation(repoTransHistory, ground_control_1.ChangeType.INSERT_VALUES, dbEntity);
                 operationsByRepo[repositoryId] = operationHistory;
             }
             const actorRecordId = row[actorRecordIdColumnNumber];
-            const recordHistory = this.operHistoryDmo.startRecordHistory(operationHistory, actorRecordId);
+            const recordHistory = operHistoryDmo.startRecordHistory(operationHistory, actorRecordId);
             for (const columnNumber in jsonInsertValues.C) {
                 if (columnNumber === repositoryIdColumnNumber
                     || columnNumber === actorIdColumnNumber
@@ -194,7 +197,7 @@ class InsertManager {
                 const columnIndex = jsonInsertValues.C[columnNumber];
                 const dbColumn = dbEntity.columns[columnIndex];
                 const newValue = row[columnNumber];
-                this.recHistoryDmo.addNewValue(recordHistory, dbColumn, newValue);
+                recHistoryDmo.addNewValue(recordHistory, dbColumn, newValue);
             }
         }
         // for (const repositoryId in operationsByRepo) {

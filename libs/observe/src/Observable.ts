@@ -24,8 +24,8 @@ export interface IObservable<V> {
 		context: any
 	): void
 
-	parent: Observable<any>
-	children: IObservable<any>[]
+	upstream: IObservable<any>[]
+	downstream: IObservable<any>[]
 
 	currentValue: V
 	lastValue: V
@@ -35,13 +35,21 @@ export class Observable<V>
 	implements IObservable<V> {
 
 	static from(
-		sourceObservable: IObservable<any>
+		...sourceObservables: IObservable<any>[]
 	): IObservable<any> {
 		// if (!(sourceObservable instanceof Observable)) {
 		// 	throw 'only @airport/observer/Observable is supported'
 		// }
 		const targetObservable: IObservable<any> = new Observable<any>()
-		sourceObservable.children.push(targetObservable)
+		if (sourceObservables.length > 1) {
+			sourceObservables.forEach(
+				aSourceObservable => {
+					aSourceObservable.downstream.push(targetObservable)
+				})
+		} else {
+			sourceObservables[0].downstream.push(targetObservable)
+		}
+		targetObservable.upstream = sourceObservables
 
 		return targetObservable
 	}
@@ -51,67 +59,61 @@ export class Observable<V>
 	) {
 	}
 
-	callback: {
-		(
-			value: V,
-			context: any
-		): any
-	}
+	callback
 
-	parent: Observable<any>
-	children: IObservable<any>[] = []
+	upstream: Observable<any>[]   = []
+	downstream: Observable<any>[] = []
 
 	currentValue: V
 	lastValue: V
+
+	numDownstreamSubscriptions = 0
 
 	subscriptions: Subscription[] = []
 
 	exec(
 		value: V,
 		callbackName: 'onError' | 'onNext',
-		context: any = {
-			combineLatestCounter: -1,
-			currentValue: this.currentValue,
-			lastValue: this.lastValue,
-			observable: this
-		},
+		upstreamObservable?: Observable<any>,
+		context: any = this.getDefaultContext(),
 	): void {
-		if (!this.subscriptions.length) {
-			return
-		}
-		if (value === undefined) {
+		if (!this.subscriptions.length
+			&& !this.numDownstreamSubscriptions
+			|| value === undefined) {
 			return
 		}
 
-		const lastValue = this.currentValue
-
+		this.lastValue = this.currentValue
 
 		if (this.callback) {
-			value = this.callback(value, context)
+			const value       = this.currentValue
+			this.currentValue = undefined
+			this.currentValue = this.valueFromUpstream()
+			if (this.currentValue === undefined) {
+				this.currentValue = value
+			}
 		} else {
-			value = value
+			this.currentValue = value
 		}
-
-		if (value === undefined) {
-			return
-		}
-
-		this.lastValue    = lastValue
-		this.currentValue = value
 
 		this.subscriptions.forEach(
 			subscription => {
-				(subscription[callbackName] as { (error: any): void })(value)
+				subscription[callbackName](this.currentValue)
+				// if (this.currentValue instanceof Array) {
+				// 	(subscription[callbackName] as any)(...this.currentValue)
+				// } else {
+				// 	subscription[callbackName](this.currentValue)
+				// }
 			})
 
-		this.children.forEach(
+		this.downstream.forEach(
 			observable => {
-				context.combineLatestCounter = -1
-				context.currentValue         = this.currentValue
-				context.lastValue            = this.lastValue
-				context.observable           = observable
-				if (observable.exec)
-					observable.exec(value, context, callbackName)
+				context.currentValue = this.currentValue
+				context.lastValue    = this.lastValue
+				context.observable   = observable
+				// if (observable.exec) {
+				observable.exec(this.currentValue, callbackName, this, context)
+				// }
 			})
 	}
 
@@ -119,7 +121,7 @@ export class Observable<V>
 	// 	observer: IObserver<V>
 	// ): ISubscription
 	subscribe(
-		onNext: { (value: V): void },
+		onNext: { (value: any): void },
 		onError?: { (value: any): void },
 		onComplete?: Function
 	): ISubscription
@@ -142,12 +144,66 @@ export class Observable<V>
 		)
 
 		this.subscriptions.push(subscription)
+		this.subscribeUpstream()
 
-		if (this.currentValue !== undefined) {
-			this.exec(this.currentValue, 'onNext')
-		}
+		onNext(this.valueFromUpstream())
+
 
 		return subscription
+	}
+
+	unsubscribeUpstream() {
+		for (const up of this.upstream) {
+			up.numDownstreamSubscriptions--
+			up.unsubscribeUpstream()
+		}
+	}
+
+	private valueFromUpstream(): V {
+		if (this.currentValue !== undefined) {
+			return this.currentValue
+		}
+		const values = this.upstream.map(
+			upstreamObservable =>
+				upstreamObservable.valueFromUpstream()
+		)
+		switch (values.length) {
+			case 0:
+				break
+			case 1: {
+				if (this.callback) {
+					this.currentValue = this.callback(...[...values, this.getDefaultContext()])
+				} else {
+					this.currentValue = values as any
+				}
+				break
+			}
+			default: {
+				if (this.callback) {
+					this.currentValue = this.callback(values[0], this.getDefaultContext())
+				} else {
+					this.currentValue = values[0]
+				}
+				break
+			}
+		}
+
+		return this.currentValue
+	}
+
+	private getDefaultContext() {
+		return {
+			currentValue: this.currentValue,
+			lastValue: this.lastValue,
+			observable: this
+		}
+	}
+
+	private subscribeUpstream(): void {
+		for (const up of this.upstream) {
+			up.numDownstreamSubscriptions++
+			up.subscribeUpstream()
+		}
 	}
 
 }

@@ -10,19 +10,14 @@ const lib_1 = require("zipson/lib");
 const diTokens_1 = require("../../../diTokens");
 const SyncInUtils_1 = require("../SyncInUtils");
 class SyncInSchemaChecker {
-    constructor(domainDao, schemaDao, schemaVersionDao, terminalStore, utils) {
-        this.domainDao = domainDao;
-        this.schemaDao = schemaDao;
-        this.schemaVersionDao = schemaVersionDao;
-        this.terminalStore = terminalStore;
-        this.utils = utils;
-        di_1.DI.get((domainDao, schemaDao, schemaVersionDao, terminalStore, utils) => {
-            this.domainDao = domainDao;
-            this.schemaDao = schemaDao;
-            this.schemaVersionDao = schemaVersionDao;
+    constructor() {
+        di_1.DI.get((terminalStore, utils) => {
             this.terminalStore = terminalStore;
             this.utils = utils;
-        }, territory_1.DOMAIN_DAO, traffic_pattern_1.SCHEMA_DAO, traffic_pattern_1.SCHEMA_VERSION_DAO, terminal_map_1.TERMINAL_STORE, air_control_1.UTILS);
+        }, terminal_map_1.TERMINAL_STORE, air_control_1.UTILS);
+        this.domainDao = di_1.DI.cache(territory_1.DOMAIN_DAO);
+        this.schemaDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_DAO);
+        this.schemaVersionDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_VERSION_DAO);
     }
     async checkSchemas(dataMessages) {
         const schemaNameSet = new Set();
@@ -227,7 +222,7 @@ class SyncInSchemaChecker {
                 schemaIndexesToUpdateStatusBy.push(schema.index);
             }
         }
-        await this.schemaDao.setStatusByIndexes(schemaIndexesToUpdateStatusBy, ground_control_1.SchemaStatus.NEEDS_UPGRADES);
+        await (await this.schemaDao.get()).setStatusByIndexes(schemaIndexesToUpdateStatusBy, ground_control_1.SchemaStatus.NEEDS_UPGRADES);
         // All schemas needed (that do not yet exist in this TM)
         const newlyNeededSchemas = [];
         for (const [domainName, schemaMapForDomain] of missingSchemaMap) {
@@ -242,8 +237,8 @@ class SyncInSchemaChecker {
                 newlyNeededSchemas.push(schema);
             }
         }
-        await this.domainDao.bulkCreate(Array.from(missingDomainMap.values()), false, false);
-        await this.schemaDao.bulkCreate(newlyNeededSchemas, false, false);
+        await (await this.domainDao.get()).bulkCreate(Array.from(missingDomainMap.values()), false, false);
+        await (await this.schemaDao.get()).bulkCreate(newlyNeededSchemas, false, false);
         return schemaWithChangesMap;
     }
     /*

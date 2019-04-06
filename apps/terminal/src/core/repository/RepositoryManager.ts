@@ -11,7 +11,10 @@ import {
 	RawUpdate,
 	UTILS,
 }                           from '@airport/air-control'
-import {DI}                 from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                           from '@airport/di'
 import {StoreType}          from '@airport/ground-control'
 import {
 	IActor,
@@ -114,7 +117,7 @@ export class RepositoryManager
 	deltaStore: IDeltaStore
 	repositories: IRepository[]
 	repositoriesById: { [repositoryId: string]: IRepository } = {}
-	private repositoryDao: IRepositoryDao
+	private repositoryDao: ICachedPromise<IRepositoryDao>
 	terminal: ITerminal
 	userEmail: string
 	private utils: IUtils
@@ -125,10 +128,11 @@ export class RepositoryManager
 			repositoryDao,
 			utils
 		) => {
-			this.dbFacade      = databaseFacade
-			this.repositoryDao = repositoryDao
-			this.utils         = utils
-		}, ENTITY_MANAGER, REPOSITORY_DAO, UTILS)
+			this.dbFacade = databaseFacade
+			this.utils    = utils
+		}, ENTITY_MANAGER, UTILS)
+
+		this.repositoryDao = DI.cache(REPOSITORY_DAO)
 	}
 
 	async initialize(): Promise<void> {
@@ -141,7 +145,7 @@ export class RepositoryManager
 	}
 
 	async findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>> {
-		return await this.repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail)
+		return await (await this.repositoryDao.get()).findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail)
 	}
 
 	async createRepository(
@@ -197,7 +201,7 @@ export class RepositoryManager
 	}
 
 	private async ensureRepositoryRecords(): Promise<void> {
-		this.repositories = await this.repositoryDao.find.tree({
+		this.repositories = await (await this.repositoryDao.get()).find.tree({
 			select: {}
 		})
 		/*
@@ -216,7 +220,8 @@ export class RepositoryManager
 
 	private addDeltaStore(repository: IRepository): IDeltaStore {
 		// TODO: revisit configuration (instead of hard-coding
-		// let sharingAdaptor                             = getSharingAdaptor(repository.platform)
+		// let sharingAdaptor                             =
+		// getSharingAdaptor(repository.platform)
 		let sharingAdaptor                             = getSharingAdaptor(PlatformType.OFFLINE)
 		let jsonDeltaStoreConfig: JsonDeltaStoreConfig = {
 			changeList: {
@@ -263,14 +268,14 @@ export class RepositoryManager
 			transactionHistory: null,
 			url: null,
 		}
-		await this.repositoryDao.create(repository)
+		await (await this.repositoryDao.get()).create(repository)
 		this.repositories.push(repository)
 
 		return repository
 	}
 
 	private async ensureAndCacheRepositories(): Promise<void> {
-		this.repositories = await this.repositoryDao.find.tree({
+		this.repositories = await (await this.repositoryDao.get()).find.tree({
 			select: {}
 		})
 		this.repositories.forEach((repository) => {

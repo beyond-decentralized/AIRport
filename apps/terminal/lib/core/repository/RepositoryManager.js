@@ -13,9 +13,9 @@ class RepositoryManager {
         this.repositoriesById = {};
         di_1.DI.get((databaseFacade, repositoryDao, utils) => {
             this.dbFacade = databaseFacade;
-            this.repositoryDao = repositoryDao;
             this.utils = utils;
-        }, tower_1.ENTITY_MANAGER, holding_pattern_1.REPOSITORY_DAO, air_control_1.UTILS);
+        }, tower_1.ENTITY_MANAGER, air_control_1.UTILS);
+        this.repositoryDao = di_1.DI.cache(holding_pattern_1.REPOSITORY_DAO);
     }
     async initialize() {
         await this.ensureRepositoryRecords();
@@ -26,7 +26,7 @@ class RepositoryManager {
         }
     }
     async findReposWithDetailsByIds(...repositoryIds) {
-        return await this.repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail);
+        return await (await this.repositoryDao.get()).findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail);
     }
     async createRepository(appName, distributionStrategy, offlineStoreType, platformType, platformConfig, recordIdField) {
         let repository = await this.createRepositoryRecord(appName, distributionStrategy, platformType, platformConfig);
@@ -62,7 +62,7 @@ class RepositoryManager {
         return this.deltaStore[repository.id];
     }
     async ensureRepositoryRecords() {
-        this.repositories = await this.repositoryDao.find.tree({
+        this.repositories = await (await this.repositoryDao.get()).find.tree({
             select: {}
         });
         /*
@@ -80,7 +80,8 @@ class RepositoryManager {
     }
     addDeltaStore(repository) {
         // TODO: revisit configuration (instead of hard-coding
-        // let sharingAdaptor                             = getSharingAdaptor(repository.platform)
+        // let sharingAdaptor                             =
+        // getSharingAdaptor(repository.platform)
         let sharingAdaptor = DeltaStore_1.getSharingAdaptor(terminal_map_1.PlatformType.OFFLINE);
         let jsonDeltaStoreConfig = {
             changeList: {
@@ -119,12 +120,12 @@ class RepositoryManager {
             transactionHistory: null,
             url: null,
         };
-        await this.repositoryDao.create(repository);
+        await (await this.repositoryDao.get()).create(repository);
         this.repositories.push(repository);
         return repository;
     }
     async ensureAndCacheRepositories() {
-        this.repositories = await this.repositoryDao.find.tree({
+        this.repositories = await (await this.repositoryDao.get()).find.tree({
             select: {}
         });
         this.repositories.forEach((repository) => {

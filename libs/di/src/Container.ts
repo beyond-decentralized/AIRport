@@ -1,3 +1,7 @@
+import {
+	CachedPromise,
+	ICachedPromise
+}                from './CachedPromise'
 import {DiToken} from './Token'
 
 export interface IContainer {
@@ -322,9 +326,13 @@ export interface IContainer {
 		...tokens: DiToken<any>[]
 	): void
 
+	cache<A>(
+		tokenA: DiToken<A>
+	): ICachedPromise<A>;
+
 	getP<A>(
 		tokenA: DiToken<A>
-	): Promise<[A]>
+	): Promise<A>
 
 	getP<A, B>(
 		tokenA: DiToken<A>,
@@ -819,9 +827,15 @@ export class Container
 	}
 
 
+	cache<A>(
+		tokenA: DiToken<A>
+	): ICachedPromise<A> {
+		return new CachedPromise(tokenA)
+	}
+
 	getP<A>(
 		tokenA: DiToken<A>
-	): Promise<[A]>
+	): Promise<A>
 	getP<A, B>(
 		tokenA: DiToken<A>,
 		tokenB: DiToken<B>
@@ -1060,10 +1074,15 @@ export class Container
 				)
 			}, 100)
 		} else {
-			returnArray ?
-				successCallback(objects)
-				:
+			if (returnArray) {
+				if (objects.length > 1) {
+					successCallback(objects)
+				} else {
+					successCallback(objects[0])
+				}
+			} else {
 				successCallback(...objects)
+			}
 		}
 	}
 

@@ -4,51 +4,60 @@ const Subscription_1 = require("./Subscription");
 class Observable {
     constructor(onUnsubscribe) {
         this.onUnsubscribe = onUnsubscribe;
-        this.children = [];
+        this.upstream = [];
+        this.downstream = [];
+        this.numDownstreamSubscriptions = 0;
         this.subscriptions = [];
     }
-    static from(sourceObservable) {
+    static from(...sourceObservables) {
         // if (!(sourceObservable instanceof Observable)) {
         // 	throw 'only @airport/observer/Observable is supported'
         // }
         const targetObservable = new Observable();
-        sourceObservable.children.push(targetObservable);
-        return targetObservable;
-    }
-    exec(value, callbackName, context = {
-        combineLatestCounter: -1,
-        currentValue: this.currentValue,
-        lastValue: this.lastValue,
-        observable: this
-    }) {
-        if (!this.subscriptions.length) {
-            return;
-        }
-        if (value === undefined) {
-            return;
-        }
-        const lastValue = this.currentValue;
-        if (this.callback) {
-            value = this.callback(value, context);
+        if (sourceObservables.length > 1) {
+            sourceObservables.forEach(aSourceObservable => {
+                aSourceObservable.downstream.push(targetObservable);
+            });
         }
         else {
-            value = value;
+            sourceObservables[0].downstream.push(targetObservable);
         }
-        if (value === undefined) {
+        targetObservable.upstream = sourceObservables;
+        return targetObservable;
+    }
+    exec(value, callbackName, upstreamObservable, context = this.getDefaultContext()) {
+        if (!this.subscriptions.length
+            && !this.numDownstreamSubscriptions
+            || value === undefined) {
             return;
         }
-        this.lastValue = lastValue;
-        this.currentValue = value;
+        this.lastValue = this.currentValue;
+        if (this.callback) {
+            const value = this.currentValue;
+            this.currentValue = undefined;
+            this.currentValue = this.valueFromUpstream();
+            if (this.currentValue === undefined) {
+                this.currentValue = value;
+            }
+        }
+        else {
+            this.currentValue = value;
+        }
         this.subscriptions.forEach(subscription => {
-            subscription[callbackName](value);
+            subscription[callbackName](this.currentValue);
+            // if (this.currentValue instanceof Array) {
+            // 	(subscription[callbackName] as any)(...this.currentValue)
+            // } else {
+            // 	subscription[callbackName](this.currentValue)
+            // }
         });
-        this.children.forEach(observable => {
-            context.combineLatestCounter = -1;
+        this.downstream.forEach(observable => {
             context.currentValue = this.currentValue;
             context.lastValue = this.lastValue;
             context.observable = observable;
-            if (observable.exec)
-                observable.exec(value, context, callbackName);
+            // if (observable.exec) {
+            observable.exec(this.currentValue, callbackName, this, context);
+            // }
         });
     }
     // subscribe(
@@ -60,10 +69,57 @@ class Observable {
         // }
         const subscription = new Subscription_1.Subscription(this, onNext, onError, onComplete, this.onUnsubscribe);
         this.subscriptions.push(subscription);
-        if (this.currentValue !== undefined) {
-            this.exec(this.currentValue, 'onNext');
-        }
+        this.subscribeUpstream();
+        onNext(this.valueFromUpstream());
         return subscription;
+    }
+    unsubscribeUpstream() {
+        for (const up of this.upstream) {
+            up.numDownstreamSubscriptions--;
+            up.unsubscribeUpstream();
+        }
+    }
+    valueFromUpstream() {
+        if (this.currentValue !== undefined) {
+            return this.currentValue;
+        }
+        const values = this.upstream.map(upstreamObservable => upstreamObservable.valueFromUpstream());
+        switch (values.length) {
+            case 0:
+                break;
+            case 1: {
+                if (this.callback) {
+                    this.currentValue = this.callback(...[...values, this.getDefaultContext()]);
+                }
+                else {
+                    this.currentValue = values;
+                }
+                break;
+            }
+            default: {
+                if (this.callback) {
+                    this.currentValue = this.callback(values[0], this.getDefaultContext());
+                }
+                else {
+                    this.currentValue = values[0];
+                }
+                break;
+            }
+        }
+        return this.currentValue;
+    }
+    getDefaultContext() {
+        return {
+            currentValue: this.currentValue,
+            lastValue: this.lastValue,
+            observable: this
+        };
+    }
+    subscribeUpstream() {
+        for (const up of this.upstream) {
+            up.numDownstreamSubscriptions++;
+            up.subscribeUpstream();
+        }
     }
 }
 exports.Observable = Observable;

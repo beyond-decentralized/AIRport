@@ -2,72 +2,37 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const observe_1 = require("@airport/observe");
 function createSelector(...args) {
-    let numInputSelectors;
-    switch (args.length) {
-        case 0:
-        case 1:
-            throw new Error(`Invalid createSelector call, too few input selectors.
-			Expecting 1 to 3.`);
-        case 2:
-        case 3:
-        case 4:
-            numInputSelectors = args.length - 1;
-            break;
-        default:
-            throw new Error(`
-			Invalid createSelector call, too many input selectors.
-			Expecting 1 to 3.
-			`);
+    if (args.length < 2 || args.length > 6) {
+        throw new Error(`Invalid createSelector call, Expecting 1 to 3 selectors and a callback.`);
     }
-    const inputSelectors = args.slice(0, args.length);
+    const inputSelectors = args.slice(0, args.length - 1);
     const callback = args[args.length - 1];
-    let observable = inputSelectors[0].observable;
-    let combine;
+    let observable;
     if (inputSelectors.length > 1) {
-        const additionalObservables = [];
-        for (let i = 1; i < inputSelectors.length; i++) {
-            additionalObservables.push(inputSelectors[i].observable);
-        }
-        combine = (v, ctx) => observe_1.combineLatest(additionalObservables, ctx, callback);
-    }
-    if (combine) {
-        observable = observe_1.pipe(observable, (v, ctx) => 
-        // share(
-        observe_1.distinctUntilChanged(combine(v, ctx), ctx));
+        observable = observe_1.Observable.from(...inputSelectors.map(selector => selector.observable));
     }
     else {
-        observable = observe_1.pipe(observable, (v, ctx) => 
-        // share(
-        observe_1.distinctUntilChanged(callback(v), ctx));
+        observable = inputSelectors[0].observable;
     }
-    const selector = function (
-    // otherStateObservable?: Observable<SV>
-    ) {
-        // if (otherStateObservable) {
-        // 	throw new Error(`Not implemented`)
-        // }
-        return getCurrentValue(this.observable);
-    };
-    selector.observable = observable;
-    return selector;
+    observable = observe_1.pipe(observable, (v, ctx) => 
+    // share(
+    observe_1.distinctUntilChanged(callback(v), ctx));
+    return getSelector(observable);
 }
 exports.createSelector = createSelector;
 function createRootSelector(stateObservable) {
-    const rootSelector = function (
-    // otherStateObservable?: Observable<SV>
-    ) {
-        // if (otherStateObservable) {
-        // 	throw new Error(`Not implemented`)
-        // }
-        return getCurrentValue(this.observable);
-    };
-    rootSelector.observable = stateObservable;
-    return rootSelector;
+    return getSelector(stateObservable);
 }
 exports.createRootSelector = createRootSelector;
-function getCurrentValue(observable) {
-    let currentValue;
-    observable.subscribe(value => currentValue = value).unsubscribe();
-    return currentValue;
+function getSelector(observable) {
+    let selector = (function (
+    // otherStateObservable?: Observable<SV>
+    ) {
+        let currentValue;
+        observable.subscribe(value => currentValue = value).unsubscribe();
+        return currentValue;
+    });
+    selector.observable = observable;
+    return selector;
 }
 //# sourceMappingURL=Selector.js.map

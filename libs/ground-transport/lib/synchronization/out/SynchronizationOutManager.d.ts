@@ -1,11 +1,5 @@
-import { IUtils } from '@airport/air-control';
-import { IRepositoryDao, IRepositoryTransactionHistoryDao } from '@airport/holding-pattern';
-import { IRepositoryTransactionBlockDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISharingNode, ISharingNodeDao, ISharingNodeRepositoryDao, ISharingNodeRepoTransBlockDao, ISharingNodeTerminalDao } from '@airport/moving-walkway';
-import { ISchemaDao } from '@airport/traffic-pattern';
+import { ISharingNode } from '@airport/moving-walkway';
 import { ITerminal } from '@airport/travel-document-checkpoint';
-import { ISyncOutMessageSender } from './SyncOutMessageSender';
-import { ISyncOutRepositoryTransactionBlockCreator } from './SyncOutRepositoryTransactionBlockCreator';
-import { ISyncOutSerializer } from './SyncOutSerializer';
 export interface ISynchronizationOutManager {
     synchronize(sharingNodes: ISharingNode[], terminal: ITerminal): Promise<void>;
 }
@@ -32,7 +26,7 @@ export declare class SynchronizationOutManager implements ISynchronizationOutMan
     private syncOutMessageSender;
     private syncOutSerializer;
     private utils;
-    constructor(repositoryDao: IRepositoryDao, repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao, schemaDao: ISchemaDao, sharingMessageDao: ISharingMessageDao, sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao, sharingNodeDao: ISharingNodeDao, sharingNodeTerminalDao: ISharingNodeTerminalDao, sharingNodeRepositoryDao: ISharingNodeRepositoryDao, sharingNodeRepoTransBlockDao: ISharingNodeRepoTransBlockDao, repositoryTransactionBlockCreator: ISyncOutRepositoryTransactionBlockCreator, repositoryTransactionBlockDao: IRepositoryTransactionBlockDao, syncOutMessageSender: ISyncOutMessageSender, syncOutSerializer: ISyncOutSerializer, utils: IUtils);
+    constructor();
     synchronize(sharingNodes: ISharingNode[], terminal: ITerminal): Promise<void>;
     /**
      *

@@ -12,13 +12,13 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
         super();
         this.transactionInProgress = null;
         this.yieldToRunningTransaction = 100;
-        di_1.DI.get((idGenerator, offlineDeltaStore, onlineManager, queries, transactionHistoryDmo) => {
+        di_1.DI.get((idGenerator, offlineDeltaStore, onlineManager, queries) => {
             this.idGenerator = idGenerator;
             this.offlineDeltaStore = offlineDeltaStore;
             this.onlineManager = onlineManager;
             this.queries = queries;
-            this.transactionHistoryDmo = transactionHistoryDmo;
-        }, fuel_hydrant_system_1.ID_GENERATOR, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.ONLINE_MANAGER, fuel_hydrant_system_1.ACTIVE_QUERIES, holding_pattern_1.TRANS_HISTORY_DMO);
+        }, fuel_hydrant_system_1.ID_GENERATOR, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.ONLINE_MANAGER, fuel_hydrant_system_1.ACTIVE_QUERIES);
+        this.transHistoryDmo = di_1.DI.cache(holding_pattern_1.TRANS_HISTORY_DMO);
     }
     /**
      * Initializes the EntityManager at server load time.
@@ -37,7 +37,7 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
         }
         this.transactionInProgress = transactionIndex;
         let fieldMap = new ground_control_1.SyncSchemaMap();
-        this.currentTransHistory = this.transactionHistoryDmo.getNewRecord();
+        this.currentTransHistory = (await this.transHistoryDmo.get()).getNewRecord();
         await this.dataStore.transact();
     }
     async rollbackTransaction(transactionIndex) {

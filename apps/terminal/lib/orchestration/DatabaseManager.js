@@ -50,13 +50,16 @@ class DatabaseManager {
     }
     async init(storeType) {
         await fuel_hydrant_system_1.setStoreDriver(storeType);
-        const [airDb] = await di_1.DI.getP(air_control_1.AIR_DB);
+        const airDb = await di_1.DI.getP(air_control_1.AIR_DB);
         this.airDb = airDb;
-        const [transManager] = await di_1.DI.getP(terminal_map_1.TRANSACTION_MANAGER);
+        const transManager = await di_1.DI.getP(terminal_map_1.TRANSACTION_MANAGER);
         await transManager.initialize('airport');
-        const [storeDriver] = await di_1.DI.getP(ground_control_1.STORE_DRIVER);
-        if (await storeDriver.doesTableExist('AP__TERRITORY__APPLICATION_PACKAGES')) {
-            const [queryObjectInitializer] = await di_1.DI.getP(takeoff_1.QUERY_OBJECT_INITIALIZER);
+        const storeDriver = await di_1.DI.getP(ground_control_1.STORE_DRIVER)
+            .findNative(
+        // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
+        `SELECT tbl_name from sqlite_master WHERE type = '${tableName}'`, []);
+        if (await storeDriver.doesTableExist('github_com___airport_territory__Package')) {
+            const queryObjectInitializer = await di_1.DI.getP(takeoff_1.QUERY_OBJECT_INITIALIZER);
             await queryObjectInitializer.initialize();
         }
         else {
@@ -87,8 +90,8 @@ class DatabaseManager {
     }
     async installAirportSchema() {
         const blueprintFile = await Promise.resolve().then(() => require('@airport/blueprint'));
-        const [schemaInitializer] = await di_1.DI.getP(landing_1.SCHEMA_INITIALIZER);
-        await schemaInitializer.initialize(blueprintFile.BLUEPRINT);
+        const schemaInitializer = await di_1.DI.getP(landing_1.SCHEMA_INITIALIZER);
+        await schemaInitializer.initialize(blueprintFile.BLUEPRINT, false);
     }
 }
 exports.DatabaseManager = DatabaseManager;

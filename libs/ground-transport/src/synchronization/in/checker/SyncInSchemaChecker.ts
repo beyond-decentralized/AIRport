@@ -2,7 +2,10 @@ import {
 	IUtils,
 	UTILS
 }                               from '@airport/air-control'
-import {DI}                     from '@airport/di'
+import {
+	DI,
+	ICachedPromise
+}                               from '@airport/di'
 import {
 	DomainId,
 	DomainName,
@@ -73,27 +76,25 @@ export interface ISyncInSchemaChecker {
 export class SyncInSchemaChecker
 	implements ISyncInSchemaChecker {
 
-	constructor(
-		private domainDao: IDomainDao,
-		private schemaDao: ISchemaDao,
-		private schemaVersionDao: ISchemaVersionDao,
-		private terminalStore: ITerminalStore,
-		private utils: IUtils
-	) {
+	private domainDao: ICachedPromise<IDomainDao>
+	private schemaDao: ICachedPromise<ISchemaDao>
+	private schemaVersionDao: ICachedPromise<ISchemaVersionDao>
+	private terminalStore: ITerminalStore
+	private utils: IUtils
+
+	constructor() {
 		DI.get((
-			domainDao,
-			schemaDao,
-			schemaVersionDao,
 			terminalStore,
 			utils
-			) => {
-				this.domainDao        = domainDao
-				this.schemaDao        = schemaDao
-				this.schemaVersionDao = schemaVersionDao
-				this.terminalStore    = terminalStore
-				this.utils            = utils
-			}, DOMAIN_DAO, SCHEMA_DAO,
-			SCHEMA_VERSION_DAO, TERMINAL_STORE, UTILS)
+		) => {
+			this.terminalStore = terminalStore
+			this.utils         = utils
+		}, TERMINAL_STORE, UTILS)
+
+
+		this.domainDao        = DI.cache(DOMAIN_DAO)
+		this.schemaDao        = DI.cache(SCHEMA_DAO)
+		this.schemaVersionDao = DI.cache(SCHEMA_VERSION_DAO)
 	}
 
 	async checkSchemas(
@@ -367,7 +368,7 @@ export class SyncInSchemaChecker
 				schemaIndexesToUpdateStatusBy.push(schema.index)
 			}
 		}
-		await this.schemaDao.setStatusByIndexes(
+		await (await this.schemaDao.get()).setStatusByIndexes(
 			schemaIndexesToUpdateStatusBy, SchemaStatus.NEEDS_UPGRADES)
 
 		// All schemas needed (that do not yet exist in this TM)
@@ -388,10 +389,10 @@ export class SyncInSchemaChecker
 			}
 		}
 
-		await this.domainDao.bulkCreate(Array.from(missingDomainMap.values()),
+		await (await this.domainDao.get()).bulkCreate(Array.from(missingDomainMap.values()),
 			false, false)
 
-		await this.schemaDao.bulkCreate(newlyNeededSchemas, false, false)
+		await (await this.schemaDao.get()).bulkCreate(newlyNeededSchemas, false, false)
 
 		return schemaWithChangesMap
 	}

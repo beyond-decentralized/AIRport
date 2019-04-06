@@ -1,7 +1,7 @@
 import {
-	combineLatest,
 	distinctUntilChanged,
 	IObservable,
+	Observable,
 	pipe
 } from '@airport/observe'
 
@@ -58,106 +58,85 @@ export function createSelector<V1, V2, V3, V, SV>(
 		value3: V3,
 	) => V
 ): IMemoizedSelector<V, SV>
+export function createSelector<V1, V2, V3, V4, V, SV>(
+	selector1: IMemoizedSelector<V1, SV>,
+	selector2: IMemoizedSelector<V2, SV>,
+	selector3: IMemoizedSelector<V3, SV>,
+	selector4: IMemoizedSelector<V4, SV>,
+	callback: (
+		value1: V1,
+		value2: V2,
+		value3: V3,
+		value4: V4,
+	) => V
+): IMemoizedSelector<V, SV>
+export function createSelector<V1, V2, V3, V4, V5, V, SV>(
+	selector1: IMemoizedSelector<V1, SV>,
+	selector2: IMemoizedSelector<V2, SV>,
+	selector3: IMemoizedSelector<V3, SV>,
+	selector4: IMemoizedSelector<V4, SV>,
+	selector5: IMemoizedSelector<V5, SV>,
+	callback: (
+		value1: V1,
+		value2: V2,
+		value3: V3,
+		value4: V4,
+		value5: V5,
+	) => V
+): IMemoizedSelector<V, SV>
 export function createSelector<V, SV>(
 	...args: any[]
 ) {
-	let numInputSelectors
-	switch (args.length) {
-		case 0:
-		case 1:
-			throw new Error(`Invalid createSelector call, too few input selectors.
-			Expecting 1 to 3.`)
-		case 2:
-		case 3:
-		case 4:
-			numInputSelectors = args.length - 1
-			break
-		default:
-			throw new Error(`
-			Invalid createSelector call, too many input selectors.
-			Expecting 1 to 3.
-			`)
+	if(args.length < 2 || args.length > 6) {
+			throw new Error(`Invalid createSelector call, Expecting 1 to 3 selectors and a callback.`)
 	}
 
-	const inputSelectors: IMemoizedSelector<any, SV>[] = args.slice(0, args.length)
+	const inputSelectors: IMemoizedSelector<any, SV>[] = args.slice(0, args.length - 1)
 	const callback                                     = args[args.length - 1]
 
-	let observable = inputSelectors[0].observable
-
-	let combine
+	let observable
 	if (inputSelectors.length > 1) {
-		const additionalObservables: IObservable<unknown>[] = []
-		for (let i = 1; i < inputSelectors.length; i++) {
-			additionalObservables.push(inputSelectors[i].observable)
-		}
-		combine = (
-			v,
-			ctx
-		) => combineLatest(additionalObservables as any, ctx, callback)
-	}
-
-	if (combine) {
-		observable = pipe(observable, (
-			v,
-			ctx
-			) =>
-				// share(
-				distinctUntilChanged(
-					combine(v, ctx), ctx),
-			// ctx)
-		)
+		observable = Observable.from(...inputSelectors.map(
+			selector => selector.observable))
 	} else {
-		observable = pipe(observable, (
-			v,
-			ctx
-			) =>
-				// share(
-				distinctUntilChanged(
-					callback(v), ctx),
-			// ctx)
-		)
+		observable = inputSelectors[0].observable
 	}
+	observable = pipe(observable, (
+		v,
+		ctx
+		) =>
+			// share(
+			distinctUntilChanged(
+				callback(v), ctx),
+		// ctx)
+	)
 
-	const selector      = <IMemoizedSelector<V, SV>>function (
-		// otherStateObservable?: Observable<SV>
-	) {
-		// if (otherStateObservable) {
-		// 	throw new Error(`Not implemented`)
-		// }
-
-		return getCurrentValue(this.observable)
-	}
-	selector.observable = observable
-
-	return selector
+	return getSelector(observable)
 }
 
 export function createRootSelector<SV>(
 	stateObservable: IObservable<SV>
 ): IMemoizedSelector<SV, SV> {
-
-	const rootSelector      = <IMemoizedSelector<SV, SV>>function (
-		// otherStateObservable?: Observable<SV>
-	) {
-		// if (otherStateObservable) {
-		// 	throw new Error(`Not implemented`)
-		// }
-
-		return getCurrentValue(this.observable)
-	}
-	rootSelector.observable = stateObservable
-
-	return rootSelector
+	return getSelector(stateObservable)
 }
 
-function getCurrentValue<V>(
-	observable: IObservable<V>
+function getSelector<SV>(
+	observable: IObservable<SV>
 ) {
-	let currentValue
-	observable.subscribe(
-		value =>
-			currentValue = value
-	).unsubscribe()
+	let selector = <IMemoizedSelector<SV, SV>>(function (
+		// otherStateObservable?: Observable<SV>
+	) {
+		let currentValue
 
-	return currentValue
+		observable.subscribe(
+			value =>
+				currentValue = value
+		).unsubscribe()
+
+		return currentValue
+	})
+
+	selector.observable = observable
+
+	return selector
 }

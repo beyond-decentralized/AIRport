@@ -5,39 +5,44 @@ const takeoff_1 = require("@airport/takeoff");
 const diTokens_1 = require("./diTokens");
 class SchemaInitializer {
     constructor() {
-        di_1.DI.get((queryObjectInitializer, schemaBuilder, schemaChecker, schemaLocator, schemaRecorder) => {
-            this.queryObjectInitializer = queryObjectInitializer;
-            this.schemaBuilder = schemaBuilder;
-            this.schemaChecker = schemaChecker;
-            this.schemaLocator = schemaLocator;
-            this.schemaRecorder = schemaRecorder;
-        }, takeoff_1.QUERY_OBJECT_INITIALIZER, diTokens_1.SCHEMA_BUILDER, diTokens_1.SCHEMA_CHECKER, diTokens_1.SCHEMA_LOCATOR, diTokens_1.SCHEMA_RECORDER);
+        this.queryObjectInitializer = di_1.DI.cache(takeoff_1.QUERY_OBJECT_INITIALIZER);
+        this.schemaBuilder = di_1.DI.cache(diTokens_1.SCHEMA_BUILDER);
+        this.schemaChecker = di_1.DI.cache(diTokens_1.SCHEMA_CHECKER);
+        this.schemaLocator = di_1.DI.cache(diTokens_1.SCHEMA_LOCATOR);
+        this.schemaRecorder = di_1.DI.cache(diTokens_1.SCHEMA_RECORDER);
     }
-    async ensureBaseSchemas() {
-    }
-    async initialize(jsonSchemas) {
+    async initialize(jsonSchemas, checkDependencies = false) {
         const jsonSchemasToInstall = [];
+        const schemaChecker = await this.schemaChecker.get();
         for (const jsonSchema of jsonSchemas) {
-            await this.schemaChecker.check(jsonSchema);
-            const existingSchema = this.schemaLocator.locateExistingSchemaVersionRecord(jsonSchema);
+            await schemaChecker.check(jsonSchema);
+            const existingSchema = (await this.schemaLocator.get()).locateExistingSchemaVersionRecord(jsonSchema);
             if (existingSchema) {
                 // Nothing needs to be done, we already have this schema version
                 continue;
             }
             jsonSchemasToInstall.push(jsonSchema);
         }
-        const schemaReferenceCheckResults = await this.schemaChecker
-            .checkDependencies(jsonSchemasToInstall);
-        if (schemaReferenceCheckResults.neededDependencies.length
-            || schemaReferenceCheckResults.schemasInNeedOfAdditionalDependencies.length) {
-            throw new Error(`Installing schemas with external dependencies
+        let schemasWithValidDependencies;
+        if (checkDependencies) {
+            const schemaReferenceCheckResults = await schemaChecker
+                .checkDependencies(jsonSchemasToInstall);
+            if (schemaReferenceCheckResults.neededDependencies.length
+                || schemaReferenceCheckResults.schemasInNeedOfAdditionalDependencies.length) {
+                throw new Error(`Installing schemas with external dependencies
 			is not currently supported.`);
+            }
+            schemasWithValidDependencies = schemaReferenceCheckResults.schemasWithValidDependencies;
         }
-        for (const jsonSchema of schemaReferenceCheckResults.schemasWithValidDependencies) {
-            await this.schemaBuilder.build(jsonSchema);
+        else {
+            schemasWithValidDependencies = jsonSchemasToInstall;
         }
-        const ddlObjects = await this.schemaRecorder.record(schemaReferenceCheckResults.schemasWithValidDependencies);
-        this.queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects);
+        for (const jsonSchema of schemasWithValidDependencies) {
+            await (await this.schemaBuilder.get()).build(jsonSchema);
+        }
+        const ddlObjects = await (await this.schemaRecorder.get())
+            .record(schemasWithValidDependencies);
+        (await this.queryObjectInitializer.get()).generateQObjectsAndPopulateStore(ddlObjects);
     }
 }
 exports.SchemaInitializer = SchemaInitializer;
