@@ -4,7 +4,7 @@ import {
 }                       from '@airport/air-control'
 import {
 	DI,
-	ICachedPromise
+	Promise
 }                       from '@airport/di'
 import {
 	DB_SCHEMA_UTILS,
@@ -74,18 +74,18 @@ export interface ISchemaRecorder {
 export class SchemaRecorder
 	implements ISchemaRecorder {
 
-	private domainDao: ICachedPromise<IDomainDao>
-	private schemaColumnDao: ICachedPromise<ISchemaColumnDao>
-	private schemaDao: ICachedPromise<ISchemaDao>
-	private schemaEntityDao: ICachedPromise<ISchemaEntityDao>
+	private domainDao: Promise<IDomainDao>
+	private schemaColumnDao: Promise<ISchemaColumnDao>
+	private schemaDao: Promise<ISchemaDao>
+	private schemaEntityDao: Promise<ISchemaEntityDao>
 	private schemaLocator: ISchemaLocator
-	private schemaPropertyColumnDao: ICachedPromise<ISchemaPropertyColumnDao>
-	private schemaPropertyDao: ICachedPromise<ISchemaPropertyDao>
-	private schemaReferenceDao: ICachedPromise<ISchemaReferenceDao>
-	private schemaRelationColumnDao: ICachedPromise<ISchemaRelationColumnDao>
-	private schemaRelationDao: ICachedPromise<ISchemaRelationDao>
+	private schemaPropertyColumnDao: Promise<ISchemaPropertyColumnDao>
+	private schemaPropertyDao: Promise<ISchemaPropertyDao>
+	private schemaReferenceDao: Promise<ISchemaReferenceDao>
+	private schemaRelationColumnDao: Promise<ISchemaRelationColumnDao>
+	private schemaRelationDao: Promise<ISchemaRelationDao>
 	private dbSchemaUtils: IDbSchemaUtils
-	private schemaVersionDao: ICachedPromise<ISchemaVersionDao>
+	private schemaVersionDao: Promise<ISchemaVersionDao>
 	private terminalStore: ITerminalStore
 	private utils: IUtils
 
@@ -103,16 +103,16 @@ export class SchemaRecorder
 			}, SCHEMA_LOCATOR, DB_SCHEMA_UTILS,
 			TERMINAL_STORE, UTILS)
 
-		this.domainDao               = DI.cache(DOMAIN_DAO)
-		this.schemaColumnDao         = DI.cache(SCHEMA_COLUMN_DAO)
-		this.schemaDao               = DI.cache(SCHEMA_DAO)
-		this.schemaEntityDao         = DI.cache(SCHEMA_ENTITY_DAO)
-		this.schemaPropertyColumnDao = DI.cache(SCHEMA_PROPERTY_COLUMN_DAO)
-		this.schemaPropertyDao       = DI.cache(SCHEMA_PROPERTY_DAO)
-		this.schemaReferenceDao      = DI.cache(SCHEMA_REFERENCE_DAO)
-		this.schemaRelationColumnDao = DI.cache(SCHEMA_RELATION_COLUMN_DAO)
-		this.schemaRelationDao       = DI.cache(SCHEMA_RELATION_DAO)
-		this.schemaVersionDao        = DI.cache(SCHEMA_VERSION_DAO)
+		this.domainDao               = DI.getP(DOMAIN_DAO)
+		this.schemaColumnDao         = DI.getP(SCHEMA_COLUMN_DAO)
+		this.schemaDao               = DI.getP(SCHEMA_DAO)
+		this.schemaEntityDao         = DI.getP(SCHEMA_ENTITY_DAO)
+		this.schemaPropertyColumnDao = DI.getP(SCHEMA_PROPERTY_COLUMN_DAO)
+		this.schemaPropertyDao       = DI.getP(SCHEMA_PROPERTY_DAO)
+		this.schemaReferenceDao      = DI.getP(SCHEMA_REFERENCE_DAO)
+		this.schemaRelationColumnDao = DI.getP(SCHEMA_RELATION_COLUMN_DAO)
+		this.schemaRelationDao       = DI.getP(SCHEMA_RELATION_DAO)
+		this.schemaVersionDao        = DI.getP(SCHEMA_VERSION_DAO)
 	}
 
 	async record(
@@ -216,7 +216,7 @@ export class SchemaRecorder
 		}
 
 		if (newDomains.length) {
-			await (await this.domainDao.get()).bulkCreate(newDomains, false, false)
+			await (await this.domainDao).bulkCreate(newDomains, false, false)
 
 			for (const domain of newDomains) {
 				domainMapByName.set(domain.name, domain)
@@ -259,7 +259,7 @@ export class SchemaRecorder
 		}
 
 		if (newSchemas.length) {
-			await (await this.schemaDao.get()).bulkCreate(newSchemas, false, false)
+			await (await this.schemaDao).bulkCreate(newSchemas, false, false)
 
 			for (const schema of newSchemas) {
 				newSchemaMapByName.set(schema.name, schema)
@@ -306,7 +306,7 @@ export class SchemaRecorder
 			newSchemaVersionMapBySchemaName.set(schemaName, newSchemaVersion)
 		}
 
-		await (await this.schemaVersionDao.get()).bulkCreate(newSchemaVersions, false, false)
+		await (await this.schemaVersionDao).bulkCreate(newSchemaVersions, false, false)
 
 		return {
 			newSchemaVersionMapBySchemaName,
@@ -353,7 +353,7 @@ export class SchemaRecorder
 			}
 		}
 
-		await (await this.schemaReferenceDao.get()).bulkCreate(
+		await (await this.schemaReferenceDao).bulkCreate(
 			newSchemaReferences as SchemaReferenceECreateProperties[],
 			false, false)
 
@@ -400,7 +400,7 @@ export class SchemaRecorder
 			newEntitiesMapBySchemaName.set(schemaName, schemaVersion.entities)
 		}
 
-		await (await this.schemaEntityDao.get()).bulkCreate(newEntities, false, false)
+		await (await this.schemaEntityDao).bulkCreate(newEntities, false, false)
 
 		return {
 			newEntitiesMapBySchemaName,
@@ -451,7 +451,7 @@ export class SchemaRecorder
 			})
 		}
 
-		await (await this.schemaPropertyDao.get()).bulkCreate(newProperties, false, false)
+		await (await this.schemaPropertyDao).bulkCreate(newProperties, false, false)
 
 		return {
 			newProperties,
@@ -527,7 +527,7 @@ export class SchemaRecorder
 			})
 		}
 
-		await (await this.schemaRelationDao.get()).bulkCreate(newRelations, false, false)
+		await (await this.schemaRelationDao).bulkCreate(newRelations, false, false)
 
 		return {
 			newRelations,
@@ -612,8 +612,8 @@ export class SchemaRecorder
 			})
 		}
 
-		await (await this.schemaColumnDao.get()).bulkCreate(newColumns, false, false)
-		await (await this.schemaPropertyColumnDao.get()).bulkCreate(
+		await (await this.schemaColumnDao).bulkCreate(newColumns, false, false)
+		await (await this.schemaPropertyColumnDao).bulkCreate(
 			newPropertyColumns as SchemaPropertyColumnECreateProperties[],
 			false, false)
 
@@ -703,7 +703,7 @@ export class SchemaRecorder
 		}
 
 		if (newRelationColumns.length) {
-			await (await this.schemaRelationColumnDao.get()).bulkCreate(
+			await (await this.schemaRelationColumnDao).bulkCreate(
 				newRelationColumns as SchemaRelationColumnECreateProperties[],
 				false, false)
 		}

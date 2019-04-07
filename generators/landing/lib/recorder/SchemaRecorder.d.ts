@@ -1,3 +1,4 @@
+import { Promise } from '@airport/di';
 import { JsonSchema } from '@airport/ground-control';
 import { DdlObjects } from '@airport/takeoff';
 export interface ISchemaRecorder {

@@ -7,7 +7,7 @@ const traffic_pattern_1 = require("@airport/traffic-pattern");
 const diTokens_1 = require("../diTokens");
 class SchemaChecker {
     constructor() {
-        this.schemaDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_DAO);
+        this.schemaDao = di_1.DI.getP(traffic_pattern_1.SCHEMA_DAO);
         di_1.DI.get((dbSchemaUtils, utils) => {
             this.dbSchemaUtils = dbSchemaUtils;
             this.utils = utils;
@@ -119,7 +119,7 @@ class SchemaChecker {
             existingSchemaMapByName = new Map();
         }
         else {
-            existingSchemaMapByName = await (await this.schemaDao.get()).findMapByNames(schemaNames);
+            existingSchemaMapByName = await (await this.schemaDao).findMapByNames(schemaNames);
         }
         return {
             coreDomainAndSchemaNamesBySchemaName,

@@ -3,8 +3,7 @@ import {
 	IAirportDatabase
 }                           from '@airport/air-control'
 import {
-	DI,
-	ICachedPromise
+	DI
 }                           from '@airport/di'
 import {
 	ISequenceGenerator,
@@ -81,11 +80,11 @@ export class InsertManager
 	private seqGenerator: ISequenceGenerator
 	private histManager: IHistoryManager
 	private offlineDataStore: IOfflineDeltaStore
-	private operHistoryDuo: ICachedPromise<IOperationHistoryDuo>
-	private recHistoryDuo: ICachedPromise<IRecordHistoryDuo>
+	private operHistoryDuo: Promise<IOperationHistoryDuo>
+	private recHistoryDuo: Promise<IRecordHistoryDuo>
 	private repoManager: IRepositoryManager
-	private repoTransHistoryDuo: ICachedPromise<IRepositoryTransactionHistoryDuo>
-	// private transHistoryDuo: ICachedPromise<ITransactionHistoryDuo>
+	private repoTransHistoryDuo: Promise<IRepositoryTransactionHistoryDuo>
+	// private transHistoryDuo: Promise<ITransactionHistoryDuo>
 	private transManager: ITransactionManager
 
 
@@ -111,10 +110,10 @@ export class InsertManager
 			OFFLINE_DELTA_STORE, REPOSITORY_MANAGER,
 			TRANSACTION_MANAGER)
 
-		this.operHistoryDuo      = DI.cache(OPER_HISTORY_DUO,)
-		this.recHistoryDuo       = DI.cache(REC_HISTORY_DUO)
-		this.repoTransHistoryDuo = DI.cache(REPO_TRANS_HISTORY_DUO)
-		// this.transHistoryDuo     = DI.cache(TRANS_HISTORY_DUO)
+		this.operHistoryDuo      = DI.getP(OPER_HISTORY_DUO,)
+		this.recHistoryDuo       = DI.getP(REC_HISTORY_DUO)
+		this.repoTransHistoryDuo = DI.getP(REPO_TRANS_HISTORY_DUO)
+		// this.transHistoryDuo     = DI.getP(TRANS_HISTORY_DUO)
 	}
 
 	get currentTransHistory(): ITransactionHistory {
@@ -336,9 +335,9 @@ export class InsertManager
 			}
 		}
 
-		const repoTransHistoryDuo = await this.repoTransHistoryDuo.get()
-		const operHistoryDuo      = await this.operHistoryDuo.get()
-		const recHistoryDuo       = await this.recHistoryDuo.get()
+		const repoTransHistoryDuo = await this.repoTransHistoryDuo
+		const operHistoryDuo      = await this.operHistoryDuo
+		const recHistoryDuo       = await this.recHistoryDuo
 
 		// Rows may belong to different repositories
 		for (const row of jsonInsertValues.V) {

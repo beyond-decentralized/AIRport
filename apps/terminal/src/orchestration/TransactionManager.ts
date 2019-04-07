@@ -1,6 +1,5 @@
 import {
-	DI,
-	ICachedPromise
+	DI
 }                                from '@airport/di'
 import {
 	ACTIVE_QUERIES,
@@ -42,7 +41,7 @@ export class TransactionManager
 	// private repositoryManager: IRepositoryManager
 	private queries: ActiveQueries
 	storeType: StoreType
-	private transHistoryDuo: ICachedPromise<ITransactionHistoryDuo>
+	private transHistoryDuo: Promise<ITransactionHistoryDuo>
 	transactionIndexQueue: number[]
 	transactionInProgress: number     = null
 	yieldToRunningTransaction: number = 100
@@ -62,7 +61,7 @@ export class TransactionManager
 			}, ID_GENERATOR, OFFLINE_DELTA_STORE,
 			ONLINE_MANAGER, ACTIVE_QUERIES)
 
-		this.transHistoryDuo = DI.cache(TRANS_HISTORY_DUO)
+		this.transHistoryDuo = DI.getP(TRANS_HISTORY_DUO)
 	}
 
 
@@ -89,7 +88,7 @@ export class TransactionManager
 		this.transactionInProgress = transactionIndex
 		let fieldMap               = new SyncSchemaMap()
 
-		this.currentTransHistory = (await this.transHistoryDuo.get()).getNewRecord()
+		this.currentTransHistory = (await this.transHistoryDuo).getNewRecord()
 
 		await this.dataStore.transact()
 	}

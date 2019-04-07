@@ -1,6 +1,5 @@
 import {
-	DI,
-	ICachedPromise
+	DI
 }                        from '@airport/di'
 import {JsonSchema}      from '@airport/ground-control'
 import {
@@ -31,18 +30,18 @@ export interface ISchemaInitializer {
 export class SchemaInitializer
 	implements ISchemaInitializer {
 
-	private queryObjectInitializer: ICachedPromise<IQueryObjectInitializer>
-	private schemaBuilder: ICachedPromise<ISchemaBuilder>
-	private schemaChecker: ICachedPromise<ISchemaChecker>
-	private schemaLocator: ICachedPromise<ISchemaLocator>
-	private schemaRecorder: ICachedPromise<ISchemaRecorder>
+	private queryObjectInitializer: Promise<IQueryObjectInitializer>
+	private schemaBuilder: Promise<ISchemaBuilder>
+	private schemaChecker: Promise<ISchemaChecker>
+	private schemaLocator: Promise<ISchemaLocator>
+	private schemaRecorder: Promise<ISchemaRecorder>
 
 	constructor() {
-		this.queryObjectInitializer = DI.cache(QUERY_OBJECT_INITIALIZER)
-		this.schemaBuilder          = DI.cache(SCHEMA_BUILDER)
-		this.schemaChecker          = DI.cache(SCHEMA_CHECKER)
-		this.schemaLocator          = DI.cache(SCHEMA_LOCATOR)
-		this.schemaRecorder         = DI.cache(SCHEMA_RECORDER)
+		this.queryObjectInitializer = DI.getP(QUERY_OBJECT_INITIALIZER)
+		this.schemaBuilder          = DI.getP(SCHEMA_BUILDER)
+		this.schemaChecker          = DI.getP(SCHEMA_CHECKER)
+		this.schemaLocator          = DI.getP(SCHEMA_LOCATOR)
+		this.schemaRecorder         = DI.getP(SCHEMA_RECORDER)
 	}
 
 	async initialize(
@@ -55,7 +54,7 @@ export class SchemaInitializer
 
 		for (const jsonSchema of jsonSchemas) {
 			await schemaChecker.check(jsonSchema)
-			const existingSchema = (await this.schemaLocator.get()).locateExistingSchemaVersionRecord(jsonSchema)
+			const existingSchema = (await this.schemaLocator).locateExistingSchemaVersionRecord(jsonSchema)
 
 			if (existingSchema) {
 				// Nothing needs to be done, we already have this schema version
@@ -81,13 +80,13 @@ export class SchemaInitializer
 		}
 
 		for (const jsonSchema of schemasWithValidDependencies) {
-			await (await this.schemaBuilder.get()).build(jsonSchema)
+			await (await this.schemaBuilder).build(jsonSchema)
 		}
 
-		const ddlObjects = await (await this.schemaRecorder.get())
+		const ddlObjects = await (await this.schemaRecorder)
 			.record(schemasWithValidDependencies);
 
-		(await this.queryObjectInitializer.get()).generateQObjectsAndPopulateStore(ddlObjects)
+		(await this.queryObjectInitializer).generateQObjectsAndPopulateStore(ddlObjects)
 	}
 
 }

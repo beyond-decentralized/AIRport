@@ -1,6 +1,5 @@
 import {
-	DI,
-	ICachedPromise
+	DI
 }                           from '@airport/di'
 import {BlockSyncStatus}    from '@airport/ground-control'
 import {
@@ -43,8 +42,8 @@ export class OnlineManager
 	private online = false
 	private offlineDeltaStore: IOfflineDeltaStore
 	private repositoryManager: IRepositoryManager
-	private repositoryDao: ICachedPromise<IRepositoryDao>
-	private repoTransHistoryDao: ICachedPromise<IRepositoryTransactionHistoryDao>
+	private repositoryDao: Promise<IRepositoryDao>
+	private repoTransHistoryDao: Promise<IRepositoryTransactionHistoryDao>
 
 	constructor() {
 		DI.get((
@@ -56,8 +55,8 @@ export class OnlineManager
 			this.offlineDeltaStore = offlineDeltaStore
 			this.repositoryManager = repositoryManager
 		}, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER)
-		this.repositoryDao       = DI.cache(REPOSITORY_DAO)
-		this.repoTransHistoryDao = DI.cache(REPO_TRANS_HISTORY_DAO)
+		this.repositoryDao       = DI.getP(REPOSITORY_DAO)
+		this.repoTransHistoryDao = DI.getP(REPO_TRANS_HISTORY_DAO)
 	}
 
 	/**
@@ -99,7 +98,7 @@ export class OnlineManager
 				this.repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE)
 				// 2)  Find repositories
 				// const repoRecords = await this.repositoryDao.findWithTransaction()
-				const repoRecords = await (await this.repositoryDao.get()).findReposWithDetailsByIds()
+				const repoRecords = await (await this.repositoryDao).findReposWithDetailsByIds()
 
 				// 3) make each repository go Online
 				let goOnlineCalls: Promise<void>[] = []
@@ -180,7 +179,7 @@ export class OnlineManager
 		}
 
 		// 7)  Find all local unsynced transactions
-		let unsyncedChanges = await (await this.repoTransHistoryDao.get()).findUnsyncedTransactions(repository)
+		let unsyncedChanges = await (await this.repoTransHistoryDao).findUnsyncedTransactions(repository)
 		if (unsyncedChanges.length) {
 			unsyncedChanges.forEach((transaction) => {
 				// a)  Mark them as synchronized

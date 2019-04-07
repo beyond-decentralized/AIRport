@@ -1,6 +1,5 @@
 import {
-	DI,
-	ICachedPromise
+	DI
 }                        from '@airport/di'
 import {TransactionType} from '@airport/ground-control'
 import {
@@ -30,22 +29,22 @@ export interface IHistoryManager {
 export class HistoryManager
 	implements IHistoryManager {
 
-	// private operHistoryDuo: ICachedPromise<IOperationHistoryDuo>
-	// private recHistoryDuo: ICachedPromise<IRecordHistoryDuo>
-	// private repoTransHistoryDuo: ICachedPromise<IRepositoryTransactionHistoryDuo>
-	private transHistoryDuo: ICachedPromise<ITransactionHistoryDuo>
+	// private operHistoryDuo: Promise<IOperationHistoryDuo>
+	// private recHistoryDuo: Promise<IRecordHistoryDuo>
+	// private repoTransHistoryDuo: Promise<IRepositoryTransactionHistoryDuo>
+	private transHistoryDuo: Promise<ITransactionHistoryDuo>
 
 	constructor() {
-		// this.operHistoryDuo      = DI.cache(OPER_HISTORY_DUO,)
-		// this.recHistoryDuo       = DI.cache(REC_HISTORY_DUO)
-		// this.repoTransHistoryDuo = DI.cache(REPO_TRANS_HISTORY_DUO)
-		this.transHistoryDuo = DI.cache(TRANS_HISTORY_DUO)
+		// this.operHistoryDuo      = DI.getP(OPER_HISTORY_DUO,)
+		// this.recHistoryDuo       = DI.getP(REC_HISTORY_DUO)
+		// this.repoTransHistoryDuo = DI.getP(REPO_TRANS_HISTORY_DUO)
+		this.transHistoryDuo = DI.getP(TRANS_HISTORY_DUO)
 	}
 
 	async getNewTransHistory(
 		transactionType: TransactionType = TransactionType.LOCAL
 	): Promise<ITransactionHistory> {
-		const transactionHistory = (await this.transHistoryDuo.get()).getNewRecord(transactionType)
+		const transactionHistory = (await this.transHistoryDuo).getNewRecord(transactionType)
 
 		return transactionHistory
 	}
@@ -55,7 +54,7 @@ export class HistoryManager
 		repository: IRepository,
 		actor: IActor
 	): Promise<IRepositoryTransactionHistory> {
-		const repoTransHistory = (await this.transHistoryDuo.get()).getRepositoryTransaction(
+		const repoTransHistory = (await this.transHistoryDuo).getRepositoryTransaction(
 			transactionHistory, repository, actor)
 
 		return repoTransHistory

@@ -7,8 +7,7 @@ import {
 	Y
 }                           from '@airport/air-control'
 import {
-	DI,
-	ICachedPromise
+	DI
 }                           from '@airport/di'
 import {
 	CascadeType,
@@ -71,11 +70,11 @@ export class DeleteManager
 	private dataStore: IStoreDriver
 	private historyManager: IHistoryManager
 	private offlineDataStore: IOfflineDeltaStore
-	private operHistoryDuo: ICachedPromise<IOperationHistoryDuo>
-	private recHistoryDuo: ICachedPromise<IRecordHistoryDuo>
+	private operHistoryDuo: Promise<IOperationHistoryDuo>
+	private recHistoryDuo: Promise<IRecordHistoryDuo>
 	private repoManager: IRepositoryManager
-	private repoTransHistoryDuo: ICachedPromise<IRepositoryTransactionHistoryDuo>
-	// private transHistoryDuo: ICachedPromise<ITransactionHistoryDuo>
+	private repoTransHistoryDuo: Promise<IRepositoryTransactionHistoryDuo>
+	// private transHistoryDuo: Promise<ITransactionHistoryDuo>
 	private transManager: ITransactionManager
 	private utils: IUtils
 
@@ -100,10 +99,10 @@ export class DeleteManager
 			HISTORY_MANAGER, OFFLINE_DELTA_STORE,
 			REPOSITORY_MANAGER, TRANSACTION_MANAGER,
 			UTILS)
-		this.operHistoryDuo      = DI.cache(OPER_HISTORY_DUO,)
-		this.recHistoryDuo       = DI.cache(REC_HISTORY_DUO)
-		this.repoTransHistoryDuo = DI.cache(REPO_TRANS_HISTORY_DUO)
-		// this.transHistoryDuo     = DI.cache(TRANS_HISTORY_DUO)
+		this.operHistoryDuo      = DI.getP(OPER_HISTORY_DUO,)
+		this.recHistoryDuo       = DI.getP(REC_HISTORY_DUO)
+		this.repoTransHistoryDuo = DI.getP(REPO_TRANS_HISTORY_DUO)
+		// this.transHistoryDuo     = DI.getP(TRANS_HISTORY_DUO)
 	}
 
 	async deleteWhere(
@@ -254,9 +253,9 @@ export class DeleteManager
 		actor: IActor,
 	): Promise<void> {
 
-		const operHistoryDuo      = await this.operHistoryDuo.get()
-		const recHistoryDuo       = await this.recHistoryDuo.get()
-		const repoTransHistoryDuo = await this.repoTransHistoryDuo.get()
+		const operHistoryDuo      = await this.operHistoryDuo
+		const recHistoryDuo       = await this.recHistoryDuo
+		const repoTransHistoryDuo = await this.repoTransHistoryDuo
 
 		for (const [schemaIndex, schemaRecordsToDelete] of recordsToDelete) {
 			for (const [entityIndex, entityRecordsToDelete] of schemaRecordsToDelete) {

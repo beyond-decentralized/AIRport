@@ -1,10 +1,5 @@
-import { ISchemaBuilder } from './builder/ISchemaBuilder';
-import { ISchemaChecker } from './checker/SchemaChecker';
-import { ISchemaLocator } from './locator/SchemaLocator';
-import { ISchemaRecorder } from './recorder/SchemaRecorder';
-import { ISchemaInitializer } from './SchemaInitializer';
-export declare const SCHEMA_BUILDER: import("@airport/di").DiToken<ISchemaBuilder>;
-export declare const SCHEMA_CHECKER: import("@airport/di").DiToken<ISchemaChecker>;
-export declare const SCHEMA_INITIALIZER: import("@airport/di").DiToken<ISchemaInitializer>;
-export declare const SCHEMA_LOCATOR: import("@airport/di").DiToken<ISchemaLocator>;
-export declare const SCHEMA_RECORDER: import("@airport/di").DiToken<ISchemaRecorder>;
+export declare const SCHEMA_BUILDER: any;
+export declare const SCHEMA_CHECKER: any;
+export declare const SCHEMA_INITIALIZER: any;
+export declare const SCHEMA_LOCATOR: any;
+export declare const SCHEMA_RECORDER: any;

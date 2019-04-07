@@ -5,18 +5,18 @@ const takeoff_1 = require("@airport/takeoff");
 const diTokens_1 = require("./diTokens");
 class SchemaInitializer {
     constructor() {
-        this.queryObjectInitializer = di_1.DI.cache(takeoff_1.QUERY_OBJECT_INITIALIZER);
-        this.schemaBuilder = di_1.DI.cache(diTokens_1.SCHEMA_BUILDER);
-        this.schemaChecker = di_1.DI.cache(diTokens_1.SCHEMA_CHECKER);
-        this.schemaLocator = di_1.DI.cache(diTokens_1.SCHEMA_LOCATOR);
-        this.schemaRecorder = di_1.DI.cache(diTokens_1.SCHEMA_RECORDER);
+        this.queryObjectInitializer = di_1.DI.getP(takeoff_1.QUERY_OBJECT_INITIALIZER);
+        this.schemaBuilder = di_1.DI.getP(diTokens_1.SCHEMA_BUILDER);
+        this.schemaChecker = di_1.DI.getP(diTokens_1.SCHEMA_CHECKER);
+        this.schemaLocator = di_1.DI.getP(diTokens_1.SCHEMA_LOCATOR);
+        this.schemaRecorder = di_1.DI.getP(diTokens_1.SCHEMA_RECORDER);
     }
     async initialize(jsonSchemas, checkDependencies = false) {
         const jsonSchemasToInstall = [];
         const schemaChecker = await this.schemaChecker.get();
         for (const jsonSchema of jsonSchemas) {
             await schemaChecker.check(jsonSchema);
-            const existingSchema = (await this.schemaLocator.get()).locateExistingSchemaVersionRecord(jsonSchema);
+            const existingSchema = (await this.schemaLocator).locateExistingSchemaVersionRecord(jsonSchema);
             if (existingSchema) {
                 // Nothing needs to be done, we already have this schema version
                 continue;
@@ -38,11 +38,11 @@ class SchemaInitializer {
             schemasWithValidDependencies = jsonSchemasToInstall;
         }
         for (const jsonSchema of schemasWithValidDependencies) {
-            await (await this.schemaBuilder.get()).build(jsonSchema);
+            await (await this.schemaBuilder).build(jsonSchema);
         }
-        const ddlObjects = await (await this.schemaRecorder.get())
+        const ddlObjects = await (await this.schemaRecorder)
             .record(schemasWithValidDependencies);
-        (await this.queryObjectInitializer.get()).generateQObjectsAndPopulateStore(ddlObjects);
+        (await this.queryObjectInitializer).generateQObjectsAndPopulateStore(ddlObjects);
     }
 }
 exports.SchemaInitializer = SchemaInitializer;
