@@ -2,10 +2,7 @@ import {
 	IUtils,
 	UTILS,
 }                                                  from '@airport/air-control'
-import {
-	DI,
-	ICachedPromise
-}                                                  from '@airport/di'
+import {DI}                                        from '@airport/di'
 import {BlockSyncStatus}                           from '@airport/ground-control'
 import {
 	IRepositoryDao,
@@ -76,17 +73,17 @@ export class SynchronizationOutManager
 	implements ISynchronizationOutManager {
 
 
-	private repositoryDao: ICachedPromise<IRepositoryDao>
-	private repositoryTransactionHistoryDao: ICachedPromise<IRepositoryTransactionHistoryDao>
-	private schemaDao: ICachedPromise<ISchemaDao>
-	private sharingMessageDao: ICachedPromise<ISharingMessageDao>
-	private sharingMessageRepoTransBlockDao: ICachedPromise<ISharingMessageRepoTransBlockDao>
-	private sharingNodeDao: ICachedPromise<ISharingNodeDao>
-	private sharingNodeTerminalDao: ICachedPromise<ISharingNodeTerminalDao>
-	private sharingNodeRepositoryDao: ICachedPromise<ISharingNodeRepositoryDao>
-	private sharingNodeRepoTransBlockDao: ICachedPromise<ISharingNodeRepoTransBlockDao>
+	private repositoryDao: Promise<IRepositoryDao>
+	private repositoryTransactionHistoryDao: Promise<IRepositoryTransactionHistoryDao>
+	private schemaDao: Promise<ISchemaDao>
+	private sharingMessageDao: Promise<ISharingMessageDao>
+	private sharingMessageRepoTransBlockDao: Promise<ISharingMessageRepoTransBlockDao>
+	private sharingNodeDao: Promise<ISharingNodeDao>
+	private sharingNodeTerminalDao: Promise<ISharingNodeTerminalDao>
+	private sharingNodeRepositoryDao: Promise<ISharingNodeRepositoryDao>
+	private sharingNodeRepoTransBlockDao: Promise<ISharingNodeRepoTransBlockDao>
 	private repositoryTransactionBlockCreator: ISyncOutRepositoryTransactionBlockCreator
-	private repositoryTransactionBlockDao: ICachedPromise<IRepositoryTransactionBlockDao>
+	private repositoryTransactionBlockDao: Promise<IRepositoryTransactionBlockDao>
 	private syncOutMessageSender: ISyncOutMessageSender
 	private syncOutSerializer: ISyncOutSerializer
 	private utils: IUtils
@@ -105,16 +102,16 @@ export class SynchronizationOutManager
 			}, SYNC_OUT_REPO_TRANS_BLOCK_CREATOR, SYNC_OUT_MSG_SENDER,
 			SYNC_OUT_SERIALIZER, UTILS)
 
-		this.repositoryDao                   = DI.cache(REPOSITORY_DAO)
-		this.repositoryTransactionHistoryDao = DI.cache(REPO_TRANS_HISTORY_DAO)
-		this.schemaDao                       = DI.cache(SCHEMA_DAO)
-		this.sharingMessageDao               = DI.cache(SHARING_MESSAGE_DAO)
-		this.sharingMessageRepoTransBlockDao = DI.cache(SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO)
-		this.sharingNodeDao                  = DI.cache(SHARING_NODE_DAO)
-		this.sharingNodeTerminalDao          = DI.cache(SHARING_NODE_TERMINAL_DAO)
-		this.sharingNodeRepositoryDao        = DI.cache(SHARING_NODE_REPOSITORY_DAO)
-		this.sharingNodeRepoTransBlockDao    = DI.cache(SHARING_NODE_REPO_TRANS_BLOCK_DAO)
-		this.repositoryTransactionBlockDao   = DI.cache(REPO_TRANS_BLOCK_DAO)
+		this.repositoryDao                   = DI.getP(REPOSITORY_DAO)
+		this.repositoryTransactionHistoryDao = DI.getP(REPO_TRANS_HISTORY_DAO)
+		this.schemaDao                       = DI.getP(SCHEMA_DAO)
+		this.sharingMessageDao               = DI.getP(SHARING_MESSAGE_DAO)
+		this.sharingMessageRepoTransBlockDao = DI.getP(SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO)
+		this.sharingNodeDao                  = DI.getP(SHARING_NODE_DAO)
+		this.sharingNodeTerminalDao          = DI.getP(SHARING_NODE_TERMINAL_DAO)
+		this.sharingNodeRepositoryDao        = DI.getP(SHARING_NODE_REPOSITORY_DAO)
+		this.sharingNodeRepoTransBlockDao    = DI.getP(SHARING_NODE_REPO_TRANS_BLOCK_DAO)
+		this.repositoryTransactionBlockDao   = DI.getP(REPO_TRANS_BLOCK_DAO)
 	}
 
 	async synchronize(
@@ -184,7 +181,7 @@ export class SynchronizationOutManager
 			await this.addNewSharingMessages(newReposTransHistoryBlocksBySharingNodeId, terminal)
 		}
 
-		const sharingMessageIdsBySharingNodeId = await (await this.sharingMessageDao.get())
+		const sharingMessageIdsBySharingNodeId = await (await this.sharingMessageDao)
 			.findAllSyncedSharingMessageIdsForSharingNodes(sharingNodeIds)
 
 
@@ -210,7 +207,7 @@ export class SynchronizationOutManager
 		const {
 			      syncStatusRepositoryTransactionBlockIds,
 			      syncStatusRepoTransBlockIdsBySharingNodeId
-		      }                      = await (await this.sharingNodeRepoTransBlockDao.get()).getForSharingNodeIdsAndBlockStatus(
+		      }                      = await (await this.sharingNodeRepoTransBlockDao).getForSharingNodeIdsAndBlockStatus(
 			startingSharingNodeIds, BlockSyncStatus.REQUESTING_SYNC_STATUS)
 
 		// If server did not respond to Sync Status requests
@@ -219,7 +216,7 @@ export class SynchronizationOutManager
 			const inactiveSharingNodeIds: SharingNodeId[] = Array.from(
 				syncStatusRepoTransBlockIdsBySharingNodeId.keys())
 			// Keep the RTB Sync Status in Requesting and update the SharingNode status
-			await (await this.sharingNodeDao.get()).updateIsActive(inactiveSharingNodeIds, false)
+			await (await this.sharingNodeDao).updateIsActive(inactiveSharingNodeIds, false)
 
 			// TODO: add keep alive requests
 
@@ -236,14 +233,14 @@ export class SynchronizationOutManager
 		const {
 			      syncingRepositoryTransactionBlockIds,
 			      syncingRepoTransBlockIdsBySharingNodeIds
-		      } = (await await this.sharingNodeRepoTransBlockDao.get()).getForSharingNodeIdsAndBlockStatus(
+		      } = (await await this.sharingNodeRepoTransBlockDao).getForSharingNodeIdsAndBlockStatus(
 			startingSharingNodeIds, BlockSyncStatus.SYNCHRONIZING)
 
 		if (syncingRepositoryTransactionBlockIds.length) {
 			// scale down to sync status requests
 			const syncAckSharingNodeIds: SharingNodeId[] = Array.from(
 				syncingRepoTransBlockIdsBySharingNodeIds.keys())
-			await (await this.sharingNodeRepoTransBlockDao.get()).updateBlockSyncStatus(syncAckSharingNodeIds,
+			await (await this.sharingNodeRepoTransBlockDao).updateBlockSyncStatus(syncAckSharingNodeIds,
 				syncingRepositoryTransactionBlockIds,
 				BlockSyncStatus.SYNCHRONIZING,
 				BlockSyncStatus.REQUESTING_SYNC_STATUS)
@@ -357,9 +354,9 @@ export class SynchronizationOutManager
 			}
 		}
 
-		await (await this.sharingMessageDao.get()).bulkCreate(sharingMessages, false, false)
+		await (await this.sharingMessageDao).bulkCreate(sharingMessages, false, false)
 
-		await (await this.sharingMessageRepoTransBlockDao.get()).bulkCreate(sharingMessageRepoTransBlocks,
+		await (await this.sharingMessageRepoTransBlockDao).bulkCreate(sharingMessageRepoTransBlocks,
 			false, false)
 	}
 

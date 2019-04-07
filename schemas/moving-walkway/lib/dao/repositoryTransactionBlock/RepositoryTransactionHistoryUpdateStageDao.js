@@ -8,7 +8,7 @@ const generated_1 = require("../../generated/generated");
 class RepositoryTransactionHistoryUpdateStageDao extends __1.BaseRepositoryTransactionHistoryUpdateStageDao {
     constructor() {
         super();
-        this.repoTransHistoryDao = di_1.DI.cache(holding_pattern_1.REPO_TRANS_HISTORY_DAO);
+        this.repoTransHistoryDao = di_1.DI.getP(holding_pattern_1.REPO_TRANS_HISTORY_DAO);
     }
     async insertValues(values) {
         const rthus = this.db.from;
@@ -23,7 +23,7 @@ class RepositoryTransactionHistoryUpdateStageDao extends __1.BaseRepositoryTrans
     }
     async updateRepositoryTransactionHistory() {
         const rthus = this.db.from;
-        return await (await this.repoTransHistoryDao.get()).setBlockIdWhereId((idField) => {
+        return await (await this.repoTransHistoryDao).setBlockIdWhereId((idField) => {
             air_control_1.field({
                 from: [
                     rthus

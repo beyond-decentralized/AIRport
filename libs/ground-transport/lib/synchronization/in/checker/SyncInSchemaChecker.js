@@ -15,9 +15,9 @@ class SyncInSchemaChecker {
             this.terminalStore = terminalStore;
             this.utils = utils;
         }, terminal_map_1.TERMINAL_STORE, air_control_1.UTILS);
-        this.domainDao = di_1.DI.cache(territory_1.DOMAIN_DAO);
-        this.schemaDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_DAO);
-        this.schemaVersionDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_VERSION_DAO);
+        this.domainDao = di_1.DI.getP(territory_1.DOMAIN_DAO);
+        this.schemaDao = di_1.DI.getP(traffic_pattern_1.SCHEMA_DAO);
+        this.schemaVersionDao = di_1.DI.getP(traffic_pattern_1.SCHEMA_VERSION_DAO);
     }
     async checkSchemas(dataMessages) {
         const schemaNameSet = new Set();
@@ -222,7 +222,7 @@ class SyncInSchemaChecker {
                 schemaIndexesToUpdateStatusBy.push(schema.index);
             }
         }
-        await (await this.schemaDao.get()).setStatusByIndexes(schemaIndexesToUpdateStatusBy, ground_control_1.SchemaStatus.NEEDS_UPGRADES);
+        await (await this.schemaDao).setStatusByIndexes(schemaIndexesToUpdateStatusBy, ground_control_1.SchemaStatus.NEEDS_UPGRADES);
         // All schemas needed (that do not yet exist in this TM)
         const newlyNeededSchemas = [];
         for (const [domainName, schemaMapForDomain] of missingSchemaMap) {
@@ -237,8 +237,8 @@ class SyncInSchemaChecker {
                 newlyNeededSchemas.push(schema);
             }
         }
-        await (await this.domainDao.get()).bulkCreate(Array.from(missingDomainMap.values()), false, false);
-        await (await this.schemaDao.get()).bulkCreate(newlyNeededSchemas, false, false);
+        await (await this.domainDao).bulkCreate(Array.from(missingDomainMap.values()), false, false);
+        await (await this.schemaDao).bulkCreate(newlyNeededSchemas, false, false);
         return schemaWithChangesMap;
     }
     /*

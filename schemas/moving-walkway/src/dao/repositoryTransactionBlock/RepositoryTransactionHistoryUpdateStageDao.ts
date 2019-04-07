@@ -3,8 +3,7 @@ import {
 	IQNumberField
 }          from '@airport/air-control'
 import {
-	DI,
-	ICachedPromise
+	DI
 }          from '@airport/di'
 import {
 	IRepositoryTransactionHistoryDao,
@@ -43,11 +42,11 @@ export class RepositoryTransactionHistoryUpdateStageDao
 	extends BaseRepositoryTransactionHistoryUpdateStageDao
 	implements IRepositoryTransactionHistoryUpdateStageDao {
 
-	repoTransHistoryDao: ICachedPromise<IRepositoryTransactionHistoryDao>
+	repoTransHistoryDao: Promise<IRepositoryTransactionHistoryDao>
 
 	constructor() {
 		super()
-		this.repoTransHistoryDao = DI.cache(REPO_TRANS_HISTORY_DAO)
+		this.repoTransHistoryDao = DI.getP(REPO_TRANS_HISTORY_DAO)
 	}
 
 	async insertValues(
@@ -68,7 +67,7 @@ export class RepositoryTransactionHistoryUpdateStageDao
 	async updateRepositoryTransactionHistory(): Promise<number> {
 		const rthus = this.db.from
 
-		return await (await this.repoTransHistoryDao.get()).setBlockIdWhereId((
+		return await (await this.repoTransHistoryDao).setBlockIdWhereId((
 			idField: IQNumberField
 		) => {
 			field({

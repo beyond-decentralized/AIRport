@@ -54,13 +54,13 @@ export interface ISyncOutRepositoryTransactionBlockCreator {
 export class SyncOutRepositoryTransactionBlockCreator
 	implements ISyncOutRepositoryTransactionBlockCreator {
 
-	private actorDao: ICachedPromise<IActorDao>
-	private repositoryDao: ICachedPromise<IRepositoryDao>
-	private repositoryTransactionBlockDao: ICachedPromise<IRepositoryTransactionBlockDao>
+	private actorDao: Promise<IActorDao>
+	private repositoryDao: Promise<IRepositoryDao>
+	private repositoryTransactionBlockDao: Promise<IRepositoryTransactionBlockDao>
 	private repositoryTransactionHistoryUpdateStageDao
-		        : ICachedPromise<IRepositoryTransactionHistoryUpdateStageDao>
-	private schemaDao: ICachedPromise<ISchemaDao>
-	private sharingNodeRepositoryDao: ICachedPromise<ISharingNodeRepositoryDao>
+		        : Promise<IRepositoryTransactionHistoryUpdateStageDao>
+	private schemaDao: Promise<ISchemaDao>
+	private sharingNodeRepositoryDao: Promise<ISharingNodeRepositoryDao>
 	private utils: IUtils
 
 	constructor() {
@@ -69,12 +69,12 @@ export class SyncOutRepositoryTransactionBlockCreator
 			) => {
 				this.utils                                      = utils
 			}, UTILS)
-		this.actorDao                                   = DI.cache(ACTOR_DAO)
-		this.repositoryDao                              = DI.cache(REPOSITORY_DAO)
-		this.repositoryTransactionBlockDao              = DI.cache(REPO_TRANS_BLOCK_DAO)
-		this.repositoryTransactionHistoryUpdateStageDao = DI.cache(REPO_TRANS_HISTORY_UPDATE_STAGE_DAO)
-		this.schemaDao                                  = DI.cache(SCHEMA_DAO)
-		this.sharingNodeRepositoryDao                   = DI.cache(SHARING_NODE_REPOSITORY_DAO)
+		this.actorDao                                   = DI.getP(ACTOR_DAO)
+		this.repositoryDao                              = DI.getP(REPOSITORY_DAO)
+		this.repositoryTransactionBlockDao              = DI.getP(REPO_TRANS_BLOCK_DAO)
+		this.repositoryTransactionHistoryUpdateStageDao = DI.getP(REPO_TRANS_HISTORY_UPDATE_STAGE_DAO)
+		this.schemaDao                                  = DI.getP(SCHEMA_DAO)
+		this.sharingNodeRepositoryDao                   = DI.getP(SHARING_NODE_REPOSITORY_DAO)
 	}
 
 	// Get new repository transaction histories not yet in RepoTransBlocks
@@ -219,7 +219,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 		const repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>
 			      = new Map()
 
-		const repositoryMapById = await (await this.repositoryDao.get()).findReposWithGlobalIds(
+		const repositoryMapById = await (await this.repositoryDao).findReposWithGlobalIds(
 			Array.from(repositoryIdSet))
 
 		const repositoryTransactionBlocks: IRepositoryTransactionBlock[] = []
@@ -261,7 +261,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 		const schemasByRepositoryIdMap: Map<RepositoryId, ISchema[]>
 			      = new Map()
 
-		const schemaMapByVersionId = (await await this.schemaDao.get())
+		const schemaMapByVersionId = await (await this.schemaDao)
 			.findMapByVersionIds(Array.from(schemaVersionIds))
 		for (const [repositoryId, schemaVersionIdSetForRepo] of schemaVersionIdSetsByRepository) {
 			const schemasForRepository = this.utils.ensureChildArray(
@@ -362,7 +362,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 		repositoryTransactionBlocks: IRepositoryTransactionBlock[]
 	): Promise<void> {
 		const actors = await
-			(await this.actorDao.get()).findWithDetailsAndGlobalIdsByIds(Array.from(actorIdSet))
+			(await this.actorDao).findWithDetailsAndGlobalIdsByIds(Array.from(actorIdSet))
 
 		for (const actor of actors) {
 			const repositoryIdsForActorId = repositoryIdsByActorId.get(actor.id)
@@ -377,7 +377,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 			repositoryTransactionBlock.contents = JSON.stringify(repoTransBlockData)
 		}
 
-		await (await this.repositoryTransactionBlockDao.get()).bulkCreate(
+		await (await this.repositoryTransactionBlockDao).bulkCreate(
 			repositoryTransactionBlocks, false, false)
 	}
 
@@ -393,11 +393,11 @@ export class SyncOutRepositoryTransactionBlockCreator
 					repoTransHistoryUpdateStageValuesRecord[1] = repositoryTransactionBlock.id
 			)
 		}
-		await (await this.repositoryTransactionHistoryUpdateStageDao.get())
+		await (await this.repositoryTransactionHistoryUpdateStageDao)
 			.insertValues(repoTransHistoryUpdateStageValues)
 
-		await (await this.repositoryTransactionHistoryUpdateStageDao.get()).updateRepositoryTransactionHistory()
-		await (await this.repositoryTransactionHistoryUpdateStageDao.get()).delete()
+		await (await this.repositoryTransactionHistoryUpdateStageDao).updateRepositoryTransactionHistory()
+		await (await this.repositoryTransactionHistoryUpdateStageDao).delete()
 	}
 
 	private groupRepoTransBlocksBySharingNode(

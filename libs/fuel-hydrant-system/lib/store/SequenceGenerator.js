@@ -7,9 +7,9 @@ class SequenceGenerator {
     constructor() {
         this.sequences = [];
         this.sequenceBlocks = [];
-        this.sequenceBlockDao = di_1.DI.cache(airport_code_1.SEQUENCE_BLOCK_DAO);
-        this.sequenceConsumerDao = di_1.DI.cache(airport_code_1.SEQUENCE_CONSUMER_DAO);
-        this.sequenceDao = di_1.DI.cache(airport_code_1.SEQUENCE_DAO);
+        this.sequenceBlockDao = di_1.DI.getP(airport_code_1.SEQUENCE_BLOCK_DAO);
+        this.sequenceConsumerDao = di_1.DI.getP(airport_code_1.SEQUENCE_CONSUMER_DAO);
+        this.sequenceDao = di_1.DI.getP(airport_code_1.SEQUENCE_DAO);
     }
     async init(domain) {
         this.sequenceConsumer = {
@@ -17,8 +17,8 @@ class SequenceGenerator {
             domain,
             randomNumber: Math.random()
         };
-        await (await this.sequenceConsumerDao.get()).create(this.sequenceConsumer);
-        const sequences = await (await this.sequenceDao.get()).findAll();
+        await (await this.sequenceConsumerDao).create(this.sequenceConsumer);
+        const sequences = await (await this.sequenceDao).findAll();
         for (const sequence of sequences) {
             this.utils.ensureChildArray(this.utils.ensureChildArray(this.sequences, sequence.schemaIndex), sequence.tableIndex)[sequence.columnIndex] = sequence;
         }
@@ -55,7 +55,7 @@ class SequenceGenerator {
                 columnsForCreatedBlocks.push(dbColumn);
                 newBlocksToCreate.push(newBlock);
             }
-            const newBlocks = await (await this.sequenceBlockDao.get()).createNewBlocks(newBlocksToCreate);
+            const newBlocks = await (await this.sequenceBlockDao).createNewBlocks(newBlocksToCreate);
             newBlocks.forEach((newBlocksForColumn, index) => {
                 const dbColumn = columnsForCreatedBlocks[index];
                 const columnNumbers = sequentialNumbersForColumn.get(dbColumn);

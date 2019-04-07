@@ -3,8 +3,7 @@ import {
 	UTILS
 }                               from '@airport/air-control'
 import {
-	DI,
-	ICachedPromise
+	DI
 }                               from '@airport/di'
 import {
 	DomainId,
@@ -76,9 +75,9 @@ export interface ISyncInSchemaChecker {
 export class SyncInSchemaChecker
 	implements ISyncInSchemaChecker {
 
-	private domainDao: ICachedPromise<IDomainDao>
-	private schemaDao: ICachedPromise<ISchemaDao>
-	private schemaVersionDao: ICachedPromise<ISchemaVersionDao>
+	private domainDao: Promise<IDomainDao>
+	private schemaDao: Promise<ISchemaDao>
+	private schemaVersionDao: Promise<ISchemaVersionDao>
 	private terminalStore: ITerminalStore
 	private utils: IUtils
 
@@ -92,9 +91,9 @@ export class SyncInSchemaChecker
 		}, TERMINAL_STORE, UTILS)
 
 
-		this.domainDao        = DI.cache(DOMAIN_DAO)
-		this.schemaDao        = DI.cache(SCHEMA_DAO)
-		this.schemaVersionDao = DI.cache(SCHEMA_VERSION_DAO)
+		this.domainDao        = DI.getP(DOMAIN_DAO)
+		this.schemaDao        = DI.getP(SCHEMA_DAO)
+		this.schemaVersionDao = DI.getP(SCHEMA_VERSION_DAO)
 	}
 
 	async checkSchemas(
@@ -368,7 +367,7 @@ export class SyncInSchemaChecker
 				schemaIndexesToUpdateStatusBy.push(schema.index)
 			}
 		}
-		await (await this.schemaDao.get()).setStatusByIndexes(
+		await (await this.schemaDao).setStatusByIndexes(
 			schemaIndexesToUpdateStatusBy, SchemaStatus.NEEDS_UPGRADES)
 
 		// All schemas needed (that do not yet exist in this TM)
@@ -389,10 +388,10 @@ export class SyncInSchemaChecker
 			}
 		}
 
-		await (await this.domainDao.get()).bulkCreate(Array.from(missingDomainMap.values()),
+		await (await this.domainDao).bulkCreate(Array.from(missingDomainMap.values()),
 			false, false)
 
-		await (await this.schemaDao.get()).bulkCreate(newlyNeededSchemas, false, false)
+		await (await this.schemaDao).bulkCreate(newlyNeededSchemas, false, false)
 
 		return schemaWithChangesMap
 	}

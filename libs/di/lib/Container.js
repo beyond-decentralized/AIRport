@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const CachedPromise_1 = require("./CachedPromise");
 class Container {
     constructor() {
         this.objects = [];
@@ -10,9 +9,6 @@ class Container {
     get(callback, ...tokens) {
         this.doGet(tokens, false, callback, () => {
         });
-    }
-    cache(tokenA) {
-        return new CachedPromise_1.CachedPromise(tokenA);
     }
     getP(...tokens) {
         return new Promise((resolve, reject) => {

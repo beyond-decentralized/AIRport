@@ -12,7 +12,6 @@ import {
 }                           from '@airport/airport-code'
 import {
 	DI,
-	ICachedPromise
 }                           from '@airport/di'
 import {DbColumn}           from '@airport/ground-control'
 import {IDomain}            from '@airport/territory'
@@ -38,15 +37,15 @@ export class SequenceGenerator
 	private sequenceBlocks: ISequenceBlock[][][] = []
 	private sequenceConsumer: ISequenceConsumer
 
-	private sequenceBlockDao: ICachedPromise<IAbstractSequenceBlockDao>
-	private sequenceConsumerDao: ICachedPromise<IAbstractSequenceConsumerDao>
-	private sequenceDao: ICachedPromise<IAbstractSequenceDao>
+	private sequenceBlockDao: Promise<IAbstractSequenceBlockDao>
+	private sequenceConsumerDao: Promise<IAbstractSequenceConsumerDao>
+	private sequenceDao: Promise<IAbstractSequenceDao>
 	private utils: IUtils
 
 	constructor() {
-		this.sequenceBlockDao    = DI.cache(SEQUENCE_BLOCK_DAO)
-		this.sequenceConsumerDao = DI.cache(SEQUENCE_CONSUMER_DAO)
-		this.sequenceDao         = DI.cache(SEQUENCE_DAO)
+		this.sequenceBlockDao    = DI.getP(SEQUENCE_BLOCK_DAO)
+		this.sequenceConsumerDao = DI.getP(SEQUENCE_CONSUMER_DAO)
+		this.sequenceDao         = DI.getP(SEQUENCE_DAO)
 	}
 
 	async init(
@@ -58,8 +57,8 @@ export class SequenceGenerator
 			randomNumber: Math.random()
 		}
 
-		await (await this.sequenceConsumerDao.get()).create(this.sequenceConsumer)
-		const sequences = await (await this.sequenceDao.get()).findAll()
+		await (await this.sequenceConsumerDao).create(this.sequenceConsumer)
+		const sequences = await (await this.sequenceDao).findAll()
 
 		for (const sequence of sequences) {
 			this.utils.ensureChildArray(
@@ -114,7 +113,7 @@ export class SequenceGenerator
 				newBlocksToCreate.push(newBlock)
 			}
 			const newBlocks
-				      = await (await this.sequenceBlockDao.get()).createNewBlocks(newBlocksToCreate)
+				      = await (await this.sequenceBlockDao).createNewBlocks(newBlocksToCreate)
 			newBlocks.forEach((
 				newBlocksForColumn: ISequenceBlock[],
 				index: number

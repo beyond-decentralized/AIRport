@@ -1,7 +1,3 @@
-import {
-	CachedPromise,
-	ICachedPromise
-}                from './CachedPromise'
 import {DiToken} from './Token'
 
 export interface IContainer {
@@ -325,10 +321,6 @@ export interface IContainer {
 		callback: (...objects: any[]) => void,
 		...tokens: DiToken<any>[]
 	): void
-
-	cache<A>(
-		tokenA: DiToken<A>
-	): ICachedPromise<A>;
 
 	getP<A>(
 		tokenA: DiToken<A>
@@ -824,13 +816,6 @@ export class Container
 			() => {
 			}
 		)
-	}
-
-
-	cache<A>(
-		tokenA: DiToken<A>
-	): ICachedPromise<A> {
-		return new CachedPromise(tokenA)
 	}
 
 	getP<A>(

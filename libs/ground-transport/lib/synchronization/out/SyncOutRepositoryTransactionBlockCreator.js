@@ -11,12 +11,12 @@ class SyncOutRepositoryTransactionBlockCreator {
         di_1.DI.get((utils) => {
             this.utils = utils;
         }, air_control_1.UTILS);
-        this.actorDao = di_1.DI.cache(holding_pattern_1.ACTOR_DAO);
-        this.repositoryDao = di_1.DI.cache(holding_pattern_1.REPOSITORY_DAO);
-        this.repositoryTransactionBlockDao = di_1.DI.cache(moving_walkway_1.REPO_TRANS_BLOCK_DAO);
-        this.repositoryTransactionHistoryUpdateStageDao = di_1.DI.cache(moving_walkway_1.REPO_TRANS_HISTORY_UPDATE_STAGE_DAO);
-        this.schemaDao = di_1.DI.cache(traffic_pattern_1.SCHEMA_DAO);
-        this.sharingNodeRepositoryDao = di_1.DI.cache(moving_walkway_1.SHARING_NODE_REPOSITORY_DAO);
+        this.actorDao = di_1.DI.getP(holding_pattern_1.ACTOR_DAO);
+        this.repositoryDao = di_1.DI.getP(holding_pattern_1.REPOSITORY_DAO);
+        this.repositoryTransactionBlockDao = di_1.DI.getP(moving_walkway_1.REPO_TRANS_BLOCK_DAO);
+        this.repositoryTransactionHistoryUpdateStageDao = di_1.DI.getP(moving_walkway_1.REPO_TRANS_HISTORY_UPDATE_STAGE_DAO);
+        this.schemaDao = di_1.DI.getP(traffic_pattern_1.SCHEMA_DAO);
+        this.sharingNodeRepositoryDao = di_1.DI.getP(moving_walkway_1.SHARING_NODE_REPOSITORY_DAO);
     }
     // Get new repository transaction histories not yet in RepoTransBlocks
     async createNewBlocks(sharingNodeIds, terminal) {
@@ -89,7 +89,7 @@ class SyncOutRepositoryTransactionBlockCreator {
     async createNewBlocksAndSetRepoTransHistoryBlockIds(schemaVersionIds, schemaVersionIdSetsByRepository, terminal, repositoryIdSet, actorIdSet, repositoryIdsByActorId, repoTransHistoryMapByRepositoryId) {
         const schemasByRepositoryIdMap = await this.findSchemasByRepositoryMap(schemaVersionIds, schemaVersionIdSetsByRepository);
         const repoTransBlockDataByRepoId = new Map();
-        const repositoryMapById = await (await this.repositoryDao.get()).findReposWithGlobalIds(Array.from(repositoryIdSet));
+        const repositoryMapById = await (await this.repositoryDao).findReposWithGlobalIds(Array.from(repositoryIdSet));
         const repositoryTransactionBlocks = [];
         const repoTransBlocksByRepositoryId = new Map();
         const repoTransHistoryUpdateStageValuesByBlock = new Map();
@@ -103,7 +103,7 @@ class SyncOutRepositoryTransactionBlockCreator {
     }
     async findSchemasByRepositoryMap(schemaVersionIds, schemaVersionIdSetsByRepository) {
         const schemasByRepositoryIdMap = new Map();
-        const schemaMapByVersionId = (await await this.schemaDao.get())
+        const schemaMapByVersionId = await (await this.schemaDao)
             .findMapByVersionIds(Array.from(schemaVersionIds));
         for (const [repositoryId, schemaVersionIdSetForRepo] of schemaVersionIdSetsByRepository) {
             const schemasForRepository = this.utils.ensureChildArray(schemasByRepositoryIdMap, repositoryId);
@@ -157,7 +157,7 @@ class SyncOutRepositoryTransactionBlockCreator {
         repoTransHistoryUpdateStageValuesByBlock.set(repositoryTransactionBlock, repoTransHistoryUpdateStageValuesForBlock);
     }
     async finishPopulatingRepositoryTransactionBlockData(actorIdSet, repositoryIdsByActorId, repoTransBlockDataByRepoId, repoTransBlocksByRepositoryId, repositoryTransactionBlocks) {
-        const actors = await (await this.actorDao.get()).findWithDetailsAndGlobalIdsByIds(Array.from(actorIdSet));
+        const actors = await (await this.actorDao).findWithDetailsAndGlobalIdsByIds(Array.from(actorIdSet));
         for (const actor of actors) {
             const repositoryIdsForActorId = repositoryIdsByActorId.get(actor.id);
             for (const repositoryId of repositoryIdsForActorId) {
@@ -169,16 +169,16 @@ class SyncOutRepositoryTransactionBlockCreator {
             const repoTransBlockData = repoTransBlockDataByRepoId.get(repositoryId);
             repositoryTransactionBlock.contents = JSON.stringify(repoTransBlockData);
         }
-        await (await this.repositoryTransactionBlockDao.get()).bulkCreate(repositoryTransactionBlocks, false, false);
+        await (await this.repositoryTransactionBlockDao).bulkCreate(repositoryTransactionBlocks, false, false);
     }
     async setRepositoryTransactionBlockBlockIds(repoTransHistoryUpdateStageValuesByBlock, repoTransHistoryUpdateStageValues) {
         for (const [repositoryTransactionBlock, repoTransHistoryUpdateStageValuesForBlock] of repoTransHistoryUpdateStageValuesByBlock) {
             repoTransHistoryUpdateStageValuesForBlock.forEach(repoTransHistoryUpdateStageValuesRecord => repoTransHistoryUpdateStageValuesRecord[1] = repositoryTransactionBlock.id);
         }
-        await (await this.repositoryTransactionHistoryUpdateStageDao.get())
+        await (await this.repositoryTransactionHistoryUpdateStageDao)
             .insertValues(repoTransHistoryUpdateStageValues);
-        await (await this.repositoryTransactionHistoryUpdateStageDao.get()).updateRepositoryTransactionHistory();
-        await (await this.repositoryTransactionHistoryUpdateStageDao.get()).delete();
+        await (await this.repositoryTransactionHistoryUpdateStageDao).updateRepositoryTransactionHistory();
+        await (await this.repositoryTransactionHistoryUpdateStageDao).delete();
     }
     groupRepoTransBlocksBySharingNode(repositoryTransactionBlocks, sharingNodeIdMapByRepositoryId) {
         const reposTransHistoryBlockMapBySharingNodeId = new Map();
