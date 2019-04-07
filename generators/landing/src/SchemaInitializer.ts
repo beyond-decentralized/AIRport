@@ -50,7 +50,7 @@ export class SchemaInitializer
 	): Promise<void> {
 		const jsonSchemasToInstall: JsonSchema[] = []
 
-		const schemaChecker = await this.schemaChecker.get()
+		const schemaChecker = await this.schemaChecker
 
 		for (const jsonSchema of jsonSchemas) {
 			await schemaChecker.check(jsonSchema)

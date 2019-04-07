@@ -37,10 +37,12 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="ts" value="22" />
+          <entry key="txt" value="34" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
+          <entry key="PLAIN_TEXT" value="34" />
           <entry key="TypeScript" value="22" />
         </counts>
       </usages-collector>
@@ -57,11 +59,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/generators/landing/src/SchemaInitializer.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="1" column="4" lean-forward="true" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
+            <state relative-caret-position="177">
+              <caret line="54" column="6" selection-start-line="54" selection-start-column="6" selection-end-line="54" selection-end-column="6" />
+              <folding>
+                <element signature="e#0#66#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -108,11 +113,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/terminal/src/net/OnlineManager.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="1" column="4" lean-forward="true" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
+            <state relative-caret-position="198">
+              <caret line="9" column="25" lean-forward="true" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -184,7 +189,6 @@
         <option value="$PROJECT_DIR$/generators/runway/src/resolve/pathResolver.ts" />
         <option value="$PROJECT_DIR$/generators/runway/src/builder/GeneratedSummaryBuilder.ts" />
         <option value="$PROJECT_DIR$/generators/runway/src/parser/EntityCandidateRegistry.ts" />
-        <option value="$PROJECT_DIR$/generators/landing/src/SchemaInitializer.ts" />
         <option value="$PROJECT_DIR$/generators/landing/src/recorder/SchemaRecorder.ts" />
         <option value="$PROJECT_DIR$/generators/landing/src/checker/SchemaChecker.ts" />
         <option value="$PROJECT_DIR$/apps/terminal/src/orchestration/UpdateManager.ts" />
@@ -193,6 +197,7 @@
         <option value="$PROJECT_DIR$/apps/terminal/src/orchestration/HistoryManager.ts" />
         <option value="$PROJECT_DIR$/apps/terminal/src/orchestration/DeleteManager.ts" />
         <option value="$PROJECT_DIR$/apps/terminal/src/net/OnlineManager.ts" />
+        <option value="$PROJECT_DIR$/generators/landing/src/SchemaInitializer.ts" />
       </list>
     </option>
   </component>
@@ -2635,17 +2640,24 @@
       <option name="project" value="LOCAL" />
       <updated>1536240165379</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="finished removing DI.cache() api">
+      <created>1554678233530</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1554678233530</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30475000" />
+    <option name="totallyTimeSpent" value="30589000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1956378" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1956378" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -2660,7 +2672,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="TypeScript" order="9" weight="0.32983193" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50052685" side_tool="true" weight="0.39875388" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.3297587" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.3297587" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -2680,7 +2692,8 @@
     <MESSAGE value="working on Q Object generation 'takeoff' (and related changes to schema&#10;generation)" />
     <MESSAGE value="adjustments to 'runway' needed by 'bumperpoll'" />
     <MESSAGE value="moved Selector to 'check-in'" />
-    <option name="LAST_COMMIT_MESSAGE" value="moved Selector to 'check-in'" />
+    <MESSAGE value="finished removing DI.cache() api" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished removing DI.cache() api" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2823,13 +2836,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/generators/landing/src/SchemaInitializer.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" column="4" lean-forward="true" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/generators/landing/src/recorder/SchemaRecorder.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="10847">
@@ -2893,8 +2899,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/terminal/src/net/OnlineManager.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" column="4" lean-forward="true" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
+        <state relative-caret-position="198">
+          <caret line="9" column="25" lean-forward="true" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/landing/src/SchemaInitializer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="54" column="6" selection-start-line="54" selection-start-column="6" selection-end-line="54" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#66#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
