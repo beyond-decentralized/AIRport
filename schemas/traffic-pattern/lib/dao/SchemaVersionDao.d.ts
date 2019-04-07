@@ -5,7 +5,7 @@ export interface ISchemaVersionDao extends IBaseSchemaVersionDao {
     findMaxVersionedMapBySchemaAndDomainNames(schemaDomainNames: DomainName[], schemaNames: SchemaName[]): Promise<Map<DomainName, Map<SchemaName, ISchemaVersion>>>;
 }
 export declare class SchemaVersionDao extends BaseSchemaVersionDao implements ISchemaVersionDao {
-    private schemaVersionDmo;
+    private schemaVersionDuo;
     constructor();
     findAllLatestForSchemaIndexes(schemaIndexes: SchemaIndex[]): Promise<ISchemaVersion[]>;
     findMaxVersionedMapBySchemaAndDomainNames(schemaDomainNames: DomainName[], schemaNames: SchemaName[]): Promise<Map<DomainName, Map<SchemaName, ISchemaVersion>>>;

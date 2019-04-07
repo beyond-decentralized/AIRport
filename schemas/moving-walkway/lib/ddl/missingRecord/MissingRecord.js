@@ -20,7 +20,7 @@ __decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumns([
         { name: "SCHEMA_VERSION_ID" },
-        { name: "ENTITY_INDEX", referencedColumnName: "INDEX" }
+        { name: "TABLE_INDEX" }
     ])
 ], MissingRecord.prototype, "entity", void 0);
 __decorate([

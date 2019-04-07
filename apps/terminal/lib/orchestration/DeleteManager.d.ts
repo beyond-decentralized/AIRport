@@ -8,10 +8,10 @@ export declare class DeleteManager implements IDeleteManager {
     private dataStore;
     private historyManager;
     private offlineDataStore;
-    private operHistoryDmo;
-    private recHistoryDmo;
+    private operHistoryDuo;
+    private recHistoryDuo;
     private repoManager;
-    private repoTransHistoryDmo;
+    private repoTransHistoryDuo;
     private transManager;
     private utils;
     constructor();

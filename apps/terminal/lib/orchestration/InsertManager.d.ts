@@ -13,10 +13,10 @@ export declare class InsertManager implements IInsertManager {
     private seqGenerator;
     private histManager;
     private offlineDataStore;
-    private operHistoryDmo;
-    private recHistoryDmo;
+    private operHistoryDuo;
+    private recHistoryDuo;
     private repoManager;
-    private repoTransHistoryDmo;
+    private repoTransHistoryDuo;
     private transManager;
     constructor();
     readonly currentTransHistory: ITransactionHistory;

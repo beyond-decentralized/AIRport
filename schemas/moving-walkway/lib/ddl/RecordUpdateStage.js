@@ -26,7 +26,7 @@ __decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumns([
         { name: 'SCHEMA_VERSION_ID' },
-        { name: 'TABLE_INDEX', referencedColumnName: 'INDEX' }
+        { name: 'TABLE_INDEX' }
     ])
 ], RecordUpdateStage.prototype, "entity", void 0);
 __decorate([
@@ -45,7 +45,7 @@ __decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumns([
         { name: 'SCHEMA_ENTITY_ID' },
-        { name: 'COLUMN_INDEX', referencedColumnName: 'INDEX' }
+        { name: 'COLUMN_INDEX' }
     ])
 ], RecordUpdateStage.prototype, "column", void 0);
 __decorate([

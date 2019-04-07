@@ -7,6 +7,9 @@ export declare class AirportDatabase implements IAirportDatabase {
     S: DbSchema[];
     qSchemas: QSchema[];
     Q: QSchema[];
+    QM: {
+        [name: string]: QSchema;
+    };
     private databaseMap;
     private dbNames;
     private dbNameSet;

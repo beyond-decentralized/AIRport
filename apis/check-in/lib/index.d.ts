@@ -1,4 +1,4 @@
 export * from './Dao';
-export * from './Dmo';
+export * from './Duo';
 export * from './EntityDatabaseFacade';
 export * from './Selector';

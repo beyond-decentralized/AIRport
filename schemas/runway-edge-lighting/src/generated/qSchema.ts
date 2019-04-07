@@ -12,12 +12,12 @@ import { LoggedErrorStackTrace } from '../ddl/loggederrorstacktrace';
 import { QLoggedErrorStackTrace } from './qloggederrorstacktrace';
 
 import {
-	IBaseLogEntryDmo,
-	IBaseLogEntryTypeDmo,
-	IBaseLogEntryValueDmo,
-	IBaseLoggedErrorDmo,
-	IBaseLoggedErrorStackTraceDmo
-} from './baseDmos';
+	IBaseLogEntryDuo,
+	IBaseLogEntryTypeDuo,
+	IBaseLogEntryValueDuo,
+	IBaseLoggedErrorDuo,
+	IBaseLoggedErrorStackTraceDuo
+} from './baseDuos';
 
 import {
 	IBaseLogEntryDao,
@@ -31,12 +31,12 @@ export interface LocalQSchema extends AirportQSchema {
 
   db: DbSchema;
 
-	dmo: {
-		LogEntry: IBaseLogEntryDmo;
-		LogEntryType: IBaseLogEntryTypeDmo;
-		LogEntryValue: IBaseLogEntryValueDmo;
-		LoggedError: IBaseLoggedErrorDmo;
-		LoggedErrorStackTrace: IBaseLoggedErrorStackTraceDmo;
+	duo: {
+		LogEntry: IBaseLogEntryDuo;
+		LogEntryType: IBaseLogEntryTypeDuo;
+		LogEntryValue: IBaseLogEntryValueDuo;
+		LoggedError: IBaseLoggedErrorDuo;
+		LoggedErrorStackTrace: IBaseLoggedErrorStackTraceDuo;
 	}
 
 	dao: {

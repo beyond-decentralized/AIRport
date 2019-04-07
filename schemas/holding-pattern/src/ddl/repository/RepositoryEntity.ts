@@ -49,7 +49,7 @@ export abstract class RepositoryEntity
 			join: Function
 			db: IAirportDatabase,
 			f: FunctionsAndOperators,
-			opFields = DMO.getAllFieldsSelect(oh.__driver__.dbEntity),
+			opFields = DUO.getAllFieldsSelect(oh.__driver__.dbEntity),
 			rh: QRecordHistory,
 			rth: QRepositoryTransactionHistory
 		) =>

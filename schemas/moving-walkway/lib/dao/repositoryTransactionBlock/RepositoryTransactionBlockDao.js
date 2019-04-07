@@ -7,9 +7,9 @@ const generated_1 = require("../../generated/generated");
 class RepositoryTransactionBlockDao extends generated_1.BaseRepositoryTransactionBlockDao {
     constructor() {
         super();
-        di_1.DI.get((dmo) => {
-            this.dmo = dmo;
-        }, diTokens_1.REPO_TRANS_BLOCK_DMO);
+        di_1.DI.get((duo) => {
+            this.duo = duo;
+        }, diTokens_1.REPO_TRANS_BLOCK_DUO);
     }
     async updateFromResponseStage( //
     ) {

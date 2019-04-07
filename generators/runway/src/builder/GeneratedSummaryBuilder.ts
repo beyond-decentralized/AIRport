@@ -34,7 +34,7 @@ export class GeneratedSummaryBuilder
 		return `export * from './mappedSuperclass'
 export * from './qSchema';
 export * from './baseDaos';
-export * from './baseDmos';
+export * from './baseDuos';
 ${exports}
 `
 	}

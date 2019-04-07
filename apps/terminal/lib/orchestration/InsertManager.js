@@ -18,10 +18,10 @@ class InsertManager {
             this.repoManager = repositoryManager;
             this.transManager = transactionManager;
         }, air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, fuel_hydrant_system_1.SEQUENCE_GENERATOR, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.REPOSITORY_MANAGER, terminal_map_1.TRANSACTION_MANAGER);
-        this.operHistoryDmo = di_1.DI.cache(holding_pattern_1.OPER_HISTORY_DMO);
-        this.recHistoryDmo = di_1.DI.cache(holding_pattern_1.REC_HISTORY_DMO);
-        this.repoTransHistoryDmo = di_1.DI.cache(holding_pattern_1.REPO_TRANS_HISTORY_DMO);
-        // this.transHistoryDmo     = DI.cache(TRANS_HISTORY_DMO)
+        this.operHistoryDuo = di_1.DI.cache(holding_pattern_1.OPER_HISTORY_DUO);
+        this.recHistoryDuo = di_1.DI.cache(holding_pattern_1.REC_HISTORY_DUO);
+        this.repoTransHistoryDuo = di_1.DI.cache(holding_pattern_1.REPO_TRANS_HISTORY_DUO);
+        // this.transHistoryDuo     = DI.cache(TRANS_HISTORY_DUO)
     }
     get currentTransHistory() {
         return this.transManager.currentTransHistory;
@@ -169,9 +169,9 @@ class InsertManager {
                     break;
             }
         }
-        const repoTransHistoryDmo = await this.repoTransHistoryDmo.get();
-        const operHistoryDmo = await this.operHistoryDmo.get();
-        const recHistoryDmo = await this.recHistoryDmo.get();
+        const repoTransHistoryDuo = await this.repoTransHistoryDuo.get();
+        const operHistoryDuo = await this.operHistoryDuo.get();
+        const recHistoryDuo = await this.recHistoryDuo.get();
         // Rows may belong to different repositories
         for (const row of jsonInsertValues.V) {
             const repositoryId = row[repositoryIdColumnNumber];
@@ -183,11 +183,11 @@ class InsertManager {
             }
             let operationHistory = operationsByRepo[repositoryId];
             if (!operationHistory) {
-                operationHistory = repoTransHistoryDmo.startOperation(repoTransHistory, ground_control_1.ChangeType.INSERT_VALUES, dbEntity);
+                operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, ground_control_1.ChangeType.INSERT_VALUES, dbEntity);
                 operationsByRepo[repositoryId] = operationHistory;
             }
             const actorRecordId = row[actorRecordIdColumnNumber];
-            const recordHistory = operHistoryDmo.startRecordHistory(operationHistory, actorRecordId);
+            const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, actorRecordId);
             for (const columnNumber in jsonInsertValues.C) {
                 if (columnNumber === repositoryIdColumnNumber
                     || columnNumber === actorIdColumnNumber
@@ -197,7 +197,7 @@ class InsertManager {
                 const columnIndex = jsonInsertValues.C[columnNumber];
                 const dbColumn = dbEntity.columns[columnIndex];
                 const newValue = row[columnNumber];
-                recHistoryDmo.addNewValue(recordHistory, dbColumn, newValue);
+                recHistoryDuo.addNewValue(recordHistory, dbColumn, newValue);
             }
         }
         // for (const repositoryId in operationsByRepo) {

@@ -10,13 +10,11 @@ import {
 	DbSchema,
 	IDbSchemaUtils,
 }                                                 from '@airport/ground-control'
-import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos} from './dao/dao'
 import {
 	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS,
-	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS,
+	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DUOS,
 	NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA
 }                                                 from './diTokens'
-import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos} from './dmo/dmo'
 import {
 	LocalQSchema,
 	Q_SCHEMA
@@ -64,23 +62,23 @@ export class AtAirport_TrafficPattern_QSchema
 	SchemaVersion: QSchemaVersion
 	VersionedSchemaObject: QVersionedSchemaObject
 
-	public dao: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos
-	public dmo: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos
+	public dao: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS
+	public duo: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DUOS
 
 	constructor() {
 		DI.get((
 			airportDatabase,
 			dao,
 			dbSchemaUtils,
-			dmo
+			duo
 			) => {
 				this.dao = dao
-				this.dmo = dmo
+				this.duo = duo
 				this.init(airportDatabase, dbSchemaUtils)
 			}, AIR_DB,
 			NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS,
 			DB_SCHEMA_UTILS,
-			NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS
+			NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DUOS
 		)
 
 	}
@@ -93,7 +91,7 @@ export class AtAirport_TrafficPattern_QSchema
 
 		this.__constructors__ = Q_SCHEMA.__constructors
 		Q_SCHEMA.dao          = this.dao
-		Q_SCHEMA.dmo          = this.dmo
+		Q_SCHEMA.duo          = this.duo
 		Q_SCHEMA.__exported__ = Q_SCHEMA
 		Q_SCHEMA.__injected__ = this
 		this.__injected__     = this
@@ -109,7 +107,7 @@ export class AtAirport_TrafficPattern_QSchema
 			existingQSchema.__created__  = existingQSchema
 
 			existingQSchema.dao              = this.dao
-			existingQSchema.dmo              = this.dmo
+			existingQSchema.duo              = this.duo
 			existingQSchema.__constructors__ = Q_SCHEMA.__constructors
 			setQSchemaEntities(existingQSchema.__dbSchema__, this, airDb.qSchemas)
 			setQSchemaEntities(existingQSchema.__dbSchema__, Q_SCHEMA, airDb.qSchemas)
@@ -121,5 +119,9 @@ export class AtAirport_TrafficPattern_QSchema
 	}
 
 }
-
+// FIXME: make npmjs.org the default and add a '_' prefix instead
+// TODO: remember that @airport translates to _airport
 DI.set(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA, AtAirport_TrafficPattern_QSchema)
+DI.get(airDb => {
+	airDb.registerSchema(AtAirport_TrafficPattern_QSchema)
+}, AIR_DB)

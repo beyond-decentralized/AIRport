@@ -19,11 +19,11 @@ import {
 	IOperationHistory,
 	IRecordHistory,
 	IRepositoryTransactionHistoryDao,
-	IRepositoryTransactionHistoryDmo,
+	IRepositoryTransactionHistoryDuo,
 	RecordHistoryActorRecordId,
 	RecordHistoryId,
 	REPO_TRANS_HISTORY_DAO,
-	REPO_TRANS_HISTORY_DMO,
+	REPO_TRANS_HISTORY_DUO,
 	RepositoryEntityActorRecordId,
 	RepositoryId,
 }           from '@airport/holding-pattern'
@@ -62,7 +62,7 @@ export class Stage1SyncedInDataProcessor
 
 	private actorDao: IActorDao
 	private repoTransHistoryDao: IRepositoryTransactionHistoryDao
-	private repoTransHistoryDmo: IRepositoryTransactionHistoryDmo
+	private repoTransHistoryDuo: IRepositoryTransactionHistoryDuo
 	private syncInUtils: ISyncInUtils
 	private utils: IUtils
 
@@ -70,17 +70,17 @@ export class Stage1SyncedInDataProcessor
 		DI.get((
 			actorDao,
 			repositoryTransactionHistoryDao,
-			repositoryTransactionHistoryDmo,
+			repositoryTransactionHistoryDuo,
 			syncInUtils,
 			utils
 			) => {
 				this.actorDao            = actorDao
 				this.repoTransHistoryDao = repositoryTransactionHistoryDao
-				this.repoTransHistoryDmo = repositoryTransactionHistoryDmo
+				this.repoTransHistoryDuo = repositoryTransactionHistoryDuo
 				this.syncInUtils         = syncInUtils
 				this.utils               = utils
 			}, ACTOR_DAO, REPO_TRANS_HISTORY_DAO,
-			REPO_TRANS_HISTORY_DMO, SYNC_IN_UTILS, UTILS)
+			REPO_TRANS_HISTORY_DUO, SYNC_IN_UTILS, UTILS)
 	}
 
 	/**
@@ -178,7 +178,7 @@ export class Stage1SyncedInDataProcessor
 		// sort all repository histories in processing order
 		for (const [repositoryId, repoTransHistoriesForRepository]
 			of allRepoTransHistoryMapByRepoId) {
-			this.repoTransHistoryDmo
+			this.repoTransHistoryDuo
 				.sortRepoTransHistories(repoTransHistoriesForRepository, actorMayById)
 		}
 

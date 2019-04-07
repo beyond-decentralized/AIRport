@@ -3,14 +3,14 @@ import { DbSchema } from '@airport/ground-control';
 import { QSequence } from './qsequence';
 import { QSequenceBlock } from './qsequenceblock';
 import { QSequenceConsumer } from './qsequenceconsumer';
-import { IBaseSequenceDmo, IBaseSequenceBlockDmo, IBaseSequenceConsumerDmo } from './baseDmos';
+import { IBaseSequenceDuo, IBaseSequenceBlockDuo, IBaseSequenceConsumerDuo } from './baseDuos';
 import { IBaseSequenceDao, IBaseSequenceBlockDao, IBaseSequenceConsumerDao } from './baseDaos';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
-    dmo: {
-        Sequence: IBaseSequenceDmo;
-        SequenceBlock: IBaseSequenceBlockDmo;
-        SequenceConsumer: IBaseSequenceConsumerDmo;
+    duo: {
+        Sequence: IBaseSequenceDuo;
+        SequenceBlock: IBaseSequenceBlockDuo;
+        SequenceConsumer: IBaseSequenceConsumerDuo;
     };
     dao: {
         Sequence: IBaseSequenceDao;

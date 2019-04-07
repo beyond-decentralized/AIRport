@@ -93,6 +93,13 @@
           </resourceRoots>
         </entryData>
       </entry>
+      <entry url="file://$PROJECT_DIR$/../../libs/blueprint">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/../../libs/blueprint/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
       <entry url="file://$PROJECT_DIR$/../../libs/di">
         <entryData>
           <resourceRoots>

@@ -16,7 +16,7 @@ export async function transactional<T>(
 	callback: () => Promise<T>,
 	keepAlive?: boolean
 ): Promise<T> {
-	const [storeDriver] = await DI.getP(STORE_DRIVER)
+	const storeDriver = await DI.getP(STORE_DRIVER)
 	let transactionStarted          = false
 	try {
 		await storeDriver.transact(keepAlive)

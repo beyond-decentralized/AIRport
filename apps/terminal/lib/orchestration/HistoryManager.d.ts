@@ -5,7 +5,7 @@ export interface IHistoryManager {
     getNewRepoTransHistory(transactionHistory: ITransactionHistory, repository: IRepository, actor: IActor): Promise<IRepositoryTransactionHistory>;
 }
 export declare class HistoryManager implements IHistoryManager {
-    private transHistoryDmo;
+    private transHistoryDuo;
     constructor();
     getNewTransHistory(transactionType?: TransactionType): Promise<ITransactionHistory>;
     getNewRepoTransHistory(transactionHistory: ITransactionHistory, repository: IRepository, actor: IActor): Promise<IRepositoryTransactionHistory>;

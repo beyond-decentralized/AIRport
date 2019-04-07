@@ -1,12 +1,12 @@
 import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
 import { QDailyArchive } from './qdailyarchive';
-import { IBaseDailyArchiveDmo } from './baseDmos';
+import { IBaseDailyArchiveDuo } from './baseDuos';
 import { IBaseDailyArchiveDao } from './baseDaos';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
-    dmo: {
-        DailyArchive: IBaseDailyArchiveDmo;
+    duo: {
+        DailyArchive: IBaseDailyArchiveDuo;
     };
     dao: {
         DailyArchive: IBaseDailyArchiveDao;

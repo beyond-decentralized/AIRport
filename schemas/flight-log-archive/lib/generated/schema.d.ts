@@ -49,7 +49,10 @@ export declare const SCHEMA: {
             "properties": any[];
             "relations": any[];
             "sinceVersion": number;
-            "tableConfig"?: undefined;
+            "tableConfig": {
+                "indexes": any[];
+                "name"?: undefined;
+            };
         })[];
         "integerVersion": number;
         "referencedSchemas": any[];

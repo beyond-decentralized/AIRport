@@ -9,7 +9,7 @@ export declare class TransactionManager extends AbstractMutationManager implemen
     private onlineManager;
     private queries;
     storeType: StoreType;
-    private transHistoryDmo;
+    private transHistoryDuo;
     transactionIndexQueue: number[];
     transactionInProgress: number;
     yieldToRunningTransaction: number;

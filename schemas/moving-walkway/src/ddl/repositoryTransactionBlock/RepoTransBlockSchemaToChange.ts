@@ -30,7 +30,7 @@ export class RepoTransBlockSchemaToChange {
 	@Id()
 	@ManyToOne()
 	@JoinColumn({
-		name: "SCHEMA_INDEX", referencedColumnName: "INDEX"
+		name: "SCHEMA_INDEX"
 	})
 	schema: Schema;
 

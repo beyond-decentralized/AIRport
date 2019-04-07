@@ -1,4 +1,4 @@
-import { DbSchema, JsonSchema } from '@airport/ground-control';
+import { DbSchema } from '@airport/ground-control';
 import { QRelation } from '..';
 import { QEntityConstructor } from '../impl/core/entity/Entity';
 import { EntityConstructor } from './core/entity/Entity';
@@ -32,7 +32,7 @@ export interface SchemaHub {
 }
 export interface IAirportDatabase extends SchemaHub, FunctionAndOperatorHub {
     registerDatabase(facade: IDatabaseFacade): any;
-    registerSchema(schema: JsonSchema, qSchema: QSchema): any;
+    registerSchema(qSchema: QSchema): any;
     setCurrentDb(dbName: string): any;
     getDbNames(): string[];
     getDbNameSet(): {

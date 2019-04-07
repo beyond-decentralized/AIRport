@@ -17,10 +17,10 @@ class DeleteManager {
             this.transManager = transactionManager;
             this.utils = utils;
         }, air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.REPOSITORY_MANAGER, terminal_map_1.TRANSACTION_MANAGER, air_control_1.UTILS);
-        this.operHistoryDmo = di_1.DI.cache(holding_pattern_1.OPER_HISTORY_DMO);
-        this.recHistoryDmo = di_1.DI.cache(holding_pattern_1.REC_HISTORY_DMO);
-        this.repoTransHistoryDmo = di_1.DI.cache(holding_pattern_1.REPO_TRANS_HISTORY_DMO);
-        // this.transHistoryDmo     = DI.cache(TRANS_HISTORY_DMO)
+        this.operHistoryDuo = di_1.DI.cache(holding_pattern_1.OPER_HISTORY_DUO);
+        this.recHistoryDuo = di_1.DI.cache(holding_pattern_1.REC_HISTORY_DUO);
+        this.repoTransHistoryDuo = di_1.DI.cache(holding_pattern_1.REPO_TRANS_HISTORY_DUO);
+        // this.transHistoryDuo     = DI.cache(TRANS_HISTORY_DUO)
     }
     async deleteWhere(portableQuery, actor) {
         const dbEntity = this.airDb
@@ -127,25 +127,25 @@ class DeleteManager {
         return true;
     }
     async recordTreeToDelete(recordsToDelete, repositories, actor) {
-        const operHistoryDmo = await this.operHistoryDmo.get();
-        const recHistoryDmo = await this.recHistoryDmo.get();
-        const repoTransHistoryDmo = await this.repoTransHistoryDmo.get();
+        const operHistoryDuo = await this.operHistoryDuo.get();
+        const recHistoryDuo = await this.recHistoryDuo.get();
+        const repoTransHistoryDuo = await this.repoTransHistoryDuo.get();
         for (const [schemaIndex, schemaRecordsToDelete] of recordsToDelete) {
             for (const [entityIndex, entityRecordsToDelete] of schemaRecordsToDelete) {
                 const dbEntity = this.airDb.schemas[schemaIndex].currentVersion.entities[entityIndex];
                 for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
                     const repository = repositories.get(repositoryId);
                     const repoTransHistory = await this.historyManager.getNewRepoTransHistory(this.transManager.currentTransHistory, repository, actor);
-                    const operationHistory = repoTransHistoryDmo.startOperation(repoTransHistory, ground_control_1.ChangeType.DELETE_ROWS, dbEntity);
+                    const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, ground_control_1.ChangeType.DELETE_ROWS, dbEntity);
                     for (const recordToDelete of entityRecordsToDeleteForRepo) {
-                        const recordHistory = operHistoryDmo.startRecordHistory(operationHistory, recordToDelete.actorRecordId);
+                        const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, recordToDelete.actorRecordId);
                         for (const dbProperty of dbEntity.properties) {
                             if (dbProperty.relation && dbProperty.relation.length) {
                                 const dbRelation = dbProperty.relation[0];
                                 switch (dbRelation.relationType) {
                                     case ground_control_1.EntityRelationType.MANY_TO_ONE:
                                         this.utils.Schema.forEachColumnOfRelation(dbRelation, recordToDelete, (dbColumn, value, propertyNameChains) => {
-                                            recHistoryDmo.addOldValue(recordHistory, dbColumn, value);
+                                            recHistoryDuo.addOldValue(recordHistory, dbColumn, value);
                                         });
                                         break;
                                     case ground_control_1.EntityRelationType.ONE_TO_MANY:
@@ -158,7 +158,7 @@ class DeleteManager {
                             }
                             else {
                                 const dbColumn = dbProperty.propertyColumns[0].column;
-                                recHistoryDmo
+                                recHistoryDuo
                                     .addOldValue(recordHistory, dbColumn, recordToDelete[dbProperty.name]);
                             }
                         }

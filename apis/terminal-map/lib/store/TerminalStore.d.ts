@@ -18,11 +18,11 @@ export declare class TerminalStore implements ITerminalStore {
     private utils;
     constructor();
     state: BehaviorSubject<ITerminalState>;
-    getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
-    getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
-    getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<string, Map<string, ISchemaVersion>>, ITerminalState>;
-    getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<string, ISchemaVersion>, ITerminalState>;
-    getLatestSchemaVersionsByIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
-    getSchemas: IMemoizedSelector<ISchema[], ITerminalState>;
+    getTerminalState: IMemoizedSelector<any, any>;
+    getDomains: IMemoizedSelector<any, any>;
+    getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<string, Map<string, ISchemaVersion>>, any>;
+    getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<string, ISchemaVersion>, any>;
+    getLatestSchemaVersionsByIndexes: IMemoizedSelector<ISchemaVersion[], any>;
+    getSchemas: IMemoizedSelector<any, any>;
     tearDown(): void;
 }

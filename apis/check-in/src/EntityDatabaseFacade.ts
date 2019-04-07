@@ -4,7 +4,7 @@ import {
 	EntitySearch,
 	EntitySearchOne,
 	IDatabaseFacade,
-	IDmo,
+	IDuo,
 	IEntityCreateProperties,
 	IEntityDatabaseFacade,
 	IEntityFind,
@@ -26,7 +26,7 @@ import {
 	UpdateCacheType
 }                 from "@airport/air-control";
 import {DbEntity} from "@airport/ground-control";
-import {Dmo}      from "./Dmo";
+import {Duo}      from "./Duo";
 
 /**
  * Created by Papa on 12/11/2016.
@@ -42,7 +42,7 @@ export class EntityDatabaseFacade<Entity,
 	implements IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, IQ> {
 
 	common: IDatabaseFacade;
-	dmo: IDmo<Entity, EntitySelect, EntityCreate, EntityUpdateProperties, EntityId, IQ>;
+	duo: IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateProperties, EntityId, IQ>;
 	find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
 	findOne: IEntityFindOne<Entity, EntitySelect>;
 	search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
@@ -53,7 +53,7 @@ export class EntityDatabaseFacade<Entity,
 		private Q: QSchema,
 		private utils: IUtils
 	) {
-		this.dmo = new Dmo(dbEntity);
+		this.duo = new Duo(dbEntity);
 	}
 
 	get from(): IQ {

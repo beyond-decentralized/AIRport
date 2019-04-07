@@ -35,7 +35,7 @@ export class SharingNodeDao
 		let sn: QSharingNode
 		const sharingNodes: ISharingNode[] = await this.db.find.tree({
 			select: {
-				...this.db.dmo.getAllFieldsSelect()
+				...this.db.duo.getAllFieldsSelect()
 			},
 			from: [
 				sn = Q.SharingNode

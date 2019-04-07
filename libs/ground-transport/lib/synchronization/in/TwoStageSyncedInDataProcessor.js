@@ -10,11 +10,11 @@ const terminal_map_1 = require("@airport/terminal-map");
 const lib_1 = require("zipson/lib");
 const diTokens_1 = require("../../diTokens");
 class TwoStageSyncedInDataProcessor {
-    constructor(repositoryActorDao, repositoryTransactionHistoryDmo, sharingMessageDao, sharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictPendingNotificationDao, syncInChecker, repositoryTransactionBlockDao, 
+    constructor(repositoryActorDao, repositoryTransactionHistoryDuo, sharingMessageDao, sharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictPendingNotificationDao, syncInChecker, repositoryTransactionBlockDao, 
     // private repoTransBlockRepoTransHistoryDao: IRepoTransBlockRepoTransHistoryDao,
     transactionManager, utils) {
         this.repositoryActorDao = repositoryActorDao;
-        this.repositoryTransactionHistoryDmo = repositoryTransactionHistoryDmo;
+        this.repositoryTransactionHistoryDuo = repositoryTransactionHistoryDuo;
         this.sharingMessageDao = sharingMessageDao;
         this.sharingMessageRepoTransBlockDao = sharingMessageRepoTransBlockDao;
         this.stage1SyncedInDataProcessor = stage1SyncedInDataProcessor;
@@ -25,9 +25,9 @@ class TwoStageSyncedInDataProcessor {
         this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
         this.transactionManager = transactionManager;
         this.utils = utils;
-        di_1.DI.get((repositoryActorDao, repositoryTransactionHistoryDmo, sharingMessageDao, sharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictPendingNotificationDao, syncInChecker, repositoryTransactionBlockDao, transactionManager, utils) => {
+        di_1.DI.get((repositoryActorDao, repositoryTransactionHistoryDuo, sharingMessageDao, sharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictPendingNotificationDao, syncInChecker, repositoryTransactionBlockDao, transactionManager, utils) => {
             this.repositoryActorDao = repositoryActorDao;
-            this.repositoryTransactionHistoryDmo = repositoryTransactionHistoryDmo;
+            this.repositoryTransactionHistoryDuo = repositoryTransactionHistoryDuo;
             this.sharingMessageDao = sharingMessageDao;
             this.sharingMessageRepoTransBlockDao = sharingMessageRepoTransBlockDao;
             this.stage1SyncedInDataProcessor = stage1SyncedInDataProcessor;
@@ -38,7 +38,7 @@ class TwoStageSyncedInDataProcessor {
             this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
             this.transactionManager = transactionManager;
             this.utils = utils;
-        }, holding_pattern_1.REPO_ACTOR_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DMO, moving_walkway_1.SHARING_MESSAGE_DAO, moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, diTokens_1.STAGE1_SYNCED_IN_DATA_PROCESSOR, diTokens_1.STAGE2_SYNCED_IN_DATA_PROCESSOR, moving_walkway_1.SYNC_CONFLICT_DAO, moving_walkway_1.SYNC_CONFLICT_PENDING_NOTIFICATION_DAO, diTokens_1.SYNC_IN_CHECKER, moving_walkway_1.REPO_TRANS_BLOCK_DAO, terminal_map_1.TRANSACTION_MANAGER, air_control_1.UTILS);
+        }, holding_pattern_1.REPO_ACTOR_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DUO, moving_walkway_1.SHARING_MESSAGE_DAO, moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, diTokens_1.STAGE1_SYNCED_IN_DATA_PROCESSOR, diTokens_1.STAGE2_SYNCED_IN_DATA_PROCESSOR, moving_walkway_1.SYNC_CONFLICT_DAO, moving_walkway_1.SYNC_CONFLICT_PENDING_NOTIFICATION_DAO, diTokens_1.SYNC_IN_CHECKER, moving_walkway_1.REPO_TRANS_BLOCK_DAO, terminal_map_1.TRANSACTION_MANAGER, air_control_1.UTILS);
     }
     /**
      * Synchronize the data messages coming from AGT (new data for this TM).
@@ -124,7 +124,7 @@ class TwoStageSyncedInDataProcessor {
             await this.repositoryTransactionBlockDao.clearContentsWhereIdsIn(repositoryTransactionBlockIds);
         }
         for (const [repositoryId, repoTransHistories] of repoTransHistoryMapByRepositoryId) {
-            this.repositoryTransactionHistoryDmo
+            this.repositoryTransactionHistoryDuo
                 .sortRepoTransHistories(repoTransHistories, actorMapById);
         }
         return repoTransHistoryMapByRepositoryId;

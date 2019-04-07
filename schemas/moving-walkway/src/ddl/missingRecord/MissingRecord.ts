@@ -35,7 +35,7 @@ export class MissingRecord {
 	@ManyToOne()
 	@JoinColumns([
 		{name: "SCHEMA_VERSION_ID"},
-		{name: "ENTITY_INDEX", referencedColumnName: "INDEX"}
+		{name: "TABLE_INDEX"}
 	])
 	entity: ISchemaEntity;
 

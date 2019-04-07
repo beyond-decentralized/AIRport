@@ -6,6 +6,7 @@ class AirportDatabase {
     constructor() {
         this.schemas = [];
         this.qSchemas = [];
+        this.QM = {};
         this.databaseMap = {};
         this.dbNames = [];
         this.dbNameSet = {};

@@ -22,16 +22,16 @@ import {
 }                           from '@airport/ground-control'
 import {
 	IActor,
-	IOperationHistoryDmo,
+	IOperationHistoryDuo,
 	IRecordHistory,
-	IRecordHistoryDmo,
+	IRecordHistoryDuo,
 	IRepository,
-	IRepositoryTransactionHistoryDmo,
-	ITransactionHistoryDmo,
-	OPER_HISTORY_DMO,
-	REC_HISTORY_DMO,
-	REPO_TRANS_HISTORY_DMO,
-	TRANS_HISTORY_DMO
+	IRepositoryTransactionHistoryDuo,
+	ITransactionHistoryDuo,
+	OPER_HISTORY_DUO,
+	REC_HISTORY_DUO,
+	REPO_TRANS_HISTORY_DUO,
+	TRANS_HISTORY_DUO
 }                           from '@airport/holding-pattern'
 import {
 	ITransactionManager,
@@ -71,11 +71,11 @@ export class UpdateManager
 	private dataStore: IStoreDriver
 	private histManager: IHistoryManager
 	private offlineDataStore: IOfflineDeltaStore
-	private operHistoryDmo: ICachedPromise<IOperationHistoryDmo>
-	private recHistoryDmo: ICachedPromise<IRecordHistoryDmo>
+	private operHistoryDuo: ICachedPromise<IOperationHistoryDuo>
+	private recHistoryDuo: ICachedPromise<IRecordHistoryDuo>
 	private repoManager: IRepositoryManager
-	private repoTransHistoryDmo: ICachedPromise<IRepositoryTransactionHistoryDmo>
-	// private transHistoryDmo: ICachedPromise<ITransactionHistoryDmo>
+	private repoTransHistoryDuo: ICachedPromise<IRepositoryTransactionHistoryDuo>
+	// private transHistoryDuo: ICachedPromise<ITransactionHistoryDuo>
 	private transManager: ITransactionManager
 	private utils: IUtils
 
@@ -101,10 +101,10 @@ export class UpdateManager
 			HISTORY_MANAGER, OFFLINE_DELTA_STORE,
 			REPOSITORY_MANAGER, TRANSACTION_MANAGER,
 			UTILS)
-		this.operHistoryDmo      = DI.cache(OPER_HISTORY_DMO,)
-		this.recHistoryDmo       = DI.cache(REC_HISTORY_DMO)
-		this.repoTransHistoryDmo = DI.cache(REPO_TRANS_HISTORY_DMO)
-		// this.transHistoryDmo     = DI.cache(TRANS_HISTORY_DMO)
+		this.operHistoryDuo      = DI.cache(OPER_HISTORY_DUO,)
+		this.recHistoryDuo       = DI.cache(REC_HISTORY_DUO)
+		this.repoTransHistoryDuo = DI.cache(REPO_TRANS_HISTORY_DUO)
+		// this.transHistoryDuo     = DI.cache(TRANS_HISTORY_DUO)
 	}
 
 	async updateValues(
@@ -177,9 +177,9 @@ export class UpdateManager
 
 		const recordHistoryMapByRecordId: RecordHistoryMap = {}
 
-		const repoTransHistoryDmo = await this.repoTransHistoryDmo.get()
-		const operHistoryDmo = await this.operHistoryDmo.get()
-		const recHistoryDmo = await this.recHistoryDmo.get()
+		const repoTransHistoryDuo = await this.repoTransHistoryDuo.get()
+		const operHistoryDuo = await this.operHistoryDuo.get()
+		const recHistoryDuo = await this.recHistoryDuo.get()
 
 		for (const repositoryId of repositoryIds) {
 			const repository                         = repositories.get(repositoryId)
@@ -188,7 +188,7 @@ export class UpdateManager
 			const repoTransHistory                   = await this.histManager.getNewRepoTransHistory(
 				this.transManager.currentTransHistory, repository, actor
 			)
-			const operationHistory                   = repoTransHistoryDmo.startOperation(
+			const operationHistory                   = repoTransHistoryDuo.startOperation(
 				repoTransHistory, ChangeType.UPDATE_ROWS, dbEntity)
 
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
@@ -198,14 +198,14 @@ export class UpdateManager
 					      this.utils.ensureChildMap(recordHistoryMapForRepository, actorId)
 
 				const actorRecordId                     = recordToUpdate[actorRecordIdColumnIndex]
-				const recordHistory                     = operHistoryDmo.startRecordHistory(
+				const recordHistory                     = operHistoryDuo.startRecordHistory(
 					operationHistory, actorRecordId)
 				recordHistoryMapForActor[actorRecordId] = recordHistory
 
 				for (const columnName in jsonUpdate.S) {
 					const dbColumn = dbEntity.columnMap[columnName]
 					const value    = recordToUpdate[dbColumn.index]
-					recHistoryDmo.addOldValue(recordHistory, dbColumn, value)
+					recHistoryDuo.addOldValue(recordHistory, dbColumn, value)
 				}
 			}
 
@@ -230,7 +230,7 @@ export class UpdateManager
 			      repositoryIdSet
 		      } = this.groupRecordsByRepository(dbEntity, updatedRecords)
 
-		const recHistoryDmo = await this.recHistoryDmo.get()
+		const recHistoryDuo = await this.recHistoryDuo.get()
 
 		for (const repositoryId of repositoryIdSet) {
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
@@ -243,7 +243,7 @@ export class UpdateManager
 				for (const columnName in jsonUpdate.S) {
 					const dbColumn = dbEntity.columnMap[columnName]
 					const value    = updatedRecord[dbColumn.index]
-					recHistoryDmo.addNewValue(recordHistory, dbColumn, value)
+					recHistoryDuo.addNewValue(recordHistory, dbColumn, value)
 				}
 			}
 

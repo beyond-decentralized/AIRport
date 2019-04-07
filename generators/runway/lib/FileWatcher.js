@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const ts = require("typescript");
 const DaoBuilder_1 = require("./builder/DaoBuilder");
-const DmoBuilder_1 = require("./builder/DmoBuilder");
+const DuoBuilder_1 = require("./builder/DuoBuilder");
 const QEntityFileBuilder_1 = require("./builder/entity/QEntityFileBuilder");
 const GeneratedSummaryBuilder_1 = require("./builder/GeneratedSummaryBuilder");
 const PathBuilder_1 = require("./builder/PathBuilder");
@@ -80,7 +80,7 @@ function watchFiles(configuration, options, rootFileNames) {
         const generatedSummaryBuilder = new GeneratedSummaryBuilder_1.GeneratedSummaryBuilder(pathBuilder);
         const qSchemaBuilder = new QSchemaBuilder_1.QSchemaBuilder(pathBuilder);
         const daoBuilder = new DaoBuilder_1.DaoBuilder(pathBuilder);
-        const dmoBuilder = new DmoBuilder_1.DmoBuilder(pathBuilder);
+        const duoBuilder = new DuoBuilder_1.DuoBuilder(pathBuilder);
         for (const entityName in entityMapByName) {
             const entity = entityMapByName[entityName];
             const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
@@ -91,13 +91,13 @@ function watchFiles(configuration, options, rootFileNames) {
             generatedSummaryBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
             qSchemaBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
             daoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
-            dmoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
+            duoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
             const generationPath = pathBuilder.setupFileForGeneration(entity.path);
             const entitySourceString = entityFileBuilder.build();
             fs.writeFileSync(generationPath, entitySourceString);
         }
         fs.writeFileSync(daoBuilder.daoListingFilePath, daoBuilder.build());
-        fs.writeFileSync(dmoBuilder.daoListingFilePath, dmoBuilder.build());
+        fs.writeFileSync(duoBuilder.daoListingFilePath, duoBuilder.build());
         fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build());
         fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
         const mappedSuperclassBuilder = new MappedSuperclassBuilder_1.MappedSuperclassBuilder(configuration, entityMapByName);

@@ -28,13 +28,13 @@ import {
 }                           from '@airport/ground-control'
 import {
 	IActor,
-	IOperationHistoryDmo,
-	IRecordHistoryDmo,
+	IOperationHistoryDuo,
+	IRecordHistoryDuo,
 	IRepository,
-	IRepositoryTransactionHistoryDmo,
-	OPER_HISTORY_DMO,
-	REC_HISTORY_DMO,
-	REPO_TRANS_HISTORY_DMO,
+	IRepositoryTransactionHistoryDuo,
+	OPER_HISTORY_DUO,
+	REC_HISTORY_DUO,
+	REPO_TRANS_HISTORY_DUO,
 	RepositoryEntity,
 	RepositoryId
 }                           from '@airport/holding-pattern'
@@ -71,11 +71,11 @@ export class DeleteManager
 	private dataStore: IStoreDriver
 	private historyManager: IHistoryManager
 	private offlineDataStore: IOfflineDeltaStore
-	private operHistoryDmo: ICachedPromise<IOperationHistoryDmo>
-	private recHistoryDmo: ICachedPromise<IRecordHistoryDmo>
+	private operHistoryDuo: ICachedPromise<IOperationHistoryDuo>
+	private recHistoryDuo: ICachedPromise<IRecordHistoryDuo>
 	private repoManager: IRepositoryManager
-	private repoTransHistoryDmo: ICachedPromise<IRepositoryTransactionHistoryDmo>
-	// private transHistoryDmo: ICachedPromise<ITransactionHistoryDmo>
+	private repoTransHistoryDuo: ICachedPromise<IRepositoryTransactionHistoryDuo>
+	// private transHistoryDuo: ICachedPromise<ITransactionHistoryDuo>
 	private transManager: ITransactionManager
 	private utils: IUtils
 
@@ -100,10 +100,10 @@ export class DeleteManager
 			HISTORY_MANAGER, OFFLINE_DELTA_STORE,
 			REPOSITORY_MANAGER, TRANSACTION_MANAGER,
 			UTILS)
-		this.operHistoryDmo      = DI.cache(OPER_HISTORY_DMO,)
-		this.recHistoryDmo       = DI.cache(REC_HISTORY_DMO)
-		this.repoTransHistoryDmo = DI.cache(REPO_TRANS_HISTORY_DMO)
-		// this.transHistoryDmo     = DI.cache(TRANS_HISTORY_DMO)
+		this.operHistoryDuo      = DI.cache(OPER_HISTORY_DUO,)
+		this.recHistoryDuo       = DI.cache(REC_HISTORY_DUO)
+		this.repoTransHistoryDuo = DI.cache(REPO_TRANS_HISTORY_DUO)
+		// this.transHistoryDuo     = DI.cache(TRANS_HISTORY_DUO)
 	}
 
 	async deleteWhere(
@@ -254,9 +254,9 @@ export class DeleteManager
 		actor: IActor,
 	): Promise<void> {
 
-		const operHistoryDmo      = await this.operHistoryDmo.get()
-		const recHistoryDmo       = await this.recHistoryDmo.get()
-		const repoTransHistoryDmo = await this.repoTransHistoryDmo.get()
+		const operHistoryDuo      = await this.operHistoryDuo.get()
+		const recHistoryDuo       = await this.recHistoryDuo.get()
+		const repoTransHistoryDuo = await this.repoTransHistoryDuo.get()
 
 		for (const [schemaIndex, schemaRecordsToDelete] of recordsToDelete) {
 			for (const [entityIndex, entityRecordsToDelete] of schemaRecordsToDelete) {
@@ -268,12 +268,12 @@ export class DeleteManager
 						this.transManager.currentTransHistory, repository, actor
 					)
 
-					const operationHistory = repoTransHistoryDmo.startOperation(
+					const operationHistory = repoTransHistoryDuo.startOperation(
 						repoTransHistory, ChangeType.DELETE_ROWS, dbEntity)
 
 
 					for (const recordToDelete of entityRecordsToDeleteForRepo) {
-						const recordHistory = operHistoryDmo.startRecordHistory(
+						const recordHistory = operHistoryDuo.startRecordHistory(
 							operationHistory, recordToDelete.actorRecordId)
 						for (const dbProperty of dbEntity.properties) {
 							if (dbProperty.relation && dbProperty.relation.length) {
@@ -286,7 +286,7 @@ export class DeleteManager
 												value: any,
 												propertyNameChains: string[][]
 											) => {
-												recHistoryDmo.addOldValue(recordHistory, dbColumn, value)
+												recHistoryDuo.addOldValue(recordHistory, dbColumn, value)
 											})
 										break
 									case EntityRelationType.ONE_TO_MANY:
@@ -298,7 +298,7 @@ export class DeleteManager
 								}
 							} else {
 								const dbColumn = dbProperty.propertyColumns[0].column
-								recHistoryDmo
+								recHistoryDuo
 									.addOldValue(recordHistory, dbColumn, recordToDelete[dbProperty.name])
 							}
 						}

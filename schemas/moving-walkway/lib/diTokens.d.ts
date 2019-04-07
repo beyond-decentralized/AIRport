@@ -15,12 +15,12 @@ import { ISharingNodeTerminalDao } from "./dao/sharingNode/SharingNodeTerminalDa
 import { ISharingNodeRepositoryDao } from "./dao/sharingNode/SharingNodeRepositoryDao";
 import { ISharingNodeRepoTransBlockDao } from "./dao/sharingNode/SharingNodeRepoTransBlockDao";
 import { ISharingNodeRepoTransBlockStageDao } from "./dao/sharingNode/SharingNodeRepoTransBlockStageDao";
-import { IRepositoryTransactionBlockDmo } from "./dmo/repositoryTransactionBlock/RepositoryTransactionBlockDmo";
+import { IRepositoryTransactionBlockDuo } from "./duo/repositoryTransactionBlock/RepositoryTransactionBlockDuo";
 export declare const MISSING_RECORD_DAO: import("@airport/di").DiToken<IMissingRecordDao>;
 export declare const MISSING_RECORD_REPO_TRANS_BLOCK_DAO: import("@airport/di").DiToken<IMissingRecordRepoTransBlockDao>;
 export declare const RECORD_UPDATE_STAGE_DAO: import("@airport/di").DiToken<IRecordUpdateStageDao>;
 export declare const REPO_TRANS_BLOCK_DAO: import("@airport/di").DiToken<IRepositoryTransactionBlockDao>;
-export declare const REPO_TRANS_BLOCK_DMO: import("@airport/di").DiToken<IRepositoryTransactionBlockDmo>;
+export declare const REPO_TRANS_BLOCK_DUO: import("@airport/di").DiToken<IRepositoryTransactionBlockDuo>;
 export declare const REPO_TRANS_HISTORY_UPDATE_STAGE_DAO: import("@airport/di").DiToken<IRepositoryTransactionHistoryUpdateStageDao>;
 export declare const REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO: import("@airport/di").DiToken<IRepoTransBlockResponseStageDao>;
 export declare const SHARING_MESSAGE_DAO: import("@airport/di").DiToken<ISharingMessageDao>;

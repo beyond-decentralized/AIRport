@@ -2,7 +2,7 @@ import {DbSchema}                  from '@airport/ground-control'
 import * as fs                     from 'fs'
 import * as ts                     from 'typescript'
 import {DaoBuilder}                from './builder/DaoBuilder'
-import {DmoBuilder}                from './builder/DmoBuilder'
+import {DuoBuilder}                from './builder/DuoBuilder'
 import {QEntityFileBuilder}        from './builder/entity/QEntityFileBuilder'
 import {GeneratedSummaryBuilder}   from './builder/GeneratedSummaryBuilder'
 import {PathBuilder}               from './builder/PathBuilder'
@@ -122,7 +122,7 @@ export function watchFiles(
 		const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder)
 		const qSchemaBuilder          = new QSchemaBuilder(pathBuilder)
 		const daoBuilder              = new DaoBuilder(pathBuilder)
-		const dmoBuilder              = new DmoBuilder(pathBuilder)
+		const duoBuilder              = new DuoBuilder(pathBuilder)
 
 		for (const entityName in entityMapByName) {
 			const entity: EntityCandidate = entityMapByName[entityName]
@@ -137,13 +137,13 @@ export function watchFiles(
 			generatedSummaryBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
 			qSchemaBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
 			daoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
-			dmoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
+			duoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
 			const generationPath     = pathBuilder.setupFileForGeneration(entity.path)
 			const entitySourceString = entityFileBuilder.build()
 			fs.writeFileSync(generationPath, entitySourceString)
 		}
 		fs.writeFileSync(daoBuilder.daoListingFilePath, daoBuilder.build())
-		fs.writeFileSync(dmoBuilder.daoListingFilePath, dmoBuilder.build())
+		fs.writeFileSync(duoBuilder.daoListingFilePath, duoBuilder.build())
 		fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build())
 		fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build())
 

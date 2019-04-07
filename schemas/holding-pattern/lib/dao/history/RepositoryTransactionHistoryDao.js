@@ -8,10 +8,10 @@ const generated_1 = require("../../generated/generated");
 class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransactionHistoryDao {
     constructor() {
         super();
-        di_1.DI.get((operationHistoryDmo, recordHistoryDmo) => {
-            this.operHistoryDmo = operationHistoryDmo;
-            this.recHistoryDmo = recordHistoryDmo;
-        }, diTokens_1.OPER_HISTORY_DMO, diTokens_1.REC_HISTORY_DMO);
+        di_1.DI.get((operationHistoryDuo, recordHistoryDuo) => {
+            this.operHistoryDuo = operationHistoryDuo;
+            this.recHistoryDuo = recordHistoryDuo;
+        }, diTokens_1.OPER_HISTORY_DUO, diTokens_1.REC_HISTORY_DUO);
     }
     getSelectClauseWithRecordHistory() {
         const id = air_control_1.Y;
@@ -24,12 +24,12 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
                 id
             },
             operationHistory: {
-                ...this.operHistoryDmo.getAllFieldsSelect(),
+                ...this.operHistoryDuo.getAllFieldsSelect(),
                 entity: {
                     id: air_control_1.Y
                 },
                 recordHistory: {
-                    ...this.recHistoryDmo.getAllFieldsSelect()
+                    ...this.recHistoryDuo.getAllFieldsSelect()
                 }
             },
         };
@@ -54,7 +54,7 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
         let rth, a, r;
         return await this.db.find.graph({
             select: {
-                ...this.db.dmo.getAllFieldsSelect(),
+                ...this.db.duo.getAllFieldsSelect(),
                 actor: {
                     user: {},
                     database: {},

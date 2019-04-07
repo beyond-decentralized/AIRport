@@ -17,9 +17,9 @@ import {
 import {QDomain}           from '@airport/territory'
 import {
 	SCHEMA_VERSION_DAO,
-	SCHEMA_VERSION_DMO
+	SCHEMA_VERSION_DUO
 }                          from '../diTokens'
-import {ISchemaVersionDmo} from '../dmo/SchemaVersionDmo'
+import {ISchemaVersionDuo} from '../duo/SchemaVersionDuo'
 import {
 	BaseSchemaVersionDao,
 	IBaseSchemaVersionDao,
@@ -47,15 +47,15 @@ export class SchemaVersionDao
 	extends BaseSchemaVersionDao
 	implements ISchemaVersionDao {
 
-	private schemaVersionDmo: ISchemaVersionDmo
+	private schemaVersionDuo: ISchemaVersionDuo
 
 	constructor() {
 		super()
 
 		DI.get(
-			(schemaVersionDmo) => {
-				this.schemaVersionDmo = schemaVersionDmo
-			}, SCHEMA_VERSION_DMO)
+			(schemaVersionDuo) => {
+				this.schemaVersionDuo = schemaVersionDuo
+			}, SCHEMA_VERSION_DUO)
 	}
 
 	async findAllLatestForSchemaIndexes(

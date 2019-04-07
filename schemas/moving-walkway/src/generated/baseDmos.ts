@@ -1,12 +1,12 @@
 import {
-	IDmo,
+	IDuo,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control';
-import { Dmo } from "@airport/check-in";
+import { Duo } from "@airport/check-in";
 import { Q } from './qSchema';
 import {
 	IMissingRecord,
@@ -181,13 +181,13 @@ import {
 
 
 // Schema Q object Dependency Injection readiness detection DAO
-export class SQDIDmo<Entity,
+export class SQDIDuo<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	IQE extends IQEntity>
-	extends Dmo<Entity,
+	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,
 		EntityUpdateProperties,
@@ -206,221 +206,221 @@ export class SQDIDmo<Entity,
 }
 
 
-export interface IBaseMissingRecordDmo
-  extends IDmo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateProperties, MissingRecordEId, QMissingRecord> {
+export interface IBaseMissingRecordDuo
+  extends IDuo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateProperties, MissingRecordEId, QMissingRecord> {
 }
 
-export class BaseMissingRecordDmo
-  extends SQDIDmo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateProperties, MissingRecordEId, QMissingRecord>
-	implements IBaseMissingRecordDmo {
+export class BaseMissingRecordDuo
+  extends SQDIDuo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateProperties, MissingRecordEId, QMissingRecord>
+	implements IBaseMissingRecordDuo {
 	constructor() {
 		super('MissingRecord');
 	}
 }
 
 
-export interface IBaseMissingRecordRepoTransBlockDmo
-  extends IDmo<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, QMissingRecordRepoTransBlock> {
+export interface IBaseMissingRecordRepoTransBlockDuo
+  extends IDuo<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, QMissingRecordRepoTransBlock> {
 }
 
-export class BaseMissingRecordRepoTransBlockDmo
-  extends SQDIDmo<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, QMissingRecordRepoTransBlock>
-	implements IBaseMissingRecordRepoTransBlockDmo {
+export class BaseMissingRecordRepoTransBlockDuo
+  extends SQDIDuo<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, QMissingRecordRepoTransBlock>
+	implements IBaseMissingRecordRepoTransBlockDuo {
 	constructor() {
 		super('MissingRecordRepoTransBlock');
 	}
 }
 
 
-export interface IBaseRecordUpdateStageDmo
-  extends IDmo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, QRecordUpdateStage> {
+export interface IBaseRecordUpdateStageDuo
+  extends IDuo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, QRecordUpdateStage> {
 }
 
-export class BaseRecordUpdateStageDmo
-  extends SQDIDmo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, QRecordUpdateStage>
-	implements IBaseRecordUpdateStageDmo {
+export class BaseRecordUpdateStageDuo
+  extends SQDIDuo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, QRecordUpdateStage>
+	implements IBaseRecordUpdateStageDuo {
 	constructor() {
 		super('RecordUpdateStage');
 	}
 }
 
 
-export interface IBaseRepoTransBlockResponseStageDmo
-  extends IDmo<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, QRepoTransBlockResponseStage> {
+export interface IBaseRepoTransBlockResponseStageDuo
+  extends IDuo<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, QRepoTransBlockResponseStage> {
 }
 
-export class BaseRepoTransBlockResponseStageDmo
-  extends SQDIDmo<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, QRepoTransBlockResponseStage>
-	implements IBaseRepoTransBlockResponseStageDmo {
+export class BaseRepoTransBlockResponseStageDuo
+  extends SQDIDuo<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, QRepoTransBlockResponseStage>
+	implements IBaseRepoTransBlockResponseStageDuo {
 	constructor() {
 		super('RepoTransBlockResponseStage');
 	}
 }
 
 
-export interface IBaseRepoTransBlockSchemaToChangeDmo
-  extends IDmo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, QRepoTransBlockSchemaToChange> {
+export interface IBaseRepoTransBlockSchemaToChangeDuo
+  extends IDuo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, QRepoTransBlockSchemaToChange> {
 }
 
-export class BaseRepoTransBlockSchemaToChangeDmo
-  extends SQDIDmo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, QRepoTransBlockSchemaToChange>
-	implements IBaseRepoTransBlockSchemaToChangeDmo {
+export class BaseRepoTransBlockSchemaToChangeDuo
+  extends SQDIDuo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, QRepoTransBlockSchemaToChange>
+	implements IBaseRepoTransBlockSchemaToChangeDuo {
 	constructor() {
 		super('RepoTransBlockSchemaToChange');
 	}
 }
 
 
-export interface IBaseRepositoryTransactionBlockDmo
-  extends IDmo<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, QRepositoryTransactionBlock> {
+export interface IBaseRepositoryTransactionBlockDuo
+  extends IDuo<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, QRepositoryTransactionBlock> {
 }
 
-export class BaseRepositoryTransactionBlockDmo
-  extends SQDIDmo<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, QRepositoryTransactionBlock>
-	implements IBaseRepositoryTransactionBlockDmo {
+export class BaseRepositoryTransactionBlockDuo
+  extends SQDIDuo<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, QRepositoryTransactionBlock>
+	implements IBaseRepositoryTransactionBlockDuo {
 	constructor() {
 		super('RepositoryTransactionBlock');
 	}
 }
 
 
-export interface IBaseRepositoryTransactionHistoryUpdateStageDmo
-  extends IDmo<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, QRepositoryTransactionHistoryUpdateStage> {
+export interface IBaseRepositoryTransactionHistoryUpdateStageDuo
+  extends IDuo<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, QRepositoryTransactionHistoryUpdateStage> {
 }
 
-export class BaseRepositoryTransactionHistoryUpdateStageDmo
-  extends SQDIDmo<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, QRepositoryTransactionHistoryUpdateStage>
-	implements IBaseRepositoryTransactionHistoryUpdateStageDmo {
+export class BaseRepositoryTransactionHistoryUpdateStageDuo
+  extends SQDIDuo<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, QRepositoryTransactionHistoryUpdateStage>
+	implements IBaseRepositoryTransactionHistoryUpdateStageDuo {
 	constructor() {
 		super('RepositoryTransactionHistoryUpdateStage');
 	}
 }
 
 
-export interface IBaseSharingMessageDmo
-  extends IDmo<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateProperties, SharingMessageEId, QSharingMessage> {
+export interface IBaseSharingMessageDuo
+  extends IDuo<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateProperties, SharingMessageEId, QSharingMessage> {
 }
 
-export class BaseSharingMessageDmo
-  extends SQDIDmo<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateProperties, SharingMessageEId, QSharingMessage>
-	implements IBaseSharingMessageDmo {
+export class BaseSharingMessageDuo
+  extends SQDIDuo<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateProperties, SharingMessageEId, QSharingMessage>
+	implements IBaseSharingMessageDuo {
 	constructor() {
 		super('SharingMessage');
 	}
 }
 
 
-export interface IBaseSharingMessageRepoTransBlockDmo
-  extends IDmo<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, QSharingMessageRepoTransBlock> {
+export interface IBaseSharingMessageRepoTransBlockDuo
+  extends IDuo<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, QSharingMessageRepoTransBlock> {
 }
 
-export class BaseSharingMessageRepoTransBlockDmo
-  extends SQDIDmo<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, QSharingMessageRepoTransBlock>
-	implements IBaseSharingMessageRepoTransBlockDmo {
+export class BaseSharingMessageRepoTransBlockDuo
+  extends SQDIDuo<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, QSharingMessageRepoTransBlock>
+	implements IBaseSharingMessageRepoTransBlockDuo {
 	constructor() {
 		super('SharingMessageRepoTransBlock');
 	}
 }
 
 
-export interface IBaseSharingNodeDmo
-  extends IDmo<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateProperties, SharingNodeEId, QSharingNode> {
+export interface IBaseSharingNodeDuo
+  extends IDuo<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateProperties, SharingNodeEId, QSharingNode> {
 }
 
-export class BaseSharingNodeDmo
-  extends SQDIDmo<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateProperties, SharingNodeEId, QSharingNode>
-	implements IBaseSharingNodeDmo {
+export class BaseSharingNodeDuo
+  extends SQDIDuo<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateProperties, SharingNodeEId, QSharingNode>
+	implements IBaseSharingNodeDuo {
 	constructor() {
 		super('SharingNode');
 	}
 }
 
 
-export interface IBaseSharingNodeRepoTransBlockDmo
-  extends IDmo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock> {
+export interface IBaseSharingNodeRepoTransBlockDuo
+  extends IDuo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock> {
 }
 
-export class BaseSharingNodeRepoTransBlockDmo
-  extends SQDIDmo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock>
-	implements IBaseSharingNodeRepoTransBlockDmo {
+export class BaseSharingNodeRepoTransBlockDuo
+  extends SQDIDuo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock>
+	implements IBaseSharingNodeRepoTransBlockDuo {
 	constructor() {
 		super('SharingNodeRepoTransBlock');
 	}
 }
 
 
-export interface IBaseSharingNodeRepoTransBlockStageDmo
-  extends IDmo<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, QSharingNodeRepoTransBlockStage> {
+export interface IBaseSharingNodeRepoTransBlockStageDuo
+  extends IDuo<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, QSharingNodeRepoTransBlockStage> {
 }
 
-export class BaseSharingNodeRepoTransBlockStageDmo
-  extends SQDIDmo<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, QSharingNodeRepoTransBlockStage>
-	implements IBaseSharingNodeRepoTransBlockStageDmo {
+export class BaseSharingNodeRepoTransBlockStageDuo
+  extends SQDIDuo<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, QSharingNodeRepoTransBlockStage>
+	implements IBaseSharingNodeRepoTransBlockStageDuo {
 	constructor() {
 		super('SharingNodeRepoTransBlockStage');
 	}
 }
 
 
-export interface IBaseSharingNodeRepositoryDmo
-  extends IDmo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, QSharingNodeRepository> {
+export interface IBaseSharingNodeRepositoryDuo
+  extends IDuo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, QSharingNodeRepository> {
 }
 
-export class BaseSharingNodeRepositoryDmo
-  extends SQDIDmo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, QSharingNodeRepository>
-	implements IBaseSharingNodeRepositoryDmo {
+export class BaseSharingNodeRepositoryDuo
+  extends SQDIDuo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, QSharingNodeRepository>
+	implements IBaseSharingNodeRepositoryDuo {
 	constructor() {
 		super('SharingNodeRepository');
 	}
 }
 
 
-export interface IBaseSharingNodeTerminalDmo
-  extends IDmo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal> {
+export interface IBaseSharingNodeTerminalDuo
+  extends IDuo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal> {
 }
 
-export class BaseSharingNodeTerminalDmo
-  extends SQDIDmo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal>
-	implements IBaseSharingNodeTerminalDmo {
+export class BaseSharingNodeTerminalDuo
+  extends SQDIDuo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal>
+	implements IBaseSharingNodeTerminalDuo {
 	constructor() {
 		super('SharingNodeTerminal');
 	}
 }
 
 
-export interface IBaseSynchronizationConflictDmo
-  extends IDmo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, QSynchronizationConflict> {
+export interface IBaseSynchronizationConflictDuo
+  extends IDuo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, QSynchronizationConflict> {
 }
 
-export class BaseSynchronizationConflictDmo
-  extends SQDIDmo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, QSynchronizationConflict>
-	implements IBaseSynchronizationConflictDmo {
+export class BaseSynchronizationConflictDuo
+  extends SQDIDuo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, QSynchronizationConflict>
+	implements IBaseSynchronizationConflictDuo {
 	constructor() {
 		super('SynchronizationConflict');
 	}
 }
 
 
-export interface IBaseSynchronizationConflictPendingNotificationDmo
-  extends IDmo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, QSynchronizationConflictPendingNotification> {
+export interface IBaseSynchronizationConflictPendingNotificationDuo
+  extends IDuo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, QSynchronizationConflictPendingNotification> {
 }
 
-export class BaseSynchronizationConflictPendingNotificationDmo
-  extends SQDIDmo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, QSynchronizationConflictPendingNotification>
-	implements IBaseSynchronizationConflictPendingNotificationDmo {
+export class BaseSynchronizationConflictPendingNotificationDuo
+  extends SQDIDuo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, QSynchronizationConflictPendingNotification>
+	implements IBaseSynchronizationConflictPendingNotificationDuo {
 	constructor() {
 		super('SynchronizationConflictPendingNotification');
 	}
 }
 
 
-export interface IBaseSynchronizationConflictValuesDmo
-  extends IDmo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, QSynchronizationConflictValues> {
+export interface IBaseSynchronizationConflictValuesDuo
+  extends IDuo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, QSynchronizationConflictValues> {
 }
 
-export class BaseSynchronizationConflictValuesDmo
-  extends SQDIDmo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, QSynchronizationConflictValues>
-	implements IBaseSynchronizationConflictValuesDmo {
+export class BaseSynchronizationConflictValuesDuo
+  extends SQDIDuo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, QSynchronizationConflictValues>
+	implements IBaseSynchronizationConflictValuesDuo {
 	constructor() {
 		super('SynchronizationConflictValues');
 	}

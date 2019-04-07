@@ -8,13 +8,13 @@ const moving_walkway_1 = require("@airport/moving-walkway");
 const diTokens_1 = require("../../diTokens");
 class Stage1SyncedInDataProcessor {
     constructor() {
-        di_1.DI.get((actorDao, repositoryTransactionHistoryDao, repositoryTransactionHistoryDmo, syncInUtils, utils) => {
+        di_1.DI.get((actorDao, repositoryTransactionHistoryDao, repositoryTransactionHistoryDuo, syncInUtils, utils) => {
             this.actorDao = actorDao;
             this.repoTransHistoryDao = repositoryTransactionHistoryDao;
-            this.repoTransHistoryDmo = repositoryTransactionHistoryDmo;
+            this.repoTransHistoryDuo = repositoryTransactionHistoryDuo;
             this.syncInUtils = syncInUtils;
             this.utils = utils;
-        }, holding_pattern_1.ACTOR_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DMO, diTokens_1.SYNC_IN_UTILS, air_control_1.UTILS);
+        }, holding_pattern_1.ACTOR_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DUO, diTokens_1.SYNC_IN_UTILS, air_control_1.UTILS);
     }
     /**
      * In stage one:
@@ -88,7 +88,7 @@ class Stage1SyncedInDataProcessor {
         }
         // sort all repository histories in processing order
         for (const [repositoryId, repoTransHistoriesForRepository] of allRepoTransHistoryMapByRepoId) {
-            this.repoTransHistoryDmo
+            this.repoTransHistoryDuo
                 .sortRepoTransHistories(repoTransHistoriesForRepository, actorMayById);
         }
         const recordCreations = new Map();

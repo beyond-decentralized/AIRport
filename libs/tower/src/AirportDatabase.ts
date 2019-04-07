@@ -25,6 +25,8 @@ export class AirportDatabase
 	qSchemas: QSchema[] = []
 	Q: QSchema[]
 
+	QM: { [name: string]: QSchema } = {}
+
 	private databaseMap: { [databaseName: string]: IDatabaseFacade } = {}
 	private dbNames: string[]                                        = []
 	private dbNameSet: { [databaseName: string]: boolean }           = {}

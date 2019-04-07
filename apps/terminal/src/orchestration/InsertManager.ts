@@ -22,16 +22,16 @@ import {
 import {
 	IActor,
 	IOperationHistory,
-	IOperationHistoryDmo,
-	IRecordHistoryDmo,
+	IOperationHistoryDuo,
+	IRecordHistoryDuo,
 	IRepositoryTransactionHistory,
-	IRepositoryTransactionHistoryDmo,
+	IRepositoryTransactionHistoryDuo,
 	ITransactionHistory,
-	ITransactionHistoryDmo,
-	OPER_HISTORY_DMO,
-	REC_HISTORY_DMO,
-	REPO_TRANS_HISTORY_DMO,
-	TRANS_HISTORY_DMO
+	ITransactionHistoryDuo,
+	OPER_HISTORY_DUO,
+	REC_HISTORY_DUO,
+	REPO_TRANS_HISTORY_DUO,
+	TRANS_HISTORY_DUO
 }                           from '@airport/holding-pattern'
 import {
 	DistributionStrategy,
@@ -81,11 +81,11 @@ export class InsertManager
 	private seqGenerator: ISequenceGenerator
 	private histManager: IHistoryManager
 	private offlineDataStore: IOfflineDeltaStore
-	private operHistoryDmo: ICachedPromise<IOperationHistoryDmo>
-	private recHistoryDmo: ICachedPromise<IRecordHistoryDmo>
+	private operHistoryDuo: ICachedPromise<IOperationHistoryDuo>
+	private recHistoryDuo: ICachedPromise<IRecordHistoryDuo>
 	private repoManager: IRepositoryManager
-	private repoTransHistoryDmo: ICachedPromise<IRepositoryTransactionHistoryDmo>
-	// private transHistoryDmo: ICachedPromise<ITransactionHistoryDmo>
+	private repoTransHistoryDuo: ICachedPromise<IRepositoryTransactionHistoryDuo>
+	// private transHistoryDuo: ICachedPromise<ITransactionHistoryDuo>
 	private transManager: ITransactionManager
 
 
@@ -111,10 +111,10 @@ export class InsertManager
 			OFFLINE_DELTA_STORE, REPOSITORY_MANAGER,
 			TRANSACTION_MANAGER)
 
-		this.operHistoryDmo      = DI.cache(OPER_HISTORY_DMO,)
-		this.recHistoryDmo       = DI.cache(REC_HISTORY_DMO)
-		this.repoTransHistoryDmo = DI.cache(REPO_TRANS_HISTORY_DMO)
-		// this.transHistoryDmo     = DI.cache(TRANS_HISTORY_DMO)
+		this.operHistoryDuo      = DI.cache(OPER_HISTORY_DUO,)
+		this.recHistoryDuo       = DI.cache(REC_HISTORY_DUO)
+		this.repoTransHistoryDuo = DI.cache(REPO_TRANS_HISTORY_DUO)
+		// this.transHistoryDuo     = DI.cache(TRANS_HISTORY_DUO)
 	}
 
 	get currentTransHistory(): ITransactionHistory {
@@ -336,9 +336,9 @@ export class InsertManager
 			}
 		}
 
-		const repoTransHistoryDmo = await this.repoTransHistoryDmo.get()
-		const operHistoryDmo      = await this.operHistoryDmo.get()
-		const recHistoryDmo       = await this.recHistoryDmo.get()
+		const repoTransHistoryDuo = await this.repoTransHistoryDuo.get()
+		const operHistoryDuo      = await this.operHistoryDuo.get()
+		const recHistoryDuo       = await this.recHistoryDuo.get()
 
 		// Rows may belong to different repositories
 		for (const row of jsonInsertValues.V) {
@@ -352,13 +352,13 @@ export class InsertManager
 
 			let operationHistory = operationsByRepo[repositoryId]
 			if (!operationHistory) {
-				operationHistory               = repoTransHistoryDmo.startOperation(
+				operationHistory               = repoTransHistoryDuo.startOperation(
 					repoTransHistory, ChangeType.INSERT_VALUES, dbEntity)
 				operationsByRepo[repositoryId] = operationHistory
 			}
 
 			const actorRecordId = row[actorRecordIdColumnNumber]
-			const recordHistory = operHistoryDmo.startRecordHistory(
+			const recordHistory = operHistoryDuo.startRecordHistory(
 				operationHistory, actorRecordId)
 
 			for (const columnNumber in jsonInsertValues.C) {
@@ -370,7 +370,7 @@ export class InsertManager
 				const columnIndex = jsonInsertValues.C[columnNumber]
 				const dbColumn    = dbEntity.columns[columnIndex]
 				const newValue    = row[columnNumber]
-				recHistoryDmo.addNewValue(recordHistory, dbColumn, newValue)
+				recHistoryDuo.addNewValue(recordHistory, dbColumn, newValue)
 			}
 		}
 

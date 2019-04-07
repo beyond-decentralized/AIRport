@@ -17,9 +17,9 @@ import {
 	IActor,
 	IRepositoryActorDao,
 	IRepositoryTransactionHistory,
-	IRepositoryTransactionHistoryDmo,
+	IRepositoryTransactionHistoryDuo,
 	REPO_ACTOR_DAO,
-	REPO_TRANS_HISTORY_DMO,
+	REPO_TRANS_HISTORY_DUO,
 	RepositoryId,
 	RepositoryTransactionType
 }                                     from '@airport/holding-pattern'
@@ -79,7 +79,7 @@ export class TwoStageSyncedInDataProcessor
 
 	constructor(
 		private repositoryActorDao: IRepositoryActorDao,
-		private repositoryTransactionHistoryDmo: IRepositoryTransactionHistoryDmo,
+		private repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo,
 		private sharingMessageDao: ISharingMessageDao,
 		private sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao,
 		private stage1SyncedInDataProcessor: IStage1SyncedInDataProcessor,
@@ -95,7 +95,7 @@ export class TwoStageSyncedInDataProcessor
 	) {
 		DI.get((
 			repositoryActorDao,
-			repositoryTransactionHistoryDmo,
+			repositoryTransactionHistoryDuo,
 			sharingMessageDao,
 			sharingMessageRepoTransBlockDao,
 			stage1SyncedInDataProcessor,
@@ -108,7 +108,7 @@ export class TwoStageSyncedInDataProcessor
 			utils
 			) => {
 				this.repositoryActorDao                            = repositoryActorDao
-				this.repositoryTransactionHistoryDmo               = repositoryTransactionHistoryDmo
+				this.repositoryTransactionHistoryDuo               = repositoryTransactionHistoryDuo
 				this.sharingMessageDao                             = sharingMessageDao
 				this.sharingMessageRepoTransBlockDao               = sharingMessageRepoTransBlockDao
 				this.stage1SyncedInDataProcessor                   = stage1SyncedInDataProcessor
@@ -119,7 +119,7 @@ export class TwoStageSyncedInDataProcessor
 				this.repositoryTransactionBlockDao                 = repositoryTransactionBlockDao
 				this.transactionManager                            = transactionManager
 				this.utils                                         = utils
-			}, REPO_ACTOR_DAO, REPO_TRANS_HISTORY_DMO,
+			}, REPO_ACTOR_DAO, REPO_TRANS_HISTORY_DUO,
 			SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
 			STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR,
 			SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO,
@@ -258,7 +258,7 @@ export class TwoStageSyncedInDataProcessor
 		}
 
 		for (const [repositoryId, repoTransHistories] of repoTransHistoryMapByRepositoryId) {
-			this.repositoryTransactionHistoryDmo
+			this.repositoryTransactionHistoryDuo
 				.sortRepoTransHistories(repoTransHistories, actorMapById)
 		}
 

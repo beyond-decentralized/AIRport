@@ -16,7 +16,7 @@ import {ISharingNodeTerminalDao}            from "./dao/sharingNode/SharingNodeT
 import {ISharingNodeRepositoryDao}          from "./dao/sharingNode/SharingNodeRepositoryDao";
 import {ISharingNodeRepoTransBlockDao}      from "./dao/sharingNode/SharingNodeRepoTransBlockDao";
 import {ISharingNodeRepoTransBlockStageDao} from "./dao/sharingNode/SharingNodeRepoTransBlockStageDao";
-import {IRepositoryTransactionBlockDmo}     from "./dmo/repositoryTransactionBlock/RepositoryTransactionBlockDmo";
+import {IRepositoryTransactionBlockDuo}     from "./duo/repositoryTransactionBlock/RepositoryTransactionBlockDuo";
 
 export const MISSING_RECORD_DAO      = diToken<IMissingRecordDao>();
 export const MISSING_RECORD_REPO_TRANS_BLOCK_DAO
@@ -24,8 +24,8 @@ export const MISSING_RECORD_REPO_TRANS_BLOCK_DAO
 export const RECORD_UPDATE_STAGE_DAO = diToken<IRecordUpdateStageDao>();
 export const REPO_TRANS_BLOCK_DAO
 	                                                = diToken<IRepositoryTransactionBlockDao>();
-export const REPO_TRANS_BLOCK_DMO
-	                                                = diToken<IRepositoryTransactionBlockDmo>();
+export const REPO_TRANS_BLOCK_DUO
+	                                                = diToken<IRepositoryTransactionBlockDuo>();
 export const REPO_TRANS_HISTORY_UPDATE_STAGE_DAO
 	                                                = diToken<IRepositoryTransactionHistoryUpdateStageDao>();
 export const REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO

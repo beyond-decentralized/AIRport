@@ -14,9 +14,9 @@ import {
 }                                from '@airport/ground-control'
 import {
 	ITransactionHistory,
-	ITransactionHistoryDmo,
+	ITransactionHistoryDuo,
 	Q,
-	TRANS_HISTORY_DMO
+	TRANS_HISTORY_DUO
 }                                from '@airport/holding-pattern'
 import {
 	ITransactionManager,
@@ -42,7 +42,7 @@ export class TransactionManager
 	// private repositoryManager: IRepositoryManager
 	private queries: ActiveQueries
 	storeType: StoreType
-	private transHistoryDmo: ICachedPromise<ITransactionHistoryDmo>
+	private transHistoryDuo: ICachedPromise<ITransactionHistoryDuo>
 	transactionIndexQueue: number[]
 	transactionInProgress: number     = null
 	yieldToRunningTransaction: number = 100
@@ -62,7 +62,7 @@ export class TransactionManager
 			}, ID_GENERATOR, OFFLINE_DELTA_STORE,
 			ONLINE_MANAGER, ACTIVE_QUERIES)
 
-		this.transHistoryDmo = DI.cache(TRANS_HISTORY_DMO)
+		this.transHistoryDuo = DI.cache(TRANS_HISTORY_DUO)
 	}
 
 
@@ -89,7 +89,7 @@ export class TransactionManager
 		this.transactionInProgress = transactionIndex
 		let fieldMap               = new SyncSchemaMap()
 
-		this.currentTransHistory = (await this.transHistoryDmo.get()).getNewRecord()
+		this.currentTransHistory = (await this.transHistoryDuo.get()).getNewRecord()
 
 		await this.dataStore.transact()
 	}

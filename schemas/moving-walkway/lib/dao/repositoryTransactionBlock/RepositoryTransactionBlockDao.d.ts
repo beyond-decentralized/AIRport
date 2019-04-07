@@ -7,7 +7,7 @@ export interface IRepositoryTransactionBlockDao extends IBaseRepositoryTransacti
     clearContentsWhereIdsIn(repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[]): Promise<void>;
 }
 export declare class RepositoryTransactionBlockDao extends BaseRepositoryTransactionBlockDao implements IRepositoryTransactionBlockDao {
-    private dmo;
+    private duo;
     constructor();
     updateFromResponseStage(): Promise<number>;
     findWithMissingRecordIdsAndNoMissingRecordsWithStatus(missingRecordIds: MissingRecordId[], status: MissingRecordStatus): Promise<IRepositoryTransactionBlock[]>;

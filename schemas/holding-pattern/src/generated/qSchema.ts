@@ -48,30 +48,30 @@ import { TransactionHistory } from '../ddl/history/transactionhistory';
 import { QTransactionHistory } from './history/qtransactionhistory';
 
 import {
-	IBaseActorDmo,
-	IBaseActorApplicationDmo,
-	IBaseApplicationDmo,
-	IBaseChildRepoRowDmo,
-	IBaseChildRowDmo,
-	IBaseImmutableRepoRowDmo,
-	IBaseImmutableRowDmo,
-	IBaseMutableRepoRowDmo,
-	IBaseMutableRowDmo,
-	IBaseOperationHistoryDmo,
-	IBaseRecordHistoryDmo,
-	IBaseRecordHistoryNewValueDmo,
-	IBaseRecordHistoryOldValueDmo,
-	IBaseReferenceRowDmo,
-	IBaseRepoTransHistoryChangedRepositoryActorDmo,
-	IBaseRepositoryDmo,
-	IBaseRepositoryActorDmo,
-	IBaseRepositoryApplicationDmo,
-	IBaseRepositoryEntityDmo,
-	IBaseRepositorySchemaDmo,
-	IBaseRepositoryTransactionHistoryDmo,
-	IBaseStageableDmo,
-	IBaseTransactionHistoryDmo
-} from './baseDmos';
+	IBaseActorDuo,
+	IBaseActorApplicationDuo,
+	IBaseApplicationDuo,
+	IBaseChildRepoRowDuo,
+	IBaseChildRowDuo,
+	IBaseImmutableRepoRowDuo,
+	IBaseImmutableRowDuo,
+	IBaseMutableRepoRowDuo,
+	IBaseMutableRowDuo,
+	IBaseOperationHistoryDuo,
+	IBaseRecordHistoryDuo,
+	IBaseRecordHistoryNewValueDuo,
+	IBaseRecordHistoryOldValueDuo,
+	IBaseReferenceRowDuo,
+	IBaseRepoTransHistoryChangedRepositoryActorDuo,
+	IBaseRepositoryDuo,
+	IBaseRepositoryActorDuo,
+	IBaseRepositoryApplicationDuo,
+	IBaseRepositoryEntityDuo,
+	IBaseRepositorySchemaDuo,
+	IBaseRepositoryTransactionHistoryDuo,
+	IBaseStageableDuo,
+	IBaseTransactionHistoryDuo
+} from './baseDuos';
 
 import {
 	IBaseActorDao,
@@ -103,30 +103,30 @@ export interface LocalQSchema extends AirportQSchema {
 
   db: DbSchema;
 
-	dmo: {
-		Actor: IBaseActorDmo;
-		ActorApplication: IBaseActorApplicationDmo;
-		Application: IBaseApplicationDmo;
-		ChildRepoRow: IBaseChildRepoRowDmo;
-		ChildRow: IBaseChildRowDmo;
-		ImmutableRepoRow: IBaseImmutableRepoRowDmo;
-		ImmutableRow: IBaseImmutableRowDmo;
-		MutableRepoRow: IBaseMutableRepoRowDmo;
-		MutableRow: IBaseMutableRowDmo;
-		OperationHistory: IBaseOperationHistoryDmo;
-		RecordHistory: IBaseRecordHistoryDmo;
-		RecordHistoryNewValue: IBaseRecordHistoryNewValueDmo;
-		RecordHistoryOldValue: IBaseRecordHistoryOldValueDmo;
-		ReferenceRow: IBaseReferenceRowDmo;
-		RepoTransHistoryChangedRepositoryActor: IBaseRepoTransHistoryChangedRepositoryActorDmo;
-		Repository: IBaseRepositoryDmo;
-		RepositoryActor: IBaseRepositoryActorDmo;
-		RepositoryApplication: IBaseRepositoryApplicationDmo;
-		RepositoryEntity: IBaseRepositoryEntityDmo;
-		RepositorySchema: IBaseRepositorySchemaDmo;
-		RepositoryTransactionHistory: IBaseRepositoryTransactionHistoryDmo;
-		Stageable: IBaseStageableDmo;
-		TransactionHistory: IBaseTransactionHistoryDmo;
+	duo: {
+		Actor: IBaseActorDuo;
+		ActorApplication: IBaseActorApplicationDuo;
+		Application: IBaseApplicationDuo;
+		ChildRepoRow: IBaseChildRepoRowDuo;
+		ChildRow: IBaseChildRowDuo;
+		ImmutableRepoRow: IBaseImmutableRepoRowDuo;
+		ImmutableRow: IBaseImmutableRowDuo;
+		MutableRepoRow: IBaseMutableRepoRowDuo;
+		MutableRow: IBaseMutableRowDuo;
+		OperationHistory: IBaseOperationHistoryDuo;
+		RecordHistory: IBaseRecordHistoryDuo;
+		RecordHistoryNewValue: IBaseRecordHistoryNewValueDuo;
+		RecordHistoryOldValue: IBaseRecordHistoryOldValueDuo;
+		ReferenceRow: IBaseReferenceRowDuo;
+		RepoTransHistoryChangedRepositoryActor: IBaseRepoTransHistoryChangedRepositoryActorDuo;
+		Repository: IBaseRepositoryDuo;
+		RepositoryActor: IBaseRepositoryActorDuo;
+		RepositoryApplication: IBaseRepositoryApplicationDuo;
+		RepositoryEntity: IBaseRepositoryEntityDuo;
+		RepositorySchema: IBaseRepositorySchemaDuo;
+		RepositoryTransactionHistory: IBaseRepositoryTransactionHistoryDuo;
+		Stageable: IBaseStageableDuo;
+		TransactionHistory: IBaseTransactionHistoryDuo;
 	}
 
 	dao: {

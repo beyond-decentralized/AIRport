@@ -15,9 +15,9 @@ const generated_1 = require("../generated/generated");
 class SchemaVersionDao extends generated_1.BaseSchemaVersionDao {
     constructor() {
         super();
-        di_1.DI.get((schemaVersionDmo) => {
-            this.schemaVersionDmo = schemaVersionDmo;
-        }, diTokens_1.SCHEMA_VERSION_DMO);
+        di_1.DI.get((schemaVersionDuo) => {
+            this.schemaVersionDuo = schemaVersionDuo;
+        }, diTokens_1.SCHEMA_VERSION_DUO);
     }
     findAllLatestForSchemaIndexes(schemaIndexes) {
         return __awaiter(this, void 0, void 0, function* () {

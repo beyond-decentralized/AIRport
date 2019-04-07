@@ -4,7 +4,7 @@ import { IEntityFindOne } from '../../query/api/EntityFindOne';
 import { UpdateCacheType } from '../../query/api/EntityLookup';
 import { IEntitySearch } from '../../query/api/EntitySearch';
 import { IEntitySearchOne } from '../../query/api/EntitySearchOne';
-import { IDmo } from '../../query/Dmo';
+import { IDuo } from '../../query/Duo';
 import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
 import { RawUpdate, RawUpdateColumns } from '../../query/facade/Update';
@@ -17,7 +17,7 @@ import { IDatabaseFacade } from './DatabaseFacade';
 export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelectProperties, EntityCreateProperties extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, IQ extends IQEntity> {
     common: IDatabaseFacade;
     dbEntity: DbEntity;
-    dmo: IDmo<Entity, EntitySelect, EntityCreateProperties, EntityUpdateProperties, EntityId, IQ>;
+    duo: IDuo<Entity, EntitySelect, EntityCreateProperties, EntityUpdateProperties, EntityId, IQ>;
     /**
      * The Promise based API for all Entity 'find' (find many) queries.
      */

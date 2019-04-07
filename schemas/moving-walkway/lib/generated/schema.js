@@ -525,7 +525,7 @@ exports.SCHEMA = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "ENTITY_INDEX",
+                            "name": "TABLE_INDEX",
                             "notNull": false,
                             "propertyRefs": [
                                 {

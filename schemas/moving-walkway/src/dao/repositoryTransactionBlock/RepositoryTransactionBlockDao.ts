@@ -12,9 +12,9 @@ import {
 }                                       from '../../ddl/ddl'
 import {
 	REPO_TRANS_BLOCK_DAO,
-	REPO_TRANS_BLOCK_DMO
+	REPO_TRANS_BLOCK_DUO
 }                                       from '../../diTokens'
-import {IRepositoryTransactionBlockDmo} from '../../dmo/repositoryTransactionBlock/RepositoryTransactionBlockDmo'
+import {IRepositoryTransactionBlockDuo} from '../../duo/repositoryTransactionBlock/RepositoryTransactionBlockDuo'
 import {
 	BaseRepositoryTransactionBlockDao,
 	IBaseRepositoryTransactionBlockDao,
@@ -47,16 +47,16 @@ export class RepositoryTransactionBlockDao
 	extends BaseRepositoryTransactionBlockDao
 	implements IRepositoryTransactionBlockDao {
 
-	private dmo: IRepositoryTransactionBlockDmo
+	private duo: IRepositoryTransactionBlockDuo
 
 	constructor() {
 		super()
 
 		DI.get((
-			dmo
+			duo
 		) => {
-			this.dmo = dmo
-		}, REPO_TRANS_BLOCK_DMO)
+			this.duo = duo
+		}, REPO_TRANS_BLOCK_DUO)
 	}
 
 	async updateFromResponseStage( //

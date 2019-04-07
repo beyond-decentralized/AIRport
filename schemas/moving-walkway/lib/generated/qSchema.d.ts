@@ -17,28 +17,28 @@ import { QSharingNodeTerminal } from './sharingnode/qsharingnodeterminal';
 import { QSynchronizationConflict } from './conflict/qsynchronizationconflict';
 import { QSynchronizationConflictPendingNotification } from './conflict/qsynchronizationconflictpendingnotification';
 import { QSynchronizationConflictValues } from './conflict/qsynchronizationconflictvalues';
-import { IBaseMissingRecordDmo, IBaseMissingRecordRepoTransBlockDmo, IBaseRecordUpdateStageDmo, IBaseRepoTransBlockResponseStageDmo, IBaseRepoTransBlockSchemaToChangeDmo, IBaseRepositoryTransactionBlockDmo, IBaseRepositoryTransactionHistoryUpdateStageDmo, IBaseSharingMessageDmo, IBaseSharingMessageRepoTransBlockDmo, IBaseSharingNodeDmo, IBaseSharingNodeRepoTransBlockDmo, IBaseSharingNodeRepoTransBlockStageDmo, IBaseSharingNodeRepositoryDmo, IBaseSharingNodeTerminalDmo, IBaseSynchronizationConflictDmo, IBaseSynchronizationConflictPendingNotificationDmo, IBaseSynchronizationConflictValuesDmo } from './baseDmos';
+import { IBaseMissingRecordDuo, IBaseMissingRecordRepoTransBlockDuo, IBaseRecordUpdateStageDuo, IBaseRepoTransBlockResponseStageDuo, IBaseRepoTransBlockSchemaToChangeDuo, IBaseRepositoryTransactionBlockDuo, IBaseRepositoryTransactionHistoryUpdateStageDuo, IBaseSharingMessageDuo, IBaseSharingMessageRepoTransBlockDuo, IBaseSharingNodeDuo, IBaseSharingNodeRepoTransBlockDuo, IBaseSharingNodeRepoTransBlockStageDuo, IBaseSharingNodeRepositoryDuo, IBaseSharingNodeTerminalDuo, IBaseSynchronizationConflictDuo, IBaseSynchronizationConflictPendingNotificationDuo, IBaseSynchronizationConflictValuesDuo } from './baseDuos';
 import { IBaseMissingRecordDao, IBaseMissingRecordRepoTransBlockDao, IBaseRecordUpdateStageDao, IBaseRepoTransBlockResponseStageDao, IBaseRepoTransBlockSchemaToChangeDao, IBaseRepositoryTransactionBlockDao, IBaseRepositoryTransactionHistoryUpdateStageDao, IBaseSharingMessageDao, IBaseSharingMessageRepoTransBlockDao, IBaseSharingNodeDao, IBaseSharingNodeRepoTransBlockDao, IBaseSharingNodeRepoTransBlockStageDao, IBaseSharingNodeRepositoryDao, IBaseSharingNodeTerminalDao, IBaseSynchronizationConflictDao, IBaseSynchronizationConflictPendingNotificationDao, IBaseSynchronizationConflictValuesDao } from './baseDaos';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
-    dmo: {
-        MissingRecord: IBaseMissingRecordDmo;
-        MissingRecordRepoTransBlock: IBaseMissingRecordRepoTransBlockDmo;
-        RecordUpdateStage: IBaseRecordUpdateStageDmo;
-        RepoTransBlockResponseStage: IBaseRepoTransBlockResponseStageDmo;
-        RepoTransBlockSchemaToChange: IBaseRepoTransBlockSchemaToChangeDmo;
-        RepositoryTransactionBlock: IBaseRepositoryTransactionBlockDmo;
-        RepositoryTransactionHistoryUpdateStage: IBaseRepositoryTransactionHistoryUpdateStageDmo;
-        SharingMessage: IBaseSharingMessageDmo;
-        SharingMessageRepoTransBlock: IBaseSharingMessageRepoTransBlockDmo;
-        SharingNode: IBaseSharingNodeDmo;
-        SharingNodeRepoTransBlock: IBaseSharingNodeRepoTransBlockDmo;
-        SharingNodeRepoTransBlockStage: IBaseSharingNodeRepoTransBlockStageDmo;
-        SharingNodeRepository: IBaseSharingNodeRepositoryDmo;
-        SharingNodeTerminal: IBaseSharingNodeTerminalDmo;
-        SynchronizationConflict: IBaseSynchronizationConflictDmo;
-        SynchronizationConflictPendingNotification: IBaseSynchronizationConflictPendingNotificationDmo;
-        SynchronizationConflictValues: IBaseSynchronizationConflictValuesDmo;
+    duo: {
+        MissingRecord: IBaseMissingRecordDuo;
+        MissingRecordRepoTransBlock: IBaseMissingRecordRepoTransBlockDuo;
+        RecordUpdateStage: IBaseRecordUpdateStageDuo;
+        RepoTransBlockResponseStage: IBaseRepoTransBlockResponseStageDuo;
+        RepoTransBlockSchemaToChange: IBaseRepoTransBlockSchemaToChangeDuo;
+        RepositoryTransactionBlock: IBaseRepositoryTransactionBlockDuo;
+        RepositoryTransactionHistoryUpdateStage: IBaseRepositoryTransactionHistoryUpdateStageDuo;
+        SharingMessage: IBaseSharingMessageDuo;
+        SharingMessageRepoTransBlock: IBaseSharingMessageRepoTransBlockDuo;
+        SharingNode: IBaseSharingNodeDuo;
+        SharingNodeRepoTransBlock: IBaseSharingNodeRepoTransBlockDuo;
+        SharingNodeRepoTransBlockStage: IBaseSharingNodeRepoTransBlockStageDuo;
+        SharingNodeRepository: IBaseSharingNodeRepositoryDuo;
+        SharingNodeTerminal: IBaseSharingNodeTerminalDuo;
+        SynchronizationConflict: IBaseSynchronizationConflictDuo;
+        SynchronizationConflictPendingNotification: IBaseSynchronizationConflictPendingNotificationDuo;
+        SynchronizationConflictValues: IBaseSynchronizationConflictValuesDuo;
     };
     dao: {
         MissingRecord: IBaseMissingRecordDao;

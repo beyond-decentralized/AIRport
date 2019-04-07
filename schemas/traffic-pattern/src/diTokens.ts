@@ -9,15 +9,15 @@ import {ISchemaReferenceDao}                      from './dao/SchemaReferenceDao
 import {ISchemaRelationColumnDao}                 from './dao/SchemaRelationColumnDao'
 import {ISchemaRelationDao}                       from './dao/SchemaRelationDao'
 import {ISchemaVersionDao}                        from './dao/SchemaVersionDao'
-import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos} from './dmo/dmo'
-import {ISchemaVersionDmo}                        from './dmo/SchemaVersionDmo'
+import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Duos} from './duo/duo'
+import {ISchemaVersionDuo}                        from './duo/SchemaVersionDuo'
 
 export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA
 	                                      = 'NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA'
 export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS
 	                                      = diToken<NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos>()
-export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DMOS
-	                                      = diToken<NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Dmos>()
+export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DUOS
+	                                      = diToken<NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Duos>()
 export const SCHEMA_COLUMN_DAO          = diToken<ISchemaColumnDao>()
 export const SCHEMA_DAO                 = diToken<ISchemaDao>()
 export const SCHEMA_ENTITY_DAO          = diToken<ISchemaEntityDao>()
@@ -27,4 +27,4 @@ export const SCHEMA_REFERENCE_DAO       = diToken<ISchemaReferenceDao>()
 export const SCHEMA_RELATION_COLUMN_DAO = diToken<ISchemaRelationColumnDao>()
 export const SCHEMA_RELATION_DAO        = diToken<ISchemaRelationDao>()
 export const SCHEMA_VERSION_DAO         = diToken<ISchemaVersionDao>()
-export const SCHEMA_VERSION_DMO         = diToken<ISchemaVersionDmo>()
+export const SCHEMA_VERSION_DUO         = diToken<ISchemaVersionDuo>()

@@ -3,14 +3,14 @@ import { DbSchema } from '@airport/ground-control';
 import { QDailySyncLog } from './qdailysynclog';
 import { QLog } from './log/qlog';
 import { QMonthlySyncLog } from './qmonthlysynclog';
-import { IBaseDailySyncLogDmo, IBaseLogDmo, IBaseMonthlySyncLogDmo } from './baseDmos';
+import { IBaseDailySyncLogDuo, IBaseLogDuo, IBaseMonthlySyncLogDuo } from './baseDuos';
 import { IBaseDailySyncLogDao, IBaseLogDao, IBaseMonthlySyncLogDao } from './baseDaos';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
-    dmo: {
-        DailySyncLog: IBaseDailySyncLogDmo;
-        Log: IBaseLogDmo;
-        MonthlySyncLog: IBaseMonthlySyncLogDmo;
+    duo: {
+        DailySyncLog: IBaseDailySyncLogDuo;
+        Log: IBaseLogDuo;
+        MonthlySyncLog: IBaseMonthlySyncLogDuo;
     };
     dao: {
         DailySyncLog: IBaseDailySyncLogDao;

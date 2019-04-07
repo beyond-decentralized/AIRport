@@ -12,12 +12,12 @@ import { PackagedUnit } from '../ddl/packagedunit';
 import { QPackagedUnit } from './qpackagedunit';
 
 import {
-	IBaseApplicationDmo,
-	IBaseApplicationPackageDmo,
-	IBaseDomainDmo,
-	IBasePackageDmo,
-	IBasePackagedUnitDmo
-} from './baseDmos';
+	IBaseApplicationDuo,
+	IBaseApplicationPackageDuo,
+	IBaseDomainDuo,
+	IBasePackageDuo,
+	IBasePackagedUnitDuo
+} from './baseDuos';
 
 import {
 	IBaseApplicationDao,
@@ -31,12 +31,12 @@ export interface LocalQSchema extends AirportQSchema {
 
   db: DbSchema;
 
-	dmo: {
-		Application: IBaseApplicationDmo;
-		ApplicationPackage: IBaseApplicationPackageDmo;
-		Domain: IBaseDomainDmo;
-		Package: IBasePackageDmo;
-		PackagedUnit: IBasePackagedUnitDmo;
+	duo: {
+		Application: IBaseApplicationDuo;
+		ApplicationPackage: IBaseApplicationPackageDuo;
+		Domain: IBaseDomainDuo;
+		Package: IBasePackageDuo;
+		PackagedUnit: IBasePackagedUnitDuo;
 	}
 
 	dao: {

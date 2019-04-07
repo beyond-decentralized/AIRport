@@ -40,26 +40,26 @@ import { UserRepository } from '../ddl/user/userrepository';
 import { QUserRepository } from './user/quserrepository';
 
 import {
-	IBaseAgtRepositoryTransactionBlockDmo,
-	IBaseAgtSharingMessageDmo,
-	IBaseArchiveDmo,
-	IBaseDailyArchiveLogDmo,
-	IBaseDailyTerminalSyncLogDmo,
-	IBaseMonthlyArchiveLogDmo,
-	IBaseMonthlyTerminalSyncLogDmo,
-	IBaseRepositoryDmo,
-	IBaseRepositoryArchiveDmo,
-	IBaseSecurityAnswerDmo,
-	IBaseSecurityQuestionDmo,
-	IBaseServerDmo,
-	IBaseServerSyncLogDmo,
-	IBaseSyncLogDmo,
-	IBaseTerminalDmo,
-	IBaseTerminalRepositoryDmo,
-	IBaseTuningParametersDmo,
-	IBaseUserDmo,
-	IBaseUserRepositoryDmo
-} from './baseDmos';
+	IBaseAgtRepositoryTransactionBlockDuo,
+	IBaseAgtSharingMessageDuo,
+	IBaseArchiveDuo,
+	IBaseDailyArchiveLogDuo,
+	IBaseDailyTerminalSyncLogDuo,
+	IBaseMonthlyArchiveLogDuo,
+	IBaseMonthlyTerminalSyncLogDuo,
+	IBaseRepositoryDuo,
+	IBaseRepositoryArchiveDuo,
+	IBaseSecurityAnswerDuo,
+	IBaseSecurityQuestionDuo,
+	IBaseServerDuo,
+	IBaseServerSyncLogDuo,
+	IBaseSyncLogDuo,
+	IBaseTerminalDuo,
+	IBaseTerminalRepositoryDuo,
+	IBaseTuningParametersDuo,
+	IBaseUserDuo,
+	IBaseUserRepositoryDuo
+} from './baseDuos';
 
 import {
 	IBaseAgtRepositoryTransactionBlockDao,
@@ -87,26 +87,26 @@ export interface LocalQSchema extends AirportQSchema {
 
   db: DbSchema;
 
-	dmo: {
-		AgtRepositoryTransactionBlock: IBaseAgtRepositoryTransactionBlockDmo;
-		AgtSharingMessage: IBaseAgtSharingMessageDmo;
-		Archive: IBaseArchiveDmo;
-		DailyArchiveLog: IBaseDailyArchiveLogDmo;
-		DailyTerminalSyncLog: IBaseDailyTerminalSyncLogDmo;
-		MonthlyArchiveLog: IBaseMonthlyArchiveLogDmo;
-		MonthlyTerminalSyncLog: IBaseMonthlyTerminalSyncLogDmo;
-		Repository: IBaseRepositoryDmo;
-		RepositoryArchive: IBaseRepositoryArchiveDmo;
-		SecurityAnswer: IBaseSecurityAnswerDmo;
-		SecurityQuestion: IBaseSecurityQuestionDmo;
-		Server: IBaseServerDmo;
-		ServerSyncLog: IBaseServerSyncLogDmo;
-		SyncLog: IBaseSyncLogDmo;
-		Terminal: IBaseTerminalDmo;
-		TerminalRepository: IBaseTerminalRepositoryDmo;
-		TuningParameters: IBaseTuningParametersDmo;
-		User: IBaseUserDmo;
-		UserRepository: IBaseUserRepositoryDmo;
+	duo: {
+		AgtRepositoryTransactionBlock: IBaseAgtRepositoryTransactionBlockDuo;
+		AgtSharingMessage: IBaseAgtSharingMessageDuo;
+		Archive: IBaseArchiveDuo;
+		DailyArchiveLog: IBaseDailyArchiveLogDuo;
+		DailyTerminalSyncLog: IBaseDailyTerminalSyncLogDuo;
+		MonthlyArchiveLog: IBaseMonthlyArchiveLogDuo;
+		MonthlyTerminalSyncLog: IBaseMonthlyTerminalSyncLogDuo;
+		Repository: IBaseRepositoryDuo;
+		RepositoryArchive: IBaseRepositoryArchiveDuo;
+		SecurityAnswer: IBaseSecurityAnswerDuo;
+		SecurityQuestion: IBaseSecurityQuestionDuo;
+		Server: IBaseServerDuo;
+		ServerSyncLog: IBaseServerSyncLogDuo;
+		SyncLog: IBaseSyncLogDuo;
+		Terminal: IBaseTerminalDuo;
+		TerminalRepository: IBaseTerminalRepositoryDuo;
+		TuningParameters: IBaseTuningParametersDuo;
+		User: IBaseUserDuo;
+		UserRepository: IBaseUserRepositoryDuo;
 	}
 
 	dao: {

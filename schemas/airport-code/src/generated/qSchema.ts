@@ -8,10 +8,10 @@ import { SequenceConsumer } from '../ddl/sequenceconsumer';
 import { QSequenceConsumer } from './qsequenceconsumer';
 
 import {
-	IBaseSequenceDmo,
-	IBaseSequenceBlockDmo,
-	IBaseSequenceConsumerDmo
-} from './baseDmos';
+	IBaseSequenceDuo,
+	IBaseSequenceBlockDuo,
+	IBaseSequenceConsumerDuo
+} from './baseDuos';
 
 import {
 	IBaseSequenceDao,
@@ -23,10 +23,10 @@ export interface LocalQSchema extends AirportQSchema {
 
   db: DbSchema;
 
-	dmo: {
-		Sequence: IBaseSequenceDmo;
-		SequenceBlock: IBaseSequenceBlockDmo;
-		SequenceConsumer: IBaseSequenceConsumerDmo;
+	duo: {
+		Sequence: IBaseSequenceDuo;
+		SequenceBlock: IBaseSequenceBlockDuo;
+		SequenceConsumer: IBaseSequenceConsumerDuo;
 	}
 
 	dao: {

@@ -21,8 +21,8 @@ export interface IChangedRecordIdsForRepository {
     firstChangeTime: Date;
 }
 export declare class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao implements IRepositoryTransactionHistoryDao {
-    private operHistoryDmo;
-    private recHistoryDmo;
+    private operHistoryDuo;
+    private recHistoryDuo;
     constructor();
     getSelectClauseWithRecordHistory(): RepositoryTransactionHistoryESelect;
     findWhere(whereClauseFunction: {

@@ -4,8 +4,8 @@ import { DailyArchive } from '../ddl/dailyarchive';
 import { QDailyArchive } from './qdailyarchive';
 
 import {
-	IBaseDailyArchiveDmo
-} from './baseDmos';
+	IBaseDailyArchiveDuo
+} from './baseDuos';
 
 import {
 	IBaseDailyArchiveDao
@@ -15,8 +15,8 @@ export interface LocalQSchema extends AirportQSchema {
 
   db: DbSchema;
 
-	dmo: {
-		DailyArchive: IBaseDailyArchiveDmo;
+	duo: {
+		DailyArchive: IBaseDailyArchiveDuo;
 	}
 
 	dao: {

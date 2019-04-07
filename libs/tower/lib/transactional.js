@@ -11,7 +11,7 @@ const ground_control_1 = require("@airport/ground-control");
  * that.
  */
 async function transactional(callback, keepAlive) {
-    const [storeDriver] = await di_1.DI.getP(ground_control_1.STORE_DRIVER);
+    const storeDriver = await di_1.DI.getP(ground_control_1.STORE_DRIVER);
     let transactionStarted = false;
     try {
         await storeDriver.transact(keepAlive);

@@ -5,7 +5,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./dao/dao"));
 __export(require("./ddl/ddl"));
-__export(require("./dmo/dmo"));
+__export(require("./duo/duo"));
 __export(require("./generated/generated"));
 __export(require("./diTokens"));
 //# sourceMappingURL=index.js.map

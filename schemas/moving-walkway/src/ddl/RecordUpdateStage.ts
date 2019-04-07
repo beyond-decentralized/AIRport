@@ -42,7 +42,7 @@ export class RecordUpdateStage {
 	@ManyToOne()
 	@JoinColumns([
 		{name: 'SCHEMA_VERSION_ID'},
-		{name: 'TABLE_INDEX', referencedColumnName: 'INDEX'}
+		{name: 'TABLE_INDEX'}
 	])
 	entity: ISchemaEntity
 
@@ -61,7 +61,7 @@ export class RecordUpdateStage {
 	@ManyToOne()
 	@JoinColumns([
 		{name: 'SCHEMA_ENTITY_ID'},
-		{name: 'COLUMN_INDEX', referencedColumnName: 'INDEX'}
+		{name: 'COLUMN_INDEX'}
 	])
 	column: ISchemaColumn
 

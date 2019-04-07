@@ -1,5 +1,5 @@
 import { IUtils } from '@airport/air-control';
-import { IRepositoryActorDao, IRepositoryTransactionHistoryDmo } from '@airport/holding-pattern';
+import { IRepositoryActorDao, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern';
 import { IRepositoryTransactionBlockDao, ISharingMessageDao, ISharingMessageRepoTransBlockDao, ISynchronizationConflictDao, ISynchronizationConflictPendingNotificationDao } from '@airport/moving-walkway';
 import { ITransactionManager } from '@airport/terminal-map';
 import { ISyncInChecker } from './checker/SyncInChecker';
@@ -14,7 +14,7 @@ export interface ITwoStageSyncedInDataProcessor {
 }
 export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInDataProcessor {
     private repositoryActorDao;
-    private repositoryTransactionHistoryDmo;
+    private repositoryTransactionHistoryDuo;
     private sharingMessageDao;
     private sharingMessageRepoTransBlockDao;
     private stage1SyncedInDataProcessor;
@@ -25,7 +25,7 @@ export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInD
     private repositoryTransactionBlockDao;
     private transactionManager;
     private utils;
-    constructor(repositoryActorDao: IRepositoryActorDao, repositoryTransactionHistoryDmo: IRepositoryTransactionHistoryDmo, sharingMessageDao: ISharingMessageDao, sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor: IStage1SyncedInDataProcessor, stage2SyncedInDataProcessor: IStage2SyncedInDataProcessor, synchronizationConflictDao: ISynchronizationConflictDao, synchronizationConflictPendingNotificationDao: ISynchronizationConflictPendingNotificationDao, syncInChecker: ISyncInChecker, repositoryTransactionBlockDao: IRepositoryTransactionBlockDao, transactionManager: ITransactionManager, utils: IUtils);
+    constructor(repositoryActorDao: IRepositoryActorDao, repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo, sharingMessageDao: ISharingMessageDao, sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor: IStage1SyncedInDataProcessor, stage2SyncedInDataProcessor: IStage2SyncedInDataProcessor, synchronizationConflictDao: ISynchronizationConflictDao, synchronizationConflictPendingNotificationDao: ISynchronizationConflictPendingNotificationDao, syncInChecker: ISyncInChecker, repositoryTransactionBlockDao: IRepositoryTransactionBlockDao, transactionManager: ITransactionManager, utils: IUtils);
     /**
      * Synchronize the data messages coming from AGT (new data for this TM).
      * @param {IDataToTM[]} dataMessages  Incoming data messages.

@@ -1,4 +1,4 @@
-import { IDatabaseFacade, IDmo, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUtils, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, UpdateCacheType } from "@airport/air-control";
+import { IDatabaseFacade, IDuo, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUtils, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, UpdateCacheType } from "@airport/air-control";
 import { DbEntity } from "@airport/ground-control";
 /**
  * Created by Papa on 12/11/2016.
@@ -8,7 +8,7 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     private Q;
     private utils;
     common: IDatabaseFacade;
-    dmo: IDmo<Entity, EntitySelect, EntityCreate, EntityUpdateProperties, EntityId, IQ>;
+    duo: IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateProperties, EntityId, IQ>;
     find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
     findOne: IEntityFindOne<Entity, EntitySelect>;
     search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;

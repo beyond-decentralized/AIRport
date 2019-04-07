@@ -24,7 +24,7 @@ __decorate([
     ColumnDecorators_1.Id(),
     ColumnDecorators_1.ManyToOne(),
     ColumnDecorators_1.JoinColumn({
-        name: "SCHEMA_INDEX", referencedColumnName: "INDEX"
+        name: "SCHEMA_INDEX"
     })
 ], RepoTransBlockSchemaToChange.prototype, "schema", void 0);
 RepoTransBlockSchemaToChange = __decorate([

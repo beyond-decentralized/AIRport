@@ -8,8 +8,8 @@ import {
 	IRepository,
 	IRepositoryTransactionHistory,
 	ITransactionHistory,
-	ITransactionHistoryDmo,
-	TRANS_HISTORY_DMO
+	ITransactionHistoryDuo,
+	TRANS_HISTORY_DUO
 }                        from '@airport/holding-pattern'
 import {HISTORY_MANAGER} from '../diTokens'
 
@@ -30,22 +30,22 @@ export interface IHistoryManager {
 export class HistoryManager
 	implements IHistoryManager {
 
-	// private operHistoryDmo: ICachedPromise<IOperationHistoryDmo>
-	// private recHistoryDmo: ICachedPromise<IRecordHistoryDmo>
-	// private repoTransHistoryDmo: ICachedPromise<IRepositoryTransactionHistoryDmo>
-	private transHistoryDmo: ICachedPromise<ITransactionHistoryDmo>
+	// private operHistoryDuo: ICachedPromise<IOperationHistoryDuo>
+	// private recHistoryDuo: ICachedPromise<IRecordHistoryDuo>
+	// private repoTransHistoryDuo: ICachedPromise<IRepositoryTransactionHistoryDuo>
+	private transHistoryDuo: ICachedPromise<ITransactionHistoryDuo>
 
 	constructor() {
-		// this.operHistoryDmo      = DI.cache(OPER_HISTORY_DMO,)
-		// this.recHistoryDmo       = DI.cache(REC_HISTORY_DMO)
-		// this.repoTransHistoryDmo = DI.cache(REPO_TRANS_HISTORY_DMO)
-		this.transHistoryDmo = DI.cache(TRANS_HISTORY_DMO)
+		// this.operHistoryDuo      = DI.cache(OPER_HISTORY_DUO,)
+		// this.recHistoryDuo       = DI.cache(REC_HISTORY_DUO)
+		// this.repoTransHistoryDuo = DI.cache(REPO_TRANS_HISTORY_DUO)
+		this.transHistoryDuo = DI.cache(TRANS_HISTORY_DUO)
 	}
 
 	async getNewTransHistory(
 		transactionType: TransactionType = TransactionType.LOCAL
 	): Promise<ITransactionHistory> {
-		const transactionHistory = (await this.transHistoryDmo.get()).getNewRecord(transactionType)
+		const transactionHistory = (await this.transHistoryDuo.get()).getNewRecord(transactionType)
 
 		return transactionHistory
 	}
@@ -55,7 +55,7 @@ export class HistoryManager
 		repository: IRepository,
 		actor: IActor
 	): Promise<IRepositoryTransactionHistory> {
-		const repoTransHistory = (await this.transHistoryDmo.get()).getRepositoryTransaction(
+		const repoTransHistory = (await this.transHistoryDuo.get()).getRepositoryTransaction(
 			transactionHistory, repository, actor)
 
 		return repoTransHistory

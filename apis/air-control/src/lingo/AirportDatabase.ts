@@ -42,7 +42,6 @@ export interface IAirportDatabase
 	);
 
 	registerSchema(
-		schema: JsonSchema,
 		qSchema: QSchema
 	);
 

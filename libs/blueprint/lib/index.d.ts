@@ -133,7 +133,7 @@ export declare const BLUEPRINT: ({
             "sinceVersion": number;
             "tableConfig": {
                 "name": string;
-                "indexes"?: undefined;
+                "indexes": any[];
                 "primaryKey"?: undefined;
             };
         } | {
@@ -330,7 +330,7 @@ export declare const BLUEPRINT: ({
             "tableConfig": {
                 "name": string;
                 "primaryKey": string[];
-                "indexes"?: undefined;
+                "indexes": any[];
             };
         } | {
             "columns": ({
@@ -461,7 +461,7 @@ export declare const BLUEPRINT: ({
             "sinceVersion": number;
             "tableConfig": {
                 "name": string;
-                "indexes"?: undefined;
+                "indexes": any[];
                 "primaryKey"?: undefined;
             };
         } | {
@@ -547,7 +547,11 @@ export declare const BLUEPRINT: ({
                 "relationTableSchemaIndex"?: undefined;
             })[];
             "sinceVersion": number;
-            "tableConfig"?: undefined;
+            "tableConfig": {
+                "indexes": any[];
+                "name"?: undefined;
+                "primaryKey"?: undefined;
+            };
         })[];
         "integerVersion": number;
         "referencedSchemas": {
@@ -657,6 +661,7 @@ export declare const BLUEPRINT: ({
             "sinceVersion": number;
             "tableConfig": {
                 "name": string;
+                "indexes": any[];
             };
         } | {
             "columns": ({
@@ -741,6 +746,7 @@ export declare const BLUEPRINT: ({
             "sinceVersion": number;
             "tableConfig": {
                 "name": string;
+                "indexes": any[];
             };
         })[];
         "integerVersion": number;
@@ -830,6 +836,7 @@ export declare const BLUEPRINT: ({
             "sinceVersion": number;
             "tableConfig": {
                 "name": string;
+                "indexes": any[];
             };
         } | {
             "columns": ({
@@ -911,7 +918,10 @@ export declare const BLUEPRINT: ({
                 "sinceVersion": number;
             })[];
             "sinceVersion": number;
-            "tableConfig"?: undefined;
+            "tableConfig": {
+                "indexes": any[];
+                "name"?: undefined;
+            };
         } | {
             "columns": ({
                 "index": number;
@@ -995,6 +1005,7 @@ export declare const BLUEPRINT: ({
             "sinceVersion": number;
             "tableConfig": {
                 "name": string;
+                "indexes": any[];
             };
         })[];
         "integerVersion": number;

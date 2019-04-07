@@ -230,7 +230,10 @@ export const SCHEMA = {
 					"name": "Log",
 					"properties": [],
 					"relations": [],
-					"sinceVersion": 1
+					"sinceVersion": 1,
+					"tableConfig": {
+						"indexes": []
+					}
 				}
 			],
 			"integerVersion": 1,

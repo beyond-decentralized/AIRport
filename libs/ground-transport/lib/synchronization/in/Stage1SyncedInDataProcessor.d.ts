@@ -12,7 +12,7 @@ export interface IStage1SyncedInDataProcessor {
 export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataProcessor {
     private actorDao;
     private repoTransHistoryDao;
-    private repoTransHistoryDmo;
+    private repoTransHistoryDuo;
     private syncInUtils;
     private utils;
     constructor();

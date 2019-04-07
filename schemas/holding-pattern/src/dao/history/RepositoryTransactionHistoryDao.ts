@@ -23,12 +23,12 @@ import {
 	RepositoryTransactionHistoryId
 }                             from '../../ddl/ddl'
 import {
-	OPER_HISTORY_DMO,
-	REC_HISTORY_DMO,
+	OPER_HISTORY_DUO,
+	REC_HISTORY_DUO,
 	REPO_TRANS_HISTORY_DAO,
 }                             from '../../diTokens'
-import {IOperationHistoryDmo} from '../../dmo/history/OperationHistoryDmo'
-import {IRecordHistoryDmo}    from '../../dmo/history/RecordHistoryDmo'
+import {IOperationHistoryDuo} from '../../duo/history/OperationHistoryDuo'
+import {IRecordHistoryDuo}    from '../../duo/history/RecordHistoryDuo'
 import {
 	BaseRepositoryTransactionHistoryDao,
 	IOperationHistory,
@@ -102,19 +102,19 @@ export class RepositoryTransactionHistoryDao
 	extends BaseRepositoryTransactionHistoryDao
 	implements IRepositoryTransactionHistoryDao {
 
-	private operHistoryDmo: IOperationHistoryDmo
-	private recHistoryDmo: IRecordHistoryDmo
+	private operHistoryDuo: IOperationHistoryDuo
+	private recHistoryDuo: IRecordHistoryDuo
 
 	constructor() {
 		super()
 
 		DI.get((
-			operationHistoryDmo,
-			recordHistoryDmo
+			operationHistoryDuo,
+			recordHistoryDuo
 		) => {
-			this.operHistoryDmo = operationHistoryDmo
-			this.recHistoryDmo  = recordHistoryDmo
-		}, OPER_HISTORY_DMO, REC_HISTORY_DMO)
+			this.operHistoryDuo = operationHistoryDuo
+			this.recHistoryDuo  = recordHistoryDuo
+		}, OPER_HISTORY_DUO, REC_HISTORY_DUO)
 	}
 
 	getSelectClauseWithRecordHistory(): RepositoryTransactionHistoryESelect {
@@ -128,12 +128,12 @@ export class RepositoryTransactionHistoryDao
 				id
 			},
 			operationHistory: {
-				...this.operHistoryDmo.getAllFieldsSelect(),
+				...this.operHistoryDuo.getAllFieldsSelect(),
 				entity: {
 					id: Y
 				},
 				recordHistory: {
-					...this.recHistoryDmo.getAllFieldsSelect()
+					...this.recHistoryDuo.getAllFieldsSelect()
 				}
 			},
 		}
@@ -192,7 +192,7 @@ export class RepositoryTransactionHistoryDao
 		    r: QRepository
 		return await this.db.find.graph({
 			select: {
-				...this.db.dmo.getAllFieldsSelect(),
+				...this.db.duo.getAllFieldsSelect(),
 				actor: {
 					user: {},
 					database: {},

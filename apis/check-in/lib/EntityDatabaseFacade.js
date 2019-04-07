@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const Dmo_1 = require("./Dmo");
+const Duo_1 = require("./Duo");
 /**
  * Created by Papa on 12/11/2016.
  */
@@ -10,7 +10,7 @@ class EntityDatabaseFacade {
         this.dbEntity = dbEntity;
         this.Q = Q;
         this.utils = utils;
-        this.dmo = new Dmo_1.Dmo(dbEntity);
+        this.duo = new Duo_1.Duo(dbEntity);
     }
     get from() {
         return this.Q[this.dbEntity.name];
