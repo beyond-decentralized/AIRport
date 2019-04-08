@@ -13,7 +13,7 @@ class SchemaInitializer {
     }
     async initialize(jsonSchemas, checkDependencies = false) {
         const jsonSchemasToInstall = [];
-        const schemaChecker = await this.schemaChecker.get();
+        const schemaChecker = await this.schemaChecker;
         for (const jsonSchema of jsonSchemas) {
             await schemaChecker.check(jsonSchema);
             const existingSchema = (await this.schemaLocator).locateExistingSchemaVersionRecord(jsonSchema);

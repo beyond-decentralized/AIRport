@@ -20,7 +20,7 @@ class SyncOutRepositoryTransactionBlockCreator {
     }
     // Get new repository transaction histories not yet in RepoTransBlocks
     async createNewBlocks(sharingNodeIds, terminal) {
-        const [sharingNodeIdMapByRepositoryId, repoTransHistoriesToSync] = await (await this.sharingNodeRepositoryDao.get())
+        const [sharingNodeIdMapByRepositoryId, repoTransHistoriesToSync] = await (await this.sharingNodeRepositoryDao)
             .findNewRepoTransHistoriesForSharingNodes(sharingNodeIds);
         const repositoryIdSet = new Set();
         const actorIdSet = new Set();

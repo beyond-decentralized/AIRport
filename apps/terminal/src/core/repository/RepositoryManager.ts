@@ -12,8 +12,7 @@ import {
 	UTILS,
 }                           from '@airport/air-control'
 import {
-	DI,
-	ICachedPromise
+	DI
 }                           from '@airport/di'
 import {StoreType}          from '@airport/ground-control'
 import {
@@ -117,7 +116,7 @@ export class RepositoryManager
 	deltaStore: IDeltaStore
 	repositories: IRepository[]
 	repositoriesById: { [repositoryId: string]: IRepository } = {}
-	private repositoryDao: ICachedPromise<IRepositoryDao>
+	private repositoryDao: Promise<IRepositoryDao>
 	terminal: ITerminal
 	userEmail: string
 	private utils: IUtils
@@ -132,7 +131,7 @@ export class RepositoryManager
 			this.utils    = utils
 		}, ENTITY_MANAGER, UTILS)
 
-		this.repositoryDao = DI.cache(REPOSITORY_DAO)
+		this.repositoryDao = DI.getP(REPOSITORY_DAO)
 	}
 
 	async initialize(): Promise<void> {
@@ -145,7 +144,7 @@ export class RepositoryManager
 	}
 
 	async findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>> {
-		return await (await this.repositoryDao.get()).findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail)
+		return await (await this.repositoryDao).findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail)
 	}
 
 	async createRepository(
@@ -201,7 +200,7 @@ export class RepositoryManager
 	}
 
 	private async ensureRepositoryRecords(): Promise<void> {
-		this.repositories = await (await this.repositoryDao.get()).find.tree({
+		this.repositories = await (await this.repositoryDao).find.tree({
 			select: {}
 		})
 		/*
@@ -268,14 +267,14 @@ export class RepositoryManager
 			transactionHistory: null,
 			url: null,
 		}
-		await (await this.repositoryDao.get()).create(repository)
+		await (await this.repositoryDao).create(repository)
 		this.repositories.push(repository)
 
 		return repository
 	}
 
 	private async ensureAndCacheRepositories(): Promise<void> {
-		this.repositories = await (await this.repositoryDao.get()).find.tree({
+		this.repositories = await (await this.repositoryDao).find.tree({
 			select: {}
 		})
 		this.repositories.forEach((repository) => {

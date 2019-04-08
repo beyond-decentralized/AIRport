@@ -84,7 +84,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 	): Promise<Map<SharingNodeId, IRepositoryTransactionBlock[]>> {
 
 		const [sharingNodeIdMapByRepositoryId,
-			      repoTransHistoriesToSync] = await (await this.sharingNodeRepositoryDao.get())
+			      repoTransHistoriesToSync] = await (await this.sharingNodeRepositoryDao)
 			.findNewRepoTransHistoriesForSharingNodes(sharingNodeIds)
 
 		const repositoryIdSet: Set<RepositoryId>                      = new Set<RepositoryId>()

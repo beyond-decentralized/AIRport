@@ -18,10 +18,10 @@ class InsertManager {
             this.repoManager = repositoryManager;
             this.transManager = transactionManager;
         }, air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, fuel_hydrant_system_1.SEQUENCE_GENERATOR, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.REPOSITORY_MANAGER, terminal_map_1.TRANSACTION_MANAGER);
-        this.operHistoryDuo = di_1.DI.cache(holding_pattern_1.OPER_HISTORY_DUO);
-        this.recHistoryDuo = di_1.DI.cache(holding_pattern_1.REC_HISTORY_DUO);
-        this.repoTransHistoryDuo = di_1.DI.cache(holding_pattern_1.REPO_TRANS_HISTORY_DUO);
-        // this.transHistoryDuo     = DI.cache(TRANS_HISTORY_DUO)
+        this.operHistoryDuo = di_1.DI.getP(holding_pattern_1.OPER_HISTORY_DUO);
+        this.recHistoryDuo = di_1.DI.getP(holding_pattern_1.REC_HISTORY_DUO);
+        this.repoTransHistoryDuo = di_1.DI.getP(holding_pattern_1.REPO_TRANS_HISTORY_DUO);
+        // this.transHistoryDuo     = DI.getP(TRANS_HISTORY_DUO)
     }
     get currentTransHistory() {
         return this.transManager.currentTransHistory;
@@ -169,9 +169,9 @@ class InsertManager {
                     break;
             }
         }
-        const repoTransHistoryDuo = await this.repoTransHistoryDuo.get();
-        const operHistoryDuo = await this.operHistoryDuo.get();
-        const recHistoryDuo = await this.recHistoryDuo.get();
+        const repoTransHistoryDuo = await this.repoTransHistoryDuo;
+        const operHistoryDuo = await this.operHistoryDuo;
+        const recHistoryDuo = await this.recHistoryDuo;
         // Rows may belong to different repositories
         for (const row of jsonInsertValues.V) {
             const repositoryId = row[repositoryIdColumnNumber];

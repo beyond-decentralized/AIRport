@@ -15,7 +15,7 @@ class RepositoryManager {
             this.dbFacade = databaseFacade;
             this.utils = utils;
         }, tower_1.ENTITY_MANAGER, air_control_1.UTILS);
-        this.repositoryDao = di_1.DI.cache(holding_pattern_1.REPOSITORY_DAO);
+        this.repositoryDao = di_1.DI.getP(holding_pattern_1.REPOSITORY_DAO);
     }
     async initialize() {
         await this.ensureRepositoryRecords();
@@ -26,7 +26,7 @@ class RepositoryManager {
         }
     }
     async findReposWithDetailsByIds(...repositoryIds) {
-        return await (await this.repositoryDao.get()).findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail);
+        return await (await this.repositoryDao).findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail);
     }
     async createRepository(appName, distributionStrategy, offlineStoreType, platformType, platformConfig, recordIdField) {
         let repository = await this.createRepositoryRecord(appName, distributionStrategy, platformType, platformConfig);
@@ -62,7 +62,7 @@ class RepositoryManager {
         return this.deltaStore[repository.id];
     }
     async ensureRepositoryRecords() {
-        this.repositories = await (await this.repositoryDao.get()).find.tree({
+        this.repositories = await (await this.repositoryDao).find.tree({
             select: {}
         });
         /*
@@ -120,12 +120,12 @@ class RepositoryManager {
             transactionHistory: null,
             url: null,
         };
-        await (await this.repositoryDao.get()).create(repository);
+        await (await this.repositoryDao).create(repository);
         this.repositories.push(repository);
         return repository;
     }
     async ensureAndCacheRepositories() {
-        this.repositories = await (await this.repositoryDao.get()).find.tree({
+        this.repositories = await (await this.repositoryDao).find.tree({
             select: {}
         });
         this.repositories.forEach((repository) => {

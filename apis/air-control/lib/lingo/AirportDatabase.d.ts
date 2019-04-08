@@ -15,17 +15,8 @@ export interface FunctionAndOperatorHub {
 export interface SchemaHub {
     schemas: DbSchema[];
     S: DbSchema[];
-    schemaMapByName: {
-        [name: string]: DbSchema;
-    };
-    SM: {
-        [name: string]: DbSchema;
-    };
     qSchemas: QSchema[];
     Q: QSchema[];
-    qSchemaMapByName: {
-        [name: string]: QSchema;
-    };
     QM: {
         [name: string]: QSchema;
     };

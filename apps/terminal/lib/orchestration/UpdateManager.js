@@ -17,10 +17,10 @@ class UpdateManager {
             this.transManager = transactionManager;
             this.utils = utils;
         }, air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.REPOSITORY_MANAGER, terminal_map_1.TRANSACTION_MANAGER, air_control_1.UTILS);
-        this.operHistoryDuo = di_1.DI.cache(holding_pattern_1.OPER_HISTORY_DUO);
-        this.recHistoryDuo = di_1.DI.cache(holding_pattern_1.REC_HISTORY_DUO);
-        this.repoTransHistoryDuo = di_1.DI.cache(holding_pattern_1.REPO_TRANS_HISTORY_DUO);
-        // this.transHistoryDuo     = DI.cache(TRANS_HISTORY_DUO)
+        this.operHistoryDuo = di_1.DI.getP(holding_pattern_1.OPER_HISTORY_DUO);
+        this.recHistoryDuo = di_1.DI.getP(holding_pattern_1.REC_HISTORY_DUO);
+        this.repoTransHistoryDuo = di_1.DI.getP(holding_pattern_1.REPO_TRANS_HISTORY_DUO);
+        // this.transHistoryDuo     = DI.getP(TRANS_HISTORY_DUO)
     }
     async updateValues(portableQuery, actor) {
         const dbEntity = this.airDb.schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex];
@@ -62,9 +62,9 @@ class UpdateManager {
         const repositoryIds = Array.from(repositoryIdSet);
         const repositories = await this.repoManager.findReposWithDetailsByIds(...repositoryIds);
         const recordHistoryMapByRecordId = {};
-        const repoTransHistoryDuo = await this.repoTransHistoryDuo.get();
-        const operHistoryDuo = await this.operHistoryDuo.get();
-        const recHistoryDuo = await this.recHistoryDuo.get();
+        const repoTransHistoryDuo = await this.repoTransHistoryDuo;
+        const operHistoryDuo = await this.operHistoryDuo;
+        const recHistoryDuo = await this.recHistoryDuo;
         for (const repositoryId of repositoryIds) {
             const repository = repositories.get(repositoryId);
             const recordHistoryMapForRepository = {};
@@ -90,7 +90,7 @@ class UpdateManager {
     async addNewValueHistory(jsonUpdate, dbEntity, portableSelect, recordHistoryMapByRecordId) {
         const updatedRecords = await this.dataStore.find(portableSelect);
         const { repositoryIdColumnIndex, actorIdColumnIndex, actorRecordIdColumnIndex, recordsByRepositoryId, repositoryIdSet } = this.groupRecordsByRepository(dbEntity, updatedRecords);
-        const recHistoryDuo = await this.recHistoryDuo.get();
+        const recHistoryDuo = await this.recHistoryDuo;
         for (const repositoryId of repositoryIdSet) {
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
             for (const updatedRecord of recordsForRepositoryId) {

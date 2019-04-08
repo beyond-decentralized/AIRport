@@ -13,8 +13,8 @@ class OnlineManager {
             this.offlineDeltaStore = offlineDeltaStore;
             this.repositoryManager = repositoryManager;
         }, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.REPOSITORY_MANAGER);
-        this.repositoryDao = di_1.DI.cache(holding_pattern_1.REPOSITORY_DAO);
-        this.repoTransHistoryDao = di_1.DI.cache(holding_pattern_1.REPO_TRANS_HISTORY_DAO);
+        this.repositoryDao = di_1.DI.getP(holding_pattern_1.REPOSITORY_DAO);
+        this.repoTransHistoryDao = di_1.DI.getP(holding_pattern_1.REPO_TRANS_HISTORY_DAO);
     }
     goOffline() {
         this.repositoryManager.goOffline();
@@ -59,7 +59,7 @@ class OnlineManager {
                 this.repositoryManager.setUpdateStateForAll(UpdateState_1.UpdateState.GO_ONLINE);
                 // 2)  Find repositories
                 // const repoRecords = await this.repositoryDao.findWithTransaction()
-                const repoRecords = await (await this.repositoryDao.get()).findReposWithDetailsByIds();
+                const repoRecords = await (await this.repositoryDao).findReposWithDetailsByIds();
                 // 3) make each repository go Online
                 let goOnlineCalls = [];
                 repoRecords.forEach((repository) => {
@@ -134,7 +134,7 @@ class OnlineManager {
             await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
         }
         // 7)  Find all local unsynced transactions
-        let unsyncedChanges = await (await this.repoTransHistoryDao.get()).findUnsyncedTransactions(repository);
+        let unsyncedChanges = await (await this.repoTransHistoryDao).findUnsyncedTransactions(repository);
         if (unsyncedChanges.length) {
             unsyncedChanges.forEach((transaction) => {
                 // a)  Mark them as synchronized
