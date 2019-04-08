@@ -22,7 +22,7 @@ __export(require("./inMemory/InMemoryChangeStore"));
 __export(require("./inMemory/InMemorySharingAdaptor"));
 __export(require("./stub/StubChangeList"));
 __export(require("./stub/StubSharingAdaptor"));
-__export(require("./Constants"));
+// export * from './Constants';
 __export(require("./diTokens"));
 __export(require("./PromiseHttp"));
 //# sourceMappingURL=index.js.map

@@ -989,6 +989,7 @@ export class Container
 		clazz: new() => I
 	): void {
 		this.classes[token as any] = clazz
+		this.objects[token as any] = null
 	}
 
 	private doGet(
@@ -998,7 +999,18 @@ export class Container
 		errorCallback,
 	): void {
 
+		const objects = []
 		if (tokens.every(
+			token => {
+				const object = this.objects[token as any]
+				objects.push(object)
+				return object
+			})) {
+			// Reduce the amount of necessary work in the happy path, which
+			// should be the bulk of the lifetime of the application (after
+			// initialization)
+			successCallback(objects)
+		} else if (tokens.every(
 			token => {
 				const clazz = this.classes[token as any]
 				return clazz && (!clazz.diSet || clazz.diSet())

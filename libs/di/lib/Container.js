@@ -17,9 +17,21 @@ class Container {
     }
     set(token, clazz) {
         this.classes[token] = clazz;
+        this.objects[token] = null;
     }
     doGet(tokens, returnArray, successCallback, errorCallback) {
+        const objects = [];
         if (tokens.every(token => {
+            const object = this.objects[token];
+            objects.push(object);
+            return object;
+        })) {
+            // Reduce the amount of necessary work in the happy path, which
+            // should be the bulk of the lifetime of the application (after
+            // initialization)
+            successCallback(objects);
+        }
+        else if (tokens.every(token => {
             const clazz = this.classes[token];
             return clazz && (!clazz.diSet || clazz.diSet());
         })) {
