@@ -25,37 +25,46 @@ class QSchemaBuilder {
         this.entityNames.sort();
         this.generatedFilePaths.sort();
         const qApiDefinitions = this.entityNames.map(entityName => `${entityName}: Q${entityName};`).join('\n\t');
-        const duoDefinitions = this.entityNames.map(entityName => `${entityName}: IBase${entityName}Duo;`).join('\n\t\t');
-        const daoDefinitions = this.entityNames.map(entityName => `${entityName}: IBase${entityName}Dao;`).join('\n\t\t');
+        // TODO: enable DUO and DAO injections into QSchema, if needed
+        // const duoDefinitions = this.entityNames.map(
+        // 	entityName => `${entityName}: IBase${entityName}Duo;`
+        // ).join('\n\t\t');
+        // const daoDefinitions = this.entityNames.map(
+        // 	entityName => `${entityName}: IBase${entityName}Dao;`
+        // ).join('\n\t\t');
         const constructorDefinitions = this.entityNames.map(entityName => `${entityName}: ${entityName}`).join(',\n\t');
         const qEntityImports = this.entityNames.map(entityName => `import { ${entityName} } from '${this.ddlPathMapByEntityName[entityName]}';
 import { Q${entityName} } from '${this.generatedPathMapByEntityName[entityName]}';`).join('\n');
-        const iDuoImports = this.entityNames.map(entityName => `IBase${entityName}Duo`).join(',\n\t');
-        const iDaoImports = this.entityNames.map(entityName => `IBase${entityName}Dao`).join(',\n\t');
+        // const iDuoImports = this.entityNames.map(
+        // 	entityName =>
+        // 		`IBase${entityName}Duo`
+        // ).join(',\n\t');
+        // const iDaoImports = this.entityNames.map(
+        // 	entityName =>
+        // 		`IBase${entityName}Dao`
+        // ).join(',\n\t');
+        // import {
+        // 	${iDuoImports}
+        // } from './baseDuos';
+        //
+        // import {
+        // 	${iDaoImports}
+        // } from './baseDaos';
+        // duo: {
+        // 	${duoDefinitions}
+        // }
+        //
+        // dao: {
+        // 	${daoDefinitions}
+        // }
         return `import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
 ${qEntityImports}
-
-import {
-	${iDuoImports}
-} from './baseDuos';
-
-import {
-	${iDaoImports}
-} from './baseDaos';
 
 export interface LocalQSchema extends AirportQSchema {
 
   db: DbSchema;
 
-	duo: {
-		${duoDefinitions}
-	}
-
-	dao: {
-		${daoDefinitions}
-	}
-	
 	${qApiDefinitions}
 
 }
