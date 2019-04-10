@@ -21,62 +21,10 @@ import { QSchemaVersion } from './schema/qschemaversion';
 import { VersionedSchemaObject } from '../ddl/schema/versionedschemaobject';
 import { QVersionedSchemaObject } from './schema/qversionedschemaobject';
 
-import {
-	IBaseSchemaDuo,
-	IBaseSchemaColumnDuo,
-	IBaseSchemaEntityDuo,
-	IBaseSchemaPropertyDuo,
-	IBaseSchemaPropertyColumnDuo,
-	IBaseSchemaReferenceDuo,
-	IBaseSchemaRelationDuo,
-	IBaseSchemaRelationColumnDuo,
-	IBaseSchemaVersionDuo,
-	IBaseVersionedSchemaObjectDuo
-} from './baseDuos';
-
-import {
-	IBaseSchemaDao,
-	IBaseSchemaColumnDao,
-	IBaseSchemaEntityDao,
-	IBaseSchemaPropertyDao,
-	IBaseSchemaPropertyColumnDao,
-	IBaseSchemaReferenceDao,
-	IBaseSchemaRelationDao,
-	IBaseSchemaRelationColumnDao,
-	IBaseSchemaVersionDao,
-	IBaseVersionedSchemaObjectDao
-} from './baseDaos';
-
 export interface LocalQSchema extends AirportQSchema {
 
   db: DbSchema;
 
-	duo: {
-		Schema: IBaseSchemaDuo;
-		SchemaColumn: IBaseSchemaColumnDuo;
-		SchemaEntity: IBaseSchemaEntityDuo;
-		SchemaProperty: IBaseSchemaPropertyDuo;
-		SchemaPropertyColumn: IBaseSchemaPropertyColumnDuo;
-		SchemaReference: IBaseSchemaReferenceDuo;
-		SchemaRelation: IBaseSchemaRelationDuo;
-		SchemaRelationColumn: IBaseSchemaRelationColumnDuo;
-		SchemaVersion: IBaseSchemaVersionDuo;
-		VersionedSchemaObject: IBaseVersionedSchemaObjectDuo;
-	}
-
-	dao: {
-		Schema: IBaseSchemaDao;
-		SchemaColumn: IBaseSchemaColumnDao;
-		SchemaEntity: IBaseSchemaEntityDao;
-		SchemaProperty: IBaseSchemaPropertyDao;
-		SchemaPropertyColumn: IBaseSchemaPropertyColumnDao;
-		SchemaReference: IBaseSchemaReferenceDao;
-		SchemaRelation: IBaseSchemaRelationDao;
-		SchemaRelationColumn: IBaseSchemaRelationColumnDao;
-		SchemaVersion: IBaseSchemaVersionDao;
-		VersionedSchemaObject: IBaseVersionedSchemaObjectDao;
-	}
-	
 	Schema: QSchema;
 	SchemaColumn: QSchemaColumn;
 	SchemaEntity: QSchemaEntity;

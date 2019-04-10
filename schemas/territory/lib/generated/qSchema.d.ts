@@ -5,24 +5,8 @@ import { QApplicationPackage } from './qapplicationpackage';
 import { QDomain } from './qdomain';
 import { QPackage } from './qpackage';
 import { QPackagedUnit } from './qpackagedunit';
-import { IBaseApplicationDuo, IBaseApplicationPackageDuo, IBaseDomainDuo, IBasePackageDuo, IBasePackagedUnitDuo } from './baseDuos';
-import { IBaseApplicationDao, IBaseApplicationPackageDao, IBaseDomainDao, IBasePackageDao, IBasePackagedUnitDao } from './baseDaos';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
-    duo: {
-        Application: IBaseApplicationDuo;
-        ApplicationPackage: IBaseApplicationPackageDuo;
-        Domain: IBaseDomainDuo;
-        Package: IBasePackageDuo;
-        PackagedUnit: IBasePackagedUnitDuo;
-    };
-    dao: {
-        Application: IBaseApplicationDao;
-        ApplicationPackage: IBaseApplicationPackageDao;
-        Domain: IBaseDomainDao;
-        Package: IBasePackageDao;
-        PackagedUnit: IBasePackagedUnitDao;
-    };
     Application: QApplication;
     ApplicationPackage: QApplicationPackage;
     Domain: QDomain;

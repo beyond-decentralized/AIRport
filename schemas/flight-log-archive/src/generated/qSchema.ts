@@ -7,34 +7,10 @@ import { QLog } from './log/qlog';
 import { MonthlySyncLog } from '../ddl/monthlysynclog';
 import { QMonthlySyncLog } from './qmonthlysynclog';
 
-import {
-	IBaseDailySyncLogDuo,
-	IBaseLogDuo,
-	IBaseMonthlySyncLogDuo
-} from './baseDuos';
-
-import {
-	IBaseDailySyncLogDao,
-	IBaseLogDao,
-	IBaseMonthlySyncLogDao
-} from './baseDaos';
-
 export interface LocalQSchema extends AirportQSchema {
 
   db: DbSchema;
 
-	duo: {
-		DailySyncLog: IBaseDailySyncLogDuo;
-		Log: IBaseLogDuo;
-		MonthlySyncLog: IBaseMonthlySyncLogDuo;
-	}
-
-	dao: {
-		DailySyncLog: IBaseDailySyncLogDao;
-		Log: IBaseLogDao;
-		MonthlySyncLog: IBaseMonthlySyncLogDao;
-	}
-	
 	DailySyncLog: QDailySyncLog;
 	Log: QLog;
 	MonthlySyncLog: QMonthlySyncLog;

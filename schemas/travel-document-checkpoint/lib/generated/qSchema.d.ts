@@ -6,26 +6,8 @@ import { QTerminalAgt } from './qterminalagt';
 import { QUser } from './quser';
 import { QUserTerminal } from './quserterminal';
 import { QUserTerminalAgt } from './quserterminalagt';
-import { IBaseAgtDuo, IBaseTerminalDuo, IBaseTerminalAgtDuo, IBaseUserDuo, IBaseUserTerminalDuo, IBaseUserTerminalAgtDuo } from './baseDuos';
-import { IBaseAgtDao, IBaseTerminalDao, IBaseTerminalAgtDao, IBaseUserDao, IBaseUserTerminalDao, IBaseUserTerminalAgtDao } from './baseDaos';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
-    duo: {
-        Agt: IBaseAgtDuo;
-        Terminal: IBaseTerminalDuo;
-        TerminalAgt: IBaseTerminalAgtDuo;
-        User: IBaseUserDuo;
-        UserTerminal: IBaseUserTerminalDuo;
-        UserTerminalAgt: IBaseUserTerminalAgtDuo;
-    };
-    dao: {
-        Agt: IBaseAgtDao;
-        Terminal: IBaseTerminalDao;
-        TerminalAgt: IBaseTerminalAgtDao;
-        User: IBaseUserDao;
-        UserTerminal: IBaseUserTerminalDao;
-        UserTerminalAgt: IBaseUserTerminalAgtDao;
-    };
     Agt: QAgt;
     Terminal: QTerminal;
     TerminalAgt: QTerminalAgt;
