@@ -172,7 +172,7 @@ class SyncInChecker {
         // cannot yet be processed) for messages * that need to be upgraded to schema
         // versions present on this TM. * * Messages cannot yet be processed since messages
         // upgrades are done by the client * domain code and need to be sent over to those
-        // domains for upgrading. */ return this.syncInUtils.createSharingMessage(
+        // allDomains for upgrading. */ return this.syncInUtils.createSharingMessage(
         // dataMessageToBeUpgraded, SharingMessageProcessingStatus.NEEDS_DATA_UPGRADES,
         // true); }); const sharingMessagesWithCompatibleSchemasAndData =
         // dataMessagesWithCompatibleSchemasAndData.map(( sharingMessageWithCompatibleSchemas

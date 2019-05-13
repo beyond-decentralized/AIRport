@@ -1,17 +1,18 @@
+import {SchemaEntity} from '../../../../../schemas/traffic-pattern/src'
 import {
 	DatabaseForeignKey,
 	DatabaseManyToOneElements,
-	DatabaseOneToManyElements,
 	DatabaseObject,
+	DatabaseOneToManyElements,
 	EntityRelationType,
 	JsonDatabaseObject,
 	SQLDataType
-} from '../../index'
+}                     from '../../index'
 import {
 	DbEntity,
 	TableIndex
-}                    from './Entity'
-import {SchemaIndex} from './Schema'
+}                     from './Entity'
+import {SchemaIndex}  from './Schema'
 
 export type ColumnId = number;
 export type ColumnIndex = number;
@@ -34,7 +35,7 @@ export type SchemaColumnAllocationSize = number
  */
 export interface JsonSchemaProperty
 	extends SchemaReferenceByIndex<PropertyIndex>,
-					JsonDatabaseObject {
+	        JsonDatabaseObject {
 
 	/**
 	 * Does this property consist of @Id columns?
@@ -83,7 +84,7 @@ export class DbPropertyColumn {
  */
 export interface JsonSchemaColumn
 	extends SchemaReferenceByIndex<ColumnIndex>,
-					JsonDatabaseObject {
+	        JsonDatabaseObject {
 
 	/**
 	 * Verbatim DDL for the column (after the name of the column)
@@ -193,7 +194,7 @@ export interface PropertyReference
  */
 export interface JsonSchemaRelation
 	extends SchemaReferenceByIndex<RelationIndex>,
-					JsonDatabaseObject {
+	        JsonDatabaseObject {
 
 	/**
 	 * Foreign key definition, if provided by (R)JoinColumn(s)
@@ -222,7 +223,8 @@ export interface JsonSchemaRelation
 
 	/**
 	 * True if join automatically includes REPOSITORY_ID.
-	 * Not needed - all joins to and from Repository entities are automatically repository joins
+	 * Not needed - all joins to and from Repository entities are automatically repository
+	 * joins
 	 */
 	// isRepositoryJoin: boolean;
 
@@ -261,10 +263,12 @@ export interface DbRelation
 
 	id: RelationId
 
-	foreignKey: DatabaseForeignKey;
+	entity: SchemaEntity
+	foreignKey: DatabaseForeignKey
 	isId: boolean;
 	/**
-	 * Not needed - all joins to and from Repository entities are automatically repository joins
+	 * Not needed - all joins to and from Repository entities are automatically repository
+	 * joins
 	 */
 	// isRepositoryJoin: boolean;
 	manyRelationColumns: DbRelationColumn[];
@@ -280,11 +284,11 @@ export interface DbRelation
 }
 
 // export interface WhereJoinTableDeserialized {
-// 	// https://stackoverflow.com/questions/7395686/how-can-i-serialize-a-function-in-javascript
-// 	addToJoinFunction: AddToJoinFunction<any, any>, // Function to add to the join
-// 	joinFunctionWithOperator?: andOperator | orOperator // How to add the function to the join
-//
-// }
+// 	//
+// https://stackoverflow.com/questions/7395686/how-can-i-serialize-a-function-in-javascript
+// addToJoinFunction: AddToJoinFunction<any, any>, // Function to add to the join
+// joinFunctionWithOperator?: andOperator | orOperator // How to add the function to the
+// join  }
 
 export interface JsonSchemaRelationColumn
 	extends JsonDatabaseObject {

@@ -2,9 +2,7 @@ import {
 	IUtils,
 	UTILS
 }                               from '@airport/air-control'
-import {
-	DI
-}                               from '@airport/di'
+import {DI}                     from '@airport/di'
 import {
 	DomainId,
 	DomainName,
@@ -129,6 +127,7 @@ export class SyncInSchemaChecker
 		// 	// new Map();
 		// 	// if (foundDomainNames.length) {
 		// 	// 	maxVersionedMapBySchemaAndDomainNames =
+		// FIXME: use the store terminalStore.getLatestSchemaVersionMapBySchemaName
 		// 	await this.schemaVersionDao.findMaxVersionedMapBySchemaAndDomainNames(
 		// 		Array.from(schemaDomainNameSet), Array.from(schemaNameSet)
 		// 	)

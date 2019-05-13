@@ -32,6 +32,8 @@ const __constructors__ = {
 };
 
 export const Q_SCHEMA: LocalQSchema = <any>{
-	__constructors__
+	__constructors__,
+  domain: 'github.com',
+  name: '@airport/runway-edge-lighting'
 };
 export const Q: LocalQSchema = Q_SCHEMA;

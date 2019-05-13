@@ -34,7 +34,9 @@ export interface ITerminalStore {
 	getLatestSchemaVersionMapBySchemaName:
 		IMemoizedSelector<Map<SchemaName, ISchemaVersion>, ITerminalState>
 
-	getLatestSchemaVersionsByIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>
+	getAllSchemaVersionsByIds: IMemoizedSelector<ISchemaVersion[], ITerminalState>
+
+	getLatestSchemaVersionsBySchemaIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>
 
 	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>
 
@@ -105,18 +107,33 @@ export class TerminalStore
 		return latestSchemaVersionMapBySchemaName
 	})
 
-	getLatestSchemaVersionsByIndexes = createSelector(this.getDomains,
+	getAllSchemaVersionsByIds = createSelector(this.getDomains,
 		domains => {
-			const latestSchemaVersionsByNames:
+			const allSchemaVersionsByIds: ISchemaVersion[] = []
+
+			for (const domain of domains) {
+				for (const schema of domain.schemas) {
+					for (const schemaVersion of schema.versions) {
+						allSchemaVersionsByIds[schemaVersion.id] = schemaVersion
+					}
+				}
+			}
+
+			return allSchemaVersionsByIds
+		})
+
+	getLatestSchemaVersionsBySchemaIndexes = createSelector(this.getDomains,
+		domains => {
+			const latestSchemaVersionsBySchemaIndexes:
 				      ISchemaVersion[] = []
 
 			for (const domain of domains) {
 				for (const schema of domain.schemas) {
-					latestSchemaVersionsByNames[schema.index] = schema.currentVersion
+					latestSchemaVersionsBySchemaIndexes[schema.index] = schema.currentVersion
 				}
 			}
 
-			return latestSchemaVersionsByNames
+			return latestSchemaVersionsBySchemaIndexes
 		})
 
 	getSchemas = createSelector(this.getTerminalState,

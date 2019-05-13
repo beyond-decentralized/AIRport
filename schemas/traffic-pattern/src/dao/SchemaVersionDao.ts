@@ -1,20 +1,4 @@
-import {
-	and,
-	distinct,
-	field,
-	IQNumberField,
-	max,
-	RawFieldQuery,
-	tree,
-	Y
-}                          from '@airport/air-control'
 import {DI}                from '@airport/di'
-import {
-	DomainName,
-	SchemaIndex,
-	SchemaName
-}                          from '@airport/ground-control'
-import {QDomain}           from '@airport/territory'
 import {
 	SCHEMA_VERSION_DAO,
 	SCHEMA_VERSION_DUO
@@ -32,14 +16,7 @@ import {
 export interface ISchemaVersionDao
 	extends IBaseSchemaVersionDao {
 
-	findAllLatestForSchemaIndexes(
-		schemaIndexes: SchemaIndex[]
-	): Promise<ISchemaVersion[]>
-
-	findMaxVersionedMapBySchemaAndDomainNames(
-		schemaDomainNames: DomainName[],
-		schemaNames: SchemaName[]
-	): Promise<Map<DomainName, Map<SchemaName, ISchemaVersion>>>
+	findAllActiveOrderBySchemaIndexAndId(): Promise<ISchemaVersion[]>
 
 }
 
@@ -58,6 +35,7 @@ export class SchemaVersionDao
 			}, SCHEMA_VERSION_DUO)
 	}
 
+	/*
 	async findAllLatestForSchemaIndexes(
 		schemaIndexes: SchemaIndex[]
 	): Promise<ISchemaVersion[]> {
@@ -74,7 +52,27 @@ export class SchemaVersionDao
 			)
 		})
 	}
+	*/
 
+	async findAllActiveOrderBySchemaIndexAndId(): Promise<ISchemaVersion[]> {
+		let sv: QSchemaVersion
+		let s: QSchema
+
+		return await this.db.find.tree({
+			from: [
+				sv = Q.SchemaVersion,
+				s = sv.schema.innerJoin()
+			],
+			select: {},
+			where: s.removedInVersion.id.isNull(),
+			orderBy: [
+				sv.schema.index.asc(),
+				sv.id.desc()
+			]
+		})
+	}
+
+	/*
 	async findMaxVersionedMapBySchemaAndDomainNames(
 		schemaDomainNames: DomainName[],
 		schemaNames: SchemaName[]
@@ -146,6 +144,7 @@ export class SchemaVersionDao
 			select: svMax.id
 		})
 	}
+*/
 
 }
 

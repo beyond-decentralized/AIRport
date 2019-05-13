@@ -23,7 +23,9 @@ const __constructors__ = {
     VersionedSchemaObject: versionedschemaobject_1.VersionedSchemaObject
 };
 exports.Q_SCHEMA = {
-    __constructors__
+    __constructors__,
+    domain: 'github.com',
+    name: '@airport/traffic-pattern'
 };
 exports.Q = exports.Q_SCHEMA;
 //# sourceMappingURL=qSchema.js.map

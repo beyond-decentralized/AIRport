@@ -17,22 +17,22 @@ class QueryEntityClassCreator {
         schemasToCreate.map(dbSchema => this.create(dbSchema));
     }
     create(dbSchema) {
-        let qSchema = this.airDb.qSchemaMapByName[dbSchema.name];
+        let qSchema = this.airDb.QM[dbSchema.name];
         // If the Schema API source has already been loaded
         if (qSchema) {
             qSchema.__dbSchema__ = dbSchema;
-            qSchema.__injected__.__dbSchema__ = dbSchema;
-            air_control_1.setQSchemaEntities(dbSchema, qSchema.__injected__, this.airDb.qSchemas);
         }
         else {
             qSchema = {
                 __constructors__: {},
                 __qConstructors__: {},
-                __dbSchema__: dbSchema
+                __dbSchema__: dbSchema,
+                name: dbSchema.name,
+                domain: dbSchema.domain.name
             };
-            this.airDb.qSchemaMapByName[dbSchema.name] = qSchema;
+            this.airDb.QM[dbSchema.name] = qSchema;
         }
-        this.airDb.qSchemas[dbSchema.index] = qSchema;
+        this.airDb.Q[dbSchema.index] = qSchema;
         air_control_1.setQSchemaEntities(dbSchema, qSchema, this.airDb.qSchemas);
         return qSchema;
     }

@@ -59,6 +59,9 @@ export class EntityManager
 		dbEntity: DbEntity,
 		...entities: any[]
 	): void {
+		if(!entities) {
+			return
+		}
 		this.updateCache.addToCache(cacheForUpdate, dbEntity, ...entities)
 	}
 
@@ -67,6 +70,9 @@ export class EntityManager
 		dbEntity: DbEntity,
 		...entities: any[]
 	): void {
+		if(!entities) {
+			return
+		}
 		this.updateCache.dropFromCache(cacheForUpdate, dbEntity, ...entities)
 	}
 
@@ -89,6 +95,9 @@ export class EntityManager
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
+		if(!entity) {
+			return 0
+		}
 		return await transactional(async () =>
 			await this.performCreate(dbEntity, entity, [])
 		)
@@ -100,6 +109,9 @@ export class EntityManager
 		checkIfProcessed: boolean = true,
 		cascade: boolean          = false
 	): Promise<number> {
+		if(!entities || !entities.length) {
+			return 0
+		}
 		return await transactional(async () =>
 			await this.performBulkCreate(dbEntity, entities, [],
 				checkIfProcessed, cascade)
@@ -112,6 +124,9 @@ export class EntityManager
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		}
 	): Promise<number> {
+		if(!rawInsertColumnValues) {
+			return 0
+		}
 		if (rawInsertColumnValues instanceof Function) {
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
@@ -125,6 +140,9 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> }
 	): Promise<number> {
+		if(!rawInsertValues) {
+			return 0
+		}
 		if (rawInsertValues instanceof Function) {
 			rawInsertValues = rawInsertValues()
 		}
@@ -141,6 +159,9 @@ export class EntityManager
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		}
 	): Promise<number[] | string[]> {
+		if(!rawInsertColumnValues) {
+			return []
+		}
 		if (rawInsertColumnValues instanceof Function) {
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
@@ -156,6 +177,9 @@ export class EntityManager
 			(...args: any[]): RawInsertValues<IQE>;
 		}
 	): Promise<number[] | string[]> {
+		if(!rawInsertValues) {
+			return []
+		}
 		if (rawInsertValues instanceof Function) {
 			rawInsertValues = rawInsertValues()
 		}
@@ -171,6 +195,9 @@ export class EntityManager
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
+		if(!entity) {
+			return 0
+		}
 		return await transactional(async () =>
 			await this.performDelete(dbEntity, entity)
 		)
@@ -180,6 +207,9 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawDelete: RawDelete<IQE> | { (...args: any[]): RawDelete<IQE> }
 	): Promise<number> {
+		if(!rawDelete) {
+			return 0
+		}
 		if (rawDelete instanceof Function) {
 			rawDelete = rawDelete()
 		}
@@ -195,6 +225,9 @@ export class EntityManager
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
+		if(!entity) {
+			return 0
+		}
 		if (!dbEntity.idColumns.length) {
 			throw `@Id is not defined for entity: '${dbEntity.name}'.
 			Cannot call save(entity) on entities with no ids.`
@@ -228,6 +261,9 @@ export class EntityManager
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
+		if(!entity) {
+			return 0
+		}
 		return await transactional(async () =>
 			await this.performUpdate(dbEntity, entity, [])
 		)
@@ -244,6 +280,9 @@ export class EntityManager
 		rawUpdate: RawUpdateColumns<IEUC, IQE>
 			| { (...args: any[]): RawUpdateColumns<IEUC, IQE> }
 	): Promise<number> {
+		if(!rawUpdate) {
+			return 0
+		}
 		if (rawUpdate instanceof Function) {
 			rawUpdate = rawUpdate()
 		}
@@ -259,6 +298,9 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawUpdate: RawUpdate<IEUP, IQE> | { (...args: any[]): RawUpdate<IEUP, IQE> }
 	): Promise<number> {
+		if(!rawUpdate) {
+			return 0
+		}
 		if (rawUpdate instanceof Function) {
 			rawUpdate = rawUpdate()
 		}

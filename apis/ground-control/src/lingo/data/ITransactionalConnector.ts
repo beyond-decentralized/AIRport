@@ -36,6 +36,7 @@ export interface ITransactionalConnector {
 	insertValues(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
+		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number>;
 
 	insertValuesGetIds(

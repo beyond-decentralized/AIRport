@@ -18,7 +18,7 @@ __decorate([
     air_control_1.JoinColumn({ name: "DOMAIN_ID", referencedColumnName: "ID" })
 ], Application.prototype, "domain", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "APPLICATION_ID" })
+    air_control_1.OneToMany({ mappedBy: "application" })
 ], Application.prototype, "applicationPackages", void 0);
 Application = __decorate([
     air_control_1.Entity(),

@@ -48,4 +48,5 @@ export class Actor
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'ACTOR_ID'})
 	repositoryActor: IRepositoryActor[]
+
 }

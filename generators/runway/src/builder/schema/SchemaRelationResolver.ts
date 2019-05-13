@@ -132,6 +132,7 @@ export class SchemaRelationResolver {
 							relatedOneToMany =>
 								relatedOneToMany.oneToMany && relatedOneToMany.oneToMany.mappedBy === aProperty.name
 						)
+						// FIXME: right now there is no check on the One side of the relationship for mappedBy pointing to invalid location - add it
 						if (matchingRelatedOneToManys.length > 1) {
 							throw `Found more ${matchingRelatedOneToManys.length} matching @OneToMany for ${anEntity.name}.${aProperty.name}. Expecting 1 or 0.`
 						}

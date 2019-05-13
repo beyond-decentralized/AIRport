@@ -23,7 +23,7 @@ export interface SchemaHub {
 }
 export interface IAirportDatabase extends SchemaHub, FunctionAndOperatorHub {
     registerDatabase(facade: IDatabaseFacade): any;
-    registerSchema(qSchema: QSchema): any;
+    registerQSchemas(qSchemas: QSchema[]): any;
     setCurrentDb(dbName: string): any;
     getDbNames(): string[];
     getDbNameSet(): {
@@ -37,11 +37,10 @@ export interface IAirportDatabase extends SchemaHub, FunctionAndOperatorHub {
 }
 export interface QSchema {
     [name: string]: any;
+    domain: string;
+    name: string;
 }
-export interface QSchemaInternal {
-    __created__?: QSchemaInternal;
-    __exported__?: QSchemaInternal;
-    __injected__?: QSchemaInternal;
+export interface QSchemaInternal extends QSchema {
     __constructors__?: {
         [name: string]: EntityConstructor;
     };

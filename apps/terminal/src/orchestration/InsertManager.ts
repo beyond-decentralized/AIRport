@@ -55,6 +55,7 @@ export interface IInsertManager {
 	insertValues(
 		portableQuery: PortableQuery,
 		actor: IActor,
+		ensureGeneratedValues?: boolean
 	): Promise<number>;
 
 	insertValuesGetIds(
@@ -123,13 +124,14 @@ export class InsertManager
 	async insertValues(
 		portableQuery: PortableQuery,
 		actor: IActor,
+		ensureGeneratedValues?: boolean
 	): Promise<number> {
-		return <number><any>this.internalInsertValues(portableQuery, actor, false)
+		return <number><any>this.internalInsertValues(portableQuery, actor, false, ensureGeneratedValues)
 	}
 
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
-		actor: IActor,
+		actor: IActor
 	): Promise<RecordId[]> {
 		return <RecordId[]><any>this.internalInsertValues(
 			portableQuery, actor, true)
@@ -138,7 +140,8 @@ export class InsertManager
 	private async internalInsertValues(
 		portableQuery: PortableQuery,
 		actor: IActor,
-		getIds: boolean = false
+		getIds: boolean = false,
+		ensureGeneratedValues: boolean = true
 	): Promise<number | RecordId[]> {
 		const dbEntity = this.airDb.schemas[portableQuery.schemaIndex]
 			.currentVersion.entities[portableQuery.tableIndex]
@@ -148,7 +151,11 @@ export class InsertManager
 				<JsonInsertValues>portableQuery.jsonQuery)
 		}
 
-		const ids = await this.ensureGeneratedValues(dbEntity, <JsonInsertValues>portableQuery.jsonQuery)
+		let ids
+		if(ensureGeneratedValues) {
+			ids = await this.ensureGeneratedValues(dbEntity, <JsonInsertValues>portableQuery.jsonQuery)
+		}
+
 
 		if (!dbEntity.isLocal) {
 			await this.addInsertHistory(dbEntity, portableQuery, actor)
@@ -231,7 +238,6 @@ export class InsertManager
 			_ => values.length)
 		const generatedSequenceValues = this.seqGenerator.generateSequenceNumbers(
 			generatedColumns, numSequencesNeeded)
-
 
 		generatedColumns.forEach((
 			dbColumn,

@@ -144,7 +144,10 @@ export function watchFiles(
 		}
 		fs.writeFileSync(daoBuilder.daoListingFilePath, daoBuilder.build())
 		fs.writeFileSync(duoBuilder.daoListingFilePath, duoBuilder.build())
-		fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build())
+		fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build(
+			configuration.airport.domain,
+			indexedSchema.schema.name
+			))
 		fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build())
 
 		const mappedSuperclassBuilder = new MappedSuperclassBuilder(

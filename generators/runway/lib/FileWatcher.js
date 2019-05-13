@@ -98,7 +98,7 @@ function watchFiles(configuration, options, rootFileNames) {
         }
         fs.writeFileSync(daoBuilder.daoListingFilePath, daoBuilder.build());
         fs.writeFileSync(duoBuilder.daoListingFilePath, duoBuilder.build());
-        fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build());
+        fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build(configuration.airport.domain, indexedSchema.schema.name));
         fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
         const mappedSuperclassBuilder = new MappedSuperclassBuilder_1.MappedSuperclassBuilder(configuration, entityMapByName);
         const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';

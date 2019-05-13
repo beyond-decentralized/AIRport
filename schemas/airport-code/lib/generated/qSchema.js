@@ -9,7 +9,9 @@ const __constructors__ = {
     SequenceConsumer: sequenceconsumer_1.SequenceConsumer
 };
 exports.Q_SCHEMA = {
-    __constructors__
+    __constructors__,
+    domain: 'github.com',
+    name: '@airport/airport-code'
 };
 exports.Q = exports.Q_SCHEMA;
 //# sourceMappingURL=qSchema.js.map

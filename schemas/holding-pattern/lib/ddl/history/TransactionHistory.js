@@ -30,7 +30,7 @@ __decorate([
     air_control_1.DbNumber()
 ], TransactionHistory.prototype, "transactionType", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: 'repoTransHistory' })
+    air_control_1.OneToMany({ mappedBy: 'transactionHistory' })
 ], TransactionHistory.prototype, "repositoryTransactionHistories", void 0);
 __decorate([
     air_control_1.Transient()

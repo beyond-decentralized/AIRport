@@ -1,5 +1,5 @@
 import { DbColumn, DbEntity, DbProperty, DbSchema, SchemaIndex, TableIndex } from '@airport/ground-control';
-import { QSchema } from '../../lingo/AirportDatabase';
+import { QSchema, QSchemaInternal } from '../../lingo/AirportDatabase';
 import { IQEntityInternal } from '../../lingo/core/entity/Entity';
 import { IQBooleanField } from '../../lingo/core/field/BooleanField';
 import { IQDateField } from '../../lingo/core/field/DateField';
@@ -21,7 +21,7 @@ export declare function getQRelation(entity: DbEntity, property: DbProperty, q: 
 export declare function getQEntityConstructor(allQSchemas: QSchema[]): typeof QEntity;
 export declare function getQEntityIdRelationConstructor(): typeof QRelation;
 export declare function getQEntityIdFields(addToObject: any, entity: DbEntity, utils: IUtils, parentProperty?: DbProperty, relationColumnMap?: Map<DbColumn, DbColumn>): void;
-export declare function setQSchemaEntities(schema: DbSchema, qSchema: QSchema, allQSchemas: QSchema[]): void;
+export declare function setQSchemaEntities(schema: DbSchema, qSchema: QSchemaInternal, allQSchemas: QSchema[]): void;
 export interface DbSchemaWithDependencies {
     schema: DbSchema;
     dependencies: Set<SchemaIndex>;

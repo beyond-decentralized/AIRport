@@ -8,6 +8,7 @@ __export(require("./builder/sqlite/SqLiteSchemaBuilder"));
 __export(require("./builder/SqlSchemaBuilder"));
 __export(require("./checker/SchemaChecker"));
 __export(require("./locator/SchemaLocator"));
+__export(require("./recorder/SchemaComposer"));
 __export(require("./recorder/SchemaRecorder"));
 __export(require("./diTokens"));
 __export(require("./SchemaInitializer"));

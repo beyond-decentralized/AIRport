@@ -41,7 +41,9 @@ const __constructors__ = {
     UserRepository: userrepository_1.UserRepository
 };
 exports.Q_SCHEMA = {
-    __constructors__
+    __constructors__,
+    domain: 'github.com',
+    name: '@airport/guideway'
 };
 exports.Q = exports.Q_SCHEMA;
 //# sourceMappingURL=qSchema.js.map

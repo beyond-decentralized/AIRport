@@ -57,21 +57,21 @@ export class QueryEntityClassCreator
 	create(
 		dbSchema: DbSchema
 	): QSchema {
-		let qSchema: QSchemaInternal = this.airDb.qSchemaMapByName[dbSchema.name]
+		let qSchema: QSchemaInternal = this.airDb.QM[dbSchema.name] as QSchemaInternal
 		// If the Schema API source has already been loaded
 		if (qSchema) {
-			qSchema.__dbSchema__              = dbSchema
-			qSchema.__injected__.__dbSchema__ = dbSchema
-			setQSchemaEntities(dbSchema, qSchema.__injected__, this.airDb.qSchemas)
+			qSchema.__dbSchema__ = dbSchema
 		} else {
-			qSchema                                    = {
+			qSchema                      = {
 				__constructors__: {},
 				__qConstructors__: {},
-				__dbSchema__: dbSchema
+				__dbSchema__: dbSchema,
+				name: dbSchema.name,
+				domain: dbSchema.domain.name
 			}
-			this.airDb.qSchemaMapByName[dbSchema.name] = qSchema
+			this.airDb.QM[dbSchema.name] = qSchema
 		}
-		this.airDb.qSchemas[dbSchema.index] = qSchema
+		this.airDb.Q[dbSchema.index] = qSchema
 		setQSchemaEntities(dbSchema, qSchema, this.airDb.qSchemas)
 
 		return qSchema

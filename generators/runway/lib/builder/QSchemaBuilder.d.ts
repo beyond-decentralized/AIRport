@@ -9,5 +9,5 @@ export declare class QSchemaBuilder implements IQBuilder {
     private generatedPathMapByEntityName;
     constructor(pathBuilder: PathBuilder);
     addFileNameAndPaths(entityName: string, fullDdlPath: string, fullGenerationPath: string): void;
-    build(): string;
+    build(domainName: string, schemaName: string): string;
 }

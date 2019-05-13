@@ -21,7 +21,7 @@ class QSchemaBuilder {
             = this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath);
         this.entityNames.push(entityName);
     }
-    build() {
+    build(domainName, schemaName) {
         this.entityNames.sort();
         this.generatedFilePaths.sort();
         const qApiDefinitions = this.entityNames.map(entityName => `${entityName}: Q${entityName};`).join('\n\t');
@@ -74,7 +74,9 @@ const __constructors__ = {
 };
 
 export const Q_SCHEMA: LocalQSchema = <any>{
-	__constructors__
+	__constructors__,
+  domain: '${domainName}',
+  name: '${schemaName}'
 };
 export const Q: LocalQSchema = Q_SCHEMA;
 `;

@@ -142,10 +142,11 @@ export abstract class OperationManager
 		entities: E[],
 		createdEntityMap: { [entityId: string]: any }[][],
 		checkIfProcessed: boolean = true,
-		cascadeAlways: boolean    = false
+		cascadeAlways: boolean    = false,
+		ensureGeneratedValues: boolean = true // For internal use only
 	): Promise<number> {
 		let result = await this.internalCreate(dbEntity, entities,
-			createdEntityMap, checkIfProcessed, cascadeAlways)
+			createdEntityMap, checkIfProcessed, cascadeAlways, ensureGeneratedValues)
 		await this.cascadeOnPersist(result.cascadeRecords, dbEntity,
 			createdEntityMap, cascadeAlways)
 
@@ -157,7 +158,8 @@ export abstract class OperationManager
 		entities: E[],
 		createdEntityMap: { [entityId: string]: any }[][],
 		checkIfProcessed: boolean,
-		cascadeAlways = false
+		cascadeAlways = false,
+		ensureGeneratedValues?: boolean
 	): Promise<ResultWithCascade> {
 		const qEntity = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
 
@@ -243,7 +245,7 @@ export abstract class OperationManager
 
 		if (rawInsert.values.length) {
 			const generatedProperty = this.getGeneratedProperty(dbEntity)
-			if (generatedProperty) {
+			if (generatedProperty && ensureGeneratedValues) {
 				const generatedIds = await this.internalInsertValuesGetIds(dbEntity, rawInsert)
 				for (let i = 0; i < entities.length; i++) {
 					const entity                   = entities[i]
@@ -252,7 +254,7 @@ export abstract class OperationManager
 				}
 			} else {
 				numberOfAffectedRecords = await
-					this.internalInsertValues(dbEntity, rawInsert)
+					this.internalInsertValues(dbEntity, rawInsert, ensureGeneratedValues)
 			}
 		}
 
@@ -319,13 +321,14 @@ export abstract class OperationManager
 
 	protected async internalInsertValues<IQE extends IQEntity>(
 		dbEntity: DbEntity,
-		rawInsertValues: RawInsertValues<IQE>
+		rawInsertValues: RawInsertValues<IQE>,
+		ensureGeneratedValues?: boolean
 	): Promise<number> {
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null)
 
-		return await this.transactionClient.insertValues(portableQuery)
+		return await this.transactionClient.insertValues(portableQuery, undefined, ensureGeneratedValues)
 	}
 
 	protected async internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(

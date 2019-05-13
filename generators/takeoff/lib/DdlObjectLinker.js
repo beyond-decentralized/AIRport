@@ -4,17 +4,16 @@ const di_1 = require("@airport/di");
 const diTokens_1 = require("./diTokens");
 class DdlObjectLinker {
     link(ddlObjects) {
-        const { columns, domains, entities, latestSchemaVersions, properties, propertyColumns, relationColumns, relations, schemaReferences, schemas } = ddlObjects;
-        const schemaVersionMapById = this.linkDomainsAndSchemasAndVersions(domains, schemas, latestSchemaVersions, schemaReferences);
-        const entityMapById = this.linkEntities(schemaVersionMapById, entities);
-        const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(entityMapById, properties, relations);
-        this.linkColumns(entityMapById, propertyMapById, relationMapById, columns, propertyColumns, relationColumns);
+        const { allSchemaVersionsByIds, columns, domains, entities, latestSchemaVersions, properties, propertyColumns, relationColumns, relations, schemaReferences, schemas } = ddlObjects;
+        this.linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, domains, schemas, latestSchemaVersions, schemaReferences);
+        const entityMapById = this.linkEntities(allSchemaVersionsByIds, entities);
+        const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(properties, relations);
+        this.linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns);
     }
-    linkDomainsAndSchemasAndVersions(domains, schemas, latestSchemaVersions, schemaReferences) {
+    linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, domains, schemas, latestSchemaVersions, schemaReferences) {
         const domainMapById = new Map();
         domains.forEach((domain) => {
             domainMapById.set(domain.id, domain);
-            domain.schemas = [];
         });
         const schemaMapByIndex = new Map();
         schemas.forEach((schema) => {
@@ -23,9 +22,7 @@ class DdlObjectLinker {
             schema.domain = domain;
             domain.schemas.push(schema);
         });
-        const schemaVersionMapById = new Map();
         latestSchemaVersions.forEach((schemaVersion) => {
-            schemaVersionMapById.set(schemaVersion.id, schemaVersion);
             const schema = schemaMapByIndex.get(schemaVersion.schema.index);
             schema.currentVersion = schemaVersion;
             schema.versions = [schemaVersion];
@@ -38,8 +35,8 @@ class DdlObjectLinker {
             schemaVersion.referencedByMapByName = {};
         });
         schemaReferences.forEach((schemaReference) => {
-            const ownSchemaVersion = schemaVersionMapById.get(schemaReference.ownSchemaVersion.id);
-            const referencedSchemaVersion = schemaVersionMapById.get(schemaReference.referencedSchemaVersion.id);
+            const ownSchemaVersion = allSchemaVersionsByIds[schemaReference.ownSchemaVersion.id];
+            const referencedSchemaVersion = allSchemaVersionsByIds[schemaReference.referencedSchemaVersion.id];
             ownSchemaVersion.references[schemaReference.index] = schemaReference;
             ownSchemaVersion.referencesMapByName[referencedSchemaVersion.schema.name]
                 = schemaReference;
@@ -49,17 +46,15 @@ class DdlObjectLinker {
             schemaReference.ownSchemaVersion = ownSchemaVersion;
             schemaReference.referencedSchemaVersion = referencedSchemaVersion;
         });
-        return schemaVersionMapById;
     }
-    linkEntities(schemaVersionMapById, entities) {
-        const entityMapById = new Map();
+    linkEntities(allSchemaVersionsByIds, entities // All of the entities of newly created schemas
+    // from the latest available versions
+    ) {
         entities.forEach((entity) => {
-            const schemaVersion = schemaVersionMapById.get(entity.schemaVersion.id);
+            const schemaVersion = allSchemaVersionsByIds[entity.schemaVersion.id];
             entity.schemaVersion = schemaVersion;
-            schemaVersion.entities[entity.index]
-                = entity;
-            schemaVersion.entityMapByName[entity.name]
-                = entity;
+            schemaVersion.entities[entity.index] = entity;
+            schemaVersion.entityMapByName[entity.name] = entity;
             entity.columns = [];
             entity.properties = [];
             entity.relations = [];
@@ -68,14 +63,13 @@ class DdlObjectLinker {
             entity.idColumns = [];
             entity.idColumnMap = {};
             entity.propertyMap = {};
-            entityMapById.set(entity.id, entity);
         });
-        return entityMapById;
     }
-    linkPropertiesAndRelations(entityMapById, properties, relations) {
+    linkPropertiesAndRelations(properties, relations) {
         const propertyMapById = new Map();
         properties.forEach((property) => {
-            const entity = entityMapById.get(property.entity.id);
+            // Entity is already property wired in
+            const entity = property.entity;
             entity.properties[property.index] = property;
             entity.propertyMap[property.name] = property;
             property.entity = entity;
@@ -84,9 +78,9 @@ class DdlObjectLinker {
         });
         const relationMapById = new Map();
         relations.forEach((relation) => {
-            const entity = entityMapById.get(relation.entity.id);
+            const entity = relation.entity;
             entity.relations[relation.index] = relation;
-            const relationEntity = entityMapById.get(relation.relationEntity.id);
+            const relationEntity = relation.relationEntity;
             relationEntity.relationReferences.push(relation);
             const property = propertyMapById.get(relation.id);
             relation.property = property;
@@ -95,17 +89,18 @@ class DdlObjectLinker {
             relation.relationEntity = relationEntity;
             relation.manyRelationColumns = [];
             relation.oneRelationColumns = [];
+            relationMapById.set(relation.id, relation);
         });
         return {
             propertyMapById,
             relationMapById
         };
     }
-    linkColumns(entityMapById, propertyMapById, relationMapById, columns, propertyColumns, relationColumns) {
+    linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns) {
         const columnMapById = new Map();
         columns.forEach((column) => {
             columnMapById.set(column.id, column);
-            const entity = entityMapById.get(column.entity.id);
+            const entity = column.entity;
             entity.columns[column.index] = column;
             entity.columnMap[column.name] = column;
             if (column.idIndex || column.idIndex === 0) {
@@ -127,10 +122,16 @@ class DdlObjectLinker {
             manyColumn.manyRelationColumns.push(relationColumn);
             const oneColumn = columnMapById.get(relationColumn.oneColumn.id);
             oneColumn.oneRelationColumns.push(relationColumn);
-            const manyRelation = relationMapById.get(relationColumn.manyRelation.id);
-            manyRelation.manyRelationColumns.push(relationColumn);
-            const oneRelation = relationMapById.get(relationColumn.oneRelation.id);
-            oneRelation.oneRelationColumns.push(relationColumn);
+            let manyRelation;
+            if (relationColumn.manyRelation) {
+                manyRelation = relationMapById.get(relationColumn.manyRelation.id);
+                manyRelation.manyRelationColumns.push(relationColumn);
+            }
+            let oneRelation;
+            if (relationColumn.oneRelation) {
+                oneRelation = relationMapById.get(relationColumn.oneRelation.id);
+                oneRelation.oneRelationColumns.push(relationColumn);
+            }
             relationColumn.manyColumn = manyColumn;
             relationColumn.manyRelation = manyRelation;
             relationColumn.oneColumn = oneColumn;

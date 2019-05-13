@@ -37,7 +37,9 @@ const __constructors__ = {
     SynchronizationConflictValues: synchronizationconflictvalues_1.SynchronizationConflictValues
 };
 exports.Q_SCHEMA = {
-    __constructors__
+    __constructors__,
+    domain: 'github.com',
+    name: '@airport/moving-walkway'
 };
 exports.Q = exports.Q_SCHEMA;
 //# sourceMappingURL=qSchema.js.map

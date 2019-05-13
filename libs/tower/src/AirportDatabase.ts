@@ -9,9 +9,12 @@ import {
 	INonEntitySearch,
 	INonEntitySearchOne,
 	QSchema
-}                 from '@airport/air-control'
-import {DI}       from '@airport/di'
-import {DbSchema} from '@airport/ground-control'
+}           from '@airport/air-control'
+import {DI} from '@airport/di'
+import {
+	DB_SCHEMA_UTILS,
+	DbSchema
+}           from '@airport/ground-control'
 
 export class AirportDatabase
 	implements IAirportDatabase {
@@ -48,10 +51,15 @@ export class AirportDatabase
 		this.dbNameSet[facade.name]   = true
 	}
 
-	registerSchema(
-		qSchema: QSchema
-	): void {
-		this.schemaTuples.push([schema, qSchema])
+	async registerQSchemas(
+		qSchemas: QSchema[]
+	) {
+		for (const qSchema of qSchemas) {
+			const schemaName = (await DI.getP(DB_SCHEMA_UTILS)).getSchemaNameFromDomainAndJsonSchemaNames(
+				qSchema.domain, qSchema.name
+			)
+			this.QM[schemaName] = qSchema
+		}
 	}
 
 	setCurrentDb(

@@ -1009,7 +1009,7 @@ export class Container
 			// Reduce the amount of necessary work in the happy path, which
 			// should be the bulk of the lifetime of the application (after
 			// initialization)
-			successCallback(objects)
+			this.returnObjects(objects, returnArray, successCallback)
 		} else if (tokens.every(
 			token => {
 				const clazz = this.classes[token as any]
@@ -1060,8 +1060,8 @@ export class Container
 				+ firstErrorClass.name)
 			errorCallback(firstErrorClass)
 		} else if (firstDiNotSetClass) {
-			console.log('Dependency Injection is not ready for class: '
-				+ firstDiNotSetClass.name + '. Delaying injection by 100ms')
+			// console.log('Dependency Injection is not ready for class: '
+			// 	+ firstDiNotSetClass.name + '. Delaying injection by 100ms')
 			setTimeout(() => {
 				this.getSync(
 					tokens,
@@ -1071,15 +1071,23 @@ export class Container
 				)
 			}, 100)
 		} else {
-			if (returnArray) {
-				if (objects.length > 1) {
-					successCallback(objects)
-				} else {
-					successCallback(objects[0])
-				}
+			this.returnObjects(objects, returnArray, successCallback)
+		}
+	}
+
+	private returnObjects(
+		objects,
+		returnArray,
+		successCallback
+	): void {
+		if (returnArray) {
+			if (objects.length > 1) {
+				successCallback(objects)
 			} else {
-				successCallback(...objects)
+				successCallback(objects[0])
 			}
+		} else {
+			successCallback(...objects)
 		}
 	}
 

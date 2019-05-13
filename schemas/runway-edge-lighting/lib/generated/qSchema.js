@@ -13,7 +13,9 @@ const __constructors__ = {
     LoggedErrorStackTrace: loggederrorstacktrace_1.LoggedErrorStackTrace
 };
 exports.Q_SCHEMA = {
-    __constructors__
+    __constructors__,
+    domain: 'github.com',
+    name: '@airport/runway-edge-lighting'
 };
 exports.Q = exports.Q_SCHEMA;
 //# sourceMappingURL=qSchema.js.map

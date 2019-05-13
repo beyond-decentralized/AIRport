@@ -9,7 +9,10 @@ import {
 	SQLDataType,
 	TableIndex
 }                           from '@airport/ground-control'
-import {QSchema}            from '../../lingo/AirportDatabase'
+import {
+	QSchema,
+	QSchemaInternal
+}                           from '../../lingo/AirportDatabase'
 import {IQEntityInternal}   from '../../lingo/core/entity/Entity'
 import {IQBooleanField}     from '../../lingo/core/field/BooleanField'
 import {IQDateField}        from '../../lingo/core/field/DateField'
@@ -136,7 +139,7 @@ export function getQEntityIdRelationConstructor(): typeof QRelation {
 	) {
 		(<any>QEntityIdRelation).base.constructor.call(this, relation, qEntity)
 
-		getQEntityIdFields(this, entity, utils);
+		getQEntityIdFields(this, entity, utils)
 
 		// (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
 	}
@@ -198,7 +201,7 @@ export function getQEntityIdFields(
 
 export function setQSchemaEntities(
 	schema: DbSchema,
-	qSchema: QSchema,
+	qSchema: QSchemaInternal,
 	allQSchemas: QSchema[]
 ) {
 	const entities = orderEntitiesByIdDependencies(schema.currentVersion.entities)
@@ -215,13 +218,20 @@ export function setQSchemaEntities(
 			if (idColumn.manyRelationColumns
 				&& idColumn.manyRelationColumns.length) {
 				const idRelation     = idColumn.manyRelationColumns[0].oneRelation
-				const relatedEntity  = idRelation.relationEntity
+				const relatedEntity  = idRelation.entity
 				const relatedQSchema = allQSchemas[relatedEntity.schemaVersion.schema.index]
 				if (!relatedQSchema) {
 					throw new Error(`QSchema not yet initialized for ID relation:
 					${entity.name}.${idRelation.property.name}
 					`)
 				}
+
+				if (relatedEntity.id === idRelation.relationEntity.id
+					&& relatedEntity.schemaVersion.schema.index
+					=== idRelation.relationEntity.schemaVersion.schema.index) {
+					continue
+				}
+
 				const relatedQEntityConstructor = qSchema.__qConstructors__[relatedEntity.index]
 				if (!relatedQEntityConstructor) {
 					throw new Error(`QEntity not yet initialized for ID relation:
@@ -232,6 +242,7 @@ export function setQSchemaEntities(
 		}
 	})
 
+	qSchema.__qIdRelationConstructors__ = []
 	entities.forEach((
 		entity: DbEntity
 	) => {
@@ -241,6 +252,7 @@ export function setQSchemaEntities(
 
 	// TODO: compute many-to-many relations
 
+	qSchema.__qConstructors__ = []
 	entities.forEach((
 		entity: DbEntity
 	) => {

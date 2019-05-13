@@ -36,14 +36,25 @@ class TerminalStore {
             }
             return latestSchemaVersionMapBySchemaName;
         });
-        this.getLatestSchemaVersionsByIndexes = check_in_1.createSelector(this.getDomains, domains => {
-            const latestSchemaVersionsByNames = [];
+        this.getAllSchemaVersionsByIds = check_in_1.createSelector(this.getDomains, domains => {
+            const allSchemaVersionsByIds = [];
             for (const domain of domains) {
                 for (const schema of domain.schemas) {
-                    latestSchemaVersionsByNames[schema.index] = schema.currentVersion;
+                    for (const schemaVersion of schema.versions) {
+                        allSchemaVersionsByIds[schemaVersion.id] = schemaVersion;
+                    }
                 }
             }
-            return latestSchemaVersionsByNames;
+            return allSchemaVersionsByIds;
+        });
+        this.getLatestSchemaVersionsBySchemaIndexes = check_in_1.createSelector(this.getDomains, domains => {
+            const latestSchemaVersionsBySchemaIndexes = [];
+            for (const domain of domains) {
+                for (const schema of domain.schemas) {
+                    latestSchemaVersionsBySchemaIndexes[schema.index] = schema.currentVersion;
+                }
+            }
+            return latestSchemaVersionsBySchemaIndexes;
         });
         this.getSchemas = check_in_1.createSelector(this.getTerminalState, terminal => terminal.schemas);
         di_1.DI.get(utils => {

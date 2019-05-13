@@ -8,7 +8,7 @@ export interface ITransactionalConnector {
     findOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<E>;
-    insertValues(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
+    insertValues(portableQuery: PortableQuery, transactionIndex?: number, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, transactionIndex?: number): Promise<number[] | string[]>;
     updateValues(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;

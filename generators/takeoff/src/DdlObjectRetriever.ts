@@ -1,6 +1,4 @@
-import {
-	DI
-}                             from '@airport/di'
+import {DI}                   from '@airport/di'
 import {
 	DomainId,
 	SchemaIndex,
@@ -19,6 +17,7 @@ import {
 	ISchemaReferenceDao,
 	ISchemaRelationColumnDao,
 	ISchemaRelationDao,
+	ISchemaVersion,
 	ISchemaVersionDao,
 	SCHEMA_COLUMN_DAO,
 	SCHEMA_DAO,
@@ -67,10 +66,8 @@ export class DdlObjectRetriever
 		this.schemaVersionDao        = DI.getP(SCHEMA_VERSION_DAO)
 	}
 
-	async retrieveDdlObjects()
-		: Promise<DdlObjects> {
-		const schemas                      = await (await this.schemaDao)
-			.findAllActive()
+	async retrieveDdlObjects(): Promise<DdlObjects> {
+		const schemas                      = await (await this.schemaDao).findAllActive()
 		const schemaIndexes: SchemaIndex[] = []
 		const domainIdSet: Set<DomainId>   = new Set()
 		schemas.forEach(
@@ -85,13 +82,25 @@ export class DdlObjectRetriever
 			return schema1.index - schema2.index
 		})
 
-		const domains = await (await this.domainDao)
-			.findByIdIn(Array.from(domainIdSet))
+		const domains = await (await this.domainDao).findByIdIn(Array.from(domainIdSet))
 
-		const latestSchemaVersions   = await (await this.schemaVersionDao)
-			.findAllLatestForSchemaIndexes(schemaIndexes)
+		const allSchemaVersions = await (await this.schemaVersionDao)
+			.findAllActiveOrderBySchemaIndexAndId()
+
+		let lastSchemaIndex: SchemaIndex
+		const latestSchemaVersions: ISchemaVersion[]   = []
+		const allSchemaVersionsByIds: ISchemaVersion[] = []
+		for (const schemaVersion of allSchemaVersions) {
+			if (schemaVersion.schema.index !== lastSchemaIndex) {
+				latestSchemaVersions.push(schemaVersion)
+			}
+			allSchemaVersionsByIds[schemaVersion.id] = schemaVersion
+			lastSchemaIndex                          = schemaVersion.schema.index
+		}
+
 		const latestSchemaVersionIds = latestSchemaVersions.map(
 			schemaVersion => schemaVersion.id)
+
 
 		const schemaReferences = await (await this.schemaReferenceDao)
 			.findAllForSchemaVersions(latestSchemaVersionIds)
@@ -121,6 +130,7 @@ export class DdlObjectRetriever
 			.findAllForColumns(columnIds)
 
 		return {
+			allSchemaVersionsByIds,
 			columns,
 			domains,
 			entities,

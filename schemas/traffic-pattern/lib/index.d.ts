@@ -1,7 +1,5 @@
 import { QSchemaInternal } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
-import { NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos } from './dao/dao';
-import { NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Duos } from './duo/duo';
 import { LocalQSchema } from './generated/qSchema';
 import { QSchema } from './generated/schema/qschema';
 import { QSchemaColumn } from './generated/schema/qschemacolumn';
@@ -35,8 +33,6 @@ export declare class AtAirport_TrafficPattern_QSchema implements NPMJS_ORG___AIR
     SchemaRelationColumn: QSchemaRelationColumn;
     SchemaVersion: QSchemaVersion;
     VersionedSchemaObject: QVersionedSchemaObject;
-    dao: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos;
-    duo: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Duos;
     constructor();
     private init;
 }

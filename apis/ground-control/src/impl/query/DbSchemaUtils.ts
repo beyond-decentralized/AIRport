@@ -41,11 +41,16 @@ export class DbSchemaUtils
 		domainName: DomainName,
 		jsonSchemaName: JsonSchemaName
 	): string {
-		const domainPrefix = domainName.replace(/\./g, '_')
+		let domainPrefix = ''
+		if (domainName != 'npmjs.org') {
+			domainPrefix = domainName
+				.replace(/\./g, '_')
+				.replace(/-/g, '_')
+		}
 
 		const schemaPrefix = jsonSchemaName
 			.replace(/@/g, '_')
-			.replace(/\//g, '_')
+			.replace(/\//g, '__')
 			.replace(/-/g, '_')
 
 		return `${domainPrefix}__${schemaPrefix}`

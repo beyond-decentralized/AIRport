@@ -142,6 +142,7 @@ export interface IDatabaseFacade {
 		entities: E[],
 		checkIfProcessed: boolean, // defaults to true
 		cascade: boolean, // defaults to false
+		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema creation
 	): Promise<number>;
 
 	insertColumnValues<IQE extends IQEntity>(

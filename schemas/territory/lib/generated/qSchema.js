@@ -13,7 +13,9 @@ const __constructors__ = {
     PackagedUnit: packagedunit_1.PackagedUnit
 };
 exports.Q_SCHEMA = {
-    __constructors__
+    __constructors__,
+    domain: 'github.com',
+    name: '@airport/territory'
 };
 exports.Q = exports.Q_SCHEMA;
 //# sourceMappingURL=qSchema.js.map

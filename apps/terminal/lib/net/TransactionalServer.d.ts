@@ -48,7 +48,7 @@ export declare class TransactionalServer implements IInternalTransactionalConnec
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<E>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy): Promise<number>;
-    insertValues(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
+    insertValues(portableQuery: PortableQuery, transactionIndex?: number, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, transactionIndex?: number): Promise<number[] | string[]>;
     updateValues(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;

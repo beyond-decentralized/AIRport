@@ -913,6 +913,7 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 6,
+                                    "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -1212,7 +1213,7 @@ exports.SCHEMA = {
                             "index": 0,
                             "isId": false,
                             "oneToManyElems": {
-                                "mappedBy": "repoTransHistory"
+                                "mappedBy": "transactionHistory"
                             },
                             "relationType": 0,
                             "propertyRef": {

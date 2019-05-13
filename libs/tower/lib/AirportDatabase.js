@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 class AirportDatabase {
     constructor() {
         this.schemas = [];
@@ -21,8 +22,11 @@ class AirportDatabase {
         this.databaseMap[facade.name] = facade;
         this.dbNameSet[facade.name] = true;
     }
-    registerSchema(qSchema) {
-        this.schemaTuples.push([schema, qSchema]);
+    async registerQSchemas(qSchemas) {
+        for (const qSchema of qSchemas) {
+            const schemaName = (await di_1.DI.getP(ground_control_1.DB_SCHEMA_UTILS)).getSchemaNameFromDomainAndJsonSchemaNames(qSchema.domain, qSchema.name);
+            this.QM[schemaName] = qSchema;
+        }
     }
     setCurrentDb(dbName = air_control_1.dbConst.DEFAULT_DB) {
         this.currentDbName = dbName;

@@ -15,7 +15,9 @@ const __constructors__ = {
     UserTerminalAgt: userterminalagt_1.UserTerminalAgt
 };
 exports.Q_SCHEMA = {
-    __constructors__
+    __constructors__,
+    domain: 'github.com',
+    name: '@airport/travel-document-checkpoint'
 };
 exports.Q = exports.Q_SCHEMA;
 //# sourceMappingURL=qSchema.js.map

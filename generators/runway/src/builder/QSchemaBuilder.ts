@@ -34,7 +34,10 @@ export class QSchemaBuilder
 		this.entityNames.push(entityName)
 	}
 
-	build(): string {
+	build(
+		domainName: string,
+		schemaName: string
+	): string {
 		this.entityNames.sort()
 		this.generatedFilePaths.sort()
 
@@ -100,7 +103,9 @@ const __constructors__ = {
 };
 
 export const Q_SCHEMA: LocalQSchema = <any>{
-	__constructors__
+	__constructors__,
+  domain: '${domainName}',
+  name: '${schemaName}'
 };
 export const Q: LocalQSchema = Q_SCHEMA;
 `

@@ -1,7 +1,4 @@
-import {
-	DbSchema,
-	JsonSchema
-}                              from '@airport/ground-control'
+import {DbSchema}              from '@airport/ground-control'
 import {QRelation}             from '..'
 import {QEntityConstructor}    from '../impl/core/entity/Entity'
 import {EntityConstructor}     from './core/entity/Entity'
@@ -37,39 +34,38 @@ export interface IAirportDatabase
 
 	registerDatabase(
 		facade: IDatabaseFacade
-	);
+	)
 
-	registerSchema(
-		qSchema: QSchema
-	);
+	registerQSchemas(
+		qSchemas: QSchema[]
+	)
 
-	setCurrentDb(dbName: string);
+	setCurrentDb(dbName: string)
 
-	getDbNames(): string[];
+	getDbNames(): string[]
 
-	getDbNameSet(): { [databaseName: string]: boolean };
+	getDbNameSet(): { [databaseName: string]: boolean }
 
-	db: IDatabaseFacade;
+	db: IDatabaseFacade
 
-	find: INonEntityFind;
+	find: INonEntityFind
 
-	findOne: INonEntityFindOne;
+	findOne: INonEntityFindOne
 
-	search: INonEntitySearch;
+	search: INonEntitySearch
 
-	searchOne: INonEntitySearchOne;
+	searchOne: INonEntitySearchOne
 
 }
 
 export interface QSchema {
 	[name: string]: any;
 
+	domain: string;
+	name: string;
 }
 
-export interface QSchemaInternal {
-	__created__?: QSchemaInternal
-	__exported__?: QSchemaInternal
-	__injected__?: QSchemaInternal
+export interface QSchemaInternal extends QSchema {
 	__constructors__?: { [name: string]: EntityConstructor }
 	__qConstructors__?: { [name: string]: QEntityConstructor };
 	__qIdRelationConstructors__?: typeof QRelation[];

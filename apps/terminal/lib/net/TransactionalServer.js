@@ -69,9 +69,10 @@ class TransactionalServer {
     async addRepository(name, url, platform, platformConfig, distributionStrategy) {
         return this.insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
-    async insertValues(portableQuery, transactionIndex) {
+    async insertValues(portableQuery, transactionIndex, ensureGeneratedValues // for internal use only
+    ) {
         const actor = await this.getActor(portableQuery);
-        return await this.wrapInTransaction(async () => await this.insertManager.insertValues(portableQuery, actor), 'INSERT', transactionIndex);
+        return await this.wrapInTransaction(async () => await this.insertManager.insertValues(portableQuery, actor, ensureGeneratedValues), 'INSERT', transactionIndex);
     }
     async insertValuesGetIds(portableQuery, transactionIndex) {
         const actor = await this.getActor(portableQuery);

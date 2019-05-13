@@ -42,6 +42,7 @@ class SyncInSchemaChecker {
         // 	// new Map();
         // 	// if (foundDomainNames.length) {
         // 	// 	maxVersionedMapBySchemaAndDomainNames =
+        // FIXME: use the store terminalStore.getLatestSchemaVersionMapBySchemaName
         // 	await this.schemaVersionDao.findMaxVersionedMapBySchemaAndDomainNames(
         // 		Array.from(schemaDomainNameSet), Array.from(schemaNameSet)
         // 	)

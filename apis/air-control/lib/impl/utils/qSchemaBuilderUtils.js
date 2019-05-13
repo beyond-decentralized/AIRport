@@ -137,12 +137,17 @@ function setQSchemaEntities(schema, qSchema, allQSchemas) {
             if (idColumn.manyRelationColumns
                 && idColumn.manyRelationColumns.length) {
                 const idRelation = idColumn.manyRelationColumns[0].oneRelation;
-                const relatedEntity = idRelation.relationEntity;
+                const relatedEntity = idRelation.entity;
                 const relatedQSchema = allQSchemas[relatedEntity.schemaVersion.schema.index];
                 if (!relatedQSchema) {
                     throw new Error(`QSchema not yet initialized for ID relation:
 					${entity.name}.${idRelation.property.name}
 					`);
+                }
+                if (relatedEntity.id === idRelation.relationEntity.id
+                    && relatedEntity.schemaVersion.schema.index
+                        === idRelation.relationEntity.schemaVersion.schema.index) {
+                    continue;
                 }
                 const relatedQEntityConstructor = qSchema.__qConstructors__[relatedEntity.index];
                 if (!relatedQEntityConstructor) {
@@ -153,11 +158,13 @@ function setQSchemaEntities(schema, qSchema, allQSchemas) {
             }
         }
     });
+    qSchema.__qIdRelationConstructors__ = [];
     entities.forEach((entity) => {
         const qIdRelationConstructor = getQEntityIdRelationConstructor();
         qSchema.__qIdRelationConstructors__[entity.index] = qIdRelationConstructor;
     });
     // TODO: compute many-to-many relations
+    qSchema.__qConstructors__ = [];
     entities.forEach((entity) => {
         const qConstructor = getQEntityConstructor(allQSchemas);
         qSchema.__qConstructors__[entity.index] = qConstructor;

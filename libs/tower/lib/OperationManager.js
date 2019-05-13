@@ -40,12 +40,13 @@ class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performBulkCreate(dbEntity, entities, createdEntityMap, checkIfProcessed = true, cascadeAlways = false) {
-        let result = await this.internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, cascadeAlways);
+    async performBulkCreate(dbEntity, entities, createdEntityMap, checkIfProcessed = true, cascadeAlways = false, ensureGeneratedValues = true // For internal use only
+    ) {
+        let result = await this.internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, cascadeAlways, ensureGeneratedValues);
         await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, cascadeAlways);
         return result.numberOfAffectedRecords;
     }
-    async internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, cascadeAlways = false) {
+    async internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, cascadeAlways = false, ensureGeneratedValues) {
         const qEntity = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         let rawInsert = {
             insertInto: qEntity,
@@ -120,7 +121,7 @@ class OperationManager {
         let numberOfAffectedRecords = 0;
         if (rawInsert.values.length) {
             const generatedProperty = this.getGeneratedProperty(dbEntity);
-            if (generatedProperty) {
+            if (generatedProperty && ensureGeneratedValues) {
                 const generatedIds = await this.internalInsertValuesGetIds(dbEntity, rawInsert);
                 for (let i = 0; i < entities.length; i++) {
                     const entity = entities[i];
@@ -129,7 +130,7 @@ class OperationManager {
                 }
             }
             else {
-                numberOfAffectedRecords = await this.internalInsertValues(dbEntity, rawInsert);
+                numberOfAffectedRecords = await this.internalInsertValues(dbEntity, rawInsert, ensureGeneratedValues);
             }
         }
         return {
@@ -175,10 +176,10 @@ class OperationManager {
         const portableQuery = this.entity.getPortableQuery(dbEntity, insertColumnValues, null);
         return await this.transactionClient.insertValues(portableQuery);
     }
-    async internalInsertValues(dbEntity, rawInsertValues) {
+    async internalInsertValues(dbEntity, rawInsertValues, ensureGeneratedValues) {
         const insertValues = new air_control_1.InsertValues(rawInsertValues);
         const portableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null);
-        return await this.transactionClient.insertValues(portableQuery);
+        return await this.transactionClient.insertValues(portableQuery, undefined, ensureGeneratedValues);
     }
     async internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues) {
         const insertValues = new air_control_1.InsertColumnValues(rawInsertColumnValues);

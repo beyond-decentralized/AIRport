@@ -44,7 +44,7 @@ export class TransactionHistory
 	@DbNumber()
 	transactionType: TransactionType
 
-	@OneToMany({mappedBy: 'repoTransHistory'})
+	@OneToMany({mappedBy: 'transactionHistory'})
 	repositoryTransactionHistories: IRepositoryTransactionHistory[] = []
 
 	@Transient()

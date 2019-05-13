@@ -85,7 +85,8 @@ export interface IDatabaseFacade {
      * @return Number of records created
      */
     bulkCreate<E>(dbEntity: DbEntity, entities: E[], checkIfProcessed: boolean, // defaults to true
-    cascade: boolean): Promise<number>;
+    cascade: boolean, // defaults to false
+    ensureGeneratedValues?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }): Promise<number>;

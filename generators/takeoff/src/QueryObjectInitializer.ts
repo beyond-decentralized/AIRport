@@ -37,6 +37,9 @@ export interface IQueryObjectInitializer {
 
 export interface DdlObjects {
 
+	allDomains: IDomain[]
+	allSchemas: IDomain[]
+	allSchemaVersionsByIds: ISchemaVersion[]
 	columns: ISchemaColumn[]
 	domains: IDomain[]
 	entities: ISchemaEntity[]
@@ -45,8 +48,8 @@ export interface DdlObjects {
 	propertyColumns: ISchemaPropertyColumn[]
 	relationColumns: ISchemaRelationColumn[]
 	relations: ISchemaRelation[]
-	schemaReferences: ISchemaReference[]
 	schemas: ISchema[]
+	schemaReferences: ISchemaReference[]
 
 }
 

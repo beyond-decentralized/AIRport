@@ -20,9 +20,15 @@ class EntityManager extends OperationManager_1.OperationManager {
         this.updateCache.databaseFacade = this;
     }
     cacheForUpdate(cacheForUpdate, dbEntity, ...entities) {
+        if (!entities) {
+            return;
+        }
         this.updateCache.addToCache(cacheForUpdate, dbEntity, ...entities);
     }
     releaseCachedForUpdate(cacheForUpdate, dbEntity, ...entities) {
+        if (!entities) {
+            return;
+        }
         this.updateCache.dropFromCache(cacheForUpdate, dbEntity, ...entities);
     }
     dropUpdateCache() {
@@ -32,12 +38,21 @@ class EntityManager extends OperationManager_1.OperationManager {
         return await this.transactionClient.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
     async create(dbEntity, entity) {
+        if (!entity) {
+            return 0;
+        }
         return await transactional_1.transactional(async () => await this.performCreate(dbEntity, entity, []));
     }
     async bulkCreate(dbEntity, entities, checkIfProcessed = true, cascade = false) {
+        if (!entities || !entities.length) {
+            return 0;
+        }
         return await transactional_1.transactional(async () => await this.performBulkCreate(dbEntity, entities, [], checkIfProcessed, cascade));
     }
     async insertColumnValues(dbEntity, rawInsertColumnValues) {
+        if (!rawInsertColumnValues) {
+            return 0;
+        }
         if (rawInsertColumnValues instanceof Function) {
             rawInsertColumnValues = rawInsertColumnValues();
         }
@@ -45,12 +60,18 @@ class EntityManager extends OperationManager_1.OperationManager {
         return numInsertedRows;
     }
     async insertValues(dbEntity, rawInsertValues) {
+        if (!rawInsertValues) {
+            return 0;
+        }
         if (rawInsertValues instanceof Function) {
             rawInsertValues = rawInsertValues();
         }
         return await transactional_1.transactional(async () => await this.internalInsertValues(dbEntity, rawInsertValues));
     }
     async insertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues) {
+        if (!rawInsertColumnValues) {
+            return [];
+        }
         if (rawInsertColumnValues instanceof Function) {
             rawInsertColumnValues = rawInsertColumnValues();
         }
@@ -58,15 +79,24 @@ class EntityManager extends OperationManager_1.OperationManager {
         return ids;
     }
     async insertValuesGenerateIds(dbEntity, rawInsertValues) {
+        if (!rawInsertValues) {
+            return [];
+        }
         if (rawInsertValues instanceof Function) {
             rawInsertValues = rawInsertValues();
         }
         return await transactional_1.transactional(async () => await this.internalInsertValuesGetIds(dbEntity, rawInsertValues));
     }
     async delete(dbEntity, entity) {
+        if (!entity) {
+            return 0;
+        }
         return await transactional_1.transactional(async () => await this.performDelete(dbEntity, entity));
     }
     async deleteWhere(dbEntity, rawDelete) {
+        if (!rawDelete) {
+            return 0;
+        }
         if (rawDelete instanceof Function) {
             rawDelete = rawDelete();
         }
@@ -74,6 +104,9 @@ class EntityManager extends OperationManager_1.OperationManager {
         return await transactional_1.transactional(async () => await this.internalDeleteWhere(dbEntity, deleteWhere));
     }
     async save(dbEntity, entity) {
+        if (!entity) {
+            return 0;
+        }
         if (!dbEntity.idColumns.length) {
             throw `@Id is not defined for entity: '${dbEntity.name}'.
 			Cannot call save(entity) on entities with no ids.`;
@@ -100,6 +133,9 @@ class EntityManager extends OperationManager_1.OperationManager {
         });
     }
     async update(dbEntity, entity) {
+        if (!entity) {
+            return 0;
+        }
         return await transactional_1.transactional(async () => await this.performUpdate(dbEntity, entity, []));
     }
     /**
@@ -109,6 +145,9 @@ class EntityManager extends OperationManager_1.OperationManager {
      * @return Number of records updated
      */
     async updateColumnsWhere(dbEntity, rawUpdate) {
+        if (!rawUpdate) {
+            return 0;
+        }
         if (rawUpdate instanceof Function) {
             rawUpdate = rawUpdate();
         }
@@ -116,6 +155,9 @@ class EntityManager extends OperationManager_1.OperationManager {
         return await this.internalUpdateColumnsWhere(dbEntity, update);
     }
     async updateWhere(dbEntity, rawUpdate) {
+        if (!rawUpdate) {
+            return 0;
+        }
         if (rawUpdate instanceof Function) {
             rawUpdate = rawUpdate();
         }

@@ -26,19 +26,22 @@ class InsertManager {
     get currentTransHistory() {
         return this.transManager.currentTransHistory;
     }
-    async insertValues(portableQuery, actor) {
-        return this.internalInsertValues(portableQuery, actor, false);
+    async insertValues(portableQuery, actor, ensureGeneratedValues) {
+        return this.internalInsertValues(portableQuery, actor, false, ensureGeneratedValues);
     }
     async insertValuesGetIds(portableQuery, actor) {
         return this.internalInsertValues(portableQuery, actor, true);
     }
-    async internalInsertValues(portableQuery, actor, getIds = false) {
+    async internalInsertValues(portableQuery, actor, getIds = false, ensureGeneratedValues = true) {
         const dbEntity = this.airDb.schemas[portableQuery.schemaIndex]
             .currentVersion.entities[portableQuery.tableIndex];
         if (dbEntity.isRepositoryEntity) {
             this.ensureRepositoryEntityIdValues(actor, dbEntity, portableQuery.jsonQuery);
         }
-        const ids = await this.ensureGeneratedValues(dbEntity, portableQuery.jsonQuery);
+        let ids;
+        if (ensureGeneratedValues) {
+            ids = await this.ensureGeneratedValues(dbEntity, portableQuery.jsonQuery);
+        }
         if (!dbEntity.isLocal) {
             await this.addInsertHistory(dbEntity, portableQuery, actor);
         }

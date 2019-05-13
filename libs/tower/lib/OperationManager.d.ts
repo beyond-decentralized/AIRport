@@ -45,12 +45,12 @@ export declare abstract class OperationManager implements IOperationManager {
      */
     protected performBulkCreate<E>(dbEntity: DbEntity, entities: E[], createdEntityMap: {
         [entityId: string]: any;
-    }[][], checkIfProcessed?: boolean, cascadeAlways?: boolean): Promise<number>;
+    }[][], checkIfProcessed?: boolean, cascadeAlways?: boolean, ensureGeneratedValues?: boolean): Promise<number>;
     private internalCreate;
     private getGeneratedProperty;
     private columnProcessed;
     protected internalInsertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>): Promise<number>;
-    protected internalInsertValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>): Promise<number>;
+    protected internalInsertValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>, ensureGeneratedValues?: boolean): Promise<number>;
     protected internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>): Promise<number[] | string[]>;
     protected internalInsertValuesGetIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>): Promise<number[] | string[]>;
     /**

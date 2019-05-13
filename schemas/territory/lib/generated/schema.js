@@ -121,6 +121,7 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 3,
+                                    "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -429,7 +430,7 @@ exports.SCHEMA = {
                             "index": 1,
                             "isId": false,
                             "oneToManyElems": {
-                                "mappedBy": "APPLICATION_ID"
+                                "mappedBy": "application"
                             },
                             "relationType": 0,
                             "propertyRef": {

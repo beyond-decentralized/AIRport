@@ -29,7 +29,7 @@ export class Application {
 	@JoinColumn({name: "DOMAIN_ID", referencedColumnName: "ID"})
 	domain: Domain
 
-	@OneToMany({mappedBy: "APPLICATION_ID"})
+	@OneToMany({mappedBy: "application"})
 	applicationPackages: ApplicationPackage[]
 
 }

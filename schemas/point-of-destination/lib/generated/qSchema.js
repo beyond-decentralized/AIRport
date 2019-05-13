@@ -5,7 +5,9 @@ const __constructors__ = {
     DailyArchive: dailyarchive_1.DailyArchive
 };
 exports.Q_SCHEMA = {
-    __constructors__
+    __constructors__,
+    domain: 'github.com',
+    name: '@airport/point-of-destination'
 };
 exports.Q = exports.Q_SCHEMA;
 //# sourceMappingURL=qSchema.js.map

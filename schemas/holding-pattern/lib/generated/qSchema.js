@@ -49,7 +49,9 @@ const __constructors__ = {
     TransactionHistory: transactionhistory_1.TransactionHistory
 };
 exports.Q_SCHEMA = {
-    __constructors__
+    __constructors__,
+    domain: 'github.com',
+    name: '@airport/holding-pattern'
 };
 exports.Q = exports.Q_SCHEMA;
 //# sourceMappingURL=qSchema.js.map

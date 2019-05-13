@@ -16,7 +16,7 @@ export declare class AirportDatabase implements IAirportDatabase {
     private currentDbName;
     constructor();
     registerDatabase(facade: IDatabaseFacade): void;
-    registerSchema(qSchema: QSchema): void;
+    registerQSchemas(qSchemas: QSchema[]): Promise<void>;
     setCurrentDb(dbName?: string): void;
     getDbNames(): string[];
     getDbNameSet(): {

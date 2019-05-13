@@ -14,23 +14,29 @@ __export(require("./ddl/ddl"));
 __export(require("./generated/generated"));
 __export(require("./diTokens"));
 class AtAirport_TrafficPattern_QSchema {
+    // public dao: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS
+    // public duo: NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DUOS
     constructor() {
-        di_1.DI.get((airportDatabase, dao, dbSchemaUtils, duo) => {
-            this.dao = dao;
-            this.duo = duo;
+        di_1.DI.get((airportDatabase, 
+        // dao,
+        dbSchemaUtils) => {
+            // this.dao = dao
+            // this.duo = duo
             this.init(airportDatabase, dbSchemaUtils);
-        }, air_control_1.AIR_DB, diTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS, ground_control_1.DB_SCHEMA_UTILS, diTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DUOS);
+        }, air_control_1.AIR_DB, 
+        // NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS,
+        ground_control_1.DB_SCHEMA_UTILS);
     }
     init(airDb, dbSchemaUtils) {
         const schemaName = dbSchemaUtils.getSchemaName(schema_1.SCHEMA);
         this.__constructors__ = qSchema_1.Q_SCHEMA.__constructors;
-        qSchema_1.Q_SCHEMA.dao = this.dao;
-        qSchema_1.Q_SCHEMA.duo = this.duo;
+        // Q_SCHEMA.dao          = this.dao
+        // Q_SCHEMA.duo          = this.duo
         qSchema_1.Q_SCHEMA.__exported__ = qSchema_1.Q_SCHEMA;
         qSchema_1.Q_SCHEMA.__injected__ = this;
         this.__injected__ = this;
         this.__exported__ = qSchema_1.Q_SCHEMA;
-        const existingQSchema = airDb.qSchemaMapByName[schemaName];
+        const existingQSchema = airDb.QM[schemaName];
         // If '@airport/takeoff' has already run
         if (existingQSchema) {
             qSchema_1.Q_SCHEMA.__created__ = existingQSchema;
@@ -38,8 +44,8 @@ class AtAirport_TrafficPattern_QSchema {
             existingQSchema.__injected__ = this;
             existingQSchema.__exported__ = qSchema_1.Q_SCHEMA;
             existingQSchema.__created__ = existingQSchema;
-            existingQSchema.dao = this.dao;
-            existingQSchema.duo = this.duo;
+            // existingQSchema.dao              = this.dao
+            // existingQSchema.duo              = this.duo
             existingQSchema.__constructors__ = qSchema_1.Q_SCHEMA.__constructors;
             air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, this, airDb.qSchemas);
             air_control_1.setQSchemaEntities(existingQSchema.__dbSchema__, qSchema_1.Q_SCHEMA, airDb.qSchemas);
@@ -47,7 +53,7 @@ class AtAirport_TrafficPattern_QSchema {
         else {
             qSchema_1.Q_SCHEMA.__created__ = qSchema_1.Q_SCHEMA;
             this.__created__ = qSchema_1.Q_SCHEMA;
-            airDb.qSchemaMapByName[schemaName] = qSchema_1.Q_SCHEMA;
+            airDb.QM[schemaName] = qSchema_1.Q_SCHEMA;
         }
     }
 }
@@ -55,7 +61,4 @@ exports.AtAirport_TrafficPattern_QSchema = AtAirport_TrafficPattern_QSchema;
 // FIXME: make npmjs.org the default and add a '_' prefix instead
 // TODO: remember that @airport translates to _airport
 di_1.DI.set(diTokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA, AtAirport_TrafficPattern_QSchema);
-di_1.DI.get(airDb => {
-    airDb.registerSchema(AtAirport_TrafficPattern_QSchema);
-}, air_control_1.AIR_DB);
 //# sourceMappingURL=index.js.map

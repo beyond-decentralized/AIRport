@@ -18,8 +18,7 @@ class DdlObjectRetriever {
         this.schemaVersionDao = di_1.DI.getP(traffic_pattern_1.SCHEMA_VERSION_DAO);
     }
     async retrieveDdlObjects() {
-        const schemas = await (await this.schemaDao)
-            .findAllActive();
+        const schemas = await (await this.schemaDao).findAllActive();
         const schemaIndexes = [];
         const domainIdSet = new Set();
         schemas.forEach(schema => {
@@ -29,10 +28,19 @@ class DdlObjectRetriever {
         schemas.sort((schema1, schema2) => {
             return schema1.index - schema2.index;
         });
-        const domains = await (await this.domainDao)
-            .findByIdIn(Array.from(domainIdSet));
-        const latestSchemaVersions = await (await this.schemaVersionDao)
-            .findAllLatestForSchemaIndexes(schemaIndexes);
+        const domains = await (await this.domainDao).findByIdIn(Array.from(domainIdSet));
+        const allSchemaVersions = await (await this.schemaVersionDao)
+            .findAllActiveOrderBySchemaIndexAndId();
+        let lastSchemaIndex;
+        const latestSchemaVersions = [];
+        const allSchemaVersionsByIds = [];
+        for (const schemaVersion of allSchemaVersions) {
+            if (schemaVersion.schema.index !== lastSchemaIndex) {
+                latestSchemaVersions.push(schemaVersion);
+            }
+            allSchemaVersionsByIds[schemaVersion.id] = schemaVersion;
+            lastSchemaIndex = schemaVersion.schema.index;
+        }
         const latestSchemaVersionIds = latestSchemaVersions.map(schemaVersion => schemaVersion.id);
         const schemaReferences = await (await this.schemaReferenceDao)
             .findAllForSchemaVersions(latestSchemaVersionIds);
@@ -52,6 +60,7 @@ class DdlObjectRetriever {
         const relationColumns = await (await this.schemaRelationColumnDao)
             .findAllForColumns(columnIds);
         return {
+            allSchemaVersionsByIds,
             columns,
             domains,
             entities,

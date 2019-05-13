@@ -1,7 +1,5 @@
 import {QueryType}     from '@airport/ground-control'
-import {transactional} from '@airport/tower'
 import {SqlDriver}     from '../SqlDriver'
-import {DDLManager}    from './DDLManager'
 
 /**
  * Created by Papa on 11/27/2016.

@@ -3,7 +3,7 @@ import { IActor, ITransactionHistory } from '@airport/holding-pattern';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 export declare type RecordId = number;
 export interface IInsertManager {
-    insertValues(portableQuery: PortableQuery, actor: IActor): Promise<number>;
+    insertValues(portableQuery: PortableQuery, actor: IActor, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, actor: IActor): Promise<RecordId[]>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy): Promise<number>;
 }
@@ -20,7 +20,7 @@ export declare class InsertManager implements IInsertManager {
     private transManager;
     constructor();
     readonly currentTransHistory: ITransactionHistory;
-    insertValues(portableQuery: PortableQuery, actor: IActor): Promise<number>;
+    insertValues(portableQuery: PortableQuery, actor: IActor, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, actor: IActor): Promise<RecordId[]>;
     private internalInsertValues;
     addRepository(name: string, url?: string, platform?: PlatformType, platformConfig?: string, distributionStrategy?: DistributionStrategy): Promise<number>;

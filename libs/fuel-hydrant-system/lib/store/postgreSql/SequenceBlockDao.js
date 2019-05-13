@@ -11,12 +11,12 @@ class SequenceBlockDao {
         }, ground_control_1.STORE_DRIVER, terminal_map_1.TERMINAL_STORE);
     }
     async createNewBlocks(sequenceBlocks) {
-        const latestSchemaVersionsByIndexes = this.terminalStore.getLatestSchemaVersionsByIndexes();
+        const latestSchemaVersionsBySchemaIndexes = this.terminalStore.getLatestSchemaVersionsBySchemaIndexes();
         const reservationMillis = new Date().getTime();
         const allNewBlocks = [];
         for (const sequenceBlock of sequenceBlocks) {
             const sequence = sequenceBlock.sequence;
-            const schemaVersion = latestSchemaVersionsByIndexes[sequence.schemaIndex];
+            const schemaVersion = latestSchemaVersionsBySchemaIndexes[sequence.schemaIndex];
             const schemaName = schemaVersion.schema.name;
             const entity = schemaVersion.entities[sequence.tableIndex];
             const tableName = entity.name;

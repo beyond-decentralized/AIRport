@@ -34,8 +34,8 @@ export class SequenceBlockDao
 		sequenceBlocks: ISequenceBlock[]
 	): Promise<ISequenceBlock[][]> {
 
-		const latestSchemaVersionsByIndexes: ISchemaVersion[]
-			      = this.terminalStore.getLatestSchemaVersionsByIndexes()
+		const latestSchemaVersionsBySchemaIndexes: ISchemaVersion[]
+			      = this.terminalStore.getLatestSchemaVersionsBySchemaIndexes()
 
 		const reservationMillis = new Date().getTime()
 
@@ -44,7 +44,7 @@ export class SequenceBlockDao
 		for (const sequenceBlock  of sequenceBlocks) {
 			const sequence = sequenceBlock.sequence
 
-			const schemaVersion = latestSchemaVersionsByIndexes[sequence.schemaIndex]
+			const schemaVersion = latestSchemaVersionsBySchemaIndexes[sequence.schemaIndex]
 			const schemaName    = schemaVersion.schema.name
 
 			const entity    = schemaVersion.entities[sequence.tableIndex]

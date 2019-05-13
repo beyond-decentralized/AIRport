@@ -146,10 +146,11 @@ export class TransactionalServer
 	async insertValues(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
+		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
 		const actor = await this.getActor(portableQuery)
 		return await this.wrapInTransaction(async () =>
-				await this.insertManager.insertValues(portableQuery, actor)
+				await this.insertManager.insertValues(portableQuery, actor, ensureGeneratedValues)
 			, 'INSERT', transactionIndex)
 	}
 
