@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { IUser, UserEOptionalId, UserESelect, QUserQRelation, ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
 import { IActorApplication, ActorApplicationESelect, QActorApplication } from './qactorapplication';
 import { IRepositoryActor, RepositoryActorESelect, QRepositoryActor } from '../repository/qrepositoryactor';
@@ -61,7 +61,7 @@ export interface ActorECreateColumns extends ActorEId, ActorEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QActor extends QEntity {
+export interface QActor extends IQEntity {
     id: IQNumberField;
     randomId: IQNumberField;
     user: QUserQRelation;
@@ -72,5 +72,5 @@ export interface QActor extends QEntity {
 export interface QActorQId {
     id: IQNumberField;
 }
-export interface QActorQRelation extends QRelation<QActor>, QActorQId {
+export interface QActorQRelation extends IQRelation<QActor>, QActorQId {
 }

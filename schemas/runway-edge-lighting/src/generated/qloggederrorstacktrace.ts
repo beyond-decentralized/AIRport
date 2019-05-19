@@ -15,8 +15,8 @@ import {
 	IQOneToManyRelation,
 	IQStringField,
 	IQUntypedField,
-	QEntity,
-	QRelation,
+	IQEntity,
+	IQRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
@@ -138,7 +138,7 @@ extends LoggedErrorStackTraceEId, LoggedErrorStackTraceEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLoggedErrorStackTrace extends QEntity
+export interface QLoggedErrorStackTrace extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -168,6 +168,6 @@ export interface QLoggedErrorStackTraceQId
 
 // Entity Relation Interface
 export interface QLoggedErrorStackTraceQRelation
-	extends QRelation<QLoggedErrorStackTrace>, QLoggedErrorStackTraceQId {
+	extends IQRelation<QLoggedErrorStackTrace>, QLoggedErrorStackTraceQId {
 }
 

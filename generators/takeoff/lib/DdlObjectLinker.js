@@ -82,7 +82,7 @@ class DdlObjectLinker {
             entity.relations[relation.index] = relation;
             const relationEntity = relation.relationEntity;
             relationEntity.relationReferences.push(relation);
-            const property = propertyMapById.get(relation.id);
+            const property = propertyMapById.get(relation.property.id);
             relation.property = property;
             property.relation = [relation];
             relation.entity = entity;

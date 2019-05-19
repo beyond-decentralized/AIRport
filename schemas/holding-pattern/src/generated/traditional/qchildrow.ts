@@ -15,8 +15,8 @@ import {
 	IQOneToManyRelation,
 	IQStringField,
 	IQUntypedField,
-	QEntity,
-	QRelation,
+	IQEntity,
+	IQRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
@@ -162,7 +162,7 @@ export interface QChildRowQId extends QStageableQId
 }
 
 // Entity Relation Interface
-export interface QChildRowQRelation<SubType extends IQEntityInternal>
+export interface QChildRowQRelation<SubType extends IQEntity>
 	extends QStageableQRelation<QChildRow>, QChildRowQId {
 }
 

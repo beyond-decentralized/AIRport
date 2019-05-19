@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISchemaEntity, SchemaEntityESelect, QSchemaEntity } from './qschemaentity';
 import { ISchemaReference, SchemaReferenceESelect, QSchemaReference } from './qschemareference';
 import { ISchema, SchemaEOptionalId, SchemaESelect, QSchemaQRelation } from './qschema';
@@ -84,7 +84,7 @@ export interface SchemaVersionECreateColumns extends SchemaVersionEId, SchemaVer
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaVersion extends QEntity {
+export interface QSchemaVersion extends IQEntity {
     id: IQNumberField;
     integerVersion: IQNumberField;
     versionString: IQStringField;
@@ -99,5 +99,5 @@ export interface QSchemaVersion extends QEntity {
 export interface QSchemaVersionQId {
     id: IQNumberField;
 }
-export interface QSchemaVersionQRelation extends QRelation<QSchemaVersion>, QSchemaVersionQId {
+export interface QSchemaVersionQRelation extends IQRelation<QSchemaVersion>, QSchemaVersionQId {
 }

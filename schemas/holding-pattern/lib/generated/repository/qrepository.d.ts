@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
 import { IRepositoryActor, RepositoryActorESelect, QRepositoryActor } from './qrepositoryactor';
 import { IRepositoryApplication, RepositoryApplicationESelect, QRepositoryApplication } from './qrepositoryapplication';
@@ -80,7 +80,7 @@ export interface RepositoryECreateColumns extends RepositoryEId, RepositoryEUpda
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepository extends QEntity {
+export interface QRepository extends IQEntity {
     id: IQNumberField;
     orderedId: IQNumberField;
     randomId: IQNumberField;
@@ -96,5 +96,5 @@ export interface QRepository extends QEntity {
 export interface QRepositoryQId {
     id: IQNumberField;
 }
-export interface QRepositoryQRelation extends QRelation<QRepository>, QRepositoryQId {
+export interface QRepositoryQRelation extends IQRelation<QRepository>, QRepositoryQId {
 }

@@ -1,4 +1,4 @@
-import { IQEntityInternal } from '@airport/air-control';
+import { IQEntity } from '@airport/air-control';
 import { IStageable, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
 export interface IChildRow extends IStageable {
 }
@@ -44,5 +44,5 @@ export interface QChildRow extends QStageable {
 }
 export interface QChildRowQId extends QStageableQId {
 }
-export interface QChildRowQRelation<SubType extends IQEntityInternal> extends QStageableQRelation<QChildRow>, QChildRowQId {
+export interface QChildRowQRelation<SubType extends IQEntity> extends QStageableQRelation<QChildRow>, QChildRowQId {
 }

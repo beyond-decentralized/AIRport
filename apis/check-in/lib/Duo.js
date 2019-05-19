@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class Duo {
     constructor(dbEntityName, qSchema) {
         if (typeof dbEntityName === 'string') {
-            this.dbEntity = qSchema.db.currentVersion.entityMapByName[dbEntityName];
+            this.dbEntity = qSchema.__dbSchema__.currentVersion.entityMapByName[dbEntityName];
         }
         else {
             this.dbEntity = dbEntityName;

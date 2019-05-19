@@ -1,4 +1,4 @@
-import { IFrom } from "../../lingo/core/entity/Entity";
+import { IFrom } from '../../lingo/core/entity/Entity';
 import { IJoinFields, JoinOperation } from "../../lingo/core/entity/Joins";
 import { IQOrderableField } from "../../lingo/core/field/Field";
 import { RawFieldQuery } from "../../lingo/query/facade/FieldQuery";

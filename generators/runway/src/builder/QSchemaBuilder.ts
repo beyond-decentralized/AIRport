@@ -86,8 +86,15 @@ import { Q${entityName} } from '${this.generatedPathMapByEntityName[entityName]}
 		// 	${daoDefinitions}
 		// }
 
-		return `import { QSchema as AirportQSchema } from '@airport/air-control';
-import { DbSchema } from '@airport/ground-control';
+		return `import {
+	AIR_DB,
+	QSchema as AirportQSchema
+}                      from '@airport/air-control'
+import {DI}            from '@airport/di'
+import {
+	DbSchema,
+	getSchemaName
+}                      from '@airport/ground-control';
 ${qEntityImports}
 
 export interface LocalQSchema extends AirportQSchema {
@@ -107,7 +114,13 @@ export const Q_SCHEMA: LocalQSchema = <any>{
   domain: '${domainName}',
   name: '${schemaName}'
 };
-export const Q: LocalQSchema = Q_SCHEMA;
+export const Q: LocalQSchema = Q_SCHEMA
+
+DI.get((
+	airportDatabase
+) => {
+	airportDatabase.QM[getSchemaName(Q_SCHEMA)] = Q
+}, AIR_DB)
 `
 	}
 

@@ -1,4 +1,3 @@
-import {SchemaEntity} from '../../../../../schemas/traffic-pattern/src'
 import {
 	DatabaseForeignKey,
 	DatabaseManyToOneElements,
@@ -263,7 +262,7 @@ export interface DbRelation
 
 	id: RelationId
 
-	entity: SchemaEntity
+	entity: DbEntity
 	foreignKey: DatabaseForeignKey
 	isId: boolean;
 	/**

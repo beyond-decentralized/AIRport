@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const agtrepositorytransactionblock_1 = require("../ddl/synchronization/agtrepositorytransactionblock");
 const agtsharingmessage_1 = require("../ddl/synchronization/agtsharingmessage");
 const archive_1 = require("../ddl/repository/archive");
@@ -46,4 +49,7 @@ exports.Q_SCHEMA = {
     name: '@airport/guideway'
 };
 exports.Q = exports.Q_SCHEMA;
+di_1.DI.get((airportDatabase) => {
+    airportDatabase.QM[ground_control_1.getSchemaName(exports.Q_SCHEMA)] = exports.Q;
+}, air_control_1.AIR_DB);
 //# sourceMappingURL=qSchema.js.map

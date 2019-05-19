@@ -24,7 +24,7 @@ class AirportDatabase {
     }
     async registerQSchemas(qSchemas) {
         for (const qSchema of qSchemas) {
-            const schemaName = (await di_1.DI.getP(ground_control_1.DB_SCHEMA_UTILS)).getSchemaNameFromDomainAndJsonSchemaNames(qSchema.domain, qSchema.name);
+            const schemaName = ground_control_1.getSchemaName(qSchema);
             this.QM[schemaName] = qSchema;
         }
     }

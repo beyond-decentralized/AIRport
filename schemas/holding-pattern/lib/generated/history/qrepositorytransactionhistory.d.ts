@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { ITransactionHistory, TransactionHistoryEOptionalId, TransactionHistoryESelect, QTransactionHistoryQRelation } from './qtransactionhistory';
 import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
 import { IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, QRepoTransHistoryChangedRepositoryActor } from './qrepotranshistorychangedrepositoryactor';
@@ -79,7 +79,7 @@ export interface RepositoryTransactionHistoryECreateColumns extends RepositoryTr
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryTransactionHistory extends QEntity {
+export interface QRepositoryTransactionHistory extends IQEntity {
     id: IQNumberField;
     remoteId: IQNumberField;
     saveTimestamp: IQDateField;
@@ -94,5 +94,5 @@ export interface QRepositoryTransactionHistory extends QEntity {
 export interface QRepositoryTransactionHistoryQId {
     id: IQNumberField;
 }
-export interface QRepositoryTransactionHistoryQRelation extends QRelation<QRepositoryTransactionHistory>, QRepositoryTransactionHistoryQId {
+export interface QRepositoryTransactionHistoryQRelation extends IQRelation<QRepositoryTransactionHistory>, QRepositoryTransactionHistoryQId {
 }

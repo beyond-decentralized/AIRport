@@ -15,8 +15,8 @@ import {
 	IQOneToManyRelation,
 	IQStringField,
 	IQUntypedField,
-	QEntity,
-	QRelation,
+	IQEntity,
+	IQRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
@@ -159,7 +159,7 @@ extends SynchronizationConflictPendingNotificationEId, SynchronizationConflictPe
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSynchronizationConflictPendingNotification extends QEntity
+export interface QSynchronizationConflictPendingNotification extends IQEntity
 {
 	// Id Fields
 
@@ -190,6 +190,6 @@ export interface QSynchronizationConflictPendingNotificationQId
 
 // Entity Relation Interface
 export interface QSynchronizationConflictPendingNotificationQRelation
-	extends QRelation<QSynchronizationConflictPendingNotification>, QSynchronizationConflictPendingNotificationQId {
+	extends IQRelation<QSynchronizationConflictPendingNotification>, QSynchronizationConflictPendingNotificationQId {
 }
 

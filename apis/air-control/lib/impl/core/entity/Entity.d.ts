@@ -1,12 +1,13 @@
-import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONEntityRelation, JSONJoinRelation, JSONRelation, JSONViewJoinRelation } from "@airport/ground-control";
-import { IEntityUpdateColumns, IQOperableFieldInternal, IUtils } from "../../../";
-import { IAirportDatabase } from "../../../lingo/AirportDatabase";
-import { IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateProperties, IFrom, IQEntity, IQEntityDriver, IQEntityInternal } from "../../../lingo/core/entity/Entity";
-import { IJoinFields } from "../../../lingo/core/entity/Joins";
-import { IQInternalRelation } from "../../../lingo/core/entity/Relation";
-import { IEntityDatabaseFacade } from "../../../lingo/core/repository/EntityDatabaseFacade";
-import { RawTreeQuery } from "../../../lingo/query/facade/TreeQuery";
-import { FieldColumnAliases } from "./Aliases";
+import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONEntityRelation, JSONJoinRelation, JSONRelation, JSONViewJoinRelation } from '@airport/ground-control';
+import { IAirportDatabase } from '../../../lingo/AirportDatabase';
+import { IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IFrom, IQEntity, IQEntityDriver, IQEntityInternal } from '../../../lingo/core/entity/Entity';
+import { IJoinFields } from '../../../lingo/core/entity/Joins';
+import { IQInternalRelation } from '../../../lingo/core/entity/Relation';
+import { IQOperableFieldInternal } from '../../../lingo/core/field/OperableField';
+import { IEntityDatabaseFacade } from '../../../lingo/core/repository/EntityDatabaseFacade';
+import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery';
+import { IUtils } from '../../../lingo/utils/Utils';
+import { FieldColumnAliases } from './Aliases';
 /**
  * Created by Papa on 4/21/2016.
  */
@@ -26,16 +27,9 @@ export interface QEntityConstructor {
         new (...args: any[]): IQEntityDriver;
     }): IQE;
 }
-export declare class QEntity implements IQEntityInternal {
-    __driver__: IQEntityDriver;
-    constructor(dbEntity: DbEntity, fromClausePosition?: number[], dbRelation?: any, joinType?: JoinType, QDriver?: {
-        new (...args: any[]): IQEntityDriver;
-    });
-    fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
-    innerJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
-    leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
-    rightJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
-}
+export declare function QEntity(dbEntity: DbEntity, fromClausePosition?: number[], dbRelation?: any, joinType?: JoinType, QDriver?: {
+    new (...args: any[]): IQEntityDriver;
+}): void;
 export declare class QEntityDriver implements IQEntityDriver {
     dbEntity: DbEntity;
     fromClausePosition: number[];
@@ -70,16 +64,13 @@ export declare class QEntityDriver implements IQEntityDriver {
     isRootEntity(): boolean;
     getRootJoinEntity(): IQEntityInternal;
 }
-export declare class QTree extends QEntity {
-    __driver__: IQTreeDriver;
-    constructor(fromClausePosition: number[], subQuery: RawTreeQuery<any>);
-}
+export declare function QTree(fromClausePosition: number[], subQuery: RawTreeQuery<any>): void;
 export interface IQTreeDriver extends IQEntityDriver {
     subQuery: RawTreeQuery<any>;
 }
 export declare class QTreeDriver extends QEntityDriver implements IQTreeDriver {
     subQuery: RawTreeQuery<any>;
-    getInstance(): QTree;
+    getInstance(): IQEntityInternal;
     getJoinRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases): JSONViewJoinRelation;
     getRootRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases): JSONViewJoinRelation;
 }

@@ -18,7 +18,6 @@ let SchemaEntity = class SchemaEntity extends VersionedSchemaObject_1.VersionedS
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.GeneratedValue(),
     __metadata("design:type", Number)
 ], SchemaEntity.prototype, "id", void 0);
 __decorate([

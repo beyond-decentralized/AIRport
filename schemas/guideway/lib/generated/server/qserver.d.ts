@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { IServerSyncLog, ServerSyncLogESelect, QServerSyncLog } from './qserversynclog';
 export interface IServer {
     id?: number;
@@ -49,7 +49,7 @@ export interface ServerECreateColumns extends ServerEId, ServerEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QServer extends QEntity {
+export interface QServer extends IQEntity {
     id: IQNumberField;
     serverType: IQNumberField;
     serverSyncLogs: IQOneToManyRelation<QServerSyncLog>;
@@ -57,5 +57,5 @@ export interface QServer extends QEntity {
 export interface QServerQId {
     id: IQNumberField;
 }
-export interface QServerQRelation extends QRelation<QServer>, QServerQId {
+export interface QServerQRelation extends IQRelation<QServer>, QServerQId {
 }

@@ -201,6 +201,7 @@ export class DbSchemaBuilder
 		schemaVersion: DbSchemaVersion
 	): DbRelation {
 		const dbRelation: DbRelation = {
+			entity: undefined, // TODO: verity that it's not needed
 			foreignKey: jsonRelation.foreignKey,
 			isId: dbProperty.isId,
 			// isRepositoryJoin: jsonRelation.isRepositoryJoin,

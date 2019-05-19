@@ -1,4 +1,4 @@
-import { IQEntityInternal, IQNumberField } from '@airport/air-control';
+import { IQNumberField, IQEntity } from '@airport/air-control';
 import { IStageable, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
 import { IRepository, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from './qrepository';
 import { IActor, ActorEId, ActorEOptionalId, ActorESelect, QActorQId, QActorQRelation } from '../infrastructure/qactor';
@@ -63,5 +63,5 @@ export interface QRepositoryEntityQId extends QStageableQId {
     repository: QRepositoryQId;
     actor: QActorQId;
 }
-export interface QRepositoryEntityQRelation<SubType extends IQEntityInternal> extends QStageableQRelation<QRepositoryEntity>, QRepositoryEntityQId {
+export interface QRepositoryEntityQRelation<SubType extends IQEntity> extends QStageableQRelation<QRepositoryEntity>, QRepositoryEntityQId {
 }

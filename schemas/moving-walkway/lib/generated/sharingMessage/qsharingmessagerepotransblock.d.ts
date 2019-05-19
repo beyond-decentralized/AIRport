@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
 import { ISharingMessage, SharingMessageEId, SharingMessageEOptionalId, SharingMessageESelect, QSharingMessageQId, QSharingMessageQRelation } from './qsharingmessage';
 import { IRepositoryTransactionBlock, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from '../repositorytransactionblock/qrepositorytransactionblock';
 export interface ISharingMessageRepoTransBlock {
@@ -49,7 +49,7 @@ export interface SharingMessageRepoTransBlockECreateColumns extends SharingMessa
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingMessageRepoTransBlock extends QEntity {
+export interface QSharingMessageRepoTransBlock extends IQEntity {
     sharingMessage: QSharingMessageQRelation;
     repositoryTransactionBlock: QRepositoryTransactionBlockQRelation;
 }
@@ -57,5 +57,5 @@ export interface QSharingMessageRepoTransBlockQId {
     sharingMessage: QSharingMessageQId;
     repositoryTransactionBlock: QRepositoryTransactionBlockQId;
 }
-export interface QSharingMessageRepoTransBlockQRelation extends QRelation<QSharingMessageRepoTransBlock>, QSharingMessageRepoTransBlockQId {
+export interface QSharingMessageRepoTransBlockQRelation extends IQRelation<QSharingMessageRepoTransBlock>, QSharingMessageRepoTransBlockQId {
 }

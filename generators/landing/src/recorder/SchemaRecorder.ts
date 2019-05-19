@@ -1,4 +1,7 @@
-import {IDatabaseFacade} from '@airport/air-control'
+import {
+	IDao,
+	IDatabaseFacade
+}                        from '@airport/air-control'
 import {DI}              from '@airport/di'
 import {DdlObjects}      from '@airport/takeoff'
 import {
@@ -146,10 +149,10 @@ export class SchemaRecorder
 	}
 
 	private async bulkCreate(
-		dao: any,
-		entities: any
+		dao: IDao<any, any, any, any, any, any, any>,
+		entities: any[]
 	) {
-		const entityDbFacade            = dao.db
+		const entityDbFacade            = (dao as any).db
 		const dbFacade: IDatabaseFacade = entityDbFacade.common
 
 		await dbFacade.bulkCreate(entityDbFacade.dbEntity, entities, false, false, false)

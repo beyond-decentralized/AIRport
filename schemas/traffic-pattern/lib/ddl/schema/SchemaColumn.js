@@ -17,7 +17,6 @@ let SchemaColumn = class SchemaColumn extends VersionedSchemaObject_1.VersionedS
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.GeneratedValue(),
     __metadata("design:type", Number)
 ], SchemaColumn.prototype, "id", void 0);
 __decorate([

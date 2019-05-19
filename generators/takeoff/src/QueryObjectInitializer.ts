@@ -50,6 +50,7 @@ export interface DdlObjects {
 	relations: ISchemaRelation[]
 	schemas: ISchema[]
 	schemaReferences: ISchemaReference[]
+	schemaVersions: ISchemaVersion[]
 
 }
 

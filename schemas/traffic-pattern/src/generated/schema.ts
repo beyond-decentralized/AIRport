@@ -73,7 +73,7 @@ export const SCHEMA = {
 						},
 						{
 							"index": 3,
-							"isGenerated": true,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "ID",
 							"notNull": false,
@@ -1048,7 +1048,7 @@ export const SCHEMA = {
 						},
 						{
 							"index": 3,
-							"isGenerated": true,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "ID",
 							"notNull": false,
@@ -1520,7 +1520,7 @@ export const SCHEMA = {
 						},
 						{
 							"index": 3,
-							"isGenerated": true,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "ID",
 							"notNull": false,
@@ -1841,7 +1841,7 @@ export const SCHEMA = {
 						},
 						{
 							"index": 3,
-							"isGenerated": true,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "ID",
 							"notNull": false,
@@ -2439,7 +2439,7 @@ export const SCHEMA = {
 						{
 							"allocationSize": 100,
 							"index": 0,
-							"isGenerated": true,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "ID",
 							"notNull": false,
@@ -2770,7 +2770,7 @@ export const SCHEMA = {
 						{
 							"allocationSize": 1,
 							"index": 3,
-							"isGenerated": true,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "SCHEMA_INDEX",
 							"notNull": true,

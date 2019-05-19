@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { IRepositoryTransactionBlock, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from './qrepositorytransactionblock';
 import { ISchema, SchemaEId, SchemaEOptionalId, SchemaESelect, QSchemaQId, QSchemaQRelation } from '@airport/traffic-pattern';
 export interface IRepoTransBlockSchemaToChange {
@@ -53,7 +53,7 @@ export interface RepoTransBlockSchemaToChangeECreateColumns extends RepoTransBlo
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepoTransBlockSchemaToChange extends QEntity {
+export interface QRepoTransBlockSchemaToChange extends IQEntity {
     repositoryTransactionBlock: QRepositoryTransactionBlockQRelation;
     schema: QSchemaQRelation;
     status: IQNumberField;
@@ -62,5 +62,5 @@ export interface QRepoTransBlockSchemaToChangeQId {
     repositoryTransactionBlock: QRepositoryTransactionBlockQId;
     schema: QSchemaQId;
 }
-export interface QRepoTransBlockSchemaToChangeQRelation extends QRelation<QRepoTransBlockSchemaToChange>, QRepoTransBlockSchemaToChangeQId {
+export interface QRepoTransBlockSchemaToChangeQRelation extends IQRelation<QRepoTransBlockSchemaToChange>, QRepoTransBlockSchemaToChangeQId {
 }

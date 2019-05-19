@@ -9,3 +9,8 @@ export interface IOfflineDeltaStore {
     markChangesAsSynced(repository: IRepository, transactions: IRepositoryTransactionHistory[]): Promise<void>;
 }
 export declare function getOfflineDeltaStore(localStore: IStoreDriver): IOfflineDeltaStore;
+export declare class OfflineDeltaStore {
+    addRemoteChanges(repository: IRepository, transactions: IRepositoryTransactionHistory[]): Promise<void>;
+    addChange(transaction: ITransactionHistory): Promise<ITransactionHistory>;
+    markChangesAsSynced(repository: IRepository, transactions: IRepositoryTransactionHistory[]): Promise<void>;
+}

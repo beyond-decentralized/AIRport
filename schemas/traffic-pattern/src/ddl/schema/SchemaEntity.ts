@@ -43,7 +43,6 @@ export class SchemaEntity
 	// Id columns
 	//
 	@Id()
-	@GeneratedValue()
 	id: EntityId
 
 	//

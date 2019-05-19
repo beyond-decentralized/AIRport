@@ -1,4 +1,4 @@
-import { IQEntityInternal, IQDateField } from '@airport/air-control';
+import { IQDateField, IQEntity } from '@airport/air-control';
 import { IStageable, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
 import { IUser, UserEOptionalId, UserESelect, QUserQRelation } from '@airport/travel-document-checkpoint';
 export interface IImmutableRow extends IStageable {
@@ -53,5 +53,5 @@ export interface QImmutableRow extends QStageable {
 }
 export interface QImmutableRowQId extends QStageableQId {
 }
-export interface QImmutableRowQRelation<SubType extends IQEntityInternal> extends QStageableQRelation<QImmutableRow>, QImmutableRowQId {
+export interface QImmutableRowQRelation<SubType extends IQEntity> extends QStageableQRelation<QImmutableRow>, QImmutableRowQId {
 }

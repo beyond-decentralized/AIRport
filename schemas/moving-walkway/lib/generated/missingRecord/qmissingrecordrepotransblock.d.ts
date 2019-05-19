@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { IMissingRecord, MissingRecordEOptionalId, MissingRecordESelect, QMissingRecordQRelation } from './qmissingrecord';
 import { IRepositoryTransactionBlock, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQRelation } from '../repositorytransactionblock/qrepositorytransactionblock';
 export interface IMissingRecordRepoTransBlock {
@@ -49,11 +49,11 @@ export interface MissingRecordRepoTransBlockECreateColumns extends MissingRecord
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMissingRecordRepoTransBlock extends QEntity {
+export interface QMissingRecordRepoTransBlock extends IQEntity {
     missingRecord: QMissingRecordQRelation;
     repositoryTransactionBlock: QRepositoryTransactionBlockQRelation;
 }
 export interface QMissingRecordRepoTransBlockQId {
 }
-export interface QMissingRecordRepoTransBlockQRelation extends QRelation<QMissingRecordRepoTransBlock>, QMissingRecordRepoTransBlockQId {
+export interface QMissingRecordRepoTransBlockQRelation extends IQRelation<QMissingRecordRepoTransBlock>, QMissingRecordRepoTransBlockQId {
 }

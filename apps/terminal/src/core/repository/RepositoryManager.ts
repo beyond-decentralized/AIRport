@@ -112,7 +112,7 @@ export interface IRepositoryManager {
 export class RepositoryManager
 	implements IRepositoryManager {
 
-	private dbFacade: IDatabaseFacade
+	private dbFacade: () => Promise<IDatabaseFacade>
 	deltaStore: IDeltaStore
 	repositories: IRepository[]
 	repositoriesById: { [repositoryId: string]: IRepository } = {}
@@ -123,14 +123,12 @@ export class RepositoryManager
 
 	constructor() {
 		DI.get((
-			databaseFacade,
-			repositoryDao,
 			utils
 		) => {
-			this.dbFacade = databaseFacade
 			this.utils    = utils
-		}, ENTITY_MANAGER, UTILS)
+		}, UTILS)
 
+		this.dbFacade = DI.laterP(ENTITY_MANAGER)
 		this.repositoryDao = DI.getP(REPOSITORY_DAO)
 	}
 
@@ -139,7 +137,7 @@ export class RepositoryManager
 		await this.ensureAndCacheRepositories()
 		for (let i = 0; i < this.repositories.length; i++) {
 			let repository = this.repositories[i]
-			this.addDeltaStore(repository)
+			await this.addDeltaStore(repository)
 		}
 	}
 
@@ -156,7 +154,7 @@ export class RepositoryManager
 		recordIdField: string
 	): Promise<IRepository> {
 		let repository = await this.createRepositoryRecord(appName, distributionStrategy, platformType, platformConfig)
-		this.addDeltaStore(repository)
+		await this.addDeltaStore(repository)
 
 		return repository
 	}
@@ -217,7 +215,7 @@ export class RepositoryManager
 						*/
 	}
 
-	private addDeltaStore(repository: IRepository): IDeltaStore {
+	private async addDeltaStore(repository: IRepository): Promise<IDeltaStore> {
 		// TODO: revisit configuration (instead of hard-coding
 		// let sharingAdaptor                             =
 		// getSharingAdaptor(repository.platform)
@@ -242,7 +240,7 @@ export class RepositoryManager
 		}
 		let deltaStoreConfig                                   = new DeltaStoreConfig(jsonDeltaStoreConfig)
 		let deltaStore                                         = new DeltaStore(deltaStoreConfig, sharingAdaptor)
-		deltaStore.config.changeListConfig.changeListInfo.dbId = this.dbFacade.name
+		deltaStore.config.changeListConfig.changeListInfo.dbId = (await this.dbFacade()).name
 		this.deltaStore[repository.id]                         = deltaStore
 
 		return deltaStore

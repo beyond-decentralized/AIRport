@@ -116,6 +116,7 @@ class DbSchemaBuilder {
     }
     buildDbRelation(jsonRelation, dbProperty, schemaVersion) {
         const dbRelation = {
+            entity: undefined,
             foreignKey: jsonRelation.foreignKey,
             isId: dbProperty.isId,
             // isRepositoryJoin: jsonRelation.isRepositoryJoin,

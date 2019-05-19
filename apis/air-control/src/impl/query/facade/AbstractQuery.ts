@@ -12,8 +12,10 @@ import {
 }                          from "../../../lingo/core/entity/Aliases";
 import {
 	IEntityRelationFrom,
-	IFrom
-}                          from "../../../lingo/core/entity/Entity";
+	IFrom,
+	IQEntity,
+	IQEntityInternal
+} from '../../../lingo/core/entity/Entity'
 import {IFieldInOrderBy}   from "../../../lingo/core/field/FieldInOrderBy";
 import {IQOperableField}   from "../../../lingo/core/field/OperableField";
 import {IAbstractQuery}    from "../../../lingo/query/facade/AbstractQuery";
@@ -90,7 +92,7 @@ export abstract class AbstractQuery
 					throw `Entity FROM clauses can contain only Entities.`;
 				}
 			}
-			return fromEntity.__driver__.getRelationJson(this.columnAliases);
+			return (fromEntity as IQEntityInternal).__driver__.getRelationJson(this.columnAliases);
 		});
 	}
 

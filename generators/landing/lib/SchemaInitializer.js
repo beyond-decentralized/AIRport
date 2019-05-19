@@ -53,6 +53,7 @@ class SchemaInitializer {
         if (!normalOperation) {
             await (await this.schemaRecorder).record(ddlObjects, normalOperation);
         }
+        console.log('done');
     }
     addNewSchemaVersionsToAll(ddlObjects) {
         for (const schemaVersion of ddlObjects.schemaVersions) {

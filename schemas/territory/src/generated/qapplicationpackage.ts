@@ -15,8 +15,8 @@ import {
 	IQOneToManyRelation,
 	IQStringField,
 	IQUntypedField,
-	QEntity,
-	QRelation,
+	IQEntity,
+	IQRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
@@ -158,7 +158,7 @@ extends ApplicationPackageEId, ApplicationPackageEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplicationPackage extends QEntity
+export interface QApplicationPackage extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -188,6 +188,6 @@ export interface QApplicationPackageQId
 
 // Entity Relation Interface
 export interface QApplicationPackageQRelation
-	extends QRelation<QApplicationPackage>, QApplicationPackageQId {
+	extends IQRelation<QApplicationPackage>, QApplicationPackageQId {
 }
 

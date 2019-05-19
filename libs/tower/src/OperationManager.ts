@@ -179,7 +179,7 @@ export abstract class OperationManager
 
 			for (const dbProperty of dbEntity.properties) {
 				const newValue: any = entity[dbProperty.name]
-				if (dbProperty.relation.length) {
+				if (dbProperty.relation && dbProperty.relation.length) {
 					const dbRelation = dbProperty.relation[0]
 					this.assertRelationValueIsAnObject(newValue, dbProperty)
 					switch (dbRelation.relationType) {

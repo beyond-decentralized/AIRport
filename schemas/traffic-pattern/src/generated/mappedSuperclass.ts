@@ -101,10 +101,6 @@ export const MAPPED_SUPERCLASS = [
 										"values": []
 									},
 									{
-										"name": "GeneratedValue",
-										"values": []
-									},
-									{
 										"name": "SequenceGenerator",
 										"values": [
 											{
@@ -117,7 +113,7 @@ export const MAPPED_SUPERCLASS = [
 										"values": []
 									}
 								],
-								"isGenerated": true,
+								"isGenerated": false,
 								"isId": true,
 								"isMappedSuperclass": false,
 								"isTransient": false,
@@ -346,10 +342,6 @@ export const MAPPED_SUPERCLASS = [
 											"values": []
 										},
 										{
-											"name": "GeneratedValue",
-											"values": []
-										},
-										{
 											"name": "SequenceGenerator",
 											"values": [
 												{
@@ -362,7 +354,7 @@ export const MAPPED_SUPERCLASS = [
 											"values": []
 										}
 									],
-									"isGenerated": true,
+									"isGenerated": false,
 									"isId": true,
 									"isMappedSuperclass": false,
 									"isTransient": false,
@@ -539,10 +531,6 @@ export const MAPPED_SUPERCLASS = [
 														"values": []
 													},
 													{
-														"name": "GeneratedValue",
-														"values": []
-													},
-													{
 														"name": "SequenceGenerator",
 														"values": [
 															{
@@ -564,7 +552,7 @@ export const MAPPED_SUPERCLASS = [
 														]
 													}
 												],
-												"isGenerated": true,
+												"isGenerated": false,
 												"isId": true,
 												"isMappedSuperclass": false,
 												"isTransient": false,
@@ -755,10 +743,6 @@ export const MAPPED_SUPERCLASS = [
 															"values": []
 														},
 														{
-															"name": "GeneratedValue",
-															"values": []
-														},
-														{
 															"name": "SequenceGenerator",
 															"values": [
 																{
@@ -780,7 +764,7 @@ export const MAPPED_SUPERCLASS = [
 															]
 														}
 													],
-													"isGenerated": true,
+													"isGenerated": false,
 													"isId": true,
 													"isMappedSuperclass": false,
 													"isTransient": false,
@@ -824,7 +808,7 @@ export const MAPPED_SUPERCLASS = [
 																"entity": null,
 																"id": null,
 																"index": 0,
-																"isGenerated": true,
+																"isGenerated": false,
 																"name": "ID",
 																"notNull": false,
 																"propertyColumns": [
@@ -859,7 +843,7 @@ export const MAPPED_SUPERCLASS = [
 																"entity": null,
 																"id": null,
 																"index": 0,
-																"isGenerated": true,
+																"isGenerated": false,
 																"name": "ID",
 																"notNull": false,
 																"propertyColumns": [
@@ -1133,13 +1117,9 @@ export const MAPPED_SUPERCLASS = [
 													{
 														"name": "Id",
 														"values": []
-													},
-													{
-														"name": "GeneratedValue",
-														"values": []
 													}
 												],
-												"isGenerated": true,
+												"isGenerated": false,
 												"isId": true,
 												"isMappedSuperclass": false,
 												"isTransient": false,
@@ -1403,13 +1383,9 @@ export const MAPPED_SUPERCLASS = [
 														{
 															"name": "Id",
 															"values": []
-														},
-														{
-															"name": "GeneratedValue",
-															"values": []
 														}
 													],
-													"isGenerated": true,
+													"isGenerated": false,
 													"isId": true,
 													"isMappedSuperclass": false,
 													"isTransient": false,
@@ -1603,13 +1579,9 @@ export const MAPPED_SUPERCLASS = [
 																	{
 																		"name": "Id",
 																		"values": []
-																	},
-																	{
-																		"name": "GeneratedValue",
-																		"values": []
 																	}
 																],
-																"isGenerated": true,
+																"isGenerated": false,
 																"isId": true,
 																"isMappedSuperclass": false,
 																"isTransient": false,
@@ -1822,13 +1794,9 @@ export const MAPPED_SUPERCLASS = [
 																		{
 																			"name": "Id",
 																			"values": []
-																		},
-																		{
-																			"name": "GeneratedValue",
-																			"values": []
 																		}
 																	],
-																	"isGenerated": true,
+																	"isGenerated": false,
 																	"isId": true,
 																	"isMappedSuperclass": false,
 																	"isTransient": false,

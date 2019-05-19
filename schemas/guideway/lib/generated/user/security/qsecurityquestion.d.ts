@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 export interface ISecurityQuestion {
     id?: number;
     question?: string;
@@ -46,12 +46,12 @@ export interface SecurityQuestionECreateColumns extends SecurityQuestionEId, Sec
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSecurityQuestion extends QEntity {
+export interface QSecurityQuestion extends IQEntity {
     id: IQNumberField;
     question: IQStringField;
 }
 export interface QSecurityQuestionQId {
     id: IQNumberField;
 }
-export interface QSecurityQuestionQRelation extends QRelation<QSecurityQuestion>, QSecurityQuestionQId {
+export interface QSecurityQuestionQRelation extends IQRelation<QSecurityQuestion>, QSecurityQuestionQId {
 }

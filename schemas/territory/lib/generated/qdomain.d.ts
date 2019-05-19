@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
 import { IApplication, ApplicationESelect, QApplication } from './qapplication';
 export interface IDomain {
@@ -51,7 +51,7 @@ export interface DomainECreateColumns extends DomainEId, DomainEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDomain extends QEntity {
+export interface QDomain extends IQEntity {
     id: IQNumberField;
     name: IQStringField;
     applications: IQOneToManyRelation<QApplication>;
@@ -59,5 +59,5 @@ export interface QDomain extends QEntity {
 export interface QDomainQId {
     id: IQNumberField;
 }
-export interface QDomainQRelation extends QRelation<QDomain>, QDomainQId {
+export interface QDomainQRelation extends IQRelation<QDomain>, QDomainQId {
 }

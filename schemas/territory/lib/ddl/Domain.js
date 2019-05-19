@@ -11,7 +11,6 @@ let Domain = class Domain {
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.GeneratedValue(),
     air_control_1.DbNumber()
 ], Domain.prototype, "id", void 0);
 __decorate([

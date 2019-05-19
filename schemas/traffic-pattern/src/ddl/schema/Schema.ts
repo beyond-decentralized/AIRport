@@ -29,7 +29,6 @@ export class Schema
 	extends VersionedSchemaObject {
 
 	@Id()
-	@GeneratedValue()
 	@SequenceGenerator({allocationSize: 1})
 	@DbNumber()
 	@Column({name: 'SCHEMA_INDEX', nullable: false})

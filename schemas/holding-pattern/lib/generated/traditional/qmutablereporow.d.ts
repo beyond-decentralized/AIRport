@@ -1,4 +1,4 @@
-import { IQEntityInternal, IQDateField } from '@airport/air-control';
+import { IQDateField, IQEntity } from '@airport/air-control';
 import { IImmutableRepoRow, ImmutableRepoRowEId, ImmutableRepoRowEUpdateColumns, ImmutableRepoRowEUpdateProperties, ImmutableRepoRowESelect, QImmutableRepoRowQId, QImmutableRepoRowQRelation, QImmutableRepoRow } from './qimmutablereporow';
 export interface IMutableRepoRow extends IImmutableRepoRow {
     updatedAt?: Date;
@@ -48,5 +48,5 @@ export interface QMutableRepoRow extends QImmutableRepoRow {
 }
 export interface QMutableRepoRowQId extends QImmutableRepoRowQId {
 }
-export interface QMutableRepoRowQRelation<SubType extends IQEntityInternal> extends QImmutableRepoRowQRelation<QMutableRepoRow>, QMutableRepoRowQId {
+export interface QMutableRepoRowQRelation<SubType extends IQEntity> extends QImmutableRepoRowQRelation<QMutableRepoRow>, QMutableRepoRowQId {
 }

@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
 export interface ILog {
 }
 /**
@@ -39,9 +39,9 @@ export interface LogECreateColumns extends LogEId, LogEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLog extends QEntity {
+export interface QLog extends IQEntity {
 }
 export interface QLogQId {
 }
-export interface QLogQRelation extends QRelation<QLog>, QLogQId {
+export interface QLogQRelation extends IQRelation<QLog>, QLogQId {
 }

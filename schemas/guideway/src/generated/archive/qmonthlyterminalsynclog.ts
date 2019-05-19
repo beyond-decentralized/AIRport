@@ -15,8 +15,8 @@ import {
 	IQOneToManyRelation,
 	IQStringField,
 	IQUntypedField,
-	QEntity,
-	QRelation,
+	IQEntity,
+	IQRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
@@ -163,7 +163,7 @@ extends MonthlyTerminalSyncLogEId, MonthlyTerminalSyncLogEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMonthlyTerminalSyncLog extends QEntity
+export interface QMonthlyTerminalSyncLog extends IQEntity
 {
 	// Id Fields
 
@@ -195,6 +195,6 @@ export interface QMonthlyTerminalSyncLogQId
 
 // Entity Relation Interface
 export interface QMonthlyTerminalSyncLogQRelation
-	extends QRelation<QMonthlyTerminalSyncLog>, QMonthlyTerminalSyncLogQId {
+	extends IQRelation<QMonthlyTerminalSyncLog>, QMonthlyTerminalSyncLogQId {
 }
 

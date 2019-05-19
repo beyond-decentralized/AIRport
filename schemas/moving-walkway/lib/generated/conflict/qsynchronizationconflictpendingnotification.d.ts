@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISynchronizationConflict, SynchronizationConflictEId, SynchronizationConflictEOptionalId, SynchronizationConflictESelect, QSynchronizationConflictQId, QSynchronizationConflictQRelation } from './qsynchronizationconflict';
 import { IActor, ActorEId, ActorEOptionalId, ActorESelect, QActorQId, QActorQRelation } from '@airport/holding-pattern';
 export interface ISynchronizationConflictPendingNotification {
@@ -53,7 +53,7 @@ export interface SynchronizationConflictPendingNotificationECreateColumns extend
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSynchronizationConflictPendingNotification extends QEntity {
+export interface QSynchronizationConflictPendingNotification extends IQEntity {
     synchronizationConflict: QSynchronizationConflictQRelation;
     actor: QActorQRelation;
     acknowledged: IQBooleanField;
@@ -62,5 +62,5 @@ export interface QSynchronizationConflictPendingNotificationQId {
     synchronizationConflict: QSynchronizationConflictQId;
     actor: QActorQId;
 }
-export interface QSynchronizationConflictPendingNotificationQRelation extends QRelation<QSynchronizationConflictPendingNotification>, QSynchronizationConflictPendingNotificationQId {
+export interface QSynchronizationConflictPendingNotificationQRelation extends IQRelation<QSynchronizationConflictPendingNotification>, QSynchronizationConflictPendingNotificationQId {
 }

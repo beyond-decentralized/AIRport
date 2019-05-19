@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { IApplication, ApplicationEOptionalId, ApplicationESelect, QApplicationQRelation } from './qapplication';
 import { IPackage, PackageEOptionalId, PackageESelect, QPackageQRelation } from './qpackage';
 export interface IApplicationPackage {
@@ -52,7 +52,7 @@ export interface ApplicationPackageECreateColumns extends ApplicationPackageEId,
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplicationPackage extends QEntity {
+export interface QApplicationPackage extends IQEntity {
     id: IQNumberField;
     application: QApplicationQRelation;
     package: QPackageQRelation;
@@ -60,5 +60,5 @@ export interface QApplicationPackage extends QEntity {
 export interface QApplicationPackageQId {
     id: IQNumberField;
 }
-export interface QApplicationPackageQRelation extends QRelation<QApplicationPackage>, QApplicationPackageQId {
+export interface QApplicationPackageQRelation extends IQRelation<QApplicationPackage>, QApplicationPackageQId {
 }

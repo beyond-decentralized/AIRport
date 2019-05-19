@@ -35,7 +35,6 @@ import {SchemaReference} from './SchemaReference'
 export class SchemaVersion {
 
 	@Id()
-	@GeneratedValue()
 	@SequenceGenerator({allocationSize: 100})
 	@DbNumber()
 	id: SchemaVersionId

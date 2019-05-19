@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISharingNode, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from './qsharingnode';
 import { IRepository, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '@airport/holding-pattern';
 export interface ISharingNodeRepository {
@@ -61,7 +61,7 @@ export interface SharingNodeRepositoryECreateColumns extends SharingNodeReposito
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingNodeRepository extends QEntity {
+export interface QSharingNodeRepository extends IQEntity {
     sharingNode: QSharingNodeQRelation;
     repository: QRepositoryQRelation;
     agtRepositoryId: IQNumberField;
@@ -72,5 +72,5 @@ export interface QSharingNodeRepositoryQId {
     sharingNode: QSharingNodeQId;
     repository: QRepositoryQId;
 }
-export interface QSharingNodeRepositoryQRelation extends QRelation<QSharingNodeRepository>, QSharingNodeRepositoryQId {
+export interface QSharingNodeRepositoryQRelation extends IQRelation<QSharingNodeRepository>, QSharingNodeRepositoryQId {
 }

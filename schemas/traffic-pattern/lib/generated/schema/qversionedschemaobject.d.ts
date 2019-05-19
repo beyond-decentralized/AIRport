@@ -1,4 +1,4 @@
-import { IQEntityInternal, IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
 import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
 export interface IVersionedSchemaObject {
     deprecatedSinceVersion?: ISchemaVersion;
@@ -49,12 +49,12 @@ export interface VersionedSchemaObjectECreateColumns extends VersionedSchemaObje
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QVersionedSchemaObject extends QEntity {
+export interface QVersionedSchemaObject extends IQEntity {
     deprecatedSinceVersion: QSchemaVersionQRelation;
     removedInVersion: QSchemaVersionQRelation;
     sinceVersion: QSchemaVersionQRelation;
 }
 export interface QVersionedSchemaObjectQId {
 }
-export interface QVersionedSchemaObjectQRelation<SubType extends IQEntityInternal> extends QRelation<SubType>, QVersionedSchemaObjectQId {
+export interface QVersionedSchemaObjectQRelation<SubType extends IQEntity> extends IQRelation<SubType>, QVersionedSchemaObjectQId {
 }

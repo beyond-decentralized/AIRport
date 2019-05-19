@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ITerminalRepository, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
 import { IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
 export interface IRepository {
@@ -60,7 +60,7 @@ export interface RepositoryECreateColumns extends RepositoryEId, RepositoryEUpda
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepository extends QEntity {
+export interface QRepository extends IQEntity {
     id: IQNumberField;
     lastUpdateTime: IQDateField;
     name: IQStringField;
@@ -71,5 +71,5 @@ export interface QRepository extends QEntity {
 export interface QRepositoryQId {
     id: IQNumberField;
 }
-export interface QRepositoryQRelation extends QRelation<QRepository>, QRepositoryQId {
+export interface QRepositoryQRelation extends IQRelation<QRepository>, QRepositoryQId {
 }

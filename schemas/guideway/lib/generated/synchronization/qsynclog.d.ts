@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
 import { IAgtSharingMessage, AgtSharingMessageEId, AgtSharingMessageEOptionalId, AgtSharingMessageESelect, QAgtSharingMessageQId, QAgtSharingMessageQRelation } from './qagtsharingmessage';
 import { IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockEOptionalId, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlockQId, QAgtRepositoryTransactionBlockQRelation } from './qagtrepositorytransactionblock';
 export interface ISyncLog {
@@ -49,7 +49,7 @@ export interface SyncLogECreateColumns extends SyncLogEId, SyncLogEUpdateColumns
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSyncLog extends QEntity {
+export interface QSyncLog extends IQEntity {
     sharingMessage: QAgtSharingMessageQRelation;
     repositoryTransactionBlock: QAgtRepositoryTransactionBlockQRelation;
 }
@@ -57,5 +57,5 @@ export interface QSyncLogQId {
     sharingMessage: QAgtSharingMessageQId;
     repositoryTransactionBlock: QAgtRepositoryTransactionBlockQId;
 }
-export interface QSyncLogQRelation extends QRelation<QSyncLog>, QSyncLogQId {
+export interface QSyncLogQRelation extends IQRelation<QSyncLog>, QSyncLogQId {
 }

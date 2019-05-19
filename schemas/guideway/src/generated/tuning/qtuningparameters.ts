@@ -15,8 +15,8 @@ import {
 	IQOneToManyRelation,
 	IQStringField,
 	IQUntypedField,
-	QEntity,
-	QRelation,
+	IQEntity,
+	IQRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
@@ -140,7 +140,7 @@ extends TuningParametersEId, TuningParametersEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTuningParameters extends QEntity
+export interface QTuningParameters extends IQEntity
 {
 	// Id Fields
 	serverType: IQStringField;
@@ -173,6 +173,6 @@ export interface QTuningParametersQId
 
 // Entity Relation Interface
 export interface QTuningParametersQRelation
-	extends QRelation<QTuningParameters>, QTuningParametersQId {
+	extends IQRelation<QTuningParameters>, QTuningParametersQId {
 }
 

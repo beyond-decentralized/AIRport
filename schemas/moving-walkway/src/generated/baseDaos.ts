@@ -197,7 +197,7 @@ export class SQDIDao<Entity,
 		IQE> {
 
 	static diSet(): boolean {
-		return Q.db as any
+		return Q.__dbSchema__ as any
 	}
 
 	constructor(

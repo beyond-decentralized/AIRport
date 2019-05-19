@@ -15,8 +15,8 @@ import {
 	IQOneToManyRelation,
 	IQStringField,
 	IQUntypedField,
-	QEntity,
-	QRelation,
+	IQEntity,
+	IQRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
@@ -155,7 +155,7 @@ extends LoggedErrorEId, LoggedErrorEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLoggedError extends QEntity
+export interface QLoggedError extends IQEntity
 {
 	// Id Fields
 
@@ -184,6 +184,6 @@ export interface QLoggedErrorQId
 
 // Entity Relation Interface
 export interface QLoggedErrorQRelation
-	extends QRelation<QLoggedError>, QLoggedErrorQId {
+	extends IQRelation<QLoggedError>, QLoggedErrorQId {
 }
 

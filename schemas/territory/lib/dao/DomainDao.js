@@ -1,16 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
-const baseDaos_1 = require("../generated/baseDaos");
-const qschema_1 = require("../generated/qschema");
 const diTokens_1 = require("../diTokens");
-class DomainDao extends baseDaos_1.BaseDomainDao {
+const generated_1 = require("../generated/generated");
+class DomainDao extends generated_1.BaseDomainDao {
     async findByIdIn(domainIds) {
         let d;
         return await this.db.find.tree({
             select: {},
             from: [
-                d = qschema_1.Q.Domain
+                d = generated_1.Q.Domain
             ],
             where: d.id.in(domainIds)
         });
@@ -19,7 +18,7 @@ class DomainDao extends baseDaos_1.BaseDomainDao {
         let d;
         const domains = await this.db.find.tree({
             select: {},
-            from: [d = qschema_1.Q.Domain],
+            from: [d = generated_1.Q.Domain],
             where: d.name.in(domainNames)
         });
         const domainMapByNameWithNames = new Map();

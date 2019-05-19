@@ -227,7 +227,7 @@ export const SCHEMA = {
 					"columns": [
 						{
 							"index": 0,
-							"isGenerated": true,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "ID",
 							"notNull": false,

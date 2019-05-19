@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { IDailyArchiveLog, DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation } from './qdailyarchivelog';
 import { ITerminal, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '../terminal/qterminal';
 export interface IDailyTerminalSyncLog {
@@ -53,7 +53,7 @@ export interface DailyTerminalSyncLogECreateColumns extends DailyTerminalSyncLog
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDailyTerminalSyncLog extends QEntity {
+export interface QDailyTerminalSyncLog extends IQEntity {
     dailyArchiveLog: QDailyArchiveLogQRelation;
     terminal: QTerminalQRelation;
     acknowledged: IQNumberField;
@@ -62,5 +62,5 @@ export interface QDailyTerminalSyncLogQId {
     dailyArchiveLog: QDailyArchiveLogQId;
     terminal: QTerminalQId;
 }
-export interface QDailyTerminalSyncLogQRelation extends QRelation<QDailyTerminalSyncLog>, QDailyTerminalSyncLogQId {
+export interface QDailyTerminalSyncLogQRelation extends IQRelation<QDailyTerminalSyncLog>, QDailyTerminalSyncLogQId {
 }

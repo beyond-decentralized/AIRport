@@ -1,5 +1,12 @@
-import { QSchema as AirportQSchema } from '@airport/air-control';
-import { DbSchema } from '@airport/ground-control';
+import {
+	AIR_DB,
+	QSchema as AirportQSchema
+}                      from '@airport/air-control'
+import {DI}            from '@airport/di'
+import {
+	DbSchema,
+	getSchemaName
+}                      from '@airport/ground-control';
 import { Schema } from '../ddl/schema/schema';
 import { QSchema } from './schema/qschema';
 import { SchemaColumn } from '../ddl/schema/schemacolumn';
@@ -56,4 +63,10 @@ export const Q_SCHEMA: LocalQSchema = <any>{
   domain: 'github.com',
   name: '@airport/traffic-pattern'
 };
-export const Q: LocalQSchema = Q_SCHEMA;
+export const Q: LocalQSchema = Q_SCHEMA
+
+DI.get((
+	airportDatabase
+) => {
+	airportDatabase.QM[getSchemaName(Q_SCHEMA)] = Q
+}, AIR_DB)

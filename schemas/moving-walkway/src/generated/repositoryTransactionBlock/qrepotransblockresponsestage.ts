@@ -15,8 +15,8 @@ import {
 	IQOneToManyRelation,
 	IQStringField,
 	IQUntypedField,
-	QEntity,
-	QRelation,
+	IQEntity,
+	IQRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
@@ -134,7 +134,7 @@ extends RepoTransBlockResponseStageEId, RepoTransBlockResponseStageEUpdateColumn
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepoTransBlockResponseStage extends QEntity
+export interface QRepoTransBlockResponseStage extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -163,6 +163,6 @@ export interface QRepoTransBlockResponseStageQId
 
 // Entity Relation Interface
 export interface QRepoTransBlockResponseStageQRelation
-	extends QRelation<QRepoTransBlockResponseStage>, QRepoTransBlockResponseStageQId {
+	extends IQRelation<QRepoTransBlockResponseStage>, QRepoTransBlockResponseStageQId {
 }
 

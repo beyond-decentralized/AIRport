@@ -73,7 +73,7 @@ export class QEntityBuilder extends QCoreEntityBuilder {
 		const idRelationData: MemberData
 			      = this.buildRelationData(this.idRelationBuilders);
 
-		let parentEntityQType = 'QEntity';
+		let parentEntityQType = 'IQEntity';
 		if (this.entity.parentEntity) {
 			parentEntityQType = 'Q' + this.entity.parentEntity.type;
 		}

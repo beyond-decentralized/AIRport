@@ -1,6 +1,6 @@
 import { JSONFieldInGroupBy, JSONFieldInOrderBy, JsonNonEntityQuery, JSONRelation, JsonStatement } from "@airport/ground-control";
 import { IEntityAliases, IFieldColumnAliases, Parameter } from "../../../lingo/core/entity/Aliases";
-import { IEntityRelationFrom, IFrom } from "../../../lingo/core/entity/Entity";
+import { IEntityRelationFrom, IFrom } from '../../../lingo/core/entity/Entity';
 import { IFieldInOrderBy } from "../../../lingo/core/field/FieldInOrderBy";
 import { IQOperableField } from "../../../lingo/core/field/OperableField";
 import { IAbstractQuery } from "../../../lingo/query/facade/AbstractQuery";

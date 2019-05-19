@@ -12,8 +12,8 @@ import {
 }           from '@airport/air-control'
 import {DI} from '@airport/di'
 import {
-	DB_SCHEMA_UTILS,
-	DbSchema
+	DbSchema,
+	getSchemaName
 }           from '@airport/ground-control'
 
 export class AirportDatabase
@@ -55,9 +55,7 @@ export class AirportDatabase
 		qSchemas: QSchema[]
 	) {
 		for (const qSchema of qSchemas) {
-			const schemaName = (await DI.getP(DB_SCHEMA_UTILS)).getSchemaNameFromDomainAndJsonSchemaNames(
-				qSchema.domain, qSchema.name
-			)
+			const schemaName    = getSchemaName(qSchema)
 			this.QM[schemaName] = qSchema
 		}
 	}

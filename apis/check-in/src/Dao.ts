@@ -19,6 +19,7 @@ import {
 	UTILS
 }                             from '@airport/air-control'
 import {DI}                   from '@airport/di'
+import {ENTITY_MANAGER}       from '@airport/tower'
 import {EntityDatabaseFacade} from './EntityDatabaseFacade'
 
 /**
@@ -47,16 +48,20 @@ export abstract class Dao<Entity,
 		DI.get(
 			(
 				airportDatabase,
+				entityManager,
 				utils
 			) => {
 				this.airDb     = airportDatabase
 				this.utils     = utils
-				const dbEntity = Q.db.currentVersion.entityMapByName[dbEntityName]
-				this.db        = new EntityDatabaseFacade<Entity,
-					EntitySelect, EntityCreate,
+				const dbEntity = Q.__dbSchema__.currentVersion.entityMapByName[dbEntityName]
+				const entityDatabaseFacade        = new EntityDatabaseFacade<Entity,
+				 	EntitySelect, EntityCreate,
 					EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>(
 					dbEntity, Q, this.utils)
-			}, AIR_DB, UTILS)
+				entityDatabaseFacade.initialize(entityManager)
+
+				this.db = entityDatabaseFacade
+			}, AIR_DB, ENTITY_MANAGER, UTILS)
 	}
 
 	get find(): IEntityFind<Entity, Array<Entity>, EntitySelect> {

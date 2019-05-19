@@ -139,6 +139,10 @@ export interface IQEntity {
 
 }
 
+export interface IQTree extends IQEntity {
+
+}
+
 export interface IQEntityInternal
 	extends IQEntity {
 

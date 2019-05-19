@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
 import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
 export interface IMissingRecord {
@@ -68,7 +68,7 @@ export interface MissingRecordECreateColumns extends MissingRecordEId, MissingRe
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMissingRecord extends QEntity {
+export interface QMissingRecord extends IQEntity {
     id: IQNumberField;
     actorRecordId: IQNumberField;
     status: IQNumberField;
@@ -80,5 +80,5 @@ export interface QMissingRecord extends QEntity {
 export interface QMissingRecordQId {
     id: IQNumberField;
 }
-export interface QMissingRecordQRelation extends QRelation<QMissingRecord>, QMissingRecordQId {
+export interface QMissingRecordQRelation extends IQRelation<QMissingRecord>, QMissingRecordQId {
 }

@@ -129,8 +129,6 @@ export class DatabaseManager
 		await storeDriver.dropTable('github_com___airport__holding_pattern__RepositoryTransactionHistory')
 		await storeDriver.dropTable('github_com___airport__holding_pattern__TransactionHistory')
 
-
-
 		if (await storeDriver.doesTableExist('github_com___airport_territory__Package')) {
 			const queryObjectInitializer = await DI.getP(QUERY_OBJECT_INITIALIZER)
 			await queryObjectInitializer.initialize()

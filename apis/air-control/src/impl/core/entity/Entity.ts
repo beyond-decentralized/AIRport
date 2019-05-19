@@ -1,7 +1,6 @@
 import {
 	DbEntity,
 	DbRelation,
-	EntityRelationType,
 	JoinType,
 	JSONBaseOperation,
 	JSONEntityRelation,
@@ -9,32 +8,31 @@ import {
 	JSONRelation,
 	JSONRelationType,
 	JSONViewJoinRelation
-} from "@airport/ground-control";
-import {
-	IEntityUpdateColumns,
-	IQOperableFieldInternal,
-	IUtils
-}                              from "../../../";
-import {IAirportDatabase}      from "../../../lingo/AirportDatabase";
+}                                from '@airport/ground-control'
+import {IAirportDatabase}        from '../../../lingo/AirportDatabase'
 import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
+	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IFrom,
 	IQEntity,
 	IQEntityDriver,
 	IQEntityInternal
-}                              from "../../../lingo/core/entity/Entity";
-import {IJoinFields}           from "../../../lingo/core/entity/Joins";
-import {OneToManyElements}     from "../../../lingo/core/entity/metadata/ColumnDecorators";
-import {IQInternalRelation}    from "../../../lingo/core/entity/Relation";
-import {IEntityDatabaseFacade} from "../../../lingo/core/repository/EntityDatabaseFacade";
-import {RawTreeQuery}          from "../../../lingo/query/facade/TreeQuery";
-import {TreeQuery}             from "../../query/facade/TreeQuery";
-import {JoinFields}            from "../Joins";
-import {FieldColumnAliases}    from "./Aliases";
-import {QRelation}             from "./Relation";
+}                                from '../../../lingo/core/entity/Entity'
+import {IJoinFields}             from '../../../lingo/core/entity/Joins'
+import {OneToManyElements}       from '../../../lingo/core/entity/metadata/ColumnDecorators'
+import {IQInternalRelation}      from '../../../lingo/core/entity/Relation'
+import {IQOperableFieldInternal} from '../../../lingo/core/field/OperableField'
+import {IEntityDatabaseFacade}   from '../../../lingo/core/repository/EntityDatabaseFacade'
+import {RawTreeQuery}            from '../../../lingo/query/facade/TreeQuery'
+import {IUtils}                  from '../../../lingo/utils/Utils'
+import {TreeQuery}               from '../../query/facade/TreeQuery'
+import {extend}                  from '../../utils/qSchemaBuilderUtils'
+import {JoinFields}              from '../Joins'
+import {FieldColumnAliases}      from './Aliases'
+import {QRelation}               from './Relation'
 
 /**
  * Created by Papa on 4/21/2016.
@@ -71,54 +69,49 @@ export interface QEntityConstructor {
 
 }
 
-export class QEntity
-	implements IQEntityInternal {
 
-	__driver__: IQEntityDriver;
+export function QEntity(
+	dbEntity: DbEntity,
+	fromClausePosition: number[]                     = [],
+	dbRelation                                       = null,
+	joinType: JoinType                               = null,
+	QDriver: { new(...args: any[]): IQEntityDriver } = QEntityDriver
+) {
+	this.__driver__ = new QDriver(dbEntity, fromClausePosition, dbRelation, joinType, this)
+}
 
-	constructor(
-		dbEntity: DbEntity,
-		fromClausePosition: number[]                     = [],
-		dbRelation                                       = null,
-		joinType: JoinType                               = null,
-		QDriver: { new(...args: any[]): IQEntityDriver } = QEntityDriver
-	) {
-		this.__driver__ = new QDriver(dbEntity, fromClausePosition, dbRelation, joinType, this);
-	}
+QEntity.prototype.fullJoin = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
+	return this.__driver__.join(right, JoinType.FULL_JOIN)
+}
 
-	fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF> {
-		return this.__driver__.join<IF>(right, JoinType.FULL_JOIN);
-	}
+QEntity.prototype.innerJoin = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
+	return this.__driver__.join(right, JoinType.INNER_JOIN)
+}
 
-	innerJoin<IF extends IFrom>(right: IF): IJoinFields<IF> {
-		return this.__driver__.join<IF>(right, JoinType.INNER_JOIN);
-	}
+QEntity.prototype.leftJoin = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
+	return this.__driver__.join(right, JoinType.LEFT_JOIN)
+}
 
-	leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF> {
-		return this.__driver__.join<IF>(right, JoinType.LEFT_JOIN);
-	}
-
-	rightJoin<IF extends IFrom>(right: IF): IJoinFields<IF> {
-		return this.__driver__.join<IF>(right, JoinType.RIGHT_JOIN);
-	}
+QEntity.prototype.rightJoin = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
+	return this.__driver__.join(right, JoinType.RIGHT_JOIN)
 }
 
 export class QEntityDriver
 	implements IQEntityDriver {
 
-	utils: IUtils;
-	airportDb: IAirportDatabase;
-	entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> } = {};
-	entityRelations: IQInternalRelation<any>[]                                                            = [];
-	entityRelationMapByIndex: { [relationPropertyIndex: number]: IQInternalRelation<any> };
-	idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]                                = [];
-	allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]                               = [];
-	relations: IQInternalRelation<any>[]                                                                  = [];
-	currentChildIndex                                                                                     = -1;
-	joinWhereClause: JSONBaseOperation;
-	parentJoinEntity: IQEntityInternal;
-	private entityRelationMap: { [propertyName: string]: IQInternalRelation<any> };
-	private oneToManyConfigMap: { [name: string]: OneToManyElements };
+	utils: IUtils
+	airportDb: IAirportDatabase
+	entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> } = {}
+	entityRelations: IQInternalRelation<any>[]                                                            = []
+	entityRelationMapByIndex: { [relationPropertyIndex: number]: IQInternalRelation<any> }
+	idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]                                = []
+	allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]                               = []
+	relations: IQInternalRelation<any>[]                                                                  = []
+	currentChildIndex                                                                                     = -1
+	joinWhereClause: JSONBaseOperation
+	parentJoinEntity: IQEntityInternal
+	private entityRelationMap: { [propertyName: string]: IQInternalRelation<any> }
+	private oneToManyConfigMap: { [name: string]: OneToManyElements }
 
 
 	constructor(
@@ -132,16 +125,16 @@ export class QEntityDriver
 
 	getInstance(): IQEntityInternal {
 		const qEntityConstructor = this.qEntity.__driver__.utils.Schema
-			.getQEntityConstructor(this.dbEntity);
+			.getQEntityConstructor(this.dbEntity)
 
-		let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType);
+		let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType)
 
-		instance.__driver__.currentChildIndex = this.currentChildIndex;
-		instance.__driver__.joinWhereClause   = this.joinWhereClause;
-		instance.__driver__.entityFieldMap    = this.entityFieldMap;
-		instance.__driver__.entityRelations   = this.entityRelations;
+		instance.__driver__.currentChildIndex = this.currentChildIndex
+		instance.__driver__.joinWhereClause   = this.joinWhereClause
+		instance.__driver__.entityFieldMap    = this.entityFieldMap
+		instance.__driver__.entityRelations   = this.entityRelations
 
-		return instance;
+		return instance
 	}
 
 	/*
@@ -173,36 +166,36 @@ export class QEntityDriver
 			rt: null,
 			rep: columnAliases.entityAliases.getNextAlias(this.getRootJoinEntity()),
 			si: this.dbEntity.schemaVersion.id
-		};
-		if (this.joinWhereClause) {
-			this.getJoinRelationJson(<JSONJoinRelation>jsonRelation, columnAliases);
-		} else if (this.dbRelation) {
-			this.getEntityRelationJson(<JSONEntityRelation>jsonRelation, columnAliases);
-		} else {
-			this.getRootRelationJson(jsonRelation, columnAliases);
 		}
-		return jsonRelation;
+		if (this.joinWhereClause) {
+			this.getJoinRelationJson(<JSONJoinRelation>jsonRelation, columnAliases)
+		} else if (this.dbRelation) {
+			this.getEntityRelationJson(<JSONEntityRelation>jsonRelation, columnAliases)
+		} else {
+			this.getRootRelationJson(jsonRelation, columnAliases)
+		}
+		return jsonRelation
 	}
 
 	getJoinRelationJson(
 		jsonRelation: JSONJoinRelation,
 		columnAliases: FieldColumnAliases
 	): JSONJoinRelation {
-		jsonRelation.rt  = JSONRelationType.ENTITY_JOIN_ON;
-		jsonRelation.jwc = this.utils.Query.whereClauseToJSON(this.joinWhereClause, columnAliases);
+		jsonRelation.rt  = JSONRelationType.ENTITY_JOIN_ON
+		jsonRelation.jwc = this.utils.Query.whereClauseToJSON(this.joinWhereClause, columnAliases)
 
-		return jsonRelation;
+		return jsonRelation
 	}
 
 	getEntityRelationJson(
 		jsonRelation: JSONEntityRelation,
 		columnAliases: FieldColumnAliases
 	): JSONEntityRelation {
-		jsonRelation.rt = JSONRelationType.ENTITY_SCHEMA_RELATION;
-		jsonRelation.ri = this.dbRelation.index;
+		jsonRelation.rt = JSONRelationType.ENTITY_SCHEMA_RELATION
+		jsonRelation.ri = this.dbRelation.index
 
 		// if (!this.dbRelation.whereJoinTable) {
-			return jsonRelation;
+		return jsonRelation
 		// }
 		// let otmQEntity;
 		// let mtoQEntity;
@@ -219,51 +212,51 @@ export class QEntityDriver
 		// 		throw `Unknown EntityRelationType: ${this.dbRelation.relationType}`;
 		// }
 		//
-		// let joinWhereClause = this.dbRelation.whereJoinTable.addToJoinFunction(otmQEntity, mtoQEntity, this.airportDb, this.airportDb.F);
-		// jsonRelation.jwc    = this.utils.Query.whereClauseToJSON(joinWhereClause, columnAliases);
-		// jsonRelation.wjto   = this.dbRelation.joinFunctionWithOperator;
-		//
-		// return jsonRelation;
+		// let joinWhereClause = this.dbRelation.whereJoinTable.addToJoinFunction(otmQEntity,
+		// mtoQEntity, this.airportDb, this.airportDb.F); jsonRelation.jwc    =
+		// this.utils.Query.whereClauseToJSON(joinWhereClause, columnAliases);
+		// jsonRelation.wjto   = this.dbRelation.joinFunctionWithOperator;  return
+		// jsonRelation;
 	}
 
 	getRootRelationJson(
 		jsonRelation: JSONRelation,
 		columnAliases: FieldColumnAliases
 	): JSONJoinRelation {
-		jsonRelation.rt = (this instanceof QTreeDriver) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT;
+		jsonRelation.rt = (this instanceof QTreeDriver) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT
 
-		return jsonRelation;
+		return jsonRelation
 	}
 
 
 	getQ(): IQEntityInternal {
-		return this.qEntity;
+		return this.qEntity
 	}
 
 	join<IF extends IFrom>(
 		right: IF,
 		joinType: JoinType
 	): IJoinFields<IF> {
-		let joinChild: IQEntityInternal         = (<IQEntityInternal><any>right).__driver__.getInstance();
-		joinChild.__driver__.currentChildIndex  = 0;
-		let nextChildPosition                   = QRelation.getNextChildJoinPosition(this);
-		joinChild.__driver__.fromClausePosition = nextChildPosition;
-		joinChild.__driver__.joinType           = joinType;
-		joinChild.__driver__.parentJoinEntity   = this.qEntity;
+		let joinChild: IQEntityInternal         = (<IQEntityInternal><any>right).__driver__.getInstance()
+		joinChild.__driver__.currentChildIndex  = 0
+		let nextChildPosition                   = QRelation.getNextChildJoinPosition(this)
+		joinChild.__driver__.fromClausePosition = nextChildPosition
+		joinChild.__driver__.joinType           = joinType
+		joinChild.__driver__.parentJoinEntity   = this.qEntity
 
-		return new JoinFields<IF>(<any>joinChild);
+		return new JoinFields<IF>(<any>joinChild)
 	}
 
 	isRootEntity(): boolean {
-		return !this.parentJoinEntity;
+		return !this.parentJoinEntity
 	}
 
 	getRootJoinEntity(): IQEntityInternal {
-		let rootEntity: IQEntityInternal = this.qEntity;
+		let rootEntity: IQEntityInternal = this.qEntity
 		while (rootEntity.__driver__.parentJoinEntity) {
-			rootEntity = rootEntity.__driver__.parentJoinEntity;
+			rootEntity = rootEntity.__driver__.parentJoinEntity
 		}
-		return rootEntity;
+		return rootEntity
 	}
 
 	/*
@@ -299,19 +292,15 @@ export class QEntityDriver
 
 }
 
-export class QTree
-	extends QEntity {
-
-	__driver__: IQTreeDriver;
-
-	constructor(
-		fromClausePosition: number[] = [],
-		subQuery: RawTreeQuery<any>
-	) {
-		super(null, fromClausePosition, null, null, QTreeDriver);
-		this.__driver__.subQuery = subQuery;
-	}
+export function QTree(
+	fromClausePosition: number[] = [],
+	subQuery: RawTreeQuery<any>
+) {
+	(<any>QTree).base.constructor.call(this, null, fromClausePosition, null, null, QTreeDriver)
+	this.__driver__.subQuery = subQuery
 }
+
+extend(QEntity, QTree, {})
 
 export interface IQTreeDriver
 	extends IQEntityDriver {
@@ -323,13 +312,13 @@ export interface IQTreeDriver
 export class QTreeDriver
 	extends QEntityDriver
 	implements IQTreeDriver {
-	subQuery: RawTreeQuery<any>;
+	subQuery: RawTreeQuery<any>
 
-	getInstance(): QTree {
-		let instance                 = <QTree>super.getInstance();
-		instance.__driver__.subQuery = this.subQuery;
+	getInstance(): IQEntityInternal {
+		let instance                                 = super.getInstance();
+		(<IQTreeDriver>instance.__driver__).subQuery = this.subQuery
 
-		return instance;
+		return instance
 	}
 
 	// getRelationPropertyName(): string {
@@ -340,22 +329,22 @@ export class QTreeDriver
 		jsonRelation: JSONViewJoinRelation,
 		columnAliases: FieldColumnAliases
 	): JSONViewJoinRelation {
-		jsonRelation    = <JSONViewJoinRelation>super.getJoinRelationJson(jsonRelation, columnAliases);
-		jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON;
-		jsonRelation.sq = new TreeQuery(this.subQuery, this.utils, columnAliases.entityAliases).toJSON();
+		jsonRelation    = <JSONViewJoinRelation>super.getJoinRelationJson(jsonRelation, columnAliases)
+		jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON
+		jsonRelation.sq = new TreeQuery(this.subQuery, this.utils, columnAliases.entityAliases).toJSON()
 
-		return jsonRelation;
+		return jsonRelation
 	}
 
 	getRootRelationJson(
 		jsonRelation: JSONViewJoinRelation,
 		columnAliases: FieldColumnAliases
 	): JSONViewJoinRelation {
-		jsonRelation    = <JSONViewJoinRelation>super.getJoinRelationJson(jsonRelation, columnAliases);
-		jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT;
-		jsonRelation.sq = new TreeQuery(this.subQuery, this.utils, columnAliases.entityAliases).toJSON();
+		jsonRelation    = <JSONViewJoinRelation>super.getJoinRelationJson(jsonRelation, columnAliases)
+		jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT
+		jsonRelation.sq = new TreeQuery(this.subQuery, this.utils, columnAliases.entityAliases).toJSON()
 
-		return jsonRelation;
+		return jsonRelation
 	}
 
 }

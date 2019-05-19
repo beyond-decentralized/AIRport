@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 export interface ISequence {
     id?: number;
     schemaIndex?: number;
@@ -58,7 +58,7 @@ export interface SequenceECreateColumns extends SequenceEId, SequenceEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSequence extends QEntity {
+export interface QSequence extends IQEntity {
     id: IQNumberField;
     schemaIndex: IQNumberField;
     tableIndex: IQNumberField;
@@ -68,5 +68,5 @@ export interface QSequence extends QEntity {
 export interface QSequenceQId {
     id: IQNumberField;
 }
-export interface QSequenceQRelation extends QRelation<QSequence>, QSequenceQId {
+export interface QSequenceQRelation extends IQRelation<QSequence>, QSequenceQId {
 }

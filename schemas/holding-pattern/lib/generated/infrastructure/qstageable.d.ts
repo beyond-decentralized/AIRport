@@ -1,4 +1,4 @@
-import { IQEntityInternal, IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQEntity, IQRelation } from '@airport/air-control';
 export interface IStageable {
     draft?: boolean;
 }
@@ -42,10 +42,10 @@ export interface StageableECreateColumns extends StageableEId, StageableEUpdateC
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QStageable extends QEntity {
+export interface QStageable extends IQEntity {
     draft: IQBooleanField;
 }
 export interface QStageableQId {
 }
-export interface QStageableQRelation<SubType extends IQEntityInternal> extends QRelation<SubType>, QStageableQId {
+export interface QStageableQRelation<SubType extends IQEntity> extends IQRelation<SubType>, QStageableQId {
 }

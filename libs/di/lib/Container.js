@@ -7,8 +7,12 @@ class Container {
         this.numPendingInits = 0;
     }
     get(callback, ...tokens) {
-        this.doGet(tokens, false, callback, () => {
+        this.doGet(tokens, false, callback, (message) => {
+            throw message;
         });
+    }
+    laterP(...tokens) {
+        return () => this.getP(tokens);
     }
     getP(...tokens) {
         return new Promise((resolve, reject) => {
@@ -44,17 +48,17 @@ class Container {
         }
     }
     getSync(tokens, returnArray, successCallback, errorCallback) {
-        let firstErrorClass;
+        let firstMissingClassToken;
         let firstDiNotSetClass;
         const objects = tokens.map(token => {
-            if (firstErrorClass || firstDiNotSetClass) {
+            if (firstMissingClassToken || firstDiNotSetClass) {
                 return;
             }
             let object = this.objects[token];
             if (!object) {
                 const clazz = this.classes[token];
                 if (!clazz) {
-                    firstErrorClass = clazz;
+                    firstMissingClassToken = token;
                     return;
                 }
                 if (clazz.diSet && !clazz.diSet()) {
@@ -66,10 +70,11 @@ class Container {
             }
             return object;
         });
-        if (firstErrorClass) {
-            console.log('Dependency Injection could not find class: '
-                + firstErrorClass.name);
-            errorCallback(firstErrorClass);
+        if (firstMissingClassToken) {
+            const message = 'Dependency Injection could not find class for token: '
+                + firstMissingClassToken;
+            console.log(message);
+            errorCallback(message);
         }
         else if (firstDiNotSetClass) {
             // console.log('Dependency Injection is not ready for class: '

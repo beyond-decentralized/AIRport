@@ -12,7 +12,11 @@ import {
 	SchemaName,
 	SchemaStatus
 }                       from '@airport/ground-control'
-import {DdlObjects}     from '@airport/takeoff'
+import {
+	DDL_OBJECT_RETRIEVER,
+	DdlObjects,
+	IDdlObjectRetriever
+}                       from '@airport/takeoff'
 import {
 	ITerminalStore,
 	TERMINAL_STORE
@@ -38,8 +42,7 @@ import {ISchemaLocator} from '../locator/SchemaLocator'
 export interface ISchemaComposer {
 
 	compose(
-		jsonSchemas: JsonSchema[],
-		forInitialLayout: boolean
+		jsonSchemas: JsonSchema[]
 	): DdlObjects;
 
 }
@@ -48,6 +51,7 @@ export class SchemaComposer
 	implements ISchemaComposer {
 
 	private dbSchemaUtils: IDbSchemaUtils
+	private ddlObjectRetriever: IDdlObjectRetriever
 	private schemaLocator: ISchemaLocator
 	private terminalStore: ITerminalStore
 	private utils: IUtils
@@ -55,21 +59,24 @@ export class SchemaComposer
 	constructor() {
 		DI.get((
 			dbSchemaUtils,
+			ddlObjectRetriever,
 			schemaLocator,
 			terminalStore,
 			utils
 			) => {
-				this.dbSchemaUtils = dbSchemaUtils
-				this.schemaLocator = schemaLocator
-				this.terminalStore = terminalStore
-				this.utils         = utils
-			}, DB_SCHEMA_UTILS, SCHEMA_LOCATOR,
-			TERMINAL_STORE, UTILS)
+				this.dbSchemaUtils      = dbSchemaUtils
+				this.ddlObjectRetriever = ddlObjectRetriever
+				this.schemaLocator      = schemaLocator
+				this.terminalStore      = terminalStore
+				this.utils              = utils
+			}, DB_SCHEMA_UTILS, DDL_OBJECT_RETRIEVER,
+			SCHEMA_LOCATOR, TERMINAL_STORE,
+			UTILS)
+
 	}
 
 	compose(
-		jsonSchemas: JsonSchema[],
-		forInitialLayout: boolean
+		jsonSchemas: JsonSchema[]
 	): DdlObjects {
 		const domainSet: Set<DomainName>                       = new Set()
 		const jsonSchemaMapByName: Map<SchemaName, JsonSchema> = new Map()
@@ -85,19 +92,19 @@ export class SchemaComposer
 			      domainMapByName,
 			      allDomains,
 			      newDomains
-		      } = this.composeDomains(domainSet, forInitialLayout)
+		      } = this.composeDomains(domainSet)
 		const {
 			      allSchemas,
 			      newSchemaMapByName,
 			      newSchemas
 		      } = this.composeSchemas(
-			domainMapByName, jsonSchemaMapByName, forInitialLayout)
+			domainMapByName, jsonSchemaMapByName)
 		const {
 			      newLatestSchemaVersions,
 			      newSchemaVersionMapBySchemaName,
 			      newSchemaVersions
 		      } = this.composeSchemaVersions(
-			jsonSchemaMapByName, newSchemaMapByName, forInitialLayout)
+			jsonSchemaMapByName, newSchemaMapByName)
 		const {
 			      newSchemaReferenceMap,
 			      newSchemaReferences
@@ -107,25 +114,25 @@ export class SchemaComposer
 			      newEntitiesMapBySchemaName,
 			      newEntities
 		      } = this.composeSchemaEntities(
-			jsonSchemaMapByName, newSchemaVersionMapBySchemaName, forInitialLayout)
+			jsonSchemaMapByName, newSchemaVersionMapBySchemaName)
 		const {
 			      newProperties,
 			      newPropertiesMap
 		      } = this.composeSchemaProperties(
-			jsonSchemaMapByName, newEntitiesMapBySchemaName, forInitialLayout)
+			jsonSchemaMapByName, newEntitiesMapBySchemaName)
 		const {
 			      newRelations,
 			      newRelationsMap
 		      } = this.composeSchemaRelations(
 			jsonSchemaMapByName, newEntitiesMapBySchemaName, newPropertiesMap,
-			newSchemaReferenceMap, forInitialLayout)
+			newSchemaReferenceMap)
 		const {
 			      newColumns,
 			      newColumnsMap,
 			      newPropertyColumns
 		      } = this.composeSchemaColumns(
 			jsonSchemaMapByName, newEntitiesMapBySchemaName,
-			newPropertiesMap, forInitialLayout)
+			newPropertiesMap)
 
 		const newRelationColumns = this.composeSchemaRelationColumns(
 			jsonSchemaMapByName, newSchemaVersionMapBySchemaName,
@@ -151,8 +158,7 @@ export class SchemaComposer
 	}
 
 	private composeDomains(
-		domainNameSet: Set<DomainName>,
-		forInitialLayout: boolean
+		domainNameSet: Set<DomainName>
 	): {
 		domainMapByName: Map<DomainName, IDomain>,
 		allDomains: IDomain[],
@@ -168,7 +174,6 @@ export class SchemaComposer
 			}
 		}
 
-		let currentId               = 0
 		const newDomains: IDomain[] = []
 		for (const domainName of domainNameSet) {
 			const existingDomain = domainMapByName.get(domainName)
@@ -177,7 +182,7 @@ export class SchemaComposer
 				// continue
 			} else {
 				const domain: IDomain = {
-					id: forInitialLayout ? ++currentId : undefined,
+					id: ++this.ddlObjectRetriever.lastIds.domains,
 					name: domainName,
 					schemas: []
 				}
@@ -196,8 +201,7 @@ export class SchemaComposer
 
 	private composeSchemas(
 		domainMapByName: Map<DomainName, IDomain>,
-		jsonSchemaMapByName: Map<SchemaName, JsonSchema>,
-		forInitialLayout: boolean
+		jsonSchemaMapByName: Map<SchemaName, JsonSchema>
 	): {
 		allSchemas: ISchema[],
 		newSchemaMapByName: Map<SchemaName, ISchema>,
@@ -210,7 +214,6 @@ export class SchemaComposer
 			schemaMapByName.set(schema.name, schema)
 		}
 
-		let currentId               = 0
 		const newSchemas: ISchema[] = []
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
 			if (schemaMapByName.has(schemaName)) {
@@ -219,7 +222,7 @@ export class SchemaComposer
 			const domain          = domainMapByName.get(jsonSchema.domain)
 			const schema: ISchema = {
 				domain,
-				index: forInitialLayout ? ++currentId : undefined,
+				index: ++this.ddlObjectRetriever.lastIds.schemas,
 				name: schemaName,
 				scope: 'public',
 				status: SchemaStatus.CURRENT,
@@ -238,8 +241,7 @@ export class SchemaComposer
 
 	private composeSchemaVersions(
 		jsonSchemaMapByName: Map<SchemaName, JsonSchema>,
-		newSchemaMapByName: Map<SchemaName, ISchema>,
-		forInitialLayout: boolean
+		newSchemaMapByName: Map<SchemaName, ISchema>
 	): {
 		newLatestSchemaVersions: ISchemaVersion[],
 		newSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion>,
@@ -250,14 +252,13 @@ export class SchemaComposer
 		const newSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion> = new Map()
 		const newLatestSchemaVersions: ISchemaVersion[]                        = []
 
-		let currentId = 0
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
 			const schema = newSchemaMapByName.get(schemaName)
 			let newSchemaVersion: ISchemaVersion
 			for (const schemaVersion of jsonSchema.versions) {
 				const versionParts = schemaVersion.versionString.split('.')
 				newSchemaVersion   = {
-					id: forInitialLayout ? ++currentId : undefined,
+					id: ++this.ddlObjectRetriever.lastIds.schemaVersions,
 					integerVersion: schemaVersion.integerVersion,
 					versionString: schemaVersion.versionString,
 					majorVersion: parseInt(versionParts[0]),
@@ -333,26 +334,24 @@ export class SchemaComposer
 
 	private composeSchemaEntities(
 		jsonSchemaMapByName: Map<SchemaName, JsonSchema>,
-		newSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion>,
-		forInitialLayout: boolean
+		newSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion>
 	): {
 		newEntitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]>,
 		newEntities: ISchemaEntity[]
 	} {
 		const newEntitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]> = new Map()
 
-		let currentId                      = 0
 		const newEntities: ISchemaEntity[] = []
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
-			let index                  = 0
+			let index                                = 0
 			// TODO: verify that jsonSchema.versions is always ordered ascending
-			const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1]
-			const jsonEntities         = currentSchemaVersion.entities
+			const currentSchemaVersion               = jsonSchema.versions[jsonSchema.versions.length - 1]
+			const jsonEntities                       = currentSchemaVersion.entities
 			const newSchemaEntities: ISchemaEntity[] = []
-			const schemaVersion        = newSchemaVersionMapBySchemaName.get(schemaName)
+			const schemaVersion                      = newSchemaVersionMapBySchemaName.get(schemaName)
 			for (const jsonEntity of jsonEntities) {
 				const entity: ISchemaEntity = {
-					id: forInitialLayout ? ++currentId : undefined,
+					id: ++this.ddlObjectRetriever.lastIds.entities,
 					index: index++,
 					schemaVersion,
 					isLocal: jsonEntity.isLocal,
@@ -383,8 +382,7 @@ export class SchemaComposer
 
 	private composeSchemaProperties(
 		jsonSchemaMapByName: Map<SchemaName, JsonSchema>,
-		newEntitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]>,
-		forInitialLayout: boolean
+		newEntitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]>
 	): {
 		newProperties: ISchemaProperty[],
 		newPropertiesMap: Map<SchemaName, ISchemaProperty[][]>
@@ -392,7 +390,6 @@ export class SchemaComposer
 		const newProperties: ISchemaProperty[]                       = []
 		const newPropertiesMap: Map<SchemaName, ISchemaProperty[][]> = new Map()
 
-		let currentId = 0
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
 			const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1]
 			const jsonEntities         = currentSchemaVersion.entities
@@ -412,7 +409,7 @@ export class SchemaComposer
 
 				for (const jsonProperty of jsonEntity.properties) {
 					const property: ISchemaProperty = {
-						id: forInitialLayout ? ++currentId : undefined,
+						id: ++this.ddlObjectRetriever.lastIds.properties,
 						index,
 						entity,
 						name: jsonProperty.name,
@@ -438,8 +435,7 @@ export class SchemaComposer
 		jsonSchemaMapByName: Map<SchemaName, JsonSchema>,
 		newEntitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]>,
 		newPropertiesMap: Map<SchemaName, ISchemaProperty[][]>,
-		newSchemaReferenceMap: Map<SchemaName, ISchemaReference[]>,
-		forInitialLayout: boolean
+		newSchemaReferenceMap: Map<SchemaName, ISchemaReference[]>
 	): {
 		newRelations: ISchemaRelation[],
 		newRelationsMap: Map<SchemaName, ISchemaRelation[][]>
@@ -447,7 +443,6 @@ export class SchemaComposer
 		const newRelations: ISchemaRelation[]                       = []
 		const newRelationsMap: Map<SchemaName, ISchemaRelation[][]> = new Map()
 
-		let currentId = 0
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
 			const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1]
 			const jsonEntities         = currentSchemaVersion.entities
@@ -463,13 +458,13 @@ export class SchemaComposer
 				tableIndex
 			) => {
 				const propertiesForEntity
-					        = propertiesByEntityIndex[tableIndex]
+					           = propertiesByEntityIndex[tableIndex]
 				const relationsForEntity
-					        = []
+					           = []
 				relationsByEntityIndex[tableIndex]
-					        = relationsForEntity
+					           = relationsForEntity
 				const entity = entitiesForSchema[tableIndex]
-				let index = 0
+				let index    = 0
 
 				const relations: ISchemaRelation[] = []
 				for (const jsonRelation of jsonEntity.relations) {
@@ -486,7 +481,7 @@ export class SchemaComposer
 
 					const relation: ISchemaRelation = {
 						entity,
-						id: forInitialLayout ? ++currentId : undefined,
+						id: ++this.ddlObjectRetriever.lastIds.relations,
 						index,
 						foreignKey: jsonRelation.foreignKey,
 						isId: property.isId,
@@ -517,8 +512,7 @@ export class SchemaComposer
 	private composeSchemaColumns(
 		jsonSchemaMapByName: Map<SchemaName, JsonSchema>,
 		newEntitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]>,
-		newPropertiesMap: Map<SchemaName, ISchemaProperty[][]>,
-		forInitialLayout: boolean
+		newPropertiesMap: Map<SchemaName, ISchemaProperty[][]>
 	): {
 		newColumns: ISchemaColumn[],
 		newColumnsMap: Map<SchemaName, ISchemaColumn[][]>,
@@ -529,7 +523,6 @@ export class SchemaComposer
 		const newColumns: ISchemaColumn[]                 = []
 		const newPropertyColumns: ISchemaPropertyColumn[] = []
 
-		let currentId = 0
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
 			const columnsByTable: ISchemaColumn[][] = []
 			newColumnsMap.set(schemaName, columnsByTable)
@@ -562,7 +555,7 @@ export class SchemaComposer
 					const column: ISchemaColumn = {
 						allocationSize: jsonColumn.allocationSize,
 						entity,
-						id: forInitialLayout ? ++currentId : undefined,
+						id: ++this.ddlObjectRetriever.lastIds.columns,
 						idIndex: idColumndIndex,
 						index,
 						isGenerated: jsonColumn.isGenerated,
@@ -636,9 +629,8 @@ export class SchemaComposer
 					jsonColumn,
 					index
 				) => {
-					const manyColumn = columnsForEntity[index]
-					const relationColumns: ISchemaRelationColumn[]
-					                 = []
+					const manyColumn                               = columnsForEntity[index]
+					const relationColumns: ISchemaRelationColumn[] = []
 
 					jsonColumn.manyRelationColumnRefs.forEach((
 						jsonRelationColumn
@@ -683,7 +675,7 @@ export class SchemaComposer
 						relationColumns.push(relationColumn)
 						newRelationColumns.push(relationColumn)
 					})
-					manyColumn.manyRelationColumns = relationColumns
+					manyColumn.manyRelationColumns = [] // relationColumns
 				})
 			})
 		}

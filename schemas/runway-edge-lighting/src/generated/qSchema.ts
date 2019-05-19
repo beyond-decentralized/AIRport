@@ -1,5 +1,12 @@
-import { QSchema as AirportQSchema } from '@airport/air-control';
-import { DbSchema } from '@airport/ground-control';
+import {
+	AIR_DB,
+	QSchema as AirportQSchema
+}                      from '@airport/air-control'
+import {DI}            from '@airport/di'
+import {
+	DbSchema,
+	getSchemaName
+}                      from '@airport/ground-control';
 import { LogEntry } from '../ddl/logentry';
 import { QLogEntry } from './qlogentry';
 import { LogEntryType } from '../ddl/logentrytype';
@@ -36,4 +43,10 @@ export const Q_SCHEMA: LocalQSchema = <any>{
   domain: 'github.com',
   name: '@airport/runway-edge-lighting'
 };
-export const Q: LocalQSchema = Q_SCHEMA;
+export const Q: LocalQSchema = Q_SCHEMA
+
+DI.get((
+	airportDatabase
+) => {
+	airportDatabase.QM[getSchemaName(Q_SCHEMA)] = Q
+}, AIR_DB)

@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
 import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '@airport/holding-pattern';
 import { ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from '../sharingnode/qsharingnoderepotransblock';
@@ -82,7 +82,7 @@ export interface RepositoryTransactionBlockECreateColumns extends RepositoryTran
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryTransactionBlock extends QEntity {
+export interface QRepositoryTransactionBlock extends IQEntity {
     id: IQNumberField;
     sourceId: IQNumberField;
     hash: IQStringField;
@@ -99,5 +99,5 @@ export interface QRepositoryTransactionBlock extends QEntity {
 export interface QRepositoryTransactionBlockQId {
     id: IQNumberField;
 }
-export interface QRepositoryTransactionBlockQRelation extends QRelation<QRepositoryTransactionBlock>, QRepositoryTransactionBlockQId {
+export interface QRepositoryTransactionBlockQRelation extends IQRelation<QRepositoryTransactionBlock>, QRepositoryTransactionBlockQId {
 }

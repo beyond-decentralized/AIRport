@@ -11,13 +11,11 @@ import {
 export interface IDbSchemaUtils {
 
 	getSchemaName(
-		jsonSchema: JsonSchema
+		jsonSchema: {
+			domain: DomainName,
+			name: JsonSchemaName
+		}
 	): SchemaName
-
-	getSchemaNameFromDomainAndJsonSchemaNames(
-		domainName: DomainName,
-		jsonSchemaName: JsonSchemaName
-	): string
 
 	getSequenceName(
 		prefixedTableName: string,
@@ -30,30 +28,12 @@ export class DbSchemaUtils
 	implements IDbSchemaUtils {
 
 	getSchemaName(
-		jsonSchema: JsonSchema
-	): string {
-		return this.getSchemaNameFromDomainAndJsonSchemaNames(
-			jsonSchema.domain, jsonSchema.name
-		)
-	}
-
-	getSchemaNameFromDomainAndJsonSchemaNames(
-		domainName: DomainName,
-		jsonSchemaName: JsonSchemaName
-	): string {
-		let domainPrefix = ''
-		if (domainName != 'npmjs.org') {
-			domainPrefix = domainName
-				.replace(/\./g, '_')
-				.replace(/-/g, '_')
+		jsonSchema: {
+			domain: DomainName,
+			name: JsonSchemaName
 		}
-
-		const schemaPrefix = jsonSchemaName
-			.replace(/@/g, '_')
-			.replace(/\//g, '__')
-			.replace(/-/g, '_')
-
-		return `${domainPrefix}__${schemaPrefix}`
+	): string {
+		return getSchemaName(jsonSchema)
 	}
 
 	getSequenceName(
@@ -63,6 +43,25 @@ export class DbSchemaUtils
 		return `${prefixedTableName}_${columnName}__SEQUENCE`
 	}
 
+}
+
+export function getSchemaName({
+		domain,
+		name
+	}): string {
+	let domainPrefix = ''
+	if (domain != 'npmjs.org') {
+		domainPrefix = domain
+			.replace(/\./g, '_')
+			.replace(/-/g, '_')
+	}
+
+	const schemaPrefix = name
+		.replace(/@/g, '_')
+		.replace(/\//g, '__')
+		.replace(/-/g, '_')
+
+	return `${domainPrefix}__${schemaPrefix}`
 }
 
 DI.set(DB_SCHEMA_UTILS, DbSchemaUtils)

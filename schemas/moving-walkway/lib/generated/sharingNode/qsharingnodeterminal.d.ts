@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISharingNode, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from './qsharingnode';
 import { ITerminal, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '@airport/travel-document-checkpoint';
 export interface ISharingNodeTerminal {
@@ -61,7 +61,7 @@ export interface SharingNodeTerminalECreateColumns extends SharingNodeTerminalEI
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingNodeTerminal extends QEntity {
+export interface QSharingNodeTerminal extends IQEntity {
     sharingNode: QSharingNodeQRelation;
     terminal: QTerminalQRelation;
     agtTerminalId: IQNumberField;
@@ -72,5 +72,5 @@ export interface QSharingNodeTerminalQId {
     sharingNode: QSharingNodeQId;
     terminal: QTerminalQId;
 }
-export interface QSharingNodeTerminalQRelation extends QRelation<QSharingNodeTerminal>, QSharingNodeTerminalQId {
+export interface QSharingNodeTerminalQRelation extends IQRelation<QSharingNodeTerminal>, QSharingNodeTerminalQId {
 }

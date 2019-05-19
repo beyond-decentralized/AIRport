@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 export interface ISharingNodeRepoTransBlockStage {
     sharingNodeId?: number;
     repositoryTransactionBlockId?: number;
@@ -49,7 +49,7 @@ export interface SharingNodeRepoTransBlockStageECreateColumns extends SharingNod
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingNodeRepoTransBlockStage extends QEntity {
+export interface QSharingNodeRepoTransBlockStage extends IQEntity {
     sharingNodeId: IQNumberField;
     repositoryTransactionBlockId: IQNumberField;
     syncStatus: IQNumberField;
@@ -58,5 +58,5 @@ export interface QSharingNodeRepoTransBlockStageQId {
     sharingNodeId: IQNumberField;
     repositoryTransactionBlockId: IQNumberField;
 }
-export interface QSharingNodeRepoTransBlockStageQRelation extends QRelation<QSharingNodeRepoTransBlockStage>, QSharingNodeRepoTransBlockStageQId {
+export interface QSharingNodeRepoTransBlockStageQRelation extends IQRelation<QSharingNodeRepoTransBlockStage>, QSharingNodeRepoTransBlockStageQId {
 }

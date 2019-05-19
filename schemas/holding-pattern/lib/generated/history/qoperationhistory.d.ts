@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { IRepositoryTransactionHistory, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEOptionalId, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistoryQId, QRepositoryTransactionHistoryQRelation } from './qrepositorytransactionhistory';
 import { ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
 import { IRecordHistory, RecordHistoryESelect, QRecordHistory } from './qrecordhistory';
@@ -63,7 +63,7 @@ export interface OperationHistoryECreateColumns extends OperationHistoryEId, Ope
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QOperationHistory extends QEntity {
+export interface QOperationHistory extends IQEntity {
     id: IQNumberField;
     repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
     orderNumber: IQNumberField;
@@ -75,5 +75,5 @@ export interface QOperationHistoryQId {
     id: IQNumberField;
     repositoryTransactionHistory: QRepositoryTransactionHistoryQId;
 }
-export interface QOperationHistoryQRelation extends QRelation<QOperationHistory>, QOperationHistoryQId {
+export interface QOperationHistoryQRelation extends IQRelation<QOperationHistory>, QOperationHistoryQId {
 }

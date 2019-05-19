@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { IMonthlyArchiveLog, MonthlyArchiveLogEId, MonthlyArchiveLogEOptionalId, MonthlyArchiveLogESelect, QMonthlyArchiveLogQId, QMonthlyArchiveLogQRelation } from './qmonthlyarchivelog';
 import { ITerminal, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '../terminal/qterminal';
 export interface IMonthlyTerminalSyncLog {
@@ -57,7 +57,7 @@ export interface MonthlyTerminalSyncLogECreateColumns extends MonthlyTerminalSyn
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMonthlyTerminalSyncLog extends QEntity {
+export interface QMonthlyTerminalSyncLog extends IQEntity {
     monthlyArchiveLog: QMonthlyArchiveLogQRelation;
     terminal: QTerminalQRelation;
     allAcknowledged: IQBooleanField;
@@ -67,5 +67,5 @@ export interface QMonthlyTerminalSyncLogQId {
     monthlyArchiveLog: QMonthlyArchiveLogQId;
     terminal: QTerminalQId;
 }
-export interface QMonthlyTerminalSyncLogQRelation extends QRelation<QMonthlyTerminalSyncLog>, QMonthlyTerminalSyncLogQId {
+export interface QMonthlyTerminalSyncLogQRelation extends IQRelation<QMonthlyTerminalSyncLog>, QMonthlyTerminalSyncLogQId {
 }

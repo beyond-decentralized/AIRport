@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { IDomain, DomainEOptionalId, DomainESelect, QDomainQRelation } from '@airport/territory';
 export interface ISequenceConsumer {
     id?: number;
@@ -55,7 +55,7 @@ export interface SequenceConsumerECreateColumns extends SequenceConsumerEId, Seq
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSequenceConsumer extends QEntity {
+export interface QSequenceConsumer extends IQEntity {
     id: IQNumberField;
     createTimestamp: IQNumberField;
     randomNumber: IQNumberField;
@@ -64,5 +64,5 @@ export interface QSequenceConsumer extends QEntity {
 export interface QSequenceConsumerQId {
     id: IQNumberField;
 }
-export interface QSequenceConsumerQRelation extends QRelation<QSequenceConsumer>, QSequenceConsumerQId {
+export interface QSequenceConsumerQRelation extends IQRelation<QSequenceConsumer>, QSequenceConsumerQId {
 }

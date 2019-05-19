@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const schema_1 = require("../ddl/schema/schema");
 const schemacolumn_1 = require("../ddl/schema/schemacolumn");
 const schemaentity_1 = require("../ddl/schema/schemaentity");
@@ -28,4 +31,7 @@ exports.Q_SCHEMA = {
     name: '@airport/traffic-pattern'
 };
 exports.Q = exports.Q_SCHEMA;
+di_1.DI.get((airportDatabase) => {
+    airportDatabase.QM[ground_control_1.getSchemaName(exports.Q_SCHEMA)] = exports.Q;
+}, air_control_1.AIR_DB);
 //# sourceMappingURL=qSchema.js.map

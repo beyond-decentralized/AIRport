@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { IRepository, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '../repository/qrepository';
 export interface IDailyArchiveLog {
     dateNumber?: number;
@@ -51,7 +51,7 @@ export interface DailyArchiveLogECreateColumns extends DailyArchiveLogEId, Daily
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDailyArchiveLog extends QEntity {
+export interface QDailyArchiveLog extends IQEntity {
     dateNumber: IQNumberField;
     repository: QRepositoryQRelation;
     numberOfChanges: IQNumberField;
@@ -60,5 +60,5 @@ export interface QDailyArchiveLogQId {
     dateNumber: IQNumberField;
     repository: QRepositoryQId;
 }
-export interface QDailyArchiveLogQRelation extends QRelation<QDailyArchiveLog>, QDailyArchiveLogQId {
+export interface QDailyArchiveLogQRelation extends IQRelation<QDailyArchiveLog>, QDailyArchiveLogQId {
 }

@@ -36,7 +36,7 @@ class QEntityBuilder extends QBuilder_1.QCoreEntityBuilder {
         const nonIdPropertyData = this.buildPropertyData(this.nonIdPropertyBuilders);
         const nonIdRelationData = this.buildRelationData(this.nonIdRelationBuilders);
         const idRelationData = this.buildRelationData(this.idRelationBuilders);
-        let parentEntityQType = 'QEntity';
+        let parentEntityQType = 'IQEntity';
         if (this.entity.parentEntity) {
             parentEntityQType = 'Q' + this.entity.parentEntity.type;
         }

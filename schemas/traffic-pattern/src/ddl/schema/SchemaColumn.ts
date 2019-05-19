@@ -32,7 +32,6 @@ export class SchemaColumn
 	extends VersionedSchemaObject {
 
 	@Id()
-	@GeneratedValue()
 	id: ColumnId
 
 	/**

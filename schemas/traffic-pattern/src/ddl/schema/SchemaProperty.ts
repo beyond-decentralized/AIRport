@@ -28,7 +28,6 @@ export class SchemaProperty
 	extends VersionedSchemaObject {
 
 	@Id()
-	@GeneratedValue()
 	id: PropertyId
 
 	@Column({name: 'PROPERTY_INDEX', nullable: false})

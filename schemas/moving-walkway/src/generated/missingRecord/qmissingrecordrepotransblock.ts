@@ -15,8 +15,8 @@ import {
 	IQOneToManyRelation,
 	IQStringField,
 	IQUntypedField,
-	QEntity,
-	QRelation,
+	IQEntity,
+	IQRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
@@ -155,7 +155,7 @@ extends MissingRecordRepoTransBlockEId, MissingRecordRepoTransBlockEUpdateColumn
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMissingRecordRepoTransBlock extends QEntity
+export interface QMissingRecordRepoTransBlock extends IQEntity
 {
 	// Id Fields
 
@@ -183,6 +183,6 @@ export interface QMissingRecordRepoTransBlockQId
 
 // Entity Relation Interface
 export interface QMissingRecordRepoTransBlockQRelation
-	extends QRelation<QMissingRecordRepoTransBlock>, QMissingRecordRepoTransBlockQId {
+	extends IQRelation<QMissingRecordRepoTransBlock>, QMissingRecordRepoTransBlockQId {
 }
 

@@ -11,13 +11,13 @@ class QEntityRelationBuilder extends QBuilder_1.QCoreEntityBuilder {
             return decorator.name === 'MappedSuperclass';
         });
         let genericType = '';
-        let parentEntityQType = `QRelation<${qName}>`;
+        let parentEntityQType = `IQRelation<${qName}>`;
         if (isMappedSuperclass) {
-            genericType = '<SubType extends IQEntityInternal>';
-            parentEntityQType = `QRelation<SubType>`;
+            genericType = '<SubType extends IQEntity>';
+            parentEntityQType = `IQRelation<SubType>`;
         }
         if (this.entity.parentEntity) {
-            parentEntityQType = 'Q' + this.entity.parentEntity.type + `QRelation<${qName}>`;
+            parentEntityQType = `Q${this.entity.parentEntity.type}QRelation<${qName}>`;
         }
         const classSource = `// Entity Relation Interface
 export interface ${qName}QRelation${genericType}

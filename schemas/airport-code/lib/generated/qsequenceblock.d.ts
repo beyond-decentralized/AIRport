@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISequenceConsumer, SequenceConsumerEId, SequenceConsumerEOptionalId, SequenceConsumerESelect, QSequenceConsumerQId, QSequenceConsumerQRelation } from './qsequenceconsumer';
 import { ISequence, SequenceEOptionalId, SequenceESelect, QSequenceQRelation } from './qsequence';
 export interface ISequenceBlock {
@@ -65,7 +65,7 @@ export interface SequenceBlockECreateColumns extends SequenceBlockEId, SequenceB
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSequenceBlock extends QEntity {
+export interface QSequenceBlock extends IQEntity {
     id: IQNumberField;
     sequenceConsumer: QSequenceConsumerQRelation;
     size: IQNumberField;
@@ -77,5 +77,5 @@ export interface QSequenceBlockQId {
     id: IQNumberField;
     sequenceConsumer: QSequenceConsumerQId;
 }
-export interface QSequenceBlockQRelation extends QRelation<QSequenceBlock>, QSequenceBlockQId {
+export interface QSequenceBlockQRelation extends IQRelation<QSequenceBlock>, QSequenceBlockQId {
 }

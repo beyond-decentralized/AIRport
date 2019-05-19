@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 export interface IArchive {
     id?: string;
     location?: string;
@@ -46,12 +46,12 @@ export interface ArchiveECreateColumns extends ArchiveEId, ArchiveEUpdateColumns
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QArchive extends QEntity {
+export interface QArchive extends IQEntity {
     id: IQStringField;
     location: IQStringField;
 }
 export interface QArchiveQId {
     id: IQStringField;
 }
-export interface QArchiveQRelation extends QRelation<QArchive>, QArchiveQId {
+export interface QArchiveQRelation extends IQRelation<QArchive>, QArchiveQId {
 }

@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 export interface ITuningParameters {
     serverType?: string;
     parameterGroup?: string;
@@ -52,7 +52,7 @@ export interface TuningParametersECreateColumns extends TuningParametersEId, Tun
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTuningParameters extends QEntity {
+export interface QTuningParameters extends IQEntity {
     serverType: IQStringField;
     parameterGroup: IQStringField;
     parameterName: IQStringField;
@@ -63,5 +63,5 @@ export interface QTuningParametersQId {
     parameterGroup: IQStringField;
     parameterName: IQStringField;
 }
-export interface QTuningParametersQRelation extends QRelation<QTuningParameters>, QTuningParametersQId {
+export interface QTuningParametersQRelation extends IQRelation<QTuningParameters>, QTuningParametersQId {
 }

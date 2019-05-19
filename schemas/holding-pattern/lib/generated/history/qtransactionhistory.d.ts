@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from './qrepositorytransactionhistory';
 import { SyncSchemaMap } from '@airport/ground-control';
 import { IOperationHistory } from './qoperationhistory';
@@ -63,7 +63,7 @@ export interface TransactionHistoryECreateColumns extends TransactionHistoryEId,
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTransactionHistory extends QEntity {
+export interface QTransactionHistory extends IQEntity {
     id: IQNumberField;
     transactionType: IQNumberField;
     repositoryTransactionHistories: IQOneToManyRelation<QRepositoryTransactionHistory>;
@@ -71,5 +71,5 @@ export interface QTransactionHistory extends QEntity {
 export interface QTransactionHistoryQId {
     id: IQNumberField;
 }
-export interface QTransactionHistoryQRelation extends QRelation<QTransactionHistory>, QTransactionHistoryQId {
+export interface QTransactionHistoryQRelation extends IQRelation<QTransactionHistory>, QTransactionHistoryQId {
 }

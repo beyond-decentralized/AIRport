@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation, ISchemaColumn, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQRelation } from '@airport/traffic-pattern';
 import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
 export interface IRecordUpdateStage {
@@ -73,7 +73,7 @@ export interface RecordUpdateStageECreateColumns extends RecordUpdateStageEId, R
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRecordUpdateStage extends QEntity {
+export interface QRecordUpdateStage extends IQEntity {
     id: IQNumberField;
     actorRecordId: IQNumberField;
     updatedValue: IQUntypedField;
@@ -86,5 +86,5 @@ export interface QRecordUpdateStage extends QEntity {
 export interface QRecordUpdateStageQId {
     id: IQNumberField;
 }
-export interface QRecordUpdateStageQRelation extends QRelation<QRecordUpdateStage>, QRecordUpdateStageQId {
+export interface QRecordUpdateStageQRelation extends IQRelation<QRecordUpdateStage>, QRecordUpdateStageQId {
 }

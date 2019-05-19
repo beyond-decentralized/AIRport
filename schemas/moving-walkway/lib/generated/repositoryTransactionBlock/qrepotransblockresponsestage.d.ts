@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 export interface IRepoTransBlockResponseStage {
     id?: number;
     syncOutcomeType?: number;
@@ -46,12 +46,12 @@ export interface RepoTransBlockResponseStageECreateColumns extends RepoTransBloc
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepoTransBlockResponseStage extends QEntity {
+export interface QRepoTransBlockResponseStage extends IQEntity {
     id: IQNumberField;
     syncOutcomeType: IQNumberField;
 }
 export interface QRepoTransBlockResponseStageQId {
     id: IQNumberField;
 }
-export interface QRepoTransBlockResponseStageQRelation extends QRelation<QRepoTransBlockResponseStage>, QRepoTransBlockResponseStageQId {
+export interface QRepoTransBlockResponseStageQRelation extends IQRelation<QRepoTransBlockResponseStage>, QRepoTransBlockResponseStageQId {
 }

@@ -18,7 +18,6 @@ let SchemaRelation = class SchemaRelation extends VersionedSchemaObject_1.Versio
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.GeneratedValue(),
     __metadata("design:type", Number)
 ], SchemaRelation.prototype, "id", void 0);
 __decorate([

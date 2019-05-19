@@ -22,7 +22,6 @@ export class Domain
 	implements DbDomain {
 
 	@Id()
-	@GeneratedValue()
 	@DbNumber()
 	id: DomainId
 

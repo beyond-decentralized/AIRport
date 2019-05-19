@@ -3,10 +3,13 @@
  * Created by Papa on 4/24/2016.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+const tower_1 = require("@airport/tower");
 const fs = require("fs");
 const ts = require("typescript");
 const FileWatcher_1 = require("./FileWatcher");
 const generator_1 = require("./options/generator");
+//
+const REF = tower_1.ENTITY_MANAGER;
 const configuration = generator_1.readConfiguration(process.cwd(), process.argv);
 const ddlDirPath = process.cwd() + '/' + configuration.airport.ddlDir;
 const sourceFilePaths = findAllDdlFilePaths(ddlDirPath);
@@ -33,7 +36,7 @@ function findAllDdlFilePaths(dirPath) {
     return sourceFilePaths;
 }
 function isTsFile(fileName) {
-    return fileName.substr(fileName.length - 3, 3) === ".ts";
+    return fileName.substr(fileName.length - 3, 3) === '.ts';
 }
 // Start the watcher
 FileWatcher_1.watchFiles(configuration, {

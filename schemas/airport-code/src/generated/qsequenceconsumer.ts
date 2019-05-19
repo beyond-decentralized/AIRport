@@ -15,8 +15,8 @@ import {
 	IQOneToManyRelation,
 	IQStringField,
 	IQUntypedField,
-	QEntity,
-	QRelation,
+	IQEntity,
+	IQRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
@@ -152,7 +152,7 @@ extends SequenceConsumerEId, SequenceConsumerEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSequenceConsumer extends QEntity
+export interface QSequenceConsumer extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -183,6 +183,6 @@ export interface QSequenceConsumerQId
 
 // Entity Relation Interface
 export interface QSequenceConsumerQRelation
-	extends QRelation<QSequenceConsumer>, QSequenceConsumerQId {
+	extends IQRelation<QSequenceConsumer>, QSequenceConsumerQId {
 }
 

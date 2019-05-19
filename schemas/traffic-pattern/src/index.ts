@@ -1,3 +1,4 @@
+/*
 import {
 	AIR_DB,
 	IAirportDatabase,
@@ -30,12 +31,15 @@ import {QSchemaRelation}                          from './generated/schema/qsche
 import {QSchemaRelationColumn}                    from './generated/schema/qschemarelationcolumn'
 import {QSchemaVersion}                           from './generated/schema/qschemaversion'
 import {QVersionedSchemaObject}                   from './generated/schema/qversionedschemaobject'
+*/
 
 export * from './dao/dao'
+export * from './duo/duo'
 export * from './ddl/ddl'
 export * from './generated/generated'
 export * from './diTokens'
 
+/*
 export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSchema
 	extends LocalQSchema {
 
@@ -122,3 +126,4 @@ export class AtAirport_TrafficPattern_QSchema
 // FIXME: make npmjs.org the default and add a '_' prefix instead
 // TODO: remember that @airport translates to _airport
 DI.set(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA, AtAirport_TrafficPattern_QSchema)
+*/

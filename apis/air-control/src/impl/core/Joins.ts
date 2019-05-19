@@ -1,7 +1,8 @@
 import {
 	IFrom,
-	IQEntityInternal
-}                         from "../../lingo/core/entity/Entity";
+	IQEntityInternal,
+	IQTree
+} from '../../lingo/core/entity/Entity'
 import {
 	IJoinFields,
 	JoinOperation
@@ -43,18 +44,18 @@ export function tree<IME extends ITreeEntity>(
 function convertMappedEntitySelect<IME extends ITreeEntity>(
 	customEntity: IME,
 	queryDefinition: RawTreeQuery<IME>,
-	view: QTree,
+	view: IQTree,
 	selectProxy: any,
 	fieldPrefix: string
-): QTree {
+): IQTree {
 	let fieldIndex = 0;
 	for (let property in customEntity) {
 		let alias      = `${fieldPrefix}${++fieldIndex}`;
 		let value: any = customEntity[property];
 		if (value instanceof QField) {
-			let field             = value.getInstance(view);
+			let field             = value.getInstance(view as IQEntityInternal);
 			field.alias           = alias;
-			field.q               = view;
+			(field as any).q               = view;
 			selectProxy[property] = field;
 		} else {
 			if (value instanceof Object && !(value instanceof Date)) {

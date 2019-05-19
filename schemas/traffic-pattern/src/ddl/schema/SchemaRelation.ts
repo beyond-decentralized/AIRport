@@ -33,7 +33,6 @@ export class SchemaRelation
 	extends VersionedSchemaObject {
 
 	@Id()
-	@GeneratedValue()
 	id: RelationId
 
 	@Column({name: 'RELATION_INDEX', nullable: false})

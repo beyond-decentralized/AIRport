@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISecurityAnswer, SecurityAnswerESelect, QSecurityAnswer } from './security/qsecurityanswer';
 import { IUserRepository, UserRepositoryESelect, QUserRepository } from './quserrepository';
 import { ITerminal, TerminalESelect, QTerminal } from '../terminal/qterminal';
@@ -66,7 +66,7 @@ export interface UserECreateColumns extends UserEId, UserEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QUser extends QEntity {
+export interface QUser extends IQEntity {
     id: IQNumberField;
     hash: IQStringField;
     email: IQStringField;
@@ -79,5 +79,5 @@ export interface QUser extends QEntity {
 export interface QUserQId {
     id: IQNumberField;
 }
-export interface QUserQRelation extends QRelation<QUser>, QUserQId {
+export interface QUserQRelation extends IQRelation<QUser>, QUserQId {
 }

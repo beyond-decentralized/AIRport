@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { IDailyArchiveLog, DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation, IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '@airport/guideway';
 export interface IDailyArchive {
     dailyArchiveLog?: IDailyArchiveLog;
@@ -51,7 +51,7 @@ export interface DailyArchiveECreateColumns extends DailyArchiveEId, DailyArchiv
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDailyArchive extends QEntity {
+export interface QDailyArchive extends IQEntity {
     dailyArchiveLog: QDailyArchiveLogQRelation;
     repositoryData: IQStringField;
     repository: QRepositoryQRelation;
@@ -59,5 +59,5 @@ export interface QDailyArchive extends QEntity {
 export interface QDailyArchiveQId {
     dailyArchiveLog: QDailyArchiveLogQId;
 }
-export interface QDailyArchiveQRelation extends QRelation<QDailyArchive>, QDailyArchiveQId {
+export interface QDailyArchiveQRelation extends IQRelation<QDailyArchive>, QDailyArchiveQId {
 }

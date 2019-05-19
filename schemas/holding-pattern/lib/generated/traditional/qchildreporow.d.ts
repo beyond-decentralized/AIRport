@@ -1,4 +1,4 @@
-import { IQEntityInternal } from '@airport/air-control';
+import { IQEntity } from '@airport/air-control';
 import { IRepositoryEntity, RepositoryEntityEId, RepositoryEntityEUpdateColumns, RepositoryEntityEUpdateProperties, RepositoryEntityESelect, QRepositoryEntityQId, QRepositoryEntityQRelation, QRepositoryEntity } from '../repository/qrepositoryentity';
 export interface IChildRepoRow extends IRepositoryEntity {
 }
@@ -44,5 +44,5 @@ export interface QChildRepoRow extends QRepositoryEntity {
 }
 export interface QChildRepoRowQId extends QRepositoryEntityQId {
 }
-export interface QChildRepoRowQRelation<SubType extends IQEntityInternal> extends QRepositoryEntityQRelation<QChildRepoRow>, QChildRepoRowQId {
+export interface QChildRepoRowQRelation<SubType extends IQEntity> extends QRepositoryEntityQRelation<QChildRepoRow>, QChildRepoRowQId {
 }

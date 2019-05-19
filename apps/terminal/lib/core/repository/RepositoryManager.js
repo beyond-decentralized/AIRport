@@ -11,10 +11,10 @@ const diTokens_1 = require("../../diTokens");
 class RepositoryManager {
     constructor() {
         this.repositoriesById = {};
-        di_1.DI.get((databaseFacade, repositoryDao, utils) => {
-            this.dbFacade = databaseFacade;
+        di_1.DI.get((utils) => {
             this.utils = utils;
-        }, tower_1.ENTITY_MANAGER, air_control_1.UTILS);
+        }, air_control_1.UTILS);
+        this.dbFacade = di_1.DI.laterP(tower_1.ENTITY_MANAGER);
         this.repositoryDao = di_1.DI.getP(holding_pattern_1.REPOSITORY_DAO);
     }
     async initialize() {
@@ -22,7 +22,7 @@ class RepositoryManager {
         await this.ensureAndCacheRepositories();
         for (let i = 0; i < this.repositories.length; i++) {
             let repository = this.repositories[i];
-            this.addDeltaStore(repository);
+            await this.addDeltaStore(repository);
         }
     }
     async findReposWithDetailsByIds(...repositoryIds) {
@@ -30,7 +30,7 @@ class RepositoryManager {
     }
     async createRepository(appName, distributionStrategy, offlineStoreType, platformType, platformConfig, recordIdField) {
         let repository = await this.createRepositoryRecord(appName, distributionStrategy, platformType, platformConfig);
-        this.addDeltaStore(repository);
+        await this.addDeltaStore(repository);
         return repository;
     }
     async getRepository(repositoryId) {
@@ -78,7 +78,7 @@ class RepositoryManager {
                         }
                         */
     }
-    addDeltaStore(repository) {
+    async addDeltaStore(repository) {
         // TODO: revisit configuration (instead of hard-coding
         // let sharingAdaptor                             =
         // getSharingAdaptor(repository.platform)
@@ -102,7 +102,7 @@ class RepositoryManager {
         }
         let deltaStoreConfig = new terminal_map_1.DeltaStoreConfig(jsonDeltaStoreConfig);
         let deltaStore = new DeltaStore_1.DeltaStore(deltaStoreConfig, sharingAdaptor);
-        deltaStore.config.changeListConfig.changeListInfo.dbId = this.dbFacade.name;
+        deltaStore.config.changeListConfig.changeListInfo.dbId = (await this.dbFacade()).name;
         this.deltaStore[repository.id] = deltaStore;
         return deltaStore;
     }

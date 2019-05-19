@@ -22,14 +22,14 @@ export class QEntityRelationBuilder extends QCoreEntityBuilder {
 		});
 
 		let genericType = '';
-		let parentEntityQType = `QRelation<${qName}>`;
+		let parentEntityQType = `IQRelation<${qName}>`;
 		if (isMappedSuperclass) {
-			genericType = '<SubType extends IQEntityInternal>';
-			parentEntityQType = `QRelation<SubType>`;
+			genericType = '<SubType extends IQEntity>';
+			parentEntityQType = `IQRelation<SubType>`;
 		}
 
 		if (this.entity.parentEntity) {
-			parentEntityQType = 'Q' + this.entity.parentEntity.type + `QRelation<${qName}>`;
+			parentEntityQType = `Q${this.entity.parentEntity.type}QRelation<${qName}>`;
 		}
 
 		const classSource = `// Entity Relation Interface

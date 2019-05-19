@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 export interface IRepositoryTransactionHistoryUpdateStage {
     repositoryTransactionHistoryId?: number;
     blockId?: number;
@@ -46,12 +46,12 @@ export interface RepositoryTransactionHistoryUpdateStageECreateColumns extends R
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryTransactionHistoryUpdateStage extends QEntity {
+export interface QRepositoryTransactionHistoryUpdateStage extends IQEntity {
     repositoryTransactionHistoryId: IQNumberField;
     blockId: IQNumberField;
 }
 export interface QRepositoryTransactionHistoryUpdateStageQId {
     repositoryTransactionHistoryId: IQNumberField;
 }
-export interface QRepositoryTransactionHistoryUpdateStageQRelation extends QRelation<QRepositoryTransactionHistoryUpdateStage>, QRepositoryTransactionHistoryUpdateStageQId {
+export interface QRepositoryTransactionHistoryUpdateStageQRelation extends IQRelation<QRepositoryTransactionHistoryUpdateStage>, QRepositoryTransactionHistoryUpdateStageQId {
 }

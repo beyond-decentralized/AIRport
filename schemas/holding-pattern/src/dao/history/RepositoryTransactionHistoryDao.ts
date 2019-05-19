@@ -15,6 +15,7 @@ import {
 	JSONBaseOperation,
 	TransactionType
 }                             from '@airport/ground-control'
+import {getSchemaName}        from '@airport/ground-control/lib/src'
 import {
 	ActorId,
 	RecordHistoryActorRecordId,
@@ -232,8 +233,11 @@ export class RepositoryTransactionHistoryDao
 	): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>> {
 		const repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>
 			      = new Map()
-
-		const trafficPatternQSchema = this.airDb.qSchemaMapByName['@airport/traffic-pattern']
+/*
+		const trafficPatternQSchema = this.airDb.QM[
+			getSchemaName('github.com','@airport/traffic-pattern')
+			]
+*/
 
 		const rth: QRepositoryTransactionHistory = Q.RepositoryTransactionHistory
 		const th: QTransactionHistory            = rth.transactionHistory.innerJoin()

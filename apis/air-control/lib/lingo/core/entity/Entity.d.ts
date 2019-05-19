@@ -90,6 +90,8 @@ export interface IQEntity {
     leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     rightJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
 }
+export interface IQTree extends IQEntity {
+}
 export interface IQEntityInternal extends IQEntity {
     __driver__: IQEntityDriver;
 }

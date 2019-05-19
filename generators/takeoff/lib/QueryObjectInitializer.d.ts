@@ -18,6 +18,7 @@ export interface DdlObjects {
     relations: ISchemaRelation[];
     schemas: ISchema[];
     schemaReferences: ISchemaReference[];
+    schemaVersions: ISchemaVersion[];
 }
 export declare class QueryObjectInitializer implements IQueryObjectInitializer {
     private ddlObjectLinker;

@@ -62,7 +62,7 @@ class OperationManager {
             let valuesFragment = [];
             for (const dbProperty of dbEntity.properties) {
                 const newValue = entity[dbProperty.name];
-                if (dbProperty.relation.length) {
+                if (dbProperty.relation && dbProperty.relation.length) {
                     const dbRelation = dbProperty.relation[0];
                     this.assertRelationValueIsAnObject(newValue, dbProperty);
                     switch (dbRelation.relationType) {

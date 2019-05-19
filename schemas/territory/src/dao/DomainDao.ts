@@ -3,16 +3,14 @@ import {
 	DomainId,
 	DomainName
 }                   from '@airport/ground-control'
+import {DOMAIN_DAO} from '../diTokens'
 import {
 	BaseDomainDao,
-	IBaseDomainDao
-}                   from '../generated/baseDaos'
-import {
+	IBaseDomainDao,
 	IDomain,
+	Q,
 	QDomain
-}                   from '../generated/qdomain'
-import {Q}          from '../generated/qschema'
-import {DOMAIN_DAO} from '../diTokens'
+}                   from '../generated/generated'
 
 export interface IDomainDao
 	extends IBaseDomainDao {

@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 export interface IMonthlySyncLog {
     databaseId?: number;
     month?: Date;
@@ -52,7 +52,7 @@ export interface MonthlySyncLogECreateColumns extends MonthlySyncLogEId, Monthly
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMonthlySyncLog extends QEntity {
+export interface QMonthlySyncLog extends IQEntity {
     databaseId: IQNumberField;
     month: IQDateField;
     repositoryId: IQNumberField;
@@ -63,5 +63,5 @@ export interface QMonthlySyncLogQId {
     month: IQDateField;
     repositoryId: IQNumberField;
 }
-export interface QMonthlySyncLogQRelation extends QRelation<QMonthlySyncLog>, QMonthlySyncLogQId {
+export interface QMonthlySyncLogQRelation extends IQRelation<QMonthlySyncLog>, QMonthlySyncLogQId {
 }

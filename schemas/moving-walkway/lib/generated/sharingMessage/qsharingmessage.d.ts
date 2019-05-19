@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { ISharingNode, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from '../sharingnode/qsharingnode';
 import { ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, QSharingMessageRepoTransBlock } from './qsharingmessagerepotransblock';
 export interface ISharingMessage {
@@ -62,7 +62,7 @@ export interface SharingMessageECreateColumns extends SharingMessageEId, Sharing
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingMessage extends QEntity {
+export interface QSharingMessage extends IQEntity {
     id: IQNumberField;
     sharingNode: QSharingNodeQRelation;
     origin: IQNumberField;
@@ -74,5 +74,5 @@ export interface QSharingMessageQId {
     id: IQNumberField;
     sharingNode: QSharingNodeQId;
 }
-export interface QSharingMessageQRelation extends QRelation<QSharingMessage>, QSharingMessageQId {
+export interface QSharingMessageQRelation extends IQRelation<QSharingMessage>, QSharingMessageQId {
 }

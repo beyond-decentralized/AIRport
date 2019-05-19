@@ -8,7 +8,7 @@ class SQDIDao extends check_in_1.Dao {
         super(dbEntityName, qSchema_1.Q);
     }
     static diSet() {
-        return qSchema_1.Q.db;
+        return qSchema_1.Q.__dbSchema__;
     }
 }
 exports.SQDIDao = SQDIDao;

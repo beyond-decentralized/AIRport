@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 export interface ILoggedErrorStackTrace {
     id?: number;
     stackHash?: string;
@@ -50,7 +50,7 @@ export interface LoggedErrorStackTraceECreateColumns extends LoggedErrorStackTra
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLoggedErrorStackTrace extends QEntity {
+export interface QLoggedErrorStackTrace extends IQEntity {
     id: IQNumberField;
     stackHash: IQStringField;
     stack: IQStringField;
@@ -58,5 +58,5 @@ export interface QLoggedErrorStackTrace extends QEntity {
 export interface QLoggedErrorStackTraceQId {
     id: IQNumberField;
 }
-export interface QLoggedErrorStackTraceQRelation extends QRelation<QLoggedErrorStackTrace>, QLoggedErrorStackTraceQId {
+export interface QLoggedErrorStackTraceQRelation extends IQRelation<QLoggedErrorStackTrace>, QLoggedErrorStackTraceQId {
 }

@@ -47,4 +47,5 @@ export class SequenceBlock {
 
 	@Transient()
 	currentNumber: SequenceBlockCurrentNumber
+
 }

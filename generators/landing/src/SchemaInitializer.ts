@@ -94,7 +94,7 @@ export class SchemaInitializer
 		}
 
 		const ddlObjects = (await this.schemaComposer).compose(
-			schemasWithValidDependencies, !normalOperation)
+			schemasWithValidDependencies)
 
 		if (normalOperation) {
 			await (await this.schemaRecorder).record(ddlObjects, normalOperation)
@@ -108,6 +108,8 @@ export class SchemaInitializer
 		if (!normalOperation) {
 			await (await this.schemaRecorder).record(ddlObjects, normalOperation)
 		}
+
+		console.log('done')
 	}
 
 	addNewSchemaVersionsToAll(

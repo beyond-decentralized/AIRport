@@ -1,4 +1,4 @@
-import { IQEntityInternal, IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
 export interface IReferenceRow {
 }
 /**
@@ -39,9 +39,9 @@ export interface ReferenceRowECreateColumns extends ReferenceRowEId, ReferenceRo
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QReferenceRow extends QEntity {
+export interface QReferenceRow extends IQEntity {
 }
 export interface QReferenceRowQId {
 }
-export interface QReferenceRowQRelation<SubType extends IQEntityInternal> extends QRelation<SubType>, QReferenceRowQId {
+export interface QReferenceRowQRelation<SubType extends IQEntity> extends IQRelation<SubType>, QReferenceRowQId {
 }

@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, QEntity, QRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IRecordHistory, RecordHistoryEOptionalId, RecordHistoryESelect, QRecordHistoryQRelation } from '@airport/holding-pattern';
 import { ISynchronizationConflictValues, SynchronizationConflictValuesESelect, QSynchronizationConflictValues } from './qsynchronizationconflictvalues';
 export interface ISynchronizationConflict {
@@ -62,7 +62,7 @@ export interface SynchronizationConflictECreateColumns extends SynchronizationCo
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSynchronizationConflict extends QEntity {
+export interface QSynchronizationConflict extends IQEntity {
     id: IQNumberField;
     type: IQNumberField;
     repository: QRepositoryQRelation;
@@ -73,5 +73,5 @@ export interface QSynchronizationConflict extends QEntity {
 export interface QSynchronizationConflictQId {
     id: IQNumberField;
 }
-export interface QSynchronizationConflictQRelation extends QRelation<QSynchronizationConflict>, QSynchronizationConflictQId {
+export interface QSynchronizationConflictQRelation extends IQRelation<QSynchronizationConflict>, QSynchronizationConflictQId {
 }

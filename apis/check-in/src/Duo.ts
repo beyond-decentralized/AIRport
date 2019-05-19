@@ -32,7 +32,7 @@ export class Duo<Entity,
 		qSchema?: QSchema
 	) {
 		if (typeof dbEntityName === 'string') {
-			this.dbEntity = qSchema.db.currentVersion.entityMapByName[dbEntityName]
+			this.dbEntity = qSchema.__dbSchema__.currentVersion.entityMapByName[dbEntityName]
 		} else {
 			this.dbEntity = dbEntityName
 		}
