@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
 const territory_1 = require("@airport/territory");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
+const tower_1 = require("@airport/tower");
 const diTokens_1 = require("../diTokens");
 class SchemaRecorder {
     constructor() {
@@ -18,12 +19,14 @@ class SchemaRecorder {
         this.schemaVersionDao = di_1.DI.getP(traffic_pattern_1.SCHEMA_VERSION_DAO);
     }
     async record(ddlObjects, normalOperation) {
-        if (normalOperation) {
-            await this.normalRecord(ddlObjects, await this.domainDao, await this.schemaDao, await this.schemaVersionDao, await this.schemaReferenceDao, await this.schemaEntityDao, await this.schemaPropertyDao, await this.schemaRelationDao, await this.schemaColumnDao, await this.schemaPropertyColumnDao, await this.schemaRelationColumnDao);
-        }
-        else {
-            await this.bootstrapRecord(ddlObjects, await this.domainDao, await this.schemaDao, await this.schemaVersionDao, await this.schemaReferenceDao, await this.schemaEntityDao, await this.schemaPropertyDao, await this.schemaRelationDao, await this.schemaColumnDao, await this.schemaPropertyColumnDao, await this.schemaRelationColumnDao);
-        }
+        await tower_1.transactional(async () => {
+            if (normalOperation) {
+                await this.normalRecord(ddlObjects, await this.domainDao, await this.schemaDao, await this.schemaVersionDao, await this.schemaReferenceDao, await this.schemaEntityDao, await this.schemaPropertyDao, await this.schemaRelationDao, await this.schemaColumnDao, await this.schemaPropertyColumnDao, await this.schemaRelationColumnDao);
+            }
+            else {
+                await this.bootstrapRecord(ddlObjects, await this.domainDao, await this.schemaDao, await this.schemaVersionDao, await this.schemaReferenceDao, await this.schemaEntityDao, await this.schemaPropertyDao, await this.schemaRelationDao, await this.schemaColumnDao, await this.schemaPropertyColumnDao, await this.schemaRelationColumnDao);
+            }
+        });
     }
     async normalRecord(ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao) {
         await domainDao.bulkCreate(ddlObjects.domains, false, false);

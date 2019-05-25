@@ -11,7 +11,7 @@ class OperationManager {
         di_1.DI.get((airportDatabase, queryFacade, transConnector, updateCache, utils) => {
             this.airDb = airportDatabase;
             this.entity = queryFacade;
-            this.transactionClient = transConnector;
+            this.transConnector = transConnector;
             this.updateCache = updateCache;
             this.utils = utils;
         }, air_control_1.AIR_DB, diTokens_1.QUERY_FACADE, ground_control_1.TRANS_CONNECTOR, diTokens_1.UPDATE_CACHE, air_control_1.UTILS);
@@ -174,22 +174,22 @@ class OperationManager {
     async internalInsertColumnValues(dbEntity, rawInsertColumnValues) {
         const insertColumnValues = new air_control_1.InsertColumnValues(rawInsertColumnValues);
         const portableQuery = this.entity.getPortableQuery(dbEntity, insertColumnValues, null);
-        return await this.transactionClient.insertValues(portableQuery);
+        return await this.transConnector.insertValues(portableQuery);
     }
     async internalInsertValues(dbEntity, rawInsertValues, ensureGeneratedValues) {
         const insertValues = new air_control_1.InsertValues(rawInsertValues);
         const portableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null);
-        return await this.transactionClient.insertValues(portableQuery, undefined, ensureGeneratedValues);
+        return await this.transConnector.insertValues(portableQuery, undefined, ensureGeneratedValues);
     }
     async internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues) {
         const insertValues = new air_control_1.InsertColumnValues(rawInsertColumnValues);
         const portableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null);
-        return await this.transactionClient.insertValuesGetIds(portableQuery);
+        return await this.transConnector.insertValuesGetIds(portableQuery);
     }
     async internalInsertValuesGetIds(dbEntity, rawInsertValues) {
         const insertValues = new air_control_1.InsertValues(rawInsertValues);
         const portableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null);
-        return await this.transactionClient.insertValuesGetIds(portableQuery);
+        return await this.transConnector.insertValuesGetIds(portableQuery);
     }
     /**
      * Transactional context must have been started by the time this method is called.
@@ -463,17 +463,19 @@ class OperationManager {
         }
     }
     assertOneToManyIsArray(relationValue) {
-        if (!(relationValue instanceof Array)) {
+        if (relationValue !== null
+            && relationValue !== undefined
+            && !(relationValue instanceof Array)) {
             throw `@OneToMany relation must be an array`;
         }
     }
     async internalUpdateColumnsWhere(dbEntity, updateColumns) {
         const portableQuery = this.entity.getPortableQuery(dbEntity, updateColumns, null);
-        return await this.transactionClient.updateValues(portableQuery);
+        return await this.transConnector.updateValues(portableQuery);
     }
     async internalUpdateWhere(dbEntity, update) {
         const portableQuery = this.entity.getPortableQuery(dbEntity, update, null);
-        return await this.transactionClient.updateValues(portableQuery);
+        return await this.transConnector.updateValues(portableQuery);
     }
     /**
      * Transactional context must have been started by the time this method is called.
@@ -539,7 +541,7 @@ class OperationManager {
     }
     async internalDeleteWhere(dbEntity, aDelete) {
         let portableQuery = this.entity.getPortableQuery(dbEntity, aDelete, null);
-        return await this.transactionClient.deleteWhere(portableQuery);
+        return await this.transConnector.deleteWhere(portableQuery);
     }
     async internalDelete(dbEntity, entity) {
         const qEntity = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];

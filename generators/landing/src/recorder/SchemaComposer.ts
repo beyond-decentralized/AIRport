@@ -86,7 +86,7 @@ export class SchemaComposer
 			jsonSchemaMapByName.set(this.dbSchemaUtils.getSchemaName(jsonSchema), jsonSchema)
 		}
 
-		const allSchemaVersionsByIds = this.terminalStore.getAllSchemaVersionsByIds()
+		const allSchemaVersionsByIds = [...this.terminalStore.getAllSchemaVersionsByIds()]
 
 		const {
 			      domainMapByName,

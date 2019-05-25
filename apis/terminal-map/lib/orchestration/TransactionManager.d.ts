@@ -1,10 +1,12 @@
 import { StoreType } from "@airport/ground-control";
 import { ITransactionHistory } from "@airport/holding-pattern";
+import { ICredentials } from './Credentials';
 export interface ITransactionManager {
     currentTransHistory: ITransactionHistory;
     storeType: StoreType;
+    transactionInProgress: string;
     initialize(dbName: string): Promise<void>;
-    startTransaction(transactionIndex: number): Promise<void>;
-    rollbackTransaction(transactionIndex: number): Promise<void>;
-    commitTransaction(transactionIndex: number): Promise<void>;
+    transact(credentials: ICredentials): Promise<void>;
+    rollback(credentials: ICredentials): Promise<void>;
+    commit(credentials: ICredentials): Promise<void>;
 }

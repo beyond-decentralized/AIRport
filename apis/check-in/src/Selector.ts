@@ -88,26 +88,26 @@ export function createSelector<V, SV>(
 	...args: any[]
 ) {
 	if(args.length < 2 || args.length > 6) {
-			throw new Error(`Invalid createSelector call, Expecting 1 to 3 selectors and a callback.`)
+			throw new Error(`Invalid createSelector call, Expecting 1 to 5 selectors and a callback.`)
 	}
 
 	const inputSelectors: IMemoizedSelector<any, SV>[] = args.slice(0, args.length - 1)
 	const callback                                     = args[args.length - 1]
 
-	let observable
+	let sourceObservable
 	if (inputSelectors.length > 1) {
-		observable = Observable.from(...inputSelectors.map(
+		sourceObservable = Observable.from(...inputSelectors.map(
 			selector => selector.observable))
 	} else {
-		observable = inputSelectors[0].observable
+		sourceObservable = inputSelectors[0].observable
 	}
-	observable = pipe(observable, (
+	let observable = pipe(sourceObservable, (
 		v,
 		ctx
 		) =>
 			// share(
 			distinctUntilChanged(
-				callback(v), ctx),
+				callback, ctx),
 		// ctx)
 	)
 

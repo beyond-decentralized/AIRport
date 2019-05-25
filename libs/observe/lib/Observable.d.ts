@@ -10,7 +10,6 @@ export interface IObservable<V> {
     upstream: IObservable<any>[];
     downstream: IObservable<any>[];
     currentValue: V;
-    lastValue: V;
 }
 export declare class Observable<V> implements IObservable<V> {
     private onUnsubscribe?;
@@ -18,6 +17,7 @@ export declare class Observable<V> implements IObservable<V> {
     constructor(onUnsubscribe?: () => void);
     callback: any;
     upstream: Observable<any>[];
+    up$LastVal: any;
     downstream: Observable<any>[];
     currentValue: V;
     lastValue: V;

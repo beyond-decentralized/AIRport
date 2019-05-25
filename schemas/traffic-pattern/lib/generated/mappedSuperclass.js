@@ -526,19 +526,10 @@ exports.MAPPED_SUPERCLASS = [
                                         "isSuperclass": false,
                                         "ids": [
                                             {
-                                                "allocationSize": 1,
                                                 "decorators": [
                                                     {
                                                         "name": "Id",
                                                         "values": []
-                                                    },
-                                                    {
-                                                        "name": "SequenceGenerator",
-                                                        "values": [
-                                                            {
-                                                                "allocationSize": 1
-                                                            }
-                                                        ]
                                                     },
                                                     {
                                                         "name": "DbNumber",
@@ -738,19 +729,10 @@ exports.MAPPED_SUPERCLASS = [
                                             },
                                             "properties": [
                                                 {
-                                                    "allocationSize": 1,
                                                     "decorators": [
                                                         {
                                                             "name": "Id",
                                                             "values": []
-                                                        },
-                                                        {
-                                                            "name": "SequenceGenerator",
-                                                            "values": [
-                                                                {
-                                                                    "allocationSize": 1
-                                                                }
-                                                            ]
                                                         },
                                                         {
                                                             "name": "DbNumber",

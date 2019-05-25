@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
+const tower_1 = require("@airport/tower");
 const diTokens_1 = require("../diTokens");
 /**
  * Keeps track of transactions, per client and validates that a given
@@ -30,8 +30,6 @@ const diTokens_1 = require("../diTokens");
  */
 class TransactionalServer {
     constructor() {
-        this.activeTransactions = {};
-        this.lastTransactionIndex = 0;
         di_1.DI.get((deleteManager, insertManager, queryManager, transactionManager, updateManager) => {
             this.deleteManager = deleteManager;
             this.insertManager = insertManager;
@@ -40,81 +38,86 @@ class TransactionalServer {
             this.updateManager = updateManager;
         }, diTokens_1.DELETE_MANAGER, diTokens_1.INSERT_MANAGER, diTokens_1.QUERY_MANAGER, terminal_map_1.TRANSACTION_MANAGER, diTokens_1.UPDATE_MANAGER);
     }
-    async startTransaction() {
-        this.lastTransactionIndex++;
-        await this.transactionManager.startTransaction(this.lastTransactionIndex);
-        this.currentTransactionIndex = this.lastTransactionIndex;
-        return this.lastTransactionIndex;
+    async init() {
     }
-    async rollbackTransaction(transactionIndex) {
-        await this.transactionManager.rollbackTransaction(transactionIndex);
-        this.currentTransactionIndex = null;
+    async transact(credentials) {
+        // this.lastTransactionIndex++
+        await this.transactionManager.transact(credentials);
+        // this.currentTransactionIndex = this.lastTransactionIndex
     }
-    async commitTransaction(transactionIndex) {
-        await this.transactionManager.commitTransaction(transactionIndex);
-        this.currentTransactionIndex = null;
+    async rollback(credentials) {
+        await this.transactionManager.rollback(credentials);
+        // this.currentTransactionIndex = null
     }
-    async find(portableQuery, cachedSqlQueryId) {
+    async commit(credentials) {
+        await this.transactionManager.commit(credentials);
+        // this.currentTransactionIndex = null
+    }
+    async find(portableQuery, credentials, cachedSqlQueryId) {
         return await this.queryManager.find(portableQuery, cachedSqlQueryId);
     }
-    async findOne(portableQuery, cachedSqlQueryId) {
+    async findOne(portableQuery, credentials, cachedSqlQueryId) {
         return await this.queryManager.findOne(portableQuery, cachedSqlQueryId);
     }
-    search(portableQuery, cachedSqlQueryId) {
+    search(portableQuery, credentials, cachedSqlQueryId) {
         return this.queryManager.search(portableQuery);
     }
-    searchOne(portableQuery, cachedSqlQueryId) {
+    searchOne(portableQuery, credentials, cachedSqlQueryId) {
         return this.queryManager.searchOne(portableQuery);
     }
-    async addRepository(name, url, platform, platformConfig, distributionStrategy) {
+    async addRepository(name, url, platform, platformConfig, distributionStrategy, credentials) {
         return this.insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
-    async insertValues(portableQuery, transactionIndex, ensureGeneratedValues // for internal use only
+    async insertValues(portableQuery, credentials, transactionIndex, ensureGeneratedValues // for internal use only
     ) {
         const actor = await this.getActor(portableQuery);
-        return await this.wrapInTransaction(async () => await this.insertManager.insertValues(portableQuery, actor, ensureGeneratedValues), 'INSERT', transactionIndex);
+        return await this.wrapInTransaction(async () => await this.insertManager.insertValues(portableQuery, actor, ensureGeneratedValues), 'INSERT', credentials);
     }
-    async insertValuesGetIds(portableQuery, transactionIndex) {
+    async insertValuesGetIds(portableQuery, credentials, transactionIndex) {
         const actor = await this.getActor(portableQuery);
-        return await this.wrapInTransaction(async () => await this.insertManager.insertValuesGetIds(portableQuery, actor), 'INSERT GET IDS', transactionIndex);
+        return await this.wrapInTransaction(async () => await this.insertManager.insertValuesGetIds(portableQuery, actor), 'INSERT GET IDS', credentials);
     }
-    async updateValues(portableQuery, transactionIndex) {
+    async updateValues(portableQuery, credentials, transactionIndex) {
         const actor = await this.getActor(portableQuery);
-        return await this.wrapInTransaction(async () => await this.updateManager.updateValues(portableQuery, actor), 'UPDATE', transactionIndex);
+        return await this.wrapInTransaction(async () => await this.updateManager.updateValues(portableQuery, actor), 'UPDATE', credentials);
     }
-    async deleteWhere(portableQuery, transactionIndex) {
+    async deleteWhere(portableQuery, credentials, transactionIndex) {
         const actor = await this.getActor(portableQuery);
-        return await this.wrapInTransaction(async () => await this.deleteManager.deleteWhere(portableQuery, actor), 'DELETE', transactionIndex);
+        return await this.wrapInTransaction(async () => await this.deleteManager.deleteWhere(portableQuery, actor), 'DELETE', credentials);
     }
     async getActor(portableQuery) {
+        if (this.tempActor) {
+            return this.tempActor;
+        }
         throw `Not Implemented`;
     }
-    async wrapInTransaction(callback, operationName, transactionIndex) {
-        const attachToTransaction = !transactionIndex;
-        if (attachToTransaction) {
-            transactionIndex = await this.startTransaction();
+    async wrapInTransaction(callback, operationName, credentials) {
+        let transact = false;
+        if (this.transactionManager.transactionInProgress) {
+            if (credentials.domainAndPort !== this.transactionManager.transactionInProgress) {
+                throw `${operationName}: domain: ${credentials.domainAndPort} 
+				does not have an active transaction.`;
+            }
         }
         else {
-            if (transactionIndex !== this.currentTransactionIndex) {
-                throw `${operationName}: provided Transaction Index: ${transactionIndex} 
-				does not match current Transaction Index.`;
-            }
+            await this.transact(credentials);
+            transact = true;
         }
         try {
             const returnValue = await callback();
-            if (attachToTransaction) {
-                await this.commitTransaction(transactionIndex);
+            if (transact) {
+                await this.commit(credentials);
             }
             return returnValue;
         }
         catch (error) {
             // if (attachToTransaction) {
-            await this.rollbackTransaction(transactionIndex);
+            await this.rollback(credentials);
             // }
             throw error;
         }
     }
 }
 exports.TransactionalServer = TransactionalServer;
-di_1.DI.set(ground_control_1.TRANS_CONNECTOR, TransactionalServer);
+di_1.DI.set(tower_1.TRANS_SERVER, TransactionalServer);
 //# sourceMappingURL=TransactionalServer.js.map

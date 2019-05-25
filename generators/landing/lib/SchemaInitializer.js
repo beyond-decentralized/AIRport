@@ -44,7 +44,7 @@ class SchemaInitializer {
         for (const jsonSchema of schemasWithValidDependencies) {
             await (await this.schemaBuilder).build(jsonSchema);
         }
-        const ddlObjects = (await this.schemaComposer).compose(schemasWithValidDependencies, !normalOperation);
+        const ddlObjects = (await this.schemaComposer).compose(schemasWithValidDependencies);
         if (normalOperation) {
             await (await this.schemaRecorder).record(ddlObjects, normalOperation);
         }

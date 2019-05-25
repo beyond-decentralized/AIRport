@@ -7,9 +7,9 @@ function pipe(sourceObservable, callback) {
         // 	throw 'only @airport/observer/Observable is supported'
         // }
         const targetObservable = Observable_1.Observable.from(sourceObservable);
-        const persistentContext = {
-            targetObservable
-        };
+        // const persistentContext   = {
+        // 	targetObservable
+        // }
         targetObservable.callback = callback;
         /*
                 targetObservable.callback = (

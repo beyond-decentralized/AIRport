@@ -15,7 +15,7 @@ __decorate([
     air_control_1.DbNumber()
 ], User.prototype, "id", void 0);
 __decorate([
-    air_control_1.Column({ name: "UNIQUE_IDENTIFIER" }),
+    air_control_1.Column({ name: "UNIQUE_IDENTIFIER", nullable: false }),
     air_control_1.DbString()
 ], User.prototype, "uniqueId", void 0);
 __decorate([

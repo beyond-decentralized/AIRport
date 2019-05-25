@@ -1,6 +1,5 @@
 import { Delete, EntityIdData, IAirportDatabase, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IQueryFacade, IUtils, MappedEntityArray, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties, UpdateRecord } from '@airport/air-control';
-import { DbColumn, DbEntity, DbProperty, DbRelation, JSONBaseOperation } from '@airport/ground-control';
-import { IInternalTransactionalConnector } from './core/data/IInternalTransactionalConnector';
+import { DbColumn, DbEntity, DbProperty, DbRelation, ITransactionalConnector, JSONBaseOperation } from '@airport/ground-control';
 import { IUpdateCache } from './core/data/UpdateCache';
 /**
  * Created by Papa on 11/15/2016.
@@ -21,7 +20,7 @@ export declare abstract class OperationManager implements IOperationManager {
     protected airDb: IAirportDatabase;
     entity: IQueryFacade;
     higherOrderOpsYieldLength: number;
-    transactionClient: IInternalTransactionalConnector;
+    transConnector: ITransactionalConnector;
     transactionInProgress: boolean;
     updateCache: IUpdateCache;
     utils: IUtils;

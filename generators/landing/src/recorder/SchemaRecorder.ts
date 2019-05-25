@@ -31,6 +31,7 @@ import {
 	SchemaReferenceECreateProperties,
 	SchemaRelationColumnECreateProperties
 }                        from '@airport/traffic-pattern'
+import {transactional}   from '@airport/tower'
 import {SCHEMA_RECORDER} from '../diTokens'
 
 export interface ISchemaRecorder {
@@ -73,19 +74,21 @@ export class SchemaRecorder
 		ddlObjects: DdlObjects,
 		normalOperation: boolean
 	): Promise<void> {
-		if (normalOperation) {
-			await this.normalRecord(ddlObjects, await this.domainDao, await this.schemaDao,
-				await this.schemaVersionDao, await this.schemaReferenceDao,
-				await this.schemaEntityDao, await this.schemaPropertyDao,
-				await this.schemaRelationDao, await this.schemaColumnDao,
-				await this.schemaPropertyColumnDao, await this.schemaRelationColumnDao)
-		} else {
-			await this.bootstrapRecord(ddlObjects, await this.domainDao, await this.schemaDao,
-				await this.schemaVersionDao, await this.schemaReferenceDao,
-				await this.schemaEntityDao, await this.schemaPropertyDao,
-				await this.schemaRelationDao, await this.schemaColumnDao,
-				await this.schemaPropertyColumnDao, await this.schemaRelationColumnDao)
-		}
+		await transactional(async ()=> {
+			if (normalOperation) {
+				await this.normalRecord(ddlObjects, await this.domainDao, await this.schemaDao,
+					await this.schemaVersionDao, await this.schemaReferenceDao,
+					await this.schemaEntityDao, await this.schemaPropertyDao,
+					await this.schemaRelationDao, await this.schemaColumnDao,
+					await this.schemaPropertyColumnDao, await this.schemaRelationColumnDao)
+			} else {
+				await this.bootstrapRecord(ddlObjects, await this.domainDao, await this.schemaDao,
+					await this.schemaVersionDao, await this.schemaReferenceDao,
+					await this.schemaEntityDao, await this.schemaPropertyDao,
+					await this.schemaRelationDao, await this.schemaColumnDao,
+					await this.schemaPropertyColumnDao, await this.schemaRelationColumnDao)
+			}
+		})
 	}
 
 	private async normalRecord(

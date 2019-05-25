@@ -78,7 +78,7 @@ export interface IDatabaseFacade {
 	/**
 	 * Connector to the transactional server.
 	 */
-	transactionClient: ITransactionalConnector;
+	transConnector: ITransactionalConnector;
 
 	/**
 	 * Start Context for an UpdateProperties Operation.  All entity update operations must be

@@ -1,1 +1,1 @@
-export declare function distinctUntilChanged<V>(value: V, context: any): V;
+export declare function distinctUntilChanged<V>(callback: (up$CurVal?: any) => V, context: any): V;

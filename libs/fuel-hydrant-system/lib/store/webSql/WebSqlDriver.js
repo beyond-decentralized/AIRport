@@ -55,7 +55,8 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
                 // let completed = false
                 // let returnValue
                 if (this.transaction) {
-                    console.warn(`Another transaction is already in progress, using the parent transaction`);
+                    console.info(`Another transaction is already in progress, using the parent transaction`);
+                    resolve();
                     return;
                 }
                 this._db.transaction((tx) => {

@@ -1,6 +1,5 @@
-import {
-	DI
-}                                from '@airport/di'
+import {IQEntityInternal}        from '@airport/air-control'
+import {DI}                      from '@airport/di'
 import {
 	ACTIVE_QUERIES,
 	ActiveQueries,
@@ -18,6 +17,7 @@ import {
 	TRANS_HISTORY_DUO
 }                                from '@airport/holding-pattern'
 import {
+	ICredentials,
 	ITransactionManager,
 	TRANSACTION_MANAGER
 }                                from '@airport/terminal-map'
@@ -42,9 +42,9 @@ export class TransactionManager
 	private queries: ActiveQueries
 	storeType: StoreType
 	private transHistoryDuo: Promise<ITransactionHistoryDuo>
-	transactionIndexQueue: number[]
-	transactionInProgress: number     = null
-	yieldToRunningTransaction: number = 100
+	transactionIndexQueue: string[]   = []
+	transactionInProgress: string     = null
+	yieldToRunningTransaction: number = 200
 
 	constructor() {
 		super()
@@ -76,16 +76,20 @@ export class TransactionManager
 		// await this.repositoryManager.initialize();
 	}
 
-	async startTransaction(
-		transactionIndex: number
+	async transact(
+		credentials: ICredentials
 	): Promise<void> {
 		if (this.transactionInProgress) {
-			this.transactionIndexQueue.push(transactionIndex)
+			if (credentials.domainAndPort === this.transactionInProgress) {
+				// Just continue using the current transaction
+				return
+			}
+			this.transactionIndexQueue.push(credentials.domainAndPort)
 		}
-		while (!this.canRunTransaction(transactionIndex)) {
+		while (!this.canRunTransaction(credentials.domainAndPort)) {
 			await this.wait(this.yieldToRunningTransaction)
 		}
-		this.transactionInProgress = transactionIndex
+		this.transactionInProgress = credentials.domainAndPort
 		let fieldMap               = new SyncSchemaMap()
 
 		this.currentTransHistory = (await this.transHistoryDuo).getNewRecord()
@@ -93,21 +97,21 @@ export class TransactionManager
 		await this.dataStore.transact()
 	}
 
-	async rollbackTransaction(
-		transactionIndex: number
+	async rollback(
+		credentials: ICredentials
 	): Promise<void> {
-		if (this.transactionInProgress !== transactionIndex) {
+		if (this.transactionInProgress !== credentials.domainAndPort) {
 			let foundTransactionInQueue = false
 			this.transactionIndexQueue.filter(
 				transIndex => {
-					if (transIndex === transactionIndex) {
+					if (transIndex === credentials.domainAndPort) {
 						foundTransactionInQueue = true
 						return false
 					}
 					return true
 				})
 			if (!foundTransactionInQueue) {
-				throw `Could not find transaction '${transactionIndex}' is not found`
+				throw `Could not find transaction '${credentials.domainAndPort}' is not found`
 			}
 			return
 		}
@@ -118,11 +122,11 @@ export class TransactionManager
 		}
 	}
 
-	async commitTransaction(
-		transactionIndex: number
+	async commit(
+		credentials: ICredentials
 	): Promise<void> {
-		if (this.transactionInProgress !== transactionIndex) {
-			throw `Cannot commit inactive transaction '${transactionIndex}'.`
+		if (this.transactionInProgress !== credentials.domainAndPort) {
+			throw `Cannot commit inactive transaction '${credentials.domainAndPort}'.`
 		}
 		let transaction = this.currentTransHistory
 
@@ -180,11 +184,11 @@ export class TransactionManager
 			transaction.allRecordHistory.length
 		)
 
-		schemaMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true)
+		schemaMap.ensureEntity((<IQEntityInternal><any>Q.TransactionHistory).__driver__.dbEntity, true)
 		transaction.id = transHistoryIds.transactionHistoryId
 		await this.doInsertValues(Q.TransactionHistory, [transaction])
 
-		schemaMap.ensureEntity(Q.RepositoryTransactionHistory.__driver__.dbEntity, true)
+		schemaMap.ensureEntity((<IQEntityInternal><any>Q.RepositoryTransactionHistory).__driver__.dbEntity, true)
 		transaction.repositoryTransactionHistories.forEach((
 			repositoryTransactionHistory,
 			index
@@ -193,7 +197,7 @@ export class TransactionManager
 		})
 		await this.doInsertValues(Q.RepositoryTransactionHistory, transaction.repositoryTransactionHistories)
 
-		schemaMap.ensureEntity(Q.OperationHistory.__driver__.dbEntity, true)
+		schemaMap.ensureEntity((<IQEntityInternal><any>Q.OperationHistory).__driver__.dbEntity, true)
 		transaction.allOperationHistory.forEach((
 			operationHistory,
 			index
@@ -202,22 +206,22 @@ export class TransactionManager
 		})
 		await this.doInsertValues(Q.OperationHistory, transaction.allOperationHistory)
 
-		schemaMap.ensureEntity(Q.RecordHistory.__driver__.dbEntity, true)
+		schemaMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistory).__driver__.dbEntity, true)
 		transaction.allRecordHistory.forEach((
 			recordHistory,
 			index
 		) => {
 			recordHistory.id = transHistoryIds.recordHistoryIds[index]
 		})
-		await this.doInsertValues(Q.RecordHistory, transaction.allRecordHistory)
+		await this.doInsertValues((<IQEntityInternal><any>Q.RecordHistory), transaction.allRecordHistory)
 
 		if (transaction.allRecordHistoryNewValues.length) {
-			schemaMap.ensureEntity(Q.RecordHistoryNewValue.__driver__.dbEntity, true)
+			schemaMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryNewValue).__driver__.dbEntity, true)
 			await this.doInsertValues(Q.RecordHistoryNewValue, transaction.allRecordHistoryNewValues)
 		}
 
 		if (transaction.allRecordHistoryOldValues.length) {
-			schemaMap.ensureEntity(Q.RecordHistoryOldValue.__driver__.dbEntity, true)
+			schemaMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryOldValue).__driver__.dbEntity, true)
 			await this.doInsertValues(Q.RecordHistoryOldValue, transaction.allRecordHistoryOldValues)
 		}
 
@@ -243,14 +247,14 @@ export class TransactionManager
 	}
 
 	private canRunTransaction(
-		transactionIndex: number
+		domainAndPort: string
 	): boolean {
 		if (this.transactionInProgress) {
 			return false
 		}
 
 		return this.transactionIndexQueue[this.transactionIndexQueue.length - 1]
-			=== transactionIndex
+			=== domainAndPort
 	}
 
 }

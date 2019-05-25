@@ -1,4 +1,4 @@
-export * from './core/data/IInternalTransactionalConnector';
+export * from './core/data/ITransactionalServer';
 export * from './core/data/UpdateCache';
 export * from './core/metadata/MetadataUtils';
 export * from './AirportDatabase';

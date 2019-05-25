@@ -14,14 +14,9 @@ class Observable {
         // 	throw 'only @airport/observer/Observable is supported'
         // }
         const targetObservable = new Observable();
-        if (sourceObservables.length > 1) {
-            sourceObservables.forEach(aSourceObservable => {
-                aSourceObservable.downstream.push(targetObservable);
-            });
-        }
-        else {
-            sourceObservables[0].downstream.push(targetObservable);
-        }
+        sourceObservables.forEach(aSourceObservable => {
+            aSourceObservable.downstream.push(targetObservable);
+        });
         targetObservable.upstream = sourceObservables;
         return targetObservable;
     }
@@ -31,7 +26,7 @@ class Observable {
             || value === undefined) {
             return;
         }
-        this.lastValue = this.currentValue;
+        // this.lastValue = this.currentValue
         if (this.callback) {
             const value = this.currentValue;
             this.currentValue = undefined;
@@ -53,7 +48,7 @@ class Observable {
         });
         this.downstream.forEach(observable => {
             context.currentValue = this.currentValue;
-            context.lastValue = this.lastValue;
+            // context.lastValue    = this.lastValue
             context.observable = observable;
             // if (observable.exec) {
             observable.exec(this.currentValue, callbackName, this, context);
@@ -98,10 +93,10 @@ class Observable {
             }
             default: {
                 if (this.callback) {
-                    this.currentValue = this.callback(values[0], this.getDefaultContext());
+                    this.currentValue = this.callback(values, this.getDefaultContext());
                 }
                 else {
-                    this.currentValue = values[0];
+                    this.currentValue = values;
                 }
                 break;
             }
@@ -110,9 +105,7 @@ class Observable {
     }
     getDefaultContext() {
         return {
-            currentValue: this.currentValue,
-            lastValue: this.lastValue,
-            observable: this
+            $: this
         };
     }
     subscribeUpstream() {

@@ -3,14 +3,13 @@ import {PortableQuery} from "../query/PortableQuery";
 
 export interface ITransactionalConnector {
 
-	startTransaction(): Promise<number>;
-
-	rollbackTransaction(
-		transactionIndex: number
+	transact(
 	): Promise<void>;
 
-	commitTransaction(
-		transactionIndex: number
+	rollback(
+	): Promise<void>;
+
+	commit(
 	): Promise<void>;
 
 	find<E, EntityArray extends Array<E>>(

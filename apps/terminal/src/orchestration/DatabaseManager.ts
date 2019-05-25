@@ -1,19 +1,37 @@
 import {
 	AIR_DB,
 	IAirportDatabase,
+	IDao,
+	IDatabaseFacade,
 }                                 from '@airport/air-control'
 import {DI}                       from '@airport/di'
 import {setStoreDriver}           from '@airport/fuel-hydrant-system'
-import {STORE_DRIVER}             from '@airport/ground-control'
+import {
+	DomainName,
+	STORE_DRIVER,
+	TRANS_CONNECTOR
+}                                 from '@airport/ground-control'
+import {
+	Actor,
+	ACTOR_DAO
+}                                 from '@airport/holding-pattern'
 import {SCHEMA_INITIALIZER}       from '@airport/landing'
 import {QUERY_OBJECT_INITIALIZER} from '@airport/takeoff'
 import {
 	StoreType,
 	TRANSACTION_MANAGER
 }                                 from '@airport/terminal-map'
+import {transactional}            from '@airport/tower'
+import {
+	Terminal,
+	TERMINAL_DAO,
+	User,
+	USER_DAO
+}                                 from '@airport/travel-document-checkpoint'
 import {DATABASE_MANAGER}         from '../diTokens'
 
 export interface IDatabaseManager {
+
 	/*
 		ensureInitialized(
 			terminalName: string,
@@ -28,6 +46,7 @@ export interface IDatabaseManager {
 	isInitialized(): boolean;
 
 	init(
+		domainName: string,
 		storeType: StoreType
 	): Promise<void>;
 
@@ -80,6 +99,7 @@ export class DatabaseManager
 	}
 
 	async init(
+		domainName: string,
 		storeType: StoreType
 	): Promise<void> {
 		await setStoreDriver(storeType)
@@ -90,7 +110,6 @@ export class DatabaseManager
 		await transManager.initialize('airport')
 
 		const storeDriver = await DI.getP(STORE_DRIVER)
-
 		await storeDriver.dropTable('github_com___airport__airport_code__Sequence')
 		await storeDriver.dropTable('github_com___airport__airport_code__SequenceBlock')
 		await storeDriver.dropTable('github_com___airport__airport_code__SequenceConsumer')
@@ -128,12 +147,17 @@ export class DatabaseManager
 		await storeDriver.dropTable('github_com___airport__holding_pattern__RepositorySchema')
 		await storeDriver.dropTable('github_com___airport__holding_pattern__RepositoryTransactionHistory')
 		await storeDriver.dropTable('github_com___airport__holding_pattern__TransactionHistory')
-
 		if (await storeDriver.doesTableExist('github_com___airport_territory__Package')) {
 			const queryObjectInitializer = await DI.getP(QUERY_OBJECT_INITIALIZER)
 			await queryObjectInitializer.initialize()
 		} else {
+			const server              = await DI.getP(TRANS_CONNECTOR);
+			(server as any).tempActor = new Actor()
+
 			await this.installAirportSchema()
+			await this.initTerminal(domainName);
+
+			(server as any).tempActor = null
 		}
 		/*
 				throw `Implement!`
@@ -157,6 +181,40 @@ export class DatabaseManager
 					})
 				await dbFacade.init(storeType)
 				*/
+	}
+
+	private async initTerminal(
+		domainName: DomainName
+	): Promise<void> {
+		await transactional(async () => {
+			const user    = new User()
+			user.uniqueId = domainName
+			const userDao = await DI.getP(USER_DAO)
+			await userDao.save(user)
+
+			const terminal    = new Terminal()
+			terminal.name     = domainName
+			terminal.owner    = user
+			const terminalDao = await DI.getP(TERMINAL_DAO)
+			await terminalDao.save(terminal)
+
+			const actor    = new Actor()
+			actor.user     = user
+			actor.terminal = terminal
+			actor.randomId = Math.random()
+			const actorDao = await DI.getP(ACTOR_DAO)
+			await actorDao.save(actor);
+		})
+	}
+
+	private async bulkCreate(
+		dao: IDao<any, any, any, any, any, any, any>,
+		entities: any[]
+	) {
+		const entityDbFacade            = (dao as any).db
+		const dbFacade: IDatabaseFacade = entityDbFacade.common
+
+		await dbFacade.bulkCreate(entityDbFacade.dbEntity, entities, false, false, false)
 	}
 
 	private async installAirportSchema() {

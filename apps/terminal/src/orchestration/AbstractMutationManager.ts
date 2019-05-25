@@ -2,8 +2,8 @@ import {
 	AbstractQuery,
 	InsertValues,
 	IQEntity,
+	IQEntityInternal,
 	IUtils,
-	QEntity,
 	RawInsertValues,
 	UTILS
 }           from '@airport/air-control'
@@ -49,10 +49,10 @@ export class AbstractMutationManager {
 	}
 
 	protected async doInsertValues<IQE extends IQEntity>(
-		q: QEntity,
+		q: IQEntity,
 		entities: any[]
 	): Promise<number> {
-		const dbEntity                  = q.__driver__.dbEntity
+		const dbEntity                  = (q as IQEntityInternal).__driver__.dbEntity
 		const columnIndexes: number[]   = []
 		const columnValueLookups: any[] = []
 		for (const dbProperty of dbEntity.properties) {

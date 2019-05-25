@@ -14,11 +14,11 @@ import {
 	IRepositoryTransactionBlock,
 	IRepositoryTransactionBlockDao,
 	ISharingMessage,
-	ISharingMessageRepoTransBlock,
 	ISharingMessageRepoTransBlockDao,
 	MISSING_RECORD_REPO_TRANS_BLOCK_DAO,
 	REPO_TRANS_BLOCK_DAO,
-	SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO
+	SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
+	SharingMessageRepoTransBlockECreateProperties
 }                                         from '@airport/moving-walkway'
 import {stringify}                        from 'zipson/lib'
 import {SYNC_IN_REPO_TRANS_BLOCK_CREATOR} from '../../../diTokens'
@@ -177,12 +177,12 @@ export class SyncInRepositoryTransactionBlockCreator
 	async createSharingMessageRepoTransBlocks(
 		allDataToTM: IDataToTM[]
 	): Promise<void> {
-		const sharingMessageRepoTransBlocks: ISharingMessageRepoTransBlock[]
+		const sharingMessageRepoTransBlocks: SharingMessageRepoTransBlockECreateProperties[]
 			      = allDataToTM.map(
 			dataToTM => ({
 				sharingMessage: dataToTM.sharingMessage,
 				repositoryTransactionBlock: dataToTM.repositoryTransactionBlock
-			}))
+			})) as SharingMessageRepoTransBlockECreateProperties[]
 		await this.sharingMessageRepoTransBlockDao.bulkCreate(
 			sharingMessageRepoTransBlocks, false, false)
 	}
@@ -197,8 +197,8 @@ export class SyncInRepositoryTransactionBlockCreator
 			      = await this.getRepoTransHistoryMapByRepoId(dataMessages,
 			existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById)
 
-		const repositoryTransactionBlocks: IRepositoryTransactionBlock[]     = []
-		const sharingMessageRepoTransBlocks: ISharingMessageRepoTransBlock[] = []
+		const repositoryTransactionBlocks: IRepositoryTransactionBlock[]                     = []
+		const sharingMessageRepoTransBlocks: SharingMessageRepoTransBlockECreateProperties[] = []
 		// const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = [];
 
 		const transactionHistory           = this.transactionManager.currentTransHistory
@@ -256,6 +256,12 @@ export class SyncInRepositoryTransactionBlockCreator
 		// 	repoTransBlockRepoTransHistories, false, false);
 
 		return repoTransHistoryMapByRepositoryId
+	}
+
+	createSharingNodeRepoTransBlocks(
+		allDataToTM: IDataToTM[]
+	): Promise<void> {
+		throw `Not Implemented`
 	}
 
 

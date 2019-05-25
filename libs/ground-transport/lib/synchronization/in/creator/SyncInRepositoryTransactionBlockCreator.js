@@ -118,6 +118,9 @@ class SyncInRepositoryTransactionBlockCreator {
         // 	repoTransBlockRepoTransHistories, false, false);
         return repoTransHistoryMapByRepositoryId;
     }
+    createSharingNodeRepoTransBlocks(allDataToTM) {
+        throw `Not Implemented`;
+    }
 }
 exports.SyncInRepositoryTransactionBlockCreator = SyncInRepositoryTransactionBlockCreator;
 di_1.DI.get(diTokens_1.SYNC_IN_REPO_TRANS_BLOCK_CREATOR, SyncInRepositoryTransactionBlockCreator);

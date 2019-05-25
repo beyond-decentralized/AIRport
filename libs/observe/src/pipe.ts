@@ -68,9 +68,9 @@ export function pipe<V>(
 		// }
 		const targetObservable: Observable<any>
 			                        = Observable.from(sourceObservable) as any
-		const persistentContext   = {
-			targetObservable
-		}
+		// const persistentContext   = {
+		// 	targetObservable
+		// }
 		targetObservable.callback = callback
 
 		/*

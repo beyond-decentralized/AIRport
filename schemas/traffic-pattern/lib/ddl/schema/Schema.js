@@ -18,7 +18,6 @@ let Schema = class Schema extends VersionedSchemaObject_1.VersionedSchemaObject 
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.SequenceGenerator({ allocationSize: 1 }),
     air_control_1.DbNumber(),
     air_control_1.Column({ name: 'SCHEMA_INDEX', nullable: false }),
     __metadata("design:type", Number)

@@ -2768,7 +2768,6 @@ export const SCHEMA = {
 							"type": 4
 						},
 						{
-							"allocationSize": 1,
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],

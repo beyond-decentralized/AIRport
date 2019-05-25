@@ -10,8 +10,9 @@ const AbstractMutationManager_1 = require("./AbstractMutationManager");
 class TransactionManager extends AbstractMutationManager_1.AbstractMutationManager {
     constructor() {
         super();
+        this.transactionIndexQueue = [];
         this.transactionInProgress = null;
-        this.yieldToRunningTransaction = 100;
+        this.yieldToRunningTransaction = 200;
         di_1.DI.get((idGenerator, offlineDeltaStore, onlineManager, queries) => {
             this.idGenerator = idGenerator;
             this.offlineDeltaStore = offlineDeltaStore;
@@ -28,30 +29,34 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
         await this.dataStore.initialize(dbName);
         // await this.repositoryManager.initialize();
     }
-    async startTransaction(transactionIndex) {
+    async transact(credentials) {
         if (this.transactionInProgress) {
-            this.transactionIndexQueue.push(transactionIndex);
+            if (credentials.domainAndPort === this.transactionInProgress) {
+                // Just continue using the current transaction
+                return;
+            }
+            this.transactionIndexQueue.push(credentials.domainAndPort);
         }
-        while (!this.canRunTransaction(transactionIndex)) {
+        while (!this.canRunTransaction(credentials.domainAndPort)) {
             await this.wait(this.yieldToRunningTransaction);
         }
-        this.transactionInProgress = transactionIndex;
+        this.transactionInProgress = credentials.domainAndPort;
         let fieldMap = new ground_control_1.SyncSchemaMap();
         this.currentTransHistory = (await this.transHistoryDuo).getNewRecord();
         await this.dataStore.transact();
     }
-    async rollbackTransaction(transactionIndex) {
-        if (this.transactionInProgress !== transactionIndex) {
+    async rollback(credentials) {
+        if (this.transactionInProgress !== credentials.domainAndPort) {
             let foundTransactionInQueue = false;
             this.transactionIndexQueue.filter(transIndex => {
-                if (transIndex === transactionIndex) {
+                if (transIndex === credentials.domainAndPort) {
                     foundTransactionInQueue = true;
                     return false;
                 }
                 return true;
             });
             if (!foundTransactionInQueue) {
-                throw `Could not find transaction '${transactionIndex}' is not found`;
+                throw `Could not find transaction '${credentials.domainAndPort}' is not found`;
             }
             return;
         }
@@ -62,9 +67,9 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
             this.clearTransaction();
         }
     }
-    async commitTransaction(transactionIndex) {
-        if (this.transactionInProgress !== transactionIndex) {
-            throw `Cannot commit inactive transaction '${transactionIndex}'.`;
+    async commit(credentials) {
+        if (this.transactionInProgress !== credentials.domainAndPort) {
+            throw `Cannot commit inactive transaction '${credentials.domainAndPort}'.`;
         }
         let transaction = this.currentTransHistory;
         try {
@@ -147,12 +152,12 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
             }
         });
     }
-    canRunTransaction(transactionIndex) {
+    canRunTransaction(domainAndPort) {
         if (this.transactionInProgress) {
             return false;
         }
         return this.transactionIndexQueue[this.transactionIndexQueue.length - 1]
-            === transactionIndex;
+            === domainAndPort;
     }
 }
 exports.TransactionManager = TransactionManager;

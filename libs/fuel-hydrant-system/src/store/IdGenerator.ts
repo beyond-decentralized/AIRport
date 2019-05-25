@@ -61,6 +61,7 @@ export class IdGenerator
 	private transactionHistoryIdColumns: DbColumn[] = []
 
 	private airDb: IAirportDatabase
+	private sequenceGeneratorFuture: () => Promise<ISequenceGenerator>
 	private sequenceGenerator: ISequenceGenerator
 	private utils: IUtils
 
@@ -71,14 +72,16 @@ export class IdGenerator
 			utils
 		) => {
 			this.airDb             = airportDatabase
-			this.sequenceGenerator = sequenceGenerator
 			this.utils             = utils
-		}, AIR_DB, SEQUENCE_GENERATOR, UTILS)
+		}, AIR_DB, UTILS)
+
+		this.sequenceGeneratorFuture = DI.laterP(SEQUENCE_GENERATOR)
 	}
 
 	async init(
 		domain: IDomain
 	): Promise<void> {
+		this.sequenceGenerator = await this.sequenceGeneratorFuture()
 		await this.sequenceGenerator.init(domain)
 
 		const transHistoryDbEntity     =

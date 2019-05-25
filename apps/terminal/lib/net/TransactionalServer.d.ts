@@ -1,8 +1,11 @@
-import { IStoreDriver, PortableQuery } from '@airport/ground-control';
-import { ITransactionHistory } from '@airport/holding-pattern';
+import { PortableQuery } from '@airport/ground-control';
+import { IActor } from '@airport/holding-pattern';
 import { IObservable } from '@airport/observe';
-import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
-import { IInternalTransactionalConnector } from '@airport/tower';
+import { DistributionStrategy, ICredentials, PlatformType } from '@airport/terminal-map';
+import { ITransactionalServer } from '@airport/tower';
+export interface InternalPortableQuery extends PortableQuery {
+    domainAndPort: string;
+}
 /**
  * Keeps track of transactions, per client and validates that a given
  * transaction belongs to the provided client.  If the connection
@@ -27,31 +30,27 @@ import { IInternalTransactionalConnector } from '@airport/tower';
  * A single transactional queue should be enough.
  *
  */
-export declare class TransactionalServer implements IInternalTransactionalConnector {
-    activeTransactions: {
-        [index: number]: ITransactionHistory;
-    };
-    lastTransactionIndex: number;
-    currentTransactionIndex: any;
-    dataStore: IStoreDriver;
+export declare class TransactionalServer implements ITransactionalServer {
     private deleteManager;
     private insertManager;
     private queryManager;
     private transactionManager;
     private updateManager;
+    tempActor: IActor;
     constructor();
-    startTransaction(): Promise<number>;
-    rollbackTransaction(transactionIndex: number): Promise<void>;
-    commitTransaction(transactionIndex: number): Promise<void>;
-    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<EntityArray>;
-    findOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<E>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<E>;
-    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy): Promise<number>;
-    insertValues(portableQuery: PortableQuery, transactionIndex?: number, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, transactionIndex?: number): Promise<number[] | string[]>;
-    updateValues(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
-    deleteWhere(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
+    init(): Promise<void>;
+    transact(credentials: ICredentials): Promise<void>;
+    rollback(credentials: ICredentials): Promise<void>;
+    commit(credentials: ICredentials): Promise<void>;
+    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<EntityArray>;
+    findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<E>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): IObservable<EntityArray>;
+    searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): IObservable<E>;
+    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, credentials: ICredentials): Promise<number>;
+    insertValues(portableQuery: PortableQuery, credentials: ICredentials, transactionIndex?: number, ensureGeneratedValues?: boolean): Promise<number>;
+    insertValuesGetIds(portableQuery: PortableQuery, credentials: ICredentials, transactionIndex?: number): Promise<number[] | string[]>;
+    updateValues(portableQuery: PortableQuery, credentials: ICredentials, transactionIndex?: number): Promise<number>;
+    deleteWhere(portableQuery: PortableQuery, credentials: ICredentials, transactionIndex?: number): Promise<number>;
     private getActor;
     private wrapInTransaction;
 }

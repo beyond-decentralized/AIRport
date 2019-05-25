@@ -21,8 +21,8 @@ import {
 	UpdateProperties,
 	UpdateRecord,
 	UTILS
-}                                        from '@airport/air-control'
-import {DI}                              from '@airport/di'
+}                     from '@airport/air-control'
+import {DI}           from '@airport/di'
 import {
 	CascadeType,
 	CRUDOperation,
@@ -31,18 +31,18 @@ import {
 	DbProperty,
 	DbRelation,
 	EntityRelationType,
+	ITransactionalConnector,
 	JSONBaseOperation,
 	JSONValueOperation,
 	PortableQuery,
 	SQLDataType,
 	TRANS_CONNECTOR
-}                                        from '@airport/ground-control'
-import {IInternalTransactionalConnector} from './core/data/IInternalTransactionalConnector'
-import {IUpdateCache}                    from './core/data/UpdateCache'
+}                     from '@airport/ground-control'
+import {IUpdateCache} from './core/data/UpdateCache'
 import {
 	QUERY_FACADE,
 	UPDATE_CACHE
-}                                        from './diTokens'
+}                     from './diTokens'
 
 /**
  * Created by Papa on 11/15/2016.
@@ -75,7 +75,7 @@ export abstract class OperationManager
 	protected airDb: IAirportDatabase
 	public entity: IQueryFacade
 	higherOrderOpsYieldLength: number = 100
-	public transactionClient: IInternalTransactionalConnector
+	public transConnector: ITransactionalConnector
 	transactionInProgress: boolean    = false
 	public updateCache: IUpdateCache
 	public utils: IUtils
@@ -88,11 +88,11 @@ export abstract class OperationManager
 			updateCache,
 			utils
 		) => {
-			this.airDb             = airportDatabase
-			this.entity            = queryFacade
-			this.transactionClient = transConnector as IInternalTransactionalConnector
-			this.updateCache       = updateCache
-			this.utils             = utils
+			this.airDb          = airportDatabase
+			this.entity         = queryFacade
+			this.transConnector = transConnector as ITransactionalConnector
+			this.updateCache    = updateCache
+			this.utils          = utils
 		}, AIR_DB, QUERY_FACADE, TRANS_CONNECTOR, UPDATE_CACHE, UTILS)
 	}
 
@@ -141,8 +141,8 @@ export abstract class OperationManager
 		dbEntity: DbEntity,
 		entities: E[],
 		createdEntityMap: { [entityId: string]: any }[][],
-		checkIfProcessed: boolean = true,
-		cascadeAlways: boolean    = false,
+		checkIfProcessed: boolean      = true,
+		cascadeAlways: boolean         = false,
 		ensureGeneratedValues: boolean = true // For internal use only
 	): Promise<number> {
 		let result = await this.internalCreate(dbEntity, entities,
@@ -316,7 +316,7 @@ export abstract class OperationManager
 
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertColumnValues, null)
 
-		return await this.transactionClient.insertValues(portableQuery)
+		return await this.transConnector.insertValues(portableQuery)
 	}
 
 	protected async internalInsertValues<IQE extends IQEntity>(
@@ -328,7 +328,7 @@ export abstract class OperationManager
 
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null)
 
-		return await this.transactionClient.insertValues(portableQuery, undefined, ensureGeneratedValues)
+		return await this.transConnector.insertValues(portableQuery, undefined, ensureGeneratedValues)
 	}
 
 	protected async internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(
@@ -339,7 +339,7 @@ export abstract class OperationManager
 
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null)
 
-		return await this.transactionClient.insertValuesGetIds(portableQuery)
+		return await this.transConnector.insertValuesGetIds(portableQuery)
 	}
 
 	protected async internalInsertValuesGetIds<IQE extends IQEntity>(
@@ -350,7 +350,7 @@ export abstract class OperationManager
 
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null)
 
-		return await this.transactionClient.insertValuesGetIds(portableQuery)
+		return await this.transConnector.insertValuesGetIds(portableQuery)
 	}
 
 	/**
@@ -685,7 +685,9 @@ export abstract class OperationManager
 
 	private assertOneToManyIsArray(relationValue: any
 	): void {
-		if (!(relationValue instanceof Array)) {
+		if (relationValue !== null
+			&& relationValue !== undefined
+			&& !(relationValue instanceof Array)) {
 			throw `@OneToMany relation must be an array`
 		}
 	}
@@ -698,7 +700,7 @@ export abstract class OperationManager
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(
 			dbEntity, updateColumns, null)
 
-		return await this.transactionClient.updateValues(portableQuery)
+		return await this.transConnector.updateValues(portableQuery)
 	}
 
 	protected async internalUpdateWhere<E, IEUP extends IEntityUpdateProperties,
@@ -709,7 +711,7 @@ export abstract class OperationManager
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(
 			dbEntity, update, null)
 
-		return await this.transactionClient.updateValues(portableQuery)
+		return await this.transConnector.updateValues(portableQuery)
 	}
 
 	/**
@@ -802,7 +804,7 @@ export abstract class OperationManager
 	): Promise<number> {
 		let portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, aDelete, null)
 
-		return await this.transactionClient.deleteWhere(portableQuery)
+		return await this.transConnector.deleteWhere(portableQuery)
 	}
 
 	private async internalDelete(

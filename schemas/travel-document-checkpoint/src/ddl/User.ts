@@ -10,7 +10,6 @@ import {
 import {UserTerminal}     from './UserTerminal'
 import {UserTerminalAgt}  from './UserTerminalAgt'
 
-
 export type UserId = number;
 export type UserUniqueId = string;
 export type UserFirstName = string;
@@ -26,7 +25,7 @@ export class User {
 	@DbNumber()
 	id: UserId;
 
-	@Column({name: "UNIQUE_IDENTIFIER"})
+	@Column({name: "UNIQUE_IDENTIFIER", nullable: false})
 	@DbString()
 	uniqueId: UserUniqueId;
 

@@ -4,6 +4,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./core/repository/ChangeToQueryRegistry"));
+__export(require("./net/TransactionalConnector"));
 /**
  * Created by Papa on 11/21/2016.
  */

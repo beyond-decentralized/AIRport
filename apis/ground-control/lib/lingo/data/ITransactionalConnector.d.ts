@@ -1,9 +1,9 @@
 import { IObservable } from "@airport/observe";
 import { PortableQuery } from "../query/PortableQuery";
 export interface ITransactionalConnector {
-    startTransaction(): Promise<number>;
-    rollbackTransaction(transactionIndex: number): Promise<void>;
-    commitTransaction(transactionIndex: number): Promise<void>;
+    transact(): Promise<void>;
+    rollback(): Promise<void>;
+    commit(): Promise<void>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<EntityArray>;

@@ -12,11 +12,12 @@ class IdGenerator {
         this.transactionHistoryIdColumns = [];
         di_1.DI.get((airportDatabase, sequenceGenerator, utils) => {
             this.airDb = airportDatabase;
-            this.sequenceGenerator = sequenceGenerator;
             this.utils = utils;
-        }, air_control_1.AIR_DB, diTokens_1.SEQUENCE_GENERATOR, air_control_1.UTILS);
+        }, air_control_1.AIR_DB, air_control_1.UTILS);
+        this.sequenceGeneratorFuture = di_1.DI.laterP(diTokens_1.SEQUENCE_GENERATOR);
     }
     async init(domain) {
+        this.sequenceGenerator = await this.sequenceGeneratorFuture();
         await this.sequenceGenerator.init(domain);
         const transHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
         const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');

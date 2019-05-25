@@ -16,4 +16,5 @@ export declare class SyncInRepositoryTransactionBlockCreator implements ISyncInR
     createMissingRecordRepoTransBlocks(missingRecordDataToTMs: IMissingRecordDataToTM[]): Promise<void>;
     createSharingMessageRepoTransBlocks(allDataToTM: IDataToTM[]): Promise<void>;
     private recordSharingMessageToHistoryRecords;
+    createSharingNodeRepoTransBlocks(allDataToTM: IDataToTM[]): Promise<void>;
 }

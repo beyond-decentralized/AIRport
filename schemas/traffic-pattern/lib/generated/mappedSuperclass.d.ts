@@ -373,19 +373,13 @@ export declare const MAPPED_SUPERCLASS: {
                             "location": string;
                             "isSuperclass": boolean;
                             "ids": {
-                                "allocationSize": number;
-                                "decorators": ({
-                                    "name": string;
-                                    "values": {
-                                        "allocationSize": number;
-                                    }[];
-                                } | {
+                                "decorators": {
                                     "name": string;
                                     "values": {
                                         "name": string;
                                         "nullable": boolean;
                                     }[];
-                                })[];
+                                }[];
                                 "isGenerated": boolean;
                                 "isId": boolean;
                                 "isMappedSuperclass": boolean;
@@ -583,19 +577,13 @@ export declare const MAPPED_SUPERCLASS: {
                                     };
                                 };
                                 "properties": ({
-                                    "allocationSize": number;
-                                    "decorators": ({
-                                        "name": string;
-                                        "values": {
-                                            "allocationSize": number;
-                                        }[];
-                                    } | {
+                                    "decorators": {
                                         "name": string;
                                         "values": {
                                             "name": string;
                                             "nullable": boolean;
                                         }[];
-                                    })[];
+                                    }[];
                                     "isGenerated": boolean;
                                     "isId": boolean;
                                     "isMappedSuperclass": boolean;
@@ -731,31 +719,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         "tableConfig": any;
                                     };
                                     "index": number;
-                                    "allocationSize"?: undefined;
                                     "primitive"?: undefined;
-                                    "isArray"?: undefined;
-                                    "entity"?: undefined;
-                                } | {
-                                    "decorators": {
-                                        "name": string;
-                                        "values": {
-                                            "name": string;
-                                            "nullable": boolean;
-                                        }[];
-                                    }[];
-                                    "isGenerated": boolean;
-                                    "isId": boolean;
-                                    "isMappedSuperclass": boolean;
-                                    "isTransient": boolean;
-                                    "name": string;
-                                    "type": string;
-                                    "ownerEntity": any;
-                                    "nonArrayType": string;
-                                    "primitive": string;
-                                    "index": number;
-                                    "allocationSize"?: undefined;
-                                    "fromProject"?: undefined;
-                                    "otherSchemaDbEntity"?: undefined;
                                     "isArray"?: undefined;
                                     "entity"?: undefined;
                                 } | {
@@ -776,7 +740,6 @@ export declare const MAPPED_SUPERCLASS: {
                                     "nonArrayType": string;
                                     "entity": any;
                                     "index": number;
-                                    "allocationSize"?: undefined;
                                     "primitive"?: undefined;
                                     "fromProject"?: undefined;
                                     "otherSchemaDbEntity"?: undefined;
@@ -799,7 +762,6 @@ export declare const MAPPED_SUPERCLASS: {
                                     "nonArrayType": string;
                                     "entity": any;
                                     "index": number;
-                                    "allocationSize"?: undefined;
                                     "primitive"?: undefined;
                                     "fromProject"?: undefined;
                                     "otherSchemaDbEntity"?: undefined;

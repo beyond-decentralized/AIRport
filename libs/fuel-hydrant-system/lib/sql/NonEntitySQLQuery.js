@@ -239,9 +239,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                 break;
             case ground_control_1.JSONClauseObjectType.MANY_TO_ONE_RELATION:
                 throw `@ManyToOne fields cannot be directly in a select clause. Please select a non-relational field within the relation.`;
-            // let relation = <QField<any>><any>QMetadataUtils.getRelationByColumnIndex(this.dbFacade.getQEntityByIndex(fieldJson.ti), fieldJson.ci);
-            // view[alias] = relation.getInstance(view);
-            // break;
+            // let relation =
+            // <QField<any>><any>QMetadataUtils.getRelationByColumnIndex(this.dbFacade.getQEntityByIndex(fieldJson.ti),
+            // fieldJson.ci); view[alias] = relation.getInstance(view); break;
             default:
                 throw `Unexpected type property on JSONClauseField: ${fieldJson.ot}.`;
         }
@@ -262,7 +262,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     break;
                 case ground_control_1.JSONRelationType.SUB_QUERY_ROOT:
                     let viewRelation = currentRelation;
-                    let TreeSQLQueryClass = require("./TreeSQLQuery").TreeSQLQuery;
+                    let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
                     let subQuery = new TreeSQLQueryClass(this.airportDb, this.utils, viewRelation.sq, this.dialect);
                     fromFragment += `(${subQuery.toSQL()}) ${currentAlias}`;
                     break;
@@ -304,7 +304,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     break;
                 case ground_control_1.JSONRelationType.SUB_QUERY_JOIN_ON:
                     let viewJoinRelation = currentRelation;
-                    let TreeSQLQueryClass = require("./TreeSQLQuery").TreeSQLQuery;
+                    let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
                     let mappedSqlQuery = new TreeSQLQueryClass(this.airportDb, this.utils, viewJoinRelation.sq, this.dialect);
                     joinOnClause = this.getWHEREFragment(viewJoinRelation.jwc, '\t');
                     fromFragment += `${joinTypeString} (${mappedSqlQuery.toSQL()}) ${currentAlias} ON\n${joinOnClause}`;

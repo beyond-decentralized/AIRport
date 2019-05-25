@@ -4,9 +4,12 @@ const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 const ground_control_1 = require("@airport/ground-control");
+const holding_pattern_1 = require("@airport/holding-pattern");
 const landing_1 = require("@airport/landing");
 const takeoff_1 = require("@airport/takeoff");
 const terminal_map_1 = require("@airport/terminal-map");
+const tower_1 = require("@airport/tower");
+const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
 const diTokens_1 = require("../diTokens");
 class DatabaseManager {
     constructor() {
@@ -48,7 +51,7 @@ class DatabaseManager {
     isInitialized() {
         return !!this.airDb;
     }
-    async init(storeType) {
+    async init(domainName, storeType) {
         await fuel_hydrant_system_1.setStoreDriver(storeType);
         const airDb = await di_1.DI.getP(air_control_1.AIR_DB);
         this.airDb = airDb;
@@ -97,7 +100,11 @@ class DatabaseManager {
             await queryObjectInitializer.initialize();
         }
         else {
+            const server = await di_1.DI.getP(ground_control_1.TRANS_CONNECTOR);
+            server.tempActor = new holding_pattern_1.Actor();
             await this.installAirportSchema();
+            await this.initTerminal(domainName);
+            server.tempActor = null;
         }
         /*
                 throw `Implement!`
@@ -121,6 +128,30 @@ class DatabaseManager {
                     })
                 await dbFacade.init(storeType)
                 */
+    }
+    async initTerminal(domainName) {
+        await tower_1.transactional(async () => {
+            const user = new travel_document_checkpoint_1.User();
+            user.uniqueId = domainName;
+            const userDao = await di_1.DI.getP(travel_document_checkpoint_1.USER_DAO);
+            await userDao.save(user);
+            const terminal = new travel_document_checkpoint_1.Terminal();
+            terminal.name = domainName;
+            terminal.owner = user;
+            const terminalDao = await di_1.DI.getP(travel_document_checkpoint_1.TERMINAL_DAO);
+            await terminalDao.save(terminal);
+            const actor = new holding_pattern_1.Actor();
+            actor.user = user;
+            actor.terminal = terminal;
+            actor.randomId = Math.random();
+            const actorDao = await di_1.DI.getP(holding_pattern_1.ACTOR_DAO);
+            await actorDao.save(actor);
+        });
+    }
+    async bulkCreate(dao, entities) {
+        const entityDbFacade = dao.db;
+        const dbFacade = entityDbFacade.common;
+        await dbFacade.bulkCreate(entityDbFacade.dbEntity, entities, false, false, false);
     }
     async installAirportSchema() {
         const blueprintFile = await Promise.resolve().then(() => require('@airport/blueprint'));
