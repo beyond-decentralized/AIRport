@@ -1,20 +1,18 @@
 import { ColumnName } from '../../lingo/schema/Property';
-import { DomainName, JsonSchemaName, SchemaName } from '../../lingo/schema/Schema';
-export interface IDbSchemaUtils {
-    getSchemaName(jsonSchema: {
-        domain: DomainName;
-        name: JsonSchemaName;
-    }): SchemaName;
-    getSequenceName(prefixedTableName: string, columnName: ColumnName): string;
-}
-export declare class DbSchemaUtils implements IDbSchemaUtils {
-    getSchemaName(jsonSchema: {
-        domain: DomainName;
-        name: JsonSchemaName;
-    }): string;
-    getSequenceName(prefixedTableName: string, columnName: ColumnName): string;
-}
+import { DomainName, SchemaName } from '../../lingo/schema/Schema';
 export declare function getSchemaName({ domain, name }: {
     domain: any;
     name: any;
 }): string;
+export declare function getTableName(schema: {
+    domain: DomainName | {
+        name: DomainName;
+    };
+    name: SchemaName;
+}, table: {
+    name: string;
+    tableConfig?: {
+        name?: string;
+    };
+}): string;
+export declare function getSequenceName(prefixedTableName: string, columnName: ColumnName): string;

@@ -1,18 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../../diTokens");
-class DbSchemaUtils {
-    getSchemaName(jsonSchema) {
-        return getSchemaName(jsonSchema);
-    }
-    getSequenceName(prefixedTableName, columnName) {
-        return `${prefixedTableName}_${columnName}__SEQUENCE`;
-    }
-}
-exports.DbSchemaUtils = DbSchemaUtils;
 function getSchemaName({ domain, name }) {
     let domainPrefix = '';
+    if (domain.name) {
+        domain = domain.name;
+    }
     if (domain != 'npmjs.org') {
         domainPrefix = domain
             .replace(/\./g, '_')
@@ -25,5 +17,16 @@ function getSchemaName({ domain, name }) {
     return `${domainPrefix}__${schemaPrefix}`;
 }
 exports.getSchemaName = getSchemaName;
-di_1.DI.set(diTokens_1.DB_SCHEMA_UTILS, DbSchemaUtils);
+function getTableName(schema, table) {
+    let theTableName = table.name;
+    if (table.tableConfig && table.tableConfig.name) {
+        theTableName = table.tableConfig.name;
+    }
+    return `${this.getSchemaName(schema)}__${theTableName}`;
+}
+exports.getTableName = getTableName;
+function getSequenceName(prefixedTableName, columnName) {
+    return `${prefixedTableName}_${columnName}__SEQUENCE`;
+}
+exports.getSequenceName = getSequenceName;
 //# sourceMappingURL=DbSchemaUtils.js.map

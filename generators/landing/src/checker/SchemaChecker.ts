@@ -2,13 +2,10 @@ import {
 	IUtils,
 	UTILS
 }                       from '@airport/air-control'
+import {DI}             from '@airport/di'
 import {
-	DI
-}                       from '@airport/di'
-import {
-	DB_SCHEMA_UTILS,
 	DomainName,
-	IDbSchemaUtils,
+	getSchemaName,
 	JsonSchema,
 	JsonSchemaName,
 	SchemaName,
@@ -57,19 +54,16 @@ export class SchemaChecker
 	implements ISchemaChecker {
 
 	private schemaDao: Promise<ISchemaDao>
-	private dbSchemaUtils: IDbSchemaUtils
 	private utils: IUtils
 
 	constructor() {
 		this.schemaDao = DI.getP(SCHEMA_DAO)
 
 		DI.get((
-			dbSchemaUtils,
 			utils
 		) => {
-			this.dbSchemaUtils = dbSchemaUtils
-			this.utils         = utils
-		}, DB_SCHEMA_UTILS, UTILS)
+			this.utils = utils
+		}, UTILS)
 	}
 
 	async check(
@@ -214,7 +208,7 @@ export class SchemaChecker
 
 		for (const [domainName, allReferencedSchemasForDomain] of allReferencedSchemaMap) {
 			for (const [coreSchemaName, referencedSchema] of allReferencedSchemasForDomain) {
-				const schemaName = this.dbSchemaUtils.getSchemaName(referencedSchema)
+				const schemaName = getSchemaName(referencedSchema)
 				schemaNames.push(schemaName)
 				coreDomainAndSchemaNamesBySchemaName.set(schemaName, {
 					domain: domainName,

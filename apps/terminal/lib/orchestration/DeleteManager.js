@@ -42,7 +42,6 @@ class DeleteManager {
             jsonQuery: jsonSelect,
             queryResultType: ground_control_1.QueryResultType.ENTITY_TREE,
             parameterMap: portableQuery.parameterMap,
-            values: portableQuery.values,
         };
         const treesToDelete = await this.dataStore.find(portableSelect);
         const recordsToDelete = new Map();

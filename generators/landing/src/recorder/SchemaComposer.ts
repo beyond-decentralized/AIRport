@@ -4,9 +4,8 @@ import {
 }                       from '@airport/air-control'
 import {DI}             from '@airport/di'
 import {
-	DB_SCHEMA_UTILS,
 	DomainName,
-	IDbSchemaUtils,
+	getSchemaName,
 	IdColumnOnlyIndex,
 	JsonSchema,
 	SchemaName,
@@ -50,7 +49,6 @@ export interface ISchemaComposer {
 export class SchemaComposer
 	implements ISchemaComposer {
 
-	private dbSchemaUtils: IDbSchemaUtils
 	private ddlObjectRetriever: IDdlObjectRetriever
 	private schemaLocator: ISchemaLocator
 	private terminalStore: ITerminalStore
@@ -58,18 +56,16 @@ export class SchemaComposer
 
 	constructor() {
 		DI.get((
-			dbSchemaUtils,
 			ddlObjectRetriever,
 			schemaLocator,
 			terminalStore,
 			utils
 			) => {
-				this.dbSchemaUtils      = dbSchemaUtils
 				this.ddlObjectRetriever = ddlObjectRetriever
 				this.schemaLocator      = schemaLocator
 				this.terminalStore      = terminalStore
 				this.utils              = utils
-			}, DB_SCHEMA_UTILS, DDL_OBJECT_RETRIEVER,
+			}, DDL_OBJECT_RETRIEVER,
 			SCHEMA_LOCATOR, TERMINAL_STORE,
 			UTILS)
 
@@ -83,7 +79,7 @@ export class SchemaComposer
 
 		for (const jsonSchema of jsonSchemas) {
 			domainSet.add(jsonSchema.domain)
-			jsonSchemaMapByName.set(this.dbSchemaUtils.getSchemaName(jsonSchema), jsonSchema)
+			jsonSchemaMapByName.set(getSchemaName(jsonSchema), jsonSchema)
 		}
 
 		const allSchemaVersionsByIds = [...this.terminalStore.getAllSchemaVersionsByIds()]
@@ -306,7 +302,7 @@ export class SchemaComposer
 			                 = this.utils.ensureChildArray(newSchemaReferenceMap, schemaName)
 
 			for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
-				const referencedSchemaName  = this.dbSchemaUtils.getSchemaName(jsonReferencedSchema)
+				const referencedSchemaName  = getSchemaName(jsonReferencedSchema)
 				let referencedSchemaVersion = newSchemaVersionMapBySchemaName.get(referencedSchemaName)
 				if (!referencedSchemaVersion) {
 					referencedSchemaVersion = this.schemaLocator.locateLatestSchemaVersionBySchemaName(referencedSchemaName)

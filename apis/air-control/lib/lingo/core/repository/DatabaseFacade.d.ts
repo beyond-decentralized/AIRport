@@ -48,7 +48,8 @@ export interface IDatabaseFacade {
     /**
      * Connector to the transactional server.
      */
-    transConnector: ITransactionalConnector;
+    connector: ITransactionalConnector;
+    init(): Promise<void>;
     /**
      * Start Context for an UpdateProperties Operation.  All entity update operations must be
      * performed on cached entities.
@@ -152,6 +153,7 @@ export interface IDatabaseFacade {
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;
 }
 export interface IQueryFacade {
+    init(): Promise<void>;
     find<E, EntityArray extends Array<E>>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType, cacheForUpdate?: UpdateCacheType): Promise<EntityArray>;
     findOne<E>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType, cacheForUpdate?: UpdateCacheType): Promise<E>;
     search<E, EntityArray extends Array<E>>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType, cacheForUpdate?: UpdateCacheType): IObservable<EntityArray>;

@@ -45,4 +45,5 @@ export class ChangeToQueryRegistry {
 
 		return affectedQueries
 	}
+
 }

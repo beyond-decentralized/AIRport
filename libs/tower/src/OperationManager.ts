@@ -73,9 +73,9 @@ export abstract class OperationManager
 	implements IOperationManager {
 
 	protected airDb: IAirportDatabase
+	public connector: ITransactionalConnector
 	public entity: IQueryFacade
 	higherOrderOpsYieldLength: number = 100
-	public transConnector: ITransactionalConnector
 	transactionInProgress: boolean    = false
 	public updateCache: IUpdateCache
 	public utils: IUtils
@@ -83,17 +83,21 @@ export abstract class OperationManager
 	constructor() {
 		DI.get((
 			airportDatabase,
-			queryFacade,
-			transConnector,
 			updateCache,
 			utils
 		) => {
-			this.airDb          = airportDatabase
-			this.entity         = queryFacade
-			this.transConnector = transConnector as ITransactionalConnector
-			this.updateCache    = updateCache
-			this.utils          = utils
-		}, AIR_DB, QUERY_FACADE, TRANS_CONNECTOR, UPDATE_CACHE, UTILS)
+			this.airDb       = airportDatabase
+			this.updateCache = updateCache
+			this.utils       = utils
+		}, AIR_DB, UPDATE_CACHE, UTILS)
+
+	}
+
+	async init(): Promise<void> {
+		this.connector = await DI.getP(TRANS_CONNECTOR)
+		this.entity    = await DI.getP(QUERY_FACADE)
+
+		await this.entity.init()
 	}
 
 	throwUnexpectedProperty(
@@ -316,7 +320,7 @@ export abstract class OperationManager
 
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertColumnValues, null)
 
-		return await this.transConnector.insertValues(portableQuery)
+		return await this.connector.insertValues(portableQuery)
 	}
 
 	protected async internalInsertValues<IQE extends IQEntity>(
@@ -328,7 +332,7 @@ export abstract class OperationManager
 
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null)
 
-		return await this.transConnector.insertValues(portableQuery, undefined, ensureGeneratedValues)
+		return await this.connector.insertValues(portableQuery, undefined, ensureGeneratedValues)
 	}
 
 	protected async internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(
@@ -339,7 +343,7 @@ export abstract class OperationManager
 
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null)
 
-		return await this.transConnector.insertValuesGetIds(portableQuery)
+		return await this.connector.insertValuesGetIds(portableQuery)
 	}
 
 	protected async internalInsertValuesGetIds<IQE extends IQEntity>(
@@ -350,7 +354,7 @@ export abstract class OperationManager
 
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null)
 
-		return await this.transConnector.insertValuesGetIds(portableQuery)
+		return await this.connector.insertValuesGetIds(portableQuery)
 	}
 
 	/**
@@ -700,7 +704,7 @@ export abstract class OperationManager
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(
 			dbEntity, updateColumns, null)
 
-		return await this.transConnector.updateValues(portableQuery)
+		return await this.connector.updateValues(portableQuery)
 	}
 
 	protected async internalUpdateWhere<E, IEUP extends IEntityUpdateProperties,
@@ -711,7 +715,7 @@ export abstract class OperationManager
 		const portableQuery: PortableQuery = this.entity.getPortableQuery(
 			dbEntity, update, null)
 
-		return await this.transConnector.updateValues(portableQuery)
+		return await this.connector.updateValues(portableQuery)
 	}
 
 	/**
@@ -804,7 +808,7 @@ export abstract class OperationManager
 	): Promise<number> {
 		let portableQuery: PortableQuery = this.entity.getPortableQuery(dbEntity, aDelete, null)
 
-		return await this.transConnector.deleteWhere(portableQuery)
+		return await this.connector.deleteWhere(portableQuery)
 	}
 
 	private async internalDelete(

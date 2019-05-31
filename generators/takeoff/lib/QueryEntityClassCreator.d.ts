@@ -7,7 +7,6 @@ export interface IQueryEntityClassCreator {
 export declare class QueryEntityClassCreator implements IQueryEntityClassCreator {
     private airDb;
     private utils;
-    private dbSchemaUtils;
     constructor();
     createAll(schemas: ISchema[]): void;
     create(dbSchema: DbSchema): QSchema;

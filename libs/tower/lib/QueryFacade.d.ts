@@ -4,7 +4,7 @@ import { IObservable } from '@airport/observe';
 export declare class QueryFacade implements IQueryFacade {
     private connector;
     databaseFacade: IDatabaseFacade;
-    constructor();
+    init(): Promise<void>;
     find<E, EntityArray extends Array<E>>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType, cacheForUpdate?: UpdateCacheType): Promise<EntityArray>;
     findOne<E>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType, cacheForUpdate?: UpdateCacheType): Promise<E>;
     search<E, EntityArray extends Array<E>>(dbEntity: DbEntity, query: AbstractQuery, queryResultType: QueryResultType, cacheForUpdate?: UpdateCacheType): IObservable<EntityArray>;

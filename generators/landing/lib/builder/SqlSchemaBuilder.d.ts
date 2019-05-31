@@ -1,7 +1,6 @@
-import { IDbSchemaUtils, IStoreDriver, JsonSchema, JsonSchemaColumn, JsonSchemaEntity } from '@airport/ground-control';
+import { IStoreDriver, JsonSchema, JsonSchemaColumn, JsonSchemaEntity } from '@airport/ground-control';
 import { ISchemaBuilder } from './ISchemaBuilder';
 export declare abstract class SqlSchemaBuilder implements ISchemaBuilder {
-    protected dbSchemaUtils: IDbSchemaUtils;
     protected storeDriver: IStoreDriver;
     constructor();
     build(jsonSchema: JsonSchema): Promise<void>;
@@ -11,6 +10,5 @@ export declare abstract class SqlSchemaBuilder implements ISchemaBuilder {
     abstract getCreateTableSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): string;
     abstract buildSequences(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): Promise<void>;
     protected isPrimaryKeyColumn(jsonEntity: JsonSchemaEntity, jsonColumn: JsonSchemaColumn): boolean;
-    abstract getTableName(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): string;
     protected getPrimaryKeyStatement(columnNames: string[]): string;
 }

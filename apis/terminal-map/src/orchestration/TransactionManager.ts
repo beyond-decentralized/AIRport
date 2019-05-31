@@ -10,7 +10,7 @@ export interface ITransactionManager {
 
 	transactionInProgress: string;
 
-	initialize(
+	init(
 		dbName: string
 	): Promise<void>;
 

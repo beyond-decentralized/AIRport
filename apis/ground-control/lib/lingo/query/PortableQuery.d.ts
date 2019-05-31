@@ -9,5 +9,4 @@ export interface PortableQuery {
     jsonQuery: JsonStatement;
     queryResultType: QueryResultType;
     parameterMap: any;
-    values?: any[];
 }

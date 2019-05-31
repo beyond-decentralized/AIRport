@@ -126,14 +126,14 @@ export class InsertManager
 		actor: IActor,
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
-		return <number><any>this.internalInsertValues(portableQuery, actor, false, ensureGeneratedValues)
+		return <number>await this.internalInsertValues(portableQuery, actor, false, ensureGeneratedValues)
 	}
 
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
 		actor: IActor
 	): Promise<RecordId[]> {
-		return <RecordId[]><any>this.internalInsertValues(
+		return <RecordId[]>await this.internalInsertValues(
 			portableQuery, actor, true)
 	}
 
@@ -313,7 +313,7 @@ export class InsertManager
 		dbEntity: DbEntity,
 		portableQuery: PortableQuery,
 		actor: IActor,
-	) {
+	): Promise<void> {
 		const jsonInsertValues = <JsonInsertValues>portableQuery.jsonQuery
 
 		let operationsByRepo: IOperationHistory[]               = []

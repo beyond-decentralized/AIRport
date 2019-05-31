@@ -1,56 +1,68 @@
-import {IObservable}    from "@airport/observe";
-import {PortableQuery} from "../query/PortableQuery";
+import {IObservable}          from "@airport/observe";
+import {PortableQuery}        from "../query/PortableQuery";
+import {DistributionStrategy} from './DistributionStrategy'
+import {PlatformType}         from './PatformType'
 
 export interface ITransactionalConnector {
 
+	init(): Promise<void>
+
+	addRepository(
+		name: string,
+		url: string,
+		platform: PlatformType,
+		platformConfig: string,
+		distributionStrategy: DistributionStrategy
+	): Promise<number>
+
 	transact(
-	): Promise<void>;
+	): Promise<void>
 
 	rollback(
-	): Promise<void>;
+	): Promise<void>
 
 	commit(
-	): Promise<void>;
+	): Promise<void>
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): Promise<EntityArray>;
+	): Promise<EntityArray>
 
 	findOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): Promise<E>;
+	): Promise<E>
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): IObservable<EntityArray>;
+	): IObservable<EntityArray>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): IObservable<E>;
+	): IObservable<E>
 
 	insertValues(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
 		ensureGeneratedValues?: boolean // For internal use only
-	): Promise<number>;
+	): Promise<number>
 
 	insertValuesGetIds(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
-	): Promise<number[] | string[]>;
+	): Promise<number[] | string[]>
 
 	updateValues(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
-	): Promise<number>;
+	): Promise<number>
 
 	deleteWhere(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
-	): Promise<number>;
+	): Promise<number>
 
 }

@@ -39,8 +39,14 @@ class SQLWhereBase {
              })
              */
             .map((parameterReference) => {
-            if (typeof parameterReference === 'number') {
-                return this.sqlAdaptor.getValue(valuesArray[parameterReference]);
+            const refTypeIndex = ['number', 'string'].indexOf(typeof parameterReference);
+            if (refTypeIndex > -1) {
+                if (!valuesArray) {
+                    return parameterReference;
+                }
+                else if (refTypeIndex === 0) {
+                    return this.sqlAdaptor.getValue(valuesArray[parameterReference]);
+                }
             }
             let parameter = parameterMap[parameterReference];
             if (!parameter) {
@@ -143,7 +149,7 @@ class SQLWhereBase {
                 .join(', ');
         }
         if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot && clauseField.ot !== 0) {
-            throw `Object Type is not defined in JSONClauseField`;
+            throw new Error(`Object Type is not defined in JSONClauseField`);
         }
         const aField = clauseField;
         let qEntity;

@@ -1,5 +1,7 @@
 import {DI}               from '@airport/di'
 import {
+	getSequenceName,
+	getTableName,
 	JsonSchema,
 	JsonSchemaColumn,
 	JsonSchemaEntity,
@@ -56,13 +58,6 @@ export class SqLiteSchemaBuilder
 		}
 	}
 
-	getTableName(
-		jsonSchema: JsonSchema,
-		jsonEntity: JsonSchemaEntity
-	): string {
-		return `${this.dbSchemaUtils.getSchemaName(jsonSchema)}__${jsonEntity.name}`
-	}
-
 	getCreateTableSuffix(
 		jsonSchema: JsonSchema,
 		jsonEntity: JsonSchemaEntity
@@ -74,6 +69,23 @@ export class SqLiteSchemaBuilder
 		jsonSchema: JsonSchema,
 		jsonEntity: JsonSchemaEntity
 	): Promise<void> {
+		for (const jsonColumn of jsonEntity.columns) {
+			if (!jsonColumn.isGenerated) {
+				continue
+			}
+			const prefixedTableName = getTableName(jsonSchema, jsonEntity)
+			const sequenceName      = getSequenceName(prefixedTableName, jsonColumn.name)
+			let incrementBy         = jsonColumn.allocationSize
+			if (!incrementBy) {
+				incrementBy = 100000
+			}
+
+			// const createSequenceDdl
+			// 	      = `CREATE SEQUENCE ${sequenceName} INCREMENT BY ${incrementBy}`
+			//
+			// await this.storeDriver.query(QueryType.DDL, createSequenceDdl, [], false)
+			throw `Not Implemented`
+		}
 	}
 
 }

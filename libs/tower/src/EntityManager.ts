@@ -87,7 +87,7 @@ export class EntityManager
 		platformConfig: string                     = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
 	): Promise<number> {
-		return await this.transConnector.addRepository(
+		return await this.connector.addRepository(
 			name, url, platform, platformConfig, distributionStrategy)
 	}
 

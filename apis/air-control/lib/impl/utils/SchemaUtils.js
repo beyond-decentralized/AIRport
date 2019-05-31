@@ -272,10 +272,7 @@ class SchemaUtils {
         return entitySelectClause;
     }
     getTableName(dbEntity) {
-        if (dbEntity.tableConfig && dbEntity.tableConfig.name) {
-            return dbEntity.tableConfig.name;
-        }
-        return dbEntity.name;
+        return ground_control_1.getTableName(dbEntity.schemaVersion.schema, dbEntity);
     }
     addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause) {
         if (this.isManyRelationColumn(dbColumn)) {

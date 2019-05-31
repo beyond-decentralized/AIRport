@@ -488,7 +488,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
 		let currentRelation = currentTree.jsonRelation;
 		let currentAlias = QRelation.getAlias(currentRelation);
 		let qEntity = this.qEntityMapByAlias[currentAlias];
-		let tableName = qEntity.__driver__.dbEntity.name;
+		let tableName = this.utils.Schema.getTableName(qEntity.__driver__.dbEntity);
 
 		if (!parentTree) {
 			fromFragment += `${tableName} ${currentAlias}`;

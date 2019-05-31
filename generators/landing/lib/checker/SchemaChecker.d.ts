@@ -19,7 +19,6 @@ export interface ISchemaChecker {
 }
 export declare class SchemaChecker implements ISchemaChecker {
     private schemaDao;
-    private dbSchemaUtils;
     private utils;
     constructor();
     check(jsonSchema: JsonSchema): Promise<void>;

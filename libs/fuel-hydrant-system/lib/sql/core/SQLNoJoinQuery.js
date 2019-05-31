@@ -16,17 +16,19 @@ class SQLNoJoinQuery extends SQLWhereBase_1.SQLWhereBase {
         if (fromRelation.ri || fromRelation.jt) {
             throw `Table in UPDATE/DELETE clause cannot be joined`;
         }
-        const firstDbEntity = this.airportDb.schemas[fromRelation.si][fromRelation.ti];
+        const firstDbEntity = this.airportDb.schemas[fromRelation.si]
+            .currentVersion.entities[fromRelation.ti];
+        let tableName = this.utils.Schema.getTableName(firstDbEntity);
         if (fromRelation.si !== this.dbEntity.schemaVersion.schema.index
             || fromRelation.ti !== this.dbEntity.index) {
             throw `Unexpected table in UPDATE/DELETE clause: 
-			'${firstDbEntity.schemaVersion.schema.name}.${firstDbEntity.name}',
+			'${tableName}',
 			expecting: '${this.dbEntity.schemaVersion.schema.name}.${this.dbEntity.name}'`;
         }
         const firstQEntity = new air_control_1.QEntity(firstDbEntity);
         const tableAlias = air_control_1.QRelation.getAlias(fromRelation);
         this.qEntityMapByAlias[tableAlias] = firstQEntity;
-        const fromFragment = `\t${this.utils.Schema.getTableName(firstDbEntity)}`;
+        const fromFragment = `\t${tableName}`;
         return fromFragment;
     }
 }

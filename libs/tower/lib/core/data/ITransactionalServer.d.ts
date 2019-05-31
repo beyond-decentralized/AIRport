@@ -1,6 +1,6 @@
-import { PortableQuery } from '@airport/ground-control';
+import { DistributionStrategy, PlatformType, PortableQuery } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
-import { DistributionStrategy, ICredentials, PlatformType } from '@airport/terminal-map';
+import { ICredentials } from '@airport/terminal-map';
 export interface ITransactionalServer {
     init(): Promise<void>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, credentials: ICredentials): Promise<number>;

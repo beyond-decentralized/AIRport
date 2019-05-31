@@ -73,9 +73,7 @@ export abstract class SqlDriver
 		dbName: string
 	): Promise<any>;
 
-	async abstract transact(
-		keepAlive?: boolean
-	): Promise<void>;
+	async abstract transact(keepAlive?: boolean): Promise<void>;
 
 	async abstract commit(): Promise<void>;
 

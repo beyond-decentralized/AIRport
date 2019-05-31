@@ -5,7 +5,7 @@ export interface ITransactionManager {
     currentTransHistory: ITransactionHistory;
     storeType: StoreType;
     transactionInProgress: string;
-    initialize(dbName: string): Promise<void>;
+    init(dbName: string): Promise<void>;
     transact(credentials: ICredentials): Promise<void>;
     rollback(credentials: ICredentials): Promise<void>;
     commit(credentials: ICredentials): Promise<void>;

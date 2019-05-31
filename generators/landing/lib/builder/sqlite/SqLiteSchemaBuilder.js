@@ -39,13 +39,26 @@ class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
                 return `TEXT ${suffix}`;
         }
     }
-    getTableName(jsonSchema, jsonEntity) {
-        return `${this.dbSchemaUtils.getSchemaName(jsonSchema)}__${jsonEntity.name}`;
-    }
     getCreateTableSuffix(jsonSchema, jsonEntity) {
         return ` WITHOUT ROWID`;
     }
     async buildSequences(jsonSchema, jsonEntity) {
+        for (const jsonColumn of jsonEntity.columns) {
+            if (!jsonColumn.isGenerated) {
+                continue;
+            }
+            const prefixedTableName = ground_control_1.getTableName(jsonSchema, jsonEntity);
+            const sequenceName = ground_control_1.getSequenceName(prefixedTableName, jsonColumn.name);
+            let incrementBy = jsonColumn.allocationSize;
+            if (!incrementBy) {
+                incrementBy = 100000;
+            }
+            // const createSequenceDdl
+            // 	      = `CREATE SEQUENCE ${sequenceName} INCREMENT BY ${incrementBy}`
+            //
+            // await this.storeDriver.query(QueryType.DDL, createSequenceDdl, [], false)
+            throw `Not Implemented`;
+        }
     }
 }
 exports.SqLiteSchemaBuilder = SqLiteSchemaBuilder;

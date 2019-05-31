@@ -18,13 +18,14 @@ export interface IOperationManager {
 }
 export declare abstract class OperationManager implements IOperationManager {
     protected airDb: IAirportDatabase;
+    connector: ITransactionalConnector;
     entity: IQueryFacade;
     higherOrderOpsYieldLength: number;
-    transConnector: ITransactionalConnector;
     transactionInProgress: boolean;
     updateCache: IUpdateCache;
     utils: IUtils;
     constructor();
+    init(): Promise<void>;
     throwUnexpectedProperty(dbProperty: DbProperty, dbColumn: DbColumn, value: any): void;
     protected warn(message: string): void;
     /**

@@ -2,15 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("./diTokens");
 class QueryEntityClassCreator {
     constructor() {
-        di_1.DI.get((airportDatabase, utils, dbSchemaUtils) => {
+        di_1.DI.get((airportDatabase, utils) => {
             this.airDb = airportDatabase;
             this.utils = utils;
-            this.dbSchemaUtils = dbSchemaUtils;
-        }, air_control_1.AIR_DB, air_control_1.UTILS, ground_control_1.DB_SCHEMA_UTILS);
+        }, air_control_1.AIR_DB, air_control_1.UTILS);
     }
     createAll(schemas) {
         const schemasToCreate = air_control_1.orderSchemasInOrderOfPrecedence(schemas);

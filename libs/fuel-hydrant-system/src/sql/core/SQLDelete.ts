@@ -15,7 +15,8 @@ export class SQLDelete extends SQLNoJoinQuery {
 		public jsonDelete: JsonDelete,
 		dialect: SQLDialect,
 	) {
-		super(airportDb, utils, airportDb.schemas[jsonDelete.DF.si][jsonDelete.DF.ti], dialect);
+		super(airportDb, utils, airportDb.schemas[jsonDelete.DF.si]
+			.currentVersion.entities[jsonDelete.DF.ti], dialect);
 	}
 
 	toSQL(): string {
@@ -28,7 +29,7 @@ WHERE
 ${this.getWHEREFragment(jsonQuery.W, '')}`;
 			// Always replace the root entity alias reference with the table name
 			let tableAlias = QRelation.getAlias(this.jsonDelete.DF);
-			let tableName = this.qEntityMapByAlias[tableAlias].__driver__.dbEntity.name;
+			let tableName = this.utils.Schema.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
 			whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName);
 		}
 

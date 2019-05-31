@@ -25,21 +25,23 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
      */
-    async initialize(dbName) {
+    async init(dbName) {
         await this.dataStore.initialize(dbName);
         // await this.repositoryManager.initialize();
     }
     async transact(credentials) {
-        if (this.transactionInProgress) {
-            if (credentials.domainAndPort === this.transactionInProgress) {
-                // Just continue using the current transaction
-                return;
-            }
-            this.transactionIndexQueue.push(credentials.domainAndPort);
+        if (credentials.domainAndPort === this.transactionInProgress
+            || this.transactionIndexQueue.filter(transIndex => transIndex === credentials.domainAndPort).length) {
+            // Either just continue using the current transaction
+            // or return (domain shouldn't be initiating multiple transactions
+            // at the same time
+            return;
         }
+        this.transactionIndexQueue.push(credentials.domainAndPort);
         while (!this.canRunTransaction(credentials.domainAndPort)) {
             await this.wait(this.yieldToRunningTransaction);
         }
+        this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== credentials.domainAndPort);
         this.transactionInProgress = credentials.domainAndPort;
         let fieldMap = new ground_control_1.SyncSchemaMap();
         this.currentTransHistory = (await this.transHistoryDuo).getNewRecord();

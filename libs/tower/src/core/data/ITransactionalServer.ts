@@ -1,10 +1,10 @@
-import {PortableQuery} from '@airport/ground-control'
-import {IObservable}   from '@airport/observe'
 import {
 	DistributionStrategy,
-	ICredentials,
-	PlatformType
-}                      from '@airport/terminal-map'
+	PlatformType,
+	PortableQuery
+}                     from '@airport/ground-control'
+import {IObservable}  from '@airport/observe'
+import {ICredentials} from '@airport/terminal-map'
 
 export interface ITransactionalServer {
 

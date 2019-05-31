@@ -1,5 +1,5 @@
 import { DbSchema } from '@airport/ground-control';
-import { QRelation } from '..';
+import { QRelation } from '../impl/core/entity/Relation';
 import { QEntityConstructor } from '../impl/core/entity/Entity';
 import { EntityConstructor } from './core/entity/Entity';
 import { FunctionsAndOperators } from './core/FunctionsAndOperators';

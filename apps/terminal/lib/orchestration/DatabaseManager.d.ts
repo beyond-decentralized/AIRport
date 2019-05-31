@@ -5,7 +5,6 @@ export interface IDatabaseManager {
 }
 export declare class DatabaseManager implements IDatabaseManager {
     private airDb;
-    constructor();
     isInitialized(): boolean;
     init(domainName: string, storeType: StoreType): Promise<void>;
     private initTerminal;

@@ -8,20 +8,19 @@ const terminal_map_1 = require("@airport/terminal-map");
 const diTokens_1 = require("../diTokens");
 class SchemaComposer {
     constructor() {
-        di_1.DI.get((dbSchemaUtils, ddlObjectRetriever, schemaLocator, terminalStore, utils) => {
-            this.dbSchemaUtils = dbSchemaUtils;
+        di_1.DI.get((ddlObjectRetriever, schemaLocator, terminalStore, utils) => {
             this.ddlObjectRetriever = ddlObjectRetriever;
             this.schemaLocator = schemaLocator;
             this.terminalStore = terminalStore;
             this.utils = utils;
-        }, ground_control_1.DB_SCHEMA_UTILS, takeoff_1.DDL_OBJECT_RETRIEVER, diTokens_1.SCHEMA_LOCATOR, terminal_map_1.TERMINAL_STORE, air_control_1.UTILS);
+        }, takeoff_1.DDL_OBJECT_RETRIEVER, diTokens_1.SCHEMA_LOCATOR, terminal_map_1.TERMINAL_STORE, air_control_1.UTILS);
     }
     compose(jsonSchemas) {
         const domainSet = new Set();
         const jsonSchemaMapByName = new Map();
         for (const jsonSchema of jsonSchemas) {
             domainSet.add(jsonSchema.domain);
-            jsonSchemaMapByName.set(this.dbSchemaUtils.getSchemaName(jsonSchema), jsonSchema);
+            jsonSchemaMapByName.set(ground_control_1.getSchemaName(jsonSchema), jsonSchema);
         }
         const allSchemaVersionsByIds = [...this.terminalStore.getAllSchemaVersionsByIds()];
         const { domainMapByName, allDomains, newDomains } = this.composeDomains(domainSet);
@@ -154,7 +153,7 @@ class SchemaComposer {
             const lastJsonSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
             const schemaReferences = this.utils.ensureChildArray(newSchemaReferenceMap, schemaName);
             for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
-                const referencedSchemaName = this.dbSchemaUtils.getSchemaName(jsonReferencedSchema);
+                const referencedSchemaName = ground_control_1.getSchemaName(jsonReferencedSchema);
                 let referencedSchemaVersion = newSchemaVersionMapBySchemaName.get(referencedSchemaName);
                 if (!referencedSchemaVersion) {
                     referencedSchemaVersion = this.schemaLocator.locateLatestSchemaVersionBySchemaName(referencedSchemaName);

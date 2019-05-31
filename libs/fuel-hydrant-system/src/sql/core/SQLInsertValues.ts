@@ -21,7 +21,8 @@ export class SQLInsertValues
 		dialect: SQLDialect,
 		// repository?: IRepository
 	) {
-		super(airportDb, utils, airportDb.schemas[jsonInsertValues.II.si][jsonInsertValues.II.ti], dialect);
+		super(airportDb, utils, airportDb.schemas[jsonInsertValues.II.si]
+			.currentVersion.entities[jsonInsertValues.II.ti], dialect);
 	}
 
 	toSQL(): string {
@@ -57,7 +58,7 @@ ${valuesFragment}
 	): string {
 		let allValuesFragment = valuesClauseFragment.map((valuesArray) => {
 			let valuesFragment = valuesArray.map((value) => {
-				if (typeof value === 'number') {
+				if (['number','string'].indexOf(typeof value) > -1) {
 					this.parameterReferences.push(value);
 					return this.sqlAdaptor.getParameterReference(this.parameterReferences, value);
 				} else {

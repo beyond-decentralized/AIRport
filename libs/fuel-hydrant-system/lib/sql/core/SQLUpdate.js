@@ -9,7 +9,8 @@ const SQLWhereBase_1 = require("./SQLWhereBase");
  */
 class SQLUpdate extends SQLNoJoinQuery_1.SQLNoJoinQuery {
     constructor(airportDb, utils, jsonUpdate, dialect) {
-        super(airportDb, utils, airportDb.schemas[jsonUpdate.U.si][jsonUpdate.U.ti], dialect);
+        super(airportDb, utils, airportDb.schemas[jsonUpdate.U.si]
+            .currentVersion.entities[jsonUpdate.U.ti], dialect);
         this.jsonUpdate = jsonUpdate;
     }
     toSQL() {

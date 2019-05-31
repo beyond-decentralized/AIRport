@@ -6,7 +6,7 @@ const diTokens_1 = require("../../diTokens");
 const SqlSchemaBuilder_1 = require("../SqlSchemaBuilder");
 class PostgreSqlSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
     async createSchema(jsonSchema) {
-        const schemaName = this.dbSchemaUtils.getSchemaName(jsonSchema);
+        const schemaName = ground_control_1.getSchemaName(jsonSchema);
         const createSchemaStatement = `CREATE SCHEMA ${schemaName}`;
         await this.storeDriver.query(ground_control_1.QueryType.DDL, createSchemaStatement, [], false);
     }
@@ -35,9 +35,6 @@ class PostgreSqlSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
                 return `TEXT ${suffix}`;
         }
     }
-    getTableName(jsonSchema, jsonEntity) {
-        return `${this.dbSchemaUtils.getSchemaName(jsonSchema)}.${jsonEntity.name}`;
-    }
     getCreateTableSuffix(jsonSchema, jsonEntity) {
         return ``;
     }
@@ -46,8 +43,8 @@ class PostgreSqlSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
             if (!jsonColumn.isGenerated) {
                 continue;
             }
-            const prefixedTableName = this.getTableName(jsonSchema, jsonEntity);
-            const sequenceName = this.dbSchemaUtils.getSequenceName(prefixedTableName, jsonColumn.name);
+            const prefixedTableName = ground_control_1.getTableName(jsonSchema, jsonEntity);
+            const sequenceName = ground_control_1.getSequenceName(prefixedTableName, jsonColumn.name);
             let incrementBy = jsonColumn.allocationSize;
             if (!incrementBy) {
                 incrementBy = 100000;

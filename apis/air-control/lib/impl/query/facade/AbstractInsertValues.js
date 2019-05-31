@@ -14,16 +14,17 @@ class AbstractInsertValues extends AbstractQuery_1.AbstractQuery {
         this.columnIndexes = columnIndexes;
     }
     valuesToJSON(valueSets) {
-        let currentValueIndex = -1;
-        this.values = [];
+        // let currentValueIndex = -1;
+        // this.values           = [];
         return valueSets.map((valueSet) => {
             return valueSet.map((value) => {
                 if (value === undefined) {
                     throw `Cannot use 'undefined' in VALUES clause.`;
                 }
                 if (!(value instanceof Field_1.QField)) {
-                    this.values.push(WrapperFunctions_1.getPrimitiveValue(value));
-                    return ++currentValueIndex;
+                    return WrapperFunctions_1.getPrimitiveValue(value);
+                    // this.values.push(getPrimitiveValue(value));
+                    // return ++currentValueIndex;
                 }
                 else {
                     return value.toJSON(this.columnAliases, false);

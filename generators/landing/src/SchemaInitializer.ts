@@ -1,5 +1,9 @@
+import {AIR_DB}          from '@airport/air-control'
 import {DI}              from '@airport/di'
-import {JsonSchema}      from '@airport/ground-control'
+import {
+	DbSchema,
+	JsonSchema
+}                        from '@airport/ground-control'
 import {
 	DdlObjects,
 	IQueryObjectInitializer,
@@ -106,6 +110,11 @@ export class SchemaInitializer
 
 
 		if (!normalOperation) {
+			const schemas: DbSchema[] = []
+			for(let schema of ddlObjects.allSchemas) {
+				schemas[schema.index] = schema as DbSchema
+			}
+			(await DI.getP(AIR_DB)).schemas = schemas
 			await (await this.schemaRecorder).record(ddlObjects, normalOperation)
 		}
 

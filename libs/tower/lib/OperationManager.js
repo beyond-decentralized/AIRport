@@ -8,13 +8,16 @@ class OperationManager {
     constructor() {
         this.higherOrderOpsYieldLength = 100;
         this.transactionInProgress = false;
-        di_1.DI.get((airportDatabase, queryFacade, transConnector, updateCache, utils) => {
+        di_1.DI.get((airportDatabase, updateCache, utils) => {
             this.airDb = airportDatabase;
-            this.entity = queryFacade;
-            this.transConnector = transConnector;
             this.updateCache = updateCache;
             this.utils = utils;
-        }, air_control_1.AIR_DB, diTokens_1.QUERY_FACADE, ground_control_1.TRANS_CONNECTOR, diTokens_1.UPDATE_CACHE, air_control_1.UTILS);
+        }, air_control_1.AIR_DB, diTokens_1.UPDATE_CACHE, air_control_1.UTILS);
+    }
+    async init() {
+        this.connector = await di_1.DI.getP(ground_control_1.TRANS_CONNECTOR);
+        this.entity = await di_1.DI.getP(diTokens_1.QUERY_FACADE);
+        await this.entity.init();
     }
     throwUnexpectedProperty(dbProperty, dbColumn, value) {
         throw `Unexpected property value '${value.toString()}' in property '${dbProperty.entity.name}.${dbProperty.name}'
@@ -174,22 +177,22 @@ class OperationManager {
     async internalInsertColumnValues(dbEntity, rawInsertColumnValues) {
         const insertColumnValues = new air_control_1.InsertColumnValues(rawInsertColumnValues);
         const portableQuery = this.entity.getPortableQuery(dbEntity, insertColumnValues, null);
-        return await this.transConnector.insertValues(portableQuery);
+        return await this.connector.insertValues(portableQuery);
     }
     async internalInsertValues(dbEntity, rawInsertValues, ensureGeneratedValues) {
         const insertValues = new air_control_1.InsertValues(rawInsertValues);
         const portableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null);
-        return await this.transConnector.insertValues(portableQuery, undefined, ensureGeneratedValues);
+        return await this.connector.insertValues(portableQuery, undefined, ensureGeneratedValues);
     }
     async internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues) {
         const insertValues = new air_control_1.InsertColumnValues(rawInsertColumnValues);
         const portableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null);
-        return await this.transConnector.insertValuesGetIds(portableQuery);
+        return await this.connector.insertValuesGetIds(portableQuery);
     }
     async internalInsertValuesGetIds(dbEntity, rawInsertValues) {
         const insertValues = new air_control_1.InsertValues(rawInsertValues);
         const portableQuery = this.entity.getPortableQuery(dbEntity, insertValues, null);
-        return await this.transConnector.insertValuesGetIds(portableQuery);
+        return await this.connector.insertValuesGetIds(portableQuery);
     }
     /**
      * Transactional context must have been started by the time this method is called.
@@ -471,11 +474,11 @@ class OperationManager {
     }
     async internalUpdateColumnsWhere(dbEntity, updateColumns) {
         const portableQuery = this.entity.getPortableQuery(dbEntity, updateColumns, null);
-        return await this.transConnector.updateValues(portableQuery);
+        return await this.connector.updateValues(portableQuery);
     }
     async internalUpdateWhere(dbEntity, update) {
         const portableQuery = this.entity.getPortableQuery(dbEntity, update, null);
-        return await this.transConnector.updateValues(portableQuery);
+        return await this.connector.updateValues(portableQuery);
     }
     /**
      * Transactional context must have been started by the time this method is called.
@@ -541,7 +544,7 @@ class OperationManager {
     }
     async internalDeleteWhere(dbEntity, aDelete) {
         let portableQuery = this.entity.getPortableQuery(dbEntity, aDelete, null);
-        return await this.transConnector.deleteWhere(portableQuery);
+        return await this.connector.deleteWhere(portableQuery);
     }
     async internalDelete(dbEntity, entity) {
         const qEntity = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];

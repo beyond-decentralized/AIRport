@@ -69,7 +69,7 @@ export class TransactionManager
 	 * Initializes the EntityManager at server load time.
 	 * @returns {Promise<void>}
 	 */
-	async initialize(
+	async init(
 		dbName: string
 	): Promise<void> {
 		await this.dataStore.initialize(dbName)
@@ -79,16 +79,25 @@ export class TransactionManager
 	async transact(
 		credentials: ICredentials
 	): Promise<void> {
-		if (this.transactionInProgress) {
-			if (credentials.domainAndPort === this.transactionInProgress) {
-				// Just continue using the current transaction
-				return
-			}
-			this.transactionIndexQueue.push(credentials.domainAndPort)
+		if(credentials.domainAndPort === this.transactionInProgress
+			|| this.transactionIndexQueue.filter(
+			transIndex =>
+				transIndex === credentials.domainAndPort
+			).length) {
+			// Either just continue using the current transaction
+			// or return (domain shouldn't be initiating multiple transactions
+			// at the same time
+			return
 		}
+		this.transactionIndexQueue.push(credentials.domainAndPort)
+
 		while (!this.canRunTransaction(credentials.domainAndPort)) {
 			await this.wait(this.yieldToRunningTransaction)
 		}
+		this.transactionIndexQueue = this.transactionIndexQueue.filter(
+			transIndex =>
+				transIndex !== credentials.domainAndPort
+		);
 		this.transactionInProgress = credentials.domainAndPort
 		let fieldMap               = new SyncSchemaMap()
 

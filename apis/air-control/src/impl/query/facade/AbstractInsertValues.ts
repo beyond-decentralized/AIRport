@@ -29,16 +29,17 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 	}
 
 	protected valuesToJSON(valueSets: any[][]): any[][] {
-		let currentValueIndex = -1;
-		this.values           = [];
+		// let currentValueIndex = -1;
+		// this.values           = [];
 		return valueSets.map((valueSet) => {
 			return valueSet.map((value) => {
 				if (value === undefined) {
 					throw `Cannot use 'undefined' in VALUES clause.`;
 				}
 				if (!(value instanceof QField)) {
-					this.values.push(getPrimitiveValue(value));
-					return ++currentValueIndex;
+					return getPrimitiveValue(value);
+					// this.values.push(getPrimitiveValue(value));
+					// return ++currentValueIndex;
 				} else {
 					return (<QField<any>>value).toJSON(this.columnAliases, false);
 				}

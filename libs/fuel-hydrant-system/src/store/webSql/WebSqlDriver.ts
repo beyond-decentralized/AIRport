@@ -9,6 +9,15 @@ import {SqLiteDriver} from '../sqLite/SqLiteDriver'
 /**
  * Created by Papa on 8/30/2016.
  */
+export interface PendingStatement {
+	id: number
+	queryType: QueryType
+	query: string
+	params: any[]
+	reject: (error: any) => void;
+	resolve: (result: any) => void;
+}
+
 export class WebSqlDriver
 	extends SqLiteDriver {
 
@@ -18,8 +27,11 @@ export class WebSqlDriver
 
 	private _db: any
 
-	private keepAlive = false
+	private currentStatementId                    = 0
+	private keepAlive                     = false
+	private keepAliveCount                = 0
 	private transaction
+	private pendingStatements: PendingStatement[] = []
 
 	constructor() {
 		super()
@@ -59,49 +71,22 @@ export class WebSqlDriver
 			dbOptions.createFromLocation = dbOptions.existingDatabase ? 1 : 0
 			this._db                     = win.sqlitePlugin.openDatabase(dbOptions)
 		} else {
-			// console.warn('Storage: SQLite plugin not installed, falling back to WebSQL. Make sure to install cordova-sqlite-storage in production!')
+			// console.warn('Storage: SQLite plugin not installed, falling back to WebSQL. Make
+			// sure to install cordova-sqlite-storage in production!')
 			this._db = win.openDatabase(dbOptions.name, '1.0', 'terminal', 5 * 1024 * 1024)
 		}
 	}
 
 	async transact(
-		keepAlive = true
-	): Promise<any> {
+		keepAlive: boolean = true
+	): Promise<void> {
 		return new Promise((
-			resolve,
-			reject
+			resolve
 		) => {
-			// let failed = false
-			try {
-				// let completed = false
-				// let returnValue
-				if (this.transaction) {
-					console.info(`Another transaction is already in progress, using the parent transaction`)
-					resolve()
-					return
-				}
-				this._db.transaction((tx) => {
-						this.transaction = tx
-						resolve()
-						// this.keepTransactionAlive(tx)
-					},
-					(err) => {
-						reject(err)
-					}, (done) => {
-						// if (failed) {
-						// 	return
-						// }
-						// if (!completed) {
-						// 	reject('Transaction finished before method completion.')
-						// } else {
-						// 	resolve(retunValue)
-						// }
-					})
-			} catch (err) {
-				this.transaction = null
-				// failed           = true
-				reject(err)
+			if (!this.transaction) {
+				this.keepAlive = keepAlive
 			}
+			resolve()
 		})
 	}
 
@@ -109,95 +94,13 @@ export class WebSqlDriver
 		if (this.transaction) {
 			this.transaction.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, [])
 		}
+		await this.commit()
 	}
 
 	async commit(): Promise<void> {
+		this.keepAlive   = false
+		this.keepAliveCount = 0
 		this.transaction = null
-	}
-
-	keepTransactionAlive(tx): void {
-		tx.executeSql('SELECT count(*) FROM AP_SCHEMAS', [], function (
-			tx,
-			results
-		) {
-			if (this.havePendingStatements()) {
-				this.executePendingStatements(tx)
-			} else if (!this.isTransactionDone()) {
-				this.keepTransactionAlive(tx)
-			}
-		})
-	}
-
-	havePendingStatements(): boolean {
-		return !!this.pendingStatements.length
-	}
-
-	executePendingStatements(tx): void {
-		while (this.havePendingStatements()) {
-			let statement = this.pendingStatements.shift()
-
-			console.log(statement.query)
-			console.log(statement.params)
-			this.transaction.executeSql(statement.query, statement.params,
-				(
-					tx,
-					res
-				) => {
-					let response = this.getReturnValue(statement.queryType, res)
-					console.log(response)
-					this.executedResults.push({
-						id: statement.id,
-						response
-					})
-				},
-				(
-					tx,
-					err
-				) => {
-					this.executedResults.push({
-						id: statement.id,
-						error: err
-					})
-				})
-		}
-	}
-
-	isTransactionDone(): boolean {
-		return this.transaction === null
-	}
-
-	getExecutedResult(
-		id: number
-	) {
-		for (const result of this.executedResults) {
-			if (result.id === id) {
-				return result
-			}
-		}
-		return null
-	}
-
-	currentStatementId = 0
-	pendingStatements  = []
-	executedResults    = []
-
-	private getResponse(
-		id: number,
-		resolve,
-		reject,
-	): void {
-		setTimeout(() => {
-			const result = this.getExecutedResult(id)
-			if (result) {
-				if (result.response) {
-					resolve(result.response)
-				} else {
-					reject(result.error)
-				}
-			} else {
-				this.getResponse(id, resolve, reject)
-			}
-		}, 50)
 	}
 
 	async query(
@@ -210,50 +113,78 @@ export class WebSqlDriver
 			resolve,
 			reject
 		) => {
+			let id = ++this.currentStatementId
+			this.pendingStatements.push({
+				id,
+				query,
+				queryType,
+				params,
+				reject,
+				resolve
+			})
 			try {
-				if (this.transaction) {
-					let id = ++this.currentStatementId
-					this.pendingStatements.push({
-						id,
-						query,
-						queryType,
-						params,
-					})
-					this.getResponse(id, resolve, reject)
-				} else {
-					let response
+				if (!this.transaction) {
 					this._db.transaction((tx) => {
-							if (saveTransaction) {
-								this.transaction = tx
-							}
-							console.log(query)
-							console.log(params)
-							tx.executeSql(query, params,
-								(
-									tx,
-									res
-								) => {
-									console.log(res)
-									response = this.getReturnValue(queryType, res)
-								},
-								(
-									tx,
-									err
-								) => {
-									reject(err)
-								})
+							this.transaction = tx
+							this.executePendingStatements(tx)
 						},
 						(err) => {
 							reject(err)
 						},
 						(done) => {
-							resolve(response)
+							console.log('Transaction finished')
+							// nothing to do
 						})
 				}
 			} catch (err) {
 				reject(err)
 			}
 		})
+	}
+
+	private keepTransactionAlive(tx): void {
+		tx.executeSql('SELECT count(*) FROM github_com___airport__territory__Package', [], (
+			tx,
+		) => {
+			this.executePendingStatements(tx)
+		}, (
+			tx,
+		) => {
+			this.executePendingStatements(tx)
+		})
+	}
+
+	private executePendingStatements(tx): void {
+		if (this.pendingStatements.length) {
+			let statement = this.pendingStatements.shift()
+
+			console.log(statement.query)
+			console.log(statement.params)
+			if(this.keepAlive) {
+				this.keepAliveCount = 100
+			}
+			tx.executeSql(statement.query, statement.params,
+				(
+					tx,
+					res
+				) => {
+					let response = this.getReturnValue(statement.queryType, res)
+					console.log(response)
+					statement.resolve(response)
+					this.executePendingStatements(tx)
+				},
+				(
+					tx,
+					err
+				) => {
+					statement.reject(err)
+					this.executePendingStatements(tx)
+				})
+		} else if (--this.keepAliveCount) {
+			this.keepTransactionAlive(tx)
+		} else {
+			this.commit().then()
+		}
 	}
 
 	private getReturnValue(
@@ -270,12 +201,9 @@ export class WebSqlDriver
 		}
 	}
 
-	handleError(error: any) {
-		throw error
-	}
-
 }
 
+/*
 function runSqlSeries(
 	tx,
 	sqls,
@@ -313,3 +241,4 @@ function runSqlSeries(
 
 	tx.executeSql(sqls[sqlIndex], parameters, successFn, errorFn)
 }
+*/

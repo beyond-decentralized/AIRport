@@ -5,10 +5,8 @@ const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("./diTokens");
 class QueryFacade {
-    constructor() {
-        di_1.DI.get((transactionalConnector) => {
-            this.connector = transactionalConnector;
-        }, ground_control_1.TRANS_CONNECTOR);
+    async init() {
+        this.connector = await di_1.DI.getP(ground_control_1.TRANS_CONNECTOR);
     }
     async find(dbEntity, query, queryResultType, cacheForUpdate = air_control_1.UpdateCacheType.NONE) {
         const result = await this.connector.find(this.getPortableQuery(dbEntity, query, queryResultType));

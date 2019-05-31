@@ -88,7 +88,7 @@ export class TransactionalServer
 	}
 
 	async init(): Promise<void> {
-
+		this.transactionManager.init('airport')
 	}
 
 	async transact(

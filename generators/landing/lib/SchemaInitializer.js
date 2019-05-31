@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const takeoff_1 = require("@airport/takeoff");
 const terminal_map_1 = require("@airport/terminal-map");
@@ -51,6 +52,11 @@ class SchemaInitializer {
         this.addNewSchemaVersionsToAll(ddlObjects);
         (await this.queryObjectInitializer).generateQObjectsAndPopulateStore(ddlObjects);
         if (!normalOperation) {
+            const schemas = [];
+            for (let schema of ddlObjects.allSchemas) {
+                schemas[schema.index] = schema;
+            }
+            (await di_1.DI.getP(air_control_1.AIR_DB)).schemas = schemas;
             await (await this.schemaRecorder).record(ddlObjects, normalOperation);
         }
         console.log('done');

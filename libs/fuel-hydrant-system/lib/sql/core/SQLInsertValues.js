@@ -7,7 +7,8 @@ const SQLWhereBase_1 = require("./SQLWhereBase");
  */
 class SQLInsertValues extends SQLNoJoinQuery_1.SQLNoJoinQuery {
     constructor(airportDb, utils, jsonInsertValues, dialect) {
-        super(airportDb, utils, airportDb.schemas[jsonInsertValues.II.si][jsonInsertValues.II.ti], dialect);
+        super(airportDb, utils, airportDb.schemas[jsonInsertValues.II.si]
+            .currentVersion.entities[jsonInsertValues.II.ti], dialect);
         this.jsonInsertValues = jsonInsertValues;
     }
     toSQL() {
@@ -34,7 +35,7 @@ ${valuesFragment}
     getValuesFragment(valuesClauseFragment) {
         let allValuesFragment = valuesClauseFragment.map((valuesArray) => {
             let valuesFragment = valuesArray.map((value) => {
-                if (typeof value === 'number') {
+                if (['number', 'string'].indexOf(typeof value) > -1) {
                     this.parameterReferences.push(value);
                     return this.sqlAdaptor.getParameterReference(this.parameterReferences, value);
                 }

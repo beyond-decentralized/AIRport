@@ -365,7 +365,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		if (!parentTree) {
 			switch (currentRelation.rt) {
 				case JSONRelationType.ENTITY_ROOT:
-					fromFragment += `${qEntity.__driver__.dbEntity.name} ${currentAlias}`
+					fromFragment += `${this.utils.Schema.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias}`
 					break
 				case JSONRelationType.SUB_QUERY_ROOT:
 					let viewRelation                           = <JSONViewJoinRelation>currentRelation
@@ -407,7 +407,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 				case JSONRelationType.ENTITY_JOIN_ON:
 					let joinRelation = <JSONJoinRelation>currentRelation
 					joinOnClause     = this.getWHEREFragment(joinRelation.jwc, '\t')
-					fromFragment += `\t${joinTypeString} ${qEntity.__driver__.dbEntity.name} ${currentAlias} ON\n${joinOnClause}`
+					fromFragment += `\t${joinTypeString} ${this.utils.Schema.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias} ON\n${joinOnClause}`
 					break
 				case JSONRelationType.ENTITY_SCHEMA_RELATION:
 					fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity,

@@ -17,11 +17,11 @@ import {
 }                                 from '@airport/holding-pattern'
 import {SCHEMA_INITIALIZER}       from '@airport/landing'
 import {QUERY_OBJECT_INITIALIZER} from '@airport/takeoff'
+import {StoreType}                from '@airport/terminal-map'
 import {
-	StoreType,
-	TRANSACTION_MANAGER
-}                                 from '@airport/terminal-map'
-import {transactional}            from '@airport/tower'
+	TRANS_SERVER,
+	transactional
+}                                 from '@airport/tower'
 import {
 	Terminal,
 	TERMINAL_DAO,
@@ -57,8 +57,8 @@ export class DatabaseManager
 
 	private airDb: IAirportDatabase
 
-	constructor() {
-	}
+	// constructor() {
+	// }
 
 	/*
 		async ensureInitialized(
@@ -106,10 +106,11 @@ export class DatabaseManager
 		const airDb = await DI.getP(AIR_DB)
 		this.airDb  = airDb
 
-		const transManager = await DI.getP(TRANSACTION_MANAGER)
-		await transManager.initialize('airport')
+		const connector = await DI.getP(TRANS_CONNECTOR)
+		await connector.init()
 
 		const storeDriver = await DI.getP(STORE_DRIVER)
+
 		await storeDriver.dropTable('github_com___airport__airport_code__Sequence')
 		await storeDriver.dropTable('github_com___airport__airport_code__SequenceBlock')
 		await storeDriver.dropTable('github_com___airport__airport_code__SequenceConsumer')
@@ -147,11 +148,12 @@ export class DatabaseManager
 		await storeDriver.dropTable('github_com___airport__holding_pattern__RepositorySchema')
 		await storeDriver.dropTable('github_com___airport__holding_pattern__RepositoryTransactionHistory')
 		await storeDriver.dropTable('github_com___airport__holding_pattern__TransactionHistory')
+
 		if (await storeDriver.doesTableExist('github_com___airport_territory__Package')) {
 			const queryObjectInitializer = await DI.getP(QUERY_OBJECT_INITIALIZER)
 			await queryObjectInitializer.initialize()
 		} else {
-			const server              = await DI.getP(TRANS_CONNECTOR);
+			const server              = await DI.getP(TRANS_SERVER);
 			(server as any).tempActor = new Actor()
 
 			await this.installAirportSchema()
@@ -203,7 +205,7 @@ export class DatabaseManager
 			actor.terminal = terminal
 			actor.randomId = Math.random()
 			const actorDao = await DI.getP(ACTOR_DAO)
-			await actorDao.save(actor);
+			await actorDao.save(actor)
 		})
 	}
 

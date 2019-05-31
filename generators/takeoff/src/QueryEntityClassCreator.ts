@@ -10,9 +10,7 @@ import {
 }                                   from '@airport/air-control'
 import {DI}                         from '@airport/di'
 import {
-	DB_SCHEMA_UTILS,
-	DbSchema,
-	IDbSchemaUtils
+	DbSchema
 }                                   from '@airport/ground-control'
 import {ISchema}                    from '@airport/traffic-pattern'
 import {QUERY_ENTITY_CLASS_CREATOR} from './diTokens'
@@ -32,18 +30,15 @@ export class QueryEntityClassCreator
 
 	private airDb: IAirportDatabase
 	private utils: IUtils
-	private dbSchemaUtils: IDbSchemaUtils
 
 	constructor() {
 		DI.get((
 			airportDatabase,
 			utils,
-			dbSchemaUtils
 		) => {
 			this.airDb         = airportDatabase
 			this.utils         = utils
-			this.dbSchemaUtils = dbSchemaUtils
-		}, AIR_DB, UTILS, DB_SCHEMA_UTILS)
+		}, AIR_DB, UTILS)
 	}
 
 	createAll(

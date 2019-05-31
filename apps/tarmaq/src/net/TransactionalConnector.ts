@@ -1,7 +1,9 @@
 import {IDatabaseFacade} from '@airport/air-control'
 import {DI}              from '@airport/di'
 import {
+	DistributionStrategy,
 	ITransactionalConnector,
+	PlatformType,
 	PortableQuery,
 	TRANS_CONNECTOR
 }                        from '@airport/ground-control'
@@ -11,6 +13,8 @@ import {
 	ITransactionalServer,
 	TRANS_SERVER
 }                        from '@airport/tower'
+
+export const BOGUS = 0
 
 export class TransactionalConnector
 	implements ITransactionalConnector {
@@ -28,6 +32,31 @@ export class TransactionalConnector
 			this.databaseFacade = databaseFacade
 			this.transServer    = transServer
 		}, ENTITY_MANAGER, TRANS_SERVER)
+	}
+
+	async init(): Promise<void> {
+		this.databaseFacade = await DI.getP(ENTITY_MANAGER)
+		this.transServer = await DI.getP(TRANS_SERVER)
+
+		await this.transServer.init()
+		await this.databaseFacade.init()
+	}
+
+	async addRepository(
+		name: string,
+		url: string,
+		platform: PlatformType,
+		platformConfig: string,
+		distributionStrategy: DistributionStrategy
+	): Promise<number> {
+		return await this.transServer.addRepository(
+			name,
+			url,
+			platform,
+			platformConfig,
+			distributionStrategy, {
+				domainAndPort: 'test'
+			})
 	}
 
 	async transact(): Promise<void> {

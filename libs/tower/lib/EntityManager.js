@@ -35,7 +35,7 @@ class EntityManager extends OperationManager_1.OperationManager {
         this.updateCache.dropCache();
     }
     async addRepository(name, url = null, platform = terminal_map_1.PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = terminal_map_1.DistributionStrategy.S3_DISTIBUTED_PUSH) {
-        return await this.transConnector.addRepository(name, url, platform, platformConfig, distributionStrategy);
+        return await this.connector.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
     async create(dbEntity, entity) {
         if (!entity) {

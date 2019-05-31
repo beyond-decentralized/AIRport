@@ -1,6 +1,10 @@
 import { IObservable } from "@airport/observe";
 import { PortableQuery } from "../query/PortableQuery";
+import { DistributionStrategy } from './DistributionStrategy';
+import { PlatformType } from './PatformType';
 export interface ITransactionalConnector {
+    init(): Promise<void>;
+    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy): Promise<number>;
     transact(): Promise<void>;
     rollback(): Promise<void>;
     commit(): Promise<void>;

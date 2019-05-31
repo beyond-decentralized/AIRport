@@ -8,10 +8,9 @@ const diTokens_1 = require("../diTokens");
 class SchemaChecker {
     constructor() {
         this.schemaDao = di_1.DI.getP(traffic_pattern_1.SCHEMA_DAO);
-        di_1.DI.get((dbSchemaUtils, utils) => {
-            this.dbSchemaUtils = dbSchemaUtils;
+        di_1.DI.get((utils) => {
             this.utils = utils;
-        }, ground_control_1.DB_SCHEMA_UTILS, air_control_1.UTILS);
+        }, air_control_1.UTILS);
     }
     async check(jsonSchema) {
         if (!jsonSchema) {
@@ -106,7 +105,7 @@ class SchemaChecker {
         const coreDomainAndSchemaNamesBySchemaName = new Map();
         for (const [domainName, allReferencedSchemasForDomain] of allReferencedSchemaMap) {
             for (const [coreSchemaName, referencedSchema] of allReferencedSchemasForDomain) {
-                const schemaName = this.dbSchemaUtils.getSchemaName(referencedSchema);
+                const schemaName = ground_control_1.getSchemaName(referencedSchema);
                 schemaNames.push(schemaName);
                 coreDomainAndSchemaNamesBySchemaName.set(schemaName, {
                     domain: domainName,

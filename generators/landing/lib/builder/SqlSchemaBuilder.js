@@ -4,10 +4,9 @@ const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 class SqlSchemaBuilder {
     constructor() {
-        di_1.DI.get((dbSchemaUtils, storeDriver) => {
-            this.dbSchemaUtils = dbSchemaUtils;
+        di_1.DI.get((storeDriver) => {
             this.storeDriver = storeDriver;
-        }, ground_control_1.DB_SCHEMA_UTILS, ground_control_1.STORE_DRIVER);
+        }, ground_control_1.STORE_DRIVER);
     }
     async build(jsonSchema) {
         await this.createSchema(jsonSchema);
@@ -25,7 +24,7 @@ class SqlSchemaBuilder {
             return columnDdl;
         });
         const createTableSuffix = this.getCreateTableSuffix(jsonSchema, jsonEntity);
-        const tableName = this.getTableName(jsonSchema, jsonEntity);
+        const tableName = ground_control_1.getTableName(jsonSchema, jsonEntity);
         let primaryKeySubStatement = ``;
         if (primaryKeyColumnNames.length) {
             primaryKeySubStatement = this.getPrimaryKeyStatement(primaryKeyColumnNames);

@@ -27,10 +27,10 @@ class InsertManager {
         return this.transManager.currentTransHistory;
     }
     async insertValues(portableQuery, actor, ensureGeneratedValues) {
-        return this.internalInsertValues(portableQuery, actor, false, ensureGeneratedValues);
+        return await this.internalInsertValues(portableQuery, actor, false, ensureGeneratedValues);
     }
     async insertValuesGetIds(portableQuery, actor) {
-        return this.internalInsertValues(portableQuery, actor, true);
+        return await this.internalInsertValues(portableQuery, actor, true);
     }
     async internalInsertValues(portableQuery, actor, getIds = false, ensureGeneratedValues = true) {
         const dbEntity = this.airDb.schemas[portableQuery.schemaIndex]

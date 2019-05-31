@@ -79,7 +79,6 @@ export class UpdateManager
 	private utils: IUtils
 
 	constructor() {
-
 		DI.get((
 			airportDb,
 			dataStore,
@@ -158,7 +157,7 @@ export class UpdateManager
 			jsonQuery: jsonSelect,
 			queryResultType: QueryResultType.SHEET,
 			parameterMap: portableQuery.parameterMap,
-			values: portableQuery.values,
+			// values: portableQuery.values,
 		}
 		const recordsToUpdate               = await this.dataStore.find<any, Array<any>>(portableSelect)
 
@@ -218,7 +217,7 @@ export class UpdateManager
 		dbEntity: DbEntity,
 		portableSelect: PortableQuery,
 		recordHistoryMapByRecordId: RecordHistoryMap
-	) {
+	): Promise<void> {
 		const updatedRecords = await this.dataStore.find<any, Array<any>>(portableSelect)
 
 		const {

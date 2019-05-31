@@ -130,7 +130,7 @@ export class DeleteManager
 			jsonQuery: jsonSelect,
 			queryResultType: QueryResultType.ENTITY_TREE,
 			parameterMap: portableQuery.parameterMap,
-			values: portableQuery.values,
+			// values: portableQuery.values,
 		}
 		const treesToDelete                    = await this.dataStore.find<any, Array<any>>(portableSelect)
 

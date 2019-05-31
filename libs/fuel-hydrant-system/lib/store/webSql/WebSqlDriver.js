@@ -3,16 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
 const SQLQuery_1 = require("../../sql/core/SQLQuery");
 const SqLiteDriver_1 = require("../sqLite/SqLiteDriver");
-/**
- * Created by Papa on 8/30/2016.
- */
 class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
     constructor() {
         super();
-        this.keepAlive = false;
         this.currentStatementId = 0;
+        this.keepAlive = false;
+        this.keepAliveCount = 0;
         this.pendingStatements = [];
-        this.executedResults = [];
         this.type = ground_control_1.StoreType.SQLITE_CORDOVA;
     }
     getDialect() {
@@ -44,144 +41,51 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
             this._db = win.sqlitePlugin.openDatabase(dbOptions);
         }
         else {
-            // console.warn('Storage: SQLite plugin not installed, falling back to WebSQL. Make sure to install cordova-sqlite-storage in production!')
+            // console.warn('Storage: SQLite plugin not installed, falling back to WebSQL. Make
+            // sure to install cordova-sqlite-storage in production!')
             this._db = win.openDatabase(dbOptions.name, '1.0', 'terminal', 5 * 1024 * 1024);
         }
     }
     async transact(keepAlive = true) {
-        return new Promise((resolve, reject) => {
-            // let failed = false
-            try {
-                // let completed = false
-                // let returnValue
-                if (this.transaction) {
-                    console.info(`Another transaction is already in progress, using the parent transaction`);
-                    resolve();
-                    return;
-                }
-                this._db.transaction((tx) => {
-                    this.transaction = tx;
-                    resolve();
-                    // this.keepTransactionAlive(tx)
-                }, (err) => {
-                    reject(err);
-                }, (done) => {
-                    // if (failed) {
-                    // 	return
-                    // }
-                    // if (!completed) {
-                    // 	reject('Transaction finished before method completion.')
-                    // } else {
-                    // 	resolve(retunValue)
-                    // }
-                });
+        return new Promise((resolve) => {
+            if (!this.transaction) {
+                this.keepAlive = keepAlive;
             }
-            catch (err) {
-                this.transaction = null;
-                // failed           = true
-                reject(err);
-            }
+            resolve();
         });
     }
     async rollback() {
         if (this.transaction) {
             this.transaction.executeSql('SELECT count(*) FROM ' + ground_control_1.INVALID_TABLE_NAME, []);
         }
+        await this.commit();
     }
     async commit() {
+        this.keepAlive = false;
+        this.keepAliveCount = 0;
         this.transaction = null;
-    }
-    keepTransactionAlive(tx) {
-        tx.executeSql('SELECT count(*) FROM AP_SCHEMAS', [], function (tx, results) {
-            if (this.havePendingStatements()) {
-                this.executePendingStatements(tx);
-            }
-            else if (!this.isTransactionDone()) {
-                this.keepTransactionAlive(tx);
-            }
-        });
-    }
-    havePendingStatements() {
-        return !!this.pendingStatements.length;
-    }
-    executePendingStatements(tx) {
-        while (this.havePendingStatements()) {
-            let statement = this.pendingStatements.shift();
-            console.log(statement.query);
-            console.log(statement.params);
-            this.transaction.executeSql(statement.query, statement.params, (tx, res) => {
-                let response = this.getReturnValue(statement.queryType, res);
-                console.log(response);
-                this.executedResults.push({
-                    id: statement.id,
-                    response
-                });
-            }, (tx, err) => {
-                this.executedResults.push({
-                    id: statement.id,
-                    error: err
-                });
-            });
-        }
-    }
-    isTransactionDone() {
-        return this.transaction === null;
-    }
-    getExecutedResult(id) {
-        for (const result of this.executedResults) {
-            if (result.id === id) {
-                return result;
-            }
-        }
-        return null;
-    }
-    getResponse(id, resolve, reject) {
-        setTimeout(() => {
-            const result = this.getExecutedResult(id);
-            if (result) {
-                if (result.response) {
-                    resolve(result.response);
-                }
-                else {
-                    reject(result.error);
-                }
-            }
-            else {
-                this.getResponse(id, resolve, reject);
-            }
-        }, 50);
     }
     async query(queryType, query, params = [], saveTransaction = false) {
         return new Promise((resolve, reject) => {
+            let id = ++this.currentStatementId;
+            this.pendingStatements.push({
+                id,
+                query,
+                queryType,
+                params,
+                reject,
+                resolve
+            });
             try {
-                if (this.transaction) {
-                    let id = ++this.currentStatementId;
-                    this.pendingStatements.push({
-                        id,
-                        query,
-                        queryType,
-                        params,
-                    });
-                    this.getResponse(id, resolve, reject);
-                }
-                else {
-                    let response;
+                if (!this.transaction) {
                     this._db.transaction((tx) => {
-                        if (saveTransaction) {
-                            this.transaction = tx;
-                        }
-                        console.log(query);
-                        console.log(params);
-                        tx.executeSql(query, params, (tx, res) => {
-                            console.log(res);
-                            response = this.getReturnValue(queryType, res);
-                        }, (tx, err) => {
-                            reject(err);
-                        });
+                        this.transaction = tx;
+                        this.executePendingStatements(tx);
                     }, (err) => {
                         reject(err);
                     }, (done) => {
-                        resolve(response);
+                        console.log('Transaction finished');
+                        // nothing to do
                     });
                 }
             }
@@ -189,6 +93,38 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
                 reject(err);
             }
         });
+    }
+    keepTransactionAlive(tx) {
+        tx.executeSql('SELECT count(*) FROM github_com___airport__territory__Package', [], (tx) => {
+            this.executePendingStatements(tx);
+        }, (tx) => {
+            this.executePendingStatements(tx);
+        });
+    }
+    executePendingStatements(tx) {
+        if (this.pendingStatements.length) {
+            let statement = this.pendingStatements.shift();
+            console.log(statement.query);
+            console.log(statement.params);
+            if (this.keepAlive) {
+                this.keepAliveCount = 100;
+            }
+            tx.executeSql(statement.query, statement.params, (tx, res) => {
+                let response = this.getReturnValue(statement.queryType, res);
+                console.log(response);
+                statement.resolve(response);
+                this.executePendingStatements(tx);
+            }, (tx, err) => {
+                statement.reject(err);
+                this.executePendingStatements(tx);
+            });
+        }
+        else if (--this.keepAliveCount) {
+            this.keepTransactionAlive(tx);
+        }
+        else {
+            this.commit().then();
+        }
     }
     getReturnValue(queryType, response) {
         switch (queryType) {
@@ -200,39 +136,48 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
                 return null;
         }
     }
-    handleError(error) {
-        throw error;
-    }
 }
 WebSqlDriver.BACKUP_LOCAL = 2;
 WebSqlDriver.BACKUP_LIBRARY = 1;
 WebSqlDriver.BACKUP_DOCUMENTS = 0;
 exports.WebSqlDriver = WebSqlDriver;
-function runSqlSeries(tx, sqls, parameterss, fnum, callback) {
+/*
+function runSqlSeries(
+    tx,
+    sqls,
+    parameterss,
+    fnum,
+    callback
+) {
     if (typeof sqls === 'string') {
-        sqls = [sqls];
+        sqls = [sqls]
     }
-    var totalNumber = sqls.length;
-    var sqlIndex = fnum;
+    var totalNumber = sqls.length
+    var sqlIndex    = fnum
     if (parameterss && sqls.length == 1 && parameterss.length > 1) {
         //ie one sql statement run many times
-        totalNumber = parameterss.length;
-        sqlIndex = 0;
+        totalNumber = parameterss.length
+        sqlIndex    = 0
     }
     if (fnum >= totalNumber) {
-        callback(true, 'success - ran ' + fnum + ' sql statements');
-        return;
+        callback(true, 'success - ran ' + fnum + ' sql statements')
+        return
     }
-    var successFn = function () {
-        runSqlSeries(tx, sqls, parameterss, fnum + 1, callback);
-    };
-    var errorFn = function (tx, error) {
-        callback(false, 'Error running function ' + fnum + ' ' + error.message);
-    };
-    var parameters = [];
+    var successFn  = function () {
+        runSqlSeries(tx, sqls, parameterss, fnum + 1, callback)
+    }
+    var errorFn    = function (
+        tx,
+        error
+    ) {
+        callback(false, 'Error running function ' + fnum + ' ' + error.message)
+    }
+    var parameters = []
     if (parameterss) {
-        parameters = parameterss[fnum];
+        parameters = parameterss[fnum]
     }
-    tx.executeSql(sqls[sqlIndex], parameters, successFn, errorFn);
+
+    tx.executeSql(sqls[sqlIndex], parameters, successFn, errorFn)
 }
+*/
 //# sourceMappingURL=WebSqlDriver.js.map

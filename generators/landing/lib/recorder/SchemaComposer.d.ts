@@ -4,7 +4,6 @@ export interface ISchemaComposer {
     compose(jsonSchemas: JsonSchema[]): DdlObjects;
 }
 export declare class SchemaComposer implements ISchemaComposer {
-    private dbSchemaUtils;
     private ddlObjectRetriever;
     private schemaLocator;
     private terminalStore;

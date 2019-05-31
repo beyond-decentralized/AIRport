@@ -7,13 +7,12 @@ const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const landing_1 = require("@airport/landing");
 const takeoff_1 = require("@airport/takeoff");
-const terminal_map_1 = require("@airport/terminal-map");
 const tower_1 = require("@airport/tower");
 const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
 const diTokens_1 = require("../diTokens");
 class DatabaseManager {
-    constructor() {
-    }
+    // constructor() {
+    // }
     /*
         async ensureInitialized(
             terminalName: string = dbConst.DEFAULT_DB,
@@ -55,8 +54,8 @@ class DatabaseManager {
         await fuel_hydrant_system_1.setStoreDriver(storeType);
         const airDb = await di_1.DI.getP(air_control_1.AIR_DB);
         this.airDb = airDb;
-        const transManager = await di_1.DI.getP(terminal_map_1.TRANSACTION_MANAGER);
-        await transManager.initialize('airport');
+        const connector = await di_1.DI.getP(ground_control_1.TRANS_CONNECTOR);
+        await connector.init();
         const storeDriver = await di_1.DI.getP(ground_control_1.STORE_DRIVER);
         await storeDriver.dropTable('github_com___airport__airport_code__Sequence');
         await storeDriver.dropTable('github_com___airport__airport_code__SequenceBlock');
@@ -100,7 +99,7 @@ class DatabaseManager {
             await queryObjectInitializer.initialize();
         }
         else {
-            const server = await di_1.DI.getP(ground_control_1.TRANS_CONNECTOR);
+            const server = await di_1.DI.getP(tower_1.TRANS_SERVER);
             server.tempActor = new holding_pattern_1.Actor();
             await this.installAirportSchema();
             await this.initTerminal(domainName);

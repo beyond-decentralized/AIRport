@@ -6,6 +6,7 @@ import {
 	DbProperty,
 	DbRelation,
 	EntityRelationType,
+	getTableName,
 	repositoryEntity,
 	SchemaIndex,
 	TableIndex
@@ -441,10 +442,7 @@ export class SchemaUtils
 	getTableName(
 		dbEntity: DbEntity
 	): string {
-		if (dbEntity.tableConfig && dbEntity.tableConfig.name) {
-			return dbEntity.tableConfig.name
-		}
-		return dbEntity.name
+		return getTableName(dbEntity.schemaVersion.schema, dbEntity)
 	}
 
 	private addColumnToSheetSelect(

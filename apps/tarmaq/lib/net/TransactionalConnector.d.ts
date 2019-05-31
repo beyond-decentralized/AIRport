@@ -1,12 +1,15 @@
-import { ITransactionalConnector, PortableQuery } from '@airport/ground-control';
+import { DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
 import { ITransactionalServer } from '@airport/tower';
+export declare const BOGUS = 0;
 export declare class TransactionalConnector implements ITransactionalConnector {
     private databaseFacade;
     dbName: string;
     serverUrl: string;
     transServer: ITransactionalServer;
     constructor();
+    init(): Promise<void>;
+    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy): Promise<number>;
     transact(): Promise<void>;
     rollback(): Promise<void>;
     commit(): Promise<void>;

@@ -1,7 +1,6 @@
 import {DI}             from '@airport/di'
 import {
-	DB_SCHEMA_UTILS,
-	IDbSchemaUtils,
+	getTableName,
 	IStoreDriver,
 	JsonSchema,
 	JsonSchemaColumn,
@@ -15,17 +14,14 @@ import {ISchemaBuilder} from './ISchemaBuilder'
 export abstract class SqlSchemaBuilder
 	implements ISchemaBuilder {
 
-	protected dbSchemaUtils: IDbSchemaUtils
 	protected storeDriver: IStoreDriver
 
 	constructor() {
 		DI.get((
-			dbSchemaUtils,
 			storeDriver
 		) => {
-			this.dbSchemaUtils = dbSchemaUtils
-			this.storeDriver   = storeDriver
-		}, DB_SCHEMA_UTILS, STORE_DRIVER)
+			this.storeDriver = storeDriver
+		}, STORE_DRIVER)
 	}
 
 	async build(
@@ -61,7 +57,7 @@ export abstract class SqlSchemaBuilder
 
 		const createTableSuffix = this.getCreateTableSuffix(jsonSchema, jsonEntity)
 
-		const tableName = this.getTableName(jsonSchema, jsonEntity)
+		const tableName = getTableName(jsonSchema, jsonEntity)
 
 		let primaryKeySubStatement = ``
 		if (primaryKeyColumnNames.length) {
@@ -125,11 +121,6 @@ export abstract class SqlSchemaBuilder
 		})
 
 	}
-
-	abstract getTableName(
-		jsonSchema: JsonSchema,
-		jsonEntity: JsonSchemaEntity
-	): string;
 
 	/*
 	protected abstract isForeignKey(

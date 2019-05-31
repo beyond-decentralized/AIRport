@@ -55,7 +55,6 @@ class UpdateManager {
             jsonQuery: jsonSelect,
             queryResultType: ground_control_1.QueryResultType.SHEET,
             parameterMap: portableQuery.parameterMap,
-            values: portableQuery.values,
         };
         const recordsToUpdate = await this.dataStore.find(portableSelect);
         const { repositoryIdColumnIndex, actorIdColumnIndex, actorRecordIdColumnIndex, recordsByRepositoryId, repositoryIdSet } = this.groupRecordsByRepository(dbEntity, recordsToUpdate);

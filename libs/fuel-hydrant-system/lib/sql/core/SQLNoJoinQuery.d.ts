@@ -1,7 +1,7 @@
-import { IAirportDatabase, IUtils } from "@airport/air-control";
+import { IAirportDatabase, IUtils } from '@airport/air-control';
 import { DbEntity, JSONEntityRelation } from '@airport/ground-control';
-import { SQLDialect } from "./SQLQuery";
-import { SQLWhereBase } from "./SQLWhereBase";
+import { SQLDialect } from './SQLQuery';
+import { SQLWhereBase } from './SQLWhereBase';
 /**
  * Created by Papa on 10/2/2016.
  */

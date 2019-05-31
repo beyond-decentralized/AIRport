@@ -39,6 +39,7 @@ class TransactionalServer {
         }, diTokens_1.DELETE_MANAGER, diTokens_1.INSERT_MANAGER, diTokens_1.QUERY_MANAGER, terminal_map_1.TRANSACTION_MANAGER, diTokens_1.UPDATE_MANAGER);
     }
     async init() {
+        this.transactionManager.init('airport');
     }
     async transact(credentials) {
         // this.lastTransactionIndex++

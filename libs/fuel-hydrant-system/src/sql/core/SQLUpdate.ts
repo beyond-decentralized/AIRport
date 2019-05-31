@@ -24,7 +24,8 @@ export class SQLUpdate
 		public jsonUpdate: JsonUpdate<IEntityUpdateProperties>,
 		dialect: SQLDialect,
 	) {
-		super(airportDb, utils, airportDb.schemas[jsonUpdate.U.si][jsonUpdate.U.ti], dialect);
+		super(airportDb, utils, airportDb.schemas[jsonUpdate.U.si]
+			.currentVersion.entities[jsonUpdate.U.ti], dialect);
 	}
 
 	toSQL(): string {

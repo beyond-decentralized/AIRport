@@ -22,12 +22,8 @@ export class QueryFacade
 	private connector: ITransactionalConnector
 	public databaseFacade: IDatabaseFacade
 
-	constructor() {
-		DI.get((
-			transactionalConnector
-		) => {
-			this.connector = transactionalConnector
-		}, TRANS_CONNECTOR)
+	async init(): Promise<void> {
+		this.connector = await DI.getP(TRANS_CONNECTOR)
 	}
 
 	async find<E, EntityArray extends Array<E>>(

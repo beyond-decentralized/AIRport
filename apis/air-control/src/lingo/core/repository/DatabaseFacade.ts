@@ -78,7 +78,9 @@ export interface IDatabaseFacade {
 	/**
 	 * Connector to the transactional server.
 	 */
-	transConnector: ITransactionalConnector;
+	connector: ITransactionalConnector;
+
+	init(): Promise<void>;
 
 	/**
 	 * Start Context for an UpdateProperties Operation.  All entity update operations must be
@@ -253,6 +255,8 @@ export interface IDatabaseFacade {
 }
 
 export interface IQueryFacade {
+
+	init(): Promise<void>;
 
 	find<E, EntityArray extends Array<E>>(
 		dbEntity: DbEntity,
