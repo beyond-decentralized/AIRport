@@ -6,6 +6,7 @@ export declare abstract class SqlSchemaBuilder implements ISchemaBuilder {
     build(jsonSchema: JsonSchema): Promise<void>;
     abstract createSchema(jsonSchema: JsonSchema): Promise<void>;
     buildTable(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): Promise<void>;
+    buildAllSequences(jsonSchemas: JsonSchema[]): Promise<void>;
     abstract getColumnSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity, column: JsonSchemaColumn): string;
     abstract getCreateTableSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): string;
     abstract buildSequences(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): Promise<void>;

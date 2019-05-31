@@ -13,7 +13,6 @@ import {
 }               from '@airport/ground-control'
 import {Domain} from '@airport/territory'
 
-export type SequenceId = number
 export type SequenceIncrementBy = number
 
 @Entity()
@@ -21,17 +20,16 @@ export type SequenceIncrementBy = number
 export class Sequence {
 
 	@Id()
-	@GeneratedValue()
-	id: SequenceId
-
 	@Column({name: 'SCHEMA_INDEX', nullable: false})
 	@DbNumber()
 	schemaIndex: SchemaIndex
 
+	@Id()
 	@Column({name: 'TABLE_INDEX', nullable: false})
 	@DbNumber()
 	tableIndex: TableIndex
 
+	@Id()
 	@Column({name: 'COLUMN_INDEX', nullable: false})
 	@DbNumber()
 	columnIndex: ColumnIndex

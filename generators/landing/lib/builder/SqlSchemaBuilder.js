@@ -47,6 +47,13 @@ class SqlSchemaBuilder {
         }
         //
     }
+    async buildAllSequences(jsonSchemas) {
+        for (const jsonSchema of jsonSchemas) {
+            for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
+                await this.buildSequences(jsonSchema, jsonEntity);
+            }
+        }
+    }
     isPrimaryKeyColumn(jsonEntity, jsonColumn) {
         return jsonColumn.propertyRefs.some((propertyRef) => {
             const jsonProperty = jsonEntity.properties[propertyRef.index];

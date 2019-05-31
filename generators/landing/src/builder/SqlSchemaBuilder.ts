@@ -88,6 +88,16 @@ export abstract class SqlSchemaBuilder
 		//
 	}
 
+	async buildAllSequences(
+		jsonSchemas: JsonSchema[]
+	): Promise<void> {
+		for (const jsonSchema of jsonSchemas) {
+			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
+				await this.buildSequences(jsonSchema, jsonEntity)
+			}
+		}
+	}
+
 	abstract getColumnSuffix(
 		jsonSchema: JsonSchema,
 		jsonEntity: JsonSchemaEntity,

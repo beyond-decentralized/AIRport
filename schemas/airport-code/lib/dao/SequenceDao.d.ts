@@ -1,8 +1,7 @@
-import { BaseSequenceDao, IBaseSequenceDao, ISequence, SequenceEId } from '../generated/generated';
+import { BaseSequenceDao, IBaseSequenceDao } from '../generated/generated';
 export interface IAbstractSequenceDao {
-    findAll(entityIds?: SequenceEId[]): Promise<ISequence[]>;
 }
-export interface ISequenceDao extends IAbstractSequenceDao, IBaseSequenceDao {
+export interface ISequenceDao extends IBaseSequenceDao {
 }
 export declare class SequenceDao extends BaseSequenceDao implements ISequenceDao {
 }

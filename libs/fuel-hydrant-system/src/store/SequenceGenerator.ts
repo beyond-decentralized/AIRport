@@ -28,6 +28,10 @@ export interface ISequenceGenerator {
 		domain: IDomain
 	): Promise<void>
 
+	addSequences(
+		sequences: ISequence[]
+	): Promise<void>
+
 }
 
 export class SequenceGenerator
@@ -58,14 +62,19 @@ export class SequenceGenerator
 		}
 
 		await (await this.sequenceConsumerDao).create(this.sequenceConsumer)
+
 		const sequences = await (await this.sequenceDao).findAll()
+	}
+
+	async addSequences(
+		sequences: ISequence[]
+	): Promise<void> {
 
 		for (const sequence of sequences) {
 			this.utils.ensureChildArray(
 				this.utils.ensureChildArray(this.sequences, sequence.schemaIndex),
 				sequence.tableIndex)[sequence.columnIndex] = sequence
 		}
-
 	}
 
 	async generateSequenceNumbers(

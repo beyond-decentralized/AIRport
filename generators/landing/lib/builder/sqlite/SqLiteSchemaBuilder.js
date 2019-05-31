@@ -51,8 +51,9 @@ class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
             const sequenceName = ground_control_1.getSequenceName(prefixedTableName, jsonColumn.name);
             let incrementBy = jsonColumn.allocationSize;
             if (!incrementBy) {
-                incrementBy = 100000;
+                incrementBy = 10000;
             }
+            const sequence = {};
             // const createSequenceDdl
             // 	      = `CREATE SEQUENCE ${sequenceName} INCREMENT BY ${incrementBy}`
             //

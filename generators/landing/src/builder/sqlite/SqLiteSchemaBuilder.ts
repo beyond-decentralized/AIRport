@@ -7,6 +7,7 @@ import {
 	JsonSchemaEntity,
 	SQLDataType
 }                         from '@airport/ground-control'
+import {ISequence}        from '@airport/airport-code'
 import {SCHEMA_BUILDER}   from '../../diTokens'
 import {SqlSchemaBuilder} from '../SqlSchemaBuilder'
 
@@ -77,7 +78,11 @@ export class SqLiteSchemaBuilder
 			const sequenceName      = getSequenceName(prefixedTableName, jsonColumn.name)
 			let incrementBy         = jsonColumn.allocationSize
 			if (!incrementBy) {
-				incrementBy = 100000
+				incrementBy = 10000
+			}
+
+			const sequence: ISequence = {
+
 			}
 
 			// const createSequenceDdl

@@ -8,16 +8,10 @@ import {
 }                     from '../generated/generated'
 
 export interface IAbstractSequenceDao {
-
-	findAll(
-		entityIds?: SequenceEId[]
-	): Promise<ISequence[]>;
-
 }
 
 export interface ISequenceDao
-	extends IAbstractSequenceDao,
-	        IBaseSequenceDao {
+	extends IBaseSequenceDao {
 
 }
 
