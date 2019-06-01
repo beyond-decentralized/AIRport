@@ -42,8 +42,9 @@ class SchemaInitializer {
         else {
             schemasWithValidDependencies = jsonSchemasToInstall;
         }
+        let schemaBuilder = await this.schemaBuilder;
         for (const jsonSchema of schemasWithValidDependencies) {
-            await (await this.schemaBuilder).build(jsonSchema);
+            await schemaBuilder.build(jsonSchema);
         }
         const ddlObjects = (await this.schemaComposer).compose(schemasWithValidDependencies);
         if (normalOperation) {
@@ -56,7 +57,12 @@ class SchemaInitializer {
             for (let schema of ddlObjects.allSchemas) {
                 schemas[schema.index] = schema;
             }
-            (await di_1.DI.getP(air_control_1.AIR_DB)).schemas = schemas;
+            const airDb = await di_1.DI.getP(air_control_1.AIR_DB);
+            airDb.schemas = schemas;
+            airDb.S = schemas;
+        }
+        await schemaBuilder.buildAllSequences(schemasWithValidDependencies);
+        if (!normalOperation) {
             await (await this.schemaRecorder).record(ddlObjects, normalOperation);
         }
         console.log('done');

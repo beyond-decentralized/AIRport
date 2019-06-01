@@ -14,7 +14,7 @@ export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, Enti
     search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
     searchOne: IEntitySearchOne<Entity, EntitySelect>;
     releaseCachedForUpdate(updateCacheType: UpdateCacheType, ...entities: Entity[]): any;
-    bulkCreate(entities: EntityCreate[], cascade: boolean, checkIfProcessed: boolean): Promise<number>;
+    bulkCreate(entities: EntityCreate[], cascade?: boolean, checkIfProcessed?: boolean): Promise<number>;
     count(): Promise<number>;
     /**
      * Does not cascade?

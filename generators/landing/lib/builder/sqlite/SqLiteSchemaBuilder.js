@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const airport_code_1 = require("@airport/airport-code");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../../diTokens");
@@ -42,24 +44,36 @@ class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
     getCreateTableSuffix(jsonSchema, jsonEntity) {
         return ` WITHOUT ROWID`;
     }
-    async buildSequences(jsonSchema, jsonEntity) {
+    async buildAllSequences(jsonSchemas) {
+        let airDb = await di_1.DI.getP(air_control_1.AIR_DB);
+        let allSequences = [];
+        for (const jsonSchema of jsonSchemas) {
+            const qSchema = airDb.QM[ground_control_1.getSchemaName(jsonSchema)];
+            for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
+                allSequences = allSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity));
+            }
+        }
+        const sequenceDao = await di_1.DI.getP(airport_code_1.SEQUENCE_DAO);
+        await sequenceDao.bulkCreate(allSequences);
+    }
+    buildSequences(dbSchema, jsonEntity) {
+        const sequences = [];
         for (const jsonColumn of jsonEntity.columns) {
             if (!jsonColumn.isGenerated) {
                 continue;
             }
-            const prefixedTableName = ground_control_1.getTableName(jsonSchema, jsonEntity);
-            const sequenceName = ground_control_1.getSequenceName(prefixedTableName, jsonColumn.name);
             let incrementBy = jsonColumn.allocationSize;
             if (!incrementBy) {
                 incrementBy = 10000;
             }
-            const sequence = {};
-            // const createSequenceDdl
-            // 	      = `CREATE SEQUENCE ${sequenceName} INCREMENT BY ${incrementBy}`
-            //
-            // await this.storeDriver.query(QueryType.DDL, createSequenceDdl, [], false)
-            throw `Not Implemented`;
+            sequences.push({
+                schemaIndex: dbSchema.index,
+                tableIndex: jsonEntity.index,
+                columnIndex: jsonColumn.index,
+                incrementBy
+            });
         }
+        return sequences;
     }
 }
 exports.SqLiteSchemaBuilder = SqLiteSchemaBuilder;

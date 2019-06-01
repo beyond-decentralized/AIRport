@@ -1,13 +1,21 @@
+import {
+	AIR_DB,
+	QEntity,
+	QSchemaInternal
+}                         from '@airport/air-control'
+import {
+	ISequence,
+	SEQUENCE_DAO
+}                         from '@airport/airport-code'
 import {DI}               from '@airport/di'
 import {
-	getSequenceName,
-	getTableName,
+	DbSchema,
+	getSchemaName,
 	JsonSchema,
 	JsonSchemaColumn,
 	JsonSchemaEntity,
 	SQLDataType
 }                         from '@airport/ground-control'
-import {ISequence}        from '@airport/airport-code'
 import {SCHEMA_BUILDER}   from '../../diTokens'
 import {SqlSchemaBuilder} from '../SqlSchemaBuilder'
 
@@ -66,31 +74,47 @@ export class SqLiteSchemaBuilder
 		return ` WITHOUT ROWID`
 	}
 
-	async buildSequences(
-		jsonSchema: JsonSchema,
-		jsonEntity: JsonSchemaEntity
+	async buildAllSequences(
+		jsonSchemas: JsonSchema[]
 	): Promise<void> {
+		let airDb = await DI.getP(AIR_DB)
+
+		let allSequences: ISequence[] = []
+		for (const jsonSchema of jsonSchemas) {
+			const qSchema = airDb.QM[getSchemaName(jsonSchema)] as QSchemaInternal
+			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
+				allSequences = allSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity))
+			}
+		}
+
+		const sequenceDao = await DI.getP(SEQUENCE_DAO)
+
+		await sequenceDao.bulkCreate(allSequences)
+	}
+
+	buildSequences(
+		dbSchema: DbSchema,
+		jsonEntity: JsonSchemaEntity,
+	): ISequence[] {
+		const sequences: ISequence[] = []
 		for (const jsonColumn of jsonEntity.columns) {
 			if (!jsonColumn.isGenerated) {
 				continue
 			}
-			const prefixedTableName = getTableName(jsonSchema, jsonEntity)
-			const sequenceName      = getSequenceName(prefixedTableName, jsonColumn.name)
-			let incrementBy         = jsonColumn.allocationSize
+			let incrementBy = jsonColumn.allocationSize
 			if (!incrementBy) {
 				incrementBy = 10000
 			}
 
-			const sequence: ISequence = {
-
-			}
-
-			// const createSequenceDdl
-			// 	      = `CREATE SEQUENCE ${sequenceName} INCREMENT BY ${incrementBy}`
-			//
-			// await this.storeDriver.query(QueryType.DDL, createSequenceDdl, [], false)
-			throw `Not Implemented`
+			sequences.push({
+				schemaIndex: dbSchema.index,
+				tableIndex: jsonEntity.index,
+				columnIndex: jsonColumn.index,
+				incrementBy
+			})
 		}
+
+		return sequences
 	}
 
 }

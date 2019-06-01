@@ -180,7 +180,7 @@ export class WebSqlDriver
 					statement.reject(err)
 					this.executePendingStatements(tx)
 				})
-		} else if (--this.keepAliveCount) {
+		} else if (--this.keepAliveCount > 0) {
 			this.keepTransactionAlive(tx)
 		} else {
 			this.commit().then()

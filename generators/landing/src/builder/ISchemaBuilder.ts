@@ -4,6 +4,10 @@ export interface ISchemaBuilder {
 
 	build(
 		jsonSchema: JsonSchema
-	): void;
+	): Promise<void>
+
+	buildAllSequences(
+		jsonSchemas: JsonSchema[]
+	): Promise<void>
 
 }

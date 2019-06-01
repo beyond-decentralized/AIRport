@@ -39,8 +39,8 @@ export interface IDao<Entity,
 
 	bulkCreate(
 		entities: EntityCreate[],
-		cascade: boolean,
-		checkIfProcessed: boolean
+		cascade?: boolean,
+		checkIfProcessed?: boolean
 	): Promise<number>;
 
 	count(): Promise<number>;

@@ -119,7 +119,7 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
                 this.executePendingStatements(tx);
             });
         }
-        else if (--this.keepAliveCount) {
+        else if (--this.keepAliveCount > 0) {
             this.keepTransactionAlive(tx);
         }
         else {

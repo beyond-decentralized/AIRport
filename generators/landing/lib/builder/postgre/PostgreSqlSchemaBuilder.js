@@ -38,6 +38,13 @@ class PostgreSqlSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
     getCreateTableSuffix(jsonSchema, jsonEntity) {
         return ``;
     }
+    async buildAllSequences(jsonSchemas) {
+        for (const jsonSchema of jsonSchemas) {
+            for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
+                await this.buildSequences(jsonSchema, jsonEntity);
+            }
+        }
+    }
     async buildSequences(jsonSchema, jsonEntity) {
         for (const jsonColumn of jsonEntity.columns) {
             if (!jsonColumn.isGenerated) {

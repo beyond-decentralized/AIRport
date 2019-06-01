@@ -10,6 +10,7 @@ class AirportDatabasePopulator {
         }, air_control_1.AIR_DB);
     }
     populate() {
+        // FIXME: implement
         this.airDb.schemas;
         this.airDb.qSchemas;
     }

@@ -93,8 +93,10 @@ export class SchemaInitializer
 			schemasWithValidDependencies = jsonSchemasToInstall
 		}
 
+		let schemaBuilder = await this.schemaBuilder
+
 		for (const jsonSchema of schemasWithValidDependencies) {
-			await (await this.schemaBuilder).build(jsonSchema)
+			await schemaBuilder.build(jsonSchema)
 		}
 
 		const ddlObjects = (await this.schemaComposer).compose(
@@ -108,13 +110,19 @@ export class SchemaInitializer
 
 		(await this.queryObjectInitializer).generateQObjectsAndPopulateStore(ddlObjects)
 
+		if (!normalOperation) {
+			const schemas: DbSchema[]                     = []
+			for (let schema of ddlObjects.allSchemas) {
+				schemas[schema.index]            = schema as DbSchema
+			}
+			const airDb   = await DI.getP(AIR_DB)
+			airDb.schemas = schemas
+			airDb.S = schemas;
+		}
+
+		await schemaBuilder.buildAllSequences(schemasWithValidDependencies)
 
 		if (!normalOperation) {
-			const schemas: DbSchema[] = []
-			for(let schema of ddlObjects.allSchemas) {
-				schemas[schema.index] = schema as DbSchema
-			}
-			(await DI.getP(AIR_DB)).schemas = schemas
 			await (await this.schemaRecorder).record(ddlObjects, normalOperation)
 		}
 

@@ -50,7 +50,9 @@ export interface SequenceBlockEUpdateColumns extends IEntityUpdateColumns {
     SIZE?: number | IQNumberField;
     LAST_RESERVED_ID?: number | IQNumberField;
     RESERVATION_MILLIS?: number | IQNumberField;
-    SEQUENCE_ID?: number | IQNumberField;
+    SCHEMA_INDEX?: number | IQNumberField;
+    TABLE_INDEX?: number | IQNumberField;
+    COLUMN_INDEX?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).

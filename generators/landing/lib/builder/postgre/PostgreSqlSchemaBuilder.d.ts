@@ -4,5 +4,6 @@ export declare class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
     createSchema(jsonSchema: JsonSchema): Promise<void>;
     getColumnSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity, jsonColumn: JsonSchemaColumn): string;
     getCreateTableSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): string;
+    buildAllSequences(jsonSchemas: JsonSchema[]): Promise<void>;
     buildSequences(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): Promise<void>;
 }

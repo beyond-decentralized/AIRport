@@ -70,8 +70,6 @@ export abstract class SqlSchemaBuilder
 
 		await this.storeDriver.query(QueryType.DDL, createTableDdl, [], false)
 
-		await this.buildSequences(jsonSchema, jsonEntity)
-
 		for (const indexConfig of jsonEntity.tableConfig.indexes) {
 			let uniquePrefix = ''
 			if (indexConfig.unique) {
@@ -88,15 +86,9 @@ export abstract class SqlSchemaBuilder
 		//
 	}
 
-	async buildAllSequences(
+	async abstract buildAllSequences(
 		jsonSchemas: JsonSchema[]
-	): Promise<void> {
-		for (const jsonSchema of jsonSchemas) {
-			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-				await this.buildSequences(jsonSchema, jsonEntity)
-			}
-		}
-	}
+	): Promise<void>
 
 	abstract getColumnSuffix(
 		jsonSchema: JsonSchema,
@@ -108,12 +100,6 @@ export abstract class SqlSchemaBuilder
 		jsonSchema: JsonSchema,
 		jsonEntity: JsonSchemaEntity
 	): string
-
-	abstract buildSequences(
-		jsonSchema: JsonSchema,
-		jsonEntity: JsonSchemaEntity
-	): Promise<void>
-
 
 	protected isPrimaryKeyColumn(
 		jsonEntity: JsonSchemaEntity,

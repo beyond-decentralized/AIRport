@@ -33,7 +33,6 @@ class SqlSchemaBuilder {
 		${tableColumnsDdl.join(',\n')}${primaryKeySubStatement}
 		)${createTableSuffix}`;
         await this.storeDriver.query(ground_control_1.QueryType.DDL, createTableDdl, [], false);
-        await this.buildSequences(jsonSchema, jsonEntity);
         for (const indexConfig of jsonEntity.tableConfig.indexes) {
             let uniquePrefix = '';
             if (indexConfig.unique) {
@@ -46,13 +45,6 @@ class SqlSchemaBuilder {
             await this.storeDriver.query(ground_control_1.QueryType.DDL, createIndexDdl, [], false);
         }
         //
-    }
-    async buildAllSequences(jsonSchemas) {
-        for (const jsonSchema of jsonSchemas) {
-            for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-                await this.buildSequences(jsonSchema, jsonEntity);
-            }
-        }
     }
     isPrimaryKeyColumn(jsonEntity, jsonColumn) {
         return jsonColumn.propertyRefs.some((propertyRef) => {

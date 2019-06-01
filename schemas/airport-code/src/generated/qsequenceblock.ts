@@ -143,7 +143,9 @@ export interface SequenceBlockEUpdateColumns
 	SIZE?: number | IQNumberField;
 	LAST_RESERVED_ID?: number | IQNumberField;
 	RESERVATION_MILLIS?: number | IQNumberField;
-	SEQUENCE_ID?: number | IQNumberField;
+	SCHEMA_INDEX?: number | IQNumberField;
+	TABLE_INDEX?: number | IQNumberField;
+	COLUMN_INDEX?: number | IQNumberField;
 
 }
 

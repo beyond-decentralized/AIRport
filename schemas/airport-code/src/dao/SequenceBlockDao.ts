@@ -50,7 +50,9 @@ export class SequenceBlockDao
 				from: [sb],
 				select: plus(max(coalesce(sb.lastReservedId, 0)), sequenceBlock.size),
 				where: and(
-					sb.sequence.id.equals(sequenceBlock.sequence.id),
+					sb.sequence.schemaIndex.equals(sequenceBlock.sequence.schemaIndex),
+					sb.sequence.tableIndex.equals(sequenceBlock.sequence.tableIndex),
+					sb.sequence.columnIndex.equals(sequenceBlock.sequence.columnIndex)
 				)
 			}
 			return field(selectMaxLastReservedId)
@@ -60,7 +62,9 @@ export class SequenceBlockDao
 			sequenceBlock,
 			index
 		) => [
-			sequenceBlock.sequence.id,
+			sequenceBlock.sequence.schemaIndex,
+			sequenceBlock.sequence.tableIndex,
+			sequenceBlock.sequence.columnIndex,
 			sequenceBlock.sequenceConsumer.id,
 			sequenceBlock.size,
 			newLastReservedIds[index],
@@ -70,7 +74,9 @@ export class SequenceBlockDao
 		const ids = <number[]>await this.db.insertValuesGenerateIds({
 			insertInto: sb,
 			columns: [
-				sb.sequence.id,
+				sb.sequence.schemaIndex,
+				sb.sequence.tableIndex,
+				sb.sequence.columnIndex,
 				sb.sequenceConsumer.id,
 				sb.size,
 				sb.lastReservedId,

@@ -32,14 +32,13 @@ declare function require(moduleName: string): any;
 export interface ISequence {
 	
 	// Id Properties
-	id?: number;
+	schemaIndex?: number;
+	tableIndex?: number;
+	columnIndex?: number;
 
 	// Id Relations
 
 	// Non-Id Properties
-	schemaIndex?: number;
-	tableIndex?: number;
-	columnIndex?: number;
 	incrementBy?: number;
 
 	// Non-Id Relations
@@ -60,9 +59,6 @@ export interface ISequence {
 export interface SequenceESelect
     extends IEntitySelectProperties, SequenceEOptionalId {
 	// Non-Id Properties
-	schemaIndex?: number | IQNumberField;
-	tableIndex?: number | IQNumberField;
-	columnIndex?: number | IQNumberField;
 	incrementBy?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
@@ -77,7 +73,9 @@ export interface SequenceESelect
 export interface SequenceEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	schemaIndex: number | IQNumberField;
+	tableIndex: number | IQNumberField;
+	columnIndex: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -88,7 +86,9 @@ export interface SequenceEId
  */
 export interface SequenceEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	schemaIndex?: number | IQNumberField;
+	tableIndex?: number | IQNumberField;
+	columnIndex?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -100,9 +100,6 @@ export interface SequenceEOptionalId {
 export interface SequenceEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	schemaIndex?: number | IQNumberField;
-	tableIndex?: number | IQNumberField;
-	columnIndex?: number | IQNumberField;
 	incrementBy?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -115,9 +112,6 @@ export interface SequenceEUpdateProperties
 export interface SequenceEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	SCHEMA_INDEX?: number | IQNumberField;
-	TABLE_INDEX?: number | IQNumberField;
-	COLUMN_INDEX?: number | IQNumberField;
 	SEQUENCE_INCREMENT_BY?: number | IQNumberField;
 
 }
@@ -149,14 +143,13 @@ extends SequenceEId, SequenceEUpdateColumns {
 export interface QSequence extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	schemaIndex: IQNumberField;
+	tableIndex: IQNumberField;
+	columnIndex: IQNumberField;
 
 	// Id Relations
 
 	// Non-Id Fields
-	schemaIndex: IQNumberField;
-	tableIndex: IQNumberField;
-	columnIndex: IQNumberField;
 	incrementBy: IQNumberField;
 
 	// Non-Id Relations
@@ -169,7 +162,9 @@ export interface QSequenceQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	schemaIndex: IQNumberField;
+	tableIndex: IQNumberField;
+	columnIndex: IQNumberField;
 
 	// Id Relations
 

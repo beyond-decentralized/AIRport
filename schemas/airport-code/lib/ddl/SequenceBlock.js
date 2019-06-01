@@ -16,7 +16,13 @@ __decorate([
 ], SequenceBlock.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'SEQUENCE_ID', referencedColumnName: 'ID', nullable: false })
+    air_control_1.JoinColumns([{
+            name: 'SCHEMA_INDEX', nullable: false
+        }, {
+            name: 'TABLE_INDEX', nullable: false
+        }, {
+            name: 'COLUMN_INDEX', nullable: false
+        }])
 ], SequenceBlock.prototype, "sequence", void 0);
 __decorate([
     air_control_1.Id(),

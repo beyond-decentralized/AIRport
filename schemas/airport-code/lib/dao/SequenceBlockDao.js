@@ -13,12 +13,14 @@ class SequenceBlockDao extends generated_1.BaseSequenceBlockDao {
             const selectMaxLastReservedId = {
                 from: [sb],
                 select: air_control_1.plus(air_control_1.max(air_control_1.coalesce(sb.lastReservedId, 0)), sequenceBlock.size),
-                where: air_control_1.and(sb.sequence.id.equals(sequenceBlock.sequence.id))
+                where: air_control_1.and(sb.sequence.schemaIndex.equals(sequenceBlock.sequence.schemaIndex), sb.sequence.tableIndex.equals(sequenceBlock.sequence.tableIndex), sb.sequence.columnIndex.equals(sequenceBlock.sequence.columnIndex))
             };
             return air_control_1.field(selectMaxLastReservedId);
         });
         const values = sequenceBlocks.map((sequenceBlock, index) => [
-            sequenceBlock.sequence.id,
+            sequenceBlock.sequence.schemaIndex,
+            sequenceBlock.sequence.tableIndex,
+            sequenceBlock.sequence.columnIndex,
             sequenceBlock.sequenceConsumer.id,
             sequenceBlock.size,
             newLastReservedIds[index],
@@ -27,7 +29,9 @@ class SequenceBlockDao extends generated_1.BaseSequenceBlockDao {
         const ids = await this.db.insertValuesGenerateIds({
             insertInto: sb,
             columns: [
-                sb.sequence.id,
+                sb.sequence.schemaIndex,
+                sb.sequence.tableIndex,
+                sb.sequence.columnIndex,
                 sb.sequenceConsumer.id,
                 sb.size,
                 sb.lastReservedId,

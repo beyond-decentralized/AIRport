@@ -10,10 +10,10 @@
 					"columns": [
 						{
 							"index": 0,
-							"isGenerated": true,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "ID",
-							"notNull": false,
+							"name": "SCHEMA_INDEX",
+							"notNull": true,
 							"propertyRefs": [
 								{
 									"index": 0
@@ -26,7 +26,7 @@
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "SCHEMA_INDEX",
+							"name": "TABLE_INDEX",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -40,7 +40,7 @@
 							"index": 2,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "TABLE_INDEX",
+							"name": "COLUMN_INDEX",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -54,25 +54,11 @@
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "COLUMN_INDEX",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 3
-								}
-							],
-							"sinceVersion": 1,
-							"type": 4
-						},
-						{
-							"index": 4,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
 							"name": "SEQUENCE_INCREMENT_BY",
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 4
+									"index": 3
 								}
 							],
 							"sinceVersion": 1,
@@ -82,6 +68,12 @@
 					"idColumnRefs": [
 						{
 							"index": 0
+						},
+						{
+							"index": 1
+						},
+						{
+							"index": 2
 						}
 					],
 					"index": 0,
@@ -95,7 +87,7 @@
 							},
 							"index": 0,
 							"isId": true,
-							"name": "id",
+							"name": "schemaIndex",
 							"sinceVersion": 1
 						},
 						{
@@ -103,8 +95,8 @@
 								"index": 1
 							},
 							"index": 1,
-							"isId": false,
-							"name": "schemaIndex",
+							"isId": true,
+							"name": "tableIndex",
 							"sinceVersion": 1
 						},
 						{
@@ -112,8 +104,8 @@
 								"index": 2
 							},
 							"index": 2,
-							"isId": false,
-							"name": "tableIndex",
+							"isId": true,
+							"name": "columnIndex",
 							"sinceVersion": 1
 						},
 						{
@@ -121,15 +113,6 @@
 								"index": 3
 							},
 							"index": 3,
-							"isId": false,
-							"name": "columnIndex",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 4
-							},
-							"index": 4,
 							"isId": false,
 							"name": "incrementBy",
 							"sinceVersion": 1
@@ -366,7 +349,49 @@
 									"sinceVersion": 1
 								}
 							],
-							"name": "SEQUENCE_ID",
+							"name": "SCHEMA_INDEX",
+							"notNull": true,
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"sinceVersion": 1,
+							"type": 4
+						},
+						{
+							"index": 6,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 1,
+									"oneSchemaIndex": null,
+									"oneTableIndex": 0,
+									"oneColumnIndex": 1,
+									"sinceVersion": 1
+								}
+							],
+							"name": "TABLE_INDEX",
+							"notNull": true,
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"sinceVersion": 1,
+							"type": 4
+						},
+						{
+							"index": 7,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 1,
+									"oneSchemaIndex": null,
+									"oneTableIndex": 0,
+									"oneColumnIndex": 2,
+									"sinceVersion": 1
+								}
+							],
+							"name": "COLUMN_INDEX",
 							"notNull": true,
 							"propertyRefs": [
 								{

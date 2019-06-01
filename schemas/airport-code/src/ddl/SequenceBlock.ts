@@ -4,6 +4,7 @@ import {
 	GeneratedValue,
 	Id,
 	JoinColumn,
+	JoinColumns,
 	ManyToOne,
 	SequenceGenerator,
 	Table,
@@ -28,7 +29,13 @@ export class SequenceBlock {
 	id: SequenceBlockId
 
 	@ManyToOne()
-	@JoinColumn({name: 'SEQUENCE_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumns([{
+		name: 'SCHEMA_INDEX', nullable: false
+	}, {
+		name: 'TABLE_INDEX', nullable: false
+	}, {
+		name: 'COLUMN_INDEX', nullable: false
+	}])
 	sequence: Sequence
 
 	@Id()

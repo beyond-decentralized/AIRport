@@ -2,17 +2,15 @@ import {IUtils}             from '@airport/air-control'
 import {
 	IAbstractSequenceBlockDao,
 	IAbstractSequenceConsumerDao,
-	IAbstractSequenceDao,
 	ISequence,
 	ISequenceBlock,
 	ISequenceConsumer,
+	ISequenceDao,
 	SEQUENCE_BLOCK_DAO,
 	SEQUENCE_CONSUMER_DAO,
 	SEQUENCE_DAO
 }                           from '@airport/airport-code'
-import {
-	DI,
-}                           from '@airport/di'
+import {DI,}                from '@airport/di'
 import {DbColumn}           from '@airport/ground-control'
 import {IDomain}            from '@airport/territory'
 import {SEQUENCE_GENERATOR} from '../diTokens'
@@ -43,7 +41,7 @@ export class SequenceGenerator
 
 	private sequenceBlockDao: Promise<IAbstractSequenceBlockDao>
 	private sequenceConsumerDao: Promise<IAbstractSequenceConsumerDao>
-	private sequenceDao: Promise<IAbstractSequenceDao>
+	private sequenceDao: Promise<ISequenceDao>
 	private utils: IUtils
 
 	constructor() {
