@@ -1,22 +1,20 @@
-import {ColumnName} from '../../lingo/schema/Property'
+import {SchemaStatus} from '../..'
+import {ColumnName}   from '../../lingo/schema/Property'
 import {
 	DomainName,
 	SchemaName
-}                   from '../../lingo/schema/Schema'
+}                     from '../../lingo/schema/Schema'
 
 export function getSchemaName({
 	                              domain,
 	                              name
                               }): string {
-	let domainPrefix = ''
 	if (domain.name) {
 		domain = domain.name
 	}
-	if (domain != 'npmjs.org') {
-		domainPrefix = domain
-			.replace(/\./g, '_')
-			.replace(/-/g, '_')
-	}
+	const domainPrefix = domain
+		.replace(/\./g, '_')
+		.replace(/-/g, '_')
 
 	const schemaPrefix = name
 		.replace(/@/g, '_')
@@ -32,6 +30,7 @@ export function getTableName(
 			name: DomainName
 		};
 		name: SchemaName;
+		status?: SchemaStatus;
 	},
 	table: {
 		name: string,
@@ -44,7 +43,13 @@ export function getTableName(
 	if (table.tableConfig && table.tableConfig.name) {
 		theTableName = table.tableConfig.name
 	}
-	return `${this.getSchemaName(schema)}__${theTableName}`
+	let schemaName
+	if (schema.status || schema.status === 0) {
+		schemaName = schema.name
+	} else {
+		schemaName = this.getSchemaName(schema)
+	}
+	return `${schemaName}__${theTableName}`
 }
 
 export function getSequenceName(

@@ -1,3 +1,4 @@
+import { SchemaStatus } from '../..';
 import { ColumnName } from '../../lingo/schema/Property';
 import { DomainName, SchemaName } from '../../lingo/schema/Schema';
 export declare function getSchemaName({ domain, name }: {
@@ -9,6 +10,7 @@ export declare function getTableName(schema: {
         name: DomainName;
     };
     name: SchemaName;
+    status?: SchemaStatus;
 }, table: {
     name: string;
     tableConfig?: {

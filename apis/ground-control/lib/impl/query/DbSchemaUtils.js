@@ -1,15 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function getSchemaName({ domain, name }) {
-    let domainPrefix = '';
     if (domain.name) {
         domain = domain.name;
     }
-    if (domain != 'npmjs.org') {
-        domainPrefix = domain
-            .replace(/\./g, '_')
-            .replace(/-/g, '_');
-    }
+    const domainPrefix = domain
+        .replace(/\./g, '_')
+        .replace(/-/g, '_');
     const schemaPrefix = name
         .replace(/@/g, '_')
         .replace(/\//g, '__')
@@ -22,7 +19,14 @@ function getTableName(schema, table) {
     if (table.tableConfig && table.tableConfig.name) {
         theTableName = table.tableConfig.name;
     }
-    return `${this.getSchemaName(schema)}__${theTableName}`;
+    let schemaName;
+    if (schema.status || schema.status === 0) {
+        schemaName = schema.name;
+    }
+    else {
+        schemaName = this.getSchemaName(schema);
+    }
+    return `${schemaName}__${theTableName}`;
 }
 exports.getTableName = getTableName;
 function getSequenceName(prefixedTableName, columnName) {

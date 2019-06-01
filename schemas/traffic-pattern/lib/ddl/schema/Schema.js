@@ -13,8 +13,7 @@ const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const territory_1 = require("@airport/territory");
 const SchemaVersion_1 = require("./SchemaVersion");
-const VersionedSchemaObject_1 = require("./VersionedSchemaObject");
-let Schema = class Schema extends VersionedSchemaObject_1.VersionedSchemaObject {
+let Schema = class Schema {
 };
 __decorate([
     air_control_1.Id(),

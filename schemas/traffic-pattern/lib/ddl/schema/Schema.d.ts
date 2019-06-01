@@ -1,8 +1,7 @@
 import { SchemaIndex, SchemaName, SchemaScope, SchemaStatus } from '@airport/ground-control';
 import { Domain } from '@airport/territory';
 import { SchemaVersion } from './SchemaVersion';
-import { VersionedSchemaObject } from './VersionedSchemaObject';
-export declare class Schema extends VersionedSchemaObject {
+export declare class Schema {
     index: SchemaIndex;
     domain: Domain;
     scope: SchemaScope;

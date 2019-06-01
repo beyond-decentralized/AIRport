@@ -61,7 +61,8 @@ class InsertManager {
                 continue;
             }
             for (const entityValues of values) {
-                if (!entityValues[idColumn.index]) {
+                let idValue = entityValues[idColumn.index];
+                if (!idValue && idValue !== 0) {
                     throw `No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`;
                 }
             }

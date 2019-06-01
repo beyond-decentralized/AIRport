@@ -21,16 +21,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IVersionedSchemaObject,
-	VersionedSchemaObjectEId,
-	VersionedSchemaObjectEUpdateColumns,
-	VersionedSchemaObjectEUpdateProperties,
-	VersionedSchemaObjectESelect,
-	QVersionedSchemaObjectQId,
-	QVersionedSchemaObjectQRelation,
-	QVersionedSchemaObject,
-} from './qversionedschemaobject';
-import {
 	IDomain,
 	DomainEId,
 	DomainEOptionalId,
@@ -59,7 +49,7 @@ declare function require(moduleName: string): any;
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface ISchema extends IVersionedSchemaObject {
+export interface ISchema {
 	
 	// Id Properties
 	index?: number;
@@ -90,7 +80,7 @@ export interface ISchema extends IVersionedSchemaObject {
  * SELECT - All fields and relations (optional).
  */
 export interface SchemaESelect
-    extends VersionedSchemaObjectESelect, SchemaEOptionalId {
+    extends IEntitySelectProperties, SchemaEOptionalId {
 	// Non-Id Properties
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
@@ -109,7 +99,7 @@ export interface SchemaESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface SchemaEId
-    extends VersionedSchemaObjectEId {
+    extends IEntityIdProperties {
 	// Id Properties
 	index: number | IQNumberField;
 
@@ -132,7 +122,7 @@ export interface SchemaEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SchemaEUpdateProperties
-	extends VersionedSchemaObjectEUpdateProperties {
+	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
@@ -148,11 +138,8 @@ export interface SchemaEUpdateProperties
  * UPDATE - non-id columns (optional).
  */
 export interface SchemaEUpdateColumns
-	extends VersionedSchemaObjectEUpdateColumns {
+	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-	REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
-	SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
 	SCOPE?: string | IQStringField;
 	SCHEMA_NAME?: string | IQStringField;
 	STATUS?: number | IQNumberField;
@@ -185,7 +172,7 @@ extends SchemaEId, SchemaEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchema extends QVersionedSchemaObject
+export interface QSchema extends IQEntity
 {
 	// Id Fields
 	index: IQNumberField;
@@ -206,7 +193,7 @@ export interface QSchema extends QVersionedSchemaObject
 
 
 // Entity Id Interface
-export interface QSchemaQId extends QVersionedSchemaObjectQId
+export interface QSchemaQId
 {
 	
 	// Id Fields
@@ -219,6 +206,6 @@ export interface QSchemaQId extends QVersionedSchemaObjectQId
 
 // Entity Relation Interface
 export interface QSchemaQRelation
-	extends QVersionedSchemaObjectQRelation<QSchema>, QSchemaQId {
+	extends IQRelation<QSchema>, QSchemaQId {
 }
 

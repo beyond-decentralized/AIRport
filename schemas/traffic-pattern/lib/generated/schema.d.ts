@@ -257,15 +257,6 @@ export declare const SCHEMA: {
             "isRepositoryEntity": boolean;
             "name": string;
             "properties": ({
-                "index": number;
-                "isId": boolean;
-                "name": string;
-                "relationRef": {
-                    "index": number;
-                };
-                "sinceVersion": number;
-                "columnRef"?: undefined;
-            } | {
                 "columnRef": {
                     "index": number;
                 };
@@ -274,19 +265,17 @@ export declare const SCHEMA: {
                 "name": string;
                 "sinceVersion": number;
                 "relationRef"?: undefined;
-            })[];
-            "relations": ({
+            } | {
                 "index": number;
                 "isId": boolean;
-                "relationType": number;
-                "propertyRef": {
+                "name": string;
+                "relationRef": {
                     "index": number;
                 };
-                "relationTableIndex": number;
                 "sinceVersion": number;
-                "relationTableSchemaIndex"?: undefined;
-                "oneToManyElems"?: undefined;
-            } | {
+                "columnRef"?: undefined;
+            })[];
+            "relations": ({
                 "index": number;
                 "isId": boolean;
                 "relationType": number;
@@ -310,6 +299,17 @@ export declare const SCHEMA: {
                 "relationTableIndex": number;
                 "sinceVersion": number;
                 "relationTableSchemaIndex"?: undefined;
+            } | {
+                "index": number;
+                "isId": boolean;
+                "relationType": number;
+                "propertyRef": {
+                    "index": number;
+                };
+                "relationTableIndex": number;
+                "sinceVersion": number;
+                "relationTableSchemaIndex"?: undefined;
+                "oneToManyElems"?: undefined;
             })[];
             "sinceVersion": number;
             "tableConfig": {

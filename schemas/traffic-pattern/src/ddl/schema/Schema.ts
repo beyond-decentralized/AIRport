@@ -3,12 +3,10 @@ import {
 	DbNumber,
 	DbString,
 	Entity,
-	GeneratedValue,
 	Id,
 	JoinColumn,
 	ManyToOne,
 	OneToMany,
-	SequenceGenerator,
 	Table
 }                              from '@airport/air-control'
 import {
@@ -19,14 +17,12 @@ import {
 }                              from '@airport/ground-control'
 import {Domain}                from '@airport/territory'
 import {SchemaVersion}         from './SchemaVersion'
-import {VersionedSchemaObject} from './VersionedSchemaObject'
 
 @Entity()
 @Table({
 	name: 'SCHEMAS'
 })
-export class Schema
-	extends VersionedSchemaObject {
+export class Schema {
 
 	@Id()
 	@DbNumber()

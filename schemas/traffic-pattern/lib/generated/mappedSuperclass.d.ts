@@ -369,8 +369,7 @@ export declare const MAPPED_SUPERCLASS: {
                         "entity": {
                             "type": string;
                             "path": string;
-                            "parentClassName": string;
-                            "location": string;
+                            "parentClassName": any;
                             "isSuperclass": boolean;
                             "ids": {
                                 "decorators": {
@@ -430,11 +429,6 @@ export declare const MAPPED_SUPERCLASS: {
                                                     "moduleImport": any;
                                                     "sourceName": string;
                                                 };
-                                                "GeneratedValue": {
-                                                    "asName": string;
-                                                    "moduleImport": any;
-                                                    "sourceName": string;
-                                                };
                                                 "Id": {
                                                     "asName": string;
                                                     "moduleImport": any;
@@ -455,16 +449,12 @@ export declare const MAPPED_SUPERCLASS: {
                                                     "moduleImport": any;
                                                     "sourceName": string;
                                                 };
-                                                "SequenceGenerator": {
-                                                    "asName": string;
-                                                    "moduleImport": any;
-                                                    "sourceName": string;
-                                                };
                                                 "Table": {
                                                     "asName": string;
                                                     "moduleImport": any;
                                                     "sourceName": string;
                                                 };
+                                                "GeneratedValue"?: undefined;
                                                 "Json"?: undefined;
                                                 "TableConfiguration"?: undefined;
                                                 "Transient"?: undefined;
@@ -474,12 +464,10 @@ export declare const MAPPED_SUPERCLASS: {
                                         "DbNumber": any;
                                         "DbString": any;
                                         "Entity": any;
-                                        "GeneratedValue": any;
                                         "Id": any;
                                         "JoinColumn": any;
                                         "ManyToOne": any;
                                         "OneToMany": any;
-                                        "SequenceGenerator": any;
                                         "Table": any;
                                         "SchemaIndex": {
                                             "fileImports": any;
@@ -535,18 +523,7 @@ export declare const MAPPED_SUPERCLASS: {
                                             };
                                             "path": string;
                                         };
-                                        "VersionedSchemaObject": {
-                                            "fileImports": any;
-                                            "isLocal": boolean;
-                                            "objectMapByAsName": {
-                                                "VersionedSchemaObject": {
-                                                    "asName": string;
-                                                    "moduleImport": any;
-                                                    "sourceName": string;
-                                                };
-                                            };
-                                            "path": string;
-                                        };
+                                        "GeneratedValue"?: undefined;
                                         "Json"?: undefined;
                                         "TableConfiguration"?: undefined;
                                         "Transient"?: undefined;
@@ -561,6 +538,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         "SchemaColumn"?: undefined;
                                         "SchemaProperty"?: undefined;
                                         "SchemaRelation"?: undefined;
+                                        "VersionedSchemaObject"?: undefined;
                                         "SchemaReferenceIndex"?: undefined;
                                     };
                                     "importMapByModulePath": {
@@ -568,12 +546,12 @@ export declare const MAPPED_SUPERCLASS: {
                                         "@airport/ground-control": any;
                                         "@airport/territory": any;
                                         "./SchemaVersion": any;
-                                        "./VersionedSchemaObject": any;
                                         "../../generated/schema/qschemacolumn"?: undefined;
                                         "../../generated/schema/qschemaproperty"?: undefined;
                                         "./SchemaColumn"?: undefined;
                                         "./SchemaProperty"?: undefined;
                                         "./SchemaRelation"?: undefined;
+                                        "./VersionedSchemaObject"?: undefined;
                                     };
                                 };
                                 "properties": ({
@@ -774,7 +752,8 @@ export declare const MAPPED_SUPERCLASS: {
                                 }[];
                             };
                             "implementedInterfaceNames": any[];
-                            "parentEntity": any;
+                            "location"?: undefined;
+                            "parentEntity"?: undefined;
                         };
                         "index": number;
                         "allocationSize"?: undefined;
@@ -899,7 +878,6 @@ export declare const MAPPED_SUPERCLASS: {
                                                 };
                                                 "DbNumber"?: undefined;
                                                 "DbString"?: undefined;
-                                                "SequenceGenerator"?: undefined;
                                             };
                                             "path": string;
                                         };
@@ -1052,7 +1030,6 @@ export declare const MAPPED_SUPERCLASS: {
                                             "path": string;
                                         };
                                         "DbString"?: undefined;
-                                        "SequenceGenerator"?: undefined;
                                         "SchemaIndex"?: undefined;
                                         "SchemaName"?: undefined;
                                         "SchemaScope"?: undefined;
@@ -1774,9 +1751,8 @@ export declare const MAPPED_SUPERCLASS: {
                                                 };
                                                 "DbNumber"?: undefined;
                                                 "DbString"?: undefined;
-                                                "GeneratedValue"?: undefined;
                                                 "OneToMany"?: undefined;
-                                                "SequenceGenerator"?: undefined;
+                                                "GeneratedValue"?: undefined;
                                                 "Json"?: undefined;
                                                 "TableConfiguration"?: undefined;
                                                 "Transient"?: undefined;
@@ -1826,14 +1802,13 @@ export declare const MAPPED_SUPERCLASS: {
                                         };
                                         "DbNumber"?: undefined;
                                         "DbString"?: undefined;
-                                        "GeneratedValue"?: undefined;
                                         "OneToMany"?: undefined;
-                                        "SequenceGenerator"?: undefined;
                                         "SchemaIndex"?: undefined;
                                         "SchemaName"?: undefined;
                                         "SchemaScope"?: undefined;
                                         "SchemaStatus"?: undefined;
                                         "Domain"?: undefined;
+                                        "GeneratedValue"?: undefined;
                                         "Json"?: undefined;
                                         "TableConfiguration"?: undefined;
                                         "Transient"?: undefined;

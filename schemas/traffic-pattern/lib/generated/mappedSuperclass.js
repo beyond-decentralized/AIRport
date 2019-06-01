@@ -521,8 +521,7 @@ exports.MAPPED_SUPERCLASS = [
                                     "entity": {
                                         "type": "Schema",
                                         "path": "c:/users/papa/dac/airport/schemas/traffic-pattern/src/ddl/schema/schema.ts",
-                                        "parentClassName": "VersionedSchemaObject",
-                                        "location": "./VersionedSchemaObject",
+                                        "parentClassName": null,
                                         "isSuperclass": false,
                                         "ids": [
                                             {
@@ -604,11 +603,6 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "moduleImport": null,
                                                                 "sourceName": "Entity"
                                                             },
-                                                            "GeneratedValue": {
-                                                                "asName": "GeneratedValue",
-                                                                "moduleImport": null,
-                                                                "sourceName": "GeneratedValue"
-                                                            },
                                                             "Id": {
                                                                 "asName": "Id",
                                                                 "moduleImport": null,
@@ -629,11 +623,6 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "moduleImport": null,
                                                                 "sourceName": "OneToMany"
                                                             },
-                                                            "SequenceGenerator": {
-                                                                "asName": "SequenceGenerator",
-                                                                "moduleImport": null,
-                                                                "sourceName": "SequenceGenerator"
-                                                            },
                                                             "Table": {
                                                                 "asName": "Table",
                                                                 "moduleImport": null,
@@ -645,12 +634,10 @@ exports.MAPPED_SUPERCLASS = [
                                                     "DbNumber": null,
                                                     "DbString": null,
                                                     "Entity": null,
-                                                    "GeneratedValue": null,
                                                     "Id": null,
                                                     "JoinColumn": null,
                                                     "ManyToOne": null,
                                                     "OneToMany": null,
-                                                    "SequenceGenerator": null,
                                                     "Table": null,
                                                     "SchemaIndex": {
                                                         "fileImports": null,
@@ -705,26 +692,13 @@ exports.MAPPED_SUPERCLASS = [
                                                             }
                                                         },
                                                         "path": "./SchemaVersion"
-                                                    },
-                                                    "VersionedSchemaObject": {
-                                                        "fileImports": null,
-                                                        "isLocal": true,
-                                                        "objectMapByAsName": {
-                                                            "VersionedSchemaObject": {
-                                                                "asName": "VersionedSchemaObject",
-                                                                "moduleImport": null,
-                                                                "sourceName": "VersionedSchemaObject"
-                                                            }
-                                                        },
-                                                        "path": "./VersionedSchemaObject"
                                                     }
                                                 },
                                                 "importMapByModulePath": {
                                                     "@airport/air-control": null,
                                                     "@airport/ground-control": null,
                                                     "@airport/territory": null,
-                                                    "./SchemaVersion": null,
-                                                    "./VersionedSchemaObject": null
+                                                    "./SchemaVersion": null
                                                 }
                                             },
                                             "properties": [
@@ -1064,8 +1038,7 @@ exports.MAPPED_SUPERCLASS = [
                                                 }
                                             ]
                                         },
-                                        "implementedInterfaceNames": [],
-                                        "parentEntity": null
+                                        "implementedInterfaceNames": []
                                     },
                                     "index": 6
                                 },
