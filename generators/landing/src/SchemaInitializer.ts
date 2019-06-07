@@ -1,20 +1,21 @@
-import {AIR_DB}          from '@airport/air-control'
-import {DI}              from '@airport/di'
+import {AIR_DB}             from '@airport/air-control'
+import {DI}                 from '@airport/di'
+import {SEQUENCE_GENERATOR} from '@airport/fuel-hydrant-system'
 import {
 	DbSchema,
 	JsonSchema
-}                        from '@airport/ground-control'
+}                           from '@airport/ground-control'
 import {
 	DdlObjects,
 	IQueryObjectInitializer,
 	QUERY_OBJECT_INITIALIZER
-}                        from '@airport/takeoff'
+}                           from '@airport/takeoff'
 import {
 	ITerminalStore,
 	TERMINAL_STORE
-}                        from '@airport/terminal-map'
-import {ISchemaBuilder}  from './builder/ISchemaBuilder'
-import {ISchemaChecker}  from './checker/SchemaChecker'
+}                           from '@airport/terminal-map'
+import {ISchemaBuilder}     from './builder/ISchemaBuilder'
+import {ISchemaChecker}     from './checker/SchemaChecker'
 import {
 	SCHEMA_BUILDER,
 	SCHEMA_CHECKER,
@@ -22,10 +23,10 @@ import {
 	SCHEMA_INITIALIZER,
 	SCHEMA_LOCATOR,
 	SCHEMA_RECORDER
-}                        from './diTokens'
-import {ISchemaLocator}  from './locator/SchemaLocator'
-import {ISchemaComposer} from './recorder/SchemaComposer'
-import {ISchemaRecorder} from './recorder/SchemaRecorder'
+}                           from './diTokens'
+import {ISchemaLocator}     from './locator/SchemaLocator'
+import {ISchemaComposer}    from './recorder/SchemaComposer'
+import {ISchemaRecorder}    from './recorder/SchemaRecorder'
 
 export interface ISchemaInitializer {
 
@@ -111,22 +112,22 @@ export class SchemaInitializer
 		(await this.queryObjectInitializer).generateQObjectsAndPopulateStore(ddlObjects)
 
 		if (!normalOperation) {
-			const schemas: DbSchema[]                     = []
+			const schemas: DbSchema[] = []
 			for (let schema of ddlObjects.allSchemas) {
-				schemas[schema.index]            = schema as DbSchema
+				schemas[schema.index] = schema as DbSchema
 			}
 			const airDb   = await DI.getP(AIR_DB)
 			airDb.schemas = schemas
-			airDb.S = schemas;
+			airDb.S       = schemas
 		}
 
-		await schemaBuilder.buildAllSequences(schemasWithValidDependencies)
+		const newSequences = await schemaBuilder.buildAllSequences(schemasWithValidDependencies)
+
+		await (await DI.getP(SEQUENCE_GENERATOR)).init(newSequences)
 
 		if (!normalOperation) {
 			await (await this.schemaRecorder).record(ddlObjects, normalOperation)
 		}
-
-		console.log('done')
 	}
 
 	addNewSchemaVersionsToAll(

@@ -44,6 +44,7 @@ class PostgreSqlSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
                 await this.buildSequences(jsonSchema, jsonEntity);
             }
         }
+        throw 'Finish implementing';
     }
     async buildSequences(jsonSchema, jsonEntity) {
         for (const jsonColumn of jsonEntity.columns) {

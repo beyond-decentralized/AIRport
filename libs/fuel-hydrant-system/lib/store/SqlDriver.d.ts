@@ -9,6 +9,7 @@ import { ActiveQueries } from './ActiveQueries';
  */
 export declare abstract class SqlDriver implements IStoreDriver {
     protected airDb: IAirportDatabase;
+    protected maxValues: number;
     queries: ActiveQueries;
     type: StoreType;
     protected utils: IUtils;
@@ -20,6 +21,7 @@ export declare abstract class SqlDriver implements IStoreDriver {
     abstract rollback(): Promise<void>;
     saveTransaction(transaction: ITransactionHistory): Promise<any>;
     insertValues(portableQuery: PortableQuery): Promise<number>;
+    private splitValues;
     deleteWhere(portableQuery: PortableQuery): Promise<number>;
     updateWhere(portableQuery: PortableQuery): Promise<number>;
     protected abstract executeNative(sql: string, parameters: any[]): Promise<number>;

@@ -59,12 +59,15 @@ class OperationManager {
         let cascadeRecords = [];
         for (const entity of entities) {
             if (checkIfProcessed && this.isProcessed(entity, createdEntityMap, dbEntity)[0] === true) {
-                return;
+                continue;
             }
             let foundValues = [];
             let valuesFragment = [];
             for (const dbProperty of dbEntity.properties) {
-                const newValue = entity[dbProperty.name];
+                let newValue = entity[dbProperty.name];
+                if (newValue === undefined) {
+                    newValue = null;
+                }
                 if (dbProperty.relation && dbProperty.relation.length) {
                     const dbRelation = dbProperty.relation[0];
                     this.assertRelationValueIsAnObject(newValue, dbProperty);
@@ -83,7 +86,7 @@ class OperationManager {
                                     }
                                 }
                                 this.columnProcessed(dbProperty, foundValues, dbColumn, columnValue);
-                                valuesFragment[dbColumn.index] = columnValue;
+                                valuesFragment[dbColumn.index] = columnValue === undefined ? null : columnValue;
                             }, false);
                             // Cascading on manyToOne is not currently implemented, nothing else needs
                             // to be done
@@ -108,7 +111,11 @@ class OperationManager {
                         throw `Repository Id must be specified on an insert`;
                     }
                     if (column.isGenerated && (newValue !== undefined && newValue !== null)) {
-                        throw `@GeneratedValue() "${dbEntity.name}.${dbProperty.name}" cannot have a value for 'create' operations.`;
+                        // Allowing negative integers for temporary identification
+                        // within the circular dependency management lookup
+                        if (!dbProperty.isId || newValue >= 0) {
+                            throw `@GeneratedValue() "${dbEntity.name}.${dbProperty.name}" cannot have a value for 'create' operations.`;
+                        }
                     }
                     if (dbProperty.isId) {
                         if (!column.isGenerated && this.utils.Schema.isIdEmpty(newValue)) {
@@ -491,7 +498,7 @@ class OperationManager {
     isProcessed(entity, 
     // This is a per-operation map (for a single update or create or delete with cascades)
     operatedOnEntityMap, dbEntity) {
-        if (air_control_1.markAsStub(entity)) {
+        if (air_control_1.isStub(entity)) {
             return [true, null];
         }
         if (!dbEntity.idColumns.length) {

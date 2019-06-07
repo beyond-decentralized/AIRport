@@ -1,40 +1,46 @@
 import {
+	DbColumn,
 	JSONEntityRelation,
 	JsonInsertValues
-}                              from "@airport/ground-control";
+}                              from '@airport/ground-control'
 import {
 	IQEntity,
 	IQEntityInternal
-}                              from "../../../lingo/core/entity/Entity";
-import {RawInsertColumnValues} from "../../../lingo/query/facade/InsertValues";
-import {AbstractInsertValues}  from "./AbstractInsertValues";
+}                              from '../../../lingo/core/entity/Entity'
+import {RawInsertColumnValues} from '../../../lingo/query/facade/InsertValues'
+import {AbstractInsertValues}  from './AbstractInsertValues'
 
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
 export class InsertColumnValues<IQE extends IQEntity>
 	extends AbstractInsertValues<IQE, RawInsertColumnValues<IQE>> {
 
 	toJSON(): JsonInsertValues {
-		const entityDriver = (<IQEntityInternal><any>this.rawInsertValues.insertInto).__driver__;
-		const insertInto   = <JSONEntityRelation>entityDriver.getRelationJson(this.columnAliases);
+		const entityDriver = (<IQEntityInternal><any>this.rawInsertValues.insertInto).__driver__
+		const insertInto   = <JSONEntityRelation>entityDriver.getRelationJson(this.columnAliases)
 
-		const columnMap = entityDriver.dbEntity.columnMap;
+		const columnMap = entityDriver.dbEntity.columnMap
+
+		const dbColumns: DbColumn[] = []
+		const columnIndexes         = this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map((
+			columnName: string
+		) => {
+			const dbColumn = columnMap[columnName]
+			if (!dbColumn) {
+				throw new Error(`
+		Could not find column ${columnName} in entity: ${entityDriver.dbEntity.name}
+				(table: ${entityDriver.dbEntity.tableConfig.name})
+						`)
+			}
+			dbColumns.push(dbColumn)
+
+			return dbColumn.index
+		})
 
 		return {
 			II: insertInto,
-			C: this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map((
-				columnName: string
-			) => {
-				const dbColumn = columnMap[columnName];
-				if (!dbColumn) {
-					throw new Error(`
-		Could not find column ${columnName} in entity: ${entityDriver.dbEntity.name}
-				(table: ${entityDriver.dbEntity.tableConfig.name})
-						`);
-				}
-				return dbColumn.index;
-			}),
-			V: this.valuesToJSON(this.rawInsertValues.values)
-		};
+			C: columnIndexes,
+			V: this.valuesToJSON(this.rawInsertValues.values, dbColumns)
+		}
 	}
 
 }

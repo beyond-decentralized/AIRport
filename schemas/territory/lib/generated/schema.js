@@ -116,6 +116,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 1,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -138,6 +139,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 2,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
@@ -347,6 +349,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 2,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -478,6 +481,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 2,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,

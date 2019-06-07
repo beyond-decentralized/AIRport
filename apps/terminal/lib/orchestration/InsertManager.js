@@ -88,15 +88,20 @@ class InsertManager {
         }
         for (const entityValues of values) {
             generatedColumns.forEach((generatedColumn) => {
-                if (entityValues[generatedColumn.index] || entityValues[generatedColumn.index] === 0) {
-                    throw `Already provided value '${entityValues[generatedColumn.index]}'
+                const generatedValue = entityValues[generatedColumn.index];
+                if (generatedValue || generatedValue === 0) {
+                    // Allowing negative integers for temporary identification
+                    // within the circular dependency management lookup
+                    if (generatedValue >= 0) {
+                        throw `Already provided value '${entityValues[generatedColumn.index]}'
 					on insert for @GeneratedValue '${dbEntity.name}.${generatedColumn.name}'.
 					You cannot explicitly provide values for @GeneratedValue columns'.`;
+                    }
                 }
             });
         }
         const numSequencesNeeded = generatedColumns.map(_ => values.length);
-        const generatedSequenceValues = this.seqGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
+        const generatedSequenceValues = await this.seqGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
         generatedColumns.forEach((dbColumn, generatedColumnIndex) => {
             const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex];
             values.forEach((entityValues, index) => {

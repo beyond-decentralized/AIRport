@@ -13,6 +13,7 @@ class QField {
         this.q = q;
         this.objectType = objectType;
         this.utils = utils;
+        this.__appliedFunctions__ = [];
     }
     /**
      protected getFieldKey() {

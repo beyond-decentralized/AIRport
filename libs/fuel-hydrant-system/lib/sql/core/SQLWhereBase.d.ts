@@ -30,7 +30,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     constructor(airportDb: IAirportDatabase, utils: IUtils, dbEntity: DbEntity, dialect: SQLDialect);
     getParameters(parameterMap: {
         [alias: string]: Parameter;
-    }, valuesArray?: (boolean | Date | number | string)[]): any[];
+    }): any[];
     protected getWHEREFragment(operation: JSONBaseOperation, nestingPrefix: string): string;
     private getLogicalWhereFragment;
     protected getEntityPropertyColumnName(qEntity: IQEntityInternal, columnIndex: number): string;

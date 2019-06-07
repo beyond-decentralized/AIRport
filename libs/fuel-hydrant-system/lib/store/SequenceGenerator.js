@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
 const airport_code_1 = require("@airport/airport-code");
 const di_1 = require("@airport/di");
 const diTokens_1 = require("../diTokens");
@@ -10,19 +11,20 @@ class SequenceGenerator {
         this.sequenceBlockDao = di_1.DI.getP(airport_code_1.SEQUENCE_BLOCK_DAO);
         this.sequenceConsumerDao = di_1.DI.getP(airport_code_1.SEQUENCE_CONSUMER_DAO);
         this.sequenceDao = di_1.DI.getP(airport_code_1.SEQUENCE_DAO);
+        di_1.DI.get(utils => this.utils = utils, air_control_1.UTILS);
     }
-    async init(domain) {
-        this.sequenceConsumer = {
-            createTimestamp: new Date().getTime(),
-            domain,
-            randomNumber: Math.random()
-        };
-        await (await this.sequenceConsumerDao).create(this.sequenceConsumer);
-        const sequences = await (await this.sequenceDao).findAll();
-    }
-    async addSequences(sequences) {
-        for (const sequence of sequences) {
-            this.utils.ensureChildArray(this.utils.ensureChildArray(this.sequences, sequence.schemaIndex), sequence.tableIndex)[sequence.columnIndex] = sequence;
+    async init(sequences) {
+        if (!sequences) {
+            sequences = await (await this.sequenceDao).findAll();
+        }
+        this.addSequences(sequences);
+        if (!this.sequenceConsumer) {
+            this.sequenceConsumer = {
+                createTimestamp: new Date().getTime(),
+                randomNumber: Math.random()
+            };
+            await (await this.sequenceConsumerDao).create(this.sequenceConsumer);
+            console.log('SequenceGenerator.init');
         }
     }
     async generateSequenceNumbers(dbColumns, numSequencesNeeded) {
@@ -80,6 +82,11 @@ class SequenceGenerator {
             });
         }
         return sequentialNumbers;
+    }
+    addSequences(sequences) {
+        for (const sequence of sequences) {
+            this.utils.ensureChildArray(this.utils.ensureChildArray(this.sequences, sequence.schemaIndex), sequence.tableIndex)[sequence.columnIndex] = sequence;
+        }
     }
     getNumNewSequencesNeeded(dbColumn, numSequencesNeeded) {
         const dbEntity = dbColumn.propertyColumns[0].property.entity;

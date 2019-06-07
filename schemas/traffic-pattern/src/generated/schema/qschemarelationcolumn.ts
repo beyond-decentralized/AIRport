@@ -62,16 +62,18 @@ declare function require(moduleName: string): any;
 export interface ISchemaRelationColumn extends IVersionedSchemaObject {
 	
 	// Id Properties
+	id?: number;
 
 	// Id Relations
-	manyColumn?: ISchemaColumn;
-	oneColumn?: ISchemaColumn;
-	manyRelation?: ISchemaRelation;
-	oneRelation?: ISchemaRelation;
 
 	// Non-Id Properties
 
 	// Non-Id Relations
+	manyColumn?: ISchemaColumn;
+	oneColumn?: ISchemaColumn;
+	manyRelation?: ISchemaRelation;
+	oneRelation?: ISchemaRelation;
+	parentRelation?: ISchemaRelation;
 
 	// Transient Properties
 
@@ -91,12 +93,13 @@ export interface SchemaRelationColumnESelect
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
+
+  // Non-Id relations (including OneToMany's)
 	manyColumn?: SchemaColumnESelect;
 	oneColumn?: SchemaColumnESelect;
 	manyRelation?: SchemaRelationESelect;
 	oneRelation?: SchemaRelationESelect;
-
-  // Non-Id relations (including OneToMany's)
+	parentRelation?: SchemaRelationESelect;
 
 }
 
@@ -106,12 +109,9 @@ export interface SchemaRelationColumnESelect
 export interface SchemaRelationColumnEId
     extends VersionedSchemaObjectEId {
 	// Id Properties
+	id: number | IQNumberField;
 
 	// Id Relations - Ids only
-	manyColumn: SchemaColumnEId;
-	oneColumn: SchemaColumnEId;
-	manyRelation: SchemaRelationEId;
-	oneRelation: SchemaRelationEId;
 
 }
 
@@ -120,12 +120,9 @@ export interface SchemaRelationColumnEId
  */
 export interface SchemaRelationColumnEOptionalId {
 	// Id Properties
+	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
-	manyColumn?: SchemaColumnEOptionalId;
-	oneColumn?: SchemaColumnEOptionalId;
-	manyRelation?: SchemaRelationEOptionalId;
-	oneRelation?: SchemaRelationEOptionalId;
 
 }
 
@@ -137,6 +134,11 @@ export interface SchemaRelationColumnEUpdateProperties
 	// Non-Id Properties
 
 	// Non-Id Relations - ids only & no OneToMany's
+	manyColumn?: SchemaColumnEOptionalId;
+	oneColumn?: SchemaColumnEOptionalId;
+	manyRelation?: SchemaRelationEOptionalId;
+	oneRelation?: SchemaRelationEOptionalId;
+	parentRelation?: SchemaRelationEOptionalId;
 
 }
 
@@ -149,6 +151,11 @@ export interface SchemaRelationColumnEUpdateColumns
 	DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
 	REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
 	SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+	MANY_SCHEMA_COLUMN_ID?: number | IQNumberField;
+	ONE_SCHEMA_COLUMN_ID?: number | IQNumberField;
+	MANY_SCHEMA_RELATION_ID?: number | IQNumberField;
+	ONE_SCHEMA_RELATION_ID?: number | IQNumberField;
+	PARENT_RELATION_ID?: number | IQNumberField;
 
 }
 
@@ -179,16 +186,18 @@ extends SchemaRelationColumnEId, SchemaRelationColumnEUpdateColumns {
 export interface QSchemaRelationColumn extends QVersionedSchemaObject
 {
 	// Id Fields
+	id: IQNumberField;
 
 	// Id Relations
-	manyColumn: QSchemaColumnQRelation;
-	oneColumn: QSchemaColumnQRelation;
-	manyRelation: QSchemaRelationQRelation;
-	oneRelation: QSchemaRelationQRelation;
 
 	// Non-Id Fields
 
 	// Non-Id Relations
+	manyColumn: QSchemaColumnQRelation;
+	oneColumn: QSchemaColumnQRelation;
+	manyRelation: QSchemaRelationQRelation;
+	oneRelation: QSchemaRelationQRelation;
+	parentRelation: QSchemaRelationQRelation;
 
 }
 
@@ -198,12 +207,9 @@ export interface QSchemaRelationColumnQId extends QVersionedSchemaObjectQId
 {
 	
 	// Id Fields
+	id: IQNumberField;
 
 	// Id Relations
-	manyColumn: QSchemaColumnQId;
-	oneColumn: QSchemaColumnQId;
-	manyRelation: QSchemaRelationQId;
-	oneRelation: QSchemaRelationQId;
 
 
 }

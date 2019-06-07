@@ -1,3 +1,4 @@
+import {ISequence}        from '@airport/airport-code'
 import {DI}               from '@airport/di'
 import {
 	getSchemaName,
@@ -65,12 +66,13 @@ export class PostgreSqlSchemaBuilder
 
 	async buildAllSequences(
 		jsonSchemas: JsonSchema[]
-	): Promise<void> {
+	): Promise<ISequence[]> {
 		for (const jsonSchema of jsonSchemas) {
 			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
 				await this.buildSequences(jsonSchema, jsonEntity)
 			}
 		}
+		throw 'Finish implementing'
 	}
 
 	async buildSequences(

@@ -404,7 +404,9 @@ class SchemaComposer {
                             manyColumn,
                             manyRelation,
                             oneColumn,
-                            oneRelation
+                            oneRelation,
+                            // FIXME: figure out how to many OneToMany-only relations
+                            parentRelation: manyRelation
                         };
                         // manyRelation.manyRelationColumns.push(relationColumn)
                         // if (!jsonRelationColumn.oneSchemaIndex) {

@@ -27,7 +27,11 @@ __decorate([
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'CONSUMER_ID', referencedColumnName: 'ID', nullable: false })
+    air_control_1.JoinColumns([{
+            name: 'CREATE_TIMESTAMP'
+        }, {
+            name: 'RANDOM_NUMBER'
+        }])
 ], SequenceBlock.prototype, "sequenceConsumer", void 0);
 __decorate([
     air_control_1.Column({ name: 'SIZE', nullable: false })

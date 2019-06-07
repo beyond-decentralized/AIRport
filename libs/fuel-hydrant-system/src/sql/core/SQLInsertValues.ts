@@ -58,7 +58,7 @@ ${valuesFragment}
 	): string {
 		let allValuesFragment = valuesClauseFragment.map((valuesArray) => {
 			let valuesFragment = valuesArray.map((value) => {
-				if (['number','string'].indexOf(typeof value) > -1) {
+				if (value === null || ['number','string'].indexOf(typeof value) > -1) {
 					this.parameterReferences.push(value);
 					return this.sqlAdaptor.getParameterReference(this.parameterReferences, value);
 				} else {

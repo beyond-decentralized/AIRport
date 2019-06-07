@@ -7,19 +7,22 @@ class InsertColumnValues extends AbstractInsertValues_1.AbstractInsertValues {
         const entityDriver = this.rawInsertValues.insertInto.__driver__;
         const insertInto = entityDriver.getRelationJson(this.columnAliases);
         const columnMap = entityDriver.dbEntity.columnMap;
-        return {
-            II: insertInto,
-            C: this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map((columnName) => {
-                const dbColumn = columnMap[columnName];
-                if (!dbColumn) {
-                    throw new Error(`
+        const dbColumns = [];
+        const columnIndexes = this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map((columnName) => {
+            const dbColumn = columnMap[columnName];
+            if (!dbColumn) {
+                throw new Error(`
 		Could not find column ${columnName} in entity: ${entityDriver.dbEntity.name}
 				(table: ${entityDriver.dbEntity.tableConfig.name})
 						`);
-                }
-                return dbColumn.index;
-            }),
-            V: this.valuesToJSON(this.rawInsertValues.values)
+            }
+            dbColumns.push(dbColumn);
+            return dbColumn.index;
+        });
+        return {
+            II: insertInto,
+            C: columnIndexes,
+            V: this.valuesToJSON(this.rawInsertValues.values, dbColumns)
         };
     }
 }

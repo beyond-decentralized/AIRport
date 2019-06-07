@@ -10,9 +10,9 @@ import {
 	InsertValues,
 	IQEntity,
 	IQueryFacade,
+	isStub,
 	IUtils,
 	MappedEntityArray,
-	markAsStub,
 	or,
 	RawDelete,
 	RawInsertColumnValues,
@@ -176,13 +176,16 @@ export abstract class OperationManager
 
 		for (const entity of entities) {
 			if (checkIfProcessed && this.isProcessed(entity, createdEntityMap, dbEntity)[0] === true) {
-				return
+				continue
 			}
 			let foundValues         = []
 			let valuesFragment: any = []
 
 			for (const dbProperty of dbEntity.properties) {
-				const newValue: any = entity[dbProperty.name]
+				let newValue: any = entity[dbProperty.name]
+				if (newValue === undefined) {
+					newValue = null
+				}
 				if (dbProperty.relation && dbProperty.relation.length) {
 					const dbRelation = dbProperty.relation[0]
 					this.assertRelationValueIsAnObject(newValue, dbProperty)
@@ -205,7 +208,7 @@ export abstract class OperationManager
 									}
 								}
 								this.columnProcessed(dbProperty, foundValues, dbColumn, columnValue)
-								valuesFragment[dbColumn.index] = columnValue
+								valuesFragment[dbColumn.index] = columnValue === undefined ? null : columnValue
 							}, false)
 							// Cascading on manyToOne is not currently implemented, nothing else needs
 							// to be done
@@ -230,7 +233,11 @@ export abstract class OperationManager
 						throw `Repository Id must be specified on an insert`
 					}
 					if (column.isGenerated && (newValue !== undefined && newValue !== null)) {
-						throw `@GeneratedValue() "${dbEntity.name}.${dbProperty.name}" cannot have a value for 'create' operations.`
+						// Allowing negative integers for temporary identification
+						// within the circular dependency management lookup
+						if(!dbProperty.isId || newValue >= 0) {
+							throw `@GeneratedValue() "${dbEntity.name}.${dbProperty.name}" cannot have a value for 'create' operations.`
+						}
 					}
 					if (dbProperty.isId) {
 						if (!column.isGenerated && this.utils.Schema.isIdEmpty(newValue)) {
@@ -736,7 +743,7 @@ export abstract class OperationManager
 		operatedOnEntityMap: { [entityId: string]: any }[][],
 		dbEntity: DbEntity,
 	): [boolean, EntityIdData] {
-		if (markAsStub(entity)) {
+		if (isStub(entity)) {
 			return [true, null]
 		}
 

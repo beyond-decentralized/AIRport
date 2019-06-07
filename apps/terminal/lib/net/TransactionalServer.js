@@ -39,7 +39,7 @@ class TransactionalServer {
         }, diTokens_1.DELETE_MANAGER, diTokens_1.INSERT_MANAGER, diTokens_1.QUERY_MANAGER, terminal_map_1.TRANSACTION_MANAGER, diTokens_1.UPDATE_MANAGER);
     }
     async init() {
-        this.transactionManager.init('airport');
+        await this.transactionManager.init('airport');
     }
     async transact(credentials) {
         // this.lastTransactionIndex++
@@ -71,6 +71,20 @@ class TransactionalServer {
     }
     async insertValues(portableQuery, credentials, transactionIndex, ensureGeneratedValues // for internal use only
     ) {
+        const values = portableQuery.jsonQuery.V;
+        if (!values.length) {
+            return 0;
+        }
+        const firstValuesRow = values[0];
+        if (!firstValuesRow || !firstValuesRow.length) {
+            return 0;
+        }
+        const numValuesInRow = firstValuesRow.length;
+        for (let valuesRow of values) {
+            if (valuesRow.length !== numValuesInRow) {
+                return 0;
+            }
+        }
         const actor = await this.getActor(portableQuery);
         return await this.wrapInTransaction(async () => await this.insertManager.insertValues(portableQuery, actor, ensureGeneratedValues), 'INSERT', credentials);
     }

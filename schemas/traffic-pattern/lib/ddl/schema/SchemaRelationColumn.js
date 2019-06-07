@@ -17,28 +17,38 @@ let SchemaRelationColumn = class SchemaRelationColumn extends VersionedSchemaObj
 };
 __decorate([
     air_control_1.Id(),
+    air_control_1.GeneratedValue(),
+    __metadata("design:type", Number)
+], SchemaRelationColumn.prototype, "id", void 0);
+__decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'MANY_SCHEMA_COLUMN_ID', referencedColumnName: 'ID', nullable: false }),
+    air_control_1.JoinColumn({
+        name: 'MANY_SCHEMA_COLUMN_ID',
+        referencedColumnName: 'ID',
+        nullable: false
+    }),
     __metadata("design:type", SchemaColumn_1.SchemaColumn)
 ], SchemaRelationColumn.prototype, "manyColumn", void 0);
 __decorate([
-    air_control_1.Id(),
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: 'ONE_SCHEMA_COLUMN_ID', referencedColumnName: 'ID', nullable: false }),
     __metadata("design:type", SchemaColumn_1.SchemaColumn)
 ], SchemaRelationColumn.prototype, "oneColumn", void 0);
 __decorate([
-    air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'MANY_SCHEMA_RELATION_ID', referencedColumnName: 'ID', nullable: false }),
+    air_control_1.JoinColumn({ name: 'MANY_SCHEMA_RELATION_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", SchemaRelation_1.SchemaRelation)
 ], SchemaRelationColumn.prototype, "manyRelation", void 0);
 __decorate([
-    air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'ONE_SCHEMA_RELATION_ID', referencedColumnName: 'ID', nullable: false }),
+    air_control_1.JoinColumn({ name: 'ONE_SCHEMA_RELATION_ID', referencedColumnName: 'ID' }),
     __metadata("design:type", SchemaRelation_1.SchemaRelation)
 ], SchemaRelationColumn.prototype, "oneRelation", void 0);
+__decorate([
+    air_control_1.ManyToOne(),
+    air_control_1.JoinColumn({ name: 'PARENT_RELATION_ID', referencedColumnName: 'ID' }),
+    __metadata("design:type", SchemaRelation_1.SchemaRelation)
+], SchemaRelationColumn.prototype, "parentRelation", void 0);
 SchemaRelationColumn = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({

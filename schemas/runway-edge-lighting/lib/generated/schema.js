@@ -54,6 +54,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 3,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -172,6 +173,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 2,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -316,6 +318,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 3,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -337,6 +340,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 4,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
@@ -559,6 +563,7 @@ exports.SCHEMA = {
                     "columns": [
                         {
                             "index": 0,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -580,6 +585,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 1,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,

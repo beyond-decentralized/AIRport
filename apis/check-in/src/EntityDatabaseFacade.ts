@@ -24,9 +24,9 @@ import {
 	RawInsertValues,
 	RawUpdate,
 	UpdateCacheType
-}                 from "@airport/air-control";
-import {DbEntity} from "@airport/ground-control";
-import {Duo}      from "./Duo";
+}                 from '@airport/air-control'
+import {DbEntity} from '@airport/ground-control'
+import {Duo}      from './Duo'
 
 /**
  * Created by Papa on 12/11/2016.
@@ -41,91 +41,91 @@ export class EntityDatabaseFacade<Entity,
 	IQ extends IQEntity>
 	implements IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, IQ> {
 
-	common: IDatabaseFacade;
-	duo: IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateProperties, EntityId, IQ>;
-	find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
-	findOne: IEntityFindOne<Entity, EntitySelect>;
-	search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
-	searchOne: IEntitySearchOne<Entity, EntitySelect>;
+	common: IDatabaseFacade
+	duo: IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateProperties, EntityId, IQ>
+	find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>
+	findOne: IEntityFindOne<Entity, EntitySelect>
+	search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>
+	searchOne: IEntitySearchOne<Entity, EntitySelect>
 
 	constructor(
 		public dbEntity: DbEntity,
 		private Q: QSchema,
 		private utils: IUtils
 	) {
-		this.duo = new Duo(dbEntity);
+		this.duo = new Duo(dbEntity)
 	}
 
 	get from(): IQ {
-		return this.Q[this.dbEntity.name];
+		return this.Q[this.dbEntity.name]
 	}
 
 	initialize(
 		databaseFacade: IDatabaseFacade
 	) {
-		this.common = databaseFacade;
-		this.find = new EntityFind<Entity, Array<Entity>, EntitySelect>(
-			this.dbEntity, databaseFacade, this.utils);
-		this.findOne = new EntityFindOne(this.dbEntity, databaseFacade, this.utils);
-		this.search = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
-			this.dbEntity, databaseFacade, this.utils);
-		this.searchOne = new EntitySearchOne(this.dbEntity, databaseFacade, this.utils);
+		this.common    = databaseFacade
+		this.find      = new EntityFind<Entity, Array<Entity>, EntitySelect>(
+			this.dbEntity, databaseFacade, this.utils)
+		this.findOne   = new EntityFindOne(this.dbEntity, databaseFacade, this.utils)
+		this.search    = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
+			this.dbEntity, databaseFacade, this.utils)
+		this.searchOne = new EntitySearchOne(this.dbEntity, databaseFacade, this.utils)
 	}
 
 	releaseCachedForUpdate(
 		updateCacheType: UpdateCacheType,
 		...entities: Entity[]
 	): void {
-		this.common.releaseCachedForUpdate(updateCacheType, this.dbEntity, ...entities);
+		this.common.releaseCachedForUpdate(updateCacheType, this.dbEntity, ...entities)
 	}
 
 	async create(
 		entity: EntityCreate
 	): Promise<number> {
-		return await this.common.create(this.dbEntity, entity);
+		return await this.common.create(this.dbEntity, entity)
 	}
 
 	async bulkCreate(
 		entities: EntityCreate[],
-		checkIfProcessed: boolean = true,
-		cascade: boolean = false,
+		cascade: boolean          = false,
+		checkIfProcessed: boolean = true
 	): Promise<number> {
-		return await this.common.bulkCreate(this.dbEntity, entities, checkIfProcessed, cascade);
+		return await this.common.bulkCreate(this.dbEntity, entities, checkIfProcessed, cascade)
 	}
 
 	async insertColumnValues<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		}): Promise<number> {
-		return await this.common.insertColumnValues(this.dbEntity, rawInsertColumnValues);
+		return await this.common.insertColumnValues(this.dbEntity, rawInsertColumnValues)
 	}
 
 	async insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		}): Promise<number> {
-		return await this.common.insertValues(this.dbEntity, rawInsertValues);
+		return await this.common.insertValues(this.dbEntity, rawInsertValues)
 	}
 
 	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		}): Promise<number[] | string[]> {
-		return await this.common.insertColumnValuesGenerateIds(this.dbEntity, rawInsertColumnValues);
+		return await this.common.insertColumnValuesGenerateIds(this.dbEntity, rawInsertColumnValues)
 	}
 
 	async insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		}): Promise<number[] | string[]> {
-		return await this.common.insertValuesGenerateIds(this.dbEntity, rawInsertValues);
+		return await this.common.insertValuesGenerateIds(this.dbEntity, rawInsertValues)
 	}
 
 
 	async update(
 		entity: EntityCreate
 	): Promise<number> {
-		return await this.common.update(this.dbEntity, entity);
+		return await this.common.update(this.dbEntity, entity)
 	}
 
 	async updateColumnsWhere(
@@ -134,7 +134,7 @@ export class EntityDatabaseFacade<Entity,
 				: RawUpdate<EntityUpdateColumns, IQ>
 		}
 	): Promise<number> {
-		return await this.common.updateColumnsWhere(this.dbEntity, rawUpdateColumns);
+		return await this.common.updateColumnsWhere(this.dbEntity, rawUpdateColumns)
 	}
 
 	async updateWhere(
@@ -143,25 +143,25 @@ export class EntityDatabaseFacade<Entity,
 				: RawUpdate<EntityUpdateProperties, IQ>
 		}
 	): Promise<number> {
-		return await this.common.updateWhere(this.dbEntity, rawUpdate);
+		return await this.common.updateWhere(this.dbEntity, rawUpdate)
 	}
 
 	async delete(
 		entity: EntityId
 	): Promise<number> {
-		return await this.common.delete(this.dbEntity, entity);
+		return await this.common.delete(this.dbEntity, entity)
 	}
 
 	async deleteWhere(
 		rawDelete: RawDelete<IQ> | { (...args: any[]): RawDelete<IQ> }
 	): Promise<number> {
-		return await this.common.deleteWhere(this.dbEntity, rawDelete);
+		return await this.common.deleteWhere(this.dbEntity, rawDelete)
 	}
 
 	async save(
 		entity: EntityCreate
 	): Promise<number> {
-		return await this.common.save(this.dbEntity, entity);
+		return await this.common.save(this.dbEntity, entity)
 	}
 
 }

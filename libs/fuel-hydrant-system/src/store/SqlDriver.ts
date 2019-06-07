@@ -49,6 +49,7 @@ export abstract class SqlDriver
 	implements IStoreDriver {
 
 	protected airDb: IAirportDatabase
+	protected maxValues: number
 	public queries: ActiveQueries
 	public type: StoreType
 	protected utils: IUtils
@@ -87,12 +88,44 @@ export abstract class SqlDriver
 		portableQuery: PortableQuery,
 		// repository?: IRepository
 	): Promise<number> {
-		let sqlInsertValues = new SQLInsertValues(this.airDb, this.utils,
-			<JsonInsertValues>portableQuery.jsonQuery, this.getDialect())
-		let sql             = sqlInsertValues.toSQL()
-		let parameters      = sqlInsertValues.getParameters(portableQuery.parameterMap)
+		const splitValues = this.splitValues((portableQuery.jsonQuery as JsonInsertValues).V)
 
-		return await this.executeNative(sql, parameters)
+		let numVals = 0
+		for (const V of splitValues) {
+
+			let sqlInsertValues = new SQLInsertValues(this.airDb, this.utils,
+				<JsonInsertValues>{
+					...portableQuery.jsonQuery,
+					V
+				}, this.getDialect())
+			let sql             = sqlInsertValues.toSQL()
+			let parameters      = sqlInsertValues.getParameters(portableQuery.parameterMap)
+
+			numVals += await this.executeNative(sql, parameters)
+		}
+
+		return numVals
+	}
+
+	private splitValues(
+		values: any[][]
+	): any[][][] {
+		const valuesInRow = values[0].length
+		const numValues   = values.length * valuesInRow
+
+		if (numValues <= this.maxValues) {
+			return [values]
+		}
+
+		let numRowsPerBatch = Math.floor(this.maxValues / valuesInRow)
+
+		const splitValues = []
+		for (let i = 0; i < values.length; i += numRowsPerBatch) {
+			const aSplitValues = values.slice(i, i + numRowsPerBatch)
+			splitValues.push(aSplitValues)
+		}
+
+		return splitValues
 	}
 
 	async deleteWhere(

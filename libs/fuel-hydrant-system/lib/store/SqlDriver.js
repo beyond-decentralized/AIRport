@@ -30,10 +30,32 @@ class SqlDriver {
         this.queries.markQueriesToRerun(transaction.schemaMap);
     }
     async insertValues(portableQuery) {
-        let sqlInsertValues = new SQLInsertValues_1.SQLInsertValues(this.airDb, this.utils, portableQuery.jsonQuery, this.getDialect());
-        let sql = sqlInsertValues.toSQL();
-        let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap);
-        return await this.executeNative(sql, parameters);
+        const splitValues = this.splitValues(portableQuery.jsonQuery.V);
+        let numVals = 0;
+        for (const V of splitValues) {
+            let sqlInsertValues = new SQLInsertValues_1.SQLInsertValues(this.airDb, this.utils, {
+                ...portableQuery.jsonQuery,
+                V
+            }, this.getDialect());
+            let sql = sqlInsertValues.toSQL();
+            let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap);
+            numVals += await this.executeNative(sql, parameters);
+        }
+        return numVals;
+    }
+    splitValues(values) {
+        const valuesInRow = values[0].length;
+        const numValues = values.length * valuesInRow;
+        if (numValues <= this.maxValues) {
+            return [values];
+        }
+        let numRowsPerBatch = Math.floor(this.maxValues / valuesInRow);
+        const splitValues = [];
+        for (let i = 0; i < values.length; i += numRowsPerBatch) {
+            const aSplitValues = values.slice(i, i + numRowsPerBatch);
+            splitValues.push(aSplitValues);
+        }
+        return splitValues;
     }
     async deleteWhere(portableQuery) {
         let fieldMap = new ground_control_1.SyncSchemaMap();

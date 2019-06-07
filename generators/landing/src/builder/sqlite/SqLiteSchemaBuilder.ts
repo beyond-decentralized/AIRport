@@ -1,6 +1,5 @@
 import {
 	AIR_DB,
-	QEntity,
 	QSchemaInternal
 }                         from '@airport/air-control'
 import {
@@ -39,14 +38,15 @@ export class SqLiteSchemaBuilder
 			primaryKeySuffix = ' NOT NULL'
 		}
 
-		let autoincrementSuffix = ''
-		if (jsonColumn.isGenerated
-			&& jsonSchema.name === '@airport/airport-code'
-			&& jsonEntity.name === 'SEQUENCES') {
-			autoincrementSuffix = ' AUTOINCREMENT'
-		}
+		// SEQUENCES no longer have a generated id (for simplicity of code)
+		// let autoincrementSuffix = ''
+		// if (jsonColumn.isGenerated
+		// 	&& jsonSchema.name === '@airport/airport-code'
+		// 	&& jsonEntity.name === 'SEQUENCES') {
+		// 	autoincrementSuffix = ' AUTOINCREMENT'
+		// }
 
-		const suffix = primaryKeySuffix + autoincrementSuffix
+		const suffix = primaryKeySuffix // + autoincrementSuffix
 
 		switch (jsonColumn.type) {
 			case SQLDataType.ANY:
@@ -76,7 +76,7 @@ export class SqLiteSchemaBuilder
 
 	async buildAllSequences(
 		jsonSchemas: JsonSchema[]
-	): Promise<void> {
+	): Promise<ISequence[]> {
 		let airDb = await DI.getP(AIR_DB)
 
 		let allSequences: ISequence[] = []
@@ -90,6 +90,8 @@ export class SqLiteSchemaBuilder
 		const sequenceDao = await DI.getP(SEQUENCE_DAO)
 
 		await sequenceDao.bulkCreate(allSequences)
+
+		return allSequences
 	}
 
 	buildSequences(

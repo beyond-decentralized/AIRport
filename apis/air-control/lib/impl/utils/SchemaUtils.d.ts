@@ -7,6 +7,7 @@ import { QEntityConstructor } from '../core/entity/Entity';
 export declare class SchemaUtils implements ISchemaUtils {
     private airportDb;
     private utils;
+    static TEMP_ID: number;
     constructor(airportDb: IAirportDatabase, utils: IUtils);
     getDbEntity(schemaIndex: SchemaIndex, tableIndex: TableIndex): DbEntity;
     isRepositoryId(columnName: string): boolean;

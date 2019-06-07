@@ -134,7 +134,7 @@ function coalesce(...values) {
         throw new Error(`No arguments provided to the coalesce function`);
     }
     let dataType;
-    const firstValue = values[1];
+    const firstValue = values[0];
     if (firstValue instanceof UntypedField_1.QUntypedField) {
         dataType = ground_control_1.SQLDataType.ANY;
     }

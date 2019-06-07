@@ -105,6 +105,7 @@ class DatabaseManager {
             await this.initTerminal(domainName);
             server.tempActor = null;
         }
+        await (await di_1.DI.getP(fuel_hydrant_system_1.SEQUENCE_GENERATOR)).init();
         /*
                 throw `Implement!`
                 let dbFacade: IDatabaseFacade = this.databaseMap[terminalName]

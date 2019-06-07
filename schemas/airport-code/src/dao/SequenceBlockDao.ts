@@ -9,13 +9,13 @@ import {
 }                                       from '@airport/air-control'
 import {DI}                             from '@airport/di'
 import {SequenceBlockReservationMillis} from '../ddl/ddl'
+import {SEQUENCE_BLOCK_DAO}             from '../diTokens'
 import {
 	BaseSequenceBlockDao,
 	IBaseSequenceBlockDao,
 	ISequenceBlock,
 	Q,
 }                                       from '../generated/generated'
-import {SEQUENCE_BLOCK_DAO}             from '../diTokens'
 
 export interface IAbstractSequenceBlockDao {
 
@@ -27,7 +27,7 @@ export interface IAbstractSequenceBlockDao {
 
 export interface ISequenceBlockDao
 	extends IAbstractSequenceBlockDao,
-					IBaseSequenceBlockDao {
+	        IBaseSequenceBlockDao {
 
 }
 
@@ -65,7 +65,8 @@ export class SequenceBlockDao
 			sequenceBlock.sequence.schemaIndex,
 			sequenceBlock.sequence.tableIndex,
 			sequenceBlock.sequence.columnIndex,
-			sequenceBlock.sequenceConsumer.id,
+			sequenceBlock.sequenceConsumer.createTimestamp,
+			sequenceBlock.sequenceConsumer.randomNumber,
 			sequenceBlock.size,
 			newLastReservedIds[index],
 			reservationMillis
@@ -77,7 +78,8 @@ export class SequenceBlockDao
 				sb.sequence.schemaIndex,
 				sb.sequence.tableIndex,
 				sb.sequence.columnIndex,
-				sb.sequenceConsumer.id,
+				sb.sequenceConsumer.createTimestamp,
+				sb.sequenceConsumer.randomNumber,
 				sb.size,
 				sb.lastReservedId,
 				sb.reservationMillis
@@ -103,14 +105,16 @@ export class SequenceBlockDao
 		return newSequenceBlocks.sort((
 			seqBlock1,
 			seqBlock2
-		) =>
+			) =>
 			indexMapById.get(seqBlock1.id) - indexMapById.get(seqBlock2.id)
-		).map(seqBlock => {
-			seqBlock.currentNumber = seqBlock.lastReservedId - seqBlock.size
+		).map(
+			seqBlock => {
+				seqBlock.currentNumber = seqBlock.lastReservedId - seqBlock.size
 
-			return [seqBlock]
-		});
+				return [seqBlock]
+			})
 	}
 
 }
+
 DI.set(SEQUENCE_BLOCK_DAO, SequenceBlockDao)

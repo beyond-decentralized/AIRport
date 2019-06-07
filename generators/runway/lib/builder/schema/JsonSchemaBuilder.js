@@ -42,7 +42,7 @@ class JsonSchemaBuilder {
                 allocationSize: sColumn.allocationSize,
                 columnDefinition: sColumn.columnDefinition,
                 index: sColumn.index,
-                isGenerated: sColumn.isGenerated,
+                isGenerated: sColumn.isGenerated === undefined ? false : sColumn.isGenerated,
                 manyRelationColumnRefs: [],
                 name: sColumn.name,
                 notNull: sColumn.notNull,

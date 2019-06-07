@@ -61,8 +61,7 @@ export class SchemaDao
 			select: {},
 			from: [
 				s = Q.Schema
-			],
-			where: s.removedInVersion.id.isNull()
+			]
 		})
 	}
 

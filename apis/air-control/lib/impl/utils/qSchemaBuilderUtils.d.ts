@@ -17,9 +17,10 @@ import { QRelation } from '../core/entity/Relation';
  * https://stackoverflow.com/questions/6617780/how-to-call-parent-constructor
  */
 export declare function extend(base: any, sub: any, methods: any): any;
-export declare function getColumnQField(entity: DbEntity, property: DbProperty, q: IQEntityInternal, utils: IUtils, column?: DbColumn): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField;
+export declare function getColumnQField(entity: DbEntity, property: DbProperty, q: IQEntityInternal, utils: IUtils, column: DbColumn): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField;
 export declare function getQRelation(entity: DbEntity, property: DbProperty, q: IQEntityInternal, utils: IUtils, allQSchemas: QSchema[]): IQRelation<typeof q>;
 export declare function getQEntityConstructor(allQSchemas: QSchema[]): typeof QEntity;
+export declare function addColumnQField(entity: DbEntity, property: DbProperty, q: IQEntityInternal, utils: IUtils, column: DbColumn): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField;
 export declare function getQEntityIdRelationConstructor(): typeof QRelation;
 /**
  * Set all fields behind an id relation.  For example

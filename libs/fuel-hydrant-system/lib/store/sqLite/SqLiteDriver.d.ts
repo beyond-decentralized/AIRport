@@ -4,6 +4,7 @@ import { SqlDriver } from '../SqlDriver';
  * Created by Papa on 11/27/2016.
  */
 export declare abstract class SqLiteDriver extends SqlDriver {
+    constructor();
     doesTableExist(tableName: string): Promise<boolean>;
     dropTable(tableName: string): Promise<boolean>;
     findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;

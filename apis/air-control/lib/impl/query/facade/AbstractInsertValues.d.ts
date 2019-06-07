@@ -1,6 +1,7 @@
-import { IQEntity } from "../../../lingo/core/entity/Entity";
-import { AbstractRawInsertValues } from "../../../lingo/query/facade/InsertValues";
-import { AbstractQuery } from "./AbstractQuery";
+import { DbColumn } from '@airport/ground-control';
+import { IQEntity } from '../../../lingo/core/entity/Entity';
+import { AbstractRawInsertValues } from '../../../lingo/query/facade/InsertValues';
+import { AbstractQuery } from './AbstractQuery';
 /**
  * Created by Papa on 11/17/2016.
  */
@@ -8,5 +9,5 @@ export declare abstract class AbstractInsertValues<IQE extends IQEntity, ARIV ex
     rawInsertValues: ARIV;
     columnIndexes?: number[];
     constructor(rawInsertValues: ARIV, columnIndexes?: number[]);
-    protected valuesToJSON(valueSets: any[][]): any[][];
+    protected valuesToJSON(valueSets: any[][], dbColumns: DbColumn[]): any[][];
 }

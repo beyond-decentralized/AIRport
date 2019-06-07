@@ -20,16 +20,6 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
-import {
-	IDomain,
-	DomainEId,
-	DomainEOptionalId,
-	DomainEUpdateProperties,
-	DomainESelect,
-	QDomain,
-	QDomainQId,
-	QDomainQRelation,
-} from '@airport/territory';
 
 
 declare function require(moduleName: string): any;
@@ -42,16 +32,14 @@ declare function require(moduleName: string): any;
 export interface ISequenceConsumer {
 	
 	// Id Properties
-	id?: number;
+	createTimestamp?: number;
+	randomNumber?: number;
 
 	// Id Relations
 
 	// Non-Id Properties
-	createTimestamp?: number;
-	randomNumber?: number;
 
 	// Non-Id Relations
-	domain?: IDomain;
 
 	// Transient Properties
 
@@ -69,13 +57,10 @@ export interface ISequenceConsumer {
 export interface SequenceConsumerESelect
     extends IEntitySelectProperties, SequenceConsumerEOptionalId {
 	// Non-Id Properties
-	createTimestamp?: number | IQNumberField;
-	randomNumber?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	domain?: DomainESelect;
 
 }
 
@@ -85,7 +70,8 @@ export interface SequenceConsumerESelect
 export interface SequenceConsumerEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	createTimestamp: number | IQNumberField;
+	randomNumber: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -96,7 +82,8 @@ export interface SequenceConsumerEId
  */
 export interface SequenceConsumerEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	createTimestamp?: number | IQNumberField;
+	randomNumber?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -108,11 +95,8 @@ export interface SequenceConsumerEOptionalId {
 export interface SequenceConsumerEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	createTimestamp?: number | IQNumberField;
-	randomNumber?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	domain?: DomainEOptionalId;
 
 }
 
@@ -122,9 +106,6 @@ export interface SequenceConsumerEUpdateProperties
 export interface SequenceConsumerEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	CREATE_TIMESTAMP?: number | IQNumberField;
-	RANDOM_NUMBER?: number | IQNumberField;
-	DOMAIN_ID?: number | IQNumberField;
 
 }
 
@@ -155,16 +136,14 @@ extends SequenceConsumerEId, SequenceConsumerEUpdateColumns {
 export interface QSequenceConsumer extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	createTimestamp: IQNumberField;
+	randomNumber: IQNumberField;
 
 	// Id Relations
 
 	// Non-Id Fields
-	createTimestamp: IQNumberField;
-	randomNumber: IQNumberField;
 
 	// Non-Id Relations
-	domain: QDomainQRelation;
 
 }
 
@@ -174,7 +153,8 @@ export interface QSequenceConsumerQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	createTimestamp: IQNumberField;
+	randomNumber: IQNumberField;
 
 	// Id Relations
 

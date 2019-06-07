@@ -146,11 +146,17 @@ class SchemaUtils {
             const propertyBreadCrumb = [...breadCrumb];
             const propertyName = dbProperty.name;
             propertyBreadCrumb.push(propertyName);
-            const value = relationObject[propertyName];
+            let value = relationObject[propertyName];
             if (forIdKey && this.isIdEmpty(value)) {
-                // if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value,
-                // noValueCallback)) { return null; }
-                throw `Cannot retrieve composite Id value, value chain '${propertyBreadCrumb.join('.')}' is : ${value}.`;
+                if (dbColumn.isGenerated) {
+                    value = --SchemaUtils.TEMP_ID;
+                    relationObject[propertyName] = value;
+                }
+                else {
+                    // if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value,
+                    // noValueCallback)) { return null; }
+                    throw `Cannot retrieve composite Id value, value chain '${propertyBreadCrumb.join('.')}' is : ${value}.`;
+                }
             }
             return [{
                     path: propertyBreadCrumb,
@@ -331,5 +337,6 @@ class SchemaUtils {
         return false;
     }
 }
+SchemaUtils.TEMP_ID = 0;
 exports.SchemaUtils = SchemaUtils;
 //# sourceMappingURL=SchemaUtils.js.map

@@ -9,10 +9,16 @@ class InsertValues extends AbstractInsertValues_1.AbstractInsertValues {
     toJSON() {
         const insertInto = this.rawInsertValues.insertInto
             .__driver__.getRelationJson(this.columnAliases);
+        const dbColumns = [];
+        const columnIndexes = this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map(column => {
+            const dbColumn = column.dbColumn;
+            dbColumns.push(dbColumn);
+            return dbColumn.index;
+        });
         return {
             II: insertInto,
-            C: this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map(column => column.dbColumn.index),
-            V: this.valuesToJSON(this.rawInsertValues.values)
+            C: columnIndexes,
+            V: this.valuesToJSON(this.rawInsertValues.values, dbColumns)
         };
     }
 }

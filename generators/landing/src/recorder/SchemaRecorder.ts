@@ -8,6 +8,7 @@ import {
 	DOMAIN_DAO,
 	IDomainDao
 }                        from '@airport/territory'
+import {transactional}   from '@airport/tower'
 import {
 	ISchemaColumnDao,
 	ISchemaDao,
@@ -18,6 +19,7 @@ import {
 	ISchemaRelationColumnDao,
 	ISchemaRelationDao,
 	ISchemaVersionDao,
+	IVersionedSchemaObject,
 	SCHEMA_COLUMN_DAO,
 	SCHEMA_DAO,
 	SCHEMA_ENTITY_DAO,
@@ -31,7 +33,6 @@ import {
 	SchemaReferenceECreateProperties,
 	SchemaRelationColumnECreateProperties
 }                        from '@airport/traffic-pattern'
-import {transactional}   from '@airport/tower'
 import {SCHEMA_RECORDER} from '../diTokens'
 
 export interface ISchemaRecorder {
@@ -74,7 +75,9 @@ export class SchemaRecorder
 		ddlObjects: DdlObjects,
 		normalOperation: boolean
 	): Promise<void> {
-		await transactional(async ()=> {
+		await transactional(async () => {
+			// FIXME: add support for real schema versioning
+			this.setDefaultVersioning(ddlObjects)
 			if (normalOperation) {
 				await this.normalRecord(ddlObjects, await this.domainDao, await this.schemaDao,
 					await this.schemaVersionDao, await this.schemaReferenceDao,
@@ -121,6 +124,46 @@ export class SchemaRecorder
 		await schemaRelationColumnDao.bulkCreate(
 			ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[],
 			false, false)
+	}
+
+	private setDefaultVersioning(
+		ddlObjects: DdlObjects,
+	) {
+		for (const schemaReference of ddlObjects.schemaReferences) {
+			schemaReference.deprecatedSinceVersion = null
+			schemaReference.removedInVersion       = null
+			schemaReference.sinceVersion           = schemaReference.ownSchemaVersion
+		}
+		for (const entity of ddlObjects.entities) {
+			entity.deprecatedSinceVersion = null
+			entity.removedInVersion       = null
+			entity.sinceVersion           = entity.schemaVersion
+		}
+		for (const property of ddlObjects.properties) {
+			property.deprecatedSinceVersion = null
+			property.removedInVersion       = null
+			property.sinceVersion           = property.entity.schemaVersion
+		}
+		for (const relation of ddlObjects.relations) {
+			relation.deprecatedSinceVersion = null
+			relation.removedInVersion       = null
+			relation.sinceVersion           = relation.entity.schemaVersion
+		}
+		for (const column of ddlObjects.columns) {
+			column.deprecatedSinceVersion = null
+			column.removedInVersion       = null
+			column.sinceVersion           = column.entity.schemaVersion
+		}
+		for (const propertyColumn of ddlObjects.propertyColumns) {
+			propertyColumn.deprecatedSinceVersion = null
+			propertyColumn.removedInVersion       = null
+			propertyColumn.sinceVersion           = propertyColumn.property.entity.schemaVersion
+		}
+		for (const relationColumn of ddlObjects.relationColumns) {
+			relationColumn.deprecatedSinceVersion = null
+			relationColumn.removedInVersion       = null
+			relationColumn.sinceVersion           = relationColumn.parentRelation.entity.schemaVersion
+		}
 	}
 
 	private async bootstrapRecord(

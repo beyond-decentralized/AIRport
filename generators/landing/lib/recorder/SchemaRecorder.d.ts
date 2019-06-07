@@ -16,6 +16,7 @@ export declare class SchemaRecorder implements ISchemaRecorder {
     constructor();
     record(ddlObjects: DdlObjects, normalOperation: boolean): Promise<void>;
     private normalRecord;
+    private setDefaultVersioning;
     private bootstrapRecord;
     private bulkCreate;
 }

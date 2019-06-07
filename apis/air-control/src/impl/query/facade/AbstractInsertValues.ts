@@ -1,17 +1,9 @@
-import {
-	JSONEntityRelation,
-	JsonInsertValues
-}                                from "@airport/ground-control";
-import {
-	IEntitySelectProperties,
-	IQEntity,
-	IQEntityInternal
-}                                from "../../../lingo/core/entity/Entity";
-import {IQOperableFieldInternal} from "../../../lingo/core/field/OperableField";
-import {AbstractRawInsertValues}         from "../../../lingo/query/facade/InsertValues";
-import {QField}                  from "../../core/field/Field";
-import {getPrimitiveValue}       from "../../core/field/WrapperFunctions";
-import {AbstractQuery}           from "./AbstractQuery";
+import {DbColumn} from '@airport/ground-control'
+import {IQEntity} from '../../../lingo/core/entity/Entity'
+import {AbstractRawInsertValues} from '../../../lingo/query/facade/InsertValues'
+import {QField} from '../../core/field/Field'
+import {getPrimitiveValue} from '../../core/field/WrapperFunctions'
+import {AbstractQuery} from './AbstractQuery'
 
 /**
  * Created by Papa on 11/17/2016.
@@ -25,26 +17,35 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 		public rawInsertValues: ARIV,
 		public columnIndexes?: number[],
 	) {
-		super();
+		super()
 	}
 
-	protected valuesToJSON(valueSets: any[][]): any[][] {
+	protected valuesToJSON(
+		valueSets: any[][],
+		dbColumns: DbColumn[]
+	): any[][] {
 		// let currentValueIndex = -1;
 		// this.values           = [];
-		return valueSets.map((valueSet) => {
-			return valueSet.map((value) => {
+		return valueSets.map((
+			valueSet,
+			rowIndex
+		) => {
+			return valueSet.map((
+				value,
+				columnIndex
+			) => {
 				if (value === undefined) {
-					throw `Cannot use 'undefined' in VALUES clause.`;
+					throw `Cannot use 'undefined' in VALUES clause.`
 				}
 				if (!(value instanceof QField)) {
-					return getPrimitiveValue(value);
+					return getPrimitiveValue(value, dbColumns[columnIndex], rowIndex)
 					// this.values.push(getPrimitiveValue(value));
 					// return ++currentValueIndex;
 				} else {
-					return (<QField<any>>value).toJSON(this.columnAliases, false);
+					return (<QField<any>>value).toJSON(this.columnAliases, false)
 				}
-			});
-		});
+			})
+		})
 	}
 
 }

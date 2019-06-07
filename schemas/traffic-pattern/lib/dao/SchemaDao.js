@@ -20,8 +20,7 @@ class SchemaDao extends generated_1.BaseSchemaDao {
                 select: {},
                 from: [
                     s = generated_1.Q.Schema
-                ],
-                where: s.removedInVersion.id.isNull()
+                ]
             });
         });
     }

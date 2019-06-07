@@ -2,9 +2,7 @@ import {
 	AIR_DB,
 	IAirportDatabase
 }                           from '@airport/air-control'
-import {
-	DI
-}                           from '@airport/di'
+import {DI}                 from '@airport/di'
 import {
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
@@ -26,11 +24,9 @@ import {
 	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDuo,
 	ITransactionHistory,
-	ITransactionHistoryDuo,
 	OPER_HISTORY_DUO,
 	REC_HISTORY_DUO,
-	REPO_TRANS_HISTORY_DUO,
-	TRANS_HISTORY_DUO
+	REPO_TRANS_HISTORY_DUO
 }                           from '@airport/holding-pattern'
 import {
 	DistributionStrategy,
@@ -140,7 +136,7 @@ export class InsertManager
 	private async internalInsertValues(
 		portableQuery: PortableQuery,
 		actor: IActor,
-		getIds: boolean = false,
+		getIds: boolean                = false,
 		ensureGeneratedValues: boolean = true
 	): Promise<number | RecordId[]> {
 		const dbEntity = this.airDb.schemas[portableQuery.schemaIndex]
@@ -152,7 +148,7 @@ export class InsertManager
 		}
 
 		let ids
-		if(ensureGeneratedValues) {
+		if (ensureGeneratedValues) {
 			ids = await this.ensureGeneratedValues(dbEntity, <JsonInsertValues>portableQuery.jsonQuery)
 		}
 
@@ -227,17 +223,22 @@ export class InsertManager
 
 		for (const entityValues of values) {
 			generatedColumns.forEach((generatedColumn) => {
-				if (entityValues[generatedColumn.index] || entityValues[generatedColumn.index] === 0) {
-					throw `Already provided value '${entityValues[generatedColumn.index]}'
+				const generatedValue = entityValues[generatedColumn.index]
+				if (generatedValue || generatedValue === 0) {
+					// Allowing negative integers for temporary identification
+					// within the circular dependency management lookup
+					if (generatedValue >= 0) {
+						throw `Already provided value '${entityValues[generatedColumn.index]}'
 					on insert for @GeneratedValue '${dbEntity.name}.${generatedColumn.name}'.
 					You cannot explicitly provide values for @GeneratedValue columns'.`
+					}
 				}
 			})
 		}
 
 		const numSequencesNeeded      = generatedColumns.map(
 			_ => values.length)
-		const generatedSequenceValues = this.seqGenerator.generateSequenceNumbers(
+		const generatedSequenceValues = await this.seqGenerator.generateSequenceNumbers(
 			generatedColumns, numSequencesNeeded)
 
 		generatedColumns.forEach((

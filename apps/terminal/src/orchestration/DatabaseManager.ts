@@ -5,7 +5,10 @@ import {
 	IDatabaseFacade,
 }                                 from '@airport/air-control'
 import {DI}                       from '@airport/di'
-import {setStoreDriver}           from '@airport/fuel-hydrant-system'
+import {
+	SEQUENCE_GENERATOR,
+	setStoreDriver
+}                                 from '@airport/fuel-hydrant-system'
 import {
 	DomainName,
 	STORE_DRIVER,
@@ -161,6 +164,7 @@ export class DatabaseManager
 
 			(server as any).tempActor = null
 		}
+		await (await DI.getP(SEQUENCE_GENERATOR)).init()
 		/*
 				throw `Implement!`
 				let dbFacade: IDatabaseFacade = this.databaseMap[terminalName]

@@ -16,13 +16,14 @@ class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
             || this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
             primaryKeySuffix = ' NOT NULL';
         }
-        let autoincrementSuffix = '';
-        if (jsonColumn.isGenerated
-            && jsonSchema.name === '@airport/airport-code'
-            && jsonEntity.name === 'SEQUENCES') {
-            autoincrementSuffix = ' AUTOINCREMENT';
-        }
-        const suffix = primaryKeySuffix + autoincrementSuffix;
+        // SEQUENCES no longer have a generated id (for simplicity of code)
+        // let autoincrementSuffix = ''
+        // if (jsonColumn.isGenerated
+        // 	&& jsonSchema.name === '@airport/airport-code'
+        // 	&& jsonEntity.name === 'SEQUENCES') {
+        // 	autoincrementSuffix = ' AUTOINCREMENT'
+        // }
+        const suffix = primaryKeySuffix; // + autoincrementSuffix
         switch (jsonColumn.type) {
             case ground_control_1.SQLDataType.ANY:
                 return suffix;
@@ -55,6 +56,7 @@ class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
         }
         const sequenceDao = await di_1.DI.getP(airport_code_1.SEQUENCE_DAO);
         await sequenceDao.bulkCreate(allSequences);
+        return allSequences;
     }
     buildSequences(dbSchema, jsonEntity) {
         const sequences = [];

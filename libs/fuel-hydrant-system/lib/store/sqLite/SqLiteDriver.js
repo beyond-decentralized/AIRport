@@ -6,6 +6,10 @@ const SqlDriver_1 = require("../SqlDriver");
  * Created by Papa on 11/27/2016.
  */
 class SqLiteDriver extends SqlDriver_1.SqlDriver {
+    constructor() {
+        super();
+        this.maxValues = 999;
+    }
     async doesTableExist(tableName) {
         const matchingTableNames = await this.findNative(
         // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,

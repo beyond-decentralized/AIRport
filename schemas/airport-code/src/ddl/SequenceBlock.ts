@@ -3,7 +3,6 @@ import {
 	Entity,
 	GeneratedValue,
 	Id,
-	JoinColumn,
 	JoinColumns,
 	ManyToOne,
 	SequenceGenerator,
@@ -40,7 +39,11 @@ export class SequenceBlock {
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'CONSUMER_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumns([{
+		name: 'CREATE_TIMESTAMP'
+	}, {
+		name: 'RANDOM_NUMBER'
+	}])
 	sequenceConsumer: SequenceConsumer
 
 	@Column({name: 'SIZE', nullable: false})

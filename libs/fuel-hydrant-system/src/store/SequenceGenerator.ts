@@ -1,4 +1,7 @@
-import {IUtils}             from '@airport/air-control'
+import {
+	IUtils,
+	UTILS
+}                           from '@airport/air-control'
 import {
 	IAbstractSequenceBlockDao,
 	IAbstractSequenceConsumerDao,
@@ -12,7 +15,6 @@ import {
 }                           from '@airport/airport-code'
 import {DI,}                from '@airport/di'
 import {DbColumn}           from '@airport/ground-control'
-import {IDomain}            from '@airport/territory'
 import {SEQUENCE_GENERATOR} from '../diTokens'
 
 export interface ISequenceGenerator {
@@ -23,11 +25,7 @@ export interface ISequenceGenerator {
 	): Promise<number[][]>
 
 	init(
-		domain: IDomain
-	): Promise<void>
-
-	addSequences(
-		sequences: ISequence[]
+		sequences?: ISequence[]
 	): Promise<void>
 
 }
@@ -48,30 +46,27 @@ export class SequenceGenerator
 		this.sequenceBlockDao    = DI.getP(SEQUENCE_BLOCK_DAO)
 		this.sequenceConsumerDao = DI.getP(SEQUENCE_CONSUMER_DAO)
 		this.sequenceDao         = DI.getP(SEQUENCE_DAO)
+		DI.get(
+			utils => this.utils = utils, UTILS)
 	}
 
 	async init(
-		domain: IDomain
+		sequences?: ISequence[]
 	): Promise<void> {
-		this.sequenceConsumer = {
-			createTimestamp: new Date().getTime(),
-			domain,
-			randomNumber: Math.random()
+		if (!sequences) {
+			sequences = await (await this.sequenceDao).findAll()
 		}
+		this.addSequences(sequences)
 
-		await (await this.sequenceConsumerDao).create(this.sequenceConsumer)
+		if (!this.sequenceConsumer) {
+			this.sequenceConsumer = {
+				createTimestamp: new Date().getTime(),
+				randomNumber: Math.random()
+			}
 
-		const sequences = await (await this.sequenceDao).findAll()
-	}
+			await (await this.sequenceConsumerDao).create(this.sequenceConsumer)
 
-	async addSequences(
-		sequences: ISequence[]
-	): Promise<void> {
-
-		for (const sequence of sequences) {
-			this.utils.ensureChildArray(
-				this.utils.ensureChildArray(this.sequences, sequence.schemaIndex),
-				sequence.tableIndex)[sequence.columnIndex] = sequence
+			console.log('SequenceGenerator.init')
 		}
 	}
 
@@ -84,6 +79,7 @@ export class SequenceGenerator
 		const sequenceBlocksToCreate: Map<DbColumn, ISequenceBlock>  = new Map()
 		const allSequenceBlocks: Map<DbColumn, ISequenceBlock>       = new Map()
 		const sequentialNumbers: number[][]                          = []
+
 		dbColumns.forEach((
 			dbColumn,
 			index
@@ -155,6 +151,16 @@ export class SequenceGenerator
 		}
 
 		return sequentialNumbers
+	}
+
+	private addSequences(
+		sequences: ISequence[]
+	): void {
+		for (const sequence of sequences) {
+			this.utils.ensureChildArray(
+				this.utils.ensureChildArray(this.sequences, sequence.schemaIndex),
+				sequence.tableIndex)[sequence.columnIndex] = sequence
+		}
 	}
 
 	private getNumNewSequencesNeeded(

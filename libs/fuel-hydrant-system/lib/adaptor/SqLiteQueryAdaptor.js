@@ -53,6 +53,7 @@ LIMIT
     getValue(value) {
         switch (typeof value) {
             case 'boolean':
+                return value ? '1' : '0';
             case 'number':
             case 'string':
                 return value;

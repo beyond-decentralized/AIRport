@@ -5,6 +5,6 @@ export declare class SqLiteSchemaBuilder extends SqlSchemaBuilder {
     createSchema(jsonSchema: JsonSchema): Promise<void>;
     getColumnSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity, jsonColumn: JsonSchemaColumn): string;
     getCreateTableSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): string;
-    buildAllSequences(jsonSchemas: JsonSchema[]): Promise<void>;
+    buildAllSequences(jsonSchemas: JsonSchema[]): Promise<ISequence[]>;
     buildSequences(dbSchema: DbSchema, jsonEntity: JsonSchemaEntity): ISequence[];
 }

@@ -1,6 +1,6 @@
-import { IQEntityInternal, Parameter } from "@airport/air-control";
-import { JSONSqlFunctionCall, SQLDataType } from "@airport/ground-control";
-import { AbstractFunctionAdaptor, ISQLFunctionAdaptor, ISQLQueryAdaptor, ISqlValueProvider } from "./SQLQueryAdaptor";
+import { IQEntityInternal, Parameter } from '@airport/air-control';
+import { JSONSqlFunctionCall, SQLDataType } from '@airport/ground-control';
+import { AbstractFunctionAdaptor, ISQLFunctionAdaptor, ISQLQueryAdaptor, ISqlValueProvider } from './SQLQueryAdaptor';
 /**
  * Created by Papa on 8/27/2016.
  */

@@ -28,7 +28,7 @@ class EntityDatabaseFacade {
     async create(entity) {
         return await this.common.create(this.dbEntity, entity);
     }
-    async bulkCreate(entities, checkIfProcessed = true, cascade = false) {
+    async bulkCreate(entities, cascade = false, checkIfProcessed = true) {
         return await this.common.bulkCreate(this.dbEntity, entities, checkIfProcessed, cascade);
     }
     async insertColumnValues(rawInsertColumnValues) {

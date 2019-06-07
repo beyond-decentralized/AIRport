@@ -1,3 +1,4 @@
+import {ISequence}      from '@airport/airport-code/lib/src'
 import {DI}             from '@airport/di'
 import {
 	getTableName,
@@ -88,7 +89,7 @@ export abstract class SqlSchemaBuilder
 
 	async abstract buildAllSequences(
 		jsonSchemas: JsonSchema[]
-	): Promise<void>
+	): Promise<ISequence[]>
 
 	abstract getColumnSuffix(
 		jsonSchema: JsonSchema,

@@ -5,19 +5,9 @@ export declare const SCHEMA: {
     "sinceVersion": number;
     "versions": {
         "entities": {
-            "columns": ({
+            "columns": {
                 "index": number;
                 "isGenerated": boolean;
-                "manyRelationColumnRefs": any[];
-                "name": string;
-                "notNull": boolean;
-                "propertyRefs": {
-                    "index": number;
-                }[];
-                "sinceVersion": number;
-                "type": number;
-            } | {
-                "index": number;
                 "manyRelationColumnRefs": {
                     "manyRelationIndex": number;
                     "oneSchemaIndex": number;
@@ -32,8 +22,7 @@ export declare const SCHEMA: {
                 }[];
                 "sinceVersion": number;
                 "type": number;
-                "isGenerated"?: undefined;
-            })[];
+            }[];
             "idColumnRefs": {
                 "index": number;
             }[];

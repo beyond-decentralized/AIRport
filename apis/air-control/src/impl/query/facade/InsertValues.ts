@@ -1,17 +1,15 @@
 import {
+	DbColumn,
 	JSONEntityRelation,
 	JsonInsertValues
-}                                from "@airport/ground-control";
+}                                from '@airport/ground-control'
 import {
-	IEntitySelectProperties,
 	IQEntity,
 	IQEntityInternal
-}                                from "../../../lingo/core/entity/Entity";
-import {IQOperableFieldInternal} from "../../../lingo/core/field/OperableField";
-import {RawInsertValues}         from "../../../lingo/query/facade/InsertValues";
-import {QField}                  from "../../core/field/Field";
-import {getPrimitiveValue}       from "../../core/field/WrapperFunctions";
-import {AbstractInsertValues}    from "./AbstractInsertValues";
+}                                from '../../../lingo/core/entity/Entity'
+import {IQOperableFieldInternal} from '../../../lingo/core/field/OperableField'
+import {RawInsertValues}         from '../../../lingo/query/facade/InsertValues'
+import {AbstractInsertValues}    from './AbstractInsertValues'
 
 /**
  * Created by Papa on 11/17/2016.
@@ -22,17 +20,23 @@ export class InsertValues<IQE extends IQEntity>
 	extends AbstractInsertValues<IQE, RawInsertValues<IQE>> {
 
 	toJSON(): JsonInsertValues {
-		const insertInto = <JSONEntityRelation>
+		const insertInto            = <JSONEntityRelation>
 			(<IQEntityInternal><any>this.rawInsertValues.insertInto)
-				.__driver__.getRelationJson(this.columnAliases);
+				.__driver__.getRelationJson(this.columnAliases)
+		const dbColumns: DbColumn[] = []
+		const columnIndexes         = this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map(
+			column => {
+				const dbColumn = (<IQOperableFieldInternal<any, any, any, any>>column).dbColumn
+				dbColumns.push(dbColumn)
+
+				return dbColumn.index
+			})
+
 		return {
 			II: insertInto,
-			C: this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map(
-				column =>
-					(<IQOperableFieldInternal<any, any, any, any>>column).dbColumn.index
-			),
-			V: this.valuesToJSON(this.rawInsertValues.values)
-		};
+			C: columnIndexes,
+			V: this.valuesToJSON(this.rawInsertValues.values, dbColumns)
+		}
 	}
 
 }

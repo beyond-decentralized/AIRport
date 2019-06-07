@@ -11,19 +11,12 @@ let SequenceConsumer = class SequenceConsumer {
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.GeneratedValue(),
-    air_control_1.SequenceGenerator({ allocationSize: 1 })
-], SequenceConsumer.prototype, "id", void 0);
-__decorate([
     air_control_1.Column({ name: 'CREATE_TIMESTAMP', nullable: false })
 ], SequenceConsumer.prototype, "createTimestamp", void 0);
 __decorate([
+    air_control_1.Id(),
     air_control_1.Column({ name: 'RANDOM_NUMBER', nullable: false })
 ], SequenceConsumer.prototype, "randomNumber", void 0);
-__decorate([
-    air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'DOMAIN_ID', referencedColumnName: 'ID', nullable: false })
-], SequenceConsumer.prototype, "domain", void 0);
 SequenceConsumer = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({ name: 'SEQUENCE_CONSUMERS' })

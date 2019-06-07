@@ -1,28 +1,32 @@
-import {DI}              from '@airport/di'
-import {PortableQuery}   from '@airport/ground-control'
-import {IActor}          from '@airport/holding-pattern'
-import {IObservable}     from '@airport/observe'
+import {DI}                 from '@airport/di'
+import {SEQUENCE_GENERATOR} from '@airport/fuel-hydrant-system'
+import {
+	JsonInsertValues,
+	PortableQuery
+}                           from '@airport/ground-control'
+import {IActor}             from '@airport/holding-pattern'
+import {IObservable}        from '@airport/observe'
 import {
 	DistributionStrategy,
 	ICredentials,
 	ITransactionManager,
 	PlatformType,
 	TRANSACTION_MANAGER
-}                        from '@airport/terminal-map'
+}                           from '@airport/terminal-map'
 import {
 	ITransactionalServer,
 	TRANS_SERVER
-}                        from '@airport/tower'
+}                           from '@airport/tower'
 import {
 	DELETE_MANAGER,
 	INSERT_MANAGER,
 	QUERY_MANAGER,
 	UPDATE_MANAGER
-}                        from '../diTokens'
-import {IDeleteManager}  from '../orchestration/DeleteManager'
-import {IInsertManager,} from '../orchestration/InsertManager'
-import {IQueryManager}   from '../orchestration/QueryManager'
-import {IUpdateManager}  from '../orchestration/UpdateManager'
+}                           from '../diTokens'
+import {IDeleteManager}     from '../orchestration/DeleteManager'
+import {IInsertManager,}    from '../orchestration/InsertManager'
+import {IQueryManager}      from '../orchestration/QueryManager'
+import {IUpdateManager}     from '../orchestration/UpdateManager'
 
 export interface InternalPortableQuery
 	extends PortableQuery {
@@ -86,9 +90,8 @@ export class TransactionalServer
 			QUERY_MANAGER, TRANSACTION_MANAGER,
 			UPDATE_MANAGER)
 	}
-
 	async init(): Promise<void> {
-		this.transactionManager.init('airport')
+		await this.transactionManager.init('airport')
 	}
 
 	async transact(
@@ -162,6 +165,24 @@ export class TransactionalServer
 		transactionIndex?: number,
 		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
+		const values = (portableQuery.jsonQuery as JsonInsertValues).V
+		if (!values.length) {
+			return 0
+		}
+		const firstValuesRow = values[0]
+
+		if (!firstValuesRow || !firstValuesRow.length) {
+			return 0
+		}
+
+		const numValuesInRow = firstValuesRow.length
+
+		for (let valuesRow of values) {
+			if (valuesRow.length !== numValuesInRow) {
+				return 0
+			}
+		}
+
 		const actor = await this.getActor(portableQuery)
 		return await this.wrapInTransaction(async () =>
 				await this.insertManager.insertValues(portableQuery, actor, ensureGeneratedValues)
@@ -218,7 +239,7 @@ export class TransactionalServer
 		credentials: ICredentials
 	): Promise<T> {
 		let transact = false
-		if(this.transactionManager.transactionInProgress) {
+		if (this.transactionManager.transactionInProgress) {
 			if (credentials.domainAndPort !== this.transactionManager.transactionInProgress) {
 				throw `${operationName}: domain: ${credentials.domainAndPort} 
 				does not have an active transaction.`

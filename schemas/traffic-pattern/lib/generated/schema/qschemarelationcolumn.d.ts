@@ -1,12 +1,14 @@
 import { IQNumberField } from '@airport/air-control';
 import { IVersionedSchemaObject, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
-import { ISchemaColumn, SchemaColumnEId, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQId, QSchemaColumnQRelation } from './qschemacolumn';
-import { ISchemaRelation, SchemaRelationEId, SchemaRelationEOptionalId, SchemaRelationESelect, QSchemaRelationQId, QSchemaRelationQRelation } from './qschemarelation';
+import { ISchemaColumn, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQRelation } from './qschemacolumn';
+import { ISchemaRelation, SchemaRelationEOptionalId, SchemaRelationESelect, QSchemaRelationQRelation } from './qschemarelation';
 export interface ISchemaRelationColumn extends IVersionedSchemaObject {
+    id?: number;
     manyColumn?: ISchemaColumn;
     oneColumn?: ISchemaColumn;
     manyRelation?: ISchemaRelation;
     oneRelation?: ISchemaRelation;
+    parentRelation?: ISchemaRelation;
 }
 /**
  * SELECT - All fields and relations (optional).
@@ -16,29 +18,29 @@ export interface SchemaRelationColumnESelect extends VersionedSchemaObjectESelec
     oneColumn?: SchemaColumnESelect;
     manyRelation?: SchemaRelationESelect;
     oneRelation?: SchemaRelationESelect;
+    parentRelation?: SchemaRelationESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
  */
 export interface SchemaRelationColumnEId extends VersionedSchemaObjectEId {
-    manyColumn: SchemaColumnEId;
-    oneColumn: SchemaColumnEId;
-    manyRelation: SchemaRelationEId;
-    oneRelation: SchemaRelationEId;
+    id: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface SchemaRelationColumnEOptionalId {
-    manyColumn?: SchemaColumnEOptionalId;
-    oneColumn?: SchemaColumnEOptionalId;
-    manyRelation?: SchemaRelationEOptionalId;
-    oneRelation?: SchemaRelationEOptionalId;
+    id?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SchemaRelationColumnEUpdateProperties extends VersionedSchemaObjectEUpdateProperties {
+    manyColumn?: SchemaColumnEOptionalId;
+    oneColumn?: SchemaColumnEOptionalId;
+    manyRelation?: SchemaRelationEOptionalId;
+    oneRelation?: SchemaRelationEOptionalId;
+    parentRelation?: SchemaRelationEOptionalId;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -47,6 +49,11 @@ export interface SchemaRelationColumnEUpdateColumns extends VersionedSchemaObjec
     DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
     REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
     SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+    MANY_SCHEMA_COLUMN_ID?: number | IQNumberField;
+    ONE_SCHEMA_COLUMN_ID?: number | IQNumberField;
+    MANY_SCHEMA_RELATION_ID?: number | IQNumberField;
+    ONE_SCHEMA_RELATION_ID?: number | IQNumberField;
+    PARENT_RELATION_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -62,16 +69,15 @@ export interface SchemaRelationColumnECreateColumns extends SchemaRelationColumn
  * Query Entity Query Definition (used for Q.EntityName).
  */
 export interface QSchemaRelationColumn extends QVersionedSchemaObject {
+    id: IQNumberField;
     manyColumn: QSchemaColumnQRelation;
     oneColumn: QSchemaColumnQRelation;
     manyRelation: QSchemaRelationQRelation;
     oneRelation: QSchemaRelationQRelation;
+    parentRelation: QSchemaRelationQRelation;
 }
 export interface QSchemaRelationColumnQId extends QVersionedSchemaObjectQId {
-    manyColumn: QSchemaColumnQId;
-    oneColumn: QSchemaColumnQId;
-    manyRelation: QSchemaRelationQId;
-    oneRelation: QSchemaRelationQId;
+    id: IQNumberField;
 }
 export interface QSchemaRelationColumnQRelation extends QVersionedSchemaObjectQRelation<QSchemaRelationColumn>, QSchemaRelationColumnQId {
 }

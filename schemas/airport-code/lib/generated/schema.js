@@ -130,12 +130,11 @@ exports.SCHEMA = {
                 {
                     "columns": [
                         {
-                            "allocationSize": 1,
                             "index": 0,
-                            "isGenerated": true,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "ID",
-                            "notNull": false,
+                            "name": "CREATE_TIMESTAMP",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 0
@@ -148,46 +147,11 @@ exports.SCHEMA = {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "CREATE_TIMESTAMP",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
                             "name": "RANDOM_NUMBER",
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 3,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": 0,
-                                    "oneTableIndex": 2,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "DOMAIN_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
+                                    "index": 1
                                 }
                             ],
                             "sinceVersion": 1,
@@ -197,6 +161,9 @@ exports.SCHEMA = {
                     "idColumnRefs": [
                         {
                             "index": 0
+                        },
+                        {
+                            "index": 1
                         }
                     ],
                     "index": 1,
@@ -210,7 +177,7 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id",
+                            "name": "createTimestamp",
                             "sinceVersion": 1
                         },
                         {
@@ -218,42 +185,12 @@ exports.SCHEMA = {
                                 "index": 1
                             },
                             "index": 1,
-                            "isId": false,
-                            "name": "createTimestamp",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 2,
-                            "isId": false,
+                            "isId": true,
                             "name": "randomNumber",
                             "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "domain",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
                         }
                     ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 2,
-                            "relationTableSchemaIndex": 0,
-                            "sinceVersion": 1
-                        }
-                    ],
+                    "relations": [],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "SEQUENCE_CONSUMERS",
@@ -321,6 +258,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 4,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -330,8 +268,8 @@ exports.SCHEMA = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "CONSUMER_ID",
-                            "notNull": true,
+                            "name": "CREATE_TIMESTAMP",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 2
@@ -342,6 +280,29 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 1,
+                                    "oneColumnIndex": 1,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "RANDOM_NUMBER",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
@@ -362,7 +323,8 @@ exports.SCHEMA = {
                             "type": 4
                         },
                         {
-                            "index": 6,
+                            "index": 7,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
@@ -383,7 +345,8 @@ exports.SCHEMA = {
                             "type": 4
                         },
                         {
-                            "index": 7,
+                            "index": 8,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
@@ -410,6 +373,9 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 4
+                        },
+                        {
+                            "index": 5
                         }
                     ],
                     "index": 2,
@@ -502,22 +468,7 @@ exports.SCHEMA = {
                 }
             ],
             "integerVersion": 1,
-            "referencedSchemas": [
-                {
-                    "domain": "github.com",
-                    "index": 0,
-                    "name": "@airport/territory",
-                    "sinceVersion": 1,
-                    "versions": [
-                        {
-                            "entities": null,
-                            "integerVersion": 1,
-                            "referencedSchemas": null,
-                            "versionString": "1.0.0"
-                        }
-                    ]
-                }
-            ],
+            "referencedSchemas": [],
             "versionString": "1.0.0"
         }
     ]

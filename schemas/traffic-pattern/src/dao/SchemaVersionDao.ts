@@ -64,7 +64,6 @@ export class SchemaVersionDao
 				s = sv.schema.innerJoin()
 			],
 			select: {},
-			where: s.removedInVersion.id.isNull(),
 			orderBy: [
 				sv.schema.index.asc(),
 				sv.id.desc()

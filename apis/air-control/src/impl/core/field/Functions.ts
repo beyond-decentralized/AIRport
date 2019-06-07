@@ -255,7 +255,7 @@ export function coalesce(
 	}
 
 	let dataType: SQLDataType
-	const firstValue = values[1]
+	const firstValue = values[0]
 	if (firstValue instanceof QUntypedField) {
 		dataType = SQLDataType.ANY
 	} else if (firstValue instanceof QBooleanField || typeof firstValue === 'boolean') {

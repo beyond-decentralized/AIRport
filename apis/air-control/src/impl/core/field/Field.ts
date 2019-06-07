@@ -32,7 +32,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 
 	// TODO: figure out if this is ever used
 	alias: string;
-	__appliedFunctions__: JSONSqlFunctionCall[];
+	__appliedFunctions__: JSONSqlFunctionCall[] = [];
 	__fieldSubQuery__: RawFieldQuery<IQF>;
 
 	constructor(

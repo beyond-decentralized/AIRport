@@ -1,5 +1,5 @@
-import {QueryType}     from '@airport/ground-control'
-import {SqlDriver}     from '../SqlDriver'
+import {QueryType} from '@airport/ground-control'
+import {SqlDriver} from '../SqlDriver'
 
 /**
  * Created by Papa on 11/27/2016.
@@ -7,6 +7,11 @@ import {SqlDriver}     from '../SqlDriver'
 
 export abstract class SqLiteDriver
 	extends SqlDriver {
+
+	constructor() {
+		super()
+		this.maxValues = 999
+	}
 
 	async doesTableExist(
 		tableName: string
