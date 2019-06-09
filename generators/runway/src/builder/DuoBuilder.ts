@@ -1,35 +1,15 @@
-import {resolveRelativePath} from '../resolve/pathResolver'
-import {PathBuilder}         from './PathBuilder'
-import {IQBuilder}           from './QBuilder'
+import {resolveRelativePath}       from '../resolve/pathResolver'
+import {ImplementationFileBuilder} from './ImplementationFileBuilder'
+import {PathBuilder}               from './PathBuilder'
+import {IQBuilder}                 from './QBuilder'
 
 export class DuoBuilder
-	implements IQBuilder {
-
-	public daoListingFilePath
-
-	private entityNames: string[]                                          = []
-	private ddlPathMapByEntityName: { [entityName: string]: string }       = {}
-	private generatedPathMapByEntityName: { [entityName: string]: string } = {}
+	extends ImplementationFileBuilder {
 
 	constructor(
-		private pathBuilder: PathBuilder
+		pathBuilder: PathBuilder
 	) {
-		this.daoListingFilePath = pathBuilder.fullGeneratedDirPath + '/baseDuos.ts'
-	}
-
-	addFileNameAndPaths(
-		entityName: string,
-		fullDdlPath: string,
-		fullGenerationPath: string,
-	): void {
-		const ddlRelativePath                   = resolveRelativePath(this.daoListingFilePath, fullDdlPath)
-			.replace('.ts', '')
-		this.ddlPathMapByEntityName[entityName] = ddlRelativePath
-		const generatedRelativePath             = resolveRelativePath(this.daoListingFilePath, fullGenerationPath)
-			.replace('.ts', '')
-		this.generatedPathMapByEntityName[entityName]
-		                                        = this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath)
-		this.entityNames.push(entityName)
+		super('baseDuos', pathBuilder)
 	}
 
 	build(): string {
@@ -44,8 +24,13 @@ export interface IBase${entityName}Duo
 export class Base${entityName}Duo
   extends SQDIDuo<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateProperties, ${entityName}EId, Q${entityName}>
 	implements IBase${entityName}Duo {
+
+	static diSet(): boolean {
+		return diSet(${this.entityIdMapByName[entityName]})
+	}
+	
 	constructor() {
-		super('${entityName}');
+		super(${this.entityIdMapByName[entityName]})
 	}
 }
 `).join('\n')
@@ -60,7 +45,7 @@ export class Base${entityName}Duo
 	${entityName}EUpdateProperties,
 	${entityName}EId,
 	Q${entityName}
-} from '${this.generatedPathMapByEntityName[entityName]}';`
+} from '${this.generatedPathMapByEntityName[entityName]}'`
 		).join('\n')
 
 		return `import {
@@ -70,9 +55,15 @@ export class Base${entityName}Duo
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Duo } from "@airport/check-in";
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import { Duo } from "@airport/check-in"
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 ${imports}
 
 
@@ -90,14 +81,10 @@ export class SQDIDuo<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 

@@ -23,11 +23,11 @@ __decorate([
     air_control_1.JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID' })
 ], RecordUpdateStage.prototype, "schemaVersion", void 0);
 __decorate([
-    air_control_1.ManyToOne(),
-    air_control_1.JoinColumns([
-        { name: 'SCHEMA_VERSION_ID' },
-        { name: 'TABLE_INDEX' }
-    ])
+    air_control_1.ManyToOne()
+    // FIXME: verify that these records don't make it into serialized
+    // repository ledger (and hence, that using local ids is safe)
+    ,
+    air_control_1.JoinColumn({ name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID' })
 ], RecordUpdateStage.prototype, "entity", void 0);
 __decorate([
     air_control_1.ManyToOne(),
@@ -42,11 +42,11 @@ __decorate([
     air_control_1.DbNumber()
 ], RecordUpdateStage.prototype, "actorRecordId", void 0);
 __decorate([
-    air_control_1.ManyToOne(),
-    air_control_1.JoinColumns([
-        { name: 'SCHEMA_ENTITY_ID' },
-        { name: 'COLUMN_INDEX' }
-    ])
+    air_control_1.ManyToOne()
+    // FIXME: verify that these records don't make it into serialized
+    // repository ledger (and hence, that using local ids is safe)
+    ,
+    air_control_1.JoinColumn({ name: 'SCHEMA_COLUMN_ID', referencedColumnName: 'ID' })
 ], RecordUpdateStage.prototype, "column", void 0);
 __decorate([
     air_control_1.Column({ name: 'UPDATED_VALUE' })

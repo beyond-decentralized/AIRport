@@ -8,8 +8,7 @@ import {
 	IBaseSchemaReferenceDuo,
 	IBaseSchemaRelationColumnDuo,
 	IBaseSchemaRelationDuo,
-	IBaseSchemaVersionDuo,
-	IBaseVersionedSchemaObjectDuo
+	IBaseSchemaVersionDuo
 }                                                 from '../generated/generated'
 import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DUOS} from '../diTokens'
 
@@ -26,7 +25,6 @@ export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Duos {
 	SchemaRelation: IBaseSchemaRelationDuo;
 	SchemaRelationColumn: IBaseSchemaRelationColumnDuo;
 	SchemaVersion: IBaseSchemaVersionDuo;
-	VersionedSchemaObject: IBaseVersionedSchemaObjectDuo;
 
 }
 
@@ -42,7 +40,6 @@ class AtAirport_TrafficPattern_Duos
 	SchemaRelation: IBaseSchemaRelationDuo
 	SchemaRelationColumn: IBaseSchemaRelationColumnDuo
 	SchemaVersion: IBaseSchemaVersionDuo
-	VersionedSchemaObject: IBaseVersionedSchemaObjectDuo
 
 }
 

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const check_in_1 = require("@airport/check-in");
 const di_1 = require("@airport/di");
 const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 const ground_control_1 = require("@airport/ground-control");
@@ -105,7 +106,7 @@ class DatabaseManager {
             await this.initTerminal(domainName);
             server.tempActor = null;
         }
-        await (await di_1.DI.getP(fuel_hydrant_system_1.SEQUENCE_GENERATOR)).init();
+        await (await di_1.DI.getP(check_in_1.SEQUENCE_GENERATOR)).init();
         /*
                 throw `Implement!`
                 let dbFacade: IDatabaseFacade = this.databaseMap[terminalName]

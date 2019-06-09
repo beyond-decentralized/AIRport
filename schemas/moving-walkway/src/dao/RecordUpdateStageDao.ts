@@ -69,11 +69,11 @@ export class RecordUpdateStageDao
 
 		const columns = [
 			rus.schemaVersion.id,
-			rus.entity.index,
+			rus.entity.id,
 			rus.repository.id,
 			rus.actor.id,
 			rus.actorRecordId,
-			rus.column.index,
+			rus.column.id,
 			rus.updatedValue
 		]
 
@@ -116,6 +116,7 @@ export class RecordUpdateStageDao
 
 		const setClause = {}
 		for (const columnIndex of updatedColumnIndexes) {
+			const column = dbEntity.columns[columnIndex];
 			let columnRus           = Q.RecordUpdateStage
 			let columnSetClause     = field({
 				from: [
@@ -125,14 +126,14 @@ export class RecordUpdateStageDao
 				where:
 					and(
 						columnRus.schemaVersion.id.equals(schemaVersionId),
-						columnRus.entity.index.equals(tableIndex),
+						columnRus.entity.id.equals(dbEntity.id),
 						columnRus.repository.id.equals(qEntity.repository.id),
 						columnRus.actor.id.equals(qEntity.actor.id),
 						columnRus.actorRecordId.equals(qEntity.actorRecordId),
-						columnRus.column.index.equals(columnIndex)
+						columnRus.column.id.equals(column.id)
 					)
 			})
-			const propertyName      = dbEntity.columns[columnIndex]
+			const propertyName      = column
 				.propertyColumns[0].property.name
 			setClause[propertyName] = columnSetClause
 		}

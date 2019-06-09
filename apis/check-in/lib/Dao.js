@@ -8,11 +8,11 @@ const EntityDatabaseFacade_1 = require("./EntityDatabaseFacade");
  * Created by Papa on 8/26/2017.
  */
 class Dao {
-    constructor(dbEntityName, Q) {
+    constructor(dbEntityId, Q) {
         di_1.DI.get((airportDatabase, entityManager, utils) => {
             this.airDb = airportDatabase;
             this.utils = utils;
-            const dbEntity = Q.__dbSchema__.currentVersion.entityMapByName[dbEntityName];
+            const dbEntity = Q.__dbSchema__.currentVersion.entities[dbEntityId];
             const entityDatabaseFacade = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q, this.utils);
             entityDatabaseFacade.initialize(entityManager);
             this.db = entityDatabaseFacade;

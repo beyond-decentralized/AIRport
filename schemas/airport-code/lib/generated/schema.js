@@ -131,10 +131,10 @@ exports.SCHEMA = {
                     "columns": [
                         {
                             "index": 0,
-                            "isGenerated": false,
+                            "isGenerated": true,
                             "manyRelationColumnRefs": [],
-                            "name": "CREATE_TIMESTAMP",
-                            "notNull": true,
+                            "name": "ID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 0
@@ -147,11 +147,25 @@ exports.SCHEMA = {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "RANDOM_NUMBER",
+                            "name": "CREATE_TIMESTAMP",
                             "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "RANDOM_NUMBER",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
                                 }
                             ],
                             "sinceVersion": 1,
@@ -161,9 +175,6 @@ exports.SCHEMA = {
                     "idColumnRefs": [
                         {
                             "index": 0
-                        },
-                        {
-                            "index": 1
                         }
                     ],
                     "index": 1,
@@ -177,7 +188,7 @@ exports.SCHEMA = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "createTimestamp",
+                            "name": "id",
                             "sinceVersion": 1
                         },
                         {
@@ -185,7 +196,16 @@ exports.SCHEMA = {
                                 "index": 1
                             },
                             "index": 1,
-                            "isId": true,
+                            "isId": false,
+                            "name": "createTimestamp",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
                             "name": "randomNumber",
                             "sinceVersion": 1
                         }

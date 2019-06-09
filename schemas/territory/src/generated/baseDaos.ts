@@ -6,9 +6,17 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Dao } from '@airport/check-in';
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import {
+	Dao
+} from '@airport/check-in'
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	IApplication,
 	ApplicationESelect,
@@ -18,7 +26,7 @@ import {
 	ApplicationEUpdateProperties,
 	ApplicationEId,
 	QApplication
-} from './qapplication';
+} from './qapplication'
 import {
 	IApplicationPackage,
 	ApplicationPackageESelect,
@@ -28,7 +36,7 @@ import {
 	ApplicationPackageEUpdateProperties,
 	ApplicationPackageEId,
 	QApplicationPackage
-} from './qapplicationpackage';
+} from './qapplicationpackage'
 import {
 	IDomain,
 	DomainESelect,
@@ -38,7 +46,7 @@ import {
 	DomainEUpdateProperties,
 	DomainEId,
 	QDomain
-} from './qdomain';
+} from './qdomain'
 import {
 	IPackage,
 	PackageESelect,
@@ -48,7 +56,7 @@ import {
 	PackageEUpdateProperties,
 	PackageEId,
 	QPackage
-} from './qpackage';
+} from './qpackage'
 import {
 	IPackagedUnit,
 	PackagedUnitESelect,
@@ -58,7 +66,7 @@ import {
 	PackagedUnitEUpdateProperties,
 	PackagedUnitEId,
 	QPackagedUnit
-} from './qpackagedunit';
+} from './qpackagedunit'
 
 // Schema Q object Dependency Injection readiness detection DAO
 export class SQDIDao<Entity,
@@ -76,14 +84,10 @@ export class SQDIDao<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -95,8 +99,13 @@ export interface IBaseApplicationDao
 export class BaseApplicationDao
   extends SQDIDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, QApplication>
 	implements IBaseApplicationDao {
+
+	static diSet(): boolean {
+		return diSet(3)
+	}
+	
 	constructor() {
-		super('Application')
+		super(3)
 	}
 }
 
@@ -108,8 +117,13 @@ export interface IBaseApplicationPackageDao
 export class BaseApplicationPackageDao
   extends SQDIDao<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateColumns, ApplicationPackageEUpdateProperties, ApplicationPackageEId, QApplicationPackage>
 	implements IBaseApplicationPackageDao {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('ApplicationPackage')
+		super(1)
 	}
 }
 
@@ -121,8 +135,13 @@ export interface IBaseDomainDao
 export class BaseDomainDao
   extends SQDIDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, QDomain>
 	implements IBaseDomainDao {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('Domain')
+		super(2)
 	}
 }
 
@@ -134,8 +153,13 @@ export interface IBasePackageDao
 export class BasePackageDao
   extends SQDIDao<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateColumns, PackageEUpdateProperties, PackageEId, QPackage>
 	implements IBasePackageDao {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('Package')
+		super(0)
 	}
 }
 
@@ -147,7 +171,12 @@ export interface IBasePackagedUnitDao
 export class BasePackagedUnitDao
   extends SQDIDao<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateColumns, PackagedUnitEUpdateProperties, PackagedUnitEId, QPackagedUnit>
 	implements IBasePackagedUnitDao {
+
+	static diSet(): boolean {
+		return diSet(4)
+	}
+	
 	constructor() {
-		super('PackagedUnit')
+		super(4)
 	}
 }

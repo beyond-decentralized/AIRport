@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const airport_code_1 = require("@airport/airport-code");
+const check_in_1 = require("@airport/check-in");
 const di_1 = require("@airport/di");
-const diTokens_1 = require("../diTokens");
 class SequenceGenerator {
     constructor() {
         this.sequences = [];
@@ -11,6 +11,17 @@ class SequenceGenerator {
         this.sequenceBlockDao = di_1.DI.getP(airport_code_1.SEQUENCE_BLOCK_DAO);
         this.sequenceDao = di_1.DI.getP(airport_code_1.SEQUENCE_DAO);
         di_1.DI.get(utils => this.utils = utils, air_control_1.UTILS);
+    }
+    exists(dbEntity) {
+        const schemaSequences = this.sequences[dbEntity.schemaVersion.schema.index];
+        if (!schemaSequences) {
+            return false;
+        }
+        const tableSequences = schemaSequences[dbEntity.index];
+        if (!tableSequences) {
+            return false;
+        }
+        return dbEntity.columns.every(dbColumn => !dbColumn.isGenerated || !!tableSequences[dbColumn.index]);
     }
     async init(sequences) {
         if (!sequences) {
@@ -108,5 +119,5 @@ class SequenceGenerator {
     }
 }
 exports.SequenceGenerator = SequenceGenerator;
-di_1.DI.set(diTokens_1.SEQUENCE_GENERATOR, SequenceGenerator);
+di_1.DI.set(check_in_1.SEQUENCE_GENERATOR, SequenceGenerator);
 //# sourceMappingURL=SequenceGenerator.js.map

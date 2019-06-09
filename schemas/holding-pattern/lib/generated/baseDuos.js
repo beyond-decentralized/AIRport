@@ -4,149 +4,134 @@ const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
 // Schema Q object Dependency Injection readiness detection DAO
 class SQDIDuo extends check_in_1.Duo {
-    constructor(dbEntityName) {
-        super(dbEntityName, qSchema_1.Q);
-    }
-    static diSet() {
-        return qSchema_1.Q.__dbSchema__;
+    constructor(dbEntityId) {
+        super(dbEntityId, qSchema_1.Q);
     }
 }
 exports.SQDIDuo = SQDIDuo;
 class BaseActorDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(7);
+    }
     constructor() {
-        super('Actor');
+        super(7);
     }
 }
 exports.BaseActorDuo = BaseActorDuo;
 class BaseActorApplicationDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(8);
+    }
     constructor() {
-        super('ActorApplication');
+        super(8);
     }
 }
 exports.BaseActorApplicationDuo = BaseActorApplicationDuo;
 class BaseApplicationDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(9);
+    }
     constructor() {
-        super('Application');
+        super(9);
     }
 }
 exports.BaseApplicationDuo = BaseApplicationDuo;
-class BaseChildRepoRowDuo extends SQDIDuo {
-    constructor() {
-        super('ChildRepoRow');
-    }
-}
-exports.BaseChildRepoRowDuo = BaseChildRepoRowDuo;
-class BaseChildRowDuo extends SQDIDuo {
-    constructor() {
-        super('ChildRow');
-    }
-}
-exports.BaseChildRowDuo = BaseChildRowDuo;
-class BaseImmutableRepoRowDuo extends SQDIDuo {
-    constructor() {
-        super('ImmutableRepoRow');
-    }
-}
-exports.BaseImmutableRepoRowDuo = BaseImmutableRepoRowDuo;
-class BaseImmutableRowDuo extends SQDIDuo {
-    constructor() {
-        super('ImmutableRow');
-    }
-}
-exports.BaseImmutableRowDuo = BaseImmutableRowDuo;
-class BaseMutableRepoRowDuo extends SQDIDuo {
-    constructor() {
-        super('MutableRepoRow');
-    }
-}
-exports.BaseMutableRepoRowDuo = BaseMutableRepoRowDuo;
-class BaseMutableRowDuo extends SQDIDuo {
-    constructor() {
-        super('MutableRow');
-    }
-}
-exports.BaseMutableRowDuo = BaseMutableRowDuo;
 class BaseOperationHistoryDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(0);
+    }
     constructor() {
-        super('OperationHistory');
+        super(0);
     }
 }
 exports.BaseOperationHistoryDuo = BaseOperationHistoryDuo;
 class BaseRecordHistoryDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(1);
+    }
     constructor() {
-        super('RecordHistory');
+        super(1);
     }
 }
 exports.BaseRecordHistoryDuo = BaseRecordHistoryDuo;
 class BaseRecordHistoryNewValueDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(2);
+    }
     constructor() {
-        super('RecordHistoryNewValue');
+        super(2);
     }
 }
 exports.BaseRecordHistoryNewValueDuo = BaseRecordHistoryNewValueDuo;
 class BaseRecordHistoryOldValueDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(3);
+    }
     constructor() {
-        super('RecordHistoryOldValue');
+        super(3);
     }
 }
 exports.BaseRecordHistoryOldValueDuo = BaseRecordHistoryOldValueDuo;
-class BaseReferenceRowDuo extends SQDIDuo {
-    constructor() {
-        super('ReferenceRow');
-    }
-}
-exports.BaseReferenceRowDuo = BaseReferenceRowDuo;
 class BaseRepoTransHistoryChangedRepositoryActorDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(4);
+    }
     constructor() {
-        super('RepoTransHistoryChangedRepositoryActor');
+        super(4);
     }
 }
 exports.BaseRepoTransHistoryChangedRepositoryActorDuo = BaseRepoTransHistoryChangedRepositoryActorDuo;
 class BaseRepositoryDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(10);
+    }
     constructor() {
-        super('Repository');
+        super(10);
     }
 }
 exports.BaseRepositoryDuo = BaseRepositoryDuo;
 class BaseRepositoryActorDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(11);
+    }
     constructor() {
-        super('RepositoryActor');
+        super(11);
     }
 }
 exports.BaseRepositoryActorDuo = BaseRepositoryActorDuo;
 class BaseRepositoryApplicationDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(12);
+    }
     constructor() {
-        super('RepositoryApplication');
+        super(12);
     }
 }
 exports.BaseRepositoryApplicationDuo = BaseRepositoryApplicationDuo;
-class BaseRepositoryEntityDuo extends SQDIDuo {
-    constructor() {
-        super('RepositoryEntity');
-    }
-}
-exports.BaseRepositoryEntityDuo = BaseRepositoryEntityDuo;
 class BaseRepositorySchemaDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(13);
+    }
     constructor() {
-        super('RepositorySchema');
+        super(13);
     }
 }
 exports.BaseRepositorySchemaDuo = BaseRepositorySchemaDuo;
 class BaseRepositoryTransactionHistoryDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(5);
+    }
     constructor() {
-        super('RepositoryTransactionHistory');
+        super(5);
     }
 }
 exports.BaseRepositoryTransactionHistoryDuo = BaseRepositoryTransactionHistoryDuo;
-class BaseStageableDuo extends SQDIDuo {
-    constructor() {
-        super('Stageable');
-    }
-}
-exports.BaseStageableDuo = BaseStageableDuo;
 class BaseTransactionHistoryDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(6);
+    }
     constructor() {
-        super('TransactionHistory');
+        super(6);
     }
 }
 exports.BaseTransactionHistoryDuo = BaseTransactionHistoryDuo;

@@ -4,149 +4,134 @@ const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
 // Schema Q object Dependency Injection readiness detection DAO
 class SQDIDao extends check_in_1.Dao {
-    constructor(dbEntityName) {
-        super(dbEntityName, qSchema_1.Q);
-    }
-    static diSet() {
-        return qSchema_1.Q.__dbSchema__;
+    constructor(dbEntityId) {
+        super(dbEntityId, qSchema_1.Q);
     }
 }
 exports.SQDIDao = SQDIDao;
 class BaseActorDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(7);
+    }
     constructor() {
-        super('Actor');
+        super(7);
     }
 }
 exports.BaseActorDao = BaseActorDao;
 class BaseActorApplicationDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(8);
+    }
     constructor() {
-        super('ActorApplication');
+        super(8);
     }
 }
 exports.BaseActorApplicationDao = BaseActorApplicationDao;
 class BaseApplicationDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(9);
+    }
     constructor() {
-        super('Application');
+        super(9);
     }
 }
 exports.BaseApplicationDao = BaseApplicationDao;
-class BaseChildRepoRowDao extends SQDIDao {
-    constructor() {
-        super('ChildRepoRow');
-    }
-}
-exports.BaseChildRepoRowDao = BaseChildRepoRowDao;
-class BaseChildRowDao extends SQDIDao {
-    constructor() {
-        super('ChildRow');
-    }
-}
-exports.BaseChildRowDao = BaseChildRowDao;
-class BaseImmutableRepoRowDao extends SQDIDao {
-    constructor() {
-        super('ImmutableRepoRow');
-    }
-}
-exports.BaseImmutableRepoRowDao = BaseImmutableRepoRowDao;
-class BaseImmutableRowDao extends SQDIDao {
-    constructor() {
-        super('ImmutableRow');
-    }
-}
-exports.BaseImmutableRowDao = BaseImmutableRowDao;
-class BaseMutableRepoRowDao extends SQDIDao {
-    constructor() {
-        super('MutableRepoRow');
-    }
-}
-exports.BaseMutableRepoRowDao = BaseMutableRepoRowDao;
-class BaseMutableRowDao extends SQDIDao {
-    constructor() {
-        super('MutableRow');
-    }
-}
-exports.BaseMutableRowDao = BaseMutableRowDao;
 class BaseOperationHistoryDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(0);
+    }
     constructor() {
-        super('OperationHistory');
+        super(0);
     }
 }
 exports.BaseOperationHistoryDao = BaseOperationHistoryDao;
 class BaseRecordHistoryDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(1);
+    }
     constructor() {
-        super('RecordHistory');
+        super(1);
     }
 }
 exports.BaseRecordHistoryDao = BaseRecordHistoryDao;
 class BaseRecordHistoryNewValueDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(2);
+    }
     constructor() {
-        super('RecordHistoryNewValue');
+        super(2);
     }
 }
 exports.BaseRecordHistoryNewValueDao = BaseRecordHistoryNewValueDao;
 class BaseRecordHistoryOldValueDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(3);
+    }
     constructor() {
-        super('RecordHistoryOldValue');
+        super(3);
     }
 }
 exports.BaseRecordHistoryOldValueDao = BaseRecordHistoryOldValueDao;
-class BaseReferenceRowDao extends SQDIDao {
-    constructor() {
-        super('ReferenceRow');
-    }
-}
-exports.BaseReferenceRowDao = BaseReferenceRowDao;
 class BaseRepoTransHistoryChangedRepositoryActorDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(4);
+    }
     constructor() {
-        super('RepoTransHistoryChangedRepositoryActor');
+        super(4);
     }
 }
 exports.BaseRepoTransHistoryChangedRepositoryActorDao = BaseRepoTransHistoryChangedRepositoryActorDao;
 class BaseRepositoryDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(10);
+    }
     constructor() {
-        super('Repository');
+        super(10);
     }
 }
 exports.BaseRepositoryDao = BaseRepositoryDao;
 class BaseRepositoryActorDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(11);
+    }
     constructor() {
-        super('RepositoryActor');
+        super(11);
     }
 }
 exports.BaseRepositoryActorDao = BaseRepositoryActorDao;
 class BaseRepositoryApplicationDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(12);
+    }
     constructor() {
-        super('RepositoryApplication');
+        super(12);
     }
 }
 exports.BaseRepositoryApplicationDao = BaseRepositoryApplicationDao;
-class BaseRepositoryEntityDao extends SQDIDao {
-    constructor() {
-        super('RepositoryEntity');
-    }
-}
-exports.BaseRepositoryEntityDao = BaseRepositoryEntityDao;
 class BaseRepositorySchemaDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(13);
+    }
     constructor() {
-        super('RepositorySchema');
+        super(13);
     }
 }
 exports.BaseRepositorySchemaDao = BaseRepositorySchemaDao;
 class BaseRepositoryTransactionHistoryDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(5);
+    }
     constructor() {
-        super('RepositoryTransactionHistory');
+        super(5);
     }
 }
 exports.BaseRepositoryTransactionHistoryDao = BaseRepositoryTransactionHistoryDao;
-class BaseStageableDao extends SQDIDao {
-    constructor() {
-        super('Stageable');
-    }
-}
-exports.BaseStageableDao = BaseStageableDao;
 class BaseTransactionHistoryDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(6);
+    }
     constructor() {
-        super('TransactionHistory');
+        super(6);
     }
 }
 exports.BaseTransactionHistoryDao = BaseTransactionHistoryDao;

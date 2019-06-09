@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
-const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
+const check_in_1 = require("@airport/check-in");
 const takeoff_1 = require("@airport/takeoff");
 const terminal_map_1 = require("@airport/terminal-map");
 const diTokens_1 = require("./diTokens");
@@ -63,7 +63,7 @@ class SchemaInitializer {
             airDb.S = schemas;
         }
         const newSequences = await schemaBuilder.buildAllSequences(schemasWithValidDependencies);
-        await (await di_1.DI.getP(fuel_hydrant_system_1.SEQUENCE_GENERATOR)).init(newSequences);
+        await (await di_1.DI.getP(check_in_1.SEQUENCE_GENERATOR)).init(newSequences);
         if (!normalOperation) {
             await (await this.schemaRecorder).record(ddlObjects, normalOperation);
         }

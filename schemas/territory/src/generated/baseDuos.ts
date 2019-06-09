@@ -5,9 +5,15 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Duo } from "@airport/check-in";
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import { Duo } from "@airport/check-in"
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	IApplication,
 	ApplicationESelect,
@@ -17,7 +23,7 @@ import {
 	ApplicationEUpdateProperties,
 	ApplicationEId,
 	QApplication
-} from './qapplication';
+} from './qapplication'
 import {
 	IApplicationPackage,
 	ApplicationPackageESelect,
@@ -27,7 +33,7 @@ import {
 	ApplicationPackageEUpdateProperties,
 	ApplicationPackageEId,
 	QApplicationPackage
-} from './qapplicationpackage';
+} from './qapplicationpackage'
 import {
 	IDomain,
 	DomainESelect,
@@ -37,7 +43,7 @@ import {
 	DomainEUpdateProperties,
 	DomainEId,
 	QDomain
-} from './qdomain';
+} from './qdomain'
 import {
 	IPackage,
 	PackageESelect,
@@ -47,7 +53,7 @@ import {
 	PackageEUpdateProperties,
 	PackageEId,
 	QPackage
-} from './qpackage';
+} from './qpackage'
 import {
 	IPackagedUnit,
 	PackagedUnitESelect,
@@ -57,7 +63,7 @@ import {
 	PackagedUnitEUpdateProperties,
 	PackagedUnitEId,
 	QPackagedUnit
-} from './qpackagedunit';
+} from './qpackagedunit'
 
 
 // Schema Q object Dependency Injection readiness detection DAO
@@ -74,14 +80,10 @@ export class SQDIDuo<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -93,8 +95,13 @@ export interface IBaseApplicationDuo
 export class BaseApplicationDuo
   extends SQDIDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateProperties, ApplicationEId, QApplication>
 	implements IBaseApplicationDuo {
+
+	static diSet(): boolean {
+		return diSet(3)
+	}
+	
 	constructor() {
-		super('Application');
+		super(3)
 	}
 }
 
@@ -106,8 +113,13 @@ export interface IBaseApplicationPackageDuo
 export class BaseApplicationPackageDuo
   extends SQDIDuo<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateProperties, ApplicationPackageEId, QApplicationPackage>
 	implements IBaseApplicationPackageDuo {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('ApplicationPackage');
+		super(1)
 	}
 }
 
@@ -119,8 +131,13 @@ export interface IBaseDomainDuo
 export class BaseDomainDuo
   extends SQDIDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateProperties, DomainEId, QDomain>
 	implements IBaseDomainDuo {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('Domain');
+		super(2)
 	}
 }
 
@@ -132,8 +149,13 @@ export interface IBasePackageDuo
 export class BasePackageDuo
   extends SQDIDuo<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateProperties, PackageEId, QPackage>
 	implements IBasePackageDuo {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('Package');
+		super(0)
 	}
 }
 
@@ -145,7 +167,12 @@ export interface IBasePackagedUnitDuo
 export class BasePackagedUnitDuo
   extends SQDIDuo<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateProperties, PackagedUnitEId, QPackagedUnit>
 	implements IBasePackagedUnitDuo {
+
+	static diSet(): boolean {
+		return diSet(4)
+	}
+	
 	constructor() {
-		super('PackagedUnit');
+		super(4)
 	}
 }

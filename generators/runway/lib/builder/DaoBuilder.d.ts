@@ -1,12 +1,6 @@
-import { PathBuilder } from "./PathBuilder";
-import { IQBuilder } from "./QBuilder";
-export declare class DaoBuilder implements IQBuilder {
-    private pathBuilder;
-    daoListingFilePath: any;
-    private entityNames;
-    private ddlPathMapByEntityName;
-    private generatedPathMapByEntityName;
+import { ImplementationFileBuilder } from './ImplementationFileBuilder';
+import { PathBuilder } from './PathBuilder';
+export declare class DaoBuilder extends ImplementationFileBuilder {
     constructor(pathBuilder: PathBuilder);
-    addFileNameAndPaths(entityName: string, fullDdlPath: string, fullGenerationPath: string): void;
     build(): string;
 }

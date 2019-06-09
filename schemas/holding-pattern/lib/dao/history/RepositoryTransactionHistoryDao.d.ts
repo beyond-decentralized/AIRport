@@ -40,6 +40,6 @@ export declare class RepositoryTransactionHistoryDao extends BaseRepositoryTrans
     findAllLocalChangesForRecordIds(changedRecordIds: Map<RepositoryId, IChangedRecordIdsForRepository>): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>>;
     findExistingRecordIdMap(recordIdMap: Map<RepositoryId, Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>): Promise<Map<RepositoryId, Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>;
     setBlockIdWhereId(getSetClause: {
-        (id: IQNumberField): IQOrderableField<IQNumberField>;
+        (id: IQNumberField): IQNumberField;
     }): Promise<number>;
 }

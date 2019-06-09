@@ -1,4 +1,7 @@
-import {DbSchema}                  from '@airport/ground-control'
+import {
+	DbSchema,
+	EntityId
+}                                  from '@airport/ground-control'
 import * as fs                     from 'fs'
 import * as ts                     from 'typescript'
 import {DaoBuilder}                from './builder/DaoBuilder'
@@ -132,12 +135,19 @@ export function watchFiles(
 				entityMapByName, configuration, indexedSchema.entityMapByName[entityName])
 
 			if (!entity.isSuperclass) {
-				entityFileReference[entity.docEntry.name, fullGenerationPath]
+				entityFileReference[entity.docEntry.name] = fullGenerationPath
 			}
 			generatedSummaryBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
 			qSchemaBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
-			daoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
-			duoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath)
+
+			const sIndexedEntity = indexedSchema.entityMapByName[entityName]
+
+			let tableIndex: EntityId
+			if (sIndexedEntity) {
+				tableIndex = sIndexedEntity.entity.tableIndex
+			}
+			daoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath)
+			duoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath)
 			const generationPath     = pathBuilder.setupFileForGeneration(entity.path)
 			const entitySourceString = entityFileBuilder.build()
 			fs.writeFileSync(generationPath, entitySourceString)
@@ -147,7 +157,7 @@ export function watchFiles(
 		fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build(
 			configuration.airport.domain,
 			indexedSchema.schema.name
-			))
+		))
 		fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build())
 
 		const mappedSuperclassBuilder = new MappedSuperclassBuilder(

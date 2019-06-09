@@ -9,11 +9,11 @@ class RecordUpdateStageDao extends generated_1.BaseRecordUpdateStageDao {
         const rus = generated_1.Q.RecordUpdateStage;
         const columns = [
             rus.schemaVersion.id,
-            rus.entity.index,
+            rus.entity.id,
             rus.repository.id,
             rus.actor.id,
             rus.actorRecordId,
-            rus.column.index,
+            rus.column.id,
             rus.updatedValue
         ];
         for (let i = 1; i <= 50; i++) {
@@ -38,15 +38,16 @@ class RecordUpdateStageDao extends generated_1.BaseRecordUpdateStageDao {
         }
         const setClause = {};
         for (const columnIndex of updatedColumnIndexes) {
+            const column = dbEntity.columns[columnIndex];
             let columnRus = generated_1.Q.RecordUpdateStage;
             let columnSetClause = air_control_1.field({
                 from: [
                     columnRus
                 ],
                 select: columnRus.updatedValue,
-                where: air_control_1.and(columnRus.schemaVersion.id.equals(schemaVersionId), columnRus.entity.index.equals(tableIndex), columnRus.repository.id.equals(qEntity.repository.id), columnRus.actor.id.equals(qEntity.actor.id), columnRus.actorRecordId.equals(qEntity.actorRecordId), columnRus.column.index.equals(columnIndex))
+                where: air_control_1.and(columnRus.schemaVersion.id.equals(schemaVersionId), columnRus.entity.id.equals(dbEntity.id), columnRus.repository.id.equals(qEntity.repository.id), columnRus.actor.id.equals(qEntity.actor.id), columnRus.actorRecordId.equals(qEntity.actorRecordId), columnRus.column.id.equals(column.id))
             });
-            const propertyName = dbEntity.columns[columnIndex]
+            const propertyName = column
                 .propertyColumns[0].property.name;
             setClause[propertyName] = columnSetClause;
         }

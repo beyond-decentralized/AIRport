@@ -33,10 +33,9 @@ export class MissingRecord {
 	schemaVersion: ISchemaVersion;
 
 	@ManyToOne()
-	@JoinColumns([
-		{name: "SCHEMA_VERSION_ID"},
-		{name: "TABLE_INDEX"}
-	])
+	// FIXME: verify that these records don't make it into serialized
+	// repository ledger (and hence, that using local ids is safe)
+	@JoinColumn({name: "SCHEMA_ENTITY_ID", referencedColumnName: 'ID'})
 	entity: ISchemaEntity;
 
 	@ManyToOne()

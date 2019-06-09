@@ -3,25 +3,24 @@ import {
 	IAirportDatabase,
 	IUtils,
 	UTILS
-}                           from '@airport/air-control'
-import {DI}                 from '@airport/di'
+}                     from '@airport/air-control'
+import {
+	ISequenceGenerator,
+	SEQUENCE_GENERATOR
+}                     from '@airport/check-in'
+import {DI}           from '@airport/di'
 import {
 	DbColumn,
 	DbEntity
-}                           from '@airport/ground-control'
+}                     from '@airport/ground-control'
 import {
 	OperationHistoryId,
 	Q,
 	RecordHistoryId,
 	RepositoryTransactionHistoryId,
 	TransactionHistoryId
-}                           from '@airport/holding-pattern'
-import {IDomain}            from '@airport/territory'
-import {
-	ID_GENERATOR,
-	SEQUENCE_GENERATOR
-}                           from '../diTokens'
-import {ISequenceGenerator} from './SequenceGenerator'
+}                     from '@airport/holding-pattern'
+import {ID_GENERATOR} from '../diTokens'
 
 export type NumRepositoryTransHistories = number
 export type NumOperationTransHistories = number
@@ -69,8 +68,8 @@ export class IdGenerator
 			sequenceGenerator,
 			utils
 		) => {
-			this.airDb             = airportDatabase
-			this.utils             = utils
+			this.airDb = airportDatabase
+			this.utils = utils
 		}, AIR_DB, UTILS)
 
 		this.sequenceGeneratorFuture = DI.laterP(SEQUENCE_GENERATOR)

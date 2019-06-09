@@ -5,9 +5,15 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Duo } from "@airport/check-in";
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import { Duo } from "@airport/check-in"
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	IMissingRecord,
 	MissingRecordESelect,
@@ -17,7 +23,7 @@ import {
 	MissingRecordEUpdateProperties,
 	MissingRecordEId,
 	QMissingRecord
-} from './missingrecord/qmissingrecord';
+} from './missingrecord/qmissingrecord'
 import {
 	IMissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockESelect,
@@ -27,7 +33,7 @@ import {
 	MissingRecordRepoTransBlockEUpdateProperties,
 	MissingRecordRepoTransBlockEId,
 	QMissingRecordRepoTransBlock
-} from './missingrecord/qmissingrecordrepotransblock';
+} from './missingrecord/qmissingrecordrepotransblock'
 import {
 	IRecordUpdateStage,
 	RecordUpdateStageESelect,
@@ -37,7 +43,7 @@ import {
 	RecordUpdateStageEUpdateProperties,
 	RecordUpdateStageEId,
 	QRecordUpdateStage
-} from './qrecordupdatestage';
+} from './qrecordupdatestage'
 import {
 	IRepoTransBlockResponseStage,
 	RepoTransBlockResponseStageESelect,
@@ -47,7 +53,7 @@ import {
 	RepoTransBlockResponseStageEUpdateProperties,
 	RepoTransBlockResponseStageEId,
 	QRepoTransBlockResponseStage
-} from './repositorytransactionblock/qrepotransblockresponsestage';
+} from './repositorytransactionblock/qrepotransblockresponsestage'
 import {
 	IRepoTransBlockSchemaToChange,
 	RepoTransBlockSchemaToChangeESelect,
@@ -57,7 +63,7 @@ import {
 	RepoTransBlockSchemaToChangeEUpdateProperties,
 	RepoTransBlockSchemaToChangeEId,
 	QRepoTransBlockSchemaToChange
-} from './repositorytransactionblock/qrepotransblockschematochange';
+} from './repositorytransactionblock/qrepotransblockschematochange'
 import {
 	IRepositoryTransactionBlock,
 	RepositoryTransactionBlockESelect,
@@ -67,7 +73,7 @@ import {
 	RepositoryTransactionBlockEUpdateProperties,
 	RepositoryTransactionBlockEId,
 	QRepositoryTransactionBlock
-} from './repositorytransactionblock/qrepositorytransactionblock';
+} from './repositorytransactionblock/qrepositorytransactionblock'
 import {
 	IRepositoryTransactionHistoryUpdateStage,
 	RepositoryTransactionHistoryUpdateStageESelect,
@@ -77,7 +83,7 @@ import {
 	RepositoryTransactionHistoryUpdateStageEUpdateProperties,
 	RepositoryTransactionHistoryUpdateStageEId,
 	QRepositoryTransactionHistoryUpdateStage
-} from './repositorytransactionblock/qrepositorytransactionhistoryupdatestage';
+} from './repositorytransactionblock/qrepositorytransactionhistoryupdatestage'
 import {
 	ISharingMessage,
 	SharingMessageESelect,
@@ -87,7 +93,7 @@ import {
 	SharingMessageEUpdateProperties,
 	SharingMessageEId,
 	QSharingMessage
-} from './sharingmessage/qsharingmessage';
+} from './sharingmessage/qsharingmessage'
 import {
 	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockESelect,
@@ -97,7 +103,7 @@ import {
 	SharingMessageRepoTransBlockEUpdateProperties,
 	SharingMessageRepoTransBlockEId,
 	QSharingMessageRepoTransBlock
-} from './sharingmessage/qsharingmessagerepotransblock';
+} from './sharingmessage/qsharingmessagerepotransblock'
 import {
 	ISharingNode,
 	SharingNodeESelect,
@@ -107,7 +113,7 @@ import {
 	SharingNodeEUpdateProperties,
 	SharingNodeEId,
 	QSharingNode
-} from './sharingnode/qsharingnode';
+} from './sharingnode/qsharingnode'
 import {
 	ISharingNodeRepoTransBlock,
 	SharingNodeRepoTransBlockESelect,
@@ -117,7 +123,7 @@ import {
 	SharingNodeRepoTransBlockEUpdateProperties,
 	SharingNodeRepoTransBlockEId,
 	QSharingNodeRepoTransBlock
-} from './sharingnode/qsharingnoderepotransblock';
+} from './sharingnode/qsharingnoderepotransblock'
 import {
 	ISharingNodeRepoTransBlockStage,
 	SharingNodeRepoTransBlockStageESelect,
@@ -127,7 +133,7 @@ import {
 	SharingNodeRepoTransBlockStageEUpdateProperties,
 	SharingNodeRepoTransBlockStageEId,
 	QSharingNodeRepoTransBlockStage
-} from './sharingnode/qsharingnoderepotransblockstage';
+} from './sharingnode/qsharingnoderepotransblockstage'
 import {
 	ISharingNodeRepository,
 	SharingNodeRepositoryESelect,
@@ -137,7 +143,7 @@ import {
 	SharingNodeRepositoryEUpdateProperties,
 	SharingNodeRepositoryEId,
 	QSharingNodeRepository
-} from './sharingnode/qsharingnoderepository';
+} from './sharingnode/qsharingnoderepository'
 import {
 	ISharingNodeTerminal,
 	SharingNodeTerminalESelect,
@@ -147,7 +153,7 @@ import {
 	SharingNodeTerminalEUpdateProperties,
 	SharingNodeTerminalEId,
 	QSharingNodeTerminal
-} from './sharingnode/qsharingnodeterminal';
+} from './sharingnode/qsharingnodeterminal'
 import {
 	ISynchronizationConflict,
 	SynchronizationConflictESelect,
@@ -157,7 +163,7 @@ import {
 	SynchronizationConflictEUpdateProperties,
 	SynchronizationConflictEId,
 	QSynchronizationConflict
-} from './conflict/qsynchronizationconflict';
+} from './conflict/qsynchronizationconflict'
 import {
 	ISynchronizationConflictPendingNotification,
 	SynchronizationConflictPendingNotificationESelect,
@@ -167,7 +173,7 @@ import {
 	SynchronizationConflictPendingNotificationEUpdateProperties,
 	SynchronizationConflictPendingNotificationEId,
 	QSynchronizationConflictPendingNotification
-} from './conflict/qsynchronizationconflictpendingnotification';
+} from './conflict/qsynchronizationconflictpendingnotification'
 import {
 	ISynchronizationConflictValues,
 	SynchronizationConflictValuesESelect,
@@ -177,7 +183,7 @@ import {
 	SynchronizationConflictValuesEUpdateProperties,
 	SynchronizationConflictValuesEId,
 	QSynchronizationConflictValues
-} from './conflict/qsynchronizationconflictvalues';
+} from './conflict/qsynchronizationconflictvalues'
 
 
 // Schema Q object Dependency Injection readiness detection DAO
@@ -194,14 +200,10 @@ export class SQDIDuo<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -213,8 +215,13 @@ export interface IBaseMissingRecordDuo
 export class BaseMissingRecordDuo
   extends SQDIDuo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateProperties, MissingRecordEId, QMissingRecord>
 	implements IBaseMissingRecordDuo {
+
+	static diSet(): boolean {
+		return diSet(3)
+	}
+	
 	constructor() {
-		super('MissingRecord');
+		super(3)
 	}
 }
 
@@ -226,8 +233,13 @@ export interface IBaseMissingRecordRepoTransBlockDuo
 export class BaseMissingRecordRepoTransBlockDuo
   extends SQDIDuo<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, QMissingRecordRepoTransBlock>
 	implements IBaseMissingRecordRepoTransBlockDuo {
+
+	static diSet(): boolean {
+		return diSet(4)
+	}
+	
 	constructor() {
-		super('MissingRecordRepoTransBlock');
+		super(4)
 	}
 }
 
@@ -239,8 +251,13 @@ export interface IBaseRecordUpdateStageDuo
 export class BaseRecordUpdateStageDuo
   extends SQDIDuo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, QRecordUpdateStage>
 	implements IBaseRecordUpdateStageDuo {
+
+	static diSet(): boolean {
+		return diSet(5)
+	}
+	
 	constructor() {
-		super('RecordUpdateStage');
+		super(5)
 	}
 }
 
@@ -252,8 +269,13 @@ export interface IBaseRepoTransBlockResponseStageDuo
 export class BaseRepoTransBlockResponseStageDuo
   extends SQDIDuo<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, QRepoTransBlockResponseStage>
 	implements IBaseRepoTransBlockResponseStageDuo {
+
+	static diSet(): boolean {
+		return diSet(6)
+	}
+	
 	constructor() {
-		super('RepoTransBlockResponseStage');
+		super(6)
 	}
 }
 
@@ -265,8 +287,13 @@ export interface IBaseRepoTransBlockSchemaToChangeDuo
 export class BaseRepoTransBlockSchemaToChangeDuo
   extends SQDIDuo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, QRepoTransBlockSchemaToChange>
 	implements IBaseRepoTransBlockSchemaToChangeDuo {
+
+	static diSet(): boolean {
+		return diSet(7)
+	}
+	
 	constructor() {
-		super('RepoTransBlockSchemaToChange');
+		super(7)
 	}
 }
 
@@ -278,8 +305,13 @@ export interface IBaseRepositoryTransactionBlockDuo
 export class BaseRepositoryTransactionBlockDuo
   extends SQDIDuo<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, QRepositoryTransactionBlock>
 	implements IBaseRepositoryTransactionBlockDuo {
+
+	static diSet(): boolean {
+		return diSet(16)
+	}
+	
 	constructor() {
-		super('RepositoryTransactionBlock');
+		super(16)
 	}
 }
 
@@ -291,8 +323,13 @@ export interface IBaseRepositoryTransactionHistoryUpdateStageDuo
 export class BaseRepositoryTransactionHistoryUpdateStageDuo
   extends SQDIDuo<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, QRepositoryTransactionHistoryUpdateStage>
 	implements IBaseRepositoryTransactionHistoryUpdateStageDuo {
+
+	static diSet(): boolean {
+		return diSet(8)
+	}
+	
 	constructor() {
-		super('RepositoryTransactionHistoryUpdateStage');
+		super(8)
 	}
 }
 
@@ -304,8 +341,13 @@ export interface IBaseSharingMessageDuo
 export class BaseSharingMessageDuo
   extends SQDIDuo<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateProperties, SharingMessageEId, QSharingMessage>
 	implements IBaseSharingMessageDuo {
+
+	static diSet(): boolean {
+		return diSet(14)
+	}
+	
 	constructor() {
-		super('SharingMessage');
+		super(14)
 	}
 }
 
@@ -317,8 +359,13 @@ export interface IBaseSharingMessageRepoTransBlockDuo
 export class BaseSharingMessageRepoTransBlockDuo
   extends SQDIDuo<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, QSharingMessageRepoTransBlock>
 	implements IBaseSharingMessageRepoTransBlockDuo {
+
+	static diSet(): boolean {
+		return diSet(15)
+	}
+	
 	constructor() {
-		super('SharingMessageRepoTransBlock');
+		super(15)
 	}
 }
 
@@ -330,8 +377,13 @@ export interface IBaseSharingNodeDuo
 export class BaseSharingNodeDuo
   extends SQDIDuo<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateProperties, SharingNodeEId, QSharingNode>
 	implements IBaseSharingNodeDuo {
+
+	static diSet(): boolean {
+		return diSet(10)
+	}
+	
 	constructor() {
-		super('SharingNode');
+		super(10)
 	}
 }
 
@@ -343,8 +395,13 @@ export interface IBaseSharingNodeRepoTransBlockDuo
 export class BaseSharingNodeRepoTransBlockDuo
   extends SQDIDuo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, QSharingNodeRepoTransBlock>
 	implements IBaseSharingNodeRepoTransBlockDuo {
+
+	static diSet(): boolean {
+		return diSet(9)
+	}
+	
 	constructor() {
-		super('SharingNodeRepoTransBlock');
+		super(9)
 	}
 }
 
@@ -356,8 +413,13 @@ export interface IBaseSharingNodeRepoTransBlockStageDuo
 export class BaseSharingNodeRepoTransBlockStageDuo
   extends SQDIDuo<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, QSharingNodeRepoTransBlockStage>
 	implements IBaseSharingNodeRepoTransBlockStageDuo {
+
+	static diSet(): boolean {
+		return diSet(11)
+	}
+	
 	constructor() {
-		super('SharingNodeRepoTransBlockStage');
+		super(11)
 	}
 }
 
@@ -369,8 +431,13 @@ export interface IBaseSharingNodeRepositoryDuo
 export class BaseSharingNodeRepositoryDuo
   extends SQDIDuo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, QSharingNodeRepository>
 	implements IBaseSharingNodeRepositoryDuo {
+
+	static diSet(): boolean {
+		return diSet(12)
+	}
+	
 	constructor() {
-		super('SharingNodeRepository');
+		super(12)
 	}
 }
 
@@ -382,8 +449,13 @@ export interface IBaseSharingNodeTerminalDuo
 export class BaseSharingNodeTerminalDuo
   extends SQDIDuo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, QSharingNodeTerminal>
 	implements IBaseSharingNodeTerminalDuo {
+
+	static diSet(): boolean {
+		return diSet(13)
+	}
+	
 	constructor() {
-		super('SharingNodeTerminal');
+		super(13)
 	}
 }
 
@@ -395,8 +467,13 @@ export interface IBaseSynchronizationConflictDuo
 export class BaseSynchronizationConflictDuo
   extends SQDIDuo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, QSynchronizationConflict>
 	implements IBaseSynchronizationConflictDuo {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('SynchronizationConflict');
+		super(1)
 	}
 }
 
@@ -408,8 +485,13 @@ export interface IBaseSynchronizationConflictPendingNotificationDuo
 export class BaseSynchronizationConflictPendingNotificationDuo
   extends SQDIDuo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, QSynchronizationConflictPendingNotification>
 	implements IBaseSynchronizationConflictPendingNotificationDuo {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('SynchronizationConflictPendingNotification');
+		super(2)
 	}
 }
 
@@ -421,7 +503,12 @@ export interface IBaseSynchronizationConflictValuesDuo
 export class BaseSynchronizationConflictValuesDuo
   extends SQDIDuo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, QSynchronizationConflictValues>
 	implements IBaseSynchronizationConflictValuesDuo {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('SynchronizationConflictValues');
+		super(0)
 	}
 }

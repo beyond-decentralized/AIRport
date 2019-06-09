@@ -1,38 +1,17 @@
-import {resolveRelativePath} from "../resolve/pathResolver";
-import {PathBuilder}         from "./PathBuilder";
-import {IQBuilder}           from "./QBuilder";
+import {ImplementationFileBuilder} from './ImplementationFileBuilder'
+import {PathBuilder}               from './PathBuilder'
 
-export class DaoBuilder implements IQBuilder {
-
-	public daoListingFilePath;
-
-	private entityNames: string[]                                          = [];
-	private ddlPathMapByEntityName: { [entityName: string]: string }       = {};
-	private generatedPathMapByEntityName: { [entityName: string]: string } = {};
+export class DaoBuilder
+	extends ImplementationFileBuilder {
 
 	constructor(
-		private pathBuilder: PathBuilder
+		pathBuilder: PathBuilder
 	) {
-		this.daoListingFilePath = pathBuilder.fullGeneratedDirPath + '/baseDaos.ts'
-	}
-
-	addFileNameAndPaths(
-		entityName: string,
-		fullDdlPath: string,
-		fullGenerationPath: string,
-	): void {
-		const ddlRelativePath                   = resolveRelativePath(this.daoListingFilePath, fullDdlPath)
-			.replace('.ts', '');
-		this.ddlPathMapByEntityName[entityName] = ddlRelativePath;
-		const generatedRelativePath             = resolveRelativePath(this.daoListingFilePath, fullGenerationPath)
-			.replace('.ts', '');
-		this.generatedPathMapByEntityName[entityName]
-		                                        = this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath);
-		this.entityNames.push(entityName);
+		super('baseDaos', pathBuilder)
 	}
 
 	build(): string {
-		this.entityNames.sort();
+		this.entityNames.sort()
 
 		const daoDefinitions = this.entityNames.map(
 			entityName => `
@@ -43,11 +22,16 @@ export interface IBase${entityName}Dao
 export class Base${entityName}Dao
   extends SQDIDao<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, Q${entityName}>
 	implements IBase${entityName}Dao {
+
+	static diSet(): boolean {
+		return diSet(${this.entityIdMapByName[entityName]})
+	}
+	
 	constructor() {
-		super('${entityName}')
+		super(${this.entityIdMapByName[entityName]})
 	}
 }
-`).join('\n');
+`).join('\n')
 		const imports        = this.entityNames.map(
 			entityName =>
 				`import {
@@ -59,8 +43,8 @@ export class Base${entityName}Dao
 	${entityName}EUpdateProperties,
 	${entityName}EId,
 	Q${entityName}
-} from '${this.generatedPathMapByEntityName[entityName]}';`
-		).join('\n');
+} from '${this.generatedPathMapByEntityName[entityName]}'`
+		).join('\n')
 
 		return `import {
 	IDao,
@@ -70,9 +54,17 @@ export class Base${entityName}Dao
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Dao } from '@airport/check-in';
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import {
+	Dao
+} from '@airport/check-in'
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 ${imports}
 
 // Schema Q object Dependency Injection readiness detection DAO
@@ -91,18 +83,14 @@ export class SQDIDao<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
-${daoDefinitions}`;
+${daoDefinitions}`
 	}
 
 }

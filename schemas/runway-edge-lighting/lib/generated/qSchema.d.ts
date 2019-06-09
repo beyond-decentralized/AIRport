@@ -1,5 +1,5 @@
 import { QSchema as AirportQSchema } from '@airport/air-control';
-import { DbSchema } from '@airport/ground-control';
+import { DbSchema, EntityId } from '@airport/ground-control';
 import { QLogEntry } from './qlogentry';
 import { QLogEntryType } from './qlogentrytype';
 import { QLogEntryValue } from './qlogentryvalue';
@@ -15,3 +15,4 @@ export interface LocalQSchema extends AirportQSchema {
 }
 export declare const Q_SCHEMA: LocalQSchema;
 export declare const Q: LocalQSchema;
+export declare function diSet(dbEntityId: EntityId): boolean;

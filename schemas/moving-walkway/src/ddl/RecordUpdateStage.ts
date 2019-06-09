@@ -40,10 +40,9 @@ export class RecordUpdateStage {
 	schemaVersion: ISchemaVersion
 
 	@ManyToOne()
-	@JoinColumns([
-		{name: 'SCHEMA_VERSION_ID'},
-		{name: 'TABLE_INDEX'}
-	])
+	// FIXME: verify that these records don't make it into serialized
+	// repository ledger (and hence, that using local ids is safe)
+	@JoinColumn({name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID'})
 	entity: ISchemaEntity
 
 	@ManyToOne()
@@ -59,10 +58,9 @@ export class RecordUpdateStage {
 	actorRecordId: RecordHistoryActorRecordId
 
 	@ManyToOne()
-	@JoinColumns([
-		{name: 'SCHEMA_ENTITY_ID'},
-		{name: 'COLUMN_INDEX'}
-	])
+	// FIXME: verify that these records don't make it into serialized
+	// repository ledger (and hence, that using local ids is safe)
+	@JoinColumn({name: 'SCHEMA_COLUMN_ID', referencedColumnName: 'ID'})
 	column: ISchemaColumn
 
 

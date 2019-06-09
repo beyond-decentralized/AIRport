@@ -1,4 +1,4 @@
-import { IBaseSchemaColumnDao, IBaseSchemaDao, IBaseSchemaEntityDao, IBaseSchemaPropertyColumnDao, IBaseSchemaPropertyDao, IBaseSchemaReferenceDao, IBaseSchemaRelationColumnDao, IBaseSchemaRelationDao, IBaseSchemaVersionDao, IBaseVersionedSchemaObjectDao } from '../generated/generated';
+import { IBaseSchemaColumnDao, IBaseSchemaDao, IBaseSchemaEntityDao, IBaseSchemaPropertyColumnDao, IBaseSchemaPropertyDao, IBaseSchemaReferenceDao, IBaseSchemaRelationColumnDao, IBaseSchemaRelationDao, IBaseSchemaVersionDao } from '../generated/generated';
 export * from './SchemaColumnDao';
 export * from './SchemaDao';
 export * from './SchemaEntityDao';
@@ -18,5 +18,4 @@ export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos {
     SchemaRelation: IBaseSchemaRelationDao;
     SchemaRelationColumn: IBaseSchemaRelationColumnDao;
     SchemaVersion: IBaseSchemaVersionDao;
-    VersionedSchemaObject: IBaseVersionedSchemaObjectDao;
 }

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const check_in_1 = require("@airport/check-in");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const sequence_1 = require("../ddl/sequence");
@@ -17,6 +18,10 @@ exports.Q_SCHEMA = {
     name: '@airport/airport-code'
 };
 exports.Q = exports.Q_SCHEMA;
+function diSet(dbEntityId) {
+    return check_in_1.diSet(exports.Q.__dbSchema__, dbEntityId);
+}
+exports.diSet = diSet;
 di_1.DI.get((airportDatabase) => {
     airportDatabase.QM[ground_control_1.getSchemaName(exports.Q_SCHEMA)] = exports.Q;
 }, air_control_1.AIR_DB);

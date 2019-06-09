@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
-const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
+const check_in_1 = require("@airport/check-in");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const terminal_map_1 = require("@airport/terminal-map");
@@ -17,7 +17,7 @@ class InsertManager {
             this.offlineDataStore = offlineDataStore;
             this.repoManager = repositoryManager;
             this.transManager = transactionManager;
-        }, air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, fuel_hydrant_system_1.SEQUENCE_GENERATOR, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.REPOSITORY_MANAGER, terminal_map_1.TRANSACTION_MANAGER);
+        }, air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, check_in_1.SEQUENCE_GENERATOR, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.REPOSITORY_MANAGER, terminal_map_1.TRANSACTION_MANAGER);
         this.operHistoryDuo = di_1.DI.getP(holding_pattern_1.OPER_HISTORY_DUO);
         this.recHistoryDuo = di_1.DI.getP(holding_pattern_1.REC_HISTORY_DUO);
         this.repoTransHistoryDuo = di_1.DI.getP(holding_pattern_1.REPO_TRANS_HISTORY_DUO);

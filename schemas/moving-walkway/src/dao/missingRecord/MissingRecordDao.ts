@@ -13,6 +13,7 @@ import {
 	RepositoryEntityActorRecordId,
 	RepositoryId
 }                           from '@airport/holding-pattern'
+import {ISchemaVersion}     from '@airport/traffic-pattern'
 import {
 	MissingRecordId,
 	MissingRecordStatus,
@@ -81,12 +82,20 @@ export class MissingRecordDao
 
 		let numClauses = 0
 
+		const currentSchemaVersionMapById: { [schemaVersionId: number]: ISchemaVersion } = {}
+
+		for (const schema of this.airDb.schemas) {
+			const schemaVersion                           = schema.currentVersion
+			currentSchemaVersionMapById[schemaVersion.id] = schemaVersion
+		}
+
 		let repositoryWhereFragments: JSONBaseOperation[] = []
 		for (const [repositoryId, recordIdsForRepository] of recordIdMap) {
 			let schemaWhereFragments: JSONBaseOperation[] = []
 			for (const [schemaVersionId, recordIdsForSchema] of recordIdsForRepository) {
 				let tableWhereFragments: JSONBaseOperation[] = []
 				for (const [tableIndex, recordIdsForTable] of recordIdsForSchema) {
+					const dbEntity                               = currentSchemaVersionMapById[schemaVersionId].entities[tableIndex]
 					let actorWhereFragments: JSONBaseOperation[] = []
 					for (const [actorId, recordIdsForActor] of recordIdsForTable) {
 						numClauses++
@@ -96,7 +105,7 @@ export class MissingRecordDao
 						))
 					}
 					tableWhereFragments.push(and(
-						mr.entity.index.equals(tableIndex),
+						mr.entity.id.equals(dbEntity.id),
 						or(...actorWhereFragments)
 					))
 				}

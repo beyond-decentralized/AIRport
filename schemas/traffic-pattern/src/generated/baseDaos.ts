@@ -6,9 +6,17 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Dao } from '@airport/check-in';
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import {
+	Dao
+} from '@airport/check-in'
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	ISchema,
 	SchemaESelect,
@@ -18,7 +26,7 @@ import {
 	SchemaEUpdateProperties,
 	SchemaEId,
 	QSchema
-} from './schema/qschema';
+} from './schema/qschema'
 import {
 	ISchemaColumn,
 	SchemaColumnESelect,
@@ -28,7 +36,7 @@ import {
 	SchemaColumnEUpdateProperties,
 	SchemaColumnEId,
 	QSchemaColumn
-} from './schema/qschemacolumn';
+} from './schema/qschemacolumn'
 import {
 	ISchemaEntity,
 	SchemaEntityESelect,
@@ -38,7 +46,7 @@ import {
 	SchemaEntityEUpdateProperties,
 	SchemaEntityEId,
 	QSchemaEntity
-} from './schema/qschemaentity';
+} from './schema/qschemaentity'
 import {
 	ISchemaProperty,
 	SchemaPropertyESelect,
@@ -48,7 +56,7 @@ import {
 	SchemaPropertyEUpdateProperties,
 	SchemaPropertyEId,
 	QSchemaProperty
-} from './schema/qschemaproperty';
+} from './schema/qschemaproperty'
 import {
 	ISchemaPropertyColumn,
 	SchemaPropertyColumnESelect,
@@ -58,7 +66,7 @@ import {
 	SchemaPropertyColumnEUpdateProperties,
 	SchemaPropertyColumnEId,
 	QSchemaPropertyColumn
-} from './schema/qschemapropertycolumn';
+} from './schema/qschemapropertycolumn'
 import {
 	ISchemaReference,
 	SchemaReferenceESelect,
@@ -68,7 +76,7 @@ import {
 	SchemaReferenceEUpdateProperties,
 	SchemaReferenceEId,
 	QSchemaReference
-} from './schema/qschemareference';
+} from './schema/qschemareference'
 import {
 	ISchemaRelation,
 	SchemaRelationESelect,
@@ -78,7 +86,7 @@ import {
 	SchemaRelationEUpdateProperties,
 	SchemaRelationEId,
 	QSchemaRelation
-} from './schema/qschemarelation';
+} from './schema/qschemarelation'
 import {
 	ISchemaRelationColumn,
 	SchemaRelationColumnESelect,
@@ -88,7 +96,7 @@ import {
 	SchemaRelationColumnEUpdateProperties,
 	SchemaRelationColumnEId,
 	QSchemaRelationColumn
-} from './schema/qschemarelationcolumn';
+} from './schema/qschemarelationcolumn'
 import {
 	ISchemaVersion,
 	SchemaVersionESelect,
@@ -98,17 +106,7 @@ import {
 	SchemaVersionEUpdateProperties,
 	SchemaVersionEId,
 	QSchemaVersion
-} from './schema/qschemaversion';
-import {
-	IVersionedSchemaObject,
-	VersionedSchemaObjectESelect,
-	VersionedSchemaObjectECreateColumns,
-	VersionedSchemaObjectECreateProperties,
-	VersionedSchemaObjectEUpdateColumns,
-	VersionedSchemaObjectEUpdateProperties,
-	VersionedSchemaObjectEId,
-	QVersionedSchemaObject
-} from './schema/qversionedschemaobject';
+} from './schema/qschemaversion'
 
 // Schema Q object Dependency Injection readiness detection DAO
 export class SQDIDao<Entity,
@@ -126,14 +124,10 @@ export class SQDIDao<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -145,8 +139,13 @@ export interface IBaseSchemaDao
 export class BaseSchemaDao
   extends SQDIDao<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, QSchema>
 	implements IBaseSchemaDao {
+
+	static diSet(): boolean {
+		return diSet(8)
+	}
+	
 	constructor() {
-		super('Schema')
+		super(8)
 	}
 }
 
@@ -158,8 +157,13 @@ export interface IBaseSchemaColumnDao
 export class BaseSchemaColumnDao
   extends SQDIDao<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, QSchemaColumn>
 	implements IBaseSchemaColumnDao {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('SchemaColumn')
+		super(0)
 	}
 }
 
@@ -171,8 +175,13 @@ export interface IBaseSchemaEntityDao
 export class BaseSchemaEntityDao
   extends SQDIDao<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, QSchemaEntity>
 	implements IBaseSchemaEntityDao {
+
+	static diSet(): boolean {
+		return diSet(5)
+	}
+	
 	constructor() {
-		super('SchemaEntity')
+		super(5)
 	}
 }
 
@@ -184,8 +193,13 @@ export interface IBaseSchemaPropertyDao
 export class BaseSchemaPropertyDao
   extends SQDIDao<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, QSchemaProperty>
 	implements IBaseSchemaPropertyDao {
+
+	static diSet(): boolean {
+		return diSet(4)
+	}
+	
 	constructor() {
-		super('SchemaProperty')
+		super(4)
 	}
 }
 
@@ -197,8 +211,13 @@ export interface IBaseSchemaPropertyColumnDao
 export class BaseSchemaPropertyColumnDao
   extends SQDIDao<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, QSchemaPropertyColumn>
 	implements IBaseSchemaPropertyColumnDao {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('SchemaPropertyColumn')
+		super(1)
 	}
 }
 
@@ -210,8 +229,13 @@ export interface IBaseSchemaReferenceDao
 export class BaseSchemaReferenceDao
   extends SQDIDao<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, QSchemaReference>
 	implements IBaseSchemaReferenceDao {
+
+	static diSet(): boolean {
+		return diSet(6)
+	}
+	
 	constructor() {
-		super('SchemaReference')
+		super(6)
 	}
 }
 
@@ -223,8 +247,13 @@ export interface IBaseSchemaRelationDao
 export class BaseSchemaRelationDao
   extends SQDIDao<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, QSchemaRelation>
 	implements IBaseSchemaRelationDao {
+
+	static diSet(): boolean {
+		return diSet(3)
+	}
+	
 	constructor() {
-		super('SchemaRelation')
+		super(3)
 	}
 }
 
@@ -236,8 +265,13 @@ export interface IBaseSchemaRelationColumnDao
 export class BaseSchemaRelationColumnDao
   extends SQDIDao<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, QSchemaRelationColumn>
 	implements IBaseSchemaRelationColumnDao {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('SchemaRelationColumn')
+		super(2)
 	}
 }
 
@@ -249,20 +283,12 @@ export interface IBaseSchemaVersionDao
 export class BaseSchemaVersionDao
   extends SQDIDao<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion>
 	implements IBaseSchemaVersionDao {
-	constructor() {
-		super('SchemaVersion')
+
+	static diSet(): boolean {
+		return diSet(7)
 	}
-}
-
-
-export interface IBaseVersionedSchemaObjectDao
-  extends IDao<IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject> {
-}
-
-export class BaseVersionedSchemaObjectDao
-  extends SQDIDao<IVersionedSchemaObject, VersionedSchemaObjectESelect, VersionedSchemaObjectECreateProperties, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectEId, QVersionedSchemaObject>
-	implements IBaseVersionedSchemaObjectDao {
+	
 	constructor() {
-		super('VersionedSchemaObject')
+		super(7)
 	}
 }

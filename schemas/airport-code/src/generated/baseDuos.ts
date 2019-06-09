@@ -5,9 +5,15 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Duo } from "@airport/check-in";
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import { Duo } from "@airport/check-in"
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	ISequence,
 	SequenceESelect,
@@ -17,7 +23,7 @@ import {
 	SequenceEUpdateProperties,
 	SequenceEId,
 	QSequence
-} from './qsequence';
+} from './qsequence'
 import {
 	ISequenceBlock,
 	SequenceBlockESelect,
@@ -27,7 +33,7 @@ import {
 	SequenceBlockEUpdateProperties,
 	SequenceBlockEId,
 	QSequenceBlock
-} from './qsequenceblock';
+} from './qsequenceblock'
 import {
 	ITerminalRun,
 	TerminalRunESelect,
@@ -37,7 +43,7 @@ import {
 	TerminalRunEUpdateProperties,
 	TerminalRunEId,
 	QTerminalRun
-} from './qterminalrun';
+} from './qterminalrun'
 
 
 // Schema Q object Dependency Injection readiness detection DAO
@@ -54,14 +60,10 @@ export class SQDIDuo<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -73,8 +75,13 @@ export interface IBaseSequenceDuo
 export class BaseSequenceDuo
   extends SQDIDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, QSequence>
 	implements IBaseSequenceDuo {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('Sequence');
+		super(0)
 	}
 }
 
@@ -86,8 +93,13 @@ export interface IBaseSequenceBlockDuo
 export class BaseSequenceBlockDuo
   extends SQDIDuo<ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock>
 	implements IBaseSequenceBlockDuo {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('SequenceBlock');
+		super(2)
 	}
 }
 
@@ -99,7 +111,12 @@ export interface IBaseTerminalRunDuo
 export class BaseTerminalRunDuo
   extends SQDIDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateProperties, TerminalRunEId, QTerminalRun>
 	implements IBaseTerminalRunDuo {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('TerminalRun');
+		super(1)
 	}
 }

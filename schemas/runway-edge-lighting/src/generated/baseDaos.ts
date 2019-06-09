@@ -6,9 +6,17 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Dao } from '@airport/check-in';
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import {
+	Dao
+} from '@airport/check-in'
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	ILogEntry,
 	LogEntryESelect,
@@ -18,7 +26,7 @@ import {
 	LogEntryEUpdateProperties,
 	LogEntryEId,
 	QLogEntry
-} from './qlogentry';
+} from './qlogentry'
 import {
 	ILogEntryType,
 	LogEntryTypeESelect,
@@ -28,7 +36,7 @@ import {
 	LogEntryTypeEUpdateProperties,
 	LogEntryTypeEId,
 	QLogEntryType
-} from './qlogentrytype';
+} from './qlogentrytype'
 import {
 	ILogEntryValue,
 	LogEntryValueESelect,
@@ -38,7 +46,7 @@ import {
 	LogEntryValueEUpdateProperties,
 	LogEntryValueEId,
 	QLogEntryValue
-} from './qlogentryvalue';
+} from './qlogentryvalue'
 import {
 	ILoggedError,
 	LoggedErrorESelect,
@@ -48,7 +56,7 @@ import {
 	LoggedErrorEUpdateProperties,
 	LoggedErrorEId,
 	QLoggedError
-} from './qloggederror';
+} from './qloggederror'
 import {
 	ILoggedErrorStackTrace,
 	LoggedErrorStackTraceESelect,
@@ -58,7 +66,7 @@ import {
 	LoggedErrorStackTraceEUpdateProperties,
 	LoggedErrorStackTraceEId,
 	QLoggedErrorStackTrace
-} from './qloggederrorstacktrace';
+} from './qloggederrorstacktrace'
 
 // Schema Q object Dependency Injection readiness detection DAO
 export class SQDIDao<Entity,
@@ -76,14 +84,10 @@ export class SQDIDao<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -95,8 +99,13 @@ export interface IBaseLogEntryDao
 export class BaseLogEntryDao
   extends SQDIDao<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateColumns, LogEntryEUpdateProperties, LogEntryEId, QLogEntry>
 	implements IBaseLogEntryDao {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('LogEntry')
+		super(1)
 	}
 }
 
@@ -108,8 +117,13 @@ export interface IBaseLogEntryTypeDao
 export class BaseLogEntryTypeDao
   extends SQDIDao<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateColumns, LogEntryTypeEUpdateProperties, LogEntryTypeEId, QLogEntryType>
 	implements IBaseLogEntryTypeDao {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('LogEntryType')
+		super(2)
 	}
 }
 
@@ -121,8 +135,13 @@ export interface IBaseLogEntryValueDao
 export class BaseLogEntryValueDao
   extends SQDIDao<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateColumns, LogEntryValueEUpdateProperties, LogEntryValueEId, QLogEntryValue>
 	implements IBaseLogEntryValueDao {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('LogEntryValue')
+		super(0)
 	}
 }
 
@@ -134,8 +153,13 @@ export interface IBaseLoggedErrorDao
 export class BaseLoggedErrorDao
   extends SQDIDao<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateColumns, LoggedErrorEUpdateProperties, LoggedErrorEId, QLoggedError>
 	implements IBaseLoggedErrorDao {
+
+	static diSet(): boolean {
+		return diSet(4)
+	}
+	
 	constructor() {
-		super('LoggedError')
+		super(4)
 	}
 }
 
@@ -147,7 +171,12 @@ export interface IBaseLoggedErrorStackTraceDao
 export class BaseLoggedErrorStackTraceDao
   extends SQDIDao<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateColumns, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, QLoggedErrorStackTrace>
 	implements IBaseLoggedErrorStackTraceDao {
+
+	static diSet(): boolean {
+		return diSet(3)
+	}
+	
 	constructor() {
-		super('LoggedErrorStackTrace')
+		super(3)
 	}
 }

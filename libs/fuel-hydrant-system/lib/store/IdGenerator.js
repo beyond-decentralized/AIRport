@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const check_in_1 = require("@airport/check-in");
 const di_1 = require("@airport/di");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const diTokens_1 = require("../diTokens");
@@ -14,7 +15,7 @@ class IdGenerator {
             this.airDb = airportDatabase;
             this.utils = utils;
         }, air_control_1.AIR_DB, air_control_1.UTILS);
-        this.sequenceGeneratorFuture = di_1.DI.laterP(diTokens_1.SEQUENCE_GENERATOR);
+        this.sequenceGeneratorFuture = di_1.DI.laterP(check_in_1.SEQUENCE_GENERATOR);
     }
     async init() {
         this.sequenceGenerator = await this.sequenceGeneratorFuture();

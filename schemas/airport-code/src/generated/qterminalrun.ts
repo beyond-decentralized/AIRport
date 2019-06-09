@@ -32,12 +32,13 @@ declare function require(moduleName: string): any;
 export interface ITerminalRun {
 	
 	// Id Properties
-	createTimestamp?: number;
-	randomNumber?: number;
+	id?: number;
 
 	// Id Relations
 
 	// Non-Id Properties
+	createTimestamp?: number;
+	randomNumber?: number;
 
 	// Non-Id Relations
 
@@ -57,6 +58,8 @@ export interface ITerminalRun {
 export interface TerminalRunESelect
     extends IEntitySelectProperties, TerminalRunEOptionalId {
 	// Non-Id Properties
+	createTimestamp?: number | IQNumberField;
+	randomNumber?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
 
@@ -70,8 +73,7 @@ export interface TerminalRunESelect
 export interface TerminalRunEId
     extends IEntityIdProperties {
 	// Id Properties
-	createTimestamp: number | IQNumberField;
-	randomNumber: number | IQNumberField;
+	id: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -82,8 +84,7 @@ export interface TerminalRunEId
  */
 export interface TerminalRunEOptionalId {
 	// Id Properties
-	createTimestamp?: number | IQNumberField;
-	randomNumber?: number | IQNumberField;
+	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -95,6 +96,8 @@ export interface TerminalRunEOptionalId {
 export interface TerminalRunEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
+	createTimestamp?: number | IQNumberField;
+	randomNumber?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -106,6 +109,8 @@ export interface TerminalRunEUpdateProperties
 export interface TerminalRunEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
+	CREATE_TIMESTAMP?: number | IQNumberField;
+	RANDOM_NUMBER?: number | IQNumberField;
 
 }
 
@@ -136,12 +141,13 @@ extends TerminalRunEId, TerminalRunEUpdateColumns {
 export interface QTerminalRun extends IQEntity
 {
 	// Id Fields
-	createTimestamp: IQNumberField;
-	randomNumber: IQNumberField;
+	id: IQNumberField;
 
 	// Id Relations
 
 	// Non-Id Fields
+	createTimestamp: IQNumberField;
+	randomNumber: IQNumberField;
 
 	// Non-Id Relations
 
@@ -153,8 +159,7 @@ export interface QTerminalRunQId
 {
 	
 	// Id Fields
-	createTimestamp: IQNumberField;
-	randomNumber: IQNumberField;
+	id: IQNumberField;
 
 	// Id Relations
 

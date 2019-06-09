@@ -1,7 +1,7 @@
 import {
 	IUtils,
 	UTILS
-}                           from '@airport/air-control'
+}            from '@airport/air-control'
 import {
 	IAbstractSequenceBlockDao,
 	ISequence,
@@ -9,23 +9,16 @@ import {
 	ISequenceDao,
 	SEQUENCE_BLOCK_DAO,
 	SEQUENCE_DAO
-}                           from '@airport/airport-code'
-import {DI,}                from '@airport/di'
-import {DbColumn}           from '@airport/ground-control'
-import {SEQUENCE_GENERATOR} from '../diTokens'
-
-export interface ISequenceGenerator {
-
-	generateSequenceNumbers(
-		dbColumns: DbColumn[],
-		numSequencesNeeded: number[]
-	): Promise<number[][]>
-
-	init(
-		sequences?: ISequence[]
-	): Promise<void>
-
-}
+}            from '@airport/airport-code'
+import {
+	ISequenceGenerator,
+	SEQUENCE_GENERATOR
+}            from '@airport/check-in'
+import {DI,} from '@airport/di'
+import {
+	DbColumn,
+	DbEntity
+}            from '@airport/ground-control'
 
 export class SequenceGenerator
 	implements ISequenceGenerator {
@@ -38,10 +31,29 @@ export class SequenceGenerator
 	private utils: IUtils
 
 	constructor() {
-		this.sequenceBlockDao    = DI.getP(SEQUENCE_BLOCK_DAO)
-		this.sequenceDao         = DI.getP(SEQUENCE_DAO)
+		this.sequenceBlockDao = DI.getP(SEQUENCE_BLOCK_DAO)
+		this.sequenceDao      = DI.getP(SEQUENCE_DAO)
 		DI.get(
 			utils => this.utils = utils, UTILS)
+	}
+
+	exists(
+		dbEntity: DbEntity
+	): boolean {
+		const schemaSequences = this.sequences[dbEntity.schemaVersion.schema.index]
+
+		if(!schemaSequences) {
+			return false;
+		}
+
+		const tableSequences = schemaSequences[dbEntity.index];
+
+		if(!tableSequences) {
+			return false;
+		}
+
+		return dbEntity.columns.every(dbColumn =>
+			!dbColumn.isGenerated || !!tableSequences[dbColumn.index])
 	}
 
 	async init(

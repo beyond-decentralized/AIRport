@@ -6,7 +6,7 @@ import {DI}                 from '@airport/di'
 import {
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
-}                           from '@airport/fuel-hydrant-system'
+}                           from '@airport/check-in'
 import {
 	ChangeType,
 	DbEntity,

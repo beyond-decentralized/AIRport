@@ -499,13 +499,6 @@ exports.SCHEMA = {
                                     "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
-                                },
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 1,
-                                    "oneTableIndex": 5,
-                                    "oneColumnIndex": 9,
-                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "SCHEMA_VERSION_ID",
@@ -513,9 +506,6 @@ exports.SCHEMA = {
                             "propertyRefs": [
                                 {
                                     "index": 1
-                                },
-                                {
-                                    "index": 2
                                 }
                             ],
                             "sinceVersion": 1,
@@ -529,11 +519,11 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": 1,
                                     "oneTableIndex": 5,
-                                    "oneColumnIndex": 4,
+                                    "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "TABLE_INDEX",
+                            "name": "SCHEMA_ENTITY_ID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -869,13 +859,6 @@ exports.SCHEMA = {
                                     "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
-                                },
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 1,
-                                    "oneTableIndex": 5,
-                                    "oneColumnIndex": 9,
-                                    "sinceVersion": 1
                                 }
                             ],
                             "name": "SCHEMA_VERSION_ID",
@@ -883,9 +866,6 @@ exports.SCHEMA = {
                             "propertyRefs": [
                                 {
                                     "index": 1
-                                },
-                                {
-                                    "index": 2
                                 }
                             ],
                             "sinceVersion": 1,
@@ -899,11 +879,11 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": 1,
                                     "oneTableIndex": 5,
-                                    "oneColumnIndex": 4,
+                                    "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "TABLE_INDEX",
+                            "name": "SCHEMA_ENTITY_ID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -965,33 +945,11 @@ exports.SCHEMA = {
                                     "manyRelationIndex": 4,
                                     "oneSchemaIndex": 1,
                                     "oneTableIndex": 0,
-                                    "oneColumnIndex": 11,
+                                    "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "SCHEMA_ENTITY_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 8,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 4,
-                                    "oneSchemaIndex": 1,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 4,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COLUMN_INDEX",
+                            "name": "SCHEMA_COLUMN_ID",
                             "notNull": false,
                             "propertyRefs": [
                                 {

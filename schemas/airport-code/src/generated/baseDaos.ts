@@ -6,9 +6,17 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Dao } from '@airport/check-in';
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import {
+	Dao
+} from '@airport/check-in'
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	ISequence,
 	SequenceESelect,
@@ -18,7 +26,7 @@ import {
 	SequenceEUpdateProperties,
 	SequenceEId,
 	QSequence
-} from './qsequence';
+} from './qsequence'
 import {
 	ISequenceBlock,
 	SequenceBlockESelect,
@@ -28,7 +36,7 @@ import {
 	SequenceBlockEUpdateProperties,
 	SequenceBlockEId,
 	QSequenceBlock
-} from './qsequenceblock';
+} from './qsequenceblock'
 import {
 	ITerminalRun,
 	TerminalRunESelect,
@@ -38,7 +46,7 @@ import {
 	TerminalRunEUpdateProperties,
 	TerminalRunEId,
 	QTerminalRun
-} from './qterminalrun';
+} from './qterminalrun'
 
 // Schema Q object Dependency Injection readiness detection DAO
 export class SQDIDao<Entity,
@@ -56,14 +64,10 @@ export class SQDIDao<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -75,8 +79,13 @@ export interface IBaseSequenceDao
 export class BaseSequenceDao
   extends SQDIDao<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, QSequence>
 	implements IBaseSequenceDao {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('Sequence')
+		super(0)
 	}
 }
 
@@ -88,8 +97,13 @@ export interface IBaseSequenceBlockDao
 export class BaseSequenceBlockDao
   extends SQDIDao<ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateColumns, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock>
 	implements IBaseSequenceBlockDao {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('SequenceBlock')
+		super(2)
 	}
 }
 
@@ -101,7 +115,12 @@ export interface IBaseTerminalRunDao
 export class BaseTerminalRunDao
   extends SQDIDao<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, QTerminalRun>
 	implements IBaseTerminalRunDao {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('TerminalRun')
+		super(1)
 	}
 }

@@ -7,7 +7,7 @@ import {
 	IQEntity,
 	QSchema
 }                 from '@airport/air-control'
-import {DbEntity} from '@airport/ground-control'
+import {DbEntity, EntityId as DbEntityId} from '@airport/ground-control'
 
 /**
  * Created by Papa on 8/26/2017.
@@ -28,13 +28,13 @@ export class Duo<Entity,
 	private dbEntity: DbEntity
 
 	constructor(
-		dbEntityName: string | DbEntity,
+		dbEntityId: DbEntityId | DbEntity,
 		qSchema?: QSchema
 	) {
-		if (typeof dbEntityName === 'string') {
-			this.dbEntity = qSchema.__dbSchema__.currentVersion.entityMapByName[dbEntityName]
+		if (typeof dbEntityId === 'number') {
+			this.dbEntity = qSchema.__dbSchema__.currentVersion.entities[dbEntityId]
 		} else {
-			this.dbEntity = dbEntityName
+			this.dbEntity = dbEntityId
 		}
 	}
 

@@ -15,7 +15,6 @@ import {
 	JSONBaseOperation,
 	TransactionType
 }                             from '@airport/ground-control'
-import {getSchemaName}        from '@airport/ground-control/lib/src'
 import {
 	ActorId,
 	RecordHistoryActorRecordId,
@@ -403,7 +402,7 @@ export class RepositoryTransactionHistoryDao
 		getSetClause: {
 			(
 				id: IQNumberField
-			): IQOrderableField<IQNumberField>
+			): IQNumberField
 		}
 	): Promise<number> {
 		const rth: QRepositoryTransactionHistory = this.db.from

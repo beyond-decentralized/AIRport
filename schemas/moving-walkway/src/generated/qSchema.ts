@@ -2,9 +2,11 @@ import {
 	AIR_DB,
 	QSchema as AirportQSchema
 }                      from '@airport/air-control'
+import {diSet as dS}          from '@airport/check-in'
 import {DI}            from '@airport/di'
 import {
 	DbSchema,
+	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
 import { MissingRecord } from '../ddl/missingrecord/missingrecord';
@@ -92,6 +94,12 @@ export const Q_SCHEMA: LocalQSchema = <any>{
   name: '@airport/moving-walkway'
 };
 export const Q: LocalQSchema = Q_SCHEMA
+
+export function diSet(
+	dbEntityId: EntityId
+): boolean {
+	return dS(Q.__dbSchema__, dbEntityId)
+}
 
 DI.get((
 	airportDatabase

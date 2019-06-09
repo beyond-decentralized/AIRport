@@ -23,18 +23,24 @@ class MissingRecordDao extends generated_1.BaseMissingRecordDao {
     async findActualIdsByRecordIds(recordIdMap) {
         const mr = generated_1.Q.MissingRecord;
         let numClauses = 0;
+        const currentSchemaVersionMapById = {};
+        for (const schema of this.airDb.schemas) {
+            const schemaVersion = schema.currentVersion;
+            currentSchemaVersionMapById[schemaVersion.id] = schemaVersion;
+        }
         let repositoryWhereFragments = [];
         for (const [repositoryId, recordIdsForRepository] of recordIdMap) {
             let schemaWhereFragments = [];
             for (const [schemaVersionId, recordIdsForSchema] of recordIdsForRepository) {
                 let tableWhereFragments = [];
                 for (const [tableIndex, recordIdsForTable] of recordIdsForSchema) {
+                    const dbEntity = currentSchemaVersionMapById[schemaVersionId].entities[tableIndex];
                     let actorWhereFragments = [];
                     for (const [actorId, recordIdsForActor] of recordIdsForTable) {
                         numClauses++;
                         actorWhereFragments.push(air_control_1.and(mr.actorRecordId.in(Array.from(recordIdsForActor)), mr.actor.id.equals(actorId)));
                     }
-                    tableWhereFragments.push(air_control_1.and(mr.entity.index.equals(tableIndex), air_control_1.or(...actorWhereFragments)));
+                    tableWhereFragments.push(air_control_1.and(mr.entity.id.equals(dbEntity.id), air_control_1.or(...actorWhereFragments)));
                 }
                 schemaWhereFragments.push(air_control_1.and(mr.schemaVersion.id.equals(schemaVersionId), air_control_1.or(...tableWhereFragments)));
             }

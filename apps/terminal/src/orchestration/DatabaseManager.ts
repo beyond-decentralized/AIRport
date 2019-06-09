@@ -4,11 +4,9 @@ import {
 	IDao,
 	IDatabaseFacade,
 }                                 from '@airport/air-control'
+import {SEQUENCE_GENERATOR}       from '@airport/check-in'
 import {DI}                       from '@airport/di'
-import {
-	SEQUENCE_GENERATOR,
-	setStoreDriver
-}                                 from '@airport/fuel-hydrant-system'
+import {setStoreDriver}           from '@airport/fuel-hydrant-system'
 import {
 	DomainName,
 	STORE_DRIVER,

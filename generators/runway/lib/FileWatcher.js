@@ -86,12 +86,17 @@ function watchFiles(configuration, options, rootFileNames) {
             const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
             const entityFileBuilder = new QEntityFileBuilder_1.QEntityFileBuilder(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
             if (!entity.isSuperclass) {
-                entityFileReference[entity.docEntry.name, fullGenerationPath];
+                entityFileReference[entity.docEntry.name] = fullGenerationPath;
             }
             generatedSummaryBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
             qSchemaBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
-            daoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
-            duoBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
+            const sIndexedEntity = indexedSchema.entityMapByName[entityName];
+            let tableIndex;
+            if (sIndexedEntity) {
+                tableIndex = sIndexedEntity.entity.tableIndex;
+            }
+            daoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
+            duoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
             const generationPath = pathBuilder.setupFileForGeneration(entity.path);
             const entitySourceString = entityFileBuilder.build();
             fs.writeFileSync(generationPath, entitySourceString);

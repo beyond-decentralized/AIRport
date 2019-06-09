@@ -54,11 +54,10 @@ export interface RecordUpdateStageEUpdateColumns extends IEntityUpdateColumns {
     ACTOR_RECORD_ID?: number | IQNumberField;
     UPDATED_VALUE?: any | IQUntypedField;
     SCHEMA_VERSION_ID?: number | IQNumberField;
-    TABLE_INDEX?: number | IQNumberField;
+    SCHEMA_ENTITY_ID?: number | IQNumberField;
     REPOSITORY_ID?: number | IQNumberField;
     ACTOR_ID?: number | IQNumberField;
-    SCHEMA_ENTITY_ID?: number | IQNumberField;
-    COLUMN_INDEX?: number | IQNumberField;
+    SCHEMA_COLUMN_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).

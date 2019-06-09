@@ -5,9 +5,15 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Duo } from "@airport/check-in";
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import { Duo } from "@airport/check-in"
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	IAgt,
 	AgtESelect,
@@ -17,7 +23,7 @@ import {
 	AgtEUpdateProperties,
 	AgtEId,
 	QAgt
-} from './qagt';
+} from './qagt'
 import {
 	ITerminal,
 	TerminalESelect,
@@ -27,7 +33,7 @@ import {
 	TerminalEUpdateProperties,
 	TerminalEId,
 	QTerminal
-} from './qterminal';
+} from './qterminal'
 import {
 	ITerminalAgt,
 	TerminalAgtESelect,
@@ -37,7 +43,7 @@ import {
 	TerminalAgtEUpdateProperties,
 	TerminalAgtEId,
 	QTerminalAgt
-} from './qterminalagt';
+} from './qterminalagt'
 import {
 	IUser,
 	UserESelect,
@@ -47,7 +53,7 @@ import {
 	UserEUpdateProperties,
 	UserEId,
 	QUser
-} from './quser';
+} from './quser'
 import {
 	IUserTerminal,
 	UserTerminalESelect,
@@ -57,7 +63,7 @@ import {
 	UserTerminalEUpdateProperties,
 	UserTerminalEId,
 	QUserTerminal
-} from './quserterminal';
+} from './quserterminal'
 import {
 	IUserTerminalAgt,
 	UserTerminalAgtESelect,
@@ -67,7 +73,7 @@ import {
 	UserTerminalAgtEUpdateProperties,
 	UserTerminalAgtEId,
 	QUserTerminalAgt
-} from './quserterminalagt';
+} from './quserterminalagt'
 
 
 // Schema Q object Dependency Injection readiness detection DAO
@@ -84,14 +90,10 @@ export class SQDIDuo<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -103,8 +105,13 @@ export interface IBaseAgtDuo
 export class BaseAgtDuo
   extends SQDIDuo<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateProperties, AgtEId, QAgt>
 	implements IBaseAgtDuo {
+
+	static diSet(): boolean {
+		return diSet(5)
+	}
+	
 	constructor() {
-		super('Agt');
+		super(5)
 	}
 }
 
@@ -116,8 +123,13 @@ export interface IBaseTerminalDuo
 export class BaseTerminalDuo
   extends SQDIDuo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, QTerminal>
 	implements IBaseTerminalDuo {
+
+	static diSet(): boolean {
+		return diSet(3)
+	}
+	
 	constructor() {
-		super('Terminal');
+		super(3)
 	}
 }
 
@@ -129,8 +141,13 @@ export interface IBaseTerminalAgtDuo
 export class BaseTerminalAgtDuo
   extends SQDIDuo<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateProperties, TerminalAgtEId, QTerminalAgt>
 	implements IBaseTerminalAgtDuo {
+
+	static diSet(): boolean {
+		return diSet(4)
+	}
+	
 	constructor() {
-		super('TerminalAgt');
+		super(4)
 	}
 }
 
@@ -142,8 +159,13 @@ export interface IBaseUserDuo
 export class BaseUserDuo
   extends SQDIDuo<IUser, UserESelect, UserECreateProperties, UserEUpdateProperties, UserEId, QUser>
 	implements IBaseUserDuo {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('User');
+		super(2)
 	}
 }
 
@@ -155,8 +177,13 @@ export interface IBaseUserTerminalDuo
 export class BaseUserTerminalDuo
   extends SQDIDuo<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateProperties, UserTerminalEId, QUserTerminal>
 	implements IBaseUserTerminalDuo {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('UserTerminal');
+		super(0)
 	}
 }
 
@@ -168,7 +195,12 @@ export interface IBaseUserTerminalAgtDuo
 export class BaseUserTerminalAgtDuo
   extends SQDIDuo<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, QUserTerminalAgt>
 	implements IBaseUserTerminalAgtDuo {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('UserTerminalAgt');
+		super(1)
 	}
 }

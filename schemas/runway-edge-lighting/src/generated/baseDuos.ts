@@ -5,9 +5,15 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Duo } from "@airport/check-in";
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import { Duo } from "@airport/check-in"
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	ILogEntry,
 	LogEntryESelect,
@@ -17,7 +23,7 @@ import {
 	LogEntryEUpdateProperties,
 	LogEntryEId,
 	QLogEntry
-} from './qlogentry';
+} from './qlogentry'
 import {
 	ILogEntryType,
 	LogEntryTypeESelect,
@@ -27,7 +33,7 @@ import {
 	LogEntryTypeEUpdateProperties,
 	LogEntryTypeEId,
 	QLogEntryType
-} from './qlogentrytype';
+} from './qlogentrytype'
 import {
 	ILogEntryValue,
 	LogEntryValueESelect,
@@ -37,7 +43,7 @@ import {
 	LogEntryValueEUpdateProperties,
 	LogEntryValueEId,
 	QLogEntryValue
-} from './qlogentryvalue';
+} from './qlogentryvalue'
 import {
 	ILoggedError,
 	LoggedErrorESelect,
@@ -47,7 +53,7 @@ import {
 	LoggedErrorEUpdateProperties,
 	LoggedErrorEId,
 	QLoggedError
-} from './qloggederror';
+} from './qloggederror'
 import {
 	ILoggedErrorStackTrace,
 	LoggedErrorStackTraceESelect,
@@ -57,7 +63,7 @@ import {
 	LoggedErrorStackTraceEUpdateProperties,
 	LoggedErrorStackTraceEId,
 	QLoggedErrorStackTrace
-} from './qloggederrorstacktrace';
+} from './qloggederrorstacktrace'
 
 
 // Schema Q object Dependency Injection readiness detection DAO
@@ -74,14 +80,10 @@ export class SQDIDuo<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -93,8 +95,13 @@ export interface IBaseLogEntryDuo
 export class BaseLogEntryDuo
   extends SQDIDuo<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateProperties, LogEntryEId, QLogEntry>
 	implements IBaseLogEntryDuo {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('LogEntry');
+		super(1)
 	}
 }
 
@@ -106,8 +113,13 @@ export interface IBaseLogEntryTypeDuo
 export class BaseLogEntryTypeDuo
   extends SQDIDuo<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateProperties, LogEntryTypeEId, QLogEntryType>
 	implements IBaseLogEntryTypeDuo {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('LogEntryType');
+		super(2)
 	}
 }
 
@@ -119,8 +131,13 @@ export interface IBaseLogEntryValueDuo
 export class BaseLogEntryValueDuo
   extends SQDIDuo<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateProperties, LogEntryValueEId, QLogEntryValue>
 	implements IBaseLogEntryValueDuo {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('LogEntryValue');
+		super(0)
 	}
 }
 
@@ -132,8 +149,13 @@ export interface IBaseLoggedErrorDuo
 export class BaseLoggedErrorDuo
   extends SQDIDuo<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateProperties, LoggedErrorEId, QLoggedError>
 	implements IBaseLoggedErrorDuo {
+
+	static diSet(): boolean {
+		return diSet(4)
+	}
+	
 	constructor() {
-		super('LoggedError');
+		super(4)
 	}
 }
 
@@ -145,7 +167,12 @@ export interface IBaseLoggedErrorStackTraceDuo
 export class BaseLoggedErrorStackTraceDuo
   extends SQDIDuo<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, QLoggedErrorStackTrace>
 	implements IBaseLoggedErrorStackTraceDuo {
+
+	static diSet(): boolean {
+		return diSet(3)
+	}
+	
 	constructor() {
-		super('LoggedErrorStackTrace');
+		super(3)
 	}
 }

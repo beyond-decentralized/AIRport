@@ -17,10 +17,11 @@ import {
 	QSchema,
 	UpdateCacheType,
 	UTILS
-}                             from '@airport/air-control'
-import {DI}                   from '@airport/di'
-import {ENTITY_MANAGER}       from '@airport/tower'
-import {EntityDatabaseFacade} from './EntityDatabaseFacade'
+}                               from '@airport/air-control'
+import {DI}                     from '@airport/di'
+import {EntityId as DbEntityId} from '@airport/ground-control'
+import {ENTITY_MANAGER}         from '@airport/tower'
+import {EntityDatabaseFacade}   from './EntityDatabaseFacade'
 
 /**
  * Created by Papa on 8/26/2017.
@@ -42,7 +43,7 @@ export abstract class Dao<Entity,
 	protected airDb: IAirportDatabase
 
 	constructor(
-		dbEntityName: string,
+		dbEntityId: DbEntityId,
 		Q: QSchema
 	) {
 		DI.get(
@@ -51,11 +52,11 @@ export abstract class Dao<Entity,
 				entityManager,
 				utils
 			) => {
-				this.airDb     = airportDatabase
-				this.utils     = utils
-				const dbEntity = Q.__dbSchema__.currentVersion.entityMapByName[dbEntityName]
-				const entityDatabaseFacade        = new EntityDatabaseFacade<Entity,
-				 	EntitySelect, EntityCreate,
+				this.airDb                 = airportDatabase
+				this.utils                 = utils
+				const dbEntity             = Q.__dbSchema__.currentVersion.entities[dbEntityId]
+				const entityDatabaseFacade = new EntityDatabaseFacade<Entity,
+					EntitySelect, EntityCreate,
 					EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>(
 					dbEntity, Q, this.utils)
 				entityDatabaseFacade.initialize(entityManager)

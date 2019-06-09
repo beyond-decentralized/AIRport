@@ -1715,7 +1715,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 1,
 								"isGenerated": false,
 								"name": "UNIQUE_IDENTIFIER",
-								"notNull": false,
+								"notNull": true,
 								"propertyColumns": [
 									{
 										"column": null,
@@ -2928,7 +2928,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 1,
 									"isGenerated": false,
 									"name": "UNIQUE_IDENTIFIER",
-									"notNull": false,
+									"notNull": true,
 									"propertyColumns": [
 										{
 											"column": null,

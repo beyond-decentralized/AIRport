@@ -7,12 +7,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Data Manipulation object.
  */
 class Duo {
-    constructor(dbEntityName, qSchema) {
-        if (typeof dbEntityName === 'string') {
-            this.dbEntity = qSchema.__dbSchema__.currentVersion.entityMapByName[dbEntityName];
+    constructor(dbEntityId, qSchema) {
+        if (typeof dbEntityId === 'number') {
+            this.dbEntity = qSchema.__dbSchema__.currentVersion.entities[dbEntityId];
         }
         else {
-            this.dbEntity = dbEntityName;
+            this.dbEntity = dbEntityId;
         }
     }
     getIdStub(ids) {

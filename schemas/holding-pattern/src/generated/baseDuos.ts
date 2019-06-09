@@ -5,9 +5,15 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Duo } from "@airport/check-in";
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import { Duo } from "@airport/check-in"
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	IActor,
 	ActorESelect,
@@ -17,7 +23,7 @@ import {
 	ActorEUpdateProperties,
 	ActorEId,
 	QActor
-} from './infrastructure/qactor';
+} from './infrastructure/qactor'
 import {
 	IActorApplication,
 	ActorApplicationESelect,
@@ -27,7 +33,7 @@ import {
 	ActorApplicationEUpdateProperties,
 	ActorApplicationEId,
 	QActorApplication
-} from './infrastructure/qactorapplication';
+} from './infrastructure/qactorapplication'
 import {
 	IApplication,
 	ApplicationESelect,
@@ -37,67 +43,7 @@ import {
 	ApplicationEUpdateProperties,
 	ApplicationEId,
 	QApplication
-} from './infrastructure/qapplication';
-import {
-	IChildRepoRow,
-	ChildRepoRowESelect,
-	ChildRepoRowECreateColumns,
-	ChildRepoRowECreateProperties,
-	ChildRepoRowEUpdateColumns,
-	ChildRepoRowEUpdateProperties,
-	ChildRepoRowEId,
-	QChildRepoRow
-} from './traditional/qchildreporow';
-import {
-	IChildRow,
-	ChildRowESelect,
-	ChildRowECreateColumns,
-	ChildRowECreateProperties,
-	ChildRowEUpdateColumns,
-	ChildRowEUpdateProperties,
-	ChildRowEId,
-	QChildRow
-} from './traditional/qchildrow';
-import {
-	IImmutableRepoRow,
-	ImmutableRepoRowESelect,
-	ImmutableRepoRowECreateColumns,
-	ImmutableRepoRowECreateProperties,
-	ImmutableRepoRowEUpdateColumns,
-	ImmutableRepoRowEUpdateProperties,
-	ImmutableRepoRowEId,
-	QImmutableRepoRow
-} from './traditional/qimmutablereporow';
-import {
-	IImmutableRow,
-	ImmutableRowESelect,
-	ImmutableRowECreateColumns,
-	ImmutableRowECreateProperties,
-	ImmutableRowEUpdateColumns,
-	ImmutableRowEUpdateProperties,
-	ImmutableRowEId,
-	QImmutableRow
-} from './traditional/qimmutablerow';
-import {
-	IMutableRepoRow,
-	MutableRepoRowESelect,
-	MutableRepoRowECreateColumns,
-	MutableRepoRowECreateProperties,
-	MutableRepoRowEUpdateColumns,
-	MutableRepoRowEUpdateProperties,
-	MutableRepoRowEId,
-	QMutableRepoRow
-} from './traditional/qmutablereporow';
-import {
-	IMutableRow,
-	MutableRowESelect,
-	MutableRowECreateColumns,
-	MutableRowECreateProperties,
-	MutableRowEUpdateColumns,
-	MutableRowEUpdateProperties,
-	MutableRowEId,
-	QMutableRow
-} from './traditional/qmutablerow';
+} from './infrastructure/qapplication'
 import {
 	IOperationHistory,
 	OperationHistoryESelect,
@@ -107,7 +53,7 @@ import {
 	OperationHistoryEUpdateProperties,
 	OperationHistoryEId,
 	QOperationHistory
-} from './history/qoperationhistory';
+} from './history/qoperationhistory'
 import {
 	IRecordHistory,
 	RecordHistoryESelect,
@@ -117,7 +63,7 @@ import {
 	RecordHistoryEUpdateProperties,
 	RecordHistoryEId,
 	QRecordHistory
-} from './history/qrecordhistory';
+} from './history/qrecordhistory'
 import {
 	IRecordHistoryNewValue,
 	RecordHistoryNewValueESelect,
@@ -127,7 +73,7 @@ import {
 	RecordHistoryNewValueEUpdateProperties,
 	RecordHistoryNewValueEId,
 	QRecordHistoryNewValue
-} from './history/qrecordhistorynewvalue';
+} from './history/qrecordhistorynewvalue'
 import {
 	IRecordHistoryOldValue,
 	RecordHistoryOldValueESelect,
@@ -137,17 +83,7 @@ import {
 	RecordHistoryOldValueEUpdateProperties,
 	RecordHistoryOldValueEId,
 	QRecordHistoryOldValue
-} from './history/qrecordhistoryoldvalue';
-import {
-	IReferenceRow,
-	ReferenceRowESelect,
-	ReferenceRowECreateColumns,
-	ReferenceRowECreateProperties,
-	ReferenceRowEUpdateColumns,
-	ReferenceRowEUpdateProperties,
-	ReferenceRowEId,
-	QReferenceRow
-} from './traditional/qreferencerow';
+} from './history/qrecordhistoryoldvalue'
 import {
 	IRepoTransHistoryChangedRepositoryActor,
 	RepoTransHistoryChangedRepositoryActorESelect,
@@ -157,7 +93,7 @@ import {
 	RepoTransHistoryChangedRepositoryActorEUpdateProperties,
 	RepoTransHistoryChangedRepositoryActorEId,
 	QRepoTransHistoryChangedRepositoryActor
-} from './history/qrepotranshistorychangedrepositoryactor';
+} from './history/qrepotranshistorychangedrepositoryactor'
 import {
 	IRepository,
 	RepositoryESelect,
@@ -167,7 +103,7 @@ import {
 	RepositoryEUpdateProperties,
 	RepositoryEId,
 	QRepository
-} from './repository/qrepository';
+} from './repository/qrepository'
 import {
 	IRepositoryActor,
 	RepositoryActorESelect,
@@ -177,7 +113,7 @@ import {
 	RepositoryActorEUpdateProperties,
 	RepositoryActorEId,
 	QRepositoryActor
-} from './repository/qrepositoryactor';
+} from './repository/qrepositoryactor'
 import {
 	IRepositoryApplication,
 	RepositoryApplicationESelect,
@@ -187,17 +123,7 @@ import {
 	RepositoryApplicationEUpdateProperties,
 	RepositoryApplicationEId,
 	QRepositoryApplication
-} from './repository/qrepositoryapplication';
-import {
-	IRepositoryEntity,
-	RepositoryEntityESelect,
-	RepositoryEntityECreateColumns,
-	RepositoryEntityECreateProperties,
-	RepositoryEntityEUpdateColumns,
-	RepositoryEntityEUpdateProperties,
-	RepositoryEntityEId,
-	QRepositoryEntity
-} from './repository/qrepositoryentity';
+} from './repository/qrepositoryapplication'
 import {
 	IRepositorySchema,
 	RepositorySchemaESelect,
@@ -207,7 +133,7 @@ import {
 	RepositorySchemaEUpdateProperties,
 	RepositorySchemaEId,
 	QRepositorySchema
-} from './repository/qrepositoryschema';
+} from './repository/qrepositoryschema'
 import {
 	IRepositoryTransactionHistory,
 	RepositoryTransactionHistoryESelect,
@@ -217,17 +143,7 @@ import {
 	RepositoryTransactionHistoryEUpdateProperties,
 	RepositoryTransactionHistoryEId,
 	QRepositoryTransactionHistory
-} from './history/qrepositorytransactionhistory';
-import {
-	IStageable,
-	StageableESelect,
-	StageableECreateColumns,
-	StageableECreateProperties,
-	StageableEUpdateColumns,
-	StageableEUpdateProperties,
-	StageableEId,
-	QStageable
-} from './infrastructure/qstageable';
+} from './history/qrepositorytransactionhistory'
 import {
 	ITransactionHistory,
 	TransactionHistoryESelect,
@@ -237,7 +153,7 @@ import {
 	TransactionHistoryEUpdateProperties,
 	TransactionHistoryEId,
 	QTransactionHistory
-} from './history/qtransactionhistory';
+} from './history/qtransactionhistory'
 
 
 // Schema Q object Dependency Injection readiness detection DAO
@@ -254,14 +170,10 @@ export class SQDIDuo<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -273,8 +185,13 @@ export interface IBaseActorDuo
 export class BaseActorDuo
   extends SQDIDuo<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateProperties, ActorEId, QActor>
 	implements IBaseActorDuo {
+
+	static diSet(): boolean {
+		return diSet(7)
+	}
+	
 	constructor() {
-		super('Actor');
+		super(7)
 	}
 }
 
@@ -286,8 +203,13 @@ export interface IBaseActorApplicationDuo
 export class BaseActorApplicationDuo
   extends SQDIDuo<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateProperties, ActorApplicationEId, QActorApplication>
 	implements IBaseActorApplicationDuo {
+
+	static diSet(): boolean {
+		return diSet(8)
+	}
+	
 	constructor() {
-		super('ActorApplication');
+		super(8)
 	}
 }
 
@@ -299,86 +221,13 @@ export interface IBaseApplicationDuo
 export class BaseApplicationDuo
   extends SQDIDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateProperties, ApplicationEId, QApplication>
 	implements IBaseApplicationDuo {
-	constructor() {
-		super('Application');
+
+	static diSet(): boolean {
+		return diSet(9)
 	}
-}
-
-
-export interface IBaseChildRepoRowDuo
-  extends IDuo<IChildRepoRow, ChildRepoRowESelect, ChildRepoRowECreateProperties, ChildRepoRowEUpdateProperties, ChildRepoRowEId, QChildRepoRow> {
-}
-
-export class BaseChildRepoRowDuo
-  extends SQDIDuo<IChildRepoRow, ChildRepoRowESelect, ChildRepoRowECreateProperties, ChildRepoRowEUpdateProperties, ChildRepoRowEId, QChildRepoRow>
-	implements IBaseChildRepoRowDuo {
+	
 	constructor() {
-		super('ChildRepoRow');
-	}
-}
-
-
-export interface IBaseChildRowDuo
-  extends IDuo<IChildRow, ChildRowESelect, ChildRowECreateProperties, ChildRowEUpdateProperties, ChildRowEId, QChildRow> {
-}
-
-export class BaseChildRowDuo
-  extends SQDIDuo<IChildRow, ChildRowESelect, ChildRowECreateProperties, ChildRowEUpdateProperties, ChildRowEId, QChildRow>
-	implements IBaseChildRowDuo {
-	constructor() {
-		super('ChildRow');
-	}
-}
-
-
-export interface IBaseImmutableRepoRowDuo
-  extends IDuo<IImmutableRepoRow, ImmutableRepoRowESelect, ImmutableRepoRowECreateProperties, ImmutableRepoRowEUpdateProperties, ImmutableRepoRowEId, QImmutableRepoRow> {
-}
-
-export class BaseImmutableRepoRowDuo
-  extends SQDIDuo<IImmutableRepoRow, ImmutableRepoRowESelect, ImmutableRepoRowECreateProperties, ImmutableRepoRowEUpdateProperties, ImmutableRepoRowEId, QImmutableRepoRow>
-	implements IBaseImmutableRepoRowDuo {
-	constructor() {
-		super('ImmutableRepoRow');
-	}
-}
-
-
-export interface IBaseImmutableRowDuo
-  extends IDuo<IImmutableRow, ImmutableRowESelect, ImmutableRowECreateProperties, ImmutableRowEUpdateProperties, ImmutableRowEId, QImmutableRow> {
-}
-
-export class BaseImmutableRowDuo
-  extends SQDIDuo<IImmutableRow, ImmutableRowESelect, ImmutableRowECreateProperties, ImmutableRowEUpdateProperties, ImmutableRowEId, QImmutableRow>
-	implements IBaseImmutableRowDuo {
-	constructor() {
-		super('ImmutableRow');
-	}
-}
-
-
-export interface IBaseMutableRepoRowDuo
-  extends IDuo<IMutableRepoRow, MutableRepoRowESelect, MutableRepoRowECreateProperties, MutableRepoRowEUpdateProperties, MutableRepoRowEId, QMutableRepoRow> {
-}
-
-export class BaseMutableRepoRowDuo
-  extends SQDIDuo<IMutableRepoRow, MutableRepoRowESelect, MutableRepoRowECreateProperties, MutableRepoRowEUpdateProperties, MutableRepoRowEId, QMutableRepoRow>
-	implements IBaseMutableRepoRowDuo {
-	constructor() {
-		super('MutableRepoRow');
-	}
-}
-
-
-export interface IBaseMutableRowDuo
-  extends IDuo<IMutableRow, MutableRowESelect, MutableRowECreateProperties, MutableRowEUpdateProperties, MutableRowEId, QMutableRow> {
-}
-
-export class BaseMutableRowDuo
-  extends SQDIDuo<IMutableRow, MutableRowESelect, MutableRowECreateProperties, MutableRowEUpdateProperties, MutableRowEId, QMutableRow>
-	implements IBaseMutableRowDuo {
-	constructor() {
-		super('MutableRow');
+		super(9)
 	}
 }
 
@@ -390,8 +239,13 @@ export interface IBaseOperationHistoryDuo
 export class BaseOperationHistoryDuo
   extends SQDIDuo<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateProperties, OperationHistoryEId, QOperationHistory>
 	implements IBaseOperationHistoryDuo {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('OperationHistory');
+		super(0)
 	}
 }
 
@@ -403,8 +257,13 @@ export interface IBaseRecordHistoryDuo
 export class BaseRecordHistoryDuo
   extends SQDIDuo<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateProperties, RecordHistoryEId, QRecordHistory>
 	implements IBaseRecordHistoryDuo {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('RecordHistory');
+		super(1)
 	}
 }
 
@@ -416,8 +275,13 @@ export interface IBaseRecordHistoryNewValueDuo
 export class BaseRecordHistoryNewValueDuo
   extends SQDIDuo<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, QRecordHistoryNewValue>
 	implements IBaseRecordHistoryNewValueDuo {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('RecordHistoryNewValue');
+		super(2)
 	}
 }
 
@@ -429,21 +293,13 @@ export interface IBaseRecordHistoryOldValueDuo
 export class BaseRecordHistoryOldValueDuo
   extends SQDIDuo<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, QRecordHistoryOldValue>
 	implements IBaseRecordHistoryOldValueDuo {
-	constructor() {
-		super('RecordHistoryOldValue');
+
+	static diSet(): boolean {
+		return diSet(3)
 	}
-}
-
-
-export interface IBaseReferenceRowDuo
-  extends IDuo<IReferenceRow, ReferenceRowESelect, ReferenceRowECreateProperties, ReferenceRowEUpdateProperties, ReferenceRowEId, QReferenceRow> {
-}
-
-export class BaseReferenceRowDuo
-  extends SQDIDuo<IReferenceRow, ReferenceRowESelect, ReferenceRowECreateProperties, ReferenceRowEUpdateProperties, ReferenceRowEId, QReferenceRow>
-	implements IBaseReferenceRowDuo {
+	
 	constructor() {
-		super('ReferenceRow');
+		super(3)
 	}
 }
 
@@ -455,8 +311,13 @@ export interface IBaseRepoTransHistoryChangedRepositoryActorDuo
 export class BaseRepoTransHistoryChangedRepositoryActorDuo
   extends SQDIDuo<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, QRepoTransHistoryChangedRepositoryActor>
 	implements IBaseRepoTransHistoryChangedRepositoryActorDuo {
+
+	static diSet(): boolean {
+		return diSet(4)
+	}
+	
 	constructor() {
-		super('RepoTransHistoryChangedRepositoryActor');
+		super(4)
 	}
 }
 
@@ -468,8 +329,13 @@ export interface IBaseRepositoryDuo
 export class BaseRepositoryDuo
   extends SQDIDuo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, QRepository>
 	implements IBaseRepositoryDuo {
+
+	static diSet(): boolean {
+		return diSet(10)
+	}
+	
 	constructor() {
-		super('Repository');
+		super(10)
 	}
 }
 
@@ -481,8 +347,13 @@ export interface IBaseRepositoryActorDuo
 export class BaseRepositoryActorDuo
   extends SQDIDuo<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateProperties, RepositoryActorEId, QRepositoryActor>
 	implements IBaseRepositoryActorDuo {
+
+	static diSet(): boolean {
+		return diSet(11)
+	}
+	
 	constructor() {
-		super('RepositoryActor');
+		super(11)
 	}
 }
 
@@ -494,21 +365,13 @@ export interface IBaseRepositoryApplicationDuo
 export class BaseRepositoryApplicationDuo
   extends SQDIDuo<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, QRepositoryApplication>
 	implements IBaseRepositoryApplicationDuo {
-	constructor() {
-		super('RepositoryApplication');
+
+	static diSet(): boolean {
+		return diSet(12)
 	}
-}
-
-
-export interface IBaseRepositoryEntityDuo
-  extends IDuo<IRepositoryEntity, RepositoryEntityESelect, RepositoryEntityECreateProperties, RepositoryEntityEUpdateProperties, RepositoryEntityEId, QRepositoryEntity> {
-}
-
-export class BaseRepositoryEntityDuo
-  extends SQDIDuo<IRepositoryEntity, RepositoryEntityESelect, RepositoryEntityECreateProperties, RepositoryEntityEUpdateProperties, RepositoryEntityEId, QRepositoryEntity>
-	implements IBaseRepositoryEntityDuo {
+	
 	constructor() {
-		super('RepositoryEntity');
+		super(12)
 	}
 }
 
@@ -520,8 +383,13 @@ export interface IBaseRepositorySchemaDuo
 export class BaseRepositorySchemaDuo
   extends SQDIDuo<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateProperties, RepositorySchemaEId, QRepositorySchema>
 	implements IBaseRepositorySchemaDuo {
+
+	static diSet(): boolean {
+		return diSet(13)
+	}
+	
 	constructor() {
-		super('RepositorySchema');
+		super(13)
 	}
 }
 
@@ -533,21 +401,13 @@ export interface IBaseRepositoryTransactionHistoryDuo
 export class BaseRepositoryTransactionHistoryDuo
   extends SQDIDuo<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, QRepositoryTransactionHistory>
 	implements IBaseRepositoryTransactionHistoryDuo {
-	constructor() {
-		super('RepositoryTransactionHistory');
+
+	static diSet(): boolean {
+		return diSet(5)
 	}
-}
-
-
-export interface IBaseStageableDuo
-  extends IDuo<IStageable, StageableESelect, StageableECreateProperties, StageableEUpdateProperties, StageableEId, QStageable> {
-}
-
-export class BaseStageableDuo
-  extends SQDIDuo<IStageable, StageableESelect, StageableECreateProperties, StageableEUpdateProperties, StageableEId, QStageable>
-	implements IBaseStageableDuo {
+	
 	constructor() {
-		super('Stageable');
+		super(5)
 	}
 }
 
@@ -559,7 +419,12 @@ export interface IBaseTransactionHistoryDuo
 export class BaseTransactionHistoryDuo
   extends SQDIDuo<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateProperties, TransactionHistoryEId, QTransactionHistory>
 	implements IBaseTransactionHistoryDuo {
+
+	static diSet(): boolean {
+		return diSet(6)
+	}
+	
 	constructor() {
-		super('TransactionHistory');
+		super(6)
 	}
 }

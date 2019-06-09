@@ -1,6 +1,6 @@
 import {AIR_DB}             from '@airport/air-control'
 import {DI}                 from '@airport/di'
-import {SEQUENCE_GENERATOR} from '@airport/fuel-hydrant-system'
+import {SEQUENCE_GENERATOR} from '@airport/check-in'
 import {
 	DbSchema,
 	JsonSchema

@@ -4,17 +4,17 @@ const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
 // Schema Q object Dependency Injection readiness detection DAO
 class SQDIDuo extends check_in_1.Duo {
-    constructor(dbEntityName) {
-        super(dbEntityName, qSchema_1.Q);
-    }
-    static diSet() {
-        return qSchema_1.Q.__dbSchema__;
+    constructor(dbEntityId) {
+        super(dbEntityId, qSchema_1.Q);
     }
 }
 exports.SQDIDuo = SQDIDuo;
 class BaseDailyArchiveDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.diSet(0);
+    }
     constructor() {
-        super('DailyArchive');
+        super(0);
     }
 }
 exports.BaseDailyArchiveDuo = BaseDailyArchiveDuo;

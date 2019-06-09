@@ -6,9 +6,17 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Dao } from '@airport/check-in';
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import {
+	Dao
+} from '@airport/check-in'
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	IDailySyncLog,
 	DailySyncLogESelect,
@@ -18,7 +26,7 @@ import {
 	DailySyncLogEUpdateProperties,
 	DailySyncLogEId,
 	QDailySyncLog
-} from './qdailysynclog';
+} from './qdailysynclog'
 import {
 	ILog,
 	LogESelect,
@@ -28,7 +36,7 @@ import {
 	LogEUpdateProperties,
 	LogEId,
 	QLog
-} from './log/qlog';
+} from './log/qlog'
 import {
 	IMonthlySyncLog,
 	MonthlySyncLogESelect,
@@ -38,7 +46,7 @@ import {
 	MonthlySyncLogEUpdateProperties,
 	MonthlySyncLogEId,
 	QMonthlySyncLog
-} from './qmonthlysynclog';
+} from './qmonthlysynclog'
 
 // Schema Q object Dependency Injection readiness detection DAO
 export class SQDIDao<Entity,
@@ -56,14 +64,10 @@ export class SQDIDao<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -75,8 +79,13 @@ export interface IBaseDailySyncLogDao
 export class BaseDailySyncLogDao
   extends SQDIDao<IDailySyncLog, DailySyncLogESelect, DailySyncLogECreateProperties, DailySyncLogEUpdateColumns, DailySyncLogEUpdateProperties, DailySyncLogEId, QDailySyncLog>
 	implements IBaseDailySyncLogDao {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('DailySyncLog')
+		super(0)
 	}
 }
 
@@ -88,8 +97,13 @@ export interface IBaseLogDao
 export class BaseLogDao
   extends SQDIDao<ILog, LogESelect, LogECreateProperties, LogEUpdateColumns, LogEUpdateProperties, LogEId, QLog>
 	implements IBaseLogDao {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('Log')
+		super(2)
 	}
 }
 
@@ -101,7 +115,12 @@ export interface IBaseMonthlySyncLogDao
 export class BaseMonthlySyncLogDao
   extends SQDIDao<IMonthlySyncLog, MonthlySyncLogESelect, MonthlySyncLogECreateProperties, MonthlySyncLogEUpdateColumns, MonthlySyncLogEUpdateProperties, MonthlySyncLogEId, QMonthlySyncLog>
 	implements IBaseMonthlySyncLogDao {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('MonthlySyncLog')
+		super(1)
 	}
 }

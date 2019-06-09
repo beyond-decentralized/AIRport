@@ -5,9 +5,15 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Duo } from "@airport/check-in";
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import { Duo } from "@airport/check-in"
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	IDailyArchive,
 	DailyArchiveESelect,
@@ -17,7 +23,7 @@ import {
 	DailyArchiveEUpdateProperties,
 	DailyArchiveEId,
 	QDailyArchive
-} from './qdailyarchive';
+} from './qdailyarchive'
 
 
 // Schema Q object Dependency Injection readiness detection DAO
@@ -34,14 +40,10 @@ export class SQDIDuo<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -53,7 +55,12 @@ export interface IBaseDailyArchiveDuo
 export class BaseDailyArchiveDuo
   extends SQDIDuo<IDailyArchive, DailyArchiveESelect, DailyArchiveECreateProperties, DailyArchiveEUpdateProperties, DailyArchiveEId, QDailyArchive>
 	implements IBaseDailyArchiveDuo {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('DailyArchive');
+		super(0)
 	}
 }

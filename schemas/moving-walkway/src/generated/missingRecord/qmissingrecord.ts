@@ -160,7 +160,7 @@ export interface MissingRecordEUpdateColumns
 	ACTOR_RECORD_ID?: number | IQNumberField;
 	STATUS?: number | IQNumberField;
 	SCHEMA_VERSION_ID?: number | IQNumberField;
-	TABLE_INDEX?: number | IQNumberField;
+	SCHEMA_ENTITY_ID?: number | IQNumberField;
 	REPOSITORY_ID?: number | IQNumberField;
 	ACTOR_ID?: number | IQNumberField;
 

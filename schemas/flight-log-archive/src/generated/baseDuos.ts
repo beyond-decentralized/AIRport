@@ -5,9 +5,15 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Duo } from "@airport/check-in";
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import { Duo } from "@airport/check-in"
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	IDailySyncLog,
 	DailySyncLogESelect,
@@ -17,7 +23,7 @@ import {
 	DailySyncLogEUpdateProperties,
 	DailySyncLogEId,
 	QDailySyncLog
-} from './qdailysynclog';
+} from './qdailysynclog'
 import {
 	ILog,
 	LogESelect,
@@ -27,7 +33,7 @@ import {
 	LogEUpdateProperties,
 	LogEId,
 	QLog
-} from './log/qlog';
+} from './log/qlog'
 import {
 	IMonthlySyncLog,
 	MonthlySyncLogESelect,
@@ -37,7 +43,7 @@ import {
 	MonthlySyncLogEUpdateProperties,
 	MonthlySyncLogEId,
 	QMonthlySyncLog
-} from './qmonthlysynclog';
+} from './qmonthlysynclog'
 
 
 // Schema Q object Dependency Injection readiness detection DAO
@@ -54,14 +60,10 @@ export class SQDIDuo<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -73,8 +75,13 @@ export interface IBaseDailySyncLogDuo
 export class BaseDailySyncLogDuo
   extends SQDIDuo<IDailySyncLog, DailySyncLogESelect, DailySyncLogECreateProperties, DailySyncLogEUpdateProperties, DailySyncLogEId, QDailySyncLog>
 	implements IBaseDailySyncLogDuo {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('DailySyncLog');
+		super(0)
 	}
 }
 
@@ -86,8 +93,13 @@ export interface IBaseLogDuo
 export class BaseLogDuo
   extends SQDIDuo<ILog, LogESelect, LogECreateProperties, LogEUpdateProperties, LogEId, QLog>
 	implements IBaseLogDuo {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('Log');
+		super(2)
 	}
 }
 
@@ -99,7 +111,12 @@ export interface IBaseMonthlySyncLogDuo
 export class BaseMonthlySyncLogDuo
   extends SQDIDuo<IMonthlySyncLog, MonthlySyncLogESelect, MonthlySyncLogECreateProperties, MonthlySyncLogEUpdateProperties, MonthlySyncLogEId, QMonthlySyncLog>
 	implements IBaseMonthlySyncLogDuo {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('MonthlySyncLog');
+		super(1)
 	}
 }

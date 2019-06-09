@@ -6,9 +6,17 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-} from '@airport/air-control';
-import { Dao } from '@airport/check-in';
-import { Q } from './qSchema';
+} from '@airport/air-control'
+import {
+	Dao
+} from '@airport/check-in'
+import {
+	EntityId as DbEntityId
+} from '@airport/ground-control'
+import {
+	Q,
+	diSet
+} from './qSchema'
 import {
 	IAgt,
 	AgtESelect,
@@ -18,7 +26,7 @@ import {
 	AgtEUpdateProperties,
 	AgtEId,
 	QAgt
-} from './qagt';
+} from './qagt'
 import {
 	ITerminal,
 	TerminalESelect,
@@ -28,7 +36,7 @@ import {
 	TerminalEUpdateProperties,
 	TerminalEId,
 	QTerminal
-} from './qterminal';
+} from './qterminal'
 import {
 	ITerminalAgt,
 	TerminalAgtESelect,
@@ -38,7 +46,7 @@ import {
 	TerminalAgtEUpdateProperties,
 	TerminalAgtEId,
 	QTerminalAgt
-} from './qterminalagt';
+} from './qterminalagt'
 import {
 	IUser,
 	UserESelect,
@@ -48,7 +56,7 @@ import {
 	UserEUpdateProperties,
 	UserEId,
 	QUser
-} from './quser';
+} from './quser'
 import {
 	IUserTerminal,
 	UserTerminalESelect,
@@ -58,7 +66,7 @@ import {
 	UserTerminalEUpdateProperties,
 	UserTerminalEId,
 	QUserTerminal
-} from './quserterminal';
+} from './quserterminal'
 import {
 	IUserTerminalAgt,
 	UserTerminalAgtESelect,
@@ -68,7 +76,7 @@ import {
 	UserTerminalAgtEUpdateProperties,
 	UserTerminalAgtEId,
 	QUserTerminalAgt
-} from './quserterminalagt';
+} from './quserterminalagt'
 
 // Schema Q object Dependency Injection readiness detection DAO
 export class SQDIDao<Entity,
@@ -86,14 +94,10 @@ export class SQDIDao<Entity,
 		EntityId,
 		IQE> {
 
-	static diSet(): boolean {
-		return Q.__dbSchema__ as any
-	}
-
 	constructor(
-		dbEntityName: string
+		dbEntityId: DbEntityId
 	) {
-		super(dbEntityName, Q)
+		super(dbEntityId, Q)
 	}
 }
 
@@ -105,8 +109,13 @@ export interface IBaseAgtDao
 export class BaseAgtDao
   extends SQDIDao<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, QAgt>
 	implements IBaseAgtDao {
+
+	static diSet(): boolean {
+		return diSet(5)
+	}
+	
 	constructor() {
-		super('Agt')
+		super(5)
 	}
 }
 
@@ -118,8 +127,13 @@ export interface IBaseTerminalDao
 export class BaseTerminalDao
   extends SQDIDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, QTerminal>
 	implements IBaseTerminalDao {
+
+	static diSet(): boolean {
+		return diSet(3)
+	}
+	
 	constructor() {
-		super('Terminal')
+		super(3)
 	}
 }
 
@@ -131,8 +145,13 @@ export interface IBaseTerminalAgtDao
 export class BaseTerminalAgtDao
   extends SQDIDao<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, QTerminalAgt>
 	implements IBaseTerminalAgtDao {
+
+	static diSet(): boolean {
+		return diSet(4)
+	}
+	
 	constructor() {
-		super('TerminalAgt')
+		super(4)
 	}
 }
 
@@ -144,8 +163,13 @@ export interface IBaseUserDao
 export class BaseUserDao
   extends SQDIDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, QUser>
 	implements IBaseUserDao {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
 	constructor() {
-		super('User')
+		super(2)
 	}
 }
 
@@ -157,8 +181,13 @@ export interface IBaseUserTerminalDao
 export class BaseUserTerminalDao
   extends SQDIDao<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, QUserTerminal>
 	implements IBaseUserTerminalDao {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
 	constructor() {
-		super('UserTerminal')
+		super(0)
 	}
 }
 
@@ -170,7 +199,12 @@ export interface IBaseUserTerminalAgtDao
 export class BaseUserTerminalAgtDao
   extends SQDIDao<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, QUserTerminalAgt>
 	implements IBaseUserTerminalAgtDao {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
 	constructor() {
-		super('UserTerminalAgt')
+		super(1)
 	}
 }

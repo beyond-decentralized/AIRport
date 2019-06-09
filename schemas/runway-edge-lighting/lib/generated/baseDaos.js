@@ -4,41 +4,53 @@ const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
 // Schema Q object Dependency Injection readiness detection DAO
 class SQDIDao extends check_in_1.Dao {
-    constructor(dbEntityName) {
-        super(dbEntityName, qSchema_1.Q);
-    }
-    static diSet() {
-        return qSchema_1.Q.__dbSchema__;
+    constructor(dbEntityId) {
+        super(dbEntityId, qSchema_1.Q);
     }
 }
 exports.SQDIDao = SQDIDao;
 class BaseLogEntryDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(1);
+    }
     constructor() {
-        super('LogEntry');
+        super(1);
     }
 }
 exports.BaseLogEntryDao = BaseLogEntryDao;
 class BaseLogEntryTypeDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(2);
+    }
     constructor() {
-        super('LogEntryType');
+        super(2);
     }
 }
 exports.BaseLogEntryTypeDao = BaseLogEntryTypeDao;
 class BaseLogEntryValueDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(0);
+    }
     constructor() {
-        super('LogEntryValue');
+        super(0);
     }
 }
 exports.BaseLogEntryValueDao = BaseLogEntryValueDao;
 class BaseLoggedErrorDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(4);
+    }
     constructor() {
-        super('LoggedError');
+        super(4);
     }
 }
 exports.BaseLoggedErrorDao = BaseLoggedErrorDao;
 class BaseLoggedErrorStackTraceDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(3);
+    }
     constructor() {
-        super('LoggedErrorStackTrace');
+        super(3);
     }
 }
 exports.BaseLoggedErrorStackTraceDao = BaseLoggedErrorStackTraceDao;

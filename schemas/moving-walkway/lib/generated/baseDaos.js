@@ -4,113 +4,161 @@ const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
 // Schema Q object Dependency Injection readiness detection DAO
 class SQDIDao extends check_in_1.Dao {
-    constructor(dbEntityName) {
-        super(dbEntityName, qSchema_1.Q);
-    }
-    static diSet() {
-        return qSchema_1.Q.__dbSchema__;
+    constructor(dbEntityId) {
+        super(dbEntityId, qSchema_1.Q);
     }
 }
 exports.SQDIDao = SQDIDao;
 class BaseMissingRecordDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(3);
+    }
     constructor() {
-        super('MissingRecord');
+        super(3);
     }
 }
 exports.BaseMissingRecordDao = BaseMissingRecordDao;
 class BaseMissingRecordRepoTransBlockDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(4);
+    }
     constructor() {
-        super('MissingRecordRepoTransBlock');
+        super(4);
     }
 }
 exports.BaseMissingRecordRepoTransBlockDao = BaseMissingRecordRepoTransBlockDao;
 class BaseRecordUpdateStageDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(5);
+    }
     constructor() {
-        super('RecordUpdateStage');
+        super(5);
     }
 }
 exports.BaseRecordUpdateStageDao = BaseRecordUpdateStageDao;
 class BaseRepoTransBlockResponseStageDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(6);
+    }
     constructor() {
-        super('RepoTransBlockResponseStage');
+        super(6);
     }
 }
 exports.BaseRepoTransBlockResponseStageDao = BaseRepoTransBlockResponseStageDao;
 class BaseRepoTransBlockSchemaToChangeDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(7);
+    }
     constructor() {
-        super('RepoTransBlockSchemaToChange');
+        super(7);
     }
 }
 exports.BaseRepoTransBlockSchemaToChangeDao = BaseRepoTransBlockSchemaToChangeDao;
 class BaseRepositoryTransactionBlockDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(16);
+    }
     constructor() {
-        super('RepositoryTransactionBlock');
+        super(16);
     }
 }
 exports.BaseRepositoryTransactionBlockDao = BaseRepositoryTransactionBlockDao;
 class BaseRepositoryTransactionHistoryUpdateStageDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(8);
+    }
     constructor() {
-        super('RepositoryTransactionHistoryUpdateStage');
+        super(8);
     }
 }
 exports.BaseRepositoryTransactionHistoryUpdateStageDao = BaseRepositoryTransactionHistoryUpdateStageDao;
 class BaseSharingMessageDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(14);
+    }
     constructor() {
-        super('SharingMessage');
+        super(14);
     }
 }
 exports.BaseSharingMessageDao = BaseSharingMessageDao;
 class BaseSharingMessageRepoTransBlockDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(15);
+    }
     constructor() {
-        super('SharingMessageRepoTransBlock');
+        super(15);
     }
 }
 exports.BaseSharingMessageRepoTransBlockDao = BaseSharingMessageRepoTransBlockDao;
 class BaseSharingNodeDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(10);
+    }
     constructor() {
-        super('SharingNode');
+        super(10);
     }
 }
 exports.BaseSharingNodeDao = BaseSharingNodeDao;
 class BaseSharingNodeRepoTransBlockDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(9);
+    }
     constructor() {
-        super('SharingNodeRepoTransBlock');
+        super(9);
     }
 }
 exports.BaseSharingNodeRepoTransBlockDao = BaseSharingNodeRepoTransBlockDao;
 class BaseSharingNodeRepoTransBlockStageDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(11);
+    }
     constructor() {
-        super('SharingNodeRepoTransBlockStage');
+        super(11);
     }
 }
 exports.BaseSharingNodeRepoTransBlockStageDao = BaseSharingNodeRepoTransBlockStageDao;
 class BaseSharingNodeRepositoryDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(12);
+    }
     constructor() {
-        super('SharingNodeRepository');
+        super(12);
     }
 }
 exports.BaseSharingNodeRepositoryDao = BaseSharingNodeRepositoryDao;
 class BaseSharingNodeTerminalDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(13);
+    }
     constructor() {
-        super('SharingNodeTerminal');
+        super(13);
     }
 }
 exports.BaseSharingNodeTerminalDao = BaseSharingNodeTerminalDao;
 class BaseSynchronizationConflictDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(1);
+    }
     constructor() {
-        super('SynchronizationConflict');
+        super(1);
     }
 }
 exports.BaseSynchronizationConflictDao = BaseSynchronizationConflictDao;
 class BaseSynchronizationConflictPendingNotificationDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(2);
+    }
     constructor() {
-        super('SynchronizationConflictPendingNotification');
+        super(2);
     }
 }
 exports.BaseSynchronizationConflictPendingNotificationDao = BaseSynchronizationConflictPendingNotificationDao;
 class BaseSynchronizationConflictValuesDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(0);
+    }
     constructor() {
-        super('SynchronizationConflictValues');
+        super(0);
     }
 }
 exports.BaseSynchronizationConflictValuesDao = BaseSynchronizationConflictValuesDao;

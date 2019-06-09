@@ -1,9 +1,6 @@
 import { ISequence } from '@airport/airport-code';
-import { DbColumn } from '@airport/ground-control';
-export interface ISequenceGenerator {
-    generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
-    init(sequences?: ISequence[]): Promise<void>;
-}
+import { ISequenceGenerator } from '@airport/check-in';
+import { DbColumn, DbEntity } from '@airport/ground-control';
 export declare class SequenceGenerator implements ISequenceGenerator {
     private sequences;
     private sequenceBlocks;
@@ -11,6 +8,7 @@ export declare class SequenceGenerator implements ISequenceGenerator {
     private sequenceDao;
     private utils;
     constructor();
+    exists(dbEntity: DbEntity): boolean;
     init(sequences?: ISequence[]): Promise<void>;
     generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
     private addSequences;
