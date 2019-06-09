@@ -1,3 +1,3 @@
 export * from './Sequence';
-export * from './SequenceConsumer';
+export * from './TerminalRun';
 export * from './SequenceBlock';

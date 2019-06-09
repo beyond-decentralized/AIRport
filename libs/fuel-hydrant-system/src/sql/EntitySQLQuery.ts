@@ -235,6 +235,9 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
 
 		const defaults = this.entityDefaults.getForAlias(tableAlias);
 		for (let propertyName in selectClauseFragment) {
+			if(propertyName === '__state__') {
+				continue
+			}
 			const value = selectClauseFragment[propertyName];
 			if (!isY(value)) {
 				defaults[propertyName] = value;

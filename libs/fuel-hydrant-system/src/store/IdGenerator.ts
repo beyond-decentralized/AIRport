@@ -39,9 +39,7 @@ export interface TransactionHistoryIds {
 
 export interface IIdGenerator {
 
-	init(
-		domain: IDomain
-	): Promise<void>;
+	init(): Promise<void>;
 
 	generateTransactionHistoryIds(
 		numRepositoryTransHistories: NumRepositoryTransHistories,
@@ -78,11 +76,9 @@ export class IdGenerator
 		this.sequenceGeneratorFuture = DI.laterP(SEQUENCE_GENERATOR)
 	}
 
-	async init(
-		domain: IDomain
-	): Promise<void> {
+	async init(): Promise<void> {
 		this.sequenceGenerator = await this.sequenceGeneratorFuture()
-		await this.sequenceGenerator.init(domain)
+		await this.sequenceGenerator.init()
 
 		const transHistoryDbEntity     =
 			      this.getHoldingPatternDbEntity('TransactionHistory')

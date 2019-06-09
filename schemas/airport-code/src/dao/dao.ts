@@ -1,3 +1,3 @@
 export * from './SequenceBlockDao';
-export * from './SequenceConsumerDao';
+export * from './TerminalRunDao';
 export * from './SequenceDao';

@@ -171,6 +171,9 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         let selectSqlFragments = [];
         const defaults = this.entityDefaults.getForAlias(tableAlias);
         for (let propertyName in selectClauseFragment) {
+            if (propertyName === '__state__') {
+                continue;
+            }
             const value = selectClauseFragment[propertyName];
             if (!air_control_1.isY(value)) {
                 defaults[propertyName] = value;

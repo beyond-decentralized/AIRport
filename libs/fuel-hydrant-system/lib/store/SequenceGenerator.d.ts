@@ -7,9 +7,7 @@ export interface ISequenceGenerator {
 export declare class SequenceGenerator implements ISequenceGenerator {
     private sequences;
     private sequenceBlocks;
-    private sequenceConsumer;
     private sequenceBlockDao;
-    private sequenceConsumerDao;
     private sequenceDao;
     private utils;
     constructor();

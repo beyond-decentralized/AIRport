@@ -116,7 +116,7 @@ export class DatabaseManager
 
 		await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCES')
 		await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCE_BLOCKS')
-		await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCE_CONSUMERS')
+		await storeDriver.dropTable('github_com___airport__airport_code__TERMINAL_RUNS')
 		await storeDriver.dropTable('github_com___airport__holding_pattern__ACTOR_APPLICATION')
 		await storeDriver.dropTable('github_com___airport__holding_pattern__Actor')
 		await storeDriver.dropTable('github_com___airport__holding_pattern__Application')

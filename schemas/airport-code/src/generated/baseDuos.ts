@@ -29,15 +29,15 @@ import {
 	QSequenceBlock
 } from './qsequenceblock';
 import {
-	ISequenceConsumer,
-	SequenceConsumerESelect,
-	SequenceConsumerECreateColumns,
-	SequenceConsumerECreateProperties,
-	SequenceConsumerEUpdateColumns,
-	SequenceConsumerEUpdateProperties,
-	SequenceConsumerEId,
-	QSequenceConsumer
-} from './qsequenceconsumer';
+	ITerminalRun,
+	TerminalRunESelect,
+	TerminalRunECreateColumns,
+	TerminalRunECreateProperties,
+	TerminalRunEUpdateColumns,
+	TerminalRunEUpdateProperties,
+	TerminalRunEId,
+	QTerminalRun
+} from './qterminalrun';
 
 
 // Schema Q object Dependency Injection readiness detection DAO
@@ -92,14 +92,14 @@ export class BaseSequenceBlockDuo
 }
 
 
-export interface IBaseSequenceConsumerDuo
-  extends IDuo<ISequenceConsumer, SequenceConsumerESelect, SequenceConsumerECreateProperties, SequenceConsumerEUpdateProperties, SequenceConsumerEId, QSequenceConsumer> {
+export interface IBaseTerminalRunDuo
+  extends IDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateProperties, TerminalRunEId, QTerminalRun> {
 }
 
-export class BaseSequenceConsumerDuo
-  extends SQDIDuo<ISequenceConsumer, SequenceConsumerESelect, SequenceConsumerECreateProperties, SequenceConsumerEUpdateProperties, SequenceConsumerEId, QSequenceConsumer>
-	implements IBaseSequenceConsumerDuo {
+export class BaseTerminalRunDuo
+  extends SQDIDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateProperties, TerminalRunEId, QTerminalRun>
+	implements IBaseTerminalRunDuo {
 	constructor() {
-		super('SequenceConsumer');
+		super('TerminalRun');
 	}
 }

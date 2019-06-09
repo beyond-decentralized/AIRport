@@ -4,13 +4,10 @@ import {
 }                           from '@airport/air-control'
 import {
 	IAbstractSequenceBlockDao,
-	IAbstractSequenceConsumerDao,
 	ISequence,
 	ISequenceBlock,
-	ISequenceConsumer,
 	ISequenceDao,
 	SEQUENCE_BLOCK_DAO,
-	SEQUENCE_CONSUMER_DAO,
 	SEQUENCE_DAO
 }                           from '@airport/airport-code'
 import {DI,}                from '@airport/di'
@@ -35,16 +32,13 @@ export class SequenceGenerator
 
 	private sequences: ISequence[][][]           = []
 	private sequenceBlocks: ISequenceBlock[][][] = []
-	private sequenceConsumer: ISequenceConsumer
 
 	private sequenceBlockDao: Promise<IAbstractSequenceBlockDao>
-	private sequenceConsumerDao: Promise<IAbstractSequenceConsumerDao>
 	private sequenceDao: Promise<ISequenceDao>
 	private utils: IUtils
 
 	constructor() {
 		this.sequenceBlockDao    = DI.getP(SEQUENCE_BLOCK_DAO)
-		this.sequenceConsumerDao = DI.getP(SEQUENCE_CONSUMER_DAO)
 		this.sequenceDao         = DI.getP(SEQUENCE_DAO)
 		DI.get(
 			utils => this.utils = utils, UTILS)
@@ -57,17 +51,6 @@ export class SequenceGenerator
 			sequences = await (await this.sequenceDao).findAll()
 		}
 		this.addSequences(sequences)
-
-		if (!this.sequenceConsumer) {
-			this.sequenceConsumer = {
-				createTimestamp: new Date().getTime(),
-				randomNumber: Math.random()
-			}
-
-			await (await this.sequenceConsumerDao).create(this.sequenceConsumer)
-
-			console.log('SequenceGenerator.init')
-		}
 	}
 
 	async generateSequenceNumbers(
@@ -186,7 +169,6 @@ export class SequenceGenerator
 					currentNumber: 0,
 					lastReservedId: 0,
 					sequence,
-					sequenceConsumer: this.sequenceConsumer,
 					size: 0
 				}
 			}

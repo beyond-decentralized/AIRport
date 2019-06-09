@@ -65,8 +65,6 @@ export class SequenceBlockDao
 			sequenceBlock.sequence.schemaIndex,
 			sequenceBlock.sequence.tableIndex,
 			sequenceBlock.sequence.columnIndex,
-			sequenceBlock.sequenceConsumer.createTimestamp,
-			sequenceBlock.sequenceConsumer.randomNumber,
 			sequenceBlock.size,
 			newLastReservedIds[index],
 			reservationMillis
@@ -78,8 +76,6 @@ export class SequenceBlockDao
 				sb.sequence.schemaIndex,
 				sb.sequence.tableIndex,
 				sb.sequence.columnIndex,
-				sb.sequenceConsumer.createTimestamp,
-				sb.sequenceConsumer.randomNumber,
 				sb.size,
 				sb.lastReservedId,
 				sb.reservationMillis

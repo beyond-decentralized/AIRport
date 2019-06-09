@@ -24,10 +24,10 @@ class BaseSequenceBlockDao extends SQDIDao {
     }
 }
 exports.BaseSequenceBlockDao = BaseSequenceBlockDao;
-class BaseSequenceConsumerDao extends SQDIDao {
+class BaseTerminalRunDao extends SQDIDao {
     constructor() {
-        super('SequenceConsumer');
+        super('TerminalRun');
     }
 }
-exports.BaseSequenceConsumerDao = BaseSequenceConsumerDao;
+exports.BaseTerminalRunDao = BaseTerminalRunDao;
 //# sourceMappingURL=baseDaos.js.map

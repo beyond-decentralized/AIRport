@@ -169,7 +169,7 @@ exports.SCHEMA = {
                     "index": 1,
                     "isLocal": true,
                     "isRepositoryEntity": false,
-                    "name": "SequenceConsumer",
+                    "name": "TerminalRun",
                     "properties": [
                         {
                             "columnRef": {
@@ -193,7 +193,7 @@ exports.SCHEMA = {
                     "relations": [],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SEQUENCE_CONSUMERS",
+                        "name": "TERMINAL_RUNS",
                         "indexes": []
                     }
                 },
@@ -222,7 +222,7 @@ exports.SCHEMA = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 3
+                                    "index": 2
                                 }
                             ],
                             "sinceVersion": 1,
@@ -236,7 +236,7 @@ exports.SCHEMA = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 4
+                                    "index": 3
                                 }
                             ],
                             "sinceVersion": 1,
@@ -250,7 +250,7 @@ exports.SCHEMA = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 5
+                                    "index": 4
                                 }
                             ],
                             "sinceVersion": 1,
@@ -262,50 +262,6 @@ exports.SCHEMA = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 1,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "CREATE_TIMESTAMP",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 1,
-                                    "oneColumnIndex": 1,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "RANDOM_NUMBER",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
@@ -323,11 +279,11 @@ exports.SCHEMA = {
                             "type": 4
                         },
                         {
-                            "index": 7,
+                            "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
-                                    "manyRelationIndex": 1,
+                                    "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 1,
@@ -345,11 +301,11 @@ exports.SCHEMA = {
                             "type": 4
                         },
                         {
-                            "index": 8,
+                            "index": 6,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
-                                    "manyRelationIndex": 1,
+                                    "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 2,
@@ -370,12 +326,6 @@ exports.SCHEMA = {
                     "idColumnRefs": [
                         {
                             "index": 0
-                        },
-                        {
-                            "index": 4
-                        },
-                        {
-                            "index": 5
                         }
                     ],
                     "index": 2,
@@ -397,15 +347,6 @@ exports.SCHEMA = {
                             "isId": false,
                             "name": "sequence",
                             "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": true,
-                            "name": "sequenceConsumer",
-                            "relationRef": {
                                 "index": 0
                             },
                             "sinceVersion": 1
@@ -414,7 +355,7 @@ exports.SCHEMA = {
                             "columnRef": {
                                 "index": 1
                             },
-                            "index": 3,
+                            "index": 2,
                             "isId": false,
                             "name": "size",
                             "sinceVersion": 1
@@ -423,7 +364,7 @@ exports.SCHEMA = {
                             "columnRef": {
                                 "index": 2
                             },
-                            "index": 4,
+                            "index": 3,
                             "isId": false,
                             "name": "lastReservedId",
                             "sinceVersion": 1
@@ -432,7 +373,7 @@ exports.SCHEMA = {
                             "columnRef": {
                                 "index": 3
                             },
-                            "index": 5,
+                            "index": 4,
                             "isId": false,
                             "name": "reservationMillis",
                             "sinceVersion": 1
@@ -441,16 +382,6 @@ exports.SCHEMA = {
                     "relations": [
                         {
                             "index": 0,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
                             "isId": false,
                             "relationType": 1,
                             "propertyRef": {

@@ -9,7 +9,6 @@ class SequenceGenerator {
         this.sequences = [];
         this.sequenceBlocks = [];
         this.sequenceBlockDao = di_1.DI.getP(airport_code_1.SEQUENCE_BLOCK_DAO);
-        this.sequenceConsumerDao = di_1.DI.getP(airport_code_1.SEQUENCE_CONSUMER_DAO);
         this.sequenceDao = di_1.DI.getP(airport_code_1.SEQUENCE_DAO);
         di_1.DI.get(utils => this.utils = utils, air_control_1.UTILS);
     }
@@ -18,14 +17,6 @@ class SequenceGenerator {
             sequences = await (await this.sequenceDao).findAll();
         }
         this.addSequences(sequences);
-        if (!this.sequenceConsumer) {
-            this.sequenceConsumer = {
-                createTimestamp: new Date().getTime(),
-                randomNumber: Math.random()
-            };
-            await (await this.sequenceConsumerDao).create(this.sequenceConsumer);
-            console.log('SequenceGenerator.init');
-        }
     }
     async generateSequenceNumbers(dbColumns, numSequencesNeeded) {
         const numSequencesNeededFromNewBlocks = new Map();
@@ -101,7 +92,6 @@ class SequenceGenerator {
                     currentNumber: 0,
                     lastReservedId: 0,
                     sequence,
-                    sequenceConsumer: this.sequenceConsumer,
                     size: 0
                 }
             };

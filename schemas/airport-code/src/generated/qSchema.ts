@@ -11,8 +11,8 @@ import { Sequence } from '../ddl/sequence';
 import { QSequence } from './qsequence';
 import { SequenceBlock } from '../ddl/sequenceblock';
 import { QSequenceBlock } from './qsequenceblock';
-import { SequenceConsumer } from '../ddl/sequenceconsumer';
-import { QSequenceConsumer } from './qsequenceconsumer';
+import { TerminalRun } from '../ddl/terminalrun';
+import { QTerminalRun } from './qterminalrun';
 
 export interface LocalQSchema extends AirportQSchema {
 
@@ -20,14 +20,14 @@ export interface LocalQSchema extends AirportQSchema {
 
 	Sequence: QSequence;
 	SequenceBlock: QSequenceBlock;
-	SequenceConsumer: QSequenceConsumer;
+	TerminalRun: QTerminalRun;
 
 }
 
 const __constructors__ = {
 	Sequence: Sequence,
 	SequenceBlock: SequenceBlock,
-	SequenceConsumer: SequenceConsumer
+	TerminalRun: TerminalRun
 };
 
 export const Q_SCHEMA: LocalQSchema = <any>{

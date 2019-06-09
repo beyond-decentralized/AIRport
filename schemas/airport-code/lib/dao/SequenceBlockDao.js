@@ -21,8 +21,6 @@ class SequenceBlockDao extends generated_1.BaseSequenceBlockDao {
             sequenceBlock.sequence.schemaIndex,
             sequenceBlock.sequence.tableIndex,
             sequenceBlock.sequence.columnIndex,
-            sequenceBlock.sequenceConsumer.createTimestamp,
-            sequenceBlock.sequenceConsumer.randomNumber,
             sequenceBlock.size,
             newLastReservedIds[index],
             reservationMillis
@@ -33,8 +31,6 @@ class SequenceBlockDao extends generated_1.BaseSequenceBlockDao {
                 sb.sequence.schemaIndex,
                 sb.sequence.tableIndex,
                 sb.sequence.columnIndex,
-                sb.sequenceConsumer.createTimestamp,
-                sb.sequenceConsumer.randomNumber,
                 sb.size,
                 sb.lastReservedId,
                 sb.reservationMillis

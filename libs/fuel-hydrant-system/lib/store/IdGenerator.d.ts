@@ -1,5 +1,4 @@
 import { OperationHistoryId, RecordHistoryId, RepositoryTransactionHistoryId, TransactionHistoryId } from '@airport/holding-pattern';
-import { IDomain } from '@airport/territory';
 export declare type NumRepositoryTransHistories = number;
 export declare type NumOperationTransHistories = number;
 export declare type NumRecordHistories = number;
@@ -10,7 +9,7 @@ export interface TransactionHistoryIds {
     transactionHistoryId: TransactionHistoryId;
 }
 export interface IIdGenerator {
-    init(domain: IDomain): Promise<void>;
+    init(): Promise<void>;
     generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): Promise<TransactionHistoryIds>;
 }
 /**
@@ -23,7 +22,7 @@ export declare class IdGenerator implements IIdGenerator {
     private sequenceGenerator;
     private utils;
     constructor();
-    init(domain: IDomain): Promise<void>;
+    init(): Promise<void>;
     generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): Promise<TransactionHistoryIds>;
     generateEntityIds(): Promise<void>;
     private getHoldingPatternDbEntity;

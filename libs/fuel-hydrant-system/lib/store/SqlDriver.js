@@ -85,18 +85,22 @@ class SqlDriver {
         let jsonQuery = portableQuery.jsonQuery;
         let dialect = this.getDialect();
         let resultType = portableQuery.queryResultType;
+        const QueryResType = ground_control_1.QueryResultType;
         switch (resultType) {
-            case ground_control_1.QueryResultType.ENTITY_GRAPH:
-            case ground_control_1.QueryResultType.ENTITY_TREE:
+            case QueryResType.ENTITY_GRAPH:
+            case QueryResType.ENTITY_TREE:
+            case QueryResType.MAPPED_ENTITY_GRAPH:
+            case QueryResType.MAPPED_ENTITY_TREE:
                 const dbEntity = this.airDb.schemas[portableQuery.schemaIndex]
                     .currentVersion.entities[portableQuery.tableIndex];
                 return new EntitySQLQuery_1.EntitySQLQuery(this.airDb, this.utils, jsonQuery, dbEntity, dialect, resultType);
-            case ground_control_1.QueryResultType.FIELD:
+            case QueryResType.FIELD:
                 return new FieldSQLQuery_1.FieldSQLQuery(this.airDb, this.utils, jsonQuery, dialect);
-            case ground_control_1.QueryResultType.SHEET:
+            case QueryResType.SHEET:
                 return new SheetSQLQuery_1.SheetSQLQuery(this.airDb, this.utils, jsonQuery, dialect);
-            case ground_control_1.QueryResultType.TREE:
+            case QueryResType.TREE:
                 return new TreeSQLQuery_1.TreeSQLQuery(this.airDb, this.utils, jsonQuery, dialect);
+            case QueryResType.RAW:
             default:
                 throw `Unknown QueryResultType: ${resultType}`;
         }

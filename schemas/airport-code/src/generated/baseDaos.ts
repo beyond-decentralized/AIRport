@@ -30,15 +30,15 @@ import {
 	QSequenceBlock
 } from './qsequenceblock';
 import {
-	ISequenceConsumer,
-	SequenceConsumerESelect,
-	SequenceConsumerECreateColumns,
-	SequenceConsumerECreateProperties,
-	SequenceConsumerEUpdateColumns,
-	SequenceConsumerEUpdateProperties,
-	SequenceConsumerEId,
-	QSequenceConsumer
-} from './qsequenceconsumer';
+	ITerminalRun,
+	TerminalRunESelect,
+	TerminalRunECreateColumns,
+	TerminalRunECreateProperties,
+	TerminalRunEUpdateColumns,
+	TerminalRunEUpdateProperties,
+	TerminalRunEId,
+	QTerminalRun
+} from './qterminalrun';
 
 // Schema Q object Dependency Injection readiness detection DAO
 export class SQDIDao<Entity,
@@ -94,14 +94,14 @@ export class BaseSequenceBlockDao
 }
 
 
-export interface IBaseSequenceConsumerDao
-  extends IDao<ISequenceConsumer, SequenceConsumerESelect, SequenceConsumerECreateProperties, SequenceConsumerEUpdateColumns, SequenceConsumerEUpdateProperties, SequenceConsumerEId, QSequenceConsumer> {
+export interface IBaseTerminalRunDao
+  extends IDao<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, QTerminalRun> {
 }
 
-export class BaseSequenceConsumerDao
-  extends SQDIDao<ISequenceConsumer, SequenceConsumerESelect, SequenceConsumerECreateProperties, SequenceConsumerEUpdateColumns, SequenceConsumerEUpdateProperties, SequenceConsumerEId, QSequenceConsumer>
-	implements IBaseSequenceConsumerDao {
+export class BaseTerminalRunDao
+  extends SQDIDao<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, QTerminalRun>
+	implements IBaseTerminalRunDao {
 	constructor() {
-		super('SequenceConsumer')
+		super('TerminalRun')
 	}
 }

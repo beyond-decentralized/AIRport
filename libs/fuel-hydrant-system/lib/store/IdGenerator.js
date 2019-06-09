@@ -16,9 +16,9 @@ class IdGenerator {
         }, air_control_1.AIR_DB, air_control_1.UTILS);
         this.sequenceGeneratorFuture = di_1.DI.laterP(diTokens_1.SEQUENCE_GENERATOR);
     }
-    async init(domain) {
+    async init() {
         this.sequenceGenerator = await this.sequenceGeneratorFuture();
-        await this.sequenceGenerator.init(domain);
+        await this.sequenceGenerator.init();
         const transHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
         const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
         const operationHistoryDbEntity = this.getHoldingPatternDbEntity('OperationHistory');

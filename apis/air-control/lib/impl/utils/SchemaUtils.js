@@ -9,7 +9,7 @@ class SchemaUtils {
         this.utils = utils;
     }
     getDbEntity(schemaIndex, tableIndex) {
-        return this.airportDb.schemas[schemaIndex][tableIndex];
+        return this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
     }
     isRepositoryId(columnName) {
         return columnName === ground_control_1.repositoryEntity.REPOSITORY_ID;

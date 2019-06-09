@@ -1,9 +1,7 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { ISequenceConsumer, SequenceConsumerEId, SequenceConsumerEOptionalId, SequenceConsumerESelect, QSequenceConsumerQId, QSequenceConsumerQRelation } from './qsequenceconsumer';
 import { ISequence, SequenceEOptionalId, SequenceESelect, QSequenceQRelation } from './qsequence';
 export interface ISequenceBlock {
     id?: number;
-    sequenceConsumer?: ISequenceConsumer;
     size?: number;
     lastReservedId?: number;
     reservationMillis?: number;
@@ -17,7 +15,6 @@ export interface SequenceBlockESelect extends IEntitySelectProperties, SequenceB
     size?: number | IQNumberField;
     lastReservedId?: number | IQNumberField;
     reservationMillis?: number | IQNumberField;
-    sequenceConsumer?: SequenceConsumerESelect;
     sequence?: SequenceESelect;
 }
 /**
@@ -25,14 +22,12 @@ export interface SequenceBlockESelect extends IEntitySelectProperties, SequenceB
  */
 export interface SequenceBlockEId extends IEntityIdProperties {
     id: number | IQNumberField;
-    sequenceConsumer: SequenceConsumerEId;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface SequenceBlockEOptionalId {
     id?: number | IQNumberField;
-    sequenceConsumer?: SequenceConsumerEOptionalId;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -69,7 +64,6 @@ export interface SequenceBlockECreateColumns extends SequenceBlockEId, SequenceB
  */
 export interface QSequenceBlock extends IQEntity {
     id: IQNumberField;
-    sequenceConsumer: QSequenceConsumerQRelation;
     size: IQNumberField;
     lastReservedId: IQNumberField;
     reservationMillis: IQNumberField;
@@ -77,7 +71,6 @@ export interface QSequenceBlock extends IQEntity {
 }
 export interface QSequenceBlockQId {
     id: IQNumberField;
-    sequenceConsumer: QSequenceConsumerQId;
 }
 export interface QSequenceBlockQRelation extends IQRelation<QSequenceBlock>, QSequenceBlockQId {
 }

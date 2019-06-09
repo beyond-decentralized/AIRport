@@ -29,7 +29,7 @@ declare function require(moduleName: string): any;
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface ISequenceConsumer {
+export interface ITerminalRun {
 	
 	// Id Properties
 	createTimestamp?: number;
@@ -54,8 +54,8 @@ export interface ISequenceConsumer {
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SequenceConsumerESelect
-    extends IEntitySelectProperties, SequenceConsumerEOptionalId {
+export interface TerminalRunESelect
+    extends IEntitySelectProperties, TerminalRunEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
@@ -67,7 +67,7 @@ export interface SequenceConsumerESelect
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface SequenceConsumerEId
+export interface TerminalRunEId
     extends IEntityIdProperties {
 	// Id Properties
 	createTimestamp: number | IQNumberField;
@@ -80,7 +80,7 @@ export interface SequenceConsumerEId
 /**
  * Ids fields and relations only (optional).
  */
-export interface SequenceConsumerEOptionalId {
+export interface TerminalRunEOptionalId {
 	// Id Properties
 	createTimestamp?: number | IQNumberField;
 	randomNumber?: number | IQNumberField;
@@ -92,7 +92,7 @@ export interface SequenceConsumerEOptionalId {
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface SequenceConsumerEUpdateProperties
+export interface TerminalRunEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 
@@ -103,7 +103,7 @@ export interface SequenceConsumerEUpdateProperties
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface SequenceConsumerEUpdateColumns
+export interface TerminalRunEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 
@@ -112,15 +112,15 @@ export interface SequenceConsumerEUpdateColumns
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface SequenceConsumerECreateProperties
-extends Partial<SequenceConsumerEId>, SequenceConsumerEUpdateProperties {
+export interface TerminalRunECreateProperties
+extends Partial<TerminalRunEId>, TerminalRunEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
-export interface SequenceConsumerECreateColumns
-extends SequenceConsumerEId, SequenceConsumerEUpdateColumns {
+export interface TerminalRunECreateColumns
+extends TerminalRunEId, TerminalRunEUpdateColumns {
 }
 
 
@@ -133,7 +133,7 @@ extends SequenceConsumerEId, SequenceConsumerEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSequenceConsumer extends IQEntity
+export interface QTerminalRun extends IQEntity
 {
 	// Id Fields
 	createTimestamp: IQNumberField;
@@ -149,7 +149,7 @@ export interface QSequenceConsumer extends IQEntity
 
 
 // Entity Id Interface
-export interface QSequenceConsumerQId
+export interface QTerminalRunQId
 {
 	
 	// Id Fields
@@ -162,7 +162,7 @@ export interface QSequenceConsumerQId
 }
 
 // Entity Relation Interface
-export interface QSequenceConsumerQRelation
-	extends IQRelation<QSequenceConsumer>, QSequenceConsumerQId {
+export interface QTerminalRunQRelation
+	extends IQRelation<QTerminalRun>, QTerminalRunQId {
 }
 

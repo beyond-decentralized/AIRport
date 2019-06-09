@@ -52,7 +52,7 @@ export class SchemaUtils
 		schemaIndex: SchemaIndex,
 		tableIndex: TableIndex,
 	): DbEntity {
-		return this.airportDb.schemas[schemaIndex][tableIndex]
+		return this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
 	}
 
 	isRepositoryId(

@@ -1,57 +1,57 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-export interface ISequenceConsumer {
+export interface ITerminalRun {
     createTimestamp?: number;
     randomNumber?: number;
 }
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface SequenceConsumerESelect extends IEntitySelectProperties, SequenceConsumerEOptionalId {
+export interface TerminalRunESelect extends IEntitySelectProperties, TerminalRunEOptionalId {
 }
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface SequenceConsumerEId extends IEntityIdProperties {
+export interface TerminalRunEId extends IEntityIdProperties {
     createTimestamp: number | IQNumberField;
     randomNumber: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
-export interface SequenceConsumerEOptionalId {
+export interface TerminalRunEOptionalId {
     createTimestamp?: number | IQNumberField;
     randomNumber?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface SequenceConsumerEUpdateProperties extends IEntityUpdateProperties {
+export interface TerminalRunEUpdateProperties extends IEntityUpdateProperties {
 }
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface SequenceConsumerEUpdateColumns extends IEntityUpdateColumns {
+export interface TerminalRunEUpdateColumns extends IEntityUpdateColumns {
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface SequenceConsumerECreateProperties extends Partial<SequenceConsumerEId>, SequenceConsumerEUpdateProperties {
+export interface TerminalRunECreateProperties extends Partial<TerminalRunEId>, TerminalRunEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
-export interface SequenceConsumerECreateColumns extends SequenceConsumerEId, SequenceConsumerEUpdateColumns {
+export interface TerminalRunECreateColumns extends TerminalRunEId, TerminalRunEUpdateColumns {
 }
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSequenceConsumer extends IQEntity {
+export interface QTerminalRun extends IQEntity {
     createTimestamp: IQNumberField;
     randomNumber: IQNumberField;
 }
-export interface QSequenceConsumerQId {
+export interface QTerminalRunQId {
     createTimestamp: IQNumberField;
     randomNumber: IQNumberField;
 }
-export interface QSequenceConsumerQRelation extends IQRelation<QSequenceConsumer>, QSequenceConsumerQId {
+export interface QTerminalRunQRelation extends IQRelation<QTerminalRun>, QTerminalRunQId {
 }

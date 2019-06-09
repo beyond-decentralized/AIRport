@@ -8,9 +8,9 @@ import {
 	SequenceGenerator,
 	Table,
 	Transient
-}                         from '@airport/air-control'
-import {Sequence}         from './Sequence'
-import {SequenceConsumer} from './SequenceConsumer'
+}                    from '@airport/air-control'
+import {Sequence}    from './Sequence'
+import {TerminalRun} from './TerminalRun'
 
 export type SequenceBlockId = number
 export type SequenceBlockSize = number
@@ -36,15 +36,6 @@ export class SequenceBlock {
 		name: 'COLUMN_INDEX', nullable: false
 	}])
 	sequence: Sequence
-
-	@Id()
-	@ManyToOne()
-	@JoinColumns([{
-		name: 'CREATE_TIMESTAMP'
-	}, {
-		name: 'RANDOM_NUMBER'
-	}])
-	sequenceConsumer: SequenceConsumer
 
 	@Column({name: 'SIZE', nullable: false})
 	size: SequenceBlockSize

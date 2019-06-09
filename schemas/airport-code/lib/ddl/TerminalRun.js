@@ -7,19 +7,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-let SequenceConsumer = class SequenceConsumer {
+/**
+ * A record of the Terminal running (being up at a given point in time)
+ */
+let TerminalRun = class TerminalRun {
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.Column({ name: 'CREATE_TIMESTAMP', nullable: false })
-], SequenceConsumer.prototype, "createTimestamp", void 0);
+    air_control_1.GeneratedValue()
+], TerminalRun.prototype, "id", void 0);
 __decorate([
-    air_control_1.Id(),
+    air_control_1.Column({ name: 'CREATE_TIMESTAMP', nullable: false })
+], TerminalRun.prototype, "createTimestamp", void 0);
+__decorate([
     air_control_1.Column({ name: 'RANDOM_NUMBER', nullable: false })
-], SequenceConsumer.prototype, "randomNumber", void 0);
-SequenceConsumer = __decorate([
+], TerminalRun.prototype, "randomNumber", void 0);
+TerminalRun = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: 'SEQUENCE_CONSUMERS' })
-], SequenceConsumer);
-exports.SequenceConsumer = SequenceConsumer;
-//# sourceMappingURL=SequenceConsumer.js.map
+    air_control_1.Table({ name: 'TERMINAL_RUNS' })
+], TerminalRun);
+exports.TerminalRun = TerminalRun;
+//# sourceMappingURL=TerminalRun.js.map

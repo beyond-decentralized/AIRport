@@ -24,10 +24,10 @@ class BaseSequenceBlockDuo extends SQDIDuo {
     }
 }
 exports.BaseSequenceBlockDuo = BaseSequenceBlockDuo;
-class BaseSequenceConsumerDuo extends SQDIDuo {
+class BaseTerminalRunDuo extends SQDIDuo {
     constructor() {
-        super('SequenceConsumer');
+        super('TerminalRun');
     }
 }
-exports.BaseSequenceConsumerDuo = BaseSequenceConsumerDuo;
+exports.BaseTerminalRunDuo = BaseTerminalRunDuo;
 //# sourceMappingURL=baseDuos.js.map

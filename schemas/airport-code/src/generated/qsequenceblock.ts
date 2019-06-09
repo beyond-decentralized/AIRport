@@ -21,16 +21,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISequenceConsumer,
-	SequenceConsumerEId,
-	SequenceConsumerEOptionalId,
-	SequenceConsumerEUpdateProperties,
-	SequenceConsumerESelect,
-	QSequenceConsumer,
-	QSequenceConsumerQId,
-	QSequenceConsumerQRelation,
-} from './qsequenceconsumer';
-import {
 	ISequence,
 	SequenceEId,
 	SequenceEOptionalId,
@@ -55,7 +45,6 @@ export interface ISequenceBlock {
 	id?: number;
 
 	// Id Relations
-	sequenceConsumer?: ISequenceConsumer;
 
 	// Non-Id Properties
 	size?: number;
@@ -87,7 +76,6 @@ export interface SequenceBlockESelect
 	reservationMillis?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
-	sequenceConsumer?: SequenceConsumerESelect;
 
   // Non-Id relations (including OneToMany's)
 	sequence?: SequenceESelect;
@@ -103,7 +91,6 @@ export interface SequenceBlockEId
 	id: number | IQNumberField;
 
 	// Id Relations - Ids only
-	sequenceConsumer: SequenceConsumerEId;
 
 }
 
@@ -115,7 +102,6 @@ export interface SequenceBlockEOptionalId {
 	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
-	sequenceConsumer?: SequenceConsumerEOptionalId;
 
 }
 
@@ -179,7 +165,6 @@ export interface QSequenceBlock extends IQEntity
 	id: IQNumberField;
 
 	// Id Relations
-	sequenceConsumer: QSequenceConsumerQRelation;
 
 	// Non-Id Fields
 	size: IQNumberField;
@@ -200,7 +185,6 @@ export interface QSequenceBlockQId
 	id: IQNumberField;
 
 	// Id Relations
-	sequenceConsumer: QSequenceConsumerQId;
 
 
 }

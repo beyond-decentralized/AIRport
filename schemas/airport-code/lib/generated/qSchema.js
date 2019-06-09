@@ -5,11 +5,11 @@ const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const sequence_1 = require("../ddl/sequence");
 const sequenceblock_1 = require("../ddl/sequenceblock");
-const sequenceconsumer_1 = require("../ddl/sequenceconsumer");
+const terminalrun_1 = require("../ddl/terminalrun");
 const __constructors__ = {
     Sequence: sequence_1.Sequence,
     SequenceBlock: sequenceblock_1.SequenceBlock,
-    SequenceConsumer: sequenceconsumer_1.SequenceConsumer
+    TerminalRun: terminalrun_1.TerminalRun
 };
 exports.Q_SCHEMA = {
     __constructors__,

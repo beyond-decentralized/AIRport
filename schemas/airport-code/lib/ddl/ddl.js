@@ -4,6 +4,6 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./Sequence"));
-__export(require("./SequenceConsumer"));
+__export(require("./TerminalRun"));
 __export(require("./SequenceBlock"));
 //# sourceMappingURL=ddl.js.map
