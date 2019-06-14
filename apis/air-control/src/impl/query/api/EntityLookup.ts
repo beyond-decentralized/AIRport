@@ -1,4 +1,9 @@
+import {DI}              from '@airport/di'
 import {QueryResultType} from "@airport/ground-control";
+import {UTILS}           from '../../../diTokens'
+import {
+	IUtils,
+}                        from '../../../lingo/utils/Utils'
 import {
 	IEntityLookup,
 	UpdateCacheType
@@ -7,9 +12,11 @@ import {
 export abstract class EntityLookup<Child, MappedChild>
 	implements IEntityLookup<Child, MappedChild> {
 
+	isMapped = false;
 	private saveNextCallInUpdateCache = UpdateCacheType.NONE;
 
-	isMapped = false;
+	protected DI = DI
+	protected UTILS = UTILS
 
 	get mapped(): MappedChild {
 		this.isMapped = true;

@@ -8,15 +8,15 @@ const AbstractUpdate_1 = require("./AbstractUpdate");
  */
 // FIXME: add support for a full blown UPDATE, with expression support for SET
 class UpdateProperties extends AbstractUpdate_1.AbstractUpdate {
-    constructor(rawUpdate, utils) {
-        super(rawUpdate, utils);
+    constructor(rawUpdate) {
+        super(rawUpdate);
     }
-    toJSON() {
+    toJSON(queryUtils, fieldUtils) {
         return {
             U: this.rawUpdate.update
                 .__driver__.getRelationJson(this.columnAliases),
             S: this.setToJSON(this.rawUpdate.set),
-            W: this.utils.Query.whereClauseToJSON(this.rawUpdate.where, this.columnAliases)
+            W: queryUtils.whereClauseToJSON(this.rawUpdate.where, this.columnAliases, fieldUtils)
         };
     }
     setToJSON(rawSet) {

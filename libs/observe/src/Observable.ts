@@ -35,7 +35,7 @@ export class Observable<V>
 	implements IObservable<V> {
 
 	static from(
-		...sourceObservables: IObservable<any>[]
+		...sourceObservables: (IObservable<any> | Promise<IObservable<any>>)[]
 	): IObservable<any> {
 		// if (!(sourceObservable instanceof Observable)) {
 		// 	throw 'only @airport/observer/Observable is supported'
@@ -43,10 +43,17 @@ export class Observable<V>
 		const targetObservable: IObservable<any> = new Observable<any>()
 		sourceObservables.forEach(
 			aSourceObservable => {
-				aSourceObservable.downstream.push(targetObservable)
+				if (aSourceObservable instanceof Promise) {
+					aSourceObservable.then(
+						sourceObservable => {
+							sourceObservable.downstream.push(targetObservable)
+							targetObservable.upstream.push(sourceObservable)
+						})
+				} else {
+					aSourceObservable.downstream.push(targetObservable)
+					targetObservable.upstream.push(aSourceObservable)
+				}
 			})
-
-		targetObservable.upstream = sourceObservables
 
 		return targetObservable
 	}

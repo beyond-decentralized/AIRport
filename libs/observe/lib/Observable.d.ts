@@ -13,7 +13,7 @@ export interface IObservable<V> {
 }
 export declare class Observable<V> implements IObservable<V> {
     private onUnsubscribe?;
-    static from(...sourceObservables: IObservable<any>[]): IObservable<any>;
+    static from(...sourceObservables: (IObservable<any> | Promise<IObservable<any>>)[]): IObservable<any>;
     constructor(onUnsubscribe?: () => void);
     callback: any;
     upstream: Observable<any>[];

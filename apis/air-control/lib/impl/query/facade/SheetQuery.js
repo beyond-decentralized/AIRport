@@ -23,12 +23,12 @@ class SheetQuery extends NonEntityQuery_1.DistinguishableQuery {
             return selectField.toJSON(this.columnAliases, true);
         });
     }
-    toJSON() {
+    toJSON(queryUtils, fieldUtils) {
         let select = this.selectClauseToJSON(this.rawQuery.select);
         let jsonFieldQuery = {
             S: select
         };
-        return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, this.utils.Query);
+        return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils);
     }
 }
 exports.SheetQuery = SheetQuery;

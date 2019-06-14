@@ -1,4 +1,8 @@
 import { JSONBaseOperation, JsonQuery } from "@airport/ground-control";
+import {
+	IFieldUtils,
+	IQueryUtils
+}                                       from '../../..'
 import { IEntityRelationFrom, IFrom } from '../../core/entity/Entity';
 import { IFieldInOrderBy } from '../../core/field/FieldInOrderBy';
 
@@ -21,7 +25,10 @@ export interface RawLimitedQuery {
  * Internal query format. All query implementations extend this.
  */
 export interface IQuery {
-	toJSON(): JsonQuery;
+	toJSON(
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
+	): JsonQuery;
 }
 
 export const Y: any = {

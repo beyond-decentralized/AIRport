@@ -3,22 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../diTokens");
-const EntityUtils_1 = require("./utils/EntityUtils");
-const FieldUtils_1 = require("./utils/FieldUtils");
-const QueryUtils_1 = require("./utils/QueryUtils");
-const SchemaUtils_1 = require("./utils/SchemaUtils");
 class Utils extends ground_control_1.DatastructureUtils {
-    constructor() {
-        super();
-        di_1.DI.get((airportDb, Metadata) => {
-            this.airportDb = airportDb;
-            this.Metadata = Metadata;
-            this.Entity = new EntityUtils_1.EntityUtils(this);
-            this.Field = new FieldUtils_1.FieldUtils(this);
-            this.Query = new QueryUtils_1.QueryUtils(this);
-            this.Schema = new SchemaUtils_1.SchemaUtils(this.airportDb, this);
-        }, diTokens_1.AIR_DB, diTokens_1.Q_METADATA_UTILS);
-    }
     strsToNums(strings) {
         return strings.map(str => parseInt(str));
     }

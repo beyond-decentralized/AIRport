@@ -9,6 +9,8 @@ const EntityDatabaseFacade_1 = require("./EntityDatabaseFacade");
  */
 class Dao {
     constructor(dbEntityId, Q) {
+        this.utils = di_1.DI.pull(air_control_1.UTILS);
+        this.airDb = di_1.DI.pull(air_control_1.AIR_DB);
         di_1.DI.get((airportDatabase, entityManager, utils) => {
             this.airDb = airportDatabase;
             this.utils = utils;

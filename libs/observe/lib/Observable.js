@@ -15,9 +15,17 @@ class Observable {
         // }
         const targetObservable = new Observable();
         sourceObservables.forEach(aSourceObservable => {
-            aSourceObservable.downstream.push(targetObservable);
+            if (aSourceObservable instanceof Promise) {
+                aSourceObservable.then(sourceObservable => {
+                    sourceObservable.downstream.push(targetObservable);
+                    targetObservable.upstream.push(sourceObservable);
+                });
+            }
+            else {
+                aSourceObservable.downstream.push(targetObservable);
+                targetObservable.upstream.push(aSourceObservable);
+            }
         });
-        targetObservable.upstream = sourceObservables;
         return targetObservable;
     }
     exec(value, callbackName, upstreamObservable, context = this.getDefaultContext()) {

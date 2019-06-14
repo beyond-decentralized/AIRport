@@ -17,11 +17,11 @@ class FieldQuery extends NonEntityQuery_1.DistinguishableQuery {
     // private qEntityMap: {[entityName: string]: QEntity<any>},
     //	private entitiesRelationPropertyMap: {[entityName: string]: {[propertyName: string]:
     // EntityRelationRecord}},
-    //		private entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]: boolean}}
-    constructor(rawQuery, utils, entityAliases = new Aliases_1.EntityAliases()) {
+    //		private entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]:
+    // boolean}}
+    constructor(rawQuery, entityAliases = new Aliases_1.EntityAliases()) {
         super(entityAliases);
         this.rawQuery = rawQuery;
-        this.utils = utils;
     }
     nonDistinctSelectClauseToJSON(rawSelect) {
         if (!(this.rawQuery.select instanceof Field_1.QField)) {
@@ -30,14 +30,14 @@ class FieldQuery extends NonEntityQuery_1.DistinguishableQuery {
         this.columnAliases.entityAliases.getNextAlias(this.rawQuery.select.q.__driver__.getRootJoinEntity());
         return this.rawQuery.select.toJSON(this.columnAliases, true);
     }
-    toJSON() {
+    toJSON(queryUtils, fieldUtils) {
         let select = this.selectClauseToJSON(this.rawQuery.select);
         let jsonFieldQuery = {
             S: select,
             ot: ground_control_1.JSONClauseObjectType.FIELD_QUERY,
             dt: this.getClauseDataType()
         };
-        return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, this.utils.Query);
+        return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils);
     }
     getClauseDataType() {
         let selectField = this.rawQuery.select;

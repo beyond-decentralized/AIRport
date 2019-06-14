@@ -20,8 +20,7 @@ export class EntityFindOne<Entity, IESP extends IEntitySelectProperties>
 
 	constructor(
 		protected dbEntity: DbEntity,
-		protected dbFacade: IDatabaseFacade,
-		private utils: IUtils,
+		protected dbFacade: IDatabaseFacade
 	) {
 		super();
 	}
@@ -29,7 +28,7 @@ export class EntityFindOne<Entity, IESP extends IEntitySelectProperties>
 	async graph(
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
 	): Promise<Entity> {
-		const entityQuery: EntityQuery<IESP> = this.utils.Entity.getEntityQuery(rawGraphQuery);
+		const entityQuery: EntityQuery<IESP> = (await this.DI.get(this.UTILS)).Entity.getEntityQuery(rawGraphQuery);
 		const cacheForUpdate                 = this.cleanNextCallState();
 
 		return await this.dbFacade.entity.findOne<Entity>(
@@ -39,7 +38,7 @@ export class EntityFindOne<Entity, IESP extends IEntitySelectProperties>
 	async tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
 	): Promise<Entity> {
-		const entityQuery: EntityQuery<IESP> = this.utils.Entity.getEntityQuery(rawTreeQuery);
+		const entityQuery: EntityQuery<IESP> = (await this.DI.get(this.UTILS)).Entity.getEntityQuery(rawTreeQuery);
 		const cacheForUpdate                 = this.cleanNextCallState();
 
 		return await this.dbFacade.entity.findOne<Entity>(

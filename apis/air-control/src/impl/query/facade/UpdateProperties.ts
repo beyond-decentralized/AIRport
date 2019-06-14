@@ -5,18 +5,23 @@ import {
 	EntityRelationType,
 	JSONBaseOperation,
 	JSONEntityRelation,
+	JsonEntityUpdateColumns,
 	JsonUpdate
-}                                from "@airport/ground-control";
-import {JsonEntityUpdateColumns} from "@airport/ground-control";
+}                       from '@airport/ground-control'
+import {
+	IFieldUtils
+}                       from '../../../lingo/utils/FieldUtils'
+import {
+	IQueryUtils
+}                       from '../../../lingo/utils/QueryUtils'
 import {
 	IEntityUpdateProperties,
 	IQEntity,
 	IQEntityInternal
-}                                from "../../../lingo/core/entity/Entity";
-import {RawUpdate}               from "../../../lingo/query/facade/Update";
-import {IUtils}                  from "../../../lingo/utils/Utils";
-import {wrapPrimitive}           from "../../core/field/WrapperFunctions";
-import {AbstractUpdate}          from "./AbstractUpdate";
+}                       from '../../../lingo/core/entity/Entity'
+import {RawUpdate}      from '../../../lingo/query/facade/Update'
+import {wrapPrimitive}  from '../../core/field/WrapperFunctions'
+import {AbstractUpdate} from './AbstractUpdate'
 
 /**
  * Created by Papa on 10/2/2016.
@@ -27,29 +32,34 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 	extends AbstractUpdate<IQE, RawUpdate<IEUP, IQE>> {
 
 	constructor(
-		rawUpdate: RawUpdate<IEUP, IQE>,
-		utils: IUtils,
+		rawUpdate: RawUpdate<IEUP, IQE>
 	) {
-		super(rawUpdate, utils);
+		super(rawUpdate)
 	}
 
-	toJSON(): JsonUpdate<JsonEntityUpdateColumns> {
+	toJSON(
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
+	): JsonUpdate<JsonEntityUpdateColumns> {
 		return {
 			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.update)
 				.__driver__.getRelationJson(this.columnAliases),
 			S: this.setToJSON(this.rawUpdate.set),
-			W: this.utils.Query.whereClauseToJSON(this.rawUpdate.where, this.columnAliases)
-		};
+			W: queryUtils.whereClauseToJSON(
+				this.rawUpdate.where, this.columnAliases, fieldUtils)
+		}
 	}
 
-	protected setToJSON(rawSet: IEUP): JsonEntityUpdateColumns {
-		const jsonSetClause: { [columnName: string]: JSONBaseOperation } = {};
-		const dbEntity                                                   = (<IQEntityInternal><any>this.rawUpdate.update).__driver__.dbEntity;
-		const dbPropertyMap                                              = dbEntity.propertyMap;
+	protected setToJSON(
+		rawSet: IEUP
+	): JsonEntityUpdateColumns {
+		const jsonSetClause: { [columnName: string]: JSONBaseOperation } = {}
+		const dbEntity                                                   = (<IQEntityInternal><any>this.rawUpdate.update).__driver__.dbEntity
+		const dbPropertyMap                                              = dbEntity.propertyMap
 
-		this.setEntityFragmentsToJSON(rawSet, jsonSetClause, [], dbPropertyMap, []);
+		this.setEntityFragmentsToJSON(rawSet, jsonSetClause, [], dbPropertyMap, [])
 
-		return jsonSetClause;
+		return jsonSetClause
 	}
 
 	private setEntityFragmentsToJSON(
@@ -59,17 +69,17 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 		dbPropertyMap: { [name: string]: DbProperty },
 		childDbRelationChain: DbRelation[],
 	): void {
-		const isTopLevelFragment = !dbPropertyMap.length;
+		const isTopLevelFragment = !dbPropertyMap.length
 		for (const propertyName in jsonSetClause) {
-			const dbProperty = dbPropertyMap[propertyName];
-			const dbEntity   = dbProperty.entity;
+			const dbProperty = dbPropertyMap[propertyName]
+			const dbEntity   = dbProperty.entity
 			if (!dbProperty) {
 				throw new Error(`
 ${this.getPropertyChainDesription(dbPropertyChain)}
 
 	Unknown property: '${propertyName}' for entity: '${dbEntity.name}'
 			(table: '${dbEntity.tableConfig.name}').
-				`);
+				`)
 			}
 
 			if (isTopLevelFragment && dbProperty.isId) {
@@ -79,7 +89,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 	Cannot update @Id properties:
 	Property: '${propertyName}' for entity: '${dbEntity.name}'
 			(table: '${dbEntity.tableConfig.name}').
-				`);
+				`)
 			} else if (!isTopLevelFragment && !dbProperty.isId) {
 				throw new Error(`
 ${this.getPropertyChainDesription(dbPropertyChain)}
@@ -87,14 +97,14 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 	Updated properties of nested entities must be @Id properties:
 	Property: '${propertyName}' for entity: '${dbEntity.name}'
 			(table: '${dbEntity.tableConfig.name}').
-				`);
+				`)
 			}
 
-			const childDbPropertyChain = [...dbPropertyChain];
-			childDbPropertyChain.push(dbProperty);
+			const childDbPropertyChain = [...dbPropertyChain]
+			childDbPropertyChain.push(dbProperty)
 
 			this.setFragmentToJSON(rawSetFragment, jsonSetClause,
-				childDbPropertyChain, propertyName, childDbRelationChain);
+				childDbPropertyChain, propertyName, childDbRelationChain)
 		}
 
 	}
@@ -106,15 +116,15 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 		propertyName: string,
 		dbRelationChain: DbRelation[],
 	): void {
-		const dbProperty: DbProperty = dbPropertyChain[dbPropertyChain.length - 1];
-		const dbEntity               = dbProperty.entity;
+		const dbProperty: DbProperty = dbPropertyChain[dbPropertyChain.length - 1]
+		const dbEntity               = dbProperty.entity
 
-		let value = rawSetFragment[propertyName];
+		let value = rawSetFragment[propertyName]
 		if (value === undefined) {
-			delete rawSetFragment[propertyName];
-			return;
+			delete rawSetFragment[propertyName]
+			return
 		}
-		value = wrapPrimitive(value);
+		value = wrapPrimitive(value)
 		// If this is not a nested object definition
 		if (value.toJSON) {
 
@@ -127,26 +137,26 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 			(table: '${dbEntity.tableConfig.name}')
 			has ${dbProperty.propertyColumns.length + 1} columns 
 			but is being updates to a single value.
-				`);
+				`)
 
 			} else {
 
-				let dbColumn = dbProperty.propertyColumns[0].column;
+				let dbColumn = dbProperty.propertyColumns[0].column
 				if (dbRelationChain.length) {
 					for (let i = dbRelationChain.length - 1; i >= 0; i--) {
-						const currentDbRelation          = dbRelationChain[i];
+						const currentDbRelation          = dbRelationChain[i]
 						const matchingManyRelationColumn = currentDbRelation.manyRelationColumns.filter((
 							manyRelationColumn
 						) => {
 							return manyRelationColumn.manyColumn.index ===
-								dbColumn.index;
-						})[0];
-						dbColumn                         = matchingManyRelationColumn.oneColumn;
+								dbColumn.index
+						})[0]
+						dbColumn                         = matchingManyRelationColumn.oneColumn
 					}
 				}
 
 				if (jsonSetClause[dbColumn.name]) {
-					const firstProperty = dbPropertyChain[0];
+					const firstProperty = dbPropertyChain[0]
 					throw new Error(`
 ${this.getPropertyChainDesription(dbPropertyChain)}
 
@@ -155,19 +165,19 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 			(table: '${dbEntity.tableConfig.name}')
 	maps to table: ${firstProperty.entity.tableConfig.name}, column: ${dbColumn.name}
 		which has already been set in this update statement (above).
-				`);
+				`)
 				}
-				jsonSetClause[dbColumn.name] = value;
-				return;
+				jsonSetClause[dbColumn.name] = value
+				return
 			}
 		}
 		// This should be a nested property definition
 		else {
 			if (typeof value === 'object') {
 
-				const dbRelation           = dbProperty.relation[0];
-				const childDbRelationChain = [...dbRelationChain];
-				childDbRelationChain.push(dbRelation);
+				const dbRelation           = dbProperty.relation[0]
+				const childDbRelationChain = [...dbRelationChain]
+				childDbRelationChain.push(dbRelation)
 
 				switch (dbRelation.relationType) {
 					case EntityRelationType.MANY_TO_ONE: {
@@ -177,8 +187,8 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 							dbPropertyChain,
 							dbRelation.relationEntity.propertyMap,
 							childDbRelationChain
-						);
-						break;
+						)
+						break
 					}
 					case EntityRelationType.ONE_TO_MANY:
 						// Not  nested property definition
@@ -190,7 +200,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 							this.rawUpdate.update).__driver__.dbEntity.name}
 					is a @OneToMany relation and cannot be updated since it is
 					assumed to be based on @Id columns (which cannot be updated).'
-				`);
+				`)
 					default:
 						// Not  nested property definition
 						throw new Error(`
@@ -203,9 +213,9 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 					@ManyToOne(...)
 					or
 					@OneToMany(...)
-				`);
+				`)
 				}
-				return;
+				return
 			} else {
 				// Not  nested property definition
 				throw new Error(`
@@ -215,7 +225,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 					for property: '${propertyName}' of entity: '${(<IQEntityInternal><any>
 					this.rawUpdate.update).__driver__.dbEntity.name}'
 				Expecting a nested property definition.
-				`);
+				`)
 			}
 		}
 	}
@@ -223,31 +233,31 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 	private getPropertyChainDesription(
 		dbPropertyChain: DbProperty[]
 	): string {
-		const rootDbEntity: DbEntity = dbPropertyChain[0].entity;
-		let prefix                   = '    ';
-		let lastPrefix               = '';
+		const rootDbEntity: DbEntity = dbPropertyChain[0].entity
+		let prefix                   = '    '
+		let lastPrefix               = ''
 		let ending                   = `...
-}`;
+}`
 		let message                  = `
 Updated Entity: ${rootDbEntity.name}, property chain:
-{`;
-		const maxChainDepth          = dbPropertyChain.length;
+{`
+		const maxChainDepth          = dbPropertyChain.length
 		for (let i = 0; i < maxChainDepth; i++) {
-			let dbProperty = dbPropertyChain[i];
-			message += `${prefix}${dbProperty.name}: `;
+			let dbProperty = dbPropertyChain[i]
+			message += `${prefix}${dbProperty.name}: `
 			if (i + 1 < maxChainDepth) {
-				message += `: {\n`;
+				message += `: {\n`
 			} else {
-				message += 'VALUE';
+				message += 'VALUE'
 			}
 			ending     = prefix + `...
-${lastPrefix}}`;
-			lastPrefix = prefix;
-			prefix += '    ';
+${lastPrefix}}`
+			lastPrefix = prefix
+			prefix += '    '
 		}
 
 		return `${message}
-${ending}`;
+${ending}`
 	}
 
 }

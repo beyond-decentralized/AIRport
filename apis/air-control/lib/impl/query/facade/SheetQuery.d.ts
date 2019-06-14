@@ -1,4 +1,6 @@
 import { JsonSheetQuery } from "@airport/ground-control";
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { IQuery } from "../../../lingo/query/facade/Query";
 import { RawSheetQuery } from "../../../lingo/query/facade/SheetQuery";
 import { IUtils } from "../../../lingo/utils/Utils";
@@ -11,5 +13,5 @@ export declare class SheetQuery extends DistinguishableQuery implements IQuery {
     private utils;
     constructor(rawQuery: RawSheetQuery, utils: IUtils);
     nonDistinctSelectClauseToJSON(rawSelect: any[]): any;
-    toJSON(): JsonSheetQuery;
+    toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonSheetQuery;
 }

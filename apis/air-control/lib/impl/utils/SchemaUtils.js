@@ -1,15 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
+const diTokens_1 = require("../../diTokens");
 const Query_1 = require("../../lingo/query/facade/Query");
 const EntityState_1 = require("../core/entity/EntityState");
 class SchemaUtils {
     constructor(airportDb, utils) {
         this.airportDb = airportDb;
         this.utils = utils;
+        this.AIR_DB = diTokens_1.AIR_DB;
+        this.DI = di_1.DI;
     }
-    getDbEntity(schemaIndex, tableIndex) {
-        return this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
+    async getDbEntity(schemaIndex, tableIndex) {
+        return (await this.DI.get(this.AIR_DB)).schemas[schemaIndex].currentVersion.entities[tableIndex];
     }
     isRepositoryId(columnName) {
         return columnName === ground_control_1.repositoryEntity.REPOSITORY_ID;
@@ -32,17 +36,17 @@ class SchemaUtils {
                 throw `Unsupported CRUDOperation '${crudOperation}' for cascade check.`;
         }
     }
-    getQEntityConstructor(dbEntity) {
-        return this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index]
+    getQEntityConstructor(dbEntity, airDb) {
+        return airDb.qSchemas[dbEntity.schemaVersion.schema.index]
             .__qConstructors__[dbEntity.index];
     }
-    getEntityConstructor(dbEntity) {
-        const entityConstructor = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index]
+    getEntityConstructor(dbEntity, airDb) {
+        const entityConstructor = airDb.qSchemas[dbEntity.schemaVersion.schema.index]
             .__constructors__[dbEntity.name];
         return entityConstructor;
     }
-    getNewEntity(dbEntity) {
-        const entityConstructor = this.getEntityConstructor(dbEntity);
+    getNewEntity(dbEntity, airDb) {
+        const entityConstructor = this.getEntityConstructor(dbEntity, airDb);
         return entityConstructor;
     }
     isIdEmpty(idValue) {

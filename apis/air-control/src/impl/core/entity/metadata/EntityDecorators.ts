@@ -15,7 +15,9 @@ export const Entity: EntityDecorator = function () {
 	}
 };
 
-export const Table: TableDecorator = function ( tableConfiguration?: TableConfiguration ) {
+export const Table: TableDecorator = function (
+	tableConfiguration?: TableConfiguration
+) {
 	return function ( constructor: Function ) {
 		// No runtime logic required.
 	}

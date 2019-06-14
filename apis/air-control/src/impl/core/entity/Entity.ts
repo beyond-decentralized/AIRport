@@ -8,8 +8,13 @@ import {
 	JSONRelation,
 	JSONRelationType,
 	JSONViewJoinRelation
-}                                from '@airport/ground-control'
-import {IAirportDatabase}        from '../../../lingo/AirportDatabase'
+}                          from '@airport/ground-control'
+import {
+	IFieldUtils,
+	ISchemaUtils
+}                          from '../../..'
+import {IQueryUtils}       from '../../../lingo/utils/QueryUtils'
+import {IAirportDatabase}  from '../../../lingo/AirportDatabase'
 import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -20,10 +25,10 @@ import {
 	IQEntity,
 	IQEntityDriver,
 	IQEntityInternal
-}                                from '../../../lingo/core/entity/Entity'
-import {IJoinFields}             from '../../../lingo/core/entity/Joins'
-import {OneToManyElements}       from '../../../lingo/core/entity/metadata/ColumnDecorators'
-import {IQInternalRelation}      from '../../../lingo/core/entity/Relation'
+}                          from '../../../lingo/core/entity/Entity'
+import {IJoinFields}       from '../../../lingo/core/entity/Joins'
+import {OneToManyElements} from '../../../lingo/core/entity/metadata/ColumnDecorators'
+import {IQInternalRelation} from '../../../lingo/core/entity/Relation'
 import {IQOperableFieldInternal} from '../../../lingo/core/field/OperableField'
 import {IEntityDatabaseFacade}   from '../../../lingo/core/repository/EntityDatabaseFacade'
 import {RawTreeQuery}            from '../../../lingo/query/facade/TreeQuery'
@@ -124,7 +129,7 @@ export class QEntityDriver
 	}
 
 	getInstance(): IQEntityInternal {
-		const qEntityConstructor = this.qEntity.__driver__.utils.Schema
+		const qEntityConstructor = this.qEntity.__driver__.schemaUtils
 			.getQEntityConstructor(this.dbEntity)
 
 		let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType)
@@ -179,17 +184,22 @@ export class QEntityDriver
 
 	getJoinRelationJson(
 		jsonRelation: JSONJoinRelation,
-		columnAliases: FieldColumnAliases
+		columnAliases: FieldColumnAliases,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): JSONJoinRelation {
 		jsonRelation.rt  = JSONRelationType.ENTITY_JOIN_ON
-		jsonRelation.jwc = this.utils.Query.whereClauseToJSON(this.joinWhereClause, columnAliases)
+		jsonRelation.jwc = queryUtils.whereClauseToJSON(
+			this.joinWhereClause, columnAliases, fieldUtils)
 
 		return jsonRelation
 	}
 
 	getEntityRelationJson(
 		jsonRelation: JSONEntityRelation,
-		columnAliases: FieldColumnAliases
+		// columnAliases: FieldColumnAliases,
+		// queryUtils: IQueryUtils,
+		// fieldUtils: IFieldUtils
 	): JSONEntityRelation {
 		jsonRelation.rt = JSONRelationType.ENTITY_SCHEMA_RELATION
 		jsonRelation.ri = this.dbRelation.index
@@ -221,7 +231,9 @@ export class QEntityDriver
 
 	getRootRelationJson(
 		jsonRelation: JSONRelation,
-		columnAliases: FieldColumnAliases
+		columnAliases: FieldColumnAliases,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): JSONJoinRelation {
 		jsonRelation.rt = (this instanceof QTreeDriver) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT
 
@@ -235,9 +247,12 @@ export class QEntityDriver
 
 	join<IF extends IFrom>(
 		right: IF,
-		joinType: JoinType
+		joinType: JoinType,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
 	): IJoinFields<IF> {
-		let joinChild: IQEntityInternal         = (<IQEntityInternal><any>right).__driver__.getInstance()
+		let joinChild: IQEntityInternal         = (<IQEntityInternal><any>right)
+			.__driver__.getInstance(airDb, schemaUtils)
 		joinChild.__driver__.currentChildIndex  = 0
 		let nextChildPosition                   = QRelation.getNextChildJoinPosition(this)
 		joinChild.__driver__.fromClausePosition = nextChildPosition
@@ -312,6 +327,7 @@ export interface IQTreeDriver
 export class QTreeDriver
 	extends QEntityDriver
 	implements IQTreeDriver {
+
 	subQuery: RawTreeQuery<any>
 
 	getInstance(): IQEntityInternal {
@@ -327,22 +343,30 @@ export class QTreeDriver
 
 	getJoinRelationJson(
 		jsonRelation: JSONViewJoinRelation,
-		columnAliases: FieldColumnAliases
+		columnAliases: FieldColumnAliases,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): JSONViewJoinRelation {
-		jsonRelation    = <JSONViewJoinRelation>super.getJoinRelationJson(jsonRelation, columnAliases)
+		jsonRelation    = <JSONViewJoinRelation>super.getJoinRelationJson(
+			jsonRelation, columnAliases, queryUtils, fieldUtils)
 		jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON
-		jsonRelation.sq = new TreeQuery(this.subQuery, this.utils, columnAliases.entityAliases).toJSON()
+		jsonRelation.sq = new TreeQuery(this.subQuery, columnAliases.entityAliases)
+			.toJSON(queryUtils, fieldUtils)
 
 		return jsonRelation
 	}
 
 	getRootRelationJson(
 		jsonRelation: JSONViewJoinRelation,
-		columnAliases: FieldColumnAliases
+		columnAliases: FieldColumnAliases,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): JSONViewJoinRelation {
-		jsonRelation    = <JSONViewJoinRelation>super.getJoinRelationJson(jsonRelation, columnAliases)
+		jsonRelation    = <JSONViewJoinRelation>super.getJoinRelationJson(
+			jsonRelation, columnAliases, queryUtils, fieldUtils)
 		jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT
-		jsonRelation.sq = new TreeQuery(this.subQuery, this.utils, columnAliases.entityAliases).toJSON()
+		jsonRelation.sq = new TreeQuery(this.subQuery, columnAliases.entityAliases)
+			.toJSON(queryUtils, fieldUtils)
 
 		return jsonRelation
 	}

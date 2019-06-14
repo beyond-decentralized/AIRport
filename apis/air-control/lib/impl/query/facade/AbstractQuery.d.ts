@@ -1,12 +1,12 @@
-import { JSONFieldInGroupBy, JSONFieldInOrderBy, JsonNonEntityQuery, JSONRelation, JsonStatement } from "@airport/ground-control";
-import { IEntityAliases, IFieldColumnAliases, Parameter } from "../../../lingo/core/entity/Aliases";
+import { JSONFieldInGroupBy, JSONFieldInOrderBy, JsonNonEntityQuery, JSONRelation, JsonStatement } from '@airport/ground-control';
+import { IFieldUtils, IQueryUtils } from '../../..';
+import { IEntityAliases, IFieldColumnAliases, Parameter } from '../../../lingo/core/entity/Aliases';
 import { IEntityRelationFrom, IFrom } from '../../../lingo/core/entity/Entity';
-import { IFieldInOrderBy } from "../../../lingo/core/field/FieldInOrderBy";
-import { IQOperableField } from "../../../lingo/core/field/OperableField";
-import { IAbstractQuery } from "../../../lingo/query/facade/AbstractQuery";
-import { RawNonEntityQuery } from "../../../lingo/query/facade/NonEntityQuery";
-import { RawTreeQuery } from "../../../lingo/query/facade/TreeQuery";
-import { IQueryUtils } from "../../../lingo/utils/QueryUtils";
+import { IFieldInOrderBy } from '../../../lingo/core/field/FieldInOrderBy';
+import { IQOperableField } from '../../../lingo/core/field/OperableField';
+import { IAbstractQuery } from '../../../lingo/query/facade/AbstractQuery';
+import { RawNonEntityQuery } from '../../../lingo/query/facade/NonEntityQuery';
+import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery';
 /**
  * Created by Papa on 10/27/2016.
  */
@@ -19,10 +19,10 @@ export declare abstract class AbstractQuery implements IAbstractQuery {
     getParameters(): {
         [alias: string]: Parameter;
     };
-    abstract toJSON(): JsonStatement;
+    abstract toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonStatement;
     protected getNonEntityQuery(rawQuery: RawNonEntityQuery, jsonQuery: JsonNonEntityQuery, createSelectCallback: {
         (jsonQuery: JsonNonEntityQuery): void;
-    }, queryUtils: IQueryUtils): JsonNonEntityQuery;
+    }, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonNonEntityQuery;
     protected fromClauseToJSON(fromClause: (IFrom | IEntityRelationFrom | RawTreeQuery<any>)[]): JSONRelation[];
     protected groupByClauseToJSON(groupBy: IQOperableField<any, any, any, any>[]): JSONFieldInGroupBy[];
     protected orderByClauseToJSON(orderBy: IFieldInOrderBy<any>[]): JSONFieldInOrderBy[];

@@ -39,8 +39,8 @@ export abstract class Dao<Entity,
 	public db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>
 
-	protected utils: IUtils
-	protected airDb: IAirportDatabase
+	protected utils: () => Promise<IUtils> = DI.pull(UTILS)
+	protected airDb: () => Promise<IAirportDatabase> = DI.pull(AIR_DB)
 
 	constructor(
 		dbEntityId: DbEntityId,

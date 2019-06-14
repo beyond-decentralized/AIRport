@@ -15,15 +15,15 @@ class AbstractQuery {
     ) {
         return this.entityAliases.getParams().getParameters();
     }
-    getNonEntityQuery(rawQuery, jsonQuery, createSelectCallback, queryUtils) {
+    getNonEntityQuery(rawQuery, jsonQuery, createSelectCallback, queryUtils, fieldUtils) {
         let from = this.fromClauseToJSON(rawQuery.from);
         jsonQuery.F = from;
         if (createSelectCallback) {
             createSelectCallback(jsonQuery);
         }
-        jsonQuery.W = queryUtils.whereClauseToJSON(rawQuery.where, this.columnAliases);
+        jsonQuery.W = queryUtils.whereClauseToJSON(rawQuery.where, this.columnAliases, fieldUtils);
         jsonQuery.GB = this.groupByClauseToJSON(rawQuery.groupBy);
-        jsonQuery.H = queryUtils.whereClauseToJSON(rawQuery.having, this.columnAliases);
+        jsonQuery.H = queryUtils.whereClauseToJSON(rawQuery.having, this.columnAliases, fieldUtils);
         jsonQuery.OB = this.orderByClauseToJSON(rawQuery.orderBy);
         jsonQuery.L = rawQuery.limit;
         jsonQuery.O = rawQuery.offset;

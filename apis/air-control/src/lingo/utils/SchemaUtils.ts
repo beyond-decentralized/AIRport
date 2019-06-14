@@ -7,12 +7,13 @@ import {
 	SchemaIndex,
 	SQLDataType,
 	TableIndex
-}                           from "@airport/ground-control";
-import {QEntityConstructor} from "../../impl/core/entity/Entity";
+}                           from '@airport/ground-control'
+import {QEntityConstructor} from '../../impl/core/entity/Entity'
+import {IAirportDatabase}   from '../AirportDatabase'
 import {
 	IEntityIdProperties,
 	IQEntity
-}                           from "../core/entity/Entity";
+}                           from '../core/entity/Entity'
 
 export interface ManyToOneColumnMapping {
 	tableIndex: number;
@@ -49,15 +50,18 @@ export interface ISchemaUtils {
 	): DbEntity;
 
 	getQEntityConstructor(
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		airDb: IAirportDatabase
 	): QEntityConstructor;
 
 	getEntityConstructor(
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		airDb: IAirportDatabase
 	): any;
 
 	getNewEntity(
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		airDb: IAirportDatabase
 	): any;
 
 	isIdEmpty(idValue: any): boolean;

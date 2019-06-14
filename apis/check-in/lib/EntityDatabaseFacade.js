@@ -17,7 +17,7 @@ class EntityDatabaseFacade {
     }
     initialize(databaseFacade) {
         this.common = databaseFacade;
-        this.find = new air_control_1.EntityFind(this.dbEntity, databaseFacade, this.utils);
+        this.find = new air_control_1.EntityFind(this.dbEntity, databaseFacade);
         this.findOne = new air_control_1.EntityFindOne(this.dbEntity, databaseFacade, this.utils);
         this.search = new air_control_1.EntitySearch(this.dbEntity, databaseFacade, this.utils);
         this.searchOne = new air_control_1.EntitySearchOne(this.dbEntity, databaseFacade, this.utils);

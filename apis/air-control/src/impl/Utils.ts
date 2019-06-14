@@ -1,50 +1,25 @@
-import {DI} from '@airport/di'
+import {DI}                 from '@airport/di'
 import {DatastructureUtils} from '@airport/ground-control'
+import {IQMetadataUtils}    from '..'
 import {
 	AIR_DB,
 	Q_METADATA_UTILS,
 	UTILS
-} from '../diTokens'
-import {IAirportDatabase} from '../lingo/AirportDatabase'
-import {IEntityUtils} from '../lingo/utils/EntityUtils'
-import {IFieldUtils} from '../lingo/utils/FieldUtils'
-import {IQMetadataUtils} from '../lingo/utils/QMetadataUtils'
-import {IQueryUtils} from '../lingo/utils/QueryUtils'
-import {ISchemaUtils} from '../lingo/utils/SchemaUtils'
-import {IUtils} from '../lingo/utils/Utils'
-import {EntityUtils} from './utils/EntityUtils'
-import {FieldUtils} from './utils/FieldUtils'
-import {QueryUtils} from './utils/QueryUtils'
+}                           from '../diTokens'
+import {IAirportDatabase}   from '../lingo/AirportDatabase'
+import {IEntityUtils}       from '../lingo/utils/EntityUtils'
+import {IFieldUtils}        from '../lingo/utils/FieldUtils'
+import {IQueryUtils}        from '../lingo/utils/QueryUtils'
+import {ISchemaUtils}       from '../lingo/utils/SchemaUtils'
+import {IUtils}             from '../lingo/utils/Utils'
+import {EntityUtils}        from './utils/EntityUtils'
+import {FieldUtils}         from './utils/FieldUtils'
+import {QueryUtils}         from './utils/QueryUtils'
 import {SchemaUtils} from './utils/SchemaUtils'
 
 export class Utils
 	extends DatastructureUtils
 	implements IUtils {
-
-	private airportDb: IAirportDatabase
-	Entity: IEntityUtils
-	Field: IFieldUtils
-	Metadata: IQMetadataUtils
-	Query: IQueryUtils
-	Schema: ISchemaUtils
-
-	constructor() {
-		super()
-
-		DI.get(
-			(
-				airportDb,
-				Metadata
-			) => {
-				this.airportDb = airportDb
-				this.Metadata  = Metadata
-				this.Entity    = new EntityUtils(this)
-				this.Field     = new FieldUtils(this)
-				this.Query     = new QueryUtils(this)
-				this.Schema    = new SchemaUtils(this.airportDb, this)
-			}, AIR_DB, Q_METADATA_UTILS)
-
-	}
 
 	strsToNums(
 		strings: string[]

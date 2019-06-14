@@ -33,7 +33,9 @@ export const Id: IdDecorator = function () {
 }
 
 
-export const Column: ColumnDecorator = function (columnConfiguration: ColumnConfiguration) {
+export const Column: ColumnDecorator = function (
+	columnConfiguration: ColumnConfiguration
+) {
 	return function (
 		targetObject: any,
 		propertyKey: string

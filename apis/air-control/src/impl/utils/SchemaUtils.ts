@@ -1,3 +1,4 @@
+import {DI}                 from '@airport/di'
 import {
 	CascadeType,
 	CRUDOperation,
@@ -11,6 +12,7 @@ import {
 	SchemaIndex,
 	TableIndex
 }                           from '@airport/ground-control'
+import {AIR_DB}             from '../../diTokens'
 import {
 	IAirportDatabase,
 	QSchemaInternal
@@ -40,7 +42,10 @@ interface ColumnValueForPath {
 export class SchemaUtils
 	implements ISchemaUtils {
 
-	static TEMP_ID: number = 0;
+	static TEMP_ID: number = 0
+
+	AIR_DB = AIR_DB
+	DI     = DI
 
 	constructor(
 		private airportDb: IAirportDatabase,
@@ -48,11 +53,11 @@ export class SchemaUtils
 	) {
 	}
 
-	getDbEntity(
+	async getDbEntity(
 		schemaIndex: SchemaIndex,
 		tableIndex: TableIndex,
-	): DbEntity {
-		return this.airportDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
+	): Promise<DbEntity> {
+		return (await this.DI.get(this.AIR_DB)).schemas[schemaIndex].currentVersion.entities[tableIndex]
 	}
 
 	isRepositoryId(
@@ -87,24 +92,27 @@ export class SchemaUtils
 	}
 
 	getQEntityConstructor(
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		airDb: IAirportDatabase
 	): QEntityConstructor {
-		return (<QSchemaInternal>this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index])
+		return (<QSchemaInternal>airDb.qSchemas[dbEntity.schemaVersion.schema.index])
 			.__qConstructors__[dbEntity.index]
 	}
 
 	getEntityConstructor(
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		airDb: IAirportDatabase
 	): any {
-		const entityConstructor = this.airportDb.qSchemas[dbEntity.schemaVersion.schema.index]
+		const entityConstructor = airDb.qSchemas[dbEntity.schemaVersion.schema.index]
 			.__constructors__[dbEntity.name]
 		return entityConstructor
 	}
 
 	getNewEntity(
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		airDb: IAirportDatabase
 	): any {
-		const entityConstructor = this.getEntityConstructor(dbEntity)
+		const entityConstructor = this.getEntityConstructor(dbEntity, airDb)
 		return entityConstructor
 	}
 
@@ -273,8 +281,8 @@ export class SchemaUtils
 			propertyBreadCrumb.push(propertyName)
 			let value = relationObject[propertyName]
 			if (forIdKey && this.isIdEmpty(value)) {
-				if(dbColumn.isGenerated) {
-					value = --SchemaUtils.TEMP_ID
+				if (dbColumn.isGenerated) {
+					value                        = --SchemaUtils.TEMP_ID
 					relationObject[propertyName] = value
 				} else {
 					// if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value,

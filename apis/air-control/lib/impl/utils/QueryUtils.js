@@ -7,7 +7,7 @@ class QueryUtils {
     constructor(utils) {
         this.utils = utils;
     }
-    whereClauseToJSON(whereClause, columnAliases) {
+    whereClauseToJSON(whereClause, columnAliases, fieldUtils) {
         if (!whereClause) {
             return null;
         }
@@ -22,11 +22,11 @@ class QueryUtils {
                 let jsonLogicalOperation = jsonOperation;
                 switch (operation.o) {
                     case ground_control_1.SqlOperator.NOT:
-                        jsonLogicalOperation.v = this.whereClauseToJSON(logicalOperation.v, columnAliases);
+                        jsonLogicalOperation.v = this.whereClauseToJSON(logicalOperation.v, columnAliases, fieldUtils);
                         break;
                     case ground_control_1.SqlOperator.AND:
                     case ground_control_1.SqlOperator.OR:
-                        jsonLogicalOperation.v = logicalOperation.v.map((value) => this.whereClauseToJSON(value, columnAliases));
+                        jsonLogicalOperation.v = logicalOperation.v.map((value) => this.whereClauseToJSON(value, columnAliases, fieldUtils));
                         break;
                     default:
                         throw `Unsupported logical operation '${operation.o}'`;
@@ -49,24 +49,24 @@ class QueryUtils {
                 // All Non logical or exists operations are value operations (eq, isNull, like,
                 // etc.)
                 let jsonValueOperation = jsonOperation;
-                jsonValueOperation.l = this.convertLRValue(valueOperation.l, columnAliases);
+                jsonValueOperation.l = this.convertLRValue(valueOperation.l, columnAliases, fieldUtils);
                 let rValue = valueOperation.r;
                 if (rValue instanceof Array) {
                     jsonValueOperation.r = rValue.map((anRValue) => {
-                        return this.convertLRValue(anRValue, columnAliases);
+                        return this.convertLRValue(anRValue, columnAliases, fieldUtils);
                     });
                 }
                 else {
-                    jsonValueOperation.r = this.convertLRValue(rValue, columnAliases);
+                    jsonValueOperation.r = this.convertLRValue(rValue, columnAliases, fieldUtils);
                 }
                 break;
         }
         return jsonOperation;
     }
-    convertLRValue(value, columnAliases) {
+    convertLRValue(value, columnAliases, fieldUtils) {
         value = WrapperFunctions_1.wrapPrimitive(value);
         switch (typeof value) {
-            case "undefined":
+            case 'undefined':
                 throw `'undefined' is not a valid L or R value`;
             default:
                 if (value instanceof OperableField_1.QOperableField) {
@@ -74,7 +74,7 @@ class QueryUtils {
                 } // Must be a Field Query
                 else {
                     let rawFieldQuery = value;
-                    return this.utils.Field.getFieldQueryJson(rawFieldQuery, columnAliases.entityAliases);
+                    return fieldUtils.getFieldQueryJson(rawFieldQuery, columnAliases.entityAliases, this);
                 }
         }
     }

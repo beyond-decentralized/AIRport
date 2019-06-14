@@ -1,6 +1,7 @@
-import { ChangeType, CRUDOperation, DbColumn, DbEntity, DbRelation, SchemaIndex, SQLDataType, TableIndex } from "@airport/ground-control";
-import { QEntityConstructor } from "../../impl/core/entity/Entity";
-import { IEntityIdProperties, IQEntity } from "../core/entity/Entity";
+import { ChangeType, CRUDOperation, DbColumn, DbEntity, DbRelation, SchemaIndex, SQLDataType, TableIndex } from '@airport/ground-control';
+import { QEntityConstructor } from '../../impl/core/entity/Entity';
+import { IAirportDatabase } from '../AirportDatabase';
+import { IEntityIdProperties, IQEntity } from '../core/entity/Entity';
 export interface ManyToOneColumnMapping {
     tableIndex: number;
     propertyChain: string[];
@@ -28,9 +29,9 @@ export interface IdKeysByIdColumnIndex {
 }
 export interface ISchemaUtils {
     getDbEntity(schemaIndex: SchemaIndex, tableIndex: TableIndex): DbEntity;
-    getQEntityConstructor(dbEntity: DbEntity): QEntityConstructor;
-    getEntityConstructor(dbEntity: DbEntity): any;
-    getNewEntity(dbEntity: DbEntity): any;
+    getQEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): QEntityConstructor;
+    getEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): any;
+    getNewEntity(dbEntity: DbEntity, airDb: IAirportDatabase): any;
     isIdEmpty(idValue: any): boolean;
     isEmpty(value: any): boolean;
     isRelationColumn(dbColumn: DbColumn): boolean;

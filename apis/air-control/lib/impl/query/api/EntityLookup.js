@@ -1,11 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
+const diTokens_1 = require("../../../diTokens");
 const EntityLookup_1 = require("../../../lingo/query/api/EntityLookup");
 class EntityLookup {
     constructor() {
-        this.saveNextCallInUpdateCache = EntityLookup_1.UpdateCacheType.NONE;
         this.isMapped = false;
+        this.saveNextCallInUpdateCache = EntityLookup_1.UpdateCacheType.NONE;
+        this.DI = di_1.DI;
+        this.UTILS = diTokens_1.UTILS;
     }
     get mapped() {
         this.isMapped = true;

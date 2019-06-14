@@ -8,12 +8,6 @@ import {ISchemaUtils}        from "./SchemaUtils";
 export interface IUtils
 	extends IDatastructureUtils {
 
-	Entity: IEntityUtils;
-	Field: IFieldUtils;
-	Metadata: IQMetadataUtils;
-	Query: IQueryUtils;
-	Schema: ISchemaUtils;
-
 	strsToNums(
 		strings: string[]
 	): number[];

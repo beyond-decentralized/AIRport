@@ -1,14 +1,15 @@
+import {DI}     from '@airport/di'
 import {
 	DbRelation,
 	JoinType,
 	JSONEntityRelation,
 	JSONRelation
 }               from '@airport/ground-control'
+import {UTILS}  from '../../../diTokens'
 import {
 	IQEntityDriver,
 	IQEntityInternal
 }               from '../../../lingo/core/entity/Entity'
-import {IUtils} from '../../../lingo/utils/Utils'
 
 /**
  * Created by Papa on 4/26/2016.
@@ -45,12 +46,12 @@ QRelation.getParentAlias = function (
 	return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1))
 }
 
-QRelation.createRelatedQEntity = function <IQ extends IQEntityInternal>(
-	utils: IUtils,
+QRelation.createRelatedQEntity = async function <IQ extends IQEntityInternal>(
 	joinRelation: JSONRelation
-): IQ {
-	const dbEntity         = utils.Schema.getDbEntity(joinRelation.si, joinRelation.ti)
-	let QEntityConstructor = utils.Schema.getQEntityConstructor(dbEntity)
+): Promise<IQ> {
+	const utils = await DI.get(UTILS)
+	const dbEntity         = await utils.Schema.getDbEntity(joinRelation.si, joinRelation.ti)
+	let QEntityConstructor = await utils.Schema.getQEntityConstructor(dbEntity)
 	return new QEntityConstructor<IQ>(
 		dbEntity,
 		joinRelation.fcp,

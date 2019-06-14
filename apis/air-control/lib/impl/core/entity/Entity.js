@@ -36,7 +36,7 @@ class QEntityDriver {
         this.currentChildIndex = -1;
     }
     getInstance() {
-        const qEntityConstructor = this.qEntity.__driver__.utils.Schema
+        const qEntityConstructor = this.qEntity.__driver__.schemaUtils
             .getQEntityConstructor(this.dbEntity);
         let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType);
         instance.__driver__.currentChildIndex = this.currentChildIndex;
@@ -84,12 +84,12 @@ class QEntityDriver {
         }
         return jsonRelation;
     }
-    getJoinRelationJson(jsonRelation, columnAliases) {
+    getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
         jsonRelation.rt = ground_control_1.JSONRelationType.ENTITY_JOIN_ON;
-        jsonRelation.jwc = this.utils.Query.whereClauseToJSON(this.joinWhereClause, columnAliases);
+        jsonRelation.jwc = queryUtils.whereClauseToJSON(this.joinWhereClause, columnAliases, fieldUtils);
         return jsonRelation;
     }
-    getEntityRelationJson(jsonRelation, columnAliases) {
+    getEntityRelationJson(jsonRelation) {
         jsonRelation.rt = ground_control_1.JSONRelationType.ENTITY_SCHEMA_RELATION;
         jsonRelation.ri = this.dbRelation.index;
         // if (!this.dbRelation.whereJoinTable) {
@@ -116,15 +116,16 @@ class QEntityDriver {
         // jsonRelation.wjto   = this.dbRelation.joinFunctionWithOperator;  return
         // jsonRelation;
     }
-    getRootRelationJson(jsonRelation, columnAliases) {
+    getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
         jsonRelation.rt = (this instanceof QTreeDriver) ? ground_control_1.JSONRelationType.SUB_QUERY_ROOT : ground_control_1.JSONRelationType.ENTITY_ROOT;
         return jsonRelation;
     }
     getQ() {
         return this.qEntity;
     }
-    join(right, joinType) {
-        let joinChild = right.__driver__.getInstance();
+    join(right, joinType, airDb, schemaUtils) {
+        let joinChild = right
+            .__driver__.getInstance(airDb, schemaUtils);
         joinChild.__driver__.currentChildIndex = 0;
         let nextChildPosition = Relation_1.QRelation.getNextChildJoinPosition(this);
         joinChild.__driver__.fromClausePosition = nextChildPosition;
@@ -159,16 +160,18 @@ class QTreeDriver extends QEntityDriver {
     // getRelationPropertyName(): string {
     // 	throw `not imlemented`;
     // }
-    getJoinRelationJson(jsonRelation, columnAliases) {
-        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases);
+    getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
+        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);
         jsonRelation.rt = ground_control_1.JSONRelationType.SUB_QUERY_JOIN_ON;
-        jsonRelation.sq = new TreeQuery_1.TreeQuery(this.subQuery, this.utils, columnAliases.entityAliases).toJSON();
+        jsonRelation.sq = new TreeQuery_1.TreeQuery(this.subQuery, columnAliases.entityAliases)
+            .toJSON(queryUtils, fieldUtils);
         return jsonRelation;
     }
-    getRootRelationJson(jsonRelation, columnAliases) {
-        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases);
+    getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
+        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);
         jsonRelation.rt = ground_control_1.JSONRelationType.SUB_QUERY_ROOT;
-        jsonRelation.sq = new TreeQuery_1.TreeQuery(this.subQuery, this.utils, columnAliases.entityAliases).toJSON();
+        jsonRelation.sq = new TreeQuery_1.TreeQuery(this.subQuery, columnAliases.entityAliases)
+            .toJSON(queryUtils, fieldUtils);
         return jsonRelation;
     }
 }

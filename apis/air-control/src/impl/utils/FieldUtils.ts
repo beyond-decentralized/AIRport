@@ -1,4 +1,5 @@
 import {JsonFieldQuery}   from "@airport/ground-control";
+import {IQueryUtils}      from '../..'
 import {IEntityAliases}   from "../../lingo/core/entity/Aliases";
 import {IQOrderableField} from "../../lingo/core/field/Field";
 import {RawFieldQuery}    from "../../lingo/query/facade/FieldQuery";
@@ -21,13 +22,14 @@ export class FieldUtils
 
 	getFieldQueryJson<IQF extends IQOrderableField<IQF>>(
 		fieldSubQuery: RawFieldQuery<IQF>,
-		entityAliases: IEntityAliases
+		entityAliases: IEntityAliases,
+		queryUtils: IQueryUtils
 	): JsonFieldQuery {
 		if (!this.FieldQuery) {
 			this.FieldQuery = require('../query/facade/FieldQuery').FieldQuery;
 		}
-		let subSelectQuery = new this.FieldQuery(fieldSubQuery, this.utils, entityAliases);
+		let subSelectQuery = new this.FieldQuery(fieldSubQuery, entityAliases);
 
-		return subSelectQuery.toJSON();
+		return subSelectQuery.toJSON(queryUtils, this);
 	}
 }

@@ -61,11 +61,11 @@ export class EntityDatabaseFacade<Entity,
 	}
 
 	initialize(
-		databaseFacade: IDatabaseFacade
+		databaseFacade: () => Promise<IDatabaseFacade>
 	) {
 		this.common    = databaseFacade
 		this.find      = new EntityFind<Entity, Array<Entity>, EntitySelect>(
-			this.dbEntity, databaseFacade, this.utils)
+			this.dbEntity, databaseFacade)
 		this.findOne   = new EntityFindOne(this.dbEntity, databaseFacade, this.utils)
 		this.search    = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
 			this.dbEntity, databaseFacade, this.utils)

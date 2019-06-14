@@ -6,18 +6,17 @@ const TreeQuery_1 = require("./TreeQuery");
  * Created by Papa on 10/24/2016.
  */
 class EntityQuery extends TreeQuery_1.MappableQuery {
-    constructor(rawQuery, utils) {
+    constructor(rawQuery) {
         super();
         this.rawQuery = rawQuery;
-        this.utils = utils;
         this.isEntityQuery = true;
         this.isHierarchicalEntityQuery = true;
     }
-    toJSON() {
+    toJSON(queryUtils, fieldUtils) {
         return {
             S: this.selectClauseToJSON(this.rawQuery.select),
             F: this.fromClauseToJSON(this.rawQuery.from),
-            W: this.utils.Query.whereClauseToJSON(this.rawQuery.where, this.columnAliases),
+            W: queryUtils.whereClauseToJSON(this.rawQuery.where, this.columnAliases, fieldUtils),
             OB: this.orderByClauseToJSON(this.rawQuery.orderBy)
         };
     }
@@ -44,13 +43,13 @@ class EntityQuery extends TreeQuery_1.MappableQuery {
 }
 exports.EntityQuery = EntityQuery;
 class LimitedEntityQuery extends EntityQuery {
-    constructor(rawQuery, utils) {
-        super(rawQuery, utils);
+    constructor(rawQuery) {
+        super(rawQuery);
         this.rawQuery = rawQuery;
         this.isHierarchicalEntityQuery = false;
     }
-    toJSON() {
-        let limitedJsonEntity = super.toJSON();
+    toJSON(queryUtils, fieldUtils) {
+        let limitedJsonEntity = super.toJSON(queryUtils, fieldUtils);
         limitedJsonEntity.L = this.rawQuery.limit;
         limitedJsonEntity.O = this.rawQuery.offset;
         return limitedJsonEntity;

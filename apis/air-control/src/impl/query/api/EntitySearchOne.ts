@@ -1,15 +1,17 @@
 import {
 	DbEntity,
 	QueryResultType
-}                                from "@airport/ground-control";
-import {IObservable}              from "@airport/observe";
-import {IEntitySelectProperties} from "../../../lingo/core/entity/Entity";
-import {IDatabaseFacade}         from "../../../lingo/core/repository/DatabaseFacade";
-import {IEntitySearchOne}        from "../../../lingo/query/api/EntitySearchOne";
-import {RawEntityQuery}          from "../../../lingo/query/facade/EntityQuery";
-import {IUtils}                  from "../../../lingo/utils/Utils";
-import {EntityQuery}             from "../facade/EntityQuery";
-import {EntityLookup}            from "./EntityLookup";
+}                                from '@airport/ground-control'
+import {
+	IObservable,
+	Observable
+}                                from '@airport/observe'
+import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
+import {IDatabaseFacade}         from '../../../lingo/core/repository/DatabaseFacade'
+import {IEntitySearchOne}        from '../../../lingo/query/api/EntitySearchOne'
+import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
+import {EntityQuery}             from '../facade/EntityQuery'
+import {EntityLookup}            from './EntityLookup'
 
 /**
  * Created by Papa on 11/12/2016.
@@ -20,30 +22,33 @@ export class EntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 
 	constructor(
 		protected dbEntity: DbEntity,
-		protected dbFacade: IDatabaseFacade,
-		private utils: IUtils,
+		protected dbFacade: IDatabaseFacade
 	) {
-		super();
+		super()
 	}
 
 	graph(
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
 	): IObservable<Entity> {
-		let entityQuery: EntityQuery<IESP> = this.utils.Entity.getEntityQuery(rawGraphQuery);
-		const cacheForUpdate               = this.cleanNextCallState();
-
-		return this.dbFacade.entity.searchOne(
-			this.dbEntity, entityQuery, QueryResultType.ENTITY_GRAPH, cacheForUpdate);
+		return Observable.from(this.doSearch(rawGraphQuery, QueryResultType.ENTITY_GRAPH))
 	}
 
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
 	): IObservable<Entity> {
-		let entityQuery: EntityQuery<IESP> = this.utils.Entity.getEntityQuery(rawTreeQuery);
-		const cacheForUpdate               = this.cleanNextCallState();
+		return Observable.from(this.doSearch(rawTreeQuery, QueryResultType.ENTITY_TREE))
+	}
+
+	private async doSearch(
+		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		queryResultType: QueryResultType
+	): Promise<IObservable<Entity>> {
+		let entityQuery: EntityQuery<IESP> = (await this.DI.get(this.UTILS)).Entity.getEntityQuery(rawTreeQuery)
+		const cacheForUpdate               = this.cleanNextCallState()
 
 		return this.dbFacade.entity.searchOne(
-			this.dbEntity, entityQuery, QueryResultType.ENTITY_TREE, cacheForUpdate);
+			this.dbEntity, entityQuery, queryResultType, cacheForUpdate)
+
 	}
 
 }

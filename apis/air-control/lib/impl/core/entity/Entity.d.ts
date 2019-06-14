@@ -1,4 +1,6 @@
 import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONEntityRelation, JSONJoinRelation, JSONRelation, JSONViewJoinRelation } from '@airport/ground-control';
+import { IFieldUtils, ISchemaUtils } from '../../..';
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { IAirportDatabase } from '../../../lingo/AirportDatabase';
 import { IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IFrom, IQEntity, IQEntityDriver, IQEntityInternal } from '../../../lingo/core/entity/Entity';
 import { IJoinFields } from '../../../lingo/core/entity/Joins';
@@ -56,11 +58,11 @@ export declare class QEntityDriver implements IQEntityDriver {
     constructor(dbEntity: DbEntity, fromClausePosition: number[], dbRelation: DbRelation, joinType: JoinType, qEntity: IQEntityInternal);
     getInstance(): IQEntityInternal;
     getRelationJson(columnAliases: FieldColumnAliases): JSONRelation;
-    getJoinRelationJson(jsonRelation: JSONJoinRelation, columnAliases: FieldColumnAliases): JSONJoinRelation;
-    getEntityRelationJson(jsonRelation: JSONEntityRelation, columnAliases: FieldColumnAliases): JSONEntityRelation;
-    getRootRelationJson(jsonRelation: JSONRelation, columnAliases: FieldColumnAliases): JSONJoinRelation;
+    getJoinRelationJson(jsonRelation: JSONJoinRelation, columnAliases: FieldColumnAliases, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONJoinRelation;
+    getEntityRelationJson(jsonRelation: JSONEntityRelation): JSONEntityRelation;
+    getRootRelationJson(jsonRelation: JSONRelation, columnAliases: FieldColumnAliases, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONJoinRelation;
     getQ(): IQEntityInternal;
-    join<IF extends IFrom>(right: IF, joinType: JoinType): IJoinFields<IF>;
+    join<IF extends IFrom>(right: IF, joinType: JoinType, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): IJoinFields<IF>;
     isRootEntity(): boolean;
     getRootJoinEntity(): IQEntityInternal;
 }
@@ -71,6 +73,6 @@ export interface IQTreeDriver extends IQEntityDriver {
 export declare class QTreeDriver extends QEntityDriver implements IQTreeDriver {
     subQuery: RawTreeQuery<any>;
     getInstance(): IQEntityInternal;
-    getJoinRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases): JSONViewJoinRelation;
-    getRootRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases): JSONViewJoinRelation;
+    getJoinRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONViewJoinRelation;
+    getRootRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONViewJoinRelation;
 }

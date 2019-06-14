@@ -5,16 +5,15 @@ const AbstractQuery_1 = require("./AbstractQuery");
  * Created by Papa on 10/2/2016.
  */
 class Delete extends AbstractQuery_1.AbstractQuery {
-    constructor(rawDelete, utils) {
+    constructor(rawDelete) {
         super();
         this.rawDelete = rawDelete;
-        this.utils = utils;
     }
-    toJSON() {
+    toJSON(queryUtils, fieldUtils) {
         return {
             DF: this.rawDelete.deleteFrom
                 .__driver__.getRelationJson(this.columnAliases),
-            W: this.utils.Query.whereClauseToJSON(this.rawDelete.where, this.columnAliases)
+            W: queryUtils.whereClauseToJSON(this.rawDelete.where, this.columnAliases, fieldUtils)
         };
     }
 }

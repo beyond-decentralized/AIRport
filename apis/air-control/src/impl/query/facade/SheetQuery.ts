@@ -1,4 +1,10 @@
 import {JsonSheetQuery} from "@airport/ground-control";
+import {
+	IFieldUtils
+}                       from '../../../lingo/utils/FieldUtils'
+import {
+	IQueryUtils
+}                       from '../../../lingo/utils/QueryUtils'
 import {IQuery}         from "../../../lingo/query/facade/Query";
 import {RawSheetQuery}  from "../../../lingo/query/facade/SheetQuery";
 import {IUtils}         from "../../../lingo/utils/Utils";
@@ -35,7 +41,10 @@ export class SheetQuery
 		});
 	}
 
-	toJSON(): JsonSheetQuery {
+	toJSON(
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
+	): JsonSheetQuery {
 
 		let select = this.selectClauseToJSON(this.rawQuery.select);
 
@@ -44,7 +53,7 @@ export class SheetQuery
 		};
 
 		return <JsonSheetQuery>this.getNonEntityQuery(
-			this.rawQuery, jsonFieldQuery, null, this.utils.Query);
+			this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils);
 	}
 
 }

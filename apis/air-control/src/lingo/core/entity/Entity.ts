@@ -5,6 +5,7 @@ import {
 	JSONBaseOperation,
 	JSONRelation
 }                                from "@airport/ground-control";
+import {ISchemaUtils}            from '../../..'
 import {IAirportDatabase}        from "../../AirportDatabase";
 import {IUtils}                  from "../../utils/Utils";
 import {IQOperableFieldInternal} from "../field/OperableField";
@@ -152,20 +153,19 @@ export interface IQEntityInternal
 
 export interface IQEntityDriver {
 
-	utils: IUtils;
 	airportDb: IAirportDatabase;
+	allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
+	currentChildIndex: number;
 	dbEntity: DbEntity;
 	dbRelation: DbRelation;
-	currentChildIndex: number;
 	entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> };
 	entityRelations: IQInternalRelation<any>[];
 	fromClausePosition: number[];
 	idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
-	allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
-	relations: IQInternalRelation<any>[];
 	joinType: JoinType;
 	joinWhereClause: JSONBaseOperation;
 	parentJoinEntity: IQEntityInternal;
+	relations: IQInternalRelation<any>[];
 
 	/*
 	addEntityField<IQF extends IQOperableFieldInternal<any, JSONBaseOperation, any, any>>(
@@ -177,7 +177,10 @@ export interface IQEntityDriver {
 	): void;
 	*/
 
-	getInstance(): IQEntityInternal;
+	getInstance(
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
+	): IQEntityInternal;
 
 	getRelationJson(columnAliases: IFieldColumnAliases<any>): JSONRelation;
 
@@ -189,7 +192,9 @@ export interface IQEntityDriver {
 
 	join<IF extends IFrom>(
 		right: IF,
-		joinType: JoinType
+		joinType: JoinType,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
 	): IJoinFields<IF>;
 
 	//getEntityRelationMap(): { [propertyName: string]: IQInternalRelation<any> };

@@ -4,12 +4,12 @@ class FieldUtils {
     constructor(utils) {
         this.utils = utils;
     }
-    getFieldQueryJson(fieldSubQuery, entityAliases) {
+    getFieldQueryJson(fieldSubQuery, entityAliases, queryUtils) {
         if (!this.FieldQuery) {
             this.FieldQuery = require('../query/facade/FieldQuery').FieldQuery;
         }
-        let subSelectQuery = new this.FieldQuery(fieldSubQuery, this.utils, entityAliases);
-        return subSelectQuery.toJSON();
+        let subSelectQuery = new this.FieldQuery(fieldSubQuery, entityAliases);
+        return subSelectQuery.toJSON(queryUtils, this);
     }
 }
 exports.FieldUtils = FieldUtils;

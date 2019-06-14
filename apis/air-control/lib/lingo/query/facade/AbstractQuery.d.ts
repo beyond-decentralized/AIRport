@@ -1,8 +1,9 @@
-import { JsonStatement } from "@airport/ground-control";
-import { Parameter } from "../../core/entity/Aliases";
+import { JsonStatement } from '@airport/ground-control';
+import { IFieldUtils, IQueryUtils } from '../../..';
+import { Parameter } from '../../core/entity/Aliases';
 export interface IAbstractQuery {
     getParameters(): {
         [alias: string]: Parameter;
     };
-    toJSON(): JsonStatement;
+    toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonStatement;
 }

@@ -34,12 +34,12 @@ class MappableQuery extends NonEntityQuery_1.DistinguishableQuery {
                 try {
                     // Must be an entity query here
                     switch (typeof value) {
-                        case "boolean":
-                        case "number":
-                        case "string":
-                        case "undefined":
+                        case 'boolean':
+                        case 'number':
+                        case 'string':
+                        case 'undefined':
                             continue;
-                        case "object":
+                        case 'object':
                             if (value instanceof Date) {
                                 continue;
                             }
@@ -64,15 +64,14 @@ class MappableQuery extends NonEntityQuery_1.DistinguishableQuery {
 }
 exports.MappableQuery = MappableQuery;
 class TreeQuery extends MappableQuery {
-    constructor(rawQuery, utils, entityAliases = new Aliases_1.EntityAliases()) {
+    constructor(rawQuery, entityAliases = new Aliases_1.EntityAliases()) {
         super(entityAliases);
         this.rawQuery = rawQuery;
-        this.utils = utils;
     }
-    toJSON() {
+    toJSON(queryUtils, fieldUtils) {
         let jsonMappedQuery = this.getNonEntityQuery(this.rawQuery, {}, (jsonQuery) => {
             jsonQuery.S = this.selectClauseToJSON(this.rawQuery.select);
-        }, this.utils.Query);
+        }, queryUtils, fieldUtils);
         return jsonMappedQuery;
     }
 }

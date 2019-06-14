@@ -1,9 +1,10 @@
-import { JsonTreeQuery } from "@airport/ground-control";
-import { IEntityAliases } from "../../../lingo/core/entity/Aliases";
-import { IQuery } from "../../../lingo/query/facade/Query";
-import { ITreeEntity, RawTreeQuery } from "../../../lingo/query/facade/TreeQuery";
-import { IUtils } from "../../../lingo/utils/Utils";
-import { DistinguishableQuery } from "./NonEntityQuery";
+import { JsonTreeQuery } from '@airport/ground-control';
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
+import { IEntityAliases } from '../../../lingo/core/entity/Aliases';
+import { IQuery } from '../../../lingo/query/facade/Query';
+import { ITreeEntity, RawTreeQuery } from '../../../lingo/query/facade/TreeQuery';
+import { DistinguishableQuery } from './NonEntityQuery';
 /**
  * Created by Papa on 10/24/2016.
  */
@@ -16,7 +17,6 @@ export declare abstract class MappableQuery extends DistinguishableQuery {
 }
 export declare class TreeQuery<ITE extends ITreeEntity> extends MappableQuery implements IQuery {
     rawQuery: RawTreeQuery<ITE>;
-    private utils;
-    constructor(rawQuery: RawTreeQuery<ITE>, utils: IUtils, entityAliases?: IEntityAliases);
-    toJSON(): JsonTreeQuery;
+    constructor(rawQuery: RawTreeQuery<ITE>, entityAliases?: IEntityAliases);
+    toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonTreeQuery;
 }
