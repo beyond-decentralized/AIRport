@@ -1,10 +1,10 @@
-import { DbEntity } from "@airport/ground-control";
-import { IEntitySelectProperties } from "../../../lingo/core/entity/Entity";
-import { IDatabaseFacade } from "../../../lingo/core/repository/DatabaseFacade";
-import { IEntityFind } from "../../../lingo/query/api/EntityFind";
-import { RawEntityQuery } from "../../../lingo/query/facade/EntityQuery";
-import { MappedEntityArray } from "../../../lingo/query/MappedEntityArray";
-import { EntityLookup } from "./EntityLookup";
+import { DbEntity } from '@airport/ground-control';
+import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
+import { IDatabaseFacade } from '../../../lingo/core/repository/DatabaseFacade';
+import { IEntityFind } from '../../../lingo/query/api/EntityFind';
+import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery';
+import { MappedEntityArray } from '../../../lingo/query/MappedEntityArray';
+import { EntityLookup } from './EntityLookup';
 /**
  * Created by Papa on 11/12/2016.
  */

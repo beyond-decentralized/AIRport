@@ -1,16 +1,17 @@
+import {DI}                    from '@airport/di'
 import {
 	JSONBaseOperation,
 	JSONValueOperation,
 	OperationCategory,
 	SqlOperator
 }                              from '@airport/ground-control'
+import {QUERY_UTILS}           from '../../diTokens'
 import {IFieldColumnAliases}   from '../../lingo/core/entity/Aliases'
 import {JSONLogicalOperation}  from '../../lingo/core/operation/LogicalOperation'
 import {JSONRawValueOperation} from '../../lingo/core/operation/Operation'
 import {RawFieldQuery}         from '../../lingo/query/facade/FieldQuery'
 import {IFieldUtils}           from '../../lingo/utils/FieldUtils'
 import {IQueryUtils}           from '../../lingo/utils/QueryUtils'
-import {IUtils}                from '../../lingo/utils/Utils'
 import {QExistsFunction}       from '../core/field/Functions'
 import {QOperableField}        from '../core/field/OperableField'
 import {wrapPrimitive}         from '../core/field/WrapperFunctions'
@@ -20,11 +21,6 @@ declare function require(moduleName: string): any;
 
 export class QueryUtils
 	implements IQueryUtils {
-
-	constructor(
-		private utils: IUtils
-	) {
-	}
 
 	whereClauseToJSON(
 		whereClause: JSONBaseOperation,
@@ -63,7 +59,7 @@ export class QueryUtils
 				let query                                   = functionOperation.getQuery()
 				const TreeQueryClass: typeof TreeQuery      = require('../query/facade/TreeQuery').TreeQuery
 				let jsonQuery                               = new TreeQueryClass(
-					query, this.utils, columnAliases.entityAliases).toJSON()
+					query, columnAliases.entityAliases).toJSON(this, fieldUtils)
 				jsonOperation                               = functionOperation.toJSON(jsonQuery)
 				break
 			case OperationCategory.BOOLEAN:
@@ -102,7 +98,7 @@ export class QueryUtils
 				throw `'undefined' is not a valid L or R value`
 			default:
 				if (value instanceof QOperableField) {
-					return value.toJSON(columnAliases, false)
+					return value.toJSON(columnAliases, false, this, fieldUtils)
 				} // Must be a Field Query
 				else {
 					let rawFieldQuery: RawFieldQuery<any> = value
@@ -112,3 +108,5 @@ export class QueryUtils
 		}
 	}
 }
+
+DI.set(QUERY_UTILS, QueryUtils)

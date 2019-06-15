@@ -4,25 +4,27 @@ import {
 	JSONClauseField,
 	JSONClauseObjectType,
 	SQLDataType
-}                           from "@airport/ground-control";
-import {IQEntityInternal}   from "../../../lingo/core/entity/Entity";
-import {IQBooleanField}     from "../../../lingo/core/field/BooleanField";
-import {IQFunction}         from "../../../lingo/core/field/Functions";
+}                           from '@airport/ground-control'
+import {IQEntityInternal}   from '../../../lingo/core/entity/Entity'
+import {IQBooleanField}     from '../../../lingo/core/field/BooleanField'
+import {IQFunction}         from '../../../lingo/core/field/Functions'
 import {
 	IBooleanOperation,
 	JSONRawBooleanOperation
-}                           from "../../../lingo/core/operation/BooleanOperation";
-import {RawFieldQuery}      from "../../../lingo/query/facade/FieldQuery";
-import {IUtils}             from "../../../lingo/utils/Utils";
-import {FieldColumnAliases} from "../entity/Aliases";
-import {BooleanOperation}   from "../operation/BooleanOperation";
-import {QOperableField}     from "./OperableField";
+}                           from '../../../lingo/core/operation/BooleanOperation'
+import {RawFieldQuery}      from '../../../lingo/query/facade/FieldQuery'
+import {IFieldUtils}        from '../../../lingo/utils/FieldUtils'
+import {IQueryUtils}        from '../../../lingo/utils/QueryUtils'
+import {FieldColumnAliases} from '../entity/Aliases'
+import {BooleanOperation}   from '../operation/BooleanOperation'
+import {QOperableField}     from './OperableField'
 
 /**
  * Created by Papa on 8/10/2016.
  */
 
-export interface IQBooleanEntityField extends IQBooleanField {
+export interface IQBooleanEntityField
+	extends IQBooleanField {
 }
 
 export class QBooleanField
@@ -33,17 +35,16 @@ export class QBooleanField
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
 		q: IQEntityInternal,
-		utils: IUtils,
 		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
 	) {
-		super(dbColumn, dbProperty, q, objectType, new BooleanOperation(), utils);
+		super(dbColumn, dbProperty, q, objectType, new BooleanOperation())
 	}
 
 	getInstance(
 		qEntity: IQEntityInternal = this.q
 	): QBooleanField {
 		return this.copyFunctions(
-			new QBooleanField(this.dbColumn, this.dbProperty, qEntity, this.utils, this.objectType));
+			new QBooleanField(this.dbColumn, this.dbProperty, qEntity, this.objectType))
 	}
 
 }
@@ -52,31 +53,33 @@ export class QBooleanFunction
 	extends QBooleanField
 	implements IQFunction<boolean | RawFieldQuery<any>> {
 
-	parameterAlias: string;
+	parameterAlias: string
 
 	constructor(
 		public value: boolean | RawFieldQuery<QBooleanField>,
-		utils: IUtils,
 		private isQueryParameter: boolean = false
 	) {
-		super(<any>{type: SQLDataType.BOOLEAN}, null, null, utils, JSONClauseObjectType.FIELD_FUNCTION);
+		super(<any>{type: SQLDataType.BOOLEAN}, null, null, JSONClauseObjectType.FIELD_FUNCTION)
 	}
 
 	getInstance(): QBooleanFunction {
-		return this.copyFunctions(new QBooleanFunction(this.value, this.utils));
+		return this.copyFunctions(new QBooleanFunction(this.value))
 	}
 
 	toJSON(
 		columnAliases: FieldColumnAliases,
-		forSelectClause: boolean
+		forSelectClause: boolean,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): JSONClauseField {
-		let json = this.operableFunctionToJson(this, columnAliases, forSelectClause);
+		let json = this.operableFunctionToJson(
+			this, columnAliases, forSelectClause, queryUtils, fieldUtils)
 
 		if (this.isQueryParameter) {
-			this.parameterAlias = <string>json.v;
+			this.parameterAlias = <string>json.v
 		}
 
-		return json;
+		return json
 	}
 
 }

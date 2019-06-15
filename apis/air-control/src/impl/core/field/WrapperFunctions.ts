@@ -12,7 +12,6 @@ import {
 	numFunction,
 	strFunction
 }                         from '../../../lingo/core/field/WrapperFunctions'
-import {IUtils}           from '../../../lingo/utils/Utils'
 import {QBooleanFunction} from './BooleanField'
 import {QDateFunction}    from './DateField'
 import {QNullFunction}    from './NullFunction'
@@ -23,40 +22,40 @@ import {QStringFunction}  from './StringField'
  * Created by Papa on 12/31/2016.
  */
 
-let utils: IUtils
-
-export function setUtilsForWrapperFunctions(
-	utilsForFunctions: IUtils
-) {
-	utils = utilsForFunctions
-}
-
-export const bool: boolFunction = function (primitive: boolean): IQBooleanField {
+export const bool: boolFunction = function (
+	primitive: boolean
+): IQBooleanField {
 	if (typeof primitive !== 'boolean') {
 		throw `bool() accepts booleans only.`
 	}
-	return new QBooleanFunction(primitive, utils)
+	return new QBooleanFunction(primitive)
 }
 
-export const date: dateFunction = function (primitive: Date): IQDateField {
+export const date: dateFunction = function (
+	primitive: Date
+): IQDateField {
 	if (!(primitive instanceof Date)) {
 		throw `date() accepts Dates only.`
 	}
-	return new QDateFunction(primitive, utils)
+	return new QDateFunction(primitive)
 }
 
-export const num: numFunction = function (primitive: number): IQNumberField {
+export const num: numFunction = function (
+	primitive: number
+): IQNumberField {
 	if (typeof primitive !== 'number') {
 		throw `num() accepts numbers only.`
 	}
-	return new QNumberFunction(primitive, utils)
+	return new QNumberFunction(primitive)
 }
 
-export const str: strFunction = function (primitive: string): IQStringField {
+export const str: strFunction = function (
+	primitive: string
+): IQStringField {
 	if (typeof primitive !== 'string') {
 		throw `str() accepts strings only.`
 	}
-	return new QStringFunction(primitive, utils)
+	return new QStringFunction(primitive)
 }
 
 
@@ -72,7 +71,7 @@ export function wrapPrimitive(value: any): any {
 			throw `Cannot use an 'undefined' value in an operation.`
 	}
 	if (value === null) {
-		return new QNullFunction(utils)
+		return new QNullFunction()
 	}
 	if (value instanceof Date) {
 		return date(value)

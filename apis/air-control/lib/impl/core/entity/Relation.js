@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
-const diTokens_1 = require("../../../diTokens");
 /**
  * Created by Papa on 4/26/2016.
  */
@@ -24,10 +22,9 @@ QRelation.getParentAlias = function (jsonRelation) {
     }
     return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1));
 };
-QRelation.createRelatedQEntity = async function (joinRelation) {
-    const utils = await di_1.DI.get(diTokens_1.UTILS);
-    const dbEntity = await utils.Schema.getDbEntity(joinRelation.si, joinRelation.ti);
-    let QEntityConstructor = await utils.Schema.getQEntityConstructor(dbEntity);
+QRelation.createRelatedQEntity = function (joinRelation, airDb, schemaUtils) {
+    const dbEntity = schemaUtils.getDbEntity(joinRelation.si, joinRelation.ti, airDb);
+    let QEntityConstructor = schemaUtils.getQEntityConstructor(dbEntity, airDb);
     return new QEntityConstructor(dbEntity, joinRelation.fcp, dbEntity.relations[joinRelation.ri], joinRelation.jt);
 };
 QRelation.getNextChildJoinPosition = function (joinParentDriver) {

@@ -36,8 +36,6 @@ export interface IEntityDatabaseFacade<Entity,
 	EntityId extends IEntityIdProperties,
 	IQ extends IQEntity> {
 
-	common: IDatabaseFacade;
-
 	dbEntity: DbEntity;
 
 	duo: IDuo<Entity, EntitySelect, EntityCreateProperties, EntityUpdateProperties, EntityId, IQ>;

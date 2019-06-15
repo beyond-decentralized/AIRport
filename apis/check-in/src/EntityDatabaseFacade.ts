@@ -41,7 +41,6 @@ export class EntityDatabaseFacade<Entity,
 	IQ extends IQEntity>
 	implements IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, IQ> {
 
-	common: IDatabaseFacade
 	duo: IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateProperties, EntityId, IQ>
 	find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>
 	findOne: IEntityFindOne<Entity, EntitySelect>
@@ -50,8 +49,7 @@ export class EntityDatabaseFacade<Entity,
 
 	constructor(
 		public dbEntity: DbEntity,
-		private Q: QSchema,
-		private utils: IUtils
+		private Q: QSchema
 	) {
 		this.duo = new Duo(dbEntity)
 	}
@@ -61,15 +59,15 @@ export class EntityDatabaseFacade<Entity,
 	}
 
 	initialize(
-		databaseFacade: () => Promise<IDatabaseFacade>
+		databaseFacade: IDatabaseFacade
 	) {
 		this.common    = databaseFacade
 		this.find      = new EntityFind<Entity, Array<Entity>, EntitySelect>(
 			this.dbEntity, databaseFacade)
-		this.findOne   = new EntityFindOne(this.dbEntity, databaseFacade, this.utils)
+		this.findOne   = new EntityFindOne(this.dbEntity, databaseFacade)
 		this.search    = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
-			this.dbEntity, databaseFacade, this.utils)
-		this.searchOne = new EntitySearchOne(this.dbEntity, databaseFacade, this.utils)
+			this.dbEntity, databaseFacade)
+		this.searchOne = new EntitySearchOne(this.dbEntity, databaseFacade)
 	}
 
 	releaseCachedForUpdate(

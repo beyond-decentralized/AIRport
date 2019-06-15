@@ -2,6 +2,7 @@ import {
 	IAirportDatabase,
 	IQEntityInternal,
 	IQTree,
+	ISchemaUtils,
 	IUtils,
 	JoinTreeNode,
 	QBooleanField,
@@ -55,13 +56,11 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 
 
 	constructor(
-		airportDb: IAirportDatabase,
-		utils: IUtils,
 		jsonQuery: JNEQ,
 		dialect: SQLDialect,
 		queryResultType: QueryResultType
 	) {
-		super(airportDb, utils, jsonQuery, null, dialect, queryResultType)
+		super(jsonQuery, null, dialect, queryResultType)
 	}
 
 	addQEntityMapByAlias(
@@ -72,7 +71,10 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		}
 	}
 
-	toSQL(): string {
+	toSQL(
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
+	): string {
 		let jsonQuery                                      = <JsonNonEntityQuery>this.jsonQuery
 		let joinNodeMap: { [alias: string]: JoinTreeNode } = {}
 		this.joinTrees                                     = this.buildFromJoinTree(jsonQuery.F, joinNodeMap)
@@ -142,7 +144,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 
 	buildFromJoinTree(
 		joinRelations: JSONRelation[],
-		joinNodeMap: { [alias: string]: JoinTreeNode }
+		joinNodeMap: { [alias: string]: JoinTreeNode },
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
 	): JoinTreeNode[] {
 		let jsonTrees: JoinTreeNode[] = []
 		let jsonTree: JoinTreeNode
@@ -164,7 +168,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 
 		let alias = QRelation.getAlias(firstRelation)
 		this.validator.validateReadFromEntity(firstRelation)
-		let firstEntity               = QRelation.createRelatedQEntity(this.utils, firstRelation)
+		let firstEntity               = QRelation.createRelatedQEntity(
+			firstRelation, airDb, schemaUtils)
 		this.qEntityMapByAlias[alias] = firstEntity
 		jsonTree                      = new JoinTreeNode(firstRelation, [], null)
 		jsonTrees.push(jsonTree)
@@ -198,7 +203,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					if (!(<JSONEntityRelation>joinRelation).ri) {
 						throw `Table ${i + 1} in FROM clause is missing relationPropertyName`
 					}
-					rightEntity = QRelation.createRelatedQEntity(this.utils, joinRelation)
+					rightEntity = QRelation.createRelatedQEntity(
+						joinRelation, airDb, schemaUtils)
 					break
 				case JSONRelationType.SUB_QUERY_JOIN_ON:
 					if (!(<JSONJoinRelation>joinRelation).jwc) {
@@ -289,7 +295,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		fieldPrefix: string,
 		fieldJson: JSONClauseField,
 		alias: string,
-		forFieldQueryAlias: string = null
+		forFieldQueryAlias: string = null,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
 	): boolean {
 		let hasDistinctClause = false
 		let dbEntity: DbEntity
@@ -302,7 +310,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			case JSONClauseObjectType.EXISTS_FUNCTION:
 				throw `Exists function cannot be used in SELECT clause.`
 			case JSONClauseObjectType.FIELD:
-				dbEntity   = this.airportDb.schemas[fieldJson.si].currentVersion.entities[fieldJson.ti]
+				dbEntity   = airDb.schemas[fieldJson.si].currentVersion.entities[fieldJson.ti]
 				dbProperty = dbEntity.properties[fieldJson.pi]
 				dbColumn   = dbEntity.columns[fieldJson.ci]
 				switch (fieldJson.dt) {

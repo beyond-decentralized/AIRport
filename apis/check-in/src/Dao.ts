@@ -39,9 +39,6 @@ export abstract class Dao<Entity,
 	public db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>
 
-	protected utils: () => Promise<IUtils> = DI.pull(UTILS)
-	protected airDb: () => Promise<IAirportDatabase> = DI.pull(AIR_DB)
-
 	constructor(
 		dbEntityId: DbEntityId,
 		Q: QSchema
@@ -58,8 +55,10 @@ export abstract class Dao<Entity,
 				const entityDatabaseFacade = new EntityDatabaseFacade<Entity,
 					EntitySelect, EntityCreate,
 					EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>(
-					dbEntity, Q, this.utils)
+					dbEntity, Q)
+				DI.get(ENTITY_MANAGER).then(entityManager =>
 				entityDatabaseFacade.initialize(entityManager)
+				)
 
 				this.db = entityDatabaseFacade
 			}, AIR_DB, ENTITY_MANAGER, UTILS)

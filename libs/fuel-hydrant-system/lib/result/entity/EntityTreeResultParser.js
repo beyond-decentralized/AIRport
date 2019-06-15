@@ -1,12 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
 const TreeResultParser_1 = require("../TreeResultParser");
 /**
  * Created by Papa on 10/16/2016.
  */
 /**
  * The goal of this Parser is to determine which objects in the current row are the same
- * as they were in the previous row.  If the objects are the same this parser will merge them.
+ * as they were in the previous row.  If the objects are the same this parser will merge
+ * them.
  */
 class EntityTreeResultParser extends TreeResultParser_1.TreeResultParser {
     constructor() {
@@ -16,16 +18,16 @@ class EntityTreeResultParser extends TreeResultParser_1.TreeResultParser {
         this.lastRowObjectMap = {};
         this.currentObjectOneToManys = {};
     }
-    addEntity(entityAlias, dbEntity) {
-        let resultObject = this.utils.Schema.getNewEntity(dbEntity);
+    addEntity(entityAlias, dbEntity, airDb, schemaUtils) {
+        let resultObject = schemaUtils.getNewEntity(dbEntity, airDb);
         this.currentRowObjectMap[entityAlias] = resultObject;
         if (this.objectEqualityMap[entityAlias] !== undefined) {
             this.objectEqualityMap[entityAlias] = true;
         }
         return resultObject;
     }
-    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos) {
-        this.addManyToOneStub(resultObject, propertyName, relationInfos);
+    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, schemaUtils) {
+        this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils);
         this.addManyToOneReference(entityAlias, resultObject, propertyName);
     }
     addManyToOneReference(entityAlias, resultObject, propertyName) {
@@ -35,7 +37,7 @@ class EntityTreeResultParser extends TreeResultParser_1.TreeResultParser {
         // Both last and current objects must exist here
         let lastMtoStub = this.lastRowObjectMap[entityAlias][propertyName];
         let currentMtoStub = resultObject[propertyName];
-        this.objectEqualityMap[entityAlias] = this.utils.valuesEqual(lastMtoStub, currentMtoStub, true);
+        this.objectEqualityMap[entityAlias] = air_control_1.valuesEqual(lastMtoStub, currentMtoStub, true);
     }
     bufferBlankManyToOneStub(entityAlias, resultObject, propertyName) {
         resultObject[propertyName] = null;

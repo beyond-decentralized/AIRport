@@ -2,8 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
 class AbstractEntityOrderByParser {
-    constructor(airportDb, rootSelectClauseFragment, validator, orderBy) {
-        this.airportDb = airportDb;
+    constructor(rootSelectClauseFragment, validator, orderBy) {
         this.rootSelectClauseFragment = rootSelectClauseFragment;
         this.validator = validator;
         this.orderBy = orderBy;

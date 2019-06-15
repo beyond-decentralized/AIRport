@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
+const observe_1 = require("@airport/observe");
+const diTokens_1 = require("../../../diTokens");
 const FieldQuery_1 = require("../facade/FieldQuery");
 const SheetQuery_1 = require("../facade/SheetQuery");
 const TreeQuery_1 = require("../facade/TreeQuery");
@@ -8,21 +11,22 @@ const TreeQuery_1 = require("../facade/TreeQuery");
  * Created by Papa on 11/12/2016.
  */
 class NonEntitySearchOne {
-    constructor(dbFacade, utils) {
+    constructor(dbFacade) {
         this.dbFacade = dbFacade;
-        this.utils = utils;
     }
     tree(rawTreeQuery) {
-        const treeQuery = new TreeQuery_1.TreeQuery(this.utils.Entity.getQuery(rawTreeQuery), this.utils);
-        return this.dbFacade.entity.searchOne(null, treeQuery, ground_control_1.QueryResultType.TREE);
+        return observe_1.Observable.from(this.doSearch(rawTreeQuery, TreeQuery_1.TreeQuery, ground_control_1.QueryResultType.TREE));
     }
     sheet(rawSheetQuery) {
-        const sheetQuery = new SheetQuery_1.SheetQuery(this.utils.Entity.getQuery(rawSheetQuery), this.utils);
-        return this.dbFacade.entity.searchOne(null, sheetQuery, ground_control_1.QueryResultType.SHEET);
+        return observe_1.Observable.from(this.doSearch(rawSheetQuery, SheetQuery_1.SheetQuery, ground_control_1.QueryResultType.SHEET));
     }
     field(rawFieldQuery) {
-        const fieldQuery = new FieldQuery_1.FieldQuery(this.utils.Entity.getQuery(rawFieldQuery), this.utils);
-        return this.dbFacade.entity.searchOne(null, fieldQuery, ground_control_1.QueryResultType.FIELD);
+        return observe_1.Observable.from(this.doSearch(rawFieldQuery, FieldQuery_1.FieldQuery, ground_control_1.QueryResultType.FIELD));
+    }
+    async doSearch(rawNonEntityQuery, QueryClass, queryResultType) {
+        const rawQuery = (await di_1.DI.get(diTokens_1.ENTITY_UTILS)).getQuery(rawNonEntityQuery);
+        const query = new QueryClass(rawQuery);
+        return this.dbFacade.entity.search(null, query, queryResultType);
     }
 }
 exports.NonEntitySearchOne = NonEntitySearchOne;

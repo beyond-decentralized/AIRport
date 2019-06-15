@@ -1,10 +1,12 @@
-import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONRelation } from "@airport/ground-control";
-import { ISchemaUtils } from '../../..';
-import { IAirportDatabase } from "../../AirportDatabase";
-import { IQOperableFieldInternal } from "../field/OperableField";
-import { IFieldColumnAliases } from "./Aliases";
+import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONRelation } from '@airport/ground-control';
+import { IAirportDatabase } from '../../AirportDatabase';
+import { IFieldUtils } from '../../utils/FieldUtils';
+import { IQueryUtils } from '../../utils/QueryUtils';
+import { ISchemaUtils } from '../../utils/SchemaUtils';
+import { IQOperableFieldInternal } from '../field/OperableField';
+import { IFieldColumnAliases } from './Aliases';
 import { IJoinFields } from './Joins';
-import { IQInternalRelation } from "./Relation";
+import { IQInternalRelation } from './Relation';
 /**
  * Marker interface for a collection of only Entity @Id Properties.
  * Used for DELETE statements.  Must list all @Id properties.
@@ -96,7 +98,6 @@ export interface IQEntityInternal extends IQEntity {
     __driver__: IQEntityDriver;
 }
 export interface IQEntityDriver {
-    airportDb: IAirportDatabase;
     allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
     currentChildIndex: number;
     dbEntity: DbEntity;
@@ -112,7 +113,7 @@ export interface IQEntityDriver {
     parentJoinEntity: IQEntityInternal;
     relations: IQInternalRelation<any>[];
     getInstance(airDb: IAirportDatabase, schemaUtils: ISchemaUtils): IQEntityInternal;
-    getRelationJson(columnAliases: IFieldColumnAliases<any>): JSONRelation;
+    getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation;
     getRootJoinEntity(): IQEntityInternal;
     isRootEntity(): boolean;
     join<IF extends IFrom>(right: IF, joinType: JoinType, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): IJoinFields<IF>;

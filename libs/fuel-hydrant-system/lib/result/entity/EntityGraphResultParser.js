@@ -9,11 +9,12 @@ const IEntityResultParser_1 = require("./IEntityResultParser");
  * Created by Papa on 10/16/2016.
  */
 /**
- * The goal of this parser to to bridge all entity references and arrive at an inter-connected graph (where possible).
+ * The goal of this parser to to bridge all entity references and arrive at an
+ * inter-connected graph (where possible).
  */
 class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResultParser {
-    constructor(utils, config, rootDbEntity) {
-        super(utils);
+    constructor(config, rootDbEntity) {
+        super();
         this.config = config;
         this.rootDbEntity = rootDbEntity;
         // Keys can only be strings or numbers | TODO: change to JS Maps, if needed
@@ -23,19 +24,20 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
         this.mtoStubBuffer = [];
         // Used in ENTITY_FLATTENED queries
         this.currentResultRow = [];
-        this.otmMapper = new GraphOtmMapper_1.GraphOtmMapper(utils);
-        this.mtoMapper = new GraphMtoMapper_1.GraphMtoMapper(utils);
+        this.otmMapper = new GraphOtmMapper_1.GraphOtmMapper();
+        this.mtoMapper = new GraphMtoMapper_1.GraphMtoMapper();
     }
-    addEntity(entityAlias, dbEntity) {
-        return this.utils.Schema.getNewEntity(dbEntity);
+    addEntity(entityAlias, dbEntity, airDb, schemaUtils) {
+        return schemaUtils.getNewEntity(dbEntity, airDb);
     }
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject[propertyName] = propertyValue;
-        return this.utils.objectExists(propertyValue);
+        return air_control_1.objectExists(propertyValue);
     }
-    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos) {
-        if (this.addManyToOneStub(resultObject, propertyName, relationInfos)) {
-            const relatedEntityId = this.utils.Schema.getIdKey(resultObject[propertyName], relationDbEntity);
+    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, schemaUtils) {
+        const oneToManyStubAdded = this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils);
+        if (oneToManyStubAdded) {
+            const relatedEntityId = schemaUtils.getIdKey(resultObject[propertyName], relationDbEntity);
             this.bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId);
         }
     }
@@ -43,9 +45,9 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
         resultObject[propertyName] = null;
         // Nothing to do for bridged parser - bridging will map blanks, where possible
     }
-    bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject) {
+    bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, schemaUtils) {
         resultObject[propertyName] = childResultObject;
-        const relatedEntityId = this.utils.Schema.getIdKey(resultObject[propertyName], relationDbEntity);
+        const relatedEntityId = schemaUtils.getIdKey(resultObject[propertyName], relationDbEntity);
         this.bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId);
     }
     bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId) {
@@ -79,14 +81,14 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
     bufferOneToManyStub(otmDbEntity, otmPropertyName) {
         this.bufferOneToMany(otmDbEntity, otmPropertyName);
     }
-    bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject) {
+    bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject, schemaUtils) {
         this.bufferOneToMany(otmDbEntity, propertyName);
-        let childResultsArray = air_control_1.newMappedEntityArray(this.utils, relationDbEntity);
+        let childResultsArray = air_control_1.newMappedEntityArray(schemaUtils, relationDbEntity);
         childResultsArray.put(childResultObject);
         resultObject[propertyName] = childResultsArray;
     }
-    bufferBlankOneToMany(entityAlias, resultObject, otmEntityName, propertyName, relationDbEntity) {
-        resultObject[propertyName] = air_control_1.newMappedEntityArray(this.utils, relationDbEntity);
+    bufferBlankOneToMany(entityAlias, resultObject, otmEntityName, propertyName, relationDbEntity, schemaUtils) {
+        resultObject[propertyName] = air_control_1.newMappedEntityArray(schemaUtils, relationDbEntity);
     }
     bufferOneToMany(otmDbEntity, otmPropertyName) {
         this.otmStubBuffer.push({
@@ -95,21 +97,21 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
             otmObject: null
         });
     }
-    flushEntity(entityAlias, dbEntity, selectClauseFragment, entityIdValue, resultObject) {
+    flushEntity(entityAlias, dbEntity, selectClauseFragment, entityIdValue, resultObject, schemaUtils) {
         if (!entityIdValue) {
             throw `No Id provided for entity '${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'`;
         }
-        let currentEntity = this.getEntityToFlush(dbEntity, selectClauseFragment, entityIdValue, resultObject);
-        this.flushRelationStubBuffers(entityIdValue, currentEntity, dbEntity);
+        let currentEntity = this.getEntityToFlush(dbEntity, selectClauseFragment, entityIdValue, resultObject, schemaUtils);
+        this.flushRelationStubBuffers(entityIdValue, currentEntity, dbEntity, schemaUtils);
         return currentEntity;
     }
-    getEntityToFlush(dbEntity, selectClauseFragment, idValue, resultObject) {
+    getEntityToFlush(dbEntity, selectClauseFragment, idValue, resultObject, schemaUtils) {
         if (!idValue) {
             throw `Entity ID not specified for entity '${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'.`;
         }
-        let entityMapForName = this.utils.ensureChildMap(this.utils.ensureChildArray(this.entityMapBySchemaAndTableIndexes, dbEntity.schemaVersion.schema.index), dbEntity.index);
+        let entityMapForName = ground_control_1.ensureChildMap(ground_control_1.ensureChildArray(this.entityMapBySchemaAndTableIndexes, dbEntity.schemaVersion.schema.index), dbEntity.index);
         let existingEntity = entityMapForName[idValue];
-        let currentEntity = this.mergeEntities(existingEntity, resultObject, dbEntity, selectClauseFragment);
+        let currentEntity = this.mergeEntities(existingEntity, resultObject, dbEntity, selectClauseFragment, schemaUtils);
         entityMapForName[idValue] = currentEntity;
         return currentEntity;
     }
@@ -125,11 +127,11 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
      * @param entityRelationMap
      * @returns {any}
      */
-    mergeEntities(source, target, dbEntity, selectClauseFragment) {
+    mergeEntities(source, target, dbEntity, selectClauseFragment, schemaUtils) {
         if (!source || target === source) {
             return target;
         }
-        const id = this.utils.Schema.getIdKey(target, dbEntity);
+        const id = schemaUtils.getIdKey(target, dbEntity);
         for (let propertyName in selectClauseFragment) {
             if (selectClauseFragment[propertyName] === undefined) {
                 continue;
@@ -138,7 +140,7 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
             // Merge properties (conflicts detected at query parsing time):
             if (!dbProperty.relation || !dbProperty.relation.length) {
                 // If source property doesn't exist
-                if (this.utils.Schema.isEmpty(source[propertyName])) {
+                if (schemaUtils.isEmpty(source[propertyName])) {
                     // set the source property to value of target
                     source[propertyName] = target[propertyName];
                 }
@@ -150,9 +152,11 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
                 const childSelectClauseFragment = selectClauseFragment[propertyName];
                 // For stubs (conflicts detected at query parsing time)
                 if (childSelectClauseFragment == null) {
-                    // For Many-to-One stubs, assume they are are the same and don't detect conflicts, just merge
+                    // For Many-to-One stubs, assume they are are the same and don't detect
+                    // conflicts, just merge
                     source[propertyName] = target[propertyName];
-                    // Don't process One-to-Many stubs yet (not all related MTOs may have been collected).
+                    // Don't process One-to-Many stubs yet (not all related MTOs may have been
+                    // collected).
                 }
                 // For actual objects
                 else {
@@ -167,14 +171,17 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
                                 source[propertyName] = target[propertyName];
                             }
                             // Else if target property doesn't exist, keep the source value
-                            // Assume that the child objects have already been merged themselves and don't process
+                            // Assume that the child objects have already been merged themselves and
+                            // don't process
                             break;
                         case ground_control_1.EntityRelationType.ONE_TO_MANY:
                             let sourceArray = source[propertyName];
                             const targetArray = target[propertyName];
-                            // Because parseQueryResult is depth-first, all child objects have already been processed
-                            // TODO: this will probably fail, since the merged in array should always have only one entity in it
-                            // because it is created for a single result set row.
+                            // Because parseQueryResult is depth-first, all child objects have already
+                            // been processed
+                            // TODO: this will probably fail, since the merged in array should always
+                            // have only one entity in it because it is created for a single result set
+                            // row.
                             if (this.config && this.config.strict) {
                                 if ((!sourceArray && targetArray)
                                     || (!targetArray && sourceArray)
@@ -185,7 +192,7 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
                             const sourceSet = {};
                             if (sourceArray) {
                                 sourceArray.forEach((sourceChild) => {
-                                    const sourceChildIdValue = this.utils.Schema.getIdKey(sourceChild, childDbEntity);
+                                    const sourceChildIdValue = schemaUtils.getIdKey(sourceChild, childDbEntity);
                                     sourceSet[sourceChildIdValue] = sourceChild;
                                 });
                             }
@@ -195,7 +202,7 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
                             }
                             if (targetArray) {
                                 targetArray.forEach((targetChild) => {
-                                    const targetChildIdValue = this.utils.Schema.getIdKey(targetChild, childDbEntity);
+                                    const targetChildIdValue = schemaUtils.getIdKey(targetChild, childDbEntity);
                                     if (this.config && this.config.strict && !sourceSet[targetChildIdValue]) {
                                         throw `One-to-Many child arrays don't match for '${dbEntity.name}.${dbProperty.name}', Id: ${id}`;
                                     }
@@ -217,7 +224,7 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
         }
         return source;
     }
-    flushRelationStubBuffers(entityIdValue, currentEntity, dbEntity) {
+    flushRelationStubBuffers(entityIdValue, currentEntity, dbEntity, schemaUtils) {
         let otmStubBuffer = this.otmStubBuffer;
         this.otmStubBuffer = [];
         otmStubBuffer.forEach((otmStub) => {
@@ -228,18 +235,18 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
         this.mtoStubBuffer = [];
         mtoStubBuffer.forEach((mtoStub) => {
             mtoStub.mtoParentObject = currentEntity;
-            this.otmMapper.addMtoReference(mtoStub, entityIdValue, dbEntity);
+            this.otmMapper.addMtoReference(mtoStub, entityIdValue, dbEntity, schemaUtils);
             this.mtoMapper.addMtoReference(mtoStub, entityIdValue);
         });
     }
     flushRow() {
         // Nothing to do, bridged queries don't rely on rows changing
     }
-    bridge(parsedResults, selectClauseFragment) {
+    bridge(parsedResults, selectClauseFragment, schemaUtils) {
         this.mtoMapper.populateMtos(this.entityMapBySchemaAndTableIndexes);
         this.otmMapper.populateOtms(this.entityMapBySchemaAndTableIndexes, !this.config || this.config.mapped);
         // merge any out of order entity references (there shouldn't be any)
-        let resultMEA = air_control_1.newMappedEntityArray(this.utils, this.rootDbEntity);
+        let resultMEA = air_control_1.newMappedEntityArray(schemaUtils, this.rootDbEntity);
         resultMEA.putAll(parsedResults);
         if (!this.config || this.config.mapped) {
             return resultMEA;

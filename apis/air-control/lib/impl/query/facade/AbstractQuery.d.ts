@@ -1,5 +1,6 @@
 import { JSONFieldInGroupBy, JSONFieldInOrderBy, JsonNonEntityQuery, JSONRelation, JsonStatement } from '@airport/ground-control';
-import { IFieldUtils, IQueryUtils } from '../../..';
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { IEntityAliases, IFieldColumnAliases, Parameter } from '../../../lingo/core/entity/Aliases';
 import { IEntityRelationFrom, IFrom } from '../../../lingo/core/entity/Entity';
 import { IFieldInOrderBy } from '../../../lingo/core/field/FieldInOrderBy';
@@ -23,7 +24,7 @@ export declare abstract class AbstractQuery implements IAbstractQuery {
     protected getNonEntityQuery(rawQuery: RawNonEntityQuery, jsonQuery: JsonNonEntityQuery, createSelectCallback: {
         (jsonQuery: JsonNonEntityQuery): void;
     }, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonNonEntityQuery;
-    protected fromClauseToJSON(fromClause: (IFrom | IEntityRelationFrom | RawTreeQuery<any>)[]): JSONRelation[];
+    protected fromClauseToJSON(fromClause: (IFrom | IEntityRelationFrom | RawTreeQuery<any>)[], queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation[];
     protected groupByClauseToJSON(groupBy: IQOperableField<any, any, any, any>[]): JSONFieldInGroupBy[];
     protected orderByClauseToJSON(orderBy: IFieldInOrderBy<any>[]): JSONFieldInOrderBy[];
 }

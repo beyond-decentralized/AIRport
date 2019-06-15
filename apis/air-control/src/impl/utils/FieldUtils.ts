@@ -1,11 +1,12 @@
-import {JsonFieldQuery}   from "@airport/ground-control";
-import {IQueryUtils}      from '../..'
-import {IEntityAliases}   from "../../lingo/core/entity/Aliases";
-import {IQOrderableField} from "../../lingo/core/field/Field";
-import {RawFieldQuery}    from "../../lingo/query/facade/FieldQuery";
-import {IFieldUtils}      from "../../lingo/utils/FieldUtils";
-import {IUtils}           from "../../lingo/utils/Utils";
-import {FieldQuery}       from "../query/facade/FieldQuery";
+import {DI}               from '@airport/di'
+import {JsonFieldQuery}   from '@airport/ground-control'
+import {FIELD_UTILS}      from '../../diTokens'
+import {IEntityAliases}   from '../../lingo/core/entity/Aliases'
+import {IQOrderableField} from '../../lingo/core/field/Field'
+import {RawFieldQuery}    from '../../lingo/query/facade/FieldQuery'
+import {IFieldUtils}      from '../../lingo/utils/FieldUtils'
+import {IQueryUtils}      from '../../lingo/utils/QueryUtils'
+import {FieldQuery}       from '../query/facade/FieldQuery'
 
 
 declare function require(moduleName: string): any;
@@ -13,12 +14,7 @@ declare function require(moduleName: string): any;
 export class FieldUtils
 	implements IFieldUtils {
 
-	FieldQuery: typeof FieldQuery;
-
-	constructor(
-		private utils: IUtils
-	) {
-	}
+	FieldQuery: typeof FieldQuery
 
 	getFieldQueryJson<IQF extends IQOrderableField<IQF>>(
 		fieldSubQuery: RawFieldQuery<IQF>,
@@ -26,10 +22,11 @@ export class FieldUtils
 		queryUtils: IQueryUtils
 	): JsonFieldQuery {
 		if (!this.FieldQuery) {
-			this.FieldQuery = require('../query/facade/FieldQuery').FieldQuery;
+			this.FieldQuery = require('../query/facade/FieldQuery').FieldQuery
 		}
-		let subSelectQuery = new this.FieldQuery(fieldSubQuery, entityAliases);
+		let subSelectQuery = new this.FieldQuery(fieldSubQuery, entityAliases)
 
-		return subSelectQuery.toJSON(queryUtils, this);
+		return subSelectQuery.toJSON(queryUtils, this)
 	}
 }
+DI.set(FIELD_UTILS, FieldUtils)

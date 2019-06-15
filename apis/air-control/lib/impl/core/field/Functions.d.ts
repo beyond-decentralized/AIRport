@@ -1,5 +1,5 @@
 import { JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONFunctionOperation, JSONSqlFunctionCall, JsonTreeQuery, OperationCategory, SqlOperator } from '@airport/ground-control';
-import { IQUntypedField } from '../../..';
+import { IQUntypedField } from '../../../lingo/core/field/UntypedField';
 import { IQBooleanField } from '../../../lingo/core/field/BooleanField';
 import { IQDateField } from '../../../lingo/core/field/DateField';
 import { absFunction, addFunction, avgFunction, concatenateFunction, countFunction, distinctFunction, divideFunction, exceptFunction, existsFunction, formatFunction, intersectFunction, IQDistinctFunction, IQExistsFunction, lcaseFunction, lenFunction, maxFunction, midFunction, minFunction, minusFunction, modulusFunction, multiplyFunction, nowFunction, plusFunction, replaceFunction, roundFunction, subtractFunction, sumFunction, trimFunction, ucaseFunction, unionAllFunction, unionFunction } from '../../../lingo/core/field/Functions';
@@ -7,10 +7,8 @@ import { IQNumberField } from '../../../lingo/core/field/NumberField';
 import { IQStringField } from '../../../lingo/core/field/StringField';
 import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery';
 import { ITreeEntity, RawTreeQuery } from '../../../lingo/query/facade/TreeQuery';
-import { IUtils } from '../../../lingo/utils/Utils';
 import { IAppliable } from './Appliable';
 import { QOperableField } from './OperableField';
-export declare function setUtilsForFunctions(utilsForFunctions: IUtils): void;
 export declare const abs: absFunction;
 export declare const avg: avgFunction;
 export declare function getFunctionObject<T extends boolean | Date | number | string>(value: T | RawFieldQuery<any>): QOperableField<T, any, any, any>;

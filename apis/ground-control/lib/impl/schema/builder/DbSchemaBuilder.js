@@ -1,11 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const __1 = require("../../..");
-exports.test = 2;
+const SchemaStatus_1 = require("../../../lingo/schema/SchemaStatus");
+const DatastructureUtils_1 = require("../../utils/DatastructureUtils");
 class DbSchemaBuilder {
-    constructor(utils) {
-        this.utils = utils;
-    }
     buildDbSchemaWithoutReferences(jsonSchema, allSchemas, dictionary) {
         const entities = [];
         const entityMapByName = {};
@@ -45,7 +42,7 @@ class DbSchemaBuilder {
             name: jsonSchema.name,
             scope: null,
             sinceVersion: dbSchemaVersion,
-            status: __1.SchemaStatus.CURRENT,
+            status: SchemaStatus_1.SchemaStatus.CURRENT,
             versions: [dbSchemaVersion]
         };
         dbSchemaVersion.schema = dbSchema;
@@ -191,7 +188,7 @@ class DbSchemaBuilder {
             const oneTableIndex = relationColumnRef.oneTableIndex;
             const oneRelationIndex = relationColumnRef.oneRelationIndex;
             const oneColumnIndex = relationColumnRef.oneColumnIndex;
-            const manyRelationColumnMap = this.utils.ensureChildMap(this.utils.ensureChildMap(this.utils.ensureChildMap(this.utils.ensureChildMap(dictionary.dbColumnRelationMapByManySide, manySchema.name), manyTableIndex), manyRelationIndex), manySchema.domain);
+            const manyRelationColumnMap = DatastructureUtils_1.ensureChildMap(DatastructureUtils_1.ensureChildMap(DatastructureUtils_1.ensureChildMap(DatastructureUtils_1.ensureChildMap(dictionary.dbColumnRelationMapByManySide, manySchema.name), manyTableIndex), manyRelationIndex), manySchema.domain);
             manyRelationColumnMap[manyColumnIndex] = {
                 domain: oneSchema.domain,
                 schemaName: oneSchema.name,
@@ -231,7 +228,8 @@ class DbSchemaBuilder {
      * 1) Traffic Pattern
      * 2) Holding Pattern
      *
-     * Then the schema for the application being loaded is run, in order of the dependency graph:
+     * Then the schema for the application being loaded is run, in order of the dependency
+     * graph:
      *
      * 3) App schema grand-dependency
      * 4) App schema dependency

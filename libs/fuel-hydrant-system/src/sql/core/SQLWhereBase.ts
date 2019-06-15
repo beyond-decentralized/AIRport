@@ -61,8 +61,6 @@ export abstract class SQLWhereBase
 	protected parameterReferences: (string | number)[]                              = []
 
 	constructor(
-		protected airportDb: IAirportDatabase,
-		protected utils: IUtils,
 		protected dbEntity: DbEntity,
 		protected dialect: SQLDialect,
 	) {

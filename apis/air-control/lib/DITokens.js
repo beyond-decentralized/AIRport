@@ -7,5 +7,4 @@ exports.FIELD_UTILS = di_1.diToken();
 exports.Q_METADATA_UTILS = di_1.diToken();
 exports.QUERY_UTILS = di_1.diToken();
 exports.SCHEMA_UTILS = di_1.diToken();
-exports.UTILS = di_1.diToken();
 //# sourceMappingURL=diTokens.js.map

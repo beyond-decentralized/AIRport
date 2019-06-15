@@ -18,26 +18,23 @@ function getObjectResultParser(utils, queryResultType, config, rootDbEntity) {
     switch (queryResultType) {
         case ground_control_1.QueryResultType.ENTITY_GRAPH:
             let EntityGraphResultParserClass = require('./EntityGraphResultParser').EntityGraphResultParser;
-            return new EntityGraphResultParserClass(utils, config, rootDbEntity);
+            return new EntityGraphResultParserClass(config, rootDbEntity);
         case ground_control_1.QueryResultType.ENTITY_TREE:
             let EntityTreeResultParserClass = require('./EntityTreeResultParser').EntityTreeResultParser;
-            return new EntityTreeResultParserClass(utils);
+            return new EntityTreeResultParserClass();
         default:
             throw `ObjectQueryParser not supported for QueryResultType: ${queryResultType}`;
     }
 }
 exports.getObjectResultParser = getObjectResultParser;
 class AbstractObjectResultParser {
-    constructor(utils) {
-        this.utils = utils;
-    }
-    addManyToOneStub(resultObject, propertyName, relationInfos) {
+    addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils) {
         let manyToOneStub = {};
         air_control_1.isStub(manyToOneStub);
         resultObject[propertyName] = manyToOneStub;
         let haveAllIds = true;
         relationInfos.forEach((relationInfo) => {
-            if (this.utils.Schema.isIdEmpty(relationInfo.value)) {
+            if (schemaUtils.isIdEmpty(relationInfo.value)) {
                 haveAllIds = false;
                 return;
             }

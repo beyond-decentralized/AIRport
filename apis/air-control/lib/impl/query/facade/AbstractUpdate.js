@@ -9,8 +9,8 @@ class AbstractUpdate extends AbstractQuery_1.AbstractQuery {
     toJSON(queryUtils, fieldUtils) {
         return {
             U: this.rawUpdate.update
-                .__driver__.getRelationJson(this.columnAliases),
-            S: this.setToJSON(this.rawUpdate.set),
+                .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils),
+            S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils),
             W: queryUtils.whereClauseToJSON(this.rawUpdate.where, this.columnAliases, fieldUtils)
         };
     }

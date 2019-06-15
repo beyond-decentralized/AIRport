@@ -1,4 +1,4 @@
-import { IAirportDatabase, IQEntityInternal, IUtils, Parameter } from '@airport/air-control';
+import { IQEntityInternal, Parameter } from '@airport/air-control';
 import { ColumnIndex, DbColumn, DbEntity, JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONEntityRelation, JsonFieldQuery, SchemaMap, SchemaVersionId, SqlOperator, TableIndex } from '@airport/ground-control';
 import { ISQLQueryAdaptor, ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor';
 import { IValidator } from '../../validation/Validator';
@@ -13,8 +13,6 @@ export declare enum ClauseType {
     FUNCTION_CALL = 3
 }
 export declare abstract class SQLWhereBase implements ISqlValueProvider {
-    protected airportDb: IAirportDatabase;
-    protected utils: IUtils;
     protected dbEntity: DbEntity;
     protected dialect: SQLDialect;
     protected fieldMap: SchemaMap;
@@ -27,7 +25,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected sqlAdaptor: ISQLQueryAdaptor;
     protected validator: IValidator;
     protected parameterReferences: (string | number)[];
-    constructor(airportDb: IAirportDatabase, utils: IUtils, dbEntity: DbEntity, dialect: SQLDialect);
+    constructor(dbEntity: DbEntity, dialect: SQLDialect);
     getParameters(parameterMap: {
         [alias: string]: Parameter;
     }): any[];

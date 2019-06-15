@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
 // For OtM mapping in bridged queries
 class GraphOtmMapper {
-    constructor(utils) {
-        this.utils = utils;
+    constructor() {
         // Map of MtO referred objects by OtM references
         // [] OTM Reference Entity Schema Index
         // [] OTM Reference Entity Index
@@ -14,14 +14,14 @@ class GraphOtmMapper {
         // [] OtM reference Entity Index
         this.otmEntityReferenceMap = [];
     }
-    addMtoReference(mtoStubReference, mtoEntityId, dbEntity) {
+    addMtoReference(mtoStubReference, mtoEntityId, dbEntity, schemaUtils) {
         // If the @OneToMany({ mappedBy: ... }) is missing, there is nothing to map to
         if (!mtoStubReference.otmEntityField) {
             return;
         }
         // Add into mtoEntityReferenceMap
         const otmDbEntity = mtoStubReference.otmDbEntity;
-        let mtoEntityReferenceMapForEntity = this.utils.ensureChildMap(this.utils.ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.schemaVersion.schema.index), otmDbEntity.index);
+        let mtoEntityReferenceMapForEntity = ground_control_1.ensureChildMap(ground_control_1.ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.schemaVersion.schema.index), otmDbEntity.index);
         let mapForOtmEntity = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId];
         if (!mapForOtmEntity) {
             mapForOtmEntity = {};
@@ -29,15 +29,16 @@ class GraphOtmMapper {
         }
         let mtoCollection = mapForOtmEntity[mtoStubReference.otmEntityField];
         if (!mtoCollection) {
-            mtoCollection = air_control_1.newMappedEntityArray(this.utils, dbEntity);
-            mapForOtmEntity[mtoStubReference.otmEntityField] = mtoCollection;
+            mtoCollection = air_control_1.newMappedEntityArray(schemaUtils, dbEntity);
+            mapForOtmEntity[mtoStubReference.otmEntityField]
+                = mtoCollection;
         }
         mtoCollection.put(mtoStubReference.mtoParentObject);
     }
     addOtmReference(otmStubReference, otmEntityIdValue) {
         // Add into otoEntityReferenceMap
         const otmDbEntity = otmStubReference.otmDbEntity;
-        let mtoEntityReferenceMapForEntity = this.utils.ensureChildMap(this.utils.ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.schemaVersion.schema.index), otmDbEntity.index);
+        let mtoEntityReferenceMapForEntity = ground_control_1.ensureChildMap(ground_control_1.ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.schemaVersion.schema.index), otmDbEntity.index);
         let otmRecordByPropertyName = mtoEntityReferenceMapForEntity[otmEntityIdValue];
         if (!otmRecordByPropertyName) {
             otmRecordByPropertyName = {};

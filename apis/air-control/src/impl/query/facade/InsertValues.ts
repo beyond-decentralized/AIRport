@@ -9,6 +9,8 @@ import {
 }                                from '../../../lingo/core/entity/Entity'
 import {IQOperableFieldInternal} from '../../../lingo/core/field/OperableField'
 import {RawInsertValues}         from '../../../lingo/query/facade/InsertValues'
+import {IFieldUtils}             from '../../../lingo/utils/FieldUtils'
+import {IQueryUtils}             from '../../../lingo/utils/QueryUtils'
 import {AbstractInsertValues}    from './AbstractInsertValues'
 
 /**
@@ -19,10 +21,14 @@ import {AbstractInsertValues}    from './AbstractInsertValues'
 export class InsertValues<IQE extends IQEntity>
 	extends AbstractInsertValues<IQE, RawInsertValues<IQE>> {
 
-	toJSON(): JsonInsertValues {
+	toJSON(
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
+	): JsonInsertValues {
 		const insertInto            = <JSONEntityRelation>
 			(<IQEntityInternal><any>this.rawInsertValues.insertInto)
-				.__driver__.getRelationJson(this.columnAliases)
+				.__driver__.getRelationJson(
+					this.columnAliases, queryUtils, fieldUtils)
 		const dbColumns: DbColumn[] = []
 		const columnIndexes         = this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map(
 			column => {
@@ -35,7 +41,8 @@ export class InsertValues<IQE extends IQEntity>
 		return {
 			II: insertInto,
 			C: columnIndexes,
-			V: this.valuesToJSON(this.rawInsertValues.values, dbColumns)
+			V: this.valuesToJSON(
+				this.rawInsertValues.values, dbColumns, queryUtils, fieldUtils)
 		}
 	}
 

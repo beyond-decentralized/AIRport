@@ -1,4 +1,4 @@
-import {DI}                 from '@airport/di'
+import {DI}     from '@airport/di'
 import {
 	CascadeType,
 	CRUDOperation,
@@ -11,8 +11,11 @@ import {
 	repositoryEntity,
 	SchemaIndex,
 	TableIndex
-}                           from '@airport/ground-control'
-import {AIR_DB}             from '../../diTokens'
+}               from '@airport/ground-control'
+import {
+	AIR_DB,
+	SCHEMA_UTILS
+}                           from '../../diTokens'
 import {
 	IAirportDatabase,
 	QSchemaInternal
@@ -29,9 +32,9 @@ import {
 	IdKeysByIdColumnIndex,
 	ISchemaUtils
 }                           from '../../lingo/utils/SchemaUtils'
-import {IUtils}             from '../../lingo/utils/Utils'
 import {QEntityConstructor} from '../core/entity/Entity'
 import {markAsStub}         from '../core/entity/EntityState'
+import {valuesEqual}        from '../Utils'
 
 
 interface ColumnValueForPath {
@@ -44,20 +47,12 @@ export class SchemaUtils
 
 	static TEMP_ID: number = 0
 
-	AIR_DB = AIR_DB
-	DI     = DI
-
-	constructor(
-		private airportDb: IAirportDatabase,
-		private utils: IUtils
-	) {
-	}
-
-	async getDbEntity(
+	getDbEntity(
 		schemaIndex: SchemaIndex,
 		tableIndex: TableIndex,
-	): Promise<DbEntity> {
-		return (await this.DI.get(this.AIR_DB)).schemas[schemaIndex].currentVersion.entities[tableIndex]
+		airDb: IAirportDatabase
+	): DbEntity {
+		return airDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
 	}
 
 	isRepositoryId(
@@ -218,7 +213,7 @@ export class SchemaUtils
 			last,
 			current
 		) => {
-			if (!this.utils.valuesEqual(last.value, current.value, true)) {
+			if (!valuesEqual(last.value, current.value, true)) {
 				throw `Values differ for ${dbEntity.name}.${dbColumn.name}:
 						'${last.path.join('.')}' = ${last.value}
 						'${current.path.join('.')}' = ${current.value}`
@@ -536,3 +531,4 @@ export class SchemaUtils
 	}
 
 }
+DI.set(SCHEMA_UTILS, SchemaUtils)

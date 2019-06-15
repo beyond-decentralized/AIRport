@@ -1,53 +1,67 @@
-import {QueryResultType}     from "@airport/ground-control";
-import {IObservable}          from "@airport/observe";
-import {IQOrderableField}    from "../../../lingo/core/field/Field";
-import {IDatabaseFacade}     from "../../../lingo/core/repository/DatabaseFacade";
-import {INonEntitySearchOne} from "../../../lingo/query/api/NonEntitySearchOne";
-import {RawFieldQuery}       from "../../../lingo/query/facade/FieldQuery";
-import {RawSheetQuery}       from "../../../lingo/query/facade/SheetQuery";
+import {DI}                   from '@airport/di'
+import {QueryResultType}      from '@airport/ground-control'
+import {
+	IObservable,
+	Observable
+}                             from '@airport/observe'
+import {ENTITY_UTILS}         from '../../../diTokens'
+import {IQOrderableField}     from '../../../lingo/core/field/Field'
+import {IDatabaseFacade}      from '../../../lingo/core/repository/DatabaseFacade'
+import {INonEntitySearchOne}  from '../../../lingo/query/api/NonEntitySearchOne'
+import {RawFieldQuery}        from '../../../lingo/query/facade/FieldQuery'
+import {RawNonEntityQuery}    from '../../../lingo/query/facade/NonEntityQuery'
+import {RawSheetQuery}        from '../../../lingo/query/facade/SheetQuery'
 import {
 	ITreeEntity,
 	RawTreeQuery
-}                            from "../../../lingo/query/facade/TreeQuery";
-import {IUtils}              from "../../../lingo/utils/Utils";
-import {FieldQuery}          from "../facade/FieldQuery";
-import {SheetQuery}          from "../facade/SheetQuery";
-import {TreeQuery}           from "../facade/TreeQuery";
+}                             from '../../../lingo/query/facade/TreeQuery'
+import {FieldQuery}           from '../facade/FieldQuery'
+import {DistinguishableQuery} from '../facade/NonEntityQuery'
+import {SheetQuery}           from '../facade/SheetQuery'
+import {TreeQuery}            from '../facade/TreeQuery'
 
 /**
  * Created by Papa on 11/12/2016.
  */
 
-export class NonEntitySearchOne implements INonEntitySearchOne {
+export class NonEntitySearchOne
+	implements INonEntitySearchOne {
 
 	constructor(
-		private dbFacade: IDatabaseFacade,
-		private utils: IUtils,
+		private dbFacade: IDatabaseFacade
 	) {
 	}
 
 	tree<ITE extends ITreeEntity>(
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
 	): IObservable<ITE> {
-		const treeQuery: TreeQuery<ITE>
-			      = new TreeQuery(this.utils.Entity.getQuery(rawTreeQuery), this.utils);
-		return this.dbFacade.entity.searchOne<ITE>(null, treeQuery, QueryResultType.TREE);
+		return Observable.from(this.doSearch(
+			rawTreeQuery, TreeQuery, QueryResultType.TREE))
 	}
 
 	sheet(
 		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery }
 	): IObservable<any[]> {
-		const sheetQuery: SheetQuery
-			      = new SheetQuery(this.utils.Entity.getQuery(rawSheetQuery), this.utils);
-		return this.dbFacade.entity.searchOne<any>(null, sheetQuery, QueryResultType.SHEET);
+		return Observable.from(this.doSearch(
+			rawSheetQuery, SheetQuery, QueryResultType.SHEET))
 	}
 
 	field<IQF extends IQOrderableField<IQF>>(
 		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
 	): IObservable<any> {
-		const fieldQuery: FieldQuery<IQF>
-			      = new FieldQuery(this.utils.Entity.getQuery(rawFieldQuery), this.utils);
-		return this.dbFacade.entity.searchOne<any>(null, fieldQuery, QueryResultType.FIELD);
+		return Observable.from(this.doSearch(
+			rawFieldQuery, FieldQuery, QueryResultType.FIELD))
+	}
+
+	private async doSearch<IQF extends IQOrderableField<IQF>>(
+		rawNonEntityQuery: RawNonEntityQuery | { (...args: any[]): RawNonEntityQuery },
+		QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery,
+		queryResultType: QueryResultType
+	): Promise<IObservable<any>> {
+		const rawQuery                    = (await DI.get(ENTITY_UTILS)).getQuery(rawNonEntityQuery)
+		const query: DistinguishableQuery = new QueryClass(rawQuery)
+		return this.dbFacade.entity.search<any, any[]>(
+			null, query, queryResultType)
 	}
 
 }

@@ -35,9 +35,9 @@ class QEntityDriver {
         this.relations = [];
         this.currentChildIndex = -1;
     }
-    getInstance() {
-        const qEntityConstructor = this.qEntity.__driver__.schemaUtils
-            .getQEntityConstructor(this.dbEntity);
+    getInstance(airDb, schemaUtils) {
+        const qEntityConstructor = schemaUtils
+            .getQEntityConstructor(this.dbEntity, airDb);
         let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType);
         instance.__driver__.currentChildIndex = this.currentChildIndex;
         instance.__driver__.joinWhereClause = this.joinWhereClause;
@@ -63,7 +63,7 @@ class QEntityDriver {
         return QMetadataUtils.getRelationPropertyName(QMetadataUtils.getRelationByIndex(this.qEntity, this.relationIndex));
     }
 */
-    getRelationJson(columnAliases) {
+    getRelationJson(columnAliases, queryUtils, fieldUtils) {
         let jsonRelation = {
             cci: this.currentChildIndex,
             ti: this.dbEntity.index,
@@ -74,13 +74,13 @@ class QEntityDriver {
             si: this.dbEntity.schemaVersion.id
         };
         if (this.joinWhereClause) {
-            this.getJoinRelationJson(jsonRelation, columnAliases);
+            this.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);
         }
         else if (this.dbRelation) {
-            this.getEntityRelationJson(jsonRelation, columnAliases);
+            this.getEntityRelationJson(jsonRelation);
         }
         else {
-            this.getRootRelationJson(jsonRelation, columnAliases);
+            this.getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);
         }
         return jsonRelation;
     }
@@ -152,9 +152,10 @@ function QTree(fromClausePosition = [], subQuery) {
 exports.QTree = QTree;
 qSchemaBuilderUtils_1.extend(QEntity, QTree, {});
 class QTreeDriver extends QEntityDriver {
-    getInstance() {
-        let instance = super.getInstance();
-        instance.__driver__.subQuery = this.subQuery;
+    getInstance(airDb, schemaUtils) {
+        let instance = super.getInstance(airDb, schemaUtils);
+        instance.__driver__
+            .subQuery = this.subQuery;
         return instance;
     }
     // getRelationPropertyName(): string {

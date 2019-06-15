@@ -42,8 +42,10 @@ export class EntityQuery<IEP extends IEntitySelectProperties>
 		fieldUtils: IFieldUtils
 	): JsonEntityQuery<IEP> {
 		return {
-			S: this.selectClauseToJSON(this.rawQuery.select),
-			F: <JSONEntityRelation[]>this.fromClauseToJSON(this.rawQuery.from),
+			S: this.selectClauseToJSON(
+				this.rawQuery.select, queryUtils, fieldUtils),
+			F: <JSONEntityRelation[]>this.fromClauseToJSON(
+				this.rawQuery.from, queryUtils, fieldUtils),
 			W: queryUtils.whereClauseToJSON(
 				this.rawQuery.where, this.columnAliases, fieldUtils),
 			OB: this.orderByClauseToJSON(this.rawQuery.orderBy)

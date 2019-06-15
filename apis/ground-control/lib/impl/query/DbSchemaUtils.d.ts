@@ -1,4 +1,4 @@
-import { SchemaStatus } from '../..';
+import { SchemaStatus } from '../../lingo/schema/SchemaStatus';
 import { ColumnName } from '../../lingo/schema/Property';
 import { DomainName, SchemaName } from '../../lingo/schema/Schema';
 export declare function getSchemaName({ domain, name }: {

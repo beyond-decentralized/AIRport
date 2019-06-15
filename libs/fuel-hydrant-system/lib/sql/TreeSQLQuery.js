@@ -59,13 +59,13 @@ class TreeSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         return selectSqlFragment;
     }
     /**
-     * Entities get merged if they are right next to each other in the result set.  If they are not, they are
-     * treated as separate entities - hence, your sort order matters.
+     * Entities get merged if they are right next to each other in the result set.  If they
+     * are not, they are treated as separate entities - hence, your sort order matters.
      *
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(results) {
+    parseQueryResults(schemaUtils, results) {
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;

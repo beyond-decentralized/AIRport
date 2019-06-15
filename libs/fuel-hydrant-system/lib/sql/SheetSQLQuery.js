@@ -35,7 +35,7 @@ class SheetSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         }).join('');
         return selectSqlFragment;
     }
-    parseQueryResults(results) {
+    parseQueryResults(schemaUtils, results) {
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;

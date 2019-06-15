@@ -13,7 +13,7 @@ class AbstractInsertValues extends AbstractQuery_1.AbstractQuery {
         this.rawInsertValues = rawInsertValues;
         this.columnIndexes = columnIndexes;
     }
-    valuesToJSON(valueSets, dbColumns) {
+    valuesToJSON(valueSets, dbColumns, queryUtils, fieldUtils) {
         // let currentValueIndex = -1;
         // this.values           = [];
         return valueSets.map((valueSet, rowIndex) => {
@@ -27,7 +27,7 @@ class AbstractInsertValues extends AbstractQuery_1.AbstractQuery {
                     // return ++currentValueIndex;
                 }
                 else {
-                    return value.toJSON(this.columnAliases, false);
+                    return value.toJSON(this.columnAliases, false, queryUtils, fieldUtils);
                 }
             });
         });

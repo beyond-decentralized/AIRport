@@ -1,4 +1,10 @@
 import {DbColumn} from '@airport/ground-control'
+import {
+	IFieldUtils
+}                 from '../../../lingo/utils/FieldUtils'
+import {
+	IQueryUtils
+}                 from '../../../lingo/utils/QueryUtils'
 import {IQEntity} from '../../../lingo/core/entity/Entity'
 import {AbstractRawInsertValues} from '../../../lingo/query/facade/InsertValues'
 import {QField} from '../../core/field/Field'
@@ -22,7 +28,9 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 
 	protected valuesToJSON(
 		valueSets: any[][],
-		dbColumns: DbColumn[]
+		dbColumns: DbColumn[],
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): any[][] {
 		// let currentValueIndex = -1;
 		// this.values           = [];
@@ -42,7 +50,8 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 					// this.values.push(getPrimitiveValue(value));
 					// return ++currentValueIndex;
 				} else {
-					return (<QField<any>>value).toJSON(this.columnAliases, false)
+					return (<QField<any>>value).toJSON(
+						this.columnAliases, false, queryUtils, fieldUtils)
 				}
 			})
 		})

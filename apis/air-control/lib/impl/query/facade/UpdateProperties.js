@@ -14,7 +14,7 @@ class UpdateProperties extends AbstractUpdate_1.AbstractUpdate {
     toJSON(queryUtils, fieldUtils) {
         return {
             U: this.rawUpdate.update
-                .__driver__.getRelationJson(this.columnAliases),
+                .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils),
             S: this.setToJSON(this.rawUpdate.set),
             W: queryUtils.whereClauseToJSON(this.rawUpdate.where, this.columnAliases, fieldUtils)
         };

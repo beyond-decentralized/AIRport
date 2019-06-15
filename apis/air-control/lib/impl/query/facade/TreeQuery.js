@@ -12,7 +12,7 @@ exports.FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE = `Entity SELECT clauses can only c
  * A query whose select facade is a collection of properties.
  */
 class MappableQuery extends NonEntityQuery_1.DistinguishableQuery {
-    nonDistinctSelectClauseToJSON(rawSelect) {
+    nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils) {
         let select = {};
         for (let property in rawSelect) {
             let value = rawSelect[property];
@@ -24,7 +24,7 @@ class MappableQuery extends NonEntityQuery_1.DistinguishableQuery {
                 // In that case the last one will set the alias for all of them.
                 // Because the alias only matters for GROUP BY and ORDER BY
                 // that is OK.
-                select[property] = value.toJSON(this.columnAliases, true);
+                select[property] = value.toJSON(this.columnAliases, true, queryUtils, fieldUtils);
             }
             else if (value instanceof OneToManyRelation_1.QOneToManyRelation) {
                 throw `@OneToMany relation objects can cannot be used in SELECT clauses`;
@@ -41,14 +41,12 @@ class MappableQuery extends NonEntityQuery_1.DistinguishableQuery {
                             continue;
                         case 'object':
                             if (value instanceof Date) {
-                                continue;
                             }
                             else if (value === null) {
-                                continue;
                             }
                             else {
                                 isChildObject = true;
-                                select[property] = this.nonDistinctSelectClauseToJSON(value);
+                                select[property] = this.nonDistinctSelectClauseToJSON(value, queryUtils, fieldUtils);
                             }
                     }
                 }
@@ -70,7 +68,7 @@ class TreeQuery extends MappableQuery {
     }
     toJSON(queryUtils, fieldUtils) {
         let jsonMappedQuery = this.getNonEntityQuery(this.rawQuery, {}, (jsonQuery) => {
-            jsonQuery.S = this.selectClauseToJSON(this.rawQuery.select);
+            jsonQuery.S = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils);
         }, queryUtils, fieldUtils);
         return jsonMappedQuery;
     }

@@ -34,7 +34,8 @@ export class Delete<IQE extends IQEntity>
 	): JsonDelete {
 		return {
 			DF: <JSONEntityRelation>(<IQEntityInternal><any>this.rawDelete.deleteFrom)
-				.__driver__.getRelationJson(this.columnAliases),
+				.__driver__.getRelationJson(
+					this.columnAliases, queryUtils, fieldUtils),
 			W: queryUtils.whereClauseToJSON(this.rawDelete.where, this.columnAliases, fieldUtils)
 		}
 	}

@@ -28,7 +28,7 @@ class FieldSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         let selectSqlFragment = this.getFieldSelectFragment(field, SQLWhereBase_1.ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++);
         return selectSqlFragment;
     }
-    parseQueryResults(results) {
+    parseQueryResults(schemaUtils, results) {
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;

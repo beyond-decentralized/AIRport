@@ -7,12 +7,11 @@ const FieldInOrderBy_1 = require("./FieldInOrderBy");
  * Created by Papa on 4/21/2016.
  */
 class QField {
-    constructor(dbColumn, dbProperty, q, objectType, utils) {
+    constructor(dbColumn, dbProperty, q, objectType) {
         this.dbColumn = dbColumn;
         this.dbProperty = dbProperty;
         this.q = q;
         this.objectType = objectType;
-        this.utils = utils;
         this.__appliedFunctions__ = [];
     }
     /**
@@ -38,7 +37,7 @@ class QField {
         appliedField.__fieldSubQuery__ = subQuery;
         return appliedField;
     }
-    toJSON(columnAliases, forSelectClause) {
+    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
@@ -51,7 +50,7 @@ class QField {
             rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.q.__driver__.getRootJoinEntity());
         }
         let jsonField = {
-            af: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases),
+            af: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils),
             si: this.dbProperty.entity.schemaVersion.id,
             ti: this.dbProperty.entity.index,
             fa: alias,
@@ -62,41 +61,41 @@ class QField {
             dt: this.dbColumn.type
         };
         if (this.__fieldSubQuery__) {
-            jsonField.fsq = this.utils.Field.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases);
+            jsonField.fsq = fieldUtils.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases, queryUtils);
             jsonField.ot = ground_control_1.JSONClauseObjectType.FIELD_QUERY;
         }
         return jsonField;
     }
-    operableFunctionToJson(functionObject, columnAliases, forSelectClause) {
+    operableFunctionToJson(functionObject, columnAliases, forSelectClause, queryUtils, fieldUtils) {
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
         }
         return {
-            af: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases),
+            af: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils),
             fa: alias,
             ot: this.objectType,
             dt: this.dbColumn.type,
-            v: this.valueToJSON(functionObject, columnAliases, false)
+            v: this.valueToJSON(functionObject, columnAliases, false, queryUtils, fieldUtils)
         };
     }
     copyFunctions(field) {
         field.__appliedFunctions__ = this.__appliedFunctions__.slice();
         return field;
     }
-    appliedFunctionsToJson(appliedFunctions, columnAliases) {
+    appliedFunctionsToJson(appliedFunctions, columnAliases, queryUtils, fieldUtils) {
         if (!appliedFunctions) {
             return appliedFunctions;
         }
         return appliedFunctions.map((appliedFunction) => {
-            return this.functionCallToJson(appliedFunction, columnAliases);
+            return this.functionCallToJson(appliedFunction, columnAliases, queryUtils, fieldUtils);
         });
     }
-    functionCallToJson(functionCall, columnAliases) {
+    functionCallToJson(functionCall, columnAliases, queryUtils, fieldUtils) {
         let parameters;
         if (functionCall.p) {
             parameters = functionCall.p.map((parameter) => {
-                return this.valueToJSON(parameter, columnAliases, false);
+                return this.valueToJSON(parameter, columnAliases, false, queryUtils, fieldUtils);
             });
         }
         return {
@@ -104,17 +103,17 @@ class QField {
             p: parameters
         };
     }
-    valueToJSON(functionObject, columnAliases, forSelectClause) {
+    valueToJSON(functionObject, columnAliases, forSelectClause, queryUtils, fieldUtils) {
         if (!functionObject) {
             throw `Function object must be provided to valueToJSON function.`;
         }
         let value = functionObject.value;
         switch (typeof value) {
-            case "boolean":
-            case "number":
-            case "string":
+            case 'boolean':
+            case 'number':
+            case 'string':
                 return columnAliases.entityAliases.getParams().getNextAlias(functionObject);
-            case "undefined":
+            case 'undefined':
                 throw `Undefined is not allowed as a query parameter`;
         }
         if (value === null) {
@@ -124,11 +123,11 @@ class QField {
             return columnAliases.entityAliases.getParams().getNextAlias(functionObject);
         }
         if (value instanceof QField) {
-            return value.toJSON(columnAliases, forSelectClause);
+            return value.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils);
         }
         // must be a field sub-query
         let rawFieldQuery = value;
-        return this.utils.Field.getFieldQueryJson(rawFieldQuery, columnAliases.entityAliases);
+        return fieldUtils.getFieldQueryJson(rawFieldQuery, columnAliases.entityAliases, queryUtils);
     }
 }
 exports.QField = QField;

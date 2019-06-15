@@ -1,37 +1,41 @@
 import {
 	JSONClauseField,
 	JSONClauseObjectType
-}                           from "@airport/ground-control";
-import {IQFunction}         from "../../../lingo/core/field/Functions";
-import {RawFieldQuery}      from "../../../lingo/query/facade/FieldQuery";
-import {IUtils}             from "../../../lingo/utils/Utils";
-import {FieldColumnAliases} from "../entity/Aliases";
-import {QField}             from "./Field";
+}                           from '@airport/ground-control'
+import {IQFunction}         from '../../../lingo/core/field/Functions'
+import {RawFieldQuery}      from '../../../lingo/query/facade/FieldQuery'
+import {IFieldUtils}        from '../../../lingo/utils/FieldUtils'
+import {IQueryUtils}        from '../../../lingo/utils/QueryUtils'
+import {FieldColumnAliases} from '../entity/Aliases'
+import {QField}             from './Field'
 
 /**
  * Created by Papa on 11/29/2016.
  */
 
-export class QNullFunction extends QField<QNullFunction> implements IQFunction<boolean | RawFieldQuery<any>> {
+export class QNullFunction
+	extends QField<QNullFunction>
+	implements IQFunction<boolean | RawFieldQuery<any>> {
 
-	parameterAlias: string;
-	value = null;
+	parameterAlias: string
+	value = null
 
-	constructor(
-		utils: IUtils
-	) {
-		super(null, null, null, JSONClauseObjectType.FIELD_FUNCTION, utils);
+	constructor() {
+		super(null, null, null, JSONClauseObjectType.FIELD_FUNCTION)
 	}
 
 	getInstance(): QNullFunction {
-		return this.copyFunctions(new QNullFunction(this.utils));
+		return this.copyFunctions(new QNullFunction())
 	}
 
 	toJSON(
 		columnAliases: FieldColumnAliases,
-		forSelectClause: boolean
+		forSelectClause: boolean,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): JSONClauseField {
-		return this.operableFunctionToJson(this, columnAliases, forSelectClause);
+		return this.operableFunctionToJson(
+			this, columnAliases, forSelectClause, queryUtils, fieldUtils)
 	}
 
 }

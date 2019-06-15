@@ -5,8 +5,8 @@ const Field_1 = require("./Field");
  * Created by Papa on 10/25/2016.
  */
 class QOperableField extends Field_1.QField {
-    constructor(dbColumn, dbProperty, q, objectType, operation, utils) {
-        super(dbColumn, dbProperty, q, objectType, utils);
+    constructor(dbColumn, dbProperty, q, objectType, operation) {
+        super(dbColumn, dbProperty, q, objectType);
         this.operation = operation;
     }
     equals(value) {

@@ -1,29 +1,29 @@
-import {DI}              from '@airport/di'
 import {
 	JSONFieldInGroupBy,
 	JSONFieldInOrderBy,
 	JsonNonEntityQuery,
 	JSONRelation,
 	JsonStatement
-}                        from '@airport/ground-control'
+}                          from '@airport/ground-control'
 import {
-	IFieldUtils,
+	IFieldUtils
+}                          from '../../../lingo/utils/FieldUtils'
+import {
 	IQueryUtils
-} from '../../..'
-import {QUERY_UTILS}     from '../../../diTokens'
+}                          from '../../../lingo/utils/QueryUtils'
 import {
 	IEntityAliases,
 	IFieldColumnAliases,
 	Parameter
-}                        from '../../../lingo/core/entity/Aliases'
+}                          from '../../../lingo/core/entity/Aliases'
 import {
 	IEntityRelationFrom,
 	IFrom,
 	IQEntityInternal
-}                        from '../../../lingo/core/entity/Entity'
-import {IFieldInOrderBy} from '../../../lingo/core/field/FieldInOrderBy'
-import {IQOperableField} from '../../../lingo/core/field/OperableField'
-import {IAbstractQuery}  from '../../../lingo/query/facade/AbstractQuery'
+}                          from '../../../lingo/core/entity/Entity'
+import {IFieldInOrderBy}   from '../../../lingo/core/field/FieldInOrderBy'
+import {IQOperableField}   from '../../../lingo/core/field/OperableField'
+import {IAbstractQuery}    from '../../../lingo/query/facade/AbstractQuery'
 import {RawNonEntityQuery} from '../../../lingo/query/facade/NonEntityQuery'
 import {RawTreeQuery}      from '../../../lingo/query/facade/TreeQuery'
 import {EntityAliases,}    from '../../core/entity/Aliases'
@@ -65,7 +65,7 @@ export abstract class AbstractQuery
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): JsonNonEntityQuery {
-		let from    = this.fromClauseToJSON(rawQuery.from)
+		let from    = this.fromClauseToJSON(rawQuery.from, queryUtils, fieldUtils)
 		jsonQuery.F = from
 		if (createSelectCallback) {
 			createSelectCallback(jsonQuery)
@@ -84,7 +84,9 @@ export abstract class AbstractQuery
 	}
 
 	protected fromClauseToJSON(
-		fromClause: (IFrom | IEntityRelationFrom | RawTreeQuery<any>)[]
+		fromClause: (IFrom | IEntityRelationFrom | RawTreeQuery<any>)[],
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): JSONRelation[] {
 		if (!fromClause) {
 			if (this.isEntityQuery) {
@@ -102,11 +104,14 @@ export abstract class AbstractQuery
 					throw `Entity FROM clauses can contain only Entities.`
 				}
 			}
-			return (fromEntity as IQEntityInternal).__driver__.getRelationJson(this.columnAliases)
+			return (fromEntity as IQEntityInternal).__driver__
+				.getRelationJson(this.columnAliases, queryUtils, fieldUtils)
 		})
 	}
 
-	protected groupByClauseToJSON(groupBy: IQOperableField<any, any, any, any>[]): JSONFieldInGroupBy[] {
+	protected groupByClauseToJSON(
+		groupBy: IQOperableField<any, any, any, any>[]
+	): JSONFieldInGroupBy[] {
 		if (!groupBy || !groupBy.length) {
 			return null
 		}
@@ -120,7 +125,9 @@ export abstract class AbstractQuery
 		})
 	}
 
-	protected orderByClauseToJSON(orderBy: IFieldInOrderBy<any>[]): JSONFieldInOrderBy[] {
+	protected orderByClauseToJSON(
+		orderBy: IFieldInOrderBy<any>[]
+	): JSONFieldInOrderBy[] {
 		if (!orderBy || !orderBy.length) {
 			return null
 		}

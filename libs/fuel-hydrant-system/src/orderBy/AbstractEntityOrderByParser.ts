@@ -17,7 +17,8 @@ export interface IEntityOrderByParser {
 
 	getOrderByFragment(
 		joinTree: JoinTreeNode,
-		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal }
+		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
+		airDb: IAirportDatabase
 	): string;
 
 }
@@ -34,7 +35,6 @@ export interface INonEntityOrderByParser {
 export abstract class AbstractEntityOrderByParser {
 
 	constructor(
-		protected airportDb: IAirportDatabase,
 		protected rootSelectClauseFragment: any,
 		protected validator: IValidator,
 		protected orderBy?: JSONEntityFieldInOrderBy[]

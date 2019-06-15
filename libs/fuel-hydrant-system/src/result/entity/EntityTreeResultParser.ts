@@ -1,7 +1,12 @@
-import {ReferencedColumnData} from '@airport/air-control'
-import {DbEntity}             from '@airport/ground-control'
-import {TreeResultParser}     from '../TreeResultParser'
-import {IEntityResultParser}  from './IEntityResultParser'
+import {
+	IAirportDatabase,
+	ISchemaUtils,
+	ReferencedColumnData,
+	valuesEqual
+}                            from '@airport/air-control'
+import {DbEntity}            from '@airport/ground-control'
+import {TreeResultParser}    from '../TreeResultParser'
+import {IEntityResultParser} from './IEntityResultParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -9,7 +14,8 @@ import {IEntityResultParser}  from './IEntityResultParser'
 
 /**
  * The goal of this Parser is to determine which objects in the current row are the same
- * as they were in the previous row.  If the objects are the same this parser will merge them.
+ * as they were in the previous row.  If the objects are the same this parser will merge
+ * them.
  */
 export class EntityTreeResultParser
 	extends TreeResultParser
@@ -24,9 +30,11 @@ export class EntityTreeResultParser
 
 	addEntity(
 		entityAlias: string,
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
 	): any {
-		let resultObject                      = this.utils.Schema.getNewEntity(dbEntity)
+		let resultObject                      = schemaUtils.getNewEntity(dbEntity, airDb)
 		this.currentRowObjectMap[entityAlias] = resultObject
 		if (this.objectEqualityMap[entityAlias] !== undefined) {
 			this.objectEqualityMap[entityAlias] = true
@@ -41,9 +49,10 @@ export class EntityTreeResultParser
 		resultObject: any,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		relationInfos: ReferencedColumnData[]
+		relationInfos: ReferencedColumnData[],
+		schemaUtils: ISchemaUtils
 	): void {
-		this.addManyToOneStub(resultObject, propertyName, relationInfos)
+		this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils)
 		this.addManyToOneReference(entityAlias, resultObject, propertyName)
 	}
 
@@ -59,7 +68,7 @@ export class EntityTreeResultParser
 		let lastMtoStub = this.lastRowObjectMap[entityAlias][propertyName]
 
 		let currentMtoStub                  = resultObject[propertyName]
-		this.objectEqualityMap[entityAlias] = this.utils.valuesEqual(lastMtoStub, currentMtoStub, true)
+		this.objectEqualityMap[entityAlias] = valuesEqual(lastMtoStub, currentMtoStub, true)
 	}
 
 	bufferBlankManyToOneStub(

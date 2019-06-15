@@ -27,23 +27,23 @@ function extend(base, sub, methods) {
     return sub;
 }
 exports.extend = extend;
-function getColumnQField(entity, property, q, utils, column) {
+function getColumnQField(entity, property, q, column) {
     switch (column.type) {
         case ground_control_1.SQLDataType.ANY:
-            return new UntypedField_1.QUntypedField(column, property, q, utils);
+            return new UntypedField_1.QUntypedField(column, property, q);
         case ground_control_1.SQLDataType.BOOLEAN:
-            return new BooleanField_1.QBooleanField(column, property, q, utils);
+            return new BooleanField_1.QBooleanField(column, property, q);
         case ground_control_1.SQLDataType.DATE:
-            return new DateField_1.QDateField(column, property, q, utils);
+            return new DateField_1.QDateField(column, property, q);
         case ground_control_1.SQLDataType.NUMBER:
-            return new NumberField_1.QNumberField(column, property, q, utils);
+            return new NumberField_1.QNumberField(column, property, q);
         case ground_control_1.SQLDataType.JSON:
         case ground_control_1.SQLDataType.STRING:
-            return new StringField_1.QStringField(column, property, q, utils);
+            return new StringField_1.QStringField(column, property, q);
     }
 }
 exports.getColumnQField = getColumnQField;
-function getQRelation(entity, property, q, utils, allQSchemas) {
+function getQRelation(entity, property, q, allQSchemas) {
     const relation = property.relation[0];
     switch (relation.relationType) {
         case ground_control_1.EntityRelationType.MANY_TO_ONE:
@@ -51,7 +51,8 @@ function getQRelation(entity, property, q, utils, allQSchemas) {
             const relationSchema = relationEntity.schemaVersion.schema;
             const qIdRelationConstructor = allQSchemas[relationSchema.index]
                 .__qIdRelationConstructors__[relationEntity.index];
-            return new qIdRelationConstructor(relationEntity, property, q, utils);
+            // return new qIdRelationConstructor(relationEntity, property, q)
+            return new qIdRelationConstructor(relation, q);
         case ground_control_1.EntityRelationType.ONE_TO_MANY:
             return new OneToManyRelation_1.QOneToManyRelation(relation, q);
         default:
@@ -66,13 +67,13 @@ function getQEntityConstructor(allQSchemas) {
         entity.properties.forEach((property) => {
             let qFieldOrRelation;
             if (property.relation && property.relation.length) {
-                qFieldOrRelation = getQRelation(entity, property, this, this.utils, allQSchemas);
+                qFieldOrRelation = getQRelation(entity, property, this, allQSchemas);
                 for (const propertyColumn of property.propertyColumns) {
-                    addColumnQField(entity, property, this, this.utils, propertyColumn.column);
+                    addColumnQField(entity, property, this, propertyColumn.column);
                 }
             }
             else {
-                qFieldOrRelation = addColumnQField(entity, property, this, this.utils, property.propertyColumns[0].column);
+                qFieldOrRelation = addColumnQField(entity, property, this, property.propertyColumns[0].column);
             }
             this[property.name] = qFieldOrRelation;
         });
@@ -82,8 +83,8 @@ function getQEntityConstructor(allQSchemas) {
     return ChildQEntity;
 }
 exports.getQEntityConstructor = getQEntityConstructor;
-function addColumnQField(entity, property, q, utils, column) {
-    const qFieldOrRelation = getColumnQField(entity, property, q, utils, column);
+function addColumnQField(entity, property, q, column) {
+    const qFieldOrRelation = getColumnQField(entity, property, q, column);
     q.__driver__.allColumns[column.index]
         = qFieldOrRelation;
     if (column.idIndex || column.idIndex === 0) {
@@ -94,9 +95,9 @@ function addColumnQField(entity, property, q, utils, column) {
 }
 exports.addColumnQField = addColumnQField;
 function getQEntityIdRelationConstructor() {
-    function QEntityIdRelation(entity, relation, qEntity, utils) {
+    function QEntityIdRelation(entity, relation, qEntity) {
         QEntityIdRelation.base.constructor.call(this, relation, qEntity);
-        getQEntityIdFields(this, entity, utils);
+        getQEntityIdFields(this, entity);
         // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
     }
     extend(Relation_1.QRelation, QEntityIdRelation, {});
@@ -125,7 +126,7 @@ exports.getQEntityIdRelationConstructor = getQEntityIdRelationConstructor;
  * @param relationColumnMap  DbColumn map for the current path of properties
  *  (QA.rel2.otherRel), keyed by the column from the One side of the relation
  */
-function getQEntityIdFields(addToObject, entity, utils, parentProperty, relationColumnMap) {
+function getQEntityIdFields(addToObject, entity, parentProperty, relationColumnMap) {
     entity.properties.forEach((property) => {
         if (!property.isId) {
             return;
@@ -152,14 +153,14 @@ function getQEntityIdFields(addToObject, entity, utils, parentProperty, relation
                     relationColumnMap.set(relationColumn.oneColumn, originalColumn);
                 }
             }
-            qFieldOrRelation = getQEntityIdFields({}, parentRelation.relationEntity, utils, currentProperty, relationColumnMap);
+            qFieldOrRelation = getQEntityIdFields({}, parentRelation.relationEntity, currentProperty, relationColumnMap);
         }
         else {
             let originalColumn = property.propertyColumns[0].column;
             if (relationColumnMap) {
                 originalColumn = relationColumnMap.get(originalColumn);
             }
-            qFieldOrRelation = getColumnQField(entity, currentProperty, this, utils, originalColumn);
+            qFieldOrRelation = getColumnQField(entity, currentProperty, this, originalColumn);
         }
         addToObject[property.name] = qFieldOrRelation;
     });

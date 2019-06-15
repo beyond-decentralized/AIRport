@@ -1,12 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
+const diTokens_1 = require("../../diTokens");
 const OperableField_1 = require("../core/field/OperableField");
 const WrapperFunctions_1 = require("../core/field/WrapperFunctions");
 class QueryUtils {
-    constructor(utils) {
-        this.utils = utils;
-    }
     whereClauseToJSON(whereClause, columnAliases, fieldUtils) {
         if (!whereClause) {
             return null;
@@ -37,7 +36,7 @@ class QueryUtils {
                 let functionOperation = operation;
                 let query = functionOperation.getQuery();
                 const TreeQueryClass = require('../query/facade/TreeQuery').TreeQuery;
-                let jsonQuery = new TreeQueryClass(query, this.utils, columnAliases.entityAliases).toJSON();
+                let jsonQuery = new TreeQueryClass(query, columnAliases.entityAliases).toJSON(this, fieldUtils);
                 jsonOperation = functionOperation.toJSON(jsonQuery);
                 break;
             case ground_control_1.OperationCategory.BOOLEAN:
@@ -70,7 +69,7 @@ class QueryUtils {
                 throw `'undefined' is not a valid L or R value`;
             default:
                 if (value instanceof OperableField_1.QOperableField) {
-                    return value.toJSON(columnAliases, false);
+                    return value.toJSON(columnAliases, false, this, fieldUtils);
                 } // Must be a Field Query
                 else {
                     let rawFieldQuery = value;
@@ -80,4 +79,5 @@ class QueryUtils {
     }
 }
 exports.QueryUtils = QueryUtils;
+di_1.DI.set(diTokens_1.QUERY_UTILS, QueryUtils);
 //# sourceMappingURL=QueryUtils.js.map

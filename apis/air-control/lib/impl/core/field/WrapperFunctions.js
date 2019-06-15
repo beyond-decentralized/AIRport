@@ -9,34 +9,29 @@ const StringField_1 = require("./StringField");
 /**
  * Created by Papa on 12/31/2016.
  */
-let utils;
-function setUtilsForWrapperFunctions(utilsForFunctions) {
-    utils = utilsForFunctions;
-}
-exports.setUtilsForWrapperFunctions = setUtilsForWrapperFunctions;
 exports.bool = function (primitive) {
     if (typeof primitive !== 'boolean') {
         throw `bool() accepts booleans only.`;
     }
-    return new BooleanField_1.QBooleanFunction(primitive, utils);
+    return new BooleanField_1.QBooleanFunction(primitive);
 };
 exports.date = function (primitive) {
     if (!(primitive instanceof Date)) {
         throw `date() accepts Dates only.`;
     }
-    return new DateField_1.QDateFunction(primitive, utils);
+    return new DateField_1.QDateFunction(primitive);
 };
 exports.num = function (primitive) {
     if (typeof primitive !== 'number') {
         throw `num() accepts numbers only.`;
     }
-    return new NumberField_1.QNumberFunction(primitive, utils);
+    return new NumberField_1.QNumberFunction(primitive);
 };
 exports.str = function (primitive) {
     if (typeof primitive !== 'string') {
         throw `str() accepts strings only.`;
     }
-    return new StringField_1.QStringFunction(primitive, utils);
+    return new StringField_1.QStringFunction(primitive);
 };
 function wrapPrimitive(value) {
     switch (typeof value) {
@@ -50,7 +45,7 @@ function wrapPrimitive(value) {
             throw `Cannot use an 'undefined' value in an operation.`;
     }
     if (value === null) {
-        return new NullFunction_1.QNullFunction(utils);
+        return new NullFunction_1.QNullFunction();
     }
     if (value instanceof Date) {
         return exports.date(value);

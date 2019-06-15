@@ -1,9 +1,10 @@
 import {
+	IAliasMap,
 	IEntityAliases,
 	IFieldColumnAliases,
 	IParameterAliases,
 	Parameter
-}                         from "../../../lingo/core/entity/Aliases";
+} from '../../../lingo/core/entity/Aliases'
 import {IQEntityInternal} from "../../../lingo/core/entity/Entity";
 import {
 	IQFieldInternal,
@@ -52,7 +53,8 @@ export class AliasCache {
 	}
 }
 
-export abstract class AliasMap<T, A> {
+export abstract class AliasMap<T, A>
+	implements IAliasMap<T, A> {
 	protected aliasMap: Map<T, A> = new Map<T, A>();
 
 	constructor(

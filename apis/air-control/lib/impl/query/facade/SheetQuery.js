@@ -6,12 +6,11 @@ const NonEntityQuery_1 = require("./NonEntityQuery");
  * Created by Papa on 10/23/2016.
  */
 class SheetQuery extends NonEntityQuery_1.DistinguishableQuery {
-    constructor(rawQuery, utils) {
+    constructor(rawQuery) {
         super();
         this.rawQuery = rawQuery;
-        this.utils = utils;
     }
-    nonDistinctSelectClauseToJSON(rawSelect) {
+    nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils) {
         if (!(rawSelect instanceof Array)) {
             throw `Flat Queries an array of fields in SELECT clause.`;
         }
@@ -20,11 +19,11 @@ class SheetQuery extends NonEntityQuery_1.DistinguishableQuery {
                 throw NonEntityQuery_1.NON_ENTITY_SELECT_ERROR_MESSAGE;
             }
             this.columnAliases.entityAliases.getNextAlias(selectField.q.__driver__.getRootJoinEntity());
-            return selectField.toJSON(this.columnAliases, true);
+            return selectField.toJSON(this.columnAliases, true, queryUtils, fieldUtils);
         });
     }
     toJSON(queryUtils, fieldUtils) {
-        let select = this.selectClauseToJSON(this.rawQuery.select);
+        let select = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils);
         let jsonFieldQuery = {
             S: select
         };

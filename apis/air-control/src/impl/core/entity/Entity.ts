@@ -8,13 +8,9 @@ import {
 	JSONRelation,
 	JSONRelationType,
 	JSONViewJoinRelation
-}                          from '@airport/ground-control'
-import {
-	IFieldUtils,
-	ISchemaUtils
-}                          from '../../..'
-import {IQueryUtils}       from '../../../lingo/utils/QueryUtils'
-import {IAirportDatabase}  from '../../../lingo/AirportDatabase'
+}                                from '@airport/ground-control'
+import {IAirportDatabase}        from '../../../lingo/AirportDatabase'
+import {IFieldColumnAliases}     from '../../../lingo/core/entity/Aliases'
 import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -25,14 +21,16 @@ import {
 	IQEntity,
 	IQEntityDriver,
 	IQEntityInternal
-}                          from '../../../lingo/core/entity/Entity'
-import {IJoinFields}       from '../../../lingo/core/entity/Joins'
-import {OneToManyElements} from '../../../lingo/core/entity/metadata/ColumnDecorators'
-import {IQInternalRelation} from '../../../lingo/core/entity/Relation'
+}                                from '../../../lingo/core/entity/Entity'
+import {IJoinFields}             from '../../../lingo/core/entity/Joins'
+import {OneToManyElements}       from '../../../lingo/core/entity/metadata/ColumnDecorators'
+import {IQInternalRelation}      from '../../../lingo/core/entity/Relation'
 import {IQOperableFieldInternal} from '../../../lingo/core/field/OperableField'
 import {IEntityDatabaseFacade}   from '../../../lingo/core/repository/EntityDatabaseFacade'
 import {RawTreeQuery}            from '../../../lingo/query/facade/TreeQuery'
-import {IUtils}                  from '../../../lingo/utils/Utils'
+import {IFieldUtils}             from '../../../lingo/utils/FieldUtils'
+import {IQueryUtils}             from '../../../lingo/utils/QueryUtils'
+import {ISchemaUtils}            from '../../../lingo/utils/SchemaUtils'
 import {TreeQuery}               from '../../query/facade/TreeQuery'
 import {extend}                  from '../../utils/qSchemaBuilderUtils'
 import {JoinFields}              from '../Joins'
@@ -104,8 +102,6 @@ QEntity.prototype.rightJoin = function <IF extends IFrom>(right: IF): IJoinField
 export class QEntityDriver
 	implements IQEntityDriver {
 
-	utils: IUtils
-	airportDb: IAirportDatabase
 	entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> } = {}
 	entityRelations: IQInternalRelation<any>[]                                                            = []
 	entityRelationMapByIndex: { [relationPropertyIndex: number]: IQInternalRelation<any> }
@@ -128,9 +124,12 @@ export class QEntityDriver
 	) {
 	}
 
-	getInstance(): IQEntityInternal {
-		const qEntityConstructor = this.qEntity.__driver__.schemaUtils
-			.getQEntityConstructor(this.dbEntity)
+	getInstance(
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
+	): IQEntityInternal {
+		const qEntityConstructor = schemaUtils
+			.getQEntityConstructor(this.dbEntity, airDb)
 
 		let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType)
 
@@ -162,7 +161,11 @@ export class QEntityDriver
 	}
 */
 
-	getRelationJson(columnAliases: FieldColumnAliases): JSONRelation {
+	getRelationJson(
+		columnAliases: IFieldColumnAliases<any>,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
+	): JSONRelation {
 		let jsonRelation: JSONRelation = {
 			cci: this.currentChildIndex,
 			ti: this.dbEntity.index,
@@ -173,18 +176,20 @@ export class QEntityDriver
 			si: this.dbEntity.schemaVersion.id
 		}
 		if (this.joinWhereClause) {
-			this.getJoinRelationJson(<JSONJoinRelation>jsonRelation, columnAliases)
+			this.getJoinRelationJson(<JSONJoinRelation>jsonRelation, columnAliases,
+				queryUtils, fieldUtils)
 		} else if (this.dbRelation) {
-			this.getEntityRelationJson(<JSONEntityRelation>jsonRelation, columnAliases)
+			this.getEntityRelationJson(<JSONEntityRelation>jsonRelation)
 		} else {
-			this.getRootRelationJson(jsonRelation, columnAliases)
+			this.getRootRelationJson(jsonRelation, columnAliases,
+				queryUtils, fieldUtils)
 		}
 		return jsonRelation
 	}
 
 	getJoinRelationJson(
 		jsonRelation: JSONJoinRelation,
-		columnAliases: FieldColumnAliases,
+		columnAliases: IFieldColumnAliases<any>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): JSONJoinRelation {
@@ -231,7 +236,7 @@ export class QEntityDriver
 
 	getRootRelationJson(
 		jsonRelation: JSONRelation,
-		columnAliases: FieldColumnAliases,
+		columnAliases: IFieldColumnAliases<any>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): JSONJoinRelation {
@@ -330,9 +335,13 @@ export class QTreeDriver
 
 	subQuery: RawTreeQuery<any>
 
-	getInstance(): IQEntityInternal {
-		let instance                                 = super.getInstance();
-		(<IQTreeDriver>instance.__driver__).subQuery = this.subQuery
+	getInstance(
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
+	): IQEntityInternal {
+		let instance = super.getInstance(airDb, schemaUtils);
+		(<IQTreeDriver>instance.__driver__)
+			.subQuery  = this.subQuery
 
 		return instance
 	}
@@ -343,7 +352,7 @@ export class QTreeDriver
 
 	getJoinRelationJson(
 		jsonRelation: JSONViewJoinRelation,
-		columnAliases: FieldColumnAliases,
+		columnAliases: IFieldColumnAliases<any>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): JSONViewJoinRelation {

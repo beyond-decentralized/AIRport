@@ -1,5 +1,4 @@
 import {diToken}                 from '@airport/di'
-import {IDbSchemaUtils}          from './impl/query/DbSchemaUtils'
 import {ITransactionalConnector} from './lingo/data/ITransactionalConnector'
 import {IStoreDriver}            from './lingo/data/StoreDriver'
 

@@ -43,7 +43,8 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 	): JsonUpdate<JsonEntityUpdateColumns> {
 		return {
 			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.update)
-				.__driver__.getRelationJson(this.columnAliases),
+				.__driver__.getRelationJson(
+					this.columnAliases, queryUtils, fieldUtils),
 			S: this.setToJSON(this.rawUpdate.set),
 			W: queryUtils.whereClauseToJSON(
 				this.rawUpdate.where, this.columnAliases, fieldUtils)

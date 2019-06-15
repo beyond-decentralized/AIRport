@@ -9,14 +9,12 @@ const EntityDatabaseFacade_1 = require("./EntityDatabaseFacade");
  */
 class Dao {
     constructor(dbEntityId, Q) {
-        this.utils = di_1.DI.pull(air_control_1.UTILS);
-        this.airDb = di_1.DI.pull(air_control_1.AIR_DB);
         di_1.DI.get((airportDatabase, entityManager, utils) => {
             this.airDb = airportDatabase;
             this.utils = utils;
             const dbEntity = Q.__dbSchema__.currentVersion.entities[dbEntityId];
-            const entityDatabaseFacade = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q, this.utils);
-            entityDatabaseFacade.initialize(entityManager);
+            const entityDatabaseFacade = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q);
+            di_1.DI.get(tower_1.ENTITY_MANAGER).then(entityManager => entityDatabaseFacade.initialize(entityManager));
             this.db = entityDatabaseFacade;
         }, air_control_1.AIR_DB, tower_1.ENTITY_MANAGER, air_control_1.UTILS);
     }

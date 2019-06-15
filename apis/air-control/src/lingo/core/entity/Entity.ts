@@ -3,15 +3,17 @@ import {
 	DbRelation,
 	JoinType,
 	JSONBaseOperation,
-	JSONRelation
-}                                from "@airport/ground-control";
-import {ISchemaUtils}            from '../../..'
-import {IAirportDatabase}        from "../../AirportDatabase";
-import {IUtils}                  from "../../utils/Utils";
-import {IQOperableFieldInternal} from "../field/OperableField";
-import {IFieldColumnAliases}     from "./Aliases";
-import {IJoinFields}             from './Joins';
-import {IQInternalRelation}      from "./Relation";
+	JSONRelation,
+	JSONViewJoinRelation
+}                                from '@airport/ground-control'
+import {IAirportDatabase}        from '../../AirportDatabase'
+import {IFieldUtils}             from '../../utils/FieldUtils'
+import {IQueryUtils}             from '../../utils/QueryUtils'
+import {ISchemaUtils}            from '../../utils/SchemaUtils'
+import {IQOperableFieldInternal} from '../field/OperableField'
+import {IFieldColumnAliases}     from './Aliases'
+import {IJoinFields}             from './Joins'
+import {IQInternalRelation}      from './Relation'
 
 /**
  * Marker interface for a collection of only Entity @Id Properties.
@@ -140,7 +142,8 @@ export interface IQEntity {
 
 }
 
-export interface IQTree extends IQEntity {
+export interface IQTree
+	extends IQEntity {
 
 }
 
@@ -153,7 +156,6 @@ export interface IQEntityInternal
 
 export interface IQEntityDriver {
 
-	airportDb: IAirportDatabase;
 	allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
 	currentChildIndex: number;
 	dbEntity: DbEntity;
@@ -182,7 +184,11 @@ export interface IQEntityDriver {
 		schemaUtils: ISchemaUtils
 	): IQEntityInternal;
 
-	getRelationJson(columnAliases: IFieldColumnAliases<any>): JSONRelation;
+	getRelationJson(
+		columnAliases: IFieldColumnAliases<any>,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
+	): JSONRelation;
 
 	// getRelationPropertyName(): string;
 
@@ -199,5 +205,6 @@ export interface IQEntityDriver {
 
 	//getEntityRelationMap(): { [propertyName: string]: IQInternalRelation<any> };
 
-	//getOneToManyConfigMap<IQE extends IQEntityInternal>(): { [name: string]: OneToManyElements };
+	//getOneToManyConfigMap<IQE extends IQEntityInternal>(): { [name: string]:
+	// OneToManyElements };
 }

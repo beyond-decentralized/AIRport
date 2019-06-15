@@ -8,8 +8,7 @@ import { EntityQuery } from '../query/facade/EntityQuery';
 export declare class EntityUtils implements IEntityUtils {
     getObjectClassName(object: any): string;
     getClassName(clazz: Function): string;
-    exists(object: any): any;
-    valuesEqual(value1: any, value2: any, checkChildObjects?: boolean): boolean;
+    exists(object: any): boolean;
     isAppliable(object: any): boolean;
     getQuery<Q>(query: Q | {
         (...args: any[]): Q;

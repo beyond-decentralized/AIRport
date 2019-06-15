@@ -1,4 +1,4 @@
-import { IEntityAliases, IFieldColumnAliases, IParameterAliases, Parameter } from "../../../lingo/core/entity/Aliases";
+import { IAliasMap, IEntityAliases, IFieldColumnAliases, IParameterAliases, Parameter } from '../../../lingo/core/entity/Aliases';
 import { IQEntityInternal } from "../../../lingo/core/entity/Entity";
 import { IQOrderableField } from "../../../lingo/core/field/Field";
 import { IQFunction } from "../../../lingo/core/field/Functions";
@@ -9,7 +9,7 @@ export declare class AliasCache {
     getFollowingAlias(): string;
     reset(): void;
 }
-export declare abstract class AliasMap<T, A> {
+export declare abstract class AliasMap<T, A> implements IAliasMap<T, A> {
     protected aliasCache: AliasCache;
     protected aliasMap: Map<T, A>;
     constructor(aliasCache: AliasCache);

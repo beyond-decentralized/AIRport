@@ -1,22 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
 const IEntityResultParser_1 = require("./entity/IEntityResultParser");
 /**
  * Created by Papa on 10/16/2016.
  */
 /**
- * The goal of this parser is to split a flat row of result set cells into an facade graph (just for that row).
+ * The goal of this parser is to split a flat row of result set cells into an facade
+ * graph (just for that row).
  */
 class PlainResultParser extends IEntityResultParser_1.AbstractObjectResultParser {
-    addEntity(entityAlias, dbEntity) {
-        return this.utils.Schema.getNewEntity(dbEntity);
+    addEntity(entityAlias, dbEntity, airDb, schemaUtils) {
+        return schemaUtils.getNewEntity(dbEntity, airDb);
     }
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject[propertyName] = propertyValue;
-        return this.utils.objectExists(propertyValue);
+        return air_control_1.objectExists(propertyValue);
     }
-    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos) {
-        this.addManyToOneStub(resultObject, propertyName, relationInfos);
+    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, schemaUtils) {
+        this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils);
     }
     bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject) {
         resultObject[propertyName] = childResultObject;
@@ -39,11 +41,13 @@ class PlainResultParser extends IEntityResultParser_1.AbstractObjectResultParser
         resultObject[propertyName] = [];
     }
     flushEntity(entityAlias, dbEntity, selectClauseFragment, entityId, resultObject) {
-        // Nothing to be done, plain objects don't need to be flushed since they don't relate do any other rows
+        // Nothing to be done, plain objects don't need to be flushed since they don't relate
+        // do any other rows
         return resultObject;
     }
     flushRow() {
-        // Nothing to be done, plain rows don't need to be flushed since they don't relate do any other rows
+        // Nothing to be done, plain rows don't need to be flushed since they don't relate do
+        // any other rows
     }
     bridge(parsedResults, selectClauseFragment) {
         // Nothing to be done, plain queries are not bridged

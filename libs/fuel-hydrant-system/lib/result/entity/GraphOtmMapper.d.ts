@@ -1,4 +1,4 @@
-import { IUtils, MappedEntityArray } from '@airport/air-control';
+import { ISchemaUtils, MappedEntityArray } from '@airport/air-control';
 import { DbEntity } from '@airport/ground-control';
 import { ManyToOneStubReference } from './GraphMtoMapper';
 /**
@@ -10,7 +10,6 @@ export interface OneToManyStubReference {
     otmObject: any;
 }
 export declare class GraphOtmMapper {
-    private utils;
     mtoEntityReferenceMap: {
         [otmReferenceId: string]: {
             [otmProperty: string]: MappedEntityArray<any>;
@@ -19,8 +18,7 @@ export declare class GraphOtmMapper {
     otmEntityReferenceMap: {
         [otmEntityId: string]: any;
     }[][];
-    constructor(utils: IUtils);
-    addMtoReference(mtoStubReference: ManyToOneStubReference, mtoEntityId: string | number, dbEntity: DbEntity): void;
+    addMtoReference(mtoStubReference: ManyToOneStubReference, mtoEntityId: string | number, dbEntity: DbEntity, schemaUtils: ISchemaUtils): void;
     addOtmReference(otmStubReference: OneToManyStubReference, otmEntityIdValue: string): void;
     populateOtms(entityMap: {
         [entityId: string]: any;

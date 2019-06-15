@@ -13,7 +13,6 @@ import {
 	JSONRawValueOperation
 }                        from "../../../lingo/core/operation/Operation";
 import {RawFieldQuery}   from "../../../lingo/query/facade/FieldQuery";
-import {IUtils}          from "../../../lingo/utils/Utils";
 import {QField}          from "./Field";
 
 /**
@@ -33,9 +32,8 @@ export abstract class QOperableField<T,
 		q: IQEntityInternal,
 		objectType: JSONClauseObjectType,
 		public operation: IO,
-		utils: IUtils,
 	) {
-		super(dbColumn, dbProperty, q, objectType, utils);
+		super(dbColumn, dbProperty, q, objectType);
 	}
 
 	equals(

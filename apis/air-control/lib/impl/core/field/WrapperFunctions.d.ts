@@ -1,7 +1,8 @@
 import { DbColumn } from '@airport/ground-control';
 import { boolFunction, dateFunction, numFunction, strFunction } from '../../../lingo/core/field/WrapperFunctions';
-import { IUtils } from '../../../lingo/utils/Utils';
-export declare function setUtilsForWrapperFunctions(utilsForFunctions: IUtils): void;
+/**
+ * Created by Papa on 12/31/2016.
+ */
 export declare const bool: boolFunction;
 export declare const date: dateFunction;
 export declare const num: numFunction;

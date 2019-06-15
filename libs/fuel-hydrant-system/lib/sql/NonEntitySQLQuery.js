@@ -8,15 +8,15 @@ const SqlFunctionField_1 = require("./SqlFunctionField");
  * Created by Papa on 10/28/2016.
  */
 class NonEntitySQLQuery extends SQLQuery_1.SQLQuery {
-    constructor(airportDb, utils, jsonQuery, dialect, queryResultType) {
-        super(airportDb, utils, jsonQuery, null, dialect, queryResultType);
+    constructor(jsonQuery, dialect, queryResultType) {
+        super(jsonQuery, null, dialect, queryResultType);
     }
     addQEntityMapByAlias(sourceMap) {
         for (let alias in sourceMap) {
             this.qEntityMapByAlias[alias] = sourceMap[alias];
         }
     }
-    toSQL() {
+    toSQL(airDb, schemaUtils) {
         let jsonQuery = this.jsonQuery;
         let joinNodeMap = {};
         this.joinTrees = this.buildFromJoinTree(jsonQuery.F, joinNodeMap);
@@ -72,7 +72,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             return `\n\t, ${columnSelectSqlFragment}`;
         }
     }
-    buildFromJoinTree(joinRelations, joinNodeMap) {
+    buildFromJoinTree(joinRelations, joinNodeMap, airDb, schemaUtils) {
         let jsonTrees = [];
         let jsonTree;
         // For entity queries it is possible to have a query with no from clause, in this case
@@ -90,7 +90,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         }
         let alias = air_control_1.QRelation.getAlias(firstRelation);
         this.validator.validateReadFromEntity(firstRelation);
-        let firstEntity = air_control_1.QRelation.createRelatedQEntity(this.utils, firstRelation);
+        let firstEntity = air_control_1.QRelation.createRelatedQEntity(firstRelation, airDb, schemaUtils);
         this.qEntityMapByAlias[alias] = firstEntity;
         jsonTree = new air_control_1.JoinTreeNode(firstRelation, [], null);
         jsonTrees.push(jsonTree);
@@ -123,7 +123,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     if (!joinRelation.ri) {
                         throw `Table ${i + 1} in FROM clause is missing relationPropertyName`;
                     }
-                    rightEntity = air_control_1.QRelation.createRelatedQEntity(this.utils, joinRelation);
+                    rightEntity = air_control_1.QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils);
                     break;
                 case ground_control_1.JSONRelationType.SUB_QUERY_JOIN_ON:
                     if (!joinRelation.jwc) {
@@ -194,7 +194,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             }
         }
     }
-    addFieldToViewForSelect(view, viewAlias, fieldPrefix, fieldJson, alias, forFieldQueryAlias = null) {
+    addFieldToViewForSelect(view, viewAlias, fieldPrefix, fieldJson, alias, forFieldQueryAlias = null, airDb, schemaUtils) {
         let hasDistinctClause = false;
         let dbEntity;
         let dbProperty;
@@ -206,7 +206,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             case ground_control_1.JSONClauseObjectType.EXISTS_FUNCTION:
                 throw `Exists function cannot be used in SELECT clause.`;
             case ground_control_1.JSONClauseObjectType.FIELD:
-                dbEntity = this.airportDb.schemas[fieldJson.si].currentVersion.entities[fieldJson.ti];
+                dbEntity = airDb.schemas[fieldJson.si].currentVersion.entities[fieldJson.ti];
                 dbProperty = dbEntity.properties[fieldJson.pi];
                 dbColumn = dbEntity.columns[fieldJson.ci];
                 switch (fieldJson.dt) {

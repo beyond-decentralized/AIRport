@@ -29,8 +29,8 @@ exports.EntityDefaults = EntityDefaults;
  * String based SQL query.
  */
 class SQLQuery extends SQLWhereBase_1.SQLWhereBase {
-    constructor(airportDb, utils, jsonQuery, dbEntity, dialect, queryResultType) {
-        super(airportDb, utils, dbEntity, dialect);
+    constructor(jsonQuery, dbEntity, dialect, queryResultType) {
+        super(dbEntity, dialect);
         this.jsonQuery = jsonQuery;
         this.queryResultType = queryResultType;
         this.entityDefaults = new EntityDefaults();
@@ -38,7 +38,7 @@ class SQLQuery extends SQLWhereBase_1.SQLWhereBase {
     getFieldMap() {
         return this.fieldMap;
     }
-    getEntitySchemaRelationFromJoin(leftQEntity, rightQEntity, entityRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix) {
+    getEntitySchemaRelationFromJoin(leftQEntity, rightQEntity, entityRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, schemaUtils) {
         const allJoinOnColumns = [];
         const leftDbEntity = leftQEntity.__driver__.dbEntity;
         const rightDbEntity = rightQEntity.__driver__.dbEntity;
@@ -83,7 +83,7 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
             onClause = `${onClause}
 			${joinWhereOperator} ${whereClause}`;
         }
-        const tableName = this.utils.Schema.getTableName(rightDbEntity);
+        const tableName = schemaUtils.getTableName(rightDbEntity);
         const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`;
         return fromFragment;
     }

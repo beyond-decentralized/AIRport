@@ -10,12 +10,10 @@ import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/Inser
 import { RawUpdate, RawUpdateColumns } from '../../query/facade/Update';
 import { MappedEntityArray } from '../../query/MappedEntityArray';
 import { IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../entity/Entity';
-import { IDatabaseFacade } from './DatabaseFacade';
 /**
  * Facade for all DB operations related to a particular Entity.
  */
 export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelectProperties, EntityCreateProperties extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, IQ extends IQEntity> {
-    common: IDatabaseFacade;
     dbEntity: DbEntity;
     duo: IDuo<Entity, EntitySelect, EntityCreateProperties, EntityUpdateProperties, EntityId, IQ>;
     /**

@@ -14,8 +14,8 @@ class EntityQuery extends TreeQuery_1.MappableQuery {
     }
     toJSON(queryUtils, fieldUtils) {
         return {
-            S: this.selectClauseToJSON(this.rawQuery.select),
-            F: this.fromClauseToJSON(this.rawQuery.from),
+            S: this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils),
+            F: this.fromClauseToJSON(this.rawQuery.from, queryUtils, fieldUtils),
             W: queryUtils.whereClauseToJSON(this.rawQuery.where, this.columnAliases, fieldUtils),
             OB: this.orderByClauseToJSON(this.rawQuery.orderBy)
         };

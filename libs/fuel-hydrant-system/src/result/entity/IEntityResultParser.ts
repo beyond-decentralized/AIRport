@@ -1,4 +1,6 @@
 import {
+	IAirportDatabase,
+	ISchemaUtils,
 	isStub,
 	IUtils,
 	MappedEntityArray,
@@ -9,7 +11,7 @@ import {
 	DbEntity,
 	QueryResultType,
 	SQLDataType
-} from '@airport/ground-control'
+}                                from '@airport/ground-control'
 import {EntityGraphResultParser} from './EntityGraphResultParser'
 import {EntityTreeResultParser}  from './EntityTreeResultParser'
 
@@ -33,7 +35,9 @@ export interface IEntityResultParser {
 
 	addEntity(
 		entityAlias: string,
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
 	): any;
 
 	addProperty(
@@ -50,7 +54,8 @@ export interface IEntityResultParser {
 		resultObject: any,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		relationInfos: ReferencedColumnData[]
+		relationInfos: ReferencedColumnData[],
+		schemaUtils: ISchemaUtils
 	): void;
 
 	bufferBlankManyToOneStub(
@@ -66,7 +71,8 @@ export interface IEntityResultParser {
 		resultObject: any,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		relatedEntityId: any
+		relatedEntityId: any,
+		schemaUtils: ISchemaUtils
 	): void;
 
 	bufferBlankManyToOneObject(
@@ -86,7 +92,8 @@ export interface IEntityResultParser {
 		otmDbEntity: DbEntity,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		childResultObject: any
+		childResultObject: any,
+		schemaUtils: ISchemaUtils
 	): void;
 
 	bufferBlankOneToMany(
@@ -95,6 +102,7 @@ export interface IEntityResultParser {
 		otmEntityName: string,
 		propertyName: string,
 		relationDbEntity: DbEntity,
+		schemaUtils: ISchemaUtils
 	): void;
 
 	flushEntity(
@@ -102,14 +110,16 @@ export interface IEntityResultParser {
 		dbEntity: DbEntity,
 		selectClauseFragment: any,
 		idValue: any,
-		resultObject: any
+		resultObject: any,
+		schemaUtils: ISchemaUtils
 	): any;
 
 	flushRow(): void;
 
 	bridge(
 		parsedResults: any[],
-		selectClauseFragment: any
+		selectClauseFragment: any,
+		schemaUtils: ISchemaUtils
 	): any[] | MappedEntityArray<any>;
 
 }
@@ -123,10 +133,10 @@ export function getObjectResultParser(
 	switch (queryResultType) {
 		case QueryResultType.ENTITY_GRAPH:
 			let EntityGraphResultParserClass: typeof EntityGraphResultParser = require('./EntityGraphResultParser').EntityGraphResultParser
-			return new EntityGraphResultParserClass(utils, config, rootDbEntity)
+			return new EntityGraphResultParserClass(config, rootDbEntity)
 		case QueryResultType.ENTITY_TREE:
 			let EntityTreeResultParserClass: typeof EntityTreeResultParser = require('./EntityTreeResultParser').EntityTreeResultParser
-			return new EntityTreeResultParserClass(utils)
+			return new EntityTreeResultParserClass()
 		default:
 			throw `ObjectQueryParser not supported for QueryResultType: ${queryResultType}`
 	}
@@ -134,22 +144,18 @@ export function getObjectResultParser(
 
 export abstract class AbstractObjectResultParser {
 
-	constructor(
-		protected utils: IUtils
-	) {
-	}
-
 	protected addManyToOneStub(
 		resultObject: any,
 		propertyName: string,
-		relationInfos: ReferencedColumnData[]
+		relationInfos: ReferencedColumnData[],
+		schemaUtils: ISchemaUtils
 	): boolean {
 		let manyToOneStub = {}
 		isStub(manyToOneStub)
 		resultObject[propertyName] = manyToOneStub
 		let haveAllIds             = true
 		relationInfos.forEach((relationInfo) => {
-			if (this.utils.Schema.isIdEmpty(relationInfo.value)) {
+			if (schemaUtils.isIdEmpty(relationInfo.value)) {
 				haveAllIds = false
 				return
 			}

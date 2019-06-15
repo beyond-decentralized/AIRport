@@ -1,24 +1,37 @@
-import { ReferencedColumnData }                  from "@airport/air-control";
+import {
+	IAirportDatabase,
+	ISchemaUtils,
+	objectExists,
+	ReferencedColumnData
+} from '@airport/air-control'
 import {
 	DbEntity,
 	SQLDataType
 } from '@airport/ground-control'
-import { AbstractObjectResultParser, IEntityResultParser } from "./entity/IEntityResultParser";
+import {
+	AbstractObjectResultParser,
+	IEntityResultParser
+} from './entity/IEntityResultParser'
 
 /**
  * Created by Papa on 10/16/2016.
  */
 
 /**
- * The goal of this parser is to split a flat row of result set cells into an facade graph (just for that row).
+ * The goal of this parser is to split a flat row of result set cells into an facade
+ * graph (just for that row).
  */
-export class PlainResultParser extends AbstractObjectResultParser implements IEntityResultParser {
+export class PlainResultParser
+	extends AbstractObjectResultParser
+	implements IEntityResultParser {
 
 	addEntity(
 		entityAlias: string,
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
 	): any {
-		return this.utils.Schema.getNewEntity(dbEntity);
+		return schemaUtils.getNewEntity(dbEntity, airDb)
 	}
 
 	addProperty(
@@ -28,8 +41,8 @@ export class PlainResultParser extends AbstractObjectResultParser implements IEn
 		propertyName: string,
 		propertyValue: any
 	): boolean {
-		resultObject[propertyName] = propertyValue;
-		return this.utils.objectExists(propertyValue);
+		resultObject[propertyName] = propertyValue
+		return objectExists(propertyValue)
 	}
 
 	bufferManyToOneStub(
@@ -38,9 +51,11 @@ export class PlainResultParser extends AbstractObjectResultParser implements IEn
 		resultObject: any,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		relationInfos: ReferencedColumnData[]
+		relationInfos: ReferencedColumnData[],
+		schemaUtils: ISchemaUtils
 	): void {
-		this.addManyToOneStub(resultObject, propertyName, relationInfos);
+		this.addManyToOneStub(
+			resultObject, propertyName, relationInfos, schemaUtils)
 	}
 
 	bufferManyToOneObject(
@@ -51,7 +66,7 @@ export class PlainResultParser extends AbstractObjectResultParser implements IEn
 		relationDbEntity: DbEntity,
 		childResultObject: any
 	): any {
-		resultObject[propertyName] = childResultObject;
+		resultObject[propertyName] = childResultObject
 	}
 
 	bufferBlankManyToOneStub(
@@ -60,7 +75,7 @@ export class PlainResultParser extends AbstractObjectResultParser implements IEn
 		propertyName: string,
 		relationInfos: ReferencedColumnData[]
 	): void {
-		resultObject[propertyName] = null;
+		resultObject[propertyName] = null
 		// Nothing to do the facade simply doesn't have anything in it
 	}
 
@@ -69,7 +84,7 @@ export class PlainResultParser extends AbstractObjectResultParser implements IEn
 		resultObject: any,
 		propertyName: string,
 	): void {
-		resultObject[propertyName] = null;
+		resultObject[propertyName] = null
 		// Nothing to do the facade simply doesn't have anything in it
 	}
 
@@ -77,7 +92,7 @@ export class PlainResultParser extends AbstractObjectResultParser implements IEn
 		otmDbEntity: DbEntity,
 		otmPropertyName: string
 	): void {
-		throw `@OneToMany stubs not allowed in QueryResultType.PLAIN`;
+		throw `@OneToMany stubs not allowed in QueryResultType.PLAIN`
 	}
 
 	bufferOneToManyCollection(
@@ -88,7 +103,7 @@ export class PlainResultParser extends AbstractObjectResultParser implements IEn
 		relationDbEntity: DbEntity,
 		childResultObject: any
 	): void {
-		resultObject[propertyName] = [childResultObject];
+		resultObject[propertyName] = [childResultObject]
 	}
 
 	bufferBlankOneToMany(
@@ -98,7 +113,7 @@ export class PlainResultParser extends AbstractObjectResultParser implements IEn
 		propertyName: string,
 		relationDbEntity: DbEntity,
 	): void {
-		resultObject[propertyName] = [];
+		resultObject[propertyName] = []
 	}
 
 	flushEntity(
@@ -108,12 +123,14 @@ export class PlainResultParser extends AbstractObjectResultParser implements IEn
 		entityId: any,
 		resultObject: any
 	): any {
-		// Nothing to be done, plain objects don't need to be flushed since they don't relate do any other rows
-		return resultObject;
+		// Nothing to be done, plain objects don't need to be flushed since they don't relate
+		// do any other rows
+		return resultObject
 	}
 
 	flushRow(): void {
-		// Nothing to be done, plain rows don't need to be flushed since they don't relate do any other rows
+		// Nothing to be done, plain rows don't need to be flushed since they don't relate do
+		// any other rows
 	}
 
 	bridge(
@@ -121,6 +138,6 @@ export class PlainResultParser extends AbstractObjectResultParser implements IEn
 		selectClauseFragment: any
 	): any[] {
 		// Nothing to be done, plain queries are not bridged
-		return parsedResults;
+		return parsedResults
 	}
 }

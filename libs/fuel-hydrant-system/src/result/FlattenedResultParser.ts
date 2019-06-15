@@ -1,12 +1,16 @@
-import {ReferencedColumnData} from '@airport/air-control'
+import {
+	ISchemaUtils,
+	objectExists,
+	ReferencedColumnData
+} from '@airport/air-control'
 import {
 	DbEntity,
 	SQLDataType
-}                             from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	AbstractObjectResultParser,
 	IEntityResultParser
-}                             from './entity/IEntityResultParser'
+} from './entity/IEntityResultParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -20,7 +24,7 @@ export class FlattenedResultParser
 
 	addEntity(
 		entityAlias: string,
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
 	): any {
 		return this.currentResultRow
 	}
@@ -33,7 +37,7 @@ export class FlattenedResultParser
 		propertyValue: any
 	): boolean {
 		resultObject.push(propertyValue)
-		return this.utils.objectExists(propertyValue)
+		return objectExists(propertyValue)
 	}
 
 	bufferManyToOneStub(
@@ -42,9 +46,10 @@ export class FlattenedResultParser
 		resultObject: any,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		relationInfos: ReferencedColumnData[]
+		relationInfos: ReferencedColumnData[],
+		schemaUtils: ISchemaUtils
 	): void {
-		this.addManyToOneStub(resultObject, propertyName, relationInfos)
+		this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils)
 	}
 
 	bufferBlankManyToOneStub(

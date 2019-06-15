@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
 const IEntityResultParser_1 = require("./entity/IEntityResultParser");
 /**
  * Created by Papa on 10/16/2016.
@@ -14,10 +15,10 @@ class FlattenedResultParser extends IEntityResultParser_1.AbstractObjectResultPa
     }
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject.push(propertyValue);
-        return this.utils.objectExists(propertyValue);
+        return air_control_1.objectExists(propertyValue);
     }
-    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos) {
-        this.addManyToOneStub(resultObject, propertyName, relationInfos);
+    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, schemaUtils) {
+        this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils);
     }
     bufferBlankManyToOneStub(entityAlias, resultObject, propertyName, relationInfos) {
         relationInfos.forEach((relationInfo) => {

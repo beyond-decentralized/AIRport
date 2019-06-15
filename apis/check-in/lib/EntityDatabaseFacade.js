@@ -6,10 +6,9 @@ const Duo_1 = require("./Duo");
  * Created by Papa on 12/11/2016.
  */
 class EntityDatabaseFacade {
-    constructor(dbEntity, Q, utils) {
+    constructor(dbEntity, Q) {
         this.dbEntity = dbEntity;
         this.Q = Q;
-        this.utils = utils;
         this.duo = new Duo_1.Duo(dbEntity);
     }
     get from() {
@@ -18,9 +17,9 @@ class EntityDatabaseFacade {
     initialize(databaseFacade) {
         this.common = databaseFacade;
         this.find = new air_control_1.EntityFind(this.dbEntity, databaseFacade);
-        this.findOne = new air_control_1.EntityFindOne(this.dbEntity, databaseFacade, this.utils);
-        this.search = new air_control_1.EntitySearch(this.dbEntity, databaseFacade, this.utils);
-        this.searchOne = new air_control_1.EntitySearchOne(this.dbEntity, databaseFacade, this.utils);
+        this.findOne = new air_control_1.EntityFindOne(this.dbEntity, databaseFacade);
+        this.search = new air_control_1.EntitySearch(this.dbEntity, databaseFacade);
+        this.searchOne = new air_control_1.EntitySearchOne(this.dbEntity, databaseFacade);
     }
     releaseCachedForUpdate(updateCacheType, ...entities) {
         this.common.releaseCachedForUpdate(updateCacheType, this.dbEntity, ...entities);

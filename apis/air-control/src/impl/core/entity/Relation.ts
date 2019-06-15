@@ -1,15 +1,15 @@
-import {DI}     from '@airport/di'
 import {
 	DbRelation,
 	JoinType,
 	JSONEntityRelation,
 	JSONRelation
-}               from '@airport/ground-control'
-import {UTILS}  from '../../../diTokens'
+}                         from '@airport/ground-control'
+import {IAirportDatabase} from '../../../lingo/AirportDatabase'
 import {
 	IQEntityDriver,
 	IQEntityInternal
-}               from '../../../lingo/core/entity/Entity'
+}                         from '../../../lingo/core/entity/Entity'
+import {ISchemaUtils}     from '../../../lingo/utils/SchemaUtils'
 
 /**
  * Created by Papa on 4/26/2016.
@@ -46,12 +46,15 @@ QRelation.getParentAlias = function (
 	return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1))
 }
 
-QRelation.createRelatedQEntity = async function <IQ extends IQEntityInternal>(
-	joinRelation: JSONRelation
-): Promise<IQ> {
-	const utils = await DI.get(UTILS)
-	const dbEntity         = await utils.Schema.getDbEntity(joinRelation.si, joinRelation.ti)
-	let QEntityConstructor = await utils.Schema.getQEntityConstructor(dbEntity)
+QRelation.createRelatedQEntity = function <IQ extends IQEntityInternal>(
+	joinRelation: JSONRelation,
+	airDb: IAirportDatabase,
+	schemaUtils: ISchemaUtils
+): IQ {
+	const dbEntity         = schemaUtils.getDbEntity(
+		joinRelation.si, joinRelation.ti, airDb)
+	let QEntityConstructor = schemaUtils.getQEntityConstructor(
+		dbEntity, airDb)
 	return new QEntityConstructor<IQ>(
 		dbEntity,
 		joinRelation.fcp,

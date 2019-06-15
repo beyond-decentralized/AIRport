@@ -3,14 +3,13 @@ import { IQEntityInternal, IQOperableFieldInternal } from "../../../";
 import { IQOperableField } from "../../../lingo/core/field/OperableField";
 import { IValueOperation, JSONRawValueOperation } from "../../../lingo/core/operation/Operation";
 import { RawFieldQuery } from "../../../lingo/query/facade/FieldQuery";
-import { IUtils } from "../../../lingo/utils/Utils";
 import { QField } from "./Field";
 /**
  * Created by Papa on 10/25/2016.
  */
 export declare abstract class QOperableField<T, JO extends JSONRawValueOperation<IQF>, IO extends IValueOperation<T, JO, IQF>, IQF extends IQOperableField<T, JO, IO, IQF>> extends QField<IQF> implements IQOperableFieldInternal<T, JO, IO, IQF> {
     operation: IO;
-    constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal, objectType: JSONClauseObjectType, operation: IO, utils: IUtils);
+    constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal, objectType: JSONClauseObjectType, operation: IO);
     equals(value: T | IQF | RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<IQF>;
     }): JO;

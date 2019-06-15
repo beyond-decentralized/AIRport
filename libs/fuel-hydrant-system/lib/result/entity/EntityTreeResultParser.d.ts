@@ -1,4 +1,4 @@
-import { ReferencedColumnData } from '@airport/air-control';
+import { IAirportDatabase, ISchemaUtils, ReferencedColumnData } from '@airport/air-control';
 import { DbEntity } from '@airport/ground-control';
 import { TreeResultParser } from '../TreeResultParser';
 import { IEntityResultParser } from './IEntityResultParser';
@@ -7,7 +7,8 @@ import { IEntityResultParser } from './IEntityResultParser';
  */
 /**
  * The goal of this Parser is to determine which objects in the current row are the same
- * as they were in the previous row.  If the objects are the same this parser will merge them.
+ * as they were in the previous row.  If the objects are the same this parser will merge
+ * them.
  */
 export declare class EntityTreeResultParser extends TreeResultParser implements IEntityResultParser {
     currentRowObjectMap: {
@@ -22,8 +23,8 @@ export declare class EntityTreeResultParser extends TreeResultParser implements 
     currentObjectOneToManys: {
         [propertyName: string]: any[];
     };
-    addEntity(entityAlias: string, dbEntity: DbEntity): any;
-    bufferManyToOneStub(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, relationInfos: ReferencedColumnData[]): void;
+    addEntity(entityAlias: string, dbEntity: DbEntity, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): any;
+    bufferManyToOneStub(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, relationInfos: ReferencedColumnData[], schemaUtils: ISchemaUtils): void;
     private addManyToOneReference;
     bufferBlankManyToOneStub(entityAlias: string, resultObject: any, propertyName: string): void;
     bufferManyToOneObject(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, childResultObject: any): void;

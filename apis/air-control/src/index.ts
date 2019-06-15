@@ -112,6 +112,5 @@ export * from './lingo/utils/FieldUtils';
 export * from './lingo/utils/QMetadataUtils';
 export * from './lingo/utils/QueryUtils';
 export * from './lingo/utils/SchemaUtils';
-export * from './lingo/utils/Utils';
 export * from './lingo/AirportDatabase';
 export * from './diTokens';

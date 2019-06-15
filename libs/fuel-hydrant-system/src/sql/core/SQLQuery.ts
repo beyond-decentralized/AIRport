@@ -1,9 +1,10 @@
 import {
 	IAirportDatabase,
-	IQEntityInternal, IUtils,
-	JoinTreeNode,
-	Utils
-}                       from "@airport/air-control";
+	IQEntityInternal,
+	ISchemaUtils,
+	IUtils,
+	JoinTreeNode
+}                     from '@airport/air-control'
 import {
 	DbEntity,
 	DbRelationColumn,
@@ -14,8 +15,8 @@ import {
 	QueryResultType,
 	SchemaMap,
 	SqlOperator
-} from '@airport/ground-control'
-import { SQLWhereBase } from "./SQLWhereBase";
+}                     from '@airport/ground-control'
+import {SQLWhereBase} from './SQLWhereBase'
 
 /**
  * Created by Papa on 8/20/2016.
@@ -28,15 +29,15 @@ export enum SQLDialect {
 }
 
 export class EntityDefaults {
-	map: { [alias: string]: { [property: string]: any } } = {};
+	map: { [alias: string]: { [property: string]: any } } = {}
 
 	getForAlias(alias: string) {
-		let defaultsForAlias = this.map[alias];
+		let defaultsForAlias = this.map[alias]
 		if (!defaultsForAlias) {
-			defaultsForAlias = {};
-			this.map[alias] = defaultsForAlias;
+			defaultsForAlias = {}
+			this.map[alias]  = defaultsForAlias
 		}
-		return defaultsForAlias;
+		return defaultsForAlias
 	}
 }
 
@@ -51,38 +52,40 @@ interface JoinOnColumns {
 export abstract class SQLQuery<JQ extends JsonQuery>
 	extends SQLWhereBase {
 
-	protected entityDefaults: EntityDefaults = new EntityDefaults();
+	protected entityDefaults: EntityDefaults = new EntityDefaults()
 
 	constructor(
-		airportDb: IAirportDatabase,
-		utils: IUtils,
 		protected jsonQuery: JQ,
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
 		protected queryResultType: QueryResultType
 	) {
-		super(airportDb, utils, dbEntity, dialect);
+		super(dbEntity, dialect)
 	}
 
 	getFieldMap(): SchemaMap {
-		return this.fieldMap;
+		return this.fieldMap
 	}
 
-	abstract toSQL(): string;
+	abstract toSQL(
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
+	): string;
 
 	/**
 	 * If bridging is not applied:
 	 *
-	 * Entities get merged if they are right next to each other in the result set.  If they are not, they are
-	 * treated as separate entities - hence, your sort order matters.
+	 * Entities get merged if they are right next to each other in the result set.  If they
+	 * are not, they are treated as separate entities - hence, your sort order matters.
 	 *
-	 * If bridging is applied - all entities get merged - your sort order does not matter.  Might as well disallow
-	 * sort order for bridged queries (or re-sort in memory)?
+	 * If bridging is applied - all entities get merged - your sort order does not matter.
+	 * Might as well disallow sort order for bridged queries (or re-sort in memory)?
 	 *
 	 * @param results
 	 * @returns {any[]}
 	 */
 	abstract parseQueryResults(
+		schemaUtils: ISchemaUtils,
 		results: any[],
 		queryResultType: QueryResultType,
 		bridgedQueryConfiguration?: any
@@ -91,6 +94,8 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	protected abstract buildFromJoinTree(
 		joinRelations: (JSONEntityRelation | JSONRelation) [],
 		joinNodeMap: { [alias: string]: JoinTreeNode },
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
 		schemaIndex?: number,
 		tableIndex?: number
 	): JoinTreeNode | JoinTreeNode[];
@@ -103,62 +108,63 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		currentAlias: string,
 		parentAlias: string,
 		joinTypeString: string,
-		errorPrefix: string
+		errorPrefix: string,
+		schemaUtils: ISchemaUtils
 	): string {
-		const allJoinOnColumns: JoinOnColumns[] = [];
+		const allJoinOnColumns: JoinOnColumns[] = []
 
-		const leftDbEntity = leftQEntity.__driver__.dbEntity;
-		const rightDbEntity = rightQEntity.__driver__.dbEntity;
-		const dbRelation = leftDbEntity.relations[entityRelation.ri];
+		const leftDbEntity  = leftQEntity.__driver__.dbEntity
+		const rightDbEntity = rightQEntity.__driver__.dbEntity
+		const dbRelation    = leftDbEntity.relations[entityRelation.ri]
 
-		let relationColumns: DbRelationColumn[];
+		let relationColumns: DbRelationColumn[]
 		switch (dbRelation.relationType) {
 			case EntityRelationType.MANY_TO_ONE:
-				relationColumns = dbRelation.manyRelationColumns;
-				break;
+				relationColumns = dbRelation.manyRelationColumns
+				break
 			case EntityRelationType.ONE_TO_MANY:
-				relationColumns = dbRelation.oneRelationColumns;
-				break;
+				relationColumns = dbRelation.oneRelationColumns
+				break
 			default:
 				throw `Unknown relation type ${dbRelation.relationType} 
-on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`;
+on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`
 		}
 		for (const relationColumn of relationColumns) {
-			let ownColumnName: string;
-			let referencedColumnName: string;
+			let ownColumnName: string
+			let referencedColumnName: string
 			switch (dbRelation.relationType) {
 				case EntityRelationType.MANY_TO_ONE:
-					ownColumnName = relationColumn.manyColumn.name;
-					referencedColumnName = relationColumn.oneColumn.name;
-					break;
+					ownColumnName        = relationColumn.manyColumn.name
+					referencedColumnName = relationColumn.oneColumn.name
+					break
 				case EntityRelationType.ONE_TO_MANY:
-					ownColumnName = relationColumn.oneColumn.name;
-					referencedColumnName = relationColumn.manyColumn.name;
-					break;
+					ownColumnName        = relationColumn.oneColumn.name
+					referencedColumnName = relationColumn.manyColumn.name
+					break
 				default:
 					throw `Unknown relation type ${dbRelation.relationType} 
-on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`;
+on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`
 			}
 			allJoinOnColumns.push({
 				leftColumn: ownColumnName,
 				rightColumn: referencedColumnName
-			});
+			})
 		}
 
 		let onClause = allJoinOnColumns.map(
 			joinOnColumn =>
 				` ${parentAlias}.${joinOnColumn.leftColumn} = ${currentAlias}.${joinOnColumn.rightColumn}`
-		).join('\n\t\t\tAND');
+		).join('\n\t\t\tAND')
 		if (entityRelation.jwc) {
-			const whereClause = this.getWHEREFragment(entityRelation.jwc, '\t\t');
-			const joinWhereOperator = entityRelation.wjto === SqlOperator.AND ? 'AND' : 'OR';
-			onClause = `${onClause}
-			${joinWhereOperator} ${whereClause}`;
+			const whereClause       = this.getWHEREFragment(entityRelation.jwc, '\t\t')
+			const joinWhereOperator = entityRelation.wjto === SqlOperator.AND ? 'AND' : 'OR'
+			onClause                = `${onClause}
+			${joinWhereOperator} ${whereClause}`
 		}
-		const tableName = this.utils.Schema.getTableName(rightDbEntity);
-		const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`;
+		const tableName    = schemaUtils.getTableName(rightDbEntity)
+		const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`
 
-		return fromFragment;
+		return fromFragment
 	}
 
 }

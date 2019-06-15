@@ -1,5 +1,8 @@
-import {IUtils}   from '@airport/air-control'
-import {DbEntity} from '@airport/ground-control'
+import {
+	DbEntity,
+	ensureChildArray,
+	ensureChildMap
+} from '@airport/ground-control'
 
 /**
  * Created by Papa on 10/15/2016.
@@ -28,11 +31,6 @@ export class GraphMtoMapper {
 		}
 	}[][] = []
 
-	constructor(
-		private utils: IUtils,
-	) {
-	}
-
 	addMtoReference(
 		mtoStubReference: ManyToOneStubReference,
 		mtoEntityIdValue: string
@@ -40,11 +38,11 @@ export class GraphMtoMapper {
 		const mtoDbEntity = mtoStubReference.mtoDbEntity
 		let mtoEntitiesForTypeMap: {
 			[mtoEntityId: string]: { [mtoPropertyName: string]: ManyToOneStubReference }
-		}                 = this.utils.ensureChildMap(
-			this.utils.ensureChildArray(this.mtoStubReferenceMap, mtoDbEntity.schemaVersion.schema.index),
+		}                 = ensureChildMap(
+			ensureChildArray(this.mtoStubReferenceMap, mtoDbEntity.schemaVersion.schema.index),
 			mtoDbEntity.index
 		)
-		let mtosForEntity = this.utils.ensureChildMap(mtoEntitiesForTypeMap, mtoEntityIdValue)
+		let mtosForEntity = ensureChildMap(mtoEntitiesForTypeMap, mtoEntityIdValue)
 
 		mtosForEntity[mtoStubReference.mtoRelationField] = mtoStubReference
 	}

@@ -3,16 +3,12 @@ import {
 	JsonFieldQuery,
 	SQLDataType
 }                          from '@airport/ground-control'
-import {
-	IFieldUtils
-}                          from '../../../lingo/utils/FieldUtils'
-import {
-	IQueryUtils
-}                          from '../../../lingo/utils/QueryUtils'
 import {IEntityAliases}    from '../../../lingo/core/entity/Aliases'
 import {IQOrderableField}  from '../../../lingo/core/field/Field'
 import {RawFieldQuery}     from '../../../lingo/query/facade/FieldQuery'
 import {IQuery}            from '../../../lingo/query/facade/Query'
+import {IFieldUtils}       from '../../../lingo/utils/FieldUtils'
+import {IQueryUtils}       from '../../../lingo/utils/QueryUtils'
 import {EntityAliases}     from '../../core/entity/Aliases'
 import {QBooleanField}     from '../../core/field/BooleanField'
 import {QDateField}        from '../../core/field/DateField'
@@ -46,12 +42,17 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 		super(entityAliases)
 	}
 
-	nonDistinctSelectClauseToJSON(rawSelect: any): any {
+	nonDistinctSelectClauseToJSON(
+		rawSelect: any,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
+	): any {
 		if (!(this.rawQuery.select instanceof QField)) {
 			throw NON_ENTITY_SELECT_ERROR_MESSAGE
 		}
 		this.columnAliases.entityAliases.getNextAlias(this.rawQuery.select.q.__driver__.getRootJoinEntity())
-		return (<QField<any>><any>this.rawQuery.select).toJSON(this.columnAliases, true)
+		return (<QField<any>><any>this.rawQuery.select).toJSON(
+			this.columnAliases, true, queryUtils, fieldUtils)
 	}
 
 	toJSON(
@@ -59,7 +60,8 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 		fieldUtils: IFieldUtils
 	): JsonFieldQuery {
 
-		let select = this.selectClauseToJSON(this.rawQuery.select)
+		let select = this.selectClauseToJSON(
+			this.rawQuery.select, queryUtils, fieldUtils)
 
 		let jsonFieldQuery: JsonFieldQuery = {
 			S: select,

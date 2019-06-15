@@ -1,3 +1,4 @@
+import {DI}                      from '@airport/di'
 import {
 	DbEntity,
 	QueryResultType
@@ -6,6 +7,7 @@ import {
 	IObservable,
 	Observable
 }                                from '@airport/observe'
+import {ENTITY_UTILS}            from '../../../diTokens'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
 import {IDatabaseFacade}         from '../../../lingo/core/repository/DatabaseFacade'
 import {IEntitySearch}           from '../../../lingo/query/api/EntitySearch'
@@ -45,7 +47,7 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType
 	): Promise<IObservable<EntityArray>> {
-		let entityQuery: EntityQuery<IESP> = (await this.DI.get(this.UTILS)).Entity.getEntityQuery(rawTreeQuery)
+		let entityQuery: EntityQuery<IESP> = (await DI.get(ENTITY_UTILS)).getEntityQuery(rawTreeQuery)
 		const cacheForUpdate               = this.cleanNextCallState()
 
 		return this.dbFacade.entity.search(

@@ -2,17 +2,18 @@ import {
 	IQEntityInternal,
 	JoinTreeNode,
 	QRelation
-} from '@airport/air-control'
+}                         from '@airport/air-control'
+import {IAirportDatabase} from '@airport/air-control/lib/src'
 import {
 	DbEntity,
 	JSONEntityFieldInOrderBy,
 	JSONFieldInOrderBy,
 	SortOrder
-} from '@airport/ground-control'
+}                         from '@airport/ground-control'
 import {
 	AbstractEntityOrderByParser,
 	IEntityOrderByParser
-} from './AbstractEntityOrderByParser'
+}                         from './AbstractEntityOrderByParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -51,7 +52,8 @@ export class EntityOrderByParser
 	 */
 	getOrderByFragment(
 		joinTree: JoinTreeNode,
-		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal }
+		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
+		airDb: IAirportDatabase
 	): string {
 		let orderByFragments: string[]          = []
 		let orderBy: JSONEntityFieldInOrderBy[] = []
@@ -82,7 +84,7 @@ export class EntityOrderByParser
 					return true
 				}
 
-				const orderByDbEntity: DbEntity = this.airportDb.schemas[orderByField.si][orderByField.ti]
+				const orderByDbEntity: DbEntity = airDb.schemas[orderByField.si][orderByField.ti]
 				const dbColumn                  = orderByDbEntity.columns[orderByField.ci]
 				if (this.isForParentNode(currentJoinNode, orderByField)) {
 					throw `Found out of order entry in Order By 

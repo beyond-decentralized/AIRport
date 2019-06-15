@@ -47,6 +47,7 @@ export interface ISchemaUtils {
 	getDbEntity(
 		schemaIndex: SchemaIndex,
 		tableIndex: TableIndex,
+		airDb: IAirportDatabase
 	): DbEntity;
 
 	getQEntityConstructor(

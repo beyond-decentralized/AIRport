@@ -1,8 +1,8 @@
-import { IAirportDatabase, IEntitySelectProperties, IUtils, JoinTreeNode } from "@airport/air-control";
+import { IAirportDatabase, IEntitySelectProperties, ISchemaUtils, JoinTreeNode } from '@airport/air-control';
 import { DbEntity, JsonEntityQuery, JSONEntityRelation, QueryResultType } from '@airport/ground-control';
-import { IEntityOrderByParser } from "../orderBy/AbstractEntityOrderByParser";
-import { GraphQueryConfiguration } from "../result/entity/IEntityResultParser";
-import { SQLDialect, SQLQuery } from "./core/SQLQuery";
+import { IEntityOrderByParser } from '../orderBy/AbstractEntityOrderByParser';
+import { GraphQueryConfiguration } from '../result/entity/IEntityResultParser';
+import { SQLDialect, SQLQuery } from './core/SQLQuery';
 /**
  * Created by Papa on 10/16/2016.
  */
@@ -16,26 +16,26 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
     protected joinTree: JoinTreeNode;
     private queryParser;
     private columnAliases;
-    constructor(airportDb: IAirportDatabase, utils: IUtils, jsonQuery: JsonEntityQuery<IEP>, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, graphQueryConfiguration?: GraphQueryConfiguration);
-    toSQL(): string;
+    constructor(jsonQuery: JsonEntityQuery<IEP>, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, schemaUtils: ISchemaUtils, graphQueryConfiguration?: GraphQueryConfiguration);
+    toSQL(airDb: IAirportDatabase, schemaUtils: ISchemaUtils): string;
     /**
      * If bridging is not applied:
      *
-     * Entities get merged if they are right next to each other in the result set.  If they are not, they are
-     * treated as separate entities - hence, your sort order matters.
+     * Entities get merged if they are right next to each other in the result set.  If they
+     * are not, they are treated as separate entities - hence, your sort order matters.
      *
-     * If bridging is applied - all entities get merged - your sort order does not matter.  Might as well disallow
-     * sort order for bridged queries (or re-sort in memory)?
+     * If bridging is applied - all entities get merged - your sort order does not matter.
+     * Might as well disallow sort order for bridged queries (or re-sort in memory)?
      *
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(results: any[]): any[];
+    parseQueryResults(schemaUtils: ISchemaUtils, results: any[]): any[];
     protected buildFromJoinTree(joinRelations: JSONEntityRelation[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
-    }): JoinTreeNode;
+    }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): JoinTreeNode;
     private getSELECTFragment;
-    protected parseQueryResult(selectClauseFragment: any, entityAlias: string, currentJoinNode: JoinTreeNode, resultRow: any, nextFieldIndex: number[]): any;
+    protected parseQueryResult(selectClauseFragment: any, entityAlias: string, currentJoinNode: JoinTreeNode, resultRow: any, nextFieldIndex: number[], schemaUtils: ISchemaUtils): any;
     /**
      * Verify that the entity select clause is valid (has ids) and fill in clauses
      * that are blank (defined as {}).

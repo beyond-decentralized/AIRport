@@ -1,4 +1,6 @@
 import { DbColumn } from '@airport/ground-control';
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { IQEntity } from '../../../lingo/core/entity/Entity';
 import { AbstractRawInsertValues } from '../../../lingo/query/facade/InsertValues';
 import { AbstractQuery } from './AbstractQuery';
@@ -9,5 +11,5 @@ export declare abstract class AbstractInsertValues<IQE extends IQEntity, ARIV ex
     rawInsertValues: ARIV;
     columnIndexes?: number[];
     constructor(rawInsertValues: ARIV, columnIndexes?: number[]);
-    protected valuesToJSON(valueSets: any[][], dbColumns: DbColumn[]): any[][];
+    protected valuesToJSON(valueSets: any[][], dbColumns: DbColumn[], queryUtils: IQueryUtils, fieldUtils: IFieldUtils): any[][];
 }

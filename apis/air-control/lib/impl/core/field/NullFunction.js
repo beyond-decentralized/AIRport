@@ -6,15 +6,15 @@ const Field_1 = require("./Field");
  * Created by Papa on 11/29/2016.
  */
 class QNullFunction extends Field_1.QField {
-    constructor(utils) {
-        super(null, null, null, ground_control_1.JSONClauseObjectType.FIELD_FUNCTION, utils);
+    constructor() {
+        super(null, null, null, ground_control_1.JSONClauseObjectType.FIELD_FUNCTION);
         this.value = null;
     }
     getInstance() {
-        return this.copyFunctions(new QNullFunction(this.utils));
+        return this.copyFunctions(new QNullFunction());
     }
-    toJSON(columnAliases, forSelectClause) {
-        return this.operableFunctionToJson(this, columnAliases, forSelectClause);
+    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
+        return this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils);
     }
 }
 exports.QNullFunction = QNullFunction;

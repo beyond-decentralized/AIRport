@@ -5,7 +5,6 @@ export interface IEntityUtils {
     getObjectClassName(object: any): string;
     getClassName(clazz: Function): string;
     exists(object: any): any;
-    valuesEqual(value1: any, value2: any, checkChildObjects?: boolean): boolean;
     isAppliable(object: any): boolean;
     getQuery<Q>(query: Q | {
         (...args: any[]): Q;

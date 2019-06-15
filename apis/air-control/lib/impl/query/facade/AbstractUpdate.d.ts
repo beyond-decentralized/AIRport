@@ -6,7 +6,7 @@ import { AbstractRawUpdate } from '../../../lingo/query/facade/Update';
 import { AbstractQuery } from './AbstractQuery';
 export declare abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractRawUpdate<IQE>> extends AbstractQuery {
     rawUpdate: ARE;
-    constructor(rawUpdate: ARE);
+    protected constructor(rawUpdate: ARE);
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonUpdate<JsonEntityUpdateColumns>;
-    protected abstract setToJSON(set: any): JsonEntityUpdateColumns;
+    protected abstract setToJSON(set: any, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonEntityUpdateColumns;
 }

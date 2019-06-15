@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const WrapperFunctions_1 = require("../../core/field/WrapperFunctions");
 const AbstractUpdate_1 = require("./AbstractUpdate");
 class UpdateColumns extends AbstractUpdate_1.AbstractUpdate {
-    constructor(rawUpdate, utils) {
-        super(rawUpdate, utils);
+    constructor(rawUpdate) {
+        super(rawUpdate);
     }
-    setToJSON(set) {
+    setToJSON(set, queryUtils, fieldUtils) {
         const setClause = {};
         const dbEntity = this.rawUpdate.update.__driver__.dbEntity;
         const dbColumnMap = dbEntity.columnMap;
@@ -34,7 +34,7 @@ class UpdateColumns extends AbstractUpdate_1.AbstractUpdate {
             if (!value.toJSON) {
                 throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${this.rawUpdate.update.__driver__.dbEntity.name}`;
             }
-            setClause[columnName] = value.toJSON(this.columnAliases, false);
+            setClause[columnName] = value.toJSON(this.columnAliases, false, queryUtils, fieldUtils);
         }
         return setClause;
     }

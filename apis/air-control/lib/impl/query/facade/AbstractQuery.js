@@ -16,7 +16,7 @@ class AbstractQuery {
         return this.entityAliases.getParams().getParameters();
     }
     getNonEntityQuery(rawQuery, jsonQuery, createSelectCallback, queryUtils, fieldUtils) {
-        let from = this.fromClauseToJSON(rawQuery.from);
+        let from = this.fromClauseToJSON(rawQuery.from, queryUtils, fieldUtils);
         jsonQuery.F = from;
         if (createSelectCallback) {
             createSelectCallback(jsonQuery);
@@ -29,7 +29,7 @@ class AbstractQuery {
         jsonQuery.O = rawQuery.offset;
         return jsonQuery;
     }
-    fromClauseToJSON(fromClause) {
+    fromClauseToJSON(fromClause, queryUtils, fieldUtils) {
         if (!fromClause) {
             if (this.isEntityQuery) {
                 return [];
@@ -47,7 +47,8 @@ class AbstractQuery {
                     throw `Entity FROM clauses can contain only Entities.`;
                 }
             }
-            return fromEntity.__driver__.getRelationJson(this.columnAliases);
+            return fromEntity.__driver__
+                .getRelationJson(this.columnAliases, queryUtils, fieldUtils);
         });
     }
     groupByClauseToJSON(groupBy) {

@@ -1,80 +1,80 @@
-import {DbEntity}          from "@airport/ground-control";
-import {MappedEntityArray} from "../../lingo/query/MappedEntityArray";
-import {IUtils}            from "../../lingo/utils/Utils";
+import {DbEntity}          from '@airport/ground-control'
+import {MappedEntityArray} from '../../lingo/query/MappedEntityArray'
+import {ISchemaUtils}      from '../../lingo/utils/SchemaUtils'
 
 /**
  * Created by Papa on 10/14/2016.
  */
 
 export function newMappedEntityArray<E>(
-	utils: IUtils,
+	schemaUtils: ISchemaUtils,
 	dbEntity: DbEntity
 ): MappedEntityArray<E> {
 
-	let arr     = Array.apply(null, []);
-	arr.dataMap = {};
+	let arr     = Array.apply(null, [])
+	arr.dataMap = {}
 
 	arr.clear = function () {
-		this.dataMap = {};
-		this.splice(0, this.length);
-	};
+		this.dataMap = {}
+		this.splice(0, this.length)
+	}
 
 	arr.putAll = function (values: E[]): void {
 		values.forEach((value) => {
-			this.put(value);
-		});
-	};
+			this.put(value)
+		})
+	}
 
 	arr.put = function (value: E): E {
-		let keyValue = utils.Schema.getIdKey(value, dbEntity);
-		if (utils.Schema.isIdEmpty(keyValue)) {
-			throw `Composite @Id(s) value for entity '${dbEntity.name}' is not defined`;
+		let keyValue = schemaUtils.getIdKey(value, dbEntity)
+		if (schemaUtils.isIdEmpty(keyValue)) {
+			throw `Composite @Id(s) value for entity '${dbEntity.name}' is not defined`
 		}
 		if (this.dataMap[keyValue]) {
 			if (this.dataMap[keyValue] !== value) {
-				throw `Found two different instances of an object with the same @Id: ${keyValue}`;
+				throw `Found two different instances of an object with the same @Id: ${keyValue}`
 			}
-			return value;
+			return value
 		}
-		this.dataMap[keyValue] = value;
-		this.push(value);
+		this.dataMap[keyValue] = value
+		this.push(value)
 
-		return value;
-	};
+		return value
+	}
 
 	function stringifyKey(key) {
 		if (typeof key !== 'string') {
-			key = JSON.stringify(key);
+			key = JSON.stringify(key)
 		}
-		return key;
+		return key
 	}
 
 	arr.get = function (key: string): E {
-		key = stringifyKey(key);
-		return this.dataMap[key];
-	};
+		key = stringifyKey(key)
+		return this.dataMap[key]
+	}
 
 	arr.delete = function (key: string): E {
-		key       = stringifyKey(key);
-		let value = this.dataMap[key];
-		delete this.dataMap[key];
+		key       = stringifyKey(key)
+		let value = this.dataMap[key]
+		delete this.dataMap[key]
 
 		for (let i = this.length - 1; i >= 0; i--) {
-			let currentValue = this[i];
+			let currentValue = this[i]
 			if (currentValue === value) {
-				this.splice(i, 1);
-				break;
+				this.splice(i, 1)
+				break
 			}
 		}
 
-		return value;
-	};
+		return value
+	}
 
 	arr.toArray = function (): E[] {
-		return this.slice();
-	};
+		return this.slice()
+	}
 
-	return arr;
+	return arr
 }
 
 /*

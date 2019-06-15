@@ -1,4 +1,4 @@
-import { ReferencedColumnData } from '@airport/air-control';
+import { ISchemaUtils, ReferencedColumnData } from '@airport/air-control';
 import { DbEntity, SQLDataType } from '@airport/ground-control';
 import { AbstractObjectResultParser, IEntityResultParser } from './entity/IEntityResultParser';
 /**
@@ -8,7 +8,7 @@ export declare class FlattenedResultParser extends AbstractObjectResultParser im
     currentResultRow: any[];
     addEntity(entityAlias: string, dbEntity: DbEntity): any;
     addProperty(entityAlias: string, resultObject: any, dataType: SQLDataType, propertyName: string, propertyValue: any): boolean;
-    bufferManyToOneStub(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, relationInfos: ReferencedColumnData[]): void;
+    bufferManyToOneStub(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, relationInfos: ReferencedColumnData[], schemaUtils: ISchemaUtils): void;
     bufferBlankManyToOneStub(entityAlias: string, resultObject: any, propertyName: string, relationInfos: ReferencedColumnData[]): void;
     bufferManyToOneObject(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, childResultObject: any): any;
     bufferBlankManyToOneObject(entityAlias: string, resultObject: any, propertyName: string): void;

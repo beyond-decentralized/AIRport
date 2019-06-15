@@ -10,15 +10,8 @@ export interface IEntityUtils {
 
 	exists(object: any);
 
-	valuesEqual(
-		value1: any,
-		value2: any,
-		checkChildObjects?: boolean
-	): boolean;
-
 	isAppliable(object: any): boolean;
-
-	getQuery<Q>(
+getQuery<Q>(
 		query: Q | { (...args: any[]): Q }
 	): Q;
 

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 10/14/2016.
  */
-function newMappedEntityArray(utils, dbEntity) {
+function newMappedEntityArray(schemaUtils, dbEntity) {
     let arr = Array.apply(null, []);
     arr.dataMap = {};
     arr.clear = function () {
@@ -16,8 +16,8 @@ function newMappedEntityArray(utils, dbEntity) {
         });
     };
     arr.put = function (value) {
-        let keyValue = utils.Schema.getIdKey(value, dbEntity);
-        if (utils.Schema.isIdEmpty(keyValue)) {
+        let keyValue = schemaUtils.getIdKey(value, dbEntity);
+        if (schemaUtils.isIdEmpty(keyValue)) {
             throw `Composite @Id(s) value for entity '${dbEntity.name}' is not defined`;
         }
         if (this.dataMap[keyValue]) {
@@ -120,5 +120,5 @@ exports.newMappedEntityArray = newMappedEntityArray;
  }
 
  }
- */ 
+ */
 //# sourceMappingURL=MappedEntityArray.js.map

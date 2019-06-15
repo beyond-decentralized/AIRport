@@ -2,16 +2,10 @@ import { CRUDOperation, DbColumn, DbEntity, DbRelation, SchemaIndex, TableIndex 
 import { IAirportDatabase } from '../../lingo/AirportDatabase';
 import { IEntityIdProperties, IQEntity } from '../../lingo/core/entity/Entity';
 import { IdKeysByIdColumnIndex, ISchemaUtils } from '../../lingo/utils/SchemaUtils';
-import { IUtils } from '../../lingo/utils/Utils';
 import { QEntityConstructor } from '../core/entity/Entity';
 export declare class SchemaUtils implements ISchemaUtils {
-    private airportDb;
-    private utils;
     static TEMP_ID: number;
-    AIR_DB: import("@airport/di").DiToken<IAirportDatabase>;
-    DI: import("@airport/di").IContainer;
-    constructor(airportDb: IAirportDatabase, utils: IUtils);
-    getDbEntity(schemaIndex: SchemaIndex, tableIndex: TableIndex): Promise<DbEntity>;
+    getDbEntity(schemaIndex: SchemaIndex, tableIndex: TableIndex, airDb: IAirportDatabase): DbEntity;
     isRepositoryId(columnName: string): boolean;
     doCascade(dbRelation: DbRelation, crudOperation: CRUDOperation): boolean;
     getQEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): QEntityConstructor;

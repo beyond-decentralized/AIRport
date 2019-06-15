@@ -28,7 +28,7 @@ export interface IdKeysByIdColumnIndex {
     };
 }
 export interface ISchemaUtils {
-    getDbEntity(schemaIndex: SchemaIndex, tableIndex: TableIndex): DbEntity;
+    getDbEntity(schemaIndex: SchemaIndex, tableIndex: TableIndex, airDb: IAirportDatabase): DbEntity;
     getQEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): QEntityConstructor;
     getEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): any;
     getNewEntity(dbEntity: DbEntity, airDb: IAirportDatabase): any;

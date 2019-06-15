@@ -34,7 +34,7 @@ class EntityOrderByParser extends AbstractEntityOrderByParser_1.AbstractEntityOr
      * @param qEntityMapByAlias
      * @returns {string}
      */
-    getOrderByFragment(joinTree, qEntityMapByAlias) {
+    getOrderByFragment(joinTree, qEntityMapByAlias, airDb) {
         let orderByFragments = [];
         let orderBy = [];
         if (this.orderBy) {
@@ -57,7 +57,7 @@ class EntityOrderByParser extends AbstractEntityOrderByParser_1.AbstractEntityOr
                 if (parentNodeFound) {
                     return true;
                 }
-                const orderByDbEntity = this.airportDb.schemas[orderByField.si][orderByField.ti];
+                const orderByDbEntity = airDb.schemas[orderByField.si][orderByField.ti];
                 const dbColumn = orderByDbEntity.columns[orderByField.ci];
                 if (this.isForParentNode(currentJoinNode, orderByField)) {
                     throw `Found out of order entry in Order By 

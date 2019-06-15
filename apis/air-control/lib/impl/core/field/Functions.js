@@ -8,11 +8,6 @@ const OperableField_1 = require("./OperableField");
 const StringField_1 = require("./StringField");
 const UntypedField_1 = require("./UntypedField");
 const WrapperFunctions_1 = require("./WrapperFunctions");
-let utils;
-function setUtilsForFunctions(utilsForFunctions) {
-    utils = utilsForFunctions;
-}
-exports.setUtilsForFunctions = setUtilsForFunctions;
 function getSqlFunctionCall(sqlFunction, parameters) {
     if (parameters) {
         parameters = parameters.map((parameter) => {
@@ -42,7 +37,7 @@ exports.abs = function (numeric) {
         return numeric.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.AVG));
     }
     else {
-        return new NumberField_1.QNumberFunction(numeric, utils).applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.ABS));
+        return new NumberField_1.QNumberFunction(numeric).applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.ABS));
     }
 };
 exports.avg = function (numeric) {
@@ -50,36 +45,36 @@ exports.avg = function (numeric) {
         return numeric.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.AVG));
     }
     else {
-        return new NumberField_1.QNumberFunction(numeric, utils).applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.AVG));
+        return new NumberField_1.QNumberFunction(numeric).applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.AVG));
     }
 };
 function getFunctionObject(value) {
     switch (typeof value) {
         case 'boolean':
-            return new BooleanField_1.QBooleanFunction(value, utils);
+            return new BooleanField_1.QBooleanFunction(value);
         case 'number':
-            return new NumberField_1.QNumberFunction(value, utils);
+            return new NumberField_1.QNumberFunction(value);
         case 'string':
-            return new StringField_1.QStringFunction(value, utils);
+            return new StringField_1.QStringFunction(value);
     }
     if (value instanceof Date) {
-        return new DateField_1.QDateFunction(value, utils);
+        return new DateField_1.QDateFunction(value);
     }
     let selectClause = value.select;
     if (selectClause instanceof QDistinctFunction) {
         selectClause = selectClause.getSelectClause();
     }
     if (selectClause instanceof BooleanField_1.QBooleanField) {
-        return new BooleanField_1.QBooleanFunction(value, utils);
+        return new BooleanField_1.QBooleanFunction(value);
     }
     else if (selectClause instanceof DateField_1.QDateField) {
-        return new DateField_1.QDateFunction(value, utils);
+        return new DateField_1.QDateFunction(value);
     }
     else if (selectClause instanceof NumberField_1.QNumberField) {
-        return new NumberField_1.QNumberFunction(value, utils);
+        return new NumberField_1.QNumberFunction(value);
     }
     else if (selectClause instanceof StringField_1.QStringField) {
-        return new StringField_1.QStringFunction(value, utils);
+        return new StringField_1.QStringFunction(value);
     }
     throw `Function rValue must be a primitive, Date, Field or Field query`;
 }
@@ -116,7 +111,7 @@ exports.sum = function (numeric) {
         return numeric.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.SUM));
     }
     else {
-        return new NumberField_1.QNumberFunction(numeric, utils)
+        return new NumberField_1.QNumberFunction(numeric)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.SUM));
     }
 };
@@ -125,7 +120,7 @@ exports.plus = function (numeric1, numeric2) {
         return numeric1.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, [numeric2]));
     }
     else {
-        return new NumberField_1.QNumberFunction(numeric1, utils)
+        return new NumberField_1.QNumberFunction(numeric1)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, [numeric2]));
     }
 };
@@ -160,19 +155,19 @@ function coalesce(...values) {
     else {
         switch (dataType) {
             case ground_control_1.SQLDataType.ANY:
-                return new UntypedField_1.QUntypedFunction(firstValue, utils)
+                return new UntypedField_1.QUntypedFunction(firstValue)
                     .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, otherValues));
             case ground_control_1.SQLDataType.BOOLEAN:
-                return new BooleanField_1.QBooleanFunction(firstValue, utils)
+                return new BooleanField_1.QBooleanFunction(firstValue)
                     .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, otherValues));
             case ground_control_1.SQLDataType.DATE:
-                return new DateField_1.QDateFunction(firstValue, utils)
+                return new DateField_1.QDateFunction(firstValue)
                     .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, otherValues));
             case ground_control_1.SQLDataType.NUMBER:
-                return new NumberField_1.QNumberFunction(firstValue, utils)
+                return new NumberField_1.QNumberFunction(firstValue)
                     .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, otherValues));
             case ground_control_1.SQLDataType.STRING:
-                return new StringField_1.QStringFunction(firstValue, utils)
+                return new StringField_1.QStringFunction(firstValue)
                     .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, otherValues));
             default:
                 throw new Error(`Unexpected SQLDataType: ` + dataType);
@@ -185,7 +180,7 @@ exports.ucase = function (stringValue) {
         return stringValue.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.UCASE));
     }
     else {
-        return new StringField_1.QStringFunction(stringValue, utils)
+        return new StringField_1.QStringFunction(stringValue)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.UCASE));
     }
 };
@@ -194,7 +189,7 @@ exports.lcase = function (stringValue) {
         return stringValue.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.LCASE));
     }
     else {
-        return new StringField_1.QStringFunction(stringValue, utils)
+        return new StringField_1.QStringFunction(stringValue)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.LCASE));
     }
 };
@@ -203,7 +198,7 @@ exports.mid = function (stringValue, start, length) {
         return stringValue.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MID, [start, length]));
     }
     else {
-        return new StringField_1.QStringFunction(stringValue, utils)
+        return new StringField_1.QStringFunction(stringValue)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MID, [start, length]));
     }
 };
@@ -212,7 +207,7 @@ exports.len = function (stringValue) {
         return stringValue.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.LEN));
     }
     else {
-        return new StringField_1.QStringFunction(stringValue, utils)
+        return new StringField_1.QStringFunction(stringValue)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.LEN));
     }
 };
@@ -221,12 +216,12 @@ exports.round = function (numeric, digits = 0) {
         return numeric.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.ROUND, [digits]));
     }
     else {
-        return new NumberField_1.QNumberFunction(numeric, utils)
+        return new NumberField_1.QNumberFunction(numeric)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.ROUND, [digits]));
     }
 };
 exports.now = function () {
-    return new DateField_1.QDateFunction(null, utils)
+    return new DateField_1.QDateFunction(null)
         .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.NOW));
 };
 exports.format = function (format, ...formatParameters) {
@@ -234,7 +229,7 @@ exports.format = function (format, ...formatParameters) {
         return format.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.FORMAT, formatParameters));
     }
     else {
-        return new StringField_1.QStringFunction(format, utils)
+        return new StringField_1.QStringFunction(format)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.FORMAT, formatParameters));
     }
 };
@@ -243,7 +238,7 @@ exports.replace = function (stringValue, toReplace, replaceWith) {
         return stringValue.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.REPLACE, [toReplace, replaceWith]));
     }
     else {
-        return new StringField_1.QStringFunction(stringValue, utils)
+        return new StringField_1.QStringFunction(stringValue)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.REPLACE, [toReplace, replaceWith]));
     }
 };
@@ -252,7 +247,7 @@ exports.trim = function (stringField) {
         return stringField.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.TRIM));
     }
     else {
-        return new StringField_1.QStringFunction(stringField, utils)
+        return new StringField_1.QStringFunction(stringField)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.TRIM));
     }
 };
@@ -354,7 +349,7 @@ exports.divide = function (numeric1, numeric2) {
         return numeric1.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.DIVIDE, [numeric2]));
     }
     else {
-        return new NumberField_1.QNumberFunction(numeric1, utils)
+        return new NumberField_1.QNumberFunction(numeric1)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.DIVIDE, [numeric2]));
     }
 };
@@ -363,7 +358,7 @@ exports.subtract = function (numeric1, numeric2) {
         return numeric1.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MINUS, [numeric2]));
     }
     else {
-        return new NumberField_1.QNumberFunction(numeric1, utils)
+        return new NumberField_1.QNumberFunction(numeric1)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MINUS, [numeric2]));
     }
 };
@@ -372,7 +367,7 @@ exports.modulus = function (numeric1, numeric2) {
         return numeric1.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MODULUS, [numeric2]));
     }
     else {
-        return new NumberField_1.QNumberFunction(numeric1, utils)
+        return new NumberField_1.QNumberFunction(numeric1)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MODULUS, [numeric2]));
     }
 };
@@ -381,7 +376,7 @@ exports.multiply = function (numeric1, numeric2) {
         return numeric1.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MULTIPLY, [numeric2]));
     }
     else {
-        return new NumberField_1.QNumberFunction(numeric1, utils)
+        return new NumberField_1.QNumberFunction(numeric1)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.MULTIPLY, [numeric2]));
     }
 };
@@ -390,7 +385,7 @@ exports.add = function (numeric1, numeric2) {
         return numeric1.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, [numeric2]));
     }
     else {
-        return new NumberField_1.QNumberFunction(numeric1, utils)
+        return new NumberField_1.QNumberFunction(numeric1)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.PLUS, [numeric2]));
     }
 };
@@ -405,7 +400,7 @@ exports.concat = function (//
         return firstFragment.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.CONCATENATE, restOfFragments));
     }
     else {
-        return new StringField_1.QStringFunction(firstFragment, utils)
+        return new StringField_1.QStringFunction(firstFragment)
             .applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.CONCATENATE, restOfFragments));
     }
 };

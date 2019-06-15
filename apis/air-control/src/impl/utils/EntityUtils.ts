@@ -3,9 +3,9 @@ import {ENTITY_UTILS}   from '../../diTokens'
 import {RawEntityQuery} from '../../lingo/query/facade/EntityQuery'
 import {RawQuery}       from '../../lingo/query/facade/Query'
 import {IEntityUtils}   from '../../lingo/utils/EntityUtils'
-import {IUtils}         from '../../lingo/utils/Utils'
 import {QOperableField} from '../core/field/OperableField'
 import {EntityQuery}    from '../query/facade/EntityQuery'
+import {objectExists}   from '../Utils'
 
 /**
  * Created by Papa on 6/14/2016.
@@ -33,7 +33,7 @@ export class EntityUtils
 	}
 
 	exists(object: any) {
-		return this.utils.objectExists(object)
+		return objectExists(object)
 	}
 
 	/*
@@ -55,14 +55,6 @@ export class EntityUtils
 	 return true;
 	 }
 	 */
-
-	valuesEqual(
-		value1: any,
-		value2: any,
-		checkChildObjects: boolean = false
-	): boolean {
-		return this.utils.valuesEqual(value1, value2, checkChildObjects)
-	}
 
 	isAppliable(object: any): boolean {
 		return object instanceof QOperableField
@@ -87,9 +79,8 @@ export class EntityUtils
 	getEntityQuery(
 		rawGraphQuery: RawEntityQuery<any> | { (...args: any[]): RawEntityQuery<any> }
 	): EntityQuery<any> {
-		return new EntityQuery(this.getRawQuery(rawGraphQuery), this.utils)
+		return new EntityQuery(this.getRawQuery(rawGraphQuery))
 	}
 
 }
-
 DI.set(ENTITY_UTILS, EntityUtils)

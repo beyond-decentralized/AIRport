@@ -1,7 +1,9 @@
 import { JsonInsertValues } from '@airport/ground-control';
 import { IQEntity } from '../../../lingo/core/entity/Entity';
 import { RawInsertColumnValues } from '../../../lingo/query/facade/InsertValues';
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { AbstractInsertValues } from './AbstractInsertValues';
 export declare class InsertColumnValues<IQE extends IQEntity> extends AbstractInsertValues<IQE, RawInsertColumnValues<IQE>> {
-    toJSON(): JsonInsertValues;
+    toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonInsertValues;
 }

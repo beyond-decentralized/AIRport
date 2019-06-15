@@ -7,16 +7,15 @@ import { IValidator } from '../validation/Validator';
 export interface IEntityOrderByParser {
     getOrderByFragment(joinTree: JoinTreeNode, qEntityMapByAlias: {
         [entityAlias: string]: IQEntityInternal;
-    }): string;
+    }, airDb: IAirportDatabase): string;
 }
 export interface INonEntityOrderByParser {
     getOrderByFragment(rootSelectClauseFragment: any, originalOrderBy: JSONFieldInOrderBy[]): string;
 }
 export declare abstract class AbstractEntityOrderByParser {
-    protected airportDb: IAirportDatabase;
     protected rootSelectClauseFragment: any;
     protected validator: IValidator;
     protected orderBy?: JSONEntityFieldInOrderBy[];
-    constructor(airportDb: IAirportDatabase, rootSelectClauseFragment: any, validator: IValidator, orderBy?: JSONEntityFieldInOrderBy[]);
+    constructor(rootSelectClauseFragment: any, validator: IValidator, orderBy?: JSONEntityFieldInOrderBy[]);
     protected getCommonOrderByFragment(orderByFields: JSONFieldInOrderBy[]): string;
 }

@@ -11,7 +11,7 @@ import {
 	SqlFunction,
 	SqlOperator
 }                          from '@airport/ground-control'
-import {IQUntypedField}    from '../../..'
+import {IQUntypedField}    from '../../../lingo/core/field/UntypedField'
 import {IQBooleanField}    from '../../../lingo/core/field/BooleanField'
 import {IQDateField}       from '../../../lingo/core/field/DateField'
 import {
@@ -56,7 +56,6 @@ import {
 	ITreeEntity,
 	RawTreeQuery
 }                          from '../../../lingo/query/facade/TreeQuery'
-import {IUtils}            from '../../../lingo/utils/Utils'
 import {IAppliable}        from './Appliable'
 import {
 	QBooleanField,
@@ -85,15 +84,6 @@ import {
 	num,
 	str
 }                          from './WrapperFunctions'
-
-
-let utils: IUtils
-
-export function setUtilsForFunctions(
-	utilsForFunctions: IUtils
-) {
-	utils = utilsForFunctions
-}
 
 function getSqlFunctionCall(
 	sqlFunction: SqlFunction,
@@ -129,7 +119,7 @@ export const abs: absFunction = function (
 	if (numeric instanceof QNumberField) {
 		return numeric.applySqlFunction(getSqlFunctionCall(SqlFunction.AVG))
 	} else {
-		return new QNumberFunction(<any>numeric, utils).applySqlFunction(getSqlFunctionCall(SqlFunction.ABS))
+		return new QNumberFunction(<any>numeric).applySqlFunction(getSqlFunctionCall(SqlFunction.ABS))
 	}
 }
 
@@ -139,7 +129,7 @@ export const avg: avgFunction = function (
 	if (numeric instanceof QNumberField) {
 		return numeric.applySqlFunction(getSqlFunctionCall(SqlFunction.AVG))
 	} else {
-		return new QNumberFunction(<any>numeric, utils).applySqlFunction(getSqlFunctionCall(SqlFunction.AVG))
+		return new QNumberFunction(<any>numeric).applySqlFunction(getSqlFunctionCall(SqlFunction.AVG))
 	}
 }
 
@@ -148,27 +138,27 @@ export function getFunctionObject<T extends boolean | Date | number | string>(
 ): QOperableField<T, any, any, any> {
 	switch (typeof value) {
 		case 'boolean':
-			return new QBooleanFunction(<any>value, utils)
+			return new QBooleanFunction(<any>value)
 		case 'number':
-			return new QNumberFunction(<any>value, utils)
+			return new QNumberFunction(<any>value)
 		case 'string':
-			return new QStringFunction(<any>value, utils)
+			return new QStringFunction(<any>value)
 	}
 	if (value instanceof Date) {
-		return new QDateFunction(<any>value, utils)
+		return new QDateFunction(<any>value)
 	}
 	let selectClause = (<RawFieldQuery<any>>value).select
 	if (selectClause instanceof QDistinctFunction) {
 		selectClause = selectClause.getSelectClause()
 	}
 	if (selectClause instanceof QBooleanField) {
-		return new QBooleanFunction(<any>value, utils)
+		return new QBooleanFunction(<any>value)
 	} else if (selectClause instanceof QDateField) {
-		return new QDateFunction(<any>value, utils)
+		return new QDateFunction(<any>value)
 	} else if (selectClause instanceof QNumberField) {
-		return new QNumberFunction(<any>value, utils)
+		return new QNumberFunction(<any>value)
 	} else if (selectClause instanceof QStringField) {
-		return new QStringFunction(<any>value, utils)
+		return new QStringFunction(<any>value)
 	}
 	throw `Function rValue must be a primitive, Date, Field or Field query`
 }
@@ -215,7 +205,7 @@ export const sum: sumFunction = function (
 	if (numeric instanceof QNumberField) {
 		return numeric.applySqlFunction(getSqlFunctionCall(SqlFunction.SUM))
 	} else {
-		return new QNumberFunction(<any>numeric, utils)
+		return new QNumberFunction(<any>numeric)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.SUM))
 	}
 }
@@ -227,7 +217,7 @@ export const plus: plusFunction = function (
 	if (numeric1 instanceof QNumberField) {
 		return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, [numeric2]))
 	} else {
-		return new QNumberFunction(<any>numeric1, utils)
+		return new QNumberFunction(<any>numeric1)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, [numeric2]))
 	}
 }
@@ -276,19 +266,19 @@ export function coalesce(
 	} else {
 		switch (dataType) {
 			case SQLDataType.ANY:
-				return new QUntypedFunction(<any>firstValue, utils)
+				return new QUntypedFunction(<any>firstValue)
 					.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues))
 			case SQLDataType.BOOLEAN:
-				return new QBooleanFunction(<any>firstValue, utils)
+				return new QBooleanFunction(<any>firstValue)
 					.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues))
 			case SQLDataType.DATE:
-				return new QDateFunction(<any>firstValue, utils)
+				return new QDateFunction(<any>firstValue)
 					.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues))
 			case SQLDataType.NUMBER:
-				return new QNumberFunction(<any>firstValue, utils)
+				return new QNumberFunction(<any>firstValue)
 					.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues))
 			case SQLDataType.STRING:
-				return new QStringFunction(<any>firstValue, utils)
+				return new QStringFunction(<any>firstValue)
 					.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues))
 			default:
 				throw new Error(`Unexpected SQLDataType: ` + dataType)
@@ -302,7 +292,7 @@ export const ucase: ucaseFunction = function (
 	if (stringValue instanceof QStringField) {
 		return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.UCASE))
 	} else {
-		return new QStringFunction(<any>stringValue, utils)
+		return new QStringFunction(<any>stringValue)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.UCASE))
 	}
 }
@@ -313,7 +303,7 @@ export const lcase: lcaseFunction = function (
 	if (stringValue instanceof QStringField) {
 		return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.LCASE))
 	} else {
-		return <any>new QStringFunction(<any>stringValue, utils)
+		return <any>new QStringFunction(<any>stringValue)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.LCASE))
 	}
 }
@@ -326,7 +316,7 @@ export const mid: midFunction = function (
 	if (stringValue instanceof QStringField) {
 		return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.MID, [start, length]))
 	} else {
-		return new QStringFunction(<any>stringValue, utils)
+		return new QStringFunction(<any>stringValue)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.MID, [start, length]))
 	}
 }
@@ -337,7 +327,7 @@ export const len: lenFunction = function (
 	if (stringValue instanceof QStringField) {
 		return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.LEN))
 	} else {
-		return new QStringFunction(<any>stringValue, utils)
+		return new QStringFunction(<any>stringValue)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.LEN))
 	}
 }
@@ -349,13 +339,13 @@ export const round: roundFunction = function (
 	if (numeric instanceof QNumberField) {
 		return numeric.applySqlFunction(getSqlFunctionCall(SqlFunction.ROUND, [digits]))
 	} else {
-		return new QNumberFunction(<any>numeric, utils)
+		return new QNumberFunction(<any>numeric)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.ROUND, [digits]))
 	}
 }
 
 export const now: nowFunction = function (): IQDateField {
-	return new QDateFunction(null, utils)
+	return new QDateFunction(null)
 		.applySqlFunction(getSqlFunctionCall(SqlFunction.NOW))
 }
 
@@ -367,7 +357,7 @@ export const format: formatFunction = function <T extends boolean | Date | numbe
 	if (format instanceof QStringField) {
 		return format.applySqlFunction(getSqlFunctionCall(SqlFunction.FORMAT, formatParameters))
 	} else {
-		return new QStringFunction(<any>format, utils)
+		return new QStringFunction(<any>format)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.FORMAT, formatParameters))
 	}
 }
@@ -380,7 +370,7 @@ export const replace: replaceFunction = function (
 	if (stringValue instanceof QStringField) {
 		return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.REPLACE, [toReplace, replaceWith]))
 	} else {
-		return new QStringFunction(<any>stringValue, utils)
+		return new QStringFunction(<any>stringValue)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.REPLACE, [toReplace, replaceWith]))
 	}
 }
@@ -391,7 +381,7 @@ export const trim: trimFunction = function (
 	if (stringField instanceof QStringField) {
 		return stringField.applySqlFunction(getSqlFunctionCall(SqlFunction.TRIM))
 	} else {
-		return new QStringFunction(<any>stringField, utils)
+		return new QStringFunction(<any>stringField)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.TRIM))
 	}
 }
@@ -534,7 +524,7 @@ export const divide: divideFunction = function (
 	if (numeric1 instanceof QNumberField) {
 		return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.DIVIDE, [numeric2]))
 	} else {
-		return new QNumberFunction(<any>numeric1, utils)
+		return new QNumberFunction(<any>numeric1)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.DIVIDE, [numeric2]))
 	}
 }
@@ -546,7 +536,7 @@ export const subtract: subtractFunction = function (
 	if (numeric1 instanceof QNumberField) {
 		return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.MINUS, [numeric2]))
 	} else {
-		return new QNumberFunction(<any>numeric1, utils)
+		return new QNumberFunction(<any>numeric1)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.MINUS, [numeric2]))
 	}
 }
@@ -558,7 +548,7 @@ export const modulus: modulusFunction = function (
 	if (numeric1 instanceof QNumberField) {
 		return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.MODULUS, [numeric2]))
 	} else {
-		return new QNumberFunction(<any>numeric1, utils)
+		return new QNumberFunction(<any>numeric1)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.MODULUS, [numeric2]))
 	}
 }
@@ -570,7 +560,7 @@ export const multiply: multiplyFunction = function (
 	if (numeric1 instanceof QNumberField) {
 		return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.MULTIPLY, [numeric2]))
 	} else {
-		return new QNumberFunction(<any>numeric1, utils)
+		return new QNumberFunction(<any>numeric1)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.MULTIPLY, [numeric2]))
 	}
 }
@@ -582,7 +572,7 @@ export const add: addFunction = function (
 	if (numeric1 instanceof QNumberField) {
 		return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, [numeric2]))
 	} else {
-		return new QNumberFunction(<any>numeric1, utils)
+		return new QNumberFunction(<any>numeric1)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, [numeric2]))
 	}
 }
@@ -603,7 +593,7 @@ export const concat: concatenateFunction = function ( //
 	if (firstFragment instanceof QStringField) {
 		return firstFragment.applySqlFunction(getSqlFunctionCall(SqlFunction.CONCATENATE, restOfFragments))
 	} else {
-		return new QStringFunction(<any>firstFragment, utils)
+		return new QStringFunction(<any>firstFragment)
 			.applySqlFunction(getSqlFunctionCall(SqlFunction.CONCATENATE, restOfFragments))
 	}
 }

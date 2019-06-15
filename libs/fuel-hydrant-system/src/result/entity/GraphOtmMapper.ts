@@ -1,9 +1,13 @@
 import {
-	IUtils,
+	ISchemaUtils,
 	MappedEntityArray,
 	newMappedEntityArray
 }                               from '@airport/air-control'
-import {DbEntity}               from '@airport/ground-control'
+import {
+	DbEntity,
+	ensureChildArray,
+	ensureChildMap
+}                               from '@airport/ground-control'
 import {ManyToOneStubReference} from './GraphMtoMapper'
 
 /**
@@ -37,15 +41,11 @@ export class GraphOtmMapper {
 		[otmEntityId: string]: any
 	}[][] = []
 
-	constructor(
-		private utils: IUtils
-	) {
-	}
-
 	addMtoReference(
 		mtoStubReference: ManyToOneStubReference,
 		mtoEntityId: string | number,
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		schemaUtils: ISchemaUtils
 	): void {
 		// If the @OneToMany({ mappedBy: ... }) is missing, there is nothing to map to
 		if (!mtoStubReference.otmEntityField) {
@@ -55,8 +55,8 @@ export class GraphOtmMapper {
 		const otmDbEntity = mtoStubReference.otmDbEntity
 		let mtoEntityReferenceMapForEntity: {
 			[otmReferenceId: string]: { [otmProperty: string]: MappedEntityArray<any> }
-		}                 = this.utils.ensureChildMap(
-			this.utils.ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.schemaVersion.schema.index),
+		}                 = ensureChildMap(
+			ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.schemaVersion.schema.index),
 			otmDbEntity.index
 		)
 
@@ -67,8 +67,9 @@ export class GraphOtmMapper {
 		}
 		let mtoCollection: MappedEntityArray<any> = mapForOtmEntity[mtoStubReference.otmEntityField]
 		if (!mtoCollection) {
-			mtoCollection                                    = newMappedEntityArray<any>(this.utils, dbEntity)
-			mapForOtmEntity[mtoStubReference.otmEntityField] = mtoCollection
+			mtoCollection = newMappedEntityArray<any>(schemaUtils, dbEntity)
+			mapForOtmEntity[mtoStubReference.otmEntityField]
+			              = mtoCollection
 		}
 
 		mtoCollection.put(mtoStubReference.mtoParentObject)
@@ -82,8 +83,8 @@ export class GraphOtmMapper {
 		const otmDbEntity = otmStubReference.otmDbEntity
 		let mtoEntityReferenceMapForEntity: {
 			[otmEntityId: string]: any
-		}                 = this.utils.ensureChildMap(
-			this.utils.ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.schemaVersion.schema.index),
+		}                 = ensureChildMap(
+			ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.schemaVersion.schema.index),
 			otmDbEntity.index
 		)
 

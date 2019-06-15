@@ -14,9 +14,7 @@ var ClauseType;
     ClauseType[ClauseType["FUNCTION_CALL"] = 3] = "FUNCTION_CALL";
 })(ClauseType = exports.ClauseType || (exports.ClauseType = {}));
 class SQLWhereBase {
-    constructor(airportDb, utils, dbEntity, dialect) {
-        this.airportDb = airportDb;
-        this.utils = utils;
+    constructor(dbEntity, dialect) {
         this.dbEntity = dbEntity;
         this.dialect = dialect;
         this.fieldMap = new ground_control_1.SchemaMap();

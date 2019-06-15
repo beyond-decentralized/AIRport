@@ -4,11 +4,11 @@ const ground_control_1 = require("@airport/ground-control");
 const StringOperation_1 = require("../operation/StringOperation");
 const OperableField_1 = require("./OperableField");
 class QStringField extends OperableField_1.QOperableField {
-    constructor(dbColumn, dbProperty, q, utils, objectType = ground_control_1.JSONClauseObjectType.FIELD) {
-        super(dbColumn, dbProperty, q, objectType, new StringOperation_1.StringOperation(), utils);
+    constructor(dbColumn, dbProperty, q, objectType = ground_control_1.JSONClauseObjectType.FIELD) {
+        super(dbColumn, dbProperty, q, objectType, new StringOperation_1.StringOperation());
     }
     getInstance(qEntity = this.q) {
-        return this.copyFunctions(new QStringField(this.dbColumn, this.dbProperty, qEntity, this.utils, this.objectType));
+        return this.copyFunctions(new QStringField(this.dbColumn, this.dbProperty, qEntity, this.objectType));
     }
     like(value) {
         if (value instanceof Function) {
@@ -19,16 +19,16 @@ class QStringField extends OperableField_1.QOperableField {
 }
 exports.QStringField = QStringField;
 class QStringFunction extends QStringField {
-    constructor(value, utils, isQueryParameter = false) {
-        super({ type: ground_control_1.SQLDataType.STRING }, null, null, utils, ground_control_1.JSONClauseObjectType.FIELD_FUNCTION);
+    constructor(value, isQueryParameter = false) {
+        super({ type: ground_control_1.SQLDataType.STRING }, null, null, ground_control_1.JSONClauseObjectType.FIELD_FUNCTION);
         this.value = value;
         this.isQueryParameter = isQueryParameter;
     }
     getInstance() {
-        return this.copyFunctions(new QStringFunction(this.value, this.utils));
+        return this.copyFunctions(new QStringFunction(this.value));
     }
-    toJSON(columnAliases, forSelectClause) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause);
+    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
+        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils);
         if (this.isQueryParameter) {
             this.parameterAlias = json.v;
         }

@@ -1,16 +1,17 @@
-import { ReferencedColumnData } from "@airport/air-control";
+import { IAirportDatabase, ISchemaUtils, ReferencedColumnData } from '@airport/air-control';
 import { DbEntity, SQLDataType } from '@airport/ground-control';
-import { AbstractObjectResultParser, IEntityResultParser } from "./entity/IEntityResultParser";
+import { AbstractObjectResultParser, IEntityResultParser } from './entity/IEntityResultParser';
 /**
  * Created by Papa on 10/16/2016.
  */
 /**
- * The goal of this parser is to split a flat row of result set cells into an facade graph (just for that row).
+ * The goal of this parser is to split a flat row of result set cells into an facade
+ * graph (just for that row).
  */
 export declare class PlainResultParser extends AbstractObjectResultParser implements IEntityResultParser {
-    addEntity(entityAlias: string, dbEntity: DbEntity): any;
+    addEntity(entityAlias: string, dbEntity: DbEntity, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): any;
     addProperty(entityAlias: string, resultObject: any, dataType: SQLDataType, propertyName: string, propertyValue: any): boolean;
-    bufferManyToOneStub(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, relationInfos: ReferencedColumnData[]): void;
+    bufferManyToOneStub(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, relationInfos: ReferencedColumnData[], schemaUtils: ISchemaUtils): void;
     bufferManyToOneObject(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, childResultObject: any): any;
     bufferBlankManyToOneStub(entityAlias: string, resultObject: any, propertyName: string, relationInfos: ReferencedColumnData[]): void;
     bufferBlankManyToOneObject(entityAlias: string, resultObject: any, propertyName: string): void;

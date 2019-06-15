@@ -4,6 +4,7 @@ const di_1 = require("@airport/di");
 const diTokens_1 = require("../../diTokens");
 const OperableField_1 = require("../core/field/OperableField");
 const EntityQuery_1 = require("../query/facade/EntityQuery");
+const Utils_1 = require("../Utils");
 /**
  * Created by Papa on 6/14/2016.
  */
@@ -23,7 +24,7 @@ class EntityUtils {
         return className;
     }
     exists(object) {
-        return this.utils.objectExists(object);
+        return Utils_1.objectExists(object);
     }
     /*
      static isBlank(
@@ -44,9 +45,6 @@ class EntityUtils {
      return true;
      }
      */
-    valuesEqual(value1, value2, checkChildObjects = false) {
-        return this.utils.valuesEqual(value1, value2, checkChildObjects);
-    }
     isAppliable(object) {
         return object instanceof OperableField_1.QOperableField;
     }
@@ -62,7 +60,7 @@ class EntityUtils {
         }
     }
     getEntityQuery(rawGraphQuery) {
-        return new EntityQuery_1.EntityQuery(this.getRawQuery(rawGraphQuery), this.utils);
+        return new EntityQuery_1.EntityQuery(this.getRawQuery(rawGraphQuery));
     }
 }
 exports.EntityUtils = EntityUtils;
