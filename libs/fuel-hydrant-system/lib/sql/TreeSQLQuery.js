@@ -11,9 +11,9 @@ const SqlFunctionField_1 = require("./SqlFunctionField");
  * Created by Papa on 10/28/2016.
  */
 class TreeSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
-    constructor(airportDb, utils, jsonQuery, dialect) {
-        super(airportDb, utils, jsonQuery, dialect, ground_control_1.QueryResultType.TREE);
-        this.queryParser = new TreeQueryResultParser_1.TreeQueryResultParser(utils);
+    constructor(jsonQuery, dialect) {
+        super(jsonQuery, dialect, ground_control_1.QueryResultType.TREE);
+        this.queryParser = new TreeQueryResultParser_1.TreeQueryResultParser();
         this.orderByParser = new MappedOrderByParser_1.MappedOrderByParser(this.validator);
     }
     getSELECTFragment(nested, selectClauseFragment) {
@@ -65,7 +65,7 @@ class TreeSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(schemaUtils, results) {
+    parseQueryResults(airDb, schemaUtils, results) {
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;

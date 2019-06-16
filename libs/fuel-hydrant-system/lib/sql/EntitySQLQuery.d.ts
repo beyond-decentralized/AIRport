@@ -30,12 +30,12 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(schemaUtils: ISchemaUtils, results: any[]): any[];
+    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): any[];
     protected buildFromJoinTree(joinRelations: JSONEntityRelation[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
     }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): JoinTreeNode;
     private getSELECTFragment;
-    protected parseQueryResult(selectClauseFragment: any, entityAlias: string, currentJoinNode: JoinTreeNode, resultRow: any, nextFieldIndex: number[], schemaUtils: ISchemaUtils): any;
+    protected parseQueryResult(selectClauseFragment: any, entityAlias: string, currentJoinNode: JoinTreeNode, resultRow: any, nextFieldIndex: number[], airDb: IAirportDatabase, schemaUtils: ISchemaUtils): any;
     /**
      * Verify that the entity select clause is valid (has ids) and fill in clauses
      * that are blank (defined as {}).

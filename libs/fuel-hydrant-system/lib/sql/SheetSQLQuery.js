@@ -11,8 +11,8 @@ const NonEntitySQLQuery_1 = require("./NonEntitySQLQuery");
  * Represents SQL String query with flat (aka traditional) Select clause.
  */
 class SheetSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
-    constructor(airportDb, utils, jsonQuery, dialect) {
-        super(airportDb, utils, jsonQuery, dialect, ground_control_1.QueryResultType.SHEET);
+    constructor(jsonQuery, dialect) {
+        super(jsonQuery, dialect, ground_control_1.QueryResultType.SHEET);
         this.orderByParser = new ExactOrderByParser_1.ExactOrderByParser(this.validator);
     }
     getSELECTFragment(nested, selectClauseFragment) {
@@ -35,7 +35,7 @@ class SheetSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         }).join('');
         return selectSqlFragment;
     }
-    parseQueryResults(schemaUtils, results) {
+    parseQueryResults(airDb, schemaUtils, results) {
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;

@@ -19,9 +19,9 @@ class NonEntitySQLQuery extends SQLQuery_1.SQLQuery {
     toSQL(airDb, schemaUtils) {
         let jsonQuery = this.jsonQuery;
         let joinNodeMap = {};
-        this.joinTrees = this.buildFromJoinTree(jsonQuery.F, joinNodeMap);
+        this.joinTrees = this.buildFromJoinTree(jsonQuery.F, joinNodeMap, airDb, schemaUtils);
         let selectFragment = this.getSELECTFragment(false, jsonQuery.S);
-        let fromFragment = this.getFROMFragments(this.joinTrees);
+        let fromFragment = this.getFROMFragments(this.joinTrees, airDb, schemaUtils);
         let whereFragment = '';
         if (jsonQuery.W) {
             whereFragment = `
@@ -105,12 +105,12 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             alias = air_control_1.QRelation.getAlias(joinRelation);
             switch (joinRelation.rt) {
                 case ground_control_1.JSONRelationType.SUB_QUERY_ROOT:
-                    let view = this.addFieldsToView(joinRelation, alias);
+                    let view = this.addFieldsToView(joinRelation, alias, airDb, schemaUtils);
                     this.qEntityMapByAlias[alias] = view;
                     continue;
                 case ground_control_1.JSONRelationType.ENTITY_ROOT:
                     // Non-Joined table
-                    let nonJoinedEntity = air_control_1.QRelation.createRelatedQEntity(this.utils, joinRelation);
+                    let nonJoinedEntity = air_control_1.QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils);
                     this.qEntityMapByAlias[alias] = nonJoinedEntity;
                     let anotherTree = new air_control_1.JoinTreeNode(joinRelation, [], null);
                     if (joinNodeMap[alias]) {
@@ -129,13 +129,13 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     if (!joinRelation.jwc) {
                         this.warn(`View ${i + 1} in FROM clause is missing joinWhereClause`);
                     }
-                    rightEntity = this.addFieldsToView(joinRelation, alias);
+                    rightEntity = this.addFieldsToView(joinRelation, alias, airDb, schemaUtils);
                     break;
                 case ground_control_1.JSONRelationType.ENTITY_JOIN_ON:
                     if (!joinRelation.jwc) {
                         this.warn(`Table ${i + 1} in FROM clause is missing joinWhereClause`);
                     }
-                    rightEntity = air_control_1.QRelation.createRelatedQEntity(this.utils, joinRelation);
+                    rightEntity = air_control_1.QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils);
                     break;
                 default:
                     throw `Unknown JSONRelationType ${joinRelation.rt}`;
@@ -159,9 +159,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         }
         return jsonTrees;
     }
-    addFieldsToView(viewJoinRelation, viewAlias) {
+    addFieldsToView(viewJoinRelation, viewAlias, airDb, schemaUtils) {
         let view = new air_control_1.QTree(viewJoinRelation.fcp, null);
-        this.addFieldsToViewForSelect(view, viewAlias, viewJoinRelation.sq.S, 'f');
+        this.addFieldsToViewForSelect(view, viewAlias, viewJoinRelation.sq.S, 'f', null, airDb, schemaUtils);
         return view;
     }
     /**
@@ -170,7 +170,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
      * @param select
      * @param fieldPrefix
      */
-    addFieldsToViewForSelect(view, viewAlias, select, fieldPrefix, forFieldQueryAlias = null) {
+    addFieldsToViewForSelect(view, viewAlias, select, fieldPrefix, forFieldQueryAlias, airDb, schemaUtils) {
         let fieldIndex = 0;
         let hasDistinctClause = false;
         for (let fieldName in select) {
@@ -178,11 +178,11 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             let fieldJson = select[fieldName];
             // If its a nested select
             if (!fieldJson.ot) {
-                this.addFieldsToViewForSelect(view, viewAlias, fieldJson, `${alias}_`);
+                this.addFieldsToViewForSelect(view, viewAlias, fieldJson, `${alias}_`, null, airDb, schemaUtils);
             }
             else {
                 let aliasToSet = forFieldQueryAlias ? forFieldQueryAlias : alias;
-                hasDistinctClause = hasDistinctClause && this.addFieldToViewForSelect(view, viewAlias, fieldPrefix, fieldJson, aliasToSet, forFieldQueryAlias);
+                hasDistinctClause = hasDistinctClause && this.addFieldToViewForSelect(view, viewAlias, fieldPrefix, fieldJson, aliasToSet, forFieldQueryAlias, airDb, schemaUtils);
             }
         }
         if (fieldIndex > 1) {
@@ -211,19 +211,19 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                 dbColumn = dbEntity.columns[fieldJson.ci];
                 switch (fieldJson.dt) {
                     case ground_control_1.SQLDataType.BOOLEAN:
-                        view[alias] = new air_control_1.QBooleanField(dbColumn, dbProperty, view, this.utils);
+                        view[alias] = new air_control_1.QBooleanField(dbColumn, dbProperty, view);
                         break;
                     case ground_control_1.SQLDataType.DATE:
-                        view[alias] = new air_control_1.QDateField(dbColumn, dbProperty, view, this.utils);
+                        view[alias] = new air_control_1.QDateField(dbColumn, dbProperty, view);
                         break;
                     case ground_control_1.SQLDataType.NUMBER:
-                        view[alias] = new air_control_1.QNumberField(dbColumn, dbProperty, view, this.utils);
+                        view[alias] = new air_control_1.QNumberField(dbColumn, dbProperty, view);
                         break;
                     case ground_control_1.SQLDataType.STRING:
-                        view[alias] = new air_control_1.QStringField(dbColumn, dbProperty, view, this.utils);
+                        view[alias] = new air_control_1.QStringField(dbColumn, dbProperty, view);
                         break;
                     case ground_control_1.SQLDataType.ANY:
-                        view[alias] = new air_control_1.QUntypedField(dbColumn, dbProperty, view, this.utils);
+                        view[alias] = new air_control_1.QUntypedField(dbColumn, dbProperty, view);
                         break;
                     default:
                         throw `Unknown SQLDataType: ${fieldJson.dt}.`;
@@ -231,10 +231,10 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                 break;
             case ground_control_1.JSONClauseObjectType.FIELD_QUERY:
                 let fieldQuery = fieldJson;
-                this.addFieldToViewForSelect(view, viewAlias, fieldPrefix, fieldQuery.S, alias, alias);
+                this.addFieldToViewForSelect(view, viewAlias, fieldPrefix, fieldQuery.S, alias, alias, airDb, schemaUtils);
                 break;
             case ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION:
-                this.addFieldsToViewForSelect(view, viewAlias, fieldJson.v, fieldPrefix, forFieldQueryAlias);
+                this.addFieldsToViewForSelect(view, viewAlias, fieldJson.v, fieldPrefix, forFieldQueryAlias, airDb, schemaUtils);
                 hasDistinctClause = true;
                 break;
             case ground_control_1.JSONClauseObjectType.MANY_TO_ONE_RELATION:
@@ -247,10 +247,10 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         }
         return hasDistinctClause;
     }
-    getFROMFragments(joinTrees) {
-        return joinTrees.map(joinTree => this.getFROMFragment(null, joinTree)).join('\n');
+    getFROMFragments(joinTrees, airDb, schemaUtils) {
+        return joinTrees.map(joinTree => this.getFROMFragment(null, joinTree, airDb, schemaUtils)).join('\n');
     }
-    getFROMFragment(parentTree, currentTree) {
+    getFROMFragment(parentTree, currentTree, airDb, schemaUtils) {
         let fromFragment = '\t';
         let currentRelation = currentTree.jsonRelation;
         let currentAlias = air_control_1.QRelation.getAlias(currentRelation);
@@ -258,13 +258,13 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         if (!parentTree) {
             switch (currentRelation.rt) {
                 case ground_control_1.JSONRelationType.ENTITY_ROOT:
-                    fromFragment += `${this.utils.Schema.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias}`;
+                    fromFragment += `${schemaUtils.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias}`;
                     break;
                 case ground_control_1.JSONRelationType.SUB_QUERY_ROOT:
                     let viewRelation = currentRelation;
                     let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
-                    let subQuery = new TreeSQLQueryClass(this.airportDb, this.utils, viewRelation.sq, this.dialect);
-                    fromFragment += `(${subQuery.toSQL()}) ${currentAlias}`;
+                    let subQuery = new TreeSQLQueryClass(viewRelation.sq, this.dialect);
+                    fromFragment += `(${subQuery.toSQL(airDb, schemaUtils)}) ${currentAlias}`;
                     break;
                 default:
                     throw `Top level FROM entries must be Entity or Sub-Query root`;
@@ -297,17 +297,18 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                 case ground_control_1.JSONRelationType.ENTITY_JOIN_ON:
                     let joinRelation = currentRelation;
                     joinOnClause = this.getWHEREFragment(joinRelation.jwc, '\t');
-                    fromFragment += `\t${joinTypeString} ${this.utils.Schema.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias} ON\n${joinOnClause}`;
+                    fromFragment += `\t${joinTypeString} ${schemaUtils.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias} ON\n${joinOnClause}`;
                     break;
                 case ground_control_1.JSONRelationType.ENTITY_SCHEMA_RELATION:
-                    fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix);
+                    fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, schemaUtils);
                     break;
                 case ground_control_1.JSONRelationType.SUB_QUERY_JOIN_ON:
                     let viewJoinRelation = currentRelation;
                     let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
-                    let mappedSqlQuery = new TreeSQLQueryClass(this.airportDb, this.utils, viewJoinRelation.sq, this.dialect);
+                    let mappedSqlQuery = new TreeSQLQueryClass(viewJoinRelation.sq, this.dialect);
                     joinOnClause = this.getWHEREFragment(viewJoinRelation.jwc, '\t');
-                    fromFragment += `${joinTypeString} (${mappedSqlQuery.toSQL()}) ${currentAlias} ON\n${joinOnClause}`;
+                    const mappedSql = mappedSqlQuery.toSQL(airDb, schemaUtils);
+                    fromFragment += `${joinTypeString} (${mappedSql}) ${currentAlias} ON\n${joinOnClause}`;
                     break;
                 default:
                     throw `Nested FROM entries must be Entity JOIN ON or Schema Relation, or Sub-Query JOIN ON`;
@@ -315,7 +316,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         }
         for (let i = 0; i < currentTree.childNodes.length; i++) {
             let childTreeNode = currentTree.childNodes[i];
-            fromFragment += this.getFROMFragment(currentTree, childTreeNode);
+            fromFragment += this.getFROMFragment(currentTree, childTreeNode, airDb, schemaUtils);
         }
         return fromFragment;
     }

@@ -14,7 +14,7 @@ class GraphQueryConfiguration {
     }
 }
 exports.GraphQueryConfiguration = GraphQueryConfiguration;
-function getObjectResultParser(utils, queryResultType, config, rootDbEntity) {
+function getObjectResultParser(queryResultType, config, rootDbEntity) {
     switch (queryResultType) {
         case ground_control_1.QueryResultType.ENTITY_GRAPH:
             let EntityGraphResultParserClass = require('./EntityGraphResultParser').EntityGraphResultParser;

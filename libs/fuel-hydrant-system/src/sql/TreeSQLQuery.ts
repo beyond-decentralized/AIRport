@@ -1,8 +1,7 @@
 import {
 	AliasCache,
 	IAirportDatabase,
-	ISchemaUtils,
-	IUtils
+	ISchemaUtils
 }                              from '@airport/air-control'
 import {
 	JSONClauseField,
@@ -26,13 +25,11 @@ export class TreeSQLQuery
 	protected queryParser: TreeQueryResultParser
 
 	constructor(
-		airportDb: IAirportDatabase,
-		utils: IUtils,
 		jsonQuery: JsonTreeQuery,
 		dialect: SQLDialect
 	) {
-		super(airportDb, utils, jsonQuery, dialect, QueryResultType.TREE)
-		this.queryParser   = new TreeQueryResultParser(utils)
+		super(jsonQuery, dialect, QueryResultType.TREE)
+		this.queryParser   = new TreeQueryResultParser()
 		this.orderByParser = new MappedOrderByParser(this.validator)
 	}
 
@@ -93,6 +90,7 @@ export class TreeSQLQuery
 	 * @returns {any[]}
 	 */
 	parseQueryResults(
+		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		results: any[]
 	): any[] {

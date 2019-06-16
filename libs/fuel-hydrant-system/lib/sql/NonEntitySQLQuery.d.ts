@@ -21,14 +21,14 @@ export declare abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
     buildFromJoinTree(joinRelations: JSONRelation[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
     }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): JoinTreeNode[];
-    addFieldsToView(viewJoinRelation: JSONViewJoinRelation, viewAlias: string): IQTree;
+    addFieldsToView(viewJoinRelation: JSONViewJoinRelation, viewAlias: string, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): IQTree;
     /**
      * Just build the shell fields for the external API of the view, don't do anything else.
      * @param view
      * @param select
      * @param fieldPrefix
      */
-    addFieldsToViewForSelect(view: IQTree, viewAlias: string, select: any, fieldPrefix: string, forFieldQueryAlias?: string): void;
+    addFieldsToViewForSelect(view: IQTree, viewAlias: string, select: any, fieldPrefix: string, forFieldQueryAlias: string, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): void;
     addFieldToViewForSelect(view: IQTree, viewAlias: string, fieldPrefix: string, fieldJson: JSONClauseField, alias: string, forFieldQueryAlias: string, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): boolean;
     private getFROMFragments;
     private getFROMFragment;

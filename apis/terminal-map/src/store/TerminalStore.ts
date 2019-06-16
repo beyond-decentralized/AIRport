@@ -1,8 +1,4 @@
 import {
-	IUtils,
-	UTILS
-}                        from '@airport/air-control'
-import {
 	createRootSelector,
 	createSelector,
 	IMemoizedSelector
@@ -10,6 +6,7 @@ import {
 import {DI}              from '@airport/di'
 import {
 	DomainName,
+	ensureChildJsMap,
 	JsonSchemaName,
 	SchemaName
 }                        from '@airport/ground-control'
@@ -49,15 +46,6 @@ export interface ITerminalStore {
 export class TerminalStore
 	implements ITerminalStore {
 
-	private utils: IUtils
-
-	constructor() {
-		DI.get(
-			utils => {
-				this.utils = utils
-			}, UTILS)
-	}
-
 	state = new BehaviorSubject<ITerminalState>({
 		domains: [],
 		nodesBySyncFrequency: new Map(),
@@ -80,7 +68,7 @@ export class TerminalStore
 				      Map<DomainName, Map<SchemaName, ISchemaVersion>> = new Map()
 
 			for (const domain of domains) {
-				const mapForDomain = this.utils.ensureChildJsMap(
+				const mapForDomain = ensureChildJsMap(
 					latestSchemaVersionMapByNames, domain.name)
 				for (const schema of domain.schemas) {
 					mapForDomain.set(schema.name, schema.currentVersion)

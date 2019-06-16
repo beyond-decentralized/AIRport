@@ -6,19 +6,19 @@ const SQLWhereBase_1 = require("./SQLWhereBase");
  * Created by Papa on 11/17/2016.
  */
 class SQLInsertValues extends SQLNoJoinQuery_1.SQLNoJoinQuery {
-    constructor(airportDb, utils, jsonInsertValues, dialect) {
-        super(airportDb, utils, airportDb.schemas[jsonInsertValues.II.si]
+    constructor(airportDb, jsonInsertValues, dialect) {
+        super(airportDb.schemas[jsonInsertValues.II.si]
             .currentVersion.entities[jsonInsertValues.II.ti], dialect);
         this.jsonInsertValues = jsonInsertValues;
     }
-    toSQL() {
+    toSQL(airDb, schemaUtils, metadataUtils) {
         if (!this.jsonInsertValues.II) {
             throw `Expecting exactly one table in INSERT INTO clause`;
         }
         this.validator.validateInsertQEntity(this.dbEntity);
-        let tableFragment = this.getTableFragment(this.jsonInsertValues.II);
+        let tableFragment = this.getTableFragment(this.jsonInsertValues.II, airDb, schemaUtils);
         let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C);
-        let valuesFragment = this.getValuesFragment(this.jsonInsertValues.V);
+        let valuesFragment = this.getValuesFragment(this.jsonInsertValues.V, airDb, schemaUtils, metadataUtils);
         return `INSERT INTO
 ${tableFragment} ${columnsFragment}
 VALUES
@@ -32,7 +32,7 @@ ${valuesFragment}
         const columnNames = columns.map(columnIndex => dbEntity.columns[columnIndex].name);
         return `( ${columnNames.join(', \n')} )`;
     }
-    getValuesFragment(valuesClauseFragment) {
+    getValuesFragment(valuesClauseFragment, airDb, schemaUtils, metadataUtils) {
         let allValuesFragment = valuesClauseFragment.map((valuesArray) => {
             let valuesFragment = valuesArray.map((value) => {
                 if (value === null || ['number', 'string'].indexOf(typeof value) > -1) {
@@ -40,7 +40,8 @@ ${valuesFragment}
                     return this.sqlAdaptor.getParameterReference(this.parameterReferences, value);
                 }
                 else {
-                    return `\n${this.getFieldValue(value, SQLWhereBase_1.ClauseType.WHERE_CLAUSE)}\n`;
+                    const fieldValue = this.getFieldValue(value, SQLWhereBase_1.ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
+                    return `\n${fieldValue}\n`;
                 }
             });
             return `(${valuesFragment.join(',')})`;

@@ -16,8 +16,6 @@ export interface ITerminalStore {
     tearDown(): any;
 }
 export declare class TerminalStore implements ITerminalStore {
-    private utils;
-    constructor();
     state: BehaviorSubject<ITerminalState>;
     getTerminalState: IMemoizedSelector<any, any>;
     getDomains: IMemoizedSelector<any, any>;

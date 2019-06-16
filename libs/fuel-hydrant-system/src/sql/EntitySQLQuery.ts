@@ -6,6 +6,7 @@ import {
 	isN,
 	isY,
 	JoinTreeNode,
+	objectExists,
 	QRelation,
 	ReferencedColumnData,
 	Y
@@ -109,10 +110,11 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 	 * @returns {any[]}
 	 */
 	parseQueryResults(
+		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		results: any[]
 	): any[] {
-		this.queryParser         = getObjectResultParser(this.utils,
+		this.queryParser         = getObjectResultParser(
 			this.queryResultType, this.graphQueryConfiguration, this.dbEntity)
 		let parsedResults: any[] = []
 		if (!results || !results.length) {
@@ -125,7 +127,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			let entityAlias = QRelation.getAlias(this.joinTree.jsonRelation)
 			this.columnAliases.reset()
 			let parsedResult = this.parseQueryResult(
-				this.jsonQuery.S, entityAlias, this.joinTree, result, [0], schemaUtils)
+				this.jsonQuery.S, entityAlias, this.joinTree, result,
+				[0], airDb, schemaUtils)
 			if (!lastResult) {
 				parsedResults.push(parsedResult)
 			} else if (lastResult !== parsedResult) {
@@ -135,7 +138,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			this.queryParser.flushRow()
 		}
 
-		return this.queryParser.bridge(parsedResults, this.jsonQuery.S)
+		return this.queryParser.bridge(
+			parsedResults, this.jsonQuery.S, schemaUtils)
 	}
 
 	protected buildFromJoinTree(
@@ -282,6 +286,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		currentJoinNode: JoinTreeNode,
 		resultRow: any,
 		nextFieldIndex: number[],
+		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils
 	): any {
 		// Return blanks, primitives and Dates directly
@@ -294,7 +299,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		let qEntity    = this.qEntityMapByAlias[entityAlias]
 		const dbEntity = qEntity.__driver__.dbEntity
 
-		let resultObject = this.queryParser.addEntity(entityAlias, qEntity.__driver__.dbEntity)
+		let resultObject = this.queryParser.addEntity(
+			entityAlias, qEntity.__driver__.dbEntity, airDb, schemaUtils)
 
 		for (let propertyName in selectClauseFragment) {
 			if (selectClauseFragment[propertyName] === undefined) {
@@ -339,13 +345,15 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 									sqlDataType: dbColumn.type,
 									value
 								})
-								if (this.utils.objectExists(value)) {
+								if (objectExists(value)) {
 									haveRelationValues = true
 									numNonNullColumns++
 								}
 							})
 							if (haveRelationValues) {
-								this.queryParser.bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, childDbEntity, relationInfos)
+								this.queryParser.bufferManyToOneStub(
+									entityAlias, dbEntity, resultObject, propertyName, childDbEntity,
+									relationInfos, schemaUtils)
 							} else {
 								this.queryParser.bufferBlankManyToOneStub(entityAlias, resultObject, propertyName, relationInfos)
 							}
@@ -369,21 +377,28 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 						childJoinNode,
 						resultRow,
 						nextFieldIndex,
+						airDb,
 						schemaUtils
 					)
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
 							if (childResultObject) {
-								this.queryParser.bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject)
+								this.queryParser.bufferManyToOneObject(entityAlias, dbEntity,
+									resultObject, propertyName, relationDbEntity,
+									childResultObject, schemaUtils)
 							} else {
 								this.queryParser.bufferBlankManyToOneObject(entityAlias, resultObject, propertyName)
 							}
 							break
 						case EntityRelationType.ONE_TO_MANY:
 							if (childResultObject) {
-								this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, dbEntity, propertyName, relationDbEntity, childResultObject)
+								this.queryParser.bufferOneToManyCollection(
+									entityAlias, resultObject, dbEntity, propertyName,
+									relationDbEntity, childResultObject, schemaUtils)
 							} else {
-								this.queryParser.bufferBlankOneToMany(entityAlias, resultObject, dbEntity.name, propertyName, relationDbEntity)
+								this.queryParser.bufferBlankOneToMany(
+									entityAlias, resultObject, dbEntity.name, propertyName,
+									relationDbEntity, schemaUtils)
 							}
 							break
 						default:
@@ -404,7 +419,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			dbEntity,
 			selectClauseFragment,
 			idValue,
-			resultObject
+			resultObject,
+			schemaUtils
 		)
 	}
 

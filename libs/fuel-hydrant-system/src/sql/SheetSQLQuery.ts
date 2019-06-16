@@ -1,7 +1,6 @@
 import {
 	IAirportDatabase,
-	ISchemaUtils,
-	IUtils
+	ISchemaUtils
 }                           from '@airport/air-control'
 import {
 	JSONClauseField,
@@ -25,12 +24,10 @@ export class SheetSQLQuery
 	extends NonEntitySQLQuery<JsonSheetQuery> {
 
 	constructor(
-		airportDb: IAirportDatabase,
-		utils: IUtils,
 		jsonQuery: JsonSheetQuery,
 		dialect: SQLDialect
 	) {
-		super(airportDb, utils, jsonQuery, dialect, QueryResultType.SHEET)
+		super(jsonQuery, dialect, QueryResultType.SHEET)
 		this.orderByParser = new ExactOrderByParser(this.validator)
 	}
 
@@ -63,6 +60,7 @@ export class SheetSQLQuery
 	}
 
 	parseQueryResults(
+		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		results: any[]
 	): any[] {

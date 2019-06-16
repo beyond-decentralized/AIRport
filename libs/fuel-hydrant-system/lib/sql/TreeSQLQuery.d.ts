@@ -1,4 +1,4 @@
-import { AliasCache, IAirportDatabase, ISchemaUtils, IUtils } from '@airport/air-control';
+import { AliasCache, IAirportDatabase, ISchemaUtils } from '@airport/air-control';
 import { JsonTreeQuery } from '@airport/ground-control';
 import { TreeQueryResultParser } from '../result/TreeQueryResultParser';
 import { SQLDialect } from './core/SQLQuery';
@@ -8,7 +8,7 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery';
  */
 export declare class TreeSQLQuery extends NonEntitySQLQuery<JsonTreeQuery> {
     protected queryParser: TreeQueryResultParser;
-    constructor(airportDb: IAirportDatabase, utils: IUtils, jsonQuery: JsonTreeQuery, dialect: SQLDialect);
+    constructor(jsonQuery: JsonTreeQuery, dialect: SQLDialect);
     protected getSELECTFragment(nested: boolean, selectClauseFragment: any): string;
     /**
      * Entities get merged if they are right next to each other in the result set.  If they
@@ -17,6 +17,6 @@ export declare class TreeSQLQuery extends NonEntitySQLQuery<JsonTreeQuery> {
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(schemaUtils: ISchemaUtils, results: any[]): any[];
+    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): any[];
     protected parseQueryResult(selectClauseFragment: any, resultRow: any, nextFieldIndex: number[], aliasCache: AliasCache, entityAlias: string): any;
 }

@@ -8,16 +8,16 @@ const SQLWhereBase_1 = require("./SQLWhereBase");
  * Created by Papa on 10/2/2016.
  */
 class SQLUpdate extends SQLNoJoinQuery_1.SQLNoJoinQuery {
-    constructor(airportDb, utils, jsonUpdate, dialect) {
-        super(airportDb, utils, airportDb.schemas[jsonUpdate.U.si]
+    constructor(airportDb, jsonUpdate, dialect) {
+        super(airportDb.schemas[jsonUpdate.U.si]
             .currentVersion.entities[jsonUpdate.U.ti], dialect);
         this.jsonUpdate = jsonUpdate;
     }
-    toSQL() {
+    toSQL(airDb, schemaUtils, metadataUtils) {
         if (!this.jsonUpdate.U) {
             throw `Expecting exactly one table in UPDATE clause`;
         }
-        let updateFragment = this.getTableFragment(this.jsonUpdate.U);
+        let updateFragment = this.getTableFragment(this.jsonUpdate.U, airDb, schemaUtils, metadataUtils);
         let setFragment = this.getSetFragment(this.jsonUpdate.S);
         let whereFragment = '';
         let jsonQuery = this.jsonUpdate;

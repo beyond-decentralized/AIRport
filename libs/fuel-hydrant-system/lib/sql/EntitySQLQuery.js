@@ -57,8 +57,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(schemaUtils, results) {
-        this.queryParser = IEntityResultParser_1.getObjectResultParser(this.utils, this.queryResultType, this.graphQueryConfiguration, this.dbEntity);
+    parseQueryResults(airDb, schemaUtils, results) {
+        this.queryParser = IEntityResultParser_1.getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity);
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;
@@ -69,7 +69,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             let result = results[i];
             let entityAlias = air_control_1.QRelation.getAlias(this.joinTree.jsonRelation);
             this.columnAliases.reset();
-            let parsedResult = this.parseQueryResult(this.jsonQuery.S, entityAlias, this.joinTree, result, [0], schemaUtils);
+            let parsedResult = this.parseQueryResult(this.jsonQuery.S, entityAlias, this.joinTree, result, [0], airDb, schemaUtils);
             if (!lastResult) {
                 parsedResults.push(parsedResult);
             }
@@ -79,7 +79,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             lastResult = parsedResult;
             this.queryParser.flushRow();
         }
-        return this.queryParser.bridge(parsedResults, this.jsonQuery.S);
+        return this.queryParser.bridge(parsedResults, this.jsonQuery.S, schemaUtils);
     }
     buildFromJoinTree(joinRelations, joinNodeMap, airDb, schemaUtils) {
         let jsonTree;
@@ -193,7 +193,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         }
         return selectSqlFragments;
     }
-    parseQueryResult(selectClauseFragment, entityAlias, currentJoinNode, resultRow, nextFieldIndex, schemaUtils) {
+    parseQueryResult(selectClauseFragment, entityAlias, currentJoinNode, resultRow, nextFieldIndex, airDb, schemaUtils) {
         // Return blanks, primitives and Dates directly
         if (!resultRow || !(resultRow instanceof Object) || resultRow instanceof Date) {
             return resultRow;
@@ -201,7 +201,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         let numNonNullColumns = 0;
         let qEntity = this.qEntityMapByAlias[entityAlias];
         const dbEntity = qEntity.__driver__.dbEntity;
-        let resultObject = this.queryParser.addEntity(entityAlias, qEntity.__driver__.dbEntity);
+        let resultObject = this.queryParser.addEntity(entityAlias, qEntity.__driver__.dbEntity, airDb, schemaUtils);
         for (let propertyName in selectClauseFragment) {
             if (selectClauseFragment[propertyName] === undefined) {
                 continue;
@@ -239,13 +239,13 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                                     sqlDataType: dbColumn.type,
                                     value
                                 });
-                                if (this.utils.objectExists(value)) {
+                                if (air_control_1.objectExists(value)) {
                                     haveRelationValues = true;
                                     numNonNullColumns++;
                                 }
                             });
                             if (haveRelationValues) {
-                                this.queryParser.bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, childDbEntity, relationInfos);
+                                this.queryParser.bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, childDbEntity, relationInfos, schemaUtils);
                             }
                             else {
                                 this.queryParser.bufferBlankManyToOneStub(entityAlias, resultObject, propertyName, relationInfos);
@@ -264,11 +264,11 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                     const childEntityAlias = air_control_1.QRelation.getAlias(childJoinNode.jsonRelation);
                     const relationQEntity = this.qEntityMapByAlias[childEntityAlias];
                     const relationDbEntity = relationQEntity.__driver__.dbEntity;
-                    let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextFieldIndex, schemaUtils);
+                    let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextFieldIndex, airDb, schemaUtils);
                     switch (dbRelation.relationType) {
                         case ground_control_1.EntityRelationType.MANY_TO_ONE:
                             if (childResultObject) {
-                                this.queryParser.bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject);
+                                this.queryParser.bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, schemaUtils);
                             }
                             else {
                                 this.queryParser.bufferBlankManyToOneObject(entityAlias, resultObject, propertyName);
@@ -276,10 +276,10 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                             break;
                         case ground_control_1.EntityRelationType.ONE_TO_MANY:
                             if (childResultObject) {
-                                this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, dbEntity, propertyName, relationDbEntity, childResultObject);
+                                this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, dbEntity, propertyName, relationDbEntity, childResultObject, schemaUtils);
                             }
                             else {
-                                this.queryParser.bufferBlankOneToMany(entityAlias, resultObject, dbEntity.name, propertyName, relationDbEntity);
+                                this.queryParser.bufferBlankOneToMany(entityAlias, resultObject, dbEntity.name, propertyName, relationDbEntity, schemaUtils);
                             }
                             break;
                         default:
@@ -292,7 +292,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             return null;
         }
         let idValue = schemaUtils.getIdKey(resultObject, dbEntity);
-        return this.queryParser.flushEntity(entityAlias, dbEntity, selectClauseFragment, idValue, resultObject);
+        return this.queryParser.flushEntity(entityAlias, dbEntity, selectClauseFragment, idValue, resultObject, schemaUtils);
     }
     /**
      * Verify that the entity select clause is valid (has ids) and fill in clauses

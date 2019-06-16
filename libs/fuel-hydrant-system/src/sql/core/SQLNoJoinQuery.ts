@@ -2,7 +2,7 @@ import {
 	IAirportDatabase,
 	IQEntity,
 	IQEntityInternal,
-	IUtils,
+	ISchemaUtils,
 	QEntity,
 	QRelation
 }                     from '@airport/air-control'
@@ -21,16 +21,16 @@ export abstract class SQLNoJoinQuery
 	extends SQLWhereBase {
 
 	constructor(
-		airportDb: IAirportDatabase,
-		utils: IUtils,
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
 	) {
-		super(airportDb, utils, dbEntity, dialect)
+		super(dbEntity, dialect)
 	}
 
 	protected getTableFragment(
 		fromRelation: JSONEntityRelation,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
 	): string {
 		if (!fromRelation) {
 			throw `Expecting exactly one table in UPDATE/DELETE clause`
@@ -39,9 +39,9 @@ export abstract class SQLNoJoinQuery
 			throw `Table in UPDATE/DELETE clause cannot be joined`
 		}
 
-		const firstDbEntity: DbEntity = this.airportDb.schemas[fromRelation.si]
+		const firstDbEntity: DbEntity = airDb.schemas[fromRelation.si]
 			.currentVersion.entities[fromRelation.ti]
-		let tableName                 = this.utils.Schema.getTableName(firstDbEntity)
+		let tableName                 = schemaUtils.getTableName(firstDbEntity)
 		if (fromRelation.si !== this.dbEntity.schemaVersion.schema.index
 			|| fromRelation.ti !== this.dbEntity.index) {
 			throw `Unexpected table in UPDATE/DELETE clause: 

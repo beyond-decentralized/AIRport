@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const check_in_1 = require("@airport/check-in");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const observe_1 = require("@airport/observe");
 const diTokens_1 = require("../diTokens");
 class TerminalStore {
@@ -20,7 +20,7 @@ class TerminalStore {
         this.getLatestSchemaVersionMapByNames = check_in_1.createSelector(this.getDomains, domains => {
             const latestSchemaVersionMapByNames = new Map();
             for (const domain of domains) {
-                const mapForDomain = this.utils.ensureChildJsMap(latestSchemaVersionMapByNames, domain.name);
+                const mapForDomain = ground_control_1.ensureChildJsMap(latestSchemaVersionMapByNames, domain.name);
                 for (const schema of domain.schemas) {
                     mapForDomain.set(schema.name, schema.currentVersion);
                 }
@@ -57,9 +57,6 @@ class TerminalStore {
             return latestSchemaVersionsBySchemaIndexes;
         });
         this.getSchemas = check_in_1.createSelector(this.getTerminalState, terminal => terminal.schemas);
-        di_1.DI.get(utils => {
-            this.utils = utils;
-        }, air_control_1.UTILS);
     }
     tearDown() {
     }

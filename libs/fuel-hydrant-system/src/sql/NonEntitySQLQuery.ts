@@ -3,7 +3,6 @@ import {
 	IQEntityInternal,
 	IQTree,
 	ISchemaUtils,
-	IUtils,
 	JoinTreeNode,
 	QBooleanField,
 	QDateField,
@@ -75,12 +74,14 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils
 	): string {
-		let jsonQuery                                      = <JsonNonEntityQuery>this.jsonQuery
-		let joinNodeMap: { [alias: string]: JoinTreeNode } = {}
-		this.joinTrees                                     = this.buildFromJoinTree(jsonQuery.F, joinNodeMap)
-		let selectFragment                                 = this.getSELECTFragment(false, jsonQuery.S)
-		let fromFragment                                   = this.getFROMFragments(this.joinTrees)
-		let whereFragment                                  = ''
+		let jsonQuery      = <JsonNonEntityQuery>this.jsonQuery
+		let joinNodeMap: { [alias: string]: JoinTreeNode }
+		                   = {}
+		this.joinTrees     = this.buildFromJoinTree(
+			jsonQuery.F, joinNodeMap, airDb, schemaUtils)
+		let selectFragment = this.getSELECTFragment(false, jsonQuery.S)
+		let fromFragment   = this.getFROMFragments(this.joinTrees, airDb, schemaUtils)
+		let whereFragment  = ''
 		if (jsonQuery.W) {
 			whereFragment = `
 WHERE
@@ -185,12 +186,14 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			alias = QRelation.getAlias(joinRelation)
 			switch (joinRelation.rt) {
 				case JSONRelationType.SUB_QUERY_ROOT:
-					let view                      = this.addFieldsToView(<JSONViewJoinRelation>joinRelation, alias)
+					let view                      = this.addFieldsToView(
+						<JSONViewJoinRelation>joinRelation, alias, airDb, schemaUtils)
 					this.qEntityMapByAlias[alias] = view as IQEntityInternal
 					continue
 				case JSONRelationType.ENTITY_ROOT:
 					// Non-Joined table
-					let nonJoinedEntity           = QRelation.createRelatedQEntity(this.utils, joinRelation)
+					let nonJoinedEntity           = QRelation.createRelatedQEntity(
+						joinRelation, airDb, schemaUtils)
 					this.qEntityMapByAlias[alias] = nonJoinedEntity
 					let anotherTree               = new JoinTreeNode(joinRelation, [], null)
 					if (joinNodeMap[alias]) {
@@ -210,13 +213,15 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					if (!(<JSONJoinRelation>joinRelation).jwc) {
 						this.warn(`View ${i + 1} in FROM clause is missing joinWhereClause`)
 					}
-					rightEntity = this.addFieldsToView(<JSONViewJoinRelation>joinRelation, alias)
+					rightEntity = this.addFieldsToView(<JSONViewJoinRelation>joinRelation, alias,
+						airDb, schemaUtils)
 					break
 				case JSONRelationType.ENTITY_JOIN_ON:
 					if (!(<JSONJoinRelation>joinRelation).jwc) {
 						this.warn(`Table ${i + 1} in FROM clause is missing joinWhereClause`)
 					}
-					rightEntity = QRelation.createRelatedQEntity(this.utils, joinRelation)
+					rightEntity = QRelation.createRelatedQEntity(
+						joinRelation, airDb, schemaUtils)
 					break
 				default:
 					throw `Unknown JSONRelationType ${joinRelation.rt}`
@@ -245,10 +250,14 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 
 	addFieldsToView(
 		viewJoinRelation: JSONViewJoinRelation,
-		viewAlias: string
+		viewAlias: string,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
 	): IQTree {
 		let view = new QTree(viewJoinRelation.fcp, null)
-		this.addFieldsToViewForSelect(view, viewAlias, viewJoinRelation.sq.S, 'f')
+		this.addFieldsToViewForSelect(
+			view, viewAlias, viewJoinRelation.sq.S, 'f',
+			null, airDb, schemaUtils)
 
 		return view
 	}
@@ -264,7 +273,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		viewAlias: string,
 		select: any,
 		fieldPrefix: string,
-		forFieldQueryAlias: string = null
+		forFieldQueryAlias: string,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
 	) {
 		let fieldIndex        = 0
 		let hasDistinctClause = false
@@ -273,10 +284,13 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			let fieldJson: JSONClauseField = select[fieldName]
 			// If its a nested select
 			if (!fieldJson.ot) {
-				this.addFieldsToViewForSelect(view, viewAlias, fieldJson, `${alias}_`)
+				this.addFieldsToViewForSelect(view, viewAlias, fieldJson,
+					`${alias}_`, null, airDb, schemaUtils)
 			} else {
 				let aliasToSet    = forFieldQueryAlias ? forFieldQueryAlias : alias
-				hasDistinctClause = hasDistinctClause && this.addFieldToViewForSelect(view, viewAlias, fieldPrefix, fieldJson, aliasToSet, forFieldQueryAlias)
+				hasDistinctClause = hasDistinctClause && this.addFieldToViewForSelect(
+					view, viewAlias, fieldPrefix, fieldJson, aliasToSet,
+					forFieldQueryAlias, airDb, schemaUtils)
 			}
 		}
 		if (fieldIndex > 1) {
@@ -315,19 +329,24 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 				dbColumn   = dbEntity.columns[fieldJson.ci]
 				switch (fieldJson.dt) {
 					case SQLDataType.BOOLEAN:
-						view[alias] = new QBooleanField(dbColumn, dbProperty, view as IQEntityInternal, this.utils)
+						view[alias] = new QBooleanField(dbColumn, dbProperty,
+							view as IQEntityInternal)
 						break
 					case SQLDataType.DATE:
-						view[alias] = new QDateField(dbColumn, dbProperty, view as IQEntityInternal, this.utils)
+						view[alias] = new QDateField(dbColumn, dbProperty,
+							view as IQEntityInternal)
 						break
 					case SQLDataType.NUMBER:
-						view[alias] = new QNumberField(dbColumn, dbProperty, view as IQEntityInternal, this.utils)
+						view[alias] = new QNumberField(dbColumn, dbProperty,
+							view as IQEntityInternal)
 						break
 					case SQLDataType.STRING:
-						view[alias] = new QStringField(dbColumn, dbProperty, view as IQEntityInternal, this.utils)
+						view[alias] = new QStringField(dbColumn, dbProperty,
+							view as IQEntityInternal)
 						break
 					case SQLDataType.ANY:
-						view[alias] = new QUntypedField(dbColumn, dbProperty, view as IQEntityInternal, this.utils)
+						view[alias] = new QUntypedField(dbColumn, dbProperty,
+							view as IQEntityInternal)
 						break
 					default:
 						throw `Unknown SQLDataType: ${fieldJson.dt}.`
@@ -335,10 +354,12 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 				break
 			case JSONClauseObjectType.FIELD_QUERY:
 				let fieldQuery = <JsonFieldQuery><any>fieldJson
-				this.addFieldToViewForSelect(view, viewAlias, fieldPrefix, fieldQuery.S, alias, alias)
+				this.addFieldToViewForSelect(view, viewAlias, fieldPrefix,
+					fieldQuery.S, alias, alias, airDb, schemaUtils)
 				break
 			case JSONClauseObjectType.DISTINCT_FUNCTION:
-				this.addFieldsToViewForSelect(view, viewAlias, fieldJson.v, fieldPrefix, forFieldQueryAlias)
+				this.addFieldsToViewForSelect(view, viewAlias, fieldJson.v,
+					fieldPrefix, forFieldQueryAlias, airDb, schemaUtils)
 				hasDistinctClause = true
 				break
 			case JSONClauseObjectType.MANY_TO_ONE_RELATION:
@@ -355,15 +376,20 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 
 
 	private getFROMFragments(
-		joinTrees: JoinTreeNode[]
+		joinTrees: JoinTreeNode[],
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
 	): string {
 		return joinTrees.map(
-			joinTree => this.getFROMFragment(null, joinTree)).join('\n')
+			joinTree => this.getFROMFragment(
+				null, joinTree, airDb, schemaUtils)).join('\n')
 	}
 
 	private getFROMFragment(
 		parentTree: JoinTreeNode,
-		currentTree: JoinTreeNode
+		currentTree: JoinTreeNode,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils
 	): string {
 		let fromFragment    = '\t'
 		let currentRelation = currentTree.jsonRelation
@@ -373,13 +399,14 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		if (!parentTree) {
 			switch (currentRelation.rt) {
 				case JSONRelationType.ENTITY_ROOT:
-					fromFragment += `${this.utils.Schema.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias}`
+					fromFragment += `${schemaUtils.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias}`
 					break
 				case JSONRelationType.SUB_QUERY_ROOT:
 					let viewRelation                           = <JSONViewJoinRelation>currentRelation
 					let TreeSQLQueryClass: typeof TreeSQLQuery = require('./TreeSQLQuery').TreeSQLQuery
-					let subQuery                               = new TreeSQLQueryClass(this.airportDb, this.utils, viewRelation.sq, this.dialect)
-					fromFragment += `(${subQuery.toSQL()}) ${currentAlias}`
+					let subQuery                               = new TreeSQLQueryClass(
+						viewRelation.sq, this.dialect)
+					fromFragment += `(${subQuery.toSQL(airDb, schemaUtils)}) ${currentAlias}`
 					break
 				default:
 					throw `Top level FROM entries must be Entity or Sub-Query root`
@@ -415,19 +442,22 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 				case JSONRelationType.ENTITY_JOIN_ON:
 					let joinRelation = <JSONJoinRelation>currentRelation
 					joinOnClause     = this.getWHEREFragment(joinRelation.jwc, '\t')
-					fromFragment += `\t${joinTypeString} ${this.utils.Schema.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias} ON\n${joinOnClause}`
+					fromFragment += `\t${joinTypeString} ${schemaUtils.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias} ON\n${joinOnClause}`
 					break
 				case JSONRelationType.ENTITY_SCHEMA_RELATION:
-					fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity,
-						<JSONEntityRelation>currentRelation, parentRelation, currentAlias, parentAlias,
-						joinTypeString, errorPrefix)
+					fromFragment += this.getEntitySchemaRelationFromJoin(
+						leftEntity, rightEntity, <JSONEntityRelation>currentRelation,
+						parentRelation, currentAlias, parentAlias,
+						joinTypeString, errorPrefix, schemaUtils)
 					break
 				case JSONRelationType.SUB_QUERY_JOIN_ON:
 					let viewJoinRelation                       = <JSONViewJoinRelation>currentRelation
 					let TreeSQLQueryClass: typeof TreeSQLQuery = require('./TreeSQLQuery').TreeSQLQuery
-					let mappedSqlQuery                         = new TreeSQLQueryClass(this.airportDb, this.utils, viewJoinRelation.sq, this.dialect)
+					let mappedSqlQuery                         = new TreeSQLQueryClass(
+						viewJoinRelation.sq, this.dialect)
 					joinOnClause                               = this.getWHEREFragment(viewJoinRelation.jwc, '\t')
-					fromFragment += `${joinTypeString} (${mappedSqlQuery.toSQL()}) ${currentAlias} ON\n${joinOnClause}`
+					const mappedSql = mappedSqlQuery.toSQL(airDb, schemaUtils)
+					fromFragment += `${joinTypeString} (${mappedSql}) ${currentAlias} ON\n${joinOnClause}`
 					break
 				default:
 					throw `Nested FROM entries must be Entity JOIN ON or Schema Relation, or Sub-Query JOIN ON`
@@ -436,7 +466,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		}
 		for (let i = 0; i < currentTree.childNodes.length; i++) {
 			let childTreeNode = currentTree.childNodes[i]
-			fromFragment += this.getFROMFragment(currentTree, childTreeNode)
+			fromFragment += this.getFROMFragment(
+				currentTree, childTreeNode, airDb, schemaUtils)
 		}
 
 		return fromFragment

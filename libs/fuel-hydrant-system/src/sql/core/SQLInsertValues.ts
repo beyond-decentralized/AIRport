@@ -1,11 +1,15 @@
-import {IAirportDatabase, Utils, IUtils} from "@airport/air-control";
+import {
+	IAirportDatabase,
+	IQMetadataUtils,
+	ISchemaUtils
+}                       from '@airport/air-control'
 import {
 	DbEntity,
 	JsonInsertValues
-} from '@airport/ground-control'
-import { SQLNoJoinQuery }                          from "./SQLNoJoinQuery";
-import { SQLDialect }                              from "./SQLQuery";
-import { ClauseType }                              from "./SQLWhereBase";
+}                       from '@airport/ground-control'
+import {SQLNoJoinQuery} from './SQLNoJoinQuery'
+import {SQLDialect}     from './SQLQuery'
+import {ClauseType}     from './SQLWhereBase'
 
 /**
  * Created by Papa on 11/17/2016.
@@ -16,29 +20,35 @@ export class SQLInsertValues
 
 	constructor(
 		airportDb: IAirportDatabase,
-		utils: IUtils,
 		public jsonInsertValues: JsonInsertValues,
 		dialect: SQLDialect,
 		// repository?: IRepository
 	) {
-		super(airportDb, utils, airportDb.schemas[jsonInsertValues.II.si]
-			.currentVersion.entities[jsonInsertValues.II.ti], dialect);
+		super(airportDb.schemas[jsonInsertValues.II.si]
+			.currentVersion.entities[jsonInsertValues.II.ti], dialect)
 	}
 
-	toSQL(): string {
+	toSQL(
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
+	): string {
 		if (!this.jsonInsertValues.II) {
-			throw `Expecting exactly one table in INSERT INTO clause`;
+			throw `Expecting exactly one table in INSERT INTO clause`
 		}
-		this.validator.validateInsertQEntity(this.dbEntity);
-		let tableFragment = this.getTableFragment(this.jsonInsertValues.II);
-		let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C);
-		let valuesFragment = this.getValuesFragment(this.jsonInsertValues.V);
+		this.validator.validateInsertQEntity(this.dbEntity)
+		let tableFragment   = this.getTableFragment(
+			this.jsonInsertValues.II, airDb, schemaUtils)
+		let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C)
+		let valuesFragment  = this.getValuesFragment(
+			this.jsonInsertValues.V,
+			airDb, schemaUtils, metadataUtils)
 
 		return `INSERT INTO
 ${tableFragment} ${columnsFragment}
 VALUES
 ${valuesFragment}
-`;
+`
 	}
 
 	protected getColumnsFragment(
@@ -46,29 +56,36 @@ ${valuesFragment}
 		columns: number[]
 	): string {
 		if (!columns.length) {
-			return '';
+			return ''
 		}
-		const columnNames = columns.map(columnIndex =>
-			dbEntity.columns[columnIndex].name);
-		return `( ${columnNames.join(', \n')} )`;
+		const columnNames = columns.map(
+			columnIndex =>
+				dbEntity.columns[columnIndex].name)
+		return `( ${columnNames.join(', \n')} )`
 	}
 
 	protected getValuesFragment(
-		valuesClauseFragment: any[][]
+		valuesClauseFragment: any[][],
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	): string {
 		let allValuesFragment = valuesClauseFragment.map((valuesArray) => {
 			let valuesFragment = valuesArray.map((value) => {
-				if (value === null || ['number','string'].indexOf(typeof value) > -1) {
-					this.parameterReferences.push(value);
-					return this.sqlAdaptor.getParameterReference(this.parameterReferences, value);
+				if (value === null || ['number', 'string'].indexOf(typeof value) > -1) {
+					this.parameterReferences.push(value)
+					return this.sqlAdaptor.getParameterReference(this.parameterReferences, value)
 				} else {
-					return `\n${this.getFieldValue(value, ClauseType.WHERE_CLAUSE)}\n`;
+					const fieldValue = this.getFieldValue(
+						value, ClauseType.WHERE_CLAUSE, null,
+						airDb, schemaUtils, metadataUtils)
+					return `\n${fieldValue}\n`
 				}
-			});
-			return `(${valuesFragment.join(',')})`;
-		});
+			})
+			return `(${valuesFragment.join(',')})`
+		})
 
-		return allValuesFragment.join(',\n');
+		return allValuesFragment.join(',\n')
 	}
 
 }

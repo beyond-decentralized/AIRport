@@ -1,4 +1,5 @@
 import { IQEntityInternal, Parameter } from "@airport/air-control";
+import { IAirportDatabase, IQMetadataUtils, ISchemaUtils } from '@airport/air-control';
 import { JSONClauseField, JSONClauseObject, JSONSqlFunctionCall, SQLDataType } from "@airport/ground-control";
 import { SQLDialect } from "../sql/core/SQLQuery";
 /**
@@ -24,8 +25,8 @@ export interface ISQLQueryAdaptor {
     getValue(value: any): any;
 }
 export interface ISqlValueProvider {
-    getFunctionCallValue(rawValue: any): string;
-    getFieldFunctionValue(aField: JSONClauseField): string;
+    getFunctionCallValue(rawValue: any, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
+    getFieldFunctionValue(aField: JSONClauseField, defaultCallback: () => string, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
 }
 export interface ISQLFunctionAdaptor {
     getFunctionCalls(clause: JSONClauseObject, innerValue: string, qEntityMapByAlias: {

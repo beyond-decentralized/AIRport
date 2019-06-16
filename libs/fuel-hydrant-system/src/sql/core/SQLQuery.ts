@@ -1,8 +1,8 @@
 import {
 	IAirportDatabase,
 	IQEntityInternal,
+	IQMetadataUtils,
 	ISchemaUtils,
-	IUtils,
 	JoinTreeNode
 }                     from '@airport/air-control'
 import {
@@ -85,6 +85,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	 * @returns {any[]}
 	 */
 	abstract parseQueryResults(
+		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		results: any[],
 		queryResultType: QueryResultType,
@@ -109,7 +110,9 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		parentAlias: string,
 		joinTypeString: string,
 		errorPrefix: string,
-		schemaUtils: ISchemaUtils
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	): string {
 		const allJoinOnColumns: JoinOnColumns[] = []
 
@@ -156,7 +159,9 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
 				` ${parentAlias}.${joinOnColumn.leftColumn} = ${currentAlias}.${joinOnColumn.rightColumn}`
 		).join('\n\t\t\tAND')
 		if (entityRelation.jwc) {
-			const whereClause       = this.getWHEREFragment(entityRelation.jwc, '\t\t')
+			const whereClause       = this.getWHEREFragment(
+				entityRelation.jwc, '\t\t',
+				airDb, schemaUtils, metadataUtils)
 			const joinWhereOperator = entityRelation.wjto === SqlOperator.AND ? 'AND' : 'OR'
 			onClause                = `${onClause}
 			${joinWhereOperator} ${whereClause}`

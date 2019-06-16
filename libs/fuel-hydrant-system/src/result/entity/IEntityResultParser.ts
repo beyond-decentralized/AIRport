@@ -125,7 +125,6 @@ export interface IEntityResultParser {
 }
 
 export function getObjectResultParser(
-	utils: IUtils,
 	queryResultType: QueryResultType,
 	config?: GraphQueryConfiguration,
 	rootDbEntity?: DbEntity,

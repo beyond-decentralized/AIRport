@@ -8,8 +8,8 @@ const NonEntitySQLQuery_1 = require("./NonEntitySQLQuery");
  * Created by Papa on 10/29/2016.
  */
 class FieldSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
-    constructor(airportDb, utils, jsonQuery, dialect) {
-        super(airportDb, utils, jsonQuery, dialect, ground_control_1.QueryResultType.FIELD);
+    constructor(jsonQuery, dialect) {
+        super(jsonQuery, dialect, ground_control_1.QueryResultType.FIELD);
         this.orderByParser = new ExactOrderByParser_1.ExactOrderByParser(this.validator);
     }
     getSELECTFragment(nested, selectClauseFragment) {
@@ -28,7 +28,7 @@ class FieldSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         let selectSqlFragment = this.getFieldSelectFragment(field, SQLWhereBase_1.ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++);
         return selectSqlFragment;
     }
-    parseQueryResults(schemaUtils, results) {
+    parseQueryResults(airDb, schemaUtils, results) {
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;

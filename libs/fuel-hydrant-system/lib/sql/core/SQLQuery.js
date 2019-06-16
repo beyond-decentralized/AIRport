@@ -38,7 +38,7 @@ class SQLQuery extends SQLWhereBase_1.SQLWhereBase {
     getFieldMap() {
         return this.fieldMap;
     }
-    getEntitySchemaRelationFromJoin(leftQEntity, rightQEntity, entityRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, schemaUtils) {
+    getEntitySchemaRelationFromJoin(leftQEntity, rightQEntity, entityRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, airDb, schemaUtils, metadataUtils) {
         const allJoinOnColumns = [];
         const leftDbEntity = leftQEntity.__driver__.dbEntity;
         const rightDbEntity = rightQEntity.__driver__.dbEntity;
@@ -78,7 +78,7 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
         }
         let onClause = allJoinOnColumns.map(joinOnColumn => ` ${parentAlias}.${joinOnColumn.leftColumn} = ${currentAlias}.${joinOnColumn.rightColumn}`).join('\n\t\t\tAND');
         if (entityRelation.jwc) {
-            const whereClause = this.getWHEREFragment(entityRelation.jwc, '\t\t');
+            const whereClause = this.getWHEREFragment(entityRelation.jwc, '\t\t', airDb, schemaUtils, metadataUtils);
             const joinWhereOperator = entityRelation.wjto === ground_control_1.SqlOperator.AND ? 'AND' : 'OR';
             onClause = `${onClause}
 			${joinWhereOperator} ${whereClause}`;

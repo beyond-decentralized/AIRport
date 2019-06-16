@@ -1,4 +1,4 @@
-import { IAirportDatabase, ISchemaUtils, IUtils, MappedEntityArray, ReferencedColumnData } from '@airport/air-control';
+import { IAirportDatabase, ISchemaUtils, MappedEntityArray, ReferencedColumnData } from '@airport/air-control';
 import { DbEntity, QueryResultType, SQLDataType } from '@airport/ground-control';
 export declare class GraphQueryConfiguration {
     strict: boolean;
@@ -18,7 +18,7 @@ export interface IEntityResultParser {
     flushRow(): void;
     bridge(parsedResults: any[], selectClauseFragment: any, schemaUtils: ISchemaUtils): any[] | MappedEntityArray<any>;
 }
-export declare function getObjectResultParser(utils: IUtils, queryResultType: QueryResultType, config?: GraphQueryConfiguration, rootDbEntity?: DbEntity): IEntityResultParser;
+export declare function getObjectResultParser(queryResultType: QueryResultType, config?: GraphQueryConfiguration, rootDbEntity?: DbEntity): IEntityResultParser;
 export declare abstract class AbstractObjectResultParser {
     protected addManyToOneStub(resultObject: any, propertyName: string, relationInfos: ReferencedColumnData[], schemaUtils: ISchemaUtils): boolean;
 }
