@@ -1,4 +1,4 @@
-import { IDatabaseFacade, IDuo, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUtils, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, UpdateCacheType } from '@airport/air-control';
+import { IDuo, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, UpdateCacheType } from '@airport/air-control';
 import { DbEntity } from '@airport/ground-control';
 /**
  * Created by Papa on 12/11/2016.
@@ -6,17 +6,15 @@ import { DbEntity } from '@airport/ground-control';
 export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, IQ extends IQEntity> implements IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, IQ> {
     dbEntity: DbEntity;
     private Q;
-    private utils;
-    common: IDatabaseFacade;
     duo: IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateProperties, EntityId, IQ>;
     find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
     findOne: IEntityFindOne<Entity, EntitySelect>;
     search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
     searchOne: IEntitySearchOne<Entity, EntitySelect>;
-    constructor(dbEntity: DbEntity, Q: QSchema, utils: IUtils);
+    constructor(dbEntity: DbEntity, Q: QSchema);
     readonly from: IQ;
-    initialize(databaseFacade: IDatabaseFacade): void;
-    releaseCachedForUpdate(updateCacheType: UpdateCacheType, ...entities: Entity[]): void;
+    initialize(): void;
+    releaseCachedForUpdate(updateCacheType: UpdateCacheType, ...entities: Entity[]): Promise<void>;
     create(entity: EntityCreate): Promise<number>;
     bulkCreate(entities: EntityCreate[], cascade?: boolean, checkIfProcessed?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {

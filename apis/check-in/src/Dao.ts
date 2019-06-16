@@ -1,6 +1,4 @@
 import {
-	AIR_DB,
-	IAirportDatabase,
 	IDao,
 	IEntityCreateProperties,
 	IEntityDatabaseFacade,
@@ -13,14 +11,10 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-	IUtils,
 	QSchema,
-	UpdateCacheType,
-	UTILS
+	UpdateCacheType
 }                               from '@airport/air-control'
-import {DI}                     from '@airport/di'
 import {EntityId as DbEntityId} from '@airport/ground-control'
-import {ENTITY_MANAGER}         from '@airport/tower'
 import {EntityDatabaseFacade}   from './EntityDatabaseFacade'
 
 /**
@@ -43,25 +37,14 @@ export abstract class Dao<Entity,
 		dbEntityId: DbEntityId,
 		Q: QSchema
 	) {
-		DI.get(
-			(
-				airportDatabase,
-				entityManager,
-				utils
-			) => {
-				this.airDb                 = airportDatabase
-				this.utils                 = utils
-				const dbEntity             = Q.__dbSchema__.currentVersion.entities[dbEntityId]
-				const entityDatabaseFacade = new EntityDatabaseFacade<Entity,
-					EntitySelect, EntityCreate,
-					EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>(
-					dbEntity, Q)
-				DI.get(ENTITY_MANAGER).then(entityManager =>
-				entityDatabaseFacade.initialize(entityManager)
-				)
+		const dbEntity             = Q.__dbSchema__.currentVersion.entities[dbEntityId]
+		const entityDatabaseFacade = new EntityDatabaseFacade<Entity,
+			EntitySelect, EntityCreate,
+			EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>(
+			dbEntity, Q)
+		entityDatabaseFacade.initialize()
 
-				this.db = entityDatabaseFacade
-			}, AIR_DB, ENTITY_MANAGER, UTILS)
+		this.db = entityDatabaseFacade
 	}
 
 	get find(): IEntityFind<Entity, Array<Entity>, EntitySelect> {

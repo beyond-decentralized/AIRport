@@ -1,10 +1,12 @@
 import { IAirportDatabase } from './lingo/AirportDatabase';
+import { IDatabaseFacade } from './lingo/core/repository/DatabaseFacade';
 import { IEntityUtils } from './lingo/utils/EntityUtils';
 import { IFieldUtils } from './lingo/utils/FieldUtils';
 import { IQMetadataUtils } from './lingo/utils/QMetadataUtils';
 import { IQueryUtils } from './lingo/utils/QueryUtils';
 import { ISchemaUtils } from './lingo/utils/SchemaUtils';
 export declare const AIR_DB: import("@airport/di").DiToken<IAirportDatabase>;
+export declare const ENTITY_MANAGER: import("@airport/di").DiToken<IDatabaseFacade>;
 export declare const ENTITY_UTILS: import("@airport/di").DiToken<IEntityUtils>;
 export declare const FIELD_UTILS: import("@airport/di").DiToken<IFieldUtils>;
 export declare const Q_METADATA_UTILS: import("@airport/di").DiToken<IQMetadataUtils>;

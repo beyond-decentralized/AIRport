@@ -9,10 +9,9 @@ const EntityLookup_1 = require("./EntityLookup");
  * Created by Papa on 11/12/2016.
  */
 class EntitySearchOne extends EntityLookup_1.EntityLookup {
-    constructor(dbEntity, dbFacade) {
+    constructor(dbEntity) {
         super();
         this.dbEntity = dbEntity;
-        this.dbFacade = dbFacade;
     }
     graph(rawGraphQuery) {
         return observe_1.Observable.from(this.doSearch(rawGraphQuery, ground_control_1.QueryResultType.ENTITY_GRAPH));
@@ -20,10 +19,11 @@ class EntitySearchOne extends EntityLookup_1.EntityLookup {
     tree(rawTreeQuery) {
         return observe_1.Observable.from(this.doSearch(rawTreeQuery, ground_control_1.QueryResultType.ENTITY_TREE));
     }
-    async doSearch(rawTreeQuery, queryResultType) {
-        let entityQuery = (await di_1.DI.get(diTokens_1.ENTITY_UTILS)).getEntityQuery(rawTreeQuery);
+    async doSearch(rawQuery, queryResultType) {
+        const [entityUtils, dbFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.ENTITY_MANAGER);
+        const entityQuery = entityUtils.getEntityQuery(rawQuery);
         const cacheForUpdate = this.cleanNextCallState();
-        return this.dbFacade.entity.searchOne(this.dbEntity, entityQuery, queryResultType, cacheForUpdate);
+        return dbFacade.entity.searchOne(this.dbEntity, entityQuery, queryResultType, cacheForUpdate);
     }
 }
 exports.EntitySearchOne = EntitySearchOne;

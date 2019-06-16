@@ -4,7 +4,10 @@ import {
 	IObservable,
 	Observable
 }                             from '@airport/observe'
-import {ENTITY_UTILS}         from '../../../diTokens'
+import {
+	ENTITY_MANAGER,
+	ENTITY_UTILS
+} from '../../../diTokens'
 import {IQOrderableField}     from '../../../lingo/core/field/Field'
 import {IDatabaseFacade}      from '../../../lingo/core/repository/DatabaseFacade'
 import {INonEntitySearch}     from '../../../lingo/query/api/NonEntitySearch'
@@ -26,11 +29,6 @@ import {TreeQuery}            from '../facade/TreeQuery'
 
 export class NonEntitySearch
 	implements INonEntitySearch {
-
-	constructor(
-		private dbFacade: IDatabaseFacade
-	) {
-	}
 
 	tree<ITE extends ITreeEntity>(
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
@@ -58,9 +56,10 @@ export class NonEntitySearch
 		QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery,
 		queryResultType: QueryResultType
 	): Promise<IObservable<any[]>> {
-		const rawQuery                    = (await DI.get(ENTITY_UTILS)).getQuery(rawNonEntityQuery)
+		const [entityUtils, dbFacade] = await DI.get(ENTITY_UTILS, ENTITY_MANAGER)
+		const rawQuery                  = entityUtils.getQuery(rawNonEntityQuery)
 		const query: DistinguishableQuery = new QueryClass(rawQuery)
-		return this.dbFacade.entity.search<any, any[]>(
+		return dbFacade.entity.search<any, any[]>(
 			null, query, queryResultType)
 	}
 

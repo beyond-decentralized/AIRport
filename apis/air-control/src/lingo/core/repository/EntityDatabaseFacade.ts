@@ -74,7 +74,7 @@ export interface IEntityDatabaseFacade<Entity,
 	releaseCachedForUpdate(
 		updateCacheType: UpdateCacheType,
 		...entities: Entity[]
-	): void;
+	): Promise<void>;
 
 	/**
 	 * Creates the provided entity in the db.

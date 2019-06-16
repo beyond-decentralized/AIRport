@@ -42,7 +42,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @param {Entity} entities
      */
-    releaseCachedForUpdate(updateCacheType: UpdateCacheType, ...entities: Entity[]): void;
+    releaseCachedForUpdate(updateCacheType: UpdateCacheType, ...entities: Entity[]): Promise<void>;
     /**
      * Creates the provided entity in the db.
      *

@@ -1,8 +1,10 @@
 import {DI}                from '@airport/di'
 import {QueryResultType}   from '@airport/ground-control'
-import {ENTITY_UTILS}      from '../../../diTokens'
+import {
+	ENTITY_MANAGER,
+	ENTITY_UTILS
+} from '../../../diTokens'
 import {IQOrderableField}  from '../../../lingo/core/field/Field'
-import {IDatabaseFacade}   from '../../../lingo/core/repository/DatabaseFacade'
 import {INonEntityFindOne} from '../../../lingo/query/api/NonEntityFindOne'
 import {RawFieldQuery}     from '../../../lingo/query/facade/FieldQuery'
 import {RawSheetQuery}     from '../../../lingo/query/facade/SheetQuery'
@@ -21,35 +23,33 @@ import {TreeQuery}         from '../facade/TreeQuery'
 export class NonEntityFindOne
 	implements INonEntityFindOne {
 
-	constructor(
-		private dbFacade: IDatabaseFacade
-	) {
-	}
-
 	async tree<ITE extends ITreeEntity>(
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
 	): Promise<ITE> {
-		const rawQuery                  = (await DI.get(ENTITY_UTILS)).getQuery(rawTreeQuery)
+		const [entityUtils, dbFacade] = await DI.get(ENTITY_UTILS, ENTITY_MANAGER)
+		const rawQuery                  = entityUtils.getQuery(rawTreeQuery)
 		const treeQuery: TreeQuery<ITE> = new TreeQuery(rawQuery)
-		return await this.dbFacade.entity.findOne<ITE>(
+		return await dbFacade.entity.findOne<ITE>(
 			null, treeQuery, QueryResultType.TREE)
 	}
 
 	async sheet(
 		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery }
 	): Promise<any[]> {
-		const rawQuery               = (await DI.get(ENTITY_UTILS)).getQuery(rawSheetQuery)
+		const [entityUtils, dbFacade] = await DI.get(ENTITY_UTILS, ENTITY_MANAGER)
+		const rawQuery                  = entityUtils.getQuery(rawSheetQuery)
 		const sheetQuery: SheetQuery = new SheetQuery(rawQuery)
-		return await this.dbFacade.entity.findOne<any>(
+		return await dbFacade.entity.findOne<any>(
 			null, sheetQuery, QueryResultType.SHEET)
 	}
 
 	async field<IQF extends IQOrderableField<IQF>>(
 		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
 	): Promise<any> {
-		const rawQuery                    = (await DI.get(ENTITY_UTILS)).getQuery(rawFieldQuery)
+		const [entityUtils, dbFacade] = await DI.get(ENTITY_UTILS, ENTITY_MANAGER)
+		const rawQuery                  = entityUtils.getQuery(rawFieldQuery)
 		const fieldQuery: FieldQuery<IQF> = new FieldQuery(rawQuery)
-		return await this.dbFacade.entity.findOne<any>(
+		return await dbFacade.entity.findOne<any>(
 			null, fieldQuery, QueryResultType.FIELD)
 	}
 

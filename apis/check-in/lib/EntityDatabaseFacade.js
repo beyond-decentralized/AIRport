@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
 const Duo_1 = require("./Duo");
 /**
  * Created by Papa on 12/11/2016.
@@ -14,51 +15,63 @@ class EntityDatabaseFacade {
     get from() {
         return this.Q[this.dbEntity.name];
     }
-    initialize(databaseFacade) {
-        this.common = databaseFacade;
-        this.find = new air_control_1.EntityFind(this.dbEntity, databaseFacade);
-        this.findOne = new air_control_1.EntityFindOne(this.dbEntity, databaseFacade);
-        this.search = new air_control_1.EntitySearch(this.dbEntity, databaseFacade);
-        this.searchOne = new air_control_1.EntitySearchOne(this.dbEntity, databaseFacade);
+    initialize() {
+        this.find = new air_control_1.EntityFind(this.dbEntity);
+        this.findOne = new air_control_1.EntityFindOne(this.dbEntity);
+        this.search = new air_control_1.EntitySearch(this.dbEntity);
+        this.searchOne = new air_control_1.EntitySearchOne(this.dbEntity);
     }
-    releaseCachedForUpdate(updateCacheType, ...entities) {
-        this.common.releaseCachedForUpdate(updateCacheType, this.dbEntity, ...entities);
+    async releaseCachedForUpdate(updateCacheType, ...entities) {
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity, ...entities);
     }
     async create(entity) {
-        return await this.common.create(this.dbEntity, entity);
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.create(this.dbEntity, entity);
     }
     async bulkCreate(entities, cascade = false, checkIfProcessed = true) {
-        return await this.common.bulkCreate(this.dbEntity, entities, checkIfProcessed, cascade);
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.bulkCreate(this.dbEntity, entities, checkIfProcessed, cascade);
     }
     async insertColumnValues(rawInsertColumnValues) {
-        return await this.common.insertColumnValues(this.dbEntity, rawInsertColumnValues);
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.insertColumnValues(this.dbEntity, rawInsertColumnValues);
     }
     async insertValues(rawInsertValues) {
-        return await this.common.insertValues(this.dbEntity, rawInsertValues);
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.insertValues(this.dbEntity, rawInsertValues);
     }
     async insertColumnValuesGenerateIds(rawInsertColumnValues) {
-        return await this.common.insertColumnValuesGenerateIds(this.dbEntity, rawInsertColumnValues);
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.insertColumnValuesGenerateIds(this.dbEntity, rawInsertColumnValues);
     }
     async insertValuesGenerateIds(rawInsertValues) {
-        return await this.common.insertValuesGenerateIds(this.dbEntity, rawInsertValues);
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.insertValuesGenerateIds(this.dbEntity, rawInsertValues);
     }
     async update(entity) {
-        return await this.common.update(this.dbEntity, entity);
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.update(this.dbEntity, entity);
     }
     async updateColumnsWhere(rawUpdateColumns) {
-        return await this.common.updateColumnsWhere(this.dbEntity, rawUpdateColumns);
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.updateColumnsWhere(this.dbEntity, rawUpdateColumns);
     }
     async updateWhere(rawUpdate) {
-        return await this.common.updateWhere(this.dbEntity, rawUpdate);
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.updateWhere(this.dbEntity, rawUpdate);
     }
     async delete(entity) {
-        return await this.common.delete(this.dbEntity, entity);
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.delete(this.dbEntity, entity);
     }
     async deleteWhere(rawDelete) {
-        return await this.common.deleteWhere(this.dbEntity, rawDelete);
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.deleteWhere(this.dbEntity, rawDelete);
     }
     async save(entity) {
-        return await this.common.save(this.dbEntity, entity);
+        const dbFacade = await di_1.DI.get(air_control_1.ENTITY_MANAGER);
+        return await dbFacade.save(this.dbEntity, entity);
     }
 }
 exports.EntityDatabaseFacade = EntityDatabaseFacade;

@@ -10,23 +10,23 @@ const TreeQuery_1 = require("../facade/TreeQuery");
  * Created by Papa on 11/12/2016.
  */
 class NonEntityFindOne {
-    constructor(dbFacade) {
-        this.dbFacade = dbFacade;
-    }
     async tree(rawTreeQuery) {
-        const rawQuery = (await di_1.DI.get(diTokens_1.ENTITY_UTILS)).getQuery(rawTreeQuery);
+        const [entityUtils, dbFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.ENTITY_MANAGER);
+        const rawQuery = entityUtils.getQuery(rawTreeQuery);
         const treeQuery = new TreeQuery_1.TreeQuery(rawQuery);
-        return await this.dbFacade.entity.findOne(null, treeQuery, ground_control_1.QueryResultType.TREE);
+        return await dbFacade.entity.findOne(null, treeQuery, ground_control_1.QueryResultType.TREE);
     }
     async sheet(rawSheetQuery) {
-        const rawQuery = (await di_1.DI.get(diTokens_1.ENTITY_UTILS)).getQuery(rawSheetQuery);
+        const [entityUtils, dbFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.ENTITY_MANAGER);
+        const rawQuery = entityUtils.getQuery(rawSheetQuery);
         const sheetQuery = new SheetQuery_1.SheetQuery(rawQuery);
-        return await this.dbFacade.entity.findOne(null, sheetQuery, ground_control_1.QueryResultType.SHEET);
+        return await dbFacade.entity.findOne(null, sheetQuery, ground_control_1.QueryResultType.SHEET);
     }
     async field(rawFieldQuery) {
-        const rawQuery = (await di_1.DI.get(diTokens_1.ENTITY_UTILS)).getQuery(rawFieldQuery);
+        const [entityUtils, dbFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.ENTITY_MANAGER);
+        const rawQuery = entityUtils.getQuery(rawFieldQuery);
         const fieldQuery = new FieldQuery_1.FieldQuery(rawQuery);
-        return await this.dbFacade.entity.findOne(null, fieldQuery, ground_control_1.QueryResultType.FIELD);
+        return await dbFacade.entity.findOne(null, fieldQuery, ground_control_1.QueryResultType.FIELD);
     }
 }
 exports.NonEntityFindOne = NonEntityFindOne;

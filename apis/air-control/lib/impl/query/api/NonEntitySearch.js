@@ -11,9 +11,6 @@ const TreeQuery_1 = require("../facade/TreeQuery");
  * Created by Papa on 11/12/2016.
  */
 class NonEntitySearch {
-    constructor(dbFacade) {
-        this.dbFacade = dbFacade;
-    }
     tree(rawTreeQuery) {
         return observe_1.Observable.from(this.doSearch(rawTreeQuery, TreeQuery_1.TreeQuery, ground_control_1.QueryResultType.TREE));
     }
@@ -24,9 +21,10 @@ class NonEntitySearch {
         return observe_1.Observable.from(this.doSearch(rawFieldQuery, FieldQuery_1.FieldQuery, ground_control_1.QueryResultType.FIELD));
     }
     async doSearch(rawNonEntityQuery, QueryClass, queryResultType) {
-        const rawQuery = (await di_1.DI.get(diTokens_1.ENTITY_UTILS)).getQuery(rawNonEntityQuery);
+        const [entityUtils, dbFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.ENTITY_MANAGER);
+        const rawQuery = entityUtils.getQuery(rawNonEntityQuery);
         const query = new QueryClass(rawQuery);
-        return this.dbFacade.entity.search(null, query, queryResultType);
+        return dbFacade.entity.search(null, query, queryResultType);
     }
 }
 exports.NonEntitySearch = NonEntitySearch;

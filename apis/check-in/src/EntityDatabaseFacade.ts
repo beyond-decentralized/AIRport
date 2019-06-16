@@ -1,9 +1,9 @@
 import {
+	ENTITY_MANAGER,
 	EntityFind,
 	EntityFindOne,
 	EntitySearch,
 	EntitySearchOne,
-	IDatabaseFacade,
 	IDuo,
 	IEntityCreateProperties,
 	IEntityDatabaseFacade,
@@ -16,7 +16,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-	IUtils,
 	MappedEntityArray,
 	QSchema,
 	RawDelete,
@@ -25,6 +24,7 @@ import {
 	RawUpdate,
 	UpdateCacheType
 }                 from '@airport/air-control'
+import {DI}       from '@airport/di'
 import {DbEntity} from '@airport/ground-control'
 import {Duo}      from './Duo'
 
@@ -58,29 +58,28 @@ export class EntityDatabaseFacade<Entity,
 		return this.Q[this.dbEntity.name]
 	}
 
-	initialize(
-		databaseFacade: IDatabaseFacade
-	) {
-		this.common    = databaseFacade
+	initialize() {
 		this.find      = new EntityFind<Entity, Array<Entity>, EntitySelect>(
-			this.dbEntity, databaseFacade)
-		this.findOne   = new EntityFindOne(this.dbEntity, databaseFacade)
+			this.dbEntity)
+		this.findOne   = new EntityFindOne(this.dbEntity)
 		this.search    = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
-			this.dbEntity, databaseFacade)
-		this.searchOne = new EntitySearchOne(this.dbEntity, databaseFacade)
+			this.dbEntity)
+		this.searchOne = new EntitySearchOne(this.dbEntity)
 	}
 
-	releaseCachedForUpdate(
+	async releaseCachedForUpdate(
 		updateCacheType: UpdateCacheType,
 		...entities: Entity[]
-	): void {
-		this.common.releaseCachedForUpdate(updateCacheType, this.dbEntity, ...entities)
+	): Promise<void> {
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity, ...entities)
 	}
 
 	async create(
 		entity: EntityCreate
 	): Promise<number> {
-		return await this.common.create(this.dbEntity, entity)
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.create(this.dbEntity, entity)
 	}
 
 	async bulkCreate(
@@ -88,42 +87,48 @@ export class EntityDatabaseFacade<Entity,
 		cascade: boolean          = false,
 		checkIfProcessed: boolean = true
 	): Promise<number> {
-		return await this.common.bulkCreate(this.dbEntity, entities, checkIfProcessed, cascade)
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.bulkCreate(this.dbEntity, entities, checkIfProcessed, cascade)
 	}
 
 	async insertColumnValues<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		}): Promise<number> {
-		return await this.common.insertColumnValues(this.dbEntity, rawInsertColumnValues)
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.insertColumnValues(this.dbEntity, rawInsertColumnValues)
 	}
 
 	async insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		}): Promise<number> {
-		return await this.common.insertValues(this.dbEntity, rawInsertValues)
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.insertValues(this.dbEntity, rawInsertValues)
 	}
 
 	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		}): Promise<number[] | string[]> {
-		return await this.common.insertColumnValuesGenerateIds(this.dbEntity, rawInsertColumnValues)
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.insertColumnValuesGenerateIds(this.dbEntity, rawInsertColumnValues)
 	}
 
 	async insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		}): Promise<number[] | string[]> {
-		return await this.common.insertValuesGenerateIds(this.dbEntity, rawInsertValues)
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.insertValuesGenerateIds(this.dbEntity, rawInsertValues)
 	}
 
 
 	async update(
 		entity: EntityCreate
 	): Promise<number> {
-		return await this.common.update(this.dbEntity, entity)
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.update(this.dbEntity, entity)
 	}
 
 	async updateColumnsWhere(
@@ -132,7 +137,8 @@ export class EntityDatabaseFacade<Entity,
 				: RawUpdate<EntityUpdateColumns, IQ>
 		}
 	): Promise<number> {
-		return await this.common.updateColumnsWhere(this.dbEntity, rawUpdateColumns)
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.updateColumnsWhere(this.dbEntity, rawUpdateColumns)
 	}
 
 	async updateWhere(
@@ -141,25 +147,29 @@ export class EntityDatabaseFacade<Entity,
 				: RawUpdate<EntityUpdateProperties, IQ>
 		}
 	): Promise<number> {
-		return await this.common.updateWhere(this.dbEntity, rawUpdate)
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.updateWhere(this.dbEntity, rawUpdate)
 	}
 
 	async delete(
 		entity: EntityId
 	): Promise<number> {
-		return await this.common.delete(this.dbEntity, entity)
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.delete(this.dbEntity, entity)
 	}
 
 	async deleteWhere(
 		rawDelete: RawDelete<IQ> | { (...args: any[]): RawDelete<IQ> }
 	): Promise<number> {
-		return await this.common.deleteWhere(this.dbEntity, rawDelete)
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.deleteWhere(this.dbEntity, rawDelete)
 	}
 
 	async save(
 		entity: EntityCreate
 	): Promise<number> {
-		return await this.common.save(this.dbEntity, entity)
+		const dbFacade = await DI.get(ENTITY_MANAGER)
+		return await dbFacade.save(this.dbEntity, entity)
 	}
 
 }

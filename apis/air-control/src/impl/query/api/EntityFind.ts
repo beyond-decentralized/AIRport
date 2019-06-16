@@ -3,7 +3,10 @@ import {
 	DbEntity,
 	QueryResultType
 }                                from '@airport/ground-control'
-import {ENTITY_UTILS}            from '../../../diTokens'
+import {
+	ENTITY_MANAGER,
+	ENTITY_UTILS
+} from '../../../diTokens'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
 import {IDatabaseFacade}         from '../../../lingo/core/repository/DatabaseFacade'
 import {IEntityFind}             from '../../../lingo/query/api/EntityFind'
@@ -21,8 +24,7 @@ export class EntityFind<Entity, EntityArray extends Array<Entity>, IESP extends 
 	implements IEntityFind<Entity, EntityArray, IESP> {
 
 	constructor(
-		protected dbEntity: DbEntity,
-		protected dbFacade: IDatabaseFacade,
+		protected dbEntity: DbEntity
 	) {
 		super()
 	}
@@ -30,10 +32,11 @@ export class EntityFind<Entity, EntityArray extends Array<Entity>, IESP extends 
 	async graph(
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
 	): Promise<EntityArray> {
-		const entityQuery: EntityQuery<IESP> = (await DI.get(ENTITY_UTILS)).getEntityQuery(rawGraphQuery)
+		const [entityUtils, dbFacade] = await DI.get(ENTITY_UTILS, ENTITY_MANAGER)
+		const entityQuery             = entityUtils.getEntityQuery(rawGraphQuery)
 		const cacheForUpdate                 = this.cleanNextCallState()
 
-		return await this.dbFacade.entity.find<Entity, EntityArray>(
+		return await dbFacade.entity.find<Entity, EntityArray>(
 			this.dbEntity, entityQuery,
 			this.getQueryResultType(QueryResultType.ENTITY_GRAPH), cacheForUpdate)
 	}
@@ -41,10 +44,11 @@ export class EntityFind<Entity, EntityArray extends Array<Entity>, IESP extends 
 	async tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
 	): Promise<EntityArray> {
-		const entityQuery: EntityQuery<IESP> = (await DI.get(ENTITY_UTILS)).getEntityQuery(rawTreeQuery)
+		const [entityUtils, dbFacade] = await DI.get(ENTITY_UTILS, ENTITY_MANAGER)
+		const entityQuery             = entityUtils.getEntityQuery(rawTreeQuery)
 		const cacheForUpdate                 = this.cleanNextCallState()
 
-		return await this.dbFacade.entity.find<Entity, EntityArray>(
+		return await dbFacade.entity.find<Entity, EntityArray>(
 			this.dbEntity, entityQuery,
 			this.getQueryResultType(QueryResultType.ENTITY_TREE), cacheForUpdate)
 	}

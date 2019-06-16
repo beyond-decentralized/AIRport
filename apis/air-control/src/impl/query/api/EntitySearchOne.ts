@@ -7,12 +7,13 @@ import {
 	IObservable,
 	Observable
 }                                from '@airport/observe'
-import {ENTITY_UTILS}            from '../../../diTokens'
+import {
+	ENTITY_MANAGER,
+	ENTITY_UTILS
+}                                from '../../../diTokens'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
-import {IDatabaseFacade}         from '../../../lingo/core/repository/DatabaseFacade'
 import {IEntitySearchOne}        from '../../../lingo/query/api/EntitySearchOne'
 import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
-import {EntityQuery}             from '../facade/EntityQuery'
 import {EntityLookup}            from './EntityLookup'
 
 /**
@@ -23,8 +24,7 @@ export class EntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 	implements IEntitySearchOne<Entity, IESP> {
 
 	constructor(
-		protected dbEntity: DbEntity,
-		protected dbFacade: IDatabaseFacade
+		protected dbEntity: DbEntity
 	) {
 		super()
 	}
@@ -42,13 +42,14 @@ export class EntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 	}
 
 	private async doSearch(
-		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		rawQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType
 	): Promise<IObservable<Entity>> {
-		let entityQuery: EntityQuery<IESP> = (await DI.get(ENTITY_UTILS)).getEntityQuery(rawTreeQuery)
-		const cacheForUpdate               = this.cleanNextCallState()
+		const [entityUtils, dbFacade] = await DI.get(ENTITY_UTILS, ENTITY_MANAGER)
+		const entityQuery             = entityUtils.getEntityQuery(rawQuery)
+		const cacheForUpdate          = this.cleanNextCallState()
 
-		return this.dbFacade.entity.searchOne(
+		return dbFacade.entity.searchOne(
 			this.dbEntity, entityQuery, queryResultType, cacheForUpdate)
 
 	}
