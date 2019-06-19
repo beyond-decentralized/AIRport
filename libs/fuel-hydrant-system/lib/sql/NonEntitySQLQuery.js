@@ -16,17 +16,17 @@ class NonEntitySQLQuery extends SQLQuery_1.SQLQuery {
             this.qEntityMapByAlias[alias] = sourceMap[alias];
         }
     }
-    toSQL(airDb, schemaUtils) {
+    toSQL(airDb, schemaUtils, metadataUtils) {
         let jsonQuery = this.jsonQuery;
         let joinNodeMap = {};
         this.joinTrees = this.buildFromJoinTree(jsonQuery.F, joinNodeMap, airDb, schemaUtils);
-        let selectFragment = this.getSELECTFragment(false, jsonQuery.S);
-        let fromFragment = this.getFROMFragments(this.joinTrees, airDb, schemaUtils);
+        let selectFragment = this.getSELECTFragment(false, jsonQuery.S, airDb, schemaUtils, metadataUtils);
+        let fromFragment = this.getFROMFragments(this.joinTrees, airDb, schemaUtils, metadataUtils);
         let whereFragment = '';
         if (jsonQuery.W) {
             whereFragment = `
 WHERE
-${this.getWHEREFragment(jsonQuery.W, '')}`;
+${this.getWHEREFragment(jsonQuery.W, '', airDb, schemaUtils, metadataUtils)}`;
         }
         let groupByFragment = '';
         if (jsonQuery.GB && jsonQuery.GB.length) {
@@ -38,7 +38,7 @@ ${this.getGroupByFragment(jsonQuery.GB)}`;
         if (jsonQuery.H) {
             havingFragment = `
 HAVING
-${this.getWHEREFragment(jsonQuery.H, '')}`;
+${this.getWHEREFragment(jsonQuery.H, '', airDb, schemaUtils, metadataUtils)}`;
         }
         let orderByFragment = '';
         if (jsonQuery.OB && jsonQuery.OB.length) {
@@ -58,10 +58,10 @@ ORDER BY
 FROM
 ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragment}${offsetFragment}${limitFragment}`;
     }
-    getFieldSelectFragment(value, clauseType, nestedObjectCallBack, fieldIndex) {
+    getFieldSelectFragment(value, clauseType, nestedObjectCallBack, fieldIndex, airDb, schemaUtils, metadataUtils) {
         let columnSelectSqlFragment = this.getFieldValue(value, clauseType, 
         // Nested object processing
-        nestedObjectCallBack);
+        nestedObjectCallBack, airDb, schemaUtils, metadataUtils);
         if (value.fa !== undefined) {
             columnSelectSqlFragment += ` as ${value.fa}`;
         }
@@ -247,10 +247,10 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         }
         return hasDistinctClause;
     }
-    getFROMFragments(joinTrees, airDb, schemaUtils) {
-        return joinTrees.map(joinTree => this.getFROMFragment(null, joinTree, airDb, schemaUtils)).join('\n');
+    getFROMFragments(joinTrees, airDb, schemaUtils, metadataUtils) {
+        return joinTrees.map(joinTree => this.getFROMFragment(null, joinTree, airDb, schemaUtils, metadataUtils)).join('\n');
     }
-    getFROMFragment(parentTree, currentTree, airDb, schemaUtils) {
+    getFROMFragment(parentTree, currentTree, airDb, schemaUtils, metadataUtils) {
         let fromFragment = '\t';
         let currentRelation = currentTree.jsonRelation;
         let currentAlias = air_control_1.QRelation.getAlias(currentRelation);
@@ -264,7 +264,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     let viewRelation = currentRelation;
                     let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
                     let subQuery = new TreeSQLQueryClass(viewRelation.sq, this.dialect);
-                    fromFragment += `(${subQuery.toSQL(airDb, schemaUtils)}) ${currentAlias}`;
+                    const subQuerySql = subQuery.toSQL(airDb, schemaUtils, metadataUtils);
+                    fromFragment += `(${subQuerySql}) ${currentAlias}`;
                     break;
                 default:
                     throw `Top level FROM entries must be Entity or Sub-Query root`;
@@ -296,18 +297,18 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             switch (currentRelation.rt) {
                 case ground_control_1.JSONRelationType.ENTITY_JOIN_ON:
                     let joinRelation = currentRelation;
-                    joinOnClause = this.getWHEREFragment(joinRelation.jwc, '\t');
+                    joinOnClause = this.getWHEREFragment(joinRelation.jwc, '\t', airDb, schemaUtils, metadataUtils);
                     fromFragment += `\t${joinTypeString} ${schemaUtils.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias} ON\n${joinOnClause}`;
                     break;
                 case ground_control_1.JSONRelationType.ENTITY_SCHEMA_RELATION:
-                    fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, schemaUtils);
+                    fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, airDb, schemaUtils, metadataUtils);
                     break;
                 case ground_control_1.JSONRelationType.SUB_QUERY_JOIN_ON:
                     let viewJoinRelation = currentRelation;
                     let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
                     let mappedSqlQuery = new TreeSQLQueryClass(viewJoinRelation.sq, this.dialect);
-                    joinOnClause = this.getWHEREFragment(viewJoinRelation.jwc, '\t');
-                    const mappedSql = mappedSqlQuery.toSQL(airDb, schemaUtils);
+                    joinOnClause = this.getWHEREFragment(viewJoinRelation.jwc, '\t', airDb, schemaUtils, metadataUtils);
+                    const mappedSql = mappedSqlQuery.toSQL(airDb, schemaUtils, metadataUtils);
                     fromFragment += `${joinTypeString} (${mappedSql}) ${currentAlias} ON\n${joinOnClause}`;
                     break;
                 default:
@@ -316,7 +317,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         }
         for (let i = 0; i < currentTree.childNodes.length; i++) {
             let childTreeNode = currentTree.childNodes[i];
-            fromFragment += this.getFROMFragment(currentTree, childTreeNode, airDb, schemaUtils);
+            fromFragment += this.getFROMFragment(currentTree, childTreeNode, airDb, schemaUtils, metadataUtils);
         }
         return fromFragment;
     }

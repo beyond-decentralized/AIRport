@@ -40,7 +40,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     getFieldValue(clauseField: JSONClauseObject | JSONClauseField[] | JsonFieldQuery, clauseType: ClauseType, defaultCallback: () => string, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     private isParameterReference;
     protected getSimpleColumnFragment(tableAlias: string, columnName: string): string;
-    protected getComplexColumnFragment(value: JSONClauseField, columnName: string): string;
+    protected getComplexColumnFragment(value: JSONClauseField, columnName: string, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     protected getEntityManyToOneColumnName(qEntity: IQEntityInternal, columnIndex: number, metadataUtils: IQMetadataUtils): string;
     applyOperator(operator: SqlOperator, rValue: string): string;
 }

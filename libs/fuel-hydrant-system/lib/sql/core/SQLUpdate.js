@@ -17,16 +17,17 @@ class SQLUpdate extends SQLNoJoinQuery_1.SQLNoJoinQuery {
         if (!this.jsonUpdate.U) {
             throw `Expecting exactly one table in UPDATE clause`;
         }
-        let updateFragment = this.getTableFragment(this.jsonUpdate.U, airDb, schemaUtils, metadataUtils);
-        let setFragment = this.getSetFragment(this.jsonUpdate.S);
+        let updateFragment = this.getTableFragment(this.jsonUpdate.U, airDb, schemaUtils);
+        let setFragment = this.getSetFragment(this.jsonUpdate.S, airDb, schemaUtils, metadataUtils);
         let whereFragment = '';
         let jsonQuery = this.jsonUpdate;
         if (jsonQuery.W) {
+            whereFragment = this.getWHEREFragment(jsonQuery.W, '', airDb, schemaUtils, metadataUtils);
             whereFragment = `WHERE
-${this.getWHEREFragment(jsonQuery.W, '')}`;
+${whereFragment}`;
             // Always replace the root entity alias reference with the table name
             let tableAlias = air_control_1.QRelation.getAlias(this.jsonUpdate.U);
-            let tableName = this.utils.Schema.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
+            let tableName = schemaUtils.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
             whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName);
         }
         return `UPDATE
@@ -35,7 +36,7 @@ SET
 ${setFragment}
 ${whereFragment}`;
     }
-    getSetFragment(setClauseFragment) {
+    getSetFragment(setClauseFragment, airDb, schemaUtils, metadataUtils) {
         let setFragments = [];
         for (let columnName in setClauseFragment) {
             let value = setClauseFragment[columnName];
@@ -44,18 +45,18 @@ ${whereFragment}`;
                 continue;
             }
             this.validator.validateUpdateColumn(this.dbEntity.columnMap[columnName]);
-            this.addSetFragment(columnName, value, setFragments);
+            this.addSetFragment(columnName, value, setFragments, airDb, schemaUtils, metadataUtils);
         }
         return setFragments.join(', \n');
     }
-    addSetFragment(columnName, value, setFragments) {
+    addSetFragment(columnName, value, setFragments, airDb, schemaUtils, metadataUtils) {
         let fieldValue;
         if (typeof value === 'number') {
             this.parameterReferences.push(value);
             fieldValue = this.sqlAdaptor.getParameterReference(this.parameterReferences, value);
         }
         else {
-            fieldValue = this.getFieldValue(value, SQLWhereBase_1.ClauseType.WHERE_CLAUSE);
+            fieldValue = this.getFieldValue(value, SQLWhereBase_1.ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
         }
         setFragments.push(`\t${columnName} = ${fieldValue}`);
     }

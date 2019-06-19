@@ -1,4 +1,4 @@
-import { IAirportDatabase, ISchemaUtils } from '@airport/air-control';
+import { IAirportDatabase, IQMetadataUtils, ISchemaUtils } from '@airport/air-control';
 import { JsonFieldQuery } from '@airport/ground-control';
 import { SQLDialect } from './core/SQLQuery';
 import { NonEntitySQLQuery } from './NonEntitySQLQuery';
@@ -7,7 +7,7 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery';
  */
 export declare class FieldSQLQuery extends NonEntitySQLQuery<JsonFieldQuery> {
     constructor(jsonQuery: JsonFieldQuery, dialect: SQLDialect);
-    protected getSELECTFragment(nested: boolean, selectClauseFragment: any): string;
+    protected getSELECTFragment(nested: boolean, selectClauseFragment: any, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): any[];
     protected parseQueryResult(selectClauseFragment: any, resultRow: any, nextFieldIndex: number[]): any;
 }

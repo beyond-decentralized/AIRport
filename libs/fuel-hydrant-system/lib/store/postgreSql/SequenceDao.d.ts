@@ -1,6 +1,4 @@
-import { IAbstractSequenceDao, ISequence, SequenceEId } from '@airport/airport-code';
-export declare class SequenceDao implements IAbstractSequenceDao {
-    private terminalStore;
-    constructor();
+import { BaseSequenceDao, ISequence, SequenceEId } from '@airport/airport-code';
+export declare class SequenceDao extends BaseSequenceDao {
     findAll(entityIds?: SequenceEId[]): Promise<ISequence[]>;
 }

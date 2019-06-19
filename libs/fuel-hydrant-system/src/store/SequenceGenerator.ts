@@ -1,12 +1,6 @@
 import {
-	IUtils,
-	UTILS
-}            from '@airport/air-control'
-import {
-	IAbstractSequenceBlockDao,
 	ISequence,
 	ISequenceBlock,
-	ISequenceDao,
 	SEQUENCE_BLOCK_DAO,
 	SEQUENCE_DAO
 }            from '@airport/airport-code'
@@ -17,7 +11,8 @@ import {
 import {DI,} from '@airport/di'
 import {
 	DbColumn,
-	DbEntity
+	DbEntity,
+	ensureChildArray
 }            from '@airport/ground-control'
 
 export class SequenceGenerator
@@ -26,41 +21,39 @@ export class SequenceGenerator
 	private sequences: ISequence[][][]           = []
 	private sequenceBlocks: ISequenceBlock[][][] = []
 
-	private sequenceBlockDao: Promise<IAbstractSequenceBlockDao>
+	/*private sequenceBlockDao: Promise<IAbstractSequenceBlockDao>
 	private sequenceDao: Promise<ISequenceDao>
-	private utils: IUtils
 
 	constructor() {
 		this.sequenceBlockDao = DI.getP(SEQUENCE_BLOCK_DAO)
 		this.sequenceDao      = DI.getP(SEQUENCE_DAO)
-		DI.get(
-			utils => this.utils = utils, UTILS)
-	}
+	}*/
 
 	exists(
 		dbEntity: DbEntity
 	): boolean {
 		const schemaSequences = this.sequences[dbEntity.schemaVersion.schema.index]
 
-		if(!schemaSequences) {
-			return false;
+		if (!schemaSequences) {
+			return false
 		}
 
-		const tableSequences = schemaSequences[dbEntity.index];
+		const tableSequences = schemaSequences[dbEntity.index]
 
-		if(!tableSequences) {
-			return false;
+		if (!tableSequences) {
+			return false
 		}
 
-		return dbEntity.columns.every(dbColumn =>
-			!dbColumn.isGenerated || !!tableSequences[dbColumn.index])
+		return dbEntity.columns.every(
+			dbColumn =>
+				!dbColumn.isGenerated || !!tableSequences[dbColumn.index])
 	}
 
 	async init(
 		sequences?: ISequence[]
 	): Promise<void> {
 		if (!sequences) {
-			sequences = await (await this.sequenceDao).findAll()
+			sequences = await (await DI.get(SEQUENCE_DAO)).findAll()
 		}
 		this.addSequences(sequences)
 	}
@@ -80,7 +73,7 @@ export class SequenceGenerator
 			index
 		) => {
 			const numColumnSequencesNeeded = numSequencesNeeded[index]
-			const columnNumbers            = this.utils.ensureChildArray(sequentialNumbers, index)
+			const columnNumbers            = ensureChildArray(sequentialNumbers, index)
 			sequentialNumbersForColumn.set(dbColumn, columnNumbers)
 			let {numNewSequencesNeeded, sequenceBlock}
 				    = this.getNumNewSequencesNeeded(dbColumn, numColumnSequencesNeeded)
@@ -111,7 +104,7 @@ export class SequenceGenerator
 				newBlocksToCreate.push(newBlock)
 			}
 			const newBlocks
-				      = await (await this.sequenceBlockDao).createNewBlocks(newBlocksToCreate)
+				      = await (await DI.get(SEQUENCE_BLOCK_DAO)).createNewBlocks(newBlocksToCreate)
 			newBlocks.forEach((
 				newBlocksForColumn: ISequenceBlock[],
 				index: number
@@ -138,8 +131,8 @@ export class SequenceGenerator
 					}
 				})
 				const dbEntity                    = dbColumn.propertyColumns[0].property.entity
-				this.utils.ensureChildArray(
-					this.utils.ensureChildArray(
+				ensureChildArray(
+					ensureChildArray(
 						this.sequenceBlocks, dbEntity.schemaVersion.schema.index),
 					dbEntity.index)[dbColumn.index] = lastBlock
 			})
@@ -152,8 +145,8 @@ export class SequenceGenerator
 		sequences: ISequence[]
 	): void {
 		for (const sequence of sequences) {
-			this.utils.ensureChildArray(
-				this.utils.ensureChildArray(this.sequences, sequence.schemaIndex),
+			ensureChildArray(
+				ensureChildArray(this.sequences, sequence.schemaIndex),
 				sequence.tableIndex)[sequence.columnIndex] = sequence
 		}
 	}
@@ -166,8 +159,8 @@ export class SequenceGenerator
 		sequenceBlock: ISequenceBlock;
 	} {
 		const dbEntity            = dbColumn.propertyColumns[0].property.entity
-		const sequenceBlock       = this.utils.ensureChildArray(
-			this.utils.ensureChildArray(
+		const sequenceBlock       = ensureChildArray(
+			ensureChildArray(
 				this.sequenceBlocks, dbEntity.schemaVersion.schema.index),
 			dbEntity.index)[dbColumn.index]
 		const sequence            = this.sequences[dbEntity.schemaVersion.schema.index]

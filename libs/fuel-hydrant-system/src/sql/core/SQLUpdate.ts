@@ -39,16 +39,19 @@ export class SQLUpdate
 			throw `Expecting exactly one table in UPDATE clause`
 		}
 		let updateFragment = this.getTableFragment(
-			this.jsonUpdate.U, airDb, schemaUtils, metadataUtils)
-		let setFragment    = this.getSetFragment(this.jsonUpdate.S)
+			this.jsonUpdate.U, airDb, schemaUtils)
+		let setFragment    = this.getSetFragment(this.jsonUpdate.S,
+			airDb, schemaUtils, metadataUtils)
 		let whereFragment  = ''
 		let jsonQuery      = this.jsonUpdate
 		if (jsonQuery.W) {
+			whereFragment  = this.getWHEREFragment(jsonQuery.W, '',
+				airDb, schemaUtils, metadataUtils);
 			whereFragment  = `WHERE
-${this.getWHEREFragment(jsonQuery.W, '')}`
+${whereFragment}`
 			// Always replace the root entity alias reference with the table name
 			let tableAlias = QRelation.getAlias(this.jsonUpdate.U)
-			let tableName  = this.utils.Schema.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity)
+			let tableName  = schemaUtils.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity)
 			whereFragment  = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
 		}
 
@@ -60,7 +63,10 @@ ${whereFragment}`
 	}
 
 	protected getSetFragment(
-		setClauseFragment: IEntityUpdateProperties
+		setClauseFragment: IEntityUpdateProperties,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	): string {
 		let setFragments = []
 		for (let columnName in setClauseFragment) {
@@ -70,7 +76,8 @@ ${whereFragment}`
 				continue
 			}
 			this.validator.validateUpdateColumn(this.dbEntity.columnMap[columnName])
-			this.addSetFragment(columnName, value, setFragments)
+			this.addSetFragment(columnName, value, setFragments,
+				airDb, schemaUtils, metadataUtils)
 		}
 
 		return setFragments.join(', \n')
@@ -79,14 +86,18 @@ ${whereFragment}`
 	private addSetFragment(
 		columnName: string,
 		value: any,
-		setFragments: any[]
+		setFragments: any[],
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	) {
 		let fieldValue
 		if (typeof value === 'number') {
 			this.parameterReferences.push(value)
 			fieldValue = this.sqlAdaptor.getParameterReference(this.parameterReferences, value)
 		} else {
-			fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE)
+			fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE,
+				null, airDb, schemaUtils, metadataUtils)
 		}
 		setFragments.push(`\t${columnName} = ${fieldValue}`)
 	}

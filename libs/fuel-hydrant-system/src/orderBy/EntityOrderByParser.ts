@@ -1,19 +1,19 @@
 import {
+	IAirportDatabase,
 	IQEntityInternal,
 	JoinTreeNode,
 	QRelation
-}                         from '@airport/air-control'
-import {IAirportDatabase} from '@airport/air-control/lib/src'
+} from '@airport/air-control'
 import {
 	DbEntity,
 	JSONEntityFieldInOrderBy,
 	JSONFieldInOrderBy,
 	SortOrder
-}                         from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	AbstractEntityOrderByParser,
 	IEntityOrderByParser
-}                         from './AbstractEntityOrderByParser'
+} from './AbstractEntityOrderByParser'
 
 /**
  * Created by Papa on 10/16/2016.

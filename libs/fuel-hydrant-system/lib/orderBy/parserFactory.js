@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
-const __1 = require("..");
-function getOrderByParser(airportDb, queryResultType, selectClauseFragment, validator, orderBy) {
+const EntityOrderByParser_1 = require("./EntityOrderByParser");
+function getOrderByParser(queryResultType, selectClauseFragment, validator, orderBy) {
     switch (queryResultType) {
         case ground_control_1.QueryResultType.ENTITY_GRAPH:
         case ground_control_1.QueryResultType.ENTITY_TREE:
-            return new __1.EntityOrderByParser(airportDb, selectClauseFragment, validator, orderBy);
+            return new EntityOrderByParser_1.EntityOrderByParser(selectClauseFragment, validator, orderBy);
         //		case QueryResultType.FLAT:
         //		case QueryResultType.FIELD:
         //			return new ExactOrderByParser(rootQEntity, selectClauseFragment,

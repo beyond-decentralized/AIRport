@@ -1,6 +1,6 @@
-import { ISQLQueryAdaptor, ISQLFunctionAdaptor, ISqlValueProvider } from "./SQLQueryAdaptor";
-import { Parameter } from "@airport/air-control";
-import { SQLDataType } from "@airport/ground-control";
+import { Parameter } from '@airport/air-control';
+import { SQLDataType } from '@airport/ground-control';
+import { ISQLFunctionAdaptor, ISQLQueryAdaptor, ISqlValueProvider } from './SQLQueryAdaptor';
 /**
  * Created by Papa on 8/27/2016.
  */

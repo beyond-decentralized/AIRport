@@ -69,7 +69,8 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 
 	abstract toSQL(
 		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	): string;
 
 	/**

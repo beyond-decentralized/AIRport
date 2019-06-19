@@ -2,7 +2,6 @@ import {
 	IAirportDatabase,
 	ISchemaUtils,
 	isStub,
-	IUtils,
 	MappedEntityArray,
 	markAsStub,
 	ReferencedColumnData

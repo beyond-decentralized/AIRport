@@ -17,11 +17,6 @@ export interface IIdGenerator {
  */
 export declare class IdGenerator implements IIdGenerator {
     private transactionHistoryIdColumns;
-    private airDb;
-    private sequenceGeneratorFuture;
-    private sequenceGenerator;
-    private utils;
-    constructor();
     init(): Promise<void>;
     generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): Promise<TransactionHistoryIds>;
     generateEntityIds(): Promise<void>;

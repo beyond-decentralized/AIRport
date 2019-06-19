@@ -1,16 +1,12 @@
-import {IAirportDatabase} from '@airport/air-control'
 import {
 	JSONEntityFieldInOrderBy,
 	QueryResultType
-}                         from '@airport/ground-control'
-import {
-	EntityOrderByParser,
-	IEntityOrderByParser,
-	IValidator
-}                         from '..'
+}                             from '@airport/ground-control'
+import {IValidator}           from '../validation/Validator'
+import {IEntityOrderByParser} from './AbstractEntityOrderByParser'
+import {EntityOrderByParser}  from './EntityOrderByParser'
 
 export function getOrderByParser(
-	airportDb: IAirportDatabase,
 	queryResultType: QueryResultType,
 	selectClauseFragment: any,
 	validator: IValidator,
@@ -19,7 +15,7 @@ export function getOrderByParser(
 	switch (queryResultType) {
 		case QueryResultType.ENTITY_GRAPH:
 		case QueryResultType.ENTITY_TREE:
-			return new EntityOrderByParser(airportDb, selectClauseFragment, validator, orderBy)
+			return new EntityOrderByParser(selectClauseFragment, validator, orderBy)
 //		case QueryResultType.FLAT:
 //		case QueryResultType.FIELD:
 //			return new ExactOrderByParser(rootQEntity, selectClauseFragment,

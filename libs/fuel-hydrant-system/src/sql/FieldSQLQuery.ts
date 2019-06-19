@@ -1,5 +1,6 @@
 import {
 	IAirportDatabase,
+	IQMetadataUtils,
 	ISchemaUtils
 }                           from '@airport/air-control'
 import {
@@ -30,7 +31,10 @@ export class FieldSQLQuery
 
 	protected getSELECTFragment(
 		nested: boolean,
-		selectClauseFragment: any
+		selectClauseFragment: any,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	): string {
 		if (!selectClauseFragment) {
 			throw `SELECT clause is not defined for a Field Query`
@@ -38,15 +42,19 @@ export class FieldSQLQuery
 		{
 			let distinctClause = <JSONClauseField>selectClauseFragment
 			if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
-				let distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0])
+				let distinctSelect = this.getSELECTFragment(
+					nested, distinctClause.af[0].p[0],
+					airDb, schemaUtils, metadataUtils)
 				return `DISTINCT ${distinctSelect}`
 			}
 		}
 
 		let field             = <JSONClauseField>selectClauseFragment
 		let fieldIndex        = 0
-		let selectSqlFragment = this.getFieldSelectFragment(field, ClauseType.NON_MAPPED_SELECT_CLAUSE,
-			null, fieldIndex++)
+		let selectSqlFragment = this.getFieldSelectFragment(
+			field, ClauseType.NON_MAPPED_SELECT_CLAUSE,
+			null, fieldIndex++,
+			airDb, schemaUtils, metadataUtils)
 		return selectSqlFragment
 	}
 

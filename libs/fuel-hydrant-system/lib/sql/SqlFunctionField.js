@@ -5,8 +5,8 @@ class SqlFunctionField {
         this.jsonClauseField = jsonClauseField;
         // Test
     }
-    getValue(sqlValueProvider) {
-        return sqlValueProvider.getFieldFunctionValue(this.jsonClauseField);
+    getValue(sqlValueProvider, airDb, schemaUtils, metadataUtils) {
+        return sqlValueProvider.getFieldFunctionValue(this.jsonClauseField, null, airDb, schemaUtils, metadataUtils);
     }
 }
 exports.SqlFunctionField = SqlFunctionField;

@@ -12,20 +12,20 @@ class FieldSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         super(jsonQuery, dialect, ground_control_1.QueryResultType.FIELD);
         this.orderByParser = new ExactOrderByParser_1.ExactOrderByParser(this.validator);
     }
-    getSELECTFragment(nested, selectClauseFragment) {
+    getSELECTFragment(nested, selectClauseFragment, airDb, schemaUtils, metadataUtils) {
         if (!selectClauseFragment) {
             throw `SELECT clause is not defined for a Field Query`;
         }
         {
             let distinctClause = selectClauseFragment;
             if (distinctClause.ot == ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION) {
-                let distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0]);
+                let distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0], airDb, schemaUtils, metadataUtils);
                 return `DISTINCT ${distinctSelect}`;
             }
         }
         let field = selectClauseFragment;
         let fieldIndex = 0;
-        let selectSqlFragment = this.getFieldSelectFragment(field, SQLWhereBase_1.ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++);
+        let selectSqlFragment = this.getFieldSelectFragment(field, SQLWhereBase_1.ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++, airDb, schemaUtils, metadataUtils);
         return selectSqlFragment;
     }
     parseQueryResults(airDb, schemaUtils, results) {

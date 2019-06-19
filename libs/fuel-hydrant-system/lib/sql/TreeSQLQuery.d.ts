@@ -1,4 +1,4 @@
-import { AliasCache, IAirportDatabase, ISchemaUtils } from '@airport/air-control';
+import { AliasCache, IAirportDatabase, IQMetadataUtils, ISchemaUtils } from '@airport/air-control';
 import { JsonTreeQuery } from '@airport/ground-control';
 import { TreeQueryResultParser } from '../result/TreeQueryResultParser';
 import { SQLDialect } from './core/SQLQuery';
@@ -9,7 +9,7 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery';
 export declare class TreeSQLQuery extends NonEntitySQLQuery<JsonTreeQuery> {
     protected queryParser: TreeQueryResultParser;
     constructor(jsonQuery: JsonTreeQuery, dialect: SQLDialect);
-    protected getSELECTFragment(nested: boolean, selectClauseFragment: any): string;
+    protected getSELECTFragment(nested: boolean, selectClauseFragment: any, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     /**
      * Entities get merged if they are right next to each other in the result set.  If they
      * are not, they are treated as separate entities - hence, your sort order matters.

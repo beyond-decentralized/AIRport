@@ -1,14 +1,20 @@
-import { IQEntityInternal, Parameter }                                         from "@airport/air-control";
 import {
 	IAirportDatabase,
+	IQEntityInternal,
 	IQMetadataUtils,
-	ISchemaUtils
-} from '@airport/air-control'
-import { JSONClauseField, JSONClauseObject, JSONSqlFunctionCall, SQLDataType } from "@airport/ground-control";
-import { SQLDialect }                                                          from "../sql/core/SQLQuery";
-import { OracleQueryAdaptor }                                                  from "./OracleQueryAdaptor";
-import { SqlJsQueryAdaptor }                                                   from "./SqlJsQueryAdaptor";
-import { WebSqlQueryAdaptor }                                                  from "./WebSqlQueryAdaptor";
+	ISchemaUtils,
+	Parameter
+}                           from '@airport/air-control'
+import {
+	JSONClauseField,
+	JSONClauseObject,
+	JSONSqlFunctionCall,
+	SQLDataType
+}                           from '@airport/ground-control'
+import {SQLDialect}         from '../sql/core/SQLQuery'
+import {OracleQueryAdaptor} from './OracleQueryAdaptor'
+import {SqlJsQueryAdaptor}  from './SqlJsQueryAdaptor'
+import {WebSqlQueryAdaptor} from './WebSqlQueryAdaptor'
 
 declare function require(moduleName: string): any;
 
@@ -78,13 +84,19 @@ export interface ISQLFunctionAdaptor {
 	getFunctionCalls(
 		clause: JSONClauseObject,
 		innerValue: string,
-		qEntityMapByAlias: { [alias: string]: IQEntityInternal }
-	): string ;
+		qEntityMapByAlias: { [alias: string]: IQEntityInternal },
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
+	): string;
 
 	getFunctionCall(
 		jsonFunctionCall: JSONSqlFunctionCall,
 		value: string,
-		qEntityMapByAlias: { [entityName: string]: IQEntityInternal }
+		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	): string;
 
 }
@@ -96,16 +108,16 @@ export function getSQLAdaptor(
 
 	switch (sqlDialect) {
 		case SQLDialect.ORACLE:
-			let OracleQueryAdaptorClass: typeof OracleQueryAdaptor = require("./OracleQueryAdaptor").OracleQueryAdaptor;
-			return new OracleQueryAdaptorClass(sqlValueProvider);
+			let OracleQueryAdaptorClass: typeof OracleQueryAdaptor = require('./OracleQueryAdaptor').OracleQueryAdaptor
+			return new OracleQueryAdaptorClass(sqlValueProvider)
 		case SQLDialect.SQLITE_SQLJS:
-			let SqlJsQueryAdaptorClass: typeof SqlJsQueryAdaptor = require("./SqlJsQueryAdaptor").SqlJsQueryAdaptor;
-			return new SqlJsQueryAdaptorClass(sqlValueProvider);
+			let SqlJsQueryAdaptorClass: typeof SqlJsQueryAdaptor = require('./SqlJsQueryAdaptor').SqlJsQueryAdaptor
+			return new SqlJsQueryAdaptorClass(sqlValueProvider)
 		case SQLDialect.SQLITE_WEBSQL:
-			let WebSqlQueryAdaptorClass: typeof WebSqlQueryAdaptor = require("./WebSqlQueryAdaptor").WebSqlQueryAdaptor;
-			return new WebSqlQueryAdaptorClass(sqlValueProvider);
+			let WebSqlQueryAdaptorClass: typeof WebSqlQueryAdaptor = require('./WebSqlQueryAdaptor').WebSqlQueryAdaptor
+			return new WebSqlQueryAdaptorClass(sqlValueProvider)
 		default:
-			throw `Unknown SQL Dialect ${sqlDialect}`;
+			throw `Unknown SQL Dialect ${sqlDialect}`
 	}
 
 }
@@ -119,19 +131,27 @@ export abstract class AbstractFunctionAdaptor
 	getFunctionCalls(
 		clause: JSONClauseObject,
 		innerValue: string,
-		qEntityMapByAlias: { [alias: string]: IQEntityInternal }
+		qEntityMapByAlias: { [alias: string]: IQEntityInternal },
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	): string {
 		clause.af.forEach((appliedFunction) => {
-			innerValue = this.getFunctionCall(appliedFunction, innerValue, qEntityMapByAlias);
-		});
+			innerValue = this.getFunctionCall(
+				appliedFunction, innerValue, qEntityMapByAlias,
+				airDb, schemaUtils, metadataUtils)
+		})
 
-		return innerValue;
+		return innerValue
 	}
 
 	abstract getFunctionCall(
 		jsonFunctionCall: JSONSqlFunctionCall,
 		value: string,
-		qEntityMapByAlias: { [entityName: string]: IQEntityInternal }
+		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	): string;
 
 }

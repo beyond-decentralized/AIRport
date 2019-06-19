@@ -1,4 +1,4 @@
-import { IAirportDatabase, IQEntityInternal, IQTree, ISchemaUtils, JoinTreeNode } from '@airport/air-control';
+import { IAirportDatabase, IQEntityInternal, IQMetadataUtils, IQTree, ISchemaUtils, JoinTreeNode } from '@airport/air-control';
 import { JSONClauseField, JSONFieldInGroupBy, JSONFieldInOrderBy, JsonNonEntityQuery, JSONRelation, JSONViewJoinRelation, QueryResultType } from '@airport/ground-control';
 import { INonEntityOrderByParser } from '../orderBy/AbstractEntityOrderByParser';
 import { SQLDialect, SQLQuery } from './core/SQLQuery';
@@ -13,11 +13,11 @@ export declare abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
     addQEntityMapByAlias(sourceMap: {
         [entityAlias: string]: IQEntityInternal;
     }): void;
-    toSQL(airDb: IAirportDatabase, schemaUtils: ISchemaUtils): string;
-    protected abstract getSELECTFragment(nested: boolean, selectClauseFragment: any): string;
+    toSQL(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
+    protected abstract getSELECTFragment(nested: boolean, selectClauseFragment: any, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     protected getFieldSelectFragment(value: JSONClauseField, clauseType: ClauseType, nestedObjectCallBack: {
         (): string;
-    }, fieldIndex: number): string;
+    }, fieldIndex: number, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     buildFromJoinTree(joinRelations: JSONRelation[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
     }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): JoinTreeNode[];

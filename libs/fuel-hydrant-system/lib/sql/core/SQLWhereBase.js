@@ -134,7 +134,7 @@ class SQLWhereBase {
         else {
             aValue = this.getFieldValue(aValue, ClauseType.FUNCTION_CALL, defaultCallback, airDb, schemaUtils, metadataUtils);
         }
-        aValue = this.sqlAdaptor.getFunctionAdaptor().getFunctionCalls(aField, aValue, this.qEntityMapByAlias);
+        aValue = this.sqlAdaptor.getFunctionAdaptor().getFunctionCalls(aField, aValue, this.qEntityMapByAlias, airDb, schemaUtils, metadataUtils);
         this.validator.addFunctionAlias(aField.fa);
         return aValue;
     }
@@ -164,13 +164,13 @@ class SQLWhereBase {
                 }
                 let TreeSQLQueryClass = require('../TreeSQLQuery').TreeSQLQuery;
                 let mappedSqlQuery = new TreeSQLQueryClass(aField.v, this.dialect);
-                return `EXISTS(${mappedSqlQuery.toSQL(airDb, schemaUtils)})`;
+                return `EXISTS(${mappedSqlQuery.toSQL(airDb, schemaUtils, metadataUtils)})`;
             case ground_control_1.JSONClauseObjectType.FIELD:
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 this.validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityPropertyColumnName(qEntity, aField.ci, metadataUtils);
                 this.addField(aField.si, aField.ti, aField.ci);
-                return this.getComplexColumnFragment(aField, columnName);
+                return this.getComplexColumnFragment(aField, columnName, airDb, schemaUtils, metadataUtils);
             case ground_control_1.JSONClauseObjectType.FIELD_QUERY:
                 let jsonFieldSqlSubQuery = aField.fsq;
                 if (aField.S) {
@@ -180,13 +180,13 @@ class SQLWhereBase {
                 let fieldSqlQuery = new FieldSQLQueryClass(jsonFieldSqlSubQuery, this.dialect);
                 fieldSqlQuery.addQEntityMapByAlias(this.qEntityMapByAlias);
                 this.validator.addSubQueryAlias(aField.fa);
-                return `(${fieldSqlQuery.toSQL(airDb, schemaUtils)})`;
+                return `(${fieldSqlQuery.toSQL(airDb, schemaUtils, metadataUtils)})`;
             case ground_control_1.JSONClauseObjectType.MANY_TO_ONE_RELATION:
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 this.validator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, metadataUtils);
                 this.addField(aField.si, aField.ti, aField.ci);
-                return this.getComplexColumnFragment(aField, columnName);
+                return this.getComplexColumnFragment(aField, columnName, airDb, schemaUtils, metadataUtils);
             // must be a nested object
             default:
                 if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE) {
@@ -217,9 +217,10 @@ class SQLWhereBase {
     getSimpleColumnFragment(tableAlias, columnName) {
         return `${tableAlias}.${columnName}`;
     }
-    getComplexColumnFragment(value, columnName) {
+    getComplexColumnFragment(value, columnName, airDb, schemaUtils, metadataUtils) {
         let selectSqlFragment = `${value.ta}.${columnName}`;
-        selectSqlFragment = this.sqlAdaptor.getFunctionAdaptor().getFunctionCalls(value, selectSqlFragment, this.qEntityMapByAlias);
+        selectSqlFragment = this.sqlAdaptor.getFunctionAdaptor()
+            .getFunctionCalls(value, selectSqlFragment, this.qEntityMapByAlias, airDb, schemaUtils, metadataUtils);
         return selectSqlFragment;
     }
     getEntityManyToOneColumnName(qEntity, columnIndex, metadataUtils) {

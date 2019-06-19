@@ -2,6 +2,7 @@ import {
 	AliasCache,
 	IAirportDatabase,
 	IEntitySelectProperties,
+	IQMetadataUtils,
 	ISchemaUtils,
 	isN,
 	isY,
@@ -68,7 +69,8 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 
 	toSQL(
 		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	): string {
 		let joinNodeMap: { [alias: string]: JoinTreeNode } = {}
 
@@ -76,13 +78,16 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 			this.jsonQuery.F, joinNodeMap, airDb, schemaUtils)
 
 		let selectFragment = this.getSELECTFragment(this.dbEntity, this.finalSelectTree, this.joinTree)
-		let fromFragment   = this.getFROMFragment(null, this.joinTree, schemaUtils)
+		let fromFragment   = this.getFROMFragment(
+			null, this.joinTree,
+			airDb, schemaUtils, metadataUtils)
 		let whereFragment  = ''
 		let jsonQuery      = this.jsonQuery
 		if (jsonQuery.W) {
 			whereFragment = `
 WHERE
-${this.getWHEREFragment(jsonQuery.W, '')}`
+${this.getWHEREFragment(jsonQuery.W, '',
+				airDb, schemaUtils, metadataUtils)}`
 		}
 		let orderByFragment = ''
 		if (jsonQuery.OB && jsonQuery.OB.length) {
@@ -521,7 +526,9 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 	private getFROMFragment(
 		parentTree: JoinTreeNode,
 		currentTree: JoinTreeNode,
-		schemaUtils: ISchemaUtils
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	): string {
 		let fromFragment    = '\t'
 		let currentRelation = currentTree.jsonRelation
@@ -559,7 +566,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				case JSONRelationType.ENTITY_SCHEMA_RELATION:
 					fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity,
 						<JSONEntityRelation>currentRelation, parentRelation, currentAlias, parentAlias,
-						joinTypeString, errorPrefix, schemaUtils)
+						joinTypeString, errorPrefix, airDb, schemaUtils, metadataUtils)
 					break
 				default:
 					throw `Only Entity schema relations are allowed in Entity query FROM clause.`
@@ -567,7 +574,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		}
 		for (let i = 0; i < currentTree.childNodes.length; i++) {
 			let childTreeNode = currentTree.childNodes[i]
-			fromFragment += this.getFROMFragment(currentTree, childTreeNode, schemaUtils)
+			fromFragment += this.getFROMFragment(
+				currentTree, childTreeNode, airDb, schemaUtils, metadataUtils)
 		}
 
 		return fromFragment

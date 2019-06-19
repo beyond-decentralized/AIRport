@@ -1,5 +1,5 @@
 import {
-	IAbstractSequenceDao,
+	BaseSequenceDao,
 	ISequence,
 	SEQUENCE_DAO,
 	SequenceEId
@@ -9,32 +9,18 @@ import {
 	DomainName,
 	SchemaName
 }                       from '@airport/ground-control'
-import {
-	ITerminalStore,
-	TERMINAL_STORE
-}                       from '@airport/terminal-map'
+import {TERMINAL_STORE} from '@airport/terminal-map'
 import {ISchemaVersion} from '@airport/traffic-pattern'
 
 export class SequenceDao
-	implements IAbstractSequenceDao {
-
-	private terminalStore: ITerminalStore
-
-	constructor() {
-		DI.get((
-			terminalStore
-		) => {
-			this.terminalStore = terminalStore
-		}, TERMINAL_STORE)
-	}
-
+	extends BaseSequenceDao {
 
 	async findAll(
 		entityIds?: SequenceEId[]
 	): Promise<ISequence[]> {
 		const latestSchemaVersionMapByNames
 			      : Map<DomainName, Map<SchemaName, ISchemaVersion>>
-			      = this.terminalStore.getLatestSchemaVersionMapByNames()
+			      = (await DI.get(TERMINAL_STORE)).getLatestSchemaVersionMapByNames()
 
 		const sequences: ISequence[] = []
 

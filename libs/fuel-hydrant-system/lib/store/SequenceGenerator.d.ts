@@ -4,10 +4,6 @@ import { DbColumn, DbEntity } from '@airport/ground-control';
 export declare class SequenceGenerator implements ISequenceGenerator {
     private sequences;
     private sequenceBlocks;
-    private sequenceBlockDao;
-    private sequenceDao;
-    private utils;
-    constructor();
     exists(dbEntity: DbEntity): boolean;
     init(sequences?: ISequence[]): Promise<void>;
     generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;

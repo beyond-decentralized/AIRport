@@ -1,6 +1,7 @@
 import {
 	AliasCache,
 	IAirportDatabase,
+	IQMetadataUtils,
 	ISchemaUtils
 }                              from '@airport/air-control'
 import {
@@ -35,14 +36,19 @@ export class TreeSQLQuery
 
 	protected getSELECTFragment(
 		nested: boolean,
-		selectClauseFragment: any
+		selectClauseFragment: any,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	): string {
 		const distinctClause = <JSONClauseField>selectClauseFragment
 		if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
 			if (nested) {
 				throw `Cannot have DISTINCT specified in a nested select clause`
 			}
-			const distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0])
+			const distinctSelect = this.getSELECTFragment(
+				nested, distinctClause.af[0].p[0],
+				airDb, schemaUtils, metadataUtils)
 			return `DISTINCT ${distinctSelect}`
 		}
 
@@ -71,12 +77,14 @@ export class TreeSQLQuery
 				continue
 			}
 			if (value instanceof SqlFunctionField) {
-				selectSqlFragment += value.getValue(this)
+				selectSqlFragment += value.getValue(
+					this, airDb, schemaUtils, metadataUtils)
 				continue
 			}
 			selectSqlFragment += this.getFieldSelectFragment(value, ClauseType.MAPPED_SELECT_CLAUSE, () => {
-				return this.getSELECTFragment(true, value)
-			}, fieldIndex++)
+				return this.getSELECTFragment(true, value,
+					airDb, schemaUtils, metadataUtils)
+			}, fieldIndex++, airDb, schemaUtils, metadataUtils)
 		}
 
 		return selectSqlFragment

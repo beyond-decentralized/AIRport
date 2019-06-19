@@ -1,26 +1,17 @@
-import {
-	AIR_DB,
-	IAirportDatabase,
-	IUtils,
-	UTILS
-}                     from '@airport/air-control'
-import {
-	ISequenceGenerator,
-	SEQUENCE_GENERATOR
-}                     from '@airport/check-in'
-import {DI}           from '@airport/di'
+import {SEQUENCE_GENERATOR} from '@airport/check-in'
+import {DI}                 from '@airport/di'
 import {
 	DbColumn,
 	DbEntity
-}                     from '@airport/ground-control'
+}                           from '@airport/ground-control'
 import {
 	OperationHistoryId,
 	Q,
 	RecordHistoryId,
 	RepositoryTransactionHistoryId,
 	TransactionHistoryId
-}                     from '@airport/holding-pattern'
-import {ID_GENERATOR} from '../diTokens'
+}                           from '@airport/holding-pattern'
+import {ID_GENERATOR}       from '../diTokens'
 
 export type NumRepositoryTransHistories = number
 export type NumOperationTransHistories = number
@@ -57,27 +48,8 @@ export class IdGenerator
 
 	private transactionHistoryIdColumns: DbColumn[] = []
 
-	private airDb: IAirportDatabase
-	private sequenceGeneratorFuture: () => Promise<ISequenceGenerator>
-	private sequenceGenerator: ISequenceGenerator
-	private utils: IUtils
-
-	constructor() {
-		DI.get((
-			airportDatabase,
-			sequenceGenerator,
-			utils
-		) => {
-			this.airDb = airportDatabase
-			this.utils = utils
-		}, AIR_DB, UTILS)
-
-		this.sequenceGeneratorFuture = DI.laterP(SEQUENCE_GENERATOR)
-	}
-
 	async init(): Promise<void> {
-		this.sequenceGenerator = await this.sequenceGeneratorFuture()
-		await this.sequenceGenerator.init()
+		(await DI.get(SEQUENCE_GENERATOR)).init()
 
 		const transHistoryDbEntity     =
 			      this.getHoldingPatternDbEntity('TransactionHistory')
@@ -108,7 +80,7 @@ export class IdGenerator
 		numRecordHistories: NumRecordHistories
 	): Promise<TransactionHistoryIds> {
 
-		const generatedSequenceNumbers = await this.sequenceGenerator.generateSequenceNumbers(
+		const generatedSequenceNumbers = await (await DI.get(SEQUENCE_GENERATOR)).generateSequenceNumbers(
 			this.transactionHistoryIdColumns,
 			[
 				1,

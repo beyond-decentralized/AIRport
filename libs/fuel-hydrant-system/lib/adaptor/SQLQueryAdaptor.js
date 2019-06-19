@@ -4,13 +4,13 @@ const SQLQuery_1 = require("../sql/core/SQLQuery");
 function getSQLAdaptor(sqlValueProvider, sqlDialect) {
     switch (sqlDialect) {
         case SQLQuery_1.SQLDialect.ORACLE:
-            let OracleQueryAdaptorClass = require("./OracleQueryAdaptor").OracleQueryAdaptor;
+            let OracleQueryAdaptorClass = require('./OracleQueryAdaptor').OracleQueryAdaptor;
             return new OracleQueryAdaptorClass(sqlValueProvider);
         case SQLQuery_1.SQLDialect.SQLITE_SQLJS:
-            let SqlJsQueryAdaptorClass = require("./SqlJsQueryAdaptor").SqlJsQueryAdaptor;
+            let SqlJsQueryAdaptorClass = require('./SqlJsQueryAdaptor').SqlJsQueryAdaptor;
             return new SqlJsQueryAdaptorClass(sqlValueProvider);
         case SQLQuery_1.SQLDialect.SQLITE_WEBSQL:
-            let WebSqlQueryAdaptorClass = require("./WebSqlQueryAdaptor").WebSqlQueryAdaptor;
+            let WebSqlQueryAdaptorClass = require('./WebSqlQueryAdaptor').WebSqlQueryAdaptor;
             return new WebSqlQueryAdaptorClass(sqlValueProvider);
         default:
             throw `Unknown SQL Dialect ${sqlDialect}`;
@@ -21,9 +21,9 @@ class AbstractFunctionAdaptor {
     constructor(sqlValueProvider) {
         this.sqlValueProvider = sqlValueProvider;
     }
-    getFunctionCalls(clause, innerValue, qEntityMapByAlias) {
+    getFunctionCalls(clause, innerValue, qEntityMapByAlias, airDb, schemaUtils, metadataUtils) {
         clause.af.forEach((appliedFunction) => {
-            innerValue = this.getFunctionCall(appliedFunction, innerValue, qEntityMapByAlias);
+            innerValue = this.getFunctionCall(appliedFunction, innerValue, qEntityMapByAlias, airDb, schemaUtils, metadataUtils);
         });
         return innerValue;
     }

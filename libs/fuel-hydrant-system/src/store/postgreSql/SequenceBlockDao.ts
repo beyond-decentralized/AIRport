@@ -1,41 +1,21 @@
 import {
 	IAbstractSequenceBlockDao,
-	ISequenceBlock,
-	SEQUENCE_BLOCK_DAO
-}                       from '@airport/airport-code'
-import {DI}             from '@airport/di'
-import {
-	IStoreDriver,
-	STORE_DRIVER,
-}                       from '@airport/ground-control'
-import {
-	ITerminalStore,
-	TERMINAL_STORE,
-}                       from '@airport/terminal-map'
-import {ISchemaVersion} from '@airport/traffic-pattern'
+	ISequenceBlock
+}                        from '@airport/airport-code'
+import {DI}              from '@airport/di'
+import {STORE_DRIVER,}   from '@airport/ground-control'
+import {TERMINAL_STORE,} from '@airport/terminal-map'
+import {ISchemaVersion}  from '@airport/traffic-pattern'
 
 export class SequenceBlockDao
 	implements IAbstractSequenceBlockDao {
-
-	private storeDriver: IStoreDriver
-	private terminalStore: ITerminalStore
-
-	constructor() {
-		DI.get((
-			storeDriver,
-			terminalStore
-		) => {
-			this.storeDriver   = storeDriver
-			this.terminalStore = terminalStore
-		}, STORE_DRIVER, TERMINAL_STORE)
-	}
 
 	async createNewBlocks(
 		sequenceBlocks: ISequenceBlock[]
 	): Promise<ISequenceBlock[][]> {
 
 		const latestSchemaVersionsBySchemaIndexes: ISchemaVersion[]
-			      = this.terminalStore.getLatestSchemaVersionsBySchemaIndexes()
+			      = (await DI.get(TERMINAL_STORE)).getLatestSchemaVersionsBySchemaIndexes()
 
 		const reservationMillis = new Date().getTime()
 
@@ -57,14 +37,13 @@ export class SequenceBlockDao
 
 			const blocksForSequence: ISequenceBlock[] = []
 			for (let i = 0; i < numSequencesBlocksToCreate; i++) {
-				const result          = await this.storeDriver.findNative(
+				const result          = await (await DI.get(STORE_DRIVER)).findNative(
 					`SELECT NEXTVAL('"${schemaName}".${tableName}_${columnName}_SEQUENCE')`
 					, [])
 				const nextval: number = result[0]
 
 				const newSequenceBlock: ISequenceBlock = {
 					sequence,
-					sequenceConsumer: sequenceBlock.sequenceConsumer,
 					currentNumber: nextval - sequence.incrementBy,
 					lastReservedId: nextval,
 					size: sequence.incrementBy,

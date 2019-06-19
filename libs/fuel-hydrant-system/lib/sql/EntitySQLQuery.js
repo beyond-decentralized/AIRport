@@ -22,17 +22,17 @@ class EntitySQLQuery extends SQLQuery_1.SQLQuery {
         this.finalSelectTree = this.setupSelectFields(this.jsonQuery.S, dbEntity, schemaUtils);
         this.orderByParser = new EntityOrderByParser_1.EntityOrderByParser(this.finalSelectTree, this.validator, jsonQuery.OB);
     }
-    toSQL(airDb, schemaUtils) {
+    toSQL(airDb, schemaUtils, metadataUtils) {
         let joinNodeMap = {};
         this.joinTree = this.buildFromJoinTree(this.jsonQuery.F, joinNodeMap, airDb, schemaUtils);
         let selectFragment = this.getSELECTFragment(this.dbEntity, this.finalSelectTree, this.joinTree);
-        let fromFragment = this.getFROMFragment(null, this.joinTree, schemaUtils);
+        let fromFragment = this.getFROMFragment(null, this.joinTree, airDb, schemaUtils, metadataUtils);
         let whereFragment = '';
         let jsonQuery = this.jsonQuery;
         if (jsonQuery.W) {
             whereFragment = `
 WHERE
-${this.getWHEREFragment(jsonQuery.W, '')}`;
+${this.getWHEREFragment(jsonQuery.W, '', airDb, schemaUtils, metadataUtils)}`;
         }
         let orderByFragment = '';
         if (jsonQuery.OB && jsonQuery.OB.length) {
@@ -382,7 +382,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         }
         return selectFragment;
     }
-    getFROMFragment(parentTree, currentTree, schemaUtils) {
+    getFROMFragment(parentTree, currentTree, airDb, schemaUtils, metadataUtils) {
         let fromFragment = '\t';
         let currentRelation = currentTree.jsonRelation;
         let currentAlias = air_control_1.QRelation.getAlias(currentRelation);
@@ -414,7 +414,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             let errorPrefix = 'Error building FROM: ';
             switch (currentRelation.rt) {
                 case ground_control_1.JSONRelationType.ENTITY_SCHEMA_RELATION:
-                    fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, schemaUtils);
+                    fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, airDb, schemaUtils, metadataUtils);
                     break;
                 default:
                     throw `Only Entity schema relations are allowed in Entity query FROM clause.`;
@@ -422,7 +422,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         }
         for (let i = 0; i < currentTree.childNodes.length; i++) {
             let childTreeNode = currentTree.childNodes[i];
-            fromFragment += this.getFROMFragment(currentTree, childTreeNode, schemaUtils);
+            fromFragment += this.getFROMFragment(currentTree, childTreeNode, airDb, schemaUtils, metadataUtils);
         }
         return fromFragment;
     }

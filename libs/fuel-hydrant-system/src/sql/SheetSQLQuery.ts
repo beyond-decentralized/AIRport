@@ -1,5 +1,6 @@
 import {
 	IAirportDatabase,
+	IQMetadataUtils,
 	ISchemaUtils
 }                           from '@airport/air-control'
 import {
@@ -33,7 +34,10 @@ export class SheetSQLQuery
 
 	protected getSELECTFragment(
 		nested: boolean,
-		selectClauseFragment: any
+		selectClauseFragment: any,
+		airDb: IAirportDatabase,
+		schemaUtils: ISchemaUtils,
+		metadataUtils: IQMetadataUtils
 	): string {
 		if (!selectClauseFragment) {
 			throw `SELECT clause is not defined for a Flat Query`
@@ -41,7 +45,9 @@ export class SheetSQLQuery
 		{
 			let distinctClause = <JSONClauseField>selectClauseFragment
 			if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
-				let distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0])
+				let distinctSelect = this.getSELECTFragment(
+					nested, distinctClause.af[0].p[0],
+					airDb, schemaUtils, metadataUtils)
 				return `DISTINCT ${distinctSelect}`
 			}
 		}
@@ -52,7 +58,7 @@ export class SheetSQLQuery
 		let fieldIndex        = 0
 		let selectSqlFragment = selectClauseFragment.map((field: JSONClauseField) => {
 			return this.getFieldSelectFragment(field, ClauseType.NON_MAPPED_SELECT_CLAUSE,
-				null, fieldIndex++)
+				null, fieldIndex++, airDb, schemaUtils, metadataUtils)
 		}).join('')
 
 

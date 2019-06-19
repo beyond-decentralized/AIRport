@@ -18,6 +18,7 @@ import {ClauseType}     from './SQLWhereBase'
 export class SQLInsertValues
 	extends SQLNoJoinQuery {
 
+
 	constructor(
 		airportDb: IAirportDatabase,
 		public jsonInsertValues: JsonInsertValues,

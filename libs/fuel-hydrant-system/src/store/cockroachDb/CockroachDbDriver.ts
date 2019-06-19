@@ -1,8 +1,6 @@
-import {DI}           from '@airport/di'
 import {
 	INVALID_TABLE_NAME,
 	QueryType,
-	STORE_DRIVER,
 	StoreType
 }                     from '@airport/ground-control'
 import {SQLDialect}   from '../../sql/core/SQLQuery'

@@ -28,7 +28,7 @@ export declare abstract class SQLQuery<JQ extends JsonQuery> extends SQLWhereBas
     protected entityDefaults: EntityDefaults;
     constructor(jsonQuery: JQ, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType);
     getFieldMap(): SchemaMap;
-    abstract toSQL(airDb: IAirportDatabase, schemaUtils: ISchemaUtils): string;
+    abstract toSQL(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     /**
      * If bridging is not applied:
      *

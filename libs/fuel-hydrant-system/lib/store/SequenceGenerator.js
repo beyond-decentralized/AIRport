@@ -1,17 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const airport_code_1 = require("@airport/airport-code");
 const check_in_1 = require("@airport/check-in");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 class SequenceGenerator {
     constructor() {
         this.sequences = [];
         this.sequenceBlocks = [];
-        this.sequenceBlockDao = di_1.DI.getP(airport_code_1.SEQUENCE_BLOCK_DAO);
-        this.sequenceDao = di_1.DI.getP(airport_code_1.SEQUENCE_DAO);
-        di_1.DI.get(utils => this.utils = utils, air_control_1.UTILS);
     }
+    /*private sequenceBlockDao: Promise<IAbstractSequenceBlockDao>
+    private sequenceDao: Promise<ISequenceDao>
+
+    constructor() {
+        this.sequenceBlockDao = DI.getP(SEQUENCE_BLOCK_DAO)
+        this.sequenceDao      = DI.getP(SEQUENCE_DAO)
+    }*/
     exists(dbEntity) {
         const schemaSequences = this.sequences[dbEntity.schemaVersion.schema.index];
         if (!schemaSequences) {
@@ -25,7 +29,7 @@ class SequenceGenerator {
     }
     async init(sequences) {
         if (!sequences) {
-            sequences = await (await this.sequenceDao).findAll();
+            sequences = await (await di_1.DI.get(airport_code_1.SEQUENCE_DAO)).findAll();
         }
         this.addSequences(sequences);
     }
@@ -37,7 +41,7 @@ class SequenceGenerator {
         const sequentialNumbers = [];
         dbColumns.forEach((dbColumn, index) => {
             const numColumnSequencesNeeded = numSequencesNeeded[index];
-            const columnNumbers = this.utils.ensureChildArray(sequentialNumbers, index);
+            const columnNumbers = ground_control_1.ensureChildArray(sequentialNumbers, index);
             sequentialNumbersForColumn.set(dbColumn, columnNumbers);
             let { numNewSequencesNeeded, sequenceBlock } = this.getNumNewSequencesNeeded(dbColumn, numColumnSequencesNeeded);
             allSequenceBlocks.set(dbColumn, sequenceBlock);
@@ -61,7 +65,7 @@ class SequenceGenerator {
                 columnsForCreatedBlocks.push(dbColumn);
                 newBlocksToCreate.push(newBlock);
             }
-            const newBlocks = await (await this.sequenceBlockDao).createNewBlocks(newBlocksToCreate);
+            const newBlocks = await (await di_1.DI.get(airport_code_1.SEQUENCE_BLOCK_DAO)).createNewBlocks(newBlocksToCreate);
             newBlocks.forEach((newBlocksForColumn, index) => {
                 const dbColumn = columnsForCreatedBlocks[index];
                 const columnNumbers = sequentialNumbersForColumn.get(dbColumn);
@@ -80,19 +84,19 @@ class SequenceGenerator {
                     }
                 });
                 const dbEntity = dbColumn.propertyColumns[0].property.entity;
-                this.utils.ensureChildArray(this.utils.ensureChildArray(this.sequenceBlocks, dbEntity.schemaVersion.schema.index), dbEntity.index)[dbColumn.index] = lastBlock;
+                ground_control_1.ensureChildArray(ground_control_1.ensureChildArray(this.sequenceBlocks, dbEntity.schemaVersion.schema.index), dbEntity.index)[dbColumn.index] = lastBlock;
             });
         }
         return sequentialNumbers;
     }
     addSequences(sequences) {
         for (const sequence of sequences) {
-            this.utils.ensureChildArray(this.utils.ensureChildArray(this.sequences, sequence.schemaIndex), sequence.tableIndex)[sequence.columnIndex] = sequence;
+            ground_control_1.ensureChildArray(ground_control_1.ensureChildArray(this.sequences, sequence.schemaIndex), sequence.tableIndex)[sequence.columnIndex] = sequence;
         }
     }
     getNumNewSequencesNeeded(dbColumn, numSequencesNeeded) {
         const dbEntity = dbColumn.propertyColumns[0].property.entity;
-        const sequenceBlock = this.utils.ensureChildArray(this.utils.ensureChildArray(this.sequenceBlocks, dbEntity.schemaVersion.schema.index), dbEntity.index)[dbColumn.index];
+        const sequenceBlock = ground_control_1.ensureChildArray(ground_control_1.ensureChildArray(this.sequenceBlocks, dbEntity.schemaVersion.schema.index), dbEntity.index)[dbColumn.index];
         const sequence = this.sequences[dbEntity.schemaVersion.schema.index][dbEntity.index][dbColumn.index];
         let numNewSequencesNeeded = 0;
         if (!sequenceBlock) {
