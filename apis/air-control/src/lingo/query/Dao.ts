@@ -1,3 +1,4 @@
+import {IObservable}     from '@airport/observe'
 import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -5,13 +6,9 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-}                          from '../core/entity/Entity'
-import {IEntityFind}       from './api/EntityFind'
-import {IEntityFindOne}    from './api/EntityFindOne'
-import {UpdateCacheType}   from './api/EntityLookup'
-import {IEntitySearch}     from './api/EntitySearch'
-import {IEntitySearchOne}  from './api/EntitySearchOne'
-import {MappedEntityArray} from './MappedEntityArray'
+}                        from '../core/entity/Entity'
+import {UpdateCacheType} from './api/EntityLookup'
+import {RawEntityQuery}  from './facade/EntityQuery'
 
 /**
  * Data access object.
@@ -24,13 +21,37 @@ export interface IDao<Entity,
 	EntityId extends IEntityIdProperties,
 	IQE extends IQEntity> {
 
-	find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
+	findAsGraph(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): Promise<Array<Entity>>
 
-	findOne: IEntityFindOne<Entity, EntitySelect>;
+	findAsTree(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): Promise<Array<Entity>>
 
-	search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
+	findOneAsGraph(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): Promise<Entity>
 
-	searchOne: IEntitySearchOne<Entity, EntitySelect>;
+	findOneAsTree(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): Promise<Entity>
+
+	searchAsGraph(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): IObservable<Array<Entity>>
+
+	searchAsTree(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): IObservable<Array<Entity>>
+
+	searchOneAsGraph(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): IObservable<Entity>
+
+	searchOneAsTree(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): IObservable<Entity>
 
 	releaseCachedForUpdate(
 		updateCacheType: UpdateCacheType,

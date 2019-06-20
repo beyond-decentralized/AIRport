@@ -1,5 +1,6 @@
-import { IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, MappedEntityArray, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, UpdateCacheType, UpdateRecord } from '@airport/air-control';
+import { IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, IQOrderableField, ITreeEntity, MappedEntityArray, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, RawDelete, RawFieldQuery, RawInsertColumnValues, RawInsertValues, RawSheetQuery, RawTreeQuery, RawUpdate, RawUpdateColumns, UpdateCacheType, UpdateRecord } from '@airport/air-control';
 import { DbEntity } from '@airport/ground-control';
+import { IObservable } from '@airport/observe';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 import { OperationManager } from './OperationManager';
 /**
@@ -7,12 +8,46 @@ import { OperationManager } from './OperationManager';
  */
 export declare class EntityManager extends OperationManager implements IDatabaseFacade {
     name: string;
-    find: any;
-    findOne: any;
-    search: any;
-    searchOne: any;
-    constructor();
-    cacheForUpdate(cacheForUpdate: UpdateCacheType, dbEntity: DbEntity, ...entities: any[]): void;
+    find: NonEntityFind;
+    findOne: NonEntityFindOne;
+    search: NonEntitySearch;
+    searchOne: NonEntitySearchOne;
+    findAsField<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
+        (...args: any[]): RawFieldQuery<any>;
+    }): Promise<Array<any>>;
+    findAsSheet(rawSheetQuery: RawSheetQuery | {
+        (...args: any[]): RawSheetQuery;
+    }, cursorSize?: number | ((data: any[]) => void), callback?: (data: any[][]) => void): Promise<Array<any[]>>;
+    findAsTree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
+        (...args: any[]): RawTreeQuery<any>;
+    }): Promise<Array<ITE>>;
+    findOneAsField<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
+        (...args: any[]): RawFieldQuery<any>;
+    }): Promise<any>;
+    findOneAsSheet(rawSheetQuery: RawSheetQuery | {
+        (...args: any[]): RawSheetQuery;
+    }, cursorSize?: number | ((data: any[]) => void), callback?: (data: any[][]) => void): Promise<any[]>;
+    findOneAsTree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
+        (...args: any[]): RawTreeQuery<any>;
+    }): Promise<ITE>;
+    searchAsField<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
+        (...args: any[]): RawFieldQuery<any>;
+    }): IObservable<Array<any>>;
+    searchAsSheet(rawSheetQuery: RawSheetQuery | {
+        (...args: any[]): RawSheetQuery;
+    }, cursorSize?: number | ((data: any[]) => void), callback?: (data: any[][]) => void): IObservable<Array<any[]>>;
+    searchAsTree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
+        (...args: any[]): RawTreeQuery<any>;
+    }): IObservable<Array<ITE>>;
+    searchOneAsField<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
+        (...args: any[]): RawFieldQuery<any>;
+    }): IObservable<any>;
+    searchOneAsSheet(rawSheetQuery: RawSheetQuery | {
+        (...args: any[]): RawSheetQuery;
+    }, cursorSize?: number | ((data: any[]) => void), callback?: (data: any[][]) => void): IObservable<any[]>;
+    searchOneAsTree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
+        (...args: any[]): RawTreeQuery<any>;
+    }): IObservable<ITE>;
     releaseCachedForUpdate(cacheForUpdate: UpdateCacheType, dbEntity: DbEntity, ...entities: any[]): void;
     dropUpdateCache(): void;
     addRepository(name: string, url?: string, platform?: PlatformType, platformConfig?: string, distributionStrategy?: DistributionStrategy): Promise<number>;

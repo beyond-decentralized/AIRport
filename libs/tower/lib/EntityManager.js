@@ -4,7 +4,6 @@ const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
-const diTokens_1 = require("./diTokens");
 const OperationManager_1 = require("./OperationManager");
 const transactional_1 = require("./transactional");
 /**
@@ -12,19 +11,52 @@ const transactional_1 = require("./transactional");
  */
 class EntityManager extends OperationManager_1.OperationManager {
     constructor() {
+        super(...arguments);
+        this.find = new air_control_1.NonEntityFind();
+        this.findOne = new air_control_1.NonEntityFindOne();
+        this.search = new air_control_1.NonEntitySearch();
+        this.searchOne = new air_control_1.NonEntitySearchOne();
+    }
+    async findAsField(rawFieldQuery) {
+    }
+    async findAsSheet(rawSheetQuery, cursorSize, callback) {
+    }
+    async findAsTree(rawTreeQuery) {
+    }
+    async findOneAsField(rawFieldQuery) {
+    }
+    async findOneAsSheet(rawSheetQuery, cursorSize, callback) {
+    }
+    async findOneAsTree(rawTreeQuery) {
+    }
+    searchAsField(rawFieldQuery) {
+    }
+    searchAsSheet(rawSheetQuery, cursorSize, callback) {
+    }
+    searchAsTree(rawTreeQuery) {
+    }
+    searchOneAsField(rawFieldQuery) {
+    }
+    searchOneAsSheet(rawSheetQuery, cursorSize, callback) {
+    }
+    searchOneAsTree(rawTreeQuery) {
+    }
+    /*constructor() {
         super();
-        this.find = new air_control_1.NonEntityFind(this, this.utils);
-        this.findOne = new air_control_1.NonEntityFindOne(this, this.utils);
-        this.search = new air_control_1.NonEntitySearch(this, this.utils);
-        this.searchOne = new air_control_1.NonEntitySearchOne(this, this.utils);
-        this.updateCache.databaseFacade = this;
-    }
-    cacheForUpdate(cacheForUpdate, dbEntity, ...entities) {
-        if (!entities) {
-            return;
-        }
-        this.updateCache.addToCache(cacheForUpdate, dbEntity, ...entities);
-    }
+        (<any>this.updateCache).databaseFacade = this
+    }*/
+    /*
+        cacheForUpdate(
+            updateCache: IUpdateCache,
+            cacheForUpdate: UpdateCacheType,
+            dbEntity: DbEntity,
+            ...entities: any[]
+        ): void {
+            if (!entities) {
+                return
+            }
+            updateCache.addToCache(cacheForUpdate, dbEntity, ...entities)
+        }*/
     releaseCachedForUpdate(cacheForUpdate, dbEntity, ...entities) {
         if (!entities) {
             return;
@@ -190,7 +222,7 @@ class EntityManager extends OperationManager_1.OperationManager {
     }
 }
 exports.EntityManager = EntityManager;
-di_1.DI.set(diTokens_1.ENTITY_MANAGER, EntityManager);
+di_1.DI.set(air_control_1.ENTITY_MANAGER, EntityManager);
 class FunctionWrapper {
     constructor(queryFunction) {
     }

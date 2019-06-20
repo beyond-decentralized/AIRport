@@ -1,11 +1,14 @@
 import {
 	Delete,
+	ENTITY_MANAGER,
 	EntityQuery,
 	IDatabaseFacade,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IFunctionWrapper,
 	IQEntity,
+	IQOrderableField,
+	ITreeEntity,
 	MappedEntityArray,
 	NonEntityFind,
 	NonEntityFindOne,
@@ -13,8 +16,11 @@ import {
 	NonEntitySearchOne,
 	RawDelete,
 	RawEntityQuery,
+	RawFieldQuery,
 	RawInsertColumnValues,
 	RawInsertValues,
+	RawSheetQuery,
+	RawTreeQuery,
 	RawUpdate,
 	RawUpdateColumns,
 	UpdateCacheType,
@@ -27,11 +33,11 @@ import {
 	DbEntity,
 	QueryResultType
 }                          from '@airport/ground-control'
+import {IObservable}       from '@airport/observe'
 import {
 	DistributionStrategy,
 	PlatformType
 }                          from '@airport/terminal-map'
-import {ENTITY_MANAGER}    from './diTokens'
 import {OperationManager,} from './OperationManager'
 import {transactional}     from './transactional'
 
@@ -44,33 +50,131 @@ export class EntityManager
 
 	name: string
 
-	find      = new NonEntityFind(this, this.utils)
-	findOne   = new NonEntityFindOne(this, this.utils)
-	search    = new NonEntitySearch(this, this.utils)
-	searchOne = new NonEntitySearchOne(this, this.utils)
+	find      = new NonEntityFind()
+	findOne   = new NonEntityFindOne()
+	search    = new NonEntitySearch()
+	searchOne = new NonEntitySearchOne()
 
-	constructor() {
+	async findAsField<IQF extends IQOrderableField<IQF>>(
+		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
+	): Promise<Array<any>> {
+
+	}
+
+	async findAsSheet(
+		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
+		cursorSize?: number | ((
+			data: any[]
+		) => void),
+		callback?: (
+			data: any[][]
+		) => void
+	): Promise<Array<any[]>> {
+
+	}
+
+	async findAsTree<ITE extends ITreeEntity>(
+		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
+	): Promise<Array<ITE>> {
+
+	}
+
+	async findOneAsField<IQF extends IQOrderableField<IQF>>(
+		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
+	): Promise<any> {
+
+	}
+
+	async findOneAsSheet(
+		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
+		cursorSize?: number | ((
+			data: any[]
+		) => void),
+		callback?: (
+			data: any[][]
+		) => void
+	): Promise<any[]> {
+
+	}
+
+	async findOneAsTree<ITE extends ITreeEntity>(
+		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
+	): Promise<ITE> {
+
+	}
+
+	searchAsField<IQF extends IQOrderableField<IQF>>(
+		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
+	): IObservable<Array<any>> {
+
+	}
+
+	searchAsSheet(
+		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
+		cursorSize?: number | ((
+			data: any[]
+		) => void),
+		callback?: (
+			data: any[][]
+		) => void
+	): IObservable<Array<any[]>> {
+
+	}
+
+	searchAsTree<ITE extends ITreeEntity>(
+		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
+	): IObservable<Array<ITE>> {
+
+	}
+
+	searchOneAsField<IQF extends IQOrderableField<IQF>>(
+		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
+	): IObservable<any> {
+
+	}
+
+	searchOneAsSheet(
+		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
+		cursorSize?: number | ((
+			data: any[]
+		) => void),
+		callback?: (
+			data: any[][]
+		) => void
+	): IObservable<any[]> {
+
+	}
+
+	searchOneAsTree<ITE extends ITreeEntity>(
+		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
+	): IObservable<ITE> {
+
+	}
+
+	/*constructor() {
 		super();
 		(<any>this.updateCache).databaseFacade = this
-	}
+	}*/
 
-	cacheForUpdate(
-		cacheForUpdate: UpdateCacheType,
-		dbEntity: DbEntity,
-		...entities: any[]
-	): void {
-		if(!entities) {
-			return
-		}
-		this.updateCache.addToCache(cacheForUpdate, dbEntity, ...entities)
-	}
+	/*
+		cacheForUpdate(
+			updateCache: IUpdateCache,
+			cacheForUpdate: UpdateCacheType,
+			dbEntity: DbEntity,
+			...entities: any[]
+		): void {
+			if (!entities) {
+				return
+			}
+			updateCache.addToCache(cacheForUpdate, dbEntity, ...entities)
+		}*/
 
 	releaseCachedForUpdate(
 		cacheForUpdate: UpdateCacheType,
 		dbEntity: DbEntity,
 		...entities: any[]
 	): void {
-		if(!entities) {
+		if (!entities) {
 			return
 		}
 		this.updateCache.dropFromCache(cacheForUpdate, dbEntity, ...entities)
@@ -95,7 +199,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
-		if(!entity) {
+		if (!entity) {
 			return 0
 		}
 		return await transactional(async () =>
@@ -109,7 +213,7 @@ export class EntityManager
 		checkIfProcessed: boolean = true,
 		cascade: boolean          = false
 	): Promise<number> {
-		if(!entities || !entities.length) {
+		if (!entities || !entities.length) {
 			return 0
 		}
 		return await transactional(async () =>
@@ -124,7 +228,7 @@ export class EntityManager
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		}
 	): Promise<number> {
-		if(!rawInsertColumnValues) {
+		if (!rawInsertColumnValues) {
 			return 0
 		}
 		if (rawInsertColumnValues instanceof Function) {
@@ -140,7 +244,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> }
 	): Promise<number> {
-		if(!rawInsertValues) {
+		if (!rawInsertValues) {
 			return 0
 		}
 		if (rawInsertValues instanceof Function) {
@@ -159,7 +263,7 @@ export class EntityManager
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		}
 	): Promise<number[] | string[]> {
-		if(!rawInsertColumnValues) {
+		if (!rawInsertColumnValues) {
 			return []
 		}
 		if (rawInsertColumnValues instanceof Function) {
@@ -177,7 +281,7 @@ export class EntityManager
 			(...args: any[]): RawInsertValues<IQE>;
 		}
 	): Promise<number[] | string[]> {
-		if(!rawInsertValues) {
+		if (!rawInsertValues) {
 			return []
 		}
 		if (rawInsertValues instanceof Function) {
@@ -195,7 +299,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
-		if(!entity) {
+		if (!entity) {
 			return 0
 		}
 		return await transactional(async () =>
@@ -207,7 +311,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawDelete: RawDelete<IQE> | { (...args: any[]): RawDelete<IQE> }
 	): Promise<number> {
-		if(!rawDelete) {
+		if (!rawDelete) {
 			return 0
 		}
 		if (rawDelete instanceof Function) {
@@ -225,7 +329,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
-		if(!entity) {
+		if (!entity) {
 			return 0
 		}
 		if (!dbEntity.idColumns.length) {
@@ -261,7 +365,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		entity: E
 	): Promise<number> {
-		if(!entity) {
+		if (!entity) {
 			return 0
 		}
 		return await transactional(async () =>
@@ -280,7 +384,7 @@ export class EntityManager
 		rawUpdate: RawUpdateColumns<IEUC, IQE>
 			| { (...args: any[]): RawUpdateColumns<IEUC, IQE> }
 	): Promise<number> {
-		if(!rawUpdate) {
+		if (!rawUpdate) {
 			return 0
 		}
 		if (rawUpdate instanceof Function) {
@@ -298,7 +402,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawUpdate: RawUpdate<IEUP, IQE> | { (...args: any[]): RawUpdate<IEUP, IQE> }
 	): Promise<number> {
-		if(!rawUpdate) {
+		if (!rawUpdate) {
 			return 0
 		}
 		if (rawUpdate instanceof Function) {

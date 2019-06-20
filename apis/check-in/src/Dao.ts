@@ -2,19 +2,17 @@ import {
 	IDao,
 	IEntityCreateProperties,
 	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
 	IEntityIdProperties,
-	IEntitySearch,
-	IEntitySearchOne,
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
 	QSchema,
+	RawEntityQuery,
 	UpdateCacheType
 }                               from '@airport/air-control'
 import {EntityId as DbEntityId} from '@airport/ground-control'
+import {IObservable}            from '@airport/observe'
 import {EntityDatabaseFacade}   from './EntityDatabaseFacade'
 
 /**
@@ -30,7 +28,7 @@ export abstract class Dao<Entity,
 	implements IDao<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE> {
 
-	public db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
+	private db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>
 
 	constructor(
@@ -47,20 +45,60 @@ export abstract class Dao<Entity,
 		this.db = entityDatabaseFacade
 	}
 
-	get find(): IEntityFind<Entity, Array<Entity>, EntitySelect> {
-		return this.db.find
+	async findAsGraph(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): Promise<Array<Entity>> {
+		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
+		return await this.db.find.graph(rawTreeQuery)
 	}
 
-	get findOne(): IEntityFindOne<Entity, EntitySelect> {
-		return this.db.findOne
+	async findAsTree(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): Promise<Array<Entity>> {
+		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
+		return await this.db.find.tree(rawTreeQuery)
 	}
 
-	get search(): IEntitySearch<Entity, Array<Entity>, EntitySelect> {
-		return this.db.search
+	async findOneAsGraph(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): Promise<Entity> {
+		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
+		return await this.db.findOne.graph(rawTreeQuery)
 	}
 
-	get searchOne(): IEntitySearchOne<Entity, EntitySelect> {
-		return this.db.searchOne
+	async findOneAsTree(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): Promise<Entity> {
+		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
+		return await this.db.findOne.tree(rawTreeQuery)
+	}
+
+	searchAsGraph(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): IObservable<Array<Entity>> {
+		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
+		return this.db.search.graph(rawTreeQuery)
+	}
+
+	searchAsTree(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): IObservable<Array<Entity>> {
+		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
+		return this.db.search.tree(rawTreeQuery)
+	}
+
+	searchOneAsGraph(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): IObservable<Entity> {
+		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
+		return this.db.searchOne.graph(rawTreeQuery)
+	}
+
+	searchOneAsTree(
+		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
+	): IObservable<Entity> {
+		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
+		return this.db.searchOne.tree(rawTreeQuery)
 	}
 
 	releaseCachedForUpdate(

@@ -20,10 +20,10 @@ class EntitySearch extends EntityLookup_1.EntityLookup {
         return observe_1.Observable.from(this.doSearch(rawTreeQuery, ground_control_1.QueryResultType.ENTITY_TREE));
     }
     async doSearch(rawQuery, queryResultType) {
-        const [entityUtils, dbFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.ENTITY_MANAGER);
+        const [entityUtils, queryFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.QUERY_FACADE);
         const entityQuery = entityUtils.getEntityQuery(rawQuery);
         const cacheForUpdate = this.cleanNextCallState();
-        return dbFacade.entity.search(this.dbEntity, entityQuery, queryResultType, cacheForUpdate);
+        return queryFacade.search(this.dbEntity, entityQuery, queryResultType, cacheForUpdate);
     }
 }
 exports.EntitySearch = EntitySearch;

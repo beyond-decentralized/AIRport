@@ -11,17 +11,37 @@ class Dao {
         entityDatabaseFacade.initialize();
         this.db = entityDatabaseFacade;
     }
-    get find() {
-        return this.db.find;
+    async findAsGraph(rawTreeQuery) {
+        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
+        return await this.db.find.graph(rawTreeQuery);
     }
-    get findOne() {
-        return this.db.findOne;
+    async findAsTree(rawTreeQuery) {
+        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
+        return await this.db.find.tree(rawTreeQuery);
     }
-    get search() {
-        return this.db.search;
+    async findOneAsGraph(rawTreeQuery) {
+        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
+        return await this.db.findOne.graph(rawTreeQuery);
     }
-    get searchOne() {
-        return this.db.searchOne;
+    async findOneAsTree(rawTreeQuery) {
+        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
+        return await this.db.findOne.tree(rawTreeQuery);
+    }
+    searchAsGraph(rawTreeQuery) {
+        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
+        return this.db.search.graph(rawTreeQuery);
+    }
+    searchAsTree(rawTreeQuery) {
+        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
+        return this.db.search.tree(rawTreeQuery);
+    }
+    searchOneAsGraph(rawTreeQuery) {
+        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
+        return this.db.searchOne.graph(rawTreeQuery);
+    }
+    searchOneAsTree(rawTreeQuery) {
+        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
+        return this.db.searchOne.tree(rawTreeQuery);
     }
     releaseCachedForUpdate(updateCacheType, ...entities) {
         return this.db.releaseCachedForUpdate(updateCacheType, ...entities);

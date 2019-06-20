@@ -9,12 +9,23 @@ import {
 	INonEntitySearch,
 	INonEntitySearchOne,
 	QSchema
-}           from '@airport/air-control'
-import {DI} from '@airport/di'
+}                            from '@airport/air-control'
+import {
+	IQOrderableField,
+	NON_ENTITY_FIND,
+	RawFieldQuery
+}                            from '@airport/air-control'
+import {NON_ENTITY_FIND_ONE} from '@airport/air-control'
+import {
+	ITreeEntity,
+	RawSheetQuery,
+	RawTreeQuery
+} from '@airport/air-control/lib/src'
+import {DI}                  from '@airport/di'
 import {
 	DbSchema,
 	getSchemaName
-}           from '@airport/ground-control'
+}                            from '@airport/ground-control'
 
 export class AirportDatabase
 	implements IAirportDatabase {
@@ -96,6 +107,66 @@ export class AirportDatabase
 
 	get searchOne(): INonEntitySearchOne {
 		return this.db.searchOne
+	}
+
+	async findAsField<IQF extends IQOrderableField<IQF>>(
+		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
+	): Promise<any[]> {
+		const nonEntityFind = await DI.get(NON_ENTITY_FIND)
+
+		return await nonEntityFind.field(rawFieldQuery)
+	}
+
+	findOneAsField<IQF extends IQOrderableField<IQF>>(
+		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
+	) {
+		const nonEntityFindOne = await DI.get(NON_ENTITY_FIND_ONE)
+
+		return await nonEntityFindOne.field(rawFieldQuery)
+	}
+
+	findAsSheet(
+		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
+		cursorSize?: number | ((
+			data: any[]
+		) => void),
+		callback?: (
+			data: any[][]
+		) => void,
+	): Promise<any[][]> {
+		const nonEntityFind = await DI.get(NON_ENTITY_FIND)
+
+		return await nonEntityFind.sheet(rawSheetQuery)
+	}
+
+	findOneAsSheet(
+		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
+		cursorSize?: number | ((
+			data: any[]
+		) => void),
+		callback?: (
+			data: any[][]
+		) => void,
+	): Promise<any[]> {
+		const nonEntityFindOne = await DI.get(NON_ENTITY_FIND_ONE)
+
+		return await nonEntityFindOne.sheet(rawSheetQuery)
+	}
+
+	findAsTree<ITE extends ITreeEntity>(
+		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
+	): Promise<ITE[]> {
+		const nonEntityFind = await DI.get(NON_ENTITY_FIND)
+
+		return await nonEntityFind.tree(rawTreeQuery)
+	}
+
+	findOneAsTree<ITE extends ITreeEntity>(
+		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
+	): Promise<ITE> {
+		const nonEntityFindOne = await DI.get(NON_ENTITY_FIND_ONE)
+
+		return await nonEntityFindOne.tree(rawTreeQuery)
 	}
 
 }

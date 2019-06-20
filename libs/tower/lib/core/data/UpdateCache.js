@@ -8,25 +8,40 @@ class UpdateCache {
     constructor() {
         this.updateCache = [];
         this.saveRun = 0;
-        di_1.DI.get(utils => {
-            this.utils = utils;
-        }, air_control_1.UTILS);
+        /*
+            private getUpdateCache(
+                schemaUtils: ISchemaUtils,
+                dbEntity: DbEntity,
+                id: string
+            ): any {
+                const entityCache = this.getEntityCache(dbEntity)
+                if (schemaUtils.isIdEmpty(id)) {
+                    return null
+                }
+        
+                return entityCache[id]
+            }
+        */
     }
     dropCache() {
         this.updateCache = [];
     }
-    addToCache(cacheForUpdate, dbEntity, ...entities) {
+    addToCache(schemaUtils, cacheForUpdate, dbEntity, ...entities) {
+        if (!entities || !entities.length
+            || cacheForUpdate === air_control_1.UpdateCacheType.NONE) {
+            return;
+        }
         this.saveRun++;
-        this.saveToUpdateCacheInternal(cacheForUpdate, dbEntity, ...entities);
+        this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbEntity, ...entities);
     }
-    dropFromCache(cacheForUpdate, dbEntity, ...entities) {
+    dropFromCache(schemaUtils, cacheForUpdate, dbEntity, ...entities) {
         const entityCache = this.getEntityCache(dbEntity);
         for (const entity of entities) {
-            const id = this.utils.Schema.getIdKey(entity, dbEntity);
+            const id = schemaUtils.getIdKey(entity, dbEntity);
             delete entityCache[id];
             for (const dbProperty of dbEntity.properties) {
                 let value = entity[dbProperty.name];
-                if (this.utils.Schema.isEmpty(value)) {
+                if (schemaUtils.isEmpty(value)) {
                     continue;
                 }
                 if (!dbProperty.relation) {
@@ -42,7 +57,7 @@ class UpdateCache {
                             throw `Expecting @OneToMany for an array entity relation`;
                         }
                         value.forEach((manyObject) => {
-                            this.dropFromCache(cacheForUpdate, relation.relationEntity, manyObject);
+                            this.dropFromCache(schemaUtils, cacheForUpdate, relation.relationEntity, manyObject);
                         });
                         break;
                     case ground_control_1.EntityRelationType.MANY_TO_ONE:
@@ -52,7 +67,7 @@ class UpdateCache {
                         if (cacheForUpdate !== air_control_1.UpdateCacheType.ALL_QUERY_ENTITIES) {
                             continue;
                         }
-                        this.dropFromCache(cacheForUpdate, relation.relationEntity, value);
+                        this.dropFromCache(schemaUtils, cacheForUpdate, relation.relationEntity, value);
                         break;
                     default:
                         throw `Unknown relation type: ${relation.relationType}`;
@@ -60,9 +75,9 @@ class UpdateCache {
             }
         }
     }
-    getEntityUpdateCache(dbEntity, entity) {
+    getEntityUpdateCache(schemaUtils, dbEntity, entity) {
         let entityCache = this.getEntityCache(dbEntity);
-        let compositeId = this.utils.Schema.getIdKey(entity, dbEntity, false);
+        let compositeId = schemaUtils.getIdKey(entity, dbEntity, false);
         if (!compositeId) {
             return null;
         }
@@ -72,17 +87,17 @@ class UpdateCache {
         const entityCache = this.getEntityCache(dbEntity);
         return entityCache[idKey];
     }
-    getEntityUpdateDiff(dbEntity, entity, failOnNoOriginalRecord = true) {
+    getEntityUpdateDiff(schemaUtils, dbEntity, entity, failOnNoOriginalRecord = true) {
         let updateDiff = {};
-        let originalRecord = this.getEntityUpdateCache(dbEntity, entity);
-        let currentRecord = this.getEntityCacheEntry(air_control_1.UpdateCacheType.ROOT_QUERY_ENTITIES, dbEntity, entity, {});
+        let originalRecord = this.getEntityUpdateCache(schemaUtils, dbEntity, entity);
+        let currentRecord = this.getEntityCacheEntry(schemaUtils, air_control_1.UpdateCacheType.ROOT_QUERY_ENTITIES, dbEntity, entity, {});
         if (!originalRecord) {
             return entity;
         }
         for (let columnName in originalRecord) {
             let originalValue = originalRecord[columnName];
             let newValue = currentRecord[columnName];
-            if (!this.utils.valuesEqual(originalValue, newValue)) {
+            if (!air_control_1.valuesEqual(originalValue, newValue)) {
                 updateDiff[columnName] = newValue;
             }
         }
@@ -95,12 +110,12 @@ class UpdateCache {
         return updateDiff;
     }
     getEntityCache(dbEntity) {
-        let schemaCache = this.utils.ensureChildArray(this.updateCache, dbEntity.schemaVersion.schema.index);
-        return this.utils.ensureChildMap(schemaCache, dbEntity.index);
+        let schemaCache = ground_control_1.ensureChildArray(this.updateCache, dbEntity.schemaVersion.schema.index);
+        return ground_control_1.ensureChildMap(schemaCache, dbEntity.index);
     }
-    saveToUpdateCacheInternal(cacheForUpdate, dbEntity, ...entities) {
+    saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbEntity, ...entities) {
         for (const entity of entities) {
-            const compositeIdValue = this.utils.Schema.getIdKey(entity, dbEntity);
+            const compositeIdValue = schemaUtils.getIdKey(entity, dbEntity);
             // If no id is provided for an entity, it cannot be cached
             if (!compositeIdValue) {
                 throw `Cannot cache entities with no ids`;
@@ -119,13 +134,13 @@ class UpdateCache {
                 };
             }
             entityCache[compositeIdValue] = entityCopy;
-            this.getEntityCacheEntry(cacheForUpdate, dbEntity, entity, entityCopy);
+            this.getEntityCacheEntry(schemaUtils, cacheForUpdate, dbEntity, entity, entityCopy);
         }
     }
-    getEntityCacheEntry(cacheForUpdate, dbEntity, entity, entityCopy) {
+    getEntityCacheEntry(schemaUtils, cacheForUpdate, dbEntity, entity, entityCopy) {
         for (const dbProperty of dbEntity.properties) {
             let value = entity[dbProperty.name];
-            if (this.utils.Schema.isEmpty(value)) {
+            if (schemaUtils.isEmpty(value)) {
                 continue;
             }
             if (dbProperty.relation) {
@@ -139,20 +154,20 @@ class UpdateCache {
                             throw `Expecting @OneToMany for an array entity relation`;
                         }
                         value.forEach((manyObject) => {
-                            this.saveToUpdateCacheInternal(cacheForUpdate, dbRelation.relationEntity, manyObject);
+                            this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbRelation.relationEntity, manyObject);
                         });
                         break;
                     case ground_control_1.EntityRelationType.MANY_TO_ONE:
                         if (!(value instanceof Object) || value instanceof Array) {
                             throw `Expecting @ManyToOne for a non-array entity relation`;
                         }
-                        this.utils.Schema.forEachColumnOfRelation(dbRelation, entity, (dbColumn, value, propertyNameChains) => {
-                            this.copyColumn(dbColumn, entityCopy, value);
+                        schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, value, propertyNameChains) => {
+                            this.copyColumn(schemaUtils, dbColumn, entityCopy, value);
                         }, false);
                         if (cacheForUpdate !== air_control_1.UpdateCacheType.ALL_QUERY_ENTITIES) {
                             continue;
                         }
-                        this.saveToUpdateCacheInternal(cacheForUpdate, dbRelation.relationEntity, value);
+                        this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbRelation.relationEntity, value);
                         break;
                     default:
                         throw `Unknown relation type: ${dbRelation.relationType}`;
@@ -160,16 +175,16 @@ class UpdateCache {
             }
             else {
                 const dbColumn = dbProperty.propertyColumns[0].column;
-                this.copyColumn(dbColumn, entityCopy, value);
+                this.copyColumn(schemaUtils, dbColumn, entityCopy, value);
             }
         }
         return entityCopy;
     }
-    copyColumn(dbColumn, entityCopy, value) {
+    copyColumn(schemaUtils, dbColumn, entityCopy, value) {
         const columnName = dbColumn.name;
         const copiedValue = entityCopy[columnName];
-        if (!this.utils.Schema.isEmpty(copiedValue)
-            && this.utils.valuesEqual(copiedValue, value)) {
+        if (!schemaUtils.isEmpty(copiedValue)
+            && air_control_1.valuesEqual(copiedValue, value)) {
             throw `Values do not match for column '${dbColumn.propertyColumns[0].property.entity.name}.${dbColumn.name}'`;
         }
         switch (dbColumn.type) {
@@ -188,13 +203,6 @@ class UpdateCache {
             default:
                 throw `Unknown SQLDataType: ${dbColumn.type}`;
         }
-    }
-    getUpdateCache(dbEntity, id) {
-        const entityCache = this.getEntityCache(dbEntity);
-        if (this.utils.Schema.isIdEmpty(id)) {
-            return null;
-        }
-        return entityCache[id];
     }
 }
 exports.UpdateCache = UpdateCache;

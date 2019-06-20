@@ -9,8 +9,9 @@ import {
 }                                from '@airport/observe'
 import {
 	ENTITY_MANAGER,
-	ENTITY_UTILS
-}                                from '../../../diTokens'
+	ENTITY_UTILS,
+	QUERY_FACADE
+} from '../../../diTokens'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
 import {IEntitySearch}           from '../../../lingo/query/api/EntitySearch'
 import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
@@ -47,11 +48,11 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 		rawQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType
 	): Promise<IObservable<EntityArray>> {
-		const [entityUtils, dbFacade] = await DI.get(ENTITY_UTILS, ENTITY_MANAGER)
+		const [entityUtils, queryFacade] = await DI.get(ENTITY_UTILS, QUERY_FACADE)
 		const entityQuery             = entityUtils.getEntityQuery(rawQuery)
 		const cacheForUpdate          = this.cleanNextCallState()
 
-		return dbFacade.entity.search(
+		return queryFacade.search(
 			this.dbEntity, entityQuery, queryResultType, cacheForUpdate)
 
 	}

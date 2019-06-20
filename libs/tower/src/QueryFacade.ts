@@ -1,30 +1,37 @@
 import {
 	AbstractQuery,
-	IDatabaseFacade,
+	FIELD_UTILS,
+	IFieldUtils,
 	IQueryFacade,
+	IQueryUtils,
+	QUERY_FACADE,
+	QUERY_UTILS,
+	SCHEMA_UTILS,
 	UpdateCacheType
 }                     from '@airport/air-control'
 import {DI}           from '@airport/di'
 import {
 	DbEntity,
-	ITransactionalConnector,
 	JsonQuery,
 	PortableQuery,
 	QueryResultType,
 	TRANS_CONNECTOR,
 }                     from '@airport/ground-control'
 import {IObservable}  from '@airport/observe'
-import {QUERY_FACADE} from './diTokens'
+import {Observable}   from '@airport/observe'
+import {UPDATE_CACHE} from './diTokens'
 
 export class QueryFacade
 	implements IQueryFacade {
 
+	/*
 	private connector: ITransactionalConnector
 	public databaseFacade: IDatabaseFacade
 
 	async init(): Promise<void> {
 		this.connector = await DI.getP(TRANS_CONNECTOR)
 	}
+*/
 
 	async find<E, EntityArray extends Array<E>>(
 		dbEntity: DbEntity,
@@ -32,11 +39,15 @@ export class QueryFacade
 		queryResultType: QueryResultType,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<EntityArray> {
-		const result = await this.connector.find<E, EntityArray>(
-			this.getPortableQuery(dbEntity, query, queryResultType))
-		if (cacheForUpdate !== UpdateCacheType.NONE) {
-			this.databaseFacade.cacheForUpdate(cacheForUpdate, dbEntity, ...result)
-		}
+		const [fieldUtils, queryUtils, schemaUtils, transConnector, updateCache] =
+			      await DI.get(FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS,
+				      TRANS_CONNECTOR, UPDATE_CACHE)
+
+		const result = await transConnector.find<E, EntityArray>(
+			this.getPortableQuery(
+				dbEntity, query, queryResultType, queryUtils, fieldUtils))
+		updateCache.addToCache(
+			schemaUtils, cacheForUpdate, dbEntity, ...result)
 
 		return result
 	}
@@ -47,10 +58,13 @@ export class QueryFacade
 		queryResultType: QueryResultType,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<E> {
-		const result = await this.connector.findOne<E>(this.getPortableQuery(dbEntity, query, queryResultType))
-		if (cacheForUpdate !== UpdateCacheType.NONE) {
-			this.databaseFacade.cacheForUpdate(cacheForUpdate, dbEntity, result)
-		}
+		const [fieldUtils, queryUtils, schemaUtils, transConnector, updateCache] =
+			      await DI.get(FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE)
+
+		const result = await transConnector.findOne<E>(this.getPortableQuery(
+			dbEntity, query, queryResultType, queryUtils, fieldUtils))
+		updateCache.addToCache(
+			schemaUtils, cacheForUpdate, dbEntity, result)
 
 		return result
 	}
@@ -61,8 +75,8 @@ export class QueryFacade
 		queryResultType: QueryResultType,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): IObservable<EntityArray> {
-		return this.connector.search<E, EntityArray>(
-			this.getPortableQuery(dbEntity, query, queryResultType))
+		return Observable.from(this.doSearch(
+			dbEntity, query, queryResultType, cacheForUpdate))
 	}
 
 	searchOne<E>(
@@ -71,24 +85,53 @@ export class QueryFacade
 		queryResultType: QueryResultType,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): IObservable<E> {
-		return this.connector.searchOne<E>(
-			this.getPortableQuery(dbEntity, query, queryResultType))
+		return Observable.from(this.doSearchOne(
+			dbEntity, query, queryResultType, cacheForUpdate))
 	}
 
 	getPortableQuery<E>(
 		dbEntity: DbEntity,
 		query: AbstractQuery,
 		queryResultType: QueryResultType,
-		cacheForUpdate = false,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): PortableQuery {
 		return {
-			jsonQuery: <JsonQuery>query.toJSON(),
+			jsonQuery: <JsonQuery>query.toJSON(queryUtils, fieldUtils),
 			parameterMap: query.getParameters(),
 			queryResultType,
 			schemaIndex: dbEntity.schemaVersion.schema.index,
 			tableIndex: dbEntity.index,
-			values: query.values
+			// values: query.values
 		}
+	}
+
+	private async doSearch<E>(
+		dbEntity: DbEntity,
+		query: AbstractQuery,
+		queryResultType: QueryResultType,
+		cacheForUpdate = UpdateCacheType.NONE,
+	): Promise<IObservable<E[]>> {
+		const [fieldUtils, queryUtils, transConnector] =
+			      await DI.get(FIELD_UTILS, QUERY_UTILS, TRANS_CONNECTOR)
+
+		return transConnector.search(this.getPortableQuery(
+			dbEntity, query, queryResultType, queryUtils, fieldUtils))
+
+	}
+
+	private async doSearchOne<E>(
+		dbEntity: DbEntity,
+		query: AbstractQuery,
+		queryResultType: QueryResultType,
+		cacheForUpdate = UpdateCacheType.NONE,
+	): Promise<IObservable<E>> {
+		const [fieldUtils, queryUtils, transConnector] =
+			      await DI.get(FIELD_UTILS, QUERY_UTILS, TRANS_CONNECTOR)
+
+		return transConnector.searchOne(this.getPortableQuery(
+			dbEntity, query, queryResultType, queryUtils, fieldUtils))
+
 	}
 
 }

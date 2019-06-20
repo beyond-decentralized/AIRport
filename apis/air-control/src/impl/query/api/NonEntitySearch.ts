@@ -5,11 +5,11 @@ import {
 	Observable
 }                             from '@airport/observe'
 import {
-	ENTITY_MANAGER,
-	ENTITY_UTILS
+	ENTITY_UTILS,
+	NON_ENTITY_SEARCH,
+	QUERY_FACADE
 } from '../../../diTokens'
 import {IQOrderableField}     from '../../../lingo/core/field/Field'
-import {IDatabaseFacade}      from '../../../lingo/core/repository/DatabaseFacade'
 import {INonEntitySearch}     from '../../../lingo/query/api/NonEntitySearch'
 import {RawFieldQuery}        from '../../../lingo/query/facade/FieldQuery'
 import {RawNonEntityQuery}    from '../../../lingo/query/facade/NonEntityQuery'
@@ -56,11 +56,13 @@ export class NonEntitySearch
 		QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery,
 		queryResultType: QueryResultType
 	): Promise<IObservable<any[]>> {
-		const [entityUtils, dbFacade] = await DI.get(ENTITY_UTILS, ENTITY_MANAGER)
-		const rawQuery                  = entityUtils.getQuery(rawNonEntityQuery)
+		const [entityUtils, queryFacade]     = await DI.get(ENTITY_UTILS, QUERY_FACADE)
+		const rawQuery                    = entityUtils.getQuery(rawNonEntityQuery)
 		const query: DistinguishableQuery = new QueryClass(rawQuery)
-		return dbFacade.entity.search<any, any[]>(
+		return queryFacade.search<any, any[]>(
 			null, query, queryResultType)
 	}
 
 }
+
+DI.set(NON_ENTITY_SEARCH, NonEntitySearch)

@@ -1,6 +1,5 @@
-import { Delete, EntityIdData, IAirportDatabase, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IQueryFacade, IUtils, MappedEntityArray, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties, UpdateRecord } from '@airport/air-control';
-import { DbColumn, DbEntity, DbProperty, DbRelation, ITransactionalConnector, JSONBaseOperation } from '@airport/ground-control';
-import { IUpdateCache } from './core/data/UpdateCache';
+import { Delete, EntityIdData, IAirportDatabase, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, ISchemaUtils, MappedEntityArray, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties, UpdateRecord } from '@airport/air-control';
+import { DbColumn, DbEntity, DbProperty, DbRelation, JSONBaseOperation } from '@airport/ground-control';
 /**
  * Created by Papa on 11/15/2016.
  */
@@ -17,14 +16,8 @@ export interface IOperationManager {
     throwUnexpectedProperty(dbProperty: DbProperty, dbColumn: DbColumn, value: any): any;
 }
 export declare abstract class OperationManager implements IOperationManager {
-    protected airDb: IAirportDatabase;
-    connector: ITransactionalConnector;
-    entity: IQueryFacade;
     higherOrderOpsYieldLength: number;
     transactionInProgress: boolean;
-    updateCache: IUpdateCache;
-    utils: IUtils;
-    constructor();
     init(): Promise<void>;
     throwUnexpectedProperty(dbProperty: DbProperty, dbColumn: DbColumn, value: any): void;
     protected warn(message: string): void;
@@ -52,7 +45,6 @@ export declare abstract class OperationManager implements IOperationManager {
     protected internalInsertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>): Promise<number>;
     protected internalInsertValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>, ensureGeneratedValues?: boolean): Promise<number>;
     protected internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>): Promise<number[] | string[]>;
-    protected internalInsertValuesGetIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>): Promise<number[] | string[]>;
     /**
      * Transactional context must have been started by the time this method is called.
      *
@@ -61,7 +53,8 @@ export declare abstract class OperationManager implements IOperationManager {
      */
     protected performUpdate<E>(dbEntity: DbEntity, entity: E, updatedEntityMap: {
         [entityId: string]: any;
-    }[][], originalValue?: E, cascadeAlways?: boolean): Promise<number>;
+    }[][], airDb: IAirportDatabase, schemaUtils: ISchemaUtils, originalValue?: E, cascadeAlways?: boolean): Promise<number>;
+    protected internalInsertValuesGetIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>): Promise<number[] | string[]>;
     private cascadeOnPersist;
     protected abstract getOriginalRecord(dbEntity: DbEntity, idKey: string): Promise<any>;
     protected abstract getOriginalValues(entitiesToUpdate: UpdateRecord[], dbEntity: DbEntity): Promise<MappedEntityArray<any>>;

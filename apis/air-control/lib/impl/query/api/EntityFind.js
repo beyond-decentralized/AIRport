@@ -13,16 +13,16 @@ class EntityFind extends EntityLookup_1.EntityLookup {
         this.dbEntity = dbEntity;
     }
     async graph(rawGraphQuery) {
-        const [entityUtils, dbFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.ENTITY_MANAGER);
+        const [entityUtils, queryFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.QUERY_FACADE);
         const entityQuery = entityUtils.getEntityQuery(rawGraphQuery);
         const cacheForUpdate = this.cleanNextCallState();
-        return await dbFacade.entity.find(this.dbEntity, entityQuery, this.getQueryResultType(ground_control_1.QueryResultType.ENTITY_GRAPH), cacheForUpdate);
+        return await queryFacade.find(this.dbEntity, entityQuery, this.getQueryResultType(ground_control_1.QueryResultType.ENTITY_GRAPH), cacheForUpdate);
     }
     async tree(rawTreeQuery) {
-        const [entityUtils, dbFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.ENTITY_MANAGER);
+        const [entityUtils, queryFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.QUERY_FACADE);
         const entityQuery = entityUtils.getEntityQuery(rawTreeQuery);
         const cacheForUpdate = this.cleanNextCallState();
-        return await dbFacade.entity.find(this.dbEntity, entityQuery, this.getQueryResultType(ground_control_1.QueryResultType.ENTITY_TREE), cacheForUpdate);
+        return await queryFacade.find(this.dbEntity, entityQuery, this.getQueryResultType(ground_control_1.QueryResultType.ENTITY_TREE), cacheForUpdate);
     }
 }
 exports.EntityFind = EntityFind;

@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const air_control_2 = require("@airport/air-control");
+const air_control_3 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 class AirportDatabase {
@@ -55,6 +57,30 @@ class AirportDatabase {
     }
     get searchOne() {
         return this.db.searchOne;
+    }
+    async findAsField(rawFieldQuery) {
+        const nonEntityFind = await di_1.DI.get(air_control_2.NON_ENTITY_FIND);
+        return await nonEntityFind.field(rawFieldQuery);
+    }
+    findOneAsField(rawFieldQuery) {
+        const nonEntityFindOne = await di_1.DI.get(air_control_3.NON_ENTITY_FIND_ONE);
+        return await nonEntityFindOne.field(rawFieldQuery);
+    }
+    findAsSheet(rawSheetQuery, cursorSize, callback) {
+        const nonEntityFind = await di_1.DI.get(air_control_2.NON_ENTITY_FIND);
+        return await nonEntityFind.sheet(rawSheetQuery);
+    }
+    findOneAsSheet(rawSheetQuery, cursorSize, callback) {
+        const nonEntityFindOne = await di_1.DI.get(air_control_3.NON_ENTITY_FIND_ONE);
+        return await nonEntityFindOne.sheet(rawSheetQuery);
+    }
+    findAsTree(rawTreeQuery) {
+        const nonEntityFind = await di_1.DI.get(air_control_2.NON_ENTITY_FIND);
+        return await nonEntityFind.tree(rawTreeQuery);
+    }
+    findOneAsTree(rawTreeQuery) {
+        const nonEntityFindOne = await di_1.DI.get(air_control_3.NON_ENTITY_FIND_ONE);
+        return await nonEntityFindOne.tree(rawTreeQuery);
     }
 }
 exports.AirportDatabase = AirportDatabase;

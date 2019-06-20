@@ -6,7 +6,16 @@ import {
 	PortableQuery,
 	QueryResultType
 }                            from "@airport/ground-control";
-import {IObservable}          from "@airport/observe";
+import {IObservable}         from "@airport/observe";
+import {
+	IFieldUtils,
+	IQOrderableField,
+	IQueryUtils,
+	ITreeEntity,
+	RawFieldQuery,
+	RawSheetQuery,
+	RawTreeQuery
+} from '../../..'
 import {AbstractQuery}       from "../../../impl/query/facade/AbstractQuery";
 import {UpdateCacheType}     from "../../query/api/EntityLookup";
 import {INonEntityFind}      from '../../query/api/NonEntityFind';
@@ -53,32 +62,77 @@ export interface IDatabaseFacade {
 	 */
 	name: string;
 
-	/**
-	 * The Promise based API for all non-Entity 'find' (find many) queries.
-	 */
-	find: INonEntityFind;
+	findAsField<IQF extends IQOrderableField<IQF>>(
+		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
+	): Promise<Array<any>>;
 
-	/**
-	 * The Promise based API for all non-Entity 'findOne' queries.
-	 */
-	findOne: INonEntityFindOne;
+	findAsSheet(
+		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
+		cursorSize?: number | ((
+			data: any[]
+		) => void),
+		callback?: (
+			data: any[][]
+		) => void
+	): Promise<Array<any[]>>;
 
-	/**
-	 * The Observable based API for all non-Entity 'search' (search many) queries.
-	 */
-	search: INonEntitySearch;
+	findAsTree<ITE extends ITreeEntity>(
+		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
+	): Promise<Array<ITE>>;
 
-	/**
-	 * The Observable based API for all non-Entity 'searchOne' queries.
-	 */
-	searchOne: INonEntitySearchOne;
+	findOneAsField<IQF extends IQOrderableField<IQF>>(
+		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
+	): Promise<any>;
 
-	entity: IQueryFacade;
+	findOneAsSheet(
+		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
+		cursorSize?: number | ((
+			data: any[]
+		) => void),
+		callback?: (
+			data: any[][]
+		) => void
+	): Promise<any[]>;
 
-	/**
-	 * Connector to the transactional server.
-	 */
-	connector: ITransactionalConnector;
+	findOneAsTree<ITE extends ITreeEntity>(
+		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
+	): Promise<ITE>;
+
+	searchAsField<IQF extends IQOrderableField<IQF>>(
+		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
+	): IObservable<Array<any>>;
+
+	searchAsSheet(
+		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
+		cursorSize?: number | ((
+			data: any[]
+		) => void),
+		callback?: (
+			data: any[][]
+		) => void
+	): IObservable<Array<any[]>>;
+
+	searchAsTree<ITE extends ITreeEntity>(
+		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
+	): IObservable<Array<ITE>>;
+
+	searchOneAsField<IQF extends IQOrderableField<IQF>>(
+		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
+	): IObservable<any>;
+
+	searchOneAsSheet(
+		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
+		cursorSize?: number | ((
+			data: any[]
+		) => void),
+		callback?: (
+			data: any[][]
+		) => void
+	): IObservable<any[]>;
+
+	searchOneAsTree<ITE extends ITreeEntity>(
+		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
+		): IObservable<ITE>;
 
 	init(): Promise<void>;
 
@@ -289,7 +343,9 @@ export interface IQueryFacade {
 	getPortableQuery<E>(
 		dbEntity: DbEntity,
 		query: AbstractQuery,
-		queryResultType: QueryResultType
+		queryResultType: QueryResultType,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): PortableQuery;
 
 }
