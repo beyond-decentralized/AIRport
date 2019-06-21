@@ -6,17 +6,17 @@ const ground_control_1 = require("@airport/ground-control");
  * Created by Papa on 4/3/2019.
  */
 async function transact() {
-    const transConnector = await di_1.DI.getP(ground_control_1.TRANS_CONNECTOR);
+    const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
     await transConnector.transact();
 }
 exports.transact = transact;
 async function commit() {
-    const transConnector = await di_1.DI.getP(ground_control_1.TRANS_CONNECTOR);
+    const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
     await transConnector.commit();
 }
 exports.commit = commit;
 async function rollback() {
-    const transConnector = await di_1.DI.getP(ground_control_1.TRANS_CONNECTOR);
+    const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
     await transConnector.rollback();
 }
 exports.rollback = rollback;
@@ -26,7 +26,7 @@ exports.rollback = rollback;
  * that.
  */
 async function transactional(callback, keepAlive) {
-    const transConnector = await di_1.DI.getP(ground_control_1.TRANS_CONNECTOR);
+    const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
     let transactionStarted = false;
     try {
         await transConnector.transact();

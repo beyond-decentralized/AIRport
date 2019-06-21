@@ -3,17 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
-const diTokens_1 = require("./diTokens");
 class OperationManager {
-    constructor() {
-        this.higherOrderOpsYieldLength = 100;
-        this.transactionInProgress = false;
-    }
-    async init() {
+    // higherOrderOpsYieldLength: number = 100
+    // transactionInProgress: boolean    = false
+    /*async init(): Promise<void> {
         // this.connector = await DI.getP(TRANS_CONNECTOR)
         // this.entity    = await DI.getP(QUERY_FACADE)
-        await (await di_1.DI.get(diTokens_1.QUERY_FACADE)).init();
-    }
+
+        await (await DI.get(QUERY_FACADE)).init()
+    }*/
     throwUnexpectedProperty(dbProperty, dbColumn, value) {
         throw `Unexpected property value '${value.toString()}' in property '${dbProperty.entity.name}.${dbProperty.name}'
 		(column: '${dbColumn.name}').`;
@@ -27,10 +25,9 @@ class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performCreate(dbEntity, entity, createdEntityMap, idData, cascadeAlways = false) {
-        const [airDb, metadataUtils, schemaUtils] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.Q_METADATA_UTILS, air_control_1.SCHEMA_UTILS);
-        let result = await this.internalCreate(dbEntity, [entity], createdEntityMap, !idData, airDb, metadataUtils, schemaUtils, cascadeAlways);
-        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, airDb, schemaUtils, cascadeAlways);
+    async performCreate(dbEntity, entity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, idData, cascadeAlways = false) {
+        let result = await this.internalCreate(dbEntity, [entity], createdEntityMap, !idData, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, cascadeAlways);
+        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeAlways);
         return result.numberOfAffectedRecords;
     }
     /**
@@ -39,14 +36,13 @@ class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performBulkCreate(dbEntity, entities, createdEntityMap, checkIfProcessed = true, cascadeAlways = false, ensureGeneratedValues = true // For internal use only
+    async performBulkCreate(dbEntity, entities, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, checkIfProcessed = true, cascadeAlways = false, ensureGeneratedValues = true // For internal use only
     ) {
-        const [airDb, metadataUtils, schemaUtils] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.Q_METADATA_UTILS, air_control_1.SCHEMA_UTILS);
-        let result = await this.internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, metadataUtils, schemaUtils, cascadeAlways, ensureGeneratedValues);
-        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, airDb, schemaUtils, cascadeAlways);
+        let result = await this.internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, cascadeAlways, ensureGeneratedValues);
+        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeAlways);
         return result.numberOfAffectedRecords;
     }
-    async internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, metadataUtils, schemaUtils, cascadeAlways = false, ensureGeneratedValues) {
+    async internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, cascadeAlways = false, ensureGeneratedValues) {
         const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         let rawInsert = {
             insertInto: qEntity,
@@ -129,7 +125,7 @@ class OperationManager {
         if (rawInsert.values.length) {
             const generatedProperty = this.getGeneratedProperty(dbEntity);
             if (generatedProperty && ensureGeneratedValues) {
-                const generatedIds = await this.internalInsertValuesGetIds(dbEntity, rawInsert);
+                const generatedIds = await this.internalInsertValuesGetIds(dbEntity, rawInsert, fieldUtils, queryFacade, queryUtils, transConnector);
                 for (let i = 0; i < entities.length; i++) {
                     const entity = entities[i];
                     entity[generatedProperty.name] = generatedIds[i];
@@ -137,7 +133,7 @@ class OperationManager {
                 }
             }
             else {
-                numberOfAffectedRecords = await this.internalInsertValues(dbEntity, rawInsert, ensureGeneratedValues);
+                numberOfAffectedRecords = await this.internalInsertValues(dbEntity, rawInsert, queryUtils, fieldUtils, ensureGeneratedValues);
             }
         }
         return {
@@ -178,22 +174,22 @@ class OperationManager {
         }
         return true;
     }
-    async internalInsertColumnValues(dbEntity, rawInsertColumnValues) {
-        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, diTokens_1.QUERY_FACADE);
+    async internalInsertColumnValues(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils) {
+        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, air_control_1.QUERY_FACADE);
         const insertColumnValues = new air_control_1.InsertColumnValues(rawInsertColumnValues);
-        const portableQuery = queryFacade.getPortableQuery(dbEntity, insertColumnValues, null);
+        const portableQuery = queryFacade.getPortableQuery(dbEntity, insertColumnValues, null, queryUtils, fieldUtils);
         return await transConnector.insertValues(portableQuery);
     }
-    async internalInsertValues(dbEntity, rawInsertValues, ensureGeneratedValues) {
-        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, diTokens_1.QUERY_FACADE);
+    async internalInsertValues(dbEntity, rawInsertValues, queryUtils, fieldUtils, ensureGeneratedValues) {
+        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, air_control_1.QUERY_FACADE);
         const insertValues = new air_control_1.InsertValues(rawInsertValues);
-        const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null);
+        const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null, queryUtils, fieldUtils);
         return await transConnector.insertValues(portableQuery, undefined, ensureGeneratedValues);
     }
-    async internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues) {
-        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, diTokens_1.QUERY_FACADE);
+    async internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils) {
+        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, air_control_1.QUERY_FACADE);
         const insertValues = new air_control_1.InsertColumnValues(rawInsertColumnValues);
-        const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null);
+        const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null, queryUtils, fieldUtils);
         return await transConnector.insertValuesGetIds(portableQuery);
     }
     /**
@@ -202,7 +198,7 @@ class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performUpdate(dbEntity, entity, updatedEntityMap, airDb, schemaUtils, originalValue, cascadeAlways = false) {
+    async performUpdate(dbEntity, entity, updatedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, originalValue, cascadeAlways = false) {
         if (!originalValue) {
             let [isProcessed, entityIdData] = this.isProcessed(entity, updatedEntityMap, dbEntity, schemaUtils);
             if (isProcessed === true) {
@@ -211,22 +207,21 @@ class OperationManager {
             if (!entityIdData.idKey) {
                 throw `Cannot update ${dbEntity.name}, not all @Id(s) are set.`;
             }
-            let originalValue = await this.getOriginalRecord(dbEntity, entityIdData.idKey);
+            let originalValue = await this.getOriginalRecord(dbEntity, entityIdData.idKey, updateCache);
             if (!originalValue) {
                 throw `Cannot update ${dbEntity.name}, entity not found.`;
             }
         }
-        let result = await this.internalUpdate(dbEntity, entity, originalValue, airDb, schemaUtils, cascadeAlways);
-        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, updatedEntityMap, airDb, schemaUtils, cascadeAlways);
+        let result = await this.internalUpdate(dbEntity, entity, originalValue, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeAlways);
+        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, updatedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeAlways);
         return result.numberOfAffectedRecords;
     }
-    async internalInsertValuesGetIds(dbEntity, rawInsertValues) {
-        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, diTokens_1.QUERY_FACADE);
+    async internalInsertValuesGetIds(dbEntity, rawInsertValues, fieldUtils, queryFacade, queryUtils, transConnector) {
         const insertValues = new air_control_1.InsertValues(rawInsertValues);
-        const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null);
+        const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null, queryUtils, fieldUtils);
         return await transConnector.insertValuesGetIds(portableQuery);
     }
-    async cascadeOnPersist(cascadeRecords, parentDbEntity, alreadyModifiedEntityMap, airDb, schemaUtils, cascadeAlways = false) {
+    async cascadeOnPersist(cascadeRecords, parentDbEntity, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeAlways = false) {
         if (!cascadeRecords.length) {
             return;
         }
@@ -265,7 +260,7 @@ class OperationManager {
                 }
             }
             if (entitiesWithIds.length) {
-                const originalValues = await this.getOriginalValues(entitiesWithIds, dbEntity);
+                const originalValues = await this.getOriginalValues(entitiesWithIds, dbEntity, airDb, queryFacade);
                 for (const idKey in originalValues.dataMap) {
                     entitiesWithIdMap[idKey].originalValue = originalValues.dataMap[idKey];
                 }
@@ -280,16 +275,16 @@ class OperationManager {
                         // Don't know if the entity has been deleted or is a brand new one, create it
                         // TODO: figure out if the entity has been deleted and if it has, throw an
                         // exception?
-                        await this.performCreate(dbEntity, entityToUpdate.newValue, alreadyModifiedEntityMap, entityToUpdate.idData, cascadeAlways);
+                        await this.performCreate(dbEntity, entityToUpdate.newValue, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, entityToUpdate.idData, cascadeAlways);
                     }
                     else {
-                        await this.performUpdate(dbEntity, entityToUpdate.newValue, alreadyModifiedEntityMap, airDb, schemaUtils, entityToUpdate.originalValue, cascadeAlways);
+                        await this.performUpdate(dbEntity, entityToUpdate.newValue, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, entityToUpdate.originalValue, cascadeAlways);
                     }
                 }
             }
             for (let i = 0; i < entitiesWithoutIds.length; i++) {
                 let entityToCreate = entitiesWithoutIds[i];
-                await this.performCreate(dbEntity, entityToCreate, alreadyModifiedEntityMap, entityToCreate.idData, cascadeAlways);
+                await this.performCreate(dbEntity, entityToCreate, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, entityToCreate.idData, cascadeAlways);
             }
         }
     }
@@ -338,7 +333,7 @@ class OperationManager {
      *  ManyToOne:
      *    Cascades do not travel across ManyToOne
      */
-    async internalUpdate(dbEntity, entity, originalEntity, airDb, schemaUtils, cascadeAlways = false) {
+    async internalUpdate(dbEntity, entity, originalEntity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeAlways = false) {
         const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         const cascadeRecords = [];
         const setFragment = {};
@@ -420,7 +415,7 @@ class OperationManager {
                 where: whereFragment
             };
             let update = new air_control_1.UpdateProperties(rawUpdate);
-            numberOfAffectedRecords = await this.internalUpdateWhere(dbEntity, update);
+            numberOfAffectedRecords = await this.internalUpdateWhere(dbEntity, update, fieldUtils, queryFacade, queryUtils, transConnector);
         }
         return {
             recordChanged: !!numUpdates,
@@ -480,14 +475,12 @@ class OperationManager {
             throw `@OneToMany relation must be an array`;
         }
     }
-    async internalUpdateColumnsWhere(dbEntity, updateColumns) {
-        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, diTokens_1.QUERY_FACADE);
-        const portableQuery = queryFacade.getPortableQuery(dbEntity, updateColumns, null);
+    async internalUpdateColumnsWhere(dbEntity, updateColumns, fieldUtils, queryFacade, queryUtils, transConnector) {
+        const portableQuery = queryFacade.getPortableQuery(dbEntity, updateColumns, null, queryUtils, fieldUtils);
         return await transConnector.updateValues(portableQuery);
     }
-    async internalUpdateWhere(dbEntity, update) {
-        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, diTokens_1.QUERY_FACADE);
-        const portableQuery = queryFacade.getPortableQuery(dbEntity, update, null);
+    async internalUpdateWhere(dbEntity, update, fieldUtils, queryFacade, queryUtils, transConnector) {
+        const portableQuery = queryFacade.getPortableQuery(dbEntity, update, null, queryUtils, fieldUtils);
         return await transConnector.updateValues(portableQuery);
     }
     /**
@@ -495,8 +488,8 @@ class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performDelete(dbEntity, entity) {
-        return await this.internalDelete(dbEntity, entity);
+    async performDelete(dbEntity, entity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector) {
+        return await this.internalDelete(dbEntity, entity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector);
     }
     isProcessed(entity, 
     // This is a per-operation map (for a single update or create or delete with cascades)
@@ -552,13 +545,11 @@ class OperationManager {
         // The Update operation for this entity was already recorded, nothing to do
         return [true, null];
     }
-    async internalDeleteWhere(dbEntity, aDelete) {
-        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, diTokens_1.QUERY_FACADE);
-        let portableQuery = queryFacade.getPortableQuery(dbEntity, aDelete, null);
+    async internalDeleteWhere(dbEntity, aDelete, fieldUtils, queryFacade, queryUtils, transConnector) {
+        let portableQuery = queryFacade.getPortableQuery(dbEntity, aDelete, null, queryUtils, fieldUtils);
         return await transConnector.deleteWhere(portableQuery);
     }
-    async internalDelete(dbEntity, entity) {
-        const [airDb, schemaUtils] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.SCHEMA_UTILS);
+    async internalDelete(dbEntity, entity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector) {
         const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         const idWhereFragments = [];
         const valuesMapByColumn = [];
@@ -632,7 +623,7 @@ class OperationManager {
             where: idWhereClause
         };
         let deleteWhere = new air_control_1.Delete(rawDelete);
-        return await this.internalDeleteWhere(dbEntity, deleteWhere);
+        return await this.internalDeleteWhere(dbEntity, deleteWhere, fieldUtils, queryFacade, queryUtils, transConnector);
     }
 }
 exports.OperationManager = OperationManager;

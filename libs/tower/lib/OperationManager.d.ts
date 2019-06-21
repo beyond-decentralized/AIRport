@@ -1,5 +1,5 @@
-import { Delete, EntityIdData, IAirportDatabase, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, ISchemaUtils, MappedEntityArray, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties, UpdateRecord } from '@airport/air-control';
-import { DbColumn, DbEntity, DbProperty, DbRelation, JSONBaseOperation } from '@airport/ground-control';
+import { Delete, EntityIdData, IAirportDatabase, IEntityUpdateColumns, IEntityUpdateProperties, IFieldUtils, IQEntity, IQMetadataUtils, IQueryFacade, IQueryUtils, ISchemaUtils, IUpdateCache, MappedEntityArray, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties, UpdateRecord } from '@airport/air-control';
+import { DbColumn, DbEntity, DbProperty, DbRelation, ITransactionalConnector, JSONBaseOperation } from '@airport/ground-control';
 /**
  * Created by Papa on 11/15/2016.
  */
@@ -16,9 +16,6 @@ export interface IOperationManager {
     throwUnexpectedProperty(dbProperty: DbProperty, dbColumn: DbColumn, value: any): any;
 }
 export declare abstract class OperationManager implements IOperationManager {
-    higherOrderOpsYieldLength: number;
-    transactionInProgress: boolean;
-    init(): Promise<void>;
     throwUnexpectedProperty(dbProperty: DbProperty, dbColumn: DbColumn, value: any): void;
     protected warn(message: string): void;
     /**
@@ -29,7 +26,7 @@ export declare abstract class OperationManager implements IOperationManager {
      */
     protected performCreate<E>(dbEntity: DbEntity, entity: E, createdEntityMap: {
         [entityId: string]: any;
-    }[][], idData?: EntityIdData, cascadeAlways?: boolean): Promise<number>;
+    }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, idData?: EntityIdData, cascadeAlways?: boolean): Promise<number>;
     /**
      * Transactional context must have been started by the time this method is called.
      *
@@ -38,13 +35,13 @@ export declare abstract class OperationManager implements IOperationManager {
      */
     protected performBulkCreate<E>(dbEntity: DbEntity, entities: E[], createdEntityMap: {
         [entityId: string]: any;
-    }[][], checkIfProcessed?: boolean, cascadeAlways?: boolean, ensureGeneratedValues?: boolean): Promise<number>;
+    }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, checkIfProcessed?: boolean, cascadeAlways?: boolean, ensureGeneratedValues?: boolean): Promise<number>;
     private internalCreate;
     private getGeneratedProperty;
     private columnProcessed;
-    protected internalInsertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>): Promise<number>;
-    protected internalInsertValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>, ensureGeneratedValues?: boolean): Promise<number>;
-    protected internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>): Promise<number[] | string[]>;
+    protected internalInsertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): Promise<number>;
+    protected internalInsertValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, ensureGeneratedValues?: boolean): Promise<number>;
+    protected internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): Promise<number[] | string[]>;
     /**
      * Transactional context must have been started by the time this method is called.
      *
@@ -53,11 +50,11 @@ export declare abstract class OperationManager implements IOperationManager {
      */
     protected performUpdate<E>(dbEntity: DbEntity, entity: E, updatedEntityMap: {
         [entityId: string]: any;
-    }[][], airDb: IAirportDatabase, schemaUtils: ISchemaUtils, originalValue?: E, cascadeAlways?: boolean): Promise<number>;
-    protected internalInsertValuesGetIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>): Promise<number[] | string[]>;
+    }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, originalValue?: E, cascadeAlways?: boolean): Promise<number>;
+    protected internalInsertValuesGetIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number[] | string[]>;
     private cascadeOnPersist;
-    protected abstract getOriginalRecord(dbEntity: DbEntity, idKey: string): Promise<any>;
-    protected abstract getOriginalValues(entitiesToUpdate: UpdateRecord[], dbEntity: DbEntity): Promise<MappedEntityArray<any>>;
+    protected abstract getOriginalRecord(dbEntity: DbEntity, idKey: string, updateCache: IUpdateCache): Promise<any>;
+    protected abstract getOriginalValues(entitiesToUpdate: UpdateRecord[], dbEntity: DbEntity, airDb: IAirportDatabase, queryFacade: IQueryFacade): Promise<MappedEntityArray<any>>;
     protected getIdsWhereClause(entitiesToUpdate: UpdateRecord[], qEntity: IQEntity): JSONBaseOperation;
     /**
      * On an update operation, can a nested create contain an update?
@@ -72,15 +69,15 @@ export declare abstract class OperationManager implements IOperationManager {
     private assertRelationValueIsAnObject;
     private assertManyToOneNotArray;
     private assertOneToManyIsArray;
-    protected internalUpdateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(dbEntity: DbEntity, updateColumns: UpdateColumns<IEUC, IQE>): Promise<number>;
-    protected internalUpdateWhere<E, IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(dbEntity: DbEntity, update: UpdateProperties<IEUP, IQE>): Promise<number>;
+    protected internalUpdateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(dbEntity: DbEntity, updateColumns: UpdateColumns<IEUC, IQE>, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number>;
+    protected internalUpdateWhere<E, IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(dbEntity: DbEntity, update: UpdateProperties<IEUP, IQE>, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number>;
     /**
      * Transactional context must have been started by the time this method is called.
      * @param qEntity
      * @param entity
      */
-    protected performDelete<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    protected performDelete<E>(dbEntity: DbEntity, entity: E, airDb: IAirportDatabase, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector): Promise<number>;
     private isProcessed;
-    protected internalDeleteWhere<E, IQE extends IQEntity>(dbEntity: DbEntity, aDelete: Delete<IQE>): Promise<number>;
+    protected internalDeleteWhere<E, IQE extends IQEntity>(dbEntity: DbEntity, aDelete: Delete<IQE>, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number>;
     private internalDelete;
 }

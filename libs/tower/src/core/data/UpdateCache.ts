@@ -1,5 +1,6 @@
 import {
 	ISchemaUtils,
+	IUpdateCache,
 	UpdateCacheType,
 	valuesEqual
 }                     from '@airport/air-control'
@@ -21,44 +22,6 @@ export interface EntityUpdateCache {
 	[id: string]: any;
 }
 
-export interface IUpdateCache {
-
-	dropCache(): void;
-
-	addToCache(
-		schemaUtils: ISchemaUtils,
-		cacheForUpdate: UpdateCacheType,
-		dbEntity: DbEntity,
-		...entities: any[]
-	): void;
-
-	dropFromCache(
-		schemaUtils: ISchemaUtils,
-		cacheForUpdate: UpdateCacheType,
-		dbEntity: DbEntity,
-		...entities: any[]
-	): void;
-
-	getOriginalRecord(
-		dbEntity: DbEntity,
-		idKey: string,
-	): any;
-
-	getEntityUpdateCache(
-		schemaUtils: ISchemaUtils,
-		dbEntity: DbEntity,
-		entity: any
-	): any;
-
-	getEntityUpdateDiff(
-		schemaUtils: ISchemaUtils,
-		dbEntity: DbEntity,
-		entity: any,
-		failOnNoOriginalRecord?: boolean,
-	): any;
-
-}
-
 export class UpdateCache
 	implements IUpdateCache {
 
@@ -69,6 +32,15 @@ export class UpdateCache
 		this.updateCache = []
 	}
 
+	/**
+	 * Start Context for an UpdateProperties Operation.  All entity update operations must
+	 * be performed on cached entities.
+	 *
+	 * This starts recording all queries and allows the update to diff recorded
+	 * query results with the updated object to get the actual changed fields.
+	 *
+	 * @param {Entity} entities
+	 */
 	addToCache(
 		schemaUtils: ISchemaUtils,
 		cacheForUpdate: UpdateCacheType,
@@ -89,6 +61,9 @@ export class UpdateCache
 		dbEntity: DbEntity,
 		...entities: any[]
 	): void {
+		if (!entities) {
+			return
+		}
 		const entityCache = this.getEntityCache(dbEntity)
 		for (const entity of entities) {
 			const id = schemaUtils.getIdKey(entity, dbEntity)
@@ -321,20 +296,20 @@ export class UpdateCache
 		}
 	}
 
-/*
-	private getUpdateCache(
-		schemaUtils: ISchemaUtils,
-		dbEntity: DbEntity,
-		id: string
-	): any {
-		const entityCache = this.getEntityCache(dbEntity)
-		if (schemaUtils.isIdEmpty(id)) {
-			return null
-		}
+	/*
+		private getUpdateCache(
+			schemaUtils: ISchemaUtils,
+			dbEntity: DbEntity,
+			id: string
+		): any {
+			const entityCache = this.getEntityCache(dbEntity)
+			if (schemaUtils.isIdEmpty(id)) {
+				return null
+			}
 
-		return entityCache[id]
-	}
-*/
+			return entityCache[id]
+		}
+	*/
 
 }
 

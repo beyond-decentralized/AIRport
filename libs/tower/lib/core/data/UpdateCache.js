@@ -18,7 +18,7 @@ class UpdateCache {
                 if (schemaUtils.isIdEmpty(id)) {
                     return null
                 }
-        
+    
                 return entityCache[id]
             }
         */
@@ -26,6 +26,15 @@ class UpdateCache {
     dropCache() {
         this.updateCache = [];
     }
+    /**
+     * Start Context for an UpdateProperties Operation.  All entity update operations must
+     * be performed on cached entities.
+     *
+     * This starts recording all queries and allows the update to diff recorded
+     * query results with the updated object to get the actual changed fields.
+     *
+     * @param {Entity} entities
+     */
     addToCache(schemaUtils, cacheForUpdate, dbEntity, ...entities) {
         if (!entities || !entities.length
             || cacheForUpdate === air_control_1.UpdateCacheType.NONE) {
@@ -35,6 +44,9 @@ class UpdateCache {
         this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbEntity, ...entities);
     }
     dropFromCache(schemaUtils, cacheForUpdate, dbEntity, ...entities) {
+        if (!entities) {
+            return;
+        }
         const entityCache = this.getEntityCache(dbEntity);
         for (const entity of entities) {
             const id = schemaUtils.getIdKey(entity, dbEntity);

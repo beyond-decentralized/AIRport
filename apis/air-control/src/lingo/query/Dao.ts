@@ -1,4 +1,5 @@
 import {IObservable}     from '@airport/observe'
+import {UpdateCacheType} from '../core/data/UpdateCacheType'
 import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -7,7 +8,6 @@ import {
 	IEntityUpdateProperties,
 	IQEntity
 }                        from '../core/entity/Entity'
-import {UpdateCacheType} from './api/EntityLookup'
 import {RawEntityQuery}  from './facade/EntityQuery'
 
 /**

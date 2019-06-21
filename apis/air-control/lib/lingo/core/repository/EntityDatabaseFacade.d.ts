@@ -1,7 +1,6 @@
 import { DbEntity } from '@airport/ground-control';
 import { IEntityFind } from '../../query/api/EntityFind';
 import { IEntityFindOne } from '../../query/api/EntityFindOne';
-import { UpdateCacheType } from '../../query/api/EntityLookup';
 import { IEntitySearch } from '../../query/api/EntitySearch';
 import { IEntitySearchOne } from '../../query/api/EntitySearchOne';
 import { IDuo } from '../../query/Duo';
@@ -9,6 +8,7 @@ import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
 import { RawUpdate, RawUpdateColumns } from '../../query/facade/Update';
 import { MappedEntityArray } from '../../query/MappedEntityArray';
+import { UpdateCacheType } from '../data/UpdateCacheType';
 import { IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../entity/Entity';
 /**
  * Facade for all DB operations related to a particular Entity.

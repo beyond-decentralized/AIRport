@@ -6,17 +6,17 @@ import {TRANS_CONNECTOR} from '@airport/ground-control'
  */
 
 export async function transact(): Promise<void> {
-	const transConnector = await DI.getP(TRANS_CONNECTOR)
+	const transConnector = await DI.get(TRANS_CONNECTOR)
 	await transConnector.transact()
 }
 
 export async function commit(): Promise<void> {
-	const transConnector = await DI.getP(TRANS_CONNECTOR)
+	const transConnector = await DI.get(TRANS_CONNECTOR)
 	await transConnector.commit()
 }
 
 export async function rollback(): Promise<void> {
-	const transConnector = await DI.getP(TRANS_CONNECTOR)
+	const transConnector = await DI.get(TRANS_CONNECTOR)
 	await transConnector.rollback()
 }
 
@@ -29,7 +29,7 @@ export async function transactional<T>(
 	callback: () => Promise<T>,
 	keepAlive?: boolean
 ): Promise<T> {
-	const transConnector   = await DI.getP(TRANS_CONNECTOR)
+	const transConnector   = await DI.get(TRANS_CONNECTOR)
 	let transactionStarted = false
 	try {
 		await transConnector.transact()

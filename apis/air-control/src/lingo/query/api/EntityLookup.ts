@@ -1,24 +1,9 @@
 /**
  * Type of update-caching to apply to retrieved entities.
  */
-import { QueryResultType } from "@airport/ground-control";
-import { MappedEntityArray } from "../MappedEntityArray";
+import {QueryResultType} from '@airport/ground-control'
+import {UpdateCacheType} from '../../core/data/UpdateCacheType'
 
-export enum UpdateCacheType {
-	/**
-	 * Do not put retrieved entities into the update cache.
-	 */
-	NONE,
-	/**
-	 * Only put the entities from the root of the SELECT clause
-	 * into the update cache.
-	 */
-	ROOT_QUERY_ENTITIES,
-	/**
-	 * Put all entities in SELECT clause into the update cache.
-	 */
-	ALL_QUERY_ENTITIES,
-}
 
 /**
  * Common parent for all entity retrieval operations.
@@ -39,7 +24,7 @@ export interface IEntityLookup<Child, MappedChild> {
 		cacheForUpdateState: UpdateCacheType,
 	): Child;
 
-	mapped : MappedChild;
+	mapped: MappedChild;
 
 	getQueryResultType(
 		baseQueryResultType: QueryResultType

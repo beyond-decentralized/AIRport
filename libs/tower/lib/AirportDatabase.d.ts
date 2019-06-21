@@ -1,7 +1,6 @@
-import { FunctionsAndOperators, IAirportDatabase, IDatabaseFacade, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, QSchema } from '@airport/air-control';
-import { IQOrderableField, RawFieldQuery } from '@airport/air-control';
-import { ITreeEntity, RawSheetQuery, RawTreeQuery } from '@airport/air-control/lib/src';
+import { FunctionsAndOperators, IAirportDatabase, IQOrderableField, ITreeEntity, QSchema, RawFieldQuery, RawSheetQuery, RawTreeQuery } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
+import { IObservable } from '@airport/observe';
 export declare class AirportDatabase implements IAirportDatabase {
     functions: FunctionsAndOperators;
     F: FunctionsAndOperators;
@@ -12,29 +11,13 @@ export declare class AirportDatabase implements IAirportDatabase {
     QM: {
         [name: string]: QSchema;
     };
-    private databaseMap;
-    private dbNames;
-    private dbNameSet;
-    private currentDbName;
     constructor();
-    registerDatabase(facade: IDatabaseFacade): void;
-    registerQSchemas(qSchemas: QSchema[]): Promise<void>;
-    setCurrentDb(dbName?: string): void;
-    getDbNames(): string[];
-    getDbNameSet(): {
-        [databaseName: string]: boolean;
-    };
-    readonly db: IDatabaseFacade;
-    readonly find: INonEntityFind;
-    readonly findOne: INonEntityFindOne;
-    readonly search: INonEntitySearch;
-    readonly searchOne: INonEntitySearchOne;
     findAsField<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<any>;
     }): Promise<any[]>;
     findOneAsField<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<any>;
-    }): any;
+    }): Promise<any>;
     findAsSheet(rawSheetQuery: RawSheetQuery | {
         (...args: any[]): RawSheetQuery;
     }, cursorSize?: number | ((data: any[]) => void), callback?: (data: any[][]) => void): Promise<any[][]>;
@@ -47,4 +30,24 @@ export declare class AirportDatabase implements IAirportDatabase {
     findOneAsTree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
         (...args: any[]): RawTreeQuery<any>;
     }): Promise<ITE>;
+    searchAsField<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
+        (...args: any[]): RawFieldQuery<any>;
+    }): IObservable<any[]>;
+    searchOneAsField<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
+        (...args: any[]): RawFieldQuery<any>;
+    }): IObservable<any>;
+    searchAsSheet(rawSheetQuery: RawSheetQuery | {
+        (...args: any[]): RawSheetQuery;
+    }, cursorSize?: number | ((data: any[]) => void), callback?: (data: any[][]) => void): IObservable<any[][]>;
+    searchOneAsSheet(rawSheetQuery: RawSheetQuery | {
+        (...args: any[]): RawSheetQuery;
+    }, cursorSize?: number | ((data: any[]) => void), callback?: (data: any[][]) => void): IObservable<any[]>;
+    searchAsTree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
+        (...args: any[]): RawTreeQuery<any>;
+    }): IObservable<ITE[]>;
+    searchOneAsTree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
+        (...args: any[]): RawTreeQuery<any>;
+    }): IObservable<ITE>;
+    private find;
+    private search;
 }

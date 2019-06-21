@@ -2,28 +2,25 @@ import {
 	Delete,
 	ENTITY_MANAGER,
 	EntityQuery,
+	IAirportDatabase,
 	IDatabaseFacade,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
+	IFieldUtils,
 	IFunctionWrapper,
 	IQEntity,
-	IQOrderableField,
-	ITreeEntity,
+	IQMetadataUtils,
+	IQueryFacade,
+	IQueryUtils,
+	ISchemaUtils,
+	IUpdateCache,
 	MappedEntityArray,
-	NonEntityFind,
-	NonEntityFindOne,
-	NonEntitySearch,
-	NonEntitySearchOne,
 	RawDelete,
 	RawEntityQuery,
-	RawFieldQuery,
 	RawInsertColumnValues,
 	RawInsertValues,
-	RawSheetQuery,
-	RawTreeQuery,
 	RawUpdate,
 	RawUpdateColumns,
-	UpdateCacheType,
 	UpdateColumns,
 	UpdateProperties,
 	UpdateRecord,
@@ -31,9 +28,10 @@ import {
 import {DI}                from '@airport/di'
 import {
 	DbEntity,
-	QueryResultType
+	ITransactionalConnector,
+	QueryResultType,
+	TRANS_CONNECTOR
 }                          from '@airport/ground-control'
-import {IObservable}       from '@airport/observe'
 import {
 	DistributionStrategy,
 	PlatformType
@@ -49,107 +47,6 @@ export class EntityManager
 	implements IDatabaseFacade {
 
 	name: string
-
-	find      = new NonEntityFind()
-	findOne   = new NonEntityFindOne()
-	search    = new NonEntitySearch()
-	searchOne = new NonEntitySearchOne()
-
-	async findAsField<IQF extends IQOrderableField<IQF>>(
-		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
-	): Promise<Array<any>> {
-
-	}
-
-	async findAsSheet(
-		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
-		cursorSize?: number | ((
-			data: any[]
-		) => void),
-		callback?: (
-			data: any[][]
-		) => void
-	): Promise<Array<any[]>> {
-
-	}
-
-	async findAsTree<ITE extends ITreeEntity>(
-		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
-	): Promise<Array<ITE>> {
-
-	}
-
-	async findOneAsField<IQF extends IQOrderableField<IQF>>(
-		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
-	): Promise<any> {
-
-	}
-
-	async findOneAsSheet(
-		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
-		cursorSize?: number | ((
-			data: any[]
-		) => void),
-		callback?: (
-			data: any[][]
-		) => void
-	): Promise<any[]> {
-
-	}
-
-	async findOneAsTree<ITE extends ITreeEntity>(
-		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
-	): Promise<ITE> {
-
-	}
-
-	searchAsField<IQF extends IQOrderableField<IQF>>(
-		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
-	): IObservable<Array<any>> {
-
-	}
-
-	searchAsSheet(
-		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
-		cursorSize?: number | ((
-			data: any[]
-		) => void),
-		callback?: (
-			data: any[][]
-		) => void
-	): IObservable<Array<any[]>> {
-
-	}
-
-	searchAsTree<ITE extends ITreeEntity>(
-		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
-	): IObservable<Array<ITE>> {
-
-	}
-
-	searchOneAsField<IQF extends IQOrderableField<IQF>>(
-		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> }
-	): IObservable<any> {
-
-	}
-
-	searchOneAsSheet(
-		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
-		cursorSize?: number | ((
-			data: any[]
-		) => void),
-		callback?: (
-			data: any[][]
-		) => void
-	): IObservable<any[]> {
-
-	}
-
-	searchOneAsTree<ITE extends ITreeEntity>(
-		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> }
-	): IObservable<ITE> {
-
-	}
 
 	/*constructor() {
 		super();
@@ -167,7 +64,7 @@ export class EntityManager
 				return
 			}
 			updateCache.addToCache(cacheForUpdate, dbEntity, ...entities)
-		}*/
+		}
 
 	releaseCachedForUpdate(
 		cacheForUpdate: UpdateCacheType,
@@ -183,6 +80,7 @@ export class EntityManager
 	dropUpdateCache(): void {
 		this.updateCache.dropCache()
 	}
+	 */
 
 	async addRepository(
 		name: string,
@@ -191,25 +89,45 @@ export class EntityManager
 		platformConfig: string                     = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
 	): Promise<number> {
-		return await this.connector.addRepository(
+		const transConnector = await DI.get(TRANS_CONNECTOR)
+
+		return await transConnector.addRepository(
 			name, url, platform, platformConfig, distributionStrategy)
 	}
 
 	async create<E>(
 		dbEntity: DbEntity,
-		entity: E
+		entity: E,
+		airDb: IAirportDatabase,
+		fieldUtils: IFieldUtils,
+		metadataUtils: IQMetadataUtils,
+		queryFacade: IQueryFacade,
+		queryUtils: IQueryUtils,
+		schemaUtils: ISchemaUtils,
+		transConnector: ITransactionalConnector,
+		updateCache: IUpdateCache
 	): Promise<number> {
 		if (!entity) {
 			return 0
 		}
 		return await transactional(async () =>
-			await this.performCreate(dbEntity, entity, [])
+			await this.performCreate(dbEntity, entity, [],
+				airDb, fieldUtils, metadataUtils, queryFacade,
+				queryUtils, schemaUtils, transConnector, updateCache)
 		)
 	}
 
 	async bulkCreate<E>(
 		dbEntity: DbEntity,
 		entities: E[],
+		airDb: IAirportDatabase,
+		fieldUtils: IFieldUtils,
+		metadataUtils: IQMetadataUtils,
+		queryFacade: IQueryFacade,
+		queryUtils: IQueryUtils,
+		schemaUtils: ISchemaUtils,
+		transConnector: ITransactionalConnector,
+		updateCache: IUpdateCache,
 		checkIfProcessed: boolean = true,
 		cascade: boolean          = false
 	): Promise<number> {
@@ -218,7 +136,9 @@ export class EntityManager
 		}
 		return await transactional(async () =>
 			await this.performBulkCreate(dbEntity, entities, [],
-				checkIfProcessed, cascade)
+				airDb, fieldUtils, metadataUtils,
+				queryFacade, queryUtils, schemaUtils, transConnector,
+				updateCache, checkIfProcessed, cascade)
 		)
 	}
 
@@ -226,7 +146,9 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
-		}
+		},
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): Promise<number> {
 		if (!rawInsertColumnValues) {
 			return 0
@@ -235,14 +157,17 @@ export class EntityManager
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
 
-		let numInsertedRows = await this.internalInsertColumnValues(dbEntity, rawInsertColumnValues)
+		let numInsertedRows = await this.internalInsertColumnValues(
+			dbEntity, rawInsertColumnValues, queryUtils, fieldUtils)
 
 		return numInsertedRows
 	}
 
 	async insertValues<IQE extends IQEntity>(
 		dbEntity: DbEntity,
-		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> }
+		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> },
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): Promise<number> {
 		if (!rawInsertValues) {
 			return 0
@@ -253,7 +178,7 @@ export class EntityManager
 
 		return await transactional(async () =>
 			await this.internalInsertValues(
-				dbEntity, rawInsertValues as RawInsertValues<IQE>)
+				dbEntity, rawInsertValues as RawInsertValues<IQE>, queryUtils, fieldUtils)
 		)
 	}
 
@@ -261,7 +186,9 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
-		}
+		},
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): Promise<number[] | string[]> {
 		if (!rawInsertColumnValues) {
 			return []
@@ -270,16 +197,19 @@ export class EntityManager
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
 
-		let ids = await this.internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues)
-
-		return ids
+		return await this.internalInsertColumnValuesGenerateIds(
+			dbEntity, rawInsertColumnValues, queryUtils, fieldUtils)
 	}
 
 	async insertValuesGenerateIds<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
-		}
+		},
+		fieldUtils: IFieldUtils,
+		queryFacade: IQueryFacade,
+		queryUtils: IQueryUtils,
+		transConnector: ITransactionalConnector
 	): Promise<number[] | string[]> {
 		if (!rawInsertValues) {
 			return []
@@ -290,26 +220,41 @@ export class EntityManager
 
 		return await transactional(async () =>
 			await this.internalInsertValuesGetIds(
-				dbEntity, rawInsertValues as RawInsertValues<IQE>)
+				dbEntity, rawInsertValues as RawInsertValues<IQE>,
+				fieldUtils, queryFacade, queryUtils, transConnector)
 		)
 
 	}
 
 	async delete<E>(
 		dbEntity: DbEntity,
-		entity: E
+		entity: E,
+		airDb: IAirportDatabase,
+		fieldUtils: IFieldUtils,
+		queryFacade: IQueryFacade,
+		queryUtils: IQueryUtils,
+		schemaUtils: ISchemaUtils,
+		transConnector: ITransactionalConnector
 	): Promise<number> {
 		if (!entity) {
 			return 0
 		}
 		return await transactional(async () =>
-			await this.performDelete(dbEntity, entity)
+			await this.performDelete(dbEntity, entity,
+				airDb, fieldUtils, queryFacade, queryUtils,
+				schemaUtils, transConnector)
 		)
 	}
 
 	async deleteWhere<IQE extends IQEntity>(
 		dbEntity: DbEntity,
-		rawDelete: RawDelete<IQE> | { (...args: any[]): RawDelete<IQE> }
+		rawDelete: RawDelete<IQE> | {
+			(...args: any[]): RawDelete<IQE>
+		},
+		fieldUtils: IFieldUtils,
+		queryFacade: IQueryFacade,
+		queryUtils: IQueryUtils,
+		transConnector: ITransactionalConnector
 	): Promise<number> {
 		if (!rawDelete) {
 			return 0
@@ -318,16 +263,25 @@ export class EntityManager
 			rawDelete = rawDelete()
 		}
 
-		let deleteWhere: Delete<IQE> = new Delete(rawDelete, this.utils)
+		let deleteWhere: Delete<IQE> = new Delete(rawDelete)
 
 		return await transactional(async () =>
-			await this.internalDeleteWhere(dbEntity, deleteWhere)
+			await this.internalDeleteWhere(dbEntity, deleteWhere,
+				fieldUtils, queryFacade, queryUtils, transConnector)
 		)
 	}
 
 	async save<E>(
 		dbEntity: DbEntity,
-		entity: E
+		entity: E,
+		airDb: IAirportDatabase,
+		fieldUtils: IFieldUtils,
+		metadataUtils: IQMetadataUtils,
+		queryFacade: IQueryFacade,
+		queryUtils: IQueryUtils,
+		schemaUtils: ISchemaUtils,
+		transConnector: ITransactionalConnector,
+		updateCache: IUpdateCache
 	): Promise<number> {
 		if (!entity) {
 			return 0
@@ -342,9 +296,9 @@ export class EntityManager
 		for (const dbColumn of dbEntity.idColumns) {
 
 			const [propertyNameChains, idValue] =
-				      this.utils.Schema.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entity)
+				      schemaUtils.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entity)
 
-			this.utils.Schema.isIdEmpty(idValue) ? emptyIdCount++ : nonEmptyIdCount++
+			schemaUtils.isIdEmpty(idValue) ? emptyIdCount++ : nonEmptyIdCount++
 		}
 
 		return await transactional(async () => {
@@ -354,22 +308,36 @@ export class EntityManager
 			Please make sure that the entity instance either has all @Id values specified (to be
 			updated) or non of @Id values specified (to be created).`
 			} else if (emptyIdCount) {
-				return await this.create(dbEntity, entity)
+				return await this.create(dbEntity, entity,
+					airDb, fieldUtils, metadataUtils, queryFacade,
+					queryUtils, schemaUtils, transConnector, updateCache)
 			} else {
-				return await this.update(dbEntity, entity)
+				return await this.update(dbEntity, entity,
+					airDb, fieldUtils, metadataUtils, queryFacade,
+					queryUtils, schemaUtils, transConnector, updateCache)
 			}
 		})
 	}
 
 	async update<E>(
 		dbEntity: DbEntity,
-		entity: E
+		entity: E,
+		airDb: IAirportDatabase,
+		fieldUtils: IFieldUtils,
+		metadataUtils: IQMetadataUtils,
+		queryFacade: IQueryFacade,
+		queryUtils: IQueryUtils,
+		schemaUtils: ISchemaUtils,
+		transConnector: ITransactionalConnector,
+		updateCache: IUpdateCache
 	): Promise<number> {
 		if (!entity) {
 			return 0
 		}
 		return await transactional(async () =>
-			await this.performUpdate(dbEntity, entity, [])
+			await this.performUpdate(dbEntity, entity, [],
+				airDb, fieldUtils, metadataUtils, queryFacade,
+				queryUtils, schemaUtils, transConnector, updateCache)
 		)
 	}
 
@@ -382,7 +350,13 @@ export class EntityManager
 	async updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawUpdate: RawUpdateColumns<IEUC, IQE>
-			| { (...args: any[]): RawUpdateColumns<IEUC, IQE> }
+			| {
+			(...args: any[]): RawUpdateColumns<IEUC, IQE>
+		},
+		fieldUtils: IFieldUtils,
+		queryFacade: IQueryFacade,
+		queryUtils: IQueryUtils,
+		transConnector: ITransactionalConnector
 	): Promise<number> {
 		if (!rawUpdate) {
 			return 0
@@ -391,16 +365,22 @@ export class EntityManager
 			rawUpdate = rawUpdate()
 		}
 
-		let update: UpdateColumns<any, IQE>
-			    = new UpdateColumns(rawUpdate, this.utils)
+		let update: UpdateColumns<any, IQE> = new UpdateColumns(rawUpdate)
 
-		return await this.internalUpdateColumnsWhere(dbEntity, update)
+		return await this.internalUpdateColumnsWhere(dbEntity, update,
+			fieldUtils, queryFacade, queryUtils, transConnector)
 	}
 
 	async updateWhere<IEUP extends IEntityUpdateProperties,
 		IQE extends IQEntity>(
 		dbEntity: DbEntity,
-		rawUpdate: RawUpdate<IEUP, IQE> | { (...args: any[]): RawUpdate<IEUP, IQE> }
+		rawUpdate: RawUpdate<IEUP, IQE> | {
+			(...args: any[]): RawUpdate<IEUP, IQE>
+		},
+		fieldUtils: IFieldUtils,
+		queryFacade: IQueryFacade,
+		queryUtils: IQueryUtils,
+		transConnector: ITransactionalConnector
 	): Promise<number> {
 		if (!rawUpdate) {
 			return 0
@@ -409,11 +389,11 @@ export class EntityManager
 			rawUpdate = rawUpdate()
 		}
 
-		let update: UpdateProperties<any, IQE>
-			    = new UpdateProperties(rawUpdate, this.utils)
+		let update: UpdateProperties<any, IQE> = new UpdateProperties(rawUpdate)
 
 		return await transactional(async () =>
-			await this.internalUpdateWhere(dbEntity, update)
+			await this.internalUpdateWhere(dbEntity, update,
+				fieldUtils, queryFacade, queryUtils, transConnector)
 		)
 	}
 
@@ -425,8 +405,9 @@ export class EntityManager
 	async getOriginalRecord(
 		dbEntity: DbEntity,
 		idKey: string,
+		updateCache: IUpdateCache
 	): Promise<any> {
-		const originalRecord = this.updateCache.getOriginalRecord(dbEntity, idKey)
+		const originalRecord = updateCache.getOriginalRecord(dbEntity, idKey)
 
 		if (!originalRecord) {
 			throw `Cannot update '${dbEntity.name}' with composite id '${idKey}' - not found in update cache.
@@ -439,17 +420,25 @@ export class EntityManager
 	async getOriginalValues(
 		entitiesToUpdate: UpdateRecord[],
 		dbEntity: DbEntity,
+		airDb: IAirportDatabase,
+		fieldUtils: IFieldUtils,
+		queryFacade: IQueryFacade,
+		queryUtils: IQueryUtils,
+		schemaUtils: ISchemaUtils,
+		transConnector: ITransactionalConnector,
+		updateCache: IUpdateCache
 	): Promise<MappedEntityArray<any>> {
-		const qEntity                         = this.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
+		const qEntity                         = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
 		let rawTreeQuery: RawEntityQuery<any> = {
 			select: {},
 			from: [qEntity],
 			where: this.getIdsWhereClause(entitiesToUpdate, qEntity)
 		}
-		let entityQuery: EntityQuery<any>     = new EntityQuery(rawTreeQuery, this.utils)
+		let entityQuery: EntityQuery<any>     = new EntityQuery(rawTreeQuery)
 
-		return await this.entity.find<any, MappedEntityArray<any>>(
-			dbEntity, entityQuery, QueryResultType.MAPPED_ENTITY_TREE)
+		return await queryFacade.find<any, MappedEntityArray<any>>(
+			dbEntity, entityQuery, QueryResultType.MAPPED_ENTITY_TREE,
+			fieldUtils, queryUtils, schemaUtils, transConnector, updateCache)
 	}
 
 	prepare<QF extends Function>(
