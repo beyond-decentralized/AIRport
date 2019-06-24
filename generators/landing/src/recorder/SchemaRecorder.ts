@@ -19,7 +19,6 @@ import {
 	ISchemaRelationColumnDao,
 	ISchemaRelationDao,
 	ISchemaVersionDao,
-	IVersionedSchemaObject,
 	SCHEMA_COLUMN_DAO,
 	SCHEMA_DAO,
 	SCHEMA_ENTITY_DAO,
@@ -47,49 +46,35 @@ export interface ISchemaRecorder {
 export class SchemaRecorder
 	implements ISchemaRecorder {
 
-	private domainDao: Promise<IDomainDao>
-	private schemaColumnDao: Promise<ISchemaColumnDao>
-	private schemaDao: Promise<ISchemaDao>
-	private schemaEntityDao: Promise<ISchemaEntityDao>
-	private schemaPropertyColumnDao: Promise<ISchemaPropertyColumnDao>
-	private schemaPropertyDao: Promise<ISchemaPropertyDao>
-	private schemaReferenceDao: Promise<ISchemaReferenceDao>
-	private schemaRelationColumnDao: Promise<ISchemaRelationColumnDao>
-	private schemaRelationDao: Promise<ISchemaRelationDao>
-	private schemaVersionDao: Promise<ISchemaVersionDao>
-
-	constructor() {
-		this.domainDao               = DI.getP(DOMAIN_DAO)
-		this.schemaColumnDao         = DI.getP(SCHEMA_COLUMN_DAO)
-		this.schemaDao               = DI.getP(SCHEMA_DAO)
-		this.schemaEntityDao         = DI.getP(SCHEMA_ENTITY_DAO)
-		this.schemaPropertyColumnDao = DI.getP(SCHEMA_PROPERTY_COLUMN_DAO)
-		this.schemaPropertyDao       = DI.getP(SCHEMA_PROPERTY_DAO)
-		this.schemaReferenceDao      = DI.getP(SCHEMA_REFERENCE_DAO)
-		this.schemaRelationColumnDao = DI.getP(SCHEMA_RELATION_COLUMN_DAO)
-		this.schemaRelationDao       = DI.getP(SCHEMA_RELATION_DAO)
-		this.schemaVersionDao        = DI.getP(SCHEMA_VERSION_DAO)
-	}
-
 	async record(
 		ddlObjects: DdlObjects,
 		normalOperation: boolean
 	): Promise<void> {
+		const [domainDao, schemaColumnDao, schemaDao,
+			      schemaEntityDao, schemaPropertyColumnDao, schemaPropertyDao,
+			      schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao,
+			      schemaVersionDao] = await DI.get(
+			DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO,
+			SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_PROPERTY_DAO,
+			SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO,
+			SCHEMA_RELATION_DAO, SCHEMA_VERSION_DAO
+		)
+
 		await transactional(async () => {
 			// FIXME: add support for real schema versioning
 			this.setDefaultVersioning(ddlObjects)
 			if (normalOperation) {
-				await this.normalRecord(ddlObjects, await this.domainDao, await this.schemaDao,
-					await this.schemaVersionDao, await this.schemaReferenceDao,
-					await this.schemaEntityDao, await this.schemaPropertyDao,
-					await this.schemaRelationDao, await this.schemaColumnDao,
-					await this.schemaPropertyColumnDao, await this.schemaRelationColumnDao)
+				await this.normalRecord(ddlObjects, domainDao, schemaDao,
+					schemaVersionDao, schemaReferenceDao,
+					schemaEntityDao, schemaPropertyDao,
+					schemaRelationDao, schemaColumnDao,
+					schemaPropertyColumnDao, schemaRelationColumnDao)
 			} else {
-				await this.bootstrapRecord(ddlObjects, await this.domainDao, await this.schemaDao,
-					await this.schemaVersionDao, await this.schemaReferenceDao,
-					await this.schemaEntityDao, await this.schemaPropertyDao,
-					await this.schemaRelationDao, await this.schemaColumnDao,
-					await this.schemaPropertyColumnDao, await this.schemaRelationColumnDao)
+				await this.bootstrapRecord(ddlObjects, domainDao, schemaDao,
+					schemaVersionDao, schemaReferenceDao,
+					schemaEntityDao, schemaPropertyDao,
+					schemaRelationDao, schemaColumnDao,
+					schemaPropertyColumnDao, schemaRelationColumnDao)
 			}
 		})
 	}

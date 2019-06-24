@@ -1,12 +1,17 @@
-import { IQOrderableField } from '../../core/field/Field';
-import { RawFieldQuery } from '../facade/FieldQuery';
-import { RawSheetQuery } from '../facade/SheetQuery';
-import { ITreeEntity, RawTreeQuery } from '../facade/TreeQuery';
+import {IQOrderableField} from '../../core/field/Field'
+import {RawFieldQuery}    from '../facade/FieldQuery'
+import {RawSheetQuery}    from '../facade/SheetQuery'
+import {
+	ITreeEntity,
+	RawTreeQuery
+}                         from '../facade/TreeQuery'
+import {ILookup}          from './Lookup'
 
 /**
  * Non-Entity 'find' (find many) API.
  */
-export interface INonEntityFind {
+export interface INonEntityFind
+	extends ILookup {
 
 	/**
 	 * Returns a Promise for a list of non-interlinked arbitrary object tree.

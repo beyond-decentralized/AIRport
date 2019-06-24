@@ -1,3 +1,4 @@
+import { IAirportDatabase } from '@airport/air-control';
 import { ColumnIndex, SchemaVersionId, TableIndex } from '@airport/ground-control';
 import { ActorId, RepositoryEntityActorRecordId, RepositoryId } from '@airport/holding-pattern';
 import { ISchema } from '@airport/traffic-pattern';
@@ -10,10 +11,6 @@ export interface IStage2SyncedInDataProcessor {
     applyChangesToDb(stage1Result: Stage1SyncedInDataProcessingResult, schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>): Promise<void>;
 }
 export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataProcessor {
-    private airDb;
-    private recordUpdateStageDao;
-    private utils;
-    constructor();
     applyChangesToDb(stage1Result: Stage1SyncedInDataProcessingResult, schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>): Promise<void>;
     /**
      * Remote changes come in with SchemaVersionIds not SchemaIndexes, so it makes
@@ -27,7 +24,7 @@ export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataP
      *  To tie in a given SchemaVersionId to its SchemaIndex an additional mapping data
      *  structure is passed in.
      */
-    performCreates(recordCreations: Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<ActorId, Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>, schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>): Promise<void>;
+    performCreates(recordCreations: Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<ActorId, Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>, schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>, airDb: IAirportDatabase): Promise<void>;
     performUpdates(recordUpdates: Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<ActorId, Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>, schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>): Promise<void>;
     performDeletes(recordDeletions: Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>, schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>): Promise<void>;
     /**

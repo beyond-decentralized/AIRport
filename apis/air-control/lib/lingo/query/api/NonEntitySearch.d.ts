@@ -1,12 +1,13 @@
-import { IObservable } from "@airport/observe";
+import { IObservable } from '@airport/observe';
 import { IQOrderableField } from '../../core/field/Field';
 import { RawFieldQuery } from '../facade/FieldQuery';
 import { RawSheetQuery } from '../facade/SheetQuery';
 import { ITreeEntity, RawTreeQuery } from '../facade/TreeQuery';
+import { ILookup } from './Lookup';
 /**
- * Non-Entity 'search' (search many) API.
+ * Non-Entity 'searchOne' (searchOne many) API.
  */
-export interface INonEntitySearch {
+export interface INonEntitySearch extends ILookup {
     /**
      * Returns an Observable for a list of non-interlinked arbitrary object tree.
      */

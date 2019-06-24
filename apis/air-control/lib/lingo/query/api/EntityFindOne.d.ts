@@ -1,6 +1,6 @@
+import { IEntitySelectProperties } from '../../core/entity/Entity';
 import { RawEntityQuery } from '../facade/EntityQuery';
-import { IEntitySelectProperties } from "../../core/entity/Entity";
-import { IEntityLookup } from "./EntityLookup";
+import { IEntityLookup } from './EntityLookup';
 /**
  * Entity 'findOne' API.
  */

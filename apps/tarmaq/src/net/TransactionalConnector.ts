@@ -1,4 +1,5 @@
 import {IDatabaseFacade} from '@airport/air-control'
+import {DB_FACADE}       from '@airport/air-control'
 import {DI}              from '@airport/di'
 import {
 	DistributionStrategy,
@@ -9,17 +10,15 @@ import {
 }                        from '@airport/ground-control'
 import {IObservable}     from '@airport/observe'
 import {
-	ENTITY_MANAGER,
 	ITransactionalServer,
 	TRANS_SERVER
 }                        from '@airport/tower'
 
-export const BOGUS = 0
-
 export class TransactionalConnector
 	implements ITransactionalConnector {
 
-	private databaseFacade: IDatabaseFacade
+
+	private dbFacade: IDatabaseFacade
 	dbName: string
 	serverUrl: string
 	transServer: ITransactionalServer
@@ -29,17 +28,17 @@ export class TransactionalConnector
 			databaseFacade: IDatabaseFacade,
 			transServer: ITransactionalServer
 		) => {
-			this.databaseFacade = databaseFacade
-			this.transServer    = transServer
-		}, ENTITY_MANAGER, TRANS_SERVER)
+			this.dbFacade    = databaseFacade
+			this.transServer = transServer
+		}, DB_FACADE, TRANS_SERVER)
 	}
 
 	async init(): Promise<void> {
-		this.databaseFacade = await DI.getP(ENTITY_MANAGER)
+		this.dbFacade    = await DI.getP(DB_FACADE)
 		this.transServer = await DI.getP(TRANS_SERVER)
 
 		await this.transServer.init()
-		await this.databaseFacade.init()
+		await this.dbFacade.init()
 	}
 
 	async addRepository(

@@ -10,12 +10,6 @@ export interface IStage1SyncedInDataProcessor {
     performStage1DataProcessing(repoTransHistoryMapByRepositoryId: Map<RepositoryId, ISyncRepoTransHistory[]>, actorMayById: Map<ActorId, IActor>): Promise<Stage1SyncedInDataProcessingResult>;
 }
 export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataProcessor {
-    private actorDao;
-    private repoTransHistoryDao;
-    private repoTransHistoryDuo;
-    private syncInUtils;
-    private utils;
-    constructor();
     /**
      * In stage one:
      *

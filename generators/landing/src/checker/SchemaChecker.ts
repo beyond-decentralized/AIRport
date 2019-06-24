@@ -1,10 +1,7 @@
-import {
-	IUtils,
-	UTILS
-}                       from '@airport/air-control'
 import {DI}             from '@airport/di'
 import {
 	DomainName,
+	ensureChildJsMap,
 	getSchemaName,
 	JsonSchema,
 	JsonSchemaName,
@@ -12,7 +9,6 @@ import {
 }                       from '@airport/ground-control'
 import {
 	ISchema,
-	ISchemaDao,
 	SCHEMA_DAO
 }                       from '@airport/traffic-pattern'
 import {SCHEMA_CHECKER} from '../diTokens'
@@ -53,19 +49,6 @@ export interface ISchemaChecker {
 export class SchemaChecker
 	implements ISchemaChecker {
 
-	private schemaDao: Promise<ISchemaDao>
-	private utils: IUtils
-
-	constructor() {
-		this.schemaDao = DI.getP(SCHEMA_DAO)
-
-		DI.get((
-			utils
-		) => {
-			this.utils = utils
-		}, UTILS)
-	}
-
 	async check(
 		jsonSchema: JsonSchema
 	): Promise<void> {
@@ -100,15 +83,15 @@ export class SchemaChecker
 
 		for (const jsonSchema of jsonSchemas) {
 			const lastJsonSchemaVersion        = jsonSchema.versions[jsonSchema.versions.length - 1]
-			const referencedSchemaMapForSchema = this.utils.ensureChildJsMap(
-				this.utils.ensureChildJsMap(
+			const referencedSchemaMapForSchema = ensureChildJsMap(
+				ensureChildJsMap(
 					referencedSchemaMapBySchema, jsonSchema.domain
 				), jsonSchema.name)
 			for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
-				this.utils.ensureChildJsMap(
+				ensureChildJsMap(
 					allReferencedSchemaMap, jsonReferencedSchema.domain
 				).set(jsonReferencedSchema.name, jsonReferencedSchema)
-				this.utils.ensureChildJsMap(
+				ensureChildJsMap(
 					referencedSchemaMapForSchema, jsonReferencedSchema.domain
 				).set(jsonReferencedSchema.name, jsonReferencedSchema)
 			}
@@ -221,7 +204,8 @@ export class SchemaChecker
 		if (schemaNames.length) {
 			existingSchemaMapByName = new Map()
 		} else {
-			existingSchemaMapByName = await (await this.schemaDao).findMapByNames(schemaNames)
+			const schemaDao         = await DI.get(SCHEMA_DAO)
+			existingSchemaMapByName = await schemaDao.findMapByNames(schemaNames)
 
 		}
 

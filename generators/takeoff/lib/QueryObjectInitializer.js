@@ -4,23 +4,16 @@ const di_1 = require("@airport/di");
 const terminal_map_1 = require("@airport/terminal-map");
 const diTokens_1 = require("./diTokens");
 class QueryObjectInitializer {
-    constructor() {
-        di_1.DI.get((ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, terminalStore) => {
-            this.ddlObjectLinker = ddlObjectLinker;
-            this.ddlObjectRetriever = ddlObjectRetriever;
-            this.queryEntityClassCreator = queryEntityClassCreator;
-            this.terminalStore = terminalStore;
-        }, diTokens_1.DDL_OBJECT_LINKER, diTokens_1.DDL_OBJECT_RETRIEVER, diTokens_1.QUERY_ENTITY_CLASS_CREATOR, terminal_map_1.TERMINAL_STORE);
+    async initialize(airDb) {
+        const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, terminalStore] = await di_1.DI.get(diTokens_1.DDL_OBJECT_LINKER, diTokens_1.DDL_OBJECT_RETRIEVER, diTokens_1.QUERY_ENTITY_CLASS_CREATOR, terminal_map_1.TERMINAL_STORE);
+        const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects();
+        this.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
     }
-    async initialize() {
-        const ddlObjects = await this.ddlObjectRetriever.retrieveDdlObjects();
-        this.generateQObjectsAndPopulateStore(ddlObjects);
-    }
-    generateQObjectsAndPopulateStore(ddlObjects) {
-        this.ddlObjectLinker.link(ddlObjects);
-        this.queryEntityClassCreator.createAll(ddlObjects.schemas);
-        this.terminalStore.state.next({
-            ...this.terminalStore.getTerminalState(),
+    generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore) {
+        ddlObjectLinker.link(ddlObjects);
+        queryEntityClassCreator.createAll(ddlObjects.schemas, airDb);
+        terminalStore.state.next({
+            ...terminalStore.getTerminalState(),
             domains: ddlObjects.domains,
             schemas: ddlObjects.schemas
         });

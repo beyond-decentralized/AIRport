@@ -1,19 +1,16 @@
 import {
 	and,
+	DB_FACADE,
 	IDatabaseFacade,
 	IEntityUpdateProperties,
 	IQEntityInternal,
 	IQOperableFieldInternal,
-	IUtils,
 	MappedEntityArray,
 	RawDelete,
 	RawInsertValues,
 	RawUpdate,
-	UTILS,
 }                           from '@airport/air-control'
-import {
-	DI
-}                           from '@airport/di'
+import {DI}                 from '@airport/di'
 import {StoreType}          from '@airport/ground-control'
 import {
 	IActor,
@@ -30,7 +27,6 @@ import {
 	PlatformType,
 	REPOSITORY_FIELD,
 }                           from '@airport/terminal-map'
-import {ENTITY_MANAGER}     from '@airport/tower'
 import {ITerminal}          from '@airport/travel-document-checkpoint'
 import {
 	DeltaStore,
@@ -125,10 +121,10 @@ export class RepositoryManager
 		DI.get((
 			utils
 		) => {
-			this.utils    = utils
+			this.utils = utils
 		}, UTILS)
 
-		this.dbFacade = DI.laterP(ENTITY_MANAGER)
+		this.dbFacade      = DI.laterP(DB_FACADE)
 		this.repositoryDao = DI.getP(REPOSITORY_DAO)
 	}
 

@@ -3,7 +3,7 @@ export * from './core/data/UpdateCache';
 export * from './core/metadata/MetadataUtils';
 export * from './AirportDatabase';
 export * from './diTokens';
-export * from './EntityManager';
+export * from './DatabaseFacade';
 export * from './transactional';
 export * from './OperationManager';
 export * from './QueryFacade';

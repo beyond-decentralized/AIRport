@@ -30,7 +30,7 @@ export type DailySyncLogValues = [
  *
  * With Citus we can partition the table across boxes by a particular field.
  *
- * That presents two search scenarios:
+ * That presents two searchOne scenarios:
  *
  * 1) Find all SyncLogs for a terminal that have not been synced yet.
  * Here if we partition by the databaseId then all of the data for a given

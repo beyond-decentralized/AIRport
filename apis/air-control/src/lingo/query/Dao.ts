@@ -1,5 +1,4 @@
-import {IObservable}     from '@airport/observe'
-import {UpdateCacheType} from '../core/data/UpdateCacheType'
+import {IEntityDatabaseFacade} from '../..'
 import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -7,8 +6,7 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-}                        from '../core/entity/Entity'
-import {RawEntityQuery}  from './facade/EntityQuery'
+}                              from '../core/entity/Entity'
 
 /**
  * Data access object.
@@ -21,42 +19,13 @@ export interface IDao<Entity,
 	EntityId extends IEntityIdProperties,
 	IQE extends IQEntity> {
 
-	findAsGraph(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): Promise<Array<Entity>>
+	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
+		EntityUpdateColumns, EntityUpdateProperties, EntityId, IQE>
 
-	findAsTree(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): Promise<Array<Entity>>
-
-	findOneAsGraph(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): Promise<Entity>
-
-	findOneAsTree(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): Promise<Entity>
-
-	searchAsGraph(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): IObservable<Array<Entity>>
-
-	searchAsTree(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): IObservable<Array<Entity>>
-
-	searchOneAsGraph(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): IObservable<Entity>
-
-	searchOneAsTree(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): IObservable<Entity>
-
-	releaseCachedForUpdate(
-		updateCacheType: UpdateCacheType,
-		...entities: Entity[]
-	);
+	// releaseCachedForUpdate(
+	// 	updateCacheType: UpdateCacheType,
+	// 	...entities: Entity[]
+	// );
 
 	bulkCreate(
 		entities: EntityCreate[],
@@ -110,12 +79,14 @@ export interface IDao<Entity,
 	 * Stages/caches the entity for later modifications (modifications
 	 * are not saved and are just stored in memory).
 	 *
+	 * TODO: probably not needed since cache is now on each entity
+	 *
 	 * @param entity
 	 * @returns {Promise<number>}
 	 */
-	stage<EntityInfo extends EntityCreate | EntityCreate[]>(
-		entity: EntityInfo,
-	): Promise<number>
+	// stage<EntityInfo extends EntityCreate | EntityCreate[]>(
+	// 	entity: EntityInfo,
+	// ): Promise<number>
 
 	/**
 	 * Does not cascade?

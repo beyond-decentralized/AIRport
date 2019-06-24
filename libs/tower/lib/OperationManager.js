@@ -260,7 +260,7 @@ class OperationManager {
                 }
             }
             if (entitiesWithIds.length) {
-                const originalValues = await this.getOriginalValues(entitiesWithIds, dbEntity, airDb, queryFacade);
+                const originalValues = await this.getOriginalValues(entitiesWithIds, dbEntity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache);
                 for (const idKey in originalValues.dataMap) {
                     entitiesWithIdMap[idKey].originalValue = originalValues.dataMap[idKey];
                 }

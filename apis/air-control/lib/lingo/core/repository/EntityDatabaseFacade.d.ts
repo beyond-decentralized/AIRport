@@ -8,7 +8,6 @@ import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
 import { RawUpdate, RawUpdateColumns } from '../../query/facade/Update';
 import { MappedEntityArray } from '../../query/MappedEntityArray';
-import { UpdateCacheType } from '../data/UpdateCacheType';
 import { IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../entity/Entity';
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -25,7 +24,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      */
     findOne: IEntityFindOne<Entity, EntitySelect>;
     /**
-     * The Observable based API for all Entity 'search' (search many) queries.
+     * The Observable based API for all Entity 'searchOne' (searchOne many) queries.
      */
     search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
     /**
@@ -42,7 +41,6 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @param {Entity} entities
      */
-    releaseCachedForUpdate(updateCacheType: UpdateCacheType, ...entities: Entity[]): Promise<void>;
     /**
      * Creates the provided entity in the db.
      *

@@ -5,15 +5,9 @@ const di_1 = require("@airport/di");
 const moving_walkway_1 = require("@airport/moving-walkway");
 const diTokens_1 = require("../../diTokens");
 class Stage2SyncedInDataProcessor {
-    constructor() {
-        di_1.DI.get((airportDatabase, recordUpdateStageDao, utils) => {
-            this.airDb = airportDatabase;
-            this.recordUpdateStageDao = recordUpdateStageDao;
-            this.utils = utils;
-        }, air_control_1.AIR_DB, moving_walkway_1.RECORD_UPDATE_STAGE_DAO, air_control_1.UTILS);
-    }
     async applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap) {
-        await this.performCreates(stage1Result.recordCreations, schemasBySchemaVersionIdMap);
+        const [airDb, recordUpdateStageDao] = await di_1.DI.get(air_control_1.AIR_DB, moving_walkway_1.RECORD_UPDATE_STAGE_DAO);
+        await this.performCreates(stage1Result.recordCreations, schemasBySchemaVersionIdMap, airDb);
         await this.performUpdates(stage1Result.recordUpdates, schemasBySchemaVersionIdMap);
         await this.performDeletes(stage1Result.recordDeletions, schemasBySchemaVersionIdMap);
     }
@@ -29,12 +23,12 @@ class Stage2SyncedInDataProcessor {
      *  To tie in a given SchemaVersionId to its SchemaIndex an additional mapping data
      *  structure is passed in.
      */
-    async performCreates(recordCreations, schemasBySchemaVersionIdMap) {
+    async performCreates(recordCreations, schemasBySchemaVersionIdMap, airDb) {
         for (const [schemaVersionId, creationInSchemaMap] of recordCreations) {
             for (const [tableIndex, creationInTableMap] of creationInSchemaMap) {
                 const schemaIndex = schemasBySchemaVersionIdMap[schemaVersionId];
-                const dbEntity = this.airDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
-                const qEntity = this.airDb.qSchemas[schemaIndex][dbEntity.name];
+                const dbEntity = airDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
+                const qEntity = airDb.qSchemas[schemaIndex][dbEntity.name];
                 const columns = [
                     qEntity.repository.id,
                     qEntity.actor.id,
@@ -59,7 +53,7 @@ class Stage2SyncedInDataProcessor {
                                 numInserts++;
                             }
                             columnIndexedValues.sort((col1IndexAndValue, col2IndexAndValue) => {
-                                return this.utils.compareNumbers(col1IndexAndValue[0], col2IndexAndValue[0]);
+                                return air_control_1.compareNumbers(col1IndexAndValue[0], col2IndexAndValue[0]);
                             });
                             for (const [columnIndex, columnValue] of columnIndexedValues) {
                                 if (creatingColumns) {
@@ -75,7 +69,7 @@ class Stage2SyncedInDataProcessor {
                     }
                 }
                 if (numInserts) {
-                    await this.airDb.db.insertValues(dbEntity, {
+                    await airDb.db.insertValues(dbEntity, {
                         insertInto: qEntity,
                         columns,
                         values

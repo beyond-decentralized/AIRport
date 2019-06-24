@@ -5,7 +5,6 @@ const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const terminal_map_1 = require("@airport/terminal-map");
-const tower_1 = require("@airport/tower");
 const DeltaStore_1 = require("../../data/DeltaStore");
 const diTokens_1 = require("../../diTokens");
 class RepositoryManager {
@@ -13,8 +12,8 @@ class RepositoryManager {
         this.repositoriesById = {};
         di_1.DI.get((utils) => {
             this.utils = utils;
-        }, air_control_1.UTILS);
-        this.dbFacade = di_1.DI.laterP(tower_1.ENTITY_MANAGER);
+        }, UTILS);
+        this.dbFacade = di_1.DI.laterP(air_control_1.DB_FACADE);
         this.repositoryDao = di_1.DI.getP(holding_pattern_1.REPOSITORY_DAO);
     }
     async initialize() {

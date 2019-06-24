@@ -5,27 +5,11 @@ const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../../diTokens");
 class UpdateCache {
-    constructor() {
-        this.updateCache = [];
-        this.saveRun = 0;
-        /*
-            private getUpdateCache(
-                schemaUtils: ISchemaUtils,
-                dbEntity: DbEntity,
-                id: string
-            ): any {
-                const entityCache = this.getEntityCache(dbEntity)
-                if (schemaUtils.isIdEmpty(id)) {
-                    return null
-                }
-    
-                return entityCache[id]
-            }
-        */
-    }
-    dropCache() {
-        this.updateCache = [];
-    }
+    // private updateCache: EntityUpdateCache[][] = []
+    // private saveRun                            = 0
+    // dropCache(): void {
+    // 	this.updateCache = []
+    // }
     /**
      * Start Context for an UpdateProperties Operation.  All entity update operations must
      * be performed on cached entities.

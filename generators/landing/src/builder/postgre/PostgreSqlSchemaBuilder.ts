@@ -4,11 +4,13 @@ import {
 	getSchemaName,
 	getSequenceName,
 	getTableName,
+	IStoreDriver,
 	JsonSchema,
 	JsonSchemaColumn,
 	JsonSchemaEntity,
 	QueryType,
-	SQLDataType
+	SQLDataType,
+	STORE_DRIVER
 }                         from '@airport/ground-control'
 import {SCHEMA_BUILDER}   from '../../diTokens'
 import {SqlSchemaBuilder} from '../SqlSchemaBuilder'
@@ -17,12 +19,13 @@ export class PostgreSqlSchemaBuilder
 	extends SqlSchemaBuilder {
 
 	async createSchema(
-		jsonSchema: JsonSchema
+		jsonSchema: JsonSchema,
+		storeDriver: IStoreDriver
 	): Promise<void> {
 		const schemaName            = getSchemaName(jsonSchema)
 		const createSchemaStatement = `CREATE SCHEMA ${schemaName}`
 
-		await this.storeDriver.query(QueryType.DDL, createSchemaStatement, [], false)
+		await storeDriver.query(QueryType.DDL, createSchemaStatement, [], false)
 	}
 
 	getColumnSuffix(
@@ -67,9 +70,11 @@ export class PostgreSqlSchemaBuilder
 	async buildAllSequences(
 		jsonSchemas: JsonSchema[]
 	): Promise<ISequence[]> {
+		const storeDriver = await DI.get(STORE_DRIVER)
+
 		for (const jsonSchema of jsonSchemas) {
 			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-				await this.buildSequences(jsonSchema, jsonEntity)
+				await this.buildSequences(jsonSchema, jsonEntity, storeDriver)
 			}
 		}
 		throw 'Finish implementing'
@@ -77,7 +82,8 @@ export class PostgreSqlSchemaBuilder
 
 	async buildSequences(
 		jsonSchema: JsonSchema,
-		jsonEntity: JsonSchemaEntity
+		jsonEntity: JsonSchemaEntity,
+		storeDriver: IStoreDriver
 	): Promise<void> {
 		for (const jsonColumn of jsonEntity.columns) {
 			if (!jsonColumn.isGenerated) {
@@ -93,7 +99,7 @@ export class PostgreSqlSchemaBuilder
 			const createSequenceDdl
 				      = `CREATE SEQUENCE ${sequenceName} INCREMENT BY ${incrementBy}`
 
-			await this.storeDriver.query(QueryType.DDL, createSequenceDdl, [], false)
+			await storeDriver.query(QueryType.DDL, createSequenceDdl, [], false)
 		}
 	}
 

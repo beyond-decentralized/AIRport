@@ -1,16 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
-const terminal_map_1 = require("@airport/terminal-map");
 const diTokens_1 = require("../diTokens");
 class SchemaLocator {
-    constructor() {
-        di_1.DI.get((terminalStore) => {
-            this.terminalStore = terminalStore;
-        }, terminal_map_1.TERMINAL_STORE);
-    }
-    locateExistingSchemaVersionRecord(jsonSchema) {
-        const schemaVersionsForDomainName = this.terminalStore
+    // private terminalStore: ITerminalStore
+    locateExistingSchemaVersionRecord(jsonSchema, terminalStore) {
+        const schemaVersionsForDomainName = terminalStore
             .getLatestSchemaVersionMapByNames().get(jsonSchema.domain);
         if (!schemaVersionsForDomainName) {
             return null;
@@ -22,8 +17,8 @@ class SchemaLocator {
         }
         return latestSchemaVersionForSchema;
     }
-    locateLatestSchemaVersionBySchemaName(schemaName) {
-        return this.terminalStore.getLatestSchemaVersionMapBySchemaName()
+    locateLatestSchemaVersionBySchemaName(schemaName, terminalStore) {
+        return terminalStore.getLatestSchemaVersionMapBySchemaName()
             .get(schemaName);
     }
 }

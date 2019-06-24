@@ -24,7 +24,7 @@ export interface IUpdateCache {
 	/**
 	 * Completely drops update cache.
 	 */
-	dropCache(): void;
+	// dropCache(): void;
 
 	/**
 	 * Releases UpdateProperties Cache for entities that haven't been released
@@ -32,12 +32,12 @@ export interface IUpdateCache {
 	 *
 	 * @param {Entity} entities
 	 */
-	dropFromCache(
-		schemaUtils: ISchemaUtils,
-		cacheForUpdate: UpdateCacheType,
-		dbEntity: DbEntity,
-		...entities: any[]
-	): void;
+	// dropFromCache(
+	// 	schemaUtils: ISchemaUtils,
+	// 	cacheForUpdate: UpdateCacheType,
+	// 	dbEntity: DbEntity,
+	// 	...entities: any[]
+	// ): void;
 
 	getOriginalRecord(
 		dbEntity: DbEntity,

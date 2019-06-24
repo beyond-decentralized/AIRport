@@ -10,11 +10,13 @@ import {SCHEMA_LOCATOR} from '../diTokens'
 export interface ISchemaLocator {
 
 	locateExistingSchemaVersionRecord(
-		jsonSchema: JsonSchema
+		jsonSchema: JsonSchema,
+		terminalStore: ITerminalStore
 	): ISchemaVersion
 
 	locateLatestSchemaVersionBySchemaName(
-		schemaName: string
+		schemaName: string,
+		terminalStore: ITerminalStore
 	): ISchemaVersion
 
 }
@@ -22,20 +24,13 @@ export interface ISchemaLocator {
 export class SchemaLocator
 	implements ISchemaLocator {
 
-	private terminalStore: ITerminalStore
-
-	constructor() {
-		DI.get((
-			terminalStore
-		) => {
-			this.terminalStore = terminalStore
-		}, TERMINAL_STORE)
-	}
+	// private terminalStore: ITerminalStore
 
 	locateExistingSchemaVersionRecord(
-		jsonSchema: JsonSchema
+		jsonSchema: JsonSchema,
+		terminalStore: ITerminalStore
 	): ISchemaVersion {
-		const schemaVersionsForDomainName = this.terminalStore
+		const schemaVersionsForDomainName = terminalStore
 			.getLatestSchemaVersionMapByNames().get(jsonSchema.domain)
 		if (!schemaVersionsForDomainName) {
 			return null
@@ -52,9 +47,10 @@ export class SchemaLocator
 	}
 
 	locateLatestSchemaVersionBySchemaName(
-		schemaName: string
+		schemaName: string,
+		terminalStore: ITerminalStore
 	): ISchemaVersion {
-		return this.terminalStore.getLatestSchemaVersionMapBySchemaName()
+		return terminalStore.getLatestSchemaVersionMapBySchemaName()
 			.get(schemaName)
 	}
 

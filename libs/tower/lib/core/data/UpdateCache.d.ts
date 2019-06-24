@@ -7,9 +7,6 @@ export interface EntityUpdateCache {
     [id: string]: any;
 }
 export declare class UpdateCache implements IUpdateCache {
-    private updateCache;
-    private saveRun;
-    dropCache(): void;
     /**
      * Start Context for an UpdateProperties Operation.  All entity update operations must
      * be performed on cached entities.

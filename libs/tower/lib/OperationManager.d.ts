@@ -54,7 +54,7 @@ export declare abstract class OperationManager implements IOperationManager {
     protected internalInsertValuesGetIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number[] | string[]>;
     private cascadeOnPersist;
     protected abstract getOriginalRecord(dbEntity: DbEntity, idKey: string, updateCache: IUpdateCache): Promise<any>;
-    protected abstract getOriginalValues(entitiesToUpdate: UpdateRecord[], dbEntity: DbEntity, airDb: IAirportDatabase, queryFacade: IQueryFacade): Promise<MappedEntityArray<any>>;
+    protected abstract getOriginalValues(entitiesToUpdate: UpdateRecord[], dbEntity: DbEntity, airDb: IAirportDatabase, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache): Promise<MappedEntityArray<any>>;
     protected getIdsWhereClause(entitiesToUpdate: UpdateRecord[], qEntity: IQEntity): JSONBaseOperation;
     /**
      * On an update operation, can a nested create contain an update?

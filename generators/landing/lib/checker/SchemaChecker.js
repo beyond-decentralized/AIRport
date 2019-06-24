@@ -1,17 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
 const diTokens_1 = require("../diTokens");
 class SchemaChecker {
-    constructor() {
-        this.schemaDao = di_1.DI.getP(traffic_pattern_1.SCHEMA_DAO);
-        di_1.DI.get((utils) => {
-            this.utils = utils;
-        }, air_control_1.UTILS);
-    }
     async check(jsonSchema) {
         if (!jsonSchema) {
             throw new Error(`Json Schema not provided`);
@@ -33,10 +26,10 @@ class SchemaChecker {
         const referencedSchemaMapBySchema = new Map();
         for (const jsonSchema of jsonSchemas) {
             const lastJsonSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
-            const referencedSchemaMapForSchema = this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(referencedSchemaMapBySchema, jsonSchema.domain), jsonSchema.name);
+            const referencedSchemaMapForSchema = ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(referencedSchemaMapBySchema, jsonSchema.domain), jsonSchema.name);
             for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
-                this.utils.ensureChildJsMap(allReferencedSchemaMap, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
-                this.utils.ensureChildJsMap(referencedSchemaMapForSchema, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
+                ground_control_1.ensureChildJsMap(allReferencedSchemaMap, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
+                ground_control_1.ensureChildJsMap(referencedSchemaMapForSchema, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
             }
         }
         this.pruneInGroupReferences(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema);
@@ -118,7 +111,8 @@ class SchemaChecker {
             existingSchemaMapByName = new Map();
         }
         else {
-            existingSchemaMapByName = await (await this.schemaDao).findMapByNames(schemaNames);
+            const schemaDao = await di_1.DI.get(traffic_pattern_1.SCHEMA_DAO);
+            existingSchemaMapByName = await schemaDao.findMapByNames(schemaNames);
         }
         return {
             coreDomainAndSchemaNamesBySchemaName,

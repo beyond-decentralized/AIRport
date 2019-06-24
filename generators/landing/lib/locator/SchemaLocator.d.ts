@@ -1,12 +1,11 @@
 import { JsonSchema } from '@airport/ground-control';
+import { ITerminalStore } from '@airport/terminal-map';
 import { ISchemaVersion } from '@airport/traffic-pattern';
 export interface ISchemaLocator {
-    locateExistingSchemaVersionRecord(jsonSchema: JsonSchema): ISchemaVersion;
-    locateLatestSchemaVersionBySchemaName(schemaName: string): ISchemaVersion;
+    locateExistingSchemaVersionRecord(jsonSchema: JsonSchema, terminalStore: ITerminalStore): ISchemaVersion;
+    locateLatestSchemaVersionBySchemaName(schemaName: string, terminalStore: ITerminalStore): ISchemaVersion;
 }
 export declare class SchemaLocator implements ISchemaLocator {
-    private terminalStore;
-    constructor();
-    locateExistingSchemaVersionRecord(jsonSchema: JsonSchema): ISchemaVersion;
-    locateLatestSchemaVersionBySchemaName(schemaName: string): ISchemaVersion;
+    locateExistingSchemaVersionRecord(jsonSchema: JsonSchema, terminalStore: ITerminalStore): ISchemaVersion;
+    locateLatestSchemaVersionBySchemaName(schemaName: string, terminalStore: ITerminalStore): ISchemaVersion;
 }

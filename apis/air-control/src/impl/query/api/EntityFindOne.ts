@@ -1,53 +1,45 @@
-import {DI}                      from '@airport/di'
-import {
-	DbEntity,
-	QueryResultType
-}                                from '@airport/ground-control'
-import {
-	ENTITY_UTILS,
-	QUERY_FACADE
-}                                from '../../../diTokens'
+import {QueryResultType}         from '@airport/ground-control'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
 import {IEntityFindOne}          from '../../../lingo/query/api/EntityFindOne'
 import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
 import {EntityLookup}            from './EntityLookup'
 
+export interface IEntityFindOneInternal<Entity, IESP extends IEntitySelectProperties>
+	extends IEntityFindOne<Entity, IESP> {
+
+	findOne(
+		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		queryResultType: QueryResultType
+	): Promise<Entity>
+
+}
+
 /**
  * Created by Papa on 11/12/2016.
  */
-
 export class EntityFindOne<Entity, IESP extends IEntitySelectProperties>
-	extends EntityLookup<EntityFindOne<Entity, IESP>, EntityFindOne<Entity, IESP>>
-	implements IEntityFindOne<Entity, IESP> {
+	extends EntityLookup<EntityFindOne<Entity, IESP>,
+		EntityFindOne<Entity, IESP>, IESP>
+	implements IEntityFindOneInternal<Entity, IESP> {
 
-	constructor(
-		protected dbEntity: DbEntity
-	) {
-		super()
-	}
-
-	async graph(
+	graph(
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
 	): Promise<Entity> {
-		const [entityUtils, queryFacade] = await DI.get(ENTITY_UTILS, QUERY_FACADE)
-		const entityQuery                = entityUtils.getEntityQuery(rawGraphQuery)
-		const cacheForUpdate             = this.cleanNextCallState()
-
-		return await queryFacade.findOne<Entity>(
-			this.dbEntity, entityQuery,
-			QueryResultType.ENTITY_GRAPH, cacheForUpdate)
+		return this.findOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH)
 	}
 
-	async tree(
-		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
+	tree(
+		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 	): Promise<Entity> {
-		const [entityUtils, queryFacade] = await DI.get(ENTITY_UTILS, QUERY_FACADE)
-		const entityQuery                = entityUtils.getEntityQuery(rawTreeQuery)
-		const cacheForUpdate             = this.cleanNextCallState()
+		return this.findOne(rawTreeQuery, QueryResultType.ENTITY_TREE)
+	}
 
-		return await queryFacade.findOne<Entity>(
-			this.dbEntity, entityQuery,
-			QueryResultType.ENTITY_TREE, cacheForUpdate)
+	findOne(
+		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		queryResultType: QueryResultType
+	): Promise<Entity> {
+		return this.entityLookup(rawEntityQuery, queryResultType,
+			false, true)
 	}
 
 }

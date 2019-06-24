@@ -1,7 +1,7 @@
-import { IEntitySelectProperties } from "../../core/entity/Entity";
-import { RawEntityQuery } from '../facade/EntityQuery';
-import { IEntityLookup } from "./EntityLookup";
-import { MappedEntityArray } from "../MappedEntityArray";
+import {IEntitySelectProperties} from '../../core/entity/Entity'
+import {RawEntityQuery}          from '../facade/EntityQuery'
+import {MappedEntityArray}       from '../MappedEntityArray'
+import {IEntityLookup}           from './EntityLookup'
 
 /**
  * Entity 'find' (find many) API.

@@ -104,7 +104,7 @@ export class QueryFacade
 					updateCache.addToCache(
 						schemaUtils, cacheForUpdate, dbEntity, ...results)
 
-					return results;
+					return results
 				})
 		)
 
@@ -127,7 +127,7 @@ export class QueryFacade
 					updateCache.addToCache(
 						schemaUtils, cacheForUpdate, dbEntity, result)
 
-					return results;
+					return results
 				})
 		)
 

@@ -1,10 +1,7 @@
-import {
-	IUtils,
-	UTILS,
-}                      from '@airport/air-control'
 import {DI}            from '@airport/di'
 import {
 	ColumnIndex,
+	ensureChildJsMap,
 	EntityId,
 	SchemaIndex,
 	SchemaVersionId
@@ -124,16 +121,6 @@ export interface Stage1SyncedInDataProcessingResult {
 export class SyncInUtils
 	implements ISyncInUtils {
 
-	constructor(
-		private utils: IUtils
-	) {
-		DI.get((
-			utils
-		) => {
-			this.utils = utils
-		}, UTILS)
-	}
-
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
 		repositoryId: RepositoryId,
 		operationHistory: IOperationHistory,
@@ -141,10 +128,10 @@ export class SyncInUtils
 			Map<EntityId, Map<RepositoryId, Map<CI, V>>>>
 	): Map<CI, V> {
 		// FIXME: ensure that OperationHistory schemaVersion is correctly set
-		return <any>this.utils.ensureChildJsMap(
-			this.utils.ensureChildJsMap(
-				this.utils.ensureChildJsMap(
-					recordMapBySchemaTableAndRepository, operationHistory.schemaVersion.id),
+		return <any>ensureChildJsMap(
+			ensureChildJsMap(
+				ensureChildJsMap(
+					recordMapBySchemaTableAndRepository, operationHistory.entity.schemaVersion.id),
 				operationHistory.entity.id), repositoryId)
 	}
 

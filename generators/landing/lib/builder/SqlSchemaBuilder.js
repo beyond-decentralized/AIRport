@@ -3,18 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 class SqlSchemaBuilder {
-    constructor() {
-        di_1.DI.get((storeDriver) => {
-            this.storeDriver = storeDriver;
-        }, ground_control_1.STORE_DRIVER);
-    }
     async build(jsonSchema) {
-        await this.createSchema(jsonSchema);
+        const storeDriver = await di_1.DI.get(ground_control_1.STORE_DRIVER);
+        await this.createSchema(jsonSchema, storeDriver);
         for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-            await this.buildTable(jsonSchema, jsonEntity);
+            await this.buildTable(jsonSchema, jsonEntity, storeDriver);
         }
     }
-    async buildTable(jsonSchema, jsonEntity) {
+    async buildTable(jsonSchema, jsonEntity, storeDriver) {
         const primaryKeyColumnNames = [];
         const tableColumnsDdl = jsonEntity.columns.map((jsonColumn) => {
             let columnDdl = `${jsonColumn.name} ${this.getColumnSuffix(jsonSchema, jsonEntity, jsonColumn)}`;
@@ -32,7 +28,7 @@ class SqlSchemaBuilder {
         const createTableDdl = `CREATE TABLE ${tableName} (
 		${tableColumnsDdl.join(',\n')}${primaryKeySubStatement}
 		)${createTableSuffix}`;
-        await this.storeDriver.query(ground_control_1.QueryType.DDL, createTableDdl, [], false);
+        await storeDriver.query(ground_control_1.QueryType.DDL, createTableDdl, [], false);
         for (const indexConfig of jsonEntity.tableConfig.indexes) {
             let uniquePrefix = '';
             if (indexConfig.unique) {
@@ -42,7 +38,7 @@ class SqlSchemaBuilder {
 			ON ${tableName} (
 			${indexConfig.columnList.join(', ')}
 			)`;
-            await this.storeDriver.query(ground_control_1.QueryType.DDL, createIndexDdl, [], false);
+            await storeDriver.query(ground_control_1.QueryType.DDL, createIndexDdl, [], false);
         }
         //
     }

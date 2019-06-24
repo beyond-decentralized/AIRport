@@ -1,51 +1,82 @@
-import {QueryResultType} from '@airport/ground-control'
 import {
-	IEntityLookup,
-	UpdateCacheType
-}                        from '../../../lingo/query/api/EntityLookup'
+	DbEntity,
+	QueryResultType
+}                                from '@airport/ground-control'
+import {UpdateCacheType}         from '../../../lingo/core/data/UpdateCacheType'
+import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
+import {IEntityLookup}           from '../../../lingo/query/api/EntityLookup'
+import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
+import {LookupProxy}             from './Lookup'
 
-export abstract class EntityLookup<Child, MappedChild>
-	implements IEntityLookup<Child, MappedChild> {
+export interface IEntityLookupInternal<Child, MappedChild,
+	IESP extends IEntitySelectProperties>
+	extends IEntityLookup<Child, MappedChild> {
 
-	isMapped                          = false
-	private saveNextCallInUpdateCache = UpdateCacheType.NONE
+	entityLookup(
+		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		queryResultType: QueryResultType,
+		search: boolean,
+		one: boolean
+	): Promise<any>
 
-	get mapped(): MappedChild {
-		this.isMapped = true
+}
+
+export abstract class EntityLookup<Child, MappedChild,
+	IESP extends IEntitySelectProperties>
+	extends LookupProxy
+	implements IEntityLookupInternal<Child, MappedChild, IESP> {
+
+	static cacheForUpdate = UpdateCacheType.NONE
+	static mapResults     = false
+
+	protected mapResults     = EntityLookup.mapResults
+	protected cacheForUpdate = EntityLookup.cacheForUpdate
+
+	constructor(
+		protected dbEntity: DbEntity
+	) {
+		super()
+	}
+
+	map(
+		isMapped?: boolean
+	): MappedChild {
+		this.mapResults = true
+
 		return <any>this
 	}
 
-	getQueryResultType(
-		baseQueryResultType: QueryResultType
-	): QueryResultType {
-		switch (baseQueryResultType) {
-			case QueryResultType.ENTITY_GRAPH:
-				if (this.isMapped) {
-					return QueryResultType.MAPPED_ENTITY_GRAPH
-				}
-				return QueryResultType.ENTITY_GRAPH
-			case QueryResultType.ENTITY_TREE:
-				if (this.isMapped) {
-					return QueryResultType.MAPPED_ENTITY_TREE
-				}
-				return QueryResultType.ENTITY_TREE
-			default:
-				throw `Unexpected Base Query ResultType: '${baseQueryResultType}'.`
-		}
-	}
+	noCache(): Child {
+		this.cache(UpdateCacheType.NONE)
 
-	andCacheForUpdate(
-		cacheForUpdateState: UpdateCacheType = UpdateCacheType.ROOT_QUERY_ENTITIES
-	): Child {
-		this.saveNextCallInUpdateCache = cacheForUpdateState
 		return <Child><any>this
 	}
 
-	protected cleanNextCallState(): UpdateCacheType {
-		const saveCurrentCallInUpdateCache = this.saveNextCallInUpdateCache
-		this.saveNextCallInUpdateCache     = UpdateCacheType.NONE
+	cache(
+		cacheForUpdate: UpdateCacheType = UpdateCacheType.ROOT_QUERY_ENTITIES
+	): Child {
+		this.cacheForUpdate = cacheForUpdate
 
-		return saveCurrentCallInUpdateCache
+		return <Child><any>this
 	}
+
+	entityLookup(
+		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		queryResultType: QueryResultType,
+		search: boolean,
+		one: boolean
+	): Promise<any> {
+		return this.lookup(rawEntityQuery, queryResultType,
+			search, one, null,
+			this.dbEntity, this.cacheForUpdate, this.mapResults)
+	}
+
+	/*
+		protected cleanNextCallState(): UpdateCacheType {
+			const saveCurrentCallInUpdateCache = this.saveNextCallInUpdateCache
+			this.saveNextCallInUpdateCache     = UpdateCacheType.NONE
+
+			return saveCurrentCallInUpdateCache
+		}*/
 
 }

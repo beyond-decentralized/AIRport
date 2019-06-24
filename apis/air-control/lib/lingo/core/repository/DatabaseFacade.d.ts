@@ -1,13 +1,10 @@
 import { DbEntity, DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
-import { IAirportDatabase } from '../../AirportDatabase';
 import { IAbstractQuery } from '../../query/facade/AbstractQuery';
 import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
 import { RawUpdate, RawUpdateColumns } from '../../query/facade/Update';
-import { MappedEntityArray } from '../../query/MappedEntityArray';
 import { IFieldUtils } from '../../utils/FieldUtils';
-import { IQMetadataUtils } from '../../utils/QMetadataUtils';
 import { IQueryUtils } from '../../utils/QueryUtils';
 import { EntityIdData, ISchemaUtils } from '../../utils/SchemaUtils';
 import { IUpdateCache } from '../data/UpdateCache';
@@ -45,35 +42,35 @@ export interface IDatabaseFacade {
      *
      * @return Number of records created (1 or 0)
      */
-    create<E>(dbEntity: DbEntity, entity: E, airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache): Promise<number>;
+    create<E>(dbEntity: DbEntity, entity: E): Promise<number>;
     /**
      * Creates an entity - internal API.  Use the API provided by the
      * IEntityDatabaseFacade.
      *
      * @return Number of records created
      */
-    bulkCreate<E>(dbEntity: DbEntity, entities: E[], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, checkIfProcessed: boolean, // defaults to true
+    bulkCreate<E>(dbEntity: DbEntity, entities: E[], checkIfProcessed: boolean, // defaults to true
     cascade: boolean, // defaults to false
     ensureGeneratedValues?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): Promise<number>;
+    }): Promise<number>;
     insertValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): Promise<number>;
+    }): Promise<number>;
     insertColumnValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): Promise<number[] | string[]>;
+    }): Promise<number[] | string[]>;
     insertValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number[] | string[]>;
+    }): Promise<number[] | string[]>;
     /**
      * Deletes an entity - internal API.  Use the API provided by the
      * IEntityDatabaseFacade.
      *
      * @return Number of records deleted (1 or 0)
      */
-    delete<E>(dbEntity: DbEntity, entity: E, airDb: IAirportDatabase, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector): Promise<number>;
+    delete<E>(dbEntity: DbEntity, entity: E): Promise<number>;
     /**
      * Creates an entity with a where clause - internal API.  Use the
      *  API provided by the IEntityDatabaseFacade.
@@ -82,21 +79,21 @@ export interface IDatabaseFacade {
      */
     deleteWhere<IQE extends IQEntity>(dbEntity: DbEntity, rawDelete: RawDelete<IQE> | {
         (...args: any[]): RawDelete<IQE>;
-    }, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number>;
+    }): Promise<number>;
     /**
      * Ether creates or updates an entity - internal API.  Use the
      *  API provided by the IEntityDatabaseFacade.
      *
      * @return Number of records saved (1 or 0)
      */
-    save<E>(dbEntity: DbEntity, entity: E, airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache): Promise<number>;
+    save<E>(dbEntity: DbEntity, entity: E): Promise<number>;
     /**
      * Updates an entity - internal API.  Use the API provided by the
      * IEntityDatabaseFacade.
      *
      * @return Number of records updated (1 or 0)
      */
-    update<E>(dbEntity: DbEntity, entity: E, airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache): Promise<number>;
+    update<E>(dbEntity: DbEntity, entity: E): Promise<number>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.
@@ -105,7 +102,7 @@ export interface IDatabaseFacade {
      */
     updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(dbEntity: DbEntity, rawUpdateColumns: RawUpdateColumns<IEUC, IQE> | {
         (...args: any[]): RawUpdateColumns<IEUC, IQE>;
-    }, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number>;
+    }): Promise<number>;
     /**
      * Updates an entity with a where clause, using a property based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.
@@ -114,9 +111,7 @@ export interface IDatabaseFacade {
      */
     updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(dbEntity: DbEntity, rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
         (...args: any[]): RawUpdate<IEUP, IQE>;
-    }, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number>;
-    getOriginalRecord(dbEntity: DbEntity, idKey: string, updateCache: IUpdateCache): Promise<any>;
-    getOriginalValues(entitiesToUpdate: UpdateRecord[], dbEntity: DbEntity, airDb: IAirportDatabase, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache): Promise<MappedEntityArray<any>>;
+    }): Promise<number>;
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;
 }
 export interface IQueryFacade {

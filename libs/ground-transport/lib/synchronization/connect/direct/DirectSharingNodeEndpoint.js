@@ -8,14 +8,10 @@ const DirectResonse_1 = require("./DirectResonse");
  * P2P endpoint to a built-in AGT
  */
 class DirectSharingNodeEndpoint {
-    constructor() {
-        di_1.DI.get((recentConnectionServer) => {
-            this.recentConnectionServer = recentConnectionServer;
-        }, arrivals_n_departures_1.SYNC_CONNECTION_SERVER);
-    }
     async communicateWithAGT(sharingNode, message) {
+        const recentConnectionServer = await di_1.DI.get(arrivals_n_departures_1.SYNC_CONNECTION_SERVER);
         return new Promise((resolve, reject) => {
-            this.recentConnectionServer.handleInMemoryConnect(message, new DirectResonse_1.DirectResponse((statusCode, data) => {
+            recentConnectionServer.handleInMemoryConnect(message, new DirectResonse_1.DirectResponse((statusCode, data) => {
                 if (statusCode !== 200) {
                     reject([statusCode, `Error from AGT: ` + statusCode.toString()]);
                 }

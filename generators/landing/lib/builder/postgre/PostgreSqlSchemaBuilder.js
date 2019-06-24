@@ -5,10 +5,10 @@ const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../../diTokens");
 const SqlSchemaBuilder_1 = require("../SqlSchemaBuilder");
 class PostgreSqlSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
-    async createSchema(jsonSchema) {
+    async createSchema(jsonSchema, storeDriver) {
         const schemaName = ground_control_1.getSchemaName(jsonSchema);
         const createSchemaStatement = `CREATE SCHEMA ${schemaName}`;
-        await this.storeDriver.query(ground_control_1.QueryType.DDL, createSchemaStatement, [], false);
+        await storeDriver.query(ground_control_1.QueryType.DDL, createSchemaStatement, [], false);
     }
     getColumnSuffix(jsonSchema, jsonEntity, jsonColumn) {
         let primaryKeySuffix = '';
@@ -39,14 +39,15 @@ class PostgreSqlSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
         return ``;
     }
     async buildAllSequences(jsonSchemas) {
+        const storeDriver = await di_1.DI.get(ground_control_1.STORE_DRIVER);
         for (const jsonSchema of jsonSchemas) {
             for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-                await this.buildSequences(jsonSchema, jsonEntity);
+                await this.buildSequences(jsonSchema, jsonEntity, storeDriver);
             }
         }
         throw 'Finish implementing';
     }
-    async buildSequences(jsonSchema, jsonEntity) {
+    async buildSequences(jsonSchema, jsonEntity, storeDriver) {
         for (const jsonColumn of jsonEntity.columns) {
             if (!jsonColumn.isGenerated) {
                 continue;
@@ -58,7 +59,7 @@ class PostgreSqlSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
                 incrementBy = 100000;
             }
             const createSequenceDdl = `CREATE SEQUENCE ${sequenceName} INCREMENT BY ${incrementBy}`;
-            await this.storeDriver.query(ground_control_1.QueryType.DDL, createSequenceDdl, [], false);
+            await storeDriver.query(ground_control_1.QueryType.DDL, createSequenceDdl, [], false);
         }
     }
 }

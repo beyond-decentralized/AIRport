@@ -7,12 +7,9 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-	QSchema,
-	RawEntityQuery,
-	UpdateCacheType
+	QSchema
 }                               from '@airport/air-control'
 import {EntityId as DbEntityId} from '@airport/ground-control'
-import {IObservable}            from '@airport/observe'
 import {EntityDatabaseFacade}   from './EntityDatabaseFacade'
 
 /**
@@ -28,84 +25,19 @@ export abstract class Dao<Entity,
 	implements IDao<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE> {
 
-	private db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
+	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>
 
 	constructor(
 		dbEntityId: DbEntityId,
 		Q: QSchema
 	) {
-		const dbEntity             = Q.__dbSchema__.currentVersion.entities[dbEntityId]
-		const entityDatabaseFacade = new EntityDatabaseFacade<Entity,
+		const dbEntity = Q.__dbSchema__.currentVersion.entities[dbEntityId]
+		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
+		this.db        = new EntityDatabaseFacade<Entity,
 			EntitySelect, EntityCreate,
 			EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>(
 			dbEntity, Q)
-		entityDatabaseFacade.initialize()
-
-		this.db = entityDatabaseFacade
-	}
-
-	async findAsGraph(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): Promise<Array<Entity>> {
-		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
-		return await this.db.find.graph(rawTreeQuery)
-	}
-
-	async findAsTree(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): Promise<Array<Entity>> {
-		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
-		return await this.db.find.tree(rawTreeQuery)
-	}
-
-	async findOneAsGraph(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): Promise<Entity> {
-		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
-		return await this.db.findOne.graph(rawTreeQuery)
-	}
-
-	async findOneAsTree(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): Promise<Entity> {
-		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
-		return await this.db.findOne.tree(rawTreeQuery)
-	}
-
-	searchAsGraph(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): IObservable<Array<Entity>> {
-		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
-		return this.db.search.graph(rawTreeQuery)
-	}
-
-	searchAsTree(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): IObservable<Array<Entity>> {
-		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
-		return this.db.search.tree(rawTreeQuery)
-	}
-
-	searchOneAsGraph(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): IObservable<Entity> {
-		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
-		return this.db.searchOne.graph(rawTreeQuery)
-	}
-
-	searchOneAsTree(
-		rawTreeQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> }
-	): IObservable<Entity> {
-		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
-		return this.db.searchOne.tree(rawTreeQuery)
-	}
-
-	releaseCachedForUpdate(
-		updateCacheType: UpdateCacheType,
-		...entities: Entity[]
-	) {
-		return this.db.releaseCachedForUpdate(updateCacheType, ...entities)
 	}
 
 	async bulkCreate(
@@ -124,7 +56,7 @@ export abstract class Dao<Entity,
 		entityInfo: EntityInfo
 	): Promise<number> {
 		if (entityInfo instanceof Array) {
-			return await this.bulkCreate(entityInfo)
+			return await this.db.bulkCreate(entityInfo, true, true)
 		} else {
 			return await this.db.create(<EntityCreate>entityInfo)
 		}

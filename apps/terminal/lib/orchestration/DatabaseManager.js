@@ -53,11 +53,11 @@ class DatabaseManager {
     }
     async init(domainName, storeType) {
         await fuel_hydrant_system_1.setStoreDriver(storeType);
-        const airDb = await di_1.DI.getP(air_control_1.AIR_DB);
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
         this.airDb = airDb;
-        const connector = await di_1.DI.getP(ground_control_1.TRANS_CONNECTOR);
+        const connector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
         await connector.init();
-        const storeDriver = await di_1.DI.getP(ground_control_1.STORE_DRIVER);
+        const storeDriver = await di_1.DI.get(ground_control_1.STORE_DRIVER);
         await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCES');
         await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCE_BLOCKS');
         await storeDriver.dropTable('github_com___airport__airport_code__TERMINAL_RUNS');
@@ -96,17 +96,17 @@ class DatabaseManager {
         await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__USER_TERMINAL_AGT');
         await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__User');
         if (await storeDriver.doesTableExist('github_com___airport_territory__PACKAGES')) {
-            const queryObjectInitializer = await di_1.DI.getP(takeoff_1.QUERY_OBJECT_INITIALIZER);
-            await queryObjectInitializer.initialize();
+            const queryObjectInitializer = await di_1.DI.get(takeoff_1.QUERY_OBJECT_INITIALIZER);
+            await queryObjectInitializer.initialize(airDb);
         }
         else {
-            const server = await di_1.DI.getP(tower_1.TRANS_SERVER);
+            const server = await di_1.DI.get(tower_1.TRANS_SERVER);
             server.tempActor = new holding_pattern_1.Actor();
             await this.installAirportSchema();
             await this.initTerminal(domainName);
             server.tempActor = null;
         }
-        await (await di_1.DI.getP(check_in_1.SEQUENCE_GENERATOR)).init();
+        await (await di_1.DI.get(check_in_1.SEQUENCE_GENERATOR)).init();
         /*
                 throw `Implement!`
                 let dbFacade: IDatabaseFacade = this.databaseMap[terminalName]
@@ -134,18 +134,18 @@ class DatabaseManager {
         await tower_1.transactional(async () => {
             const user = new travel_document_checkpoint_1.User();
             user.uniqueId = domainName;
-            const userDao = await di_1.DI.getP(travel_document_checkpoint_1.USER_DAO);
+            const userDao = await di_1.DI.get(travel_document_checkpoint_1.USER_DAO);
             await userDao.save(user);
             const terminal = new travel_document_checkpoint_1.Terminal();
             terminal.name = domainName;
             terminal.owner = user;
-            const terminalDao = await di_1.DI.getP(travel_document_checkpoint_1.TERMINAL_DAO);
+            const terminalDao = await di_1.DI.get(travel_document_checkpoint_1.TERMINAL_DAO);
             await terminalDao.save(terminal);
             const actor = new holding_pattern_1.Actor();
             actor.user = user;
             actor.terminal = terminal;
             actor.randomId = Math.random();
-            const actorDao = await di_1.DI.getP(holding_pattern_1.ACTOR_DAO);
+            const actorDao = await di_1.DI.get(holding_pattern_1.ACTOR_DAO);
             await actorDao.save(actor);
         });
     }
@@ -156,7 +156,7 @@ class DatabaseManager {
     }
     async installAirportSchema() {
         const blueprintFile = await Promise.resolve().then(() => require('@airport/blueprint'));
-        const schemaInitializer = await di_1.DI.getP(landing_1.SCHEMA_INITIALIZER);
+        const schemaInitializer = await di_1.DI.get(landing_1.SCHEMA_INITIALIZER);
         await schemaInitializer.initialize(blueprintFile.BLUEPRINT, false);
     }
 }

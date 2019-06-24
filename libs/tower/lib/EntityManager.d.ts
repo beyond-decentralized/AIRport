@@ -1,4 +1,4 @@
-import { IAirportDatabase, IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFieldUtils, IFunctionWrapper, IQEntity, IQMetadataUtils, IQueryFacade, IQueryUtils, ISchemaUtils, IUpdateCache, MappedEntityArray, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, UpdateRecord } from '@airport/air-control';
+import { IAirportDatabase, IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFieldUtils, IFunctionWrapper, IQEntity, IQueryFacade, IQueryUtils, ISchemaUtils, IUpdateCache, MappedEntityArray, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, UpdateRecord } from '@airport/air-control';
 import { DbEntity, ITransactionalConnector } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 import { OperationManager } from './OperationManager';
@@ -8,26 +8,26 @@ import { OperationManager } from './OperationManager';
 export declare class EntityManager extends OperationManager implements IDatabaseFacade {
     name: string;
     addRepository(name: string, url?: string, platform?: PlatformType, platformConfig?: string, distributionStrategy?: DistributionStrategy): Promise<number>;
-    create<E>(dbEntity: DbEntity, entity: E, airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache): Promise<number>;
-    bulkCreate<E>(dbEntity: DbEntity, entities: E[], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, checkIfProcessed?: boolean, cascade?: boolean): Promise<number>;
+    create<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    bulkCreate<E>(dbEntity: DbEntity, entities: E[], checkIfProcessed?: boolean, cascade?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): Promise<number>;
+    }): Promise<number>;
     insertValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): Promise<number>;
+    }): Promise<number>;
     insertColumnValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): Promise<number[] | string[]>;
+    }): Promise<number[] | string[]>;
     insertValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number[] | string[]>;
-    delete<E>(dbEntity: DbEntity, entity: E, airDb: IAirportDatabase, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector): Promise<number>;
+    }): Promise<number[] | string[]>;
+    delete<E>(dbEntity: DbEntity, entity: E): Promise<number>;
     deleteWhere<IQE extends IQEntity>(dbEntity: DbEntity, rawDelete: RawDelete<IQE> | {
         (...args: any[]): RawDelete<IQE>;
-    }, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number>;
-    save<E>(dbEntity: DbEntity, entity: E, airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache): Promise<number>;
-    update<E>(dbEntity: DbEntity, entity: E, airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache): Promise<number>;
+    }): Promise<number>;
+    save<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    update<E>(dbEntity: DbEntity, entity: E): Promise<number>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.
@@ -36,10 +36,10 @@ export declare class EntityManager extends OperationManager implements IDatabase
      */
     updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(dbEntity: DbEntity, rawUpdate: RawUpdateColumns<IEUC, IQE> | {
         (...args: any[]): RawUpdateColumns<IEUC, IQE>;
-    }, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number>;
+    }): Promise<number>;
     updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(dbEntity: DbEntity, rawUpdate: RawUpdate<IEUP, IQE> | {
         (...args: any[]): RawUpdate<IEUP, IQE>;
-    }, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number>;
+    }): Promise<number>;
     private ensureId;
     getOriginalRecord(dbEntity: DbEntity, idKey: string, updateCache: IUpdateCache): Promise<any>;
     getOriginalValues(entitiesToUpdate: UpdateRecord[], dbEntity: DbEntity, airDb: IAirportDatabase, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache): Promise<MappedEntityArray<any>>;

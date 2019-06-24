@@ -1,4 +1,3 @@
-import { IUtils } from '@airport/air-control';
 import { ColumnIndex, EntityId, SchemaIndex, SchemaVersionId } from '@airport/ground-control';
 import { ActorId, IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRepositoryTransactionHistory, RecordHistoryId, RepositoryEntityActorRecordId, RepositoryId } from '@airport/holding-pattern';
 import { IRepositoryTransactionBlock, ISharingMessage, ISynchronizationConflict, RepositoryTransactionBlockData } from '@airport/moving-walkway';
@@ -50,8 +49,6 @@ export interface Stage1SyncedInDataProcessingResult {
     syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>;
 }
 export declare class SyncInUtils implements ISyncInUtils {
-    private utils;
-    constructor(utils: IUtils);
     ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: RepositoryId, operationHistory: IOperationHistory, recordMapBySchemaTableAndRepository: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<CI, V>>>>): Map<CI, V>;
     private recordSharingMessageRepoTransBlocks;
     private recordSharingNodeRepoTransBlocks;

@@ -7,9 +7,5 @@ import { ISharingNodeEndpoint } from '../SharingNodeEndpoint';
 export declare class HttpSharingNodeEndpoint implements ISharingNodeEndpoint {
     xhr: XMLHttpRequest;
     agtUrl: string;
-    private messageFromTMSerializer;
-    private messageToTMDeserializer;
-    private messageToTMVerifier;
-    constructor();
     communicateWithAGT(sharingNode: ISharingNode, message: MessageFromTM): Promise<BatchedMessagesToTM>;
 }

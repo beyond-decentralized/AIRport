@@ -1,10 +1,9 @@
 import {
 	AIR_DB,
 	and,
+	compareNumbers,
 	IAirportDatabase,
-	IUtils,
-	or,
-	UTILS
+	or
 }                                        from '@airport/air-control'
 import {DI}                              from '@airport/di'
 import {
@@ -20,7 +19,6 @@ import {
 	RepositoryId
 }                                        from '@airport/holding-pattern'
 import {
-	IRecordUpdateStageDao,
 	RECORD_UPDATE_STAGE_DAO,
 	RecordUpdateStageValues
 }                                        from '@airport/moving-walkway'
@@ -63,29 +61,15 @@ type ColumnIndexAndValue = [ColumnIndex, any];
 export class Stage2SyncedInDataProcessor
 	implements IStage2SyncedInDataProcessor {
 
-	private airDb: IAirportDatabase
-	private recordUpdateStageDao: IRecordUpdateStageDao
-	private utils: IUtils
-
-	constructor() {
-		DI.get((
-			airportDatabase,
-			recordUpdateStageDao,
-			utils
-			) => {
-				this.airDb                = airportDatabase
-				this.recordUpdateStageDao = recordUpdateStageDao
-				this.utils                = utils
-			}, AIR_DB, RECORD_UPDATE_STAGE_DAO,
-			UTILS)
-	}
-
 	async applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
 	): Promise<void> {
+		const [airDb, recordUpdateStageDao] = await DI.get(
+			AIR_DB, RECORD_UPDATE_STAGE_DAO)
 
-		await this.performCreates(stage1Result.recordCreations, schemasBySchemaVersionIdMap)
+		await this.performCreates(stage1Result.recordCreations,
+			schemasBySchemaVersionIdMap, airDb)
 		await this.performUpdates(stage1Result.recordUpdates, schemasBySchemaVersionIdMap)
 		await this.performDeletes(stage1Result.recordDeletions, schemasBySchemaVersionIdMap)
 	}
@@ -107,13 +91,14 @@ export class Stage2SyncedInDataProcessor
 		recordCreations: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
-		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
+		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
+		airDb: IAirportDatabase
 	): Promise<void> {
 		for (const [schemaVersionId, creationInSchemaMap] of recordCreations) {
 			for (const [tableIndex, creationInTableMap] of creationInSchemaMap) {
 				const schemaIndex     = schemasBySchemaVersionIdMap[schemaVersionId]
-				const dbEntity        = this.airDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
-				const qEntity         = this.airDb.qSchemas[schemaIndex][dbEntity.name]
+				const dbEntity        = airDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
+				const qEntity         = airDb.qSchemas[schemaIndex][dbEntity.name]
 				const columns         = [
 					qEntity.repository.id,
 					qEntity.actor.id,
@@ -141,7 +126,7 @@ export class Stage2SyncedInDataProcessor
 								col1IndexAndValue: ColumnIndexAndValue,
 								col2IndexAndValue: ColumnIndexAndValue
 							) => {
-								return this.utils.compareNumbers(col1IndexAndValue[0], col2IndexAndValue[0])
+								return compareNumbers(col1IndexAndValue[0], col2IndexAndValue[0])
 							})
 							for (const [columnIndex, columnValue] of columnIndexedValues) {
 								if (creatingColumns) {
@@ -158,7 +143,7 @@ export class Stage2SyncedInDataProcessor
 				}
 
 				if (numInserts) {
-					await this.airDb.db.insertValues(dbEntity, {
+					await airDb.db.insertValues(dbEntity, {
 						insertInto: qEntity,
 						columns,
 						values

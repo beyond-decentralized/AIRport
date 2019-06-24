@@ -1,34 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
-const diTokens_1 = require("../../../diTokens");
 const FieldQuery_1 = require("../facade/FieldQuery");
 const SheetQuery_1 = require("../facade/SheetQuery");
 const TreeQuery_1 = require("../facade/TreeQuery");
+const Lookup_1 = require("./Lookup");
 /**
  * Created by Papa on 11/12/2016.
  */
-class NonEntityFindOne {
-    async tree(rawTreeQuery) {
-        const [entityUtils, queryFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.QUERY_FACADE);
-        const rawQuery = entityUtils.getQuery(rawTreeQuery);
-        const treeQuery = new TreeQuery_1.TreeQuery(rawQuery);
-        return await queryFacade.findOne(null, treeQuery, ground_control_1.QueryResultType.TREE);
+class NonEntityFindOne extends Lookup_1.Lookup {
+    field(rawFieldQuery) {
+        return this.findOne(rawFieldQuery, ground_control_1.QueryResultType.FIELD, FieldQuery_1.FieldQuery);
     }
-    async sheet(rawSheetQuery) {
-        const [entityUtils, queryFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.QUERY_FACADE);
-        const rawQuery = entityUtils.getQuery(rawSheetQuery);
-        const sheetQuery = new SheetQuery_1.SheetQuery(rawQuery);
-        return await queryFacade.findOne(null, sheetQuery, ground_control_1.QueryResultType.SHEET);
+    sheet(rawSheetQuery) {
+        return this.findOne(rawSheetQuery, ground_control_1.QueryResultType.SHEET, SheetQuery_1.SheetQuery);
     }
-    async field(rawFieldQuery) {
-        const [entityUtils, queryFacade] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.QUERY_FACADE);
-        const rawQuery = entityUtils.getQuery(rawFieldQuery);
-        const fieldQuery = new FieldQuery_1.FieldQuery(rawQuery);
-        return await queryFacade.findOne(null, fieldQuery, ground_control_1.QueryResultType.FIELD);
+    tree(rawTreeQuery) {
+        return this.findOne(rawTreeQuery, ground_control_1.QueryResultType.TREE, TreeQuery_1.TreeQuery);
+    }
+    findOne(rawNonEntityQuery, queryResultType, QueryClass) {
+        return this.lookup(rawNonEntityQuery, queryResultType, false, true, QueryClass);
     }
 }
 exports.NonEntityFindOne = NonEntityFindOne;
-di_1.DI.set(diTokens_1.NON_ENTITY_FIND_ONE, NonEntityFindOne);
 //# sourceMappingURL=NonEntityFindOne.js.map

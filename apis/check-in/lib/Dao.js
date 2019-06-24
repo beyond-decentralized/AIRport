@@ -7,44 +7,8 @@ const EntityDatabaseFacade_1 = require("./EntityDatabaseFacade");
 class Dao {
     constructor(dbEntityId, Q) {
         const dbEntity = Q.__dbSchema__.currentVersion.entities[dbEntityId];
-        const entityDatabaseFacade = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q);
-        entityDatabaseFacade.initialize();
-        this.db = entityDatabaseFacade;
-    }
-    async findAsGraph(rawTreeQuery) {
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
-        return await this.db.find.graph(rawTreeQuery);
-    }
-    async findAsTree(rawTreeQuery) {
-        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
-        return await this.db.find.tree(rawTreeQuery);
-    }
-    async findOneAsGraph(rawTreeQuery) {
-        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
-        return await this.db.findOne.graph(rawTreeQuery);
-    }
-    async findOneAsTree(rawTreeQuery) {
-        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
-        return await this.db.findOne.tree(rawTreeQuery);
-    }
-    searchAsGraph(rawTreeQuery) {
-        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
-        return this.db.search.graph(rawTreeQuery);
-    }
-    searchAsTree(rawTreeQuery) {
-        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
-        return this.db.search.tree(rawTreeQuery);
-    }
-    searchOneAsGraph(rawTreeQuery) {
-        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
-        return this.db.searchOne.graph(rawTreeQuery);
-    }
-    searchOneAsTree(rawTreeQuery) {
-        // TODO: figure out how to inject EntityDatabaseFacade and dependencies
-        return this.db.searchOne.tree(rawTreeQuery);
-    }
-    releaseCachedForUpdate(updateCacheType, ...entities) {
-        return this.db.releaseCachedForUpdate(updateCacheType, ...entities);
+        this.db = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q);
     }
     async bulkCreate(entities, cascade = false, checkIfProcessed = true) {
         return await this.db.bulkCreate(entities, cascade, checkIfProcessed);
@@ -54,7 +18,7 @@ class Dao {
     }
     async create(entityInfo) {
         if (entityInfo instanceof Array) {
-            return await this.bulkCreate(entityInfo);
+            return await this.db.bulkCreate(entityInfo, true, true);
         }
         else {
             return await this.db.create(entityInfo);

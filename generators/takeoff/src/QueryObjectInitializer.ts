@@ -1,3 +1,4 @@
+import {IAirportDatabase}         from '@airport/air-control'
 import {DI}                       from '@airport/di'
 import {
 	ITerminalStore,
@@ -16,7 +17,6 @@ import {
 	ISchemaVersion
 }                                 from '@airport/traffic-pattern'
 import {IDdlObjectLinker}         from './DdlObjectLinker'
-import {IDdlObjectRetriever}      from './DdlObjectRetriever'
 import {
 	DDL_OBJECT_LINKER,
 	DDL_OBJECT_RETRIEVER,
@@ -27,10 +27,16 @@ import {IQueryEntityClassCreator} from './QueryEntityClassCreator'
 
 export interface IQueryObjectInitializer {
 
-	initialize(): Promise<void>
+	initialize(
+		airDb: IAirportDatabase
+	): Promise<void>
 
 	generateQObjectsAndPopulateStore(
-		ddlObjects: DdlObjects
+		ddlObjects: DdlObjects,
+		airDb: IAirportDatabase,
+		ddlObjectLinker: IDdlObjectLinker,
+		queryEntityClassCreator: IQueryEntityClassCreator,
+		terminalStore: ITerminalStore
 	): void
 
 }
@@ -57,42 +63,33 @@ export interface DdlObjects {
 export class QueryObjectInitializer
 	implements IQueryObjectInitializer {
 
-	private ddlObjectLinker: IDdlObjectLinker
-	private ddlObjectRetriever: IDdlObjectRetriever
-	private queryEntityClassCreator: IQueryEntityClassCreator
-	private terminalStore: ITerminalStore
-
-	constructor() {
-		DI.get((
-			ddlObjectLinker,
-			ddlObjectRetriever,
-			queryEntityClassCreator,
-			terminalStore
-			) => {
-				this.ddlObjectLinker         = ddlObjectLinker
-				this.ddlObjectRetriever      = ddlObjectRetriever
-				this.queryEntityClassCreator = queryEntityClassCreator
-				this.terminalStore           = terminalStore
-			}, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
+	async initialize(
+		airDb: IAirportDatabase
+	): Promise<void> {
+		const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
+			      terminalStore] = await DI.get(
+			DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
 			QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE)
-	}
 
+		const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects()
 
-	async initialize(): Promise<void> {
-		const ddlObjects = await this.ddlObjectRetriever.retrieveDdlObjects()
-
-		this.generateQObjectsAndPopulateStore(ddlObjects)
+		this.generateQObjectsAndPopulateStore(ddlObjects, airDb,
+			ddlObjectLinker, queryEntityClassCreator, terminalStore)
 	}
 
 	generateQObjectsAndPopulateStore(
-		ddlObjects: DdlObjects
+		ddlObjects: DdlObjects,
+		airDb: IAirportDatabase,
+		ddlObjectLinker: IDdlObjectLinker,
+		queryEntityClassCreator: IQueryEntityClassCreator,
+		terminalStore: ITerminalStore
 	): void {
-		this.ddlObjectLinker.link(ddlObjects)
+		ddlObjectLinker.link(ddlObjects)
 
-		this.queryEntityClassCreator.createAll(ddlObjects.schemas)
+		queryEntityClassCreator.createAll(ddlObjects.schemas, airDb)
 
-		this.terminalStore.state.next({
-			...this.terminalStore.getTerminalState(),
+		terminalStore.state.next({
+			...terminalStore.getTerminalState(),
 			domains: ddlObjects.domains,
 			schemas: ddlObjects.schemas
 		})

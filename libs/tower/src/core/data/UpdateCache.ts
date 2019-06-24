@@ -25,12 +25,12 @@ export interface EntityUpdateCache {
 export class UpdateCache
 	implements IUpdateCache {
 
-	private updateCache: EntityUpdateCache[][] = []
-	private saveRun                            = 0
+	// private updateCache: EntityUpdateCache[][] = []
+	// private saveRun                            = 0
 
-	dropCache(): void {
-		this.updateCache = []
-	}
+	// dropCache(): void {
+	// 	this.updateCache = []
+	// }
 
 	/**
 	 * Start Context for an UpdateProperties Operation.  All entity update operations must

@@ -71,7 +71,7 @@ export function generateEntityDefinitions(
 	// Visit every sourceFile in the program
 	for (const sourceFile of sourceFiles) {
 		currentSourceFile = sourceFile
-		// Walk the tree to search for classes
+		// Walk the tree to searchOne for classes
 		ts.forEachChild(sourceFile, visit)
 	}
 

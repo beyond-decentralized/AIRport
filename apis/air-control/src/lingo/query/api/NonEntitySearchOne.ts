@@ -6,11 +6,13 @@ import {
 	ITreeEntity,
 	RawTreeQuery
 }                         from '../facade/TreeQuery'
+import {ILookup}          from './Lookup'
 
 /**
  * Non-Entity 'searchOne' API.
  */
-export interface INonEntitySearchOne {
+export interface INonEntitySearchOne
+	extends ILookup {
 
 	/**
 	 * Returns an Observable for a non-interlinked arbitrary object tree.

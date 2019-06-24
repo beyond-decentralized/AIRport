@@ -1,28 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const di_1 = require("@airport/di");
 const check_in_1 = require("@airport/check-in");
+const di_1 = require("@airport/di");
 const takeoff_1 = require("@airport/takeoff");
 const terminal_map_1 = require("@airport/terminal-map");
 const diTokens_1 = require("./diTokens");
 class SchemaInitializer {
-    constructor() {
-        this.queryObjectInitializer = di_1.DI.getP(takeoff_1.QUERY_OBJECT_INITIALIZER);
-        this.schemaBuilder = di_1.DI.getP(diTokens_1.SCHEMA_BUILDER);
-        this.schemaChecker = di_1.DI.getP(diTokens_1.SCHEMA_CHECKER);
-        this.schemaComposer = di_1.DI.getP(diTokens_1.SCHEMA_COMPOSER);
-        this.schemaLocator = di_1.DI.getP(diTokens_1.SCHEMA_LOCATOR);
-        this.schemaRecorder = di_1.DI.getP(diTokens_1.SCHEMA_RECORDER);
-        this.terminalStore = di_1.DI.getP(terminal_map_1.TERMINAL_STORE);
-    }
     async initialize(jsonSchemas, normalOperation = true) {
+        const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaBuilder, schemaChecker, schemaComposer, schemaLocator, schemaRecorder, sequenceGenerator, terminalStore] = await di_1.DI.get(air_control_1.AIR_DB, takeoff_1.DDL_OBJECT_LINKER, takeoff_1.DDL_OBJECT_RETRIEVER, takeoff_1.QUERY_ENTITY_CLASS_CREATOR, takeoff_1.QUERY_OBJECT_INITIALIZER, diTokens_1.SCHEMA_BUILDER, diTokens_1.SCHEMA_CHECKER, diTokens_1.SCHEMA_COMPOSER, diTokens_1.SCHEMA_LOCATOR, diTokens_1.SCHEMA_RECORDER, check_in_1.SEQUENCE_GENERATOR, terminal_map_1.TERMINAL_STORE);
         const jsonSchemasToInstall = [];
-        const schemaChecker = await this.schemaChecker;
-        const schemaLocator = await this.schemaLocator;
         for (const jsonSchema of jsonSchemas) {
             await schemaChecker.check(jsonSchema);
-            const existingSchema = schemaLocator.locateExistingSchemaVersionRecord(jsonSchema);
+            const existingSchema = schemaLocator.locateExistingSchemaVersionRecord(jsonSchema, terminalStore);
             if (existingSchema) {
                 // Nothing needs to be done, we already have this schema version
                 continue;
@@ -43,29 +33,27 @@ class SchemaInitializer {
         else {
             schemasWithValidDependencies = jsonSchemasToInstall;
         }
-        let schemaBuilder = await this.schemaBuilder;
         for (const jsonSchema of schemasWithValidDependencies) {
             await schemaBuilder.build(jsonSchema);
         }
-        const ddlObjects = (await this.schemaComposer).compose(schemasWithValidDependencies);
+        const ddlObjects = schemaComposer.compose(schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
         if (normalOperation) {
-            await (await this.schemaRecorder).record(ddlObjects, normalOperation);
+            await schemaRecorder.record(ddlObjects, normalOperation);
         }
         this.addNewSchemaVersionsToAll(ddlObjects);
-        (await this.queryObjectInitializer).generateQObjectsAndPopulateStore(ddlObjects);
+        queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
         if (!normalOperation) {
             const schemas = [];
             for (let schema of ddlObjects.allSchemas) {
                 schemas[schema.index] = schema;
             }
-            const airDb = await di_1.DI.getP(air_control_1.AIR_DB);
             airDb.schemas = schemas;
             airDb.S = schemas;
         }
         const newSequences = await schemaBuilder.buildAllSequences(schemasWithValidDependencies);
-        await (await di_1.DI.getP(check_in_1.SEQUENCE_GENERATOR)).init(newSequences);
+        await sequenceGenerator.init(newSequences);
         if (!normalOperation) {
-            await (await this.schemaRecorder).record(ddlObjects, normalOperation);
+            await schemaRecorder.record(ddlObjects, normalOperation);
         }
     }
     addNewSchemaVersionsToAll(ddlObjects) {

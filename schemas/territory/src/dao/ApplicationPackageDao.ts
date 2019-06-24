@@ -1,12 +1,12 @@
 import {DI}                      from '@airport/di'
+import {APPLICATION_PACKAGE_DAO} from '../diTokens'
 import {
 	BaseApplicationPackageDao,
-	IBaseApplicationDao
+	IBaseApplicationPackageDao
 }                                from '../generated/baseDaos'
-import {APPLICATION_PACKAGE_DAO} from '../diTokens'
 
 export interface IApplicationPackageDao
-	extends IBaseApplicationDao {
+	extends IBaseApplicationPackageDao {
 
 }
 

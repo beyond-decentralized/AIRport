@@ -1,7 +1,9 @@
 import {
+	AIR_DB,
+	DB_FACADE,
 	Delete,
-	ENTITY_MANAGER,
 	EntityQuery,
+	FIELD_UTILS,
 	IAirportDatabase,
 	IDatabaseFacade,
 	IEntityUpdateColumns,
@@ -9,18 +11,22 @@ import {
 	IFieldUtils,
 	IFunctionWrapper,
 	IQEntity,
-	IQMetadataUtils,
 	IQueryFacade,
 	IQueryUtils,
 	ISchemaUtils,
 	IUpdateCache,
 	MappedEntityArray,
+	Q_METADATA_UTILS,
+	QUERY_FACADE,
+	QUERY_UTILS,
 	RawDelete,
 	RawEntityQuery,
 	RawInsertColumnValues,
 	RawInsertValues,
 	RawUpdate,
 	RawUpdateColumns,
+	SCHEMA_UTILS,
+	UPDATE_CACHE,
 	UpdateColumns,
 	UpdateProperties,
 	UpdateRecord,
@@ -42,7 +48,7 @@ import {transactional}     from './transactional'
 /**
  * Created by Papa on 5/23/2016.
  */
-export class EntityManager
+export class DatabaseFacade
 	extends OperationManager
 	implements IDatabaseFacade {
 
@@ -97,19 +103,19 @@ export class EntityManager
 
 	async create<E>(
 		dbEntity: DbEntity,
-		entity: E,
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
-		metadataUtils: IQMetadataUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache
+		entity: E
 	): Promise<number> {
 		if (!entity) {
 			return 0
 		}
+		const [airDb, fieldUtils, metadataUtils, queryFacade,
+			      queryUtils, schemaUtils, transConnector,
+			      updateCache] = await DI.get(
+			AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
+			QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR,
+			UPDATE_CACHE
+		)
+
 		return await transactional(async () =>
 			await this.performCreate(dbEntity, entity, [],
 				airDb, fieldUtils, metadataUtils, queryFacade,
@@ -120,20 +126,19 @@ export class EntityManager
 	async bulkCreate<E>(
 		dbEntity: DbEntity,
 		entities: E[],
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
-		metadataUtils: IQMetadataUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache,
 		checkIfProcessed: boolean = true,
 		cascade: boolean          = false
 	): Promise<number> {
 		if (!entities || !entities.length) {
 			return 0
 		}
+		const [airDb, fieldUtils, metadataUtils, queryFacade,
+			      queryUtils, schemaUtils, transConnector,
+			      updateCache] = await DI.get(
+			AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
+			QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
+		)
+
 		return await transactional(async () =>
 			await this.performBulkCreate(dbEntity, entities, [],
 				airDb, fieldUtils, metadataUtils,
@@ -146,9 +151,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
-		},
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		}
 	): Promise<number> {
 		if (!rawInsertColumnValues) {
 			return 0
@@ -156,6 +159,9 @@ export class EntityManager
 		if (rawInsertColumnValues instanceof Function) {
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
+		const [fieldUtils, queryUtils] = await DI.get(
+			FIELD_UTILS, QUERY_UTILS
+		)
 
 		let numInsertedRows = await this.internalInsertColumnValues(
 			dbEntity, rawInsertColumnValues, queryUtils, fieldUtils)
@@ -165,9 +171,7 @@ export class EntityManager
 
 	async insertValues<IQE extends IQEntity>(
 		dbEntity: DbEntity,
-		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> },
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> }
 	): Promise<number> {
 		if (!rawInsertValues) {
 			return 0
@@ -175,10 +179,14 @@ export class EntityManager
 		if (rawInsertValues instanceof Function) {
 			rawInsertValues = rawInsertValues()
 		}
+		const [fieldUtils, queryUtils] = await DI.get(
+			FIELD_UTILS, QUERY_UTILS
+		)
 
 		return await transactional(async () =>
 			await this.internalInsertValues(
-				dbEntity, rawInsertValues as RawInsertValues<IQE>, queryUtils, fieldUtils)
+				dbEntity, rawInsertValues as RawInsertValues<IQE>,
+				queryUtils, fieldUtils)
 		)
 	}
 
@@ -186,9 +194,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
-		},
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		}
 	): Promise<number[] | string[]> {
 		if (!rawInsertColumnValues) {
 			return []
@@ -196,6 +202,9 @@ export class EntityManager
 		if (rawInsertColumnValues instanceof Function) {
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
+		const [fieldUtils, queryUtils] = await DI.get(
+			FIELD_UTILS, QUERY_UTILS
+		)
 
 		return await this.internalInsertColumnValuesGenerateIds(
 			dbEntity, rawInsertColumnValues, queryUtils, fieldUtils)
@@ -205,11 +214,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
-		},
-		fieldUtils: IFieldUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector
+		}
 	): Promise<number[] | string[]> {
 		if (!rawInsertValues) {
 			return []
@@ -217,6 +222,10 @@ export class EntityManager
 		if (rawInsertValues instanceof Function) {
 			rawInsertValues = rawInsertValues()
 		}
+		const [fieldUtils, queryFacade, queryUtils, transConnector
+		      ] = await DI.get(
+			FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR
+		)
 
 		return await transactional(async () =>
 			await this.internalInsertValuesGetIds(
@@ -228,17 +237,16 @@ export class EntityManager
 
 	async delete<E>(
 		dbEntity: DbEntity,
-		entity: E,
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector
+		entity: E
 	): Promise<number> {
 		if (!entity) {
 			return 0
 		}
+		const [airDb, fieldUtils, queryFacade, queryUtils,
+			      schemaUtils, transConnector] = await DI.get(
+			AIR_DB, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS,
+			SCHEMA_UTILS, TRANS_CONNECTOR)
+
 		return await transactional(async () =>
 			await this.performDelete(dbEntity, entity,
 				airDb, fieldUtils, queryFacade, queryUtils,
@@ -250,11 +258,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
-		},
-		fieldUtils: IFieldUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector
+		}
 	): Promise<number> {
 		if (!rawDelete) {
 			return 0
@@ -265,6 +269,10 @@ export class EntityManager
 
 		let deleteWhere: Delete<IQE> = new Delete(rawDelete)
 
+		const [fieldUtils, queryFacade, queryUtils,
+			      transConnector] = await DI.get(
+			FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR)
+
 		return await transactional(async () =>
 			await this.internalDeleteWhere(dbEntity, deleteWhere,
 				fieldUtils, queryFacade, queryUtils, transConnector)
@@ -273,15 +281,7 @@ export class EntityManager
 
 	async save<E>(
 		dbEntity: DbEntity,
-		entity: E,
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
-		metadataUtils: IQMetadataUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache
+		entity: E
 	): Promise<number> {
 		if (!entity) {
 			return 0
@@ -290,6 +290,12 @@ export class EntityManager
 			throw `@Id is not defined for entity: '${dbEntity.name}'.
 			Cannot call save(entity) on entities with no ids.`
 		}
+		const [airDb, fieldUtils, metadataUtils, queryFacade,
+			      queryUtils, schemaUtils, transConnector,
+			      updateCache] = await DI.get(
+			AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
+			QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
+		)
 
 		let emptyIdCount    = 0
 		let nonEmptyIdCount = 0
@@ -308,11 +314,11 @@ export class EntityManager
 			Please make sure that the entity instance either has all @Id values specified (to be
 			updated) or non of @Id values specified (to be created).`
 			} else if (emptyIdCount) {
-				return await this.create(dbEntity, entity,
+				return await this.performCreate(dbEntity, entity, [],
 					airDb, fieldUtils, metadataUtils, queryFacade,
 					queryUtils, schemaUtils, transConnector, updateCache)
 			} else {
-				return await this.update(dbEntity, entity,
+				return await this.performUpdate(dbEntity, entity, [],
 					airDb, fieldUtils, metadataUtils, queryFacade,
 					queryUtils, schemaUtils, transConnector, updateCache)
 			}
@@ -321,19 +327,18 @@ export class EntityManager
 
 	async update<E>(
 		dbEntity: DbEntity,
-		entity: E,
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
-		metadataUtils: IQMetadataUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache
+		entity: E
 	): Promise<number> {
 		if (!entity) {
 			return 0
 		}
+		const [airDb, fieldUtils, metadataUtils, queryFacade,
+			      queryUtils, schemaUtils, transConnector,
+			      updateCache] = await DI.get(
+			AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
+			QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
+		)
+
 		return await transactional(async () =>
 			await this.performUpdate(dbEntity, entity, [],
 				airDb, fieldUtils, metadataUtils, queryFacade,
@@ -352,11 +357,7 @@ export class EntityManager
 		rawUpdate: RawUpdateColumns<IEUC, IQE>
 			| {
 			(...args: any[]): RawUpdateColumns<IEUC, IQE>
-		},
-		fieldUtils: IFieldUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector
+		}
 	): Promise<number> {
 		if (!rawUpdate) {
 			return 0
@@ -364,6 +365,9 @@ export class EntityManager
 		if (rawUpdate instanceof Function) {
 			rawUpdate = rawUpdate()
 		}
+		const [fieldUtils, queryFacade, queryUtils,
+			      transConnector] = await DI.get(
+			FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR)
 
 		let update: UpdateColumns<any, IQE> = new UpdateColumns(rawUpdate)
 
@@ -376,11 +380,7 @@ export class EntityManager
 		dbEntity: DbEntity,
 		rawUpdate: RawUpdate<IEUP, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
-		},
-		fieldUtils: IFieldUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector
+		}
 	): Promise<number> {
 		if (!rawUpdate) {
 			return 0
@@ -388,6 +388,9 @@ export class EntityManager
 		if (rawUpdate instanceof Function) {
 			rawUpdate = rawUpdate()
 		}
+		const [fieldUtils, queryFacade, queryUtils,
+			      transConnector] = await DI.get(
+			FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR)
 
 		let update: UpdateProperties<any, IQE> = new UpdateProperties(rawUpdate)
 
@@ -449,13 +452,13 @@ export class EntityManager
 
 }
 
-DI.set(ENTITY_MANAGER, EntityManager)
+DI.set(DB_FACADE, DatabaseFacade)
 
 export class FunctionWrapper<QF extends Function>
 	implements IFunctionWrapper<any> {
 
 	constructor(queryFunction: QF) {
-
+		throw new Error('Not Implemented')
 	}
 
 	find(...params: any[]): any {

@@ -11,10 +11,12 @@ export interface IAirportDatabasePopulator {
 
 }
 
+// TODO: probably not needed, included schema source populates itself
+// May be needed to populate schemas from the database
 export class AirportDatabasePopulator
 	implements IAirportDatabasePopulator {
 
-	private airDb: IAirportDatabase
+/*	private airDb: IAirportDatabase
 
 	constructor() {
 		DI.get((
@@ -22,12 +24,12 @@ export class AirportDatabasePopulator
 		) => {
 			this.airDb = airportDatabase
 		}, AIR_DB)
-	}
+	}*/
 
 	populate(): void {
 		// FIXME: implement
-		this.airDb.schemas
-		this.airDb.qSchemas
+		// this.airDb.schemas
+		// this.airDb.qSchemas
 	}
 
 }

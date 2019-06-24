@@ -1,4 +1,4 @@
-import {ISequence}      from '@airport/airport-code/lib/src'
+import {ISequence}      from '@airport/airport-code'
 import {DI}             from '@airport/di'
 import {
 	getTableName,
@@ -15,33 +15,28 @@ import {ISchemaBuilder} from './ISchemaBuilder'
 export abstract class SqlSchemaBuilder
 	implements ISchemaBuilder {
 
-	protected storeDriver: IStoreDriver
-
-	constructor() {
-		DI.get((
-			storeDriver
-		) => {
-			this.storeDriver = storeDriver
-		}, STORE_DRIVER)
-	}
-
 	async build(
 		jsonSchema: JsonSchema
 	): Promise<void> {
-		await this.createSchema(jsonSchema)
+		const storeDriver = await DI.get(STORE_DRIVER)
+
+		await this.createSchema(jsonSchema, storeDriver)
+
 
 		for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-			await this.buildTable(jsonSchema, jsonEntity)
+			await this.buildTable(jsonSchema, jsonEntity, storeDriver)
 		}
 	}
 
 	abstract createSchema(
-		jsonSchema: JsonSchema
+		jsonSchema: JsonSchema,
+		storeDriver: IStoreDriver
 	): Promise<void>;
 
 	async buildTable(
 		jsonSchema: JsonSchema,
-		jsonEntity: JsonSchemaEntity
+		jsonEntity: JsonSchemaEntity,
+		storeDriver: IStoreDriver
 	): Promise<void> {
 		const primaryKeyColumnNames: string[] = []
 		const tableColumnsDdl: string[]       = jsonEntity.columns.map((
@@ -69,7 +64,7 @@ export abstract class SqlSchemaBuilder
 		${tableColumnsDdl.join(',\n')}${primaryKeySubStatement}
 		)${createTableSuffix}`
 
-		await this.storeDriver.query(QueryType.DDL, createTableDdl, [], false)
+		await storeDriver.query(QueryType.DDL, createTableDdl, [], false)
 
 		for (const indexConfig of jsonEntity.tableConfig.indexes) {
 			let uniquePrefix = ''
@@ -82,7 +77,7 @@ export abstract class SqlSchemaBuilder
 			${indexConfig.columnList.join(', ')}
 			)`
 
-			await this.storeDriver.query(QueryType.DDL, createIndexDdl, [], false)
+			await storeDriver.query(QueryType.DDL, createIndexDdl, [], false)
 		}
 		//
 	}

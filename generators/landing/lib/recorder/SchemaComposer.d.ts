@@ -1,15 +1,12 @@
 import { JsonSchema } from '@airport/ground-control';
-import { DdlObjects } from '@airport/takeoff';
+import { DdlObjects, IDdlObjectRetriever } from '@airport/takeoff';
+import { ITerminalStore } from '@airport/terminal-map';
+import { ISchemaLocator } from '../locator/SchemaLocator';
 export interface ISchemaComposer {
-    compose(jsonSchemas: JsonSchema[]): DdlObjects;
+    compose(jsonSchemas: JsonSchema[], ddlObjectRetriever: IDdlObjectRetriever, schemaLocator: ISchemaLocator, terminalStore: ITerminalStore): DdlObjects;
 }
 export declare class SchemaComposer implements ISchemaComposer {
-    private ddlObjectRetriever;
-    private schemaLocator;
-    private terminalStore;
-    private utils;
-    constructor();
-    compose(jsonSchemas: JsonSchema[]): DdlObjects;
+    compose(jsonSchemas: JsonSchema[], ddlObjectRetriever: IDdlObjectRetriever, schemaLocator: ISchemaLocator, terminalStore: ITerminalStore): DdlObjects;
     private composeDomains;
     private composeSchemas;
     private composeSchemaVersions;

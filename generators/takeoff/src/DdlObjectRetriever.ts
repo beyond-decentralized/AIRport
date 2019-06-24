@@ -3,22 +3,10 @@ import {
 	DomainId,
 	SchemaIndex,
 }                             from '@airport/ground-control'
-import {
-	DOMAIN_DAO,
-	IDomainDao
-}                             from '@airport/territory'
+import {IDomainDao}           from '@airport/territory'
 import {
 	ISchema,
-	ISchemaColumnDao,
-	ISchemaDao,
-	ISchemaEntityDao,
-	ISchemaPropertyColumnDao,
-	ISchemaPropertyDao,
-	ISchemaReferenceDao,
-	ISchemaRelationColumnDao,
-	ISchemaRelationDao,
 	ISchemaVersion,
-	ISchemaVersionDao,
 	SCHEMA_COLUMN_DAO,
 	SCHEMA_DAO,
 	SCHEMA_ENTITY_DAO,
@@ -66,31 +54,18 @@ export class DdlObjectRetriever
 		schemas: 0,
 		schemaVersions: 0
 	}
-	private schemaColumnDao: () => Promise<ISchemaColumnDao>
-	private schemaDao: () => Promise<ISchemaDao>
-	private schemaEntityDao: () => Promise<ISchemaEntityDao>
-	private schemaPropertyColumnDao: () => Promise<ISchemaPropertyColumnDao>
-	private schemaPropertyDao: () => Promise<ISchemaPropertyDao>
-	private schemaReferenceDao: () => Promise<ISchemaReferenceDao>
-	private schemaRelationColumnDao: () => Promise<ISchemaRelationColumnDao>
-	private schemaRelationDao: () => Promise<ISchemaRelationDao>
-	private schemaVersionDao: () => Promise<ISchemaVersionDao>
-
-	constructor() {
-		this.domainDao               = DI.laterP(DOMAIN_DAO)
-		this.schemaColumnDao         = DI.laterP(SCHEMA_COLUMN_DAO)
-		this.schemaDao               = DI.laterP(SCHEMA_DAO)
-		this.schemaEntityDao         = DI.laterP(SCHEMA_ENTITY_DAO)
-		this.schemaPropertyColumnDao = DI.laterP(SCHEMA_PROPERTY_COLUMN_DAO)
-		this.schemaPropertyDao       = DI.laterP(SCHEMA_PROPERTY_DAO)
-		this.schemaReferenceDao      = DI.laterP(SCHEMA_REFERENCE_DAO)
-		this.schemaRelationColumnDao = DI.laterP(SCHEMA_RELATION_COLUMN_DAO)
-		this.schemaRelationDao       = DI.laterP(SCHEMA_RELATION_DAO)
-		this.schemaVersionDao        = DI.laterP(SCHEMA_VERSION_DAO)
-	}
 
 	async retrieveDdlObjects(): Promise<DdlObjects> {
-		const schemas                      = await (await this.schemaDao()).findAllActive()
+		const [schemaDao, schemaVersionDao, schemaReferenceDao,
+			      schemaEntityDao, schemaPropertyDao, schemaRelationDao,
+			      schemaColumnDao, schemaPropertyColumnDao,
+			      schemaRelationColumnDao
+		      ]                            = await DI.get(
+			SCHEMA_DAO, SCHEMA_VERSION_DAO, SCHEMA_REFERENCE_DAO,
+			SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_RELATION_DAO,
+			SCHEMA_COLUMN_DAO, SCHEMA_PROPERTY_COLUMN_DAO,
+			SCHEMA_RELATION_COLUMN_DAO)
+		const schemas                      = await schemaDao.findAllActive()
 		const schemaIndexes: SchemaIndex[] = []
 		const domainIdSet: Set<DomainId>   = new Set()
 		schemas.forEach(
@@ -107,13 +82,13 @@ export class DdlObjectRetriever
 
 		const domains = await (await this.domainDao()).findByIdIn(Array.from(domainIdSet))
 
-		const allSchemaVersions = await (await this.schemaVersionDao())
+		const allSchemaVersions = await schemaVersionDao
 			.findAllActiveOrderBySchemaIndexAndId()
 
 		let lastSchemaIndex: SchemaIndex
 		const allSchemaVersionsByIds: ISchemaVersion[] = []
 		const latestSchemaVersions: ISchemaVersion[]   = []
-		const schemaVersions: ISchemaVersion[]   = []
+		const schemaVersions: ISchemaVersion[]         = []
 		for (const schemaVersion of allSchemaVersions) {
 			if (schemaVersion.schema.index !== lastSchemaIndex) {
 				latestSchemaVersions.push(schemaVersion)
@@ -127,31 +102,31 @@ export class DdlObjectRetriever
 			schemaVersion => schemaVersion.id)
 
 
-		const schemaReferences = await (await this.schemaReferenceDao())
+		const schemaReferences = await schemaReferenceDao
 			.findAllForSchemaVersions(latestSchemaVersionIds)
 
-		const entities  = await (await this.schemaEntityDao())
+		const entities  = await schemaEntityDao
 			.findAllForSchemaVersions(latestSchemaVersionIds)
 		const entityIds = entities.map(
 			entity => entity.id)
 
-		const properties  = await (await this.schemaPropertyDao())
+		const properties  = await schemaPropertyDao
 			.findAllForEntities(entityIds)
 		const propertyIds = properties.map(
 			property => property.id)
 
-		const relations = await (await this.schemaRelationDao())
+		const relations = await schemaRelationDao
 			.findAllForProperties(propertyIds)
 
-		const columns   = await (await this.schemaColumnDao())
+		const columns   = await schemaColumnDao
 			.findAllForEntities(entityIds)
 		const columnIds = columns.map(
 			column => column.id)
 
-		const propertyColumns = await (await this.schemaPropertyColumnDao())
+		const propertyColumns = await schemaPropertyColumnDao
 			.findAllForColumns(columnIds)
 
-		const relationColumns = await (await this.schemaRelationColumnDao())
+		const relationColumns = await schemaRelationColumnDao
 			.findAllForColumns(columnIds)
 
 		this.lastIds = {

@@ -505,7 +505,9 @@ export abstract class OperationManager
 			}
 			if (entitiesWithIds.length) {
 				const originalValues = await this.getOriginalValues(
-					entitiesWithIds, dbEntity, airDb, queryFacade)
+					entitiesWithIds, dbEntity, airDb, fieldUtils,
+					queryFacade, queryUtils, schemaUtils,
+					transConnector, updateCache)
 				for (const idKey in originalValues.dataMap) {
 					entitiesWithIdMap[idKey].originalValue = originalValues.dataMap[idKey]
 				}
@@ -555,7 +557,12 @@ export abstract class OperationManager
 		entitiesToUpdate: UpdateRecord[],
 		dbEntity: DbEntity,
 		airDb: IAirportDatabase,
-		queryFacade: IQueryFacade
+		fieldUtils: IFieldUtils,
+		queryFacade: IQueryFacade,
+		queryUtils: IQueryUtils,
+		schemaUtils: ISchemaUtils,
+		transConnector: ITransactionalConnector,
+		updateCache: IUpdateCache
 	): Promise<MappedEntityArray<any>>;
 
 	protected getIdsWhereClause(

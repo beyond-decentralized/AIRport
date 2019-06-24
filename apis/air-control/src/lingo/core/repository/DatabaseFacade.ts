@@ -5,34 +5,31 @@ import {
 	PlatformType,
 	PortableQuery,
 	QueryResultType
-}                          from '@airport/ground-control'
-import {IObservable}       from '@airport/observe'
-import {IAirportDatabase}  from '../../AirportDatabase'
-import {IAbstractQuery}    from '../../query/facade/AbstractQuery'
-import {RawDelete}         from '../../query/facade/Delete'
+}                        from '@airport/ground-control'
+import {IObservable}     from '@airport/observe'
+import {IAbstractQuery}  from '../../query/facade/AbstractQuery'
+import {RawDelete}       from '../../query/facade/Delete'
 import {
 	RawInsertColumnValues,
 	RawInsertValues
-}                          from '../../query/facade/InsertValues'
+}                        from '../../query/facade/InsertValues'
 import {
 	RawUpdate,
 	RawUpdateColumns
-}                          from '../../query/facade/Update'
-import {MappedEntityArray} from '../../query/MappedEntityArray'
-import {IFieldUtils}       from '../../utils/FieldUtils'
-import {IQMetadataUtils}   from '../../utils/QMetadataUtils'
-import {IQueryUtils}       from '../../utils/QueryUtils'
+}                        from '../../query/facade/Update'
+import {IFieldUtils}     from '../../utils/FieldUtils'
+import {IQueryUtils}     from '../../utils/QueryUtils'
 import {
 	EntityIdData,
 	ISchemaUtils
-}                          from '../../utils/SchemaUtils'
-import {IUpdateCache}      from '../data/UpdateCache'
-import {UpdateCacheType}   from '../data/UpdateCacheType'
+}                        from '../../utils/SchemaUtils'
+import {IUpdateCache}    from '../data/UpdateCache'
+import {UpdateCacheType} from '../data/UpdateCacheType'
 import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-}                          from '../entity/Entity'
+}                        from '../entity/Entity'
 
 
 export interface UpdateRecord {
@@ -66,13 +63,14 @@ export interface IDatabaseFacade {
 	 *
 	 * @param {Entity} entities
 	 */
-/*
-	cacheForUpdate(
-		cacheForUpdate: UpdateCacheType,
-		dbEntity: DbEntity,
-		...entities: any[]
-	): void;
-	*/
+
+	/*
+		cacheForUpdate(
+			cacheForUpdate: UpdateCacheType,
+			dbEntity: DbEntity,
+			...entities: any[]
+		): void;
+		*/
 
 	addRepository(
 		name: string,
@@ -91,14 +89,6 @@ export interface IDatabaseFacade {
 	create<E>(
 		dbEntity: DbEntity,
 		entity: E,
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
-		metadataUtils: IQMetadataUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache
 	): Promise<number>;
 
 	/**
@@ -110,14 +100,6 @@ export interface IDatabaseFacade {
 	bulkCreate<E>(
 		dbEntity: DbEntity,
 		entities: E[],
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
-		metadataUtils: IQMetadataUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache,
 		checkIfProcessed: boolean, // defaults to true
 		cascade: boolean, // defaults to false
 		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
@@ -129,8 +111,6 @@ export interface IDatabaseFacade {
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
 	): Promise<number>;
 
 	insertValues<IQE extends IQEntity>(
@@ -138,8 +118,6 @@ export interface IDatabaseFacade {
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
 	): Promise<number>;
 
 	insertColumnValuesGenerateIds<IQE extends IQEntity>(
@@ -147,8 +125,6 @@ export interface IDatabaseFacade {
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
 	): Promise<number[] | string[]>;
 
 	insertValuesGenerateIds<IQE extends IQEntity>(
@@ -156,10 +132,6 @@ export interface IDatabaseFacade {
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-		fieldUtils: IFieldUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector
 	): Promise<number[] | string[]>;
 
 	/**
@@ -171,12 +143,6 @@ export interface IDatabaseFacade {
 	delete<E>(
 		dbEntity: DbEntity,
 		entity: E,
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector
 	): Promise<number>;
 
 	/**
@@ -190,10 +156,6 @@ export interface IDatabaseFacade {
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
-		fieldUtils: IFieldUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector
 	): Promise<number>;
 
 	/**
@@ -205,14 +167,6 @@ export interface IDatabaseFacade {
 	save<E>(
 		dbEntity: DbEntity,
 		entity: E,
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
-		metadataUtils: IQMetadataUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache
 	): Promise<number>;
 
 	/**
@@ -224,14 +178,6 @@ export interface IDatabaseFacade {
 	update<E>(
 		dbEntity: DbEntity,
 		entity: E,
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
-		metadataUtils: IQMetadataUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache
 	): Promise<number>;
 
 	/**
@@ -246,10 +192,6 @@ export interface IDatabaseFacade {
 			| {
 			(...args: any[]): RawUpdateColumns<IEUC, IQE>
 		},
-		fieldUtils: IFieldUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector
 	): Promise<number>;
 
 	/**
@@ -263,29 +205,7 @@ export interface IDatabaseFacade {
 		rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},
-		fieldUtils: IFieldUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector
 	): Promise<number>;
-
-	getOriginalRecord(
-		dbEntity: DbEntity,
-		idKey: string,
-		updateCache: IUpdateCache
-	): Promise<any>;
-
-	getOriginalValues(
-		entitiesToUpdate: UpdateRecord[],
-		dbEntity: DbEntity,
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache
-	): Promise<MappedEntityArray<any>>;
 
 	prepare<QF extends Function>(
 		queryFunction: QF

@@ -104,13 +104,13 @@ export class DatabaseManager
 		storeType: StoreType
 	): Promise<void> {
 		await setStoreDriver(storeType)
-		const airDb = await DI.getP(AIR_DB)
+		const airDb = await DI.get(AIR_DB)
 		this.airDb  = airDb
 
-		const connector = await DI.getP(TRANS_CONNECTOR)
+		const connector = await DI.get(TRANS_CONNECTOR)
 		await connector.init()
 
-		const storeDriver = await DI.getP(STORE_DRIVER)
+		const storeDriver = await DI.get(STORE_DRIVER)
 
 		await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCES')
 		await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCE_BLOCKS')
@@ -151,10 +151,10 @@ export class DatabaseManager
 		await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__User')
 
 		if (await storeDriver.doesTableExist('github_com___airport_territory__PACKAGES')) {
-			const queryObjectInitializer = await DI.getP(QUERY_OBJECT_INITIALIZER)
-			await queryObjectInitializer.initialize()
+			const queryObjectInitializer = await DI.get(QUERY_OBJECT_INITIALIZER)
+			await queryObjectInitializer.initialize(airDb)
 		} else {
-			const server              = await DI.getP(TRANS_SERVER);
+			const server              = await DI.get(TRANS_SERVER);
 			(server as any).tempActor = new Actor()
 
 			await this.installAirportSchema()
@@ -162,7 +162,7 @@ export class DatabaseManager
 
 			(server as any).tempActor = null
 		}
-		await (await DI.getP(SEQUENCE_GENERATOR)).init()
+		await (await DI.get(SEQUENCE_GENERATOR)).init()
 		/*
 				throw `Implement!`
 				let dbFacade: IDatabaseFacade = this.databaseMap[terminalName]
@@ -193,20 +193,20 @@ export class DatabaseManager
 		await transactional(async () => {
 			const user    = new User()
 			user.uniqueId = domainName
-			const userDao = await DI.getP(USER_DAO)
+			const userDao = await DI.get(USER_DAO)
 			await userDao.save(user)
 
 			const terminal    = new Terminal()
 			terminal.name     = domainName
 			terminal.owner    = user
-			const terminalDao = await DI.getP(TERMINAL_DAO)
+			const terminalDao = await DI.get(TERMINAL_DAO)
 			await terminalDao.save(terminal)
 
 			const actor    = new Actor()
 			actor.user     = user
 			actor.terminal = terminal
 			actor.randomId = Math.random()
-			const actorDao = await DI.getP(ACTOR_DAO)
+			const actorDao = await DI.get(ACTOR_DAO)
 			await actorDao.save(actor)
 		})
 	}
@@ -223,8 +223,9 @@ export class DatabaseManager
 
 	private async installAirportSchema() {
 		const blueprintFile     = await import('@airport/blueprint')
-		const schemaInitializer = await DI.getP(SCHEMA_INITIALIZER)
-		await schemaInitializer.initialize(blueprintFile.BLUEPRINT as any, false)
+		const schemaInitializer = await DI.get(SCHEMA_INITIALIZER)
+		await schemaInitializer.initialize(
+			blueprintFile.BLUEPRINT as any, false)
 	}
 
 	/*

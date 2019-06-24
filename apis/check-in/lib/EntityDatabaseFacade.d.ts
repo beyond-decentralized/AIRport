@@ -1,4 +1,4 @@
-import { IDuo, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, UpdateCacheType } from '@airport/air-control';
+import { IDuo, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFindOne, IEntityFind, IEntityIdProperties, IEntitySearchOne, IEntitySearch, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-control';
 import { DbEntity } from '@airport/ground-control';
 /**
  * Created by Papa on 12/11/2016.
@@ -13,8 +13,6 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     searchOne: IEntitySearchOne<Entity, EntitySelect>;
     constructor(dbEntity: DbEntity, Q: QSchema);
     readonly from: IQ;
-    initialize(): void;
-    releaseCachedForUpdate(updateCacheType: UpdateCacheType, ...entities: Entity[]): Promise<void>;
     create(entity: EntityCreate): Promise<number>;
     bulkCreate(entities: EntityCreate[], cascade?: boolean, checkIfProcessed?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {

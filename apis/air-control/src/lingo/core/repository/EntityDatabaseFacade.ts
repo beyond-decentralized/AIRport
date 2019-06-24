@@ -1,20 +1,19 @@
-import {DbEntity}          from '@airport/ground-control'
-import {IEntityFind}       from '../../query/api/EntityFind'
-import {IEntityFindOne}    from '../../query/api/EntityFindOne'
-import {IEntitySearch}     from '../../query/api/EntitySearch'
-import {IEntitySearchOne}  from '../../query/api/EntitySearchOne'
-import {IDuo}              from '../../query/Duo'
-import {RawDelete}         from '../../query/facade/Delete'
+import {DbEntity}              from '@airport/ground-control'
+import {IEntityFind}      from '../../query/api/EntityFind'
+import {IEntityFindOne}   from '../../query/api/EntityFindOne'
+import {IEntitySearch}    from '../../query/api/EntitySearch'
+import {IEntitySearchOne} from '../../query/api/EntitySearchOne'
+import {IDuo}                  from '../../query/Duo'
+import {RawDelete}             from '../../query/facade/Delete'
 import {
 	RawInsertColumnValues,
 	RawInsertValues
-}                          from '../../query/facade/InsertValues'
+}                              from '../../query/facade/InsertValues'
 import {
 	RawUpdate,
 	RawUpdateColumns
-}                          from '../../query/facade/Update'
-import {MappedEntityArray} from '../../query/MappedEntityArray'
-import {UpdateCacheType}   from '../data/UpdateCacheType'
+}                              from '../../query/facade/Update'
+import {MappedEntityArray}     from '../../query/MappedEntityArray'
 import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -22,7 +21,7 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-}                          from '../entity/Entity'
+}                              from '../entity/Entity'
 
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -50,7 +49,7 @@ export interface IEntityDatabaseFacade<Entity,
 	findOne: IEntityFindOne<Entity, EntitySelect>;
 
 	/**
-	 * The Observable based API for all Entity 'search' (search many) queries.
+	 * The Observable based API for all Entity 'searchOne' (searchOne many) queries.
 	 */
 	search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
 
@@ -70,10 +69,13 @@ export interface IEntityDatabaseFacade<Entity,
 	 *
 	 * @param {Entity} entities
 	 */
-	releaseCachedForUpdate(
-		updateCacheType: UpdateCacheType,
-		...entities: Entity[]
-	): Promise<void>;
+
+	/*
+		releaseCachedForUpdate(
+			updateCacheType: UpdateCacheType,
+			...entities: Entity[]
+		): Promise<void>;
+		*/
 
 	/**
 	 * Creates the provided entity in the db.

@@ -77,7 +77,7 @@ export class SqLiteSchemaBuilder
 	async buildAllSequences(
 		jsonSchemas: JsonSchema[]
 	): Promise<ISequence[]> {
-		let airDb = await DI.getP(AIR_DB)
+		let [airDb, sequenceDao] = await DI.get(AIR_DB, SEQUENCE_DAO)
 
 		let allSequences: ISequence[] = []
 		for (const jsonSchema of jsonSchemas) {
@@ -86,8 +86,6 @@ export class SqLiteSchemaBuilder
 				allSequences = allSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity))
 			}
 		}
-
-		const sequenceDao = await DI.getP(SEQUENCE_DAO)
 
 		await sequenceDao.bulkCreate(allSequences)
 

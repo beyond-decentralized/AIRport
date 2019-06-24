@@ -275,7 +275,6 @@ export class TwoStageSyncedInDataProcessor
 		repoTransHistoryMapByRepositoryId.set(data.repository.id, repoTransHistories)
 	}
 
-
 	private async updateLocalData(
 		repoTransHistoryMapByRepositoryId: Map<RepositoryId, ISyncRepoTransHistory[]>,
 		actorMayById: Map<ActorId, IActor>,

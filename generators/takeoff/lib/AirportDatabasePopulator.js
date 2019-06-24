@@ -1,18 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const diTokens_1 = require("./diTokens");
+// TODO: probably not needed, included schema source populates itself
+// May be needed to populate schemas from the database
 class AirportDatabasePopulator {
-    constructor() {
-        di_1.DI.get((airportDatabase) => {
-            this.airDb = airportDatabase;
-        }, air_control_1.AIR_DB);
-    }
+    /*	private airDb: IAirportDatabase
+    
+        constructor() {
+            DI.get((
+                airportDatabase
+            ) => {
+                this.airDb = airportDatabase
+            }, AIR_DB)
+        }*/
     populate() {
         // FIXME: implement
-        this.airDb.schemas;
-        this.airDb.qSchemas;
+        // this.airDb.schemas
+        // this.airDb.qSchemas
     }
 }
 exports.AirportDatabasePopulator = AirportDatabasePopulator;

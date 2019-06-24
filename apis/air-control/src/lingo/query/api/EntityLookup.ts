@@ -1,14 +1,16 @@
 /**
  * Type of update-caching to apply to retrieved entities.
  */
-import {QueryResultType} from '@airport/ground-control'
 import {UpdateCacheType} from '../../core/data/UpdateCacheType'
-
+import {ILookup}         from './Lookup'
 
 /**
  * Common parent for all entity retrieval operations.
  */
-export interface IEntityLookup<Child, MappedChild> {
+export interface IEntityLookup<Child, MappedChild>
+	extends ILookup {
+
+	map(): MappedChild;
 
 	/**
 	 * Enables update caching (required for all update operations).
@@ -20,14 +22,10 @@ export interface IEntityLookup<Child, MappedChild> {
 	 * @param {UpdateCacheType} cacheForUpdateState
 	 * @returns {Child}
 	 */
-	andCacheForUpdate(
-		cacheForUpdateState: UpdateCacheType,
+	cache(
+		cacheForUpdateState?: UpdateCacheType,
 	): Child;
 
-	mapped: MappedChild;
-
-	getQueryResultType(
-		baseQueryResultType: QueryResultType
-	): QueryResultType;
+	noCache(): Child;
 
 }

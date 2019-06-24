@@ -1,8 +1,5 @@
 import {
 	BatchedMessagesToTM,
-	IMessageFromTMSerializer,
-	IMessageToTMDeserializer,
-	IMessageToTMVerifier,
 	MESSAGE_FROM_TM_SERIALIZER,
 	MESSAGE_TO_TM_DESERIALIZER,
 	MESSAGE_TO_TM_VERIFIER,
@@ -25,28 +22,14 @@ export class HttpSharingNodeEndpoint
 	xhr = new XMLHttpRequest()
 	agtUrl: string
 
-	private messageFromTMSerializer: IMessageFromTMSerializer
-	private messageToTMDeserializer: IMessageToTMDeserializer
-	private messageToTMVerifier: IMessageToTMVerifier
-
-	constructor() {
-		DI.get((
-			messageFromTMSerializer,
-			messageToTMDeserializer,
-			messageToTMVerifier
-			) => {
-				this.messageFromTMSerializer = messageFromTMSerializer
-				this.messageToTMDeserializer = messageToTMDeserializer
-				this.messageToTMVerifier     = messageToTMVerifier
-			}, MESSAGE_FROM_TM_SERIALIZER, MESSAGE_TO_TM_DESERIALIZER,
-			MESSAGE_TO_TM_VERIFIER)
-	}
-
 	async communicateWithAGT(
 		sharingNode: ISharingNode,
 		message: MessageFromTM
 	): Promise<BatchedMessagesToTM> {
-		const serializedMessageFromTM = this.messageFromTMSerializer.serialize(message)
+		const [messageFromTMSerializer, messageToTMDeserializer,
+			      messageToTMVerifier]  = await DI.get(MESSAGE_FROM_TM_SERIALIZER,
+			MESSAGE_TO_TM_DESERIALIZER, MESSAGE_TO_TM_VERIFIER)
+		const serializedMessageFromTM = messageFromTMSerializer.serialize(message)
 
 		return new Promise<BatchedMessagesToTM>((
 			resolve: (batchedMessages: BatchedMessagesToTM) => void,
@@ -59,7 +42,7 @@ export class HttpSharingNodeEndpoint
 				try {
 					const serializedBatchedMessagesToTM: SerializedBatchedMessagesToTM
 						                           = JSON.parse(stringBatchedMessagesToTM)
-					const schemaValidationResult = _self.messageToTMVerifier.verifyMessagesBatch(serializedBatchedMessagesToTM)
+					const schemaValidationResult = messageToTMVerifier.verifyMessagesBatch(serializedBatchedMessagesToTM)
 
 					const connectionDataError = schemaValidationResult[0]
 					if (connectionDataError) {
@@ -73,7 +56,7 @@ export class HttpSharingNodeEndpoint
 				`)
 						reject(new Error('Message to TM validation error:\n\t\tInvalid sync message data schema'))
 					}
-					const batchedMessagesToTM = _self.messageToTMDeserializer.deserialize(serializedBatchedMessagesToTM)
+					const batchedMessagesToTM = messageToTMDeserializer.deserialize(serializedBatchedMessagesToTM)
 					resolve(batchedMessagesToTM)
 				} catch (e) {
 					reject(e)

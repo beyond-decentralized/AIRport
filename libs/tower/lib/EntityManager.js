@@ -46,62 +46,69 @@ class EntityManager extends OperationManager_1.OperationManager {
         const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
         return await transConnector.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
-    async create(dbEntity, entity, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache) {
+    async create(dbEntity, entity) {
         if (!entity) {
             return 0;
         }
+        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.FIELD_UTILS, air_control_1.Q_METADATA_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, air_control_1.SCHEMA_UTILS, ground_control_1.TRANS_CONNECTOR, air_control_1.UPDATE_CACHE);
         return await transactional_1.transactional(async () => await this.performCreate(dbEntity, entity, [], airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache));
     }
-    async bulkCreate(dbEntity, entities, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, checkIfProcessed = true, cascade = false) {
+    async bulkCreate(dbEntity, entities, checkIfProcessed = true, cascade = false) {
         if (!entities || !entities.length) {
             return 0;
         }
+        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.FIELD_UTILS, air_control_1.Q_METADATA_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, air_control_1.SCHEMA_UTILS, ground_control_1.TRANS_CONNECTOR, air_control_1.UPDATE_CACHE);
         return await transactional_1.transactional(async () => await this.performBulkCreate(dbEntity, entities, [], airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, checkIfProcessed, cascade));
     }
-    async insertColumnValues(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils) {
+    async insertColumnValues(dbEntity, rawInsertColumnValues) {
         if (!rawInsertColumnValues) {
             return 0;
         }
         if (rawInsertColumnValues instanceof Function) {
             rawInsertColumnValues = rawInsertColumnValues();
         }
+        const [fieldUtils, queryUtils] = await di_1.DI.get(air_control_1.FIELD_UTILS, air_control_1.QUERY_UTILS);
         let numInsertedRows = await this.internalInsertColumnValues(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils);
         return numInsertedRows;
     }
-    async insertValues(dbEntity, rawInsertValues, queryUtils, fieldUtils) {
+    async insertValues(dbEntity, rawInsertValues) {
         if (!rawInsertValues) {
             return 0;
         }
         if (rawInsertValues instanceof Function) {
             rawInsertValues = rawInsertValues();
         }
+        const [fieldUtils, queryUtils] = await di_1.DI.get(air_control_1.FIELD_UTILS, air_control_1.QUERY_UTILS);
         return await transactional_1.transactional(async () => await this.internalInsertValues(dbEntity, rawInsertValues, queryUtils, fieldUtils));
     }
-    async insertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils) {
+    async insertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues) {
         if (!rawInsertColumnValues) {
             return [];
         }
         if (rawInsertColumnValues instanceof Function) {
             rawInsertColumnValues = rawInsertColumnValues();
         }
+        const [fieldUtils, queryUtils] = await di_1.DI.get(air_control_1.FIELD_UTILS, air_control_1.QUERY_UTILS);
         return await this.internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils);
     }
-    async insertValuesGenerateIds(dbEntity, rawInsertValues, fieldUtils, queryFacade, queryUtils, transConnector) {
+    async insertValuesGenerateIds(dbEntity, rawInsertValues) {
         if (!rawInsertValues) {
             return [];
         }
         if (rawInsertValues instanceof Function) {
             rawInsertValues = rawInsertValues();
         }
+        const [fieldUtils, queryFacade, queryUtils, transConnector] = await di_1.DI.get(air_control_1.FIELD_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, ground_control_1.TRANS_CONNECTOR);
         return await transactional_1.transactional(async () => await this.internalInsertValuesGetIds(dbEntity, rawInsertValues, fieldUtils, queryFacade, queryUtils, transConnector));
     }
-    async delete(dbEntity, entity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector) {
+    async delete(dbEntity, entity) {
         if (!entity) {
             return 0;
         }
+        const [airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.FIELD_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, air_control_1.SCHEMA_UTILS, ground_control_1.TRANS_CONNECTOR);
         return await transactional_1.transactional(async () => await this.performDelete(dbEntity, entity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector));
     }
-    async deleteWhere(dbEntity, rawDelete, fieldUtils, queryFacade, queryUtils, transConnector) {
+    async deleteWhere(dbEntity, rawDelete) {
         if (!rawDelete) {
             return 0;
         }
@@ -109,9 +116,10 @@ class EntityManager extends OperationManager_1.OperationManager {
             rawDelete = rawDelete();
         }
         let deleteWhere = new air_control_1.Delete(rawDelete);
+        const [fieldUtils, queryFacade, queryUtils, transConnector] = await di_1.DI.get(air_control_1.FIELD_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, ground_control_1.TRANS_CONNECTOR);
         return await transactional_1.transactional(async () => await this.internalDeleteWhere(dbEntity, deleteWhere, fieldUtils, queryFacade, queryUtils, transConnector));
     }
-    async save(dbEntity, entity, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache) {
+    async save(dbEntity, entity) {
         if (!entity) {
             return 0;
         }
@@ -119,6 +127,7 @@ class EntityManager extends OperationManager_1.OperationManager {
             throw `@Id is not defined for entity: '${dbEntity.name}'.
 			Cannot call save(entity) on entities with no ids.`;
         }
+        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.FIELD_UTILS, air_control_1.Q_METADATA_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, air_control_1.SCHEMA_UTILS, ground_control_1.TRANS_CONNECTOR, air_control_1.UPDATE_CACHE);
         let emptyIdCount = 0;
         let nonEmptyIdCount = 0;
         for (const dbColumn of dbEntity.idColumns) {
@@ -133,17 +142,18 @@ class EntityManager extends OperationManager_1.OperationManager {
 			updated) or non of @Id values specified (to be created).`;
             }
             else if (emptyIdCount) {
-                return await this.create(dbEntity, entity, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache);
+                return await this.performCreate(dbEntity, entity, [], airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache);
             }
             else {
-                return await this.update(dbEntity, entity, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache);
+                return await this.performUpdate(dbEntity, entity, [], airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache);
             }
         });
     }
-    async update(dbEntity, entity, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache) {
+    async update(dbEntity, entity) {
         if (!entity) {
             return 0;
         }
+        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.FIELD_UTILS, air_control_1.Q_METADATA_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, air_control_1.SCHEMA_UTILS, ground_control_1.TRANS_CONNECTOR, air_control_1.UPDATE_CACHE);
         return await transactional_1.transactional(async () => await this.performUpdate(dbEntity, entity, [], airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache));
     }
     /**
@@ -152,23 +162,25 @@ class EntityManager extends OperationManager_1.OperationManager {
      *
      * @return Number of records updated
      */
-    async updateColumnsWhere(dbEntity, rawUpdate, fieldUtils, queryFacade, queryUtils, transConnector) {
+    async updateColumnsWhere(dbEntity, rawUpdate) {
         if (!rawUpdate) {
             return 0;
         }
         if (rawUpdate instanceof Function) {
             rawUpdate = rawUpdate();
         }
+        const [fieldUtils, queryFacade, queryUtils, transConnector] = await di_1.DI.get(air_control_1.FIELD_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, ground_control_1.TRANS_CONNECTOR);
         let update = new air_control_1.UpdateColumns(rawUpdate);
         return await this.internalUpdateColumnsWhere(dbEntity, update, fieldUtils, queryFacade, queryUtils, transConnector);
     }
-    async updateWhere(dbEntity, rawUpdate, fieldUtils, queryFacade, queryUtils, transConnector) {
+    async updateWhere(dbEntity, rawUpdate) {
         if (!rawUpdate) {
             return 0;
         }
         if (rawUpdate instanceof Function) {
             rawUpdate = rawUpdate();
         }
+        const [fieldUtils, queryFacade, queryUtils, transConnector] = await di_1.DI.get(air_control_1.FIELD_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, ground_control_1.TRANS_CONNECTOR);
         let update = new air_control_1.UpdateProperties(rawUpdate);
         return await transactional_1.transactional(async () => await this.internalUpdateWhere(dbEntity, update, fieldUtils, queryFacade, queryUtils, transConnector));
     }
@@ -201,6 +213,7 @@ exports.EntityManager = EntityManager;
 di_1.DI.set(air_control_1.ENTITY_MANAGER, EntityManager);
 class FunctionWrapper {
     constructor(queryFunction) {
+        throw new Error('Not Implemented');
     }
     find(...params) {
     }

@@ -18,9 +18,6 @@ export interface ISchemaChecker {
     checkDependencies(jsonSchemas: JsonSchema[]): Promise<SchemaReferenceCheckResults>;
 }
 export declare class SchemaChecker implements ISchemaChecker {
-    private schemaDao;
-    private utils;
-    constructor();
     check(jsonSchema: JsonSchema): Promise<void>;
     checkDomain(jsonSchema: JsonSchema): Promise<void>;
     checkDependencies(jsonSchemas: JsonSchema[]): Promise<SchemaReferenceCheckResults>;

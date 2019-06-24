@@ -1,14 +1,13 @@
 import {
-	ISyncConnectionServer,
 	MessageFromTM,
-	MessageToTM
-}                                     from "@airport/arrivals-n-departures";
-import {SYNC_CONNECTION_SERVER}       from '@airport/arrivals-n-departures'
+	MessageToTM,
+	SYNC_CONNECTION_SERVER
+}                                     from '@airport/arrivals-n-departures'
 import {DI}                           from '@airport/di'
-import {ISharingNode}                 from "@airport/moving-walkway";
-import {DIRECT_SHARING_NODE_ENDPOINT} from "../../../diTokens";
-import {ISharingNodeEndpoint}         from "../SharingNodeEndpoint";
-import {DirectResponse}               from "./DirectResonse";
+import {ISharingNode}                 from '@airport/moving-walkway'
+import {DIRECT_SHARING_NODE_ENDPOINT} from '../../../diTokens'
+import {ISharingNodeEndpoint}         from '../SharingNodeEndpoint'
+import {DirectResponse}               from './DirectResonse'
 
 /**
  * P2P endpoint to a built-in AGT
@@ -16,36 +15,28 @@ import {DirectResponse}               from "./DirectResonse";
 export class DirectSharingNodeEndpoint
 	implements ISharingNodeEndpoint {
 
-	recentConnectionServer: ISyncConnectionServer<MessageFromTM, any, any, any>;
-
-	constructor() {
-		DI.get((
-			recentConnectionServer
-		) => {
-			this.recentConnectionServer = recentConnectionServer
-		}, SYNC_CONNECTION_SERVER);
-	}
-
 	async communicateWithAGT(
 		sharingNode: ISharingNode,
 		message: MessageFromTM
 	): Promise<MessageToTM[]> {
+		const recentConnectionServer = await DI.get(SYNC_CONNECTION_SERVER)
+
 		return new Promise<MessageToTM[]>((
 			resolve,
 			reject
 		) => {
-			this.recentConnectionServer.handleInMemoryConnect(message, new DirectResponse(
+			recentConnectionServer.handleInMemoryConnect(message, new DirectResponse(
 				(
 					statusCode: number,
 					data: MessageToTM[]
 				) => {
 					if (statusCode !== 200) {
-						reject([statusCode, `Error from AGT: ` + statusCode.toString()]);
+						reject([statusCode, `Error from AGT: ` + statusCode.toString()])
 					}
-					resolve(data);
+					resolve(data)
 				}
-			));
-		});
+			))
+		})
 	}
 
 }

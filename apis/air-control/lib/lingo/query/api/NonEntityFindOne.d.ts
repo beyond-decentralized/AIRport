@@ -2,10 +2,11 @@ import { IQOrderableField } from '../../core/field/Field';
 import { RawFieldQuery } from '../facade/FieldQuery';
 import { RawSheetQuery } from '../facade/SheetQuery';
 import { ITreeEntity, RawTreeQuery } from '../facade/TreeQuery';
+import { ILookup } from './Lookup';
 /**
  * Non-Entity 'findOne' API.
  */
-export interface INonEntityFindOne {
+export interface INonEntityFindOne extends ILookup {
     /**
      * Returns a Promise for a non-interlinked arbitrary object tree.
      */
