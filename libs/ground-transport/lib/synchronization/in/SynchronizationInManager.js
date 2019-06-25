@@ -11,14 +11,6 @@ const diTokens_1 = require("../../diTokens");
  * Synchronization in Manager implementation.
  */
 class SynchronizationInManager {
-    constructor() {
-        di_1.DI.get((sharingMessageDao, syncInChecker, syncLogMessageProcessor, twoStageSyncedInDataProcessor) => {
-            this.sharingMessageDao = sharingMessageDao;
-            this.syncInChecker = syncInChecker;
-            this.syncLogMessageProcessor = syncLogMessageProcessor;
-            this.twoStageSyncedInDataProcessor = twoStageSyncedInDataProcessor;
-        }, moving_walkway_1.SHARING_MESSAGE_DAO, diTokens_1.SYNC_IN_CHECKER, diTokens_1.SYNC_LOG_MESSAGE_PROCESSOR, diTokens_1.TWO_STAGE_SYNCED_IN_DATA_PROCESSOR);
-    }
     /**
      * ASSUMPTION: all of the messages are intended for this TM.
      *
@@ -30,6 +22,8 @@ class SynchronizationInManager {
      * @returns {Promise<void>}   Return when all of the messages have been processed
      */
     async receiveMessages(sharingNodes, incomingMessages, sharingNodeTerminalMap) {
+        // TODO: is syncInChecker needed (what was the reason for original injection)?
+        const [sharingMessageDao, syncInChecker, syncLogMessageProcessor, twoStageSyncedInDataProcessor] = await di_1.DI.get(moving_walkway_1.SHARING_MESSAGE_DAO, diTokens_1.SYNC_IN_CHECKER, diTokens_1.SYNC_LOG_MESSAGE_PROCESSOR, diTokens_1.TWO_STAGE_SYNCED_IN_DATA_PROCESSOR);
         const syncTimestamp = new Date();
         const allSyncLogMessages = [];
         const allDataMessages = [];
@@ -110,11 +104,11 @@ class SynchronizationInManager {
             }
         }
         await tower_1.transactional(async () => {
-            await this.sharingMessageDao.bulkCreate(sharingMessages, false, false);
+            await sharingMessageDao.bulkCreate(sharingMessages, false, false);
             // These messages are responses to already sent messages
             // no need to check for existence of repositories
-            await this.syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages);
-            await this.twoStageSyncedInDataProcessor.syncDataMessages(allDataMessages);
+            await syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages);
+            await twoStageSyncedInDataProcessor.syncDataMessages(allDataMessages);
         });
     }
     isValidLastChangeTime(syncTimestamp, lastChangeTimeMillis) {

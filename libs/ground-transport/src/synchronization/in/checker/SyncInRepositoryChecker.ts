@@ -1,13 +1,12 @@
-import {
-	IUtils,
-	UTILS
-}                             from '@airport/air-control'
 import {AgtRepositoryId}      from '@airport/arrivals-n-departures'
 import {DI}                   from '@airport/di'
+import {
+	ensureChildArray,
+	ensureChildJsSet
+}                             from '@airport/ground-control'
 import {RepositoryId}         from '@airport/holding-pattern'
 import {
-	ISharingNodeRepositoryDao,
-	SHARING_NODE_REPO_TRANS_BLOCK_DAO,
+	SHARING_NODE_REPOSITORY_DAO,
 	SharingNodeId
 }                             from '@airport/moving-walkway'
 import {SYNC_IN_REPO_CHECKER} from '../../../diTokens'
@@ -30,19 +29,6 @@ export interface ISyncInRepositoryChecker {
 
 export class SyncInRepositoryChecker
 	implements ISyncInRepositoryChecker {
-
-	private sharingNodeRepositoryDao: ISharingNodeRepositoryDao
-	private utils: IUtils
-
-	constructor() {
-		DI.get((
-			sharingNodeRepositoryDao,
-			utils
-		) => {
-			this.sharingNodeRepositoryDao = sharingNodeRepositoryDao
-			this.utils                    = utils
-		}, SHARING_NODE_REPO_TRANS_BLOCK_DAO, UTILS)
-	}
 
 	async ensureRepositories(
 		incomingMessages: IDataToTM[],
@@ -74,9 +60,9 @@ export class SyncInRepositoryChecker
 				// 	this.utils.ensureChildJsMap(
 				// 		dataMessageMapBySharingNodeAndAgtRepositoryId,
 				// 		sharingNodeId), agtRepositoryId).push();
-				this.utils.ensureChildArray(dataMessageMapBySharingNodeId, sharingNodeId)
+				ensureChildArray(dataMessageMapBySharingNodeId, sharingNodeId)
 					.push(message)
-				this.utils.ensureChildJsSet(sharingNodeRepositoryMap, sharingNodeId)
+				ensureChildJsSet(sharingNodeRepositoryMap, sharingNodeId)
 					.add(message.data.repository.id)
 				consistentMessages.push(message)
 			} else {

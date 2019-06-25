@@ -71,26 +71,6 @@ export type LastRemoteChangeMillis = number;
 export class SynchronizationInManager
 	implements ISynchronizationInManager {
 
-	private sharingMessageDao: ISharingMessageDao
-	private syncInChecker: ISyncInChecker
-	private syncLogMessageProcessor: ISyncLogMessageProcessor
-	private twoStageSyncedInDataProcessor: ITwoStageSyncedInDataProcessor
-
-	constructor() {
-		DI.get((
-			sharingMessageDao,
-			syncInChecker,
-			syncLogMessageProcessor,
-			twoStageSyncedInDataProcessor
-			) => {
-				this.sharingMessageDao             = sharingMessageDao
-				this.syncInChecker                 = syncInChecker
-				this.syncLogMessageProcessor       = syncLogMessageProcessor
-				this.twoStageSyncedInDataProcessor = twoStageSyncedInDataProcessor
-			}, SHARING_MESSAGE_DAO, SYNC_IN_CHECKER,
-			SYNC_LOG_MESSAGE_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
-	}
-
 	/**
 	 * ASSUMPTION: all of the messages are intended for this TM.
 	 *
@@ -106,6 +86,12 @@ export class SynchronizationInManager
 		incomingMessages: BatchedMessagesToTM[],
 		sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>
 	): Promise<void> {
+		// TODO: is syncInChecker needed (what was the reason for original injection)?
+		const [sharingMessageDao, syncInChecker,
+			      syncLogMessageProcessor,twoStageSyncedInDataProcessor
+		      ] = await DI.get(SHARING_MESSAGE_DAO, SYNC_IN_CHECKER,
+			SYNC_LOG_MESSAGE_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
+
 		const syncTimestamp                      = new Date()
 		const allSyncLogMessages: ISyncLogToTM[] = []
 		const allDataMessages: IDataToTM[]       = []
@@ -200,16 +186,16 @@ export class SynchronizationInManager
 		}
 
 		await transactional(async () => {
-			await this.sharingMessageDao.bulkCreate(
+			await sharingMessageDao.bulkCreate(
 				sharingMessages, false, false)
 
 
 			// These messages are responses to already sent messages
 			// no need to check for existence of repositories
-			await this.syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages)
+			await syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages)
 
 
-			await this.twoStageSyncedInDataProcessor.syncDataMessages(allDataMessages)
+			await twoStageSyncedInDataProcessor.syncDataMessages(allDataMessages)
 		})
 	}
 

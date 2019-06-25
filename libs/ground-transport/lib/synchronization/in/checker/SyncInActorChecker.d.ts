@@ -14,10 +14,6 @@ export interface ISyncInActorChecker {
     ensureActorsAndGetAsMaps(dataMessages: IDataToTM[], actorMap: Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>, actorMapById: Map<ActorId, IActor>, userCheckResults: UserCheckResults, terminalCheckResults: TerminalCheckResults, dataMessagesWithInvalidData: IDataToTM[]): Promise<ActorCheckResults>;
 }
 export declare class SyncInActorChecker implements ISyncInActorChecker {
-    private actorDao;
-    private terminalDao;
-    private utils;
-    constructor();
     ensureActorsAndGetAsMaps(dataMessages: IDataToTM[], actorMap: Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>, actorMapById: Map<ActorId, IActor>, userCheckResults: UserCheckResults, terminalCheckResults: TerminalCheckResults, dataMessagesWithInvalidData: IDataToTM[]): Promise<ActorCheckResults>;
     private areActorIdsConsistentInMessage;
     private updateActorIdsInMessages;

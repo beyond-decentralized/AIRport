@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
@@ -8,19 +7,6 @@ const moving_walkway_1 = require("@airport/moving-walkway");
 const terminal_map_1 = require("@airport/terminal-map");
 const diTokens_1 = require("../../../diTokens");
 class SyncInDataChecker {
-    constructor() {
-        di_1.DI.get((missingRecordDao, missingRecordRepoTransBlockDao, repositoryTransactionBlockDao, repositoryTransactionHistoryDao, sharingMessageDao, syncInRepositoryTransactionBlockCreator, syncInUtils, terminalStore, utils) => {
-            this.missingRecordDao = missingRecordDao;
-            this.missingRecordRepoTransBlockDao = missingRecordRepoTransBlockDao;
-            this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
-            this.repositoryTransactionHistoryDao = repositoryTransactionHistoryDao;
-            this.sharingMessageDao = sharingMessageDao;
-            this.syncInRepositoryTransactionBlockCreator = syncInRepositoryTransactionBlockCreator;
-            this.syncInUtils = syncInUtils;
-            this.terminalStore = terminalStore;
-            this.utils = utils;
-        }, moving_walkway_1.MISSING_RECORD_DAO, moving_walkway_1.MISSING_RECORD_REPO_TRANS_BLOCK_DAO, moving_walkway_1.REPO_TRANS_BLOCK_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DAO, moving_walkway_1.SHARING_MESSAGE_DAO, diTokens_1.SYNC_IN_REPO_TRANS_BLOCK_CREATOR, diTokens_1.SYNC_IN_UTILS, terminal_map_1.TERMINAL_STORE, air_control_1.UTILS);
-    }
     /**
      * Every dataMessage.data.repoTransHistories array must be sorted before entering
      * this method.
@@ -29,10 +15,12 @@ class SyncInDataChecker {
      * @returns {DataCheckResults}
      */
     async checkData(dataMessagesWithCompatibleSchemas) {
-        const { messageIndexMapByRecordToUpdateIds, recordsToUpdateMap } = this.getDataStructuresForChanges(dataMessagesWithCompatibleSchemas);
-        const existingRecordIdMap = await this.repositoryTransactionHistoryDao.findExistingRecordIdMap(recordsToUpdateMap);
+        // TODO: remove unneeded dependencies once tested
+        const [missingRecordDao, missingRecordRepoTransBlockDao, repositoryTransactionBlockDao, repositoryTransactionHistoryDao, sharingMessageDao, syncInRepositoryTransactionBlockCreator, syncInUtils, terminalStore] = await di_1.DI.get(moving_walkway_1.MISSING_RECORD_DAO, moving_walkway_1.MISSING_RECORD_REPO_TRANS_BLOCK_DAO, moving_walkway_1.REPO_TRANS_BLOCK_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DAO, moving_walkway_1.SHARING_MESSAGE_DAO, diTokens_1.SYNC_IN_REPO_TRANS_BLOCK_CREATOR, diTokens_1.SYNC_IN_UTILS, terminal_map_1.TERMINAL_STORE);
+        const { messageIndexMapByRecordToUpdateIds, recordsToUpdateMap } = this.getDataStructuresForChanges(dataMessagesWithCompatibleSchemas, syncInUtils);
+        const existingRecordIdMap = await repositoryTransactionHistoryDao.findExistingRecordIdMap(recordsToUpdateMap);
         const dataMessagesWithIncompatibleData = [];
-        const { compatibleDataMessageFlags, missingRecordDataToTMs, } = await this.determineMissingRecords(dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, recordsToUpdateMap, existingRecordIdMap, messageIndexMapByRecordToUpdateIds);
+        const { compatibleDataMessageFlags, missingRecordDataToTMs, } = await this.determineMissingRecords(dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, recordsToUpdateMap, existingRecordIdMap, messageIndexMapByRecordToUpdateIds, missingRecordDao);
         const dataMessagesWithCompatibleSchemasAndData = [];
         // filter out data messages with records that do not exist
         for (let i = 0; i < compatibleDataMessageFlags.length; i++) {
@@ -42,9 +30,9 @@ class SyncInDataChecker {
             }
         }
         const toBeInsertedRecordMap = this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemasAndData);
-        const foundMissingRecordIds = await this.missingRecordDao.setStatusWhereIdsInAndReturnIds(toBeInsertedRecordMap, moving_walkway_1.MissingRecordStatus.MISSING);
+        const foundMissingRecordIds = await missingRecordDao.setStatusWhereIdsInAndReturnIds(toBeInsertedRecordMap, moving_walkway_1.MissingRecordStatus.MISSING);
         // Find repository transaction blocks that now can be processed
-        const existingRepoTransBlocksWithCompatibleSchemasAndData = await this.getExistingRepoTransBlocksWithCompatibleSchemasAndData(foundMissingRecordIds);
+        const existingRepoTransBlocksWithCompatibleSchemasAndData = await this.getExistingRepoTransBlocksWithCompatibleSchemasAndData(foundMissingRecordIds, missingRecordDao, missingRecordRepoTransBlockDao, repositoryTransactionBlockDao);
         return {
             dataMessagesWithCompatibleSchemasAndData,
             dataMessagesWithIncompatibleData,
@@ -52,7 +40,7 @@ class SyncInDataChecker {
             missingRecordDataToTMs
         };
     }
-    getDataStructuresForChanges(dataMessagesWithCompatibleSchemas) {
+    getDataStructuresForChanges(dataMessagesWithCompatibleSchemas, syncInUtils) {
         const recordsToInsertMap = this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemas);
         const recordsToUpdateMap = new Map();
         const messageIndexMapByRecordToUpdateIds = new Map();
@@ -66,7 +54,7 @@ class SyncInDataChecker {
                 for (const operationHistory of repoTransHistory.operationHistory) {
                     let recordToInsertMapForEntityInRepo;
                     if (recordToInsertMapForRepo) {
-                        const recordToInsertMapForSchemaInRepo = recordToInsertMapForRepo.get(operationHistory.schemaVersion.id);
+                        const recordToInsertMapForSchemaInRepo = recordToInsertMapForRepo.get(operationHistory.entity.schemaVersion.id);
                         if (recordToInsertMapForSchemaInRepo) {
                             recordToInsertMapForEntityInRepo
                                 = recordToInsertMapForSchemaInRepo.get(operationHistory.entity.id);
@@ -83,10 +71,10 @@ class SyncInDataChecker {
                                 }
                                 if (!recordToInsertSetForActor
                                     || !recordToInsertSetForActor.has(recordHistory.actorRecordId)) {
-                                    const recordToUpdateMapForRepoInTable = this.syncInUtils
+                                    const recordToUpdateMapForRepoInTable = syncInUtils
                                         .ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordsToUpdateMap);
                                     this.ensureRecordId(recordHistory, recordToUpdateMapForRepoInTable, recordHistory.actorRecordId);
-                                    this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(messageIndexMapByRecordToUpdateIds, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.id), recordHistory.actor.id), recordHistory.actorRecordId)
+                                    ground_control_1.ensureChildJsSet(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(messageIndexMapByRecordToUpdateIds, repositoryId), operationHistory.entity.schemaVersion.id), operationHistory.entity.id), recordHistory.actor.id), recordHistory.actorRecordId)
                                         .add(i);
                                 }
                             }
@@ -100,7 +88,7 @@ class SyncInDataChecker {
             recordsToUpdateMap
         };
     }
-    async determineMissingRecords(dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, recordToUpdateMap, existingRecordIdMap, messageIndexMapByRecordToUpdateIds) {
+    async determineMissingRecords(dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, recordToUpdateMap, existingRecordIdMap, messageIndexMapByRecordToUpdateIds, missingRecordDao) {
         const compatibleDataMessageFlags = dataMessagesWithCompatibleSchemas.map(_ => true);
         const missingRecords = [];
         const missingRecordDataToTMs = [];
@@ -143,7 +131,7 @@ class SyncInDataChecker {
             }
         }
         if (missingRecords.length) {
-            await this.missingRecordDao.bulkCreate(missingRecords, false, false);
+            await missingRecordDao.bulkCreate(missingRecords, false, false);
         }
         return {
             compatibleDataMessageFlags,
@@ -160,7 +148,7 @@ class SyncInDataChecker {
                     switch (operationHistory.changeType) {
                         case ground_control_1.ChangeType.INSERT_VALUES:
                             for (const recordHistory of operationHistory.recordHistory) {
-                                this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(recordsToInsertMap, repositoryId), operationHistory.schemaVersion.id), operationHistory.entity.id), recordHistory.actor.id)
+                                ground_control_1.ensureChildJsSet(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(recordsToInsertMap, repositoryId), operationHistory.entity.schemaVersion.id), operationHistory.entity.id), recordHistory.actor.id)
                                     .add(recordHistory.actorRecordId);
                             }
                             break;
@@ -171,7 +159,7 @@ class SyncInDataChecker {
         return recordsToInsertMap;
     }
     ensureRecordId(recordHistory, actorRecordIdSetByActor, actorRecordId = recordHistory.actorRecordId) {
-        this.utils.ensureChildJsSet(actorRecordIdSetByActor, recordHistory.actor.id).add(actorRecordId);
+        ground_control_1.ensureChildJsSet(actorRecordIdSetByActor, recordHistory.actor.id).add(actorRecordId);
     }
     recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaVersionId, entityId, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordDataToTMs) {
         const missingRecord = this.createMissingRecord(repositoryId, schemaVersionId, entityId, actorId, actorRecordId);
@@ -213,13 +201,13 @@ class SyncInDataChecker {
             status: moving_walkway_1.MissingRecordStatus.MISSING
         };
     }
-    async getExistingRepoTransBlocksWithCompatibleSchemasAndData(foundMissingRecordIds) {
+    async getExistingRepoTransBlocksWithCompatibleSchemasAndData(foundMissingRecordIds, missingRecordDao, missingRecordRepoTransBlockDao, repositoryTransactionBlockDao) {
         if (foundMissingRecordIds.length) {
             return [];
         }
-        const existingRepoTransBlocksWithCompatibleSchemasAndData = await this.repositoryTransactionBlockDao.findWithMissingRecordIdsAndNoMissingRecordsWithStatus(foundMissingRecordIds, moving_walkway_1.MissingRecordStatus.MISSING);
-        await this.missingRecordRepoTransBlockDao.deleteWhereMissingRecordIdsIn(foundMissingRecordIds);
-        await this.missingRecordDao.deleteWhereIdsIn(foundMissingRecordIds);
+        const existingRepoTransBlocksWithCompatibleSchemasAndData = await repositoryTransactionBlockDao.findWithMissingRecordIdsAndNoMissingRecordsWithStatus(foundMissingRecordIds, moving_walkway_1.MissingRecordStatus.MISSING);
+        await missingRecordRepoTransBlockDao.deleteWhereMissingRecordIdsIn(foundMissingRecordIds);
+        await missingRecordDao.deleteWhereIdsIn(foundMissingRecordIds);
         return existingRepoTransBlocksWithCompatibleSchemasAndData;
     }
 }

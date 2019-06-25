@@ -2,14 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const moving_walkway_1 = require("@airport/moving-walkway");
 const diTokens_1 = require("../../diTokens");
 class Stage2SyncedInDataProcessor {
     async applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap) {
-        const [airDb, recordUpdateStageDao] = await di_1.DI.get(air_control_1.AIR_DB, moving_walkway_1.RECORD_UPDATE_STAGE_DAO);
-        await this.performCreates(stage1Result.recordCreations, schemasBySchemaVersionIdMap, airDb);
-        await this.performUpdates(stage1Result.recordUpdates, schemasBySchemaVersionIdMap);
-        await this.performDeletes(stage1Result.recordDeletions, schemasBySchemaVersionIdMap);
+        const [airDb, dbFacade, recordUpdateStageDao] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.DB_FACADE, moving_walkway_1.RECORD_UPDATE_STAGE_DAO);
+        await this.performCreates(stage1Result.recordCreations, schemasBySchemaVersionIdMap, airDb, dbFacade);
+        await this.performUpdates(stage1Result.recordUpdates, schemasBySchemaVersionIdMap, recordUpdateStageDao);
+        await this.performDeletes(stage1Result.recordDeletions, schemasBySchemaVersionIdMap, airDb, dbFacade);
     }
     /**
      * Remote changes come in with SchemaVersionIds not SchemaIndexes, so it makes
@@ -23,7 +24,7 @@ class Stage2SyncedInDataProcessor {
      *  To tie in a given SchemaVersionId to its SchemaIndex an additional mapping data
      *  structure is passed in.
      */
-    async performCreates(recordCreations, schemasBySchemaVersionIdMap, airDb) {
+    async performCreates(recordCreations, schemasBySchemaVersionIdMap, airDb, dbFacade) {
         for (const [schemaVersionId, creationInSchemaMap] of recordCreations) {
             for (const [tableIndex, creationInTableMap] of creationInSchemaMap) {
                 const schemaIndex = schemasBySchemaVersionIdMap[schemaVersionId];
@@ -69,7 +70,7 @@ class Stage2SyncedInDataProcessor {
                     }
                 }
                 if (numInserts) {
-                    await airDb.db.insertValues(dbEntity, {
+                    await dbFacade.insertValues(dbEntity, {
                         insertInto: qEntity,
                         columns,
                         values
@@ -78,19 +79,19 @@ class Stage2SyncedInDataProcessor {
             }
         }
     }
-    async performUpdates(recordUpdates, schemasBySchemaVersionIdMap) {
+    async performUpdates(recordUpdates, schemasBySchemaVersionIdMap, recordUpdateStageDao) {
         const finalUpdateMap = new Map();
         const recordUpdateStage = [];
         // Build the final update data structure
         for (const [schemaVersionId, schemaUpdateMap] of recordUpdates) {
-            const finalSchemaUpdateMap = this.utils.ensureChildJsMap(finalUpdateMap, schemaVersionId);
+            const finalSchemaUpdateMap = ground_control_1.ensureChildJsMap(finalUpdateMap, schemaVersionId);
             for (const [tableIndex, tableUpdateMap] of schemaUpdateMap) {
-                const finalTableUpdateMap = this.utils.ensureChildJsMap(finalSchemaUpdateMap, tableIndex);
+                const finalTableUpdateMap = ground_control_1.ensureChildJsMap(finalSchemaUpdateMap, tableIndex);
                 for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
                     for (const [actorId, actorUpdates] of repositoryUpdateMap) {
                         for (const [actorRecordId, recordUpdateMap] of actorUpdates) {
                             const recordKeyMap = this.getRecordKeyMap(recordUpdateMap, finalTableUpdateMap);
-                            this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(recordKeyMap, repositoryId), actorId)
+                            ground_control_1.ensureChildJsSet(ground_control_1.ensureChildJsMap(recordKeyMap, repositoryId), actorId)
                                 .add(actorRecordId);
                             for (const [columnIndex, columnUpdate] of recordUpdateMap) {
                                 recordUpdateStage.push([
@@ -108,22 +109,22 @@ class Stage2SyncedInDataProcessor {
                 }
             }
         }
-        await this.recordUpdateStageDao.insertValues(recordUpdateStage);
+        await recordUpdateStageDao.insertValues(recordUpdateStage);
         // Perform the updates
         for (const [schemaVersionId, updateMapForSchema] of finalUpdateMap) {
             const schema = schemasBySchemaVersionIdMap.get(schemaVersionId);
             for (const [tableIndex, updateMapForTable] of updateMapForSchema) {
-                await this.runUpdatesForTable(schema.index, schemaVersionId, tableIndex, updateMapForTable);
+                await this.runUpdatesForTable(schema.index, schemaVersionId, tableIndex, updateMapForTable, recordUpdateStageDao);
             }
         }
-        await this.recordUpdateStageDao.delete();
+        await recordUpdateStageDao.delete();
     }
-    async performDeletes(recordDeletions, schemasBySchemaVersionIdMap) {
+    async performDeletes(recordDeletions, schemasBySchemaVersionIdMap, airDb, dbFacade) {
         for (const [schemaVersionId, deletionInSchemaMap] of recordDeletions) {
             const schema = schemasBySchemaVersionIdMap.get(schemaVersionId);
             for (const [tableIndex, deletionInTableMap] of deletionInSchemaMap) {
-                const dbEntity = this.airDb.schemas[schema.index].currentVersion.entities[tableIndex];
-                const qEntity = this.airDb.qSchemas[schema.index][dbEntity.name];
+                const dbEntity = airDb.schemas[schema.index].currentVersion.entities[tableIndex];
+                const qEntity = airDb.qSchemas[schema.index][dbEntity.name];
                 let numClauses = 0;
                 let repositoryWhereFragments = [];
                 for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
@@ -135,7 +136,7 @@ class Stage2SyncedInDataProcessor {
                     repositoryWhereFragments.push(air_control_1.and(qEntity.repository.id.equals(repositoryId), air_control_1.or(...actorWhereFragments)));
                 }
                 if (numClauses) {
-                    await this.airDb.db.deleteWhere(dbEntity, {
+                    await dbFacade.deleteWhere(dbEntity, {
                         deleteFrom: qEntity,
                         where: air_control_1.or(...repositoryWhereFragments)
                     });
@@ -160,7 +161,7 @@ class Stage2SyncedInDataProcessor {
         }
         // Sort the updated columns by column index, to ensure that all records with the
         // same combination of updated columns are grouped
-        updatedColumns.sort(this.utils.compareNumbers);
+        updatedColumns.sort(air_control_1.compareNumbers);
         // Navigate down the table UpdateKeyMap to find the matching combination of
         // columns being updated
         let columnValueUpdate;
@@ -193,14 +194,14 @@ class Stage2SyncedInDataProcessor {
      * @param {ColumnUpdateKeyMap} updateKeyMap
      * @returns {Promise<void>}
      */
-    async runUpdatesForTable(schemaIndex, schemaVersionId, tableIndex, updateKeyMap) {
+    async runUpdatesForTable(schemaIndex, schemaVersionId, tableIndex, updateKeyMap, recordUpdateStageDao) {
         for (const columnValueUpdate of updateKeyMap.values()) {
             const updatedColumns = columnValueUpdate.updatedColumns;
             if (updatedColumns) {
-                await this.recordUpdateStageDao.updateEntityWhereIds(schemaIndex, schemaVersionId, tableIndex, columnValueUpdate.recordKeyMap, updatedColumns);
+                await recordUpdateStageDao.updateEntityWhereIds(schemaIndex, schemaVersionId, tableIndex, columnValueUpdate.recordKeyMap, updatedColumns);
             }
             // Traverse down into nested column update combinations
-            await this.runUpdatesForTable(schemaIndex, schemaVersionId, tableIndex, columnValueUpdate.childColumnUpdateKeyMap);
+            await this.runUpdatesForTable(schemaIndex, schemaVersionId, tableIndex, columnValueUpdate.childColumnUpdateKeyMap, recordUpdateStageDao);
         }
     }
 }

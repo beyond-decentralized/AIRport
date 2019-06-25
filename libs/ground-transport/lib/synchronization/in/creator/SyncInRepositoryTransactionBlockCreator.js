@@ -8,14 +8,9 @@ const moving_walkway_1 = require("@airport/moving-walkway");
 const lib_1 = require("zipson/lib");
 const diTokens_1 = require("../../../diTokens");
 class SyncInRepositoryTransactionBlockCreator {
-    constructor() {
-        di_1.DI.get((repositoryTransactionBlockDao, missingRecordRepoTransBlockDao, sharingMessageRepoTransBlockDao) => {
-            this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
-            this.missingRecordRepoTransBlockDao = missingRecordRepoTransBlockDao;
-            this.sharingMessageRepoTransBlockDao = sharingMessageRepoTransBlockDao;
-        }, moving_walkway_1.REPO_TRANS_BLOCK_DAO, moving_walkway_1.MISSING_RECORD_REPO_TRANS_BLOCK_DAO, moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO);
-    }
     async createRepositoryTransBlocks(dataMessagesWithIncompatibleSchemas, dataMessagesWithIncompatibleData, dataMessagesToBeUpgraded, dataMessagesWithCompatibleSchemasAndData, dataMessagesWithInvalidData) {
+        // TODO: remove unneeded dependencies once tested
+        const [repositoryTransactionBlockDao, missingRecordRepoTransBlockDao, sharingMessageRepoTransBlockDao] = await di_1.DI.get(moving_walkway_1.REPO_TRANS_BLOCK_DAO, moving_walkway_1.MISSING_RECORD_REPO_TRANS_BLOCK_DAO, moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO);
         let allRepositoryTransactionBlocks = [];
         const repoTransBlocksNeedingSchemaChanges = this.createRepositoryTransactionBlocks(dataMessagesWithIncompatibleSchemas, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_SCHEMA_CHANGES, true);
         allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksNeedingSchemaChanges);
@@ -27,7 +22,7 @@ class SyncInRepositoryTransactionBlockCreator {
         allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksWithInvalidData);
         const repoTransBlocksWithValidDataAndSchemas = this.createRepositoryTransactionBlocks(dataMessagesWithCompatibleSchemasAndData, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_TO_TM_SUCCESSFUL);
         allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksWithValidDataAndSchemas);
-        await this.repositoryTransactionBlockDao.bulkCreate(allRepositoryTransactionBlocks, false, false);
+        await repositoryTransactionBlockDao.bulkCreate(allRepositoryTransactionBlocks, false, false);
         let allDataToTM = [];
         allDataToTM = allDataToTM.concat(dataMessagesWithIncompatibleSchemas);
         allDataToTM = allDataToTM.concat(dataMessagesWithIncompatibleData);
@@ -52,29 +47,29 @@ class SyncInRepositoryTransactionBlockCreator {
         }
         return repositoryTransactionBlocks;
     }
-    async createMissingRecordRepoTransBlocks(missingRecordDataToTMs) {
+    async createMissingRecordRepoTransBlocks(missingRecordDataToTMs, missingRecordRepoTransBlockDao) {
         const missingRecordRepoTransBlocks = missingRecordDataToTMs.map(missingRecordDataToTM => ({
             missingRecord: missingRecordDataToTM.missingRecord,
             repositoryTransactionBlock: missingRecordDataToTM
                 .dataMessage.repositoryTransactionBlock
         }));
         if (missingRecordRepoTransBlocks.length) {
-            await this.missingRecordRepoTransBlockDao.bulkCreate(missingRecordRepoTransBlocks, false, false);
+            await missingRecordRepoTransBlockDao.bulkCreate(missingRecordRepoTransBlocks, false, false);
         }
     }
-    async createSharingMessageRepoTransBlocks(allDataToTM) {
+    async createSharingMessageRepoTransBlocks(allDataToTM, sharingMessageRepoTransBlockDao) {
         const sharingMessageRepoTransBlocks = allDataToTM.map(dataToTM => ({
             sharingMessage: dataToTM.sharingMessage,
             repositoryTransactionBlock: dataToTM.repositoryTransactionBlock
         }));
-        await this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
+        await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
     }
-    async recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById) {
+    async recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById, repositoryTransactionBlockDao, sharingMessageRepoTransBlockDao, transactionManager) {
         const repoTransHistoryMapByRepositoryId = await this.getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
         const repositoryTransactionBlocks = [];
         const sharingMessageRepoTransBlocks = [];
         // const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = [];
-        const transactionHistory = this.transactionManager.currentTransHistory;
+        const transactionHistory = transactionManager.currentTransHistory;
         transactionHistory.transactionType = ground_control_1.TransactionType.REMOTE_SYNC;
         // split messages by repository and record actor information
         for (let i = 0; i < dataMessages.length; i++) {
@@ -112,8 +107,8 @@ class SyncInRepositoryTransactionBlockCreator {
                 });
             });
         }
-        await this.repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
-        await this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
+        await repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
+        await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
         // await this.repoTransBlockRepoTransHistoryDao.bulkCreate(
         // 	repoTransBlockRepoTransHistories, false, false);
         return repoTransHistoryMapByRepositoryId;

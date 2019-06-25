@@ -2,57 +2,50 @@ import {
 	AgtRepositoryId,
 	TerminalName,
 	TerminalSecondId
-}                                                 from '@airport/arrivals-n-departures'
-import {DI}                                       from '@airport/di'
+}                                 from '@airport/arrivals-n-departures'
+import {DI}                       from '@airport/di'
 import {
 	DomainName,
 	SchemaIndex,
 	SchemaName,
 	SchemaVersionId
-}                                                 from '@airport/ground-control'
+}                                 from '@airport/ground-control'
 import {
 	ActorRandomId,
 	IActor,
 	RepositoryId
-}                                                 from '@airport/holding-pattern'
+}                                 from '@airport/holding-pattern'
 import {
-	IMissingRecordRepoTransBlockDao,
 	IRepositoryTransactionBlock,
 	IRepoTransBlockSchemaToChange,
 	IRepoTransBlockSchemaToChangeDao,
 	ISharingMessage,
-	ISharingMessageDao,
 	MISSING_RECORD_REPO_TRANS_BLOCK_DAO,
 	REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO,
 	SchemaChangeStatus,
-	SHARING_MESSAGE_DAO,
+	SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
 	SharingNodeId
-}                                                 from '@airport/moving-walkway'
+}                                 from '@airport/moving-walkway'
 import {
 	ISchema,
 	ISchemaVersion,
-}                                                 from '@airport/traffic-pattern'
-import {UserUniqueId}                             from '@airport/travel-document-checkpoint'
+}                                 from '@airport/traffic-pattern'
+import {UserUniqueId}             from '@airport/travel-document-checkpoint'
 import {
 	SYNC_IN_ACTOR_CHECKER,
 	SYNC_IN_CHECKER,
 	SYNC_IN_DATA_CHECKER,
 	SYNC_IN_REPO_CHECKER,
 	SYNC_IN_REPO_TRANS_BLOCK_CREATOR,
-	SYNC_IN_SCHEMA_CHECKER,
-	SYNC_IN_UTILS
-}                                                 from '../../../diTokens'
-import {ISyncInRepositoryTransactionBlockCreator} from '../creator/SyncInRepositoryTransactionBlockCreator'
+	SYNC_IN_SCHEMA_CHECKER
+}                                 from '../../../diTokens'
 import {
 	IDataToTM,
-	ISyncInUtils,
 	RemoteActorId,
 	RemoteSchemaVersionId
-}                                                 from '../SyncInUtils'
-import {ISyncInActorChecker}                      from './SyncInActorChecker'
-import {ISyncInDataChecker}                       from './SyncInDataChecker'
-import {ISyncInRepositoryChecker}                 from './SyncInRepositoryChecker'
-import {ISyncInSchemaChecker}                     from './SyncInSchemaChecker'
+}                                 from '../SyncInUtils'
+import {ISyncInActorChecker}      from './SyncInActorChecker'
+import {ISyncInRepositoryChecker} from './SyncInRepositoryChecker'
 
 export interface CheckSchemasResult {
 	dataMessagesToBeUpgraded: IDataToTM[];
@@ -89,44 +82,6 @@ export interface ISyncInChecker {
 export class SyncInChecker
 	implements ISyncInChecker {
 
-	public actorChecker: ISyncInActorChecker
-	private dataChecker: ISyncInDataChecker
-	private missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao
-	public repositoryChecker: ISyncInRepositoryChecker
-	private repoTransBlockSchemasToChangeDao: IRepoTransBlockSchemaToChangeDao
-	private schemaChecker: ISyncInSchemaChecker
-	private sharingMessageDao: ISharingMessageDao
-	private syncInRepositoryTransactionBlockCreator: ISyncInRepositoryTransactionBlockCreator
-	private syncInUtils: ISyncInUtils
-
-	constructor() {
-		DI.get((
-			syncInActorChecker,
-			syncInDataChecker,
-			missingRecordRepoTransBlockDao,
-			syncInRepositoryChecker,
-			repoTransBlockSchemasToChangeDao,
-			syncInSchemaChecker,
-			sharingMessageDao,
-			syncInRepositoryTransactionBlockCreator,
-			syncInUtils
-			) => {
-				this.actorChecker                            = syncInActorChecker
-				this.dataChecker                             = syncInDataChecker
-				this.missingRecordRepoTransBlockDao          = missingRecordRepoTransBlockDao
-				this.repositoryChecker                       = syncInRepositoryChecker
-				this.repoTransBlockSchemasToChangeDao        = repoTransBlockSchemasToChangeDao
-				this.schemaChecker                           = syncInSchemaChecker
-				this.sharingMessageDao                       = sharingMessageDao
-				this.syncInRepositoryTransactionBlockCreator = syncInRepositoryTransactionBlockCreator
-				this.syncInUtils                             = syncInUtils
-			}, SYNC_IN_ACTOR_CHECKER, SYNC_IN_DATA_CHECKER,
-			MISSING_RECORD_REPO_TRANS_BLOCK_DAO, SYNC_IN_REPO_CHECKER,
-			REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO, SYNC_IN_SCHEMA_CHECKER,
-			SHARING_MESSAGE_DAO, SYNC_IN_REPO_TRANS_BLOCK_CREATOR,
-			SYNC_IN_UTILS)
-	}
-
 	/**
 	 *
 	 * @param {IDataToTM[]} dataMessages
@@ -140,6 +95,14 @@ export class SyncInChecker
 	async checkSchemasAndDataAndRecordRepoTransBlocks(
 		dataMessages: IDataToTM[]
 	): Promise<CheckResults> {
+		const [syncInActorChecker, syncInDataChecker,
+			      missingRecordRepoTransBlockDao, syncInRepositoryChecker,
+			      repoTransBlockSchemasToChangeDao, syncInSchemaChecker,
+			      sharingMessageRepoTransBlockDao, syncInRepoTransBlockCreator] = await DI.get(
+			SYNC_IN_ACTOR_CHECKER, SYNC_IN_DATA_CHECKER,
+			MISSING_RECORD_REPO_TRANS_BLOCK_DAO, SYNC_IN_REPO_CHECKER,
+			REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO, SYNC_IN_SCHEMA_CHECKER,
+			SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SYNC_IN_REPO_TRANS_BLOCK_CREATOR)
 
 		const {
 			      dataMessagesWithCompatibleSchemas,
@@ -149,18 +112,18 @@ export class SyncInChecker
 			      maxVersionedMapBySchemaAndDomainNames,
 			      requiredSchemaVersionIds,
 			      schemasWithChangesMap,
-		      } = await this.schemaChecker.checkSchemas(dataMessages)
+		      } = await syncInSchemaChecker.checkSchemas(dataMessages)
 
 		const {
 			      actorMap,
 			      actorMapById,
 			      consistentMessages
-		      } = await this.actorChecker.ensureActorsAndGetAsMaps(
+		      } = await syncInActorChecker.ensureActorsAndGetAsMaps(
 			dataMessages, dataMessagesWithInvalidData)
 
 
 		const {consistentMessages, sharingNodeRepositoryMap}
-			      = await this.repositoryChecker.ensureRepositories(
+			      = await syncInRepositoryChecker.ensureRepositories(
 			allDataMessages, dataMessagesWithInvalidData)
 
 		dataMessagesWithInvalidData = dataMessagesWithInvalidData
@@ -188,10 +151,10 @@ export class SyncInChecker
 			      dataMessagesWithIncompatibleData,
 			      existingRepoTransBlocksWithCompatibleSchemasAndData,
 			      missingRecordDataToTMs
-		      } = await this.dataChecker.checkData(dataMessagesWithCompatibleSchemas)
+		      } = await syncInDataChecker.checkData(dataMessagesWithCompatibleSchemas)
 
 
-		const allDataToTM = await this.syncInRepositoryTransactionBlockCreator
+		const allDataToTM = await syncInRepoTransBlockCreator
 			.createRepositoryTransBlocks(
 				dataMessagesWithIncompatibleSchemas,
 				dataMessagesWithIncompatibleData,
@@ -200,13 +163,14 @@ export class SyncInChecker
 				dataMessagesWithInvalidData
 			)
 
-		await this.syncInRepositoryTransactionBlockCreator
+		await syncInRepoTransBlockCreator
 			.createMissingRecordRepoTransBlocks(
-				missingRecordDataToTMs
-			)
+				missingRecordDataToTMs,
+				missingRecordRepoTransBlockDao)
 
-		await this.syncInRepositoryTransactionBlockCreator
-			.createSharingMessageRepoTransBlocks(allDataToTM)
+		await syncInRepoTransBlockCreator
+			.createSharingMessageRepoTransBlocks(allDataToTM,
+				sharingMessageRepoTransBlockDao)
 
 		// Currently, SharingNodeRepoTransBlocks are not needed for incoming messages.
 		// Their are used to track the sync status of the outgoing RTBs only
@@ -219,7 +183,8 @@ export class SyncInChecker
 			schemasWithChangesMap,
 			// dataMessagesWithCompatibleSchemasAndData,
 			// sharingMessagesWithIncompatibleData,
-			// missingRecordRepoTransBlocks
+			// missingRecordRepoTransBlocks,
+			repoTransBlockSchemasToChangeDao
 		)
 
 		return [
@@ -290,7 +255,7 @@ export class SyncInChecker
 					const localSchemaVersionId
 						      = schemaVersionIdMapByRemoteSchemaVersionId.get(operationHistory.schemaVersion.id)
 					usedSchemaIndexSet.add(localSchemaVersionId)
-					operationHistory.schemaVersion.id = localSchemaVersionId
+					operationHistory.entity.schemaVersion.id = localSchemaVersionId
 					for (const recordHistory of operationHistory.recordHistory) {
 						delete recordHistory.id
 					}
@@ -354,7 +319,8 @@ export class SyncInChecker
 		schemaWithChangesMap: Map<DomainName, Map<SchemaName, ISchema>>,
 		// dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
 		// sharingMessagesWithIncompatibleData: ISharingMessage[],
-		// missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[]
+		// missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[],
+		repoTransBlockSchemasToChangeDao: IRepoTransBlockSchemaToChangeDao
 	): Promise<ISharingMessage[]> {
 		// const sharingMessagesWithIncompatibleSchemas =
 		// dataMessagesWithIncompatibleSchemas.map(( dataMessagesWithIncompatibleSchemas ) =>
@@ -376,7 +342,9 @@ export class SyncInChecker
 		// SharingMessageProcessingStatus.READY_FOR_PROCESSING, false); }); const
 		// allSharingMessagesToCreate: ISharingMessage[] = [
 		// ...sharingMessagesWithIncompatibleSchemas, ...sharingMessagesToBeUpgraded,
-		// ...sharingMessagesWithIncompatibleData, ...sharingMessagesWithCompatibleSchemasAndData ]; await this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false, false);
+		// ...sharingMessagesWithIncompatibleData,
+		// ...sharingMessagesWithCompatibleSchemasAndData ]; await
+		// this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false, false);
 
 		// const m: MissingRecordRepoTransBlock;
 
@@ -411,7 +379,7 @@ export class SyncInChecker
 				})
 			}
 		}
-		await this.repoTransBlockSchemasToChangeDao.bulkCreate(
+		await repoTransBlockSchemasToChangeDao.bulkCreate(
 			repoTransBlockSchemasToChange, false, false)
 
 		return sharingMessagesWithCompatibleSchemasAndData

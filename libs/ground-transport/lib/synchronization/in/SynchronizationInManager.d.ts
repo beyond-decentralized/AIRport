@@ -24,11 +24,6 @@ export declare type LastRemoteChangeMillis = number;
  * Synchronization in Manager implementation.
  */
 export declare class SynchronizationInManager implements ISynchronizationInManager {
-    private sharingMessageDao;
-    private syncInChecker;
-    private syncLogMessageProcessor;
-    private twoStageSyncedInDataProcessor;
-    constructor();
     /**
      * ASSUMPTION: all of the messages are intended for this TM.
      *

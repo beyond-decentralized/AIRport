@@ -1,22 +1,17 @@
 import {
-	IUtils,
-	UTILS
-}                              from '@airport/air-control'
-import {
 	TerminalId,
 	TerminalName,
 	TerminalSecondId
 }                              from '@airport/arrivals-n-departures'
 import {DI}                    from '@airport/di'
+import {ensureChildJsMap}      from '@airport/ground-control'
 import {
 	ACTOR_DAO,
 	ActorId,
 	ActorRandomId,
-	IActor,
-	IActorDao
+	IActor
 }                              from '@airport/holding-pattern'
 import {
-	ITerminalDao,
 	TERMINAL_DAO,
 	UserUniqueId
 }                              from '@airport/travel-document-checkpoint'
@@ -53,22 +48,6 @@ export interface ISyncInActorChecker {
 export class SyncInActorChecker
 	implements ISyncInActorChecker {
 
-	private actorDao: IActorDao
-	private terminalDao: ITerminalDao
-	private utils: IUtils
-
-	constructor() {
-		DI.get((
-			actorDao,
-			terminalDao,
-			utils
-		) => {
-			this.actorDao    = actorDao
-			this.terminalDao = terminalDao
-			this.utils       = utils
-		}, ACTOR_DAO, TERMINAL_DAO, UTILS)
-	}
-
 	async ensureActorsAndGetAsMaps(
 		dataMessages: IDataToTM[],
 		actorMap: Map<UserUniqueId, Map<TerminalName,
@@ -78,6 +57,8 @@ export class SyncInActorChecker
 		terminalCheckResults: TerminalCheckResults,
 		dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<ActorCheckResults> {
+		const [actorDao, terminalDao] = await DI.get(ACTOR_DAO, TERMINAL_DAO)
+
 		const actorRandomIdSet: Set<ActorRandomId>       = new Set()
 		const userUniqueIdsSet: Set<UserUniqueId>        = new Set()
 		const terminalNameSet: Set<TerminalName>         = new Set()
@@ -104,12 +85,11 @@ export class SyncInActorChecker
 			}
 		}
 
-		const terminalMapByGlobalIds = await this.terminalDao.findMapByGlobalIds(
+		const terminalMapByGlobalIds = await terminalDao.findMapByGlobalIds(
 			Array.from(ownerUniqueIdSet),
 			Array.from(terminalNameSet),
 			Array.from(terminalSecondIdSet)
 		)
-
 
 		const terminalIdSet: Set<TerminalId> = new Set()
 		for (const message of dataMessages) {
@@ -123,7 +103,7 @@ export class SyncInActorChecker
 		// NOTE: remote actors should not contain terminal info, it should be populated here
 		// this is because a given RTB is always generated in one and only one terminal
 
-		await this.actorDao.findMapsWithDetailsByGlobalIds(
+		await actorDao.findMapsWithDetailsByGlobalIds(
 			Array.from(actorRandomIdSet),
 			Array.from(userUniqueIdsSet),
 			Array.from(terminalIdSet),
@@ -131,7 +111,7 @@ export class SyncInActorChecker
 			actorMapById)
 
 		const newActors: IActor[] = this.getNewActors(consistentMessages, actorMap)
-		await this.actorDao.bulkCreate(newActors, false, false)
+		await actorDao.bulkCreate(newActors, false, false)
 
 		for (const newActor of newActors) {
 			actorMapById.set(newActor.id, newActor)
@@ -282,10 +262,10 @@ export class SyncInActorChecker
 		actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName,
 			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>
 	): void {
-		this.utils.ensureChildJsMap(
-			this.utils.ensureChildJsMap(
-				this.utils.ensureChildJsMap(
-					this.utils.ensureChildJsMap(actorMap, actor.randomId),
+		ensureChildJsMap(
+			ensureChildJsMap(
+				ensureChildJsMap(
+					ensureChildJsMap(actorMap, actor.randomId),
 					actor.user.uniqueId),
 				actor.terminal.name),
 			actor.terminal.secondId).set(actor.terminal.owner.uniqueId, actor)

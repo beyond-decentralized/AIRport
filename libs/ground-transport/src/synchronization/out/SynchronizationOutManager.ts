@@ -1,28 +1,19 @@
+import {DI}              from '@airport/di'
+import {BlockSyncStatus} from '@airport/ground-control'
 import {
-	IUtils,
-	UTILS,
-}                                                  from '@airport/air-control'
-import {DI}                                        from '@airport/di'
-import {BlockSyncStatus}                           from '@airport/ground-control'
-import {
-	IRepositoryDao,
-	IRepositoryTransactionHistoryDao,
 	REPO_TRANS_HISTORY_DAO,
 	REPOSITORY_DAO
-}                                                  from '@airport/holding-pattern'
+}                        from '@airport/holding-pattern'
 import {
 	DataOrigin,
 	IRepositoryTransactionBlock,
-	IRepositoryTransactionBlockDao,
 	ISharingMessage,
 	ISharingMessageDao,
 	ISharingMessageRepoTransBlock,
 	ISharingMessageRepoTransBlockDao,
 	ISharingNode,
 	ISharingNodeDao,
-	ISharingNodeRepositoryDao,
 	ISharingNodeRepoTransBlockDao,
-	ISharingNodeTerminalDao,
 	REPO_TRANS_BLOCK_DAO,
 	SHARING_MESSAGE_DAO,
 	SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
@@ -31,21 +22,15 @@ import {
 	SHARING_NODE_REPOSITORY_DAO,
 	SHARING_NODE_TERMINAL_DAO,
 	SharingNodeId,
-}                                                  from '@airport/moving-walkway'
-import {
-	ISchemaDao,
-	SCHEMA_DAO
-}                                                  from '@airport/traffic-pattern'
-import {ITerminal}                                 from '@airport/travel-document-checkpoint'
+}                        from '@airport/moving-walkway'
+import {SCHEMA_DAO}      from '@airport/traffic-pattern'
+import {ITerminal}       from '@airport/travel-document-checkpoint'
 import {
 	SYNC_OUT_MANAGER,
 	SYNC_OUT_MSG_SENDER,
 	SYNC_OUT_REPO_TRANS_BLOCK_CREATOR,
 	SYNC_OUT_SERIALIZER,
-}                                                  from '../../diTokens'
-import {ISyncOutMessageSender}                     from './SyncOutMessageSender'
-import {ISyncOutRepositoryTransactionBlockCreator} from './SyncOutRepositoryTransactionBlockCreator'
-import {ISyncOutSerializer}                        from './SyncOutSerializer'
+}                        from '../../diTokens'
 
 export interface ISynchronizationOutManager {
 
@@ -72,52 +57,40 @@ const maxAllRepoChangesLength   = 10485760
 export class SynchronizationOutManager
 	implements ISynchronizationOutManager {
 
-
-	private repositoryDao: Promise<IRepositoryDao>
-	private repositoryTransactionHistoryDao: Promise<IRepositoryTransactionHistoryDao>
-	private schemaDao: Promise<ISchemaDao>
-	private sharingMessageDao: Promise<ISharingMessageDao>
-	private sharingMessageRepoTransBlockDao: Promise<ISharingMessageRepoTransBlockDao>
-	private sharingNodeDao: Promise<ISharingNodeDao>
-	private sharingNodeTerminalDao: Promise<ISharingNodeTerminalDao>
-	private sharingNodeRepositoryDao: Promise<ISharingNodeRepositoryDao>
-	private sharingNodeRepoTransBlockDao: Promise<ISharingNodeRepoTransBlockDao>
-	private repositoryTransactionBlockCreator: ISyncOutRepositoryTransactionBlockCreator
-	private repositoryTransactionBlockDao: Promise<IRepositoryTransactionBlockDao>
-	private syncOutMessageSender: ISyncOutMessageSender
-	private syncOutSerializer: ISyncOutSerializer
-	private utils: IUtils
-
-	constructor() {
-		DI.get((
-			repositoryTransactionBlockCreator,
-			syncOutMessageSender,
-			syncOutSerializer,
-			utils
-			) => {
-				this.repositoryTransactionBlockCreator = repositoryTransactionBlockCreator
-				this.syncOutMessageSender              = syncOutMessageSender
-				this.syncOutSerializer                 = syncOutSerializer
-				this.utils                             = utils
-			}, SYNC_OUT_REPO_TRANS_BLOCK_CREATOR, SYNC_OUT_MSG_SENDER,
-			SYNC_OUT_SERIALIZER, UTILS)
-
-		this.repositoryDao                   = DI.getP(REPOSITORY_DAO)
-		this.repositoryTransactionHistoryDao = DI.getP(REPO_TRANS_HISTORY_DAO)
-		this.schemaDao                       = DI.getP(SCHEMA_DAO)
-		this.sharingMessageDao               = DI.getP(SHARING_MESSAGE_DAO)
-		this.sharingMessageRepoTransBlockDao = DI.getP(SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO)
-		this.sharingNodeDao                  = DI.getP(SHARING_NODE_DAO)
-		this.sharingNodeTerminalDao          = DI.getP(SHARING_NODE_TERMINAL_DAO)
-		this.sharingNodeRepositoryDao        = DI.getP(SHARING_NODE_REPOSITORY_DAO)
-		this.sharingNodeRepoTransBlockDao    = DI.getP(SHARING_NODE_REPO_TRANS_BLOCK_DAO)
-		this.repositoryTransactionBlockDao   = DI.getP(REPO_TRANS_BLOCK_DAO)
-	}
-
 	async synchronize(
 		sharingNodes: ISharingNode[],
 		terminal: ITerminal,
 	): Promise<void> {
+		// TODO: remove unneeded dependencies once implemented
+		const [
+			      repositoryDao,
+			      repoTransBlockDao,
+			      repoTransHistoryDao,
+			      schemaDao,
+			      sharingMessageDao,
+			      sharingMessageRepoTransBlockDao,
+			      sharingNodeDao,
+			      sharingNodeTerminalDao,
+			      sharingNodeRepositoryDao,
+			      sharingNodeRepoTransBlockDao,
+			      syncOutRepoTransBlockCreator,
+			      syncOutMessageSender,
+			      syncOutSerializer,
+		      ] = await DI.get(
+			REPOSITORY_DAO,
+			REPO_TRANS_BLOCK_DAO,
+			REPO_TRANS_HISTORY_DAO,
+			SCHEMA_DAO,
+			SHARING_MESSAGE_DAO,
+			SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
+			SHARING_NODE_DAO,
+			SHARING_NODE_TERMINAL_DAO,
+			SHARING_NODE_REPOSITORY_DAO,
+			SHARING_NODE_REPO_TRANS_BLOCK_DAO,
+			SYNC_OUT_REPO_TRANS_BLOCK_CREATOR,
+			SYNC_OUT_MSG_SENDER,
+			SYNC_OUT_SERIALIZER)
+
 		const sharingNodeMap: Map<SharingNodeId, ISharingNode> = new Map()
 		sharingNodes.forEach(
 			sharingNode => {
@@ -171,29 +144,33 @@ export class SynchronizationOutManager
 		// Get RepoTransBlocks that have not acknowledged by AGT (or not sent for some reason)
 		// Send Sync Status request for each of these messages
 
-		await this.getNotAcknowledgedRTBs(sharingNodeMap)
+		await this.getNotAcknowledgedRTBs(sharingNodeMap,
+			sharingNodeDao, sharingNodeRepoTransBlockDao)
 
 		if (sharingNodeMap.size) {
 			// Get new repository transaction histories not yet in RepoTransBlocks
-			const newReposTransHistoryBlocksBySharingNodeId = await this.repositoryTransactionBlockCreator
+			const newReposTransHistoryBlocksBySharingNodeId = await syncOutRepoTransBlockCreator
 				.createNewBlocks(Array.from(sharingNodeMap.keys()), terminal)
 
-			await this.addNewSharingMessages(newReposTransHistoryBlocksBySharingNodeId, terminal)
+			await this.addNewSharingMessages(newReposTransHistoryBlocksBySharingNodeId,
+				terminal, sharingMessageDao, sharingMessageRepoTransBlockDao)
+
+
+			const sharingMessageIdsBySharingNodeId = await (await sharingMessageDao)
+				.findAllSyncedSharingMessageIdsForSharingNodes(sharingNodeIds)
+
+
+			// FIXME: check RepoTransBlocks that were denied sync due to no Write Permission
+			// if it is determined that AGT did not yet have the up-to-date repo permissions
+
+			const messagesBySharingNode = await syncOutSerializer.serializeMessages(
+				sharingNodeDbMap, sharingNodeMap,
+				repositoriesBySharingNodeIds, repoTransBlockDataByRepoId, repoTransHistoryIds, terminal)
+
+			await syncOutMessageSender.sendMessages(sharingNodeMap, messagesBySharingNode)
 		}
-
-		const sharingMessageIdsBySharingNodeId = await (await this.sharingMessageDao)
-			.findAllSyncedSharingMessageIdsForSharingNodes(sharingNodeIds)
-
-
-		// FIXME: check RepoTransBlocks that were denied sync due to no Write Permission
-		// if it is determined that AGT did not yet have the up-to-date repo permissions
-
-		const messagesBySharingNode = await this.syncOutSerializer.serializeMessages(
-			sharingNodeDbMap, sharingNodeMap,
-			repositoriesBySharingNodeIds, repoTransBlockDataByRepoId, repoTransHistoryIds, terminal)
-
-		await this.syncOutMessageSender.sendMessages(sharingNodeMap, messagesBySharingNode)
 	}
+
 
 	/**
 	 *
@@ -201,13 +178,15 @@ export class SynchronizationOutManager
 	 * @returns {Promise<void>}
 	 */
 	private async getNotAcknowledgedRTBs(
-		sharingNodeMap: Map<SharingNodeId, ISharingNode>
+		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
+		sharingNodeDao: ISharingNodeDao,
+		sharingNodeRepoTransBlockDao: ISharingNodeRepoTransBlockDao
 	) {
 		const startingSharingNodeIds = Array.from(sharingNodeMap.keys())
 		const {
 			      syncStatusRepositoryTransactionBlockIds,
 			      syncStatusRepoTransBlockIdsBySharingNodeId
-		      }                      = await (await this.sharingNodeRepoTransBlockDao).getForSharingNodeIdsAndBlockStatus(
+		      }                      = await sharingNodeRepoTransBlockDao.getForSharingNodeIdsAndBlockStatus(
 			startingSharingNodeIds, BlockSyncStatus.REQUESTING_SYNC_STATUS)
 
 		// If server did not respond to Sync Status requests
@@ -216,12 +195,13 @@ export class SynchronizationOutManager
 			const inactiveSharingNodeIds: SharingNodeId[] = Array.from(
 				syncStatusRepoTransBlockIdsBySharingNodeId.keys())
 			// Keep the RTB Sync Status in Requesting and update the SharingNode status
-			await (await this.sharingNodeDao).updateIsActive(inactiveSharingNodeIds, false)
+			await (await sharingNodeDao.updateIsActive(inactiveSharingNodeIds, false)
 
-			// TODO: add keep alive requests
+				// TODO: add keep alive requests
 
-			// Remove inactive Sharing Nodes from further message processing
-			for (const inactiveSharingNodeId of inactiveSharingNodeIds) {
+				// Remove inactive Sharing Nodes from further message processing
+				for (const inactiveSharingNodeId of inactiveSharingNodeIds)
+			{
 				sharingNodeMap.delete(inactiveSharingNodeId)
 			}
 		}
@@ -233,14 +213,14 @@ export class SynchronizationOutManager
 		const {
 			      syncingRepositoryTransactionBlockIds,
 			      syncingRepoTransBlockIdsBySharingNodeIds
-		      } = (await await this.sharingNodeRepoTransBlockDao).getForSharingNodeIdsAndBlockStatus(
+		      } = await sharingNodeRepoTransBlockDao.getForSharingNodeIdsAndBlockStatus(
 			startingSharingNodeIds, BlockSyncStatus.SYNCHRONIZING)
 
 		if (syncingRepositoryTransactionBlockIds.length) {
 			// scale down to sync status requests
 			const syncAckSharingNodeIds: SharingNodeId[] = Array.from(
 				syncingRepoTransBlockIdsBySharingNodeIds.keys())
-			await (await this.sharingNodeRepoTransBlockDao).updateBlockSyncStatus(syncAckSharingNodeIds,
+			await sharingNodeRepoTransBlockDao.updateBlockSyncStatus(syncAckSharingNodeIds,
 				syncingRepositoryTransactionBlockIds,
 				BlockSyncStatus.SYNCHRONIZING,
 				BlockSyncStatus.REQUESTING_SYNC_STATUS)
@@ -318,7 +298,9 @@ export class SynchronizationOutManager
 
 	private async addNewSharingMessages(
 		newReposTransHistoryBlocksBySharingNodeId: Map<SharingNodeId, IRepositoryTransactionBlock[]>,
-		source: ITerminal
+		source: ITerminal,
+		sharingMessageDao: ISharingMessageDao,
+		sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao
 	): Promise<void> {
 		const origin                    = DataOrigin.LOCAL
 		const messageSyncStatus         = BlockSyncStatus.SYNCHRONIZING
@@ -354,9 +336,9 @@ export class SynchronizationOutManager
 			}
 		}
 
-		await (await this.sharingMessageDao).bulkCreate(sharingMessages, false, false)
+		await sharingMessageDao.bulkCreate(sharingMessages, false, false)
 
-		await (await this.sharingMessageRepoTransBlockDao).bulkCreate(sharingMessageRepoTransBlocks,
+		await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks,
 			false, false)
 	}
 

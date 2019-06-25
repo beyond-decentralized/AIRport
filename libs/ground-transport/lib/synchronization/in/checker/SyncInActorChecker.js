@@ -1,19 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
 const diTokens_1 = require("../../../diTokens");
 class SyncInActorChecker {
-    constructor() {
-        di_1.DI.get((actorDao, terminalDao, utils) => {
-            this.actorDao = actorDao;
-            this.terminalDao = terminalDao;
-            this.utils = utils;
-        }, holding_pattern_1.ACTOR_DAO, travel_document_checkpoint_1.TERMINAL_DAO, air_control_1.UTILS);
-    }
     async ensureActorsAndGetAsMaps(dataMessages, actorMap, actorMapById, userCheckResults, terminalCheckResults, dataMessagesWithInvalidData) {
+        const [actorDao, terminalDao] = await di_1.DI.get(holding_pattern_1.ACTOR_DAO, travel_document_checkpoint_1.TERMINAL_DAO);
         const actorRandomIdSet = new Set();
         const userUniqueIdsSet = new Set();
         const terminalNameSet = new Set();
@@ -36,7 +30,7 @@ class SyncInActorChecker {
                 userUniqueIdsSet.add(actor.user.uniqueId);
             }
         }
-        const terminalMapByGlobalIds = await this.terminalDao.findMapByGlobalIds(Array.from(ownerUniqueIdSet), Array.from(terminalNameSet), Array.from(terminalSecondIdSet));
+        const terminalMapByGlobalIds = await terminalDao.findMapByGlobalIds(Array.from(ownerUniqueIdSet), Array.from(terminalNameSet), Array.from(terminalSecondIdSet));
         const terminalIdSet = new Set();
         for (const message of dataMessages) {
             const terminal = message.data.terminal;
@@ -47,9 +41,9 @@ class SyncInActorChecker {
         }
         // NOTE: remote actors should not contain terminal info, it should be populated here
         // this is because a given RTB is always generated in one and only one terminal
-        await this.actorDao.findMapsWithDetailsByGlobalIds(Array.from(actorRandomIdSet), Array.from(userUniqueIdsSet), Array.from(terminalIdSet), actorMap, actorMapById);
+        await actorDao.findMapsWithDetailsByGlobalIds(Array.from(actorRandomIdSet), Array.from(userUniqueIdsSet), Array.from(terminalIdSet), actorMap, actorMapById);
         const newActors = this.getNewActors(consistentMessages, actorMap);
-        await this.actorDao.bulkCreate(newActors, false, false);
+        await actorDao.bulkCreate(newActors, false, false);
         for (const newActor of newActors) {
             actorMapById.set(newActor.id, newActor);
         }
@@ -171,7 +165,7 @@ class SyncInActorChecker {
         return newActors;
     }
     addActorToMap(actor, actorMap) {
-        this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(actorMap, actor.randomId), actor.user.uniqueId), actor.terminal.name), actor.terminal.secondId).set(actor.terminal.owner.uniqueId, actor);
+        ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(actorMap, actor.randomId), actor.user.uniqueId), actor.terminal.name), actor.terminal.secondId).set(actor.terminal.owner.uniqueId, actor);
     }
 }
 exports.SyncInActorChecker = SyncInActorChecker;

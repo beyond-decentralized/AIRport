@@ -1,16 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
-const moving_walkway_1 = require("@airport/moving-walkway");
+const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../../../diTokens");
 class SyncInRepositoryChecker {
-    constructor() {
-        di_1.DI.get((sharingNodeRepositoryDao, utils) => {
-            this.sharingNodeRepositoryDao = sharingNodeRepositoryDao;
-            this.utils = utils;
-        }, moving_walkway_1.SHARING_NODE_REPO_TRANS_BLOCK_DAO, air_control_1.UTILS);
-    }
     async ensureRepositories(incomingMessages, dataMessagesWithInvalidData) {
         const consistentMessages = [];
         // const dataMessageMapBySharingNodeAndAgtRepositoryId:
@@ -31,9 +24,9 @@ class SyncInRepositoryChecker {
                 // 	this.utils.ensureChildJsMap(
                 // 		dataMessageMapBySharingNodeAndAgtRepositoryId,
                 // 		sharingNodeId), agtRepositoryId).push();
-                this.utils.ensureChildArray(dataMessageMapBySharingNodeId, sharingNodeId)
+                ground_control_1.ensureChildArray(dataMessageMapBySharingNodeId, sharingNodeId)
                     .push(message);
-                this.utils.ensureChildJsSet(sharingNodeRepositoryMap, sharingNodeId)
+                ground_control_1.ensureChildJsSet(sharingNodeRepositoryMap, sharingNodeId)
                     .add(message.data.repository.id);
                 consistentMessages.push(message);
             }

@@ -1,10 +1,11 @@
 import {
 	ISchemaUtils,
 	IUpdateCache,
+	UPDATE_CACHE,
 	UpdateCacheType,
 	valuesEqual
-}                     from '@airport/air-control'
-import {DI}           from '@airport/di'
+}           from '@airport/air-control'
+import {DI} from '@airport/di'
 import {
 	DbColumn,
 	DbEntity,
@@ -12,8 +13,7 @@ import {
 	ensureChildMap,
 	EntityRelationType,
 	SQLDataType
-}                     from '@airport/ground-control'
-import {UPDATE_CACHE} from '../../diTokens'
+}           from '@airport/ground-control'
 
 /**
  * Created by Papa on 9/8/2016.

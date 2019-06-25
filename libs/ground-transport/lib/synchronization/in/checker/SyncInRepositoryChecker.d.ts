@@ -9,9 +9,6 @@ export interface ISyncInRepositoryChecker {
     ensureRepositories(incomingMessages: IDataToTM[], dataMessagesWithInvalidData: IDataToTM[]): Promise<RepositoryCheckResults>;
 }
 export declare class SyncInRepositoryChecker implements ISyncInRepositoryChecker {
-    private sharingNodeRepositoryDao;
-    private utils;
-    constructor();
     ensureRepositories(incomingMessages: IDataToTM[], dataMessagesWithInvalidData: IDataToTM[]): Promise<RepositoryCheckResults>;
     private areRepositoryIdsConsistentInMessage;
 }

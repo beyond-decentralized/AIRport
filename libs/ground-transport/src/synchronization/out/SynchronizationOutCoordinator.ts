@@ -5,7 +5,6 @@ import {
 }                                   from '@airport/moving-walkway'
 import {
 	ITerminalState,
-	ITerminalStore,
 	TERMINAL_STORE,
 }                                   from '@airport/terminal-map'
 import {ITerminal}                  from '@airport/travel-document-checkpoint'
@@ -15,7 +14,6 @@ import {
 	SYNC_OUT_COORDINATOR,
 	SYNC_OUT_MANAGER
 }                                   from '../../diTokens'
-import {ISyncNodeManager}           from '../SyncNodeManager'
 import {ISynchronizationOutManager} from './SynchronizationOutManager'
 
 export interface ISynchronizationOutCoordinator {
@@ -31,27 +29,15 @@ export class SynchronizationOutCoordinator
 	private nodesBySyncFrequency: Map<SharingNodeSyncFrequency, ISharingNode[]>
 		        = new Map()
 
-	private syncOutManager: ISynchronizationOutManager
-	private syncNodeManager: ISyncNodeManager
-	private terminalStore: ITerminalStore
-
-	constructor() {
-		super()
-		DI.get((
-			syncNodeManager,
-			synchronizationOutManager,
-			terminalStore
-			) => {
-				this.syncNodeManager = syncNodeManager
-				this.syncOutManager  = synchronizationOutManager
-				this.terminalStore   = terminalStore
-			}, SYNC_NODE_MANAGER, SYNC_OUT_MANAGER,
-			TERMINAL_STORE)
-	}
-
+	// private syncOutManager: ISynchronizationOutManager
+	// private syncNodeManager: ISyncNodeManager
+	// private terminalStore: ITerminalStore
 
 	async initialize(): Promise<void> {
-		await this.syncNodeManager.initialize()
+		const [syncNodeManager, syncOutManager,
+			      terminalStore] = await DI.get(SYNC_NODE_MANAGER,
+			SYNC_OUT_MANAGER, TERMINAL_STORE)
+		await syncNodeManager.initialize()
 
 		/*
 				pipe(this.terminalStore.getTerminalState.observable, (
@@ -60,19 +46,21 @@ export class SynchronizationOutCoordinator
 				) => withLatestFrom([]))
 				*/
 
-		this.record(this.terminalStore.getTerminalState.observable.subscribe((
+		this.record(terminalStore.getTerminalState.observable.subscribe((
 			terminalState: ITerminalState
 		) => {
 			if (!terminalState.terminal) {
 				return
 			}
-			this.updateSyncPool(terminalState.nodesBySyncFrequency, terminalState.terminal)
+			this.updateSyncPool(terminalState.nodesBySyncFrequency,
+				terminalState.terminal, syncOutManager)
 		}))
 	}
 
 	private updateSyncPool(
 		nodesBySyncFrequency: Map<SharingNodeSyncFrequency, ISharingNode[]>,
 		terminal: ITerminal,
+		syncOutManager: ISynchronizationOutManager
 	) {
 		const lastNodesBySyncFrequency = this.nodesBySyncFrequency
 		this.nodesBySyncFrequency      = nodesBySyncFrequency
@@ -80,7 +68,8 @@ export class SynchronizationOutCoordinator
 			// If in the new map there are sync node frequency that weren't in
 			// the old map then kick off syncs for those frequencies
 			if (!lastNodesBySyncFrequency.get(frequency)) {
-				this.scheduleSyncsForFrequency(frequency, sharingNodes, terminal)
+				this.scheduleSyncsForFrequency(
+					frequency, sharingNodes, terminal, syncOutManager)
 			}
 		}
 
@@ -89,22 +78,25 @@ export class SynchronizationOutCoordinator
 	private returnToSyncPool(
 		frequency: SharingNodeSyncFrequency,
 		terminal: ITerminal,
+		syncOutManager: ISynchronizationOutManager
 	): void {
 		const sharingNodes = this.nodesBySyncFrequency.get(frequency)
 		if (!sharingNodes) {
 			return
 		}
-		this.scheduleSyncsForFrequency(frequency, sharingNodes, terminal)
+		this.scheduleSyncsForFrequency(
+			frequency, sharingNodes, terminal, syncOutManager)
 	}
 
 	private scheduleSyncsForFrequency(
 		frequency: SharingNodeSyncFrequency,
 		sharingNodes: ISharingNode[],
 		terminal: ITerminal,
+		syncOutManager: ISynchronizationOutManager
 	): void {
 		setTimeout(async () => {
-			await this.syncOutManager.synchronize(sharingNodes, terminal).then()
-			this.returnToSyncPool(frequency, terminal)
+			await syncOutManager.synchronize(sharingNodes, terminal).then()
+			this.returnToSyncPool(frequency, terminal, syncOutManager)
 		}, frequency)
 	}
 

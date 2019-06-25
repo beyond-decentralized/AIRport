@@ -12,21 +12,6 @@ export interface ISynchronizationOutManager {
  *
  */
 export declare class SynchronizationOutManager implements ISynchronizationOutManager {
-    private repositoryDao;
-    private repositoryTransactionHistoryDao;
-    private schemaDao;
-    private sharingMessageDao;
-    private sharingMessageRepoTransBlockDao;
-    private sharingNodeDao;
-    private sharingNodeTerminalDao;
-    private sharingNodeRepositoryDao;
-    private sharingNodeRepoTransBlockDao;
-    private repositoryTransactionBlockCreator;
-    private repositoryTransactionBlockDao;
-    private syncOutMessageSender;
-    private syncOutSerializer;
-    private utils;
-    constructor();
     synchronize(sharingNodes: ISharingNode[], terminal: ITerminal): Promise<void>;
     /**
      *

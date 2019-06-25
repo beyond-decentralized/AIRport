@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
-const diTokens_1 = require("../../diTokens");
 class UpdateCache {
     // private updateCache: EntityUpdateCache[][] = []
     // private saveRun                            = 0
@@ -202,5 +201,5 @@ class UpdateCache {
     }
 }
 exports.UpdateCache = UpdateCache;
-di_1.DI.set(diTokens_1.UPDATE_CACHE, UpdateCache);
+di_1.DI.set(air_control_1.UPDATE_CACHE, UpdateCache);
 //# sourceMappingURL=UpdateCache.js.map

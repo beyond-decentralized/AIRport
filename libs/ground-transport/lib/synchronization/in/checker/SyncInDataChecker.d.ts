@@ -24,16 +24,6 @@ export interface ISyncInDataChecker {
     checkData(dataMessagesWithCompatibleSchemas: IDataToTM[]): Promise<DataCheckResults>;
 }
 export declare class SyncInDataChecker implements ISyncInDataChecker {
-    private missingRecordDao;
-    private missingRecordRepoTransBlockDao;
-    private repositoryTransactionBlockDao;
-    private repositoryTransactionHistoryDao;
-    private sharingMessageDao;
-    private syncInRepositoryTransactionBlockCreator;
-    private syncInUtils;
-    private terminalStore;
-    private utils;
-    constructor();
     /**
      * Every dataMessage.data.repoTransHistories array must be sorted before entering
      * this method.

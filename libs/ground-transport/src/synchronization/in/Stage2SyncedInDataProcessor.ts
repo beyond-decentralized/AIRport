@@ -2,12 +2,16 @@ import {
 	AIR_DB,
 	and,
 	compareNumbers,
+	DB_FACADE,
 	IAirportDatabase,
+	IDatabaseFacade,
 	or
 }                                        from '@airport/air-control'
 import {DI}                              from '@airport/di'
 import {
 	ColumnIndex,
+	ensureChildJsMap,
+	ensureChildJsSet,
 	JSONBaseOperation,
 	SchemaIndex,
 	SchemaVersionId,
@@ -19,6 +23,7 @@ import {
 	RepositoryId
 }                                        from '@airport/holding-pattern'
 import {
+	IRecordUpdateStageDao,
 	RECORD_UPDATE_STAGE_DAO,
 	RecordUpdateStageValues
 }                                        from '@airport/moving-walkway'
@@ -65,13 +70,15 @@ export class Stage2SyncedInDataProcessor
 		stage1Result: Stage1SyncedInDataProcessingResult,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
 	): Promise<void> {
-		const [airDb, recordUpdateStageDao] = await DI.get(
-			AIR_DB, RECORD_UPDATE_STAGE_DAO)
+		const [airDb, dbFacade, recordUpdateStageDao] = await DI.get(
+			AIR_DB, DB_FACADE, RECORD_UPDATE_STAGE_DAO)
 
 		await this.performCreates(stage1Result.recordCreations,
-			schemasBySchemaVersionIdMap, airDb)
-		await this.performUpdates(stage1Result.recordUpdates, schemasBySchemaVersionIdMap)
-		await this.performDeletes(stage1Result.recordDeletions, schemasBySchemaVersionIdMap)
+			schemasBySchemaVersionIdMap, airDb, dbFacade)
+		await this.performUpdates(stage1Result.recordUpdates,
+			schemasBySchemaVersionIdMap, recordUpdateStageDao)
+		await this.performDeletes(stage1Result.recordDeletions,
+			schemasBySchemaVersionIdMap, airDb, dbFacade)
 	}
 
 	/**
@@ -92,7 +99,8 @@ export class Stage2SyncedInDataProcessor
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
-		airDb: IAirportDatabase
+		airDb: IAirportDatabase,
+		dbFacade: IDatabaseFacade
 	): Promise<void> {
 		for (const [schemaVersionId, creationInSchemaMap] of recordCreations) {
 			for (const [tableIndex, creationInTableMap] of creationInSchemaMap) {
@@ -143,7 +151,7 @@ export class Stage2SyncedInDataProcessor
 				}
 
 				if (numInserts) {
-					await airDb.db.insertValues(dbEntity, {
+					await dbFacade.insertValues(dbEntity, {
 						insertInto: qEntity,
 						columns,
 						values
@@ -157,7 +165,8 @@ export class Stage2SyncedInDataProcessor
 		recordUpdates: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
-		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
+		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
+		recordUpdateStageDao: IRecordUpdateStageDao
 	): Promise<void> {
 		const finalUpdateMap: Map<SchemaVersionId, Map<TableIndex, ColumnUpdateKeyMap>> = new Map()
 
@@ -166,15 +175,15 @@ export class Stage2SyncedInDataProcessor
 		// Build the final update data structure
 		for (const [schemaVersionId, schemaUpdateMap] of recordUpdates) {
 			const finalSchemaUpdateMap
-				      = this.utils.ensureChildJsMap(finalUpdateMap, schemaVersionId)
+				      = ensureChildJsMap(finalUpdateMap, schemaVersionId)
 			for (const [tableIndex, tableUpdateMap] of schemaUpdateMap) {
-				const finalTableUpdateMap = this.utils.ensureChildJsMap(finalSchemaUpdateMap, tableIndex)
+				const finalTableUpdateMap = ensureChildJsMap(finalSchemaUpdateMap, tableIndex)
 				for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
 					for (const [actorId, actorUpdates] of repositoryUpdateMap) {
 						for (const [actorRecordId, recordUpdateMap] of actorUpdates) {
 							const recordKeyMap = this.getRecordKeyMap(recordUpdateMap, finalTableUpdateMap)
-							this.utils.ensureChildJsSet(
-								this.utils.ensureChildJsMap(recordKeyMap, repositoryId),
+							ensureChildJsSet(
+								ensureChildJsMap(recordKeyMap, repositoryId),
 								actorId)
 								.add(actorRecordId)
 							for (const [columnIndex, columnUpdate] of recordUpdateMap) {
@@ -194,30 +203,33 @@ export class Stage2SyncedInDataProcessor
 			}
 		}
 
-		await this.recordUpdateStageDao.insertValues(recordUpdateStage)
+		await recordUpdateStageDao.insertValues(recordUpdateStage)
 
 		// Perform the updates
 		for (const [schemaVersionId, updateMapForSchema] of finalUpdateMap) {
 			const schema = schemasBySchemaVersionIdMap.get(schemaVersionId)
 			for (const [tableIndex, updateMapForTable] of updateMapForSchema) {
-				await this.runUpdatesForTable(schema.index, schemaVersionId, tableIndex, updateMapForTable)
+				await this.runUpdatesForTable(schema.index, schemaVersionId,
+					tableIndex, updateMapForTable, recordUpdateStageDao)
 			}
 		}
 
-		await this.recordUpdateStageDao.delete()
+		await recordUpdateStageDao.delete()
 	}
 
 	async performDeletes(
 		recordDeletions: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
 				Set<RepositoryEntityActorRecordId>>>>>,
-		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
+		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
+		airDb: IAirportDatabase,
+		dbFacade: IDatabaseFacade
 	): Promise<void> {
 		for (const [schemaVersionId, deletionInSchemaMap] of recordDeletions) {
 			const schema = schemasBySchemaVersionIdMap.get(schemaVersionId)
 			for (const [tableIndex, deletionInTableMap] of deletionInSchemaMap) {
-				const dbEntity = this.airDb.schemas[schema.index].currentVersion.entities[tableIndex]
-				const qEntity  = this.airDb.qSchemas[schema.index][dbEntity.name]
+				const dbEntity = airDb.schemas[schema.index].currentVersion.entities[tableIndex]
+				const qEntity  = airDb.qSchemas[schema.index][dbEntity.name]
 
 				let numClauses                                    = 0
 				let repositoryWhereFragments: JSONBaseOperation[] = []
@@ -237,7 +249,7 @@ export class Stage2SyncedInDataProcessor
 				}
 
 				if (numClauses) {
-					await this.airDb.db.deleteWhere(dbEntity, {
+					await dbFacade.deleteWhere(dbEntity, {
 						deleteFrom: qEntity,
 						where: or(...repositoryWhereFragments)
 					})
@@ -265,7 +277,7 @@ export class Stage2SyncedInDataProcessor
 		}
 		// Sort the updated columns by column index, to ensure that all records with the
 		// same combination of updated columns are grouped
-		updatedColumns.sort(this.utils.compareNumbers)
+		updatedColumns.sort(compareNumbers)
 
 
 		// Navigate down the table UpdateKeyMap to find the matching combination of
@@ -309,12 +321,13 @@ export class Stage2SyncedInDataProcessor
 		schemaIndex: SchemaIndex,
 		schemaVersionId: SchemaVersionId,
 		tableIndex: TableIndex,
-		updateKeyMap: ColumnUpdateKeyMap
+		updateKeyMap: ColumnUpdateKeyMap,
+		recordUpdateStageDao: IRecordUpdateStageDao
 	) {
 		for (const columnValueUpdate of updateKeyMap.values()) {
 			const updatedColumns = columnValueUpdate.updatedColumns
 			if (updatedColumns) {
-				await this.recordUpdateStageDao.updateEntityWhereIds(
+				await recordUpdateStageDao.updateEntityWhereIds(
 					schemaIndex,
 					schemaVersionId,
 					tableIndex,
@@ -324,7 +337,8 @@ export class Stage2SyncedInDataProcessor
 			}
 			// Traverse down into nested column update combinations
 			await this.runUpdatesForTable(
-				schemaIndex, schemaVersionId, tableIndex, columnValueUpdate.childColumnUpdateKeyMap)
+				schemaIndex, schemaVersionId, tableIndex,
+				columnValueUpdate.childColumnUpdateKeyMap, recordUpdateStageDao)
 		}
 
 	}

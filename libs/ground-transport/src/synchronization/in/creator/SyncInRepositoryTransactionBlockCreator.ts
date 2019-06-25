@@ -20,6 +20,7 @@ import {
 	SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
 	SharingMessageRepoTransBlockECreateProperties
 }                                         from '@airport/moving-walkway'
+import {ITransactionManager}              from '@airport/terminal-map'
 import {stringify}                        from 'zipson/lib'
 import {SYNC_IN_REPO_TRANS_BLOCK_CREATOR} from '../../../diTokens'
 import {IMissingRecordDataToTM}           from '../checker/SyncInDataChecker'
@@ -36,11 +37,13 @@ export interface ISyncInRepositoryTransactionBlockCreator {
 	): Promise<IDataToTM[]>;
 
 	createMissingRecordRepoTransBlocks(
-		missingRecordDataToTMs: IMissingRecordDataToTM[]
+		missingRecordDataToTMs: IMissingRecordDataToTM[],
+		missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao
 	): Promise<void>;
 
 	createSharingMessageRepoTransBlocks(
-		allDataToTM: IDataToTM[]
+		allDataToTM: IDataToTM[],
+		sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao
 	): Promise<void>;
 
 	createSharingNodeRepoTransBlocks(
@@ -51,24 +54,6 @@ export interface ISyncInRepositoryTransactionBlockCreator {
 export class SyncInRepositoryTransactionBlockCreator
 	implements ISyncInRepositoryTransactionBlockCreator {
 
-	private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao
-	private missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao
-	private sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao
-
-	constructor() {
-		DI.get((
-			repositoryTransactionBlockDao,
-			missingRecordRepoTransBlockDao,
-			sharingMessageRepoTransBlockDao
-			) => {
-				this.repositoryTransactionBlockDao   = repositoryTransactionBlockDao
-				this.missingRecordRepoTransBlockDao  = missingRecordRepoTransBlockDao
-				this.sharingMessageRepoTransBlockDao = sharingMessageRepoTransBlockDao
-			}, REPO_TRANS_BLOCK_DAO, MISSING_RECORD_REPO_TRANS_BLOCK_DAO,
-			SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO)
-	}
-
-
 	async createRepositoryTransBlocks(
 		dataMessagesWithIncompatibleSchemas: IDataToTM[],
 		dataMessagesWithIncompatibleData: IDataToTM[],
@@ -76,6 +61,14 @@ export class SyncInRepositoryTransactionBlockCreator
 		dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
 		dataMessagesWithInvalidData: IDataToTM[],
 	): Promise<IDataToTM[]> {
+		// TODO: remove unneeded dependencies once tested
+		const [repositoryTransactionBlockDao,
+			      missingRecordRepoTransBlockDao,
+			      sharingMessageRepoTransBlockDao] = await DI.get(
+			REPO_TRANS_BLOCK_DAO, MISSING_RECORD_REPO_TRANS_BLOCK_DAO,
+			SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO
+		)
+
 		let allRepositoryTransactionBlocks: IRepositoryTransactionBlock[] = []
 
 		const repoTransBlocksNeedingSchemaChanges = this.createRepositoryTransactionBlocks(
@@ -121,7 +114,7 @@ export class SyncInRepositoryTransactionBlockCreator
 			repoTransBlocksWithValidDataAndSchemas
 		)
 
-		await this.repositoryTransactionBlockDao.bulkCreate(
+		await repositoryTransactionBlockDao.bulkCreate(
 			allRepositoryTransactionBlocks, false, false)
 
 
@@ -159,7 +152,8 @@ export class SyncInRepositoryTransactionBlockCreator
 	}
 
 	async createMissingRecordRepoTransBlocks(
-		missingRecordDataToTMs: IMissingRecordDataToTM[]
+		missingRecordDataToTMs: IMissingRecordDataToTM[],
+		missingRecordRepoTransBlockDao: IMissingRecordRepoTransBlockDao
 	): Promise<void> {
 		const missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[]
 			      = missingRecordDataToTMs.map(
@@ -169,13 +163,14 @@ export class SyncInRepositoryTransactionBlockCreator
 					.dataMessage.repositoryTransactionBlock
 			}))
 		if (missingRecordRepoTransBlocks.length) {
-			await this.missingRecordRepoTransBlockDao.bulkCreate(
+			await missingRecordRepoTransBlockDao.bulkCreate(
 				missingRecordRepoTransBlocks, false, false)
 		}
 	}
 
 	async createSharingMessageRepoTransBlocks(
-		allDataToTM: IDataToTM[]
+		allDataToTM: IDataToTM[],
+		sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao
 	): Promise<void> {
 		const sharingMessageRepoTransBlocks: SharingMessageRepoTransBlockECreateProperties[]
 			      = allDataToTM.map(
@@ -183,7 +178,7 @@ export class SyncInRepositoryTransactionBlockCreator
 				sharingMessage: dataToTM.sharingMessage,
 				repositoryTransactionBlock: dataToTM.repositoryTransactionBlock
 			})) as SharingMessageRepoTransBlockECreateProperties[]
-		await this.sharingMessageRepoTransBlockDao.bulkCreate(
+		await sharingMessageRepoTransBlockDao.bulkCreate(
 			sharingMessageRepoTransBlocks, false, false)
 	}
 
@@ -191,7 +186,10 @@ export class SyncInRepositoryTransactionBlockCreator
 		sharingMessages: ISharingMessage[],
 		existingRepoTransBlocksWithCompatibleSchemasAndData: IRepositoryTransactionBlock[],
 		dataMessages: IDataToTM[],
-		actorMapById: Map<ActorId, IActor>
+		actorMapById: Map<ActorId, IActor>,
+		repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
+		sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao,
+		transactionManager: ITransactionManager
 	): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>> {
 		const repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>
 			      = await this.getRepoTransHistoryMapByRepoId(dataMessages,
@@ -201,7 +199,7 @@ export class SyncInRepositoryTransactionBlockCreator
 		const sharingMessageRepoTransBlocks: SharingMessageRepoTransBlockECreateProperties[] = []
 		// const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = [];
 
-		const transactionHistory           = this.transactionManager.currentTransHistory
+		const transactionHistory           = transactionManager.currentTransHistory
 		transactionHistory.transactionType = TransactionType.REMOTE_SYNC
 
 		// split messages by repository and record actor information
@@ -248,9 +246,9 @@ export class SyncInRepositoryTransactionBlockCreator
 			})
 		}
 
-		await this.repositoryTransactionBlockDao.bulkCreate(
+		await repositoryTransactionBlockDao.bulkCreate(
 			repositoryTransactionBlocks, false, false)
-		await this.sharingMessageRepoTransBlockDao.bulkCreate(
+		await sharingMessageRepoTransBlockDao.bulkCreate(
 			sharingMessageRepoTransBlocks, false, false)
 		// await this.repoTransBlockRepoTransHistoryDao.bulkCreate(
 		// 	repoTransBlockRepoTransHistories, false, false);

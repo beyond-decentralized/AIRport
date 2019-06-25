@@ -22,16 +22,6 @@ export interface ISyncInChecker {
     checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages: IDataToTM[]): Promise<CheckResults>;
 }
 export declare class SyncInChecker implements ISyncInChecker {
-    actorChecker: ISyncInActorChecker;
-    private dataChecker;
-    private missingRecordRepoTransBlockDao;
-    repositoryChecker: ISyncInRepositoryChecker;
-    private repoTransBlockSchemasToChangeDao;
-    private schemaChecker;
-    private sharingMessageDao;
-    private syncInRepositoryTransactionBlockCreator;
-    private syncInUtils;
-    constructor();
     /**
      *
      * @param {IDataToTM[]} dataMessages
