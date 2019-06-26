@@ -37,12 +37,12 @@ export interface ITransactionalConnector {
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): IObservable<EntityArray>
+	): Promise<IObservable<EntityArray>>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): IObservable<E>
+	): Promise<IObservable<E>>
 
 	insertValues(
 		portableQuery: PortableQuery,

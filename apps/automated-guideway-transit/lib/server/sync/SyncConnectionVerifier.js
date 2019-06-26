@@ -8,13 +8,6 @@ const log = diTokens_1.AGTLogger.add('SyncConnectionVerifier');
 class SyncConnectionVerifier {
     constructor() {
         this.pendingConnectionClaims = [];
-        di_1.DI.get((blacklist, terminalDao, terminalRepositoryDao, agtSharingMessageDao, errorLogger) => {
-            this.blacklist = blacklist;
-            this.terminalDao = terminalDao;
-            this.terminalRepositoryDao = terminalRepositoryDao;
-            this.agtSharingMessageDao = agtSharingMessageDao;
-            this.errorLogger = errorLogger;
-        }, diTokens_1.BLACKLIST, guideway_1.TERMINAL_DAO, guideway_1.TERMINAL_REPOSITORY_DAO, guideway_1.AGT_SHARING_MESSAGE_DAO, diTokens_1.ERROR_LOGGER);
     }
     queueConnectionClaim(pendingConnectionClaim) {
         this.pendingConnectionClaims.push(pendingConnectionClaim);
@@ -44,6 +37,8 @@ class SyncConnectionVerifier {
     async verifyPendingClaims(
     // serverId: ServerId,
     minMillisSinceLastConnection) {
+        // TODO: removed unused dependencies once tested
+        const [blacklist, terminalDao, terminalRepositoryDao, agtSharingMessageDao, errorLogger] = await di_1.DI.get(diTokens_1.BLACKLIST, guideway_1.TERMINAL_DAO, guideway_1.TERMINAL_REPOSITORY_DAO, guideway_1.AGT_SHARING_MESSAGE_DAO, diTokens_1.ERROR_LOGGER);
         const currentConnectionClaims = this.pendingConnectionClaims;
         this.pendingConnectionClaims = [];
         // If there are no records to be processed
@@ -56,12 +51,12 @@ class SyncConnectionVerifier {
             };
         }
         const earliestAllowedLastConnectionDatetime = new Date().getTime() - minMillisSinceLastConnection;
-        const verifiedMessagesFromTM = await this.verifyTerminalsAndGetResourceIds(currentConnectionClaims, earliestAllowedLastConnectionDatetime);
+        const verifiedMessagesFromTM = await this.verifyTerminalsAndGetResourceIds(currentConnectionClaims, earliestAllowedLastConnectionDatetime, errorLogger, terminalDao);
         // At this point we are guaranteed that in the present batch there are no duplicate
         // terminal requests
         return verifiedMessagesFromTM;
     }
-    async verifyTerminalsAndGetResourceIds(currentConnectionClaims, earliestAllowedLastConnectionDatetime) {
+    async verifyTerminalsAndGetResourceIds(currentConnectionClaims, earliestAllowedLastConnectionDatetime, errorLogger, terminalDao) {
         const terminalIds = new Set();
         const repositoryIds = new Set();
         const agtSharingMessageIds = new Set();
@@ -86,31 +81,31 @@ class SyncConnectionVerifier {
                     duplicatePendingConnectionClaimsMapForTerminal.push(previousConnectionClaim);
                     duplicatePendingConnectionClaimsMap.set(terminalId, duplicatePendingConnectionClaimsMapForTerminal);
                     syncConnectionClaimsByTmId.delete(terminalId);
-                    this.errorLogger.logError(log, ServerErrorType_1.ServerErrorType.INCOMING_DATABASE_KEY_APPEARS_MORE_THAN_ONCE_IN_THE_BATCH, terminalCredentials, null);
+                    errorLogger.logError(log, ServerErrorType_1.ServerErrorType.INCOMING_DATABASE_KEY_APPEARS_MORE_THAN_ONCE_IN_THE_BATCH, terminalCredentials, null);
                 }
                 duplicatePendingConnectionClaimsMapForTerminal.push(currentConnectionClaim);
                 continue;
             }
             terminalIdSet.add(terminalId);
         }
-        const terminalCredentialMapById = await this.terminalDao.findTerminalVerificationRecords(Array.from(terminalIdSet));
+        const terminalCredentialMapById = await terminalDao.findTerminalVerificationRecords(Array.from(terminalIdSet));
         // For every Connection claim with no duplicates
         for (const [terminalId, pendingConnectionClaim] of syncConnectionClaimsByTmId) {
             const message = pendingConnectionClaim.messageFromTM;
             const incomingTerminalCredentials = message.terminalCredentials;
-            const terminalData = this.verifyTerminalInfo(terminalId, incomingTerminalCredentials, pendingConnectionClaim, terminalCredentialMapById);
+            const terminalData = this.verifyTerminalInfo(terminalId, incomingTerminalCredentials, pendingConnectionClaim, terminalCredentialMapById, errorLogger);
             if (!terminalData) {
                 syncConnectionClaimsByTmId.delete(terminalId);
                 continue;
             }
-            if (!this.finishTerminalVerification(earliestAllowedLastConnectionDatetime, terminalId, pendingConnectionClaim, terminalData[1], repositoryIds, agtSharingMessageIds, syncConnectionClaimsByTmId)) {
+            if (!this.finishTerminalVerification(earliestAllowedLastConnectionDatetime, terminalId, pendingConnectionClaim, terminalData[1], repositoryIds, agtSharingMessageIds, syncConnectionClaimsByTmId, errorLogger)) {
                 syncConnectionClaimsByTmId.delete(terminalId);
                 terminalIds.add(terminalId);
             }
         }
         // If there where duplicate requests per terminal
         if (duplicatePendingConnectionClaimsMap.size) {
-            await this.filterDuplicateRequestsPerTerminal(duplicatePendingConnectionClaimsMap, terminalIdSet, repositoryIds, agtSharingMessageIds, terminalCredentialMapById, syncConnectionClaimsByTmId, earliestAllowedLastConnectionDatetime);
+            await this.filterDuplicateRequestsPerTerminal(duplicatePendingConnectionClaimsMap, terminalIdSet, repositoryIds, agtSharingMessageIds, terminalCredentialMapById, syncConnectionClaimsByTmId, earliestAllowedLastConnectionDatetime, errorLogger);
         }
         return {
             terminalIds,
@@ -119,26 +114,26 @@ class SyncConnectionVerifier {
             syncConnectionClaimsByTmId
         };
     }
-    verifyTerminalInfo(terminalId, incomingTerminalCredentials, pendingConnectionClaim, terminalInfoMapById) {
+    verifyTerminalInfo(terminalId, incomingTerminalCredentials, pendingConnectionClaim, terminalInfoMapById, errorLogger) {
         const terminalData = terminalInfoMapById.get(terminalId);
         if (!terminalData) {
-            this.errorLogger.logError(log, ServerErrorType_1.ServerErrorType.INCOMING_DATABASE_RECORD_WASNT_IN_DATABASES_TABLE, incomingTerminalCredentials, null);
+            errorLogger.logError(log, ServerErrorType_1.ServerErrorType.INCOMING_DATABASE_RECORD_WASNT_IN_DATABASES_TABLE, incomingTerminalCredentials, null);
             pendingConnectionClaim.connectionDataCallback(null, false, null);
             return null;
         }
         if (incomingTerminalCredentials.terminalPassword !== terminalData[0]) {
             // Terminal password does not match (probably a hack or an attack)
-            this.errorLogger.logError(log, ServerErrorType_1.ServerErrorType.INCOMING_DATABASE_HASH_DOES_NOT_MATCH, incomingTerminalCredentials, null);
+            errorLogger.logError(log, ServerErrorType_1.ServerErrorType.INCOMING_DATABASE_HASH_DOES_NOT_MATCH, incomingTerminalCredentials, null);
             pendingConnectionClaim.connectionDataCallback(null, false, null);
             return null;
         }
         return terminalData;
     }
-    finishTerminalVerification(earliestAllowedLastConnectionDatetime, terminalId, pendingConnectionClaim, lastConnectionDatetime, repositoryIdSet, agtSharingMessageIdSet, pendingConnectionClaimsMap) {
+    finishTerminalVerification(earliestAllowedLastConnectionDatetime, terminalId, pendingConnectionClaim, lastConnectionDatetime, repositoryIdSet, agtSharingMessageIdSet, pendingConnectionClaimsMap, errorLogger) {
         const message = pendingConnectionClaim.messageFromTM;
         // If the server connected too soon (probably a hack or an attack)
         if (lastConnectionDatetime > earliestAllowedLastConnectionDatetime) {
-            this.errorLogger.logError(log, ServerErrorType_1.ServerErrorType.SYNC_CLIENT_CONNECTED_TOO_SOON, message.terminalCredentials, null);
+            errorLogger.logError(log, ServerErrorType_1.ServerErrorType.SYNC_CLIENT_CONNECTED_TOO_SOON, message.terminalCredentials, null);
             pendingConnectionClaim.connectionDataCallback(null, false, null);
             return false;
         }
@@ -148,7 +143,7 @@ class SyncConnectionVerifier {
         const sharingMessageIdSetForClaim = new Set();
         for (const agtSharingMessageId of message.terminalSyncAcks) {
             if (sharingMessageIdSetForClaim.has(agtSharingMessageId)) {
-                this.errorLogger.logError(log, ServerErrorType_1.ServerErrorType.INCOMING_DATABASE_SYNC_LOG_KEY_APPEARS_MORE_THAN_ONCE_IN_A_REQUEST, message.terminalCredentials, agtSharingMessageId);
+                errorLogger.logError(log, ServerErrorType_1.ServerErrorType.INCOMING_DATABASE_SYNC_LOG_KEY_APPEARS_MORE_THAN_ONCE_IN_A_REQUEST, message.terminalCredentials, agtSharingMessageId);
                 pendingConnectionClaimsMap.delete(terminalId);
                 pendingConnectionClaim.connectionDataCallback(null, false, null);
                 return false;
@@ -158,7 +153,7 @@ class SyncConnectionVerifier {
         sharingMessageIdSetForClaim.forEach(agtSharingMessageIdSet.add, agtSharingMessageIdSet);
         return true;
     }
-    async filterDuplicateRequestsPerTerminal(duplicatePendingConnectionClaimsMap, verifiedTerminalIdSet, repositoryIdSet, agtSharingMessageIdSet, terminalInfoMapById, pendingConnectionClaimsMap, earliestAllowedLastConnectionDatetime) {
+    async filterDuplicateRequestsPerTerminal(duplicatePendingConnectionClaimsMap, verifiedTerminalIdSet, repositoryIdSet, agtSharingMessageIdSet, terminalInfoMapById, pendingConnectionClaimsMap, earliestAllowedLastConnectionDatetime, errorLogger) {
         // For every set of duplicate requests per terminal
         for (const [terminalId, duplicateConnectionClaimsForTerminal] of duplicatePendingConnectionClaimsMap) {
             const terminalData = terminalInfoMapById.get(terminalId);
@@ -186,7 +181,7 @@ class SyncConnectionVerifier {
                 }
                 else {
                     if (!foundClaimsWithIncorrectHash) {
-                        this.errorLogger.logError(log, ServerErrorType_1.ServerErrorType.DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_INCORRECT_HASH, duplicateConnectionClaimForTerminal.messageFromTM.terminalCredentials, null);
+                        errorLogger.logError(log, ServerErrorType_1.ServerErrorType.DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_INCORRECT_HASH, duplicateConnectionClaimForTerminal.messageFromTM.terminalCredentials, null);
                     }
                     foundClaimsWithIncorrectHash = true;
                     duplicateConnectionClaimForTerminal.connectionDataCallback(null, false, null);
@@ -194,11 +189,11 @@ class SyncConnectionVerifier {
             }
             if (connectionClaimWithMatchingHash) {
                 if (foundMultipleWithCorrectHash) {
-                    this.errorLogger.logError(log, ServerErrorType_1.ServerErrorType.MULTIPLE_DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_CORRECT_HASH, connectionClaimWithMatchingHash.messageFromTM.terminalCredentials, null);
+                    errorLogger.logError(log, ServerErrorType_1.ServerErrorType.MULTIPLE_DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_CORRECT_HASH, connectionClaimWithMatchingHash.messageFromTM.terminalCredentials, null);
                     connectionClaimWithMatchingHash.connectionDataCallback(null, false, null);
                     continue;
                 }
-                if (this.finishTerminalVerification(earliestAllowedLastConnectionDatetime, terminalId, connectionClaimWithMatchingHash, terminalData[1], repositoryIdSet, agtSharingMessageIdSet, pendingConnectionClaimsMap)) {
+                if (this.finishTerminalVerification(earliestAllowedLastConnectionDatetime, terminalId, connectionClaimWithMatchingHash, terminalData[1], repositoryIdSet, agtSharingMessageIdSet, pendingConnectionClaimsMap, errorLogger)) {
                     // This is a valid connection
                     pendingConnectionClaimsMap.set(terminalId, connectionClaimWithMatchingHash);
                     verifiedTerminalIdSet.add(terminalId);
@@ -207,7 +202,7 @@ class SyncConnectionVerifier {
         }
         // For any remaining duplicate requests (that had no matching terminal record)
         for (const connectionClaimsForTerminal of duplicatePendingConnectionClaimsMap.values()) {
-            this.errorLogger.logError(log, ServerErrorType_1.ServerErrorType.DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_NO_MATCHING_DATABASE, connectionClaimsForTerminal[0].messageFromTM.terminalCredentials, null);
+            errorLogger.logError(log, ServerErrorType_1.ServerErrorType.DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_NO_MATCHING_DATABASE, connectionClaimsForTerminal[0].messageFromTM.terminalCredentials, null);
             for (const ConnectionClaimForTerminal of connectionClaimsForTerminal) {
                 ConnectionClaimForTerminal.connectionDataCallback(null, false, null);
             }

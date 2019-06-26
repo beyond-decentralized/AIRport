@@ -1,7 +1,6 @@
 import { ISyncConnectionVerifier, SyncConnectionClaim, VerifiedMessagesFromTM } from '@airport/arrivals-n-departures';
 export declare class SyncConnectionVerifier implements ISyncConnectionVerifier {
     pendingConnectionClaims: SyncConnectionClaim[];
-    constructor();
     queueConnectionClaim(pendingConnectionClaim: SyncConnectionClaim): void;
     /**
      * Verify pending connection claims.

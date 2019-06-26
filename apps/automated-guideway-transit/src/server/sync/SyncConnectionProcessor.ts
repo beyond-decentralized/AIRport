@@ -1,8 +1,4 @@
 import {
-	IUtils,
-	UTILS
-}                      from '@airport/air-control'
-import {
 	AgtRepositoryId,
 	AgtSharingMessageId,
 	DataTransferMessageFromTM,
@@ -18,6 +14,10 @@ import {
 	VerifiedMessagesFromTM
 }                      from '@airport/arrivals-n-departures'
 import {DI}            from '@airport/di'
+import {
+	ensureChildArray,
+	ensureChildJsMap
+}                      from '@airport/ground-control'
 import {
 	AGT_REPO_TRANS_BLOCK_DAO,
 	AGT_SHARING_MESSAGE_DAO,
@@ -46,7 +46,6 @@ import {
 	ERROR_LOGGER,
 	SYNC_CONNECTION_PROCESSOR
 }                      from '../../diTokens'
-import {IErrorLogger}  from '../common/ErrorLogger'
 
 export interface ISyncConnectionProcessor {
 
@@ -61,41 +60,18 @@ const log = AGTLogger.add('SyncConnectionProcessor')
 export class SyncConnectionProcessor
 	implements ISyncConnectionProcessor {
 
-	private terminalDao: ITerminalDao
-	private terminalRepositoryDao: ITerminalRepositoryDao
-	private agtSharingMessageDao: IAgtSharingMessageDao
-	// private tunningParameters: TuningParameters,
-	private errorLogger: IErrorLogger
-	private syncLogDao: ISyncLogDao
-	private agtRepoTransBlockDao: IAgtRepositoryTransactionBlockDao
-	private utils: IUtils
-
-	constructor() {
-		DI.get((
-			terminalDao,
-			terminalRepositoryDao,
-			agtSharingMessageDao,
-			errorLogger,
-			syncLogDao,
-			agtRepositoryTransactionBlockDao,
-			utils
-			) => {
-				this.terminalDao           = terminalDao
-				this.terminalRepositoryDao = terminalRepositoryDao
-				this.agtSharingMessageDao  = agtSharingMessageDao
-				this.errorLogger           = errorLogger
-				this.syncLogDao            = syncLogDao
-				this.agtRepoTransBlockDao  = agtRepositoryTransactionBlockDao
-				this.utils                 = utils
-			}, TERMINAL_DAO, TERMINAL_REPOSITORY_DAO,
-			AGT_SHARING_MESSAGE_DAO, ERROR_LOGGER,
-			SYNC_LOG_DAO, AGT_REPO_TRANS_BLOCK_DAO,
-			UTILS)
-	}
-
 	async processConnections(
 		verifiedMessagesFromTM: VerifiedMessagesFromTM
 	): Promise<void> {
+		// TODO: remove unused dependencies once tested
+		const [terminalDao, terminalRepositoryDao,
+			      agtSharingMessageDao, errorLogger, syncLogDao,
+			      agtRepositoryTransactionBlockDao] = await DI.get(
+			TERMINAL_DAO, TERMINAL_REPOSITORY_DAO,
+			AGT_SHARING_MESSAGE_DAO, ERROR_LOGGER,
+			SYNC_LOG_DAO, AGT_REPO_TRANS_BLOCK_DAO
+		)
+
 		const verifiedTerminalIds = Array.from(verifiedMessagesFromTM.terminalIds)
 
 		// Start writing data back to valid connections
@@ -104,50 +80,70 @@ export class SyncConnectionProcessor
 		}
 
 		// Update last login time asynchronously - no further processing depends on that
-		this.updateLastSyncConnectionDatetime(verifiedTerminalIds).then()
+		this.updateLastSyncConnectionDatetime(verifiedTerminalIds,
+			terminalDao).then()
 
 		// Wait for both
 		await Promise.all([
 			// Waiting for incoming records to make it to other terminal syncs
 			// and to be marked as already synced for terminals from which they come
-			this.insertRepositoryTransactionBlocks(verifiedTerminalIds, verifiedMessagesFromTM.repositoryIds,
-				verifiedMessagesFromTM.syncConnectionClaimsByTmId),
+			this.insertRepositoryTransactionBlocks(
+				verifiedTerminalIds, verifiedMessagesFromTM.repositoryIds,
+				verifiedMessagesFromTM.syncConnectionClaimsByTmId,
+				agtRepositoryTransactionBlockDao, agtSharingMessageDao,
+				syncLogDao, terminalRepositoryDao),
 			// Waiting for incoming sync ACKS to be recorded so that the synced repositories
 			// won't be sent out again
 			this.updateAgtSharingMessages(verifiedMessagesFromTM.agtSharingMessageIds,
-				verifiedMessagesFromTM.syncConnectionClaimsByTmId)])
+				verifiedMessagesFromTM.syncConnectionClaimsByTmId,
+				agtSharingMessageDao)])
 
 		await this.sendRecentChangesToVerifiedConnections(
-			verifiedTerminalIds, verifiedMessagesFromTM.syncConnectionClaimsByTmId)
+			verifiedTerminalIds, verifiedMessagesFromTM.syncConnectionClaimsByTmId,
+			agtRepositoryTransactionBlockDao, agtSharingMessageDao,
+			syncLogDao)
 	}
 
-	async updateLastSyncConnectionDatetime(verifiedTerminalIds: TerminalId[],) {
+	async updateLastSyncConnectionDatetime(
+		verifiedTerminalIds: TerminalId[],
+		terminalDao: ITerminalDao
+	) {
 		// TODO: see if manual retry logic should be applied
-		await this.terminalDao.updateLastPollConnectionDatetime(
+		await terminalDao.updateLastPollConnectionDatetime(
 			verifiedTerminalIds, new Date().getTime())
 	}
 
 	private async insertRepositoryTransactionBlocks(
 		verifiedTerminalIds: TerminalId[],
 		repositoryIdSet: Set<AgtRepositoryId>,
-		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>
+		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>,
+		agtRepoTransBlockDao: IAgtRepositoryTransactionBlockDao,
+		agtSharingMessageDao: IAgtSharingMessageDao,
+		syncLogDao: ISyncLogDao,
+		terminalRepositoryDao: ITerminalRepositoryDao
 	): Promise<void> {
 		// TODO: see if manual retry logic should be applied
 		await this.tryToInsertAgtRepositoryTransactionBlocks(
-			verifiedTerminalIds, repositoryIdSet, verifiedConnectionClaimMap)
+			verifiedTerminalIds, repositoryIdSet, verifiedConnectionClaimMap,
+			agtRepoTransBlockDao, agtSharingMessageDao,
+			syncLogDao, terminalRepositoryDao)
 	}
 
 	async tryToInsertAgtRepositoryTransactionBlocks(
 		verifiedTerminalIds: TerminalId[],
 		repositoryIdSet: Set<AgtRepositoryId>,
-		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>
+		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>,
+		agtRepoTransBlockDao: IAgtRepositoryTransactionBlockDao,
+		agtSharingMessageDao: IAgtSharingMessageDao,
+		syncLogDao: ISyncLogDao,
+		terminalRepositoryDao: ITerminalRepositoryDao
 	): Promise<void> {
 		await transactional(async () => {
 
 			// Query TerminalRepositories to verify that the incoming repository change records
 			// exist and get the permissions a given terminal has in a particular repository
 			const terminalRepositoryMapByTerminalId
-				      = await this.terminalRepositoryDao.findByTerminalIdInAndRepositoryIdIn(
+				      = await terminalRepositoryDao.findByTerminalIdInAndRepositoryIdIn(
 				verifiedTerminalIds, Array.from(repositoryIdSet)
 			)
 
@@ -173,15 +169,19 @@ export class SyncConnectionProcessor
 				verifiedConnectionClaimMap, alreadySyncedInMessageTerminalIds,
 				alreadySyncedInMessageTmSharingMessageIds,
 				alreadySyncedMessageMapByTerminalIdAndTmSharingMessageId, repoTransBlockSyncOutcomeMap,
-				successTransSyncOutcomes, agtRepositoryTransactionBlockInserts)
+				successTransSyncOutcomes, agtRepositoryTransactionBlockInserts,
+				agtRepoTransBlockDao)
 
 			await this.respondToAlreadySyncedMessages(alreadySyncedInMessageTerminalIds,
 				alreadySyncedInMessageTmSharingMessageIds,
-				alreadySyncedMessageMapByTerminalIdAndTmSharingMessageId, verifiedConnectionClaimMap)
+				alreadySyncedMessageMapByTerminalIdAndTmSharingMessageId,
+				verifiedConnectionClaimMap, agtSharingMessageDao)
 
-			const agtSharingMessageIdMapByTerminalId = await this.persistRepositoryTransactionBlocks(
-				verifiedTerminalIds,
-				verifiedConnectionClaimMap, agtRepositoryTransactionBlockInserts, successTransSyncOutcomes)
+			const agtSharingMessageIdMapByTerminalId = await
+				this.persistRepositoryTransactionBlocks(verifiedTerminalIds,
+					verifiedConnectionClaimMap, agtRepositoryTransactionBlockInserts,
+					successTransSyncOutcomes, agtRepoTransBlockDao,
+					agtSharingMessageDao, syncLogDao)
 
 			// Send back all remaining RepoTransBlockSyncOutcomes
 			for (const [terminalId, syncOutcomes] of repoTransBlockSyncOutcomeMap) {
@@ -276,7 +276,7 @@ export class SyncConnectionProcessor
 					      = permissionByRepositoryId.get(repoUpdateRequest.agtRepositoryId)
 				if (!repoPermission) {
 					const declinedTransSyncLogOutcomes: RepoTransBlockSyncOutcome[] =
-						      this.utils.ensureChildArray(repoTransBlockSyncOutcomeMap, terminalId)
+						      ensureChildArray(repoTransBlockSyncOutcomeMap, terminalId)
 					this.declineTransSyncLog(terminalId, repoUpdateRequest, declinedTransSyncLogOutcomes,
 						RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_DENIED_REPOSITORY_NOT_FOUND)
 					continue
@@ -285,7 +285,7 @@ export class SyncConnectionProcessor
 					tmRepositoryTransactionBlockIds.add(repoUpdateRequest.tmRepositoryTransactionBlockId)
 				} else {
 					const declinedTransSyncLogOutcomes: RepoTransBlockSyncOutcome[] =
-						      this.utils.ensureChildArray(repoTransBlockSyncOutcomeMap, terminalId)
+						      ensureChildArray(repoTransBlockSyncOutcomeMap, terminalId)
 					this.declineTransSyncLog(terminalId, repoUpdateRequest, declinedTransSyncLogOutcomes,
 						RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_DENIED_NO_WRITE_PERMISSION)
 				}
@@ -341,9 +341,10 @@ export class SyncConnectionProcessor
 				SyncNotificationMessageToTM>>,
 		repoTransBlockSyncOutcomeMap: Map<TerminalId, RepoTransBlockSyncOutcome[]>,
 		successTransSyncOutcomes: RepoTransBlockSyncOutcome[],
-		agtRepositoryTransactionBlockInserts: InsertAgtRepositoryTransactionBlock[]
+		agtRepositoryTransactionBlockInserts: InsertAgtRepositoryTransactionBlock[],
+		agtRepoTransBlockDao: IAgtRepositoryTransactionBlockDao
 	) {
-		const existingAgtRepoTransBlockInfoMap = await this.agtRepoTransBlockDao
+		const existingAgtRepoTransBlockInfoMap = await agtRepoTransBlockDao
 			.findExistingDataIdMap(terminalIds, tmRepositoryTransactionBlockIds)
 
 		// For every found terminal repository map, make sure that the sent record
@@ -355,7 +356,7 @@ export class SyncConnectionProcessor
 			const messageFromTM = <DataTransferMessageFromTM>verifiedLoginClaim.messageFromTM
 
 			const transSyncLogOutcomes =
-				      this.utils.ensureChildArray(repoTransBlockSyncOutcomeMap, terminalId)
+				      ensureChildArray(repoTransBlockSyncOutcomeMap, terminalId)
 			for (const repoUpdateRequest of messageFromTM.repositoryUpdateRequests) {
 				const repositoryId                   = repoUpdateRequest.agtRepositoryId
 				const tmRepositoryTransactionBlockId = repoUpdateRequest.tmRepositoryTransactionBlockId
@@ -417,7 +418,7 @@ export class SyncConnectionProcessor
 		const tmSharingMessageId = messageFromTM.tmSharingMessageId
 		alreadySyncedInMessageTmSharingMessageIds.add(tmSharingMessageId)
 
-		const alreadySyncedMessagesForTerminalId = this.utils.ensureChildJsMap(
+		const alreadySyncedMessagesForTerminalId = ensureChildJsMap(
 			alreadySyncedMessageMapByTerminalIdAndTmSharingMessageId, terminalId)
 		let alreadySyncedMessage: SyncNotificationMessageToTM
 		                                         = alreadySyncedMessagesForTerminalId.get(tmSharingMessageId)
@@ -456,13 +457,14 @@ export class SyncConnectionProcessor
 		alreadySyncedMessageMapByTerminalIdAndTmSharingMessageId:
 			Map<TerminalId, Map<TmSharingMessageId,
 				SyncNotificationMessageToTM>>,
-		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>
+		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>,
+		agtSharingMessageDao: IAgtSharingMessageDao
 	) {
 
 		// Find AgtSharingMessageIds for all already synced messages
 		const agtAgtSharingMessageIdMapByTerminalIdAndTmSharingMessageId
 			      : Map<TerminalId, Map<TmSharingMessageId, AgtSharingMessageId>>
-			      = await this.agtSharingMessageDao.findIdMapByTerminalIdAndTmSharingMessageId(
+			      = await agtSharingMessageDao.findIdMapByTerminalIdAndTmSharingMessageId(
 			Array.from(alreadySyncedInMessageTerminalIds),
 			Array.from(alreadySyncedInMessageTmSharingMessageIds)
 		)
@@ -496,7 +498,10 @@ export class SyncConnectionProcessor
 		verifiedTerminalIds: TerminalId[],
 		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>,
 		agtRepositoryTransactionBlockInserts: InsertAgtRepositoryTransactionBlock[],
-		successTransSyncOutcomes: RepoTransBlockSyncOutcome[]
+		successTransSyncOutcomes: RepoTransBlockSyncOutcome[],
+		agtRepoTransBlockDao: IAgtRepositoryTransactionBlockDao,
+		agtSharingMessageDao: IAgtSharingMessageDao,
+		syncLogDao: ISyncLogDao
 	): Promise<Map<TerminalId, AgtSharingMessageId>> {
 		// Mark the terminals from which the sync records came as already having received
 		// those records
@@ -509,8 +514,8 @@ export class SyncConnectionProcessor
 			])
 
 		const [agtSharingMessageIdMapByTerminalId, agtRepositoryTransactionBlockIds] = await Promise.all([
-			this.agtSharingMessageDao.insertValues(agtSharingMessageInserts),
-			this.agtRepoTransBlockDao.insertValues(agtRepositoryTransactionBlockInserts)
+			agtSharingMessageDao.insertValues(agtSharingMessageInserts),
+			agtRepoTransBlockDao.insertValues(agtRepositoryTransactionBlockInserts)
 		])
 
 		const syncLogInserts: InsertSyncLog[] = []
@@ -529,24 +534,27 @@ export class SyncConnectionProcessor
 			])
 		}
 
-		await this.syncLogDao.insertValues(syncLogInserts)
+		await syncLogDao.insertValues(syncLogInserts)
 
 		return agtSharingMessageIdMapByTerminalId
 	}
 
 	private async updateAgtSharingMessages(// TODO: see if manual retry logic should be applied
 		agtSharingMessageIdSet: Set<AgtSharingMessageId>,
-		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>
+		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>,
+		agtSharingMessageDao: IAgtSharingMessageDao
 	) {
-		await this.tryToUpdateAgtSharingMessages(agtSharingMessageIdSet, verifiedConnectionClaimMap)
+		await this.tryToUpdateAgtSharingMessages(agtSharingMessageIdSet,
+			verifiedConnectionClaimMap, agtSharingMessageDao)
 	}
 
 	private async tryToUpdateAgtSharingMessages(
 		agtSharingMessageIdSet: Set<AgtSharingMessageId>,
-		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>
+		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>,
+		agtSharingMessageDao: IAgtSharingMessageDao
 	) {
 		await transactional(async () => {
-			const sharingMessageMapByTerminalId = await this.agtSharingMessageDao.findNotSyncedByIdIn(
+			const sharingMessageMapByTerminalId = await agtSharingMessageDao.findNotSyncedByIdIn(
 				Array.from(agtSharingMessageIdSet)
 			)
 
@@ -567,26 +575,34 @@ export class SyncConnectionProcessor
 				}
 			}
 
-			await this.agtSharingMessageDao.updateToAcked(Array.from(verifiedAgtSharingMessageIdSet))
+			await agtSharingMessageDao.updateToAcked(Array.from(verifiedAgtSharingMessageIdSet))
 		})
 	}
 
 	private async sendRecentChangesToVerifiedConnections(
 		verifiedTerminalIds: TerminalId[],
-		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>
+		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>,
+		agtRepoTransBlockDao: IAgtRepositoryTransactionBlockDao,
+		agtSharingMessageDao: IAgtSharingMessageDao,
+		syncLogDao: ISyncLogDao
 	) {
 		// TODO: see if manual retry logic should be applied
 		await this.tryToSendRecentChangesToVerifiedConnections(
-			verifiedTerminalIds, verifiedConnectionClaimMap, new Date().getTime())
+			verifiedTerminalIds, verifiedConnectionClaimMap,
+			new Date().getTime(), agtRepoTransBlockDao,
+			agtSharingMessageDao, syncLogDao)
 	}
 
 	private async tryToSendRecentChangesToVerifiedConnections(
 		verifiedTerminalIds: TerminalId[],
 		verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>,
-		addDateTime: number
+		addDateTime: number,
+		agtRepoTransBlockDao: IAgtRepositoryTransactionBlockDao,
+		agtSharingMessageDao: IAgtSharingMessageDao,
+		syncLogDao: ISyncLogDao
 	) {
 		const repoTransBlocksToSendByTerminalId: Map<TerminalId, AugmentedRepoTransBlockMessageToTM[]> = await
-			this.agtRepoTransBlockDao.getAllAgtRepositoryTransactionBlocksToSend(verifiedTerminalIds)
+			agtRepoTransBlockDao.getAllAgtRepositoryTransactionBlocksToSend(verifiedTerminalIds)
 
 		// Sync Logs to insert for the sent records
 		const syncLogsByTerminalIdMap: Map<TerminalId, InsertSyncLog[]> = new Map()
@@ -616,7 +632,7 @@ export class SyncConnectionProcessor
 			}
 		}
 
-		const agtSharingMessageIdMapByTerminalId = await this.agtSharingMessageDao.insertValues(agtSharingMessagesToInsert)
+		const agtSharingMessageIdMapByTerminalId = await agtSharingMessageDao.insertValues(agtSharingMessagesToInsert)
 
 		// For every AgtSharingMessage record created (and hence for every terminal
 		// from which we have received a message in this processing loop)
@@ -655,7 +671,7 @@ export class SyncConnectionProcessor
 			// createdTerminalRepoTransBlockMessage);
 		}
 
-		await this.syncLogDao.insertValues(syncLogInserts)
+		await syncLogDao.insertValues(syncLogInserts)
 	}
 
 }

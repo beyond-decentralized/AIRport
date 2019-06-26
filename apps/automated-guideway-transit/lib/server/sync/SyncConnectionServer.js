@@ -6,51 +6,40 @@ const guideway_1 = require("@airport/guideway");
 const diTokens_1 = require("../../diTokens");
 const log = diTokens_1.AGTLogger.add('SyncConnectionServer');
 class SyncConnectionServer {
-    constructor() {
-        di_1.DI.get((ipBlacklist, agtSharingMessageDao, messageFromTMVerifier, messageFromTMDeserializer, messageToTMSerializer, syncConnectionProcessor, syncConnectionVerifier, agtRepositoryTransactionBlockDao, syncLogDao, tuningSettings) => {
-            this.ipBlacklist = ipBlacklist;
-            this.agtSharingMessageDao = agtSharingMessageDao;
-            this.messageFromTMVerifier = messageFromTMVerifier;
-            this.messageFromTMDeserializer = messageFromTMDeserializer;
-            this.messageToTMSerializer = messageToTMSerializer;
-            this.syncConnectionProcessor = syncConnectionProcessor;
-            this.syncConnectionVerifier = syncConnectionVerifier;
-            this.agtRepositoryTransactionBlockDao = agtRepositoryTransactionBlockDao;
-            this.syncLogDao = syncLogDao;
-            this.tuningSettings = tuningSettings;
-        }, diTokens_1.BLACKLIST, guideway_1.AGT_SHARING_MESSAGE_DAO, arrivals_n_departures_1.MESSAGE_FROM_TM_VERIFIER, arrivals_n_departures_1.MESSAGE_FROM_TM_DESERIALIZER, arrivals_n_departures_1.MESSAGE_TO_TM_SERIALIZER, diTokens_1.SYNC_CONNECTION_PROCESSOR, diTokens_1.SYNC_CONNECTION_VERIFIER, guideway_1.AGT_REPO_TRANS_BLOCK_DAO, guideway_1.SYNC_LOG_DAO, diTokens_1.TUNNING_SETTINGS);
-    }
     async initialize() {
     }
     startProcessing(createServer, portNumberToListenOn, setInterval, intervalFrequencyMillis) {
-        createServer((req, res) => {
-            const ip = this.getIP(req);
-            if (this.connectionBlocked(req, res, ip)) {
-                return;
-            }
-            switch (req.url) {
-                case '/connect':
-                    this.handleConnect(req, res, ip);
-                    break;
-                default:
-                    this.ipBlacklist.blacklist(ip);
-                    this.block(res);
-            }
-        }).listen(portNumberToListenOn);
-        // this.jwtTokenProcessorClient.startProcessing();
-        // TODO: implement smarter batching, if a batch got kicked off mid-interval.
-        // Dont' call next batch until the interval time from the last forced batch kickoff.
-        setInterval(() => {
-            this.processBatchedConnections().then();
-        }, this.tuningSettings.recent.incomingBatchFrequencyMillis);
+        // TODO: removed unused depencencies once tested
+        di_1.DI.get(guideway_1.AGT_SHARING_MESSAGE_DAO, guideway_1.AGT_REPO_TRANS_BLOCK_DAO, guideway_1.SYNC_LOG_DAO);
+        di_1.DI.get(diTokens_1.BLACKLIST, arrivals_n_departures_1.MESSAGE_FROM_TM_VERIFIER, arrivals_n_departures_1.MESSAGE_FROM_TM_DESERIALIZER, arrivals_n_departures_1.MESSAGE_TO_TM_SERIALIZER, diTokens_1.SYNC_CONNECTION_PROCESSOR, diTokens_1.SYNC_CONNECTION_VERIFIER, diTokens_1.TUNNING_SETTINGS).then(([ipBlacklist, messageFromTMVerifier, messageFromTMDeserializer, messageToTMSerializer, syncConnectionProcessor, syncConnectionVerifier, tuningSettings]) => {
+            createServer((req, res) => {
+                const ip = this.getIP(req);
+                if (this.connectionBlocked(req, res, ip, ipBlacklist)) {
+                    return;
+                }
+                switch (req.url) {
+                    case '/connect':
+                        this.handleConnect(req, res, ip, messageFromTMDeserializer, messageFromTMVerifier, messageToTMSerializer, syncConnectionVerifier);
+                        break;
+                    default:
+                        ipBlacklist.blacklist(ip);
+                        this.block(res);
+                }
+            }).listen(portNumberToListenOn);
+            // this.jwtTokenProcessorClient.startProcessing();
+            // TODO: implement smarter batching, if a batch got kicked off mid-interval.
+            // Dont' call next batch until the interval time from the last forced batch kickoff.
+            setInterval(() => {
+                this.processBatchedConnections(syncConnectionProcessor, syncConnectionVerifier, tuningSettings).then();
+            }, tuningSettings.recent.incomingBatchFrequencyMillis);
+        });
     }
-    async processBatchedConnections( //
-    ) {
+    async processBatchedConnections(syncConnectionProcessor, syncConnectionVerifier, tuningSettings) {
         // const serverId: ServerId = this.server.id;
-        const verifiedMessagesFromTM = await this.syncConnectionVerifier.verifyPendingClaims(
+        const verifiedMessagesFromTM = await syncConnectionVerifier.verifyPendingClaims(
         // serverId,
-        this.tuningSettings.recent.minMillisSinceLastConnection);
-        await this.syncConnectionProcessor.processConnections(verifiedMessagesFromTM);
+        tuningSettings.recent.minMillisSinceLastConnection);
+        await syncConnectionProcessor.processConnections(verifiedMessagesFromTM);
         // Close all remaining (valid) connections
         for (const [terminalId, connectionClaim] of verifiedMessagesFromTM.syncConnectionClaimsByTmId) {
             connectionClaim.connectionDataCallback(terminalId, false, null);
@@ -61,16 +50,16 @@ class SyncConnectionServer {
     }
     // TODO: implement kicking off a new batch if max records counts are over the
     // configured values.
-    handleConnect(req, res, ip) {
+    handleConnect(req, res, ip, messageFromTMDeserializer, messageFromTMVerifier, messageToTMSerializer, syncConnectionVerifier) {
         this.handleConnection(req, res, (message) => {
             const connectionDataCallback = (terminalId, 
             // token: JwtToken,
             writeHeaders, data) => {
-                this.writeToConnection(res, terminalId, writeHeaders, data);
+                this.writeToConnection(res, terminalId, writeHeaders, data, messageToTMSerializer);
             };
             let maxSingleRepoChangeLength = Number.MAX_SAFE_INTEGER; //1048576;
             let maxAllRepoChangesLength = Number.MAX_SAFE_INTEGER; //10485760;
-            const schemaValidationResult = this.messageFromTMVerifier.verifyMessage(message, maxAllRepoChangesLength, maxSingleRepoChangeLength);
+            const schemaValidationResult = messageFromTMVerifier.verifyMessage(message, maxAllRepoChangesLength, maxSingleRepoChangeLength);
             const connectionDataError = schemaValidationResult[0];
             if (connectionDataError) {
                 log.error(`
@@ -82,21 +71,21 @@ class SyncConnectionServer {
 				`, connectionDataError, schemaValidationResult[1], schemaValidationResult[2]);
                 connectionDataCallback(null, false, null);
             }
-            const messageFromTM = this.messageFromTMDeserializer.deserialize(message);
-            this.syncConnectionVerifier.queueConnectionClaim({
+            const messageFromTM = messageFromTMDeserializer.deserialize(message);
+            syncConnectionVerifier.queueConnectionClaim({
                 messageFromTM,
                 connectionDataCallback,
                 loginClaimReceptionTime: new Date().getTime()
             });
         });
     }
-    handleInMemoryConnect(messageFromTM, res) {
+    handleInMemoryConnect(messageFromTM, res, syncConnectionVerifier) {
         const connectionDataCallback = (terminalId, 
         // token: JwtToken,
         writeHeaders, data) => {
             this.writeToInMemoryConnection(res, terminalId, writeHeaders, data);
         };
-        this.syncConnectionVerifier.queueConnectionClaim({
+        syncConnectionVerifier.queueConnectionClaim({
             messageFromTM,
             connectionDataCallback,
             loginClaimReceptionTime: new Date().getTime()
@@ -125,7 +114,7 @@ class SyncConnectionServer {
             }
         });
     }
-    writeToConnection(res, terminalId, writeHeaders, data) {
+    writeToConnection(res, terminalId, writeHeaders, data, messageToTMSerializer) {
         if (!terminalId) {
             this.block(res);
         }
@@ -139,7 +128,7 @@ class SyncConnectionServer {
         }
         else if (data) {
             res.write(',');
-            const serializedMessage = this.messageToTMSerializer.serializeAMessage(data);
+            const serializedMessage = messageToTMSerializer.serializeAMessage(data);
             res.write(JSON.stringify(serializedMessage));
         }
         else {
@@ -181,12 +170,12 @@ class SyncConnectionServer {
             return cookieList;
         }
     */
-    connectionBlocked(req, res, ip) {
-        if (this.blockBlacklisted(ip, res)) {
+    connectionBlocked(req, res, ip, ipBlacklist) {
+        if (this.blockBlacklisted(ip, res, ipBlacklist)) {
             return true;
         }
         if (req.method !== 'PUT') {
-            this.ipBlacklist.blacklist(ip);
+            ipBlacklist.blacklist(ip);
             this.block(res);
             return true;
         }
@@ -200,8 +189,8 @@ class SyncConnectionServer {
         // ip = request.headers['x-forwarded-for']
         return ip;
     }
-    blockBlacklisted(ip, res) {
-        if (this.ipBlacklist.isBlacklisted(ip)) {
+    blockBlacklisted(ip, res, ipBlacklist) {
+        if (ipBlacklist.isBlacklisted(ip)) {
             this.block(res);
             return true;
         }

@@ -20,9 +20,6 @@ import {DI}                       from '@airport/di'
 import {
 	AGT_REPO_TRANS_BLOCK_DAO,
 	AGT_SHARING_MESSAGE_DAO,
-	IAgtRepositoryTransactionBlockDao,
-	IAgtSharingMessageDao,
-	ISyncLogDao,
 	SYNC_LOG_DAO
 }                                 from '@airport/guideway'
 import * as http                  from 'http'
@@ -41,47 +38,6 @@ const log = AGTLogger.add('SyncConnectionServer')
 export class SyncConnectionServer
 	implements ISyncConnectionServer<http.IncomingMessage, http.ServerResponse, http.Server, NodeJS.Timer> {
 
-	private ipBlacklist: IBlacklist<string>
-	private agtSharingMessageDao: IAgtSharingMessageDao
-	private messageFromTMVerifier: IMessageFromTMVerifier
-	private messageFromTMDeserializer: IMessageFromTMDeserializer
-	private messageToTMSerializer: IMessageToTMSerializer
-	private syncConnectionProcessor: ISyncConnectionProcessor
-	private syncConnectionVerifier: ISyncConnectionVerifier
-	private agtRepositoryTransactionBlockDao: IAgtRepositoryTransactionBlockDao
-	private syncLogDao: ISyncLogDao
-	private tuningSettings: ITuningSettings
-
-	constructor() {
-		DI.get((
-			ipBlacklist,
-			agtSharingMessageDao,
-			messageFromTMVerifier,
-			messageFromTMDeserializer,
-			messageToTMSerializer,
-			syncConnectionProcessor,
-			syncConnectionVerifier,
-			agtRepositoryTransactionBlockDao,
-			syncLogDao,
-			tuningSettings
-			) => {
-				this.ipBlacklist                      = ipBlacklist
-				this.agtSharingMessageDao             = agtSharingMessageDao
-				this.messageFromTMVerifier            = messageFromTMVerifier
-				this.messageFromTMDeserializer        = messageFromTMDeserializer
-				this.messageToTMSerializer            = messageToTMSerializer
-				this.syncConnectionProcessor          = syncConnectionProcessor
-				this.syncConnectionVerifier           = syncConnectionVerifier
-				this.agtRepositoryTransactionBlockDao = agtRepositoryTransactionBlockDao
-				this.syncLogDao                       = syncLogDao
-				this.tuningSettings                   = tuningSettings
-			}, BLACKLIST, AGT_SHARING_MESSAGE_DAO,
-			MESSAGE_FROM_TM_VERIFIER, MESSAGE_FROM_TM_DESERIALIZER,
-			MESSAGE_TO_TM_SERIALIZER, SYNC_CONNECTION_PROCESSOR,
-			SYNC_CONNECTION_VERIFIER, AGT_REPO_TRANS_BLOCK_DAO,
-			SYNC_LOG_DAO, TUNNING_SETTINGS)
-	}
-
 	async initialize() {
 	}
 
@@ -99,44 +55,71 @@ export class SyncConnectionServer
 		) => NodeJS.Timer,
 		intervalFrequencyMillis: number,
 	): void {
-		createServer((
-			req: http.IncomingMessage,
-			res: http.ServerResponse
-		) => {
-			const ip = this.getIP(req)
-			if (this.connectionBlocked(req, res, ip)) {
-				return
-			}
 
-			switch (req.url) {
-				case '/connect':
-					this.handleConnect(req, res, ip)
-					break
-				default:
-					this.ipBlacklist.blacklist(ip)
-					this.block(res)
-			}
-		}).listen(portNumberToListenOn)
-		// this.jwtTokenProcessorClient.startProcessing();
+		// TODO: removed unused depencencies once tested
+		DI.get(AGT_SHARING_MESSAGE_DAO,
+			AGT_REPO_TRANS_BLOCK_DAO,
+			SYNC_LOG_DAO)
 
-		// TODO: implement smarter batching, if a batch got kicked off mid-interval.
-		// Dont' call next batch until the interval time from the last forced batch kickoff.
-		setInterval(() => {
-			this.processBatchedConnections().then()
-		}, this.tuningSettings.recent.incomingBatchFrequencyMillis)
+		DI.get(BLACKLIST,
+			MESSAGE_FROM_TM_VERIFIER, MESSAGE_FROM_TM_DESERIALIZER,
+			MESSAGE_TO_TM_SERIALIZER, SYNC_CONNECTION_PROCESSOR,
+			SYNC_CONNECTION_VERIFIER, TUNNING_SETTINGS).then((
+			[
+				ipBlacklist,
+				messageFromTMVerifier,
+				messageFromTMDeserializer,
+				messageToTMSerializer,
+				syncConnectionProcessor,
+				syncConnectionVerifier,
+				tuningSettings
+			]) => {
+			createServer((
+				req: http.IncomingMessage,
+				res: http.ServerResponse
+			) => {
+				const ip = this.getIP(req)
+				if (this.connectionBlocked(req, res, ip, ipBlacklist)) {
+					return
+				}
+
+				switch (req.url) {
+					case '/connect':
+						this.handleConnect(req, res, ip,
+							messageFromTMDeserializer, messageFromTMVerifier,
+							messageToTMSerializer, syncConnectionVerifier)
+						break
+					default:
+						ipBlacklist.blacklist(ip)
+						this.block(res)
+				}
+			}).listen(portNumberToListenOn)
+			// this.jwtTokenProcessorClient.startProcessing();
+
+			// TODO: implement smarter batching, if a batch got kicked off mid-interval.
+			// Dont' call next batch until the interval time from the last forced batch kickoff.
+			setInterval(() => {
+				this.processBatchedConnections(
+					syncConnectionProcessor, syncConnectionVerifier, tuningSettings
+				).then()
+			}, tuningSettings.recent.incomingBatchFrequencyMillis)
+		})
 
 	}
 
-	async processBatchedConnections( //
+	async processBatchedConnections(
+		syncConnectionProcessor: ISyncConnectionProcessor,
+		syncConnectionVerifier: ISyncConnectionVerifier,
+		tuningSettings: ITuningSettings
 	): Promise<void> {
 		// const serverId: ServerId = this.server.id;
 
 		const verifiedMessagesFromTM
-			      = await this.syncConnectionVerifier.verifyPendingClaims(
+			      = await syncConnectionVerifier.verifyPendingClaims(
 			// serverId,
-			this.tuningSettings.recent.minMillisSinceLastConnection)
+			tuningSettings.recent.minMillisSinceLastConnection)
 
-		await this.syncConnectionProcessor.processConnections(verifiedMessagesFromTM)
+		await syncConnectionProcessor.processConnections(verifiedMessagesFromTM)
 
 		// Close all remaining (valid) connections
 		for (const [terminalId, connectionClaim]
@@ -154,7 +137,11 @@ export class SyncConnectionServer
 	handleConnect(
 		req: http.IncomingMessage,
 		res: http.ServerResponse,
-		ip: string
+		ip: string,
+		messageFromTMDeserializer: IMessageFromTMDeserializer,
+		messageFromTMVerifier: IMessageFromTMVerifier,
+		messageToTMSerializer: IMessageToTMSerializer,
+		syncConnectionVerifier: ISyncConnectionVerifier
 	): void {
 		this.handleConnection(req, res, (
 			message: SerializedMessageFromTM
@@ -166,12 +153,12 @@ export class SyncConnectionServer
 				data: MessageToTM,
 			) => {
 				this.writeToConnection(
-					res, terminalId, writeHeaders, data)
+					res, terminalId, writeHeaders, data, messageToTMSerializer)
 			}
 			let maxSingleRepoChangeLength                        = Number.MAX_SAFE_INTEGER //1048576;
 			let maxAllRepoChangesLength                          = Number.MAX_SAFE_INTEGER //10485760;
 
-			const schemaValidationResult = this.messageFromTMVerifier.verifyMessage(
+			const schemaValidationResult = messageFromTMVerifier.verifyMessage(
 				message, maxAllRepoChangesLength, maxSingleRepoChangeLength)
 
 			const connectionDataError = schemaValidationResult[0]
@@ -189,8 +176,8 @@ export class SyncConnectionServer
 				)
 				connectionDataCallback(null, false, null)
 			}
-			const messageFromTM = this.messageFromTMDeserializer.deserialize(message)
-			this.syncConnectionVerifier.queueConnectionClaim({
+			const messageFromTM = messageFromTMDeserializer.deserialize(message)
+			syncConnectionVerifier.queueConnectionClaim({
 				messageFromTM,
 				connectionDataCallback,
 				loginClaimReceptionTime: new Date().getTime()
@@ -201,6 +188,7 @@ export class SyncConnectionServer
 	handleInMemoryConnect(
 		messageFromTM: MessageFromTM,
 		res: http.ServerResponse,
+		syncConnectionVerifier: ISyncConnectionVerifier
 	): void {
 		const connectionDataCallback: ConnectionDataCallback = (
 			terminalId: TerminalId,
@@ -211,7 +199,7 @@ export class SyncConnectionServer
 			this.writeToInMemoryConnection(
 				res, terminalId, writeHeaders, data)
 		}
-		this.syncConnectionVerifier.queueConnectionClaim({
+		syncConnectionVerifier.queueConnectionClaim({
 			messageFromTM,
 			connectionDataCallback,
 			loginClaimReceptionTime: new Date().getTime()
@@ -252,6 +240,7 @@ export class SyncConnectionServer
 		terminalId: TerminalId,
 		writeHeaders: boolean,
 		data: MessageToTM,
+		messageToTMSerializer: IMessageToTMSerializer
 	): void {
 		if (!terminalId) {
 			this.block(res)
@@ -265,7 +254,7 @@ export class SyncConnectionServer
 			res.write('[' + protocolVersion)
 		} else if (data) {
 			res.write(',')
-			const serializedMessage = this.messageToTMSerializer.serializeAMessage(data)
+			const serializedMessage = messageToTMSerializer.serializeAMessage(data)
 			res.write(JSON.stringify(serializedMessage))
 		} else {
 			res.write(']')
@@ -315,13 +304,14 @@ export class SyncConnectionServer
 	private connectionBlocked(
 		req: http.IncomingMessage,
 		res: http.ServerResponse,
-		ip: string
+		ip: string,
+		ipBlacklist: IBlacklist<string>
 	) {
-		if (this.blockBlacklisted(ip, res)) {
+		if (this.blockBlacklisted(ip, res, ipBlacklist)) {
 			return true
 		}
 		if (req.method !== 'PUT') {
-			this.ipBlacklist.blacklist(ip)
+			ipBlacklist.blacklist(ip)
 			this.block(res)
 			return true
 		}
@@ -343,8 +333,9 @@ export class SyncConnectionServer
 	private blockBlacklisted(
 		ip: string,
 		res: http.ServerResponse,
+		ipBlacklist: IBlacklist<string>
 	): boolean {
-		if (this.ipBlacklist.isBlacklisted(ip)) {
+		if (ipBlacklist.isBlacklisted(ip)) {
 			this.block(res)
 			return true
 		}

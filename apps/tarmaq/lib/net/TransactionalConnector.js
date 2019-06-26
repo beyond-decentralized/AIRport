@@ -1,82 +1,73 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const tower_1 = require("@airport/tower");
 class TransactionalConnector {
-    constructor() {
-        di_1.DI.get((databaseFacade, transServer) => {
-            this.dbFacade = databaseFacade;
-            this.transServer = transServer;
-        }, air_control_1.DB_FACADE, tower_1.TRANS_SERVER);
-    }
     async init() {
-        this.dbFacade = await di_1.DI.getP(air_control_1.DB_FACADE);
-        this.transServer = await di_1.DI.getP(tower_1.TRANS_SERVER);
-        await this.transServer.init();
-        await this.dbFacade.init();
+        const transServer = await di_1.DI.get(tower_1.TRANS_SERVER);
+        await transServer.init();
     }
-    async addRepository(name, url, platform, platformConfig, distributionStrategy) {
-        return await this.transServer.addRepository(name, url, platform, platformConfig, distributionStrategy, {
+    addRepository(name, url, platform, platformConfig, distributionStrategy) {
+        return di_1.DI.get(tower_1.TRANS_SERVER).then(transServer => transServer.addRepository(name, url, platform, platformConfig, distributionStrategy, {
             domainAndPort: 'test'
-        });
+        }));
     }
-    async transact() {
-        await this.transServer.transact({
+    transact() {
+        return di_1.DI.get(tower_1.TRANS_SERVER).then(transServer => transServer.transact({
             domainAndPort: 'test'
-        });
+        }));
     }
-    async rollback() {
-        await this.transServer.rollback({
+    rollback() {
+        return di_1.DI.get(tower_1.TRANS_SERVER).then(transServer => transServer.rollback({
             domainAndPort: 'test'
-        });
+        }));
     }
-    async commit() {
-        await this.transServer.commit({
+    commit() {
+        return di_1.DI.get(tower_1.TRANS_SERVER).then(transServer => transServer.commit({
             domainAndPort: 'test'
-        });
+        }));
     }
-    async find(portableQuery, cachedSqlQueryId) {
-        return await this.transServer.find(portableQuery, {
+    find(portableQuery, cachedSqlQueryId) {
+        return di_1.DI.get(tower_1.TRANS_SERVER).then(transServer => transServer.find(portableQuery, {
             domainAndPort: 'test'
-        }, cachedSqlQueryId);
+        }, cachedSqlQueryId));
     }
-    async findOne(portableQuery, cachedSqlQueryId) {
-        return await this.transServer.findOne(portableQuery, {
+    findOne(portableQuery, cachedSqlQueryId) {
+        return di_1.DI.get(tower_1.TRANS_SERVER).then(transServer => transServer.findOne(portableQuery, {
             domainAndPort: 'test'
-        }, cachedSqlQueryId);
+        }, cachedSqlQueryId));
     }
     search(portableQuery, cachedSqlQueryId) {
-        return this.transServer.search(portableQuery, {
+        return di_1.DI.get(tower_1.TRANS_SERVER).then(transServer => transServer.search(portableQuery, {
             domainAndPort: 'test'
-        }, cachedSqlQueryId);
+        }, cachedSqlQueryId));
     }
     searchOne(portableQuery, cachedSqlQueryId) {
-        return this.transServer.searchOne(portableQuery, {
+        return di_1.DI.get(tower_1.TRANS_SERVER).then(transServer => transServer.searchOne(portableQuery, {
             domainAndPort: 'test'
-        }, cachedSqlQueryId);
+        }, cachedSqlQueryId));
     }
-    async insertValues(portableQuery, transactionIndex, ensureGeneratedValues // For internal use only
+    insertValues(portableQuery, transactionIndex, ensureGeneratedValues // For internal use only
     ) {
-        return await this.transServer.insertValues(portableQuery, {
+        return di_1.DI.get(tower_1.TRANS_SERVER).then(transServer => transServer.insertValues(portableQuery, {
             domainAndPort: 'test'
-        }, transactionIndex, ensureGeneratedValues);
+        }, transactionIndex, ensureGeneratedValues));
     }
-    async insertValuesGetIds(portableQuery, transactionIndex) {
-        return await this.transServer.insertValuesGetIds(portableQuery, {
+    insertValuesGetIds(portableQuery, transactionIndex) {
+        return di_1.DI.get(tower_1.TRANS_SERVER).then(transServer => transServer.insertValuesGetIds(portableQuery, {
             domainAndPort: 'test'
-        }, transactionIndex);
+        }, transactionIndex));
     }
-    async updateValues(portableQuery, transactionIndex) {
-        return await this.transServer.updateValues(portableQuery, {
+    updateValues(portableQuery, transactionIndex) {
+        return di_1.DI.get(tower_1.TRANS_SERVER).then(transServer => transServer.updateValues(portableQuery, {
             domainAndPort: 'test'
-        }, transactionIndex);
+        }, transactionIndex));
     }
-    async deleteWhere(portableQuery, transactionIndex) {
-        return await this.transServer.updateValues(portableQuery, {
+    deleteWhere(portableQuery, transactionIndex) {
+        return di_1.DI.get(tower_1.TRANS_SERVER).then(transServer => transServer.updateValues(portableQuery, {
             domainAndPort: 'test'
-        }, transactionIndex);
+        }, transactionIndex));
     }
 }
 exports.TransactionalConnector = TransactionalConnector;

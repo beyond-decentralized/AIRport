@@ -1,20 +1,13 @@
 import { AgtRepositoryId, SyncConnectionClaim, TerminalId, VerifiedMessagesFromTM } from '@airport/arrivals-n-departures';
+import { IAgtRepositoryTransactionBlockDao, IAgtSharingMessageDao, ISyncLogDao, ITerminalDao, ITerminalRepositoryDao } from '@airport/guideway';
 export interface ISyncConnectionProcessor {
     processConnections(verifiedMessagesFromTM: VerifiedMessagesFromTM): Promise<void>;
 }
 export declare class SyncConnectionProcessor implements ISyncConnectionProcessor {
-    private terminalDao;
-    private terminalRepositoryDao;
-    private agtSharingMessageDao;
-    private errorLogger;
-    private syncLogDao;
-    private agtRepoTransBlockDao;
-    private utils;
-    constructor();
     processConnections(verifiedMessagesFromTM: VerifiedMessagesFromTM): Promise<void>;
-    updateLastSyncConnectionDatetime(verifiedTerminalIds: TerminalId[]): Promise<void>;
+    updateLastSyncConnectionDatetime(verifiedTerminalIds: TerminalId[], terminalDao: ITerminalDao): Promise<void>;
     private insertRepositoryTransactionBlocks;
-    tryToInsertAgtRepositoryTransactionBlocks(verifiedTerminalIds: TerminalId[], repositoryIdSet: Set<AgtRepositoryId>, verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>): Promise<void>;
+    tryToInsertAgtRepositoryTransactionBlocks(verifiedTerminalIds: TerminalId[], repositoryIdSet: Set<AgtRepositoryId>, verifiedConnectionClaimMap: Map<TerminalId, SyncConnectionClaim>, agtRepoTransBlockDao: IAgtRepositoryTransactionBlockDao, agtSharingMessageDao: IAgtSharingMessageDao, syncLogDao: ISyncLogDao, terminalRepositoryDao: ITerminalRepositoryDao): Promise<void>;
     private declineTransSyncLog;
     /**
      * It is possible for a valid terminal to attempt to sync records to a repository

@@ -13,6 +13,7 @@ import {
 import {DI}              from '@airport/di'
 import {
 	AGT_SHARING_MESSAGE_DAO,
+	ITerminalDao,
 	TERMINAL_DAO,
 	TERMINAL_REPOSITORY_DAO,
 	TerminalLastPollConnectionDatetime,
@@ -25,6 +26,7 @@ import {
 	SYNC_CONNECTION_VERIFIER
 }                        from '../../diTokens'
 import {ServerErrorType} from '../../model/ServerErrorType'
+import {IErrorLogger}    from '../common/ErrorLogger'
 
 
 const log = AGTLogger.add('SyncConnectionVerifier')
@@ -33,24 +35,6 @@ export class SyncConnectionVerifier
 	implements ISyncConnectionVerifier {
 
 	pendingConnectionClaims: SyncConnectionClaim[] = []
-
-	constructor() {
-		DI.get((
-			blacklist,
-			terminalDao,
-			terminalRepositoryDao,
-			agtSharingMessageDao,
-			errorLogger
-			) => {
-				this.blacklist             = blacklist
-				this.terminalDao           = terminalDao
-				this.terminalRepositoryDao = terminalRepositoryDao
-				this.agtSharingMessageDao  = agtSharingMessageDao
-				this.errorLogger           = errorLogger
-			}, BLACKLIST, TERMINAL_DAO,
-			TERMINAL_REPOSITORY_DAO, AGT_SHARING_MESSAGE_DAO,
-			ERROR_LOGGER)
-	}
 
 	queueConnectionClaim(
 		pendingConnectionClaim: SyncConnectionClaim,
@@ -84,6 +68,17 @@ export class SyncConnectionVerifier
 		// serverId: ServerId,
 		minMillisSinceLastConnection: number
 	): Promise<VerifiedMessagesFromTM> {
+		// TODO: removed unused dependencies once tested
+		const [
+			      blacklist,
+			      terminalDao,
+			      terminalRepositoryDao,
+			      agtSharingMessageDao,
+			      errorLogger
+		      ] = await DI.get(BLACKLIST, TERMINAL_DAO,
+			TERMINAL_REPOSITORY_DAO, AGT_SHARING_MESSAGE_DAO,
+			ERROR_LOGGER)
+
 		const currentConnectionClaims = this.pendingConnectionClaims
 		this.pendingConnectionClaims  = []
 
@@ -101,7 +96,8 @@ export class SyncConnectionVerifier
 			                           = new Date().getTime() - minMillisSinceLastConnection
 		const verifiedMessagesFromTM = await this.verifyTerminalsAndGetResourceIds(
 			currentConnectionClaims,
-			earliestAllowedLastConnectionDatetime
+			earliestAllowedLastConnectionDatetime,
+			errorLogger, terminalDao
 		)
 
 		// At this point we are guaranteed that in the present batch there are no duplicate
@@ -113,7 +109,9 @@ export class SyncConnectionVerifier
 
 	private async verifyTerminalsAndGetResourceIds(
 		currentConnectionClaims: SyncConnectionClaim[],
-		earliestAllowedLastConnectionDatetime: number
+		earliestAllowedLastConnectionDatetime: number,
+		errorLogger: IErrorLogger,
+		terminalDao: ITerminalDao
 	): Promise<VerifiedMessagesFromTM> {
 		const terminalIds: Set<TerminalId>                                     = new Set()
 		const repositoryIds: Set<AgtRepositoryId>                              = new Set()
@@ -144,7 +142,7 @@ export class SyncConnectionVerifier
 					duplicatePendingConnectionClaimsMap.set(terminalId,
 						duplicatePendingConnectionClaimsMapForTerminal)
 					syncConnectionClaimsByTmId.delete(terminalId)
-					this.errorLogger.logError(
+					errorLogger.logError(
 						log,
 						ServerErrorType.INCOMING_DATABASE_KEY_APPEARS_MORE_THAN_ONCE_IN_THE_BATCH,
 						terminalCredentials,
@@ -158,7 +156,7 @@ export class SyncConnectionVerifier
 		}
 
 		const terminalCredentialMapById =
-			      await this.terminalDao.findTerminalVerificationRecords(Array.from(terminalIdSet))
+			      await terminalDao.findTerminalVerificationRecords(Array.from(terminalIdSet))
 
 
 		// For every Connection claim with no duplicates
@@ -167,7 +165,10 @@ export class SyncConnectionVerifier
 			const message: MessageFromTM      = pendingConnectionClaim.messageFromTM
 			const incomingTerminalCredentials = message.terminalCredentials
 			const terminalData                =
-				      this.verifyTerminalInfo(terminalId, incomingTerminalCredentials, pendingConnectionClaim, terminalCredentialMapById)
+				      this.verifyTerminalInfo(
+					      terminalId, incomingTerminalCredentials,
+					      pendingConnectionClaim, terminalCredentialMapById,
+					      errorLogger)
 			if (!terminalData) {
 				syncConnectionClaimsByTmId.delete(terminalId)
 				continue
@@ -180,7 +181,8 @@ export class SyncConnectionVerifier
 				terminalData[1],
 				repositoryIds,
 				agtSharingMessageIds,
-				syncConnectionClaimsByTmId)) {
+				syncConnectionClaimsByTmId,
+				errorLogger)) {
 				syncConnectionClaimsByTmId.delete(terminalId)
 				terminalIds.add(terminalId)
 			}
@@ -196,7 +198,8 @@ export class SyncConnectionVerifier
 				agtSharingMessageIds,
 				terminalCredentialMapById,
 				syncConnectionClaimsByTmId,
-				earliestAllowedLastConnectionDatetime
+				earliestAllowedLastConnectionDatetime,
+				errorLogger
 			)
 		}
 
@@ -213,12 +216,13 @@ export class SyncConnectionVerifier
 		incomingTerminalCredentials: TerminalCredentials,
 		pendingConnectionClaim: SyncConnectionClaim,
 		terminalInfoMapById: Map<TerminalId, [
-			TerminalPassword, TerminalLastPollConnectionDatetime, TerminalId]>
+			TerminalPassword, TerminalLastPollConnectionDatetime, TerminalId]>,
+		errorLogger: IErrorLogger
 	): [TerminalPassword, TerminalLastPollConnectionDatetime, TerminalId] {
 
 		const terminalData = terminalInfoMapById.get(terminalId)
 		if (!terminalData) {
-			this.errorLogger.logError(
+			errorLogger.logError(
 				log,
 				ServerErrorType.INCOMING_DATABASE_RECORD_WASNT_IN_DATABASES_TABLE,
 				incomingTerminalCredentials,
@@ -230,7 +234,7 @@ export class SyncConnectionVerifier
 		}
 		if (incomingTerminalCredentials.terminalPassword !== terminalData[0]) {
 			// Terminal password does not match (probably a hack or an attack)
-			this.errorLogger.logError(
+			errorLogger.logError(
 				log,
 				ServerErrorType.INCOMING_DATABASE_HASH_DOES_NOT_MATCH,
 				incomingTerminalCredentials,
@@ -252,12 +256,13 @@ export class SyncConnectionVerifier
 		repositoryIdSet: Set<AgtRepositoryId>,
 		agtSharingMessageIdSet: Set<AgtSharingMessageId>,
 		pendingConnectionClaimsMap: Map<TerminalId, SyncConnectionClaim>,
+		errorLogger: IErrorLogger
 	): boolean {
 		const message = <DataTransferMessageFromTM>pendingConnectionClaim.messageFromTM
 
 		// If the server connected too soon (probably a hack or an attack)
 		if (lastConnectionDatetime > earliestAllowedLastConnectionDatetime) {
-			this.errorLogger.logError(
+			errorLogger.logError(
 				log,
 				ServerErrorType.SYNC_CLIENT_CONNECTED_TOO_SOON,
 				message.terminalCredentials,
@@ -273,7 +278,7 @@ export class SyncConnectionVerifier
 		const sharingMessageIdSetForClaim: Set<AgtSharingMessageId> = new Set()
 		for (const agtSharingMessageId of message.terminalSyncAcks) {
 			if (sharingMessageIdSetForClaim.has(agtSharingMessageId)) {
-				this.errorLogger.logError(
+				errorLogger.logError(
 					log,
 					ServerErrorType.INCOMING_DATABASE_SYNC_LOG_KEY_APPEARS_MORE_THAN_ONCE_IN_A_REQUEST,
 					message.terminalCredentials,
@@ -298,7 +303,8 @@ export class SyncConnectionVerifier
 		terminalInfoMapById: Map<TerminalId, [
 			TerminalPassword, TerminalLastPollConnectionDatetime, TerminalId]>,
 		pendingConnectionClaimsMap: Map<TerminalId, SyncConnectionClaim>,
-		earliestAllowedLastConnectionDatetime: number
+		earliestAllowedLastConnectionDatetime: number,
+		errorLogger: IErrorLogger
 	) {
 		// For every set of duplicate requests per terminal
 		for (const [terminalId, duplicateConnectionClaimsForTerminal] of duplicatePendingConnectionClaimsMap) {
@@ -328,7 +334,7 @@ export class SyncConnectionVerifier
 					connectionClaimWithMatchingHash = duplicateConnectionClaimForTerminal
 				} else {
 					if (!foundClaimsWithIncorrectHash) {
-						this.errorLogger.logError(
+						errorLogger.logError(
 							log,
 							ServerErrorType.DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_INCORRECT_HASH,
 							duplicateConnectionClaimForTerminal.messageFromTM.terminalCredentials,
@@ -342,7 +348,7 @@ export class SyncConnectionVerifier
 
 			if (connectionClaimWithMatchingHash) {
 				if (foundMultipleWithCorrectHash) {
-					this.errorLogger.logError(
+					errorLogger.logError(
 						log,
 						ServerErrorType.MULTIPLE_DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_CORRECT_HASH,
 						connectionClaimWithMatchingHash.messageFromTM.terminalCredentials,
@@ -359,7 +365,8 @@ export class SyncConnectionVerifier
 					terminalData[1],
 					repositoryIdSet,
 					agtSharingMessageIdSet,
-					pendingConnectionClaimsMap)) {
+					pendingConnectionClaimsMap,
+					errorLogger)) {
 					// This is a valid connection
 					pendingConnectionClaimsMap.set(terminalId, connectionClaimWithMatchingHash)
 					verifiedTerminalIdSet.add(terminalId)
@@ -369,7 +376,7 @@ export class SyncConnectionVerifier
 
 		// For any remaining duplicate requests (that had no matching terminal record)
 		for (const connectionClaimsForTerminal of duplicatePendingConnectionClaimsMap.values()) {
-			this.errorLogger.logError(
+			errorLogger.logError(
 				log,
 				ServerErrorType.DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_NO_MATCHING_DATABASE,
 				connectionClaimsForTerminal[0].messageFromTM.terminalCredentials,
