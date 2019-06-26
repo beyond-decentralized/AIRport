@@ -16,6 +16,15 @@ class EntitySearchOne extends EntityLookup_1.EntityLookup {
     searchOne(rawEntityQuery, queryResultType) {
         return this.entityLookup(rawEntityQuery, queryResultType, true, true);
     }
+    map(isMapped) {
+        return this.setMap(EntitySearchOne, isMapped);
+    }
+    noCache() {
+        return this.setNoCache(EntitySearchOne);
+    }
+    cache(cacheForUpdate) {
+        return this.setCache(EntitySearchOne, cacheForUpdate);
+    }
 }
 exports.EntitySearchOne = EntitySearchOne;
 //# sourceMappingURL=EntitySearchOne.js.map

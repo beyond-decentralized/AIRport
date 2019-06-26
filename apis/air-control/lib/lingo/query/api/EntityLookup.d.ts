@@ -7,7 +7,7 @@ import { ILookup } from './Lookup';
  * Common parent for all entity retrieval operations.
  */
 export interface IEntityLookup<Child, MappedChild> extends ILookup {
-    map(): MappedChild;
+    map(isMapped?: boolean): MappedChild;
     /**
      * Enables update caching (required for all update operations).
      * Entities that are retrieved are cached for update purposes.

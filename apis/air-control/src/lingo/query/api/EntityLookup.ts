@@ -10,7 +10,9 @@ import {ILookup}         from './Lookup'
 export interface IEntityLookup<Child, MappedChild>
 	extends ILookup {
 
-	map(): MappedChild;
+	map(
+		isMapped?: boolean
+	): MappedChild;
 
 	/**
 	 * Enables update caching (required for all update operations).

@@ -1,5 +1,6 @@
 import { QueryResultType } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
+import { UpdateCacheType } from '../../..';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
 import { IEntitySearch } from '../../../lingo/query/api/EntitySearch';
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery';
@@ -23,4 +24,7 @@ export declare class EntitySearch<Entity, EntityArray extends Array<Entity>, IES
     search(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
     }, queryResultType: QueryResultType): Promise<IObservable<EntityArray>>;
+    map(isMapped?: boolean): EntitySearch<Entity, MappedEntityArray<Entity>, IESP>;
+    noCache(): EntitySearch<Entity, Entity[], IESP>;
+    cache(cacheForUpdate?: UpdateCacheType): EntitySearch<Entity, Entity[], IESP>;
 }

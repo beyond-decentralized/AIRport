@@ -15,6 +15,15 @@ class EntityFind extends EntityLookup_1.EntityLookup {
     find(rawEntityQuery, queryResultType) {
         return this.entityLookup(rawEntityQuery, queryResultType, false, false);
     }
+    map(isMapped) {
+        return this.setMap(EntityFind, isMapped);
+    }
+    noCache() {
+        return this.setNoCache(EntityFind);
+    }
+    cache(cacheForUpdate) {
+        return this.setCache(EntityFind, cacheForUpdate);
+    }
 }
 exports.EntityFind = EntityFind;
 //# sourceMappingURL=EntityFind.js.map

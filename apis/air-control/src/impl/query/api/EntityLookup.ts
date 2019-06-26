@@ -19,6 +19,32 @@ export interface IEntityLookupInternal<Child, MappedChild,
 		one: boolean
 	): Promise<any>
 
+	setMap(
+		MappedChildClass: new (
+			dbEntity: DbEntity,
+			cacheForUpdate: UpdateCacheType,
+			mapResults: boolean
+		) => MappedChild,
+		isMapped: boolean
+	): MappedChild
+
+	setNoCache(
+		ChildClass: new (
+			dbEntity: DbEntity,
+			cacheForUpdate: UpdateCacheType,
+			mapResults: boolean
+		) => Child
+	): Child
+
+	setCache(
+		ChildClass: new (
+			dbEntity: DbEntity,
+			cacheForUpdate: UpdateCacheType,
+			mapResults: boolean
+		) => Child,
+		cacheForUpdate: UpdateCacheType
+	): Child
+
 }
 
 export abstract class EntityLookup<Child, MappedChild,
@@ -29,35 +55,59 @@ export abstract class EntityLookup<Child, MappedChild,
 	static cacheForUpdate = UpdateCacheType.NONE
 	static mapResults     = false
 
-	protected mapResults     = EntityLookup.mapResults
-	protected cacheForUpdate = EntityLookup.cacheForUpdate
 
 	constructor(
-		protected dbEntity: DbEntity
+		protected dbEntity: DbEntity,
+		protected cacheForUpdate = EntityLookup.cacheForUpdate,
+		protected mapResults     = EntityLookup.mapResults
 	) {
 		super()
 	}
 
-	map(
+	abstract map(
 		isMapped?: boolean
+	): MappedChild
+
+
+	abstract noCache(): Child
+
+	abstract cache(
+		cacheForUpdate?: UpdateCacheType
+	): Child
+
+	setMap(
+		MappedChildClass: new (
+			dbEntity: DbEntity,
+			cacheForUpdate: UpdateCacheType,
+			mapResults: boolean
+		) => MappedChild,
+		isMapped = true
 	): MappedChild {
-		this.mapResults = true
-
-		return <any>this
+		return new MappedChildClass(
+			this.dbEntity, this.cacheForUpdate, isMapped)
 	}
 
-	noCache(): Child {
-		this.cache(UpdateCacheType.NONE)
-
-		return <Child><any>this
-	}
-
-	cache(
-		cacheForUpdate: UpdateCacheType = UpdateCacheType.ROOT_QUERY_ENTITIES
+	setNoCache(
+		ChildClass: new (
+			dbEntity: DbEntity,
+			cacheForUpdate: UpdateCacheType,
+			mapResults: boolean
+		) => Child
 	): Child {
-		this.cacheForUpdate = cacheForUpdate
+		return new ChildClass(
+			this.dbEntity, UpdateCacheType.NONE, this.mapResults)
+	}
 
-		return <Child><any>this
+	setCache(
+		ChildClass: new (
+			dbEntity: DbEntity,
+			cacheForUpdate: UpdateCacheType,
+			mapResults: boolean
+		) => Child,
+		cacheForUpdate: UpdateCacheType = UpdateCacheType.ALL_QUERY_ENTITIES
+	): Child {
+		return new ChildClass(
+			this.dbEntity, cacheForUpdate, this.mapResults)
 	}
 
 	entityLookup(

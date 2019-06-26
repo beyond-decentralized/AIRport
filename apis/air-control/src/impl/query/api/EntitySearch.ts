@@ -3,6 +3,7 @@ import {
 	IObservable,
 	Observable
 }                                from '@airport/observe'
+import {UpdateCacheType}         from '../../..'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
 import {IEntitySearch}           from '../../../lingo/query/api/EntitySearch'
 import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
@@ -46,6 +47,22 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 	): Promise<IObservable<EntityArray>> {
 		return this.entityLookup(rawEntityQuery, queryResultType,
 			true, false)
+	}
+
+	map(
+		isMapped?: boolean
+	): EntitySearch<Entity, MappedEntityArray<Entity>, IESP> {
+		return this.setMap(EntitySearch, isMapped)
+	}
+
+	noCache(): EntitySearch<Entity, Entity[], IESP> {
+		return this.setNoCache(EntitySearch)
+	}
+
+	cache(
+		cacheForUpdate?: UpdateCacheType
+	): EntitySearch<Entity, Entity[], IESP> {
+		return this.setCache(EntitySearch, cacheForUpdate)
 	}
 
 }

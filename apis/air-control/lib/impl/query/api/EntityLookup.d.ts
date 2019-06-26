@@ -8,17 +8,23 @@ export interface IEntityLookupInternal<Child, MappedChild, IESP extends IEntityS
     entityLookup(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
     }, queryResultType: QueryResultType, search: boolean, one: boolean): Promise<any>;
+    setMap(MappedChildClass: new (dbEntity: DbEntity, cacheForUpdate: UpdateCacheType, mapResults: boolean) => MappedChild, isMapped: boolean): MappedChild;
+    setNoCache(ChildClass: new (dbEntity: DbEntity, cacheForUpdate: UpdateCacheType, mapResults: boolean) => Child): Child;
+    setCache(ChildClass: new (dbEntity: DbEntity, cacheForUpdate: UpdateCacheType, mapResults: boolean) => Child, cacheForUpdate: UpdateCacheType): Child;
 }
 export declare abstract class EntityLookup<Child, MappedChild, IESP extends IEntitySelectProperties> extends LookupProxy implements IEntityLookupInternal<Child, MappedChild, IESP> {
     protected dbEntity: DbEntity;
+    protected cacheForUpdate: UpdateCacheType;
+    protected mapResults: boolean;
     static cacheForUpdate: UpdateCacheType;
     static mapResults: boolean;
-    protected mapResults: boolean;
-    protected cacheForUpdate: UpdateCacheType;
-    constructor(dbEntity: DbEntity);
-    map(isMapped?: boolean): MappedChild;
-    noCache(): Child;
-    cache(cacheForUpdate?: UpdateCacheType): Child;
+    constructor(dbEntity: DbEntity, cacheForUpdate?: UpdateCacheType, mapResults?: boolean);
+    abstract map(isMapped?: boolean): MappedChild;
+    abstract noCache(): Child;
+    abstract cache(cacheForUpdate?: UpdateCacheType): Child;
+    setMap(MappedChildClass: new (dbEntity: DbEntity, cacheForUpdate: UpdateCacheType, mapResults: boolean) => MappedChild, isMapped?: boolean): MappedChild;
+    setNoCache(ChildClass: new (dbEntity: DbEntity, cacheForUpdate: UpdateCacheType, mapResults: boolean) => Child): Child;
+    setCache(ChildClass: new (dbEntity: DbEntity, cacheForUpdate: UpdateCacheType, mapResults: boolean) => Child, cacheForUpdate?: UpdateCacheType): Child;
     entityLookup(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
     }, queryResultType: QueryResultType, search: boolean, one: boolean): Promise<any>;

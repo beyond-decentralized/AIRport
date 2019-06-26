@@ -1,4 +1,5 @@
 import { QueryResultType } from '@airport/ground-control';
+import { UpdateCacheType } from '../../..';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
 import { IEntityFind } from '../../../lingo/query/api/EntityFind';
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery';
@@ -22,4 +23,7 @@ export declare class EntityFind<Entity, EntityArray extends Array<Entity>, IESP 
     find(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
     }, queryResultType: QueryResultType): Promise<EntityArray>;
+    map(isMapped?: boolean): EntityFind<Entity, MappedEntityArray<Entity>, IESP>;
+    noCache(): EntityFind<Entity, Entity[], IESP>;
+    cache(cacheForUpdate?: UpdateCacheType): EntityFind<Entity, Entity[], IESP>;
 }
