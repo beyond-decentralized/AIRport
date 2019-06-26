@@ -1,8 +1,4 @@
 import {
-	IUtils,
-	UTILS
-}                            from '@airport/air-control'
-import {
 	AgtRepositoryId,
 	DataTransferMessageFromTM,
 	MessageFromTM,
@@ -11,6 +7,7 @@ import {
 	TerminalCredentials
 }                            from '@airport/arrivals-n-departures'
 import {DI}                  from '@airport/di'
+import {ensureChildArray}    from '@airport/ground-control'
 import {
 	IRepository,
 	REPO_TRANS_HISTORY_DAO,
@@ -19,11 +16,8 @@ import {
 }                            from '@airport/holding-pattern'
 import {
 	IRepositoryTransactionBlock,
-	IRepositoryTransactionBlockDao,
 	ISharingMessage,
-	ISharingMessageDao,
 	ISharingMessageRepoTransBlock,
-	ISharingMessageRepoTransBlockDao,
 	ISharingNode,
 	ISharingNodeTerminal,
 	REPO_TRANS_BLOCK_DAO,
@@ -54,30 +48,6 @@ export interface ISyncOutSerializer {
 export class SyncOutSerializer
 	implements ISyncOutSerializer {
 
-	private repoTransBlockDao: IRepositoryTransactionBlockDao
-	private repoTransBlockRepoTransHistoryDao: IRepoTransBlockRepoTransHistoryDao
-	private sharingMessageDao: ISharingMessageDao
-	private sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao
-	private utils: IUtils
-
-	constructor() {
-		DI.get((
-			repoTransBlockDao,
-			repoTransBlockRepoTransHistoryDao,
-			sharingMessageDao,
-			sharingMessageRepoTransBlockDao,
-			utils
-			) => {
-				this.repoTransBlockDao                 = repoTransBlockDao
-				this.repoTransBlockRepoTransHistoryDao = repoTransBlockRepoTransHistoryDao
-				this.sharingMessageDao                 = sharingMessageDao
-				this.sharingMessageRepoTransBlockDao   = sharingMessageRepoTransBlockDao
-			}, REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_DAO,
-			null, SHARING_MESSAGE_DAO,
-			SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, UTILS)
-	}
-
-
 	async serializeMessages(
 		sharingNodeDbMap: Map<SharingNodeId, ISharingNodeTerminal>,
 		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
@@ -87,6 +57,15 @@ export class SyncOutSerializer
 		repoTransHistoryIds: Set<RepositoryTransactionHistoryId>,
 		terminal: ITerminal
 	): Promise<Map<SharingNodeId, MessageFromTM>> {
+		const [repoTransBlockDao,
+			      repoTransBlockRepoTransHistoryDao,
+			      sharingMessageDao,
+			      sharingMessageRepoTransBlockDao
+		      ]                                             = await DI.get(REPO_TRANS_BLOCK_DAO,
+			// TODO: is this what needs to be injected
+			REPO_TRANS_HISTORY_DAO,
+			SHARING_MESSAGE_DAO,
+			SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO)
 		const messageMap: Map<SharingNodeId, MessageFromTM> = new Map()
 
 		const lastSyncAttemptTimestamp                                                      = new Date()
@@ -115,7 +94,7 @@ export class SyncOutSerializer
 				repoTransBlockRepoTransHistories,
 			}
 
-			this.utils.ensureChildArray(repoTransBlocksByRepositoryId, repositoryId)
+			ensureChildArray(repoTransBlocksByRepositoryId, repositoryId)
 				.push(repositoryTransactionBlock)
 
 			for (const repositoryTransactionHistory of messageData.repoTransHistories) {
@@ -131,8 +110,8 @@ export class SyncOutSerializer
 		}
 
 		await transactional(async () => {
-			await this.repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, false, false)
-			await this.repoTransBlockRepoTransHistoryDao
+			await repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, false, false)
+			await repoTransBlockRepoTransHistoryDao
 				.bulkCreate(allTransLogRepoTransHistories, false, false)
 
 			const sharingMessages: ISharingMessage[]                             = []
@@ -180,13 +159,13 @@ export class SyncOutSerializer
 				}
 			}
 
-			await this.sharingMessageDao.bulkCreate(sharingMessages, false, false)
+			await sharingMessageDao.bulkCreate(sharingMessages, false, false)
 
 			for (const sharingMessage of sharingMessages) {
 				messageMap.get(sharingMessage.sharingNode.id)[2] = sharingMessage.id
 			}
 
-			await this.sharingMessageRepoTransBlockDao.bulkCreate(
+			await sharingMessageRepoTransBlockDao.bulkCreate(
 				sharingMessageRepoTransBlocks, false, false
 			)
 		})

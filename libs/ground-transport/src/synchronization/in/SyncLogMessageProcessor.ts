@@ -1,18 +1,11 @@
 import {
-	IUtils,
-	UTILS
-}                                   from '@airport/air-control'
-import {
 	RepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
 }                                   from '@airport/arrivals-n-departures'
 import {DI}                         from '@airport/di'
+import {ensureChildJsMap}           from '@airport/ground-control/lib/src'
 import {
-	IRepositoryTransactionBlockDao,
-	IRepoTransBlockResponseStageDao,
-	ISharingMessageDao,
 	ISharingNodeRepoTransBlockDao,
-	ISharingNodeRepoTransBlockStageDao,
 	REPO_TRANS_BLOCK_DAO,
 	REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO,
 	SHARING_MESSAGE_DAO,
@@ -37,34 +30,11 @@ export interface ISyncLogMessageProcessor {
 export class SyncLogMessageProcessor
 	implements ISyncLogMessageProcessor {
 
-	private sharingMessageDao: ISharingMessageDao
-	// private sharingMessageResponseStageDao: ISharingMessageResponseStageDao,
-	private sharingNodeRepoTransBlockDao: ISharingNodeRepoTransBlockDao
-	private sharingNodeRepoTransBlockStageDao: ISharingNodeRepoTransBlockStageDao
-	private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao
-	private repoTransBlockResponseStageDao: IRepoTransBlockResponseStageDao
-	private utils: IUtils
-
-	constructor() {
-		DI.get((
-			sharingMessageDao,
-			sharingNodeRepoTransBlockDao,
-			sharingNodeRepoTransBlockStageDao,
-			repositoryTransactionBlockDao,
-			repoTransBlockResponseStageDao,
-			utils
-			) => {
-				this.sharingMessageDao                 = sharingMessageDao
-				this.sharingNodeRepoTransBlockDao      = sharingNodeRepoTransBlockDao
-				this.sharingNodeRepoTransBlockStageDao = sharingNodeRepoTransBlockStageDao
-				this.repositoryTransactionBlockDao     = repositoryTransactionBlockDao
-				this.repoTransBlockResponseStageDao    = repoTransBlockResponseStageDao
-				this.utils                             = utils
-			}, SHARING_MESSAGE_DAO, SHARING_NODE_REPO_TRANS_BLOCK_DAO,
-			SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO, REPO_TRANS_BLOCK_DAO,
-			REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO, UTILS)
-	}
-
+	// private sharingMessageDao: ISharingMessageDao
+	// private sharingNodeRepoTransBlockDao: ISharingNodeRepoTransBlockDao
+	// private sharingNodeRepoTransBlockStageDao: ISharingNodeRepoTransBlockStageDao
+	// private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao
+	// private repoTransBlockResponseStageDao: IRepoTransBlockResponseStageDao
 
 	/**
 	 *
@@ -80,6 +50,17 @@ export class SyncLogMessageProcessor
 		if (!syncLogMessages.length) {
 			return
 		}
+
+		// TODO: remove unused dependencies once tested
+		const [sharingMessageDao,
+			      sharingNodeRepoTransBlockDao,
+			      sharingNodeRepoTransBlockStageDao,
+			      repositoryTransactionBlockDao,
+			      repoTransBlockResponseStageDao] = await DI.get(
+			SHARING_MESSAGE_DAO, SHARING_NODE_REPO_TRANS_BLOCK_DAO,
+			SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO, REPO_TRANS_BLOCK_DAO,
+			REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO
+		)
 
 		const {
 			      repoTransBlockIdSet,
@@ -97,14 +78,14 @@ export class SyncLogMessageProcessor
 		// 	repoTransBlockSyncOutcomeMapBySharingNodeId
 		// );
 
-		await this.sharingNodeRepoTransBlockStageDao
+		await sharingNodeRepoTransBlockStageDao
 			.insertValues(sharingNodeRepoTransBlockStageValues)
-		await this.sharingNodeRepoTransBlockDao.updateFromResponseStage()
-		await this.sharingNodeRepoTransBlockStageDao.delete()
+		await sharingNodeRepoTransBlockDao.updateFromResponseStage()
+		await sharingNodeRepoTransBlockStageDao.delete()
 
 		// // If for some reason they don't insert them
 		// await this.insertNewSharingNodeRepoTransBlocks(
-		// 	repoTransBlockSyncOutcomeMapBySharingNodeId);
+		// 	repoTransBlockSyncOutcomeMapBySharingNodeId, sharingNodeRepoTransBlockDao);
 
 		// Update SharingMessages with data from AGT
 		// await
@@ -150,7 +131,7 @@ export class SyncLogMessageProcessor
 			for (const outcome of syncLogMessage.outcomes) {
 				const tmRepositoryTransactionBlockId = outcome.tmRepositoryTransactionBlockId
 				repoTransBlockIdSet.add(tmRepositoryTransactionBlockId)
-				this.utils.ensureChildJsMap(repoTransBlockSyncOutcomeMapBySharingNodeId, sharingNodeId)
+				ensureChildJsMap(repoTransBlockSyncOutcomeMapBySharingNodeId, sharingNodeId)
 					.set(tmRepositoryTransactionBlockId, outcome)
 				messageRepoTransBlockResponseStageValues.push([
 					sharingNodeId,
@@ -200,7 +181,8 @@ export class SyncLogMessageProcessor
 
 	private async insertNewSharingNodeRepoTransBlocks(
 		repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNodeId,
-			Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncStatus>>
+			Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncStatus>>,
+		sharingNodeRepoTransBlockDao: ISharingNodeRepoTransBlockDao
 	): Promise<void> {
 		const sharingNodeTransBlockValues: SharingNodeRepoTransBlockValues[] = []
 		const sharingMessageSyncTimestamp: SharingMessageSyncTimestamp       = new Date()
@@ -220,7 +202,7 @@ export class SyncLogMessageProcessor
 			}
 		}
 
-		await this.sharingNodeRepoTransBlockDao.insertValues(sharingNodeTransBlockValues)
+		await sharingNodeRepoTransBlockDao.insertValues(sharingNodeTransBlockValues)
 	}
 
 }

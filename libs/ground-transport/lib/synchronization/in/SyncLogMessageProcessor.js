@@ -1,20 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const src_1 = require("@airport/ground-control/lib/src");
 const moving_walkway_1 = require("@airport/moving-walkway");
 const diTokens_1 = require("../../diTokens");
 class SyncLogMessageProcessor {
-    constructor() {
-        di_1.DI.get((sharingMessageDao, sharingNodeRepoTransBlockDao, sharingNodeRepoTransBlockStageDao, repositoryTransactionBlockDao, repoTransBlockResponseStageDao, utils) => {
-            this.sharingMessageDao = sharingMessageDao;
-            this.sharingNodeRepoTransBlockDao = sharingNodeRepoTransBlockDao;
-            this.sharingNodeRepoTransBlockStageDao = sharingNodeRepoTransBlockStageDao;
-            this.repositoryTransactionBlockDao = repositoryTransactionBlockDao;
-            this.repoTransBlockResponseStageDao = repoTransBlockResponseStageDao;
-            this.utils = utils;
-        }, moving_walkway_1.SHARING_MESSAGE_DAO, moving_walkway_1.SHARING_NODE_REPO_TRANS_BLOCK_DAO, moving_walkway_1.SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO, moving_walkway_1.REPO_TRANS_BLOCK_DAO, moving_walkway_1.REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO, air_control_1.UTILS);
-    }
+    // private sharingMessageDao: ISharingMessageDao
+    // private sharingNodeRepoTransBlockDao: ISharingNodeRepoTransBlockDao
+    // private sharingNodeRepoTransBlockStageDao: ISharingNodeRepoTransBlockStageDao
+    // private repositoryTransactionBlockDao: IRepositoryTransactionBlockDao
+    // private repoTransBlockResponseStageDao: IRepoTransBlockResponseStageDao
     /**
      *
      * Record Synchronization Log messages coming from AGT (messages replying back with
@@ -27,6 +22,8 @@ class SyncLogMessageProcessor {
         if (!syncLogMessages.length) {
             return;
         }
+        // TODO: remove unused dependencies once tested
+        const [sharingMessageDao, sharingNodeRepoTransBlockDao, sharingNodeRepoTransBlockStageDao, repositoryTransactionBlockDao, repoTransBlockResponseStageDao] = await di_1.DI.get(moving_walkway_1.SHARING_MESSAGE_DAO, moving_walkway_1.SHARING_NODE_REPO_TRANS_BLOCK_DAO, moving_walkway_1.SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO, moving_walkway_1.REPO_TRANS_BLOCK_DAO, moving_walkway_1.REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO);
         const { repoTransBlockIdSet, sharingNodeRepoTransBlockStageValues, repoTransBlockSyncOutcomeMapBySharingNodeId, 
         // sharingMessageResponseStageValues,
         sharingNodeIdSet } = this.generateSyncLogDataStructures(syncLogMessages);
@@ -37,13 +34,13 @@ class SyncLogMessageProcessor {
         // 	repoTransBlockIdSet,
         // 	repoTransBlockSyncOutcomeMapBySharingNodeId
         // );
-        await this.sharingNodeRepoTransBlockStageDao
+        await sharingNodeRepoTransBlockStageDao
             .insertValues(sharingNodeRepoTransBlockStageValues);
-        await this.sharingNodeRepoTransBlockDao.updateFromResponseStage();
-        await this.sharingNodeRepoTransBlockStageDao.delete();
+        await sharingNodeRepoTransBlockDao.updateFromResponseStage();
+        await sharingNodeRepoTransBlockStageDao.delete();
         // // If for some reason they don't insert them
         // await this.insertNewSharingNodeRepoTransBlocks(
-        // 	repoTransBlockSyncOutcomeMapBySharingNodeId);
+        // 	repoTransBlockSyncOutcomeMapBySharingNodeId, sharingNodeRepoTransBlockDao);
         // Update SharingMessages with data from AGT
         // await
         // this.sharingMessageResponseStageDao.insertValues(sharingMessageResponseStageValues);
@@ -73,7 +70,7 @@ class SyncLogMessageProcessor {
             for (const outcome of syncLogMessage.outcomes) {
                 const tmRepositoryTransactionBlockId = outcome.tmRepositoryTransactionBlockId;
                 repoTransBlockIdSet.add(tmRepositoryTransactionBlockId);
-                this.utils.ensureChildJsMap(repoTransBlockSyncOutcomeMapBySharingNodeId, sharingNodeId)
+                src_1.ensureChildJsMap(repoTransBlockSyncOutcomeMapBySharingNodeId, sharingNodeId)
                     .set(tmRepositoryTransactionBlockId, outcome);
                 messageRepoTransBlockResponseStageValues.push([
                     sharingNodeId,
@@ -117,7 +114,7 @@ class SyncLogMessageProcessor {
     // this.sharingNodeRepoTransBlockStageDao.insertValues(sharingNodeTransBlockStageValues);
     // await this.sharingNodeRepoTransBlockDao.updateFromResponseStage(); await
     // this.sharingNodeRepoTransBlockStageDao.delete(); }
-    async insertNewSharingNodeRepoTransBlocks(repoTransBlockSyncOutcomeMapBySharingNodeId) {
+    async insertNewSharingNodeRepoTransBlocks(repoTransBlockSyncOutcomeMapBySharingNodeId, sharingNodeRepoTransBlockDao) {
         const sharingNodeTransBlockValues = [];
         const sharingMessageSyncTimestamp = new Date();
         for (const [sharingNodeId, repoTransBlockSyncOutcomesForSharingNodeId] of repoTransBlockSyncOutcomeMapBySharingNodeId) {
@@ -130,7 +127,7 @@ class SyncLogMessageProcessor {
                 ]);
             }
         }
-        await this.sharingNodeRepoTransBlockDao.insertValues(sharingNodeTransBlockValues);
+        await sharingNodeRepoTransBlockDao.insertValues(sharingNodeTransBlockValues);
     }
 }
 exports.SyncLogMessageProcessor = SyncLogMessageProcessor;

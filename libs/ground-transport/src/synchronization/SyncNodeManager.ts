@@ -1,26 +1,21 @@
 import {
 	BatchedMessagesToTM,
 	MessageFromTM
-}                                  from '@airport/arrivals-n-departures'
-import {DI}                        from '@airport/di'
+}                             from '@airport/arrivals-n-departures'
+import {DI}                   from '@airport/di'
 import {
 	ISharingNode,
-	ISharingNodeDao,
 	ISharingNodeTerminal,
-	ISharingNodeTerminalDao,
+	SHARING_NODE_DAO,
 	SHARING_NODE_TERMINAL_DAO,
 	SharingNodeId
-}                                  from '@airport/moving-walkway'
-import {
-	ITerminalStore,
-	TERMINAL_STORE
-}                                  from '@airport/terminal-map'
+}                             from '@airport/moving-walkway'
+import {TERMINAL_STORE}       from '@airport/terminal-map'
 import {
 	SYNC_IN_MANAGER,
 	SYNC_NODE_MANAGER,
-}                                  from '../diTokens'
-import {ISharingNodeEndpoint}      from './connect/SharingNodeEndpoint'
-import {ISynchronizationInManager} from './in/SynchronizationInManager'
+}                             from '../diTokens'
+import {ISharingNodeEndpoint} from './connect/SharingNodeEndpoint'
 
 export interface ISyncNodeManager {
 
@@ -40,42 +35,31 @@ export class SyncNodeManager
 
 	sharingNodeEndPoint: ISharingNodeEndpoint
 
-	private sharingNodeDao: ISharingNodeDao
-	private sharingNodeTerminalDao: ISharingNodeTerminalDao
-	private synchronizationInManager: ISynchronizationInManager
-	private terminalStore: ITerminalStore
-
-	constructor() {
-		DI.get((
-			sharingNodeDao,
-			sharingNodeTerminalDao,
-			synchronizationInManager,
-			terminalStore
-			) => {
-				this.sharingNodeDao           = sharingNodeDao
-				this.sharingNodeTerminalDao   = sharingNodeTerminalDao
-				this.synchronizationInManager = synchronizationInManager
-				this.terminalStore            = terminalStore
-			}, SYNC_NODE_MANAGER, SHARING_NODE_TERMINAL_DAO,
-			SYNC_IN_MANAGER, TERMINAL_STORE)
-	}
-
 	async initialize(): Promise<void> {
-		const nodesBySyncFrequency = await this.sharingNodeDao.findAllGroupedBySyncFrequency()
-		this.terminalStore.nodesBySyncFrequency.next(nodesBySyncFrequency)
+		const [sharingNodeDao, terminalStore] = await DI.get(
+			SHARING_NODE_DAO, TERMINAL_STORE)
+
+		const nodesBySyncFrequency = await sharingNodeDao.findAllGroupedBySyncFrequency()
+		terminalStore.nodesBySyncFrequency.next(nodesBySyncFrequency)
 	}
 
 	async sendMessages(
 		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
 		messagesBySharingNode: Map<SharingNodeId, MessageFromTM>
 	): Promise<void> {
+		const [sharingNodeDao,
+			      sharingNodeTerminalDao,
+			      synchronizationInManager,
+			      terminalStore] = await DI.get(
+			SYNC_NODE_MANAGER, SHARING_NODE_TERMINAL_DAO,
+			SYNC_IN_MANAGER, TERMINAL_STORE)
 		let terminal
-		this.terminalStore.terminal.subscribe((
+		terminalStore.terminal.subscribe((
 			theTerminal
 			) => terminal = theTerminal
 		).unsubscribe()
 		const sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>
-			      = await this.sharingNodeTerminalDao
+			      = await sharingNodeTerminalDao
 			.findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(
 				terminal.id, Array.from(sharingNodeMap.keys())
 			)
@@ -91,7 +75,7 @@ export class SyncNodeManager
 		const incomingMessages = await Promise.all(messageDepartures)
 
 
-		await this.synchronizationInManager.receiveMessages(
+		await synchronizationInManager.receiveMessages(
 			sharingNodes, incomingMessages, sharingNodeTerminalMap)
 	}
 

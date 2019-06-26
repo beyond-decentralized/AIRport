@@ -118,5 +118,5 @@ class SyncInRepositoryTransactionBlockCreator {
     }
 }
 exports.SyncInRepositoryTransactionBlockCreator = SyncInRepositoryTransactionBlockCreator;
-di_1.DI.get(diTokens_1.SYNC_IN_REPO_TRANS_BLOCK_CREATOR, SyncInRepositoryTransactionBlockCreator);
+di_1.DI.set(diTokens_1.SYNC_IN_REPO_TRANS_BLOCK_CREATOR, SyncInRepositoryTransactionBlockCreator);
 //# sourceMappingURL=SyncInRepositoryTransactionBlockCreator.js.map

@@ -265,4 +265,4 @@ export class SyncInRepositoryTransactionBlockCreator
 
 }
 
-DI.get(SYNC_IN_REPO_TRANS_BLOCK_CREATOR, SyncInRepositoryTransactionBlockCreator)
+DI.set(SYNC_IN_REPO_TRANS_BLOCK_CREATOR, SyncInRepositoryTransactionBlockCreator)

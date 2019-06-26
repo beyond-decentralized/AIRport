@@ -9,9 +9,6 @@ export interface TerminalCheckResults {
 export interface ISyncInTerminalChecker {
 }
 export declare class SyncInTerminalChecker implements ISyncInTerminalChecker {
-    private terminalDao;
-    private utils;
-    constructor();
     ensureTerminalsAndGetAsMaps(dataMessages: IDataToTM[], localTerminal: ITerminal, userCheckResults: UserCheckResults): Promise<TerminalCheckResults>;
     private recordTerminalCredentials;
     private areTerminalIdsConsistentInMessageData;

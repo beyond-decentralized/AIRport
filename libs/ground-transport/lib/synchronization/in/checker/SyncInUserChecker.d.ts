@@ -11,9 +11,6 @@ export interface ISyncInUserChecker {
     ensureUsersAndGetAsMaps(dataMessages: IDataToTM[]): Promise<UserCheckResults>;
 }
 export declare class SyncInUserChecker implements ISyncInUserChecker {
-    private userDao;
-    private utils;
-    constructor();
     ensureUsersAndGetAsMaps(dataMessages: IDataToTM[]): Promise<UserCheckResults>;
     private areUserIdsConsistentInMessageData;
     private gatherUserUniqueIds;

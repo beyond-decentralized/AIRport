@@ -1,8 +1,4 @@
-import {
-	IUtils,
-	UTILS,
-	Y
-}                                       from '@airport/air-control'
+import {Y}                              from '@airport/air-control'
 import {DI}                             from '@airport/di'
 import {RepositoryTransactionBlockData} from '@airport/moving-walkway'
 import {
@@ -34,22 +30,11 @@ export interface ISyncInUserChecker {
 export class SyncInUserChecker
 	implements ISyncInUserChecker {
 
-	private userDao: IUserDao
-	private utils: IUtils
-
-	constructor() {
-		DI.get((
-			userDao,
-			utils
-		) => {
-			this.userDao = userDao
-			this.utils   = utils
-		}, USER_DAO, UTILS)
-	}
-
 	async ensureUsersAndGetAsMaps(
 		dataMessages: IDataToTM[]
 	): Promise<UserCheckResults> {
+		const userDao = await DI.get(USER_DAO)
+
 		const remoteUserMapByUniqueId: Map<UserUniqueId, IUser>      = new Map()
 		const mapById: Map<UserId, IUser>                            = new Map()
 		const mapByMessageIndexAndRemoteUserId: Map<UserId, IUser>[] = []
@@ -69,13 +54,14 @@ export class SyncInUserChecker
 			mapByMessageIndexAndRemoteUserId.push(mapForMessageByRemoteUserId)
 		}
 
-		const map = await this.userDao.findFieldsMapByUniqueId(
+		const map = userDao.findFieldsMapByUniqueId(
 			Array.from(remoteUserMapByUniqueId.keys()), {
 				id: Y,
 				uniqueId: Y
 			})
 
-		await this.addMissingUsers(remoteUserMapByUniqueId, map, mapById)
+		await this.addMissingUsers(remoteUserMapByUniqueId, map, mapById,
+			userDao)
 
 		return {
 			map,
@@ -126,7 +112,8 @@ export class SyncInUserChecker
 	private async addMissingUsers(
 		remoteUserMapByUniqueId: Map<UserUniqueId, IUser>,
 		userMap: Map<UserUniqueId, IUser>,
-		userMapById: Map<UserId, IUser>
+		userMapById: Map<UserId, IUser>,
+		userDao: IUserDao
 	): Promise<void> {
 		const newUsers: IUser[] = []
 		for (const [uniqueId, user] of remoteUserMapByUniqueId) {
@@ -141,7 +128,7 @@ export class SyncInUserChecker
 			}
 		}
 		if (newUsers.length) {
-			await this.userDao.bulkCreate(newUsers, false, false)
+			await userDao.bulkCreate(newUsers, false, false)
 			for (const newUser of newUsers) {
 				userMapById.set(newUser.id, newUser)
 			}

@@ -1,12 +1,9 @@
 import {
-	IUtils,
-	UTILS
-}                                 from '@airport/air-control'
-import {
 	TerminalName,
 	TerminalSecondId
 }                                 from '@airport/arrivals-n-departures'
 import {DI}                       from '@airport/di'
+import {ensureChildJsMap}         from '@airport/ground-control'
 import {
 	ITerminal,
 	ITerminalDao,
@@ -32,20 +29,13 @@ export interface ISyncInTerminalChecker {
 export class SyncInTerminalChecker
 	implements ISyncInTerminalChecker {
 
-	private terminalDao: ITerminalDao
-	private utils: IUtils
-
-	constructor() {
-		DI.get(() => {
-
-		}, TERMINAL_DAO, UTILS)
-	}
-
 	async ensureTerminalsAndGetAsMaps(
 		dataMessages: IDataToTM[],
 		localTerminal: ITerminal,
 		userCheckResults: UserCheckResults
 	): Promise<TerminalCheckResults> {
+		const terminalDao = await DI.get(TERMINAL_DAO)
+
 		const remoteTerminalMapByUniqueIds: Map<UserUniqueId,
 			Map<TerminalName, Map<TerminalSecondId, ITerminal>>> = new Map()
 		const terminalNameSet: Set<TerminalName>               = new Set()
@@ -67,14 +57,14 @@ export class SyncInTerminalChecker
 		})
 
 
-		const terminalMapByIds = await this.terminalDao.findMapByIds(
+		const terminalMapByIds = await terminalDao.findMapByIds(
 			Array.from(ownerIdSet),
 			Array.from(terminalNameSet),
 			Array.from(terminalSecondIdSet)
 		)
 
 		await this.addMissingTerminals(remoteTerminalMapByUniqueIds, terminalMapByIds,
-			userCheckResults)
+			userCheckResults, terminalDao)
 
 		return {
 			mapByMessageIndex,
@@ -116,8 +106,8 @@ export class SyncInTerminalChecker
 		terminalSecondIdSet.add(terminal.secondId)
 		ownerIdSet.add(owner.id)
 
-		this.utils.ensureChildJsMap(
-			this.utils.ensureChildJsMap(remoteTerminalMapByUniqueIds,
+		ensureChildJsMap(
+			ensureChildJsMap(remoteTerminalMapByUniqueIds,
 				owner.uniqueId),
 			terminal.name)
 			.set(terminal.secondId, terminal)
@@ -145,7 +135,8 @@ export class SyncInTerminalChecker
 		remoteTerminalMapByUniqueIds: Map<UserUniqueId,
 			Map<TerminalName, Map<TerminalSecondId, ITerminal>>>,
 		terminalMapByIds: Map<UserId, Map<TerminalName, Map<TerminalSecondId, ITerminal>>>,
-		userCheckResults: UserCheckResults
+		userCheckResults: UserCheckResults,
+		terminalDao: ITerminalDao
 	): Promise<void> {
 		const userMap                   = userCheckResults.map
 		const newTerminals: ITerminal[] = []
@@ -178,7 +169,7 @@ export class SyncInTerminalChecker
 		}
 
 		if (newTerminals.length) {
-			await this.terminalDao.bulkCreate(newTerminals, false, false)
+			await terminalDao.bulkCreate(newTerminals, false, false)
 		}
 	}
 

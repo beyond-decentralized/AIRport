@@ -1,23 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const moving_walkway_1 = require("@airport/moving-walkway");
 const tower_1 = require("@airport/tower");
 const lib_1 = require("zipson/lib");
 const diTokens_1 = require("../../diTokens");
 class SyncOutSerializer {
-    constructor() {
-        di_1.DI.get((repoTransBlockDao, repoTransBlockRepoTransHistoryDao, sharingMessageDao, sharingMessageRepoTransBlockDao, utils) => {
-            this.repoTransBlockDao = repoTransBlockDao;
-            this.repoTransBlockRepoTransHistoryDao = repoTransBlockRepoTransHistoryDao;
-            this.sharingMessageDao = sharingMessageDao;
-            this.sharingMessageRepoTransBlockDao = sharingMessageRepoTransBlockDao;
-        }, moving_walkway_1.REPO_TRANS_BLOCK_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DAO, null, moving_walkway_1.SHARING_MESSAGE_DAO, moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, air_control_1.UTILS);
-    }
     async serializeMessages(sharingNodeDbMap, sharingNodeMap, repoMapBySharingNodeAndRepoIds, repoTransBlockDataByRepoId, repoTransHistoryIds, terminal) {
+        const [repoTransBlockDao, repoTransBlockRepoTransHistoryDao, sharingMessageDao, sharingMessageRepoTransBlockDao] = await di_1.DI.get(moving_walkway_1.REPO_TRANS_BLOCK_DAO, 
+        // TODO: is this what needs to be injected
+        holding_pattern_1.REPO_TRANS_HISTORY_DAO, moving_walkway_1.SHARING_MESSAGE_DAO, moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO);
         const messageMap = new Map();
         const lastSyncAttemptTimestamp = new Date();
         const repositoryTransactionBlocks = [];
@@ -41,7 +36,7 @@ class SyncOutSerializer {
                 contents: repositoryTransactionBlockContents,
                 repoTransBlockRepoTransHistories,
             };
-            this.utils.ensureChildArray(repoTransBlocksByRepositoryId, repositoryId)
+            ground_control_1.ensureChildArray(repoTransBlocksByRepositoryId, repositoryId)
                 .push(repositoryTransactionBlock);
             for (const repositoryTransactionHistory of messageData.repoTransHistories) {
                 repoTransBlockRepoTransHistories.push({
@@ -54,8 +49,8 @@ class SyncOutSerializer {
             repositoryTransactionBlocks.push(repositoryTransactionBlock);
         }
         await tower_1.transactional(async () => {
-            await this.repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
-            await this.repoTransBlockRepoTransHistoryDao
+            await repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
+            await repoTransBlockRepoTransHistoryDao
                 .bulkCreate(allTransLogRepoTransHistories, false, false);
             const sharingMessages = [];
             const sharingMessageRepoTransBlocks = [];
@@ -94,11 +89,11 @@ class SyncOutSerializer {
                     sharingMessageRepoTransBlocks.push(sharingMessageRepoTransBlock);
                 }
             }
-            await this.sharingMessageDao.bulkCreate(sharingMessages, false, false);
+            await sharingMessageDao.bulkCreate(sharingMessages, false, false);
             for (const sharingMessage of sharingMessages) {
                 messageMap.get(sharingMessage.sharingNode.id)[2] = sharingMessage.id;
             }
-            await this.sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
+            await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
         });
         // await this.repositoryTransactionHistoryDao.updateSyncStatusHistory(
         // 	SyncStatus.SYNCHRONIZING, Array.from(repoTransHistoryIds)

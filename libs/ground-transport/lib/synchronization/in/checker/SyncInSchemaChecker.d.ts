@@ -24,12 +24,6 @@ export interface ISyncInSchemaChecker {
     checkSchemas(dataMessages: IDataToTM[]): Promise<SchemaCheckResults>;
 }
 export declare class SyncInSchemaChecker implements ISyncInSchemaChecker {
-    private domainDao;
-    private schemaDao;
-    private schemaVersionDao;
-    private terminalStore;
-    private utils;
-    constructor();
     checkSchemas(dataMessages: IDataToTM[]): Promise<SchemaCheckResults>;
     private groupMessagesAndSchemasBySchemaState;
     private verifyRTBSchemaConsistency;

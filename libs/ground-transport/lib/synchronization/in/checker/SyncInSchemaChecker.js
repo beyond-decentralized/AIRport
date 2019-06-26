@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
@@ -10,16 +9,9 @@ const lib_1 = require("zipson/lib");
 const diTokens_1 = require("../../../diTokens");
 const SyncInUtils_1 = require("../SyncInUtils");
 class SyncInSchemaChecker {
-    constructor() {
-        di_1.DI.get((terminalStore, utils) => {
-            this.terminalStore = terminalStore;
-            this.utils = utils;
-        }, terminal_map_1.TERMINAL_STORE, air_control_1.UTILS);
-        this.domainDao = di_1.DI.getP(territory_1.DOMAIN_DAO);
-        this.schemaDao = di_1.DI.getP(traffic_pattern_1.SCHEMA_DAO);
-        this.schemaVersionDao = di_1.DI.getP(traffic_pattern_1.SCHEMA_VERSION_DAO);
-    }
     async checkSchemas(dataMessages) {
+        // TODO: remove unused dependencies once tested
+        const [domainDao, schemaDao, schemaVersionDao, terminalStore] = await di_1.DI.get(territory_1.DOMAIN_DAO, traffic_pattern_1.SCHEMA_DAO, traffic_pattern_1.SCHEMA_VERSION_DAO, terminal_map_1.TERMINAL_STORE);
         const schemaNameSet = new Set();
         const schemaDomainNameSet = new Set();
         const dataMessagesWithInvalidSchemas = [];
@@ -38,7 +30,7 @@ class SyncInSchemaChecker {
         const domainNames = Array.from(schemaDomainNameSet);
         // const domainMapByName = await this.domainDao.findMapByNameWithNames(domainNames);
         // const foundDomainNames = Array.from(domainMapByName.keys());
-        const maxVersionedMapBySchemaAndDomainNames = this.terminalStore.getLatestSchemaVersionMapByNames();
+        const maxVersionedMapBySchemaAndDomainNames = terminalStore.getLatestSchemaVersionMapByNames();
         // 	// new Map();
         // 	// if (foundDomainNames.length) {
         // 	// 	maxVersionedMapBySchemaAndDomainNames =
@@ -53,7 +45,7 @@ class SyncInSchemaChecker {
         requiredSchemaVersionIds, 
         // schemasToBeUpgradedMap,
         schemasToBeUpgradedMap } = this.groupMessagesAndSchemasBySchemaState(dataMessages, maxVersionedMapBySchemaAndDomainNames);
-        const schemasWithChangesMap = await this.recordSchemasToBeAddedAndUpgraded(schemasToBeUpgradedMap, missingDomainMap, missingSchemaMap);
+        const schemasWithChangesMap = await this.recordSchemasToBeAddedAndUpgraded(schemasToBeUpgradedMap, missingDomainMap, missingSchemaMap, domainDao, schemaDao);
         // const schemasWithChangesMap
         // 	= this.mergeSchemaMaps(missingSchemaMap, schemasToBeUpgradedMap);
         // const allSchemaMap
@@ -92,7 +84,7 @@ class SyncInSchemaChecker {
                         name: domain.name
                     };
                     missingDomainMap.set(domain.name, missingDomain);
-                    this.utils.ensureChildJsMap(missingSchemaMap, domain.name)
+                    ground_control_1.ensureChildJsMap(missingSchemaMap, domain.name)
                         .set(schema.name, {
                         domain: missingDomain,
                         name: schema.name
@@ -103,12 +95,12 @@ class SyncInSchemaChecker {
                 const maxSchemaVersion = maxVersionedMapBySchemaName.get(schema.name);
                 // If the schema of the message is not present in this TM
                 if (!maxSchemaVersion) {
-                    this.utils.ensureChildJsMap(missingSchemaMap, domain.name)
+                    ground_control_1.ensureChildJsMap(missingSchemaMap, domain.name)
                         .set(schema.name, {
                         domain: domain,
                         name: schema.name
                     });
-                    this.utils.ensureChildJsMap(missingSchemaMap, schema.domain.name)
+                    ground_control_1.ensureChildJsMap(missingSchemaMap, schema.domain.name)
                         .set(schema.name, schema);
                     allMessageSchemasAreCompatible = false;
                     continue;
@@ -118,7 +110,7 @@ class SyncInSchemaChecker {
                         messageBuildWithOutdatedSchemaVersions = true;
                         break;
                     case SyncInUtils_1.SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_HIGHER:
-                        this.utils.ensureChildJsMap(schemasToBeUpgradedMap, schema.domain.name)
+                        ground_control_1.ensureChildJsMap(schemasToBeUpgradedMap, schema.domain.name)
                             .set(schema.name, schema);
                         allMessageSchemasAreCompatible = false;
                         break;
@@ -170,7 +162,7 @@ class SyncInSchemaChecker {
                 && schemaMapForDomainByName.has(schema.name)) {
                 return false;
             }
-            this.utils.ensureChildJsMap(schemaMapByDomainIdAndName, domainId)
+            ground_control_1.ensureChildJsMap(schemaMapByDomainIdAndName, domainId)
                 .set(schema.name, schema);
             if (schemaMapByIndex.has(schema.index)) {
                 return false;
@@ -199,7 +191,7 @@ class SyncInSchemaChecker {
                     }
                 }
             }
-            this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(schemaVersionMapBySchemaIndexAndVersions, schema.index), schemaVersion.majorVersion), schemaVersion.minorVersion).set(schemaVersion.patchVersion, schemaVersion);
+            ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(schemaVersionMapBySchemaIndexAndVersions, schema.index), schemaVersion.majorVersion), schemaVersion.minorVersion).set(schemaVersion.patchVersion, schemaVersion);
             schemaVersion.schema = schemaMapByIndex.get(schema.index);
         }
         return true;
@@ -214,7 +206,7 @@ class SyncInSchemaChecker {
      * @param {Map<SchemaDomainName, Set<SchemaName>>} missingSchemaNameMap
      * @returns {Promise<void>}
      */
-    async recordSchemasToBeAddedAndUpgraded(schemasToBeUpgradedMap, missingDomainMap, missingSchemaMap) {
+    async recordSchemasToBeAddedAndUpgraded(schemasToBeUpgradedMap, missingDomainMap, missingSchemaMap, domainDao, schemaDao) {
         const schemaWithChangesMap = new Map();
         // All local (TM) indexes of schemas that need to be upgraded
         const schemaIndexesToUpdateStatusBy = [];
@@ -223,11 +215,11 @@ class SyncInSchemaChecker {
                 schemaIndexesToUpdateStatusBy.push(schema.index);
             }
         }
-        await (await this.schemaDao).setStatusByIndexes(schemaIndexesToUpdateStatusBy, ground_control_1.SchemaStatus.NEEDS_UPGRADES);
+        await (await schemaDao).setStatusByIndexes(schemaIndexesToUpdateStatusBy, ground_control_1.SchemaStatus.NEEDS_UPGRADES);
         // All schemas needed (that do not yet exist in this TM)
         const newlyNeededSchemas = [];
         for (const [domainName, schemaMapForDomain] of missingSchemaMap) {
-            const schemaDomainWithChangesMap = this.utils.ensureChildJsMap(schemaWithChangesMap, domainName);
+            const schemaDomainWithChangesMap = ground_control_1.ensureChildJsMap(schemaWithChangesMap, domainName);
             for (const [schemaName, missingSchema] of schemaMapForDomain) {
                 const schema = {
                     domain: missingSchema.domain,
@@ -238,8 +230,8 @@ class SyncInSchemaChecker {
                 newlyNeededSchemas.push(schema);
             }
         }
-        await (await this.domainDao).bulkCreate(Array.from(missingDomainMap.values()), false, false);
-        await (await this.schemaDao).bulkCreate(newlyNeededSchemas, false, false);
+        await (await domainDao).bulkCreate(Array.from(missingDomainMap.values()), false, false);
+        await (await schemaDao).bulkCreate(newlyNeededSchemas, false, false);
         return schemaWithChangesMap;
     }
     /*
@@ -260,7 +252,7 @@ class SyncInSchemaChecker {
             targetMap: Map<DomainName, Map<SchemaName, ISchema>>
         ): void {
             for (const [schemaDomainName, schemaMapByName] of sourceMap) {
-                const targetSchemaMapByName = this.utils.ensureChildJsMap(targetMap, schemaDomainName)
+                const targetSchemaMapByName = ensureChildJsMap(targetMap, schemaDomainName)
                 for (const [schemaName, schema] of schemaMapByName) {
                     targetSchemaMapByName.set(schemaName, schema)
                 }

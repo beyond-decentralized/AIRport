@@ -5,13 +5,8 @@ const di_1 = require("@airport/di");
 const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
 const diTokens_1 = require("../../../diTokens");
 class SyncInUserChecker {
-    constructor() {
-        di_1.DI.get((userDao, utils) => {
-            this.userDao = userDao;
-            this.utils = utils;
-        }, travel_document_checkpoint_1.USER_DAO, air_control_1.UTILS);
-    }
     async ensureUsersAndGetAsMaps(dataMessages) {
+        const userDao = await di_1.DI.get(travel_document_checkpoint_1.USER_DAO);
         const remoteUserMapByUniqueId = new Map();
         const mapById = new Map();
         const mapByMessageIndexAndRemoteUserId = [];
@@ -27,11 +22,11 @@ class SyncInUserChecker {
             consistentMessages.push(message);
             mapByMessageIndexAndRemoteUserId.push(mapForMessageByRemoteUserId);
         }
-        const map = await this.userDao.findFieldsMapByUniqueId(Array.from(remoteUserMapByUniqueId.keys()), {
+        const map = userDao.findFieldsMapByUniqueId(Array.from(remoteUserMapByUniqueId.keys()), {
             id: air_control_1.Y,
             uniqueId: air_control_1.Y
         });
-        await this.addMissingUsers(remoteUserMapByUniqueId, map, mapById);
+        await this.addMissingUsers(remoteUserMapByUniqueId, map, mapById, userDao);
         return {
             map,
             mapById,
@@ -69,7 +64,7 @@ class SyncInUserChecker {
         }
         return mapForMessageByRemoteUserId;
     }
-    async addMissingUsers(remoteUserMapByUniqueId, userMap, userMapById) {
+    async addMissingUsers(remoteUserMapByUniqueId, userMap, userMapById, userDao) {
         const newUsers = [];
         for (const [uniqueId, user] of remoteUserMapByUniqueId) {
             const existingUser = userMap.get(uniqueId);
@@ -84,7 +79,7 @@ class SyncInUserChecker {
             }
         }
         if (newUsers.length) {
-            await this.userDao.bulkCreate(newUsers, false, false);
+            await userDao.bulkCreate(newUsers, false, false);
             for (const newUser of newUsers) {
                 userMapById.set(newUser.id, newUser);
             }

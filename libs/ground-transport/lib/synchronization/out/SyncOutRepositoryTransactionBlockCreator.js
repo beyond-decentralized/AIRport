@@ -1,26 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const moving_walkway_1 = require("@airport/moving-walkway");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
 const diTokens_1 = require("../../diTokens");
 class SyncOutRepositoryTransactionBlockCreator {
-    constructor() {
-        di_1.DI.get((utils) => {
-            this.utils = utils;
-        }, air_control_1.UTILS);
-        this.actorDao = di_1.DI.getP(holding_pattern_1.ACTOR_DAO);
-        this.repositoryDao = di_1.DI.getP(holding_pattern_1.REPOSITORY_DAO);
-        this.repositoryTransactionBlockDao = di_1.DI.getP(moving_walkway_1.REPO_TRANS_BLOCK_DAO);
-        this.repositoryTransactionHistoryUpdateStageDao = di_1.DI.getP(moving_walkway_1.REPO_TRANS_HISTORY_UPDATE_STAGE_DAO);
-        this.schemaDao = di_1.DI.getP(traffic_pattern_1.SCHEMA_DAO);
-        this.sharingNodeRepositoryDao = di_1.DI.getP(moving_walkway_1.SHARING_NODE_REPOSITORY_DAO);
-    }
     // Get new repository transaction histories not yet in RepoTransBlocks
     async createNewBlocks(sharingNodeIds, terminal) {
-        const [sharingNodeIdMapByRepositoryId, repoTransHistoriesToSync] = await (await this.sharingNodeRepositoryDao)
+        const [actorDao, repositoryDao, repositoryTransactionBlockDao, repositoryTransactionHistoryUpdateStageDao, schemaDao, sharingNodeRepositoryDao] = await di_1.DI.get(holding_pattern_1.ACTOR_DAO, holding_pattern_1.REPOSITORY_DAO, moving_walkway_1.REPO_TRANS_BLOCK_DAO, moving_walkway_1.REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, traffic_pattern_1.SCHEMA_DAO, moving_walkway_1.SHARING_NODE_REPOSITORY_DAO);
+        const [sharingNodeIdMapByRepositoryId, repoTransHistoriesToSync] = await sharingNodeRepositoryDao
             .findNewRepoTransHistoriesForSharingNodes(sharingNodeIds);
         const repositoryIdSet = new Set();
         const actorIdSet = new Set();
@@ -30,7 +20,7 @@ class SyncOutRepositoryTransactionBlockCreator {
         const schemaVersionIdSetsByRepository = new Map();
         const repositoryTransactionHistoryIds = new Set();
         this.gatherIdsForBlockCreation(repoTransHistoriesToSync, repositoryTransactionHistoryIds, repositoryIdSet, repoTransHistoryMapByRepositoryId, schemaVersionIds, schemaVersionIdSetsByRepository, actorIdSet, repositoryIdsByActorId);
-        const repositoryTransactionBlocks = await this.createNewBlocksAndSetRepoTransHistoryBlockIds(schemaVersionIds, schemaVersionIdSetsByRepository, terminal, repositoryIdSet, actorIdSet, repositoryIdsByActorId, repoTransHistoryMapByRepositoryId);
+        const repositoryTransactionBlocks = await this.createNewBlocksAndSetRepoTransHistoryBlockIds(schemaVersionIds, schemaVersionIdSetsByRepository, terminal, repositoryIdSet, actorIdSet, repositoryIdsByActorId, repoTransHistoryMapByRepositoryId, actorDao, repositoryDao, repositoryTransactionBlockDao, repositoryTransactionHistoryUpdateStageDao, schemaDao);
         return this.groupRepoTransBlocksBySharingNode(repositoryTransactionBlocks, sharingNodeIdMapByRepositoryId);
     }
     /*    Every history record is recorded as corresponding schema version.
@@ -50,7 +40,7 @@ class SyncOutRepositoryTransactionBlockCreator {
             repositoryTransactionHistoryIds.add(repoTransHistory.id);
             const repositoryId = repoTransHistory.repository.id;
             repositoryIdSet.add(repoTransHistory.repository.id);
-            const repoTransHistoriesForRepositoryId = this.utils.ensureChildArray(repoTransHistoryMapByRepositoryId, repositoryId);
+            const repoTransHistoriesForRepositoryId = ground_control_1.ensureChildArray(repoTransHistoryMapByRepositoryId, repositoryId);
             repoTransHistoriesForRepositoryId.push(repoTransHistory);
             this.gatherHistoryIds(repoTransHistory, schemaVersionIds, schemaVersionIdSetsByRepository, actorIdSet, repositoryIdsByActorId);
         });
@@ -59,18 +49,18 @@ class SyncOutRepositoryTransactionBlockCreator {
         const repoTransHistoryActorId = repoTransHistory.actor.id;
         actorIdSet.add(repoTransHistoryActorId);
         const repositoryId = repoTransHistory.repository.id;
-        let repositoryIdsForActorId = this.utils.ensureChildJsSet(repositoryIdsByActorId, repoTransHistoryActorId);
+        let repositoryIdsForActorId = ground_control_1.ensureChildJsSet(repositoryIdsByActorId, repoTransHistoryActorId);
         repositoryIdsForActorId.add(repositoryId);
-        const schemaVersionIdSetForRepo = this.utils.ensureChildJsSet(schemaVersionIdSetsByRepository, repositoryId);
+        const schemaVersionIdSetForRepo = ground_control_1.ensureChildJsSet(schemaVersionIdSetsByRepository, repositoryId);
         repoTransHistory.operationHistory.forEach(operationHistory => {
-            const schemaVersionId = operationHistory.schemaVersion.id;
+            const schemaVersionId = operationHistory.entity.schemaVersion.id;
             schemaVersionIds.add(schemaVersionId);
             schemaVersionIdSetForRepo.add(schemaVersionId);
             operationHistory.recordHistory.forEach(recordHistory => {
                 const recordHistoryActorId = recordHistory.actor.id;
                 actorIdSet.add(recordHistoryActorId);
                 repositoryIdsForActorId
-                    = this.utils.ensureChildJsSet(repositoryIdsByActorId, recordHistoryActorId);
+                    = ground_control_1.ensureChildJsSet(repositoryIdsByActorId, recordHistoryActorId);
                 repositoryIdsForActorId.add(repositoryId);
                 // actorIdsForRepositoryId.add(recordHistoryActorId);
             });
@@ -86,10 +76,10 @@ class SyncOutRepositoryTransactionBlockCreator {
      *    upgrades generate their own (not-syncable) transaction history
      *
      * So, we need all of the versions used by transaction history records. */
-    async createNewBlocksAndSetRepoTransHistoryBlockIds(schemaVersionIds, schemaVersionIdSetsByRepository, terminal, repositoryIdSet, actorIdSet, repositoryIdsByActorId, repoTransHistoryMapByRepositoryId) {
-        const schemasByRepositoryIdMap = await this.findSchemasByRepositoryMap(schemaVersionIds, schemaVersionIdSetsByRepository);
+    async createNewBlocksAndSetRepoTransHistoryBlockIds(schemaVersionIds, schemaVersionIdSetsByRepository, terminal, repositoryIdSet, actorIdSet, repositoryIdsByActorId, repoTransHistoryMapByRepositoryId, actorDao, repositoryDao, repositoryTransactionBlockDao, repositoryTransactionHistoryUpdateStageDao, schemaDao) {
+        const schemasByRepositoryIdMap = await this.findSchemasByRepositoryMap(schemaVersionIds, schemaVersionIdSetsByRepository, schemaDao);
         const repoTransBlockDataByRepoId = new Map();
-        const repositoryMapById = await (await this.repositoryDao).findReposWithGlobalIds(Array.from(repositoryIdSet));
+        const repositoryMapById = await repositoryDao.findReposWithGlobalIds(Array.from(repositoryIdSet));
         const repositoryTransactionBlocks = [];
         const repoTransBlocksByRepositoryId = new Map();
         const repoTransHistoryUpdateStageValuesByBlock = new Map();
@@ -97,16 +87,16 @@ class SyncOutRepositoryTransactionBlockCreator {
         for (const [repositoryId, repositoryTransactionHistories] of repoTransHistoryMapByRepositoryId) {
             this.createRepositoryTransactionBlockAndStageData(repositoryMapById, actorIdSet, repositoryId, repositoryIdsByActorId, repositoryTransactionHistories, schemasByRepositoryIdMap, repoTransBlockDataByRepoId, terminal, repositoryTransactionBlocks, repoTransBlocksByRepositoryId, repoTransHistoryUpdateStageValues, repoTransHistoryUpdateStageValuesByBlock);
         }
-        await this.finishPopulatingRepositoryTransactionBlockData(actorIdSet, repositoryIdsByActorId, repoTransBlockDataByRepoId, repoTransBlocksByRepositoryId, repositoryTransactionBlocks);
-        await this.setRepositoryTransactionBlockBlockIds(repoTransHistoryUpdateStageValuesByBlock, repoTransHistoryUpdateStageValues);
+        await this.finishPopulatingRepositoryTransactionBlockData(actorIdSet, repositoryIdsByActorId, repoTransBlockDataByRepoId, repoTransBlocksByRepositoryId, repositoryTransactionBlocks, actorDao, repositoryTransactionBlockDao);
+        await this.setRepositoryTransactionBlockBlockIds(repoTransHistoryUpdateStageValuesByBlock, repoTransHistoryUpdateStageValues, repositoryTransactionHistoryUpdateStageDao);
         return repositoryTransactionBlocks;
     }
-    async findSchemasByRepositoryMap(schemaVersionIds, schemaVersionIdSetsByRepository) {
+    async findSchemasByRepositoryMap(schemaVersionIds, schemaVersionIdSetsByRepository, schemaDao) {
         const schemasByRepositoryIdMap = new Map();
-        const schemaMapByVersionId = await (await this.schemaDao)
+        const schemaMapByVersionId = await schemaDao
             .findMapByVersionIds(Array.from(schemaVersionIds));
         for (const [repositoryId, schemaVersionIdSetForRepo] of schemaVersionIdSetsByRepository) {
-            const schemasForRepository = this.utils.ensureChildArray(schemasByRepositoryIdMap, repositoryId);
+            const schemasForRepository = ground_control_1.ensureChildArray(schemasByRepositoryIdMap, repositoryId);
             for (const schemaVersionId of schemaVersionIdSetForRepo) {
                 schemasForRepository.push(schemaMapByVersionId.get(schemaVersionId));
             }
@@ -117,7 +107,7 @@ class SyncOutRepositoryTransactionBlockCreator {
         const repository = repositoryMapById.get(repositoryId);
         const repositoryOwnerActorId = repository.ownerActor.id;
         actorIdSet.add(repositoryOwnerActorId);
-        let repositoryIdsForActorId = this.utils.ensureChildJsSet(repositoryIdsByActorId, repositoryOwnerActorId);
+        let repositoryIdsForActorId = ground_control_1.ensureChildJsSet(repositoryIdsByActorId, repositoryOwnerActorId);
         repositoryIdsForActorId.add(repositoryId);
         const repoTransBlockData = {
             terminal: {
@@ -156,8 +146,8 @@ class SyncOutRepositoryTransactionBlockCreator {
         }
         repoTransHistoryUpdateStageValuesByBlock.set(repositoryTransactionBlock, repoTransHistoryUpdateStageValuesForBlock);
     }
-    async finishPopulatingRepositoryTransactionBlockData(actorIdSet, repositoryIdsByActorId, repoTransBlockDataByRepoId, repoTransBlocksByRepositoryId, repositoryTransactionBlocks) {
-        const actors = await (await this.actorDao).findWithDetailsAndGlobalIdsByIds(Array.from(actorIdSet));
+    async finishPopulatingRepositoryTransactionBlockData(actorIdSet, repositoryIdsByActorId, repoTransBlockDataByRepoId, repoTransBlocksByRepositoryId, repositoryTransactionBlocks, actorDao, repositoryTransactionBlockDao) {
+        const actors = await actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(actorIdSet));
         for (const actor of actors) {
             const repositoryIdsForActorId = repositoryIdsByActorId.get(actor.id);
             for (const repositoryId of repositoryIdsForActorId) {
@@ -169,16 +159,16 @@ class SyncOutRepositoryTransactionBlockCreator {
             const repoTransBlockData = repoTransBlockDataByRepoId.get(repositoryId);
             repositoryTransactionBlock.contents = JSON.stringify(repoTransBlockData);
         }
-        await (await this.repositoryTransactionBlockDao).bulkCreate(repositoryTransactionBlocks, false, false);
+        await (await repositoryTransactionBlockDao).bulkCreate(repositoryTransactionBlocks, false, false);
     }
-    async setRepositoryTransactionBlockBlockIds(repoTransHistoryUpdateStageValuesByBlock, repoTransHistoryUpdateStageValues) {
+    async setRepositoryTransactionBlockBlockIds(repoTransHistoryUpdateStageValuesByBlock, repoTransHistoryUpdateStageValues, repositoryTransactionHistoryUpdateStageDao) {
         for (const [repositoryTransactionBlock, repoTransHistoryUpdateStageValuesForBlock] of repoTransHistoryUpdateStageValuesByBlock) {
             repoTransHistoryUpdateStageValuesForBlock.forEach(repoTransHistoryUpdateStageValuesRecord => repoTransHistoryUpdateStageValuesRecord[1] = repositoryTransactionBlock.id);
         }
-        await (await this.repositoryTransactionHistoryUpdateStageDao)
+        await repositoryTransactionHistoryUpdateStageDao
             .insertValues(repoTransHistoryUpdateStageValues);
-        await (await this.repositoryTransactionHistoryUpdateStageDao).updateRepositoryTransactionHistory();
-        await (await this.repositoryTransactionHistoryUpdateStageDao).delete();
+        await repositoryTransactionHistoryUpdateStageDao.updateRepositoryTransactionHistory();
+        await repositoryTransactionHistoryUpdateStageDao.delete();
     }
     groupRepoTransBlocksBySharingNode(repositoryTransactionBlocks, sharingNodeIdMapByRepositoryId) {
         const reposTransHistoryBlockMapBySharingNodeId = new Map();
@@ -186,7 +176,7 @@ class SyncOutRepositoryTransactionBlockCreator {
             const repositoryId = repositoryTransactionBlock.repository.id;
             const sharingNodeIdSet = sharingNodeIdMapByRepositoryId.get(repositoryId);
             for (const sharingNodeId of sharingNodeIdSet) {
-                this.utils.ensureChildArray(reposTransHistoryBlockMapBySharingNodeId, sharingNodeId)
+                ground_control_1.ensureChildArray(reposTransHistoryBlockMapBySharingNodeId, sharingNodeId)
                     .push(repositoryTransactionBlock);
             }
         }

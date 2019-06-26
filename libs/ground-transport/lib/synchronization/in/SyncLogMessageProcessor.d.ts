@@ -3,13 +3,6 @@ export interface ISyncLogMessageProcessor {
     recordSyncLogMessages(syncLogMessages: ISyncLogToTM[]): Promise<void>;
 }
 export declare class SyncLogMessageProcessor implements ISyncLogMessageProcessor {
-    private sharingMessageDao;
-    private sharingNodeRepoTransBlockDao;
-    private sharingNodeRepoTransBlockStageDao;
-    private repositoryTransactionBlockDao;
-    private repoTransBlockResponseStageDao;
-    private utils;
-    constructor();
     /**
      *
      * Record Synchronization Log messages coming from AGT (messages replying back with

@@ -6,11 +6,5 @@ export interface ISyncOutSerializer {
     serializeMessages(sharingNodeDbMap: Map<SharingNodeId, ISharingNodeTerminal>, sharingNodeMap: Map<SharingNodeId, ISharingNode>, repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<RepositoryId, [IRepository, AgtRepositoryId]>>, repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>, repoTransHistoryIds: Set<RepositoryTransactionHistoryId>, terminal: ITerminal): Promise<Map<SharingNodeId, MessageFromTM>>;
 }
 export declare class SyncOutSerializer implements ISyncOutSerializer {
-    private repoTransBlockDao;
-    private repoTransBlockRepoTransHistoryDao;
-    private sharingMessageDao;
-    private sharingMessageRepoTransBlockDao;
-    private utils;
-    constructor();
     serializeMessages(sharingNodeDbMap: Map<SharingNodeId, ISharingNodeTerminal>, sharingNodeMap: Map<SharingNodeId, ISharingNode>, repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<RepositoryId, [IRepository, AgtRepositoryId]>>, repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>, repoTransHistoryIds: Set<RepositoryTransactionHistoryId>, terminal: ITerminal): Promise<Map<SharingNodeId, MessageFromTM>>;
 }
