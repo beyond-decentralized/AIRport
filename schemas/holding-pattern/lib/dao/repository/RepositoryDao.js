@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
 class RepositoryDao extends generated_1.BaseRepositoryDao {
@@ -12,7 +13,7 @@ class RepositoryDao extends generated_1.BaseRepositoryDao {
         let u;
         let d;
         let id = air_control_1.Y;
-        return await this.db.find.mapped.tree({
+        return await this.db.find.map().tree({
             select: {
                 orderedId: air_control_1.Y,
                 randomId: air_control_1.Y,
@@ -62,7 +63,7 @@ class RepositoryDao extends generated_1.BaseRepositoryDao {
         let u;
         let d;
         let id = air_control_1.Y;
-        return await this.db.find.mapped.tree({
+        return await this.db.find.map().tree({
             select: {
                 ...this.db.duo.getAllFieldsSelect(),
                 repositoryActors: {
@@ -122,7 +123,8 @@ class RepositoryDao extends generated_1.BaseRepositoryDao {
         let od;
         let odu;
         let ou;
-        const resultRows = await this.db.common.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const resultRows = await airDb.find.sheet({
             from: [
                 r = generated_1.Q.Repository,
                 oa = r.ownerActor.innerJoin(),
@@ -143,7 +145,7 @@ class RepositoryDao extends generated_1.BaseRepositoryDao {
             where: air_control_1.and(r.orderedId.in(orderedIds), r.randomId.in(randomIds), oa.randomId.in(ownerActorRandomIds), ou.uniqueId.in(ownerUserUniqueIds), od.name.in(ownerTerminalNames), od.secondId.in(ownerTerminalSecondIds), odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds))
         });
         for (const resultRow of resultRows) {
-            this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4]), resultRow[5]).set(resultRow[6], resultRow[7]);
+            ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4]), resultRow[5]).set(resultRow[6], resultRow[7]);
         }
         return repositoryIdMap;
     }

@@ -2,14 +2,10 @@
  * Created by Papa on 4/24/2016.
  */
 
-import {ENTITY_MANAGER}    from '@airport/tower'
 import * as fs             from 'fs'
 import * as ts             from 'typescript'
 import {watchFiles}        from './FileWatcher'
 import {readConfiguration} from './options/generator'
-
-//
-const REF = ENTITY_MANAGER
 
 const configuration = readConfiguration(process.cwd(), process.argv)
 

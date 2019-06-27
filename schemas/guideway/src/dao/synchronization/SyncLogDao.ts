@@ -1,4 +1,5 @@
 import {
+	AIR_DB,
 	and,
 	max,
 	min,
@@ -65,7 +66,9 @@ export class SyncLogDao
 		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog
 		let sl: QSyncLog
 
-		await this.airDb.db.insertValues(dbEntity, {
+		const airDb = await DI.get(AIR_DB)
+
+		await airDb.insertValues(dbEntity, {
 			insertInto: sl = Q.SyncLog,
 			columns: [
 				sl.repositoryTransactionBlock.id,
@@ -151,7 +154,9 @@ export class SyncLogDao
 			]
 		})
 
-		return <TerminalSyncStatus[]>await this.airDb.find.sheet({
+		const airDb = await DI.get(AIR_DB)
+
+		return <TerminalSyncStatus[]>await airDb.find.sheet({
 			from: [
 				smrtb
 			],

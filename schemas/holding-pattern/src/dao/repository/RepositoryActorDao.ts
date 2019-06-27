@@ -1,14 +1,15 @@
 import {
 	and,
 	Y
-}                       from '@airport/air-control'
-import {DI}             from '@airport/di'
-import {QTerminal}      from '@airport/travel-document-checkpoint'
+}                         from '@airport/air-control'
+import {DI}               from '@airport/di'
+import {ensureChildJsSet} from '@airport/ground-control'
+import {QTerminal}        from '@airport/travel-document-checkpoint'
 import {
 	ActorId,
 	RepositoryId
-}                       from '../../ddl/ddl'
-import {REPO_ACTOR_DAO} from '../../diTokens'
+}                         from '../../ddl/ddl'
+import {REPO_ACTOR_DAO}   from '../../diTokens'
 import {
 	BaseRepositoryActorDao,
 	IBaseRepositoryActorDao,
@@ -16,7 +17,7 @@ import {
 	Q,
 	QActor,
 	QRepositoryActor,
-}                       from '../../generated/generated'
+}                         from '../../generated/generated'
 
 export interface IRepositoryActorDao
 	extends IBaseRepositoryActorDao {
@@ -72,7 +73,7 @@ export class RepositoryActorDao
 		const actorIdMapByRepositoryId: Map<RepositoryId, Set<ActorId>> = new Map()
 
 		for (const record of records) {
-			this.utils.ensureChildJsSet(actorIdMapByRepositoryId, record.repository.id)
+			ensureChildJsSet(actorIdMapByRepositoryId, record.repository.id)
 				.add(record.actor.id)
 		}
 

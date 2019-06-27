@@ -1,4 +1,5 @@
 import {
+	AIR_DB,
 	and,
 	distinct,
 	IQNumberField,
@@ -11,6 +12,9 @@ import {
 import {DI}                   from '@airport/di'
 import {
 	ChangeType,
+	ensureChildArray,
+	ensureChildJsMap,
+	ensureChildJsSet,
 	EntityId,
 	JSONBaseOperation,
 	TransactionType
@@ -232,11 +236,11 @@ export class RepositoryTransactionHistoryDao
 	): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>> {
 		const repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>
 			      = new Map()
-/*
-		const trafficPatternQSchema = this.airDb.QM[
-			getSchemaName('github.com','@airport/traffic-pattern')
-			]
-*/
+		/*
+				const trafficPatternQSchema = this.airDb.QM[
+					getSchemaName('github.com','@airport/traffic-pattern')
+					]
+		*/
 
 		const rth: QRepositoryTransactionHistory = Q.RepositoryTransactionHistory
 		const th: QTransactionHistory            = rth.transactionHistory.innerJoin()
@@ -314,7 +318,7 @@ export class RepositoryTransactionHistoryDao
 		})
 
 		for (const repoTransHistory of repoTransHistories) {
-			this.utils.ensureChildArray(
+			ensureChildArray(
 				repoTransHistoryMapByRepositoryId, repoTransHistory.repository.id)
 				.push(repoTransHistory)
 			repoTransHistory.operationHistory.sort((
@@ -372,7 +376,9 @@ export class RepositoryTransactionHistoryDao
 			))
 		}
 
-		const records = await this.airDb.find.sheet({
+		const airDb = await DI.get(AIR_DB)
+
+		const records = await airDb.find.sheet({
 			from: [
 				rth,
 				oh,
@@ -388,9 +394,9 @@ export class RepositoryTransactionHistoryDao
 		})
 
 		for (const record of records) {
-			this.utils.ensureChildJsSet(
-				this.utils.ensureChildJsMap(
-					this.utils.ensureChildJsMap(existingRecordIdMap, record[0]),
+			ensureChildJsSet(
+				ensureChildJsMap(
+					ensureChildJsMap(existingRecordIdMap, record[0]),
 					record[1]), record[2]
 			).add(record[3])
 		}

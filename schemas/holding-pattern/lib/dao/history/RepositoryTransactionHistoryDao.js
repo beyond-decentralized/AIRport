@@ -145,7 +145,7 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
             ]
         });
         for (const repoTransHistory of repoTransHistories) {
-            this.utils.ensureChildArray(repoTransHistoryMapByRepositoryId, repoTransHistory.repository.id)
+            ground_control_1.ensureChildArray(repoTransHistoryMapByRepositoryId, repoTransHistory.repository.id)
                 .push(repoTransHistory);
             repoTransHistory.operationHistory.sort((rth1, rth2) => {
                 if (rth1.orderNumber < rth2.orderNumber) {
@@ -174,7 +174,8 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
             }
             idsFragments.push(air_control_1.and(rth.repository.id.equals(repositoryId), oh.changeType.equals(ground_control_1.ChangeType.INSERT_VALUES), air_control_1.or(...tableFragments)));
         }
-        const records = await this.airDb.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const records = await airDb.find.sheet({
             from: [
                 rth,
                 oh,
@@ -189,7 +190,7 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
             where: air_control_1.or(...idsFragments)
         });
         for (const record of records) {
-            this.utils.ensureChildJsSet(this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(existingRecordIdMap, record[0]), record[1]), record[2]).add(record[3]);
+            ground_control_1.ensureChildJsSet(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(existingRecordIdMap, record[0]), record[1]), record[2]).add(record[3]);
         }
         return existingRecordIdMap;
     }

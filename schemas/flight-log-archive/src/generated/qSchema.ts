@@ -45,8 +45,8 @@ export function diSet(
 	return dS(Q.__dbSchema__, dbEntityId)
 }
 
-DI.get((
-	airportDatabase
+DI.get(AIR_DB).then((
+	airDb
 ) => {
-	airportDatabase.QM[getSchemaName(Q_SCHEMA)] = Q
-}, AIR_DB)
+	airDb.QM[getSchemaName(Q_SCHEMA)] = Q
+})

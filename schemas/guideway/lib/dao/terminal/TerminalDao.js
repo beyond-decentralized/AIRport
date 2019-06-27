@@ -9,7 +9,8 @@ class TerminalDao extends baseDaos_1.BaseTerminalDao {
     async findTerminalVerificationRecords(terminalIds) {
         const resultMapByTerminalId = new Map();
         let t;
-        const results = await this.airDb.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const results = await airDb.find.sheet({
             from: [
                 t = qSchema_1.Q.Terminal
             ],
@@ -30,7 +31,8 @@ class TerminalDao extends baseDaos_1.BaseTerminalDao {
     repositoryIds) {
         const resultMapByTerminalId = new Map();
         let tr;
-        const results = await this.airDb.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const results = await airDb.find.sheet({
             from: [
                 tr = qSchema_1.Q.TerminalRepository,
             ],

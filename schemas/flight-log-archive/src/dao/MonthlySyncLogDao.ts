@@ -1,4 +1,7 @@
-import {and}                   from '@airport/air-control'
+import {
+	AIR_DB,
+	and
+}                              from '@airport/air-control'
 import {DI}                    from '@airport/di'
 import {
 	MonthlySyncLogDatabaseId,
@@ -41,7 +44,10 @@ export class MonthlySyncLogDao
 		) => void,
 	): Promise<void> {
 		let dsl: QMonthlySyncLog
-		await this.airDb.find.sheet({
+
+		const airDb = await DI.get(AIR_DB)
+
+		await airDb.find.sheet({
 			from: [
 				dsl = Q.MonthlySyncLog
 			],

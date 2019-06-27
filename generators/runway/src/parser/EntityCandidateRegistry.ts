@@ -1,5 +1,4 @@
 import {
-	DatastructureUtils,
 	DbEntity,
 	DbSchema,
 	DbSchemaBuilder,
@@ -37,7 +36,7 @@ export class EntityCandidateRegistry {
 	allInterfacesMap: Map<string, Interface[]>       = new Map<string, Interface[]>()
 	configuration: Configuration
 
-	dbSchemaBuilder: IDbSchemaBuilder                                                                   = new DbSchemaBuilder(new DatastructureUtils())
+	dbSchemaBuilder: IDbSchemaBuilder                                                                   = new DbSchemaBuilder()
 	allSchemas: DbSchema[]                                                                              = []
 	schemaMap: { [projectName: string]: DbSchema }                                                      = {}
 	mappedSuperClassMap: { [projectName: string]: { [mappedSuperClassName: string]: EntityCandidate } } = {}

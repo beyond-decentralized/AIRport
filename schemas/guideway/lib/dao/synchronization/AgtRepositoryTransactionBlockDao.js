@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const ddl_1 = require("../../ddl/ddl");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
@@ -16,7 +17,8 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
             tmTransactionLogIds = Array.from(tmTransactionLogIds);
         }
         let rtb;
-        const records = await this.airDb.db.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const records = await airDb.find.sheet({
             from: [
                 rtb = generated_1.Q.AgtRepositoryTransactionBlock
             ],
@@ -29,7 +31,7 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
             where: air_control_1.and(rtb.terminal.id.in(terminalIds), rtb.tmRepositoryTransactionBlockId.in(tmTransactionLogIds))
         });
         for (const record of records) {
-            this.utils.ensureChildJsMap(existingDataIdMap, record[1]).set(record[2], [record[0], record[2]]);
+            ground_control_1.ensureChildJsMap(existingDataIdMap, record[1]).set(record[2], [record[0], record[2]]);
         }
         return existingDataIdMap;
     }
@@ -38,7 +40,8 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
     values) {
         const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.RealtimeAgtRepositoryTransactionBlock;
         let rtb;
-        return await this.airDb.db
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        return await airDb
             .insertValuesGenerateIds(dbEntity, {
             insertInto: rtb = generated_1.Q.AgtRepositoryTransactionBlock,
             columns: [
@@ -57,7 +60,8 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
         let rtb, tr, sl, sm;
         // TODO: once CockroachDb supports optimized (non-nested loop) correlated
         // query, test against NOT EXISTS and see which is faster
-        const rtbsToSend = await this.airDb.find.tree({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const rtbsToSend = await airDb.find.tree({
             from: [
                 rtb = generated_1.Q.AgtRepositoryTransactionBlock,
                 tr = rtb.terminalRepositories.innerJoin()
@@ -102,7 +106,8 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
         // TODO: verify correctness of NOT EXISTS
         // TODO: test performance on CockroachDb vs TiDB for NOT EXISTS vs
         // NOT IN vs EXCEPT
-        await this.airDb.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        await airDb.find.sheet({
             from: [
                 sr = generated_1.Q.AgtRepositoryTransactionBlock,
                 r = sr.repository.innerJoin(),
@@ -161,7 +166,8 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
         const results = [];
         const repositoryTransactionBlockIds = [];
         let rtb;
-        const rtbsToArchive = await this.airDb.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const rtbsToArchive = await airDb.find.sheet({
             from: [
                 rtb = generated_1.Q.AgtRepositoryTransactionBlock,
             ],
@@ -197,7 +203,8 @@ class AgtRepositoryTransactionBlockDao extends generated_1.BaseAgtRepositoryTran
     }
     async getAllStuckChangesToArchive(toDateExclusive, cursorSize, callback) {
         let rtb;
-        await this.airDb.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        await airDb.find.sheet({
             from: [
                 rtb = generated_1.Q.AgtRepositoryTransactionBlock,
             ],

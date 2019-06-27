@@ -1,28 +1,30 @@
 import {
+	AIR_DB,
 	and,
 	IQNumberField,
 	MappedEntityArray,
 	RawFieldQuery,
 	Y
-}                       from '@airport/air-control'
+}                         from '@airport/air-control'
 import {
 	TerminalName,
 	TerminalSecondId
-}                       from '@airport/arrivals-n-departures'
-import {DI}             from '@airport/di'
+}                         from '@airport/arrivals-n-departures'
+import {DI}               from '@airport/di'
+import {ensureChildJsMap} from '@airport/ground-control'
 import {
 	QTerminal,
 	QUser,
 	UserUniqueId
-}                       from '@airport/travel-document-checkpoint'
+}                         from '@airport/travel-document-checkpoint'
 import {
 	ActorRandomId,
 	RepositoryId,
 	RepositoryOrderedId,
 	RepositoryRandomId,
 	RepositoryTransactionHistoryId,
-}                       from '../../ddl/ddl'
-import {REPOSITORY_DAO} from '../../diTokens'
+}                         from '../../ddl/ddl'
+import {REPOSITORY_DAO}   from '../../diTokens'
 import {
 	BaseRepositoryDao,
 	IBaseRepositoryDao,
@@ -31,7 +33,7 @@ import {
 	QActor,
 	QRepository,
 	QRepositoryActor,
-}                       from '../../generated/generated'
+}                         from '../../generated/generated'
 
 export interface IRepositoryDao
 	extends IBaseRepositoryDao {
@@ -80,7 +82,7 @@ export class RepositoryDao
 		let u: QUser
 		let d: QTerminal
 		let id = Y
-		return await this.db.find.mapped.tree({
+		return await this.db.find.map().tree({
 			select: {
 				orderedId: Y,
 				randomId: Y,
@@ -145,7 +147,7 @@ export class RepositoryDao
 		let u: QUser
 		let d: QTerminal
 		let id = Y
-		return await this.db.find.mapped.tree({
+		return await this.db.find.map().tree({
 				select: {
 					...this.db.duo.getAllFieldsSelect(),
 					repositoryActors: {
@@ -228,43 +230,45 @@ export class RepositoryDao
 		let od: QTerminal
 		let odu: QUser
 		let ou: QUser
-		const resultRows = await
-			this.db.common.find.sheet({
-				from: [
-					r = Q.Repository,
-					oa = r.ownerActor.innerJoin(),
-					ou = oa.user.innerJoin(),
-					od = oa.terminal.innerJoin(),
-					odu = od.owner.innerJoin(),
-				],
-				select: [
-					odu.uniqueId,
-					od.name,
-					od.secondId,
-					ou.uniqueId,
-					oa.randomId,
-					r.orderedId,
-					r.randomId,
-					r.id,
-				],
-				where: and(
-					r.orderedId.in(orderedIds),
-					r.randomId.in(randomIds),
-					oa.randomId.in(ownerActorRandomIds),
-					ou.uniqueId.in(ownerUserUniqueIds),
-					od.name.in(ownerTerminalNames),
-					od.secondId.in(ownerTerminalSecondIds),
-					odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds)
-				)
-			})
+
+		const airDb = await DI.get(AIR_DB)
+
+		const resultRows = await airDb.find.sheet({
+			from: [
+				r = Q.Repository,
+				oa = r.ownerActor.innerJoin(),
+				ou = oa.user.innerJoin(),
+				od = oa.terminal.innerJoin(),
+				odu = od.owner.innerJoin(),
+			],
+			select: [
+				odu.uniqueId,
+				od.name,
+				od.secondId,
+				ou.uniqueId,
+				oa.randomId,
+				r.orderedId,
+				r.randomId,
+				r.id,
+			],
+			where: and(
+				r.orderedId.in(orderedIds),
+				r.randomId.in(randomIds),
+				oa.randomId.in(ownerActorRandomIds),
+				ou.uniqueId.in(ownerUserUniqueIds),
+				od.name.in(ownerTerminalNames),
+				od.secondId.in(ownerTerminalSecondIds),
+				odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds)
+			)
+		})
 
 		for (const resultRow of resultRows) {
-			this.utils.ensureChildJsMap(
-				this.utils.ensureChildJsMap(
-					this.utils.ensureChildJsMap(
-						this.utils.ensureChildJsMap(
-							this.utils.ensureChildJsMap(
-								this.utils.ensureChildJsMap(repositoryIdMap, resultRow[0]),
+			ensureChildJsMap(
+				ensureChildJsMap(
+					ensureChildJsMap(
+						ensureChildJsMap(
+							ensureChildJsMap(
+								ensureChildJsMap(repositoryIdMap, resultRow[0]),
 								resultRow[1]),
 							resultRow[2]),
 						resultRow[3]),

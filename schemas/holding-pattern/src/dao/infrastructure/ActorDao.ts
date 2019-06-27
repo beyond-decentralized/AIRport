@@ -1,26 +1,29 @@
 import {
 	and,
 	Y
-}                          from '@airport/air-control'
-import {DI}                from '@airport/di'
-import {JSONBaseOperation} from '@airport/ground-control'
+}                  from '@airport/air-control'
+import {DI}        from '@airport/di'
+import {
+	ensureChildJsMap,
+	JSONBaseOperation
+}                  from '@airport/ground-control'
 import {
 	QUser,
 	TmTerminalId,
 	UserId
-}                          from '@airport/travel-document-checkpoint'
+}                  from '@airport/travel-document-checkpoint'
 import {
 	ActorId,
 	ActorRandomId,
-}                          from '../../ddl/ddl'
-import {ACTOR_DAO}         from '../../diTokens'
+}                  from '../../ddl/ddl'
+import {ACTOR_DAO} from '../../diTokens'
 import {
 	BaseActorDao,
 	IActor,
 	IBaseActorDao,
 	Q,
 	QActor,
-}                          from '../../generated/generated'
+}                  from '../../generated/generated'
 
 export interface IActorDao
 	extends IBaseActorDao {
@@ -71,7 +74,7 @@ export class ActorDao
 		)
 
 		for (const actor of actors) {
-			this.utils.ensureChildJsMap(actorMap, actor.user.id)
+			ensureChildJsMap(actorMap, actor.user.id)
 				.set(actor.terminal.id, actor)
 			actorMapById.set(actor.id, actor)
 		}

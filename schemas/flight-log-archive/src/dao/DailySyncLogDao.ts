@@ -1,4 +1,5 @@
 import {
+	AIR_DB,
 	and,
 	distinct
 }                            from '@airport/air-control'
@@ -58,7 +59,9 @@ export class DailySyncLogDao
 		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog
 		let dsl: QDailySyncLog
 
-		await this.airDb.db.insertValues(dbEntity, {
+		const airDb = await DI.get(AIR_DB)
+
+		await airDb.insertValues(dbEntity, {
 			insertInto: dsl = Q.DailySyncLog,
 			columns: [
 				dsl.databaseId,
@@ -78,7 +81,10 @@ export class DailySyncLogDao
 		) => void,
 	): Promise<void> {
 		let dsl: QDailySyncLog
-		await this.airDb.find.sheet({
+
+		const airDb = await DI.get(AIR_DB)
+
+		await airDb.find.sheet({
 			from: [
 				dsl = Q.DailySyncLog
 			],
@@ -123,7 +129,9 @@ export class DailySyncLogDao
 	): Promise<DailyToMonthlyResult[]> {
 		let dsl: QDailySyncLog
 
-		return <DailyToMonthlyResult[]>await this.airDb.find.sheet({
+		const airDb = await DI.get(AIR_DB)
+
+		return <DailyToMonthlyResult[]>await airDb.find.sheet({
 			from: [
 				dsl = Q.DailySyncLog
 			],

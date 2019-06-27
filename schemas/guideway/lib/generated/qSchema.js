@@ -54,7 +54,7 @@ function diSet(dbEntityId) {
     return check_in_1.diSet(exports.Q.__dbSchema__, dbEntityId);
 }
 exports.diSet = diSet;
-di_1.DI.get((airportDatabase) => {
-    airportDatabase.QM[ground_control_1.getSchemaName(exports.Q_SCHEMA)] = exports.Q;
-}, air_control_1.AIR_DB);
+di_1.DI.get(air_control_1.AIR_DB).then((airDb) => {
+    airDb.QM[ground_control_1.getSchemaName(exports.Q_SCHEMA)] = exports.Q;
+});
 //# sourceMappingURL=qSchema.js.map

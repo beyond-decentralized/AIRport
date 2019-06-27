@@ -14,7 +14,7 @@ class EntityCandidateRegistry {
         this.enumMap = enumMap;
         this.entityCandidateMap = new Map();
         this.allInterfacesMap = new Map();
-        this.dbSchemaBuilder = new ground_control_1.DbSchemaBuilder(new ground_control_1.DatastructureUtils());
+        this.dbSchemaBuilder = new ground_control_1.DbSchemaBuilder();
         this.allSchemas = [];
         this.schemaMap = {};
         this.mappedSuperClassMap = {};

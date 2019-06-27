@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
 class ActorDao extends generated_1.BaseActorDao {
@@ -11,7 +12,7 @@ class ActorDao extends generated_1.BaseActorDao {
     async findMapsWithDetailsByGlobalIds(randomIds, userIds, terminalIds, actorMap, actorMapById) {
         const actors = await this.findWithDetailsByGlobalIds(randomIds, userIds, terminalIds);
         for (const actor of actors) {
-            this.utils.ensureChildJsMap(actorMap, actor.user.id)
+            ground_control_1.ensureChildJsMap(actorMap, actor.user.id)
                 .set(actor.terminal.id, actor);
             actorMapById.set(actor.id, actor);
         }

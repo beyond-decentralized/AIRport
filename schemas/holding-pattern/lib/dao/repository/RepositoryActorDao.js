@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
 class RepositoryActorDao extends generated_1.BaseRepositoryActorDao {
@@ -29,7 +30,7 @@ class RepositoryActorDao extends generated_1.BaseRepositoryActorDao {
         const records = await this.findAllForLocalActorsWhereRepositoryIdIn(repositoryIds);
         const actorIdMapByRepositoryId = new Map();
         for (const record of records) {
-            this.utils.ensureChildJsSet(actorIdMapByRepositoryId, record.repository.id)
+            ground_control_1.ensureChildJsSet(actorIdMapByRepositoryId, record.repository.id)
                 .add(record.actor.id);
         }
         return actorIdMapByRepositoryId;

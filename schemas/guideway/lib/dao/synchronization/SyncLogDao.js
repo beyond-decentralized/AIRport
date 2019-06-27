@@ -9,7 +9,8 @@ class SyncLogDao extends generated_1.BaseSyncLogDao {
     async insertValues(values) {
         const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
         let sl;
-        await this.airDb.db.insertValues(dbEntity, {
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        await airDb.insertValues(dbEntity, {
             insertInto: sl = generated_1.Q.SyncLog,
             columns: [
                 sl.repositoryTransactionBlock.id,
@@ -70,7 +71,8 @@ class SyncLogDao extends generated_1.BaseSyncLogDao {
                 sm.terminal.id.asc(),
             ]
         });
-        return await this.airDb.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        return await airDb.find.sheet({
             from: [
                 smrtb
             ],

@@ -8,7 +8,8 @@ const qSchema_1 = require("../generated/qSchema");
 class MonthlySyncLogDao extends baseDaos_1.BaseMonthlySyncLogDao {
     async findAllForDatabase(databaseId, synced, callback) {
         let dsl;
-        await this.airDb.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        await airDb.find.sheet({
             from: [
                 dsl = qSchema_1.Q.MonthlySyncLog
             ],

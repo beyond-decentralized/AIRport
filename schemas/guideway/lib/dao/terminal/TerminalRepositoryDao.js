@@ -9,7 +9,8 @@ class TerminalRepositoryDao extends generated_1.BaseTerminalRepositoryDao {
     async findByTerminalIdInAndRepositoryIdIn(terminalIds, repositoryIds) {
         const resultMapByTerminalId = new Map();
         let tr;
-        const results = await this.airDb.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const results = await airDb.find.sheet({
             from: [
                 tr = qSchema_1.Q.TerminalRepository
             ],

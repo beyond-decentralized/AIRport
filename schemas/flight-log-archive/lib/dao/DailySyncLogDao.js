@@ -9,7 +9,8 @@ class DailySyncLogDao extends baseDaos_1.BaseDailySyncLogDao {
     async insertValues(values) {
         const dbEntity = qSchema_1.Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
         let dsl;
-        await this.airDb.db.insertValues(dbEntity, {
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        await airDb.insertValues(dbEntity, {
             insertInto: dsl = qSchema_1.Q.DailySyncLog,
             columns: [
                 dsl.databaseId,
@@ -22,7 +23,8 @@ class DailySyncLogDao extends baseDaos_1.BaseDailySyncLogDao {
     }
     async findAllForDatabase(databaseId, synced, callback) {
         let dsl;
-        await this.airDb.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        await airDb.find.sheet({
             from: [
                 dsl = qSchema_1.Q.DailySyncLog
             ],
@@ -48,7 +50,8 @@ class DailySyncLogDao extends baseDaos_1.BaseDailySyncLogDao {
     }
     async findMonthlyResults(databaseIds, fromDateInclusive, toDateExclusive) {
         let dsl;
-        return await this.airDb.find.sheet({
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        return await airDb.find.sheet({
             from: [
                 dsl = qSchema_1.Q.DailySyncLog
             ],

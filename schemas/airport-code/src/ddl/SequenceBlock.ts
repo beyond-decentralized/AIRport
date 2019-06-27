@@ -8,9 +8,8 @@ import {
 	SequenceGenerator,
 	Table,
 	Transient
-}                    from '@airport/air-control'
-import {Sequence}    from './Sequence'
-import {TerminalRun} from './TerminalRun'
+}                 from '@airport/air-control'
+import {Sequence} from './Sequence'
 
 export type SequenceBlockId = number
 export type SequenceBlockSize = number
@@ -27,6 +26,9 @@ export class SequenceBlock {
 	@SequenceGenerator({allocationSize: 1000})
 	id: SequenceBlockId
 
+	// Have to reference by indexes to avoid adding a @GeneratedValue
+	// on SequenceBlock, which would greatly complicate bootstraping
+	// of AP for the first time
 	@ManyToOne()
 	@JoinColumns([{
 		name: 'SCHEMA_INDEX', nullable: false

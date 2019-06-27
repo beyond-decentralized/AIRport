@@ -1,4 +1,5 @@
 import {
+	AIR_DB,
 	and,
 	Y
 }                                            from '@airport/air-control'
@@ -73,7 +74,10 @@ export class TerminalDao
 			      = new Map()
 
 		let t: QTerminal
-		const results = await this.airDb.find.sheet({
+
+		const airDb = await DI.get(AIR_DB)
+
+		const results = await airDb.find.sheet({
 			from: [
 				t = Q.Terminal
 			],
@@ -102,7 +106,10 @@ export class TerminalDao
 		const resultMapByTerminalId: Map<TerminalId, AgtRepositoryId> = new Map()
 
 		let tr: QTerminalRepository
-		const results = await this.airDb.find.sheet({
+
+		const airDb = await DI.get(AIR_DB)
+
+		const results = await airDb.find.sheet({
 			from: [
 				tr = Q.TerminalRepository,
 			],

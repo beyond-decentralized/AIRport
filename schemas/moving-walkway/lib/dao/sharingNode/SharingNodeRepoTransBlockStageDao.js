@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
@@ -7,6 +8,7 @@ class SharingNodeRepoTransBlockStageDao extends generated_1.BaseSharingNodeRepoT
     async insertValues(values) {
         const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlockStage;
         let snrtbs;
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
         return await this.airDb.db.insertValues(dbEntity, {
             insertInto: snrtbs = generated_1.Q.SharingNodeRepoTransBlockStage,
             columns: [

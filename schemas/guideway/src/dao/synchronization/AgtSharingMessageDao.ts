@@ -1,7 +1,6 @@
 import {
-	and,
-	IAirportDatabase,
-	IUtils
+	AIR_DB,
+	and
 }                                from '@airport/air-control'
 import {
 	AgtRepositoryId,
@@ -10,6 +9,7 @@ import {
 	TmSharingMessageId,
 }                                from '@airport/arrivals-n-departures'
 import {DI}                      from '@airport/di'
+import {ensureChildJsMap}        from '@airport/ground-control'
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtSharingMessageAcknowledged
@@ -57,9 +57,12 @@ export class AgtSharingMessageDao
 	): Promise<Map<TerminalId, AgtSharingMessageId>> {
 		const sharingMessageIdsByTerminalId: Map<TerminalId, AgtSharingMessageId> = new Map()
 
-		const dbEntity          = Q.db.currentVersion.entityMapByName.AgtSharingMessage
+		const dbEntity = Q.db.currentVersion.entityMapByName.AgtSharingMessage
 		let asm: QAgtSharingMessage
-		const sharingMessageIds = <number[]>await this.airDb.db.insertValuesGenerateIds(dbEntity, {
+
+		const airDb = await DI.get(AIR_DB)
+
+		const sharingMessageIds = <number[]>await airDb.insertValuesGenerateIds(dbEntity, {
 			insertInto: asm = Q.AgtSharingMessage,
 			columns: [
 				asm.terminal.id,
@@ -85,8 +88,10 @@ export class AgtSharingMessageDao
 
 		let asm: QAgtSharingMessage
 
+		const airDb = await DI.get(AIR_DB)
+
 		const dbSyncLogs =
-			      await this.airDb.db.find.sheet({
+			      await airDb.find.sheet({
 				      from: [
 					      asm = Q.AgtSharingMessage
 				      ],
@@ -140,7 +145,10 @@ export class AgtSharingMessageDao
 			      = new Map()
 
 		let asm: QAgtSharingMessage
-		const sharingMessages = await this.airDb.db.find.sheet({
+
+		const airDb = await DI.get(AIR_DB)
+
+		const sharingMessages = await airDb.find.sheet({
 			from: [
 				asm = Q.AgtSharingMessage
 			],
@@ -156,7 +164,7 @@ export class AgtSharingMessageDao
 		})
 
 		for (const sharingMessage of sharingMessages) {
-			this.utils.ensureChildJsMap(idMapByTerminalIdAndTmSharingMessageId, sharingMessage[0])
+			ensureChildJsMap(idMapByTerminalIdAndTmSharingMessageId, sharingMessage[0])
 				.set(sharingMessage[1], sharingMessage[2])
 		}
 

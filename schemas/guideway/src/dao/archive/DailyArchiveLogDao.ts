@@ -1,3 +1,4 @@
+import {AIR_DB}                from '@airport/air-control'
 import {DI}                    from '@airport/di'
 import {DailyArchiveLogValues} from '../../ddl/ddl'
 import {DAILY_ARCHIVE_LOG_DAO} from '../../diTokens'
@@ -26,7 +27,9 @@ export class DailyArchiveLogDao
 
 		let dal: QDailyArchiveLog
 
-		return await this.airDb.db.insertValues(dbEntity, {
+		const airDb = await DI.get(AIR_DB)
+
+		return await airDb.insertValues(dbEntity, {
 			insertInto: dal = Q.DailyArchiveLog,
 			columns: [
 				dal.repository.id,
