@@ -14,30 +14,7 @@
     <bookmark url="file://$PROJECT_DIR$/../../generators/takeoff/src/AirportDatabasePopulator.ts" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="refactoring DI">
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/SyncConnectionServer.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/SyncConnectionServer.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/SyncConnectionVerifier.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/lib/lingo/SyncConnectionVerifier.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/SyncConnectionServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/SyncConnectionServer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/SyncConnectionVerifier.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/SyncConnectionVerifier.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/data/ITransactionalConnector.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/lib/lingo/data/ITransactionalConnector.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/data/ITransactionalConnector.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/ground-control/src/lingo/data/ITransactionalConnector.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionProcessor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionProcessor.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionProcessor.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionProcessor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionProcessor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionProcessor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionServer.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionServer.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionServer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionServer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionServer.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionVerifier.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionVerifier.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionVerifier.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionVerifier.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionVerifier.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/lib/server/sync/SyncConnectionVerifier.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/src/server/sync/SyncConnectionProcessor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/src/server/sync/SyncConnectionProcessor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/src/server/sync/SyncConnectionServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/src/server/sync/SyncConnectionServer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/automated-guideway-transit/src/server/sync/SyncConnectionVerifier.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/automated-guideway-transit/src/server/sync/SyncConnectionVerifier.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/tarmaq/lib/net/TransactionalConnector.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/tarmaq/lib/net/TransactionalConnector.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/tarmaq/lib/net/TransactionalConnector.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/tarmaq/lib/net/TransactionalConnector.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/tarmaq/lib/net/TransactionalConnector.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/tarmaq/lib/net/TransactionalConnector.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/tarmaq/src/net/TransactionalConnector.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/tarmaq/src/net/TransactionalConnector.ts" afterDir="false" />
-    </list>
+    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="refactoring DI" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
