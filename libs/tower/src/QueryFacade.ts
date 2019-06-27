@@ -8,16 +8,19 @@ import {
 	IUpdateCache,
 	QUERY_FACADE,
 	UpdateCacheType
-}                    from '@airport/air-control'
-import {DI}          from '@airport/di'
+}           from '@airport/air-control'
+import {DI} from '@airport/di'
 import {
 	DbEntity,
 	ITransactionalConnector,
 	JsonQuery,
 	PortableQuery,
 	QueryResultType,
-}                    from '@airport/ground-control'
-import {IObservable} from '@airport/observe'
+}           from '@airport/ground-control'
+import {
+	IObservable,
+	map
+}           from '@airport/observe'
 
 export class QueryFacade
 	implements IQueryFacade {
@@ -99,15 +102,18 @@ export class QueryFacade
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<IObservable<EntityArray>> {
 		return transConnector.search(this.getPortableQuery(
-			dbEntity, query, queryResultType, queryUtils, fieldUtils)).pipe(
-				map(results => {
-					updateCache.addToCache(
-						schemaUtils, cacheForUpdate, dbEntity, ...results)
+			dbEntity, query, queryResultType, queryUtils, fieldUtils)).then(
+			observable =>
+				observable.pipe(
+					map(
+						results => {
+							updateCache.addToCache(
+								schemaUtils, cacheForUpdate, dbEntity, ...results)
 
-					return results
-				})
+							return results
+						})
+				) as IObservable<EntityArray>
 		)
-
 	}
 
 	async searchOne<E>(
@@ -122,15 +128,18 @@ export class QueryFacade
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<IObservable<E>> {
 		return transConnector.searchOne(this.getPortableQuery(
-			dbEntity, query, queryResultType, queryUtils, fieldUtils)).pipe(
-				map(result => {
-					updateCache.addToCache(
-						schemaUtils, cacheForUpdate, dbEntity, result)
+			dbEntity, query, queryResultType, queryUtils, fieldUtils)).then(
+			observable =>
+				observable.pipe(
+					map(
+						result => {
+							updateCache.addToCache(
+								schemaUtils, cacheForUpdate, dbEntity, result)
 
-					return results
-				})
+							return result
+						})
+				) as IObservable<E>
 		)
-
 	}
 
 }

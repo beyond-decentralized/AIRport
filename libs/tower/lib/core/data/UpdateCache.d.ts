@@ -17,11 +17,8 @@ export declare class UpdateCache implements IUpdateCache {
      * @param {Entity} entities
      */
     addToCache(schemaUtils: ISchemaUtils, cacheForUpdate: UpdateCacheType, dbEntity: DbEntity, ...entities: any[]): void;
-    dropFromCache(schemaUtils: ISchemaUtils, cacheForUpdate: UpdateCacheType, dbEntity: DbEntity, ...entities: any[]): void;
-    getEntityUpdateCache(schemaUtils: ISchemaUtils, dbEntity: DbEntity, entity: any): any;
-    getOriginalRecord(dbEntity: DbEntity, idKey: string): any;
+    getEntityUpdateCache(entity: any): any;
     getEntityUpdateDiff(schemaUtils: ISchemaUtils, dbEntity: DbEntity, entity: any, failOnNoOriginalRecord?: boolean): any;
-    private getEntityCache;
     private saveToUpdateCacheInternal;
     private getEntityCacheEntry;
     private copyColumn;

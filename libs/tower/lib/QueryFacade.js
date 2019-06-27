@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const observe_1 = require("@airport/observe");
 class QueryFacade {
     /*
     private connector: ITransactionalConnector
@@ -31,16 +32,16 @@ class QueryFacade {
         };
     }
     async search(dbEntity, query, queryResultType, fieldUtils, queryUtils, schemaUtils, transConnector, updateCache, cacheForUpdate = air_control_1.UpdateCacheType.NONE) {
-        return transConnector.search(this.getPortableQuery(dbEntity, query, queryResultType, queryUtils, fieldUtils)).pipe(map(results => {
+        return transConnector.search(this.getPortableQuery(dbEntity, query, queryResultType, queryUtils, fieldUtils)).then(observable => observable.pipe(observe_1.map(results => {
             updateCache.addToCache(schemaUtils, cacheForUpdate, dbEntity, ...results);
             return results;
-        }));
+        })));
     }
     async searchOne(dbEntity, query, queryResultType, fieldUtils, queryUtils, schemaUtils, transConnector, updateCache, cacheForUpdate = air_control_1.UpdateCacheType.NONE) {
-        return transConnector.searchOne(this.getPortableQuery(dbEntity, query, queryResultType, queryUtils, fieldUtils)).pipe(map(result => {
+        return transConnector.searchOne(this.getPortableQuery(dbEntity, query, queryResultType, queryUtils, fieldUtils)).then(observable => observable.pipe(observe_1.map(result => {
             updateCache.addToCache(schemaUtils, cacheForUpdate, dbEntity, result);
-            return results;
-        }));
+            return result;
+        })));
     }
 }
 exports.QueryFacade = QueryFacade;

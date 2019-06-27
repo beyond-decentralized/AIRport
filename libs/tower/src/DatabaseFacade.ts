@@ -407,14 +407,15 @@ export class DatabaseFacade
 
 	async getOriginalRecord(
 		dbEntity: DbEntity,
-		idKey: string,
+		entity: any,
 		updateCache: IUpdateCache
 	): Promise<any> {
-		const originalRecord = updateCache.getOriginalRecord(dbEntity, idKey)
+		const originalRecord = updateCache.getEntityUpdateCache(entity)
 
 		if (!originalRecord) {
-			throw `Cannot update '${dbEntity.name}' with composite id '${idKey}' - not found in update cache.
-			Did you forget to add .andCacheForUpdate() to the query you used to retrieve the original?`
+			throw `Cannot update '${dbEntity.name}' - entity has no update cache.
+			Did you forget to add .cache() to the query you used to retrieve the 
+			original record?`
 		}
 
 		return originalRecord

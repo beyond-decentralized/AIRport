@@ -14,9 +14,9 @@ function createSelector(...args) {
     else {
         sourceObservable = inputSelectors[0].observable;
     }
-    let observable = observe_1.pipe(sourceObservable, (v, ctx) => 
-    // share(
-    observe_1.distinctUntilChanged(callback, ctx));
+    let observable = sourceObservable.pipe(
+    // share() TODO: implement once RxJs support is added
+    observe_1.distinctUntilChanged());
     return getSelector(observable);
 }
 exports.createSelector = createSelector;

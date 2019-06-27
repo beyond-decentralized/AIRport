@@ -4,6 +4,7 @@ const Subscription_1 = require("./Subscription");
 class Observable {
     constructor(onUnsubscribe) {
         this.onUnsubscribe = onUnsubscribe;
+        this.operators = [];
         this.upstream = [];
         this.downstream = [];
         this.numDownstreamSubscriptions = 0;
@@ -28,23 +29,26 @@ class Observable {
         });
         return targetObservable;
     }
-    exec(value, callbackName, upstreamObservable, context = this.getDefaultContext()) {
+    pipe(...operators) {
+        // if (!(sourceObservable instanceof Observable)) {
+        // 	throw 'only @airport/observer/Observable is supported'
+        // }
+        const targetObservable = Observable.from(this);
+        targetObservable.operators = operators;
+        return targetObservable;
+    }
+    exec(value, callbackName, upstreamObservable) {
         if (!this.subscriptions.length
             && !this.numDownstreamSubscriptions
             || value === undefined) {
             return;
         }
         // this.lastValue = this.currentValue
-        if (this.callback) {
-            const value = this.currentValue;
-            this.currentValue = undefined;
-            this.currentValue = this.valueFromUpstream();
-            if (this.currentValue === undefined) {
-                this.currentValue = value;
-            }
-        }
-        else {
-            this.currentValue = value;
+        const theValue = this.currentValue;
+        this.currentValue = undefined;
+        this.valueFromUpstream();
+        if (this.currentValue === undefined) {
+            this.currentValue = theValue;
         }
         this.subscriptions.forEach(subscription => {
             subscription[callbackName](this.currentValue);
@@ -55,12 +59,7 @@ class Observable {
             // }
         });
         this.downstream.forEach(observable => {
-            context.currentValue = this.currentValue;
-            // context.lastValue    = this.lastValue
-            context.observable = observable;
-            // if (observable.exec) {
-            observable.exec(this.currentValue, callbackName, this, context);
-            // }
+            observable.exec(this.currentValue, callbackName, this);
         });
     }
     // subscribe(
@@ -86,35 +85,11 @@ class Observable {
         if (this.currentValue !== undefined) {
             return this.currentValue;
         }
-        const values = this.upstream.map(upstreamObservable => upstreamObservable.valueFromUpstream());
-        switch (values.length) {
-            case 0:
-                break;
-            case 1: {
-                if (this.callback) {
-                    this.currentValue = this.callback(...[...values, this.getDefaultContext()]);
-                }
-                else {
-                    this.currentValue = values;
-                }
-                break;
-            }
-            default: {
-                if (this.callback) {
-                    this.currentValue = this.callback(values, this.getDefaultContext());
-                }
-                else {
-                    this.currentValue = values;
-                }
-                break;
-            }
+        this.currentValue = this.upstream.map(upstreamObservable => upstreamObservable.valueFromUpstream());
+        for (const operator of this.operators) {
+            this.currentValue = operator.exec(this);
         }
         return this.currentValue;
-    }
-    getDefaultContext() {
-        return {
-            $: this
-        };
     }
     subscribeUpstream() {
         for (const up of this.upstream) {

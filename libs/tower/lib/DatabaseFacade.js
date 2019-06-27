@@ -187,11 +187,12 @@ class DatabaseFacade extends OperationManager_1.OperationManager {
     ensureId(entity) {
         throw `Not Implemented`;
     }
-    async getOriginalRecord(dbEntity, idKey, updateCache) {
-        const originalRecord = updateCache.getOriginalRecord(dbEntity, idKey);
+    async getOriginalRecord(dbEntity, entity, updateCache) {
+        const originalRecord = updateCache.getEntityUpdateCache(entity);
         if (!originalRecord) {
-            throw `Cannot update '${dbEntity.name}' with composite id '${idKey}' - not found in update cache.
-			Did you forget to add .andCacheForUpdate() to the query you used to retrieve the original?`;
+            throw `Cannot update '${dbEntity.name}' - entity has no update cache.
+			Did you forget to add .cache() to the query you used to retrieve the 
+			original record?`;
         }
         return originalRecord;
     }

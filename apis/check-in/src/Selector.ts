@@ -1,8 +1,7 @@
 import {
 	distinctUntilChanged,
 	IObservable,
-	Observable,
-	pipe
+	Observable
 } from '@airport/observe'
 
 /**
@@ -101,14 +100,9 @@ export function createSelector<V, SV>(
 	} else {
 		sourceObservable = inputSelectors[0].observable
 	}
-	let observable = pipe(sourceObservable, (
-		v,
-		ctx
-		) =>
-			// share(
-			distinctUntilChanged(
-				callback, ctx),
-		// ctx)
+	let observable = sourceObservable.pipe(
+		// share() TODO: implement once RxJs support is added
+			distinctUntilChanged()
 	)
 
 	return getSelector(observable)

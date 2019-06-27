@@ -14,7 +14,49 @@
     <bookmark url="file://$PROJECT_DIR$/../../generators/takeoff/src/AirportDatabasePopulator.ts" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="refactoring DI" />
+    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="refactoring DI">
+      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/operators/map.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../libs/observe/src/operators/operator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/data/UpdateCache.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/data/UpdateCache.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/lingo/core/data/UpdateCache.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/lingo/core/data/UpdateCache.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/Selector.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/Selector.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/Selector.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/Selector.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/check-in/src/Selector.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/src/Selector.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/index.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/distinctUntilChanged.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/distinctUntilChanged.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/distinctUntilChanged.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/distinctUntilChanged.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/distinctUntilChanged.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/distinctUntilChanged.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/map.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/map.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/map.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/map.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/map.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/withLatestFrom.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/withLatestFrom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/operators/withLatestFrom.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/operators/withLatestFrom.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/Observable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/Observable.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/operators/distinctUntilChanged.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/operators/distinctUntilChanged.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/operators/withLatestFrom.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/operators/withLatestFrom.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/pipe.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/DatabaseFacade.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/DatabaseFacade.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/DatabaseFacade.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/DatabaseFacade.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/DatabaseFacade.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/DatabaseFacade.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/OperationManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/OperationManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/OperationManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/OperationManager.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/QueryFacade.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/QueryFacade.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/QueryFacade.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/QueryFacade.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/core/data/UpdateCache.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/core/data/UpdateCache.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/core/data/UpdateCache.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/core/data/UpdateCache.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/core/data/UpdateCache.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/core/data/UpdateCache.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/src/DatabaseFacade.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/src/DatabaseFacade.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/src/OperationManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/src/OperationManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/src/QueryFacade.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/src/QueryFacade.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/tower/src/core/data/UpdateCache.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/src/core/data/UpdateCache.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -45,23 +87,32 @@
     <splitter split-orientation="horizontal" split-proportion="0.48522168">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/AbstractCompletable.ts">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/../../libs/tower/src/core/data/UpdateCache.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="242">
-                  <caret line="11" column="40" lean-forward="true" selection-start-line="11" selection-start-column="40" selection-end-line="11" selection-end-column="40" />
+                <state relative-caret-position="128">
+                  <caret line="59" column="3" selection-start-line="59" selection-start-column="3" selection-end-line="59" selection-end-column="3" />
+                  <folding>
+                    <element signature="e#0#124#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/../../apps/tarmaq/src/net/TransactionalConnector.ts">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/lingo/core/data/UpdateCache.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="308">
-                  <caret line="14" column="16" lean-forward="true" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
-                  <folding>
-                    <element signature="e#0#40#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="208">
+                  <caret line="41" selection-start-line="41" selection-end-line="41" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/../../libs/tower/src/OperationManager.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="272">
+                  <caret line="534" column="43" selection-start-line="534" selection-start-column="29" selection-end-line="534" selection-end-column="43" />
                 </state>
               </provider>
             </entry>
@@ -73,8 +124,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../../libs/tower/src/core/data/UpdateCache.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="168">
-                  <caret line="134" selection-start-line="134" selection-end-line="134" />
+                <state relative-caret-position="258">
+                  <caret line="106" column="3" lean-forward="true" selection-start-line="106" selection-start-column="3" selection-end-line="106" selection-end-column="3" />
                   <folding>
                     <element signature="e#0#124#0" expanded="true" />
                   </folding>
@@ -83,10 +134,13 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/../../libs/tower/src/QueryFacade.ts">
+            <entry file="file://$PROJECT_DIR$/../../libs/tower/src/DatabaseFacade.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="200">
-                  <caret line="35" column="25" lean-forward="true" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="25" />
+                <state relative-caret-position="197">
+                  <caret line="50" column="13" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+                  <folding>
+                    <element signature="e#0#560#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -104,16 +158,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ENTITY_MANAG</find>
-      <find>doSearch</find>
-      <find>async</find>
-      <find>Proxy</find>
-      <find>bulkCreate</find>
-      <find>performDeletes</find>
-      <find>runUpdatesForTable</find>
-      <find>insertValues</find>
-      <find>this.</find>
-      <find>SharingMessageProcessingStatus</find>
       <find>addNewSharingMessages</find>
       <find>Dao</find>
       <find>recordRepoTransBlockSchemaToChange</find>
@@ -134,6 +178,16 @@
       <find>syncLogDao</find>
       <find>sendRecentChangesToVerifiedConnections</find>
       <find>DI.</find>
+      <find>transConnector</find>
+      <find>searchOne</find>
+      <find>export function</find>
+      <find>.search</find>
+      <find>T,</find>
+      <find>$</find>
+      <find>withLatestFrom</find>
+      <find>getEntityCache</find>
+      <find>getEntityCacheEntry</find>
+      <find>getEntity</find>
     </findStrings>
     <replaceStrings>
       <replace>Module</replace>
@@ -154,6 +208,7 @@
       <replace>,</replace>
       <replace>search</replace>
       <replace>EntitySearch</replace>
+      <replace>source</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\Users\Papa\dac\airport\schemas\territory\src</dir>
@@ -195,17 +250,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/EntityFindOne.ts" />
-        <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/EntitySearch.ts" />
-        <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/EntitySearchOne.ts" />
-        <option value="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/NonEntityLookup.ts" />
-        <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/NonEntityFind.ts" />
-        <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/NonEntityFindOne.ts" />
-        <option value="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/NonEntityFind.ts" />
-        <option value="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/NonEntityFindOne.ts" />
-        <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/NonEntitySearch.ts" />
-        <option value="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/NonEntitySearch.ts" />
-        <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/api/NonEntitySearchOne.ts" />
         <option value="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/NonEntitySearchOne.ts" />
         <option value="$PROJECT_DIR$/../../apis/air-control/src/impl/query/api/Lookup.ts" />
         <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/AirportDatabase.ts" />
@@ -213,7 +257,6 @@
         <option value="$PROJECT_DIR$/../../apis/check-in/src/EntityDatabaseFacade.ts" />
         <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/core/repository/EntityDatabaseFacade.ts" />
         <option value="$PROJECT_DIR$/src/dao/ApplicationPackageDao.ts" />
-        <option value="$PROJECT_DIR$/../../libs/tower/src/core/data/UpdateCache.ts" />
         <option value="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.ts" />
         <option value="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/SynchronizationInManager.ts" />
         <option value="$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/out/SynchronizationOutCoordinator.ts" />
@@ -246,6 +289,18 @@
         <option value="$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/SyncConnectionVerifier.ts" />
         <option value="$PROJECT_DIR$/../../apis/ground-control/src/lingo/data/ITransactionalConnector.ts" />
         <option value="$PROJECT_DIR$/../../apps/tarmaq/src/net/TransactionalConnector.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/index.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/operators/operator.ts" />
+        <option value="$PROJECT_DIR$/../../libs/tower/src/QueryFacade.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/operators/map.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/Observable.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/operators/distinctUntilChanged.ts" />
+        <option value="$PROJECT_DIR$/../../libs/observe/src/operators/withLatestFrom.ts" />
+        <option value="$PROJECT_DIR$/../../apis/check-in/src/Selector.ts" />
+        <option value="$PROJECT_DIR$/../../libs/tower/src/DatabaseFacade.ts" />
+        <option value="$PROJECT_DIR$/../../apis/air-control/src/lingo/core/data/UpdateCache.ts" />
+        <option value="$PROJECT_DIR$/../../libs/tower/src/OperationManager.ts" />
+        <option value="$PROJECT_DIR$/../../libs/tower/src/core/data/UpdateCache.ts" />
       </list>
     </option>
   </component>
@@ -402,6 +457,21 @@
             <path>
               <item name="territory" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="C:\Users\Papa\dac\airport\apps\tarmaq" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+            <path>
+              <item name="territory" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="C:\Users\Papa\dac\airport\libs\observe" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+            <path>
+              <item name="territory" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="C:\Users\Papa\dac\airport\libs\observe" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="territory" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="C:\Users\Papa\dac\airport\libs\observe" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="operators" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
@@ -576,13 +646,13 @@
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4985294" visible="true" weight="0.14436248" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4985294" weight="0.14436248" />
       <window_info id="Favorites" order="1" sideWeight="0.50147057" side_tool="true" weight="0.14436248" />
       <window_info id="Structure" order="2" weight="0.15384616" />
-      <window_info content_ui="combo" id="Hierarchy" order="3" weight="0.13119073" />
+      <window_info active="true" content_ui="combo" id="Hierarchy" order="3" visible="true" weight="0.13119073" />
       <window_info id="Database" order="4" weight="0.22760801" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" sideWeight="0.49789253" visible="true" weight="0.3208122" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49789253" visible="true" weight="0.3208122" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49947312" weight="0.32606438" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.35721704" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -774,126 +844,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../libs/tower/src/DatabaseFacadeProxy.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="11" selection-start-line="3" selection-start-column="11" selection-end-line="3" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../apis/check-in/src/EntityDatabaseFacade.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-35">
-          <folding>
-            <element signature="e#0#454#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/lingo/AirportDatabase.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="29" column="33" lean-forward="true" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/connect/direct/DirectSharingNodeEndpoint.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="21" column="41" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/Stage1SyncedInDataProcessor.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="103" column="34" lean-forward="true" selection-start-line="103" selection-start-column="34" selection-end-line="103" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/Stage2SyncedInDataProcessor.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="152" column="25" selection-start-line="152" selection-start-column="25" selection-end-line="152" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#162#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/connect/remote/HttpSharingNodeEndpoint.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="64" column="20" selection-start-line="64" selection-start-column="20" selection-end-line="64" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/creator/MissingRecordCreator.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/tower/src/DatabaseFacade.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="171" column="20" selection-start-line="171" selection-start-column="8" selection-end-line="171" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#560#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/SynchronizationInManager.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="80" column="22" lean-forward="true" selection-start-line="80" selection-start-column="22" selection-end-line="80" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#252#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/out/SynchronizationOutCoordinator.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../apis/arrivals-n-departures/src/lingo/message/MessageTypes.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="19" column="12" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/out/SynchronizationOutManager.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="158" column="17" selection-start-line="158" selection-start-column="17" selection-end-line="158" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/in/checker/SyncInActorChecker.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="6" column="60" selection-start-line="6" selection-start-column="60" selection-end-line="6" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../moving-walkway/src/diTokens.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
@@ -915,16 +865,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="43" column="16" selection-start-line="43" selection-start-column="15" selection-end-line="43" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/tower/src/core/data/UpdateCache.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="134" selection-start-line="134" selection-end-line="134" />
-          <folding>
-            <element signature="e#0#124#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1178,13 +1118,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/AbstractCompletable.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="40" lean-forward="true" selection-start-line="11" selection-start-column="40" selection-end-line="11" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../apis/ground-control/src/lingo/query/PortableQuery.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
@@ -1199,26 +1132,156 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../apis/ground-control/src/lingo/data/ITransactionalConnector.ts">
+    <entry file="file://$PROJECT_DIR$/../../apps/tarmaq/src/net/TransactionalConnector.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="24" column="18" lean-forward="true" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
+        <state relative-caret-position="63">
+          <caret line="181" column="5" lean-forward="true" selection-start-line="181" selection-start-column="5" selection-end-line="181" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/pipe.ts" />
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/index.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="30" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/operator.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="10" column="24" lean-forward="true" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../libs/tower/src/QueryFacade.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="35" column="25" lean-forward="true" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="25" />
+        <state relative-caret-position="846">
+          <caret line="140" column="27" selection-start-line="140" selection-start-column="9" selection-end-line="140" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#186#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../apps/tarmaq/src/net/TransactionalConnector.ts">
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/map.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="14" column="16" lean-forward="true" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+        <state>
+          <caret lean-forward="true" />
           <folding>
-            <element signature="e#0#40#0" expanded="true" />
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/combineLatest.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="574">
+          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/withLatestFrom.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="538">
+          <caret line="29" column="32" selection-start-line="29" selection-start-column="32" selection-end-line="29" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/operators/distinctUntilChanged.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="34" column="10" lean-forward="true" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/observe/src/Observable.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="574">
+          <caret line="68" selection-start-line="68" selection-end-line="68" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../apis/check-in/src/Selector.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="71" column="16" selection-start-line="71" selection-start-column="16" selection-end-line="71" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../apis/ground-control/src/lingo/data/ITransactionalConnector.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="41" column="2" selection-start-line="41" selection-start-column="2" selection-end-line="41" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/synchronization/out/SynchronizationOutCoordinator.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="25" column="10" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/ground-transport/src/AbstractCompletable.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="11" column="35" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../apis/air-control/lib/lingo/core/data/UpdateCache.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="429">
+          <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../apis/air-control/src/lingo/core/data/UpdateCache.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="41" selection-start-line="41" selection-end-line="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/tower/src/DatabaseFacade.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="50" column="13" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#560#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/tower/src/OperationManager.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="534" column="43" selection-start-line="534" selection-start-column="29" selection-end-line="534" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../libs/tower/src/core/data/UpdateCache.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="59" column="3" selection-start-line="59" selection-start-column="3" selection-end-line="59" selection-end-column="3" />
+          <folding>
+            <element signature="e#0#124#0" expanded="true" />
           </folding>
         </state>
       </provider>

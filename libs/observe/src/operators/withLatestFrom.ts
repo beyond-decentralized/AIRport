@@ -27,6 +27,7 @@ export function withLatestFrom<V1, V2, V3, V4, R>(
 		v4: V4
 	) => R
 ): IObservable<R>;
+// TODO: re-implement, if needed
 export function withLatestFrom<V, R>(
 	observables: IObservable<unknown>[],
 	context: any,

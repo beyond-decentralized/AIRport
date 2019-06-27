@@ -1,25 +1,60 @@
+import {IOperator} from './operators/operator'
 import {
 	ISubscription,
 	Subscription
-} from './Subscription'
+}                  from './Subscription'
 
 /**
  * An Observable represents a sequence of values which may be observed.
  */
-export interface IObservable<V> {
+export interface IObservable<T> {
+
+	pipe<T2, T3, T4, T5, R>(
+		operator1: IOperator<T, T2>,
+		operator2: IOperator<T2, T3>,
+		operator3: IOperator<T3, T4>,
+		operator4: IOperator<T4, T5>,
+		operator5: IOperator<T5, R>
+	): IObservable<R>
+
+	pipe<T2, T3, T4, R>(
+		operator1: IOperator<T, T2>,
+		operator2: IOperator<T2, T3>,
+		operator3: IOperator<T3, T4>,
+		operator4: IOperator<T4, R>
+	): IObservable<R>
+
+	pipe<T2, T3, R>(
+		operator1: IOperator<T, T2>,
+		operator2: IOperator<T2, T3>,
+		operator3: IOperator<T3, R>
+	): IObservable<R>
+
+	pipe<T2, R>(
+		operator1: IOperator<T, T2>,
+		operator2: IOperator<T2, R>
+	): IObservable<R>
+
+	pipe<R>(
+		operator: IOperator<T, R>
+	): IObservable<R>
+
+	pipe<R>(
+		...operators: IOperator<any, any>[]
+	): IObservable<R>
 
 	// Subscribes to the sequence with an observer
 	// subscribe(observer: IObserver<V>): ISubscription
 
 	// Subscribes to the sequence with callbacks
 	subscribe(
-		onNext: { (value: V): void },
+		onNext: { (value: T): void },
 		onError?: Function,
 		onComplete?: Function
 	): ISubscription
 
 	exec(
-		value: V,
+		value: T,
 		callbackName: 'onError' | 'onNext',
 		context: any
 	): void
@@ -27,12 +62,15 @@ export interface IObservable<V> {
 	upstream: IObservable<any>[]
 	downstream: IObservable<any>[]
 
-	currentValue: V
+	currentValue: T
 	// lastValue: V
+
+	up$LastVal
+
 }
 
-export class Observable<V>
-	implements IObservable<V> {
+export class Observable<T>
+	implements IObservable<T> {
 
 	static from(
 		...sourceObservables: (IObservable<any> | Promise<IObservable<any>>)[]
@@ -63,24 +101,62 @@ export class Observable<V>
 	) {
 	}
 
-	callback
+	operators: IOperator<any, any>[] = []
 
 	upstream: Observable<any>[]   = []
 	up$LastVal
 	downstream: Observable<any>[] = []
 
-	currentValue: V
-	lastValue: V
+	currentValue: T
+	lastValue: T
 
 	numDownstreamSubscriptions = 0
 
 	subscriptions: Subscription[] = []
 
+	pipe<T2, T3, T4, T5, R>(
+		operator1: IOperator<T, T2>,
+		operator2: IOperator<T2, T3>,
+		operator3: IOperator<T3, T4>,
+		operator4: IOperator<T4, T5>,
+		operator5: IOperator<T5, R>
+	): IObservable<R>
+	pipe<T2, T3, T4, R>(
+		operator1: IOperator<T, T2>,
+		operator2: IOperator<T2, T3>,
+		operator3: IOperator<T3, T4>,
+		operator4: IOperator<T4, R>
+	): IObservable<R>
+	pipe<T2, T3, R>(
+		operator1: IOperator<T, T2>,
+		operator2: IOperator<T2, T3>,
+		operator3: IOperator<T3, R>
+	): IObservable<R>
+	pipe<T2, R>(
+		operator1: IOperator<T, T2>,
+		operator2: IOperator<T2, R>
+	): IObservable<R>
+	pipe<R>(
+		operator: IOperator<T, R>
+	): IObservable<R>
+	pipe<V>(
+		...operators: IOperator<any, any>[]
+	): IObservable<any> {
+		// if (!(sourceObservable instanceof Observable)) {
+		// 	throw 'only @airport/observer/Observable is supported'
+		// }
+		const targetObservable: Observable<any>
+			                         = Observable.from(this) as any
+		targetObservable.operators = operators
+
+		return targetObservable
+	}
+
+
 	exec(
-		value: V,
+		value: T,
 		callbackName: 'onError' | 'onNext',
-		upstreamObservable?: Observable<any>,
-		context: any = this.getDefaultContext(),
+		upstreamObservable?: Observable<any>
 	): void {
 		if (!this.subscriptions.length
 			&& !this.numDownstreamSubscriptions
@@ -89,16 +165,11 @@ export class Observable<V>
 		}
 
 		// this.lastValue = this.currentValue
-
-		if (this.callback) {
-			const value       = this.currentValue
-			this.currentValue = undefined
-			this.currentValue = this.valueFromUpstream()
-			if (this.currentValue === undefined) {
-				this.currentValue = value
-			}
-		} else {
-			this.currentValue = value
+		const theValue    = this.currentValue
+		this.currentValue = undefined
+		this.valueFromUpstream()
+		if (this.currentValue === undefined) {
+			this.currentValue = theValue
 		}
 
 		this.subscriptions.forEach(
@@ -113,12 +184,7 @@ export class Observable<V>
 
 		this.downstream.forEach(
 			observable => {
-				context.currentValue = this.currentValue
-				// context.lastValue    = this.lastValue
-				context.observable   = observable
-				// if (observable.exec) {
-				observable.exec(this.currentValue, callbackName, this, context)
-				// }
+				observable.exec(this.currentValue, callbackName, this)
 			})
 	}
 
@@ -164,42 +230,20 @@ export class Observable<V>
 		}
 	}
 
-	private valueFromUpstream(): V {
+	private valueFromUpstream(): T {
 		if (this.currentValue !== undefined) {
 			return this.currentValue
 		}
-		const values = this.upstream.map(
+		this.currentValue = this.upstream.map(
 			upstreamObservable =>
 				upstreamObservable.valueFromUpstream()
-		)
-		switch (values.length) {
-			case 0:
-				break
-			case 1: {
-				if (this.callback) {
-					this.currentValue = this.callback(...[...values, this.getDefaultContext()])
-				} else {
-					this.currentValue = values as any
-				}
-				break
-			}
-			default: {
-				if (this.callback) {
-					this.currentValue = this.callback(values, this.getDefaultContext())
-				} else {
-					this.currentValue = values as any
-				}
-				break
-			}
+		) as any
+
+		for (const operator of this.operators) {
+			this.currentValue = operator.exec(this)
 		}
 
 		return this.currentValue
-	}
-
-	private getDefaultContext() {
-		return {
-			$: this
-		}
 	}
 
 	private subscribeUpstream(): void {

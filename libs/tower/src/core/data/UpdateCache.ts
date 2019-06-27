@@ -9,8 +9,6 @@ import {DI} from '@airport/di'
 import {
 	DbColumn,
 	DbEntity,
-	ensureChildArray,
-	ensureChildMap,
 	EntityRelationType,
 	SQLDataType
 }           from '@airport/ground-control'
@@ -51,86 +49,14 @@ export class UpdateCache
 			|| cacheForUpdate === UpdateCacheType.NONE) {
 			return
 		}
-		this.saveRun++
-		this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbEntity, ...entities)
-	}
-
-	dropFromCache(
-		schemaUtils: ISchemaUtils,
-		cacheForUpdate: UpdateCacheType,
-		dbEntity: DbEntity,
-		...entities: any[]
-	): void {
-		if (!entities) {
-			return
-		}
-		const entityCache = this.getEntityCache(dbEntity)
-		for (const entity of entities) {
-			const id = schemaUtils.getIdKey(entity, dbEntity)
-			delete entityCache[id]
-
-			for (const dbProperty of dbEntity.properties) {
-				let value = entity[dbProperty.name]
-				if (schemaUtils.isEmpty(value)) {
-					continue
-				}
-				if (!dbProperty.relation) {
-					continue
-				}
-				const relation = dbProperty.relation[0]
-				switch (relation.relationType) {
-					case EntityRelationType.ONE_TO_MANY:
-						if (cacheForUpdate !== UpdateCacheType.ALL_QUERY_ENTITIES) {
-							continue
-						}
-						if (!(value instanceof Array)) {
-							throw `Expecting @OneToMany for an array entity relation`
-						}
-						value.forEach((manyObject) => {
-							this.dropFromCache(schemaUtils, cacheForUpdate,
-								relation.relationEntity, manyObject)
-						})
-						break
-					case EntityRelationType.MANY_TO_ONE:
-						if (!(value instanceof Object) || value instanceof Array) {
-							throw `Expecting @ManyToOne for a non-array entity relation`
-						}
-						if (cacheForUpdate !== UpdateCacheType.ALL_QUERY_ENTITIES) {
-							continue
-						}
-						this.dropFromCache(schemaUtils, cacheForUpdate,
-							relation.relationEntity, value)
-						break
-					default:
-						throw `Unknown relation type: ${relation.relationType}`
-				}
-			}
-		}
+		this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate,
+			dbEntity, ...entities)
 	}
 
 	getEntityUpdateCache(
-		schemaUtils: ISchemaUtils,
-		dbEntity: DbEntity,
 		entity: any
 	): any {
-		let entityCache = this.getEntityCache(dbEntity)
-
-		let compositeId = schemaUtils.getIdKey(entity, dbEntity, false)
-
-		if (!compositeId) {
-			return null
-		}
-
-		return entityCache[compositeId]
-	}
-
-	getOriginalRecord(
-		dbEntity: DbEntity,
-		idKey: string,
-	): any {
-		const entityCache = this.getEntityCache(dbEntity)
-
-		return entityCache[idKey]
+		return entity.__updateCache__
 	}
 
 	getEntityUpdateDiff(
@@ -140,8 +66,7 @@ export class UpdateCache
 		failOnNoOriginalRecord = true,
 	): any {
 		let updateDiff     = {}
-		let originalRecord = this.getEntityUpdateCache(
-			schemaUtils, dbEntity, entity)
+		let originalRecord = this.getEntityUpdateCache(entity)
 		let currentRecord  = this.getEntityCacheEntry(
 			schemaUtils, UpdateCacheType.ROOT_QUERY_ENTITIES,
 			dbEntity, entity, {})
@@ -168,15 +93,6 @@ export class UpdateCache
 		return updateDiff
 	}
 
-	private getEntityCache(
-		dbEntity: DbEntity
-	): EntityUpdateCache {
-		let schemaCache = ensureChildArray(
-			this.updateCache, dbEntity.schemaVersion.schema.index)
-
-		return ensureChildMap(schemaCache, dbEntity.index)
-	}
-
 	private saveToUpdateCacheInternal(
 		schemaUtils: ISchemaUtils,
 		cacheForUpdate: UpdateCacheType,
@@ -184,26 +100,9 @@ export class UpdateCache
 		...entities: any[]
 	): void {
 		for (const entity of entities) {
-			const compositeIdValue = schemaUtils.getIdKey(entity, dbEntity)
-			// If no id is provided for an entity, it cannot be cached
-			if (!compositeIdValue) {
-				throw `Cannot cache entities with no ids`
-			}
-			let entityCache = this.getEntityCache(dbEntity)
-			let entityCopy  = entityCache[compositeIdValue]
-			if (entityCopy) {
-				if (entityCopy.__saveRun__ === this.saveRun) {
-					return entityCopy
-				}
-				entityCopy.__saveRun__ = this.saveRun
-			} else {
-				entityCopy = {
-					__saveRun__: this.saveRun
-				}
-			}
-			entityCache[compositeIdValue] = entityCopy
-
-			this.getEntityCacheEntry(schemaUtils, cacheForUpdate, dbEntity, entity, entityCopy)
+			entity.__updateCache__ = {}
+			this.getEntityCacheEntry(schemaUtils, cacheForUpdate, dbEntity,
+				entity, entity.__updateCache__)
 		}
 	}
 
@@ -274,10 +173,10 @@ export class UpdateCache
 	) {
 		const columnName  = dbColumn.name
 		const copiedValue = entityCopy[columnName]
-		if (!schemaUtils.isEmpty(copiedValue)
-			&& valuesEqual(copiedValue, value)) {
-			throw `Values do not match for column '${dbColumn.propertyColumns[0].property.entity.name}.${dbColumn.name}'`
-		}
+		// if (!schemaUtils.isEmpty(copiedValue)
+		// 	&& valuesEqual(copiedValue, value)) {
+		// 	throw `Values do not match for column
+		// '${dbColumn.propertyColumns[0].property.entity.name}.${dbColumn.name}'` }
 		switch (dbColumn.type) {
 			case SQLDataType.BOOLEAN:
 			case SQLDataType.NUMBER:

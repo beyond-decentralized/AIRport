@@ -41,7 +41,7 @@ export declare class DatabaseFacade extends OperationManager implements IDatabas
         (...args: any[]): RawUpdate<IEUP, IQE>;
     }): Promise<number>;
     private ensureId;
-    getOriginalRecord(dbEntity: DbEntity, idKey: string, updateCache: IUpdateCache): Promise<any>;
+    getOriginalRecord(dbEntity: DbEntity, entity: any, updateCache: IUpdateCache): Promise<any>;
     getOriginalValues(entitiesToUpdate: UpdateRecord[], dbEntity: DbEntity, airDb: IAirportDatabase, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache): Promise<MappedEntityArray<any>>;
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;
 }

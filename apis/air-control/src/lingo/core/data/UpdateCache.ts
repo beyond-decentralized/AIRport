@@ -39,14 +39,7 @@ export interface IUpdateCache {
 	// 	...entities: any[]
 	// ): void;
 
-	getOriginalRecord(
-		dbEntity: DbEntity,
-		idKey: string,
-	): any;
-
 	getEntityUpdateCache(
-		schemaUtils: ISchemaUtils,
-		dbEntity: DbEntity,
 		entity: any
 	): any;
 

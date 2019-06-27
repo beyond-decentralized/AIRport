@@ -1,29 +1,42 @@
+import { IOperator } from './operators/operator';
 import { ISubscription, Subscription } from './Subscription';
 /**
  * An Observable represents a sequence of values which may be observed.
  */
-export interface IObservable<V> {
+export interface IObservable<T> {
+    pipe<T2, T3, T4, T5, R>(operator1: IOperator<T, T2>, operator2: IOperator<T2, T3>, operator3: IOperator<T3, T4>, operator4: IOperator<T4, T5>, operator5: IOperator<T5, R>): IObservable<R>;
+    pipe<T2, T3, T4, R>(operator1: IOperator<T, T2>, operator2: IOperator<T2, T3>, operator3: IOperator<T3, T4>, operator4: IOperator<T4, R>): IObservable<R>;
+    pipe<T2, T3, R>(operator1: IOperator<T, T2>, operator2: IOperator<T2, T3>, operator3: IOperator<T3, R>): IObservable<R>;
+    pipe<T2, R>(operator1: IOperator<T, T2>, operator2: IOperator<T2, R>): IObservable<R>;
+    pipe<R>(operator: IOperator<T, R>): IObservable<R>;
+    pipe<R>(...operators: IOperator<any, any>[]): IObservable<R>;
     subscribe(onNext: {
-        (value: V): void;
+        (value: T): void;
     }, onError?: Function, onComplete?: Function): ISubscription;
-    exec(value: V, callbackName: 'onError' | 'onNext', context: any): void;
+    exec(value: T, callbackName: 'onError' | 'onNext', context: any): void;
     upstream: IObservable<any>[];
     downstream: IObservable<any>[];
-    currentValue: V;
+    currentValue: T;
+    up$LastVal: any;
 }
-export declare class Observable<V> implements IObservable<V> {
+export declare class Observable<T> implements IObservable<T> {
     private onUnsubscribe?;
     static from(...sourceObservables: (IObservable<any> | Promise<IObservable<any>>)[]): IObservable<any>;
     constructor(onUnsubscribe?: () => void);
-    callback: any;
+    operators: IOperator<any, any>[];
     upstream: Observable<any>[];
     up$LastVal: any;
     downstream: Observable<any>[];
-    currentValue: V;
-    lastValue: V;
+    currentValue: T;
+    lastValue: T;
     numDownstreamSubscriptions: number;
     subscriptions: Subscription[];
-    exec(value: V, callbackName: 'onError' | 'onNext', upstreamObservable?: Observable<any>, context?: any): void;
+    pipe<T2, T3, T4, T5, R>(operator1: IOperator<T, T2>, operator2: IOperator<T2, T3>, operator3: IOperator<T3, T4>, operator4: IOperator<T4, T5>, operator5: IOperator<T5, R>): IObservable<R>;
+    pipe<T2, T3, T4, R>(operator1: IOperator<T, T2>, operator2: IOperator<T2, T3>, operator3: IOperator<T3, T4>, operator4: IOperator<T4, R>): IObservable<R>;
+    pipe<T2, T3, R>(operator1: IOperator<T, T2>, operator2: IOperator<T2, T3>, operator3: IOperator<T3, R>): IObservable<R>;
+    pipe<T2, R>(operator1: IOperator<T, T2>, operator2: IOperator<T2, R>): IObservable<R>;
+    pipe<R>(operator: IOperator<T, R>): IObservable<R>;
+    exec(value: T, callbackName: 'onError' | 'onNext', upstreamObservable?: Observable<any>): void;
     subscribe(onNext: {
         (value: any): void;
     }, onError?: {
@@ -31,6 +44,5 @@ export declare class Observable<V> implements IObservable<V> {
     }, onComplete?: Function): ISubscription;
     unsubscribeUpstream(): void;
     private valueFromUpstream;
-    private getDefaultContext;
     private subscribeUpstream;
 }

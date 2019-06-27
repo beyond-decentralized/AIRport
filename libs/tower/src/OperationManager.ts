@@ -416,11 +416,11 @@ export abstract class OperationManager
 			if (!entityIdData.idKey) {
 				throw `Cannot update ${dbEntity.name}, not all @Id(s) are set.`
 			}
-			let originalValue = await this.getOriginalRecord(
+			originalValue = await this.getOriginalRecord(
 				dbEntity, entityIdData.idKey, updateCache)
-			if (!originalValue) {
-				throw `Cannot update ${dbEntity.name}, entity not found.`
-			}
+			// if (!originalValue) {
+			// 	throw `Cannot update ${dbEntity.name}, entity not found.`
+			// }
 		}
 		let result = await this.internalUpdate(
 			dbEntity, entity, originalValue, airDb,

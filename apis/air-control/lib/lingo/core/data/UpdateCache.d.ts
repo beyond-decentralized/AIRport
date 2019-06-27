@@ -21,7 +21,6 @@ export interface IUpdateCache {
      *
      * @param {Entity} entities
      */
-    getOriginalRecord(dbEntity: DbEntity, idKey: string): any;
-    getEntityUpdateCache(schemaUtils: ISchemaUtils, dbEntity: DbEntity, entity: any): any;
+    getEntityUpdateCache(entity: any): any;
     getEntityUpdateDiff(schemaUtils: ISchemaUtils, dbEntity: DbEntity, entity: any, failOnNoOriginalRecord?: boolean): any;
 }
