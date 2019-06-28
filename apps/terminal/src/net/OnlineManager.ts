@@ -23,7 +23,7 @@ import {
 
 export interface IOnlineManager {
 
-	goOffline(): void;
+	goOffline(): Promise<void>;
 
 	goOnline(): Promise<void>;
 
@@ -34,30 +34,14 @@ export interface IOnlineManager {
 export class OnlineManager
 	implements IOnlineManager {
 
-	goOffline(): void {
-		this.repositoryManager.goOffline()
+	async goOffline(): Promise<void> {
+		const repositoryManager = await DI.get(REPOSITORY_MANAGER)
+
+		repositoryManager.goOffline()
 		this.online = false
 	}
 
 	private online = false
-	private offlineDeltaStore: IOfflineDeltaStore
-	private repositoryManager: IRepositoryManager
-	private repositoryDao: Promise<IRepositoryDao>
-	private repoTransHistoryDao: Promise<IRepositoryTransactionHistoryDao>
-
-	constructor() {
-		DI.get((
-			offlineDeltaStore,
-			repositoryDao,
-			repoTransHistoryDao,
-			repositoryManager
-		) => {
-			this.offlineDeltaStore = offlineDeltaStore
-			this.repositoryManager = repositoryManager
-		}, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER)
-		this.repositoryDao       = DI.getP(REPOSITORY_DAO)
-		this.repoTransHistoryDao = DI.getP(REPO_TRANS_HISTORY_DAO)
-	}
 
 	/**
 	 There are tree update states:
@@ -92,18 +76,31 @@ export class OnlineManager
 	 * @returns {Promise<void>}
 	 */
 	async goOnline(): Promise<void> {
+		const [
+			      offlineDeltaStore,
+			      repositoryDao,
+			      repoTransHistoryDao,
+			      repositoryManager
+		      ] = await DI.get(
+		      	OFFLINE_DELTA_STORE, REPOSITORY_DAO,
+			REPO_TRANS_HISTORY_DAO, REPOSITORY_MANAGER)
 		await transactional(async () => {
 			try {
 				// 1)  Flip update state to GO_ONLINE
-				this.repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE)
+				repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE)
 				// 2)  Find repositories
 				// const repoRecords = await this.repositoryDao.findWithTransaction()
-				const repoRecords = await (await this.repositoryDao).findReposWithDetailsByIds()
+				const repoRecords = await repositoryDao.findReposWithDetailsByIds()
 
 				// 3) make each repository go Online
 				let goOnlineCalls: Promise<void>[] = []
 				repoRecords.forEach((repository) => {
-					goOnlineCalls.push(this.repositoryGoOnline(repository))
+					goOnlineCalls.push(this.repositoryGoOnline(
+						repository,
+						offlineDeltaStore,
+						repositoryManager,
+						repoTransHistoryDao
+						))
 				})
 				await Promise.all(goOnlineCalls)
 
@@ -114,13 +111,18 @@ export class OnlineManager
 				throw error
 			} finally {
 				// Finally, always flip update state to LOCAL
-				this.repositoryManager.setUpdateStateForAll(UpdateState.LOCAL)
+				repositoryManager.setUpdateStateForAll(UpdateState.LOCAL)
 			}
 		})
 	}
 
-	async repositoryGoOnline(repository: IRepository): Promise<void> {
-		let deltaStore = this.repositoryManager.deltaStore[repository.id]
+	async repositoryGoOnline(
+		repository: IRepository,
+		offlineDeltaStore: IOfflineDeltaStore,
+		repositoryManager: IRepositoryManager,
+		repoTransHistoryDao: IRepositoryTransactionHistoryDao
+	): Promise<void> {
+		let deltaStore = repositoryManager.deltaStore[repository.id]
 
 		let remoteChangesSinceInitialGoOnline = []
 
@@ -138,22 +140,22 @@ export class OnlineManager
 			})
 			// a) While Go-Online is in progress continue gathering all remote transactions
 			// that come in and add them to remoteChangesSinceInitialGoOffline
-			if (this.repositoryManager.getUpdateState(repository) === UpdateState.GO_ONLINE) {
+			if (repositoryManager.getUpdateState(repository) === UpdateState.GO_ONLINE) {
 				remoteChangesSinceInitialGoOnline.push(transactions)
 			}
 			// b) Once Go-Online finishes, when remote transactions come in
 			else {
 				try {
 					// i)  Flip update state to REMOTE_CHANGES
-					this.repositoryManager.setUpdateState(repository, UpdateState.REMOTE)
+					repositoryManager.setUpdateState(repository, UpdateState.REMOTE)
 					// ii)  Add remote transactions to local store
-					await this.offlineDeltaStore.addRemoteChanges(repository, transactions)
+					await offlineDeltaStore.addRemoteChanges(repository, transactions)
 				} catch (error) {
 					// TODO: notify of error
 					throw error
 				} finally {
 					// iii) Flip state to LOCAL
-					this.repositoryManager.setUpdateState(repository, UpdateState.LOCAL)
+					repositoryManager.setUpdateState(repository, UpdateState.LOCAL)
 				}
 
 			}
@@ -167,7 +169,7 @@ export class OnlineManager
 		}
 		// 5)  Add remote transactions to local store
 		if (remoteChanges.length) {
-			await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges)
+			await offlineDeltaStore.addRemoteChanges(repository, remoteChanges)
 		}
 
 		// 6)  While there are more transactions coming in remotely:
@@ -175,11 +177,11 @@ export class OnlineManager
 			remoteChanges                     = remoteChangesSinceInitialGoOnline
 			remoteChangesSinceInitialGoOnline = []
 			// Add them to local store
-			await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges)
+			await offlineDeltaStore.addRemoteChanges(repository, remoteChanges)
 		}
 
 		// 7)  Find all local unsynced transactions
-		let unsyncedChanges = await (await this.repoTransHistoryDao).findUnsyncedTransactions(repository)
+		let unsyncedChanges = await repoTransHistoryDao.findUnsyncedTransactions(repository)
 		if (unsyncedChanges.length) {
 			unsyncedChanges.forEach((transaction) => {
 				// a)  Mark them as synchronized
@@ -189,7 +191,7 @@ export class OnlineManager
 			await deltaStore.addChanges(deltaStore.config.changeListConfig, unsyncedChanges)
 			// c)  save them back in local store, now with the synched flag
 			// (and update db with new lastSyncedTransaction)
-			await this.offlineDeltaStore.markChangesAsSynced(repository, null)
+			await offlineDeltaStore.markChangesAsSynced(repository, null)
 		}
 
 		// 	8)  While there are more transactions coming in remotely:
@@ -197,7 +199,7 @@ export class OnlineManager
 		while (remoteChangesSinceInitialGoOnline.length) {
 			remoteChanges                     = remoteChangesSinceInitialGoOnline
 			remoteChangesSinceInitialGoOnline = []
-			await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges)
+			await offlineDeltaStore.addRemoteChanges(repository, remoteChanges)
 		}
 
 		// 9)  Flip the online state to true

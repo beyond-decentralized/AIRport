@@ -1,23 +1,22 @@
 import {
 	field,
 	IQNumberField
-}          from '@airport/air-control'
+}           from '@airport/air-control'
+import {DI} from '@airport/di'
 import {
-	DI
-}          from '@airport/di'
-import {
-	IRepositoryTransactionHistoryDao,
 	REPO_TRANS_HISTORY_DAO,
 	RepositoryTransactionHistoryBlockId,
 	RepositoryTransactionHistoryId
-}          from '@airport/holding-pattern'
+}           from '@airport/holding-pattern'
 import {
 	BaseRepositoryTransactionHistoryUpdateStageDao,
 	IBaseRepositoryTransactionHistoryUpdateStageDao,
-	QRepositoryTransactionHistoryUpdateStage,
+	QRepositoryTransactionHistoryUpdateStage
+}           from '../../generated/generated'
+import {
 	REPO_TRANS_HISTORY_UPDATE_STAGE_DAO
-}          from '../..'
-import {Q} from '../../generated/generated'
+}           from '../../diTokens'
+import {Q}  from '../../generated/generated'
 
 export type RepositoryTransactionHistoryUpdateStageValues = [
 	RepositoryTransactionHistoryId,
@@ -42,13 +41,6 @@ export class RepositoryTransactionHistoryUpdateStageDao
 	extends BaseRepositoryTransactionHistoryUpdateStageDao
 	implements IRepositoryTransactionHistoryUpdateStageDao {
 
-	repoTransHistoryDao: Promise<IRepositoryTransactionHistoryDao>
-
-	constructor() {
-		super()
-		this.repoTransHistoryDao = DI.getP(REPO_TRANS_HISTORY_DAO)
-	}
-
 	async insertValues(
 		values: RepositoryTransactionHistoryUpdateStageValues[]
 	): Promise<number> {
@@ -67,17 +59,19 @@ export class RepositoryTransactionHistoryUpdateStageDao
 	async updateRepositoryTransactionHistory(): Promise<number> {
 		const rthus = this.db.from
 
-		return await (await this.repoTransHistoryDao).setBlockIdWhereId((
+		const repoTransHistoryDao = await DI.get(REPO_TRANS_HISTORY_DAO)
+
+		return await repoTransHistoryDao.setBlockIdWhereId((
 			idField: IQNumberField
-		) => {
-			field({
-				from: [
-					rthus
-				],
-				select: rthus.blockId,
-				where: rthus.repositoryTransactionHistoryId.equals(idField)
-			})
-		})
+			) =>
+				field({
+					from: [
+						rthus
+					],
+					select: rthus.blockId,
+					where: rthus.repositoryTransactionHistoryId.equals(idField)
+				})
+		)
 	}
 
 	async delete( //

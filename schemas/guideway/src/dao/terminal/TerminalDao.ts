@@ -103,12 +103,11 @@ export class TerminalDao
 		// Superset of all of repository ids received for all of the above terminals
 		repositoryIds: AgtRepositoryId[],
 	): Promise<Map<TerminalId, AgtRepositoryId>> {
+		const airDb = await DI.get(AIR_DB)
+
 		const resultMapByTerminalId: Map<TerminalId, AgtRepositoryId> = new Map()
 
 		let tr: QTerminalRepository
-
-		const airDb = await DI.get(AIR_DB)
-
 		const results = await airDb.find.sheet({
 			from: [
 				tr = Q.TerminalRepository,

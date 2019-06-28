@@ -2,6 +2,7 @@ import {
 	and,
 	or
 }                           from '@airport/air-control'
+import {AIR_DB}             from '@airport/air-control'
 import {DI}                 from '@airport/di'
 import {
 	JSONBaseOperation,
@@ -24,7 +25,7 @@ import {
 	IBaseMissingRecordDao,
 	Q,
 	QMissingRecord
-}                           from '../../generated/generated'
+}                    from '../../generated/generated'
 
 export interface IMissingRecordDao
 	extends IBaseMissingRecordDao {
@@ -84,7 +85,9 @@ export class MissingRecordDao
 
 		const currentSchemaVersionMapById: { [schemaVersionId: number]: ISchemaVersion } = {}
 
-		for (const schema of this.airDb.schemas) {
+		const airDb = await DI.get(AIR_DB)
+
+		for (const schema of airDb.schemas) {
 			const schemaVersion                           = schema.currentVersion
 			currentSchemaVersionMapById[schemaVersion.id] = schemaVersion
 		}
@@ -124,7 +127,7 @@ export class MissingRecordDao
 			return []
 		}
 
-		return await this.airDb.find.field({
+		return await airDb.find.field({
 			select: mr.id,
 			from: [mr],
 			where: or(...repositoryWhereFragments)

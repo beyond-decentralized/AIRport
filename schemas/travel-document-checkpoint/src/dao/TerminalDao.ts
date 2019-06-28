@@ -1,18 +1,19 @@
-import {and}          from '@airport/air-control'
+import {and}              from '@airport/air-control'
 import {
 	TerminalName,
 	TerminalSecondId
-}                     from '@airport/arrivals-n-departures'
-import {DI}           from '@airport/di'
-import {UserId}       from '../ddl/ddl'
-import {TERMINAL_DAO} from '../diTokens'
+}                         from '@airport/arrivals-n-departures'
+import {DI}               from '@airport/di'
+import {ensureChildJsMap} from '@airport/ground-control'
+import {UserId}           from '../ddl/ddl'
+import {TERMINAL_DAO}     from '../diTokens'
 import {
 	BaseTerminalDao,
 	IBaseTerminalDao,
 	ITerminal,
 	Q,
 	QTerminal
-}                     from '../generated/generated'
+}                         from '../generated/generated'
 
 export interface ITerminalDao
 	extends IBaseTerminalDao {
@@ -45,8 +46,8 @@ export class TerminalDao
 
 		const terminals = await this.findByIds(ownerIds, names, secondIds)
 		for (const terminal of terminals) {
-			this.utils.ensureChildJsMap(
-				this.utils.ensureChildJsMap(terminalMap,
+			ensureChildJsMap(
+				ensureChildJsMap(terminalMap,
 					terminal.owner.id),
 				terminal.name)
 				.set(terminal.secondId, terminal)

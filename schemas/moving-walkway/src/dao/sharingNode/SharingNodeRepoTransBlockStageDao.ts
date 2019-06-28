@@ -40,11 +40,10 @@ export class SharingNodeRepoTransBlockStageDao
 	): Promise<number> {
 		const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlockStage
 
-		let snrtbs: QSharingNodeRepoTransBlockStage
-
 		const airDb = await DI.get(AIR_DB)
 
-		return await this.airDb.db.insertValues(dbEntity, {
+		let snrtbs: QSharingNodeRepoTransBlockStage
+		return await airDb.insertValues(dbEntity, {
 			insertInto: snrtbs = Q.SharingNodeRepoTransBlockStage,
 			columns: [
 				snrtbs.sharingNodeId,

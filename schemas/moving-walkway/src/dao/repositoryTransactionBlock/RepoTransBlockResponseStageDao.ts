@@ -1,3 +1,4 @@
+import {AIR_DB}                              from '@airport/air-control'
 import {
 	RepoTransBlockSyncOutcomeType,
 	TmRepositoryTransactionBlockId
@@ -39,8 +40,10 @@ export class RepoTransBlockResponseStageDao
 
 		let smrs: QRepoTransBlockResponseStage
 
+		const airDb = await DI.get(AIR_DB)
+
 		return await
-			this.airDb.db.insertValues(dbEntity, {
+			airDb.insertValues(dbEntity, {
 				insertInto: smrs = Q.RepoTransBlockResponseStage,
 				columns: [
 					smrs.id,

@@ -10,11 +10,6 @@ const diTokens_1 = require("../../diTokens");
 class RepositoryManager {
     constructor() {
         this.repositoriesById = {};
-        di_1.DI.get((utils) => {
-            this.utils = utils;
-        }, UTILS);
-        this.dbFacade = di_1.DI.laterP(air_control_1.DB_FACADE);
-        this.repositoryDao = di_1.DI.getP(holding_pattern_1.REPOSITORY_DAO);
     }
     async initialize() {
         await this.ensureRepositoryRecords();
@@ -24,8 +19,8 @@ class RepositoryManager {
             await this.addDeltaStore(repository);
         }
     }
-    async findReposWithDetailsByIds(...repositoryIds) {
-        return await (await this.repositoryDao).findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail);
+    findReposWithDetailsByIds(...repositoryIds) {
+        return di_1.DI.get(holding_pattern_1.REPOSITORY_DAO).then(repositoryDao => repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail));
     }
     async createRepository(appName, distributionStrategy, offlineStoreType, platformType, platformConfig, recordIdField) {
         let repository = await this.createRepositoryRecord(appName, distributionStrategy, platformType, platformConfig);
@@ -60,9 +55,12 @@ class RepositoryManager {
     getDeltaStore(repository) {
         return this.deltaStore[repository.id];
     }
-    async ensureRepositoryRecords() {
-        this.repositories = await (await this.repositoryDao).find.tree({
-            select: {}
+    ensureRepositoryRecords() {
+        return di_1.DI.get(holding_pattern_1.REPOSITORY_DAO).then(repositoryDao => {
+            // TODO: verify that we want to get ALL of the repositories
+            this.repositories = repositoryDao.db.find.tree({
+                select: {}
+            });
         });
         /*
                         if (!this.repositories.length) {
@@ -101,7 +99,8 @@ class RepositoryManager {
         }
         let deltaStoreConfig = new terminal_map_1.DeltaStoreConfig(jsonDeltaStoreConfig);
         let deltaStore = new DeltaStore_1.DeltaStore(deltaStoreConfig, sharingAdaptor);
-        deltaStore.config.changeListConfig.changeListInfo.dbId = (await this.dbFacade()).name;
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        deltaStore.config.changeListConfig.changeListInfo.dbId = dbFacade.name;
         this.deltaStore[repository.id] = deltaStore;
         return deltaStore;
     }
@@ -119,12 +118,14 @@ class RepositoryManager {
             transactionHistory: null,
             url: null,
         };
-        await (await this.repositoryDao).create(repository);
+        const repositoryDao = await di_1.DI.get(holding_pattern_1.REPOSITORY_DAO);
+        await repositoryDao.create(repository);
         this.repositories.push(repository);
         return repository;
     }
     async ensureAndCacheRepositories() {
-        this.repositories = await (await this.repositoryDao).find.tree({
+        const repositoryDao = await di_1.DI.get(holding_pattern_1.REPOSITORY_DAO);
+        this.repositories = await repositoryDao.db.find.tree({
             select: {}
         });
         this.repositories.forEach((repository) => {

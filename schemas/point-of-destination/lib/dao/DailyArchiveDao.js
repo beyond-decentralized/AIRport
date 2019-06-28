@@ -7,9 +7,10 @@ const baseDaos_1 = require("../generated/baseDaos");
 const qSchema_1 = require("../generated/qSchema");
 class DailyArchiveDao extends baseDaos_1.BaseDailyArchiveDao {
     async addRecords(values) {
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
         const dbEntity = qSchema_1.Q.db.currentVersion.entityMapByName.DailyArchive;
         let da;
-        await this.airDb.db.insertValues(dbEntity, {
+        await airDb.insertValues(dbEntity, {
             insertInto: da = qSchema_1.Q.DailyArchive,
             columns: [
                 da.repository.id,
@@ -20,6 +21,7 @@ class DailyArchiveDao extends baseDaos_1.BaseDailyArchiveDao {
         });
     }
     async findForRepositoryIdsOnDates(repositoryIds, dates) {
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
         const whereClauseFragments = [];
         let i = -1;
         let dsl = qSchema_1.Q.DailyArchive;
@@ -27,7 +29,7 @@ class DailyArchiveDao extends baseDaos_1.BaseDailyArchiveDao {
             const repositoryDates = dates[++i];
             whereClauseFragments.push(air_control_1.and(dsl.repository.id.equals(repositoryId), dsl.dailyArchiveLog.dateNumber.in(repositoryDates)));
         }
-        return await this.airDb.find.sheet({
+        return await airDb.find.sheet({
             from: [
                 dsl
             ],

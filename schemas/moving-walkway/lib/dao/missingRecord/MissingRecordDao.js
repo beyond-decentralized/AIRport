@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const air_control_2 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
@@ -24,7 +25,8 @@ class MissingRecordDao extends generated_1.BaseMissingRecordDao {
         const mr = generated_1.Q.MissingRecord;
         let numClauses = 0;
         const currentSchemaVersionMapById = {};
-        for (const schema of this.airDb.schemas) {
+        const airDb = await di_1.DI.get(air_control_2.AIR_DB);
+        for (const schema of airDb.schemas) {
             const schemaVersion = schema.currentVersion;
             currentSchemaVersionMapById[schemaVersion.id] = schemaVersion;
         }
@@ -49,7 +51,7 @@ class MissingRecordDao extends generated_1.BaseMissingRecordDao {
         if (!numClauses) {
             return [];
         }
-        return await this.airDb.find.field({
+        return await airDb.find.field({
             select: mr.id,
             from: [mr],
             where: air_control_1.or(...repositoryWhereFragments)

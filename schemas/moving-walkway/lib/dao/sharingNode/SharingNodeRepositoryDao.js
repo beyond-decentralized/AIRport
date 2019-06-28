@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
@@ -42,7 +43,7 @@ class SharingNodeRepositoryDao extends generated_1.BaseSharingNodeRepositoryDao 
             where: air_control_1.and(snr.repository.id.in(repositoryIds), snr.sharingNode.id.in(sharingNodeIds))
         });
         sharingNodeRepos.forEach(sharingNodeRepo => {
-            this.utils.ensureChildJsMap(repositoriesBySharingNodeIds, sharingNodeRepo.sharingNode.id)
+            ground_control_1.ensureChildJsMap(repositoriesBySharingNodeIds, sharingNodeRepo.sharingNode.id)
                 .set(sharingNodeRepo.repository.id, sharingNodeRepo);
         });
         return repositoriesBySharingNodeIds;
@@ -67,18 +68,19 @@ class SharingNodeRepositoryDao extends generated_1.BaseSharingNodeRepositoryDao 
             where: air_control_1.and(snr.sharingNode.id.in(sharingNodeIds), snr.agtRepositoryId.in(agtRepositoryIds))
         });
         sharingNodeRepos.forEach(sharingNodeRepo => {
-            this.utils.ensureChildJsMap(repositoryIdsBySharingNodeAndAgtRepositoryIds, sharingNodeRepo.sharingNode.id)
+            ground_control_1.ensureChildJsMap(repositoryIdsBySharingNodeAndAgtRepositoryIds, sharingNodeRepo.sharingNode.id)
                 .set(sharingNodeRepo.agtRepositoryId, sharingNodeRepo.repository.id);
         });
         return repositoryIdsBySharingNodeAndAgtRepositoryIds;
     }
     async findNewRepoTransHistoriesForSharingNodes(sharingNodeIds) {
         const sharingNodeIdMapByRepositoryId = new Map();
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
         let snr = generated_1.Q.SharingNodeRepository;
         let r;
         let rth;
         // const dbEntity = this.qMetadataUtils.getDbEntity(snr);
-        const sharingNodeIdsWithRepoTransHistoryIds = await this.airDb.find.sheet({
+        const sharingNodeIdsWithRepoTransHistoryIds = await airDb.find.sheet({
             from: [
                 snr,
                 r = snr.repository.innerJoin(),
@@ -95,7 +97,7 @@ class SharingNodeRepositoryDao extends generated_1.BaseSharingNodeRepositoryDao 
         for (const sharingNodeIdWithRepoTransHistoryId of sharingNodeIdsWithRepoTransHistoryIds) {
             const sharingNodeId = sharingNodeIdWithRepoTransHistoryId[0];
             const repositoryId = sharingNodeIdWithRepoTransHistoryId[1];
-            this.utils.ensureChildJsSet(sharingNodeIdMapByRepositoryId, repositoryId)
+            ground_control_1.ensureChildJsSet(sharingNodeIdMapByRepositoryId, repositoryId)
                 .add(sharingNodeId);
             repositoryTransactionHistoryIdSet.add(sharingNodeIdWithRepoTransHistoryId[2]);
         }

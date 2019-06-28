@@ -1,4 +1,5 @@
 import {
+	AIR_DB,
 	and,
 	field,
 	or
@@ -96,8 +97,10 @@ export class RecordUpdateStageDao
 		idMap: Map<RepositoryId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
 	): Promise<void> {
-		const dbEntity = this.airDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
-		const qEntity  = this.airDb.qSchemas[schemaIndex][dbEntity.name]
+		const airDb = await DI.get(AIR_DB)
+
+		const dbEntity = airDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
+		const qEntity  = airDb.qSchemas[schemaIndex][dbEntity.name]
 
 		const repositoryEquals: JSONBaseOperation[] = []
 		for (const [repositoryId, idsForRepository] of idMap) {
@@ -116,7 +119,7 @@ export class RecordUpdateStageDao
 
 		const setClause = {}
 		for (const columnIndex of updatedColumnIndexes) {
-			const column = dbEntity.columns[columnIndex];
+			const column            = dbEntity.columns[columnIndex]
 			let columnRus           = Q.RecordUpdateStage
 			let columnSetClause     = field({
 				from: [

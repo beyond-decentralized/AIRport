@@ -1,7 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const air_control_2 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const ground_control_2 = require("@airport/ground-control");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
 class SharingNodeRepoTransBlockDao extends generated_1.BaseSharingNodeRepoTransBlockDao {
@@ -16,7 +19,7 @@ class SharingNodeRepoTransBlockDao extends generated_1.BaseSharingNodeRepoTransB
             where: air_control_1.and(snrtb.sharingNode.id.in(sharingNodeIds), snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds))
         });
         for (const record of records) {
-            this.utils.ensureChildJsMap(mapBySharingNodeId, record.sharingNode.id)
+            ground_control_1.ensureChildJsMap(mapBySharingNodeId, record.sharingNode.id)
                 .set(record.repositoryTransactionBlock.id, record);
         }
         return mapBySharingNodeId;
@@ -50,8 +53,9 @@ class SharingNodeRepoTransBlockDao extends generated_1.BaseSharingNodeRepoTransB
     }
     async insertValues(values) {
         const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock;
+        const airDb = await di_1.DI.get(air_control_2.AIR_DB);
         let snrtb;
-        return await this.airDb.db.insertValues(dbEntity, {
+        return await airDb.insertValues(dbEntity, {
             insertInto: snrtb = generated_1.Q.SharingNodeRepoTransBlock,
             columns: [
                 snrtb.sharingNode.id,
@@ -68,7 +72,8 @@ class SharingNodeRepoTransBlockDao extends generated_1.BaseSharingNodeRepoTransB
         const repoTransBlocksBySharingNodeId = new Map();
         const repositoryTransactionBlockIds = new Set();
         let snrtb;
-        const records = await this.airDb.find.sheet({
+        const airDb = await di_1.DI.get(air_control_2.AIR_DB);
+        const records = await airDb.find.sheet({
             from: [
                 snrtb = generated_1.Q.SharingNodeRepoTransBlock,
             ],
@@ -80,7 +85,7 @@ class SharingNodeRepoTransBlockDao extends generated_1.BaseSharingNodeRepoTransB
         });
         for (const record of records) {
             const sharingNodeRepoTransBlockId = record[1];
-            this.utils.ensureChildArray(repoTransBlocksBySharingNodeId, record[0])
+            ground_control_2.ensureChildArray(repoTransBlocksBySharingNodeId, record[0])
                 .push(sharingNodeRepoTransBlockId);
             repositoryTransactionBlockIds.add(sharingNodeRepoTransBlockId);
         }

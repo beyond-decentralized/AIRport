@@ -1,5 +1,5 @@
-import { BaseLogEntryTypeDao, IBaseLogEntryDao } from '../generated/baseDaos';
-export interface ILogEntryTypeDao extends IBaseLogEntryDao {
+import { BaseLogEntryTypeDao, IBaseLogEntryTypeDao } from '../generated/baseDaos';
+export interface ILogEntryTypeDao extends IBaseLogEntryTypeDao {
 }
 export declare class LogEntryTypeDao extends BaseLogEntryTypeDao implements ILogEntryTypeDao {
 }

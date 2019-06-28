@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../diTokens");
 const generated_1 = require("../generated/generated");
 class SchemaDao extends generated_1.BaseSchemaDao {
@@ -59,8 +60,9 @@ class SchemaDao extends generated_1.BaseSchemaDao {
     }
     findMaxIndex() {
         return __awaiter(this, void 0, void 0, function* () {
+            const airDb = yield di_1.DI.get(air_control_1.AIR_DB);
             const s = generated_1.Q.Schema;
-            return yield this.airDb.findOne.field({
+            return yield airDb.findOne.field({
                 select: air_control_1.max(s.index),
                 from: [
                     s
@@ -70,13 +72,14 @@ class SchemaDao extends generated_1.BaseSchemaDao {
     }
     findMaxVersionedMapBySchemaAndDomainNames(schemaDomainNames, schemaNames) {
         return __awaiter(this, void 0, void 0, function* () {
+            const airDb = yield di_1.DI.get(air_control_1.AIR_DB);
             const maxVersionedMapBySchemaAndDomainNames = new Map();
             let sv;
             let s;
             let d;
             let sMaV;
             let sMiV;
-            const schemas = yield this.airDb.db.find.tree({
+            const schemas = yield airDb.find.tree({
                 from: [
                     sMiV = air_control_1.tree({
                         from: [
@@ -146,7 +149,7 @@ class SchemaDao extends generated_1.BaseSchemaDao {
                 ]
             });
             for (const schema of schemas) {
-                this.utils.ensureChildJsMap(maxVersionedMapBySchemaAndDomainNames, schema.domain.name)
+                ground_control_1.ensureChildJsMap(maxVersionedMapBySchemaAndDomainNames, schema.domain.name)
                     .set(schema.name, schema);
             }
             return maxVersionedMapBySchemaAndDomainNames;

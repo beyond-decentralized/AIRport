@@ -7,9 +7,9 @@ const generated_1 = require("../../generated/generated");
 class SharingNodeRepoTransBlockStageDao extends generated_1.BaseSharingNodeRepoTransBlockStageDao {
     async insertValues(values) {
         const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlockStage;
-        let snrtbs;
         const airDb = await di_1.DI.get(air_control_1.AIR_DB);
-        return await this.airDb.db.insertValues(dbEntity, {
+        let snrtbs;
+        return await airDb.insertValues(dbEntity, {
             insertInto: snrtbs = generated_1.Q.SharingNodeRepoTransBlockStage,
             columns: [
                 snrtbs.sharingNodeId,

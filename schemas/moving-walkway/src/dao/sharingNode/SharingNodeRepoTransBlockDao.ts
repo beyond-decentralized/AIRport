@@ -2,11 +2,14 @@ import {
 	and,
 	field
 }                                          from '@airport/air-control'
+import {AIR_DB}                            from '@airport/air-control'
 import {
 	SharingNodeRepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
 }                                          from '@airport/arrivals-n-departures'
 import {DI}                                from '@airport/di'
+import {ensureChildJsMap}                  from '@airport/ground-control'
+import {ensureChildArray}                  from '@airport/ground-control'
 import {SharingNodeId}                     from '../../ddl/ddl'
 import {SHARING_NODE_REPO_TRANS_BLOCK_DAO} from '../../diTokens'
 import {
@@ -89,7 +92,7 @@ export class SharingNodeRepoTransBlockDao
 		})
 
 		for (const record of records) {
-			this.utils.ensureChildJsMap(mapBySharingNodeId, record.sharingNode.id)
+			ensureChildJsMap(mapBySharingNodeId, record.sharingNode.id)
 				.set(record.repositoryTransactionBlock.id, record)
 		}
 
@@ -142,9 +145,10 @@ export class SharingNodeRepoTransBlockDao
 	): Promise<number> {
 		const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock
 
-		let snrtb: QSharingNodeRepoTransBlock
+		const airDb = await DI.get(AIR_DB)
 
-		return await this.airDb.db.insertValues(dbEntity, {
+		let snrtb: QSharingNodeRepoTransBlock
+		return await airDb.insertValues(dbEntity, {
 			insertInto: snrtb = Q.SharingNodeRepoTransBlock,
 			columns: [
 				snrtb.sharingNode.id,
@@ -169,7 +173,9 @@ export class SharingNodeRepoTransBlockDao
 
 		let snrtb: QSharingNodeRepoTransBlock
 
-		const records = await this.airDb.find.sheet({
+		const airDb = await DI.get(AIR_DB)
+
+		const records = await airDb.find.sheet({
 			      from: [
 				      snrtb = Q.SharingNodeRepoTransBlock,
 			      ],
@@ -186,7 +192,7 @@ export class SharingNodeRepoTransBlockDao
 
 		for (const record of records) {
 			const sharingNodeRepoTransBlockId = record[1]
-			this.utils.ensureChildArray(repoTransBlocksBySharingNodeId, record[0])
+			ensureChildArray(repoTransBlocksBySharingNodeId, record[0])
 				.push(sharingNodeRepoTransBlockId)
 			repositoryTransactionBlockIds.add(sharingNodeRepoTransBlockId)
 		}

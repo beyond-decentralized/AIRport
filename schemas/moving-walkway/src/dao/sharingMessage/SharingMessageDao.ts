@@ -1,5 +1,7 @@
+import {AIR_DB}              from '@airport/air-control'
 import {TmSharingMessageId}  from '@airport/arrivals-n-departures'
 import {DI}                  from '@airport/di'
+import {ensureChildArray}    from '@airport/ground-control'
 import {
 	IRecordHistoryNewValueDao,
 	IRecordHistoryOldValueDao,
@@ -113,8 +115,10 @@ export class SharingMessageDao
 		const sharingMessageIdsBySharingNodeId: Map<SharingNodeId, TmSharingMessageId[]>
 			      = new Map()
 
+		const airDb = await DI.get(AIR_DB)
+
 		let sm: QSharingMessage
-		const data = await this.airDb.find.sheet({
+		const data = await airDb.find.sheet({
 			from: [
 				sm = Q.SharingMessage
 			],
@@ -126,7 +130,7 @@ export class SharingMessageDao
 		})
 
 		for (const record of data) {
-			this.utils.ensureChildArray(sharingMessageIdsBySharingNodeId, record[0])
+			ensureChildArray(sharingMessageIdsBySharingNodeId, record[0])
 				.push(record[1])
 		}
 

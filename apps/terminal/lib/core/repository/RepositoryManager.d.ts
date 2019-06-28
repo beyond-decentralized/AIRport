@@ -37,17 +37,13 @@ export interface IRepositoryManager {
     findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>>;
 }
 export declare class RepositoryManager implements IRepositoryManager {
-    private dbFacade;
     deltaStore: IDeltaStore;
     repositories: IRepository[];
     repositoriesById: {
         [repositoryId: string]: IRepository;
     };
-    private repositoryDao;
     terminal: ITerminal;
     userEmail: string;
-    private utils;
-    constructor();
     initialize(): Promise<void>;
     findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>>;
     createRepository(appName: string, distributionStrategy: DistributionStrategy, offlineStoreType: StoreType, platformType: PlatformType, platformConfig: any, recordIdField: string): Promise<IRepository>;

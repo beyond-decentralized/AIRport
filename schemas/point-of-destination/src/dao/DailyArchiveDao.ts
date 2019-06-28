@@ -1,4 +1,5 @@
 import {
+	AIR_DB,
 	and,
 	JSONLogicalOperation,
 	or
@@ -38,9 +39,11 @@ export class DailyArchiveDao
 	async addRecords(
 		values: DailyArchiveValues[]
 	): Promise<void> {
+		const airDb = await DI.get(AIR_DB)
+
 		const dbEntity = Q.db.currentVersion.entityMapByName.DailyArchive
 		let da: QDailyArchive
-		await this.airDb.db.insertValues(dbEntity, {
+		await airDb.insertValues(dbEntity, {
 			insertInto: da = Q.DailyArchive,
 			columns: [
 				da.repository.id,
@@ -55,6 +58,8 @@ export class DailyArchiveDao
 		repositoryIds: DailyArchiveRepositoryId[],
 		dates: DailyArchiveDate[][],
 	): Promise<FlatDailyArchive[]> {
+		const airDb = await DI.get(AIR_DB)
+
 		const whereClauseFragments: JSONLogicalOperation[] = []
 		let i                                              = -1
 		let dsl: QDailyArchive                             = Q.DailyArchive
@@ -66,7 +71,7 @@ export class DailyArchiveDao
 					dsl.dailyArchiveLog.dateNumber.in(repositoryDates)
 				))
 		}
-		return <FlatDailyArchive[]>await this.airDb.find.sheet({
+		return <FlatDailyArchive[]>await airDb.find.sheet({
 			from: [
 				dsl
 			],

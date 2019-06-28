@@ -1,17 +1,14 @@
-import { IRepository } from '@airport/holding-pattern';
+import { IRepository, IRepositoryTransactionHistoryDao } from '@airport/holding-pattern';
+import { IRepositoryManager } from '../core/repository/RepositoryManager';
+import { IOfflineDeltaStore } from '../data/OfflineDeltaStore';
 export interface IOnlineManager {
-    goOffline(): void;
+    goOffline(): Promise<void>;
     goOnline(): Promise<void>;
     isOnline(): boolean;
 }
 export declare class OnlineManager implements IOnlineManager {
-    goOffline(): void;
+    goOffline(): Promise<void>;
     private online;
-    private offlineDeltaStore;
-    private repositoryManager;
-    private repositoryDao;
-    private repoTransHistoryDao;
-    constructor();
     /**
      There are tree update states:
      LOCAL            0
@@ -45,6 +42,6 @@ export declare class OnlineManager implements IOnlineManager {
      * @returns {Promise<void>}
      */
     goOnline(): Promise<void>;
-    repositoryGoOnline(repository: IRepository): Promise<void>;
+    repositoryGoOnline(repository: IRepository, offlineDeltaStore: IOfflineDeltaStore, repositoryManager: IRepositoryManager, repoTransHistoryDao: IRepositoryTransactionHistoryDao): Promise<void>;
     isOnline(): boolean;
 }

@@ -26,8 +26,9 @@ class RecordUpdateStageDao extends generated_1.BaseRecordUpdateStageDao {
         });
     }
     async updateEntityWhereIds(schemaIndex, schemaVersionId, tableIndex, idMap, updatedColumnIndexes) {
-        const dbEntity = this.airDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
-        const qEntity = this.airDb.qSchemas[schemaIndex][dbEntity.name];
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const dbEntity = airDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
+        const qEntity = airDb.qSchemas[schemaIndex][dbEntity.name];
         const repositoryEquals = [];
         for (const [repositoryId, idsForRepository] of idMap) {
             const actorEquals = [];

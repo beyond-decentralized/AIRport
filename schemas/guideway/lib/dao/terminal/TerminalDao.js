@@ -29,9 +29,9 @@ class TerminalDao extends baseDaos_1.BaseTerminalDao {
     async findTerminalRepositoryVerificationRecords(terminalIds, 
     // Superset of all of repository ids received for all of the above terminals
     repositoryIds) {
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
         const resultMapByTerminalId = new Map();
         let tr;
-        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
         const results = await airDb.find.sheet({
             from: [
                 tr = qSchema_1.Q.TerminalRepository,

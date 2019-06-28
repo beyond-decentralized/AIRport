@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
@@ -7,7 +8,8 @@ class RepoTransBlockResponseStageDao extends generated_1.BaseRepoTransBlockRespo
     async insertValues(values) {
         const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.RepoTransBlockResponseStage;
         let smrs;
-        return await this.airDb.db.insertValues(dbEntity, {
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        return await airDb.insertValues(dbEntity, {
             insertInto: smrs = generated_1.Q.RepoTransBlockResponseStage,
             columns: [
                 smrs.id,

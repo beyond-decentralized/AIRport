@@ -1,4 +1,5 @@
 import {
+	AIR_DB,
 	and,
 	distinct,
 	IQMetadataUtils,
@@ -7,6 +8,10 @@ import {
 }                                    from '@airport/air-control'
 import {AgtRepositoryId}             from '@airport/arrivals-n-departures'
 import {DI}                          from '@airport/di'
+import {
+	ensureChildJsMap,
+	ensureChildJsSet
+}                                    from '@airport/ground-control'
 import {
 	IRecordHistory,
 	IRecordHistoryNewValueDao,
@@ -115,7 +120,7 @@ export class SharingNodeRepositoryDao
 
 		sharingNodeRepos.forEach(
 			sharingNodeRepo => {
-				this.utils.ensureChildJsMap(repositoriesBySharingNodeIds, sharingNodeRepo.sharingNode.id)
+				ensureChildJsMap(repositoriesBySharingNodeIds, sharingNodeRepo.sharingNode.id)
 					.set(sharingNodeRepo.repository.id, sharingNodeRepo)
 			})
 
@@ -154,7 +159,7 @@ export class SharingNodeRepositoryDao
 
 		sharingNodeRepos.forEach(
 			sharingNodeRepo => {
-				this.utils.ensureChildJsMap(repositoryIdsBySharingNodeAndAgtRepositoryIds,
+				ensureChildJsMap(repositoryIdsBySharingNodeAndAgtRepositoryIds,
 					sharingNodeRepo.sharingNode.id)
 					.set(
 						sharingNodeRepo.agtRepositoryId,
@@ -171,12 +176,14 @@ export class SharingNodeRepositoryDao
 		const sharingNodeIdMapByRepositoryId
 			      : Map<RepositoryId, Set<SharingNodeId>> = new Map()
 
+		const airDb = await DI.get(AIR_DB)
+
 		let snr: QSharingNodeRepository = Q.SharingNodeRepository
 		let r: QRepository
 		let rth: QRepositoryTransactionHistory
 
 		// const dbEntity = this.qMetadataUtils.getDbEntity(snr);
-		const sharingNodeIdsWithRepoTransHistoryIds = await this.airDb.find.sheet({
+		const sharingNodeIdsWithRepoTransHistoryIds = await airDb.find.sheet({
 			from: [
 				snr,
 				r = snr.repository.innerJoin(),
@@ -197,7 +204,7 @@ export class SharingNodeRepositoryDao
 		for (const sharingNodeIdWithRepoTransHistoryId of sharingNodeIdsWithRepoTransHistoryIds) {
 			const sharingNodeId: SharingNodeId = sharingNodeIdWithRepoTransHistoryId[0]
 			const repositoryId: RepositoryId   = sharingNodeIdWithRepoTransHistoryId[1]
-			this.utils.ensureChildJsSet(sharingNodeIdMapByRepositoryId,
+			ensureChildJsSet(sharingNodeIdMapByRepositoryId,
 				repositoryId)
 				.add(sharingNodeId)
 			repositoryTransactionHistoryIdSet.add(sharingNodeIdWithRepoTransHistoryId[2])

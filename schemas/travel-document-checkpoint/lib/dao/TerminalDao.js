@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../diTokens");
 const generated_1 = require("../generated/generated");
 class TerminalDao extends generated_1.BaseTerminalDao {
@@ -9,7 +10,7 @@ class TerminalDao extends generated_1.BaseTerminalDao {
         const terminalMap = new Map();
         const terminals = await this.findByIds(ownerIds, names, secondIds);
         for (const terminal of terminals) {
-            this.utils.ensureChildJsMap(this.utils.ensureChildJsMap(terminalMap, terminal.owner.id), terminal.name)
+            ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(terminalMap, terminal.owner.id), terminal.name)
                 .set(terminal.secondId, terminal);
         }
         return terminalMap;

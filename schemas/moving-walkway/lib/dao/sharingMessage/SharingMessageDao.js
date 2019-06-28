@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
@@ -57,8 +59,9 @@ class SharingMessageDao extends generated_1.BaseSharingMessageDao {
         }*/
     async findAllSyncedSharingMessageIdsForSharingNodes(sharingNodeIds) {
         const sharingMessageIdsBySharingNodeId = new Map();
+        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
         let sm;
-        const data = await this.airDb.find.sheet({
+        const data = await airDb.find.sheet({
             from: [
                 sm = generated_1.Q.SharingMessage
             ],
@@ -69,7 +72,7 @@ class SharingMessageDao extends generated_1.BaseSharingMessageDao {
             where: sm.sharingNode.id.in(sharingNodeIds)
         });
         for (const record of data) {
-            this.utils.ensureChildArray(sharingMessageIdsBySharingNodeId, record[0])
+            ground_control_1.ensureChildArray(sharingMessageIdsBySharingNodeId, record[0])
                 .push(record[1]);
         }
         return sharingMessageIdsBySharingNodeId;

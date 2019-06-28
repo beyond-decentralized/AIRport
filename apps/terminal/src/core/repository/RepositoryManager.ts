@@ -1,7 +1,6 @@
 import {
 	and,
 	DB_FACADE,
-	IDatabaseFacade,
 	IEntityUpdateProperties,
 	IQEntityInternal,
 	IQOperableFieldInternal,
@@ -15,7 +14,6 @@ import {StoreType}          from '@airport/ground-control'
 import {
 	IActor,
 	IRepository,
-	IRepositoryDao,
 	IRepositoryTransactionHistory,
 	QRepositoryEntity,
 	REPOSITORY_DAO
@@ -108,25 +106,11 @@ export interface IRepositoryManager {
 export class RepositoryManager
 	implements IRepositoryManager {
 
-	private dbFacade: () => Promise<IDatabaseFacade>
 	deltaStore: IDeltaStore
 	repositories: IRepository[]
 	repositoriesById: { [repositoryId: string]: IRepository } = {}
-	private repositoryDao: Promise<IRepositoryDao>
 	terminal: ITerminal
 	userEmail: string
-	private utils: IUtils
-
-	constructor() {
-		DI.get((
-			utils
-		) => {
-			this.utils = utils
-		}, UTILS)
-
-		this.dbFacade      = DI.laterP(DB_FACADE)
-		this.repositoryDao = DI.getP(REPOSITORY_DAO)
-	}
 
 	async initialize(): Promise<void> {
 		await this.ensureRepositoryRecords()
@@ -137,8 +121,11 @@ export class RepositoryManager
 		}
 	}
 
-	async findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>> {
-		return await (await this.repositoryDao).findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail)
+	findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>> {
+		return DI.get(REPOSITORY_DAO).then(
+			repositoryDao =>
+				repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail)
+		)
 	}
 
 	async createRepository(
@@ -193,10 +180,14 @@ export class RepositoryManager
 		return this.deltaStore[repository.id]
 	}
 
-	private async ensureRepositoryRecords(): Promise<void> {
-		this.repositories = await (await this.repositoryDao).find.tree({
-			select: {}
-		})
+	private ensureRepositoryRecords(): Promise<void> {
+		return DI.get(REPOSITORY_DAO).then(
+			repositoryDao => {
+				// TODO: verify that we want to get ALL of the repositories
+				this.repositories = repositoryDao.db.find.tree({
+					select: {}
+				})
+			})
 		/*
 						if (!this.repositories.length) {
 								let deltaStoreConfig = config.deltaStoreConfig;
@@ -234,9 +225,11 @@ export class RepositoryManager
 			let platformConfig   = JSON.parse(repository.platformConfig)
 			jsonDeltaStoreConfig = <any>{...jsonDeltaStoreConfig, ...platformConfig}
 		}
-		let deltaStoreConfig                                   = new DeltaStoreConfig(jsonDeltaStoreConfig)
-		let deltaStore                                         = new DeltaStore(deltaStoreConfig, sharingAdaptor)
-		deltaStore.config.changeListConfig.changeListInfo.dbId = (await this.dbFacade()).name
+		let deltaStoreConfig = new DeltaStoreConfig(jsonDeltaStoreConfig)
+		let deltaStore       = new DeltaStore(deltaStoreConfig, sharingAdaptor)
+
+		const dbFacade                                         = await DI.get(DB_FACADE)
+		deltaStore.config.changeListConfig.changeListInfo.dbId = dbFacade.name
 		this.deltaStore[repository.id]                         = deltaStore
 
 		return deltaStore
@@ -248,7 +241,7 @@ export class RepositoryManager
 		platformType: PlatformType,
 		platformConfig: any,
 	): Promise<IRepository> {
-		const repository = {
+		const repository    = {
 			distributionStrategy: distributionStrategy,
 			id: null,
 			lastSyncedTransaction: null,
@@ -261,14 +254,17 @@ export class RepositoryManager
 			transactionHistory: null,
 			url: null,
 		}
-		await (await this.repositoryDao).create(repository)
+		const repositoryDao = await DI.get(REPOSITORY_DAO)
+		await repositoryDao.create(repository)
 		this.repositories.push(repository)
 
 		return repository
 	}
 
 	private async ensureAndCacheRepositories(): Promise<void> {
-		this.repositories = await (await this.repositoryDao).find.tree({
+		const repositoryDao = await DI.get(REPOSITORY_DAO)
+
+		this.repositories = await repositoryDao.db.find.tree({
 			select: {}
 		})
 		this.repositories.forEach((repository) => {

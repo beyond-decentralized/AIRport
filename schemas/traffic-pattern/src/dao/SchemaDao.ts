@@ -1,4 +1,5 @@
 import {
+	AIR_DB,
 	and,
 	max,
 	tree,
@@ -7,6 +8,7 @@ import {
 import {DI}         from '@airport/di'
 import {
 	DomainName,
+	ensureChildJsMap,
 	SchemaIndex,
 	SchemaName,
 	SchemaStatus,
@@ -105,8 +107,10 @@ export class SchemaDao
 	}
 
 	async findMaxIndex(): Promise<SchemaIndex> {
+		const airDb = await DI.get(AIR_DB)
+
 		const s = Q.Schema
-		return await this.airDb.findOne.field({
+		return await airDb.findOne.field({
 			select: max(s.index),
 			from: [
 				s
@@ -118,6 +122,8 @@ export class SchemaDao
 		schemaDomainNames: DomainName[],
 		schemaNames: SchemaName[]
 	): Promise<Map<DomainName, Map<SchemaName, ISchema>>> {
+		const airDb = await DI.get(AIR_DB)
+
 		const maxVersionedMapBySchemaAndDomainNames: Map<DomainName, Map<SchemaName, ISchema>>
 			      = new Map()
 
@@ -127,8 +133,7 @@ export class SchemaDao
 		let sMaV
 		let sMiV
 
-
-		const schemas = await this.airDb.db.find.tree({
+		const schemas = await airDb.find.tree({
 			from: [
 				sMiV = tree({
 					from: [
@@ -200,7 +205,7 @@ export class SchemaDao
 		})
 
 		for (const schema of schemas) {
-			this.utils.ensureChildJsMap(
+			ensureChildJsMap(
 				maxVersionedMapBySchemaAndDomainNames, schema.domain.name)
 				.set(schema.name, schema)
 		}
