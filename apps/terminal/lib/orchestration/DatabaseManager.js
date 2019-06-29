@@ -58,43 +58,45 @@ class DatabaseManager {
         const connector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
         await connector.init();
         const storeDriver = await di_1.DI.get(ground_control_1.STORE_DRIVER);
-        await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCES');
-        await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCE_BLOCKS');
-        await storeDriver.dropTable('github_com___airport__airport_code__TERMINAL_RUNS');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__ACTOR_APPLICATION');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__Actor');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__Application');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_ACTORS');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_APPLICATION');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_OPERATION_HISTORY');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_RECORD_HISTORY');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_RECORD_HISTORY_NEW_VALUES');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_RECORD_HISTORY_OLD_VALUES');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_SCHEMAS');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_TRANSACTION_HISTORY');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__REPO_TRANS_HISTORY_CHANGED_REPOSITORY_ACTORS');
-        await storeDriver.dropTable('github_com___airport__holding_pattern__TRANSACTION_HISTORY');
-        await storeDriver.dropTable('github_com___airport__territory__APPLICATIONS');
-        await storeDriver.dropTable('github_com___airport__territory__APPLICATION_PACKAGES');
-        await storeDriver.dropTable('github_com___airport__territory__DOMAINS');
-        await storeDriver.dropTable('github_com___airport__territory__PACKAGED_UNITS');
-        await storeDriver.dropTable('github_com___airport__territory__PACKAGES');
-        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMAS');
-        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_COLUMNS');
-        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_COLUMN_PROPERTIES');
-        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_ENTITIES');
-        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_PROPERTIES');
-        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_REFERENCES');
-        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_RELATIONS');
-        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_RELATION_COLUMNS');
-        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_VERSIONS');
-        await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__Agt');
-        await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__TERMINAL_AGTS');
-        await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__Terminal');
-        await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__USER_TERMINAL');
-        await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__USER_TERMINAL_AGT');
-        await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__User');
+        /*
+        await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCES')
+        await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCE_BLOCKS')
+        await storeDriver.dropTable('github_com___airport__airport_code__TERMINAL_RUNS')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__ACTOR_APPLICATION')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__Actor')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__Application')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_ACTORS')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_APPLICATION')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_OPERATION_HISTORY')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_RECORD_HISTORY')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_RECORD_HISTORY_NEW_VALUES')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_RECORD_HISTORY_OLD_VALUES')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_SCHEMAS')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__REPOSITORY_TRANSACTION_HISTORY')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__REPO_TRANS_HISTORY_CHANGED_REPOSITORY_ACTORS')
+        await storeDriver.dropTable('github_com___airport__holding_pattern__TRANSACTION_HISTORY')
+        await storeDriver.dropTable('github_com___airport__territory__APPLICATIONS')
+        await storeDriver.dropTable('github_com___airport__territory__APPLICATION_PACKAGES')
+        await storeDriver.dropTable('github_com___airport__territory__DOMAINS')
+        await storeDriver.dropTable('github_com___airport__territory__PACKAGED_UNITS')
+        await storeDriver.dropTable('github_com___airport__territory__PACKAGES')
+        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMAS')
+        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_COLUMNS')
+        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_COLUMN_PROPERTIES')
+        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_ENTITIES')
+        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_PROPERTIES')
+        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_REFERENCES')
+        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_RELATIONS')
+        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_RELATION_COLUMNS')
+        await storeDriver.dropTable('github_com___airport__traffic_pattern__SCHEMA_VERSIONS')
+        await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__Agt')
+        await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__TERMINAL_AGTS')
+        await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__Terminal')
+        await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__USER_TERMINAL')
+        await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__USER_TERMINAL_AGT')
+        await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__User')
+*/
         if (await storeDriver.doesTableExist('github_com___airport_territory__PACKAGES')) {
             const queryObjectInitializer = await di_1.DI.get(takeoff_1.QUERY_OBJECT_INITIALIZER);
             await queryObjectInitializer.initialize(airDb);
