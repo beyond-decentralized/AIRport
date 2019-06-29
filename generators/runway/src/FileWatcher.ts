@@ -15,6 +15,9 @@ import {MappedSuperclassBuilder}   from './builder/superclass/MappedSuperclassBu
 import {Configuration}             from './options/Options'
 import {EntityCandidate}           from './parser/EntityCandidate'
 import {generateEntityDefinitions} from './parser/EntityDefinitionGenerator'
+import {AirportDatabase} from '@airport/tower'
+
+(AirportDatabase as any).bogus = 'loaded for schema generation'
 
 /**
  * Created by Papa on 3/30/2016.

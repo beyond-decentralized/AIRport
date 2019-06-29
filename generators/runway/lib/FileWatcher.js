@@ -11,6 +11,8 @@ const QSchemaBuilder_1 = require("./builder/QSchemaBuilder");
 const JsonSchemaBuilder_1 = require("./builder/schema/JsonSchemaBuilder");
 const MappedSuperclassBuilder_1 = require("./builder/superclass/MappedSuperclassBuilder");
 const EntityDefinitionGenerator_1 = require("./parser/EntityDefinitionGenerator");
+const tower_1 = require("@airport/tower");
+tower_1.AirportDatabase.bogus = 'loaded for schema generation';
 /**
  * Created by Papa on 3/30/2016.
  */
