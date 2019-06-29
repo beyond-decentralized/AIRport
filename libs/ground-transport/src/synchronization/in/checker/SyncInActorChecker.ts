@@ -4,7 +4,10 @@ import {
 	TerminalSecondId
 }                              from '@airport/arrivals-n-departures'
 import {DI}                    from '@airport/di'
-import {ensureChildJsMap}      from '@airport/ground-control'
+import {
+	CascadeOverwrite,
+	ensureChildJsMap
+}                              from '@airport/ground-control'
 import {
 	ACTOR_DAO,
 	ActorId,
@@ -111,7 +114,8 @@ export class SyncInActorChecker
 			actorMapById)
 
 		const newActors: IActor[] = this.getNewActors(consistentMessages, actorMap)
-		await actorDao.bulkCreate(newActors, false, false)
+		await actorDao.bulkCreate(newActors,
+			CascadeOverwrite.DEFAULT, false)
 
 		for (const newActor of newActors) {
 			actorMapById.set(newActor.id, newActor)

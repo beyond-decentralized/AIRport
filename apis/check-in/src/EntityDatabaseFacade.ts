@@ -1,17 +1,17 @@
 import {
 	DB_FACADE,
-	EntityFindOne,
 	EntityFind,
-	EntitySearchOne,
+	EntityFindOne,
 	EntitySearch,
+	EntitySearchOne,
 	IDuo,
 	IEntityCreateProperties,
 	IEntityDatabaseFacade,
-	IEntityFindOne,
 	IEntityFind,
+	IEntityFindOne,
 	IEntityIdProperties,
-	IEntitySearchOne,
 	IEntitySearch,
+	IEntitySearchOne,
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
@@ -22,10 +22,13 @@ import {
 	RawInsertColumnValues,
 	RawInsertValues,
 	RawUpdate
-}                 from '@airport/air-control'
-import {DI}       from '@airport/di'
-import {DbEntity} from '@airport/ground-control'
-import {Duo}      from './Duo'
+}            from '@airport/air-control'
+import {DI}  from '@airport/di'
+import {
+	CascadeOverwrite,
+	DbEntity
+}            from '@airport/ground-control'
+import {Duo} from './Duo'
 
 /**
  * Created by Papa on 12/11/2016.
@@ -86,11 +89,12 @@ export class EntityDatabaseFacade<Entity,
 
 	async bulkCreate(
 		entities: EntityCreate[],
-		cascade: boolean          = false,
-		checkIfProcessed: boolean = true
+		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT,
+		checkIfProcessed: boolean          = true
 	): Promise<number> {
 		const dbFacade = await DI.get(DB_FACADE)
-		return await dbFacade.bulkCreate(this.dbEntity, entities, checkIfProcessed, cascade)
+		return await dbFacade.bulkCreate(this.dbEntity, entities,
+			checkIfProcessed, cascadeOverwrite)
 	}
 
 	async insertColumnValues<IQE extends IQEntity>(

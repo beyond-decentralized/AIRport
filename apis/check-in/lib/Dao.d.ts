@@ -1,12 +1,12 @@
 import { IDao, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, QSchema } from '@airport/air-control';
-import { EntityId as DbEntityId } from '@airport/ground-control';
+import { CascadeOverwrite, EntityId as DbEntityId } from '@airport/ground-control';
 /**
  * Created by Papa on 8/26/2017.
  */
 export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, QE extends IQEntity> implements IDao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, QE> {
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>;
     constructor(dbEntityId: DbEntityId, Q: QSchema);
-    bulkCreate(entities: EntityCreate[], cascade?: boolean, checkIfProcessed?: boolean): Promise<number>;
+    bulkCreate(entities: EntityCreate[], cascadeOverwrite?: CascadeOverwrite, checkIfProcessed?: boolean): Promise<number>;
     count(): Promise<number>;
     create<EntityInfo extends EntityCreate | EntityCreate[]>(entityInfo: EntityInfo): Promise<number>;
     delete(entityIdInfo: EntityId | EntityId[]): Promise<number>;

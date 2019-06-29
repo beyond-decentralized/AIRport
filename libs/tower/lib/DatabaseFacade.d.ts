@@ -1,5 +1,5 @@
 import { IAirportDatabase, IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFieldUtils, IFunctionWrapper, IQEntity, IQueryFacade, IQueryUtils, ISchemaUtils, IUpdateCache, MappedEntityArray, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, UpdateRecord } from '@airport/air-control';
-import { DbEntity, ITransactionalConnector } from '@airport/ground-control';
+import { CascadeOverwrite, DbEntity, ITransactionalConnector } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 import { OperationManager } from './OperationManager';
 /**
@@ -9,7 +9,7 @@ export declare class DatabaseFacade extends OperationManager implements IDatabas
     name: string;
     addRepository(name: string, url?: string, platform?: PlatformType, platformConfig?: string, distributionStrategy?: DistributionStrategy): Promise<number>;
     create<E>(dbEntity: DbEntity, entity: E): Promise<number>;
-    bulkCreate<E>(dbEntity: DbEntity, entities: E[], checkIfProcessed?: boolean, cascade?: boolean): Promise<number>;
+    bulkCreate<E>(dbEntity: DbEntity, entities: E[], checkIfProcessed?: boolean, cascadeOverwrite?: CascadeOverwrite): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }): Promise<number>;

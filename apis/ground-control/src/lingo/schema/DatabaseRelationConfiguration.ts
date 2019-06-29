@@ -62,6 +62,15 @@ export enum CascadeType {
 	REMOVE // Cascade on remove operation
 }
 
+export enum CascadeOverwrite {
+	// Always cascade
+	ALWAYS,
+	// Follow the default entity configuration rules
+	DEFAULT,
+	// Never cascade
+	NEVER
+}
+
 
 /**
  * One-To-Many relation configuration

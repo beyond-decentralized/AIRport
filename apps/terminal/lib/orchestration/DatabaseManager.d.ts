@@ -8,6 +8,5 @@ export declare class DatabaseManager implements IDatabaseManager {
     isInitialized(): boolean;
     init(domainName: string, storeType: StoreType): Promise<void>;
     private initTerminal;
-    private bulkCreate;
     private installAirportSchema;
 }

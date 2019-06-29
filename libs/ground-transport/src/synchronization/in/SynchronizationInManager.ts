@@ -6,31 +6,28 @@ import {
 	RepoTransBlockSyncStatus,
 	SyncNotificationMessageToTM,
 	TmSharingMessageId
-}                                       from '@airport/arrivals-n-departures'
-import {DI}                             from '@airport/di'
+}                                 from '@airport/arrivals-n-departures'
+import {DI}                       from '@airport/di'
+import {CascadeOverwrite}         from '@airport/ground-control'
 import {
 	DataOrigin,
 	ISharingMessage,
-	ISharingMessageDao,
 	ISharingNode,
 	ISharingNodeTerminal,
 	RepositoryTransactionBlockData,
 	SHARING_MESSAGE_DAO,
 	SharingNodeId
-}                                       from '@airport/moving-walkway'
-import {transactional}                  from '@airport/tower'
-import {parse}                          from 'zipson/lib'
+}                                 from '@airport/moving-walkway'
+import {transactional}            from '@airport/tower'
+import {parse}                    from 'zipson/lib'
 import {
 	SYNC_IN_CHECKER,
 	SYNC_IN_MANAGER,
 	SYNC_LOG_MESSAGE_PROCESSOR,
 	TWO_STAGE_SYNCED_IN_DATA_PROCESSOR
-}                                       from '../../diTokens'
-import {ISyncInChecker}                 from './checker/SyncInChecker'
-import {SyncInMessageWithContent}       from './model/SyncInMessageWithContent'
-import {IDataToTM}                      from './SyncInUtils'
-import {ISyncLogMessageProcessor}       from './SyncLogMessageProcessor'
-import {ITwoStageSyncedInDataProcessor} from './TwoStageSyncedInDataProcessor'
+}                                 from '../../diTokens'
+import {SyncInMessageWithContent} from './model/SyncInMessageWithContent'
+import {IDataToTM}                from './SyncInUtils'
 
 /**
  * Synchronization Log part of the Message from AGT to Terminal (TM)
@@ -88,7 +85,7 @@ export class SynchronizationInManager
 	): Promise<void> {
 		// TODO: is syncInChecker needed (what was the reason for original injection)?
 		const [sharingMessageDao, syncInChecker,
-			      syncLogMessageProcessor,twoStageSyncedInDataProcessor
+			      syncLogMessageProcessor, twoStageSyncedInDataProcessor
 		      ] = await DI.get(SHARING_MESSAGE_DAO, SYNC_IN_CHECKER,
 			SYNC_LOG_MESSAGE_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
 
@@ -187,7 +184,8 @@ export class SynchronizationInManager
 
 		await transactional(async () => {
 			await sharingMessageDao.bulkCreate(
-				sharingMessages, false, false)
+				sharingMessages, CascadeOverwrite.DEFAULT,
+				false)
 
 
 			// These messages are responses to already sent messages

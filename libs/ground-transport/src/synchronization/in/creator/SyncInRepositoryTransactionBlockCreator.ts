@@ -1,6 +1,9 @@
 import {RepoTransBlockSyncOutcomeType}    from '@airport/arrivals-n-departures'
 import {DI}                               from '@airport/di'
-import {TransactionType}                  from '@airport/ground-control'
+import {
+	CascadeOverwrite,
+	TransactionType
+}                                         from '@airport/ground-control'
 import {
 	ActorId,
 	IActor,
@@ -115,7 +118,8 @@ export class SyncInRepositoryTransactionBlockCreator
 		)
 
 		await repositoryTransactionBlockDao.bulkCreate(
-			allRepositoryTransactionBlocks, false, false)
+			allRepositoryTransactionBlocks, CascadeOverwrite.DEFAULT,
+			false)
 
 
 		let allDataToTM: IDataToTM[] = []
@@ -164,7 +168,8 @@ export class SyncInRepositoryTransactionBlockCreator
 			}))
 		if (missingRecordRepoTransBlocks.length) {
 			await missingRecordRepoTransBlockDao.bulkCreate(
-				missingRecordRepoTransBlocks, false, false)
+				missingRecordRepoTransBlocks, CascadeOverwrite.DEFAULT,
+				false)
 		}
 	}
 
@@ -179,7 +184,8 @@ export class SyncInRepositoryTransactionBlockCreator
 				repositoryTransactionBlock: dataToTM.repositoryTransactionBlock
 			})) as SharingMessageRepoTransBlockECreateProperties[]
 		await sharingMessageRepoTransBlockDao.bulkCreate(
-			sharingMessageRepoTransBlocks, false, false)
+			sharingMessageRepoTransBlocks, CascadeOverwrite.DEFAULT,
+			false)
 	}
 
 	private async recordSharingMessageToHistoryRecords(
@@ -247,11 +253,14 @@ export class SyncInRepositoryTransactionBlockCreator
 		}
 
 		await repositoryTransactionBlockDao.bulkCreate(
-			repositoryTransactionBlocks, false, false)
+			repositoryTransactionBlocks, CascadeOverwrite.DEFAULT,
+			false)
 		await sharingMessageRepoTransBlockDao.bulkCreate(
-			sharingMessageRepoTransBlocks, false, false)
+			sharingMessageRepoTransBlocks, CascadeOverwrite.DEFAULT,
+			false)
 		// await this.repoTransBlockRepoTransHistoryDao.bulkCreate(
-		// 	repoTransBlockRepoTransHistories, false, false);
+		// 	repoTransBlockRepoTransHistories, CascadeOverwrite.DEFAULT,
+		// 	false);
 
 		return repoTransHistoryMapByRepositoryId
 	}

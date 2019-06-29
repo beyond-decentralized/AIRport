@@ -1,8 +1,6 @@
 import {
 	AIR_DB,
 	IAirportDatabase,
-	IDao,
-	IDatabaseFacade,
 }                                 from '@airport/air-control'
 import {SEQUENCE_GENERATOR}       from '@airport/check-in'
 import {DI}                       from '@airport/di'
@@ -209,16 +207,6 @@ export class DatabaseManager
 			const actorDao = await DI.get(ACTOR_DAO)
 			await actorDao.save(actor)
 		})
-	}
-
-	private async bulkCreate(
-		dao: IDao<any, any, any, any, any, any, any>,
-		entities: any[]
-	) {
-		const entityDbFacade            = (dao as any).db
-		const dbFacade: IDatabaseFacade = entityDbFacade.common
-
-		await dbFacade.bulkCreate(entityDbFacade.dbEntity, entities, false, false, false)
 	}
 
 	private async installAirportSchema() {

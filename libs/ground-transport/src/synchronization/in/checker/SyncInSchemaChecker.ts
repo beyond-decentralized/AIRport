@@ -1,5 +1,6 @@
 import {DI}                     from '@airport/di'
 import {
+	CascadeOverwrite,
 	DomainId,
 	DomainName,
 	ensureChildJsMap,
@@ -368,9 +369,10 @@ export class SyncInSchemaChecker
 		}
 
 		await (await domainDao).bulkCreate(Array.from(missingDomainMap.values()),
-			false, false)
+			CascadeOverwrite.DEFAULT, false)
 
-		await (await schemaDao).bulkCreate(newlyNeededSchemas, false, false)
+		await (await schemaDao).bulkCreate(newlyNeededSchemas,
+			CascadeOverwrite.DEFAULT, false)
 
 		return schemaWithChangesMap
 	}

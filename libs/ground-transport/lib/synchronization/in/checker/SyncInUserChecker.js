@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
 const diTokens_1 = require("../../../diTokens");
 class SyncInUserChecker {
@@ -79,7 +80,7 @@ class SyncInUserChecker {
             }
         }
         if (newUsers.length) {
-            await userDao.bulkCreate(newUsers, false, false);
+            await userDao.bulkCreate(newUsers, ground_control_1.CascadeOverwrite.DEFAULT, false);
             for (const newUser of newUsers) {
                 userMapById.set(newUser.id, newUser);
             }

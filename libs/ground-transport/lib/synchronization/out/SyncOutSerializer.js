@@ -49,9 +49,8 @@ class SyncOutSerializer {
             repositoryTransactionBlocks.push(repositoryTransactionBlock);
         }
         await tower_1.transactional(async () => {
-            await repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
-            await repoTransBlockRepoTransHistoryDao
-                .bulkCreate(allTransLogRepoTransHistories, false, false);
+            await repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, ground_control_1.CascadeOverwrite.DEFAULT, false);
+            await repoTransBlockRepoTransHistoryDao.bulkCreate(allTransLogRepoTransHistories, ground_control_1.CascadeOverwrite.DEFAULT, false);
             const sharingMessages = [];
             const sharingMessageRepoTransBlocks = [];
             for (const [sharingNodeId, repositoryMapById] of repoMapBySharingNodeAndRepoIds) {
@@ -89,11 +88,11 @@ class SyncOutSerializer {
                     sharingMessageRepoTransBlocks.push(sharingMessageRepoTransBlock);
                 }
             }
-            await sharingMessageDao.bulkCreate(sharingMessages, false, false);
+            await sharingMessageDao.bulkCreate(sharingMessages, ground_control_1.CascadeOverwrite.DEFAULT, false);
             for (const sharingMessage of sharingMessages) {
                 messageMap.get(sharingMessage.sharingNode.id)[2] = sharingMessage.id;
             }
-            await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
+            await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, ground_control_1.CascadeOverwrite.DEFAULT, false);
         });
         // await this.repositoryTransactionHistoryDao.updateSyncStatusHistory(
         // 	SyncStatus.SYNCHRONIZING, Array.from(repoTransHistoryIds)

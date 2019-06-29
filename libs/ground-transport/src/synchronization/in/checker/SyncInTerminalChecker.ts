@@ -3,7 +3,10 @@ import {
 	TerminalSecondId
 }                                 from '@airport/arrivals-n-departures'
 import {DI}                       from '@airport/di'
-import {ensureChildJsMap}         from '@airport/ground-control'
+import {
+	CascadeOverwrite,
+	ensureChildJsMap
+}                                 from '@airport/ground-control'
 import {
 	ITerminal,
 	ITerminalDao,
@@ -169,7 +172,8 @@ export class SyncInTerminalChecker
 		}
 
 		if (newTerminals.length) {
-			await terminalDao.bulkCreate(newTerminals, false, false)
+			await terminalDao.bulkCreate(newTerminals,
+				CascadeOverwrite.DEFAULT, false)
 		}
 	}
 

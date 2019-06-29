@@ -28,6 +28,7 @@ import {
 }           from '@airport/air-control'
 import {DI} from '@airport/di'
 import {
+	CascadeOverwrite,
 	CascadeType,
 	CRUDOperation,
 	DbColumn,
@@ -108,17 +109,17 @@ export abstract class OperationManager
 		transConnector: ITransactionalConnector,
 		updateCache: IUpdateCache,
 		idData?: EntityIdData,
-		cascadeAlways = false
+		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT
 	): Promise<number> {
 		let result = await this.internalCreate(dbEntity, [entity],
 			createdEntityMap, !idData,
 			airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils,
-			transConnector, cascadeAlways)
+			transConnector, cascadeOverwrite)
 
 		await this.cascadeOnPersist(result.cascadeRecords, dbEntity,
 			createdEntityMap, airDb, fieldUtils, metadataUtils,
 			queryFacade, queryUtils, schemaUtils, transConnector,
-			updateCache, cascadeAlways)
+			updateCache, cascadeOverwrite)
 
 		return result.numberOfAffectedRecords
 	}
@@ -142,17 +143,17 @@ export abstract class OperationManager
 		transConnector: ITransactionalConnector,
 		updateCache: IUpdateCache,
 		checkIfProcessed: boolean      = true,
-		cascadeAlways: boolean         = false,
+		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT,
 		ensureGeneratedValues: boolean = true // For internal use only
 	): Promise<number> {
 		let result = await this.internalCreate(dbEntity, entities,
 			createdEntityMap, checkIfProcessed,
 			airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils,
-			transConnector, cascadeAlways, ensureGeneratedValues)
+			transConnector, cascadeOverwrite, ensureGeneratedValues)
 		await this.cascadeOnPersist(result.cascadeRecords, dbEntity,
 			createdEntityMap, airDb, fieldUtils, metadataUtils,
 			queryFacade, queryUtils, schemaUtils, transConnector,
-			updateCache, cascadeAlways)
+			updateCache, cascadeOverwrite)
 
 		return result.numberOfAffectedRecords
 	}
@@ -169,7 +170,7 @@ export abstract class OperationManager
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
 		transConnector: ITransactionalConnector,
-		cascadeAlways = false,
+		cascadeOverwrite: CascadeOverwrite,
 		ensureGeneratedValues?: boolean
 	): Promise<ResultWithCascade> {
 		const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
@@ -223,8 +224,14 @@ export abstract class OperationManager
 							continue
 						case EntityRelationType.ONE_TO_MANY:
 							this.assertOneToManyIsArray(newValue)
-							if (!cascadeAlways && !schemaUtils.doCascade(dbRelation, CRUDOperation.CREATE)) {
-								continue
+							switch(cascadeOverwrite) {
+								case CascadeOverwrite.NEVER:
+									continue
+								case CascadeOverwrite.DEFAULT:
+									if(!schemaUtils.doCascade(dbRelation, CRUDOperation.CREATE)) {
+										continue
+									}
+									break
 							}
 
 							cascadeRecords.push({
@@ -398,7 +405,7 @@ export abstract class OperationManager
 		transConnector: ITransactionalConnector,
 		updateCache: IUpdateCache,
 		originalValue ?: E,
-		cascadeAlways = false
+		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT
 	): Promise<number> {
 		if (!originalValue) {
 			let [isProcessed, entityIdData] = this.isProcessed(
@@ -418,11 +425,11 @@ export abstract class OperationManager
 		let result = await this.internalUpdate(
 			dbEntity, entity, originalValue, airDb,
 			fieldUtils, queryFacade, queryUtils,
-			schemaUtils, transConnector, updateCache, cascadeAlways)
+			schemaUtils, transConnector, updateCache, cascadeOverwrite)
 		await this.cascadeOnPersist(result.cascadeRecords, dbEntity,
 			updatedEntityMap, airDb, fieldUtils, metadataUtils,
 			queryFacade, queryUtils, schemaUtils, transConnector,
-			updateCache, cascadeAlways)
+			updateCache, cascadeOverwrite)
 
 		return result.numberOfAffectedRecords
 	}
@@ -456,7 +463,7 @@ export abstract class OperationManager
 		schemaUtils: ISchemaUtils,
 		transConnector: ITransactionalConnector,
 		updateCache: IUpdateCache,
-		cascadeAlways: boolean = false
+		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT
 	): Promise<void> {
 		if (!cascadeRecords.length) {
 			return
@@ -519,13 +526,13 @@ export abstract class OperationManager
 							this.performCreate(dbEntity, entityToUpdate.newValue,
 								alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils,
 								queryFacade, queryUtils, schemaUtils, transConnector,
-								updateCache, entityToUpdate.idData, cascadeAlways)
+								updateCache, entityToUpdate.idData, cascadeOverwrite)
 					} else {
 						await
 							this.performUpdate(dbEntity, entityToUpdate.newValue,
 								alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils,
 								queryFacade, queryUtils, schemaUtils, transConnector,
-								updateCache, entityToUpdate.originalValue, cascadeAlways)
+								updateCache, entityToUpdate.originalValue, cascadeOverwrite)
 					}
 				}
 			}
@@ -535,7 +542,7 @@ export abstract class OperationManager
 					this.performCreate(dbEntity, entityToCreate,
 						alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils,
 						queryFacade, queryUtils, schemaUtils, transConnector,
-						updateCache, entityToCreate.idData, cascadeAlways)
+						updateCache, entityToCreate.idData, cascadeOverwrite)
 			}
 		}
 	}
@@ -621,7 +628,7 @@ export abstract class OperationManager
 		schemaUtils: ISchemaUtils,
 		transConnector: ITransactionalConnector,
 		updateCache: IUpdateCache,
-		cascadeAlways = false
+		cascadeOverwrite: CascadeOverwrite
 	): Promise<ResultWithCascade> {
 		const qEntity                                = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
 		const cascadeRecords: CascadeRecord[]        = []
@@ -682,8 +689,14 @@ export abstract class OperationManager
 					continue
 				case EntityRelationType.ONE_TO_MANY:
 					this.assertOneToManyIsArray(updatedValue)
-					if (!cascadeAlways && !schemaUtils.doCascade(dbRelation, CRUDOperation.UPDATE)) {
-						continue
+					switch(cascadeOverwrite) {
+						case CascadeOverwrite.NEVER:
+							continue
+						case CascadeOverwrite.DEFAULT:
+							if(!schemaUtils.doCascade(dbRelation, CRUDOperation.UPDATE)) {
+								continue
+							}
+							break
 					}
 					cascadeRecords.push({
 						relation: dbRelation,

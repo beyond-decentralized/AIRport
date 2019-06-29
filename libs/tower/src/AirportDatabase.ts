@@ -24,6 +24,7 @@ import {
 }           from '@airport/air-control'
 import {DI} from '@airport/di'
 import {
+	CascadeOverwrite,
 	DbEntity,
 	DbSchema,
 	DistributionStrategy,
@@ -150,14 +151,14 @@ export class AirportDatabase
 		dbEntity: DbEntity,
 		entities: E[],
 		checkIfProcessed: boolean, // defaults to true
-		cascade: boolean, // defaults to false
+		cascadeOverwrite: CascadeOverwrite, // defaults to false
 		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
 	                                  // creation
 	): Promise<number> {
 		return DI.get(DB_FACADE).then(
 			dbFacade =>
 				dbFacade.bulkCreate(dbEntity, entities, checkIfProcessed,
-					cascade, ensureGeneratedValues)
+					cascadeOverwrite, ensureGeneratedValues)
 		)
 	}
 

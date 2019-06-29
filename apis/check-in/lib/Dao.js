@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
 const EntityDatabaseFacade_1 = require("./EntityDatabaseFacade");
 /**
  * Created by Papa on 8/26/2017.
@@ -10,15 +11,15 @@ class Dao {
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
         this.db = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q);
     }
-    async bulkCreate(entities, cascade = false, checkIfProcessed = true) {
-        return await this.db.bulkCreate(entities, cascade, checkIfProcessed);
+    async bulkCreate(entities, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT, checkIfProcessed = true) {
+        return await this.db.bulkCreate(entities, cascadeOverwrite, checkIfProcessed);
     }
     async count() {
         throw `Not Implemented`;
     }
     async create(entityInfo) {
         if (entityInfo instanceof Array) {
-            return await this.db.bulkCreate(entityInfo, true, true);
+            return await this.db.bulkCreate(entityInfo, ground_control_1.CascadeOverwrite.DEFAULT, true);
         }
         else {
             return await this.db.create(entityInfo);

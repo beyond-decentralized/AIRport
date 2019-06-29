@@ -2,19 +2,20 @@ import {
 	AgtRepositoryId,
 	TerminalName,
 	TerminalSecondId
-}                                 from '@airport/arrivals-n-departures'
-import {DI}                       from '@airport/di'
+}                     from '@airport/arrivals-n-departures'
+import {DI}           from '@airport/di'
 import {
+	CascadeOverwrite,
 	DomainName,
 	SchemaIndex,
 	SchemaName,
 	SchemaVersionId
-}                                 from '@airport/ground-control'
+}                     from '@airport/ground-control'
 import {
 	ActorRandomId,
 	IActor,
 	RepositoryId
-}                                 from '@airport/holding-pattern'
+}                     from '@airport/holding-pattern'
 import {
 	IRepositoryTransactionBlock,
 	IRepoTransBlockSchemaToChange,
@@ -25,12 +26,12 @@ import {
 	SchemaChangeStatus,
 	SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
 	SharingNodeId
-}                                 from '@airport/moving-walkway'
+}                     from '@airport/moving-walkway'
 import {
 	ISchema,
 	ISchemaVersion,
-}                                 from '@airport/traffic-pattern'
-import {UserUniqueId}             from '@airport/travel-document-checkpoint'
+}                     from '@airport/traffic-pattern'
+import {UserUniqueId} from '@airport/travel-document-checkpoint'
 import {
 	SYNC_IN_ACTOR_CHECKER,
 	SYNC_IN_CHECKER,
@@ -38,14 +39,12 @@ import {
 	SYNC_IN_REPO_CHECKER,
 	SYNC_IN_REPO_TRANS_BLOCK_CREATOR,
 	SYNC_IN_SCHEMA_CHECKER
-}                                 from '../../../diTokens'
+}                     from '../../../diTokens'
 import {
 	IDataToTM,
 	RemoteActorId,
 	RemoteSchemaVersionId
-}                                 from '../SyncInUtils'
-import {ISyncInActorChecker}      from './SyncInActorChecker'
-import {ISyncInRepositoryChecker} from './SyncInRepositoryChecker'
+}                     from '../SyncInUtils'
 
 export interface CheckSchemasResult {
 	dataMessagesToBeUpgraded: IDataToTM[];
@@ -341,13 +340,14 @@ export class SyncInChecker
 		// ...sharingMessagesWithIncompatibleSchemas, ...sharingMessagesToBeUpgraded,
 		// ...sharingMessagesWithIncompatibleData,
 		// ...sharingMessagesWithCompatibleSchemasAndData ]; await
-		// this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false, false);
+		// this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate,
+		// CascadeOverwrite.DEFAULT, false);
 
 		// const m: MissingRecordRepoTransBlock;
 
 		// if (missingRecordRepoTransBlocks.length) {
 		// 	await this.missingRecordRepoTransBlockDao.bulkCreate(
-		// 		missingRecordRepoTransBlocks, false, false);
+		// 		missingRecordRepoTransBlocks, CascadeOverwrite.DEFAULT, false);
 		// }
 
 
@@ -377,7 +377,7 @@ export class SyncInChecker
 			}
 		}
 		await repoTransBlockSchemasToChangeDao.bulkCreate(
-			repoTransBlockSchemasToChange, false, false)
+			repoTransBlockSchemasToChange, CascadeOverwrite.DEFAULT, false)
 
 		return sharingMessagesWithCompatibleSchemasAndData
 	}

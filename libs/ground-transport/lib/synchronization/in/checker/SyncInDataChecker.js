@@ -131,7 +131,7 @@ class SyncInDataChecker {
             }
         }
         if (missingRecords.length) {
-            await missingRecordDao.bulkCreate(missingRecords, false, false);
+            await missingRecordDao.bulkCreate(missingRecords, ground_control_1.CascadeOverwrite.DEFAULT, false);
         }
         return {
             compatibleDataMessageFlags,

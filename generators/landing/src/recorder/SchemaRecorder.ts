@@ -2,14 +2,15 @@ import {
 	AIR_DB,
 	IAirportDatabase,
 	IDao
-}                        from '@airport/air-control'
-import {DI}              from '@airport/di'
-import {DdlObjects}      from '@airport/takeoff'
+}                         from '@airport/air-control'
+import {DI}               from '@airport/di'
+import {CascadeOverwrite} from '@airport/ground-control'
+import {DdlObjects}       from '@airport/takeoff'
 import {
 	DOMAIN_DAO,
 	IDomainDao
-}                        from '@airport/territory'
-import {transactional}   from '@airport/tower'
+}                         from '@airport/territory'
+import {transactional}    from '@airport/tower'
 import {
 	ISchemaColumnDao,
 	ISchemaDao,
@@ -32,8 +33,8 @@ import {
 	SchemaPropertyColumnECreateProperties,
 	SchemaReferenceECreateProperties,
 	SchemaRelationColumnECreateProperties
-}                        from '@airport/traffic-pattern'
-import {SCHEMA_RECORDER} from '../diTokens'
+}                         from '@airport/traffic-pattern'
+import {SCHEMA_RECORDER}  from '../diTokens'
 
 export interface ISchemaRecorder {
 
@@ -93,23 +94,29 @@ export class SchemaRecorder
 		schemaPropertyColumnDao: ISchemaPropertyColumnDao,
 		schemaRelationColumnDao: ISchemaRelationColumnDao,
 	) {
-		await domainDao.bulkCreate(ddlObjects.domains, false, false)
-		await schemaDao.bulkCreate(ddlObjects.schemas, false, false)
+		await domainDao.bulkCreate(ddlObjects.domains, CascadeOverwrite.NEVER,
+			false)
+		await schemaDao.bulkCreate(ddlObjects.schemas, CascadeOverwrite.NEVER,
+			false)
 		await schemaVersionDao.bulkCreate(ddlObjects.schemaVersions,
-			false, false)
+			CascadeOverwrite.NEVER, false)
 		await schemaReferenceDao.bulkCreate(
 			ddlObjects.schemaReferences as SchemaReferenceECreateProperties[],
-			false, false)
-		await schemaEntityDao.bulkCreate(ddlObjects.entities, false, false)
-		await schemaPropertyDao.bulkCreate(ddlObjects.properties, false, false)
-		await schemaRelationDao.bulkCreate(ddlObjects.relations, false, false)
-		await schemaColumnDao.bulkCreate(ddlObjects.columns, false, false)
+			CascadeOverwrite.NEVER, false)
+		await schemaEntityDao.bulkCreate(ddlObjects.entities,
+			CascadeOverwrite.NEVER, false)
+		await schemaPropertyDao.bulkCreate(ddlObjects.properties,
+			CascadeOverwrite.NEVER, false)
+		await schemaRelationDao.bulkCreate(ddlObjects.relations,
+			CascadeOverwrite.NEVER, false)
+		await schemaColumnDao.bulkCreate(ddlObjects.columns,
+			CascadeOverwrite.NEVER, false)
 		await schemaPropertyColumnDao.bulkCreate(
 			ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[],
-			false, false)
+			CascadeOverwrite.NEVER, false)
 		await schemaRelationColumnDao.bulkCreate(
 			ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[],
-			false, false)
+			CascadeOverwrite.NEVER, false)
 	}
 
 	private setDefaultVersioning(
@@ -186,7 +193,8 @@ export class SchemaRecorder
 		dao: IDao<any, any, any, any, any, any, any>,
 		entities: any[]
 	) {
-		await airDb.bulkCreate(dao.db.dbEntity, entities, false, false, false)
+		await airDb.bulkCreate(dao.db.dbEntity, entities,
+			CascadeOverwrite.NEVER, false, false)
 	}
 
 }

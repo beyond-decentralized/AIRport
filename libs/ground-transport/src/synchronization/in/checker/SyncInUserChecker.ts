@@ -1,5 +1,6 @@
 import {Y}                              from '@airport/air-control'
 import {DI}                             from '@airport/di'
+import {CascadeOverwrite}               from '@airport/ground-control'
 import {RepositoryTransactionBlockData} from '@airport/moving-walkway'
 import {
 	IUser,
@@ -128,7 +129,8 @@ export class SyncInUserChecker
 			}
 		}
 		if (newUsers.length) {
-			await userDao.bulkCreate(newUsers, false, false)
+			await userDao.bulkCreate(newUsers,
+				CascadeOverwrite.DEFAULT, false)
 			for (const newUser of newUsers) {
 				userMapById.set(newUser.id, newUser)
 			}

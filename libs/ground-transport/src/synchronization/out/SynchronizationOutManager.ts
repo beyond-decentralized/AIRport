@@ -1,9 +1,12 @@
-import {DI}              from '@airport/di'
-import {BlockSyncStatus} from '@airport/ground-control'
+import {DI}         from '@airport/di'
+import {
+	BlockSyncStatus,
+	CascadeOverwrite
+}                   from '@airport/ground-control'
 import {
 	REPO_TRANS_HISTORY_DAO,
 	REPOSITORY_DAO
-}                        from '@airport/holding-pattern'
+}                   from '@airport/holding-pattern'
 import {
 	DataOrigin,
 	IRepositoryTransactionBlock,
@@ -22,15 +25,15 @@ import {
 	SHARING_NODE_REPOSITORY_DAO,
 	SHARING_NODE_TERMINAL_DAO,
 	SharingNodeId,
-}                        from '@airport/moving-walkway'
-import {SCHEMA_DAO}      from '@airport/traffic-pattern'
-import {ITerminal}       from '@airport/travel-document-checkpoint'
+}                   from '@airport/moving-walkway'
+import {SCHEMA_DAO} from '@airport/traffic-pattern'
+import {ITerminal}  from '@airport/travel-document-checkpoint'
 import {
 	SYNC_OUT_MANAGER,
 	SYNC_OUT_MSG_SENDER,
 	SYNC_OUT_REPO_TRANS_BLOCK_CREATOR,
 	SYNC_OUT_SERIALIZER,
-}                        from '../../diTokens'
+}                   from '../../diTokens'
 
 export interface ISynchronizationOutManager {
 
@@ -336,10 +339,12 @@ export class SynchronizationOutManager
 			}
 		}
 
-		await sharingMessageDao.bulkCreate(sharingMessages, false, false)
+		await sharingMessageDao.bulkCreate(sharingMessages,
+			CascadeOverwrite.DEFAULT, false)
 
-		await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks,
-			false, false)
+		await sharingMessageRepoTransBlockDao.bulkCreate(
+			sharingMessageRepoTransBlocks,
+			CascadeOverwrite.DEFAULT, false)
 	}
 
 }

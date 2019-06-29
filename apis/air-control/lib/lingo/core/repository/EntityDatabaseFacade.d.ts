@@ -1,4 +1,4 @@
-import { DbEntity } from '@airport/ground-control';
+import { CascadeOverwrite, DbEntity } from '@airport/ground-control';
 import { IEntityFind } from '../../query/api/EntityFind';
 import { IEntityFindOne } from '../../query/api/EntityFindOne';
 import { IEntitySearch } from '../../query/api/EntitySearch';
@@ -52,7 +52,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records created
      */
-    bulkCreate(entities: EntityCreateProperties[], cascade: boolean, // defaults to false
+    bulkCreate(entities: EntityCreateProperties[], cascadeOverwrite: CascadeOverwrite, // defaults to false
     checkIfProcessed: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;

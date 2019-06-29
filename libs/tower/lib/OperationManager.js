@@ -19,9 +19,9 @@ class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performCreate(dbEntity, entity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, idData, cascadeAlways = false) {
-        let result = await this.internalCreate(dbEntity, [entity], createdEntityMap, !idData, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, cascadeAlways);
-        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeAlways);
+    async performCreate(dbEntity, entity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, idData, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT) {
+        let result = await this.internalCreate(dbEntity, [entity], createdEntityMap, !idData, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, cascadeOverwrite);
+        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite);
         return result.numberOfAffectedRecords;
     }
     /**
@@ -30,13 +30,13 @@ class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performBulkCreate(dbEntity, entities, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, checkIfProcessed = true, cascadeAlways = false, ensureGeneratedValues = true // For internal use only
+    async performBulkCreate(dbEntity, entities, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, checkIfProcessed = true, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT, ensureGeneratedValues = true // For internal use only
     ) {
-        let result = await this.internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, cascadeAlways, ensureGeneratedValues);
-        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeAlways);
+        let result = await this.internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, cascadeOverwrite, ensureGeneratedValues);
+        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite);
         return result.numberOfAffectedRecords;
     }
-    async internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, cascadeAlways = false, ensureGeneratedValues) {
+    async internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, cascadeOverwrite, ensureGeneratedValues) {
         const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         let rawInsert = {
             insertInto: qEntity,
@@ -80,8 +80,14 @@ class OperationManager {
                             continue;
                         case ground_control_1.EntityRelationType.ONE_TO_MANY:
                             this.assertOneToManyIsArray(newValue);
-                            if (!cascadeAlways && !schemaUtils.doCascade(dbRelation, ground_control_1.CRUDOperation.CREATE)) {
-                                continue;
+                            switch (cascadeOverwrite) {
+                                case ground_control_1.CascadeOverwrite.NEVER:
+                                    continue;
+                                case ground_control_1.CascadeOverwrite.DEFAULT:
+                                    if (!schemaUtils.doCascade(dbRelation, ground_control_1.CRUDOperation.CREATE)) {
+                                        continue;
+                                    }
+                                    break;
                             }
                             cascadeRecords.push({
                                 relation: dbRelation,
@@ -192,7 +198,7 @@ class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performUpdate(dbEntity, entity, updatedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, originalValue, cascadeAlways = false) {
+    async performUpdate(dbEntity, entity, updatedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, originalValue, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT) {
         if (!originalValue) {
             let [isProcessed, entityIdData] = this.isProcessed(entity, updatedEntityMap, dbEntity, schemaUtils);
             if (isProcessed === true) {
@@ -206,8 +212,8 @@ class OperationManager {
             // 	throw `Cannot update ${dbEntity.name}, entity not found.`
             // }
         }
-        let result = await this.internalUpdate(dbEntity, entity, originalValue, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeAlways);
-        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, updatedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeAlways);
+        let result = await this.internalUpdate(dbEntity, entity, originalValue, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite);
+        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, updatedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite);
         return result.numberOfAffectedRecords;
     }
     async internalInsertValuesGetIds(dbEntity, rawInsertValues, fieldUtils, queryFacade, queryUtils, transConnector) {
@@ -215,7 +221,7 @@ class OperationManager {
         const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null, queryUtils, fieldUtils);
         return await transConnector.insertValuesGetIds(portableQuery);
     }
-    async cascadeOnPersist(cascadeRecords, parentDbEntity, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeAlways = false) {
+    async cascadeOnPersist(cascadeRecords, parentDbEntity, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT) {
         if (!cascadeRecords.length) {
             return;
         }
@@ -269,16 +275,16 @@ class OperationManager {
                         // Don't know if the entity has been deleted or is a brand new one, create it
                         // TODO: figure out if the entity has been deleted and if it has, throw an
                         // exception?
-                        await this.performCreate(dbEntity, entityToUpdate.newValue, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, entityToUpdate.idData, cascadeAlways);
+                        await this.performCreate(dbEntity, entityToUpdate.newValue, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, entityToUpdate.idData, cascadeOverwrite);
                     }
                     else {
-                        await this.performUpdate(dbEntity, entityToUpdate.newValue, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, entityToUpdate.originalValue, cascadeAlways);
+                        await this.performUpdate(dbEntity, entityToUpdate.newValue, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, entityToUpdate.originalValue, cascadeOverwrite);
                     }
                 }
             }
             for (let i = 0; i < entitiesWithoutIds.length; i++) {
                 let entityToCreate = entitiesWithoutIds[i];
-                await this.performCreate(dbEntity, entityToCreate, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, entityToCreate.idData, cascadeAlways);
+                await this.performCreate(dbEntity, entityToCreate, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, entityToCreate.idData, cascadeOverwrite);
             }
         }
     }
@@ -327,7 +333,7 @@ class OperationManager {
      *  ManyToOne:
      *    Cascades do not travel across ManyToOne
      */
-    async internalUpdate(dbEntity, entity, originalEntity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeAlways = false) {
+    async internalUpdate(dbEntity, entity, originalEntity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite) {
         const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         const cascadeRecords = [];
         const setFragment = {};
@@ -384,8 +390,14 @@ class OperationManager {
                     continue;
                 case ground_control_1.EntityRelationType.ONE_TO_MANY:
                     this.assertOneToManyIsArray(updatedValue);
-                    if (!cascadeAlways && !schemaUtils.doCascade(dbRelation, ground_control_1.CRUDOperation.UPDATE)) {
-                        continue;
+                    switch (cascadeOverwrite) {
+                        case ground_control_1.CascadeOverwrite.NEVER:
+                            continue;
+                        case ground_control_1.CascadeOverwrite.DEFAULT:
+                            if (!schemaUtils.doCascade(dbRelation, ground_control_1.CRUDOperation.UPDATE)) {
+                                continue;
+                            }
+                            break;
                     }
                     cascadeRecords.push({
                         relation: dbRelation,

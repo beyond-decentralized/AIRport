@@ -1,4 +1,4 @@
-import { DbEntity, DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery, QueryResultType } from '@airport/ground-control';
+import { CascadeOverwrite, DbEntity, DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
 import { IAbstractQuery } from '../../query/facade/AbstractQuery';
 import { RawDelete } from '../../query/facade/Delete';
@@ -50,7 +50,7 @@ export interface IDatabaseFacade {
      * @return Number of records created
      */
     bulkCreate<E>(dbEntity: DbEntity, entities: E[], checkIfProcessed: boolean, // defaults to true
-    cascade: boolean, // defaults to false
+    cascadeOverwrite: CascadeOverwrite, // defaults to false
     ensureGeneratedValues?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;

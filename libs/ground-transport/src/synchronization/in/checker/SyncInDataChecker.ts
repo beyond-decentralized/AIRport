@@ -1,5 +1,6 @@
 import {DI}             from '@airport/di'
 import {
+	CascadeOverwrite,
 	ChangeType,
 	ensureChildJsMap,
 	ensureChildJsSet,
@@ -323,7 +324,8 @@ export class SyncInDataChecker
 		}
 
 		if (missingRecords.length) {
-			await missingRecordDao.bulkCreate(missingRecords, false, false)
+			await missingRecordDao.bulkCreate(missingRecords,
+				CascadeOverwrite.DEFAULT, false)
 		}
 
 		return {

@@ -230,8 +230,8 @@ class SyncInSchemaChecker {
                 newlyNeededSchemas.push(schema);
             }
         }
-        await (await domainDao).bulkCreate(Array.from(missingDomainMap.values()), false, false);
-        await (await schemaDao).bulkCreate(newlyNeededSchemas, false, false);
+        await (await domainDao).bulkCreate(Array.from(missingDomainMap.values()), ground_control_1.CascadeOverwrite.DEFAULT, false);
+        await (await schemaDao).bulkCreate(newlyNeededSchemas, ground_control_1.CascadeOverwrite.DEFAULT, false);
         return schemaWithChangesMap;
     }
     /*

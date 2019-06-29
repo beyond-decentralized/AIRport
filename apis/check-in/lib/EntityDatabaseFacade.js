@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const Duo_1 = require("./Duo");
 /**
  * Created by Papa on 12/11/2016.
@@ -31,9 +32,9 @@ class EntityDatabaseFacade {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
         return await dbFacade.create(this.dbEntity, entity);
     }
-    async bulkCreate(entities, cascade = false, checkIfProcessed = true) {
+    async bulkCreate(entities, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT, checkIfProcessed = true) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
-        return await dbFacade.bulkCreate(this.dbEntity, entities, checkIfProcessed, cascade);
+        return await dbFacade.bulkCreate(this.dbEntity, entities, checkIfProcessed, cascadeOverwrite);
     }
     async insertColumnValues(rawInsertColumnValues) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);

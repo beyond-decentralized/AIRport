@@ -149,11 +149,6 @@ class DatabaseManager {
             await actorDao.save(actor);
         });
     }
-    async bulkCreate(dao, entities) {
-        const entityDbFacade = dao.db;
-        const dbFacade = entityDbFacade.common;
-        await dbFacade.bulkCreate(entityDbFacade.dbEntity, entities, false, false, false);
-    }
     async installAirportSchema() {
         const blueprintFile = await Promise.resolve().then(() => require('@airport/blueprint'));
         const schemaInitializer = await di_1.DI.get(landing_1.SCHEMA_INITIALIZER);

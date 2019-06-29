@@ -8,9 +8,12 @@ import {
 	IEntityUpdateProperties,
 	IQEntity,
 	QSchema
-}                               from '@airport/air-control'
-import {EntityId as DbEntityId} from '@airport/ground-control'
-import {EntityDatabaseFacade}   from './EntityDatabaseFacade'
+}                             from '@airport/air-control'
+import {
+	CascadeOverwrite,
+	EntityId as DbEntityId
+}                             from '@airport/ground-control'
+import {EntityDatabaseFacade} from './EntityDatabaseFacade'
 
 /**
  * Created by Papa on 8/26/2017.
@@ -42,10 +45,11 @@ export abstract class Dao<Entity,
 
 	async bulkCreate(
 		entities: EntityCreate[],
-		cascade: boolean          = false,
-		checkIfProcessed: boolean = true
+		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT,
+		checkIfProcessed: boolean          = true
 	): Promise<number> {
-		return await this.db.bulkCreate(entities, cascade, checkIfProcessed)
+		return await this.db.bulkCreate(entities,
+			cascadeOverwrite, checkIfProcessed)
 	}
 
 	async count(): Promise<number> {
@@ -56,7 +60,8 @@ export abstract class Dao<Entity,
 		entityInfo: EntityInfo
 	): Promise<number> {
 		if (entityInfo instanceof Array) {
-			return await this.db.bulkCreate(entityInfo, true, true)
+			return await this.db.bulkCreate(entityInfo,
+				CascadeOverwrite.DEFAULT, true)
 		} else {
 			return await this.db.create(<EntityCreate>entityInfo)
 		}

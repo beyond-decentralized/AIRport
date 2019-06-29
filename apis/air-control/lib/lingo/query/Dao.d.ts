@@ -1,11 +1,12 @@
-import { IEntityDatabaseFacade } from '../..';
+import { CascadeOverwrite } from '@airport/ground-control';
+import { IEntityDatabaseFacade } from '../core/repository/EntityDatabaseFacade';
 import { IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../core/entity/Entity';
 /**
  * Data access object.
  */
 export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, IQE extends IQEntity> {
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, IQE>;
-    bulkCreate(entities: EntityCreate[], cascade?: boolean, checkIfProcessed?: boolean): Promise<number>;
+    bulkCreate(entities: EntityCreate[], cascadeOverwrite?: CascadeOverwrite, checkIfProcessed?: boolean): Promise<number>;
     count(): Promise<number>;
     /**
      * Does not cascade?

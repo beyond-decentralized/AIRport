@@ -43,7 +43,7 @@ class SyncInActorChecker {
         // this is because a given RTB is always generated in one and only one terminal
         await actorDao.findMapsWithDetailsByGlobalIds(Array.from(actorRandomIdSet), Array.from(userUniqueIdsSet), Array.from(terminalIdSet), actorMap, actorMapById);
         const newActors = this.getNewActors(consistentMessages, actorMap);
-        await actorDao.bulkCreate(newActors, false, false);
+        await actorDao.bulkCreate(newActors, ground_control_1.CascadeOverwrite.DEFAULT, false);
         for (const newActor of newActors) {
             actorMapById.set(newActor.id, newActor);
         }

@@ -7,7 +7,10 @@ import {
 	TerminalCredentials
 }                            from '@airport/arrivals-n-departures'
 import {DI}                  from '@airport/di'
-import {ensureChildArray}    from '@airport/ground-control'
+import {
+	CascadeOverwrite,
+	ensureChildArray
+}                            from '@airport/ground-control'
 import {
 	IRepository,
 	REPO_TRANS_HISTORY_DAO,
@@ -110,9 +113,10 @@ export class SyncOutSerializer
 		}
 
 		await transactional(async () => {
-			await repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, false, false)
-			await repoTransBlockRepoTransHistoryDao
-				.bulkCreate(allTransLogRepoTransHistories, false, false)
+			await repoTransBlockDao.bulkCreate(repositoryTransactionBlocks,
+				CascadeOverwrite.DEFAULT, false)
+			await repoTransBlockRepoTransHistoryDao.bulkCreate(
+				allTransLogRepoTransHistories, CascadeOverwrite.DEFAULT, false)
 
 			const sharingMessages: ISharingMessage[]                             = []
 			const sharingMessageRepoTransBlocks: ISharingMessageRepoTransBlock[] = []
@@ -159,14 +163,16 @@ export class SyncOutSerializer
 				}
 			}
 
-			await sharingMessageDao.bulkCreate(sharingMessages, false, false)
+			await sharingMessageDao.bulkCreate(sharingMessages,
+				CascadeOverwrite.DEFAULT, false)
 
 			for (const sharingMessage of sharingMessages) {
 				messageMap.get(sharingMessage.sharingNode.id)[2] = sharingMessage.id
 			}
 
 			await sharingMessageRepoTransBlockDao.bulkCreate(
-				sharingMessageRepoTransBlocks, false, false
+				sharingMessageRepoTransBlocks, CascadeOverwrite.DEFAULT,
+				false
 			)
 		})
 

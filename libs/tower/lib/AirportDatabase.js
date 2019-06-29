@@ -79,11 +79,11 @@ class AirportDatabase {
      * @return Number of records created
      */
     bulkCreate(dbEntity, entities, checkIfProcessed, // defaults to true
-    cascade, // defaults to false
+    cascadeOverwrite, // defaults to false
     ensureGeneratedValues // for internal use only, needed at initial schema
     // creation
     ) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.bulkCreate(dbEntity, entities, checkIfProcessed, cascade, ensureGeneratedValues));
+        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.bulkCreate(dbEntity, entities, checkIfProcessed, cascadeOverwrite, ensureGeneratedValues));
     }
     insertColumnValues(dbEntity, rawInsertValues) {
         return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.insertColumnValues(dbEntity, rawInsertValues));

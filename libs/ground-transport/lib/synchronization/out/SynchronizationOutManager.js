@@ -209,8 +209,8 @@ class SynchronizationOutManager {
                 });
             }
         }
-        await sharingMessageDao.bulkCreate(sharingMessages, false, false);
-        await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false, false);
+        await sharingMessageDao.bulkCreate(sharingMessages, ground_control_1.CascadeOverwrite.DEFAULT, false);
+        await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, ground_control_1.CascadeOverwrite.DEFAULT, false);
     }
 }
 exports.SynchronizationOutManager = SynchronizationOutManager;

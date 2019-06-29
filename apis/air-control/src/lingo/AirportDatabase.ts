@@ -1,4 +1,5 @@
 import {
+	CascadeOverwrite,
 	DbEntity,
 	DbSchema,
 	DistributionStrategy,
@@ -100,7 +101,7 @@ export interface IAirportDatabase
 		dbEntity: DbEntity,
 		entities: E[],
 		checkIfProcessed: boolean, // defaults to true
-		cascade: boolean, // defaults to false
+		cascadeOverwrite: CascadeOverwrite, // defaults to false
 		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
 	                                  // creation
 	): Promise<number>;

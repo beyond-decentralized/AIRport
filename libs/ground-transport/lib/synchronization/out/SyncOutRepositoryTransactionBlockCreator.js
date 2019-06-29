@@ -159,7 +159,7 @@ class SyncOutRepositoryTransactionBlockCreator {
             const repoTransBlockData = repoTransBlockDataByRepoId.get(repositoryId);
             repositoryTransactionBlock.contents = JSON.stringify(repoTransBlockData);
         }
-        await (await repositoryTransactionBlockDao).bulkCreate(repositoryTransactionBlocks, false, false);
+        await (await repositoryTransactionBlockDao).bulkCreate(repositoryTransactionBlocks, ground_control_1.CascadeOverwrite.DEFAULT, false);
     }
     async setRepositoryTransactionBlockBlockIds(repoTransHistoryUpdateStageValuesByBlock, repoTransHistoryUpdateStageValues, repositoryTransactionHistoryUpdateStageDao) {
         for (const [repositoryTransactionBlock, repoTransHistoryUpdateStageValuesForBlock] of repoTransHistoryUpdateStageValuesByBlock) {

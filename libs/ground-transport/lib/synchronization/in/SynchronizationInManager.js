@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const moving_walkway_1 = require("@airport/moving-walkway");
 const tower_1 = require("@airport/tower");
 const lib_1 = require("zipson/lib");
@@ -104,7 +105,7 @@ class SynchronizationInManager {
             }
         }
         await tower_1.transactional(async () => {
-            await sharingMessageDao.bulkCreate(sharingMessages, false, false);
+            await sharingMessageDao.bulkCreate(sharingMessages, ground_control_1.CascadeOverwrite.DEFAULT, false);
             // These messages are responses to already sent messages
             // no need to check for existence of repositories
             await syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages);

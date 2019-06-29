@@ -84,7 +84,7 @@ class SyncInTerminalChecker {
             }
         }
         if (newTerminals.length) {
-            await terminalDao.bulkCreate(newTerminals, false, false);
+            await terminalDao.bulkCreate(newTerminals, ground_control_1.CascadeOverwrite.DEFAULT, false);
         }
     }
 }

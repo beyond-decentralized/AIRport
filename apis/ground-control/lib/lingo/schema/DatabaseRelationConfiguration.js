@@ -21,4 +21,13 @@ var CascadeType;
     // REFRESH,
     CascadeType[CascadeType["REMOVE"] = 3] = "REMOVE"; // Cascade on remove operation
 })(CascadeType = exports.CascadeType || (exports.CascadeType = {}));
+var CascadeOverwrite;
+(function (CascadeOverwrite) {
+    // Always cascade
+    CascadeOverwrite[CascadeOverwrite["ALWAYS"] = 0] = "ALWAYS";
+    // Follow the default entity configuration rules
+    CascadeOverwrite[CascadeOverwrite["DEFAULT"] = 1] = "DEFAULT";
+    // Never cascade
+    CascadeOverwrite[CascadeOverwrite["NEVER"] = 2] = "NEVER";
+})(CascadeOverwrite = exports.CascadeOverwrite || (exports.CascadeOverwrite = {}));
 //# sourceMappingURL=DatabaseRelationConfiguration.js.map

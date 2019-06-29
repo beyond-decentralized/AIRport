@@ -73,8 +73,8 @@ class TwoStageSyncedInDataProcessor {
                 });
             });
         }
-        await repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false, false);
-        await repoTransBlockRepoTransHistoryDao.bulkCreate(repoTransBlockRepoTransHistories, false, false);
+        await repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, ground_control_1.CascadeOverwrite.DEFAULT, false);
+        await repoTransBlockRepoTransHistoryDao.bulkCreate(repoTransBlockRepoTransHistories, ground_control_1.CascadeOverwrite.DEFAULT, false);
         return repoTransHistoryMapByRepositoryId;
     }
     async getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById, repositoryTransactionBlockDao, repositoryTransactionHistoryDuo) {
@@ -127,10 +127,8 @@ class TwoStageSyncedInDataProcessor {
                 }
             }
         }
-        await synchronizationConflictDao
-            .bulkCreate(allSyncConflicts, false, false);
-        await synchronizationConflictPendingNotificationDao
-            .bulkCreate(syncConflictPendingNotifications, false, false);
+        await synchronizationConflictDao.bulkCreate(allSyncConflicts, ground_control_1.CascadeOverwrite.DEFAULT, false);
+        await synchronizationConflictPendingNotificationDao.bulkCreate(syncConflictPendingNotifications, ground_control_1.CascadeOverwrite.DEFAULT, false);
         await stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap);
     }
 }

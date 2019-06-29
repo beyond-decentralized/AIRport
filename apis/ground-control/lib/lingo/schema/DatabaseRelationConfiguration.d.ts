@@ -26,6 +26,11 @@ export declare enum CascadeType {
     PERSIST = 2,
     REMOVE = 3
 }
+export declare enum CascadeOverwrite {
+    ALWAYS = 0,
+    DEFAULT = 1,
+    NEVER = 2
+}
 /**
  * One-To-Many relation configuration
  */

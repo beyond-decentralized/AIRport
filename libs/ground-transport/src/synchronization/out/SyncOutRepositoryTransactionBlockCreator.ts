@@ -1,5 +1,6 @@
 import {DI}                                from '@airport/di'
 import {
+	CascadeOverwrite,
 	ensureChildArray,
 	ensureChildJsSet,
 	SchemaIndex,
@@ -368,7 +369,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 		}
 
 		await (await repositoryTransactionBlockDao).bulkCreate(
-			repositoryTransactionBlocks, false, false)
+			repositoryTransactionBlocks, CascadeOverwrite.DEFAULT, false)
 	}
 
 	private async setRepositoryTransactionBlockBlockIds(

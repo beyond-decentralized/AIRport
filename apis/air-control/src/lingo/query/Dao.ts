@@ -1,4 +1,5 @@
-import {IEntityDatabaseFacade} from '../..'
+import {CascadeOverwrite}      from '@airport/ground-control'
+import {IEntityDatabaseFacade} from '../core/repository/EntityDatabaseFacade'
 import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -29,7 +30,7 @@ export interface IDao<Entity,
 
 	bulkCreate(
 		entities: EntityCreate[],
-		cascade?: boolean,
+		cascadeOverwrite?: CascadeOverwrite,
 		checkIfProcessed?: boolean
 	): Promise<number>;
 

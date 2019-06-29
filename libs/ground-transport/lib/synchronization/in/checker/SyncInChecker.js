@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const moving_walkway_1 = require("@airport/moving-walkway");
 const diTokens_1 = require("../../../diTokens");
 class SyncInChecker {
@@ -179,11 +180,12 @@ class SyncInChecker {
         // ...sharingMessagesWithIncompatibleSchemas, ...sharingMessagesToBeUpgraded,
         // ...sharingMessagesWithIncompatibleData,
         // ...sharingMessagesWithCompatibleSchemasAndData ]; await
-        // this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false, false);
+        // this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate,
+        // CascadeOverwrite.DEFAULT, false);
         // const m: MissingRecordRepoTransBlock;
         // if (missingRecordRepoTransBlocks.length) {
         // 	await this.missingRecordRepoTransBlockDao.bulkCreate(
-        // 		missingRecordRepoTransBlocks, false, false);
+        // 		missingRecordRepoTransBlocks, CascadeOverwrite.DEFAULT, false);
         // }
         // Record all schemas to change per sharing message with incompatible schemas
         const repoTransBlockSchemasToChange = [];
@@ -208,7 +210,7 @@ class SyncInChecker {
                 });
             }
         }
-        await repoTransBlockSchemasToChangeDao.bulkCreate(repoTransBlockSchemasToChange, false, false);
+        await repoTransBlockSchemasToChangeDao.bulkCreate(repoTransBlockSchemasToChange, ground_control_1.CascadeOverwrite.DEFAULT, false);
         return sharingMessagesWithCompatibleSchemasAndData;
     }
     findMatchingSchema(schemaMap, schema) {

@@ -33,6 +33,7 @@ import {
 }                          from '@airport/air-control'
 import {DI}                from '@airport/di'
 import {
+	CascadeOverwrite,
 	DbEntity,
 	ITransactionalConnector,
 	QueryResultType,
@@ -126,8 +127,8 @@ export class DatabaseFacade
 	async bulkCreate<E>(
 		dbEntity: DbEntity,
 		entities: E[],
-		checkIfProcessed: boolean = true,
-		cascade: boolean          = false
+		checkIfProcessed: boolean          = true,
+		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT
 	): Promise<number> {
 		if (!entities || !entities.length) {
 			return 0
@@ -143,7 +144,7 @@ export class DatabaseFacade
 			await this.performBulkCreate(dbEntity, entities, [],
 				airDb, fieldUtils, metadataUtils,
 				queryFacade, queryUtils, schemaUtils, transConnector,
-				updateCache, checkIfProcessed, cascade)
+				updateCache, checkIfProcessed, cascadeOverwrite)
 		)
 	}
 

@@ -1,19 +1,22 @@
-import {DbEntity}              from '@airport/ground-control'
-import {IEntityFind}      from '../../query/api/EntityFind'
-import {IEntityFindOne}   from '../../query/api/EntityFindOne'
-import {IEntitySearch}    from '../../query/api/EntitySearch'
-import {IEntitySearchOne} from '../../query/api/EntitySearchOne'
-import {IDuo}                  from '../../query/Duo'
-import {RawDelete}             from '../../query/facade/Delete'
+import {
+	CascadeOverwrite,
+	DbEntity
+}                          from '@airport/ground-control'
+import {IEntityFind}       from '../../query/api/EntityFind'
+import {IEntityFindOne}    from '../../query/api/EntityFindOne'
+import {IEntitySearch}     from '../../query/api/EntitySearch'
+import {IEntitySearchOne}  from '../../query/api/EntitySearchOne'
+import {IDuo}              from '../../query/Duo'
+import {RawDelete}         from '../../query/facade/Delete'
 import {
 	RawInsertColumnValues,
 	RawInsertValues
-}                              from '../../query/facade/InsertValues'
+}                          from '../../query/facade/InsertValues'
 import {
 	RawUpdate,
 	RawUpdateColumns
-}                              from '../../query/facade/Update'
-import {MappedEntityArray}     from '../../query/MappedEntityArray'
+}                          from '../../query/facade/Update'
+import {MappedEntityArray} from '../../query/MappedEntityArray'
 import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -21,7 +24,7 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-}                              from '../entity/Entity'
+}                          from '../entity/Entity'
 
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -93,7 +96,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	bulkCreate(
 		entities: EntityCreateProperties[],
-		cascade: boolean, // defaults to false
+		cascadeOverwrite: CascadeOverwrite, // defaults to false
 		checkIfProcessed: boolean // defaults to true
 	): Promise<number>;
 

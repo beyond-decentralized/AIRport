@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 const territory_1 = require("@airport/territory");
 const tower_1 = require("@airport/tower");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
@@ -21,16 +22,16 @@ class SchemaRecorder {
         });
     }
     async normalRecord(ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao) {
-        await domainDao.bulkCreate(ddlObjects.domains, false, false);
-        await schemaDao.bulkCreate(ddlObjects.schemas, false, false);
-        await schemaVersionDao.bulkCreate(ddlObjects.schemaVersions, false, false);
-        await schemaReferenceDao.bulkCreate(ddlObjects.schemaReferences, false, false);
-        await schemaEntityDao.bulkCreate(ddlObjects.entities, false, false);
-        await schemaPropertyDao.bulkCreate(ddlObjects.properties, false, false);
-        await schemaRelationDao.bulkCreate(ddlObjects.relations, false, false);
-        await schemaColumnDao.bulkCreate(ddlObjects.columns, false, false);
-        await schemaPropertyColumnDao.bulkCreate(ddlObjects.propertyColumns, false, false);
-        await schemaRelationColumnDao.bulkCreate(ddlObjects.relationColumns, false, false);
+        await domainDao.bulkCreate(ddlObjects.domains, ground_control_1.CascadeOverwrite.NEVER, false);
+        await schemaDao.bulkCreate(ddlObjects.schemas, ground_control_1.CascadeOverwrite.NEVER, false);
+        await schemaVersionDao.bulkCreate(ddlObjects.schemaVersions, ground_control_1.CascadeOverwrite.NEVER, false);
+        await schemaReferenceDao.bulkCreate(ddlObjects.schemaReferences, ground_control_1.CascadeOverwrite.NEVER, false);
+        await schemaEntityDao.bulkCreate(ddlObjects.entities, ground_control_1.CascadeOverwrite.NEVER, false);
+        await schemaPropertyDao.bulkCreate(ddlObjects.properties, ground_control_1.CascadeOverwrite.NEVER, false);
+        await schemaRelationDao.bulkCreate(ddlObjects.relations, ground_control_1.CascadeOverwrite.NEVER, false);
+        await schemaColumnDao.bulkCreate(ddlObjects.columns, ground_control_1.CascadeOverwrite.NEVER, false);
+        await schemaPropertyColumnDao.bulkCreate(ddlObjects.propertyColumns, ground_control_1.CascadeOverwrite.NEVER, false);
+        await schemaRelationColumnDao.bulkCreate(ddlObjects.relationColumns, ground_control_1.CascadeOverwrite.NEVER, false);
     }
     setDefaultVersioning(ddlObjects) {
         for (const schemaReference of ddlObjects.schemaReferences) {
@@ -82,7 +83,7 @@ class SchemaRecorder {
         await this.bulkCreate(airDb, schemaRelationColumnDao, ddlObjects.relationColumns);
     }
     async bulkCreate(airDb, dao, entities) {
-        await airDb.bulkCreate(dao.db.dbEntity, entities, false, false, false);
+        await airDb.bulkCreate(dao.db.dbEntity, entities, ground_control_1.CascadeOverwrite.NEVER, false, false);
     }
 }
 exports.SchemaRecorder = SchemaRecorder;
