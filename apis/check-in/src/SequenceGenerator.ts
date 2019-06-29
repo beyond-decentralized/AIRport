@@ -27,7 +27,13 @@ export interface ISequenceGenerator {
 
 }
 
-export var SEQ_GEN: ISequenceGenerator
+export function setSeqGen(
+	sequenceGenerator: ISequenceGenerator
+) {
+	SEQ_GEN = sequenceGenerator
+}
+
+var SEQ_GEN: ISequenceGenerator
 
 export function diSet(
 	dbSchema: DbSchema,
@@ -41,4 +47,11 @@ export function diSet(
 	const dbEntity = dbSchema.currentVersion.entities[dbEntityId]
 
 	return SEQ_GEN.exists(dbEntity)
+}
+
+export function duoDiSet(
+	dbSchema: DbSchema,
+	dbEntityId: number
+): boolean {
+	return dbSchema && dbSchema.currentVersion.entities[dbEntityId] as any as boolean
 }

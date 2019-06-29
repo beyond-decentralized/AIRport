@@ -11,7 +11,7 @@ class SQDIDuo extends check_in_1.Duo {
 exports.SQDIDuo = SQDIDuo;
 class BaseDailyArchiveDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);

@@ -12,7 +12,7 @@ import {
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
 	IAgt,
@@ -107,7 +107,7 @@ export class BaseAgtDuo
 	implements IBaseAgtDuo {
 
 	static diSet(): boolean {
-		return diSet(5)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
@@ -125,7 +125,7 @@ export class BaseTerminalDuo
 	implements IBaseTerminalDuo {
 
 	static diSet(): boolean {
-		return diSet(3)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
@@ -143,7 +143,7 @@ export class BaseTerminalAgtDuo
 	implements IBaseTerminalAgtDuo {
 
 	static diSet(): boolean {
-		return diSet(4)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
@@ -161,7 +161,7 @@ export class BaseUserDuo
 	implements IBaseUserDuo {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
@@ -179,7 +179,7 @@ export class BaseUserTerminalDuo
 	implements IBaseUserTerminalDuo {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
@@ -197,7 +197,7 @@ export class BaseUserTerminalAgtDuo
 	implements IBaseUserTerminalAgtDuo {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return duoDiSet(1)
 	}
 	
 	constructor() {

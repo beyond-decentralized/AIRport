@@ -46,6 +46,7 @@ class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
         return ` WITHOUT ROWID`;
     }
     async buildAllSequences(jsonSchemas) {
+        console.log('buildAllSequences');
         let [airDb, sequenceDao] = await di_1.DI.get(air_control_1.AIR_DB, airport_code_1.SEQUENCE_DAO);
         let allSequences = [];
         for (const jsonSchema of jsonSchemas) {

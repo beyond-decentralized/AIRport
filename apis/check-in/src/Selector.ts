@@ -1,6 +1,7 @@
 import {
 	distinctUntilChanged,
 	IObservable,
+	map,
 	Observable
 } from '@airport/observe'
 
@@ -86,8 +87,8 @@ export function createSelector<V1, V2, V3, V4, V5, V, SV>(
 export function createSelector<V, SV>(
 	...args: any[]
 ) {
-	if(args.length < 2 || args.length > 6) {
-			throw new Error(`Invalid createSelector call, Expecting 1 to 5 selectors and a callback.`)
+	if (args.length < 2 || args.length > 6) {
+		throw new Error(`Invalid createSelector call, Expecting 1 to 5 selectors and a callback.`)
 	}
 
 	const inputSelectors: IMemoizedSelector<any, SV>[] = args.slice(0, args.length - 1)
@@ -102,7 +103,9 @@ export function createSelector<V, SV>(
 	}
 	let observable = sourceObservable.pipe(
 		// share() TODO: implement once RxJs support is added
-			distinctUntilChanged()
+		distinctUntilChanged(),
+		map(
+			value => callback(value))
 	)
 
 	return getSelector(observable)

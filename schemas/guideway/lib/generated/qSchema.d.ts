@@ -44,3 +44,4 @@ export interface LocalQSchema extends AirportQSchema {
 export declare const Q_SCHEMA: LocalQSchema;
 export declare const Q: LocalQSchema;
 export declare function diSet(dbEntityId: EntityId): boolean;
+export declare function duoDiSet(dbEntityId: EntityId): boolean;

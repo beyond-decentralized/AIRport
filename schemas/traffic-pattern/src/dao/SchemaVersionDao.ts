@@ -24,17 +24,6 @@ export class SchemaVersionDao
 	extends BaseSchemaVersionDao
 	implements ISchemaVersionDao {
 
-	private schemaVersionDuo: ISchemaVersionDuo
-
-	constructor() {
-		super()
-
-		DI.get(
-			(schemaVersionDuo) => {
-				this.schemaVersionDuo = schemaVersionDuo
-			}, SCHEMA_VERSION_DUO)
-	}
-
 	/*
 	async findAllLatestForSchemaIndexes(
 		schemaIndexes: SchemaIndex[]

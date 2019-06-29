@@ -9,5 +9,6 @@ export interface ISequenceGenerator {
     generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
     init(sequences?: DbSequence[]): Promise<void>;
 }
-export declare var SEQ_GEN: ISequenceGenerator;
+export declare function setSeqGen(sequenceGenerator: ISequenceGenerator): void;
 export declare function diSet(dbSchema: DbSchema, dbEntityId: number): boolean;
+export declare function duoDiSet(dbSchema: DbSchema, dbEntityId: number): boolean;

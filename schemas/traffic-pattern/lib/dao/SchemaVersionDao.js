@@ -12,12 +12,6 @@ const di_1 = require("@airport/di");
 const diTokens_1 = require("../diTokens");
 const generated_1 = require("../generated/generated");
 class SchemaVersionDao extends generated_1.BaseSchemaVersionDao {
-    constructor() {
-        super();
-        di_1.DI.get((schemaVersionDuo) => {
-            this.schemaVersionDuo = schemaVersionDuo;
-        }, diTokens_1.SCHEMA_VERSION_DUO);
-    }
     /*
     async findAllLatestForSchemaIndexes(
         schemaIndexes: SchemaIndex[]

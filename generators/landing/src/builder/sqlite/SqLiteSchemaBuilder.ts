@@ -77,6 +77,8 @@ export class SqLiteSchemaBuilder
 	async buildAllSequences(
 		jsonSchemas: JsonSchema[]
 	): Promise<ISequence[]> {
+		console.log('buildAllSequences')
+
 		let [airDb, sequenceDao] = await DI.get(AIR_DB, SEQUENCE_DAO)
 
 		let allSequences: ISequence[] = []

@@ -11,7 +11,7 @@ class SQDIDuo extends check_in_1.Duo {
 exports.SQDIDuo = SQDIDuo;
 class BaseAgtDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(5);
+        return qSchema_1.duoDiSet(5);
     }
     constructor() {
         super(5);
@@ -20,7 +20,7 @@ class BaseAgtDuo extends SQDIDuo {
 exports.BaseAgtDuo = BaseAgtDuo;
 class BaseTerminalDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(3);
+        return qSchema_1.duoDiSet(3);
     }
     constructor() {
         super(3);
@@ -29,7 +29,7 @@ class BaseTerminalDuo extends SQDIDuo {
 exports.BaseTerminalDuo = BaseTerminalDuo;
 class BaseTerminalAgtDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(4);
+        return qSchema_1.duoDiSet(4);
     }
     constructor() {
         super(4);
@@ -38,7 +38,7 @@ class BaseTerminalAgtDuo extends SQDIDuo {
 exports.BaseTerminalAgtDuo = BaseTerminalAgtDuo;
 class BaseUserDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(2);
+        return qSchema_1.duoDiSet(2);
     }
     constructor() {
         super(2);
@@ -47,7 +47,7 @@ class BaseUserDuo extends SQDIDuo {
 exports.BaseUserDuo = BaseUserDuo;
 class BaseUserTerminalDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
@@ -56,7 +56,7 @@ class BaseUserTerminalDuo extends SQDIDuo {
 exports.BaseUserTerminalDuo = BaseUserTerminalDuo;
 class BaseUserTerminalAgtDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(1);
+        return qSchema_1.duoDiSet(1);
     }
     constructor() {
         super(1);

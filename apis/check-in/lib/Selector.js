@@ -16,7 +16,7 @@ function createSelector(...args) {
     }
     let observable = sourceObservable.pipe(
     // share() TODO: implement once RxJs support is added
-    observe_1.distinctUntilChanged());
+    observe_1.distinctUntilChanged(), observe_1.map(value => callback(value)));
     return getSelector(observable);
 }
 exports.createSelector = createSelector;

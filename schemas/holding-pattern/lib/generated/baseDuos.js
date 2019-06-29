@@ -11,7 +11,7 @@ class SQDIDuo extends check_in_1.Duo {
 exports.SQDIDuo = SQDIDuo;
 class BaseActorDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(7);
+        return qSchema_1.duoDiSet(7);
     }
     constructor() {
         super(7);
@@ -20,7 +20,7 @@ class BaseActorDuo extends SQDIDuo {
 exports.BaseActorDuo = BaseActorDuo;
 class BaseActorApplicationDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(8);
+        return qSchema_1.duoDiSet(8);
     }
     constructor() {
         super(8);
@@ -29,7 +29,7 @@ class BaseActorApplicationDuo extends SQDIDuo {
 exports.BaseActorApplicationDuo = BaseActorApplicationDuo;
 class BaseApplicationDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(9);
+        return qSchema_1.duoDiSet(9);
     }
     constructor() {
         super(9);
@@ -38,7 +38,7 @@ class BaseApplicationDuo extends SQDIDuo {
 exports.BaseApplicationDuo = BaseApplicationDuo;
 class BaseOperationHistoryDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
@@ -47,7 +47,7 @@ class BaseOperationHistoryDuo extends SQDIDuo {
 exports.BaseOperationHistoryDuo = BaseOperationHistoryDuo;
 class BaseRecordHistoryDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(1);
+        return qSchema_1.duoDiSet(1);
     }
     constructor() {
         super(1);
@@ -56,7 +56,7 @@ class BaseRecordHistoryDuo extends SQDIDuo {
 exports.BaseRecordHistoryDuo = BaseRecordHistoryDuo;
 class BaseRecordHistoryNewValueDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(2);
+        return qSchema_1.duoDiSet(2);
     }
     constructor() {
         super(2);
@@ -65,7 +65,7 @@ class BaseRecordHistoryNewValueDuo extends SQDIDuo {
 exports.BaseRecordHistoryNewValueDuo = BaseRecordHistoryNewValueDuo;
 class BaseRecordHistoryOldValueDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(3);
+        return qSchema_1.duoDiSet(3);
     }
     constructor() {
         super(3);
@@ -74,7 +74,7 @@ class BaseRecordHistoryOldValueDuo extends SQDIDuo {
 exports.BaseRecordHistoryOldValueDuo = BaseRecordHistoryOldValueDuo;
 class BaseRepoTransHistoryChangedRepositoryActorDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(4);
+        return qSchema_1.duoDiSet(4);
     }
     constructor() {
         super(4);
@@ -83,7 +83,7 @@ class BaseRepoTransHistoryChangedRepositoryActorDuo extends SQDIDuo {
 exports.BaseRepoTransHistoryChangedRepositoryActorDuo = BaseRepoTransHistoryChangedRepositoryActorDuo;
 class BaseRepositoryDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(10);
+        return qSchema_1.duoDiSet(10);
     }
     constructor() {
         super(10);
@@ -92,7 +92,7 @@ class BaseRepositoryDuo extends SQDIDuo {
 exports.BaseRepositoryDuo = BaseRepositoryDuo;
 class BaseRepositoryActorDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(11);
+        return qSchema_1.duoDiSet(11);
     }
     constructor() {
         super(11);
@@ -101,7 +101,7 @@ class BaseRepositoryActorDuo extends SQDIDuo {
 exports.BaseRepositoryActorDuo = BaseRepositoryActorDuo;
 class BaseRepositoryApplicationDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(12);
+        return qSchema_1.duoDiSet(12);
     }
     constructor() {
         super(12);
@@ -110,7 +110,7 @@ class BaseRepositoryApplicationDuo extends SQDIDuo {
 exports.BaseRepositoryApplicationDuo = BaseRepositoryApplicationDuo;
 class BaseRepositorySchemaDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(13);
+        return qSchema_1.duoDiSet(13);
     }
     constructor() {
         super(13);
@@ -119,7 +119,7 @@ class BaseRepositorySchemaDuo extends SQDIDuo {
 exports.BaseRepositorySchemaDuo = BaseRepositorySchemaDuo;
 class BaseRepositoryTransactionHistoryDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(5);
+        return qSchema_1.duoDiSet(5);
     }
     constructor() {
         super(5);
@@ -128,7 +128,7 @@ class BaseRepositoryTransactionHistoryDuo extends SQDIDuo {
 exports.BaseRepositoryTransactionHistoryDuo = BaseRepositoryTransactionHistoryDuo;
 class BaseTransactionHistoryDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(6);
+        return qSchema_1.duoDiSet(6);
     }
     constructor() {
         super(6);

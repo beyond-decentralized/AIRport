@@ -11,7 +11,7 @@ class SQDIDuo extends check_in_1.Duo {
 exports.SQDIDuo = SQDIDuo;
 class BaseSequenceDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
@@ -20,7 +20,7 @@ class BaseSequenceDuo extends SQDIDuo {
 exports.BaseSequenceDuo = BaseSequenceDuo;
 class BaseSequenceBlockDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(2);
+        return qSchema_1.duoDiSet(2);
     }
     constructor() {
         super(2);
@@ -29,7 +29,7 @@ class BaseSequenceBlockDuo extends SQDIDuo {
 exports.BaseSequenceBlockDuo = BaseSequenceBlockDuo;
 class BaseTerminalRunDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(1);
+        return qSchema_1.duoDiSet(1);
     }
     constructor() {
         super(1);

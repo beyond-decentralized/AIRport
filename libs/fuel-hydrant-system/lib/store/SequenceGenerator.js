@@ -10,6 +10,10 @@ class SequenceGenerator {
         this.sequenceBlocks = [];
     }
     exists(dbEntity) {
+        const generatedColumns = dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
+        if (!generatedColumns.length) {
+            return true;
+        }
         const schemaSequences = this.sequences[dbEntity.schemaVersion.schema.index];
         if (!schemaSequences) {
             return false;
@@ -18,13 +22,14 @@ class SequenceGenerator {
         if (!tableSequences) {
             return false;
         }
-        return dbEntity.columns.every(dbColumn => !dbColumn.isGenerated || !!tableSequences[dbColumn.index]);
+        return generatedColumns.every(dbColumn => !!tableSequences[dbColumn.index]);
     }
     async init(sequences) {
         if (!sequences) {
             sequences = await (await di_1.DI.get(airport_code_1.SEQUENCE_DAO)).findAll();
         }
         this.addSequences(sequences);
+        check_in_1.setSeqGen(this);
     }
     async generateSequenceNumbers(dbColumns, numSequencesNeeded) {
         const numSequencesNeededFromNewBlocks = new Map();

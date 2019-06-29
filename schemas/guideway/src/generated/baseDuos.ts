@@ -12,7 +12,7 @@ import {
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
 	IAgtRepositoryTransactionBlock,
@@ -237,7 +237,7 @@ export class BaseAgtRepositoryTransactionBlockDuo
 	implements IBaseAgtRepositoryTransactionBlockDuo {
 
 	static diSet(): boolean {
-		return diSet(16)
+		return duoDiSet(16)
 	}
 	
 	constructor() {
@@ -255,7 +255,7 @@ export class BaseAgtSharingMessageDuo
 	implements IBaseAgtSharingMessageDuo {
 
 	static diSet(): boolean {
-		return diSet(14)
+		return duoDiSet(14)
 	}
 	
 	constructor() {
@@ -273,7 +273,7 @@ export class BaseArchiveDuo
 	implements IBaseArchiveDuo {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
@@ -291,7 +291,7 @@ export class BaseDailyArchiveLogDuo
 	implements IBaseDailyArchiveLogDuo {
 
 	static diSet(): boolean {
-		return diSet(18)
+		return duoDiSet(18)
 	}
 	
 	constructor() {
@@ -309,7 +309,7 @@ export class BaseDailyTerminalSyncLogDuo
 	implements IBaseDailyTerminalSyncLogDuo {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
@@ -327,7 +327,7 @@ export class BaseMonthlyArchiveLogDuo
 	implements IBaseMonthlyArchiveLogDuo {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
@@ -345,7 +345,7 @@ export class BaseMonthlyTerminalSyncLogDuo
 	implements IBaseMonthlyTerminalSyncLogDuo {
 
 	static diSet(): boolean {
-		return diSet(3)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
@@ -363,7 +363,7 @@ export class BaseRepositoryDuo
 	implements IBaseRepositoryDuo {
 
 	static diSet(): boolean {
-		return diSet(17)
+		return duoDiSet(17)
 	}
 	
 	constructor() {
@@ -381,7 +381,7 @@ export class BaseRepositoryArchiveDuo
 	implements IBaseRepositoryArchiveDuo {
 
 	static diSet(): boolean {
-		return diSet(4)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
@@ -399,7 +399,7 @@ export class BaseSecurityAnswerDuo
 	implements IBaseSecurityAnswerDuo {
 
 	static diSet(): boolean {
-		return diSet(8)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
@@ -417,7 +417,7 @@ export class BaseSecurityQuestionDuo
 	implements IBaseSecurityQuestionDuo {
 
 	static diSet(): boolean {
-		return diSet(7)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
@@ -435,7 +435,7 @@ export class BaseServerDuo
 	implements IBaseServerDuo {
 
 	static diSet(): boolean {
-		return diSet(10)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
@@ -453,7 +453,7 @@ export class BaseServerSyncLogDuo
 	implements IBaseServerSyncLogDuo {
 
 	static diSet(): boolean {
-		return diSet(9)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
@@ -471,7 +471,7 @@ export class BaseSyncLogDuo
 	implements IBaseSyncLogDuo {
 
 	static diSet(): boolean {
-		return diSet(11)
+		return duoDiSet(11)
 	}
 	
 	constructor() {
@@ -489,7 +489,7 @@ export class BaseTerminalDuo
 	implements IBaseTerminalDuo {
 
 	static diSet(): boolean {
-		return diSet(15)
+		return duoDiSet(15)
 	}
 	
 	constructor() {
@@ -507,7 +507,7 @@ export class BaseTerminalRepositoryDuo
 	implements IBaseTerminalRepositoryDuo {
 
 	static diSet(): boolean {
-		return diSet(12)
+		return duoDiSet(12)
 	}
 	
 	constructor() {
@@ -525,7 +525,7 @@ export class BaseTuningParametersDuo
 	implements IBaseTuningParametersDuo {
 
 	static diSet(): boolean {
-		return diSet(13)
+		return duoDiSet(13)
 	}
 	
 	constructor() {
@@ -543,7 +543,7 @@ export class BaseUserDuo
 	implements IBaseUserDuo {
 
 	static diSet(): boolean {
-		return diSet(6)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
@@ -561,7 +561,7 @@ export class BaseUserRepositoryDuo
 	implements IBaseUserRepositoryDuo {
 
 	static diSet(): boolean {
-		return diSet(5)
+		return duoDiSet(5)
 	}
 	
 	constructor() {

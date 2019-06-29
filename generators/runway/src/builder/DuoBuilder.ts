@@ -26,7 +26,7 @@ export class Base${entityName}Duo
 	implements IBase${entityName}Duo {
 
 	static diSet(): boolean {
-		return diSet(${this.entityIdMapByName[entityName]})
+		return duoDiSet(${this.entityIdMapByName[entityName]})
 	}
 	
 	constructor() {
@@ -62,7 +62,7 @@ import {
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 ${imports}
 

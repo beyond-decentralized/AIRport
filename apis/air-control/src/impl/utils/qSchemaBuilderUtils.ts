@@ -89,7 +89,7 @@ export function getQRelation(
 			                     = allQSchemas[relationSchema.index]
 				.__qIdRelationConstructors__[relationEntity.index]
 			// return new qIdRelationConstructor(relationEntity, property, q)
-			return new qIdRelationConstructor(relation, q)
+			return new qIdRelationConstructor(relation.relationEntity, relation, q)
 		case EntityRelationType.ONE_TO_MANY:
 			return new QOneToManyRelation(relation, q)
 		default:

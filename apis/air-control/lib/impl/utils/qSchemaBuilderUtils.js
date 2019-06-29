@@ -52,7 +52,7 @@ function getQRelation(entity, property, q, allQSchemas) {
             const qIdRelationConstructor = allQSchemas[relationSchema.index]
                 .__qIdRelationConstructors__[relationEntity.index];
             // return new qIdRelationConstructor(relationEntity, property, q)
-            return new qIdRelationConstructor(relation, q);
+            return new qIdRelationConstructor(relation.relationEntity, relation, q);
         case ground_control_1.EntityRelationType.ONE_TO_MANY:
             return new OneToManyRelation_1.QOneToManyRelation(relation, q);
         default:

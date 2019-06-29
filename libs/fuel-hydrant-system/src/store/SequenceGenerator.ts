@@ -6,7 +6,8 @@ import {
 }            from '@airport/airport-code'
 import {
 	ISequenceGenerator,
-	SEQUENCE_GENERATOR
+	SEQUENCE_GENERATOR,
+	setSeqGen
 }            from '@airport/check-in'
 import {DI,} from '@airport/di'
 import {
@@ -24,6 +25,13 @@ export class SequenceGenerator
 	exists(
 		dbEntity: DbEntity
 	): boolean {
+		const generatedColumns = dbEntity.columns.filter(
+			dbColumn => dbColumn.isGenerated)
+
+		if (!generatedColumns.length) {
+			return true
+		}
+
 		const schemaSequences = this.sequences[dbEntity.schemaVersion.schema.index]
 
 		if (!schemaSequences) {
@@ -36,9 +44,9 @@ export class SequenceGenerator
 			return false
 		}
 
-		return dbEntity.columns.every(
+		return generatedColumns.every(
 			dbColumn =>
-				!dbColumn.isGenerated || !!tableSequences[dbColumn.index])
+				!!tableSequences[dbColumn.index])
 	}
 
 	async init(
@@ -48,6 +56,7 @@ export class SequenceGenerator
 			sequences = await (await DI.get(SEQUENCE_DAO)).findAll()
 		}
 		this.addSequences(sequences)
+		setSeqGen(this)
 	}
 
 	async generateSequenceNumbers(

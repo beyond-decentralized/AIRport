@@ -2,7 +2,10 @@ import {
 	AIR_DB,
 	QSchema as AirportQSchema
 }                      from '@airport/air-control'
-import {diSet as dS}          from '@airport/check-in'
+import {
+	diSet as dS,
+	duoDiSet as ddS
+}                      from '@airport/check-in'
 import {DI}            from '@airport/di'
 import {
 	DbSchema,
@@ -35,6 +38,12 @@ export function diSet(
 	dbEntityId: EntityId
 ): boolean {
 	return dS(Q.__dbSchema__, dbEntityId)
+}
+
+export function duoDiSet(
+	dbEntityId: EntityId
+): boolean {
+	return ddS(Q.__dbSchema__, dbEntityId)
 }
 
 DI.get(AIR_DB).then((

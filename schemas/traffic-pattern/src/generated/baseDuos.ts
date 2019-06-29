@@ -12,7 +12,7 @@ import {
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
 	ISchema,
@@ -137,7 +137,7 @@ export class BaseSchemaDuo
 	implements IBaseSchemaDuo {
 
 	static diSet(): boolean {
-		return diSet(8)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
@@ -155,7 +155,7 @@ export class BaseSchemaColumnDuo
 	implements IBaseSchemaColumnDuo {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
@@ -173,7 +173,7 @@ export class BaseSchemaEntityDuo
 	implements IBaseSchemaEntityDuo {
 
 	static diSet(): boolean {
-		return diSet(5)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
@@ -191,7 +191,7 @@ export class BaseSchemaPropertyDuo
 	implements IBaseSchemaPropertyDuo {
 
 	static diSet(): boolean {
-		return diSet(4)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
@@ -209,7 +209,7 @@ export class BaseSchemaPropertyColumnDuo
 	implements IBaseSchemaPropertyColumnDuo {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
@@ -227,7 +227,7 @@ export class BaseSchemaReferenceDuo
 	implements IBaseSchemaReferenceDuo {
 
 	static diSet(): boolean {
-		return diSet(6)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
@@ -245,7 +245,7 @@ export class BaseSchemaRelationDuo
 	implements IBaseSchemaRelationDuo {
 
 	static diSet(): boolean {
-		return diSet(3)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
@@ -263,7 +263,7 @@ export class BaseSchemaRelationColumnDuo
 	implements IBaseSchemaRelationColumnDuo {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
@@ -281,7 +281,7 @@ export class BaseSchemaVersionDuo
 	implements IBaseSchemaVersionDuo {
 
 	static diSet(): boolean {
-		return diSet(7)
+		return duoDiSet(7)
 	}
 	
 	constructor() {

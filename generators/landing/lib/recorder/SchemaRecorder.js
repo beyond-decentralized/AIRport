@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const territory_1 = require("@airport/territory");
 const tower_1 = require("@airport/tower");
@@ -7,7 +8,7 @@ const traffic_pattern_1 = require("@airport/traffic-pattern");
 const diTokens_1 = require("../diTokens");
 class SchemaRecorder {
     async record(ddlObjects, normalOperation) {
-        const [domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaVersionDao] = await di_1.DI.get(territory_1.DOMAIN_DAO, traffic_pattern_1.SCHEMA_COLUMN_DAO, traffic_pattern_1.SCHEMA_DAO, traffic_pattern_1.SCHEMA_ENTITY_DAO, traffic_pattern_1.SCHEMA_PROPERTY_COLUMN_DAO, traffic_pattern_1.SCHEMA_PROPERTY_DAO, traffic_pattern_1.SCHEMA_REFERENCE_DAO, traffic_pattern_1.SCHEMA_RELATION_COLUMN_DAO, traffic_pattern_1.SCHEMA_RELATION_DAO, traffic_pattern_1.SCHEMA_VERSION_DAO);
+        const [airDb, domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaVersionDao] = await di_1.DI.get(air_control_1.AIR_DB, territory_1.DOMAIN_DAO, traffic_pattern_1.SCHEMA_COLUMN_DAO, traffic_pattern_1.SCHEMA_DAO, traffic_pattern_1.SCHEMA_ENTITY_DAO, traffic_pattern_1.SCHEMA_PROPERTY_COLUMN_DAO, traffic_pattern_1.SCHEMA_PROPERTY_DAO, traffic_pattern_1.SCHEMA_REFERENCE_DAO, traffic_pattern_1.SCHEMA_RELATION_COLUMN_DAO, traffic_pattern_1.SCHEMA_RELATION_DAO, traffic_pattern_1.SCHEMA_VERSION_DAO);
         await tower_1.transactional(async () => {
             // FIXME: add support for real schema versioning
             this.setDefaultVersioning(ddlObjects);
@@ -15,7 +16,7 @@ class SchemaRecorder {
                 await this.normalRecord(ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao);
             }
             else {
-                await this.bootstrapRecord(ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao);
+                await this.bootstrapRecord(airDb, ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao);
             }
         });
     }
@@ -68,22 +69,20 @@ class SchemaRecorder {
             relationColumn.sinceVersion = relationColumn.parentRelation.entity.schemaVersion;
         }
     }
-    async bootstrapRecord(ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao) {
-        await this.bulkCreate(domainDao, ddlObjects.domains);
-        await this.bulkCreate(schemaDao, ddlObjects.schemas);
-        await this.bulkCreate(schemaVersionDao, ddlObjects.latestSchemaVersions);
-        await this.bulkCreate(schemaReferenceDao, ddlObjects.schemaReferences);
-        await this.bulkCreate(schemaEntityDao, ddlObjects.entities);
-        await this.bulkCreate(schemaPropertyDao, ddlObjects.properties);
-        await this.bulkCreate(schemaRelationDao, ddlObjects.relations);
-        await this.bulkCreate(schemaColumnDao, ddlObjects.columns);
-        await this.bulkCreate(schemaPropertyColumnDao, ddlObjects.propertyColumns);
-        await this.bulkCreate(schemaRelationColumnDao, ddlObjects.relationColumns);
+    async bootstrapRecord(airDb, ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao) {
+        await this.bulkCreate(airDb, domainDao, ddlObjects.domains);
+        await this.bulkCreate(airDb, schemaDao, ddlObjects.schemas);
+        await this.bulkCreate(airDb, schemaVersionDao, ddlObjects.latestSchemaVersions);
+        await this.bulkCreate(airDb, schemaReferenceDao, ddlObjects.schemaReferences);
+        await this.bulkCreate(airDb, schemaEntityDao, ddlObjects.entities);
+        await this.bulkCreate(airDb, schemaPropertyDao, ddlObjects.properties);
+        await this.bulkCreate(airDb, schemaRelationDao, ddlObjects.relations);
+        await this.bulkCreate(airDb, schemaColumnDao, ddlObjects.columns);
+        await this.bulkCreate(airDb, schemaPropertyColumnDao, ddlObjects.propertyColumns);
+        await this.bulkCreate(airDb, schemaRelationColumnDao, ddlObjects.relationColumns);
     }
-    async bulkCreate(dao, entities) {
-        const entityDbFacade = dao.db;
-        const dbFacade = entityDbFacade.common;
-        await dbFacade.bulkCreate(entityDbFacade.dbEntity, entities, false, false, false);
+    async bulkCreate(airDb, dao, entities) {
+        await airDb.bulkCreate(dao.db.dbEntity, entities, false, false, false);
     }
 }
 exports.SchemaRecorder = SchemaRecorder;

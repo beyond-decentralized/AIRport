@@ -12,7 +12,7 @@ import {
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
 	ILogEntry,
@@ -97,7 +97,7 @@ export class BaseLogEntryDuo
 	implements IBaseLogEntryDuo {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
@@ -115,7 +115,7 @@ export class BaseLogEntryTypeDuo
 	implements IBaseLogEntryTypeDuo {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
@@ -133,7 +133,7 @@ export class BaseLogEntryValueDuo
 	implements IBaseLogEntryValueDuo {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
@@ -151,7 +151,7 @@ export class BaseLoggedErrorDuo
 	implements IBaseLoggedErrorDuo {
 
 	static diSet(): boolean {
-		return diSet(4)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
@@ -169,7 +169,7 @@ export class BaseLoggedErrorStackTraceDuo
 	implements IBaseLoggedErrorStackTraceDuo {
 
 	static diSet(): boolean {
-		return diSet(3)
+		return duoDiSet(3)
 	}
 	
 	constructor() {

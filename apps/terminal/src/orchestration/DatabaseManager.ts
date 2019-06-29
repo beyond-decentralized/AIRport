@@ -112,7 +112,6 @@ export class DatabaseManager
 
 		const storeDriver = await DI.get(STORE_DRIVER)
 
-		/*
 		await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCES')
 		await storeDriver.dropTable('github_com___airport__airport_code__SEQUENCE_BLOCKS')
 		await storeDriver.dropTable('github_com___airport__airport_code__TERMINAL_RUNS')
@@ -150,7 +149,7 @@ export class DatabaseManager
 		await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__USER_TERMINAL')
 		await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__USER_TERMINAL_AGT')
 		await storeDriver.dropTable('github_com___airport__travel_document_checkpoint__User')
-*/
+
 		if (await storeDriver.doesTableExist('github_com___airport_territory__PACKAGES')) {
 			const queryObjectInitializer = await DI.get(QUERY_OBJECT_INITIALIZER)
 			await queryObjectInitializer.initialize(airDb)

@@ -1,6 +1,7 @@
 import {
-	IDao,
-	IDatabaseFacade
+	AIR_DB,
+	IAirportDatabase,
+	IDao
 }                        from '@airport/air-control'
 import {DI}              from '@airport/di'
 import {DdlObjects}      from '@airport/takeoff'
@@ -50,11 +51,11 @@ export class SchemaRecorder
 		ddlObjects: DdlObjects,
 		normalOperation: boolean
 	): Promise<void> {
-		const [domainDao, schemaColumnDao, schemaDao,
+		const [airDb, domainDao, schemaColumnDao, schemaDao,
 			      schemaEntityDao, schemaPropertyColumnDao, schemaPropertyDao,
 			      schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao,
 			      schemaVersionDao] = await DI.get(
-			DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO,
+			AIR_DB, DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO,
 			SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_PROPERTY_DAO,
 			SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO,
 			SCHEMA_RELATION_DAO, SCHEMA_VERSION_DAO
@@ -70,7 +71,7 @@ export class SchemaRecorder
 					schemaRelationDao, schemaColumnDao,
 					schemaPropertyColumnDao, schemaRelationColumnDao)
 			} else {
-				await this.bootstrapRecord(ddlObjects, domainDao, schemaDao,
+				await this.bootstrapRecord(airDb, ddlObjects, domainDao, schemaDao,
 					schemaVersionDao, schemaReferenceDao,
 					schemaEntityDao, schemaPropertyDao,
 					schemaRelationDao, schemaColumnDao,
@@ -152,6 +153,7 @@ export class SchemaRecorder
 	}
 
 	private async bootstrapRecord(
+		airDb: IAirportDatabase,
 		ddlObjects: DdlObjects,
 		domainDao: IDomainDao,
 		schemaDao: ISchemaDao,
@@ -164,29 +166,27 @@ export class SchemaRecorder
 		schemaPropertyColumnDao: ISchemaPropertyColumnDao,
 		schemaRelationColumnDao: ISchemaRelationColumnDao,
 	) {
-		await this.bulkCreate(domainDao, ddlObjects.domains)
-		await this.bulkCreate(schemaDao, ddlObjects.schemas)
-		await this.bulkCreate(schemaVersionDao, ddlObjects.latestSchemaVersions)
-		await this.bulkCreate(schemaReferenceDao,
+		await this.bulkCreate(airDb, domainDao, ddlObjects.domains)
+		await this.bulkCreate(airDb, schemaDao, ddlObjects.schemas)
+		await this.bulkCreate(airDb, schemaVersionDao, ddlObjects.latestSchemaVersions)
+		await this.bulkCreate(airDb, schemaReferenceDao,
 			ddlObjects.schemaReferences as SchemaReferenceECreateProperties[])
-		await this.bulkCreate(schemaEntityDao, ddlObjects.entities)
-		await this.bulkCreate(schemaPropertyDao, ddlObjects.properties)
-		await this.bulkCreate(schemaRelationDao, ddlObjects.relations)
-		await this.bulkCreate(schemaColumnDao, ddlObjects.columns)
-		await this.bulkCreate(schemaPropertyColumnDao,
+		await this.bulkCreate(airDb, schemaEntityDao, ddlObjects.entities)
+		await this.bulkCreate(airDb, schemaPropertyDao, ddlObjects.properties)
+		await this.bulkCreate(airDb, schemaRelationDao, ddlObjects.relations)
+		await this.bulkCreate(airDb, schemaColumnDao, ddlObjects.columns)
+		await this.bulkCreate(airDb, schemaPropertyColumnDao,
 			ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[])
-		await this.bulkCreate(schemaRelationColumnDao,
+		await this.bulkCreate(airDb, schemaRelationColumnDao,
 			ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[])
 	}
 
 	private async bulkCreate(
+		airDb: IAirportDatabase,
 		dao: IDao<any, any, any, any, any, any, any>,
 		entities: any[]
 	) {
-		const entityDbFacade            = (dao as any).db
-		const dbFacade: IDatabaseFacade = entityDbFacade.common
-
-		await dbFacade.bulkCreate(entityDbFacade.dbEntity, entities, false, false, false)
+		await airDb.bulkCreate(dao.db.dbEntity, entities, false, false, false)
 	}
 
 }

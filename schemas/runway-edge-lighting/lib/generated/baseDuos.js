@@ -11,7 +11,7 @@ class SQDIDuo extends check_in_1.Duo {
 exports.SQDIDuo = SQDIDuo;
 class BaseLogEntryDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(1);
+        return qSchema_1.duoDiSet(1);
     }
     constructor() {
         super(1);
@@ -20,7 +20,7 @@ class BaseLogEntryDuo extends SQDIDuo {
 exports.BaseLogEntryDuo = BaseLogEntryDuo;
 class BaseLogEntryTypeDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(2);
+        return qSchema_1.duoDiSet(2);
     }
     constructor() {
         super(2);
@@ -29,7 +29,7 @@ class BaseLogEntryTypeDuo extends SQDIDuo {
 exports.BaseLogEntryTypeDuo = BaseLogEntryTypeDuo;
 class BaseLogEntryValueDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
@@ -38,7 +38,7 @@ class BaseLogEntryValueDuo extends SQDIDuo {
 exports.BaseLogEntryValueDuo = BaseLogEntryValueDuo;
 class BaseLoggedErrorDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(4);
+        return qSchema_1.duoDiSet(4);
     }
     constructor() {
         super(4);
@@ -47,7 +47,7 @@ class BaseLoggedErrorDuo extends SQDIDuo {
 exports.BaseLoggedErrorDuo = BaseLoggedErrorDuo;
 class BaseLoggedErrorStackTraceDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(3);
+        return qSchema_1.duoDiSet(3);
     }
     constructor() {
         super(3);

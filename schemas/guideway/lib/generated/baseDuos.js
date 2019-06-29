@@ -11,7 +11,7 @@ class SQDIDuo extends check_in_1.Duo {
 exports.SQDIDuo = SQDIDuo;
 class BaseAgtRepositoryTransactionBlockDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(16);
+        return qSchema_1.duoDiSet(16);
     }
     constructor() {
         super(16);
@@ -20,7 +20,7 @@ class BaseAgtRepositoryTransactionBlockDuo extends SQDIDuo {
 exports.BaseAgtRepositoryTransactionBlockDuo = BaseAgtRepositoryTransactionBlockDuo;
 class BaseAgtSharingMessageDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(14);
+        return qSchema_1.duoDiSet(14);
     }
     constructor() {
         super(14);
@@ -29,7 +29,7 @@ class BaseAgtSharingMessageDuo extends SQDIDuo {
 exports.BaseAgtSharingMessageDuo = BaseAgtSharingMessageDuo;
 class BaseArchiveDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
@@ -38,7 +38,7 @@ class BaseArchiveDuo extends SQDIDuo {
 exports.BaseArchiveDuo = BaseArchiveDuo;
 class BaseDailyArchiveLogDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(18);
+        return qSchema_1.duoDiSet(18);
     }
     constructor() {
         super(18);
@@ -47,7 +47,7 @@ class BaseDailyArchiveLogDuo extends SQDIDuo {
 exports.BaseDailyArchiveLogDuo = BaseDailyArchiveLogDuo;
 class BaseDailyTerminalSyncLogDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(1);
+        return qSchema_1.duoDiSet(1);
     }
     constructor() {
         super(1);
@@ -56,7 +56,7 @@ class BaseDailyTerminalSyncLogDuo extends SQDIDuo {
 exports.BaseDailyTerminalSyncLogDuo = BaseDailyTerminalSyncLogDuo;
 class BaseMonthlyArchiveLogDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(2);
+        return qSchema_1.duoDiSet(2);
     }
     constructor() {
         super(2);
@@ -65,7 +65,7 @@ class BaseMonthlyArchiveLogDuo extends SQDIDuo {
 exports.BaseMonthlyArchiveLogDuo = BaseMonthlyArchiveLogDuo;
 class BaseMonthlyTerminalSyncLogDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(3);
+        return qSchema_1.duoDiSet(3);
     }
     constructor() {
         super(3);
@@ -74,7 +74,7 @@ class BaseMonthlyTerminalSyncLogDuo extends SQDIDuo {
 exports.BaseMonthlyTerminalSyncLogDuo = BaseMonthlyTerminalSyncLogDuo;
 class BaseRepositoryDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(17);
+        return qSchema_1.duoDiSet(17);
     }
     constructor() {
         super(17);
@@ -83,7 +83,7 @@ class BaseRepositoryDuo extends SQDIDuo {
 exports.BaseRepositoryDuo = BaseRepositoryDuo;
 class BaseRepositoryArchiveDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(4);
+        return qSchema_1.duoDiSet(4);
     }
     constructor() {
         super(4);
@@ -92,7 +92,7 @@ class BaseRepositoryArchiveDuo extends SQDIDuo {
 exports.BaseRepositoryArchiveDuo = BaseRepositoryArchiveDuo;
 class BaseSecurityAnswerDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(8);
+        return qSchema_1.duoDiSet(8);
     }
     constructor() {
         super(8);
@@ -101,7 +101,7 @@ class BaseSecurityAnswerDuo extends SQDIDuo {
 exports.BaseSecurityAnswerDuo = BaseSecurityAnswerDuo;
 class BaseSecurityQuestionDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(7);
+        return qSchema_1.duoDiSet(7);
     }
     constructor() {
         super(7);
@@ -110,7 +110,7 @@ class BaseSecurityQuestionDuo extends SQDIDuo {
 exports.BaseSecurityQuestionDuo = BaseSecurityQuestionDuo;
 class BaseServerDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(10);
+        return qSchema_1.duoDiSet(10);
     }
     constructor() {
         super(10);
@@ -119,7 +119,7 @@ class BaseServerDuo extends SQDIDuo {
 exports.BaseServerDuo = BaseServerDuo;
 class BaseServerSyncLogDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(9);
+        return qSchema_1.duoDiSet(9);
     }
     constructor() {
         super(9);
@@ -128,7 +128,7 @@ class BaseServerSyncLogDuo extends SQDIDuo {
 exports.BaseServerSyncLogDuo = BaseServerSyncLogDuo;
 class BaseSyncLogDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(11);
+        return qSchema_1.duoDiSet(11);
     }
     constructor() {
         super(11);
@@ -137,7 +137,7 @@ class BaseSyncLogDuo extends SQDIDuo {
 exports.BaseSyncLogDuo = BaseSyncLogDuo;
 class BaseTerminalDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(15);
+        return qSchema_1.duoDiSet(15);
     }
     constructor() {
         super(15);
@@ -146,7 +146,7 @@ class BaseTerminalDuo extends SQDIDuo {
 exports.BaseTerminalDuo = BaseTerminalDuo;
 class BaseTerminalRepositoryDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(12);
+        return qSchema_1.duoDiSet(12);
     }
     constructor() {
         super(12);
@@ -155,7 +155,7 @@ class BaseTerminalRepositoryDuo extends SQDIDuo {
 exports.BaseTerminalRepositoryDuo = BaseTerminalRepositoryDuo;
 class BaseTuningParametersDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(13);
+        return qSchema_1.duoDiSet(13);
     }
     constructor() {
         super(13);
@@ -164,7 +164,7 @@ class BaseTuningParametersDuo extends SQDIDuo {
 exports.BaseTuningParametersDuo = BaseTuningParametersDuo;
 class BaseUserDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(6);
+        return qSchema_1.duoDiSet(6);
     }
     constructor() {
         super(6);
@@ -173,7 +173,7 @@ class BaseUserDuo extends SQDIDuo {
 exports.BaseUserDuo = BaseUserDuo;
 class BaseUserRepositoryDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.diSet(5);
+        return qSchema_1.duoDiSet(5);
     }
     constructor() {
         super(5);

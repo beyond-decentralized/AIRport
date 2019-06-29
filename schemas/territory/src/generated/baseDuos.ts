@@ -12,7 +12,7 @@ import {
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
 	IApplication,
@@ -97,7 +97,7 @@ export class BaseApplicationDuo
 	implements IBaseApplicationDuo {
 
 	static diSet(): boolean {
-		return diSet(3)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
@@ -115,7 +115,7 @@ export class BaseApplicationPackageDuo
 	implements IBaseApplicationPackageDuo {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
@@ -133,7 +133,7 @@ export class BaseDomainDuo
 	implements IBaseDomainDuo {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
@@ -151,7 +151,7 @@ export class BasePackageDuo
 	implements IBasePackageDuo {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
@@ -169,7 +169,7 @@ export class BasePackagedUnitDuo
 	implements IBasePackagedUnitDuo {
 
 	static diSet(): boolean {
-		return diSet(4)
+		return duoDiSet(4)
 	}
 	
 	constructor() {

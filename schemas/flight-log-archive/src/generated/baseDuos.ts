@@ -12,7 +12,7 @@ import {
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
 	IDailySyncLog,
@@ -77,7 +77,7 @@ export class BaseDailySyncLogDuo
 	implements IBaseDailySyncLogDuo {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
@@ -95,7 +95,7 @@ export class BaseLogDuo
 	implements IBaseLogDuo {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
@@ -113,7 +113,7 @@ export class BaseMonthlySyncLogDuo
 	implements IBaseMonthlySyncLogDuo {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
