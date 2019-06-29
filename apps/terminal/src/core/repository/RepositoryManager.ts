@@ -182,11 +182,14 @@ export class RepositoryManager
 
 	private ensureRepositoryRecords(): Promise<void> {
 		return DI.get(REPOSITORY_DAO).then(
-			repositoryDao => {
+			repositoryDao =>
 				// TODO: verify that we want to get ALL of the repositories
-				this.repositories = repositoryDao.db.find.tree({
+				repositoryDao.db.find.tree({
 					select: {}
 				})
+		).then(
+			repositories => {
+				this.repositories = repositories
 			})
 		/*
 						if (!this.repositories.length) {

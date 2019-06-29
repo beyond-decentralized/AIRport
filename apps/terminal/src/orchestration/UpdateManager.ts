@@ -1,16 +1,16 @@
 import {
 	AIR_DB,
 	IAirportDatabase,
-	IUtils,
+	ISchemaUtils,
 	MappedEntityArray,
-	UTILS
-}                           from '@airport/air-control'
-import {
-	DI
-}                           from '@airport/di'
+	SCHEMA_UTILS
+}           from '@airport/air-control'
+import {DI} from '@airport/di'
 import {
 	ChangeType,
 	DbEntity,
+	ensureChildArray,
+	ensureChildMap,
 	IStoreDriver,
 	JsonSheetQuery,
 	JsonUpdate,
@@ -18,33 +18,36 @@ import {
 	QueryResultType,
 	repositoryEntity,
 	STORE_DRIVER,
-}                           from '@airport/ground-control'
+}           from '@airport/ground-control'
 import {
 	IActor,
 	IOperationHistoryDuo,
 	IRecordHistory,
 	IRecordHistoryDuo,
+	IRecordHistoryNewValueDuo,
+	IRecordHistoryOldValueDuo,
 	IRepository,
 	IRepositoryTransactionHistoryDuo,
-	ITransactionHistoryDuo,
 	OPER_HISTORY_DUO,
+	REC_HIST_NEW_VALUE_DUO,
+	REC_HIST_OLD_VALUE_DUO,
 	REC_HISTORY_DUO,
-	REPO_TRANS_HISTORY_DUO,
-	TRANS_HISTORY_DUO
-}                           from '@airport/holding-pattern'
+	REPO_TRANS_HISTORY_DUO
+}           from '@airport/holding-pattern'
 import {
 	ITransactionManager,
 	TRANSACTION_MANAGER
-}                           from '@airport/terminal-map'
-import {IRepositoryManager} from '../core/repository/RepositoryManager'
-import {IOfflineDeltaStore} from '../data/OfflineDeltaStore'
+}           from '@airport/terminal-map'
+import {
+	IHistoryManager,
+	IRepositoryManager
+}           from '..'
 import {
 	HISTORY_MANAGER,
 	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER,
 	UPDATE_MANAGER
-}                           from '../diTokens'
-import {IHistoryManager}    from './HistoryManager'
+}           from '../diTokens'
 
 export interface IUpdateManager {
 
@@ -66,64 +69,49 @@ interface RecordHistoryMap {
 export class UpdateManager
 	implements IUpdateManager {
 
-	private airDb: IAirportDatabase
-	private dataStore: IStoreDriver
-	private histManager: IHistoryManager
-	private offlineDataStore: IOfflineDeltaStore
-	private operHistoryDuo: Promise<IOperationHistoryDuo>
-	private recHistoryDuo: Promise<IRecordHistoryDuo>
-	private repoManager: IRepositoryManager
-	private repoTransHistoryDuo: Promise<IRepositoryTransactionHistoryDuo>
-	// private transHistoryDuo: Promise<ITransactionHistoryDuo>
-	private transManager: ITransactionManager
-	private utils: IUtils
-
-	constructor() {
-		DI.get((
-			airportDb,
-			dataStore,
-			historyManager,
-			offlineDataStore,
-			repositoryManager,
-			transactionManager,
-			utils
-			) => {
-				this.airDb            = airportDb
-				this.dataStore        = dataStore
-				this.histManager      = historyManager
-				this.offlineDataStore = offlineDataStore
-				this.repoManager      = repositoryManager
-				this.transManager     = transactionManager
-				this.utils            = utils
-			}, AIR_DB, STORE_DRIVER,
-			HISTORY_MANAGER, OFFLINE_DELTA_STORE,
-			REPOSITORY_MANAGER, TRANSACTION_MANAGER,
-			UTILS)
-		this.operHistoryDuo      = DI.getP(OPER_HISTORY_DUO)
-		this.recHistoryDuo       = DI.getP(REC_HISTORY_DUO)
-		this.repoTransHistoryDuo = DI.getP(REPO_TRANS_HISTORY_DUO)
-		// this.transHistoryDuo     = DI.getP(TRANS_HISTORY_DUO)
-	}
-
-	async updateValues( 
+	async updateValues(
 		portableQuery: PortableQuery,
 		actor: IActor,
 	): Promise<number> {
-		const dbEntity = this.airDb.schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex]
+		// TODO: remove unused dependencies after testing
+		const [airDb,
+			      historyManager,
+			      offlineDataStore,
+			      operHistoryDuo,
+			      recHistoryDuo,
+			      recHistoryNewValueDuo,
+			      recHistoryOldValueDuo,
+			      repositoryManager,
+			      repoTransHistoryDuo,
+			      schemaUtils,
+			      storeDriver,
+			      transactionManager] = await DI.get(AIR_DB,
+			HISTORY_MANAGER, OFFLINE_DELTA_STORE,
+			OPER_HISTORY_DUO, REC_HISTORY_DUO,
+			REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO,
+			REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO,
+			SCHEMA_UTILS, STORE_DRIVER, TRANSACTION_MANAGER)
+
+		const dbEntity = airDb.schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex]
 
 		let valueSelect: PortableQuery
 		let recordHistoryMap: RecordHistoryMap
 		if (!dbEntity.isLocal) {
 			[valueSelect, recordHistoryMap]
-				= await this.addUpdateHistory(dbEntity, portableQuery, actor)
+				= await this.addUpdateHistory(dbEntity, portableQuery, actor,
+				airDb, historyManager, operHistoryDuo, recHistoryDuo,
+				recHistoryOldValueDuo,
+				repositoryManager, repoTransHistoryDuo, schemaUtils,
+				storeDriver, transactionManager)
 		}
 
-		const numUpdatedRows = await this.dataStore.updateWhere(portableQuery)
+		const numUpdatedRows = await storeDriver.updateWhere(portableQuery)
 
 		if (!dbEntity.isLocal) {
 			await this.addNewValueHistory(
 				<JsonUpdate<any>>portableQuery.jsonQuery, dbEntity,
-				valueSelect, recordHistoryMap)
+				valueSelect, recordHistoryMap, recHistoryDuo,
+				recHistoryNewValueDuo, storeDriver)
 		}
 
 		return numUpdatedRows
@@ -133,6 +121,16 @@ export class UpdateManager
 		dbEntity: DbEntity,
 		portableQuery: PortableQuery,
 		actor: IActor,
+		airDb: IAirportDatabase,
+		histManager: IHistoryManager,
+		operHistoryDuo: IOperationHistoryDuo,
+		recHistoryDuo: IRecordHistoryDuo,
+		recHistoryOldValueDuo: IRecordHistoryOldValueDuo,
+		repoManager: IRepositoryManager,
+		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
+		schemaUtils: ISchemaUtils,
+		storeDriver: IStoreDriver,
+		transManager: ITransactionManager
 	): Promise<[
 		PortableQuery,
 		RecordHistoryMap
@@ -141,10 +139,10 @@ export class UpdateManager
 			throw `Cannot add update history for a non-RepositoryEntity`
 		}
 
-		const qEntity                       = this.airDb
+		const qEntity                       = airDb
 			.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
 		const jsonUpdate: JsonUpdate<any>   = <JsonUpdate<any>>portableQuery.jsonQuery
-		const selectClause                  = this.utils.Schema.getSheetSelectFromSetClause(
+		const selectClause                  = schemaUtils.getSheetSelectFromSetClause(
 			dbEntity, qEntity, jsonUpdate.S)
 		const jsonSelect: JsonSheetQuery    = {
 			S: selectClause,
@@ -159,7 +157,7 @@ export class UpdateManager
 			parameterMap: portableQuery.parameterMap,
 			// values: portableQuery.values,
 		}
-		const recordsToUpdate               = await this.dataStore.find<any, Array<any>>(portableSelect)
+		const recordsToUpdate               = await storeDriver.find<any, Array<any>>(portableSelect)
 
 		const {
 			      repositoryIdColumnIndex,
@@ -171,39 +169,36 @@ export class UpdateManager
 
 		const repositoryIds: number[]                      = Array.from(repositoryIdSet)
 		const repositories: MappedEntityArray<IRepository> =
-			      await this.repoManager.findReposWithDetailsByIds(...repositoryIds)
+			      await repoManager.findReposWithDetailsByIds(...repositoryIds)
 
 		const recordHistoryMapByRecordId: RecordHistoryMap = {}
-
-		const repoTransHistoryDuo = await this.repoTransHistoryDuo
-		const operHistoryDuo = await this.operHistoryDuo
-		const recHistoryDuo = await this.recHistoryDuo
 
 		for (const repositoryId of repositoryIds) {
 			const repository                         = repositories.get(repositoryId)
 			const recordHistoryMapForRepository      = {}
 			recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository
-			const repoTransHistory                   = await this.histManager.getNewRepoTransHistory(
-				this.transManager.currentTransHistory, repository, actor
+			const repoTransHistory                   = await histManager.getNewRepoTransHistory(
+				transManager.currentTransHistory, repository, actor
 			)
 			const operationHistory                   = repoTransHistoryDuo.startOperation(
-				repoTransHistory, ChangeType.UPDATE_ROWS, dbEntity)
+				repoTransHistory, ChangeType.UPDATE_ROWS, dbEntity, operHistoryDuo)
 
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
 			for (const recordToUpdate of recordsForRepositoryId) {
 				const actorId                  = recordToUpdate[actorIdColumnIndex]
 				const recordHistoryMapForActor =
-					      this.utils.ensureChildMap(recordHistoryMapForRepository, actorId)
+					      ensureChildMap(recordHistoryMapForRepository, actorId)
 
 				const actorRecordId                     = recordToUpdate[actorRecordIdColumnIndex]
 				const recordHistory                     = operHistoryDuo.startRecordHistory(
-					operationHistory, actorRecordId)
+					operationHistory, actorRecordId, recHistoryDuo)
 				recordHistoryMapForActor[actorRecordId] = recordHistory
 
 				for (const columnName in jsonUpdate.S) {
 					const dbColumn = dbEntity.columnMap[columnName]
 					const value    = recordToUpdate[dbColumn.index]
-					recHistoryDuo.addOldValue(recordHistory, dbColumn, value)
+					recHistoryDuo.addOldValue(recordHistory, dbColumn, value,
+						recHistoryOldValueDuo)
 				}
 			}
 
@@ -216,9 +211,12 @@ export class UpdateManager
 		jsonUpdate: JsonUpdate<any>,
 		dbEntity: DbEntity,
 		portableSelect: PortableQuery,
-		recordHistoryMapByRecordId: RecordHistoryMap
+		recordHistoryMapByRecordId: RecordHistoryMap,
+		recHistoryDuo: IRecordHistoryDuo,
+		recHistoryNewValueDuo: IRecordHistoryNewValueDuo,
+		storeDriver: IStoreDriver
 	): Promise<void> {
-		const updatedRecords = await this.dataStore.find<any, Array<any>>(portableSelect)
+		const updatedRecords = await storeDriver.find<any, Array<any>>(portableSelect)
 
 		const {
 			      repositoryIdColumnIndex,
@@ -227,8 +225,6 @@ export class UpdateManager
 			      recordsByRepositoryId,
 			      repositoryIdSet
 		      } = this.groupRecordsByRepository(dbEntity, updatedRecords)
-
-		const recHistoryDuo = await this.recHistoryDuo
 
 		for (const repositoryId of repositoryIdSet) {
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
@@ -241,7 +237,8 @@ export class UpdateManager
 				for (const columnName in jsonUpdate.S) {
 					const dbColumn = dbEntity.columnMap[columnName]
 					const value    = updatedRecord[dbColumn.index]
-					recHistoryDuo.addNewValue(recordHistory, dbColumn, value)
+					recHistoryDuo.addNewValue(recordHistory, dbColumn, value,
+						recHistoryNewValueDuo)
 				}
 			}
 
@@ -269,7 +266,7 @@ export class UpdateManager
 			const repositoryId = recordToUpdate[repositoryIdColumnIndex]
 			repositoryIdSet.add(repositoryId)
 			const recordsForRepositoryId =
-				      this.utils.ensureChildArray(recordsByRepositoryId, repositoryId)
+				      ensureChildArray(recordsByRepositoryId, repositoryId)
 			recordsForRepositoryId.push(recordToUpdate)
 		}
 

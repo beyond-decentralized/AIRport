@@ -60,28 +60,6 @@ export class SharingNodeRepositoryDao
 	extends BaseSharingNodeRepositoryDao
 	implements ISharingNodeRepositoryDao {
 
-	private qMetadataUtils: IQMetadataUtils
-	private repoTransHistoryDao: IRepositoryTransactionHistoryDao
-	private recHistNewValueDao: IRecordHistoryNewValueDao
-	private recHistOldValueDao: IRecordHistoryOldValueDao
-
-	constructor() {
-		super()
-
-		DI.get((
-			qMetadataUtils,
-			repositoryTransactionHistoryDao,
-			recordHistoryNewValueDao,
-			recordHistoryOldValueDao
-			) => {
-				this.qMetadataUtils      = qMetadataUtils
-				this.repoTransHistoryDao = repositoryTransactionHistoryDao
-				this.recHistNewValueDao  = recordHistoryNewValueDao
-				this.recHistOldValueDao  = recordHistoryOldValueDao
-			}, Q_METADATA_UTILS, REPO_TRANS_HISTORY_DAO,
-			REC_HIST_NEW_VALUE_DAO, REC_HIST_OLD_VALUE_DAO)
-	}
-
 	async findRepositoryMapBySharingNodeAndRepositoryIds(
 		repositoryIds: RepositoryId[],
 		sharingNodeIds: SharingNodeId[]
@@ -210,7 +188,11 @@ export class SharingNodeRepositoryDao
 			repositoryTransactionHistoryIdSet.add(sharingNodeIdWithRepoTransHistoryId[2])
 		}
 
-		const repositoryTransactionHistories = await this.repoTransHistoryDao
+		const [recHistNewValueDao, recHistOldValueDao,
+			      repoTransHistoryDao] = await DI.get(
+			REC_HIST_NEW_VALUE_DAO, REC_HIST_OLD_VALUE_DAO,
+			REPO_TRANS_HISTORY_DAO)
+		const repositoryTransactionHistories = await repoTransHistoryDao
 			.findWhereIdsIn(Array.from(repositoryTransactionHistoryIdSet))
 
 		const recordHistoryIds: RecordHistoryId[]                        = []
@@ -230,14 +212,14 @@ export class SharingNodeRepositoryDao
 		}
 
 		const oldValues
-			      = await this.recHistOldValueDao.findByRecordHistoryIdIn(recordHistoryIds)
+			      = await recHistOldValueDao.findByRecordHistoryIdIn(recordHistoryIds)
 		for (const oldValue of oldValues) {
 			const recordHistoryId = oldValue.recordHistory.id
 			recordHistoryMapById.get(recordHistoryId).oldValues.push(oldValue)
 		}
 
 		const newValues
-			      = await this.recHistNewValueDao.findByRecordHistoryIdIn(recordHistoryIds)
+			      = await recHistNewValueDao.findByRecordHistoryIdIn(recordHistoryIds)
 		for (const newValue of newValues) {
 			const recordHistoryId = newValue.recordHistory.id
 			recordHistoryMapById.get(recordHistoryId).newValues.push(newValue)

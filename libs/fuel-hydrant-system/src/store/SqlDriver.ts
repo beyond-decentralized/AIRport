@@ -51,18 +51,6 @@ export abstract class SqlDriver
 	// public queries: ActiveQueries
 	public type: StoreType
 
-	/*constructor() {
-		DI.get((
-			airportDatabase,
-			activeQueries,
-			utils
-		) => {
-			this.airDb   = airportDatabase
-			this.queries = activeQueries
-			this.utils   = utils
-		}, AIR_DB, ACTIVE_QUERIES, UTILS)
-	}*/
-
 	supportsLocalTransactions(): boolean {
 		return true
 	}

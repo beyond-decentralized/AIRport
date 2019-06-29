@@ -1,5 +1,5 @@
 import { PortableQuery } from '@airport/ground-control';
-import { IActor, ITransactionHistory } from '@airport/holding-pattern';
+import { IActor } from '@airport/holding-pattern';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 export declare type RecordId = number;
 export interface IInsertManager {
@@ -8,18 +8,6 @@ export interface IInsertManager {
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy): Promise<number>;
 }
 export declare class InsertManager implements IInsertManager {
-    private airDb;
-    private dataStore;
-    private seqGenerator;
-    private histManager;
-    private offlineDataStore;
-    private operHistoryDuo;
-    private recHistoryDuo;
-    private repoManager;
-    private repoTransHistoryDuo;
-    private transManager;
-    constructor();
-    readonly currentTransHistory: ITransactionHistory;
     insertValues(portableQuery: PortableQuery, actor: IActor, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, actor: IActor): Promise<RecordId[]>;
     private internalInsertValues;

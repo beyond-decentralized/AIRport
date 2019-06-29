@@ -5,10 +5,7 @@ import {
 }                                      from '@airport/ground-control'
 import {IBaseOperationHistoryDuo}      from '../../'
 import {RepositoryEntityActorRecordId} from '../../ddl/ddl'
-import {
-	OPER_HISTORY_DUO,
-	REC_HISTORY_DUO
-}                                      from '../../diTokens'
+import {OPER_HISTORY_DUO}              from '../../diTokens'
 import {
 	BaseOperationHistoryDuo,
 	IOperationHistory,
@@ -34,6 +31,7 @@ export interface IOperationHistoryDuo
 	startRecordHistory(
 		operationHistory: IOperationHistory,
 		actorRecordId: RepositoryEntityActorRecordId,
+		recHistoryDuo: IRecordHistoryDuo
 	): IRecordHistory;
 
 }
@@ -41,18 +39,6 @@ export interface IOperationHistoryDuo
 export class OperationHistoryDuo
 	extends BaseOperationHistoryDuo
 	implements IOperationHistoryDuo {
-
-	private recHistoryDuo: IRecordHistoryDuo
-
-	constructor() {
-		super()
-
-		DI.get((
-			recordHistoryDuo
-		) => {
-			this.recHistoryDuo = recordHistoryDuo
-		}, REC_HISTORY_DUO)
-	}
 
 	getNewRecord(
 		entityChangeType: ChangeType,
@@ -83,13 +69,12 @@ export class OperationHistoryDuo
 		return 0
 	}
 
-
 	startRecordHistory(
 		operationHistory: IOperationHistory,
 		actorRecordId: RepositoryEntityActorRecordId,
+		recHistoryDuo: IRecordHistoryDuo
 	): IRecordHistory {
-
-		const recordHistory = this.recHistoryDuo.getNewRecord(actorRecordId)
+		const recordHistory = recHistoryDuo.getNewRecord(actorRecordId)
 
 		operationHistory.recordHistory.push(recordHistory)
 

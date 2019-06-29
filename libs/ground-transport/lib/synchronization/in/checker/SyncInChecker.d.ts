@@ -1,8 +1,6 @@
 import { SchemaIndex } from '@airport/ground-control';
 import { IRepositoryTransactionBlock, ISharingMessage } from '@airport/moving-walkway';
 import { IDataToTM } from '../SyncInUtils';
-import { ISyncInActorChecker } from './SyncInActorChecker';
-import { ISyncInRepositoryChecker } from './SyncInRepositoryChecker';
 export interface CheckSchemasResult {
     dataMessagesToBeUpgraded: IDataToTM[];
     dataMessagesWithCompatibleSchemasAndData: IDataToTM[];
@@ -17,8 +15,6 @@ export interface CheckResults {
     dataMessagesWithInvalidData: IDataToTM[];
 }
 export interface ISyncInChecker {
-    actorChecker: ISyncInActorChecker;
-    repositoryChecker: ISyncInRepositoryChecker;
     checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages: IDataToTM[]): Promise<CheckResults>;
 }
 export declare class SyncInChecker implements ISyncInChecker {

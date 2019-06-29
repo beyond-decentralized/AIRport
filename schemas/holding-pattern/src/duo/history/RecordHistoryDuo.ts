@@ -30,13 +30,15 @@ export interface IRecordHistoryDuo
 	addNewValue(
 		recordHistory: IRecordHistory,
 		dbColumn: DbColumn,
-		newValue: any
+		newValue: any,
+		recHistoryNewValueDuo: IRecordHistoryNewValueDuo
 	): IRecordHistoryNewValue;
 
 	addOldValue(
 		recordHistory: IRecordHistory,
 		dbColumn: DbColumn,
-		oldValue: any
+		oldValue: any,
+		recHistoryOldValueDuo: IRecordHistoryOldValueDuo
 	): IRecordHistoryOldValue;
 
 }
@@ -44,21 +46,6 @@ export interface IRecordHistoryDuo
 export class RecordHistoryDuo
 	extends BaseRecordHistoryDuo
 	implements IRecordHistoryDuo {
-
-	private recHistoryNewValueDuo: IRecordHistoryNewValueDuo
-	private recHistoryOldValueDuo: IRecordHistoryOldValueDuo
-
-	constructor() {
-		super()
-
-		DI.get((
-			recordHistoryNewValueDuo,
-			recordHistoryOldValueDuo
-		) => {
-			this.recHistoryNewValueDuo = recordHistoryNewValueDuo
-			this.recHistoryOldValueDuo = recordHistoryOldValueDuo
-		}, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO)
-	}
 
 	getNewRecord(
 		actorRecordId: RepositoryEntityActorRecordId
@@ -73,9 +60,10 @@ export class RecordHistoryDuo
 	addNewValue(
 		recordHistory: IRecordHistory,
 		dbColumn: DbColumn,
-		newValue: any
+		newValue: any,
+		recHistoryNewValueDuo: IRecordHistoryNewValueDuo
 	): IRecordHistoryNewValue {
-		const recordHistoryNewValue = this.recHistoryNewValueDuo.getNewRecord(recordHistory, dbColumn, newValue)
+		const recordHistoryNewValue = recHistoryNewValueDuo.getNewRecord(recordHistory, dbColumn, newValue)
 
 		recordHistory.newValues.push(recordHistoryNewValue)
 
@@ -89,9 +77,10 @@ export class RecordHistoryDuo
 	addOldValue(
 		recordHistory: IRecordHistory,
 		dbColumn: DbColumn,
-		oldValue: any
+		oldValue: any,
+		recHistoryOldValueDuo: IRecordHistoryOldValueDuo
 	): IRecordHistoryOldValue {
-		const recordHistoryOldValue = this.recHistoryOldValueDuo.getNewRecord(recordHistory, dbColumn, oldValue)
+		const recordHistoryOldValue = recHistoryOldValueDuo.getNewRecord(recordHistory, dbColumn, oldValue)
 
 		recordHistory.oldValues.push(recordHistoryOldValue)
 

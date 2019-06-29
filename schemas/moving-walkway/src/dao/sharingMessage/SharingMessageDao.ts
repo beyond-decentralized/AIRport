@@ -45,25 +45,9 @@ export class SharingMessageDao
 	extends BaseSharingMessageDao
 	implements ISharingMessageDao {
 
-	private repoTransHistoryDao: IRepositoryTransactionHistoryDao
-	private recHistNewValueDao: IRecordHistoryNewValueDao
-	private recHistOldValueDao: IRecordHistoryOldValueDao
-
-	constructor() {
-		super()
-
-		DI.get((
-			repositoryTransactionHistoryDao,
-			recordHistoryNewValueDao,
-			recordHistoryOldValueDao
-		) => {
-			this.repoTransHistoryDao = repositoryTransactionHistoryDao
-			this.recHistNewValueDao  = recordHistoryNewValueDao
-			this.recHistOldValueDao  = recordHistoryOldValueDao
-		}, REPO_TRANS_HISTORY_DAO, REC_HIST_NEW_VALUE_DAO, REC_HIST_OLD_VALUE_DAO)
-
-
-	}
+	// private repoTransHistoryDao: IRepositoryTransactionHistoryDao
+	// private recHistNewValueDao: IRecordHistoryNewValueDao
+	// private recHistOldValueDao: IRecordHistoryOldValueDao
 
 	/*
 	async updateSyncStatusByAgtSharingMessageIds(

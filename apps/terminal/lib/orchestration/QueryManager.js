@@ -4,22 +4,17 @@ const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../diTokens");
 class QueryManager {
-    constructor() {
-        di_1.DI.get((dataStore) => {
-            this.dataStore = dataStore;
-        }, ground_control_1.STORE_DRIVER);
+    find(portableQuery, cachedSqlQueryId) {
+        return di_1.DI.get(ground_control_1.STORE_DRIVER).then(storeDriver => storeDriver.find(portableQuery, cachedSqlQueryId));
     }
-    async find(portableQuery, cachedSqlQueryId) {
-        return await this.dataStore.find(portableQuery, cachedSqlQueryId);
-    }
-    async findOne(portableQuery, cachedSqlQueryId) {
-        return await this.dataStore.findOne(portableQuery, cachedSqlQueryId);
+    findOne(portableQuery, cachedSqlQueryId) {
+        return di_1.DI.get(ground_control_1.STORE_DRIVER).then(storeDriver => storeDriver.findOne(portableQuery, cachedSqlQueryId));
     }
     search(portableQuery, cachedSqlQueryId) {
-        return this.dataStore.search(portableQuery, cachedSqlQueryId);
+        return di_1.DI.get(ground_control_1.STORE_DRIVER).then(storeDriver => storeDriver.search(portableQuery, cachedSqlQueryId));
     }
     searchOne(portableQuery, cachedSqlQueryId) {
-        return this.dataStore.searchOne(portableQuery, cachedSqlQueryId);
+        return di_1.DI.get(ground_control_1.STORE_DRIVER).then(storeDriver => storeDriver.searchOne(portableQuery, cachedSqlQueryId));
     }
 }
 exports.QueryManager = QueryManager;

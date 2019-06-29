@@ -4,23 +4,17 @@ const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 class AbstractMutationManager {
-    constructor() {
-        di_1.DI.get((dataStore, utils) => {
-            this.dataStore = dataStore;
-            this.utils = utils;
-        }, ground_control_1.STORE_DRIVER, air_control_1.UTILS);
-    }
-    getPortableQuery(schemaIndex, tableIndex, query, queryResultType) {
+    getPortableQuery(schemaIndex, tableIndex, query, queryResultType, queryUtils, fieldUtils) {
         return {
             schemaIndex,
             tableIndex,
-            jsonQuery: query.toJSON(),
+            jsonQuery: query.toJSON(queryUtils, fieldUtils),
             parameterMap: query.getParameters(),
-            queryResultType,
-            values: query.values
+            queryResultType
         };
     }
     async doInsertValues(q, entities) {
+        const [fieldUtils, queryUtils, schemaUtils, storeDriver] = await di_1.DI.get(air_control_1.FIELD_UTILS, air_control_1.QUERY_UTILS, air_control_1.SCHEMA_UTILS, ground_control_1.STORE_DRIVER);
         const dbEntity = q.__driver__.dbEntity;
         const columnIndexes = [];
         const columnValueLookups = [];
@@ -31,7 +25,7 @@ class AbstractMutationManager {
             };
             if (dbProperty.relation && dbProperty.relation.length) {
                 const dbRelation = dbProperty.relation[0];
-                this.utils.Schema.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
+                schemaUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
                     if (columnIndexes[dbColumn.index]) {
                         return;
                     }
@@ -77,8 +71,8 @@ class AbstractMutationManager {
             values,
         };
         let insertValues = new air_control_1.InsertValues(rawInsertValues, columnIndexes);
-        let portableQuery = this.getPortableQuery(dbEntity.schemaVersion.schema.index, dbEntity.index, insertValues, null);
-        return await this.dataStore.insertValues(portableQuery);
+        let portableQuery = this.getPortableQuery(dbEntity.schemaVersion.schema.index, dbEntity.index, insertValues, null, queryUtils, fieldUtils);
+        return await storeDriver.insertValues(portableQuery);
     }
 }
 exports.AbstractMutationManager = AbstractMutationManager;

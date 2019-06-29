@@ -21,14 +21,6 @@ export class SequenceGenerator
 	private sequences: ISequence[][][]           = []
 	private sequenceBlocks: ISequenceBlock[][][] = []
 
-	/*private sequenceBlockDao: Promise<IAbstractSequenceBlockDao>
-	private sequenceDao: Promise<ISequenceDao>
-
-	constructor() {
-		this.sequenceBlockDao = DI.getP(SEQUENCE_BLOCK_DAO)
-		this.sequenceDao      = DI.getP(SEQUENCE_DAO)
-	}*/
-
 	exists(
 		dbEntity: DbEntity
 	): boolean {

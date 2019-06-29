@@ -4,14 +4,6 @@ const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const observe_1 = require("@airport/observe");
 class QueryFacade {
-    /*
-    private connector: ITransactionalConnector
-    public databaseFacade: IDatabaseFacade
-
-    async init(): Promise<void> {
-        this.connector = await DI.getP(TRANS_CONNECTOR)
-    }
-*/
     async find(dbEntity, query, queryResultType, fieldUtils, queryUtils, schemaUtils, transConnector, updateCache, cacheForUpdate = air_control_1.UpdateCacheType.NONE) {
         const result = await transConnector.find(this.getPortableQuery(dbEntity, query, queryResultType, queryUtils, fieldUtils));
         updateCache.addToCache(schemaUtils, cacheForUpdate, dbEntity, ...result);

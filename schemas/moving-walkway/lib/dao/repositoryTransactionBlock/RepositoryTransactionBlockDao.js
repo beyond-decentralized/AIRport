@@ -5,12 +5,6 @@ const di_1 = require("@airport/di");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
 class RepositoryTransactionBlockDao extends generated_1.BaseRepositoryTransactionBlockDao {
-    constructor() {
-        super();
-        di_1.DI.get((duo) => {
-            this.duo = duo;
-        }, diTokens_1.REPO_TRANS_BLOCK_DUO);
-    }
     async updateFromResponseStage( //
     ) {
         let rtb;

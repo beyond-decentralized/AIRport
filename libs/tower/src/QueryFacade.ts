@@ -25,15 +25,6 @@ import {
 export class QueryFacade
 	implements IQueryFacade {
 
-	/*
-	private connector: ITransactionalConnector
-	public databaseFacade: IDatabaseFacade
-
-	async init(): Promise<void> {
-		this.connector = await DI.getP(TRANS_CONNECTOR)
-	}
-*/
-
 	async find<E, EntityArray extends Array<E>>(
 		dbEntity: DbEntity,
 		query: AbstractQuery,

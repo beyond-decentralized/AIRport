@@ -10,14 +10,6 @@ export class MissingRecordCreator
 
 	/*
 	private missingRecordDao: IMissingRecordDao
-
-	constructor() {
-		DI.get((
-			missingRecordDao
-		) => {
-			this.missingRecordDao = missingRecordDao
-		}, MISSING_RECORD_DAO)
-	}
 */
 
 }

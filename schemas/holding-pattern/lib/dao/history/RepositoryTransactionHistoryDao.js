@@ -6,14 +6,7 @@ const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
 class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransactionHistoryDao {
-    constructor() {
-        super();
-        di_1.DI.get((operationHistoryDuo, recordHistoryDuo) => {
-            this.operHistoryDuo = operationHistoryDuo;
-            this.recHistoryDuo = recordHistoryDuo;
-        }, diTokens_1.OPER_HISTORY_DUO, diTokens_1.REC_HISTORY_DUO);
-    }
-    getSelectClauseWithRecordHistory() {
+    getSelectClauseWithRecordHistory(operHistoryDuo, recHistoryDuo) {
         const id = air_control_1.Y;
         return {
             id,
@@ -24,21 +17,22 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
                 id
             },
             operationHistory: {
-                ...this.operHistoryDuo.getAllFieldsSelect(),
+                ...operHistoryDuo.getAllFieldsSelect(),
                 entity: {
                     id: air_control_1.Y
                 },
                 recordHistory: {
-                    ...this.recHistoryDuo.getAllFieldsSelect()
+                    ...recHistoryDuo.getAllFieldsSelect()
                 }
             },
         };
     }
     async findWhere(whereClauseFunction) {
+        const [operHistoryDuo, recHistoryDuo] = await di_1.DI.get(diTokens_1.OPER_HISTORY_DUO, diTokens_1.REC_HISTORY_DUO);
         let rth, r, oh, rh;
         const id = air_control_1.Y;
         return await this.db.find.tree({
-            select: this.getSelectClauseWithRecordHistory(),
+            select: this.getSelectClauseWithRecordHistory(operHistoryDuo, recHistoryDuo),
             from: [
                 rth = generated_1.Q.RepositoryTransactionHistory,
                 oh = rth.operationHistory.innerJoin(),

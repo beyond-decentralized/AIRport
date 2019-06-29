@@ -7,15 +7,6 @@ const holding_pattern_1 = require("@airport/holding-pattern");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
 class SharingNodeRepositoryDao extends generated_1.BaseSharingNodeRepositoryDao {
-    constructor() {
-        super();
-        di_1.DI.get((qMetadataUtils, repositoryTransactionHistoryDao, recordHistoryNewValueDao, recordHistoryOldValueDao) => {
-            this.qMetadataUtils = qMetadataUtils;
-            this.repoTransHistoryDao = repositoryTransactionHistoryDao;
-            this.recHistNewValueDao = recordHistoryNewValueDao;
-            this.recHistOldValueDao = recordHistoryOldValueDao;
-        }, air_control_1.Q_METADATA_UTILS, holding_pattern_1.REPO_TRANS_HISTORY_DAO, holding_pattern_1.REC_HIST_NEW_VALUE_DAO, holding_pattern_1.REC_HIST_OLD_VALUE_DAO);
-    }
     async findRepositoryMapBySharingNodeAndRepositoryIds(repositoryIds, sharingNodeIds) {
         const repositoriesBySharingNodeIds = new Map();
         let snr;
@@ -101,7 +92,8 @@ class SharingNodeRepositoryDao extends generated_1.BaseSharingNodeRepositoryDao 
                 .add(sharingNodeId);
             repositoryTransactionHistoryIdSet.add(sharingNodeIdWithRepoTransHistoryId[2]);
         }
-        const repositoryTransactionHistories = await this.repoTransHistoryDao
+        const [recHistNewValueDao, recHistOldValueDao, repoTransHistoryDao] = await di_1.DI.get(holding_pattern_1.REC_HIST_NEW_VALUE_DAO, holding_pattern_1.REC_HIST_OLD_VALUE_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DAO);
+        const repositoryTransactionHistories = await repoTransHistoryDao
             .findWhereIdsIn(Array.from(repositoryTransactionHistoryIdSet));
         const recordHistoryIds = [];
         const recordHistoryIdSet = new Set();
@@ -117,12 +109,12 @@ class SharingNodeRepositoryDao extends generated_1.BaseSharingNodeRepositoryDao 
                 }
             }
         }
-        const oldValues = await this.recHistOldValueDao.findByRecordHistoryIdIn(recordHistoryIds);
+        const oldValues = await recHistOldValueDao.findByRecordHistoryIdIn(recordHistoryIds);
         for (const oldValue of oldValues) {
             const recordHistoryId = oldValue.recordHistory.id;
             recordHistoryMapById.get(recordHistoryId).oldValues.push(oldValue);
         }
-        const newValues = await this.recHistNewValueDao.findByRecordHistoryIdIn(recordHistoryIds);
+        const newValues = await recHistNewValueDao.findByRecordHistoryIdIn(recordHistoryIds);
         for (const newValue of newValues) {
             const recordHistoryId = newValue.recordHistory.id;
             recordHistoryMapById.get(recordHistoryId).newValues.push(newValue);

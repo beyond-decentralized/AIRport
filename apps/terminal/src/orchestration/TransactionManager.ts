@@ -7,6 +7,7 @@ import {
 	IIdGenerator
 }                                from '@airport/fuel-hydrant-system'
 import {
+	STORE_DRIVER,
 	StoreType,
 	SyncSchemaMap
 }                                from '@airport/ground-control'
@@ -35,54 +36,37 @@ export class TransactionManager
 
 	// Keyed by repository index
 	currentTransHistory: ITransactionHistory
-	private idGenerator: IIdGenerator
-	private offlineDeltaStore: IOfflineDeltaStore
-	private onlineManager: IOnlineManager
-	// private repositoryManager: IRepositoryManager
-	private queries: ActiveQueries
 	storeType: StoreType
-	private transHistoryDuo: Promise<ITransactionHistoryDuo>
 	transactionIndexQueue: string[]   = []
 	transactionInProgress: string     = null
 	yieldToRunningTransaction: number = 200
-
-	constructor() {
-		super()
-		DI.get((
-			idGenerator,
-			offlineDeltaStore,
-			onlineManager,
-			queries,
-			) => {
-				this.idGenerator       = idGenerator
-				this.offlineDeltaStore = offlineDeltaStore
-				this.onlineManager     = onlineManager
-				this.queries           = queries
-			}, ID_GENERATOR, OFFLINE_DELTA_STORE,
-			ONLINE_MANAGER, ACTIVE_QUERIES)
-
-		this.transHistoryDuo = DI.getP(TRANS_HISTORY_DUO)
-	}
-
 
 	/**
 	 * Initializes the EntityManager at server load time.
 	 * @returns {Promise<void>}
 	 */
-	async init(
+	init(
 		dbName: string
 	): Promise<void> {
-		await this.dataStore.initialize(dbName)
+		return DI.get(STORE_DRIVER).then(
+			storeDriver =>
+				storeDriver.initialize(dbName)
+		)
+		// await this.dataStore.initialize(dbName)
 		// await this.repositoryManager.initialize();
 	}
 
 	async transact(
 		credentials: ICredentials
 	): Promise<void> {
-		if(credentials.domainAndPort === this.transactionInProgress
+		const [storeDriver, transHistoryDuo] = await DI.get(
+			STORE_DRIVER, TRANS_HISTORY_DUO
+		)
+
+		if (credentials.domainAndPort === this.transactionInProgress
 			|| this.transactionIndexQueue.filter(
-			transIndex =>
-				transIndex === credentials.domainAndPort
+				transIndex =>
+					transIndex === credentials.domainAndPort
 			).length) {
 			// Either just continue using the current transaction
 			// or return (domain shouldn't be initiating multiple transactions
@@ -97,13 +81,13 @@ export class TransactionManager
 		this.transactionIndexQueue = this.transactionIndexQueue.filter(
 			transIndex =>
 				transIndex !== credentials.domainAndPort
-		);
+		)
 		this.transactionInProgress = credentials.domainAndPort
 		let fieldMap               = new SyncSchemaMap()
 
-		this.currentTransHistory = (await this.transHistoryDuo).getNewRecord()
+		this.currentTransHistory = transHistoryDuo.getNewRecord()
 
-		await this.dataStore.transact()
+		await storeDriver.transact()
 	}
 
 	async rollback(
@@ -125,7 +109,7 @@ export class TransactionManager
 			return
 		}
 		try {
-			await this.dataStore.rollback()
+			await (await DI.get(STORE_DRIVER)).rollback()
 		} finally {
 			this.clearTransaction()
 		}
@@ -134,18 +118,22 @@ export class TransactionManager
 	async commit(
 		credentials: ICredentials
 	): Promise<void> {
+		const [activeQueries, idGenerator, storeDriver] = await DI.get(
+			ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER
+		)
+
 		if (this.transactionInProgress !== credentials.domainAndPort) {
 			throw `Cannot commit inactive transaction '${credentials.domainAndPort}'.`
 		}
 		let transaction = this.currentTransHistory
 
 		try {
-			await this.saveRepositoryHistory(transaction)
+			await this.saveRepositoryHistory(transaction, idGenerator)
 
-			await this.dataStore.saveTransaction(transaction)
+			await storeDriver.saveTransaction(transaction)
 
-			this.queries.rerunQueries()
-			await this.dataStore.commit()
+			activeQueries.rerunQueries()
+			await storeDriver.commit()
 		} finally {
 			this.clearTransaction()
 		}
@@ -180,14 +168,15 @@ export class TransactionManager
 	}
 
 	private async saveRepositoryHistory(
-		transaction: ITransactionHistory
+		transaction: ITransactionHistory,
+		idGenerator: IIdGenerator
 	): Promise<boolean> {
 		if (!transaction.allRecordHistory.length) {
 			return false
 		}
 		let schemaMap = transaction.schemaMap
 
-		const transHistoryIds = await this.idGenerator.generateTransactionHistoryIds(
+		const transHistoryIds = await idGenerator.generateTransactionHistoryIds(
 			transaction.repositoryTransactionHistories.length,
 			transaction.allOperationHistory.length,
 			transaction.allRecordHistory.length

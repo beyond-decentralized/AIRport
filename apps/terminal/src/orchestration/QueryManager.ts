@@ -1,6 +1,5 @@
 import {DI}            from '@airport/di'
 import {
-	IStoreDriver,
 	PortableQuery,
 	STORE_DRIVER
 }                      from '@airport/ground-control'
@@ -22,53 +21,55 @@ export interface IQueryManager {
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery
-	): IObservable<EntityArray>;
+	): Promise<IObservable<EntityArray>>;
 
 	searchOne<E>(
 		portableQuery: PortableQuery
-	): IObservable<E>;
+	): Promise<IObservable<E>>;
 
 }
 
 export class QueryManager
 	implements IQueryManager {
 
-	private dataStore: IStoreDriver
-
-	constructor() {
-		DI.get((
-			dataStore
-		) => {
-			this.dataStore = dataStore
-		}, STORE_DRIVER)
-	}
-
-	async find<E, EntityArray extends Array<E>>(
+	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number
 	): Promise<EntityArray> {
-		return await this.dataStore.find<E, EntityArray>(portableQuery, cachedSqlQueryId)
+		return DI.get(STORE_DRIVER).then(
+			storeDriver =>
+				storeDriver.find<E, EntityArray>(portableQuery, cachedSqlQueryId)
+		)
 	}
 
-	async findOne<E>(
+	findOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number
 	): Promise<E> {
-		return await this.dataStore.findOne<E>(portableQuery, cachedSqlQueryId)
+		return DI.get(STORE_DRIVER).then(
+			storeDriver =>
+				storeDriver.findOne<E>(portableQuery, cachedSqlQueryId)
+		)
 	}
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): IObservable<EntityArray> {
-		return this.dataStore.search<E, EntityArray>(portableQuery, cachedSqlQueryId)
+	): Promise<IObservable<EntityArray>> {
+		return DI.get(STORE_DRIVER).then(
+			storeDriver =>
+				storeDriver.search<E, EntityArray>(portableQuery, cachedSqlQueryId)
+		)
 	}
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
-	): IObservable<E> {
-		return this.dataStore.searchOne<E>(portableQuery, cachedSqlQueryId)
+	): Promise<IObservable<E>> {
+		return DI.get(STORE_DRIVER).then(
+			storeDriver =>
+				storeDriver.searchOne<E>(portableQuery, cachedSqlQueryId)
+		)
 	}
 
 }

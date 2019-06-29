@@ -5,31 +5,25 @@ const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const terminal_map_1 = require("@airport/terminal-map");
-const diTokens_1 = require("../diTokens");
 const AbstractMutationManager_1 = require("./AbstractMutationManager");
 class TransactionManager extends AbstractMutationManager_1.AbstractMutationManager {
     constructor() {
-        super();
+        super(...arguments);
         this.transactionIndexQueue = [];
         this.transactionInProgress = null;
         this.yieldToRunningTransaction = 200;
-        di_1.DI.get((idGenerator, offlineDeltaStore, onlineManager, queries) => {
-            this.idGenerator = idGenerator;
-            this.offlineDeltaStore = offlineDeltaStore;
-            this.onlineManager = onlineManager;
-            this.queries = queries;
-        }, fuel_hydrant_system_1.ID_GENERATOR, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.ONLINE_MANAGER, fuel_hydrant_system_1.ACTIVE_QUERIES);
-        this.transHistoryDuo = di_1.DI.getP(holding_pattern_1.TRANS_HISTORY_DUO);
     }
     /**
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
      */
-    async init(dbName) {
-        await this.dataStore.initialize(dbName);
+    init(dbName) {
+        return di_1.DI.get(ground_control_1.STORE_DRIVER).then(storeDriver => storeDriver.initialize(dbName));
+        // await this.dataStore.initialize(dbName)
         // await this.repositoryManager.initialize();
     }
     async transact(credentials) {
+        const [storeDriver, transHistoryDuo] = await di_1.DI.get(ground_control_1.STORE_DRIVER, holding_pattern_1.TRANS_HISTORY_DUO);
         if (credentials.domainAndPort === this.transactionInProgress
             || this.transactionIndexQueue.filter(transIndex => transIndex === credentials.domainAndPort).length) {
             // Either just continue using the current transaction
@@ -44,8 +38,8 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
         this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== credentials.domainAndPort);
         this.transactionInProgress = credentials.domainAndPort;
         let fieldMap = new ground_control_1.SyncSchemaMap();
-        this.currentTransHistory = (await this.transHistoryDuo).getNewRecord();
-        await this.dataStore.transact();
+        this.currentTransHistory = transHistoryDuo.getNewRecord();
+        await storeDriver.transact();
     }
     async rollback(credentials) {
         if (this.transactionInProgress !== credentials.domainAndPort) {
@@ -63,22 +57,23 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
             return;
         }
         try {
-            await this.dataStore.rollback();
+            await (await di_1.DI.get(ground_control_1.STORE_DRIVER)).rollback();
         }
         finally {
             this.clearTransaction();
         }
     }
     async commit(credentials) {
+        const [activeQueries, idGenerator, storeDriver] = await di_1.DI.get(fuel_hydrant_system_1.ACTIVE_QUERIES, fuel_hydrant_system_1.ID_GENERATOR, ground_control_1.STORE_DRIVER);
         if (this.transactionInProgress !== credentials.domainAndPort) {
             throw `Cannot commit inactive transaction '${credentials.domainAndPort}'.`;
         }
         let transaction = this.currentTransHistory;
         try {
-            await this.saveRepositoryHistory(transaction);
-            await this.dataStore.saveTransaction(transaction);
-            this.queries.rerunQueries();
-            await this.dataStore.commit();
+            await this.saveRepositoryHistory(transaction, idGenerator);
+            await storeDriver.saveTransaction(transaction);
+            activeQueries.rerunQueries();
+            await storeDriver.commit();
         }
         finally {
             this.clearTransaction();
@@ -108,12 +103,12 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
             this.transactionInProgress = this.transactionIndexQueue.shift();
         }
     }
-    async saveRepositoryHistory(transaction) {
+    async saveRepositoryHistory(transaction, idGenerator) {
         if (!transaction.allRecordHistory.length) {
             return false;
         }
         let schemaMap = transaction.schemaMap;
-        const transHistoryIds = await this.idGenerator.generateTransactionHistoryIds(transaction.repositoryTransactionHistories.length, transaction.allOperationHistory.length, transaction.allRecordHistory.length);
+        const transHistoryIds = await idGenerator.generateTransactionHistoryIds(transaction.repositoryTransactionHistories.length, transaction.allOperationHistory.length, transaction.allRecordHistory.length);
         schemaMap.ensureEntity(holding_pattern_1.Q.TransactionHistory.__driver__.dbEntity, true);
         transaction.id = transHistoryIds.transactionHistoryId;
         await this.doInsertValues(holding_pattern_1.Q.TransactionHistory, [transaction]);

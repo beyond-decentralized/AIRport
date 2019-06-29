@@ -4,16 +4,10 @@ import { ICredentials, ITransactionManager } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export declare class TransactionManager extends AbstractMutationManager implements ITransactionManager {
     currentTransHistory: ITransactionHistory;
-    private idGenerator;
-    private offlineDeltaStore;
-    private onlineManager;
-    private queries;
     storeType: StoreType;
-    private transHistoryDuo;
     transactionIndexQueue: string[];
     transactionInProgress: string;
     yieldToRunningTransaction: number;
-    constructor();
     /**
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}

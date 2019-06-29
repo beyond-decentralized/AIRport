@@ -24,6 +24,7 @@ export interface ITransactionHistoryDuo {
 		transactionHistory: ITransactionHistory,
 		repository: IRepository,
 		actor: IActor,
+		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo
 	): IRepositoryTransactionHistory
 
 }
@@ -31,18 +32,6 @@ export interface ITransactionHistoryDuo {
 export class TransactionHistoryDuo
 	extends BaseTransactionHistoryDuo
 	implements ITransactionHistoryDuo {
-
-	private repoTransHistoryDuo: IRepositoryTransactionHistoryDuo
-
-	constructor() {
-		super()
-
-		DI.get((
-			repositoryTransactionHistoryDuo
-		) => {
-			this.repoTransHistoryDuo = repositoryTransactionHistoryDuo
-		}, REPO_TRANS_HISTORY_DUO)
-	}
 
 	getNewRecord(
 		transactionType: TransactionType = TransactionType.LOCAL
@@ -58,11 +47,12 @@ export class TransactionHistoryDuo
 		transactionHistory: ITransactionHistory,
 		repository: IRepository,
 		actor: IActor,
+		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo
 	): IRepositoryTransactionHistory {
 		let repoTransHistory = transactionHistory.repoTransHistoryMap[repository.id]
 
 		if (!repoTransHistory) {
-			repoTransHistory = this.repoTransHistoryDuo.getNewRecord(
+			repoTransHistory = repoTransHistoryDuo.getNewRecord(
 				repository, actor)
 
 			transactionHistory.repositoryTransactionHistories.push(repoTransHistory)

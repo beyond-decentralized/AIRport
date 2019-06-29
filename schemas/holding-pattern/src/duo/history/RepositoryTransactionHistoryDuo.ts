@@ -39,7 +39,8 @@ export interface IRepositoryTransactionHistoryDuo {
 	startOperation(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		entityChangeType: ChangeType,
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		operHistoryDuo: IOperationHistoryDuo
 	): IOperationHistory;
 
 }
@@ -47,18 +48,6 @@ export interface IRepositoryTransactionHistoryDuo {
 export class RepositoryTransactionHistoryDuo
 	extends BaseRepositoryTransactionHistoryDuo
 	implements IRepositoryTransactionHistoryDuo {
-
-	private operHistoryDuo: IOperationHistoryDuo
-
-	constructor() {
-		super()
-
-		DI.get((
-			operationHistoryDuo
-		) => {
-			this.operHistoryDuo = operationHistoryDuo
-		}, OPER_HISTORY_DUO)
-	}
 
 	getNewRecord(
 		repository: IRepository,
@@ -134,9 +123,10 @@ export class RepositoryTransactionHistoryDuo
 	startOperation(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		entityChangeType: ChangeType,
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		operHistoryDuo: IOperationHistoryDuo
 	): IOperationHistory {
-		let operationHistory = this.operHistoryDuo.getNewRecord(
+		let operationHistory = operHistoryDuo.getNewRecord(
 			entityChangeType, dbEntity, repositoryTransactionHistory)
 		repositoryTransactionHistory.operationHistory.push(operationHistory)
 

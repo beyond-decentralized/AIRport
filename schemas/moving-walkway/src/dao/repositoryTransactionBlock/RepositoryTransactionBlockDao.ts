@@ -10,11 +10,7 @@ import {
 	MissingRecordId,
 	MissingRecordStatus
 }                                       from '../../ddl/ddl'
-import {
-	REPO_TRANS_BLOCK_DAO,
-	REPO_TRANS_BLOCK_DUO
-}                                       from '../../diTokens'
-import {IRepositoryTransactionBlockDuo} from '../../duo/repositoryTransactionBlock/RepositoryTransactionBlockDuo'
+import {REPO_TRANS_BLOCK_DAO}           from '../../diTokens'
 import {
 	BaseRepositoryTransactionBlockDao,
 	IBaseRepositoryTransactionBlockDao,
@@ -46,18 +42,6 @@ export interface IRepositoryTransactionBlockDao
 export class RepositoryTransactionBlockDao
 	extends BaseRepositoryTransactionBlockDao
 	implements IRepositoryTransactionBlockDao {
-
-	private duo: IRepositoryTransactionBlockDuo
-
-	constructor() {
-		super()
-
-		DI.get((
-			duo
-		) => {
-			this.duo = duo
-		}, REPO_TRANS_BLOCK_DUO)
-	}
 
 	async updateFromResponseStage( //
 	): Promise<number> {

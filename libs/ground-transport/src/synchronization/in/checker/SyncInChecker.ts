@@ -65,9 +65,6 @@ export interface CheckResults {
 
 export interface ISyncInChecker {
 
-	actorChecker: ISyncInActorChecker;
-	repositoryChecker: ISyncInRepositoryChecker;
-
 	checkSchemasAndDataAndRecordRepoTransBlocks(
 		dataMessages: IDataToTM[]
 		// actorMap: Map<ActorRandomId,

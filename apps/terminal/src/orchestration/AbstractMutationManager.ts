@@ -1,16 +1,18 @@
 import {
 	AbstractQuery,
+	FIELD_UTILS,
+	IFieldUtils,
 	InsertValues,
 	IQEntity,
 	IQEntityInternal,
-	IUtils,
+	IQueryUtils,
+	QUERY_UTILS,
 	RawInsertValues,
-	UTILS
+	SCHEMA_UTILS
 }           from '@airport/air-control'
 import {DI} from '@airport/di'
 import {
 	DbColumn,
-	IStoreDriver,
 	JsonQuery,
 	PortableQuery,
 	QueryResultType,
@@ -19,32 +21,20 @@ import {
 
 export class AbstractMutationManager {
 
-	protected utils: IUtils
-	protected dataStore: IStoreDriver
-
-	constructor() {
-		DI.get((
-			dataStore,
-			utils
-		) => {
-			this.dataStore = dataStore
-			this.utils     = utils
-		}, STORE_DRIVER, UTILS)
-	}
-
 	protected getPortableQuery(
 		schemaIndex: number,
 		tableIndex: number,
 		query: AbstractQuery,
-		queryResultType: QueryResultType
+		queryResultType: QueryResultType,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): PortableQuery {
 		return {
 			schemaIndex,
 			tableIndex,
-			jsonQuery: <JsonQuery>query.toJSON(),
+			jsonQuery: <JsonQuery>query.toJSON(queryUtils, fieldUtils),
 			parameterMap: query.getParameters(),
-			queryResultType,
-			values: query.values
+			queryResultType
 		}
 	}
 
@@ -52,6 +42,10 @@ export class AbstractMutationManager {
 		q: IQEntity,
 		entities: any[]
 	): Promise<number> {
+		const [fieldUtils, queryUtils, schemaUtils, storeDriver
+		      ] = await DI.get(
+			FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS, STORE_DRIVER)
+
 		const dbEntity                  = (q as IQEntityInternal).__driver__.dbEntity
 		const columnIndexes: number[]   = []
 		const columnValueLookups: any[] = []
@@ -62,7 +56,7 @@ export class AbstractMutationManager {
 			}
 			if (dbProperty.relation && dbProperty.relation.length) {
 				const dbRelation = dbProperty.relation[0]
-				this.utils.Schema.forEachColumnTypeOfRelation(dbRelation, (
+				schemaUtils.forEachColumnTypeOfRelation(dbRelation, (
 					dbColumn: DbColumn,
 					propertyNameChains: string[][]
 				) => {
@@ -112,9 +106,11 @@ export class AbstractMutationManager {
 			values,
 		}
 		let insertValues: InsertValues<any>         = new InsertValues(rawInsertValues, columnIndexes)
-		let portableQuery: PortableQuery            = this.getPortableQuery(dbEntity.schemaVersion.schema.index, dbEntity.index, insertValues, null)
+		let portableQuery: PortableQuery            = this.getPortableQuery(
+			dbEntity.schemaVersion.schema.index, dbEntity.index,
+			insertValues, null, queryUtils, fieldUtils)
 
-		return await this.dataStore.insertValues(portableQuery)
+		return await storeDriver.insertValues(portableQuery)
 	}
 
 }

@@ -31,21 +31,15 @@ export interface InternalPortableQuery extends PortableQuery {
  *
  */
 export declare class TransactionalServer implements ITransactionalServer {
-    private deleteManager;
-    private insertManager;
-    private queryManager;
-    private transactionManager;
-    private updateManager;
     tempActor: IActor;
-    constructor();
     init(): Promise<void>;
     transact(credentials: ICredentials): Promise<void>;
     rollback(credentials: ICredentials): Promise<void>;
     commit(credentials: ICredentials): Promise<void>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<E>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): IObservable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): IObservable<E>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<IObservable<EntityArray>>;
+    searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<IObservable<E>>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, credentials: ICredentials): Promise<number>;
     insertValues(portableQuery: PortableQuery, credentials: ICredentials, transactionIndex?: number, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, credentials: ICredentials, transactionIndex?: number): Promise<number[] | string[]>;

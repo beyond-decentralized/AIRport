@@ -4,12 +4,6 @@ const di_1 = require("@airport/di");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
 class OperationHistoryDuo extends generated_1.BaseOperationHistoryDuo {
-    constructor() {
-        super();
-        di_1.DI.get((recordHistoryDuo) => {
-            this.recHistoryDuo = recordHistoryDuo;
-        }, diTokens_1.REC_HISTORY_DUO);
-    }
     getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory) {
         let operationHistory = {
             repositoryTransactionHistory: repositoryTransactionHistory,
@@ -30,8 +24,8 @@ class OperationHistoryDuo extends generated_1.BaseOperationHistoryDuo {
         }
         return 0;
     }
-    startRecordHistory(operationHistory, actorRecordId) {
-        const recordHistory = this.recHistoryDuo.getNewRecord(actorRecordId);
+    startRecordHistory(operationHistory, actorRecordId, recHistoryDuo) {
+        const recordHistory = recHistoryDuo.getNewRecord(actorRecordId);
         operationHistory.recordHistory.push(recordHistory);
         operationHistory.repositoryTransactionHistory
             .transactionHistory.allRecordHistory.push(recordHistory);

@@ -1,31 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const di_1 = require("@airport/di");
 const check_in_1 = require("@airport/check-in");
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const terminal_map_1 = require("@airport/terminal-map");
 const diTokens_1 = require("../diTokens");
 class InsertManager {
-    constructor() {
-        di_1.DI.get((airportDatabase, dataStore, sequenceGenerator, historyManager, offlineDataStore, repositoryManager, transactionManager) => {
-            this.airDb = airportDatabase;
-            this.dataStore = dataStore;
-            this.seqGenerator = sequenceGenerator;
-            this.histManager = historyManager;
-            this.offlineDataStore = offlineDataStore;
-            this.repoManager = repositoryManager;
-            this.transManager = transactionManager;
-        }, air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, check_in_1.SEQUENCE_GENERATOR, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, diTokens_1.REPOSITORY_MANAGER, terminal_map_1.TRANSACTION_MANAGER);
-        this.operHistoryDuo = di_1.DI.getP(holding_pattern_1.OPER_HISTORY_DUO);
-        this.recHistoryDuo = di_1.DI.getP(holding_pattern_1.REC_HISTORY_DUO);
-        this.repoTransHistoryDuo = di_1.DI.getP(holding_pattern_1.REPO_TRANS_HISTORY_DUO);
-        // this.transHistoryDuo     = DI.getP(TRANS_HISTORY_DUO)
-    }
-    get currentTransHistory() {
-        return this.transManager.currentTransHistory;
-    }
+    // get currentTransHistory(): ITransactionHistory {
+    // 	return this.transManager.currentTransHistory
+    // }
     async insertValues(portableQuery, actor, ensureGeneratedValues) {
         return await this.internalInsertValues(portableQuery, actor, false, ensureGeneratedValues);
     }
@@ -33,26 +18,27 @@ class InsertManager {
         return await this.internalInsertValues(portableQuery, actor, true);
     }
     async internalInsertValues(portableQuery, actor, getIds = false, ensureGeneratedValues = true) {
-        const dbEntity = this.airDb.schemas[portableQuery.schemaIndex]
+        // TODO: remove unused dependencies after testing
+        const [airDb, storeDriver, sequenceGenerator, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transactionManager] = await di_1.DI.get(air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, check_in_1.SEQUENCE_GENERATOR, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DUO, holding_pattern_1.REC_HISTORY_DUO, holding_pattern_1.REC_HIST_NEW_VALUE_DUO, diTokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DUO, terminal_map_1.TRANSACTION_MANAGER);
+        const dbEntity = airDb.schemas[portableQuery.schemaIndex]
             .currentVersion.entities[portableQuery.tableIndex];
         if (dbEntity.isRepositoryEntity) {
             this.ensureRepositoryEntityIdValues(actor, dbEntity, portableQuery.jsonQuery);
         }
         let ids;
         if (ensureGeneratedValues) {
-            ids = await this.ensureGeneratedValues(dbEntity, portableQuery.jsonQuery);
+            ids = await this.ensureGeneratedValues(dbEntity, portableQuery.jsonQuery, sequenceGenerator);
         }
         if (!dbEntity.isLocal) {
-            await this.addInsertHistory(dbEntity, portableQuery, actor);
+            await this.addInsertHistory(dbEntity, portableQuery, actor, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transactionManager);
         }
-        const numberOfInsertedRecords = await this.dataStore.insertValues(portableQuery);
+        const numberOfInsertedRecords = await storeDriver.insertValues(portableQuery);
         return getIds ? ids : numberOfInsertedRecords;
     }
-    async addRepository(name, url = null, platform = terminal_map_1.PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = terminal_map_1.DistributionStrategy.S3_DISTIBUTED_PUSH) {
-        const repository = await this.repoManager.createRepository(name, distributionStrategy, this.transManager.storeType, platform, platformConfig, 'id');
-        return repository.id;
+    addRepository(name, url = null, platform = terminal_map_1.PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = terminal_map_1.DistributionStrategy.S3_DISTIBUTED_PUSH) {
+        return di_1.DI.get(diTokens_1.REPOSITORY_MANAGER, terminal_map_1.TRANSACTION_MANAGER).then(([repoManager, transManager]) => repoManager.createRepository(name, distributionStrategy, transManager.storeType, platform, platformConfig, 'id')).then(repository => repository.id);
     }
-    async ensureGeneratedValues(dbEntity, jsonInsertValues) {
+    async ensureGeneratedValues(dbEntity, jsonInsertValues, seqGenerator) {
         let ids = null;
         const values = jsonInsertValues.V;
         const idColumns = dbEntity.idColumns;
@@ -101,7 +87,7 @@ class InsertManager {
             });
         }
         const numSequencesNeeded = generatedColumns.map(_ => values.length);
-        const generatedSequenceValues = await this.seqGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
+        const generatedSequenceValues = await seqGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
         generatedColumns.forEach((dbColumn, generatedColumnIndex) => {
             const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex];
             values.forEach((entityValues, index) => {
@@ -154,7 +140,7 @@ class InsertManager {
      * @param {PortableQuery} portableQuery
      * @returns {Promise<void>}
      */
-    async addInsertHistory(dbEntity, portableQuery, actor) {
+    async addInsertHistory(dbEntity, portableQuery, actor, histManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoManager, repoTransHistoryDuo, transManager) {
         const jsonInsertValues = portableQuery.jsonQuery;
         let operationsByRepo = [];
         let repoTransHistories = [];
@@ -178,25 +164,22 @@ class InsertManager {
                     break;
             }
         }
-        const repoTransHistoryDuo = await this.repoTransHistoryDuo;
-        const operHistoryDuo = await this.operHistoryDuo;
-        const recHistoryDuo = await this.recHistoryDuo;
         // Rows may belong to different repositories
         for (const row of jsonInsertValues.V) {
             const repositoryId = row[repositoryIdColumnNumber];
-            const repo = await this.repoManager.getRepository(repositoryId);
+            const repo = await repoManager.getRepository(repositoryId);
             let repoTransHistory = repoTransHistories[repositoryId];
             if (!repoTransHistory) {
-                repoTransHistory = await this.histManager
-                    .getNewRepoTransHistory(this.currentTransHistory, repo, actor);
+                repoTransHistory = await histManager
+                    .getNewRepoTransHistory(transManager.currentTransHistory, repo, actor);
             }
             let operationHistory = operationsByRepo[repositoryId];
             if (!operationHistory) {
-                operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, ground_control_1.ChangeType.INSERT_VALUES, dbEntity);
+                operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, ground_control_1.ChangeType.INSERT_VALUES, dbEntity, operHistoryDuo);
                 operationsByRepo[repositoryId] = operationHistory;
             }
             const actorRecordId = row[actorRecordIdColumnNumber];
-            const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, actorRecordId);
+            const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, actorRecordId, recHistoryDuo);
             for (const columnNumber in jsonInsertValues.C) {
                 if (columnNumber === repositoryIdColumnNumber
                     || columnNumber === actorIdColumnNumber
@@ -206,13 +189,13 @@ class InsertManager {
                 const columnIndex = jsonInsertValues.C[columnNumber];
                 const dbColumn = dbEntity.columns[columnIndex];
                 const newValue = row[columnNumber];
-                recHistoryDuo.addNewValue(recordHistory, dbColumn, newValue);
+                recHistoryDuo.addNewValue(recordHistory, dbColumn, newValue, recHistoryNewValueDuo);
             }
         }
         // for (const repositoryId in operationsByRepo) {
         // 	const repoTransHistory = await
         // 		this.currentTransHistory.getRepositoryTransaction(
-        // 			repositoryId, null, null, null);
+        // 			repositoryId, null, null, null, repoTransHistoryDuo);
         // 	repoTransHistory.endGroupMutation(operationsByRepo[repositoryId]);
         // }
     }

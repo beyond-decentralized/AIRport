@@ -1,16 +1,12 @@
-import {
-	AIR_DB,
-	IAirportDatabase
-}                           from '@airport/air-control'
-import {DI}                 from '@airport/di'
+import {AIR_DB}             from '@airport/air-control'
 import {
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
 }                           from '@airport/check-in'
+import {DI}                 from '@airport/di'
 import {
 	ChangeType,
 	DbEntity,
-	IStoreDriver,
 	JsonInsertValues,
 	PortableQuery,
 	repositoryEntity,
@@ -21,10 +17,11 @@ import {
 	IOperationHistory,
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
+	IRecordHistoryNewValueDuo,
 	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDuo,
-	ITransactionHistory,
 	OPER_HISTORY_DUO,
+	REC_HIST_NEW_VALUE_DUO,
 	REC_HISTORY_DUO,
 	REPO_TRANS_HISTORY_DUO
 }                           from '@airport/holding-pattern'
@@ -35,7 +32,6 @@ import {
 	TRANSACTION_MANAGER
 }                           from '@airport/terminal-map'
 import {IRepositoryManager} from '../core/repository/RepositoryManager'
-import {IOfflineDeltaStore} from '../data/OfflineDeltaStore'
 import {
 	HISTORY_MANAGER,
 	INSERT_MANAGER,
@@ -72,57 +68,17 @@ export interface IInsertManager {
 export class InsertManager
 	implements IInsertManager {
 
-	private airDb: IAirportDatabase
-	private dataStore: IStoreDriver
-	private seqGenerator: ISequenceGenerator
-	private histManager: IHistoryManager
-	private offlineDataStore: IOfflineDeltaStore
-	private operHistoryDuo: Promise<IOperationHistoryDuo>
-	private recHistoryDuo: Promise<IRecordHistoryDuo>
-	private repoManager: IRepositoryManager
-	private repoTransHistoryDuo: Promise<IRepositoryTransactionHistoryDuo>
-	// private transHistoryDuo: Promise<ITransactionHistoryDuo>
-	private transManager: ITransactionManager
-
-
-	constructor() {
-		DI.get((
-			airportDatabase,
-			dataStore,
-			sequenceGenerator,
-			historyManager,
-			offlineDataStore,
-			repositoryManager,
-			transactionManager
-			) => {
-				this.airDb            = airportDatabase
-				this.dataStore        = dataStore
-				this.seqGenerator     = sequenceGenerator
-				this.histManager      = historyManager
-				this.offlineDataStore = offlineDataStore
-				this.repoManager      = repositoryManager
-				this.transManager     = transactionManager
-			}, AIR_DB, STORE_DRIVER,
-			SEQUENCE_GENERATOR, HISTORY_MANAGER,
-			OFFLINE_DELTA_STORE, REPOSITORY_MANAGER,
-			TRANSACTION_MANAGER)
-
-		this.operHistoryDuo      = DI.getP(OPER_HISTORY_DUO,)
-		this.recHistoryDuo       = DI.getP(REC_HISTORY_DUO)
-		this.repoTransHistoryDuo = DI.getP(REPO_TRANS_HISTORY_DUO)
-		// this.transHistoryDuo     = DI.getP(TRANS_HISTORY_DUO)
-	}
-
-	get currentTransHistory(): ITransactionHistory {
-		return this.transManager.currentTransHistory
-	}
+	// get currentTransHistory(): ITransactionHistory {
+	// 	return this.transManager.currentTransHistory
+	// }
 
 	async insertValues(
 		portableQuery: PortableQuery,
 		actor: IActor,
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
-		return <number>await this.internalInsertValues(portableQuery, actor, false, ensureGeneratedValues)
+		return <number>await this.internalInsertValues(
+			portableQuery, actor, false, ensureGeneratedValues)
 	}
 
 	async insertValuesGetIds(
@@ -139,7 +95,26 @@ export class InsertManager
 		getIds: boolean                = false,
 		ensureGeneratedValues: boolean = true
 	): Promise<number | RecordId[]> {
-		const dbEntity = this.airDb.schemas[portableQuery.schemaIndex]
+		// TODO: remove unused dependencies after testing
+		const [
+			      airDb,
+			      storeDriver,
+			      sequenceGenerator,
+			      historyManager,
+			      offlineDataStore,
+			      operHistoryDuo,
+			      recHistoryDuo,
+			      recHistoryNewValueDuo,
+			      repositoryManager,
+			      repoTransHistoryDuo,
+			      transactionManager
+		      ] = await DI.get(AIR_DB, STORE_DRIVER,
+			SEQUENCE_GENERATOR, HISTORY_MANAGER,
+			OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
+			REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER,
+			REPO_TRANS_HISTORY_DUO, TRANSACTION_MANAGER)
+
+		const dbEntity = airDb.schemas[portableQuery.schemaIndex]
 			.currentVersion.entities[portableQuery.tableIndex]
 
 		if (dbEntity.isRepositoryEntity) {
@@ -149,36 +124,44 @@ export class InsertManager
 
 		let ids
 		if (ensureGeneratedValues) {
-			ids = await this.ensureGeneratedValues(dbEntity, <JsonInsertValues>portableQuery.jsonQuery)
+			ids = await this.ensureGeneratedValues(dbEntity,
+				<JsonInsertValues>portableQuery.jsonQuery, sequenceGenerator)
 		}
 
 
 		if (!dbEntity.isLocal) {
-			await this.addInsertHistory(dbEntity, portableQuery, actor)
+			await this.addInsertHistory(dbEntity, portableQuery, actor,
+				historyManager, operHistoryDuo, recHistoryDuo,
+				recHistoryNewValueDuo, repositoryManager,
+				repoTransHistoryDuo, transactionManager)
 		}
 
-		const numberOfInsertedRecords = await this.dataStore.insertValues(portableQuery)
+		const numberOfInsertedRecords = await storeDriver.insertValues(portableQuery)
 
 		return getIds ? ids : numberOfInsertedRecords
 	}
 
-	async addRepository(
+	addRepository(
 		name: string,
 		url: string                                = null,
 		platform: PlatformType                     = PlatformType.GOOGLE_DOCS,
 		platformConfig: string                     = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
 	): Promise<number> {
-		const repository = await this.repoManager.createRepository(
-			name, distributionStrategy, this.transManager.storeType,
-			platform, platformConfig, 'id')
-
-		return repository.id
+		return DI.get(REPOSITORY_MANAGER, TRANSACTION_MANAGER).then(([
+			                                                             repoManager, transManager
+		                                                             ]) =>
+			repoManager.createRepository(
+				name, distributionStrategy, transManager.storeType,
+				platform, platformConfig, 'id')
+		).then(
+			repository => repository.id)
 	}
 
 	private async ensureGeneratedValues(
 		dbEntity: DbEntity,
-		jsonInsertValues: JsonInsertValues
+		jsonInsertValues: JsonInsertValues,
+		seqGenerator: ISequenceGenerator
 	): Promise<number[]> {
 		let ids: number[] = null
 
@@ -238,7 +221,7 @@ export class InsertManager
 
 		const numSequencesNeeded      = generatedColumns.map(
 			_ => values.length)
-		const generatedSequenceValues = await this.seqGenerator.generateSequenceNumbers(
+		const generatedSequenceValues = await seqGenerator.generateSequenceNumbers(
 			generatedColumns, numSequencesNeeded)
 
 		generatedColumns.forEach((
@@ -315,6 +298,13 @@ export class InsertManager
 		dbEntity: DbEntity,
 		portableQuery: PortableQuery,
 		actor: IActor,
+		histManager: IHistoryManager,
+		operHistoryDuo: IOperationHistoryDuo,
+		recHistoryDuo: IRecordHistoryDuo,
+		recHistoryNewValueDuo: IRecordHistoryNewValueDuo,
+		repoManager: IRepositoryManager,
+		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
+		transManager: ITransactionManager
 	): Promise<void> {
 		const jsonInsertValues = <JsonInsertValues>portableQuery.jsonQuery
 
@@ -343,30 +333,27 @@ export class InsertManager
 			}
 		}
 
-		const repoTransHistoryDuo = await this.repoTransHistoryDuo
-		const operHistoryDuo      = await this.operHistoryDuo
-		const recHistoryDuo       = await this.recHistoryDuo
-
 		// Rows may belong to different repositories
 		for (const row of jsonInsertValues.V) {
 			const repositoryId   = row[repositoryIdColumnNumber]
-			const repo           = await this.repoManager.getRepository(repositoryId)
+			const repo           = await repoManager.getRepository(repositoryId)
 			let repoTransHistory = repoTransHistories[repositoryId]
 			if (!repoTransHistory) {
-				repoTransHistory = await this.histManager
-					.getNewRepoTransHistory(this.currentTransHistory, repo, actor)
+				repoTransHistory = await histManager
+					.getNewRepoTransHistory(transManager.currentTransHistory, repo, actor)
 			}
 
 			let operationHistory = operationsByRepo[repositoryId]
 			if (!operationHistory) {
 				operationHistory               = repoTransHistoryDuo.startOperation(
-					repoTransHistory, ChangeType.INSERT_VALUES, dbEntity)
+					repoTransHistory, ChangeType.INSERT_VALUES, dbEntity,
+					operHistoryDuo)
 				operationsByRepo[repositoryId] = operationHistory
 			}
 
 			const actorRecordId = row[actorRecordIdColumnNumber]
 			const recordHistory = operHistoryDuo.startRecordHistory(
-				operationHistory, actorRecordId)
+				operationHistory, actorRecordId, recHistoryDuo)
 
 			for (const columnNumber in jsonInsertValues.C) {
 				if (columnNumber === repositoryIdColumnNumber
@@ -377,14 +364,15 @@ export class InsertManager
 				const columnIndex = jsonInsertValues.C[columnNumber]
 				const dbColumn    = dbEntity.columns[columnIndex]
 				const newValue    = row[columnNumber]
-				recHistoryDuo.addNewValue(recordHistory, dbColumn, newValue)
+				recHistoryDuo.addNewValue(recordHistory, dbColumn, newValue,
+					recHistoryNewValueDuo)
 			}
 		}
 
 		// for (const repositoryId in operationsByRepo) {
 		// 	const repoTransHistory = await
 		// 		this.currentTransHistory.getRepositoryTransaction(
-		// 			repositoryId, null, null, null);
+		// 			repositoryId, null, null, null, repoTransHistoryDuo);
 		// 	repoTransHistory.endGroupMutation(operationsByRepo[repositoryId]);
 		// }
 	}

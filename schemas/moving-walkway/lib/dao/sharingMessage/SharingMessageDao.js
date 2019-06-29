@@ -3,18 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
-const holding_pattern_1 = require("@airport/holding-pattern");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
 class SharingMessageDao extends generated_1.BaseSharingMessageDao {
-    constructor() {
-        super();
-        di_1.DI.get((repositoryTransactionHistoryDao, recordHistoryNewValueDao, recordHistoryOldValueDao) => {
-            this.repoTransHistoryDao = repositoryTransactionHistoryDao;
-            this.recHistNewValueDao = recordHistoryNewValueDao;
-            this.recHistOldValueDao = recordHistoryOldValueDao;
-        }, holding_pattern_1.REPO_TRANS_HISTORY_DAO, holding_pattern_1.REC_HIST_NEW_VALUE_DAO, holding_pattern_1.REC_HIST_OLD_VALUE_DAO);
-    }
+    // private repoTransHistoryDao: IRepositoryTransactionHistoryDao
+    // private recHistNewValueDao: IRecordHistoryNewValueDao
+    // private recHistOldValueDao: IRecordHistoryOldValueDao
     /*
     async updateSyncStatusByAgtSharingMessageIds(
         messageSyncStatus: MessageSyncStatus,

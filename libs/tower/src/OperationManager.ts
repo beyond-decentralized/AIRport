@@ -76,13 +76,6 @@ export abstract class OperationManager
 	// higherOrderOpsYieldLength: number = 100
 	// transactionInProgress: boolean    = false
 
-	/*async init(): Promise<void> {
-		// this.connector = await DI.getP(TRANS_CONNECTOR)
-		// this.entity    = await DI.getP(QUERY_FACADE)
-
-		await (await DI.get(QUERY_FACADE)).init()
-	}*/
-
 	throwUnexpectedProperty(
 		dbProperty: DbProperty,
 		dbColumn: DbColumn,

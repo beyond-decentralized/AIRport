@@ -50,7 +50,10 @@ import {
 
 export interface IRepositoryTransactionHistoryDao {
 
-	getSelectClauseWithRecordHistory(): RepositoryTransactionHistoryESelect;
+	getSelectClauseWithRecordHistory(
+		operHistoryDuo: IOperationHistoryDuo,
+		recHistoryDuo: IRecordHistoryDuo
+	): RepositoryTransactionHistoryESelect;
 
 	findWhere(
 		whereClauseFunction: {
@@ -106,22 +109,11 @@ export class RepositoryTransactionHistoryDao
 	extends BaseRepositoryTransactionHistoryDao
 	implements IRepositoryTransactionHistoryDao {
 
-	private operHistoryDuo: IOperationHistoryDuo
-	private recHistoryDuo: IRecordHistoryDuo
-
-	constructor() {
-		super()
-
-		DI.get((
-			operationHistoryDuo,
-			recordHistoryDuo
-		) => {
-			this.operHistoryDuo = operationHistoryDuo
-			this.recHistoryDuo  = recordHistoryDuo
-		}, OPER_HISTORY_DUO, REC_HISTORY_DUO)
-	}
-
-	getSelectClauseWithRecordHistory(): RepositoryTransactionHistoryESelect {
+	getSelectClauseWithRecordHistory(
+		operHistoryDuo: IOperationHistoryDuo,
+		recHistoryDuo: IRecordHistoryDuo
+	):
+		RepositoryTransactionHistoryESelect {
 		const id = Y
 		return {
 			id,
@@ -132,12 +124,12 @@ export class RepositoryTransactionHistoryDao
 				id
 			},
 			operationHistory: {
-				...this.operHistoryDuo.getAllFieldsSelect(),
+				...operHistoryDuo.getAllFieldsSelect(),
 				entity: {
 					id: Y
 				},
 				recordHistory: {
-					...this.recHistoryDuo.getAllFieldsSelect()
+					...recHistoryDuo.getAllFieldsSelect()
 				}
 			},
 		}
@@ -153,13 +145,17 @@ export class RepositoryTransactionHistoryDao
 			): JSONBaseOperation
 		}
 	): Promise<IRepositoryTransactionHistory[]> {
+		const [operHistoryDuo, recHistoryDuo] = await DI.get(
+			OPER_HISTORY_DUO, REC_HISTORY_DUO)
+
 		let rth: QRepositoryTransactionHistory,
 		    r: QRepository,
 		    oh: QOperationHistory,
 		    rh: QRecordHistory
 		const id = Y
 		return await this.db.find.tree({
-			select: this.getSelectClauseWithRecordHistory(),
+			select: this.getSelectClauseWithRecordHistory(
+				operHistoryDuo, recHistoryDuo),
 			from: [
 				rth = Q.RepositoryTransactionHistory,
 				oh = rth.operationHistory.innerJoin(),

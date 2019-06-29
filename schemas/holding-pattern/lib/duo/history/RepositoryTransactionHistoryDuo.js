@@ -5,12 +5,6 @@ const ddl_1 = require("../../ddl/ddl");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
 class RepositoryTransactionHistoryDuo extends generated_1.BaseRepositoryTransactionHistoryDuo {
-    constructor() {
-        super();
-        di_1.DI.get((operationHistoryDuo) => {
-            this.operHistoryDuo = operationHistoryDuo;
-        }, diTokens_1.OPER_HISTORY_DUO);
-    }
     getNewRecord(repository, actor) {
         let transaction = new ddl_1.RepositoryTransactionHistory();
         let saveTimestamp = new Date();
@@ -54,8 +48,8 @@ class RepositoryTransactionHistoryDuo extends generated_1.BaseRepositoryTransact
             return actorRandomIdComparison;
         });
     }
-    startOperation(repositoryTransactionHistory, entityChangeType, dbEntity) {
-        let operationHistory = this.operHistoryDuo.getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory);
+    startOperation(repositoryTransactionHistory, entityChangeType, dbEntity, operHistoryDuo) {
+        let operationHistory = operHistoryDuo.getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory);
         repositoryTransactionHistory.operationHistory.push(operationHistory);
         repositoryTransactionHistory
             .transactionHistory.allOperationHistory.push(operationHistory);

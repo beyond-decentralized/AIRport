@@ -56,11 +56,12 @@ class RepositoryManager {
         return this.deltaStore[repository.id];
     }
     ensureRepositoryRecords() {
-        return di_1.DI.get(holding_pattern_1.REPOSITORY_DAO).then(repositoryDao => {
-            // TODO: verify that we want to get ALL of the repositories
-            this.repositories = repositoryDao.db.find.tree({
-                select: {}
-            });
+        return di_1.DI.get(holding_pattern_1.REPOSITORY_DAO).then(repositoryDao => 
+        // TODO: verify that we want to get ALL of the repositories
+        repositoryDao.db.find.tree({
+            select: {}
+        })).then(repositories => {
+            this.repositories = repositories;
         });
         /*
                         if (!this.repositories.length) {

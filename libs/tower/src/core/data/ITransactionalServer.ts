@@ -47,13 +47,13 @@ export interface ITransactionalServer {
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		cachedSqlQueryId?: number
-	): IObservable<EntityArray>
+	): Promise<IObservable<EntityArray>>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		cachedSqlQueryId?: number
-	): IObservable<E>
+	): Promise<IObservable<E>>
 
 	insertValues(
 		portableQuery: PortableQuery,

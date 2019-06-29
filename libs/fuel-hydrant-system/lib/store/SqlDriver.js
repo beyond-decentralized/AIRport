@@ -16,17 +16,6 @@ const TreeSQLQuery_1 = require("../sql/TreeSQLQuery");
  * Created by Papa on 9/9/2016.
  */
 class SqlDriver {
-    /*constructor() {
-        DI.get((
-            airportDatabase,
-            activeQueries,
-            utils
-        ) => {
-            this.airDb   = airportDatabase
-            this.queries = activeQueries
-            this.utils   = utils
-        }, AIR_DB, ACTIVE_QUERIES, UTILS)
-    }*/
     supportsLocalTransactions() {
         return true;
     }

@@ -6,12 +6,6 @@ const ground_control_1 = require("@airport/ground-control");
 class OperationManager {
     // higherOrderOpsYieldLength: number = 100
     // transactionInProgress: boolean    = false
-    /*async init(): Promise<void> {
-        // this.connector = await DI.getP(TRANS_CONNECTOR)
-        // this.entity    = await DI.getP(QUERY_FACADE)
-
-        await (await DI.get(QUERY_FACADE)).init()
-    }*/
     throwUnexpectedProperty(dbProperty, dbColumn, value) {
         throw `Unexpected property value '${value.toString()}' in property '${dbProperty.entity.name}.${dbProperty.name}'
 		(column: '${dbColumn.name}').`;

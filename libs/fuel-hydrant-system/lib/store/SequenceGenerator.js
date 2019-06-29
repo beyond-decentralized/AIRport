@@ -9,13 +9,6 @@ class SequenceGenerator {
         this.sequences = [];
         this.sequenceBlocks = [];
     }
-    /*private sequenceBlockDao: Promise<IAbstractSequenceBlockDao>
-    private sequenceDao: Promise<ISequenceDao>
-
-    constructor() {
-        this.sequenceBlockDao = DI.getP(SEQUENCE_BLOCK_DAO)
-        this.sequenceDao      = DI.getP(SEQUENCE_DAO)
-    }*/
     exists(dbEntity) {
         const schemaSequences = this.sequences[dbEntity.schemaVersion.schema.index];
         if (!schemaSequences) {

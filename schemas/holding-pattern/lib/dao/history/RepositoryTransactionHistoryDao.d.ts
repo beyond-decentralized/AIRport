@@ -1,9 +1,11 @@
 import { IQNumberField, IQOrderableField, JSONLogicalOperation, RawFieldQuery } from '@airport/air-control';
 import { EntityId, JSONBaseOperation } from '@airport/ground-control';
 import { ActorId, RecordHistoryActorRecordId, RepositoryEntityActorRecordId, RepositoryId, RepositoryTransactionHistoryId } from '../../ddl/ddl';
+import { IOperationHistoryDuo } from '../../duo/history/OperationHistoryDuo';
+import { IRecordHistoryDuo } from '../../duo/history/RecordHistoryDuo';
 import { BaseRepositoryTransactionHistoryDao, IRepositoryTransactionHistory, QActor, QOperationHistory, QRecordHistory, QRecordHistoryNewValue, QRepository, QRepositoryTransactionHistory, RepositoryTransactionHistoryESelect } from '../../generated/generated';
 export interface IRepositoryTransactionHistoryDao {
-    getSelectClauseWithRecordHistory(): RepositoryTransactionHistoryESelect;
+    getSelectClauseWithRecordHistory(operHistoryDuo: IOperationHistoryDuo, recHistoryDuo: IRecordHistoryDuo): RepositoryTransactionHistoryESelect;
     findWhere(whereClauseFunction: {
         (rth: QRepositoryTransactionHistory, r: QRepository, oh?: QOperationHistory, rh?: QRecordHistory, rhnv?: QRecordHistoryNewValue): JSONLogicalOperation;
     }): Promise<IRepositoryTransactionHistory[]>;
@@ -21,10 +23,7 @@ export interface IChangedRecordIdsForRepository {
     firstChangeTime: Date;
 }
 export declare class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao implements IRepositoryTransactionHistoryDao {
-    private operHistoryDuo;
-    private recHistoryDuo;
-    constructor();
-    getSelectClauseWithRecordHistory(): RepositoryTransactionHistoryESelect;
+    getSelectClauseWithRecordHistory(operHistoryDuo: IOperationHistoryDuo, recHistoryDuo: IRecordHistoryDuo): RepositoryTransactionHistoryESelect;
     findWhere(whereClauseFunction: {
         (rth: QRepositoryTransactionHistory, r: QRepository, oh?: QOperationHistory, rh?: QRecordHistory): JSONBaseOperation;
     }): Promise<IRepositoryTransactionHistory[]>;

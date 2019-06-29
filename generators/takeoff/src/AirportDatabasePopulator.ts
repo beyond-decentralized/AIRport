@@ -16,16 +16,6 @@ export interface IAirportDatabasePopulator {
 export class AirportDatabasePopulator
 	implements IAirportDatabasePopulator {
 
-/*	private airDb: IAirportDatabase
-
-	constructor() {
-		DI.get((
-			airportDatabase
-		) => {
-			this.airDb = airportDatabase
-		}, AIR_DB)
-	}*/
-
 	populate(): void {
 		// FIXME: implement
 		// this.airDb.schemas

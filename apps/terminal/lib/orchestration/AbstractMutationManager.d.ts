@@ -1,9 +1,6 @@
-import { AbstractQuery, IQEntity, IUtils } from '@airport/air-control';
-import { IStoreDriver, PortableQuery, QueryResultType } from '@airport/ground-control';
+import { AbstractQuery, IFieldUtils, IQEntity, IQueryUtils } from '@airport/air-control';
+import { PortableQuery, QueryResultType } from '@airport/ground-control';
 export declare class AbstractMutationManager {
-    protected utils: IUtils;
-    protected dataStore: IStoreDriver;
-    constructor();
-    protected getPortableQuery(schemaIndex: number, tableIndex: number, query: AbstractQuery, queryResultType: QueryResultType): PortableQuery;
+    protected getPortableQuery(schemaIndex: number, tableIndex: number, query: AbstractQuery, queryResultType: QueryResultType, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): PortableQuery;
     protected doInsertValues<IQE extends IQEntity>(q: IQEntity, entities: any[]): Promise<number>;
 }
