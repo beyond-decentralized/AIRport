@@ -7,11 +7,13 @@ const AbstractInsertValues_1 = require("./AbstractInsertValues");
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
 class InsertValues extends AbstractInsertValues_1.AbstractInsertValues {
     toJSON(queryUtils, fieldUtils) {
-        const insertInto = this.rawInsertValues.insertInto
-            .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils);
+        const driver = this.rawInsertValues.insertInto
+            .__driver__;
+        const insertInto = driver.getRelationJson(this.columnAliases, queryUtils, fieldUtils);
         const dbColumns = [];
         const columnIndexes = this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map(column => {
             const dbColumn = column.dbColumn;
+            this.validateColumn(dbColumn, driver.dbEntity);
             dbColumns.push(dbColumn);
             return dbColumn.index;
         });

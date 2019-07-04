@@ -39,17 +39,16 @@ class SQLWhereBase {
              })
              */
             .map((parameterReference) => {
-            const isReference = parameterReference === null || ['number', 'string'].indexOf(typeof parameterReference) > -1;
-            if (isReference) {
-                // if (!valuesArray) {
-                return parameterReference;
-                // } else if (typeof parameterReference === 'number') {
-                // 	return this.sqlAdaptor.getValue(valuesArray[parameterReference])
-                // }
-            }
-            // FIXME: this code never gets invoked (probably)
             let parameter = parameterMap[parameterReference];
             if (!parameter) {
+                const isReference = parameterReference === null || ['number', 'string'].indexOf(typeof parameterReference) > -1;
+                if (isReference) {
+                    // if (!valuesArray) {
+                    return parameterReference;
+                    // } else if (typeof parameterReference === 'number') {
+                    // 	return this.sqlAdaptor.getValue(valuesArray[parameterReference])
+                    // }
+                }
                 throw `No parameter found for alias '${parameterReference}'`;
             }
             return this.sqlAdaptor.getParameterValue(parameter);

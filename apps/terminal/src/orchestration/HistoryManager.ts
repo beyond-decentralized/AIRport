@@ -31,13 +31,12 @@ export class HistoryManager
 	// private recHistoryDuo: Promise<IRecordHistoryDuo>
 	// private repoTransHistoryDuo: Promise<IRepositoryTransactionHistoryDuo>
 
-	getNewTransHistory(
+	async getNewTransHistory(
 		transactionType: TransactionType = TransactionType.LOCAL
 	): Promise<ITransactionHistory> {
-		return DI.get(TRANS_HISTORY_DUO).then(
-			transHistoryDuo =>
-				transHistoryDuo.getNewRecord(transactionType)
-		)
+		const transHistoryDuo = await DI.get(TRANS_HISTORY_DUO)
+
+		return await transHistoryDuo.getNewRecord(transactionType)
 	}
 
 	async getNewRepoTransHistory(
@@ -45,14 +44,11 @@ export class HistoryManager
 		repository: IRepository,
 		actor: IActor,
 	): Promise<IRepositoryTransactionHistory> {
-		return DI.get(REPO_TRANS_HISTORY_DUO, TRANS_HISTORY_DUO).then((
-			[
-				repoTransHistoryDuo,
-				transHistoryDuo
-			]) =>
-			transHistoryDuo.getRepositoryTransaction(
+		const [repoTransHistoryDuo, transHistoryDuo] = await DI.get(
+			REPO_TRANS_HISTORY_DUO, TRANS_HISTORY_DUO)
+
+		return await transHistoryDuo.getRepositoryTransaction(
 				transactionHistory, repository, actor, repoTransHistoryDuo)
-		)
 	}
 
 }

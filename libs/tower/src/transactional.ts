@@ -5,25 +5,19 @@ import {TRANS_CONNECTOR} from '@airport/ground-control'
  * Created by Papa on 4/3/2019.
  */
 
-export function transact(): Promise<void> {
-	return DI.get(TRANS_CONNECTOR).then(
-		transConnector =>
-			transConnector.transact()
-	)
+export async function transact(): Promise<void> {
+	const transConnector = await DI.get(TRANS_CONNECTOR)
+	await transConnector.transact()
 }
 
-export function commit(): Promise<void> {
-	return DI.get(TRANS_CONNECTOR).then(
-		transConnector =>
-			transConnector.commit()
-	)
+export async function commit(): Promise<void> {
+	const transConnector = await DI.get(TRANS_CONNECTOR)
+	await transConnector.commit()
 }
 
-export function rollback(): Promise<void> {
-	return DI.get(TRANS_CONNECTOR).then(
-		transConnector =>
-			transConnector.rollback()
-	)
+export async function rollback(): Promise<void> {
+	const transConnector = await DI.get(TRANS_CONNECTOR)
+	await transConnector.rollback()
 }
 
 /**
@@ -31,43 +25,32 @@ export function rollback(): Promise<void> {
  * transactional context is required.  Zone.js can be used as a thread local context for
  * that.
  */
-export function transactional<T>(
+export async function transactional<T>(
 	callback: () => Promise<T>,
 	keepAlive?: boolean
 ): Promise<T> {
+	const transConnector   = await DI.get(TRANS_CONNECTOR)
 	let transactionStarted = false
-	let transactionalConnector
-	let result
+	try {
+		await transConnector.transact()
+		transactionStarted = true
 
-	return DI.get(TRANS_CONNECTOR).then(
-		transConnector => {
-			transactionalConnector = transConnector
-			return transConnector.transact()
-		}).then(
-		_ => {
-			transactionStarted = true
-			return callback()
-		}).then(
-		returnValue => {
-			result = returnValue
-			return transactionalConnector.commit()
+		const returnValue = await callback()
 
-		}).then(
-		_ => result)
-		.catch(
-			e => {
-				if (transactionStarted) {
-					return
-				}
-				return transactionalConnector.rollback()
-					.then()
-					.catch(
-						_ => {
-							// do nothing - no need to report the rollback error, since it was the
-							// error that causes a rollback
-						}).then(
-						_ => {
-							throw e
-						})
-			})
+		await transConnector.commit()
+
+		return returnValue
+	} catch (e) {
+		try {
+			if (transactionStarted) {
+				await transConnector.rollback()
+			}
+		} catch (e) {
+			// do nothing - no need to report the rollback error, since it was the
+			// error that causes a rollback
+		} finally {
+			throw e
+		}
+	}
+
 }

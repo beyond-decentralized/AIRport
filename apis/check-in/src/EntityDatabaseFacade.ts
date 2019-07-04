@@ -116,7 +116,7 @@ export class EntityDatabaseFacade<Entity,
 	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
-		}): Promise<number[] | string[]> {
+		}): Promise<number[] | string[] | number[][] | string[][]> {
 		const dbFacade = await DI.get(DB_FACADE)
 		return await dbFacade.insertColumnValuesGenerateIds(this.dbEntity, rawInsertColumnValues)
 	}
@@ -124,7 +124,7 @@ export class EntityDatabaseFacade<Entity,
 	async insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
-		}): Promise<number[] | string[]> {
+		}): Promise<number[] | string[] | number[][] | string[][]> {
 		const dbFacade = await DI.get(DB_FACADE)
 		return await dbFacade.insertValuesGenerateIds(this.dbEntity, rawInsertValues)
 	}

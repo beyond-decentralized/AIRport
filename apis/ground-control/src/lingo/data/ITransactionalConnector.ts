@@ -53,7 +53,7 @@ export interface ITransactionalConnector {
 	insertValuesGetIds(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
-	): Promise<number[] | string[]>
+	): Promise<number[] | string[] | number[][] | string[][]>
 
 	updateValues(
 		portableQuery: PortableQuery,

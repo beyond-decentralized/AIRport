@@ -101,6 +101,9 @@ export class DatabaseManager
 		domainName: string,
 		storeType: StoreType
 	): Promise<void> {
+		if(true) {
+			return
+		}
 		await setStoreDriver(storeType)
 		const airDb = await DI.get(AIR_DB)
 		this.airDb  = airDb

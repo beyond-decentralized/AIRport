@@ -97,7 +97,7 @@ exports.addColumnQField = addColumnQField;
 function getQEntityIdRelationConstructor() {
     function QEntityIdRelation(entity, relation, qEntity) {
         QEntityIdRelation.base.constructor.call(this, relation, qEntity);
-        getQEntityIdFields(this, entity);
+        getQEntityIdFields(this, entity, qEntity, relation.property);
         // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
     }
     extend(Relation_1.QRelation, QEntityIdRelation, {});
@@ -119,48 +119,43 @@ exports.getQEntityIdRelationConstructor = getQEntityIdRelationConstructor;
  * QA.rel2.id
  *
  * @param addToObject  Object to add to (Ex: QA | QA.rel1 | QA.rel2.otherRel
- * @param entity  Entity to which the fields belong (Ex: QA, QRel1, QRel2, QOtherRel)
+ * @param relationEntity  Entity to which the fields belong (Ex: QA, QRel1, QRel2, QOtherRel)
  * @param utils
  * @param parentProperty  The parent property from which the current property was
  *    navigated to
  * @param relationColumnMap  DbColumn map for the current path of properties
  *  (QA.rel2.otherRel), keyed by the column from the One side of the relation
  */
-function getQEntityIdFields(addToObject, entity, parentProperty, relationColumnMap) {
-    entity.properties.forEach((property) => {
+function getQEntityIdFields(addToObject, relationEntity, qEntity, parentProperty, relationColumnMap) {
+    if (!relationColumnMap) {
+        const parentRelation = parentProperty.relation[0];
+        const relationColumns = parentRelation.manyRelationColumns;
+        relationColumnMap = new Map();
+        for (const relationColumn of relationColumns) {
+            relationColumnMap.set(relationColumn.oneColumn, relationColumn.manyColumn);
+        }
+    }
+    relationEntity.properties.forEach((property) => {
         if (!property.isId) {
             return;
         }
         let qFieldOrRelation;
-        const currentProperty = parentProperty ? parentProperty : property;
         // If it's a relation property (and therefore has backing columns)
         if (property.relation && property.relation.length) {
-            const parentRelation = currentProperty.relation[0];
-            const relationColumns = parentRelation.manyRelationColumns;
-            if (!parentProperty) {
-                relationColumnMap = new Map();
-                for (const relationColumn of relationColumns) {
-                    relationColumnMap.set(relationColumn.oneColumn, relationColumn.manyColumn);
-                }
+            const relation = property.relation[0];
+            const relationColumns = relation.manyRelationColumns;
+            for (const relationColumn of relationColumns) {
+                const originalColumn = relationColumnMap.get(relationColumn.manyColumn);
+                // Remove the mapping of the parent relation
+                relationColumnMap.delete(relationColumn.manyColumn);
+                // And replace it with the nested relation
+                relationColumnMap.set(relationColumn.oneColumn, originalColumn);
             }
-            // If it's a nested relation
-            else {
-                for (const relationColumn of relationColumns) {
-                    const originalColumn = relationColumnMap.get(relationColumn.manyColumn);
-                    // Remove the mapping of the parent relation
-                    relationColumnMap.delete(relationColumn.manyColumn);
-                    // And replace it with the nested relation
-                    relationColumnMap.set(relationColumn.oneColumn, originalColumn);
-                }
-            }
-            qFieldOrRelation = getQEntityIdFields({}, parentRelation.relationEntity, currentProperty, relationColumnMap);
+            qFieldOrRelation = getQEntityIdFields({}, relation.relationEntity, qEntity, parentProperty, relationColumnMap);
         }
         else {
-            let originalColumn = property.propertyColumns[0].column;
-            if (relationColumnMap) {
-                originalColumn = relationColumnMap.get(originalColumn);
-            }
-            qFieldOrRelation = getColumnQField(entity, currentProperty, this, originalColumn);
+            const originalColumn = relationColumnMap.get(property.propertyColumns[0].column);
+            qFieldOrRelation = getColumnQField(relationEntity, parentProperty, qEntity, originalColumn);
         }
         addToObject[property.name] = qFieldOrRelation;
     });

@@ -111,18 +111,17 @@ export class AirportDatabase
 		}
 	*/
 
-	addRepository(
+	async addRepository(
 		name: string,
 		url: string,
 		platform: PlatformType,
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
 	): Promise<number> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.addRepository(name, url, platform,
-					platformConfig, distributionStrategy)
-		)
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.addRepository(name, url, platform,
+			platformConfig, distributionStrategy)
 	}
 
 	/**
@@ -131,14 +130,13 @@ export class AirportDatabase
 	 *
 	 * @return Number of records created (1 or 0)
 	 */
-	create<E>(
+	async create<E>(
 		dbEntity: DbEntity,
 		entity: E,
 	): Promise<number> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.create(dbEntity, entity)
-		)
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.create(dbEntity, entity)
 	}
 
 	/**
@@ -147,7 +145,7 @@ export class AirportDatabase
 	 *
 	 * @return Number of records created
 	 */
-	bulkCreate<E>(
+	async bulkCreate<E>(
 		dbEntity: DbEntity,
 		entities: E[],
 		checkIfProcessed: boolean, // defaults to true
@@ -155,59 +153,54 @@ export class AirportDatabase
 		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
 	                                  // creation
 	): Promise<number> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.bulkCreate(dbEntity, entities, checkIfProcessed,
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.bulkCreate(dbEntity, entities, checkIfProcessed,
 					cascadeOverwrite, ensureGeneratedValues)
-		)
 	}
 
-	insertColumnValues<IQE extends IQEntity>(
+	async insertColumnValues<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>
 		},
 	): Promise<number> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.insertColumnValues(dbEntity, rawInsertValues)
-		)
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.insertColumnValues(dbEntity, rawInsertValues)
 	}
 
-	insertValues<IQE extends IQEntity>(
+	async insertValues<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
 	): Promise<number> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.insertValues(dbEntity, rawInsertValues)
-		)
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.insertValues(dbEntity, rawInsertValues)
 	}
 
-	insertColumnValuesGenerateIds<IQE extends IQEntity>(
+	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>
 		},
-	): Promise<number[] | string[]> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.insertColumnValuesGenerateIds(dbEntity, rawInsertValues)
-		)
+	): Promise<number[] | string[] | number[][] | string[][]> {
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.insertColumnValuesGenerateIds(dbEntity, rawInsertValues)
 	}
 
-	insertValuesGenerateIds<IQE extends IQEntity>(
+	async insertValuesGenerateIds<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-	): Promise<number[] | string[]> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.insertValuesGenerateIds(dbEntity, rawInsertValues)
-		)
+	): Promise<number[] | string[] | number[][] | string[][]> {
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.insertValuesGenerateIds(dbEntity, rawInsertValues)
 	}
 
 	/**
@@ -216,14 +209,13 @@ export class AirportDatabase
 	 *
 	 * @return Number of records deleted (1 or 0)
 	 */
-	delete<E>(
+	async delete<E>(
 		dbEntity: DbEntity,
 		entity: E,
 	): Promise<number> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.delete(dbEntity, entity)
-		)
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.delete(dbEntity, entity)
 	}
 
 	/**
@@ -232,16 +224,15 @@ export class AirportDatabase
 	 *
 	 * @return Number of records deleted
 	 */
-	deleteWhere<IQE extends IQEntity>(
+	async deleteWhere<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
 	): Promise<number> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.deleteWhere(dbEntity, rawDelete)
-		)
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.deleteWhere(dbEntity, rawDelete)
 	}
 
 	/**
@@ -250,14 +241,13 @@ export class AirportDatabase
 	 *
 	 * @return Number of records saved (1 or 0)
 	 */
-	save<E>(
+	async save<E>(
 		dbEntity: DbEntity,
 		entity: E,
 	): Promise<number> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.save(dbEntity, entity)
-		)
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.save(dbEntity, entity)
 	}
 
 	/**
@@ -266,14 +256,13 @@ export class AirportDatabase
 	 *
 	 * @return Number of records updated (1 or 0)
 	 */
-	update<E>(
+	async update<E>(
 		dbEntity: DbEntity,
 		entity: E,
 	): Promise<number> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.update(dbEntity, entity)
-		)
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.update(dbEntity, entity)
 	}
 
 	/**
@@ -282,17 +271,16 @@ export class AirportDatabase
 	 *
 	 * @return Number of records updated
 	 */
-	updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(
+	async updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawUpdateColumns: RawUpdateColumns<IEUC, IQE>
 			| {
 			(...args: any[]): RawUpdateColumns<IEUC, IQE>
 		},
 	): Promise<number> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.updateColumnsWhere(dbEntity, rawUpdateColumns)
-		)
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.updateColumnsWhere(dbEntity, rawUpdateColumns)
 	}
 
 	/**
@@ -301,16 +289,15 @@ export class AirportDatabase
 	 *
 	 * @return Number of records updated
 	 */
-	updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(
+	async updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},
 	): Promise<number> {
-		return DI.get(DB_FACADE).then(
-			dbFacade =>
-				dbFacade.updateWhere(dbEntity, rawUpdate)
-		)
+		const dbFacade = await DI.get(DB_FACADE)
+
+		return await dbFacade.updateWhere(dbEntity, rawUpdate)
 	}
 }
 

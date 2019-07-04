@@ -23,10 +23,10 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     }): Promise<number>;
     insertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }): Promise<number[] | string[]>;
+    }): Promise<number[] | string[] | number[][] | string[][]>;
     insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }): Promise<number[] | string[]>;
+    }): Promise<number[] | string[] | number[][] | string[][]>;
     update(entity: EntityCreate): Promise<number>;
     updateColumnsWhere(rawUpdateColumns: RawUpdate<EntityUpdateColumns, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateColumns, IQ>;

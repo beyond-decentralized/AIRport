@@ -11,7 +11,6 @@ import {
 }                 from '@airport/air-control'
 import {Sequence} from './Sequence'
 
-export type SequenceBlockId = number
 export type SequenceBlockSize = number
 export type SequenceBlockLastReservedId = number
 export type SequenceBlockReservationMillis = number
@@ -22,12 +21,12 @@ export type SequenceBlockCurrentNumber = number
 export class SequenceBlock {
 
 	@Id()
-	@GeneratedValue()
-	@SequenceGenerator({allocationSize: 1000})
-	id: SequenceBlockId
+	@Column({name: 'RESERVATION_MILLIS', nullable: false})
+	reservationMillis: SequenceBlockReservationMillis
 
+	@Id()
 	// Have to reference by indexes to avoid adding a @GeneratedValue
-	// on SequenceBlock, which would greatly complicate bootstraping
+	// on Sequence, which would greatly complicate bootstraping
 	// of AP for the first time
 	@ManyToOne()
 	@JoinColumns([{
@@ -45,8 +44,6 @@ export class SequenceBlock {
 	@Column({name: 'LAST_RESERVED_ID', nullable: false})
 	lastReservedId: SequenceBlockLastReservedId
 
-	@Column({name: 'RESERVATION_MILLIS', nullable: false})
-	reservationMillis: SequenceBlockReservationMillis
 
 	@Transient()
 	currentNumber: SequenceBlockCurrentNumber

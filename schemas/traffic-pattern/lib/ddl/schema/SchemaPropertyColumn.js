@@ -29,7 +29,9 @@ __decorate([
     __metadata("design:type", Object)
 ], SchemaPropertyColumn.prototype, "property", void 0);
 SchemaPropertyColumn = __decorate([
-    air_control_1.Entity(),
+    air_control_1.Entity()
+    // TODO: rename table name to SCHEMA_PROPERTY_COLUMNS
+    ,
     air_control_1.Table({
         name: 'SCHEMA_COLUMN_PROPERTIES'
     })

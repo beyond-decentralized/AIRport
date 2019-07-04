@@ -320,6 +320,7 @@ export class SchemaUtils
 		return columnValuesAndPaths
 	}
 
+	/*
 	addRelationToEntitySelectClause(
 		dbRelation: DbRelation,
 		selectClause: any,
@@ -378,6 +379,7 @@ export class SchemaUtils
 				}
 			})
 	}
+	 */
 
 	forEachColumnOfRelation(
 		dbRelation: DbRelation,

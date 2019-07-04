@@ -60,8 +60,9 @@ class AirportDatabase {
             return database
         }
     */
-    addRepository(name, url, platform, platformConfig, distributionStrategy) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.addRepository(name, url, platform, platformConfig, distributionStrategy));
+    async addRepository(name, url, platform, platformConfig, distributionStrategy) {
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
     /**
      * Creates an entity - internal API.  Use the API provided by the
@@ -69,8 +70,9 @@ class AirportDatabase {
      *
      * @return Number of records created (1 or 0)
      */
-    create(dbEntity, entity) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.create(dbEntity, entity));
+    async create(dbEntity, entity) {
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.create(dbEntity, entity);
     }
     /**
      * Creates an entity - internal API.  Use the API provided by the
@@ -78,24 +80,29 @@ class AirportDatabase {
      *
      * @return Number of records created
      */
-    bulkCreate(dbEntity, entities, checkIfProcessed, // defaults to true
+    async bulkCreate(dbEntity, entities, checkIfProcessed, // defaults to true
     cascadeOverwrite, // defaults to false
     ensureGeneratedValues // for internal use only, needed at initial schema
     // creation
     ) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.bulkCreate(dbEntity, entities, checkIfProcessed, cascadeOverwrite, ensureGeneratedValues));
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.bulkCreate(dbEntity, entities, checkIfProcessed, cascadeOverwrite, ensureGeneratedValues);
     }
-    insertColumnValues(dbEntity, rawInsertValues) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.insertColumnValues(dbEntity, rawInsertValues));
+    async insertColumnValues(dbEntity, rawInsertValues) {
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.insertColumnValues(dbEntity, rawInsertValues);
     }
-    insertValues(dbEntity, rawInsertValues) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.insertValues(dbEntity, rawInsertValues));
+    async insertValues(dbEntity, rawInsertValues) {
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.insertValues(dbEntity, rawInsertValues);
     }
-    insertColumnValuesGenerateIds(dbEntity, rawInsertValues) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.insertColumnValuesGenerateIds(dbEntity, rawInsertValues));
+    async insertColumnValuesGenerateIds(dbEntity, rawInsertValues) {
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.insertColumnValuesGenerateIds(dbEntity, rawInsertValues);
     }
-    insertValuesGenerateIds(dbEntity, rawInsertValues) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.insertValuesGenerateIds(dbEntity, rawInsertValues));
+    async insertValuesGenerateIds(dbEntity, rawInsertValues) {
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.insertValuesGenerateIds(dbEntity, rawInsertValues);
     }
     /**
      * Deletes an entity - internal API.  Use the API provided by the
@@ -103,8 +110,9 @@ class AirportDatabase {
      *
      * @return Number of records deleted (1 or 0)
      */
-    delete(dbEntity, entity) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.delete(dbEntity, entity));
+    async delete(dbEntity, entity) {
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.delete(dbEntity, entity);
     }
     /**
      * Creates an entity with a where clause - internal API.  Use the
@@ -112,8 +120,9 @@ class AirportDatabase {
      *
      * @return Number of records deleted
      */
-    deleteWhere(dbEntity, rawDelete) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.deleteWhere(dbEntity, rawDelete));
+    async deleteWhere(dbEntity, rawDelete) {
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.deleteWhere(dbEntity, rawDelete);
     }
     /**
      * Ether creates or updates an entity - internal API.  Use the
@@ -121,8 +130,9 @@ class AirportDatabase {
      *
      * @return Number of records saved (1 or 0)
      */
-    save(dbEntity, entity) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.save(dbEntity, entity));
+    async save(dbEntity, entity) {
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.save(dbEntity, entity);
     }
     /**
      * Updates an entity - internal API.  Use the API provided by the
@@ -130,8 +140,9 @@ class AirportDatabase {
      *
      * @return Number of records updated (1 or 0)
      */
-    update(dbEntity, entity) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.update(dbEntity, entity));
+    async update(dbEntity, entity) {
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.update(dbEntity, entity);
     }
     /**
      * Updates an entity with a where clause, using a column based set clause
@@ -139,8 +150,9 @@ class AirportDatabase {
      *
      * @return Number of records updated
      */
-    updateColumnsWhere(dbEntity, rawUpdateColumns) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.updateColumnsWhere(dbEntity, rawUpdateColumns));
+    async updateColumnsWhere(dbEntity, rawUpdateColumns) {
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.updateColumnsWhere(dbEntity, rawUpdateColumns);
     }
     /**
      * Updates an entity with a where clause, using a property based set clause
@@ -148,8 +160,9 @@ class AirportDatabase {
      *
      * @return Number of records updated
      */
-    updateWhere(dbEntity, rawUpdate) {
-        return di_1.DI.get(air_control_1.DB_FACADE).then(dbFacade => dbFacade.updateWhere(dbEntity, rawUpdate));
+    async updateWhere(dbEntity, rawUpdate) {
+        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        return await dbFacade.updateWhere(dbEntity, rawUpdate);
     }
 }
 exports.AirportDatabase = AirportDatabase;

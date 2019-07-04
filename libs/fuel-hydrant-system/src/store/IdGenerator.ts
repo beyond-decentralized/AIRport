@@ -80,14 +80,15 @@ export class IdGenerator
 		numRecordHistories: NumRecordHistories
 	): Promise<TransactionHistoryIds> {
 
-		const generatedSequenceNumbers = await (await DI.get(SEQUENCE_GENERATOR)).generateSequenceNumbers(
-			this.transactionHistoryIdColumns,
-			[
-				1,
-				numRepositoryTransHistories,
-				numOperationTransHistories,
-				numRecordHistories
-			])
+		const generatedSequenceNumbers = await (await DI.get(SEQUENCE_GENERATOR))
+			.generateSequenceNumbers(
+				this.transactionHistoryIdColumns,
+				[
+					1,
+					numRepositoryTransHistories,
+					numOperationTransHistories,
+					numRecordHistories
+				])
 
 		return {
 			operationHistoryIds: generatedSequenceNumbers[2],

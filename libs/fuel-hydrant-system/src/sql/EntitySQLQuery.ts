@@ -13,6 +13,10 @@ import {
 	Y
 }                             from '@airport/air-control'
 import {
+	isStub,
+	markAsStub
+}                             from '@airport/air-control'
+import {
 	DbColumn,
 	DbEntity,
 	DbProperty,
@@ -253,9 +257,12 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		dbEntity: DbEntity,
 		selectClauseFragment: any,
 		joinTree: JoinTreeNode,
+		parentProperty?: DbProperty
 	): string[] {
 		const tableAlias       = QRelation.getAlias(joinTree.jsonRelation)
 		let selectSqlFragments = []
+
+		let isStubProperty = isStub(selectClauseFragment)
 
 		const defaults = this.entityDefaults.getForAlias(tableAlias)
 		for (let propertyName in selectClauseFragment) {
@@ -268,12 +275,22 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			}
 			const dbProperty = dbEntity.propertyMap[propertyName]
 			if (dbProperty.relation && dbProperty.relation.length) {
-				const dbRelation         = dbProperty.relation[0]
-				const subSelectFragments = this.getSELECTFragment(
-					dbRelation.relationEntity,
-					selectClauseFragment[propertyName],
-					joinTree.getEntityRelationChildNode(dbRelation))
-				selectSqlFragments       = selectSqlFragments.concat(subSelectFragments)
+				const dbRelation = dbProperty.relation[0]
+				if (isStub(selectClauseFragment[propertyName])) {
+					for(const relationColumn of dbRelation.manyRelationColumns) {
+						const dbColumn = relationColumn.manyColumn
+						this.addFieldFromColumn(dbColumn)
+						const columnSelect = this.getSimpleColumnFragment(tableAlias, dbColumn.name)
+						selectSqlFragments.push(`${columnSelect} ${this.columnAliases.getFollowingAlias()}`)
+					}
+				} else {
+					const subSelectFragments = this.getSELECTFragment(
+						dbRelation.relationEntity,
+						selectClauseFragment[propertyName],
+						joinTree.getEntityRelationChildNode(dbRelation),
+						dbProperty)
+					selectSqlFragments       = selectSqlFragments.concat(subSelectFragments)
+				}
 			} else {
 				const dbColumn = dbProperty.propertyColumns[0].column
 				this.addFieldFromColumn(dbColumn)
@@ -442,6 +459,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 	 *  other1: Y
 	 * }
 	 *
+	 * If no properties are specified all properties are included.
+	 *
 	 * @param selectClauseFragment
 	 * @param {DbEntity} dbEntity
 	 * @returns {any}
@@ -479,15 +498,18 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			}
 			const dbProperty = dbEntity.propertyMap[propertyName]
 			if (!dbProperty) {
-				throw `DB Property '${dbEntity.name}.${propertyName}' does not exist.`
+				throw `Entity property '${dbEntity.name}.${propertyName}' does not exist.`
 			}
+			// Need to differentiate between properties that contain only
+			// foreign key ids and properties
 			if (dbProperty.relation && dbProperty.relation.length) {
 				selectFragment[propertyName] = this.setupSelectFields(value,
 					dbProperty.relation[0].relationEntity, schemaUtils, dbProperty)
-			} else {
-				//  At least one non-relational field is in the original select clause
-				retrieveAllOwnFields = false
+				// } else {
+				// 	//  At least one non-relational field is in the original select clause
+				// 	retrieveAllOwnFields = false
 			}
+			retrieveAllOwnFields = false
 		}
 
 		//  For {} select causes, entities with no @Id, retrieve the entire object.
@@ -503,7 +525,11 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 					case EntityRelationType.ONE_TO_MANY:
 						break
 					case EntityRelationType.MANY_TO_ONE:
-						schemaUtils.addRelationToEntitySelectClause(dbRelation, selectFragment, allowDefaults)
+						const manyToOneRelation = {}
+						markAsStub(manyToOneRelation)
+						selectFragment[dbProperty.name] = manyToOneRelation
+						// schemaUtils.addRelationToEntitySelectClause(dbRelation, selectFragment,
+						// allowDefaults)
 						break
 					default:
 						throw `Unknown relation type: '${dbRelation.relationType}' on '${dbEntity.name}.${dbProperty.name}'.`

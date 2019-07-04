@@ -41,10 +41,10 @@ export declare class AirportDatabase implements IAirportDatabase {
     }): Promise<number>;
     insertColumnValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }): Promise<number[] | string[]>;
+    }): Promise<number[] | string[] | number[][] | string[][]>;
     insertValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }): Promise<number[] | string[]>;
+    }): Promise<number[] | string[] | number[][] | string[][]>;
     /**
      * Deletes an entity - internal API.  Use the API provided by the
      * IEntityDatabaseFacade.

@@ -13,6 +13,7 @@ import {VersionedSchemaObject} from './VersionedSchemaObject'
  * Many-to-Many between Columns and properties
  */
 @Entity()
+// TODO: rename table name to SCHEMA_PROPERTY_COLUMNS
 @Table({
 	name: 'SCHEMA_COLUMN_PROPERTIES'
 })

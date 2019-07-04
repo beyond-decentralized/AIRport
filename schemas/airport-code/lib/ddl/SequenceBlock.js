@@ -11,10 +11,14 @@ let SequenceBlock = class SequenceBlock {
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.GeneratedValue(),
-    air_control_1.SequenceGenerator({ allocationSize: 1000 })
-], SequenceBlock.prototype, "id", void 0);
+    air_control_1.Column({ name: 'RESERVATION_MILLIS', nullable: false })
+], SequenceBlock.prototype, "reservationMillis", void 0);
 __decorate([
+    air_control_1.Id()
+    // Have to reference by indexes to avoid adding a @GeneratedValue
+    // on Sequence, which would greatly complicate bootstraping
+    // of AP for the first time
+    ,
     air_control_1.ManyToOne(),
     air_control_1.JoinColumns([{
             name: 'SCHEMA_INDEX', nullable: false
@@ -30,9 +34,6 @@ __decorate([
 __decorate([
     air_control_1.Column({ name: 'LAST_RESERVED_ID', nullable: false })
 ], SequenceBlock.prototype, "lastReservedId", void 0);
-__decorate([
-    air_control_1.Column({ name: 'RESERVATION_MILLIS', nullable: false })
-], SequenceBlock.prototype, "reservationMillis", void 0);
 __decorate([
     air_control_1.Transient()
 ], SequenceBlock.prototype, "currentNumber", void 0);

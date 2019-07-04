@@ -121,11 +121,13 @@ export class RepositoryManager
 		}
 	}
 
-	findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>> {
-		return DI.get(REPOSITORY_DAO).then(
-			repositoryDao =>
-				repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail)
-		)
+	async findReposWithDetailsByIds(
+		...repositoryIds: number[]
+	): Promise<MappedEntityArray<IRepository>> {
+		const repositoryDao = await DI.get(REPOSITORY_DAO)
+
+		return await repositoryDao.findReposWithDetailsByIds(
+			repositoryIds, this.terminal.name, this.userEmail)
 	}
 
 	async createRepository(
@@ -180,17 +182,13 @@ export class RepositoryManager
 		return this.deltaStore[repository.id]
 	}
 
-	private ensureRepositoryRecords(): Promise<void> {
-		return DI.get(REPOSITORY_DAO).then(
-			repositoryDao =>
+	private async ensureRepositoryRecords(): Promise<void> {
+		const repositoryDao = await DI.get(REPOSITORY_DAO)
 				// TODO: verify that we want to get ALL of the repositories
-				repositoryDao.db.find.tree({
+		this.repositories = await repositoryDao.db.find.tree({
 					select: {}
 				})
-		).then(
-			repositories => {
-				this.repositories = repositories
-			})
+
 		/*
 						if (!this.repositories.length) {
 								let deltaStoreConfig = config.deltaStoreConfig;

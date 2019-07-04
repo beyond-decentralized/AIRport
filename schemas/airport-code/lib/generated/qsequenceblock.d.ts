@@ -1,11 +1,10 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { ISequence, SequenceEOptionalId, SequenceESelect, QSequenceQRelation } from './qsequence';
+import { ISequence, SequenceEId, SequenceEOptionalId, SequenceESelect, QSequenceQId, QSequenceQRelation } from './qsequence';
 export interface ISequenceBlock {
-    id?: number;
-    size?: number;
-    lastReservedId?: number;
     reservationMillis?: number;
     sequence?: ISequence;
+    size?: number;
+    lastReservedId?: number;
     currentNumber?: number;
 }
 /**
@@ -14,20 +13,21 @@ export interface ISequenceBlock {
 export interface SequenceBlockESelect extends IEntitySelectProperties, SequenceBlockEOptionalId {
     size?: number | IQNumberField;
     lastReservedId?: number | IQNumberField;
-    reservationMillis?: number | IQNumberField;
     sequence?: SequenceESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
  */
 export interface SequenceBlockEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    reservationMillis: number | IQNumberField;
+    sequence: SequenceEId;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface SequenceBlockEOptionalId {
-    id?: number | IQNumberField;
+    reservationMillis?: number | IQNumberField;
+    sequence?: SequenceEOptionalId;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -35,8 +35,6 @@ export interface SequenceBlockEOptionalId {
 export interface SequenceBlockEUpdateProperties extends IEntityUpdateProperties {
     size?: number | IQNumberField;
     lastReservedId?: number | IQNumberField;
-    reservationMillis?: number | IQNumberField;
-    sequence?: SequenceEOptionalId;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -44,10 +42,6 @@ export interface SequenceBlockEUpdateProperties extends IEntityUpdateProperties 
 export interface SequenceBlockEUpdateColumns extends IEntityUpdateColumns {
     SIZE?: number | IQNumberField;
     LAST_RESERVED_ID?: number | IQNumberField;
-    RESERVATION_MILLIS?: number | IQNumberField;
-    SCHEMA_INDEX?: number | IQNumberField;
-    TABLE_INDEX?: number | IQNumberField;
-    COLUMN_INDEX?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -63,14 +57,14 @@ export interface SequenceBlockECreateColumns extends SequenceBlockEId, SequenceB
  * Query Entity Query Definition (used for Q.EntityName).
  */
 export interface QSequenceBlock extends IQEntity {
-    id: IQNumberField;
-    size: IQNumberField;
-    lastReservedId: IQNumberField;
     reservationMillis: IQNumberField;
     sequence: QSequenceQRelation;
+    size: IQNumberField;
+    lastReservedId: IQNumberField;
 }
 export interface QSequenceBlockQId {
-    id: IQNumberField;
+    reservationMillis: IQNumberField;
+    sequence: QSequenceQId;
 }
 export interface QSequenceBlockQRelation extends IQRelation<QSequenceBlock>, QSequenceBlockQId {
 }

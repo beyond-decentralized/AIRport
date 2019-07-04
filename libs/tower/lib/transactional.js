@@ -5,16 +5,19 @@ const ground_control_1 = require("@airport/ground-control");
 /**
  * Created by Papa on 4/3/2019.
  */
-function transact() {
-    return di_1.DI.get(ground_control_1.TRANS_CONNECTOR).then(transConnector => transConnector.transact());
+async function transact() {
+    const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
+    await transConnector.transact();
 }
 exports.transact = transact;
-function commit() {
-    return di_1.DI.get(ground_control_1.TRANS_CONNECTOR).then(transConnector => transConnector.commit());
+async function commit() {
+    const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
+    await transConnector.commit();
 }
 exports.commit = commit;
-function rollback() {
-    return di_1.DI.get(ground_control_1.TRANS_CONNECTOR).then(transConnector => transConnector.rollback());
+async function rollback() {
+    const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
+    await transConnector.rollback();
 }
 exports.rollback = rollback;
 /**
@@ -22,33 +25,30 @@ exports.rollback = rollback;
  * transactional context is required.  Zone.js can be used as a thread local context for
  * that.
  */
-function transactional(callback, keepAlive) {
+async function transactional(callback, keepAlive) {
+    const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
     let transactionStarted = false;
-    let transactionalConnector;
-    let result;
-    return di_1.DI.get(ground_control_1.TRANS_CONNECTOR).then(transConnector => {
-        transactionalConnector = transConnector;
-        return transConnector.transact();
-    }).then(_ => {
+    try {
+        await transConnector.transact();
         transactionStarted = true;
-        return callback();
-    }).then(returnValue => {
-        result = returnValue;
-        return transactionalConnector.commit();
-    }).then(_ => result)
-        .catch(e => {
-        if (transactionStarted) {
-            return;
+        const returnValue = await callback();
+        await transConnector.commit();
+        return returnValue;
+    }
+    catch (e) {
+        try {
+            if (transactionStarted) {
+                await transConnector.rollback();
+            }
         }
-        return transactionalConnector.rollback()
-            .then()
-            .catch(_ => {
+        catch (e) {
             // do nothing - no need to report the rollback error, since it was the
             // error that causes a rollback
-        }).then(_ => {
+        }
+        finally {
             throw e;
-        });
-    });
+        }
+    }
 }
 exports.transactional = transactional;
 //# sourceMappingURL=transactional.js.map

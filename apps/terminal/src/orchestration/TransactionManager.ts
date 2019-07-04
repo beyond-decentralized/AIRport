@@ -45,13 +45,12 @@ export class TransactionManager
 	 * Initializes the EntityManager at server load time.
 	 * @returns {Promise<void>}
 	 */
-	init(
+	async init(
 		dbName: string
 	): Promise<void> {
-		return DI.get(STORE_DRIVER).then(
-			storeDriver =>
-				storeDriver.initialize(dbName)
-		)
+		const storeDriver = await DI.get(STORE_DRIVER)
+
+		return await storeDriver.initialize(dbName)
 		// await this.dataStore.initialize(dbName)
 		// await this.repositoryManager.initialize();
 	}

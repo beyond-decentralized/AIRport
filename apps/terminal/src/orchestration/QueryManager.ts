@@ -32,44 +32,40 @@ export interface IQueryManager {
 export class QueryManager
 	implements IQueryManager {
 
-	find<E, EntityArray extends Array<E>>(
+	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number
 	): Promise<EntityArray> {
-		return DI.get(STORE_DRIVER).then(
-			storeDriver =>
-				storeDriver.find<E, EntityArray>(portableQuery, cachedSqlQueryId)
-		)
+		const storeDriver = await DI.get(STORE_DRIVER)
+
+		return await storeDriver.find<E, EntityArray>(portableQuery, cachedSqlQueryId)
 	}
 
-	findOne<E>(
+	async findOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number
 	): Promise<E> {
-		return DI.get(STORE_DRIVER).then(
-			storeDriver =>
-				storeDriver.findOne<E>(portableQuery, cachedSqlQueryId)
-		)
+		const storeDriver = await DI.get(STORE_DRIVER)
+
+		return await storeDriver.findOne<E>(portableQuery, cachedSqlQueryId)
 	}
 
-	search<E, EntityArray extends Array<E>>(
+	async search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<EntityArray>> {
-		return DI.get(STORE_DRIVER).then(
-			storeDriver =>
-				storeDriver.search<E, EntityArray>(portableQuery, cachedSqlQueryId)
-		)
+		const storeDriver = await DI.get(STORE_DRIVER)
+
+		return await storeDriver.search<E, EntityArray>(portableQuery, cachedSqlQueryId)
 	}
 
-	searchOne<E>(
+	async searchOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<E>> {
-		return DI.get(STORE_DRIVER).then(
-			storeDriver =>
-				storeDriver.searchOne<E>(portableQuery, cachedSqlQueryId)
-		)
+		const storeDriver = await DI.get(STORE_DRIVER)
+
+		return await storeDriver.searchOne<E>(portableQuery, cachedSqlQueryId)
 	}
 
 }

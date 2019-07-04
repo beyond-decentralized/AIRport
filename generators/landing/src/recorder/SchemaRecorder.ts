@@ -194,7 +194,7 @@ export class SchemaRecorder
 		entities: any[]
 	) {
 		await airDb.bulkCreate(dao.db.dbEntity, entities,
-			CascadeOverwrite.NEVER, false, false)
+			false, CascadeOverwrite.NEVER, false)
 	}
 
 }

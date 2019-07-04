@@ -17,8 +17,9 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
      */
-    init(dbName) {
-        return di_1.DI.get(ground_control_1.STORE_DRIVER).then(storeDriver => storeDriver.initialize(dbName));
+    async init(dbName) {
+        const storeDriver = await di_1.DI.get(ground_control_1.STORE_DRIVER);
+        return await storeDriver.initialize(dbName);
         // await this.dataStore.initialize(dbName)
         // await this.repositoryManager.initialize();
     }

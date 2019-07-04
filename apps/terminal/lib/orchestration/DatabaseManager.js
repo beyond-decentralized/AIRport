@@ -52,6 +52,9 @@ class DatabaseManager {
         return !!this.airDb;
     }
     async init(domainName, storeType) {
+        if (true) {
+            return;
+        }
         await fuel_hydrant_system_1.setStoreDriver(storeType);
         const airDb = await di_1.DI.get(air_control_1.AIR_DB);
         this.airDb = airDb;

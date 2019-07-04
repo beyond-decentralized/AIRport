@@ -37,11 +37,10 @@ export declare abstract class OperationManager implements IOperationManager {
         [entityId: string]: any;
     }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, checkIfProcessed?: boolean, cascadeOverwrite?: CascadeOverwrite, ensureGeneratedValues?: boolean): Promise<number>;
     private internalCreate;
-    private getGeneratedProperty;
     private columnProcessed;
     protected internalInsertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): Promise<number>;
     protected internalInsertValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, ensureGeneratedValues?: boolean): Promise<number>;
-    protected internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): Promise<number[] | string[]>;
+    protected internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): Promise<number[] | string[] | number[][] | string[][]>;
     /**
      * Transactional context must have been started by the time this method is called.
      *
@@ -51,7 +50,7 @@ export declare abstract class OperationManager implements IOperationManager {
     protected performUpdate<E>(dbEntity: DbEntity, entity: E, updatedEntityMap: {
         [entityId: string]: any;
     }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, originalValue?: E, cascadeOverwrite?: CascadeOverwrite): Promise<number>;
-    protected internalInsertValuesGetIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number[] | string[]>;
+    protected internalInsertValuesGetIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number[] | string[] | number[][] | string[][]>;
     private cascadeOnPersist;
     protected abstract getOriginalRecord(dbEntity: DbEntity, idKey: string, updateCache: IUpdateCache): Promise<any>;
     protected abstract getOriginalValues(entitiesToUpdate: UpdateRecord[], dbEntity: DbEntity, airDb: IAirportDatabase, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache): Promise<MappedEntityArray<any>>;

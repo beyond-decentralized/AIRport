@@ -49,6 +49,8 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
      *  other1: Y
      * }
      *
+     * If no properties are specified all properties are included.
+     *
      * @param selectClauseFragment
      * @param {DbEntity} dbEntity
      * @returns {any}

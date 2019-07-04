@@ -138,6 +138,8 @@ class SqlLiteFunctionAdaptor extends SQLQueryAdaptor_1.AbstractFunctionAdaptor {
                     let primitiveValue = this.toString(this.sqlValueProvider.getFunctionCallValue(val, airDb, schemaUtils, metadataUtils));
                     return acc + val;
                 }, this.toString(value));
+            case ground_control_1.SqlFunction.COALESCE:
+                return null;
             default:
                 throw `Unknown function type: ${jsonFunctionCall.ft}`;
         }

@@ -11,36 +11,34 @@ class LookupProxy {
 exports.LookupProxy = LookupProxy;
 class Lookup {
     async lookup(rawQuery, queryResultType, search, one, QueryClass, dbEntity, cacheForUpdate, mapResults) {
-        return await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.FIELD_UTILS, diTokens_1.QUERY_FACADE, diTokens_1.QUERY_UTILS, diTokens_1.SCHEMA_UTILS, ground_control_1.TRANS_CONNECTOR, diTokens_1.UPDATE_CACHE).then(([entityUtils, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache]) => {
-            let query;
-            if (QueryClass) {
-                const rawNonEntityQuery = entityUtils.getQuery(rawQuery);
-                query = new QueryClass(rawNonEntityQuery);
+        const [entityUtils, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.FIELD_UTILS, diTokens_1.QUERY_FACADE, diTokens_1.QUERY_UTILS, diTokens_1.SCHEMA_UTILS, ground_control_1.TRANS_CONNECTOR, diTokens_1.UPDATE_CACHE);
+        let query;
+        if (QueryClass) {
+            const rawNonEntityQuery = entityUtils.getQuery(rawQuery);
+            query = new QueryClass(rawNonEntityQuery);
+        }
+        else {
+            query = entityUtils.getEntityQuery(rawQuery);
+            queryResultType = this.getQueryResultType(queryResultType, mapResults);
+        }
+        let queryMethod;
+        if (search) {
+            if (one) {
+                queryMethod = queryFacade.searchOne;
             }
             else {
-                query = entityUtils.getEntityQuery(rawQuery);
-                queryResultType = this.getQueryResultType(queryResultType, mapResults);
+                queryMethod = queryFacade.search;
             }
-            let queryMethod;
-            if (search) {
-                if (one) {
-                    queryMethod = queryFacade.searchOne;
-                }
-                else {
-                    queryMethod = queryFacade.search;
-                }
+        }
+        else {
+            if (one) {
+                queryMethod = queryFacade.findOne;
             }
             else {
-                if (one) {
-                    queryMethod = queryFacade.findOne;
-                }
-                else {
-                    queryMethod = queryFacade.find;
-                }
+                queryMethod = queryFacade.find;
             }
-            let result = queryMethod.call(queryFacade, dbEntity, query, this.getQueryResultType(queryResultType, mapResults), fieldUtils, queryUtils, schemaUtils, transConnector, updateCache, cacheForUpdate);
-            return result;
-        });
+        }
+        return await queryMethod.call(queryFacade, dbEntity, query, this.getQueryResultType(queryResultType, mapResults), fieldUtils, queryUtils, schemaUtils, transConnector, updateCache, cacheForUpdate);
     }
     getQueryResultType(baseQueryResultType, mapResults) {
         switch (baseQueryResultType) {

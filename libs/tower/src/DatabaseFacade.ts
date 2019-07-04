@@ -196,7 +196,7 @@ export class DatabaseFacade
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		}
-	): Promise<number[] | string[]> {
+	): Promise<number[] | string[] | number[][] | string[][]> {
 		if (!rawInsertColumnValues) {
 			return []
 		}
@@ -216,7 +216,7 @@ export class DatabaseFacade
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		}
-	): Promise<number[] | string[]> {
+	): Promise<number[] | string[] | number[][] | string[][]> {
 		if (!rawInsertValues) {
 			return []
 		}

@@ -18,10 +18,10 @@ export declare class DatabaseFacade extends OperationManager implements IDatabas
     }): Promise<number>;
     insertColumnValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }): Promise<number[] | string[]>;
+    }): Promise<number[] | string[] | number[][] | string[][]>;
     insertValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }): Promise<number[] | string[]>;
+    }): Promise<number[] | string[] | number[][] | string[][]>;
     delete<E>(dbEntity: DbEntity, entity: E): Promise<number>;
     deleteWhere<IQE extends IQEntity>(dbEntity: DbEntity, rawDelete: RawDelete<IQE> | {
         (...args: any[]): RawDelete<IQE>;

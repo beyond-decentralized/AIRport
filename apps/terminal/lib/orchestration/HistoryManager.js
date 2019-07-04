@@ -8,11 +8,13 @@ class HistoryManager {
     // private operHistoryDuo: Promise<IOperationHistoryDuo>
     // private recHistoryDuo: Promise<IRecordHistoryDuo>
     // private repoTransHistoryDuo: Promise<IRepositoryTransactionHistoryDuo>
-    getNewTransHistory(transactionType = ground_control_1.TransactionType.LOCAL) {
-        return di_1.DI.get(holding_pattern_1.TRANS_HISTORY_DUO).then(transHistoryDuo => transHistoryDuo.getNewRecord(transactionType));
+    async getNewTransHistory(transactionType = ground_control_1.TransactionType.LOCAL) {
+        const transHistoryDuo = await di_1.DI.get(holding_pattern_1.TRANS_HISTORY_DUO);
+        return await transHistoryDuo.getNewRecord(transactionType);
     }
     async getNewRepoTransHistory(transactionHistory, repository, actor) {
-        return di_1.DI.get(holding_pattern_1.REPO_TRANS_HISTORY_DUO, holding_pattern_1.TRANS_HISTORY_DUO).then(([repoTransHistoryDuo, transHistoryDuo]) => transHistoryDuo.getRepositoryTransaction(transactionHistory, repository, actor, repoTransHistoryDuo));
+        const [repoTransHistoryDuo, transHistoryDuo] = await di_1.DI.get(holding_pattern_1.REPO_TRANS_HISTORY_DUO, holding_pattern_1.TRANS_HISTORY_DUO);
+        return await transHistoryDuo.getRepositoryTransaction(transactionHistory, repository, actor, repoTransHistoryDuo);
     }
 }
 exports.HistoryManager = HistoryManager;

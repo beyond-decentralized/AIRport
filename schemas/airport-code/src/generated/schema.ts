@@ -218,12 +218,11 @@ export const SCHEMA = {
 				{
 					"columns": [
 						{
-							"allocationSize": 1000,
 							"index": 0,
-							"isGenerated": true,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "ID",
-							"notNull": false,
+							"name": "RESERVATION_MILLIS",
+							"notNull": true,
 							"propertyRefs": [
 								{
 									"index": 0
@@ -263,20 +262,6 @@ export const SCHEMA = {
 						{
 							"index": 3,
 							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "RESERVATION_MILLIS",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 4
-								}
-							],
-							"sinceVersion": 1,
-							"type": 4
-						},
-						{
-							"index": 4,
-							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
@@ -297,7 +282,7 @@ export const SCHEMA = {
 							"type": 4
 						},
 						{
-							"index": 5,
+							"index": 4,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -319,7 +304,7 @@ export const SCHEMA = {
 							"type": 4
 						},
 						{
-							"index": 6,
+							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -344,6 +329,15 @@ export const SCHEMA = {
 					"idColumnRefs": [
 						{
 							"index": 0
+						},
+						{
+							"index": 3
+						},
+						{
+							"index": 4
+						},
+						{
+							"index": 5
 						}
 					],
 					"index": 2,
@@ -357,12 +351,12 @@ export const SCHEMA = {
 							},
 							"index": 0,
 							"isId": true,
-							"name": "id",
+							"name": "reservationMillis",
 							"sinceVersion": 1
 						},
 						{
 							"index": 1,
-							"isId": false,
+							"isId": true,
 							"name": "sequence",
 							"relationRef": {
 								"index": 0
@@ -386,21 +380,12 @@ export const SCHEMA = {
 							"isId": false,
 							"name": "lastReservedId",
 							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 3
-							},
-							"index": 4,
-							"isId": false,
-							"name": "reservationMillis",
-							"sinceVersion": 1
 						}
 					],
 					"relations": [
 						{
 							"index": 0,
-							"isId": false,
+							"isId": true,
 							"relationType": 1,
 							"propertyRef": {
 								"index": 1

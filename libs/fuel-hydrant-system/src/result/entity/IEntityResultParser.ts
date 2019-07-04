@@ -130,9 +130,11 @@ export function getObjectResultParser(
 ): IEntityResultParser {
 	switch (queryResultType) {
 		case QueryResultType.ENTITY_GRAPH:
+		case QueryResultType.MAPPED_ENTITY_GRAPH:
 			let EntityGraphResultParserClass: typeof EntityGraphResultParser = require('./EntityGraphResultParser').EntityGraphResultParser
 			return new EntityGraphResultParserClass(config, rootDbEntity)
 		case QueryResultType.ENTITY_TREE:
+		case QueryResultType.MAPPED_ENTITY_TREE:
 			let EntityTreeResultParserClass: typeof EntityTreeResultParser = require('./EntityTreeResultParser').EntityTreeResultParser
 			return new EntityTreeResultParserClass()
 		default:

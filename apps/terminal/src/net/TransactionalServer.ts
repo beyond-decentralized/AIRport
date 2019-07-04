@@ -1,31 +1,26 @@
-import {DI}              from '@airport/di'
+import {DI}          from '@airport/di'
 import {
 	JsonInsertValues,
 	PortableQuery
-}                        from '@airport/ground-control'
-import {IActor}          from '@airport/holding-pattern'
-import {IObservable}     from '@airport/observe'
+}                    from '@airport/ground-control'
+import {IActor}      from '@airport/holding-pattern'
+import {IObservable} from '@airport/observe'
 import {
 	DistributionStrategy,
 	ICredentials,
-	ITransactionManager,
 	PlatformType,
 	TRANSACTION_MANAGER
-}                        from '@airport/terminal-map'
+}                    from '@airport/terminal-map'
 import {
 	ITransactionalServer,
 	TRANS_SERVER
-}                        from '@airport/tower'
+}                    from '@airport/tower'
 import {
 	DELETE_MANAGER,
 	INSERT_MANAGER,
 	QUERY_MANAGER,
 	UPDATE_MANAGER
-}                        from '../diTokens'
-import {IDeleteManager}  from '../orchestration/DeleteManager'
-import {IInsertManager,} from '../orchestration/InsertManager'
-import {IQueryManager}   from '../orchestration/QueryManager'
-import {IUpdateManager}  from '../orchestration/UpdateManager'
+}                    from '../diTokens'
 
 export interface InternalPortableQuery
 	extends PortableQuery {
@@ -61,32 +56,29 @@ export class TransactionalServer
 
 	tempActor: IActor
 
-	init(): Promise<void> {
-		return DI.get(TRANSACTION_MANAGER).then(
-			transManager =>
-				transManager.init('airport')
-		)
+	async init(): Promise<void> {
+		const transManager = await DI.get(TRANSACTION_MANAGER)
+
+		return await transManager.init('airport')
 	}
 
-	transact(
+	async transact(
 		credentials: ICredentials
 	): Promise<void> {
-		return DI.get(TRANSACTION_MANAGER).then(
-			transManager =>
-				transManager.transact(credentials)
-		)
+		const transManager = await DI.get(TRANSACTION_MANAGER)
+
+		return await transManager.transact(credentials)
 		// this.lastTransactionIndex++
 		// await this.transactionManager.transact(credentials)
 		// this.currentTransactionIndex = this.lastTransactionIndex
 	}
 
-	rollback(
+	async rollback(
 		credentials: ICredentials
 	): Promise<void> {
-		return DI.get(TRANSACTION_MANAGER).then(
-			transManager =>
-				transManager.rollback(credentials)
-		)
+		const transManager = await DI.get(TRANSACTION_MANAGER)
+
+		return await transManager.rollback(credentials)
 		// await this.transactionManager.rollback(credentials)
 		// this.currentTransactionIndex = null
 	}
@@ -94,23 +86,21 @@ export class TransactionalServer
 	async commit(
 		credentials: ICredentials
 	): Promise<void> {
-		return DI.get(TRANSACTION_MANAGER).then(
-			transManager =>
-				transManager.commit(credentials)
-		)
+		const transManager = await DI.get(TRANSACTION_MANAGER)
+
+		return await transManager.commit(credentials)
 		// await this.transactionManager.commit(credentials)
 		// this.currentTransactionIndex = null
 	}
 
-	find<E, EntityArray extends Array<E>>(
+	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		return DI.get(QUERY_MANAGER).then(
-			queryManager =>
-				queryManager.find<E, EntityArray>(portableQuery, cachedSqlQueryId)
-		)
+		const queryManager = await DI.get(QUERY_MANAGER)
+
+		return await queryManager.find<E, EntityArray>(portableQuery, cachedSqlQueryId)
 	}
 
 	async findOne<E>(
@@ -118,35 +108,32 @@ export class TransactionalServer
 		credentials: ICredentials,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		return DI.get(QUERY_MANAGER).then(
-			queryManager =>
-				queryManager.findOne<E>(portableQuery, cachedSqlQueryId)
-		)
+		const queryManager = await DI.get(QUERY_MANAGER)
+
+		return await queryManager.findOne<E>(portableQuery, cachedSqlQueryId)
 	}
 
-	search<E, EntityArray extends Array<E>>(
+	async search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<EntityArray>> {
-		return DI.get(QUERY_MANAGER).then(
-			queryManager =>
-				queryManager.search<E, EntityArray>(portableQuery)
-		)
+		const queryManager = await DI.get(QUERY_MANAGER)
+
+		return await queryManager.search<E, EntityArray>(portableQuery)
 	}
 
-	searchOne<E>(
+	async searchOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<E>> {
-		return DI.get(QUERY_MANAGER).then(
-			queryManager =>
-				queryManager.searchOne<E>(portableQuery)
-		)
+		const queryManager = await DI.get(QUERY_MANAGER)
+
+		return await queryManager.searchOne<E>(portableQuery)
 	}
 
-	addRepository(
+	async addRepository(
 		name: string,
 		url: string,
 		platform: PlatformType,
@@ -154,11 +141,10 @@ export class TransactionalServer
 		distributionStrategy: DistributionStrategy,
 		credentials: ICredentials,
 	): Promise<number> {
-		return DI.get(INSERT_MANAGER).then(
-			insertManager =>
-				insertManager.addRepository(name, url, platform,
-					platformConfig, distributionStrategy)
-		)
+		const insertManager = await DI.get(INSERT_MANAGER)
+
+		return await insertManager.addRepository(name, url, platform,
+			platformConfig, distributionStrategy)
 	}
 
 	async insertValues(
@@ -197,11 +183,11 @@ export class TransactionalServer
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		transactionIndex?: number,
-	): Promise<number[] | string[]> {
+	): Promise<number[] | string[] | number[][] | string[][]> {
 		const insertManager = await DI.get(INSERT_MANAGER)
 
 		const actor = await this.getActor(portableQuery)
-		return await this.wrapInTransaction<number[] | string[]>(async () =>
+		return await this.wrapInTransaction<number[] | string[] | number[][] | string[][]>(async () =>
 				await insertManager.insertValuesGetIds(portableQuery, actor)
 			, 'INSERT GET IDS', credentials)
 	}

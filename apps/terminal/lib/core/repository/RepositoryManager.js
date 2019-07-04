@@ -19,8 +19,9 @@ class RepositoryManager {
             await this.addDeltaStore(repository);
         }
     }
-    findReposWithDetailsByIds(...repositoryIds) {
-        return di_1.DI.get(holding_pattern_1.REPOSITORY_DAO).then(repositoryDao => repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail));
+    async findReposWithDetailsByIds(...repositoryIds) {
+        const repositoryDao = await di_1.DI.get(holding_pattern_1.REPOSITORY_DAO);
+        return await repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail);
     }
     async createRepository(appName, distributionStrategy, offlineStoreType, platformType, platformConfig, recordIdField) {
         let repository = await this.createRepositoryRecord(appName, distributionStrategy, platformType, platformConfig);
@@ -55,13 +56,11 @@ class RepositoryManager {
     getDeltaStore(repository) {
         return this.deltaStore[repository.id];
     }
-    ensureRepositoryRecords() {
-        return di_1.DI.get(holding_pattern_1.REPOSITORY_DAO).then(repositoryDao => 
+    async ensureRepositoryRecords() {
+        const repositoryDao = await di_1.DI.get(holding_pattern_1.REPOSITORY_DAO);
         // TODO: verify that we want to get ALL of the repositories
-        repositoryDao.db.find.tree({
+        this.repositories = await repositoryDao.db.find.tree({
             select: {}
-        })).then(repositories => {
-            this.repositories = repositories;
         });
         /*
                         if (!this.repositories.length) {

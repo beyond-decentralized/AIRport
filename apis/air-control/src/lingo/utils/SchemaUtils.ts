@@ -122,11 +122,13 @@ export interface ISchemaUtils {
 		forIdKey?: boolean,
 	): [string[][], any];
 
+/*
 	addRelationToEntitySelectClause(
 		dbRelation: DbRelation,
 		selectClause: any,
 		allowDefaults?: boolean
 	): void;
+ */
 
 	forEachColumnOfRelation(
 		dbRelation: DbRelation,

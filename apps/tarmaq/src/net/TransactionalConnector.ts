@@ -21,180 +21,168 @@ export class TransactionalConnector
 		await transServer.init()
 	}
 
-	addRepository(
+	async addRepository(
 		name: string,
 		url: string,
 		platform: PlatformType,
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy
 	): Promise<number> {
-		return DI.get(TRANS_SERVER).then(
-			transServer =>
-				transServer.addRepository(
-					name,
-					url,
-					platform,
-					platformConfig,
-					distributionStrategy, {
-						domainAndPort: 'test'
-					})
-		)
+		const transServer = await DI.get(TRANS_SERVER)
+
+		return await transServer.addRepository(
+			name,
+			url,
+			platform,
+			platformConfig,
+			distributionStrategy, {
+				domainAndPort: 'test'
+			})
 	}
 
-	transact(): Promise<void> {
-		return DI.get(TRANS_SERVER).then(
-			transServer =>
-				transServer.transact({
-					domainAndPort: 'test'
-				})
-		)
+	async transact(): Promise<void> {
+		const transServer = await DI.get(TRANS_SERVER)
+
+		return await transServer.transact({
+			domainAndPort: 'test'
+		})
 	}
 
-	rollback(): Promise<void> {
-		return DI.get(TRANS_SERVER).then(
-			transServer =>
-				transServer.rollback({
-					domainAndPort: 'test'
-				})
-		)
+	async rollback(): Promise<void> {
+		const transServer = await DI.get(TRANS_SERVER)
+
+		return await transServer.rollback({
+			domainAndPort: 'test'
+		})
 	}
 
-	commit(): Promise<void> {
-		return DI.get(TRANS_SERVER).then(
-			transServer =>
-				transServer.commit({
-					domainAndPort: 'test'
-				})
-		)
+	async commit(): Promise<void> {
+		const transServer = await DI.get(TRANS_SERVER)
+
+		return await transServer.commit({
+			domainAndPort: 'test'
+		})
 	}
 
-	find<E, EntityArray extends Array<E>>(
+	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		return DI.get(TRANS_SERVER).then(
-			transServer =>
-				transServer.find(
-					portableQuery,
-					{
-						domainAndPort: 'test'
-					},
-					cachedSqlQueryId
-				)
+		const transServer = await DI.get(TRANS_SERVER)
+
+		return await transServer.find(
+			portableQuery,
+			{
+				domainAndPort: 'test'
+			},
+			cachedSqlQueryId
 		)
 	}
 
-	findOne<E>(
+	async findOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		return DI.get(TRANS_SERVER).then(
-			transServer =>
-				transServer.findOne(
-					portableQuery,
-					{
-						domainAndPort: 'test'
-					},
-					cachedSqlQueryId
-				)
+		const transServer = await DI.get(TRANS_SERVER)
+
+		return await transServer.findOne(
+			portableQuery,
+			{
+				domainAndPort: 'test'
+			},
+			cachedSqlQueryId
 		)
 	}
 
-	search<E, EntityArray extends Array<E>>(
+	async search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<EntityArray>> {
-		return DI.get(TRANS_SERVER).then(
-			transServer =>
-				transServer.search(
-					portableQuery,
-					{
-						domainAndPort: 'test'
-					},
-					cachedSqlQueryId
-				)
+		const transServer = await DI.get(TRANS_SERVER)
+
+		return await transServer.search(
+			portableQuery,
+			{
+				domainAndPort: 'test'
+			},
+			cachedSqlQueryId
 		)
 	}
 
-	searchOne<E>(
+	async searchOne<E>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<E>> {
-		return DI.get(TRANS_SERVER).then(
-			transServer =>
-				transServer.searchOne(
-					portableQuery,
-					{
-						domainAndPort: 'test'
-					},
-					cachedSqlQueryId
-				)
+		const transServer = await DI.get(TRANS_SERVER)
+
+		return await transServer.searchOne(
+			portableQuery,
+			{
+				domainAndPort: 'test'
+			},
+			cachedSqlQueryId
 		)
 	}
 
-	insertValues(
+	async insertValues(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number> {
-		return DI.get(TRANS_SERVER).then(
-			transServer =>
-				transServer.insertValues(
-					portableQuery,
-					{
-						domainAndPort: 'test'
-					},
-					transactionIndex,
-					ensureGeneratedValues
-				)
+		const transServer = await DI.get(TRANS_SERVER)
+
+		return await transServer.insertValues(
+			portableQuery,
+			{
+				domainAndPort: 'test'
+			},
+			transactionIndex,
+			ensureGeneratedValues
 		)
 	}
 
-	insertValuesGetIds(
+	async insertValuesGetIds(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
-	): Promise<number[] | string[]> {
-		return DI.get(TRANS_SERVER).then(
-			transServer =>
-				transServer.insertValuesGetIds(
-					portableQuery,
-					{
-						domainAndPort: 'test'
-					},
-					transactionIndex
-				)
+	): Promise<number[] | string[] | number[][] | string[][]> {
+		const transServer = await DI.get(TRANS_SERVER)
+
+		return await transServer.insertValuesGetIds(
+			portableQuery,
+			{
+				domainAndPort: 'test'
+			},
+			transactionIndex
 		)
 	}
 
-	updateValues(
-		portableQuery: PortableQuery,
-		transactionIndex?: number,
-	): Promise<number> {
-		return DI.get(TRANS_SERVER).then(
-			transServer =>
-				transServer.updateValues(
-					portableQuery,
-					{
-						domainAndPort: 'test'
-					},
-					transactionIndex
-				)
-		)
-	}
-
-	deleteWhere(
+	async updateValues(
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
 	): Promise<number> {
-		return DI.get(TRANS_SERVER).then(
-			transServer =>
-				transServer.updateValues(
-					portableQuery,
-					{
-						domainAndPort: 'test'
-					},
-					transactionIndex
-				)
+		const transServer = await DI.get(TRANS_SERVER)
+
+		return await transServer.updateValues(
+			portableQuery,
+			{
+				domainAndPort: 'test'
+			},
+			transactionIndex
+		)
+	}
+
+	async deleteWhere(
+		portableQuery: PortableQuery,
+		transactionIndex?: number,
+	): Promise<number> {
+		const transServer = await DI.get(TRANS_SERVER)
+
+		return await transServer.updateValues(
+			portableQuery,
+			{
+				domainAndPort: 'test'
+			},
+			transactionIndex
 		)
 	}
 

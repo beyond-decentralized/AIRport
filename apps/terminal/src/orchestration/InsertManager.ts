@@ -53,7 +53,7 @@ export interface IInsertManager {
 	insertValuesGetIds(
 		portableQuery: PortableQuery,
 		actor: IActor,
-	): Promise<RecordId[]>;
+	): Promise<RecordId[] | RecordId[][]>;
 
 	addRepository(
 		name: string,
@@ -84,8 +84,8 @@ export class InsertManager
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
 		actor: IActor
-	): Promise<RecordId[]> {
-		return <RecordId[]>await this.internalInsertValues(
+	): Promise<RecordId[] | RecordId[][]> {
+		return <RecordId[] | RecordId[][]>await this.internalInsertValues(
 			portableQuery, actor, true)
 	}
 
@@ -94,7 +94,7 @@ export class InsertManager
 		actor: IActor,
 		getIds: boolean                = false,
 		ensureGeneratedValues: boolean = true
-	): Promise<number | RecordId[]> {
+	): Promise<number | RecordId[] | RecordId[][]> {
 		// TODO: remove unused dependencies after testing
 		const [
 			      airDb,
@@ -116,6 +116,20 @@ export class InsertManager
 
 		const dbEntity = airDb.schemas[portableQuery.schemaIndex]
 			.currentVersion.entities[portableQuery.tableIndex]
+
+		const jsonInsertValues = portableQuery.jsonQuery as JsonInsertValues
+
+		const columnIndexSet = {}
+		for (const columnIndex of jsonInsertValues.C) {
+			if (columnIndex < 0 || columnIndex >= dbEntity.columns.length) {
+				throw new Error(`Invalid column index: ${columnIndex}`)
+			}
+			if (columnIndexSet[columnIndex]) {
+				throw new Error(`Column ${dbEntity.name}.${dbEntity.columns[columnIndex].name} 
+				appears more than once in the Columns clause`)
+			}
+			columnIndexSet[columnIndex] = true
+		}
 
 		if (dbEntity.isRepositoryEntity) {
 			this.ensureRepositoryEntityIdValues(actor, dbEntity,
@@ -141,42 +155,63 @@ export class InsertManager
 		return getIds ? ids : numberOfInsertedRecords
 	}
 
-	addRepository(
+	async addRepository(
 		name: string,
 		url: string                                = null,
 		platform: PlatformType                     = PlatformType.GOOGLE_DOCS,
 		platformConfig: string                     = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
 	): Promise<number> {
-		return DI.get(REPOSITORY_MANAGER, TRANSACTION_MANAGER).then(([
-			                                                             repoManager, transManager
-		                                                             ]) =>
-			repoManager.createRepository(
-				name, distributionStrategy, transManager.storeType,
-				platform, platformConfig, 'id')
-		).then(
-			repository => repository.id)
+		const [repoManager, transManager] = await DI.get(
+			REPOSITORY_MANAGER, TRANSACTION_MANAGER)
+
+		const repository = await repoManager.createRepository(
+			name, distributionStrategy, transManager.storeType,
+			platform, platformConfig, 'id')
+
+		return repository.id
 	}
 
 	private async ensureGeneratedValues(
 		dbEntity: DbEntity,
 		jsonInsertValues: JsonInsertValues,
 		seqGenerator: ISequenceGenerator
-	): Promise<number[]> {
-		let ids: number[] = null
-
+	): Promise<RecordId[] | RecordId[][]> {
 		const values    = jsonInsertValues.V
 		const idColumns = dbEntity.idColumns
+
+		const allIds: RecordId[][] = []
+		for (const entityValues of values) {
+			allIds.push([])
+		}
 
 		for (const idColumn of idColumns) {
 			if (idColumn.isGenerated) {
 				continue
 			}
-			for (const entityValues of values) {
-				let idValue = entityValues[idColumn.index]
+
+			const matchingColumns = jsonInsertValues.C.map((
+				columnIndex,
+				index
+			) => [columnIndex, index]).filter(
+				([columnIndex, index]) => columnIndex === idColumn.index)
+			if (matchingColumns.length < 1) {
+				throw new Error(`Could not find @Id column ${dbEntity.name}.${idColumn.name} in
+					the insert statement.  Non-generated @Id columns must be present in the Insert
+					statement.`)
+			}
+
+			const insertIdColumnIndex = matchingColumns[0]
+			const columnIndex         = idColumn.index
+
+			for (let i = 0; i < values.length; i++) {
+				const entityValues = values[i]
+				const idValues     = allIds[i]
+				let idValue        = entityValues[insertIdColumnIndex[1]]
 				if (!idValue && idValue !== 0) {
 					throw `No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`
 				}
+				idValues[columnIndex] = idValue
 			}
 		}
 
@@ -187,7 +222,7 @@ export class InsertManager
 		// 		const repositoryId = entityValues[repositoryIdIndex]
 		// 		if (!repositoryId && repositoryId !== 0) {
 		// 			throw `@Column({ name: 'REPOSITORY_ID'}) value is not specified on insert for
-		// 			'${dbEntity.name}.${repositoryColumn.name}'.`
+		// 			'${dbEntity0.name}.${repositoryColumn.name}'.`
 		// 		}
 		// 	}
 		// }
@@ -195,18 +230,23 @@ export class InsertManager
 		const generatedColumns = dbEntity.columns.filter(
 			dbColumn => dbColumn.isGenerated
 		)
-		if (!generatedColumns.length) {
-			if (idColumns.length === 1) {
-				const idColumn = idColumns[0]
-				ids            = values.map(
-					entityValues => entityValues[idColumn.index])
-			}
-			return ids
-		}
 
-		for (const entityValues of values) {
-			generatedColumns.forEach((generatedColumn) => {
-				const generatedValue = entityValues[generatedColumn.index]
+		const generatedColumnIndexes: number[] = []
+		let numAddedColumns                    = 0
+		for (const generatedColumn of generatedColumns) {
+			const matchingColumns = jsonInsertValues.C.filter(
+				columnIndex => columnIndex === generatedColumn.index)
+			if (!matchingColumns.length) {
+				// TODO: verify that it is OK to mutate the JsonInsertValues query
+				jsonInsertValues.C.push(generatedColumn.index)
+				generatedColumnIndexes.push(jsonInsertValues.C.length + numAddedColumns)
+				numAddedColumns++
+				continue
+			}
+			const generatedIdColumnIndex = matchingColumns[0]
+			generatedColumnIndexes.push(generatedIdColumnIndex)
+			for (const entityValues of values) {
+				const generatedValue = entityValues[generatedIdColumnIndex]
 				if (generatedValue || generatedValue === 0) {
 					// Allowing negative integers for temporary identification
 					// within the circular dependency management lookup
@@ -216,7 +256,7 @@ export class InsertManager
 					You cannot explicitly provide values for @GeneratedValue columns'.`
 					}
 				}
-			})
+			}
 		}
 
 		const numSequencesNeeded      = generatedColumns.map(
@@ -229,20 +269,44 @@ export class InsertManager
 			generatedColumnIndex
 		) => {
 			const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex]
+			const insertColumnIndex             = generatedColumnIndexes[generatedColumnIndex]
+			const columnIndex                   = dbColumn.index
 			values.forEach((
 				entityValues,
 				index
 			) => {
-				entityValues[dbColumn.index] = generatedColumnSequenceValues[index]
+				const generatedValue            = generatedColumnSequenceValues[index]
+				entityValues[insertColumnIndex] = generatedValue
+				allIds[index][columnIndex]      = generatedValue
 			})
-
-			if (dbEntity.idColumnMap[dbColumn.name]) {
-				ids = values.map(
-					entityValues => entityValues[dbColumn.index])
-			}
 		})
 
-		return ids
+		if (!idColumns.length && !generatedColumns.length) {
+			return values.length as any
+		}
+
+		switch (idColumns.length) {
+			case 0: {
+				if (generatedColumns.length == 1) {
+					const columnIndex = generatedColumns[0].index
+					return allIds.map(
+						rowIds => rowIds[columnIndex])
+				}
+				break
+			}
+			case 1: {
+				if (!generatedColumns.length
+					|| (generatedColumns.length === 1
+						&& idColumns[0].index === generatedColumns[0].index)) {
+					const columnIndex = idColumns[0].index
+					return allIds.map(
+						rowIds => rowIds[columnIndex])
+				}
+				break
+			}
+		}
+
+		return allIds
 	}
 
 	private ensureRepositoryEntityIdValues(

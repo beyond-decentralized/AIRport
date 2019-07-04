@@ -1,8 +1,8 @@
-import { DbColumn } from '@airport/ground-control';
-import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
-import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
+import { DbColumn, DbEntity } from '@airport/ground-control';
 import { IQEntity } from '../../../lingo/core/entity/Entity';
 import { AbstractRawInsertValues } from '../../../lingo/query/facade/InsertValues';
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { AbstractQuery } from './AbstractQuery';
 /**
  * Created by Papa on 11/17/2016.
@@ -11,5 +11,6 @@ export declare abstract class AbstractInsertValues<IQE extends IQEntity, ARIV ex
     rawInsertValues: ARIV;
     columnIndexes?: number[];
     constructor(rawInsertValues: ARIV, columnIndexes?: number[]);
+    protected validateColumn(dbColumn: DbColumn, dbEntity: DbEntity, columnName?: string): void;
     protected valuesToJSON(valueSets: any[][], dbColumns: DbColumn[], queryUtils: IQueryUtils, fieldUtils: IFieldUtils): any[][];
 }

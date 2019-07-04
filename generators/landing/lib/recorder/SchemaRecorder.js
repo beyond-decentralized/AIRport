@@ -83,7 +83,7 @@ class SchemaRecorder {
         await this.bulkCreate(airDb, schemaRelationColumnDao, ddlObjects.relationColumns);
     }
     async bulkCreate(airDb, dao, entities) {
-        await airDb.bulkCreate(dao.db.dbEntity, entities, ground_control_1.CascadeOverwrite.NEVER, false, false);
+        await airDb.bulkCreate(dao.db.dbEntity, entities, false, ground_control_1.CascadeOverwrite.NEVER, false);
     }
 }
 exports.SchemaRecorder = SchemaRecorder;

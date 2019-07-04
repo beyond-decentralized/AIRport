@@ -13,7 +13,7 @@ export declare class TransactionalConnector implements ITransactionalConnector {
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<IObservable<EntityArray>>;
     searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<IObservable<E>>;
     insertValues(portableQuery: PortableQuery, transactionIndex?: number, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, transactionIndex?: number): Promise<number[] | string[]>;
+    insertValuesGetIds(portableQuery: PortableQuery, transactionIndex?: number): Promise<number[] | string[] | number[][] | string[][]>;
     updateValues(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
 }

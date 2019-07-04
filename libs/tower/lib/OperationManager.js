@@ -123,36 +123,26 @@ class OperationManager {
         }
         let numberOfAffectedRecords = 0;
         if (rawInsert.values.length) {
-            const generatedProperty = this.getGeneratedProperty(dbEntity);
-            if (generatedProperty && ensureGeneratedValues) {
-                const generatedIds = await this.internalInsertValuesGetIds(dbEntity, rawInsert, fieldUtils, queryFacade, queryUtils, transConnector);
+            const generatedColumns = dbEntity.columns.filter(column => column.isGenerated);
+            if (generatedColumns.length && ensureGeneratedValues) {
+                const idsAndGeneratedValues = await this.internalInsertValuesGetIds(dbEntity, rawInsert, fieldUtils, queryFacade, queryUtils, transConnector);
                 for (let i = 0; i < entities.length; i++) {
-                    const entity = entities[i];
-                    entity[generatedProperty.name] = generatedIds[i];
-                    numberOfAffectedRecords = generatedIds.length;
+                    for (const generatedColumn of generatedColumns) {
+                        // Return index for generated column values is: DbColumn.index
+                        entities[i][generatedColumn.propertyColumns[0].property.name]
+                            = idsAndGeneratedValues[i][generatedColumn.index];
+                    }
                 }
+                numberOfAffectedRecords = idsAndGeneratedValues.length;
             }
             else {
                 numberOfAffectedRecords = await this.internalInsertValues(dbEntity, rawInsert, queryUtils, fieldUtils, ensureGeneratedValues);
             }
         }
         return {
-            cascadeRecords: cascadeRecords,
-            numberOfAffectedRecords: numberOfAffectedRecords,
+            cascadeRecords,
+            numberOfAffectedRecords,
         };
-    }
-    getGeneratedProperty(dbEntity) {
-        const generatedColumns = dbEntity.idColumns.filter(dbColumn => dbColumn.isGenerated);
-        switch (generatedColumns.length) {
-            case 0:
-                return null;
-            case 1:
-                return generatedColumns[0].propertyColumns[0].property;
-            default:
-                throw `Multiple @GeneratedValue() columns are not supported,
-				entity: ${dbEntity.schemaVersion.schema.name}.${dbEntity.name}
-				(schema version: ${dbEntity.schemaVersion.versionString}`;
-        }
     }
     /*
      Values for the same column could be repeated in different places in the object graph.
@@ -222,7 +212,8 @@ class OperationManager {
         return await transConnector.insertValuesGetIds(portableQuery);
     }
     async cascadeOnPersist(cascadeRecords, parentDbEntity, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT) {
-        if (!cascadeRecords.length) {
+        if (!cascadeRecords.length
+            || cascadeOverwrite === ground_control_1.CascadeOverwrite.NEVER) {
             return;
         }
         for (const cascadeRecord of cascadeRecords) {
@@ -241,22 +232,24 @@ class OperationManager {
             const entitiesWithIdMap = {};
             const entitiesWithoutIds = [];
             const dbEntity = cascadeRecord.relation.relationEntity;
-            for (const manyEntity of cascadeRecord.manyEntities) {
-                const [isProcessed, entityIdData] = this.isProcessed(manyEntity, alreadyModifiedEntityMap, dbEntity, schemaUtils);
-                if (isProcessed === true) {
-                    return;
-                }
-                const record = {
-                    newValue: manyEntity,
-                    originalValue: null,
-                    idData: entityIdData
-                };
-                if (entityIdData.idKey) {
-                    entitiesWithIds.push(record);
-                    entitiesWithIdMap[entityIdData.idKey] = record;
-                }
-                else {
-                    entitiesWithoutIds.push(record);
+            if (cascadeRecord.manyEntities) {
+                for (const manyEntity of cascadeRecord.manyEntities) {
+                    const [isProcessed, entityIdData] = this.isProcessed(manyEntity, alreadyModifiedEntityMap, dbEntity, schemaUtils);
+                    if (isProcessed === true) {
+                        return;
+                    }
+                    const record = {
+                        newValue: manyEntity,
+                        originalValue: null,
+                        idData: entityIdData
+                    };
+                    if (entityIdData.idKey) {
+                        entitiesWithIds.push(record);
+                        entitiesWithIdMap[entityIdData.idKey] = record;
+                    }
+                    else {
+                        entitiesWithoutIds.push(record);
+                    }
                 }
             }
             if (entitiesWithIds.length) {
@@ -317,7 +310,7 @@ class OperationManager {
                 currentQObject = currentQObject[propertyName];
             }
             if (entitiesToUpdate.length > 1) {
-                idsWhereClause = currentQObject.in(...idsWhereClauseFragments);
+                idsWhereClause = currentQObject.in(idsWhereClauseFragments);
             }
             else {
                 idsWhereClause = currentQObject.equals(idsWhereClauseFragments[0]);

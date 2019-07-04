@@ -142,9 +142,9 @@ export abstract class OperationManager
 		schemaUtils: ISchemaUtils,
 		transConnector: ITransactionalConnector,
 		updateCache: IUpdateCache,
-		checkIfProcessed: boolean      = true,
+		checkIfProcessed: boolean          = true,
 		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT,
-		ensureGeneratedValues: boolean = true // For internal use only
+		ensureGeneratedValues: boolean     = true // For internal use only
 	): Promise<number> {
 		let result = await this.internalCreate(dbEntity, entities,
 			createdEntityMap, checkIfProcessed,
@@ -224,11 +224,11 @@ export abstract class OperationManager
 							continue
 						case EntityRelationType.ONE_TO_MANY:
 							this.assertOneToManyIsArray(newValue)
-							switch(cascadeOverwrite) {
+							switch (cascadeOverwrite) {
 								case CascadeOverwrite.NEVER:
 									continue
 								case CascadeOverwrite.DEFAULT:
-									if(!schemaUtils.doCascade(dbRelation, CRUDOperation.CREATE)) {
+									if (!schemaUtils.doCascade(dbRelation, CRUDOperation.CREATE)) {
 										continue
 									}
 									break
@@ -270,44 +270,30 @@ export abstract class OperationManager
 
 
 		if (rawInsert.values.length) {
-			const generatedProperty = this.getGeneratedProperty(dbEntity)
-			if (generatedProperty && ensureGeneratedValues) {
-				const generatedIds = await this.internalInsertValuesGetIds(
+			const generatedColumns = dbEntity.columns.filter(
+				column => column.isGenerated)
+			if (generatedColumns.length && ensureGeneratedValues) {
+				const idsAndGeneratedValues = await this.internalInsertValuesGetIds(
 					dbEntity, rawInsert, fieldUtils, queryFacade, queryUtils,
 					transConnector)
 				for (let i = 0; i < entities.length; i++) {
-					const entity                   = entities[i]
-					entity[generatedProperty.name] = generatedIds[i]
-					numberOfAffectedRecords        = generatedIds.length
+					for (const generatedColumn of generatedColumns) {
+						// Return index for generated column values is: DbColumn.index
+						entities[i][generatedColumn.propertyColumns[0].property.name]
+							= idsAndGeneratedValues[i][generatedColumn.index]
+					}
 				}
+				numberOfAffectedRecords = idsAndGeneratedValues.length
 			} else {
 				numberOfAffectedRecords = await
 					this.internalInsertValues(
-						dbEntity, rawInsert, queryUtils, fieldUtils, ensureGeneratedValues,)
+						dbEntity, rawInsert, queryUtils, fieldUtils, ensureGeneratedValues)
 			}
 		}
 
 		return {
-			cascadeRecords: cascadeRecords,
-			numberOfAffectedRecords: numberOfAffectedRecords,
-		}
-	}
-
-	private getGeneratedProperty(
-		dbEntity: DbEntity
-	): DbProperty | null {
-		const generatedColumns = dbEntity.idColumns.filter(
-			dbColumn => dbColumn.isGenerated
-		)
-		switch (generatedColumns.length) {
-			case 0:
-				return null
-			case 1:
-				return generatedColumns[0].propertyColumns[0].property
-			default:
-				throw `Multiple @GeneratedValue() columns are not supported,
-				entity: ${dbEntity.schemaVersion.schema.name}.${dbEntity.name}
-				(schema version: ${dbEntity.schemaVersion.versionString}`
+			cascadeRecords,
+			numberOfAffectedRecords,
 		}
 	}
 
@@ -375,7 +361,7 @@ export abstract class OperationManager
 		rawInsertColumnValues: RawInsertColumnValues<IQE>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
-	): Promise<number[] | string[]> {
+	): Promise<number[] | string[] | number[][] | string[][]> {
 		const [transConnector, queryFacade] = await DI.get(TRANS_CONNECTOR, QUERY_FACADE)
 
 		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
@@ -441,7 +427,7 @@ export abstract class OperationManager
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
 		transConnector: ITransactionalConnector
-	): Promise<number[] | string[]> {
+	): Promise<number[] | string[] | number[][] | string[][]> {
 
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 
@@ -465,7 +451,8 @@ export abstract class OperationManager
 		updateCache: IUpdateCache,
 		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT
 	): Promise<void> {
-		if (!cascadeRecords.length) {
+		if (!cascadeRecords.length
+			|| cascadeOverwrite === CascadeOverwrite.NEVER) {
 			return
 		}
 		for (const cascadeRecord of cascadeRecords) {
@@ -485,22 +472,24 @@ export abstract class OperationManager
 			const entitiesWithIdMap: { [idKey: string]: UpdateRecord } = {}
 			const entitiesWithoutIds: any[]                            = []
 			const dbEntity                                             = cascadeRecord.relation.relationEntity
-			for (const manyEntity of cascadeRecord.manyEntities) {
-				const [isProcessed, entityIdData] = this.isProcessed(manyEntity,
-					alreadyModifiedEntityMap, dbEntity, schemaUtils)
-				if (isProcessed === true) {
-					return
-				}
-				const record: UpdateRecord = {
-					newValue: manyEntity,
-					originalValue: null,
-					idData: entityIdData
-				}
-				if (entityIdData.idKey) {
-					entitiesWithIds.push(record)
-					entitiesWithIdMap[entityIdData.idKey] = record
-				} else {
-					entitiesWithoutIds.push(record)
+			if (cascadeRecord.manyEntities) {
+				for (const manyEntity of cascadeRecord.manyEntities) {
+					const [isProcessed, entityIdData] = this.isProcessed(manyEntity,
+						alreadyModifiedEntityMap, dbEntity, schemaUtils)
+					if (isProcessed === true) {
+						return
+					}
+					const record: UpdateRecord = {
+						newValue: manyEntity,
+						originalValue: null,
+						idData: entityIdData
+					}
+					if (entityIdData.idKey) {
+						entitiesWithIds.push(record)
+						entitiesWithIdMap[entityIdData.idKey] = record
+					} else {
+						entitiesWithoutIds.push(record)
+					}
 				}
 			}
 			if (entitiesWithIds.length) {
@@ -600,7 +589,7 @@ export abstract class OperationManager
 				currentQObject = currentQObject[propertyName]
 			}
 			if (entitiesToUpdate.length > 1) {
-				idsWhereClause = currentQObject.in(...idsWhereClauseFragments)
+				idsWhereClause = currentQObject.in(idsWhereClauseFragments)
 			} else {
 				idsWhereClause = currentQObject.equals(idsWhereClauseFragments[0])
 			}
@@ -689,11 +678,11 @@ export abstract class OperationManager
 					continue
 				case EntityRelationType.ONE_TO_MANY:
 					this.assertOneToManyIsArray(updatedValue)
-					switch(cascadeOverwrite) {
+					switch (cascadeOverwrite) {
 						case CascadeOverwrite.NEVER:
 							continue
 						case CascadeOverwrite.DEFAULT:
-							if(!schemaUtils.doCascade(dbRelation, CRUDOperation.UPDATE)) {
+							if (!schemaUtils.doCascade(dbRelation, CRUDOperation.UPDATE)) {
 								continue
 							}
 							break

@@ -23,7 +23,8 @@ class IdGenerator {
         this.transactionHistoryIdColumns.push(recordHistoryDbEntity.idColumns[0]);
     }
     async generateTransactionHistoryIds(numRepositoryTransHistories, numOperationTransHistories, numRecordHistories) {
-        const generatedSequenceNumbers = await (await di_1.DI.get(check_in_1.SEQUENCE_GENERATOR)).generateSequenceNumbers(this.transactionHistoryIdColumns, [
+        const generatedSequenceNumbers = await (await di_1.DI.get(check_in_1.SEQUENCE_GENERATOR))
+            .generateSequenceNumbers(this.transactionHistoryIdColumns, [
             1,
             numRepositoryTransHistories,
             numOperationTransHistories,

@@ -62,10 +62,10 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
     }): Promise<number>;
     insertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }): Promise<number[] | string[]>;
+    }): Promise<number[] | string[] | number[][] | string[][]>;
     insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }): Promise<number[] | string[]>;
+    }): Promise<number[] | string[] | number[][] | string[][]>;
     /**
      * Creates the provided entity in the db. As part of that attempts to
      * update only the changed fields.

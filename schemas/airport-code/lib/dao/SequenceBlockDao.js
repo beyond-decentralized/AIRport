@@ -6,8 +6,7 @@ const diTokens_1 = require("../diTokens");
 const generated_1 = require("../generated/generated");
 class SequenceBlockDao extends generated_1.BaseSequenceBlockDao {
     async createNewBlocks(sequenceBlocks) {
-        const sb = generated_1.Q.SequenceBlock;
-        const reservationMillis = new Date().getTime();
+        let reservationMillis = new Date().getTime();
         const newLastReservedIds = sequenceBlocks.map((sequenceBlock) => {
             const sb = generated_1.Q.SequenceBlock;
             const selectMaxLastReservedId = {
@@ -23,9 +22,10 @@ class SequenceBlockDao extends generated_1.BaseSequenceBlockDao {
             sequenceBlock.sequence.columnIndex,
             sequenceBlock.size,
             newLastReservedIds[index],
-            reservationMillis
+            reservationMillis++
         ]);
-        const ids = await this.db.insertValuesGenerateIds({
+        let sb = generated_1.Q.SequenceBlock;
+        const allIds = await this.db.insertValuesGenerateIds({
             insertInto: sb,
             columns: [
                 sb.sequence.schemaIndex,
@@ -38,15 +38,28 @@ class SequenceBlockDao extends generated_1.BaseSequenceBlockDao {
             values
         });
         const indexMapById = new Map();
-        ids.forEach((id, index) => {
-            indexMapById.set(id, index);
+        sb = generated_1.Q.SequenceBlock;
+        const sbI = sb;
+        const dbEntity = sb.__driver__.dbEntity;
+        const idDbColumns = dbEntity.idColumns;
+        const whereClauseFragments = [];
+        allIds.forEach((ids, index) => {
+            const entityWhereClauseFragments = [];
+            sbI.__driver__.idColumns.forEach((idQColumn, idColumnIndex) => {
+                if (idDbColumns[idColumnIndex].name === 'reservationMillis') {
+                    indexMapById.set(ids[idColumnIndex], index);
+                }
+                entityWhereClauseFragments.push(idQColumn.equals(ids[idColumnIndex]));
+            });
+            whereClauseFragments.push(air_control_1.and(...entityWhereClauseFragments));
         });
         const newSequenceBlocks = await this.db.find.tree({
             from: [sb],
             select: {},
-            where: sb.id.in(ids)
+            where: air_control_1.or(...whereClauseFragments)
         });
-        return newSequenceBlocks.sort((seqBlock1, seqBlock2) => indexMapById.get(seqBlock1.id) - indexMapById.get(seqBlock2.id)).map(seqBlock => {
+        return newSequenceBlocks.sort((seqBlock1, seqBlock2) => indexMapById.get(seqBlock1.reservationMillis)
+            - indexMapById.get(seqBlock2.reservationMillis)).map(seqBlock => {
             seqBlock.currentNumber = seqBlock.lastReservedId - seqBlock.size;
             return [seqBlock];
         });

@@ -29,39 +29,48 @@ const diTokens_1 = require("../diTokens");
  *
  */
 class TransactionalServer {
-    init() {
-        return di_1.DI.get(terminal_map_1.TRANSACTION_MANAGER).then(transManager => transManager.init('airport'));
+    async init() {
+        const transManager = await di_1.DI.get(terminal_map_1.TRANSACTION_MANAGER);
+        return await transManager.init('airport');
     }
-    transact(credentials) {
-        return di_1.DI.get(terminal_map_1.TRANSACTION_MANAGER).then(transManager => transManager.transact(credentials));
+    async transact(credentials) {
+        const transManager = await di_1.DI.get(terminal_map_1.TRANSACTION_MANAGER);
+        return await transManager.transact(credentials);
         // this.lastTransactionIndex++
         // await this.transactionManager.transact(credentials)
         // this.currentTransactionIndex = this.lastTransactionIndex
     }
-    rollback(credentials) {
-        return di_1.DI.get(terminal_map_1.TRANSACTION_MANAGER).then(transManager => transManager.rollback(credentials));
+    async rollback(credentials) {
+        const transManager = await di_1.DI.get(terminal_map_1.TRANSACTION_MANAGER);
+        return await transManager.rollback(credentials);
         // await this.transactionManager.rollback(credentials)
         // this.currentTransactionIndex = null
     }
     async commit(credentials) {
-        return di_1.DI.get(terminal_map_1.TRANSACTION_MANAGER).then(transManager => transManager.commit(credentials));
+        const transManager = await di_1.DI.get(terminal_map_1.TRANSACTION_MANAGER);
+        return await transManager.commit(credentials);
         // await this.transactionManager.commit(credentials)
         // this.currentTransactionIndex = null
     }
-    find(portableQuery, credentials, cachedSqlQueryId) {
-        return di_1.DI.get(diTokens_1.QUERY_MANAGER).then(queryManager => queryManager.find(portableQuery, cachedSqlQueryId));
+    async find(portableQuery, credentials, cachedSqlQueryId) {
+        const queryManager = await di_1.DI.get(diTokens_1.QUERY_MANAGER);
+        return await queryManager.find(portableQuery, cachedSqlQueryId);
     }
     async findOne(portableQuery, credentials, cachedSqlQueryId) {
-        return di_1.DI.get(diTokens_1.QUERY_MANAGER).then(queryManager => queryManager.findOne(portableQuery, cachedSqlQueryId));
+        const queryManager = await di_1.DI.get(diTokens_1.QUERY_MANAGER);
+        return await queryManager.findOne(portableQuery, cachedSqlQueryId);
     }
-    search(portableQuery, credentials, cachedSqlQueryId) {
-        return di_1.DI.get(diTokens_1.QUERY_MANAGER).then(queryManager => queryManager.search(portableQuery));
+    async search(portableQuery, credentials, cachedSqlQueryId) {
+        const queryManager = await di_1.DI.get(diTokens_1.QUERY_MANAGER);
+        return await queryManager.search(portableQuery);
     }
-    searchOne(portableQuery, credentials, cachedSqlQueryId) {
-        return di_1.DI.get(diTokens_1.QUERY_MANAGER).then(queryManager => queryManager.searchOne(portableQuery));
+    async searchOne(portableQuery, credentials, cachedSqlQueryId) {
+        const queryManager = await di_1.DI.get(diTokens_1.QUERY_MANAGER);
+        return await queryManager.searchOne(portableQuery);
     }
-    addRepository(name, url, platform, platformConfig, distributionStrategy, credentials) {
-        return di_1.DI.get(diTokens_1.INSERT_MANAGER).then(insertManager => insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy));
+    async addRepository(name, url, platform, platformConfig, distributionStrategy, credentials) {
+        const insertManager = await di_1.DI.get(diTokens_1.INSERT_MANAGER);
+        return await insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
     async insertValues(portableQuery, credentials, transactionIndex, ensureGeneratedValues // for internal use only
     ) {

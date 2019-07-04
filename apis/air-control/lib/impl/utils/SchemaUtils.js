@@ -3,8 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const diTokens_1 = require("../../diTokens");
-const Query_1 = require("../../lingo/query/facade/Query");
-const EntityState_1 = require("../core/entity/EntityState");
 const Utils_1 = require("../Utils");
 class SchemaUtils {
     getDbEntity(schemaIndex, tableIndex, airDb) {
@@ -186,54 +184,66 @@ class SchemaUtils {
         }
         return columnValuesAndPaths;
     }
-    addRelationToEntitySelectClause(dbRelation, selectClause, allowDefaults = false) {
-        this.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
-            let convertTo = true;
-            let propertySelectClause = selectClause;
-            const firstPropertyNameChain = propertyNameChains[0];
-            firstPropertyNameChain.forEach((propertyNameLink, index) => {
-                let propertyObject = propertySelectClause[propertyNameLink];
-                if (!propertyObject) {
-                    propertyObject = {};
-                    EntityState_1.markAsStub(propertyObject);
-                    propertySelectClause[propertyNameLink] = propertyObject;
-                }
-                else {
-                    if (index < firstPropertyNameChain.length - 1) {
-                        if (!(propertyObject instanceof Object) || propertyObject instanceof Date) {
-                            throw `Invalid entry: 
-								...
-								{
-									...
-									${propertyNameLink}: ${propertyObject}
-								}
-								in '${dbRelation.property.entity.name}.${dbRelation.property.name}',
-								Property must be an Object.`;
+    /*
+    addRelationToEntitySelectClause(
+        dbRelation: DbRelation,
+        selectClause: any,
+        allowDefaults: boolean = false,
+    ): void {
+        this.forEachColumnTypeOfRelation(
+            dbRelation,
+            (
+                dbColumn: DbColumn,
+                propertyNameChains: string[][]
+            ) => {
+                let convertTo                = true
+                let propertySelectClause     = selectClause
+                const firstPropertyNameChain = propertyNameChains[0]
+                firstPropertyNameChain.forEach((
+                    propertyNameLink,
+                    index
+                ) => {
+                    let propertyObject = propertySelectClause[propertyNameLink]
+                    if (!propertyObject) {
+                        propertyObject = {}
+                        markAsStub(propertyObject)
+                        propertySelectClause[propertyNameLink] = propertyObject
+                    } else {
+                        if (index < firstPropertyNameChain.length - 1) {
+                            if (!(propertyObject instanceof Object) || propertyObject instanceof Date) {
+                                throw `Invalid entry:
+                                ...
+                                {
+                                    ...
+                                    ${propertyNameLink}: ${propertyObject}
+                                }
+                                in '${dbRelation.property.entity.name}.${dbRelation.property.name}',
+                                Property must be an Object.`
+                            }
+                        } else {
+                            if (!allowDefaults && !isY(propertyObject)) {
+                                const reason = dbRelation.property.isId
+                                    ? `'${dbRelation.property.entity.name}.${dbRelation.property.name}' is an @Id property`
+                                    : `'${dbRelation.property.entity.name}' has no @Id - all properties are treated as @Ids`
+                                throw `Defaults are not allowed in:
+                                ...
+                                {
+                                    ...
+                                    ${propertyNameLink}: ${propertyObject}
+                                }
+                                ${reason}.`
+                            }
+                            convertTo = false
                         }
                     }
-                    else {
-                        if (!allowDefaults && !Query_1.isY(propertyObject)) {
-                            const reason = dbRelation.property.isId
-                                ? `'${dbRelation.property.entity.name}.${dbRelation.property.name}' is an @Id property`
-                                : `'${dbRelation.property.entity.name}' has no @Id - all properties are treated as @Ids`;
-                            throw `Defaults are not allowed in: 
-								...
-								{
-									...
-									${propertyNameLink}: ${propertyObject}
-								}
-								${reason}.`;
-                        }
-                        convertTo = false;
-                    }
+                    propertySelectClause = propertyObject
+                })
+                if (convertTo) {
+                    convertToY(propertySelectClause)
                 }
-                propertySelectClause = propertyObject;
-            });
-            if (convertTo) {
-                Query_1.convertToY(propertySelectClause);
-            }
-        });
+            })
     }
+     */
     forEachColumnOfRelation(dbRelation, entity, callback, failOnNoValue = true) {
         const dbEntity = dbRelation.property.entity;
         for (const dbRelationColumn of dbRelation.manyRelationColumns) {

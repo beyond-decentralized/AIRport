@@ -208,6 +208,8 @@ export class SqlLiteFunctionAdaptor
 							val, airDb, schemaUtils, metadataUtils))
 					return acc + val
 				}, this.toString(value))
+			case SqlFunction.COALESCE:
+				return null
 			default:
 				throw `Unknown function type: ${jsonFunctionCall.ft}`
 		}

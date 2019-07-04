@@ -10,12 +10,7 @@ class InsertColumnValues extends AbstractInsertValues_1.AbstractInsertValues {
         const dbColumns = [];
         const columnIndexes = this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map((columnName) => {
             const dbColumn = columnMap[columnName];
-            if (!dbColumn) {
-                throw new Error(`
-		Could not find column ${columnName} in entity: ${entityDriver.dbEntity.name}
-				(table: ${entityDriver.dbEntity.tableConfig.name})
-						`);
-            }
+            this.validateColumn(dbColumn, entityDriver.dbEntity, columnName);
             dbColumns.push(dbColumn);
             return dbColumn.index;
         });

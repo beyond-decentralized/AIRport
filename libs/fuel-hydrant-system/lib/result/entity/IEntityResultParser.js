@@ -17,9 +17,11 @@ exports.GraphQueryConfiguration = GraphQueryConfiguration;
 function getObjectResultParser(queryResultType, config, rootDbEntity) {
     switch (queryResultType) {
         case ground_control_1.QueryResultType.ENTITY_GRAPH:
+        case ground_control_1.QueryResultType.MAPPED_ENTITY_GRAPH:
             let EntityGraphResultParserClass = require('./EntityGraphResultParser').EntityGraphResultParser;
             return new EntityGraphResultParserClass(config, rootDbEntity);
         case ground_control_1.QueryResultType.ENTITY_TREE:
+        case ground_control_1.QueryResultType.MAPPED_ENTITY_TREE:
             let EntityTreeResultParserClass = require('./EntityTreeResultParser').EntityTreeResultParser;
             return new EntityTreeResultParserClass();
         default:

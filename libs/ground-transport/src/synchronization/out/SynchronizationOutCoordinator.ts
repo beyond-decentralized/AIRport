@@ -95,7 +95,7 @@ export class SynchronizationOutCoordinator
 		syncOutManager: ISynchronizationOutManager
 	): void {
 		setTimeout(async () => {
-			await syncOutManager.synchronize(sharingNodes, terminal).then()
+			await syncOutManager.synchronize(sharingNodes, terminal)
 			this.returnToSyncPool(frequency, terminal, syncOutManager)
 		}, frequency)
 	}

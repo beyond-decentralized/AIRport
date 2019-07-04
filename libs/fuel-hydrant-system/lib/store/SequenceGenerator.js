@@ -32,6 +32,9 @@ class SequenceGenerator {
         check_in_1.setSeqGen(this);
     }
     async generateSequenceNumbers(dbColumns, numSequencesNeeded) {
+        if (!dbColumns.length) {
+            return [];
+        }
         const numSequencesNeededFromNewBlocks = new Map();
         const sequentialNumbersForColumn = new Map();
         const sequenceBlocksToCreate = new Map();

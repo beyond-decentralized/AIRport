@@ -63,6 +63,10 @@ export class SequenceGenerator
 		dbColumns: DbColumn[],
 		numSequencesNeeded: number[]
 	): Promise<number[][]> {
+		if(!dbColumns.length) {
+			return []
+		}
+
 		const numSequencesNeededFromNewBlocks: Map<DbColumn, number> = new Map()
 		const sequentialNumbersForColumn: Map<DbColumn, number[]>    = new Map()
 		const sequenceBlocksToCreate: Map<DbColumn, ISequenceBlock>  = new Map()

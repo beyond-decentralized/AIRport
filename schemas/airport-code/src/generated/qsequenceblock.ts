@@ -42,17 +42,16 @@ declare function require(moduleName: string): any;
 export interface ISequenceBlock {
 	
 	// Id Properties
-	id?: number;
+	reservationMillis?: number;
 
 	// Id Relations
+	sequence?: ISequence;
 
 	// Non-Id Properties
 	size?: number;
 	lastReservedId?: number;
-	reservationMillis?: number;
 
 	// Non-Id Relations
-	sequence?: ISequence;
 
 	// Transient Properties
 	currentNumber?: number;
@@ -73,12 +72,11 @@ export interface SequenceBlockESelect
 	// Non-Id Properties
 	size?: number | IQNumberField;
 	lastReservedId?: number | IQNumberField;
-	reservationMillis?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
+	sequence?: SequenceESelect;
 
   // Non-Id relations (including OneToMany's)
-	sequence?: SequenceESelect;
 
 }
 
@@ -88,9 +86,10 @@ export interface SequenceBlockESelect
 export interface SequenceBlockEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	reservationMillis: number | IQNumberField;
 
 	// Id Relations - Ids only
+	sequence: SequenceEId;
 
 }
 
@@ -99,9 +98,10 @@ export interface SequenceBlockEId
  */
 export interface SequenceBlockEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	reservationMillis?: number | IQNumberField;
 
 	// Id Relations - Ids only
+	sequence?: SequenceEOptionalId;
 
 }
 
@@ -113,10 +113,8 @@ export interface SequenceBlockEUpdateProperties
 	// Non-Id Properties
 	size?: number | IQNumberField;
 	lastReservedId?: number | IQNumberField;
-	reservationMillis?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	sequence?: SequenceEOptionalId;
 
 }
 
@@ -128,10 +126,6 @@ export interface SequenceBlockEUpdateColumns
 	// Non-Id Columns
 	SIZE?: number | IQNumberField;
 	LAST_RESERVED_ID?: number | IQNumberField;
-	RESERVATION_MILLIS?: number | IQNumberField;
-	SCHEMA_INDEX?: number | IQNumberField;
-	TABLE_INDEX?: number | IQNumberField;
-	COLUMN_INDEX?: number | IQNumberField;
 
 }
 
@@ -162,17 +156,16 @@ extends SequenceBlockEId, SequenceBlockEUpdateColumns {
 export interface QSequenceBlock extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	reservationMillis: IQNumberField;
 
 	// Id Relations
+	sequence: QSequenceQRelation;
 
 	// Non-Id Fields
 	size: IQNumberField;
 	lastReservedId: IQNumberField;
-	reservationMillis: IQNumberField;
 
 	// Non-Id Relations
-	sequence: QSequenceQRelation;
 
 }
 
@@ -182,9 +175,10 @@ export interface QSequenceBlockQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	reservationMillis: IQNumberField;
 
 	// Id Relations
+	sequence: QSequenceQId;
 
 
 }

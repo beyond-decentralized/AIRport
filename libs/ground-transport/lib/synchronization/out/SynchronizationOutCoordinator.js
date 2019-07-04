@@ -48,7 +48,7 @@ class SynchronizationOutCoordinator extends AbstractCompletable_1.AbstractComple
     }
     scheduleSyncsForFrequency(frequency, sharingNodes, terminal, syncOutManager) {
         setTimeout(async () => {
-            await syncOutManager.synchronize(sharingNodes, terminal).then();
+            await syncOutManager.synchronize(sharingNodes, terminal);
             this.returnToSyncPool(frequency, terminal, syncOutManager);
         }, frequency);
     }

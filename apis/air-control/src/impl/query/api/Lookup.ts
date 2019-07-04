@@ -51,44 +51,41 @@ export class Lookup
 		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any> {
-		return await DI.get(
+		const [
+			      entityUtils, fieldUtils, queryFacade, queryUtils,
+			      schemaUtils, transConnector, updateCache
+		      ] = await DI.get(
 			ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS,
 			SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
-		).then(([
-			        entityUtils, fieldUtils, queryFacade, queryUtils,
-			        schemaUtils, transConnector, updateCache
-		        ]) => {
-			let query: IAbstractQuery
+		)
+		let query: IAbstractQuery
 
-			if (QueryClass) {
-				const rawNonEntityQuery = entityUtils.getQuery(rawQuery)
-				query                   = new QueryClass(rawNonEntityQuery)
+		if (QueryClass) {
+			const rawNonEntityQuery = entityUtils.getQuery(rawQuery)
+			query                   = new QueryClass(rawNonEntityQuery)
+		} else {
+			query           = entityUtils.getEntityQuery(rawQuery)
+			queryResultType = this.getQueryResultType(queryResultType, mapResults)
+		}
+		let queryMethod
+		if (search) {
+			if (one) {
+				queryMethod = queryFacade.searchOne
 			} else {
-				query           = entityUtils.getEntityQuery(rawQuery)
-				queryResultType = this.getQueryResultType(queryResultType, mapResults)
+				queryMethod = queryFacade.search
 			}
-			let queryMethod
-			if (search) {
-				if (one) {
-					queryMethod = queryFacade.searchOne
-				} else {
-					queryMethod = queryFacade.search
-				}
+		} else {
+			if (one) {
+				queryMethod = queryFacade.findOne
 			} else {
-				if (one) {
-					queryMethod = queryFacade.findOne
-				} else {
-					queryMethod = queryFacade.find
-				}
+				queryMethod = queryFacade.find
 			}
+		}
 
-			let result = queryMethod.call(queryFacade, dbEntity, query,
-				this.getQueryResultType(queryResultType, mapResults), fieldUtils,
-				queryUtils, schemaUtils, transConnector, updateCache,
-				cacheForUpdate)
-
-			return result
-		})
+		return await queryMethod.call(queryFacade, dbEntity, query,
+			this.getQueryResultType(queryResultType, mapResults), fieldUtils,
+			queryUtils, schemaUtils, transConnector, updateCache,
+			cacheForUpdate)
 	}
 
 	private getQueryResultType(
