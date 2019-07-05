@@ -14,7 +14,7 @@ class DistinguishableQuery extends AbstractQuery_1.AbstractQuery {
     selectClauseToJSON(rawSelect, queryUtils, fieldUtils) {
         if (rawSelect instanceof Functions_1.QDistinctFunction) {
             if (this.isHierarchicalEntityQuery) {
-                throw `Distinct cannot be used in SELECT of Hierarchical/Bridged Entity queries.`;
+                throw new Error(`Distinct cannot be used in SELECT of Hierarchical/Bridged Entity queries.`);
             }
             let rawInnerSelect = rawSelect.getSelectClause();
             let innerSelect = this.nonDistinctSelectClauseToJSON(rawInnerSelect, queryUtils, fieldUtils);

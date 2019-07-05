@@ -28,16 +28,6 @@ import {
 	QSequence
 } from './qsequence'
 import {
-	ISequenceBlock,
-	SequenceBlockESelect,
-	SequenceBlockECreateColumns,
-	SequenceBlockECreateProperties,
-	SequenceBlockEUpdateColumns,
-	SequenceBlockEUpdateProperties,
-	SequenceBlockEId,
-	QSequenceBlock
-} from './qsequenceblock'
-import {
 	ITerminalRun,
 	TerminalRunESelect,
 	TerminalRunECreateColumns,
@@ -86,24 +76,6 @@ export class BaseSequenceDao
 	
 	constructor() {
 		super(0)
-	}
-}
-
-
-export interface IBaseSequenceBlockDao
-  extends IDao<ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateColumns, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock> {
-}
-
-export class BaseSequenceBlockDao
-  extends SQDIDao<ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateColumns, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock>
-	implements IBaseSequenceBlockDao {
-
-	static diSet(): boolean {
-		return diSet(2)
-	}
-	
-	constructor() {
-		super(2)
 	}
 }
 

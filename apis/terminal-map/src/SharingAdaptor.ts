@@ -1,5 +1,8 @@
-import { DistributionStrategy, PlatformType } from "@airport/ground-control";
-import { SharedChangeList } from "./sync/SharedChangeList";
+import {
+	DistributionStrategy,
+	PlatformType
+}                         from '@airport/ground-control'
+import {SharedChangeList} from './sync/SharedChangeList'
 
 /**
  * Created by Papa on 1/10/2016.
@@ -17,22 +20,23 @@ export interface SharingPlatformSetupInfo {
 }
 
 export namespace deltaStore.platform {
-	export const GOOGLE = 'GOOGLE';
-	export const IN_MEMORY = 'IN_MEMORY';
-	export const STUB = 'STUB';
+	export const GOOGLE    = 'GOOGLE'
+	export const IN_MEMORY = 'IN_MEMORY'
+	export const STUB      = 'STUB'
 
 	export function getName(
 		platformType: PlatformType
 	): string {
 		switch (platformType) {
 			case PlatformType.GOOGLE_DOCS:
-				return GOOGLE;
+				return GOOGLE
 			case PlatformType.IN_MEMORY:
-				return IN_MEMORY;
+				return IN_MEMORY
 			case PlatformType.STUB:
-				return STUB;
+				return STUB
 			default:
-				throw `Unsupported Platform Type: ${distributionStrategy}`;
+				throw new Error(
+					`Unsupported Platform Type: ${distributionStrategy}`)
 		}
 	}
 
@@ -41,13 +45,14 @@ export namespace deltaStore.platform {
 	): PlatformType {
 		switch (platformTypeName) {
 			case GOOGLE:
-				return PlatformType.GOOGLE_DOCS;
+				return PlatformType.GOOGLE_DOCS
 			case IN_MEMORY:
-				return PlatformType.IN_MEMORY;
+				return PlatformType.IN_MEMORY
 			case STUB:
-				return PlatformType.STUB;
+				return PlatformType.STUB
 			default:
-				throw `Unsupported Platform Type name: ${platformTypeName}`;
+				throw new Error(
+					`Unsupported Platform Type name: ${platformTypeName}`)
 		}
 	}
 
@@ -55,19 +60,20 @@ export namespace deltaStore.platform {
 
 export namespace deltaStore.distributionStrategy {
 
-	export const S3_DISTRIBUTED_PUSH = 'S3_DISTRIBUTED_PUSH';
-	export const S3_SECURE_POLL = 'S3_SECURE_POLL';
+	export const S3_DISTRIBUTED_PUSH = 'S3_DISTRIBUTED_PUSH'
+	export const S3_SECURE_POLL      = 'S3_SECURE_POLL'
 
 	export function getName(
 		distributionStrategy: DistributionStrategy
 	): string {
 		switch (distributionStrategy) {
 			case DistributionStrategy.S3_DISTIBUTED_PUSH:
-				return S3_DISTRIBUTED_PUSH;
+				return S3_DISTRIBUTED_PUSH
 			case DistributionStrategy.S3_SECURE_POLL:
-				return S3_SECURE_POLL;
+				return S3_SECURE_POLL
 			default:
-				throw `Unsupported Distribution Strategy: ${distributionStrategy}`;
+				throw new Error(
+					`Unsupported Distribution Strategy: ${distributionStrategy}`)
 		}
 	}
 
@@ -76,11 +82,12 @@ export namespace deltaStore.distributionStrategy {
 	): DistributionStrategy {
 		switch (distributionStrategyName) {
 			case S3_DISTRIBUTED_PUSH:
-				return DistributionStrategy.S3_DISTIBUTED_PUSH;
+				return DistributionStrategy.S3_DISTIBUTED_PUSH
 			case S3_SECURE_POLL:
-				return DistributionStrategy.S3_SECURE_POLL;
+				return DistributionStrategy.S3_SECURE_POLL
 			default:
-				throw `Unsupported Distribution Strategy name: ${distributionStrategyName}`;
+				throw new Error(
+					`Unsupported Distribution Strategy name: ${distributionStrategyName}`)
 		}
 	}
 }

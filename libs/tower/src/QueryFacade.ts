@@ -92,10 +92,10 @@ export class QueryFacade
 		updateCache: IUpdateCache,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<IObservable<EntityArray>> {
-		return transConnector.search(this.getPortableQuery(
-			dbEntity, query, queryResultType, queryUtils, fieldUtils)).then(
-			observable =>
-				observable.pipe(
+		let observable = await transConnector.search(this.getPortableQuery(
+			dbEntity, query, queryResultType, queryUtils, fieldUtils))
+
+		observable = observable.pipe(
 					map(
 						results => {
 							updateCache.addToCache(
@@ -104,7 +104,8 @@ export class QueryFacade
 							return results
 						})
 				) as IObservable<EntityArray>
-		)
+
+		return observable as IObservable<EntityArray>
 	}
 
 	async searchOne<E>(
@@ -118,19 +119,20 @@ export class QueryFacade
 		updateCache: IUpdateCache,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<IObservable<E>> {
-		return transConnector.searchOne(this.getPortableQuery(
-			dbEntity, query, queryResultType, queryUtils, fieldUtils)).then(
-			observable =>
-				observable.pipe(
-					map(
-						result => {
-							updateCache.addToCache(
-								schemaUtils, cacheForUpdate, dbEntity, result)
+		let observable = await transConnector.searchOne(this.getPortableQuery(
+			dbEntity, query, queryResultType, queryUtils, fieldUtils))
 
-							return result
-						})
-				) as IObservable<E>
+		observable = observable.pipe(
+			map(
+				result => {
+					updateCache.addToCache(
+						schemaUtils, cacheForUpdate, dbEntity, result)
+
+					return result
+				})
 		)
+
+		return observable as IObservable<E>
 	}
 
 }

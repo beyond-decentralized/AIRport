@@ -15,7 +15,7 @@ class Dao {
         return await this.db.bulkCreate(entities, cascadeOverwrite, checkIfProcessed);
     }
     async count() {
-        throw `Not Implemented`;
+        throw new Error(`Not Implemented`);
     }
     async create(entityInfo) {
         if (entityInfo instanceof Array) {
@@ -27,21 +27,21 @@ class Dao {
     }
     async delete(entityIdInfo) {
         if (entityIdInfo instanceof Array) {
-            throw `Not Implemented`;
+            throw new Error(`Not Implemented`);
         }
         else {
             return await this.db.delete(entityIdInfo);
         }
     }
     async deleteAll() {
-        throw `Not Implemented`;
+        throw new Error(`Not Implemented`);
     }
     exists(entityId) {
-        throw `Not Implemented`;
+        throw new Error(`Not Implemented`);
     }
     async findAll(entityIds, cacheForUpdate = false) {
         if (entityIds) {
-            throw `Not implemented`;
+            throw new Error(`Not implemented`);
         }
         return await this.db.find.graph({
             select: {},
@@ -50,7 +50,7 @@ class Dao {
     }
     async findAllAsTrees(entityIds, cacheForUpdate = false) {
         if (entityIds) {
-            throw `Not implemented`;
+            throw new Error(`Not implemented`);
         }
         return await this.db.find.tree({
             select: {},
@@ -58,11 +58,11 @@ class Dao {
         });
     }
     findById(entityId, cacheForUpdate = false) {
-        throw `Not implemented`;
+        throw new Error(`Not implemented`);
     }
     async save(entity) {
         if (entity instanceof Array) {
-            throw `Not Implemented`;
+            throw new Error(`Not Implemented`);
         }
         else {
             return await this.db.save(entity);
@@ -70,15 +70,15 @@ class Dao {
     }
     async stage(entity) {
         if (entity instanceof Array) {
-            throw `Not Implemented`;
+            throw new Error(`Not Implemented`);
         }
         else {
-            throw `Not Implemented`;
+            throw new Error(`Not Implemented`);
         }
     }
     async update(entityInfo) {
         if (entityInfo instanceof Array) {
-            throw `Not Implemented`;
+            throw new Error(`Not Implemented`);
         }
         else {
             return await this.db.update(entityInfo);

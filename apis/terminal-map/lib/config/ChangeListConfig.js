@@ -9,9 +9,9 @@ class ChangeListConfig {
         this.deltaStoreConfig = deltaStoreConfig;
         let distributionStrategy = config.distributionStrategy;
         if (!distributionStrategy && distributionStrategy !== 0) {
-            throw `Distribution Strategy is not defined`;
+            throw new Error(`Distribution Strategy is not defined`);
         }
-        if (typeof distributionStrategy === "string") {
+        if (typeof distributionStrategy === 'string') {
             this.distributionStrategy = SharingAdaptor_1.deltaStore.distributionStrategy.getValue(distributionStrategy);
         }
         else {

@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const SharingAdaptor_1 = require("../SharingAdaptor");
 const ChangeListConfig_1 = require("./ChangeListConfig");
 const OfflineDeltaStoreConfig_1 = require("./OfflineDeltaStoreConfig");
 const PlatformType_1 = require("./PlatformType");
-const SharingAdaptor_1 = require("../SharingAdaptor");
 class DeltaStoreConfig {
     constructor(config) {
         this.config = config;
         if (!config.platform && config.platform !== 0) {
-            throw `Sharing Platform is not defined `;
+            throw new Error(`Sharing Platform is not defined `);
         }
         let platformType = getPlatformType(config.platform);
         this.setupInfo = {
@@ -18,10 +18,10 @@ class DeltaStoreConfig {
             dbIdField: air_control_1.deltaConst.DB_ID_FIELD
         };
         if (!config.changeList) {
-            throw `ChangeList config is not defined`;
+            throw new Error(`ChangeList config is not defined`);
         }
         if (!config.offlineDeltaStore) {
-            throw `OfflineDeltaStore must be specified if changeLists are specified.`;
+            throw new Error(`OfflineDeltaStore must be specified if changeLists are specified.`);
         }
         this.changeListConfig = new ChangeListConfig_1.ChangeListConfig(config.changeList, this);
         this.offlineDeltaStore = new OfflineDeltaStoreConfig_1.OfflineDeltaStoreConfig(config.offlineDeltaStore, this);
@@ -30,7 +30,7 @@ class DeltaStoreConfig {
 exports.DeltaStoreConfig = DeltaStoreConfig;
 function getPlatformType(platform) {
     let platformType;
-    if (typeof platform === "string") {
+    if (typeof platform === 'string') {
         platformType = SharingAdaptor_1.deltaStore.platform.getValue(platform);
     }
     else {
@@ -45,13 +45,13 @@ class GoogleDeltaStoreConfig extends DeltaStoreConfig {
     constructor(config) {
         super(config);
         if (!config.rootFolder) {
-            throw `Root folder is not defined`;
+            throw new Error(`Root folder is not defined`);
         }
         if (!config.apiKey) {
-            throw `ApiKey is not defined`;
+            throw new Error(`ApiKey is not defined`);
         }
         if (!config.clientId) {
-            throw `ClientId is not defined`;
+            throw new Error(`ClientId is not defined`);
         }
         this.setupInfo.rootFolder = config.rootFolder;
         this.setupInfo.apiKey = config.apiKey;
@@ -67,7 +67,7 @@ class StubDeltaStoreConfig extends DeltaStoreConfig {
 exports.StubDeltaStoreConfig = StubDeltaStoreConfig;
 function createDeltaStoreConfig(jsonDeltaStoreConfig) {
     if (!jsonDeltaStoreConfig.platform && jsonDeltaStoreConfig.platform !== 0) {
-        throw `deltaStore.platform is nod specified`;
+        throw new Error(`deltaStore.platform is nod specified`);
     }
     let platformType = getPlatformType(jsonDeltaStoreConfig.platform);
     switch (platformType) {
@@ -78,7 +78,7 @@ function createDeltaStoreConfig(jsonDeltaStoreConfig) {
         case PlatformType_1.PlatformType.STUB:
             return new StubDeltaStoreConfig(jsonDeltaStoreConfig);
         default:
-            throw `Unsupported platform type ${platformType}`;
+            throw new Error(`Unsupported platform type ${platformType}`);
     }
 }
 exports.createDeltaStoreConfig = createDeltaStoreConfig;

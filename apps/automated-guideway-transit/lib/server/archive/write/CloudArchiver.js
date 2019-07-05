@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class CloudArchiver {
     // TODO: shift out any records that could not be archived at this time
     async archive(dailyArchiveDtos, dailyArchiveLogValues, onDate) {
-        throw `Not implemented`;
+        throw new Error(`Not implemented`);
     }
 }
 exports.CloudArchiver = CloudArchiver;

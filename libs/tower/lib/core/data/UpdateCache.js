@@ -70,7 +70,7 @@ class UpdateCache {
                             continue;
                         }
                         if (!(value instanceof Array)) {
-                            throw `Expecting @OneToMany for an array entity relation`;
+                            throw new Error(`Expecting @OneToMany for an array entity relation`);
                         }
                         value.forEach((manyObject) => {
                             this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbRelation.relationEntity, manyObject);
@@ -78,7 +78,7 @@ class UpdateCache {
                         break;
                     case ground_control_1.EntityRelationType.MANY_TO_ONE:
                         if (!(value instanceof Object) || value instanceof Array) {
-                            throw `Expecting @ManyToOne for a non-array entity relation`;
+                            throw new Error(`Expecting @ManyToOne for a non-array entity relation`);
                         }
                         schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, value, propertyNameChains) => {
                             this.copyColumn(schemaUtils, dbColumn, entityCopy, value);
@@ -89,7 +89,7 @@ class UpdateCache {
                         this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbRelation.relationEntity, value);
                         break;
                     default:
-                        throw `Unknown relation type: ${dbRelation.relationType}`;
+                        throw new Error(`Unknown relation type: ${dbRelation.relationType}`);
                 }
             }
             else {
@@ -104,8 +104,8 @@ class UpdateCache {
         const copiedValue = entityCopy[columnName];
         // if (!schemaUtils.isEmpty(copiedValue)
         // 	&& valuesEqual(copiedValue, value)) {
-        // 	throw `Values do not match for column
-        // '${dbColumn.propertyColumns[0].property.entity.name}.${dbColumn.name}'` }
+        // 	throw new Error(`Values do not match for column
+        // '${dbColumn.propertyColumns[0].property.entity.name}.${dbColumn.name}'`) }
         switch (dbColumn.type) {
             case ground_control_1.SQLDataType.BOOLEAN:
             case ground_control_1.SQLDataType.NUMBER:
@@ -120,7 +120,7 @@ class UpdateCache {
                 entityCopy[columnName] = new Date(value.getTime());
                 break;
             default:
-                throw `Unknown SQLDataType: ${dbColumn.type}`;
+                throw new Error(`Unknown SQLDataType: ${dbColumn.type}`);
         }
     }
 }

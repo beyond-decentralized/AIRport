@@ -107,7 +107,7 @@ class QEntityDriver {
         // 		mtoQEntity = this.parentJoinEntity;
         // 		break;
         // 	default:
-        // 		throw `Unknown EntityRelationType: ${this.dbRelation.relationType}`;
+        // 		throw new Error(`Unknown EntityRelationType: ${this.dbRelation.relationType}`);
         // }
         //
         // let joinWhereClause = this.dbRelation.whereJoinTable.addToJoinFunction(otmQEntity,
@@ -159,7 +159,7 @@ class QTreeDriver extends QEntityDriver {
         return instance;
     }
     // getRelationPropertyName(): string {
-    // 	throw `not imlemented`;
+    // 	throw new Error(`not implemented`);
     // }
     getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
         jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);

@@ -86,7 +86,7 @@ export class FlattenedResultParser
 		otmDbEntity: DbEntity,
 		otmPropertyName: string
 	): void {
-		throw `@OneToMany stubs not allowed in QueryResultType.PLAIN`
+		throw new Error(`@OneToMany stubs not allowed in QueryResultType.PLAIN`)
 	}
 
 	bufferOneToManyCollection(

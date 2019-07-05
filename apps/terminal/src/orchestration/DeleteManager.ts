@@ -196,7 +196,9 @@ export class DeleteManager
 						}
 						break
 					default:
-						throw `Unknown relation type: '${dbRelation.relationType}' on '${dbEntity.name}.${dbRelation.property.name}'.`
+						throw new Error(
+							`Unknown relation type: '${dbRelation.relationType}' 
+							on '${dbEntity.name}.${dbRelation.property.name}'.`)
 				}
 			} else {
 				const value = treeToDelete[dbProperty.name]
@@ -221,15 +223,16 @@ export class DeleteManager
 		value: any,
 	): boolean {
 		// if (value === undefined) {
-		// 	throw `Values cannot be undefined, please use null.`;
+		// 	throw new Error(`Values cannot be undefined, please use null.`_;
 		// }
 		if (foundValues[dbColumn.name] === undefined) {
 			foundValues[dbColumn.name] = value
 			return false
 		}
 		if (!valuesEqual(foundValues[dbColumn.name], value)) {
-			throw `Found value mismatch in '${dbProperty.entity.name}.${dbProperty.name}'
-			(column: '${dbColumn.name}'): ${foundValues[dbColumn.name]} !== ${value}`
+			throw new Error(
+				`Found value mismatch in '${dbProperty.entity.name}.${dbProperty.name}'
+			(column: '${dbColumn.name}'): ${foundValues[dbColumn.name]} !== ${value}`)
 		}
 		return true
 	}
@@ -285,8 +288,8 @@ export class DeleteManager
 										// One-To-Many do not contain any columns in source entity
 										break
 									default:
-										throw `Unknown relation type: '${dbRelation.relationType}'
-										on '${dbEntity.name}.${dbProperty.name}'.`
+										throw new Error(`Unknown relation type: '${dbRelation.relationType}'
+										on '${dbEntity.name}.${dbProperty.name}'.`)
 								}
 							} else {
 								const dbColumn = dbProperty.propertyColumns[0].column
@@ -333,7 +336,9 @@ export class DeleteManager
 						schemaUtils.addRelationToEntitySelectClause(dbRelation, selectClause)
 						break
 					default:
-						throw `Unknown relation type: '${dbRelation.relationType}' on '${dbEntity.name}.${dbProperty.name}'.`
+						throw new Error(
+							`Unknown relation type: '${dbRelation.relationType}' 
+							on '${dbEntity.name}.${dbProperty.name}'.`)
 				}
 			} else {
 				selectClause[dbProperty.name] = Y

@@ -37,7 +37,7 @@ export class NonEntityFind
 		) => void,
 	): Promise<any[][]> {
 		if (cursorSize || callback) {
-			throw `Implement!`
+			throw new Error(`Implement!`)
 		}
 
 		return this.find(rawSheetQuery, QueryResultType.SHEET, SheetQuery)

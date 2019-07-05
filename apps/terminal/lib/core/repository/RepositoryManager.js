@@ -29,10 +29,10 @@ class RepositoryManager {
         return repository;
     }
     async getRepository(repositoryId) {
-        throw `not implemented`;
+        throw new Error(`not implemented`);
     }
     getActor(actorId) {
-        throw `not implemented`;
+        throw new Error(`not implemented`);
     }
     goOffline() {
         for (let repositoryId in this.deltaStore) {
@@ -66,7 +66,7 @@ class RepositoryManager {
                         if (!this.repositories.length) {
                                 let deltaStoreConfig = config.deltaStoreConfig;
                                 if (!deltaStoreConfig) {
-                                        throw `Delta store is not configured`;
+                                        throw new Error(`Delta store is not configured`);
                                 }
                                 let repository = await this.createRepositoryRecord(config.appName,
                                         deltaStoreConfig.changeListConfig.distributionStrategy,
@@ -138,7 +138,7 @@ class RepositoryManager {
     }
     getOnlyRepositoryInDatabase() {
         if (this.repositories.length !== 1) {
-            throw `Do not have "Only" repository - more than one repository found.`;
+            throw new Error(`Do not have "Only" repository - more than one repository found.`);
         }
         return this.repositories[0];
     }

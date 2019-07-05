@@ -1,5 +1,5 @@
-import { PropertyDocEntry } from "../../parser/DocEntry";
-import { IQBuilder, IQCoreEntityBuilder } from "../QBuilder";
+import { PropertyDocEntry } from '../../parser/DocEntry';
+import { IQBuilder, IQCoreEntityBuilder } from '../QBuilder';
 /**
  * Created by Papa on 4/25/2016.
  */

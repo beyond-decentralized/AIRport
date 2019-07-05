@@ -18,11 +18,11 @@ function newMappedEntityArray(schemaUtils, dbEntity) {
     arr.put = function (value) {
         let keyValue = schemaUtils.getIdKey(value, dbEntity);
         if (schemaUtils.isIdEmpty(keyValue)) {
-            throw `Composite @Id(s) value for entity '${dbEntity.name}' is not defined`;
+            throw new Error(`Composite @Id(s) value for entity '${dbEntity.name}' is not defined`);
         }
         if (this.dataMap[keyValue]) {
             if (this.dataMap[keyValue] !== value) {
-                throw `Found two different instances of an object with the same @Id: ${keyValue}`;
+                throw new Error(`Found two different instances of an object with the same @Id: ${keyValue}`);
             }
             return value;
         }
@@ -82,11 +82,11 @@ exports.newMappedEntityArray = newMappedEntityArray;
  put( value: E ): E {
  let keyValue = value[this.keyField];
  if (MetadataUtils.isIdEmpty(keyValue)) {
- throw `Key field ${this.keyField} is not defined`;
+ throw new Error(`Key field ${this.keyField} is not defined`);
  }
  if (this.dataMap[keyValue]) {
  if (this.dataMap[keyValue] !== value) {
- throw `Found two different instances of an object with the same @Id: ${keyValue}`;
+ throw new Error(`Found two different instances of an object with the same @Id: ${keyValue}`);
  }
  return value;
  }

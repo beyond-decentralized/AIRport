@@ -15,7 +15,7 @@ function getDbIndex(dbName) {
     if (dbName === dbConst.CURRENT_DB) {
         return -1;
     }
-    throw `Not implemented`;
+    throw new Error(`Not implemented`);
 }
 exports.getDbIndex = getDbIndex;
 //# sourceMappingURL=Constants.js.map

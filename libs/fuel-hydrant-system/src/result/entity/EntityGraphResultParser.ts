@@ -134,7 +134,7 @@ export class EntityGraphResultParser
 				case EntityRelationType.MANY_TO_ONE:
 					continue
 				default:
-					throw `Unknown EntityRelationType: ${dbRelation.relationType}`
+					throw new Error(`Unknown EntityRelationType: ${dbRelation.relationType}`)
 			}
 			if (dbRelation.oneToManyElems && dbRelation.oneToManyElems.mappedBy) {
 				otmEntityField = dbRelation.property.name
@@ -213,7 +213,8 @@ export class EntityGraphResultParser
 		schemaUtils: ISchemaUtils
 	): any {
 		if (!entityIdValue) {
-			throw `No Id provided for entity '${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'`
+			throw new Error(`No Id provided for entity 
+			'${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'`)
 		}
 		let currentEntity = this.getEntityToFlush(
 			dbEntity, selectClauseFragment, entityIdValue, resultObject, schemaUtils)
@@ -231,7 +232,8 @@ export class EntityGraphResultParser
 		schemaUtils: ISchemaUtils
 	): any {
 		if (!idValue) {
-			throw `Entity ID not specified for entity '${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'.`
+			throw new Error(`Entity ID not specified for entity 
+			'${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'.`)
 		}
 		let entityMapForName: {
 			[entityId: string]: any
@@ -327,7 +329,8 @@ export class EntityGraphResultParser
 								if ((!sourceArray && targetArray)
 									|| (!targetArray && sourceArray)
 									|| sourceArray.length != targetArray.length) {
-									throw `One-to-Many child arrays don't match for '${dbEntity.name}.${dbProperty.name}', Id: ${id}`
+									throw new Error(`One-to-Many child arrays don't match for 
+									'${dbEntity.name}.${dbProperty.name}', Id: ${id}`)
 								}
 							}
 							const sourceSet: { [id: string]: any } = {}
@@ -344,7 +347,8 @@ export class EntityGraphResultParser
 								targetArray.forEach((targetChild) => {
 									const targetChildIdValue = schemaUtils.getIdKey(targetChild, childDbEntity)
 									if (this.config && this.config.strict && !sourceSet[targetChildIdValue]) {
-										throw `One-to-Many child arrays don't match for '${dbEntity.name}.${dbProperty.name}', Id: ${id}`
+										throw new Error(`One-to-Many child arrays don't match for 
+										'${dbEntity.name}.${dbProperty.name}', Id: ${id}`)
 									}
 									// If target child array has a value that source doesn't
 									if (!sourceSet[targetChildIdValue]) {
@@ -357,7 +361,8 @@ export class EntityGraphResultParser
 							// sourceArray.putAll(targetArray);
 							break
 						default:
-							throw `Unknown relation type '${dbRelation.relationType}' for '${dbEntity.name}.${dbProperty.name}'`
+							throw new Error(`Unknown relation type '${dbRelation.relationType}' for 
+							'${dbEntity.name}.${dbProperty.name}'`)
 					}
 				}
 			}

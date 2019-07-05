@@ -196,7 +196,7 @@ export abstract class SqlDriver
 				return new TreeSQLQuery(<JsonSheetQuery>jsonQuery, dialect)
 			case QueryResType.RAW:
 			default:
-				throw `Unknown QueryResultType: ${resultType}`
+				throw new Error(`Unknown QueryResultType: ${resultType}`)
 		}
 	}
 
@@ -214,7 +214,7 @@ export abstract class SqlDriver
 		let results = await this.find(portableQuery)
 
 		if (results.length > 1) {
-			throw `Expecting a single result, got ${results.length}`
+			throw new Error(`Expecting a single result, got ${results.length}`)
 		}
 		if (results.length == 1) {
 			return <E>results[0]

@@ -29,7 +29,7 @@ export abstract class DistinguishableQuery
 	): any {
 		if (rawSelect instanceof QDistinctFunction) {
 			if (this.isHierarchicalEntityQuery) {
-				throw `Distinct cannot be used in SELECT of Hierarchical/Bridged Entity queries.`
+				throw new Error(`Distinct cannot be used in SELECT of Hierarchical/Bridged Entity queries.`)
 			}
 			let rawInnerSelect = rawSelect.getSelectClause()
 			let innerSelect    = this.nonDistinctSelectClauseToJSON(

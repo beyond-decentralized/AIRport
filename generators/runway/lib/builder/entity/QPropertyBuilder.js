@@ -17,7 +17,7 @@ class QPropertyBuilder {
         return `${name}: I${fieldClass};`;
     }
     build() {
-        throw `Not Implemented.`;
+        throw new Error(`Not Implemented.`);
     }
     buildInterfaceDefinition(optional = true, forInternalInterfaces = true) {
         let prop = this.propertyDocEntry;

@@ -18,7 +18,7 @@ class MappableQuery extends NonEntityQuery_1.DistinguishableQuery {
             let value = rawSelect[property];
             if (value instanceof Field_1.QField) {
                 if (this.isEntityQuery) {
-                    throw exports.FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE;
+                    throw new Error(exports.FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE);
                 }
                 // The same value may appear in the select clause more than once.
                 // In that case the last one will set the alias for all of them.
@@ -27,7 +27,7 @@ class MappableQuery extends NonEntityQuery_1.DistinguishableQuery {
                 select[property] = value.toJSON(this.columnAliases, true, queryUtils, fieldUtils);
             }
             else if (value instanceof OneToManyRelation_1.QOneToManyRelation) {
-                throw `@OneToMany relation objects can cannot be used in SELECT clauses`;
+                throw new Error(`@OneToMany relation objects can cannot be used in SELECT clauses`);
             } // Must be a primitive
             else {
                 let isChildObject = false;
@@ -52,7 +52,7 @@ class MappableQuery extends NonEntityQuery_1.DistinguishableQuery {
                 }
                 finally {
                     if (!isChildObject && !this.isEntityQuery) {
-                        throw NonEntityQuery_1.NON_ENTITY_SELECT_ERROR_MESSAGE;
+                        throw new Error(NonEntityQuery_1.NON_ENTITY_SELECT_ERROR_MESSAGE);
                     }
                 }
             }

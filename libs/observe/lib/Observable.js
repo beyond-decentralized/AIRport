@@ -12,7 +12,7 @@ class Observable {
     }
     static from(...sourceObservables) {
         // if (!(sourceObservable instanceof Observable)) {
-        // 	throw 'only @airport/observer/Observable is supported'
+        // 	throw new Error('only @airport/observer/Observable is supported')
         // }
         const targetObservable = new Observable();
         sourceObservables.forEach(aSourceObservable => {
@@ -31,7 +31,7 @@ class Observable {
     }
     pipe(...operators) {
         // if (!(sourceObservable instanceof Observable)) {
-        // 	throw 'only @airport/observer/Observable is supported'
+        // 	throw new Error('only @airport/observer/Observable is supported')
         // }
         const targetObservable = Observable.from(this);
         targetObservable.operators = operators;
@@ -67,7 +67,7 @@ class Observable {
     // ): ISubscription
     subscribe(onNext, onError, onComplete) {
         // if (!(observer instanceof Function)) {
-        // 	throw 'Subjects can only be subscribed to with functions'
+        // 	throw new Error('Subjects can only be subscribed to with functions')
         // }
         const subscription = new Subscription_1.Subscription(this, onNext, onError, onComplete, this.onUnsubscribe);
         this.subscriptions.push(subscription);

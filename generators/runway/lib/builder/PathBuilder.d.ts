@@ -1,7 +1,7 @@
 /**
  * Created by Papa on 4/28/2016.
  */
-import { Configuration } from "../options/Options";
+import { Configuration } from '../options/Options';
 export declare class PathBuilder {
     private configuration;
     dirExistanceMap: {

@@ -1,5 +1,5 @@
-import { JsonFieldQuery } from '../../query/facade/FieldQuery';
-import { JSONSqlFunctionCall } from './Functions';
+import {JsonFieldQuery}      from '../../query/facade/FieldQuery'
+import {JSONSqlFunctionCall} from './Functions'
 
 /**
  * All possible types of serialized JSON clauses.
@@ -30,19 +30,19 @@ export function getSqlDataType(
 ): SQLDataType {
 	switch (type) {
 		case 'any':
-			return SQLDataType.ANY;
+			return SQLDataType.ANY
 		case 'boolean':
-			return SQLDataType.BOOLEAN;
+			return SQLDataType.BOOLEAN
 		case 'Date':
-			return SQLDataType.DATE;
+			return SQLDataType.DATE
 		case 'Json':
-			return SQLDataType.JSON;
+			return SQLDataType.JSON
 		case 'number':
-			return SQLDataType.NUMBER;
+			return SQLDataType.NUMBER
 		case 'string':
-			return SQLDataType.STRING;
+			return SQLDataType.STRING
 		default:
-			throw `Uknown type: ${type}`;
+			throw new Error(`Uknown type: ${type}`)
 	}
 }
 
@@ -98,7 +98,8 @@ export interface JSONClauseField
 	ci?: number,
 	/**
 	 * Field Sub Query
-	 * A reference pointer from a field to a sub-query, as defined in SELECT clause via the field function
+	 * A reference pointer from a field to a sub-query, as defined in SELECT clause via the
+	 * field function
 	 */
 	fsq?: JsonFieldQuery;
 	/**

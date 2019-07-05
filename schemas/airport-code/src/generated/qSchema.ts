@@ -14,8 +14,6 @@ import {
 }                      from '@airport/ground-control';
 import { Sequence } from '../ddl/sequence';
 import { QSequence } from './qsequence';
-import { SequenceBlock } from '../ddl/sequenceblock';
-import { QSequenceBlock } from './qsequenceblock';
 import { TerminalRun } from '../ddl/terminalrun';
 import { QTerminalRun } from './qterminalrun';
 
@@ -24,14 +22,12 @@ export interface LocalQSchema extends AirportQSchema {
   db: DbSchema;
 
 	Sequence: QSequence;
-	SequenceBlock: QSequenceBlock;
 	TerminalRun: QTerminalRun;
 
 }
 
 const __constructors__ = {
 	Sequence: Sequence,
-	SequenceBlock: SequenceBlock,
 	TerminalRun: TerminalRun
 };
 

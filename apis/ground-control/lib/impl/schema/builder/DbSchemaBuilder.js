@@ -211,8 +211,8 @@ class DbSchemaBuilder {
                     }
                 });
                 if (!idIndex && idIndex !== 0) {
-                    throw `Could not find column "${jsonColumn.name}" 
-					in @Id column references of entity "${jsonEntity.name}".`;
+                    throw new Error(`Could not find column "${jsonColumn.name}" 
+					in @Id column references of entity "${jsonEntity.name}".`);
                 }
                 dbColumn.idIndex = idIndex;
             }
@@ -250,7 +250,7 @@ class DbSchemaBuilder {
             const dbDomainMap = schemaMap[domain];
             if (!dbDomainMap) {
                 if (failOnMissingMappings) {
-                    throw `Domain '${domain}' is not yet available for relation linking.`;
+                    throw new Error(`Domain '${domain}' is not yet available for relation linking.`);
                 }
                 continue;
             }
@@ -258,7 +258,7 @@ class DbSchemaBuilder {
                 const ownSchema = dbDomainMap[schemaName];
                 if (!ownSchema) {
                     if (failOnMissingMappings) {
-                        throw `Schema '${schemaName}' is not yet available for relation linking.`;
+                        throw new Error(`Schema '${schemaName}' is not yet available for relation linking.`);
                     }
                     continue;
                 }
@@ -271,14 +271,14 @@ class DbSchemaBuilder {
                     const referencedDbDomain = schemaMap[schemaReference.domain];
                     if (!referencedDbDomain) {
                         if (failOnMissingMappings) {
-                            throw `Domain '${schemaReference.domain}' is not yet available for relation linking.`;
+                            throw new Error(`Domain '${schemaReference.domain}' is not yet available for relation linking.`);
                         }
                         continue;
                     }
                     const referencedSchema = referencedDbDomain[referencedSchemaName];
                     if (!referencedSchema) {
                         if (failOnMissingMappings) {
-                            throw `Schema '${referencedSchemaName}' is not yet available for relation linking.`;
+                            throw new Error(`Schema '${referencedSchemaName}' is not yet available for relation linking.`);
                         }
                         continue;
                     }
@@ -306,7 +306,7 @@ class DbSchemaBuilder {
                 const manySchema = schemaMap[schemaName];
                 if (!manySchema) {
                     if (failOnMissingMappings) {
-                        throw `Schema '${schemaName}' is not yet available for relation linking.`;
+                        throw new Error(`Schema '${schemaName}' is not yet available for relation linking.`);
                     }
                     continue;
                 }
@@ -314,38 +314,38 @@ class DbSchemaBuilder {
                     const mapForEntity = mapForSchema[entityIndex];
                     const manyEntity = manySchema.entities[entityIndex];
                     if (!schemaMap) {
-                        throw `Table '${schemaName}.${entityIndex}' is not defined.`;
+                        throw new Error(`Table '${schemaName}.${entityIndex}' is not defined.`);
                     }
                     for (const relationIndex in mapForEntity) {
                         const mapForRelation = mapForEntity[relationIndex];
                         const manyRelation = manyEntity.relations[relationIndex];
                         if (!manyRelation) {
-                            throw `Relation '${schemaName}.${manyEntity.name} - ${relationIndex}' is not defined.`;
+                            throw new Error(`Relation '${schemaName}.${manyEntity.name} - ${relationIndex}' is not defined.`);
                         }
                         for (const columnIndex in mapForRelation) {
                             const relationColumnReference = mapForRelation[columnIndex];
                             const oneSchema = schemaMap[relationColumnReference.schemaName];
                             if (!oneSchema) {
                                 if (failOnMissingMappings) {
-                                    throw `Schema '${relationColumnReference.schemaName}' is not yet available for relation linking.`;
+                                    throw new Error(`Schema '${relationColumnReference.schemaName}' is not yet available for relation linking.`);
                                 }
                                 break;
                             }
                             const oneEntity = manySchema.entities[relationColumnReference.entityIndex];
                             if (!oneEntity) {
-                                throw `Table '${relationColumnReference.schemaName}.${relationColumnReference.entityIndex}' is not defined.`;
+                                throw new Error(`Table '${relationColumnReference.schemaName}.${relationColumnReference.entityIndex}' is not defined.)`);
                             }
                             const oneRelation = manyEntity.relations[relationColumnReference.relationIndex];
                             if (!oneRelation) {
-                                throw `Relation '${relationColumnReference.schemaName}.${oneEntity.name} - ${relationColumnReference.relationIndex}' is not defined.`;
+                                throw new Error(`Relation '${relationColumnReference.schemaName}.${oneEntity.name} - ${relationColumnReference.relationIndex}' is not defined.`);
                             }
                             const oneColumn = oneEntity.columns[relationColumnReference.columnIndex];
                             if (!oneColumn) {
-                                throw `Column '${relationColumnReference.schemaName}.${oneEntity.name} - ${relationColumnReference.columnIndex}' is not defined.`;
+                                throw new Error(`Column '${relationColumnReference.schemaName}.${oneEntity.name} - ${relationColumnReference.columnIndex}' is not defined.`);
                             }
                             const manyColumn = oneEntity.columns[columnIndex];
                             if (!manyColumn) {
-                                throw `Column '${schemaName}.${oneEntity.name} - ${columnIndex}' is not defined.`;
+                                throw new Error(`Column '${schemaName}.${oneEntity.name} - ${columnIndex}' is not defined.`);
                             }
                             const relationColumn = {
                                 manyColumn,

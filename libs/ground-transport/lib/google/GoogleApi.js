@@ -44,8 +44,9 @@ class GoogleApi {
                     }
                     if (parameterMap.access_token !== undefined && parameterMap.access_token !== null) {
                         resolve(parameterMap);
-                        // deferred.resolve({ state : parameterMap.state,error : parameterMap.error, access_token:
-                        // parameterMap.access_token, token_type: parameterMap.token_type, expires_in: parameterMap.expires_in });
+                        // deferred.resolve({ state : parameterMap.state,error : parameterMap.error,
+                        // access_token: parameterMap.access_token, token_type:
+                        // parameterMap.token_type, expires_in: parameterMap.expires_in });
                     }
                     else {
                         reject('Problem authenticating');
@@ -95,7 +96,7 @@ class GoogleApi {
             }
             else {
                 // 				return <Promise<any>><any>gapi.load(apiName, undefined);
-                throw `Google API Version must be specified.`;
+                throw new Error(`Google API Version must be specified.`);
             }
         });
     }

@@ -1,11 +1,11 @@
 import {DI}                  from '@airport/di'
-import { IStoreDriver }      from "@airport/ground-control";
+import {IStoreDriver}        from '@airport/ground-control'
 import {
 	IRepository,
 	IRepositoryTransactionHistory,
 	ITransactionHistory
-}                            from "@airport/holding-pattern";
-import { StoreType }         from "@airport/terminal-map";
+}                            from '@airport/holding-pattern'
+import {StoreType}           from '@airport/terminal-map'
 import {OFFLINE_DELTA_STORE} from '../diTokens'
 
 /**
@@ -36,10 +36,10 @@ export function getOfflineDeltaStore(
 	switch (localStore.type) {
 		case StoreType.SQLITE_CORDOVA:
 		case StoreType.SQLJS:
-			throw `Implement!`;
+			throw new Error(`Implement!`)
 		// return new OfflineSqlDeltaStore(localStore);
 		default:
-			throw `Unsupported LocalStoreType: ${localStore.type}`;
+			throw new Error(`Unsupported LocalStoreType: ${localStore.type}`)
 	}
 }
 
@@ -49,23 +49,23 @@ export class OfflineDeltaStore {
 		repository: IRepository,
 		transactions: IRepositoryTransactionHistory[]
 	): Promise<void> {
-		throw `Implement!`;
+		throw new Error(`Implement!`)
 	}
 
 	addChange(
 		transaction: ITransactionHistory
 	): Promise<ITransactionHistory> {
-		throw `Implement!`;
+		throw new Error(`Implement!`)
 	}
 
 	markChangesAsSynced(
 		repository: IRepository,
 		transactions: IRepositoryTransactionHistory[]
 	): Promise<void> {
-		throw `Implement!`;
+		throw new Error(`Implement!`)
 	}
 
 }
 
-DI.set(OFFLINE_DELTA_STORE, OfflineDeltaStore);
+DI.set(OFFLINE_DELTA_STORE, OfflineDeltaStore)
 

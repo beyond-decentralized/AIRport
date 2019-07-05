@@ -25,21 +25,25 @@ function verifyConfiguration(
 	options: Configuration
 ): void {
 	if (!options.name) {
-		throw `"name" must be specified in package.json.`;
+		throw new Error(`"name" must be specified in package.json.`);
 	}
 	if (!options.airport) {
-		throw `"airport" configuration object must be specified in package.json.`;
+		throw new Error(`"airport" configuration object must be specified in package.json.`);
 	}
 	if (typeof options.airport.domain !== 'string') {
-		throw `"airport.domain" configuration object must be specified (as HTTL Domain URL or 'private') in package.json.  It is: ${options.airport.domain}`;
+		throw new Error(`"airport.domain" configuration object must be specified 
+		(as HTTL Domain URL or 'private') in package.json.  
+		It is: ${options.airport.domain}`);
 	}
 	options.airport.ddlDir = 'src/ddl'
 	// if (!options.airport.ddlDir) {
-	// 	throw `"airport.ddlDir" configuration property must be specified in package.json.`;
+	// 	throw new Error(
+	// 	`"airport.ddlDir" configuration property must be specified in package.json.`);
 	// }
 	options.airport.generatedDir = 'src/generated'
 	// if (!options.airport.generatedDir) {
-	// 	throw `"airport.generatedDir" configuration property must be specified in package.json.`;
+	// 	throw new Error(
+	// 	`"airport.generatedDir" configuration property must be specified in package.json.`);
 	// }
 	if (!options.airport.cacheGeneratedPaths && options.airport.cacheGeneratedPaths !== false) {
 		options.airport.cacheGeneratedPaths = false;

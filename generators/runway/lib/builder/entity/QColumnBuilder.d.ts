@@ -1,5 +1,5 @@
-import { IQBuilder, IQCoreEntityBuilder } from "../QBuilder";
-import { SColumn } from "../schema/SProperty";
+import { IQBuilder, IQCoreEntityBuilder } from '../QBuilder';
+import { SColumn } from '../schema/SProperty';
 /**
  * Created by Papa on 4/25/2016.
  */

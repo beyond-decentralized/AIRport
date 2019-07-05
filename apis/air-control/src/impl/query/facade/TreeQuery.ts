@@ -42,7 +42,7 @@ export abstract class MappableQuery
 			let value = rawSelect[property]
 			if (value instanceof QField) {
 				if (this.isEntityQuery) {
-					throw FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE
+					throw new Error(FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE)
 				}
 				// The same value may appear in the select clause more than once.
 				// In that case the last one will set the alias for all of them.
@@ -51,7 +51,7 @@ export abstract class MappableQuery
 				select[property] = value.toJSON(
 					this.columnAliases, true, queryUtils, fieldUtils)
 			} else if (value instanceof QOneToManyRelation) {
-				throw `@OneToMany relation objects can cannot be used in SELECT clauses`
+				throw new Error(`@OneToMany relation objects can cannot be used in SELECT clauses`)
 			} // Must be a primitive
 			else {
 				let isChildObject = false
@@ -76,7 +76,7 @@ export abstract class MappableQuery
 					}
 				} finally {
 					if (!isChildObject && !this.isEntityQuery) {
-						throw NON_ENTITY_SELECT_ERROR_MESSAGE
+						throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE)
 					}
 				}
 			}

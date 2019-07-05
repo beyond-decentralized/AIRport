@@ -50,7 +50,7 @@ export class QueryUtils
 						)
 						break
 					default:
-						throw `Unsupported logical operation '${operation.o}'`
+						throw new Error(`Unsupported logical operation '${operation.o}'`)
 				}
 				break
 			case OperationCategory.FUNCTION:
@@ -95,7 +95,7 @@ export class QueryUtils
 		value = wrapPrimitive(value)
 		switch (typeof value) {
 			case 'undefined':
-				throw `'undefined' is not a valid L or R value`
+				throw new Error(`'undefined' is not a valid L or R value`)
 			default:
 				if (value instanceof QOperableField) {
 					return value.toJSON(columnAliases, false, this, fieldUtils)

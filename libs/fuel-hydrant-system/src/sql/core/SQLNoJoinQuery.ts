@@ -33,10 +33,10 @@ export abstract class SQLNoJoinQuery
 		schemaUtils: ISchemaUtils
 	): string {
 		if (!fromRelation) {
-			throw `Expecting exactly one table in UPDATE/DELETE clause`
+			throw new Error(`Expecting exactly one table in UPDATE/DELETE clause`)
 		}
 		if (fromRelation.ri || fromRelation.jt) {
-			throw `Table in UPDATE/DELETE clause cannot be joined`
+			throw new Error(`Table in UPDATE/DELETE clause cannot be joined`)
 		}
 
 		const firstDbEntity: DbEntity = airDb.schemas[fromRelation.si]
@@ -44,9 +44,9 @@ export abstract class SQLNoJoinQuery
 		let tableName                 = schemaUtils.getTableName(firstDbEntity)
 		if (fromRelation.si !== this.dbEntity.schemaVersion.schema.index
 			|| fromRelation.ti !== this.dbEntity.index) {
-			throw `Unexpected table in UPDATE/DELETE clause: 
+			throw new Error(`Unexpected table in UPDATE/DELETE clause: 
 			'${tableName}',
-			expecting: '${this.dbEntity.schemaVersion.schema.name}.${this.dbEntity.name}'`
+			expecting: '${this.dbEntity.schemaVersion.schema.name}.${this.dbEntity.name}'`)
 		}
 
 		const firstQEntity: IQEntity = new QEntity(firstDbEntity)

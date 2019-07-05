@@ -184,7 +184,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		fieldUtils: IFieldUtils
 	): string | JSONClauseField | JsonFieldQuery {
 		if (!functionObject) {
-			throw `Function object must be provided to valueToJSON function.`
+			throw new Error(`Function object must be provided to valueToJSON function.`)
 		}
 		let value = functionObject.value
 		switch (typeof value) {
@@ -193,7 +193,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			case 'string':
 				return columnAliases.entityAliases.getParams().getNextAlias(functionObject)
 			case 'undefined':
-				throw `Undefined is not allowed as a query parameter`
+				throw new Error(`Undefined is not allowed as a query parameter`)
 		}
 		if (value === null) {
 			return columnAliases.entityAliases.getParams().getNextAlias(functionObject)

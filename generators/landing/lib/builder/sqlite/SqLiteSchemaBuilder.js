@@ -72,7 +72,8 @@ class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
                 schemaIndex: dbSchema.index,
                 tableIndex: jsonEntity.index,
                 columnIndex: jsonColumn.index,
-                incrementBy
+                incrementBy,
+                currentValue: 0
             });
         }
         return sequences;

@@ -20,7 +20,7 @@ class LogicalOperation extends Operation_1.Operation {
     }
     static verifyChildOps(ops) {
         if (!ops || !ops.length) {
-            throw `No child operations provided`;
+            throw new Error(`No child operations provided`);
         }
     }
     and(ops) {

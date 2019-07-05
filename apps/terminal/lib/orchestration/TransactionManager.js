@@ -53,7 +53,7 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
                 return true;
             });
             if (!foundTransactionInQueue) {
-                throw `Could not find transaction '${credentials.domainAndPort}' is not found`;
+                throw new Error(`Could not find transaction '${credentials.domainAndPort}' is not found`);
             }
             return;
         }
@@ -67,7 +67,7 @@ class TransactionManager extends AbstractMutationManager_1.AbstractMutationManag
     async commit(credentials) {
         const [activeQueries, idGenerator, storeDriver] = await di_1.DI.get(fuel_hydrant_system_1.ACTIVE_QUERIES, fuel_hydrant_system_1.ID_GENERATOR, ground_control_1.STORE_DRIVER);
         if (this.transactionInProgress !== credentials.domainAndPort) {
-            throw `Cannot commit inactive transaction '${credentials.domainAndPort}'.`;
+            throw new Error(`Cannot commit inactive transaction '${credentials.domainAndPort}'.`);
         }
         let transaction = this.currentTransHistory;
         try {

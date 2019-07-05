@@ -25,7 +25,7 @@ class FieldQuery extends NonEntityQuery_1.DistinguishableQuery {
     }
     nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils) {
         if (!(this.rawQuery.select instanceof Field_1.QField)) {
-            throw NonEntityQuery_1.NON_ENTITY_SELECT_ERROR_MESSAGE;
+            throw new Error(NonEntityQuery_1.NON_ENTITY_SELECT_ERROR_MESSAGE);
         }
         this.columnAliases.entityAliases.getNextAlias(this.rawQuery.select.q.__driver__.getRootJoinEntity());
         return this.rawQuery.select.toJSON(this.columnAliases, true, queryUtils, fieldUtils);
@@ -60,7 +60,7 @@ class FieldQuery extends NonEntityQuery_1.DistinguishableQuery {
             return ground_control_1.SQLDataType.ANY;
         }
         else {
-            throw `Unsupported type of select field in Field Query`;
+            throw new Error(`Unsupported type of select field in Field Query`);
         }
     }
 }

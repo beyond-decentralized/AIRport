@@ -136,7 +136,8 @@ export class UpdateManager
 		RecordHistoryMap
 		]> {
 		if (!dbEntity.isRepositoryEntity) {
-			throw `Cannot add update history for a non-RepositoryEntity`
+			throw new Error(
+				`Cannot add update history for a non-RepositoryEntity`)
 		}
 
 		const qEntity                       = airDb

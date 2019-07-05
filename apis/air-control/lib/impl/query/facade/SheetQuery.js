@@ -12,11 +12,11 @@ class SheetQuery extends NonEntityQuery_1.DistinguishableQuery {
     }
     nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils) {
         if (!(rawSelect instanceof Array)) {
-            throw `Flat Queries an array of fields in SELECT clause.`;
+            throw new Error(`Flat Queries an array of fields in SELECT clause.`);
         }
         return rawSelect.map((selectField) => {
             if (!(selectField instanceof Field_1.QField)) {
-                throw NonEntityQuery_1.NON_ENTITY_SELECT_ERROR_MESSAGE;
+                throw new Error(NonEntityQuery_1.NON_ENTITY_SELECT_ERROR_MESSAGE);
             }
             this.columnAliases.entityAliases.getNextAlias(selectField.q.__driver__.getRootJoinEntity());
             return selectField.toJSON(this.columnAliases, true, queryUtils, fieldUtils);

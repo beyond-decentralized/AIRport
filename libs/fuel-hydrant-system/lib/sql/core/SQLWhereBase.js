@@ -49,7 +49,7 @@ class SQLWhereBase {
                     // 	return this.sqlAdaptor.getValue(valuesArray[parameterReference])
                     // }
                 }
-                throw `No parameter found for alias '${parameterReference}'`;
+                throw new Error(`No parameter found for alias '${parameterReference}'`);
             }
             return this.sqlAdaptor.getParameterValue(parameter);
         });
@@ -57,7 +57,7 @@ class SQLWhereBase {
     getWHEREFragment(operation, nestingPrefix, airDb, schemaUtils, metadataUtils) {
         let whereFragment = '';
         if (!operation) {
-            throw `An operation is missing in WHERE or HAVING clause`;
+            throw new Error(`An operation is missing in WHERE or HAVING clause`);
         }
         nestingPrefix = `${nestingPrefix}\t`;
         switch (operation.c) {
@@ -95,11 +95,12 @@ class SQLWhereBase {
                 const whereFragment = this.getWHEREFragment(operation.v, nestingPrefix, airDb, schemaUtils, metadataUtils);
                 return ` NOT (${whereFragment})`;
             default:
-                throw `Unknown logical operator: ${operation.o}`;
+                throw new Error(`Unknown logical operator: ${operation.o}`);
         }
         let childOperations = operation.v;
         if (!(childOperations instanceof Array)) {
-            throw `Expecting an array of child operations as a value for operator ${operator}, in the WHERE Clause.`;
+            throw new Error(`Expecting an array of child operations as a value for operator ${operator}, 
+				in the WHERE Clause.`);
         }
         let whereFragment = childOperations.map((childOperation) => {
             return this.getWHEREFragment(childOperation, nestingPrefix, airDb, schemaUtils, metadataUtils);
@@ -140,7 +141,7 @@ class SQLWhereBase {
     getFieldValue(clauseField, clauseType, defaultCallback, airDb, schemaUtils, metadataUtils) {
         let columnName;
         if (!clauseField) {
-            throw `Missing Clause Field definition`;
+            throw new Error(`Missing Clause Field definition`);
         }
         if (clauseField instanceof Array) {
             return clauseField
@@ -156,10 +157,10 @@ class SQLWhereBase {
             case ground_control_1.JSONClauseObjectType.FIELD_FUNCTION:
                 return this.getFieldFunctionValue(aField, defaultCallback, airDb, schemaUtils, metadataUtils);
             case ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION:
-                throw `Distinct function cannot be nested.`;
+                throw new Error(`Distinct function cannot be nested.`);
             case ground_control_1.JSONClauseObjectType.EXISTS_FUNCTION:
                 if (clauseType !== ClauseType.WHERE_CLAUSE) {
-                    throw `Exists can only be used as a top function in a WHERE clause.`;
+                    throw new Error(`Exists can only be used as a top function in a WHERE clause.`);
                 }
                 let TreeSQLQueryClass = require('../TreeSQLQuery').TreeSQLQuery;
                 let mappedSqlQuery = new TreeSQLQueryClass(aField.v, this.dialect);
@@ -199,17 +200,17 @@ class SQLWhereBase {
             return false;
         }
         if (value === undefined || value === '' || value === NaN) {
-            throw `Invalid query value: ${value}`;
+            throw new Error(`Invalid query value: ${value}`);
         }
         switch (typeof value) {
             case 'boolean':
             case 'number':
-                throw `Unexpected primitive instance, expecting parameter alias.`;
+                throw new Error(`Unexpected primitive instance, expecting parameter alias.`);
             case 'string':
                 return true;
         }
         if (value instanceof Date) {
-            throw `Unexpected date instance, expecting parameter alias.`;
+            throw new Error(`Unexpected date instance, expecting parameter alias.`);
         }
         return false;
     }
@@ -250,7 +251,7 @@ class SQLWhereBase {
             case ground_control_1.SqlOperator.LIKE:
                 return ` LIKE ${rValue}`;
             default:
-                throw `Unsupported operator ${operator}`;
+                throw new Error(`Unsupported operator ${operator}`);
         }
     }
 }

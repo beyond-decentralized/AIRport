@@ -24,7 +24,7 @@ class QRelationBuilder {
         return `${this.entityProperty.name}: ${type};`;
     }
     build() {
-        throw `Not implemented`;
+        throw new Error(`Not implemented`);
     }
     buildInterfaceDefinition(idOnly, optional = true, forInternalInterfaces = true) {
         if (idOnly && this.entityProperty.decorators.filter(decorator => decorator.name === 'OneToMany').length) {

@@ -28,7 +28,7 @@ class JoinTreeNode {
             case 1:
                 return matchingNodes[0];
             default:
-                throw `More than one child node matched relation property index '${relationIndex}'`;
+                throw new Error(`More than one child node matched relation property index '${relationIndex}'`);
         }
         // No node matched, this must be reference to a sub-entity in select clause (in a Entity
         // query)

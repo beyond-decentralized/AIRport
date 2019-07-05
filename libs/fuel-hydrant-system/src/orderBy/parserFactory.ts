@@ -21,8 +21,9 @@ export function getOrderByParser(
 //			return new ExactOrderByParser(rootQEntity, selectClauseFragment,
 // qEntityMapByName, entitiesRelationPropertyMap, entitiesPropertyTypeMap, orderBy);
 		case QueryResultType.RAW:
-			throw `Query parsing not supported for raw queries`
+			throw new Error(`Query parsing not supported for raw queries`)
 		default:
-			throw `Unexpected queryResultType for an Entity ORDER BY parser: ${queryResultType}`
+			throw new Error(
+				`Unexpected queryResultType for an Entity ORDER BY parser: ${queryResultType}`)
 	}
 }

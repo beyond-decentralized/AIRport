@@ -104,7 +104,7 @@ export class Lookup
 				}
 				return QueryResultType.ENTITY_TREE
 			default:
-				throw `Unexpected Base Query ResultType: '${baseQueryResultType}'.`
+				throw new Error(`Unexpected Base Query ResultType: '${baseQueryResultType}'.`)
 		}
 	}
 

@@ -77,7 +77,7 @@ export class DatabaseManager
 			defaultStoreType: StoreType
 		): Promise<void> {
 			AIR_DB
-			throw `Implement!`
+			throw new Error(`Implement!`)
 					const db = TQ.db(dbConst.DEFAULT_DB);
 					if (!TQ.isInitialized(dbConst.DEFAULT_DB)) {
 						await TQ.addDataStore(defaultStoreType, dbConst.DEFAULT_DB);
@@ -165,7 +165,7 @@ export class DatabaseManager
 		}
 		await (await DI.get(SEQUENCE_GENERATOR)).init()
 		/*
-				throw `Implement!`
+				throw new Error(`Implement!`)
 				let dbFacade: IDatabaseFacade = this.databaseMap[terminalName]
 				if (!dbFacade) {
 					dbFacade                       = new DatabaseFacade(terminalName)
@@ -174,7 +174,8 @@ export class DatabaseManager
 					this.dbNameSet[terminalName] = true
 				}
 				if (this.isInitialized(terminalName)) {
-					throw `Database '${terminalName}' is already initialized`
+					throw new Error(
+					`Database '${terminalName}' is already initialized`)
 				}
 				this.allDbsEntityData.forEach(
 					entityData => {
@@ -225,7 +226,8 @@ export class DatabaseManager
 		terminalName: string
 	): Promise<void> {
 		if (this.isInitialized(terminalName)) {
-			throw `Database '${terminalName}' is already initialized`;
+			throw new Error(
+			`Database '${terminalName}' is already initialized`);
 		}
 		const newDataStore = await QDataStore.db(dbConst.DEFAULT_DB).save({
 			name: terminalName,

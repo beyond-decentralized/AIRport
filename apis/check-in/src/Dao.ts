@@ -53,7 +53,7 @@ export abstract class Dao<Entity,
 	}
 
 	async count(): Promise<number> {
-		throw `Not Implemented`
+		throw new Error(`Not Implemented`)
 	}
 
 	async create<EntityInfo extends EntityCreate | EntityCreate[]>(
@@ -71,18 +71,18 @@ export abstract class Dao<Entity,
 		entityIdInfo: EntityId | EntityId[],
 	): Promise<number> {
 		if (entityIdInfo instanceof Array) {
-			throw `Not Implemented`
+			throw new Error(`Not Implemented`)
 		} else {
 			return await this.db.delete(entityIdInfo)
 		}
 	}
 
 	async deleteAll(): Promise<number> {
-		throw `Not Implemented`
+		throw new Error(`Not Implemented`)
 	}
 
 	exists(entityId: EntityId): Promise<boolean> {
-		throw `Not Implemented`
+		throw new Error(`Not Implemented`)
 	}
 
 	async findAll(
@@ -90,7 +90,7 @@ export abstract class Dao<Entity,
 		cacheForUpdate: boolean = false
 	): Promise<Entity[]> {
 		if (entityIds) {
-			throw `Not implemented`
+			throw new Error(`Not implemented`)
 		}
 		return await this.db.find.graph({
 			select: <any>{},
@@ -103,7 +103,7 @@ export abstract class Dao<Entity,
 		cacheForUpdate: boolean = false
 	): Promise<Entity[]> {
 		if (entityIds) {
-			throw `Not implemented`
+			throw new Error(`Not implemented`)
 		}
 		return await this.db.find.tree({
 			select: <any>{},
@@ -115,14 +115,14 @@ export abstract class Dao<Entity,
 		entityId: EntityId,
 		cacheForUpdate: boolean = false
 	): Promise<Entity> {
-		throw `Not implemented`
+		throw new Error(`Not implemented`)
 	}
 
 	async save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entity: EntityInfo,
 	): Promise<number> {
 		if (entity instanceof Array) {
-			throw `Not Implemented`
+			throw new Error(`Not Implemented`)
 		} else {
 			return await this.db.save(<EntityCreate>entity)
 		}
@@ -132,9 +132,9 @@ export abstract class Dao<Entity,
 		entity: EntityInfo,
 	): Promise<number> {
 		if (entity instanceof Array) {
-			throw `Not Implemented`
+			throw new Error(`Not Implemented`)
 		} else {
-			throw `Not Implemented`
+			throw new Error(`Not Implemented`)
 		}
 	}
 
@@ -142,7 +142,7 @@ export abstract class Dao<Entity,
 		entityInfo: EntityCreate | EntityCreate[]
 	): Promise<number> {
 		if (entityInfo instanceof Array) {
-			throw `Not Implemented`
+			throw new Error(`Not Implemented`)
 		} else {
 			return await this.db.update(entityInfo)
 		}

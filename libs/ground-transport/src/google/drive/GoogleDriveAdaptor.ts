@@ -1,17 +1,17 @@
 import {
 	GoogleChangeListShareInfo,
 	GoogleSetupInfo
-}                    from '@airport/terminal-map';
+}                    from '@airport/terminal-map'
 import {
 	ApiConstants,
 	GoogleApi
-}                    from '../GoogleApi';
-import {GoogleDrive} from './GoogleDrive';
+}                    from '../GoogleApi'
+import {GoogleDrive} from './GoogleDrive'
 import {
 	DriveConstants,
 	DriveResponse,
 	MimeTypes
-}                    from './GoogleDriveModel';
+}                    from './GoogleDriveModel'
 
 /**
  * Created by Papa on 1/3/2016.
@@ -32,16 +32,16 @@ export class GoogleDriveAdaptor {
 			let loadRequests = [
 				this.googleApi.loadApi('drive', DriveConstants.VERSION),
 				this.googleApi.loadApi('drive-realtime,drive-share', DriveConstants.VERSION)
-			];
+			]
 
-			return Promise.all(loadRequests);
-		});
+			return Promise.all(loadRequests)
+		})
 	}
 
 	setup(
 		setupInfo: GoogleSetupInfo
 	): Promise<DriveResponse> {
-		return this.googleDrive.findOrCreateUniqueFolder(setupInfo.rootFolder);
+		return this.googleDrive.findOrCreateUniqueFolder(setupInfo.rootFolder)
 	}
 
 	listChangeLists(
@@ -50,20 +50,20 @@ export class GoogleDriveAdaptor {
 		return this.googleDrive.listFiles(info.sharedAppFolderId).then((
 			response: DriveResponse
 		) => {
-			let files = response.result.files;
+			let files = response.result.files
 			if (!files || files.length === 0) {
-				return [];
+				return []
 			}
-			let shares: GoogleChangeListShareInfo[] = [];
+			let shares: GoogleChangeListShareInfo[] = []
 			files.forEach((file) => {
 				shares.push({
 					name: file.name,
 					dbId: info.dbIdField,
 					folderId: file.id
-				});
-			});
-			return shares;
-		});
+				})
+			})
+			return shares
+		})
 	}
 
 	populateChangeListFileInfo(
@@ -72,19 +72,20 @@ export class GoogleDriveAdaptor {
 		return this.googleDrive.listFiles(changeListInfo.folderId).then((
 			response: DriveResponse
 		) => {
-			let files = response.result.files;
+			let files = response.result.files
 			if (!files || files.length === 0) {
-				return changeListInfo;
+				return changeListInfo
 			}
 			files.forEach((file) => {
 				if (file.mimeType.indexOf(MimeTypes.REALTIME) === 0) {
 					if (changeListInfo.realtimeFileId) {
-						throw `Multiple Realtime files found for Change List: ${changeListInfo.name}`;
+						throw new Error(
+							`Multiple Realtime files found for Change List: ${changeListInfo.name}`)
 					}
-					changeListInfo.realtimeFileId = file.id;
+					changeListInfo.realtimeFileId = file.id
 				}
-			});
-			return changeListInfo;
-		});
+			})
+			return changeListInfo
+		})
 	}
 }

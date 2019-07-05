@@ -138,7 +138,8 @@ export function getObjectResultParser(
 			let EntityTreeResultParserClass: typeof EntityTreeResultParser = require('./EntityTreeResultParser').EntityTreeResultParser
 			return new EntityTreeResultParserClass()
 		default:
-			throw `ObjectQueryParser not supported for QueryResultType: ${queryResultType}`
+			throw new Error(
+				`ObjectQueryParser not supported for QueryResultType: ${queryResultType}`)
 	}
 }
 

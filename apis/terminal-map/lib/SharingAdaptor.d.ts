@@ -1,5 +1,5 @@
-import { DistributionStrategy, PlatformType } from "@airport/ground-control";
-import { SharedChangeList } from "./sync/SharedChangeList";
+import { DistributionStrategy, PlatformType } from '@airport/ground-control';
+import { SharedChangeList } from './sync/SharedChangeList';
 /**
  * Created by Papa on 1/10/2016.
  */

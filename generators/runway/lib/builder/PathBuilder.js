@@ -56,7 +56,8 @@ class PathBuilder {
             else {
                 let pathStat = fs.statSync(currentPath);
                 if (!pathStat.isDirectory()) {
-                    throw `'${currentPath}' is not a directory`;
+                    throw new Error(`'${currentPath}' 
+					is not a directory`);
                 }
             }
             this.dirExistanceMap[currentPath] = true;
@@ -76,7 +77,7 @@ class PathBuilder {
         sourcePath = pathResolver_1.normalizePath(sourcePath);
         let indexOfSourceDirInPath = sourcePath.toLowerCase().indexOf(this.ddlDirPath.toLowerCase());
         if (indexOfSourceDirInPath !== 0) {
-            throw `Cannot generate file from source outside of root source dir`;
+            throw new Error(`Cannot generate file from source outside of root source dir`);
         }
         let sourceRelativePath = sourcePath.substr(this.ddlDirPath.length + 1);
         if (prefixQ) {

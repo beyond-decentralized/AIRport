@@ -53,7 +53,7 @@ class Lookup {
                 }
                 return ground_control_1.QueryResultType.ENTITY_TREE;
             default:
-                throw `Unexpected Base Query ResultType: '${baseQueryResultType}'.`;
+                throw new Error(`Unexpected Base Query ResultType: '${baseQueryResultType}'.`);
         }
     }
 }

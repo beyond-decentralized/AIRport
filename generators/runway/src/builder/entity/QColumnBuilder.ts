@@ -2,14 +2,15 @@ import {
 	getColumnFieldInterface,
 	IQBuilder,
 	IQCoreEntityBuilder
-}                from "../QBuilder";
-import {SColumn} from "../schema/SProperty";
+}                from '../QBuilder'
+import {SColumn} from '../schema/SProperty'
 
 /**
  * Created by Papa on 4/25/2016.
  */
 
-export class QColumnBuilder implements IQBuilder {
+export class QColumnBuilder
+	implements IQBuilder {
 
 	constructor(
 		private parentBuilder: IQCoreEntityBuilder,
@@ -18,30 +19,30 @@ export class QColumnBuilder implements IQBuilder {
 	}
 
 	buildDefinition(): string {
-		let column = this.sColumn;
+		let column = this.sColumn
 
-		return `${column.name}: ${column.type};`;
+		return `${column.name}: ${column.type};`
 	}
 
 	build(): string {
-		throw `Not Implemented.`;
+		throw new Error(`Not Implemented.`)
 	}
 
 	buildInterfaceDefinition(
 		optional: boolean              = true,
 		forInternalInterfaces: boolean = true
 	): string {
-		const column = this.sColumn;
-		const name   = column.name;
-		let type     = column.type;
+		const column = this.sColumn
+		const name   = column.name
+		let type     = column.type
 		if (type === 'Json') {
-			type = 'string';
+			type = 'string'
 		}
-		let operableFieldSuffix = '';
+		let operableFieldSuffix = ''
 		if (forInternalInterfaces) {
-			operableFieldSuffix = ' | ' + getColumnFieldInterface(column);
+			operableFieldSuffix = ' | ' + getColumnFieldInterface(column)
 		}
-		return `${name}${optional ? '?' : ''}: ${type}${operableFieldSuffix};`;
+		return `${name}${optional ? '?' : ''}: ${type}${operableFieldSuffix};`
 
 	}
 

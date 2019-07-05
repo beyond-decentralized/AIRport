@@ -58,7 +58,8 @@ class GoogleDrive {
                         }
                     };
                 default:
-                    throw `Found more than one '${fileName}' in directory '${folderId}', please delete the duplicate.`;
+                    throw new Error(`Found more than one '${fileName}' in directory '${folderId}', 
+						please delete the duplicate.`);
             }
         });
     }
@@ -79,7 +80,8 @@ class GoogleDrive {
                         statusText: undefined
                     };
                 default:
-                    throw `Found more than one '${fileName}' in directory '${folderId}', please delete the duplicate.`;
+                    throw new Error(`Found more than one '${fileName}' in directory '${folderId}',
+						please delete the duplicate.`);
             }
         });
     }

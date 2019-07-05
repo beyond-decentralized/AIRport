@@ -25,7 +25,7 @@ class UpdateManager {
     }
     async addUpdateHistory(dbEntity, portableQuery, actor, airDb, histManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoManager, repoTransHistoryDuo, schemaUtils, storeDriver, transManager) {
         if (!dbEntity.isRepositoryEntity) {
-            throw `Cannot add update history for a non-RepositoryEntity`;
+            throw new Error(`Cannot add update history for a non-RepositoryEntity`);
         }
         const qEntity = airDb
             .qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];

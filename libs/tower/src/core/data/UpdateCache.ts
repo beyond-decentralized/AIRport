@@ -126,7 +126,8 @@ export class UpdateCache
 							continue
 						}
 						if (!(value instanceof Array)) {
-							throw `Expecting @OneToMany for an array entity relation`
+							throw new Error(
+								`Expecting @OneToMany for an array entity relation`)
 						}
 						value.forEach((manyObject) => {
 							this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate,
@@ -135,7 +136,8 @@ export class UpdateCache
 						break
 					case EntityRelationType.MANY_TO_ONE:
 						if (!(value instanceof Object) || value instanceof Array) {
-							throw `Expecting @ManyToOne for a non-array entity relation`
+							throw new Error(
+								`Expecting @ManyToOne for a non-array entity relation`)
 						}
 						schemaUtils.forEachColumnOfRelation(
 							dbRelation,
@@ -154,7 +156,8 @@ export class UpdateCache
 							dbRelation.relationEntity, value)
 						break
 					default:
-						throw `Unknown relation type: ${dbRelation.relationType}`
+						throw new Error(
+							`Unknown relation type: ${dbRelation.relationType}`)
 				}
 			} else {
 				const dbColumn = dbProperty.propertyColumns[0].column
@@ -175,8 +178,8 @@ export class UpdateCache
 		const copiedValue = entityCopy[columnName]
 		// if (!schemaUtils.isEmpty(copiedValue)
 		// 	&& valuesEqual(copiedValue, value)) {
-		// 	throw `Values do not match for column
-		// '${dbColumn.propertyColumns[0].property.entity.name}.${dbColumn.name}'` }
+		// 	throw new Error(`Values do not match for column
+		// '${dbColumn.propertyColumns[0].property.entity.name}.${dbColumn.name}'`) }
 		switch (dbColumn.type) {
 			case SQLDataType.BOOLEAN:
 			case SQLDataType.NUMBER:
@@ -191,7 +194,7 @@ export class UpdateCache
 				entityCopy[columnName] = new Date(value.getTime())
 				break
 			default:
-				throw `Unknown SQLDataType: ${dbColumn.type}`
+				throw new Error(`Unknown SQLDataType: ${dbColumn.type}`)
 		}
 	}
 

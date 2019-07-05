@@ -77,7 +77,7 @@ export class PostgreSqlSchemaBuilder
 				await this.buildSequences(jsonSchema, jsonEntity, storeDriver)
 			}
 		}
-		throw 'Finish implementing'
+		throw new Error('Finish implementing')
 	}
 
 	async buildSequences(

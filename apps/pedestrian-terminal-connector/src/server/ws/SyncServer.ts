@@ -48,7 +48,7 @@ export class SyncServer implements ISyncServer {
 	}
 
 	stop(): void {
-		throw `Not Implemented`;
+		throw new Error(`Not Implemented`);
 	}
 
 }

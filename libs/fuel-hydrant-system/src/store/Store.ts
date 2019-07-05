@@ -24,7 +24,7 @@ export async function setStoreDriver(
 			StoreDriver           = sqlJsDriverFile.SqlJsDriver
 			break
 		default:
-			throw `Unsupported StoreType: ${storeType}`
+			throw new Error(`Unsupported StoreType: ${storeType}`)
 	}
 
 

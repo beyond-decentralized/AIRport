@@ -37,7 +37,7 @@ export class FieldSQLQuery
 		metadataUtils: IQMetadataUtils
 	): string {
 		if (!selectClauseFragment) {
-			throw `SELECT clause is not defined for a Field Query`
+			throw new Error(`SELECT clause is not defined for a Field Query`)
 		}
 		{
 			let distinctClause = <JSONClauseField>selectClauseFragment

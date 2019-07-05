@@ -78,7 +78,7 @@ propertyDocEntry //
         case 'any':
             return 'ANY';
         default:
-            throw `Unexpected primitive ${propertyDocEntry.primitive}`;
+            throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`);
     }
 }
 exports.getPropertyFieldType = getPropertyFieldType;
@@ -98,7 +98,7 @@ propertyDocEntry //
         case 'any':
             return 'JSONRawUntypedOperation';
         default:
-            throw `Unexpected primitive ${propertyDocEntry.primitive}`;
+            throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`);
     }
 }
 exports.getPropertyJSONOperationInterface = getPropertyJSONOperationInterface;
@@ -118,7 +118,7 @@ propertyDocEntry //
         case 'any':
             return 'IUntypedOperation';
         default:
-            throw `Unexpected primitive ${propertyDocEntry.primitive}`;
+            throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`);
     }
 }
 exports.getPropertyTypedOperationInterface = getPropertyTypedOperationInterface;
@@ -150,7 +150,7 @@ primitive //
         case 'any':
             return 'IQUntypedField';
         default:
-            throw `Unexpected primitive ${primitive}`;
+            throw new Error(`Unexpected primitive ${primitive}`);
     }
 }
 exports.getPrimitiveFieldInterface = getPrimitiveFieldInterface;
@@ -170,7 +170,7 @@ propertyDocEntry //
         case 'any':
             return 'QUntypedField';
         default:
-            throw `Unexpected primitive ${propertyDocEntry.primitive}`;
+            throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`);
     }
 }
 exports.getPropertyFieldClass = getPropertyFieldClass;

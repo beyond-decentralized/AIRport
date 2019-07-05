@@ -1,12 +1,12 @@
+import {plus}         from '@airport/air-control'
 import {DI}           from '@airport/di'
+import {DbSequence}   from '@airport/ground-control/lib/src'
 import {SEQUENCE_DAO} from '../diTokens'
 import {
 	BaseSequenceDao,
 	IBaseSequenceDao,
-	ISequence,
-	Q,
-	SequenceEId
-} from '../generated/generated'
+	Q
+}                     from '../generated/generated'
 
 export interface IAbstractSequenceDao {
 }
@@ -14,6 +14,7 @@ export interface IAbstractSequenceDao {
 export interface ISequenceDao
 	extends IBaseSequenceDao {
 
+	incrementCurrentValues(): Promise<void>
 }
 
 export class SequenceDao
@@ -24,6 +25,21 @@ export class SequenceDao
 		return Q.__dbSchema__ && Q.__dbSchema__
 			.currentVersion.entities[0]
 	}
+
+	async incrementCurrentValues(): Promise<void> {
+		const s = Q.Sequence
+		await this.db.updateWhere({
+			update: s,
+			set: {
+				currentValue: plus(s.currentValue, s.incrementBy)
+			}
+		})
+	}
+
+	async updateCurrentValue(
+		sequence: DbSequence,
+		numNewSequencesNeeded: number
+	): Promise<void>
 
 }
 

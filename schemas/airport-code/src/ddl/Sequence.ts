@@ -14,6 +14,7 @@ import {
 import {Domain} from '@airport/territory'
 
 export type SequenceIncrementBy = number
+export type SequenceCurrentValue = number
 
 @Entity()
 @Table({name: 'SEQUENCES'})
@@ -36,5 +37,8 @@ export class Sequence {
 
 	@Column({name: 'SEQUENCE_INCREMENT_BY', nullable: false})
 	incrementBy: SequenceIncrementBy
+
+	@Column({name: 'CURRENT_VALUE', nullable: false})
+	currentValue: SequenceCurrentValue
 
 }

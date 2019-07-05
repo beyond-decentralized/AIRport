@@ -56,7 +56,7 @@ export class EntityQuery<IEP extends IEntitySelectProperties>
 		for (let field in rawSelect) {
 			let value = rawSelect[field]
 			if (value instanceof QField) {
-				throw `Field References cannot be used in Entity Queries`
+				throw new Error(`Field References cannot be used in Entity Queries`)
 			} else if (value instanceof Object && !(value instanceof Date)) {
 				this.nonDistinctSelectClauseToJSON(value)
 			}

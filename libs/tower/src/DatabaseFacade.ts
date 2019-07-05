@@ -288,8 +288,8 @@ export class DatabaseFacade
 			return 0
 		}
 		if (!dbEntity.idColumns.length) {
-			throw `@Id is not defined for entity: '${dbEntity.name}'.
-			Cannot call save(entity) on entities with no ids.`
+			throw new Error(`@Id is not defined for entity: '${dbEntity.name}'.
+			Cannot call save(entity) on entities with no ids.`)
 		}
 		const [airDb, fieldUtils, metadataUtils, queryFacade,
 			      queryUtils, schemaUtils, transConnector,
@@ -310,10 +310,10 @@ export class DatabaseFacade
 
 		return await transactional(async () => {
 			if (emptyIdCount && nonEmptyIdCount) {
-				throw `Cannot call save(entity) for instance of '${dbEntity.name}' which has
+				throw new Error(`Cannot call save(entity) for instance of '${dbEntity.name}' which has
 			${nonEmptyIdCount} @Id values specified and ${emptyIdCount} @Id values not specified.
 			Please make sure that the entity instance either has all @Id values specified (to be
-			updated) or non of @Id values specified (to be created).`
+			updated) or non of @Id values specified (to be created).`)
 			} else if (emptyIdCount) {
 				return await this.performCreate(dbEntity, entity, [],
 					airDb, fieldUtils, metadataUtils, queryFacade,
@@ -402,7 +402,7 @@ export class DatabaseFacade
 	}
 
 	private ensureId<E>(entity: E) {
-		throw `Not Implemented`
+		throw new Error(`Not Implemented`)
 	}
 
 
@@ -414,9 +414,9 @@ export class DatabaseFacade
 		const originalRecord = updateCache.getEntityUpdateCache(entity)
 
 		if (!originalRecord) {
-			throw `Cannot update '${dbEntity.name}' - entity has no update cache.
+			throw new Error(`Cannot update '${dbEntity.name}' - entity has no update cache.
 			Did you forget to add .cache() to the query you used to retrieve the 
-			original record?`
+			original record?`)
 		}
 
 		return originalRecord

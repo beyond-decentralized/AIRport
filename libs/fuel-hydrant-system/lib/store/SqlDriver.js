@@ -99,13 +99,13 @@ class SqlDriver {
                 return new TreeSQLQuery_1.TreeSQLQuery(jsonQuery, dialect);
             case QueryResType.RAW:
             default:
-                throw `Unknown QueryResultType: ${resultType}`;
+                throw new Error(`Unknown QueryResultType: ${resultType}`);
         }
     }
     async findOne(portableQuery, cachedSqlQueryId) {
         let results = await this.find(portableQuery);
         if (results.length > 1) {
-            throw `Expecting a single result, got ${results.length}`;
+            throw new Error(`Expecting a single result, got ${results.length}`);
         }
         if (results.length == 1) {
             return results[0];

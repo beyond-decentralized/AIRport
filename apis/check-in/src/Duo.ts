@@ -41,45 +41,45 @@ export class Duo<Entity,
 	getIdStub(
 		ids: number | string | number[] | string[]
 	): EntityId {
-		throw `Not Implemented.`
+		throw new Error(`Not Implemented.`)
 	}
 
 	getIdStubs(
 		ids: number[] | string[] | number[][] | string[][]
 	): EntityId[] {
-		throw `Not Implemented.`
+		throw new Error(`Not Implemented.`)
 	}
 
 	getAllFieldsSelect(): EntitySelect {
-		throw `Not Implemented.`
+		throw new Error(`Not Implemented.`)
 	}
 
 	getIdFieldsSelect(): EntityId {
-		throw `Not Implemented.`
+		throw new Error(`Not Implemented.`)
 	}
 
 	getNonIdFieldsSelect(): EntityUpdate {
-		throw `Not Implemented.`
+		throw new Error(`Not Implemented.`)
 	}
 
 	getMaxIdsSelectPerRepository() {
-		throw `Not implemented`
+		throw new Error(`Not implemented`)
 	}
 
 	getMaxIdSelect() {
-		throw `Not implemented`
+		throw new Error(`Not implemented`)
 	}
 
 	getAllManyToOnesSelect(): EntitySelect {
-		throw `Not implemented`
+		throw new Error(`Not implemented`)
 	}
 
 	getAllManyToOneIdStubsSelect(): EntitySelect {
-		throw `Not implemented`
+		throw new Error(`Not implemented`)
 	}
 
 	getAllOneToManysSelect(): EntitySelect {
-		throw `Not implemented`
+		throw new Error(`Not implemented`)
 	}
 
 }
@@ -87,7 +87,7 @@ export class Duo<Entity,
 export function getAllFieldsSelect(
 	dbEntity: DbEntity
 ): IEntitySelectProperties {
-	throw `Not implemented`
+	throw new Error(`Not implemented`)
 }
 
 

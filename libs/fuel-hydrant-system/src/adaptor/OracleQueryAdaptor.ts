@@ -19,7 +19,7 @@ export class OracleQueryAdaptor
 		parameterReferences: (number | string)[],
 		newReference: number | string
 	): string {
-		throw `Not implemented`
+		throw new Error(`Not implemented`)
 	}
 
 	dateToDbQuery(date: Date): string {
@@ -29,7 +29,7 @@ export class OracleQueryAdaptor
 	}
 
 	getResultArray(rawResponse: any): any[] {
-		throw `Not implemented - getResultArray`
+		throw new Error(`Not implemented - getResultArray`)
 	}
 
 	getResultCellValue(
@@ -39,27 +39,27 @@ export class OracleQueryAdaptor
 		dataType: SQLDataType,
 		defaultValue: any
 	): any {
-		throw `Not implemented - getResultCellValue`
+		throw new Error(`Not implemented - getResultCellValue`)
 	}
 
 	getFunctionAdaptor(): ISQLFunctionAdaptor {
-		throw `Not implemented getFunctionAdaptor`
+		throw new Error(`Not implemented getFunctionAdaptor`)
 	}
 
 	getOffsetFragment(offset: number): string {
-		throw `Not implemented`
+		throw new Error(`Not implemented`)
 	}
 
 	getLimitFragment(limit: number): string {
-		throw `Not implemented`
+		throw new Error(`Not implemented`)
 	}
 
 	getParameterValue(parameter: Parameter): any {
-		throw `Not implemented`
+		throw new Error(`Not implemented`)
 	}
 
 	getValue(value: any): any {
-		throw `Not implemented`
+		throw new Error(`Not implemented`)
 	}
 
 }

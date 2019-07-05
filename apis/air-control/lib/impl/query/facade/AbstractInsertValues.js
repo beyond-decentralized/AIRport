@@ -42,7 +42,7 @@ class AbstractInsertValues extends AbstractQuery_1.AbstractQuery {
         return valueSets.map((valueSet, rowIndex) => {
             return valueSet.map((value, columnIndex) => {
                 if (value === undefined) {
-                    throw `Cannot use 'undefined' in VALUES clause.`;
+                    throw new Error(`Cannot use 'undefined' in VALUES clause.`);
                 }
                 if (!(value instanceof Field_1.QField)) {
                     return WrapperFunctions_1.getPrimitiveValue(value, dbColumns[columnIndex], rowIndex);

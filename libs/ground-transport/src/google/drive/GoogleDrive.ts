@@ -1,9 +1,9 @@
-import {GoogleApi} from '../GoogleApi';
+import {GoogleApi} from '../GoogleApi'
 import {
 	DriveConstants,
 	DriveResponse,
 	MimeTypes
-}                  from './GoogleDriveModel';
+}                  from './GoogleDriveModel'
 
 /**
  * Created by Papa on 1/2/2016.
@@ -18,27 +18,27 @@ export class GoogleDrive {
 			'email',
 			'profile',
 			// Add other scopes needed by your application.
-		];
+		]
 	}
 
 	createFolder(
 		name: string,
 		folderId?: string
 	): Promise<any> {
-		let parents;
+		let parents
 		if (folderId) {
-			parents = [folderId];
+			parents = [folderId]
 		}
-		let fileMetadata: gapi.client.drive.files.FileMetadata = {
+		let fileMetadata: gapi.client.drive.files.FileMetadata         = {
 			name: name,
 			mimeType: MimeTypes.FOLDER,
 			parents: parents
-		};
+		}
 		let createDescriptor: gapi.client.drive.files.CreateDescriptor = {
 			resource: fileMetadata,
 			fields: 'id'
-		};
-		return gapi.client.drive.files.create(createDescriptor);
+		}
+		return gapi.client.drive.files.create(createDescriptor)
 	}
 
 	createFile(
@@ -50,20 +50,20 @@ export class GoogleDrive {
 			mimeType: mimeType,
 			name: name,
 			parents: [folderId]
-		};
+		}
 		return <Promise<DriveResponse>><any>Promise.resolve().then(() => {
 			return gapi.client.drive.files.create({
 				resource: fileMetadata,
 				fields: 'id'
-			});
-		});
+			})
+		})
 	}
 
 	findOrCreateBook(
 		name: string,
 		folderId: string
 	): Promise<DriveResponse> {
-		return this.findOrCreateUniqueFile(name, MimeTypes.SPREAD_SHEET_BOOK, folderId);
+		return this.findOrCreateUniqueFile(name, MimeTypes.SPREAD_SHEET_BOOK, folderId)
 	}
 
 	findOrCreateUniqueFolder(
@@ -73,20 +73,22 @@ export class GoogleDrive {
 		return this.findFile(fileName, folderId).then((
 			response: DriveResponse
 		) => {
-			let files = response.result.files;
+			let files = response.result.files
 			switch (files.length) {
 				case 0:
-					return this.createFolder(fileName, folderId);
+					return this.createFolder(fileName, folderId)
 				case 1:
 					return {
 						result: {
 							id: files[0].id
 						}
-					};
+					}
 				default:
-					throw `Found more than one '${fileName}' in directory '${folderId}', please delete the duplicate.`;
+					throw new Error(
+						`Found more than one '${fileName}' in directory '${folderId}', 
+						please delete the duplicate.`)
 			}
-		});
+		})
 	}
 
 	findOrCreateUniqueFile(
@@ -97,10 +99,10 @@ export class GoogleDrive {
 		return this.findFile(fileName, folderId).then((
 			response: DriveResponse
 		) => {
-			let files = response.result.files;
+			let files = response.result.files
 			switch (files.length) {
 				case 0:
-					return this.createFile(fileName, mimeType, folderId);
+					return this.createFile(fileName, mimeType, folderId)
 				case 1:
 					return {
 						body: undefined,
@@ -110,11 +112,13 @@ export class GoogleDrive {
 						},
 						status: undefined,
 						statusText: undefined
-					};
+					}
 				default:
-					throw `Found more than one '${fileName}' in directory '${folderId}', please delete the duplicate.`;
+					throw new Error(
+						`Found more than one '${fileName}' in directory '${folderId}',
+						please delete the duplicate.`)
 			}
-		});
+		})
 	}
 
 	private apiFileList(
@@ -124,47 +128,47 @@ export class GoogleDrive {
 			resolve,
 			reject
 		) => {
-			resolve();
+			resolve()
 		}).then(() => {
-			return gapi.client.drive.files.list(dirRef);
-		});
+			return gapi.client.drive.files.list(dirRef)
+		})
 	}
 
 	findFile(
 		fileName: string,
 		folderId: string = DriveConstants.DRIVE_FOLDER
 	): Promise<any> {
-		let query = `name = '${fileName}' and '${folderId}' in parents and trashed=false`;
+		let query = `name = '${fileName}' and '${folderId}' in parents and trashed=false`
 		return this.apiFileList({
 			q: query
 		}).then((response: DriveResponse) => {
-			console.log('Found for q:\n\t' + query);
-			console.log(response);
-			return response;
+			console.log('Found for q:\n\t' + query)
+			console.log(response)
+			return response
 		}).catch((error: DriveResponse) => {
-			console.log('Did not find for q:\n\t' + query);
+			console.log('Did not find for q:\n\t' + query)
 			if (error.status === 404) {
 				return {
 					result: {
 						files: []
 					}
-				};
+				}
 			}
-			throw error;
-		});
+			throw error
+		})
 	}
 
 	listFiles(
 		folderId: string,
 		pageToken: string = null,
-		space: string = DriveConstants.DRIVE_SPACE
+		space: string     = DriveConstants.DRIVE_SPACE
 	): Promise<any> {
 		return this.apiFileList({
 			fields: 'nextPageToken, files(id, mimeType, name)',
 			pageToken: pageToken,
 			q: `'${folderId}' in parents and trashed = false`,
 			spaces: space
-		});
+		})
 	}
 
 	searchFiles(
@@ -174,6 +178,6 @@ export class GoogleDrive {
 			spaces: space,
 			fields: DriveConstants.APP_DATA_LIST_FIELDS,
 			pageSize: 100
-		});
+		})
 	}
 }

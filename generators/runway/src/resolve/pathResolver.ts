@@ -107,7 +107,7 @@ export function addImportForType(
 ) {
 	const moduleImport = entity.docEntry.fileImports.importMapByObjectAsName[type]
 	if (!moduleImport) {
-		throw `Could not find import for ${type} in file for '${entity.type}'`
+		throw new Error(`Could not find import for ${type} in file for '${entity.type}'`)
 	}
 	let relativePathToImport = moduleImport.path
 	if (moduleImport.path.indexOf('.') === 0) {

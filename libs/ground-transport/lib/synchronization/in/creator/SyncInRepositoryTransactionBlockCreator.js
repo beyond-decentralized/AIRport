@@ -115,7 +115,7 @@ class SyncInRepositoryTransactionBlockCreator {
         return repoTransHistoryMapByRepositoryId;
     }
     createSharingNodeRepoTransBlocks(allDataToTM) {
-        throw `Not Implemented`;
+        throw new Error(`Not Implemented`);
     }
 }
 exports.SyncInRepositoryTransactionBlockCreator = SyncInRepositoryTransactionBlockCreator;

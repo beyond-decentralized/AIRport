@@ -1,5 +1,5 @@
-import { IStoreDriver } from "@airport/ground-control";
-import { IRepository, IRepositoryTransactionHistory, ITransactionHistory } from "@airport/holding-pattern";
+import { IStoreDriver } from '@airport/ground-control';
+import { IRepository, IRepositoryTransactionHistory, ITransactionHistory } from '@airport/holding-pattern';
 /**
  * Created by Papa on 5/31/2016.
  */

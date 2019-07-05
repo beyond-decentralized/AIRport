@@ -21,7 +21,7 @@ export class SchemaRelationResolver {
 			const indexedEntity = indexedSchema.entityMapByName[entityName]
 			if (indexedEntity.entity.isRepositoryEntity) {
 				if (indexedEntity.idColumns[0].name !== repositoryEntity.FOREIGN_KEY) {
-					throw `@Id Column at index 0, must be 'REPOSITORY_ID'`
+					throw new Error(`@Id Column at index 0, must be 'REPOSITORY_ID'`)
 				}
 			}
 			this.resolveEntityRelationLinks(indexedSchema, indexedEntity)
@@ -71,8 +71,8 @@ export class SchemaRelationResolver {
 				relationIndexedEntity =
 					indexedSchema.entityMapByName[aRelation.entityName]
 				if (!relationIndexedEntity) {
-					throw `Did not find ${aRelation.entityName} entity `
-					+ `(via the ${anEntity.name}.${aProperty.name} relation).`
+					throw new Error(`Did not find ${aRelation.entityName} entity `
+						+ `(via the ${anEntity.name}.${aProperty.name} relation).`)
 				}
 
 				relatedOneToManys = this.getEntityRelationsOfType(
@@ -105,20 +105,22 @@ export class SchemaRelationResolver {
 				case EntityRelationType.ONE_TO_MANY:
 					if (aRelation.oneToMany && aRelation.oneToMany.cascade
 						&& anEntity.isLocal && !relationEntityIsLocal) {
-						throw `@OneToMany Relation '${anEntity.name}.${aProperty.name}' is on a Local entity and is cascading 
+						throw new Error(
+							`@OneToMany Relation '${anEntity.name}.${aProperty.name}' is on a Local entity and is cascading 
 						into a repository entity '${aRelation.entityName}'.
-						Cascading from Local entities to Repository entities is not currently supported.`
+						Cascading from Local entities to Repository entities is not currently supported.`)
 					}
 					if (crossSchema && !aRelation.sRelationColumns.length) {
-						throw `@OneToMany Relation '${anEntity.name}.${aProperty.name}' is a cross-schema @OneToMany association.
-						@OneToMany associations are not allowed across schemas (without @JoinColumn(s)).`
+						throw new Error(
+							`@OneToMany Relation '${anEntity.name}.${aProperty.name}' is a cross-schema @OneToMany association.
+						@OneToMany associations are not allowed across schemas (without @JoinColumn(s)).`)
 					}
 					break
 				case EntityRelationType.MANY_TO_ONE:
 					// Many-To-One relations are not cascaded, so no cascade check is needed
 					break
 				default:
-					throw `Unknown EntityRelationType: ${aRelation.relationType}.`
+					throw new Error(`Unknown EntityRelationType: ${aRelation.relationType}.`
 			}
 
 			let oneSideRelationIndex
@@ -132,21 +134,23 @@ export class SchemaRelationResolver {
 							relatedOneToMany =>
 								relatedOneToMany.oneToMany && relatedOneToMany.oneToMany.mappedBy === aProperty.name
 						)
-						// FIXME: right now there is no check on the One side of the relationship for mappedBy pointing to invalid location - add it
+						// FIXME: right now there is no check on the One side of the relationship for
+						// mappedBy pointing to invalid location - add it
 						if (matchingRelatedOneToManys.length > 1) {
-							throw `Found more ${matchingRelatedOneToManys.length} matching @OneToMany for ${anEntity.name}.${aProperty.name}. Expecting 1 or 0.`
+							throw new Error(`Found more ${matchingRelatedOneToManys.length} matching @OneToMany 
+							for ${anEntity.name}.${aProperty.name}. Expecting 1 or 0.`)
 						}
 						if (!matchingRelatedOneToManys.length) {
 							break
-							// throw `Expecting one matching @OneToMany for
+							// throw new Error(`Expecting one matching @OneToMany for
 							// ${anEntity.name}.${aProperty.name} and found
-							// ${matchingRelatedOneToManys.length}`;
+							// ${matchingRelatedOneToManys.length}`);
 						}
 						oneSideRelationIndex = matchingRelatedOneToManys[0].index
 					}
 					break
 				default:
-					throw `Unknown relation type ${aRelation.relationType}.`
+					throw new Error(`Unknown relation type ${aRelation.relationType}.`)
 			}
 
 			for (const sRelationColumn of aRelation.sRelationColumns) {
@@ -156,13 +160,14 @@ export class SchemaRelationResolver {
 				// if (sRelationColumn.ownColumnIdIndex) {
 				// 	ownColumn = indexedEntity.idColumns[sRelationColumn.ownColumnIdIndex]
 				// 	if (!ownColumn) {
-				// 		throw `Did not find @Id column of ${anEntity.name} at index
+				// 		throw new Error(`Did not find @Id column of ${anEntity.name} at index
 				// ${sRelationColumn.ownColumnIdIndex} ` + `(via the
-				// ${anEntity.name}.${aProperty.name} relation).` } } else {
+				// ${anEntity.name}.${aProperty.name} relation).`) } } else {
 				ownColumn = indexedEntity.columnMap[sRelationColumn.ownColumnReference]
 				if (!ownColumn) {
-					throw `Did not find column ${anEntity.name}.${sRelationColumn.ownColumnReference} `
-					+ `(via the ${anEntity.name}.${aProperty.name} relation).`
+					throw new Error(
+						`Did not find column ${anEntity.name}.${sRelationColumn.ownColumnReference} `
+						+ `(via the ${anEntity.name}.${aProperty.name} relation).`)
 				}
 				// }
 
@@ -171,20 +176,22 @@ export class SchemaRelationResolver {
 				// 	|| sRelationColumn.relationColumnIdIndex == 0) {
 				// 	relatedColumn =
 				// relationIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex] if
-				// (!relatedColumn) { throw `Did not find @Id column of ${relationEntityName} at
+				// (!relatedColumn) { throw new Error(
+				// `Did not find @Id column of ${relationEntityName} at
 				// index ${sRelationColumn.relationColumnIdIndex} ` + `(via the
-				// ${anEntity.name}.${aProperty.name} relation).` } } else
+				// ${anEntity.name}.${aProperty.name} relation).`) } } else
 				if (sRelationColumn.relationColumnReference) {
 					relatedColumn = relationIndexedEntity.columnMap[sRelationColumn.relationColumnReference]
 					if (!relatedColumn) {
-						throw `Did not find column ${relationEntityName}.${sRelationColumn.relationColumnReference} `
-						+ `(via the ${anEntity.name}.${aProperty.name} relation).`
+						throw new Error(
+							`Did not find column ${relationEntityName}.${sRelationColumn.relationColumnReference} `
+							+ `(via the ${anEntity.name}.${aProperty.name} relation).`)
 					}
 				} else {
 					relatedColumn = relationIndexedEntity.columnMap[ownColumn.name]
 					if (!relatedColumn) {
-						throw `Did not find column ${relationEntityName}.${ownColumn.name} `
-						+ `(via the ${anEntity.name}.${aProperty.name} relation).`
+						throw new Error(`Did not find column ${relationEntityName}.${ownColumn.name} `
+							+ `(via the ${anEntity.name}.${aProperty.name} relation).`)
 					}
 					sRelationColumn.relationColumnReference = ownColumn.name
 				}
@@ -272,7 +279,7 @@ export class SchemaRelationResolver {
 			case SQLDataType.STRING:
 				return 'string'
 			default:
-				throw `Unexpected SQLDataType: ${sqlDataType}.`
+				throw new Error(`Unexpected SQLDataType: ${sqlDataType}.`)
 		}
 
 	}

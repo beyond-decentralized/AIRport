@@ -19,7 +19,7 @@ function getSqlFunctionCall(sqlFunction, parameters) {
                 case 'string':
                     return WrapperFunctions_1.str(parameter);
                 case 'undefined':
-                    throw `'undefined' cannot be used as a function parameter`;
+                    throw new Error(`'undefined' cannot be used as a function parameter`);
             }
             if (parameter instanceof Date) {
                 return WrapperFunctions_1.date(parameter);
@@ -76,7 +76,7 @@ function getFunctionObject(value) {
     else if (selectClause instanceof StringField_1.QStringField) {
         return new StringField_1.QStringFunction(value);
     }
-    throw `Function rValue must be a primitive, Date, Field or Field query`;
+    throw new Error(`Function rValue must be a primitive, Date, Field or Field query`);
 }
 exports.getFunctionObject = getFunctionObject;
 exports.count = function (value) {
@@ -277,10 +277,10 @@ class QDistinctFunction extends StandAloneFunction {
     }
     toJSON(parsedSelectClause) {
         if (this.__appliedFunctions__.length != 1) {
-            throw `Not expecting and parent or child functions on "distinct"`;
+            throw new Error(`Not expecting and parent or child functions on "distinct"`);
         }
         if (!this.selectClause) {
-            throw `SELECT clause is missing in "distinct" function.`;
+            throw new Error(`SELECT clause is missing in "distinct" function.`);
         }
         let appliedFunctions = [
             getSqlFunctionCall(ground_control_1.SqlFunction.DISTINCT)
@@ -298,7 +298,7 @@ exports.QDistinctFunction = QDistinctFunction;
 exports.exists = function (rawQuery) {
     let selectClause = rawQuery.select;
     if (!selectClause) {
-        throw `Sub-Query must have SELECT clause defined to be used in EXITS function`;
+        throw new Error(`Sub-Query must have SELECT clause defined to be used in EXITS function`);
     }
     let existsFunction = new QExistsFunction(rawQuery);
     return existsFunction.applySqlFunction(getSqlFunctionCall(ground_control_1.SqlFunction.EXISTS));
@@ -322,10 +322,10 @@ class QExistsFunction extends StandAloneFunction {
     }
     toJSON(parsedQuery) {
         if (this.__appliedFunctions__.length != 1) {
-            throw `Not expecting and parent or child functions on "exists"`;
+            throw new Error(`Not expecting and parent or child functions on "exists"`);
         }
         if (!this.subQuery) {
-            throw `Subquery is not defined in "exists" function.`;
+            throw new Error(`Subquery is not defined in "exists" function.`);
         }
         let appliedFunctions = [
             getSqlFunctionCall(ground_control_1.SqlFunction.EXISTS)
@@ -392,7 +392,7 @@ exports.add = function (numeric1, numeric2) {
 exports.concat = function (//
 ...fragments) {
     if (fragments.length > 2) {
-        throw `Less than two operands passed to 'concat' function.`;
+        throw new Error(`Less than two operands passed to 'concat' function.`);
     }
     let firstFragment = fragments[0];
     let restOfFragments = fragments.slice(1);
@@ -410,7 +410,7 @@ exports.concat = function (//
  * B
  */
 exports.union = function (...rawQueries) {
-    throw 'not implemented';
+    throw new Error('not implemented');
 };
 /**
  * A
@@ -418,7 +418,7 @@ exports.union = function (...rawQueries) {
  * B
  */
 exports.unionAll = function (...rawQueries) {
-    throw 'not implemented';
+    throw new Error('not implemented');
 };
 /**
  * A
@@ -426,7 +426,7 @@ exports.unionAll = function (...rawQueries) {
  * B
  */
 exports.intersect = function (...rawQueries) {
-    throw 'not implemented';
+    throw new Error('not implemented');
 };
 /**
  * A
@@ -434,7 +434,7 @@ exports.intersect = function (...rawQueries) {
  * B
  */
 exports.except = function (...rawQueries) {
-    throw 'not implemented';
+    throw new Error('not implemented');
 };
 /**
  * A

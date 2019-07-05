@@ -18,15 +18,6 @@ class BaseSequenceDao extends SQDIDao {
     }
 }
 exports.BaseSequenceDao = BaseSequenceDao;
-class BaseSequenceBlockDao extends SQDIDao {
-    static diSet() {
-        return qSchema_1.diSet(2);
-    }
-    constructor() {
-        super(2);
-    }
-}
-exports.BaseSequenceBlockDao = BaseSequenceBlockDao;
 class BaseTerminalRunDao extends SQDIDao {
     static diSet() {
         return qSchema_1.diSet(1);

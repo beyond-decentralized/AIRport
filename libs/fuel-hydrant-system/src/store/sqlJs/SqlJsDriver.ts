@@ -40,7 +40,7 @@ export class SqlJsDriver
 			// FIXME: add support, in future, if needed
 			// let sql  = require('sql.js')
 			// this._db = new sql.Database()
-			throw 'Not implemented'
+			throw new Error('Not implemented')
 		}
 	}
 

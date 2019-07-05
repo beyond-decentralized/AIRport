@@ -1,6 +1,6 @@
-import {RepositoryTransactionBlockContents} from "@airport/arrivals-n-departures";
-import {AgtRepositoryTransactionBlockId}    from "@airport/guideway";
-import {ArchiveInfo}                        from "../../../model/ArchiveInfo";
+import {RepositoryTransactionBlockContents} from '@airport/arrivals-n-departures'
+import {AgtRepositoryTransactionBlockId}    from '@airport/guideway'
+import {ArchiveInfo}                        from '../../../model/ArchiveInfo'
 
 export interface IDataArchiver {
 
@@ -19,7 +19,7 @@ export class DataArchiver
 		archiveInfo: ArchiveInfo,
 		data: [AgtRepositoryTransactionBlockId, RepositoryTransactionBlockContents][]
 	): Promise<void> {
-		throw `Implement`;
+		throw new Error(`Implement`)
 	}
 
 }

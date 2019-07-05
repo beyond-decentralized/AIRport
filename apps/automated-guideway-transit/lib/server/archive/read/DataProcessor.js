@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class DataProcessor {
     addDataForProcessing(userId, terminalId, repositoryId, data) {
-        throw `Implement!`;
+        throw new Error(`Implement!`);
     }
 }
 exports.DataProcessor = DataProcessor;

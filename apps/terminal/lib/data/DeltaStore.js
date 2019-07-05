@@ -90,7 +90,7 @@ function getSharingAdaptor(platformType) {
         case ground_control_1.PlatformType.STUB:
             return new ground_transport_1.StubSharingAdaptor();
         default:
-            throw `Unsupported PlatformType: ${platformType}`;
+            throw new Error(`Unsupported PlatformType: ${platformType}`);
     }
 }
 exports.getSharingAdaptor = getSharingAdaptor;

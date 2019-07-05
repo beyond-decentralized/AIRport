@@ -31,7 +31,7 @@ class InMemoryChangeList {
                 return new terminal_map_1.ArrayChangeRecordIterator(allCurrentChangeRecords, i + 1);
             }
         }
-        throw `Change record not found. ID: ${changeRecord[id]}.`;
+        throw new Error(`Change record not found. ID: ${changeRecord[id]}.`);
     }
     async addChanges(changeRecords) {
         await this.changeStore.addChanges(this.shareInfo.name, changeRecords);

@@ -106,9 +106,9 @@ LIMIT
 				if (value instanceof Date) {
 					return value.getTime()
 				}
-				throw `Unexpected object as a parameter.`
+				throw new Error(`Unexpected object as a parameter.`)
 			default:
-				throw `Unexpected type of parameter '${typeof value}.'`
+				throw new Error(`Unexpected type of parameter '${typeof value}.'`)
 		}
 	}
 
@@ -179,9 +179,9 @@ export class SqlLiteFunctionAdaptor
 			case SqlFunction.TRIM:
 				return `TRIM(${value})`
 			case SqlFunction.DISTINCT:
-				throw `Invalid placement of a distinct function`
+				throw new Error(`Invalid placement of a distinct function`)
 			case SqlFunction.EXISTS:
-				throw `Invalid placement of an exists function`
+				throw new Error(`Invalid placement of an exists function`)
 			case SqlFunction.DIVIDE:
 				param2 = this.sqlValueProvider.getFunctionCallValue(
 					jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils)
@@ -209,9 +209,9 @@ export class SqlLiteFunctionAdaptor
 					return acc + val
 				}, this.toString(value))
 			case SqlFunction.COALESCE:
-				return null
+				throw new Error('Not Implemented')
 			default:
-				throw `Unknown function type: ${jsonFunctionCall.ft}`
+				throw new Error(`Unknown function type: ${jsonFunctionCall.ft}`)
 		}
 	}
 
@@ -231,9 +231,9 @@ export class SqlLiteFunctionAdaptor
 				if (val instanceof Date) {
 					return val.toJSON()
 				}
-				throw `Unsupported value for conversion to string.`
+				throw new Error(`Unsupported value for conversion to string.`)
 			default:
-				throw `Unsupported value for conversion to string.`
+				throw new Error(`Unsupported value for conversion to string.`)
 		}
 	}
 }

@@ -26,7 +26,7 @@ export const bool: boolFunction = function (
 	primitive: boolean
 ): IQBooleanField {
 	if (typeof primitive !== 'boolean') {
-		throw `bool() accepts booleans only.`
+		throw new Error(`bool() accepts booleans only.`)
 	}
 	return new QBooleanFunction(primitive)
 }
@@ -35,7 +35,7 @@ export const date: dateFunction = function (
 	primitive: Date
 ): IQDateField {
 	if (!(primitive instanceof Date)) {
-		throw `date() accepts Dates only.`
+		throw new Error(`date() accepts Dates only.`)
 	}
 	return new QDateFunction(primitive)
 }
@@ -44,7 +44,7 @@ export const num: numFunction = function (
 	primitive: number
 ): IQNumberField {
 	if (typeof primitive !== 'number') {
-		throw `num() accepts numbers only.`
+		throw new Error(`num() accepts numbers only.`)
 	}
 	return new QNumberFunction(primitive)
 }
@@ -53,7 +53,7 @@ export const str: strFunction = function (
 	primitive: string
 ): IQStringField {
 	if (typeof primitive !== 'string') {
-		throw `str() accepts strings only.`
+		throw new Error(`str() accepts strings only.`)
 	}
 	return new QStringFunction(primitive)
 }
@@ -68,7 +68,7 @@ export function wrapPrimitive(value: any): any {
 		case 'string':
 			return str(value)
 		case 'undefined':
-			throw `Cannot use an 'undefined' value in an operation.`
+			throw new Error(`Cannot use an 'undefined' value in an operation.`)
 	}
 	if (value === null) {
 		return new QNullFunction()
@@ -123,7 +123,7 @@ export function getPrimitiveValue(
 			break
 		}
 		default:
-			throw 'Unexpected SQLDataType: ' + dbColumn.type
+			throw new Error('Unexpected SQLDataType: ' + dbColumn.type)
 	}
 	switch (typeof value) {
 		case 'boolean':
@@ -138,20 +138,20 @@ export function getPrimitiveValue(
 			}
 			if (value instanceof Date) {
 				if (dbColumn.type !== SQLDataType.DATE) {
-					throw `Unexpected Date object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`
+					throw new Error(`Unexpected Date object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`)
 				}
 				return datesToNumbers ? value.getTime() : value
 			} else {
 				if (dbColumn.type !== SQLDataType.JSON) {
-					throw `Unexpected Json object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`
+					throw new Error(`Unexpected Json object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`)
 				}
 				return JSON.stringify(value)
 			}
 		}
 		case 'undefined':
-			throw `Cannot use an 'undefined' value in an operation.`
+			throw new Error(`Cannot use an 'undefined' value in an operation.`)
 		default:
-			throw `Unexpected object in operation.`
+			throw new Error(`Unexpected object in operation.`)
 	}
 }
 
@@ -163,7 +163,7 @@ function assertDataType(
 ) {
 	if (typesOfData.indexOf(typeof value) < -1) {
 		const expectedDataTypes = typesOfData.join(', ')
-		throw `Unexpected typeof value for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}.  Expecting: ${expectedDataTypes}`
+		throw new Error(`Unexpected typeof value for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}.  Expecting: ${expectedDataTypes}`)
 	}
 }
 

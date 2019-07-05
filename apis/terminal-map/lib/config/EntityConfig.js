@@ -8,13 +8,14 @@ class EntityConfig {
         this.config = config;
         this.persistenceConfig = persistenceConfig;
         if (!config) {
-            throw `Entity Configuration not specified`;
+            throw new Error(`Entity Configuration not specified`);
         }
         /*		let changeListName = config.changeList;
                 if (changeListName) {
                     let changeListConfig = persistenceConfig.changeListConfigMap[changeListName];
                     if (!changeListConfig) {
-                        throw `Unknown Change List: ${changeListName} for Entity ${className}`;
+                        throw new Error(
+                        `Unknown Change List: ${changeListName} for Entity ${className}`);
                     }
                     this.changeListConfig = changeListConfig;
                 }
@@ -22,13 +23,15 @@ class EntityConfig {
                 if (localStoreName) {
                     let localStoreConfig = persistenceConfig.localStoreConfigMap[localStoreName];
                     if (!localStoreConfig) {
-                        throw `Unknown Local Store: ${localStoreName} for Entity ${className}`;
+                        throw new Error(
+                        `Unknown Local Store: ${localStoreName} for Entity ${className}`);
                     }
                     this.localStoreConfig = localStoreConfig;
                 }
-        
+
                 if(!this.changeListConfig && !this.localStoreConfig) {
-                    throw `Entity Configuration does not specify a Change List or a Local Store`;
+                    throw new Error(
+                    `Entity Configuration does not specify a Change List or a Local Store`);
                 }*/
     }
 }

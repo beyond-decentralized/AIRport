@@ -8,7 +8,7 @@ class ArrayChangeRecordIterator {
     }
     next() {
         if (!this.hasNext()) {
-            throw 'No more change records found';
+            throw new Error('No more change records found');
         }
         let nextValue = this.changeRecords[this.nextIndex];
         this.nextIndex++;

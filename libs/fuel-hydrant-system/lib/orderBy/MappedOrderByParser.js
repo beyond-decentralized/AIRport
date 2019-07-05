@@ -80,7 +80,7 @@ class MappedOrderByParser {
             orderByFragments = orderByFragments.concat(entityOrderByFragments);
         }
         if (orderBy.length) {
-            throw `Found entries in Order By for tables not found in select clause.  Entries must be ordered hierarchically, in breadth-first order.`;
+            throw new Error(`Found entries in Order By for tables not found in select clause.  Entries must be ordered hierarchically, in breadth-first order.`);
         }
         return orderByFragments.join(', ');
     }

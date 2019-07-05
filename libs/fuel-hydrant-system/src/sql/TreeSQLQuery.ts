@@ -44,7 +44,8 @@ export class TreeSQLQuery
 		const distinctClause = <JSONClauseField>selectClauseFragment
 		if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
 			if (nested) {
-				throw `Cannot have DISTINCT specified in a nested select clause`
+				throw new Error(
+					`Cannot have DISTINCT specified in a nested select clause`)
 			}
 			const distinctSelect = this.getSELECTFragment(
 				nested, distinctClause.af[0].p[0],
@@ -55,13 +56,15 @@ export class TreeSQLQuery
 		let numProperties = 0
 		for (let propertyName in selectClauseFragment) {
 			if (propertyName === '*') {
-				throw `'*' operator isn't yet implemented in mapped queries`
+				throw new Error(
+					`'*' operator isn't yet implemented in mapped queries`)
 			}
 			numProperties++
 		}
 		if (numProperties === 0) {
 			if (nested) {
-				throw `Mapped query must have fields in a nested-select clause`
+				throw new Error(
+					`Mapped query must have fields in a nested-select clause`)
 			} else {
 				return '*'
 			}

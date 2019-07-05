@@ -15,7 +15,7 @@ class SQLUpdate extends SQLNoJoinQuery_1.SQLNoJoinQuery {
     }
     toSQL(airDb, schemaUtils, metadataUtils) {
         if (!this.jsonUpdate.U) {
-            throw `Expecting exactly one table in UPDATE clause`;
+            throw new Error(`Expecting exactly one table in UPDATE clause`);
         }
         let updateFragment = this.getTableFragment(this.jsonUpdate.U, airDb, schemaUtils);
         let setFragment = this.getSetFragment(this.jsonUpdate.S, airDb, schemaUtils, metadataUtils);

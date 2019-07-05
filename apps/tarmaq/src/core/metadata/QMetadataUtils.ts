@@ -98,9 +98,11 @@
 // 				}
 // 				break;
 // 			case RepositoryEntityType.NOT_REPOSITORY_ENTITY:
-// 				throw `Cannot determine @Id for a non-repository entity.`;
+// 				throw new Error(
+// 				`Cannot determine @Id for a non-repository entity.`);
 // 			default:
-// 				throw `Unknown RepositoryEntityType ${repositoryEntityType}`;
+// 				throw new Error(
+// 				`Unknown RepositoryEntityType ${repositoryEntityType}`);
 // 		}
 // 		return false;
 // 	}
@@ -137,7 +139,8 @@
 // 				this.addIdColumnToSelectClause(0, qEntity, selectClause);
 // 				break;
 // 			default:
-// 				throw `Cannot add Ids to Tree Select for non-Id Entity Types`;
+// 				throw new Error(
+// 				`Cannot add Ids to Tree Select for non-Id Entity Types`);
 // 		}
 // 	}
 //
@@ -183,7 +186,8 @@
 // 		const relation = indexedEntity.entity.relations[relationRef.index];
 //
 // 		if (relation.relationColumnRefs.length != 1) {
-// 			throw `More than one JoinColumn exists on ${indexedEntity.entity.name}.${propertyName}`;
+// 			throw new Error(
+// 			`More than one JoinColumn exists on ${indexedEntity.entity.name}.${propertyName}`);
 // 		}
 // 		const columnIndex = relation.relationColumnRefs[0].ownColumnIndex;
 //
@@ -199,7 +203,8 @@
 // 			const iEntity = SchemaUtils.getIEntity(iSchema, qEntity.__driver__.tableIndex);
 // 			const iRelation = iEntity.relations[relationReference];
 // 			if (!iRelation) {
-// 				throw `Did not find a relation on property ${iEntity.name} @ index ${relationReference}.`;
+// 				throw new Error(
+// 				`Did not find a relation on property ${iEntity.name} @ index ${relationReference}.`);
 // 			}
 //
 // 			return iRelation;
@@ -208,7 +213,8 @@
 // 				qEntity.__driver__.schemaIndex, qEntity.__driver__.tableIndex);
 // 			const relationRef = indexedEntity.propertyMap[relationReference].relationRef;
 // 			if (!relationRef) {
-// 				throw `Did not find a relation on property ${indexedEntity.entity.name}.${relationReference}.`;
+// 				throw new Error(
+// 				`Did not find a relation on property ${indexedEntity.entity.name}.${relationReference}.`);
 // 			}
 //
 // 			return indexedEntity.entity.relations[relationRef.index];
@@ -229,15 +235,18 @@
 // 			return joinColumnConfigs;
 // 		}
 // 		if (fromOneToMany) {
-// 			throw `Did not find any @JoinColumn(s) on an inverse @ManyToOne.`;
+// 			throw new Error(
+// 			`Did not find any @JoinColumn(s) on an inverse @ManyToOne.`);
 // 		}
 //
 // 		let oneToMany = MetadataStore.getOneToManyConfig(entityMetadata, propertyName);
 // 		if (!oneToMany) {
-// 			throw `Cannot retrieve @JoinColumn(s) for non @ManyToOne/@OneToMany properties.`;
+// 			throw new Error(
+// 			`Cannot retrieve @JoinColumn(s) for non @ManyToOne/@OneToMany properties.`);
 // 		}
 // 		if (!oneToMany.mappedBy) {
-// 			throw `No @JoinColumn(s) or 'mappedBy' found for @OneToMany.`;
+// 			throw new Error(
+// 			`No @JoinColumn(s) or 'mappedBy' found for @OneToMany.`);
 // 		}
 //
 // 		let oneToManyRelation = this.getRelation(qEntity, propertyName);
@@ -261,7 +270,8 @@
 // 			let idFieldName = this.getFieldName(idColumn);
 // 			let idValue = row[idFieldName];
 // 			if (!idValue) {
-// 				throw `Id value not found for ${this.getEntityName(qEntity)}.${idFieldName}`;
+// 				throw new Error(
+// 				`Id value not found for ${this.getEntityName(qEntity)}.${idFieldName}`);
 // 			}
 // 		}).join('|');
 // 	}
@@ -297,15 +307,18 @@
 // 		const idConfig = this.getIdConfiguration(qEntity);
 // 		for (const idProperty in idConfig) {
 // 			if (onlyIdProperty) {
-// 				throw `Cannot generate @Id for a multi-column id entity.`;
+// 				throw new Error(
+// 				`Cannot generate @Id for a multi-column id entity.`);
 // 			}
 // 			onlyIdProperty = idProperty;
 // 			if (!idConfig[idProperty]) {
-// 				throw `@Id config ${this.getEntityName(qEntity)}.${idProperty} is not set.`;
+// 				throw new Error(
+// 				`@Id config ${this.getEntityName(qEntity)}.${idProperty} is not set.`);
 // 			}
 // 		}
 // 		if (!onlyIdProperty) {
-// 			throw `Could not find any @Id fields for ${this.getEntityName(qEntity)}.`;
+// 			throw new Error(
+// 			`Could not find any @Id fields for ${this.getEntityName(qEntity)}.`);
 // 		}
 //
 // 		return onlyIdProperty;
@@ -366,7 +379,7 @@
 // 	static getQEntityIndexes<IQE extends IQEntityInternal>(
 // 		qEntity: IQE
 // 	): [SchemaIndex, TableIndex] {
-// 		throw `Not implemented`;
+// 		throw new Error(`Not implemented`);
 // 	}
 //
 // 	static getOneToManyConfig<IQE extends IQEntityInternal>(
@@ -507,14 +520,18 @@
 // 			// @JoinColumns on a @ManyToOneReference
 // 			propertyName = MetadataStore.getPropertyNameForJoinColumnsConfigName(entityMetadata, columnName);
 // 			if (!propertyName) {
-// 				throw `Did not find a property for column name '${columnName}' of entity '${MetadataStore.getEntityName(entityMetadata)}'.`;
+// 				throw new Error(
+// 				`Did not find a property for column name '${columnName}'
+// 				of entity '${MetadataStore.getEntityName(entityMetadata)}'.`);
 // 			}
 // 		}
 //
 // 		let relationValue = entityObject[propertyName];
 // 		if (!relationValue) {
 // 			if (failOnNoValue) {
-// 				throw `Cannot retrieve value for column '${columnName} of entity '${MetadataStore.getEntityName(entityMetadata)}', relation property '${propertyName}' is not set.`;
+// 				throw new Error(`Cannot retrieve value for column '${columnName}
+// 				of entity '${MetadataStore.getEntityName(entityMetadata)}',
+// 				relation property '${propertyName}' is not set.`);
 // 			}
 // 			return null;
 // 		}
@@ -539,7 +556,8 @@
 // 			return true;
 // 		});
 // 		if (!referencedData) {
-// 			throw `Could not find referencedData for column '${columnName}' of property '${this.getEntityName(qEntity)}.${propertyName}'`;
+// 			throw new Error(`Could not find referencedData for column '${columnName}'
+// 			of property '${this.getEntityName(qEntity)}.${propertyName}'`);
 // 		}
 //
 // 		return this.verifyJoinableColumn(referencedData, columnName, propertyName, qEntity, failOnNoValue);

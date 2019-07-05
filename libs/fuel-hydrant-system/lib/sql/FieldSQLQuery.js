@@ -14,7 +14,7 @@ class FieldSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
     }
     getSELECTFragment(nested, selectClauseFragment, airDb, schemaUtils, metadataUtils) {
         if (!selectClauseFragment) {
-            throw `SELECT clause is not defined for a Field Query`;
+            throw new Error(`SELECT clause is not defined for a Field Query`);
         }
         {
             let distinctClause = selectClauseFragment;

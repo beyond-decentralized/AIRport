@@ -39,7 +39,7 @@ function getSqlDataType(type) {
         case 'string':
             return SQLDataType.STRING;
         default:
-            throw `Uknown type: ${type}`;
+            throw new Error(`Uknown type: ${type}`);
     }
 }
 exports.getSqlDataType = getSqlDataType;

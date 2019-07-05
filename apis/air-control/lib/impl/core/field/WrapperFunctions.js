@@ -11,25 +11,25 @@ const StringField_1 = require("./StringField");
  */
 exports.bool = function (primitive) {
     if (typeof primitive !== 'boolean') {
-        throw `bool() accepts booleans only.`;
+        throw new Error(`bool() accepts booleans only.`);
     }
     return new BooleanField_1.QBooleanFunction(primitive);
 };
 exports.date = function (primitive) {
     if (!(primitive instanceof Date)) {
-        throw `date() accepts Dates only.`;
+        throw new Error(`date() accepts Dates only.`);
     }
     return new DateField_1.QDateFunction(primitive);
 };
 exports.num = function (primitive) {
     if (typeof primitive !== 'number') {
-        throw `num() accepts numbers only.`;
+        throw new Error(`num() accepts numbers only.`);
     }
     return new NumberField_1.QNumberFunction(primitive);
 };
 exports.str = function (primitive) {
     if (typeof primitive !== 'string') {
-        throw `str() accepts strings only.`;
+        throw new Error(`str() accepts strings only.`);
     }
     return new StringField_1.QStringFunction(primitive);
 };
@@ -42,7 +42,7 @@ function wrapPrimitive(value) {
         case 'string':
             return exports.str(value);
         case 'undefined':
-            throw `Cannot use an 'undefined' value in an operation.`;
+            throw new Error(`Cannot use an 'undefined' value in an operation.`);
     }
     if (value === null) {
         return new NullFunction_1.QNullFunction();
@@ -92,7 +92,7 @@ function getPrimitiveValue(value, dbColumn, rowIndex, datesToNumbers = true) {
             break;
         }
         default:
-            throw 'Unexpected SQLDataType: ' + dbColumn.type;
+            throw new Error('Unexpected SQLDataType: ' + dbColumn.type);
     }
     switch (typeof value) {
         case 'boolean':
@@ -107,28 +107,28 @@ function getPrimitiveValue(value, dbColumn, rowIndex, datesToNumbers = true) {
             }
             if (value instanceof Date) {
                 if (dbColumn.type !== ground_control_1.SQLDataType.DATE) {
-                    throw `Unexpected Date object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`;
+                    throw new Error(`Unexpected Date object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`);
                 }
                 return datesToNumbers ? value.getTime() : value;
             }
             else {
                 if (dbColumn.type !== ground_control_1.SQLDataType.JSON) {
-                    throw `Unexpected Json object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`;
+                    throw new Error(`Unexpected Json object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`);
                 }
                 return JSON.stringify(value);
             }
         }
         case 'undefined':
-            throw `Cannot use an 'undefined' value in an operation.`;
+            throw new Error(`Cannot use an 'undefined' value in an operation.`);
         default:
-            throw `Unexpected object in operation.`;
+            throw new Error(`Unexpected object in operation.`);
     }
 }
 exports.getPrimitiveValue = getPrimitiveValue;
 function assertDataType(typesOfData, dbColumn, rowIndex, value) {
     if (typesOfData.indexOf(typeof value) < -1) {
         const expectedDataTypes = typesOfData.join(', ');
-        throw `Unexpected typeof value for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}.  Expecting: ${expectedDataTypes}`;
+        throw new Error(`Unexpected typeof value for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}.  Expecting: ${expectedDataTypes}`);
     }
 }
 function getColumnName(dbColumn) {

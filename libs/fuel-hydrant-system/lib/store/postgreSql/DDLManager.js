@@ -6,23 +6,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class DDLManager {
     static getCreateDDL() {
         let createQueries = [];
-        throw `Implement!`;
-        // let tableName = MetadataUtils.getTableName(entityMetadata, QMetadataUtils.getEntityName(qEntity));
-        // let createTableStatement = `CREATE TABLE IF NOT EXISTS ${tableName} (${columnNames.join(' , ')})`;
-        //
-        // return createTableStatement;
+        throw new Error(`Implement!`);
+        // let tableName = MetadataUtils.getTableName(entityMetadata,
+        // QMetadataUtils.getEntityName(qEntity)); let createTableStatement = `CREATE TABLE
+        // IF NOT EXISTS ${tableName} (${columnNames.join(' , ')})`;  return
+        // createTableStatement;
     }
     static getColumnIndexByColumnName(globalTableIndex, columnName) {
-        throw `Not Implemented`;
+        throw new Error(`Not Implemented`);
     }
     static getRelationIndex(applicationName, entityName, propertyName) {
-        throw `Not Implemented`;
+        throw new Error(`Not Implemented`);
     }
     static getRelationGlobalTableIndex() {
-        throw `Not Implemented`;
+        throw new Error(`Not Implemented`);
     }
     static getGlobalTableIndex(applicationName, entityName) {
-        throw `Not Implemented`;
+        throw new Error(`Not Implemented`);
     }
     static warn(message) {
         console.log(message);

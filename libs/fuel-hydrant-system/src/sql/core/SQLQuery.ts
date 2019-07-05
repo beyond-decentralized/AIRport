@@ -130,8 +130,8 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 				relationColumns = dbRelation.oneRelationColumns
 				break
 			default:
-				throw `Unknown relation type ${dbRelation.relationType} 
-on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`
+				throw new Error(`Unknown relation type ${dbRelation.relationType} 
+on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`)
 		}
 		for (const relationColumn of relationColumns) {
 			let ownColumnName: string
@@ -146,8 +146,8 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
 					referencedColumnName = relationColumn.manyColumn.name
 					break
 				default:
-					throw `Unknown relation type ${dbRelation.relationType} 
-on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`
+					throw new Error(`Unknown relation type ${dbRelation.relationType} 
+on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`)
 			}
 			allJoinOnColumns.push({
 				leftColumn: ownColumnName,

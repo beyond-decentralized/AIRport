@@ -1,13 +1,20 @@
-import { deltaConst } from "@airport/air-control";
-import { ChangeListConfig, IChangeListConfig, JsonChangeListConfig } from "./ChangeListConfig";
+import {deltaConst}      from '@airport/air-control'
+import {
+	deltaStore,
+	SharingPlatformSetupInfo
+}                        from '../SharingAdaptor'
+import {
+	ChangeListConfig,
+	IChangeListConfig,
+	JsonChangeListConfig
+}                        from './ChangeListConfig'
+import {GoogleSetupInfo} from './GoogleSharingModel'
 import {
 	IOfflineDeltaStoreConfig,
 	JsonOfflineDeltaStoreConfig,
 	OfflineDeltaStoreConfig
-} from "./OfflineDeltaStoreConfig";
-import { PlatformType } from "./PlatformType";
-import { deltaStore, SharingPlatformSetupInfo } from "../SharingAdaptor";
-import { GoogleSetupInfo } from "./GoogleSharingModel";
+}                        from './OfflineDeltaStoreConfig'
+import {PlatformType}    from './PlatformType'
 
 /**
  * Created by Papa on 5/31/2016.
@@ -20,7 +27,8 @@ export interface JsonDeltaStoreConfig {
 	recordIdField: string;
 }
 
-export interface JsonGoogleDeltaStoreConfig extends JsonDeltaStoreConfig {
+export interface JsonGoogleDeltaStoreConfig
+	extends JsonDeltaStoreConfig {
 	apiKey: string;
 	clientId: string;
 	rootFolder: string;
@@ -33,102 +41,109 @@ export interface IDeltaStoreConfig {
 	setupInfo: SharingPlatformSetupInfo;
 }
 
-export class DeltaStoreConfig implements IDeltaStoreConfig {
+export class DeltaStoreConfig
+	implements IDeltaStoreConfig {
 
-	changeListConfig: IChangeListConfig;
-	offlineDeltaStore: IOfflineDeltaStoreConfig;
-	setupInfo: SharingPlatformSetupInfo;
+	changeListConfig: IChangeListConfig
+	offlineDeltaStore: IOfflineDeltaStoreConfig
+	setupInfo: SharingPlatformSetupInfo
 
 	constructor(
 		public config: JsonDeltaStoreConfig
 	) {
 		if (!config.platform && config.platform !== 0) {
-			throw `Sharing Platform is not defined `;
+			throw new Error(`Sharing Platform is not defined `)
 		}
 
-		let platformType: PlatformType = getPlatformType(config.platform);
-		this.setupInfo = {
+		let platformType: PlatformType = getPlatformType(config.platform)
+		this.setupInfo                 = {
 			platformType: platformType,
 			recordIdField: config.recordIdField,
 			dbIdField: deltaConst.DB_ID_FIELD
-		};
+		}
 		if (!config.changeList) {
-			throw `ChangeList config is not defined`;
+			throw new Error(`ChangeList config is not defined`)
 		}
 		if (!config.offlineDeltaStore) {
-			throw `OfflineDeltaStore must be specified if changeLists are specified.`;
+			throw new Error(
+				`OfflineDeltaStore must be specified if changeLists are specified.`)
 		}
-		this.changeListConfig = new ChangeListConfig(config.changeList, this);
-		this.offlineDeltaStore = new OfflineDeltaStoreConfig(config.offlineDeltaStore, this);
+		this.changeListConfig  = new ChangeListConfig(config.changeList, this)
+		this.offlineDeltaStore = new OfflineDeltaStoreConfig(config.offlineDeltaStore, this)
 	}
 }
 
 export function getPlatformType(
 	platform: PlatformType | string
 ): PlatformType {
-	let platformType: PlatformType;
-	if (typeof platform === "string") {
-		platformType = deltaStore.platform.getValue(<string>platform);
+	let platformType: PlatformType
+	if (typeof platform === 'string') {
+		platformType = deltaStore.platform.getValue(<string>platform)
 	} else {
 		// Verify the platform
-		deltaStore.platform.getName(<PlatformType>platform);
-		platformType = <PlatformType>platform;
+		deltaStore.platform.getName(<PlatformType>platform)
+		platformType = <PlatformType>platform
 	}
 
-	return platformType;
+	return platformType
 }
 
-export interface IGoogleDeltaStoreConfig extends IDeltaStoreConfig {
+export interface IGoogleDeltaStoreConfig
+	extends IDeltaStoreConfig {
 	setupInfo: GoogleSetupInfo;
 }
 
-export class GoogleDeltaStoreConfig extends DeltaStoreConfig implements IGoogleDeltaStoreConfig {
+export class GoogleDeltaStoreConfig
+	extends DeltaStoreConfig
+	implements IGoogleDeltaStoreConfig {
 
-	setupInfo: GoogleSetupInfo;
+	setupInfo: GoogleSetupInfo
 
 	constructor(
 		config: JsonGoogleDeltaStoreConfig
 	) {
-		super(config);
+		super(config)
 		if (!config.rootFolder) {
-			throw `Root folder is not defined`;
+			throw new Error(`Root folder is not defined`)
 		}
 		if (!config.apiKey) {
-			throw `ApiKey is not defined`;
+			throw new Error(`ApiKey is not defined`)
 		}
 		if (!config.clientId) {
-			throw `ClientId is not defined`;
+			throw new Error(`ClientId is not defined`)
 		}
 
-		this.setupInfo.rootFolder = config.rootFolder;
-		this.setupInfo.apiKey = config.apiKey;
-		this.setupInfo.clientId = config.clientId;
+		this.setupInfo.rootFolder = config.rootFolder
+		this.setupInfo.apiKey     = config.apiKey
+		this.setupInfo.clientId   = config.clientId
 	}
 }
 
-export class InMemoryDeltaStoreConfig extends DeltaStoreConfig {
+export class InMemoryDeltaStoreConfig
+	extends DeltaStoreConfig {
 }
 
-export class StubDeltaStoreConfig extends DeltaStoreConfig {
+export class StubDeltaStoreConfig
+	extends DeltaStoreConfig {
 }
 
 export function createDeltaStoreConfig(
 	jsonDeltaStoreConfig: JsonDeltaStoreConfig
 ): IDeltaStoreConfig {
 	if (!jsonDeltaStoreConfig.platform && jsonDeltaStoreConfig.platform !== 0) {
-		throw `deltaStore.platform is nod specified`;
+		throw new Error(`deltaStore.platform is nod specified`)
 	}
-	let platformType: PlatformType = getPlatformType(jsonDeltaStoreConfig.platform);
+	let platformType: PlatformType = getPlatformType(jsonDeltaStoreConfig.platform)
 
 	switch (platformType) {
 		case PlatformType.GOOGLE_DOCS:
-			return new GoogleDeltaStoreConfig(<JsonGoogleDeltaStoreConfig>jsonDeltaStoreConfig);
+			return new GoogleDeltaStoreConfig(<JsonGoogleDeltaStoreConfig>jsonDeltaStoreConfig)
 		case PlatformType.IN_MEMORY:
-			return new InMemoryDeltaStoreConfig(jsonDeltaStoreConfig);
+			return new InMemoryDeltaStoreConfig(jsonDeltaStoreConfig)
 		case PlatformType.STUB:
-			return new StubDeltaStoreConfig(jsonDeltaStoreConfig);
+			return new StubDeltaStoreConfig(jsonDeltaStoreConfig)
 		default:
-			throw `Unsupported platform type ${platformType}`;
+			throw new Error(`Unsupported platform type ${platformType}`)
 	}
 }
 
@@ -141,8 +156,8 @@ export function getPlatformConfig(
 				rootFolder: this.setupInfo.rootFolder,
 				apiKey: this.setupInfo.apiKey,
 				clientId: this.setupInfo.clientId
-			};
+			}
 		default:
-			return {};
+			return {}
 	}
 }

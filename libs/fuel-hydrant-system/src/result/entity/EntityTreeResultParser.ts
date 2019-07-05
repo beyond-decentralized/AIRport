@@ -111,7 +111,8 @@ export class EntityTreeResultParser
 		otmDbEntity: DbEntity,
 		otmPropertyName: string
 	): void {
-		throw `@OneToMany stubs not allowed in QueryResultType.HIERARCHICAL`
+		throw new Error(
+			`@OneToMany stubs not allowed in QueryResultType.HIERARCHICAL`)
 	}
 
 	bufferOneToManyCollection(

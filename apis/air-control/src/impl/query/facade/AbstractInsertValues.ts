@@ -70,7 +70,7 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 				columnIndex
 			) => {
 				if (value === undefined) {
-					throw `Cannot use 'undefined' in VALUES clause.`
+					throw new Error(`Cannot use 'undefined' in VALUES clause.`)
 				}
 				if (!(value instanceof QField)) {
 					return getPrimitiveValue(value, dbColumns[columnIndex], rowIndex)

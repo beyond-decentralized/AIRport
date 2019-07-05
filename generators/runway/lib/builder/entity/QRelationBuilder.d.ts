@@ -1,6 +1,6 @@
-import { PropertyDocEntry } from "../../parser/DocEntry";
-import { EntityCandidate } from "../../parser/EntityCandidate";
-import { IQBuilder, IQCoreEntityBuilder } from "../QBuilder";
+import { PropertyDocEntry } from '../../parser/DocEntry';
+import { EntityCandidate } from '../../parser/EntityCandidate';
+import { IQBuilder, IQCoreEntityBuilder } from '../QBuilder';
 /**
  * Created by Papa on 4/25/2016.
  */

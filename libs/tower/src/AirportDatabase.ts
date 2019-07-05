@@ -105,7 +105,7 @@ export class AirportDatabase
 		get db(): IDatabaseFacade {
 			let database = this.databaseMap[this.currentDbName]
 			if (!database) {
-				throw `Did not find database '${this.currentDbName}'`
+				throw new Error(`Did not find database '${this.currentDbName}'`)
 			}
 			return database
 		}

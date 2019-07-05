@@ -103,7 +103,8 @@ export class TransactionManager
 					return true
 				})
 			if (!foundTransactionInQueue) {
-				throw `Could not find transaction '${credentials.domainAndPort}' is not found`
+				throw new Error(
+					`Could not find transaction '${credentials.domainAndPort}' is not found`)
 			}
 			return
 		}
@@ -122,7 +123,8 @@ export class TransactionManager
 		)
 
 		if (this.transactionInProgress !== credentials.domainAndPort) {
-			throw `Cannot commit inactive transaction '${credentials.domainAndPort}'.`
+			throw new Error(
+				`Cannot commit inactive transaction '${credentials.domainAndPort}'.`)
 		}
 		let transaction = this.currentTransHistory
 

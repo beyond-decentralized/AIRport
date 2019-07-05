@@ -61,7 +61,7 @@ function convertMappedEntitySelect<IME extends ITreeEntity>(
 			if (value instanceof Object && !(value instanceof Date)) {
 				selectProxy[<string>value] = convertMappedEntitySelect(<any>value, queryDefinition, view, {}, `${alias}_`);
 			} else {
-				throw `All SELECT clause entries of a Mapped query must be Fields or Functions`;
+				throw new Error(`All SELECT clause entries of a Mapped query must be Fields or Functions`)
 			}
 		}
 	}
@@ -96,7 +96,7 @@ export class JoinFields<IF extends IFrom> implements IJoinFields<IF> {
 		private joinTo: IF
 	) {
 		if (!(this.joinTo instanceof QEntity)) {
-			throw `Right value in join must be a View or an Entity`;
+			throw new Error(`Right value in join must be a View or an Entity`)
 		}
 	}
 

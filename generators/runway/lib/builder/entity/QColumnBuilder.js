@@ -14,7 +14,7 @@ class QColumnBuilder {
         return `${column.name}: ${column.type};`;
     }
     build() {
-        throw `Not Implemented.`;
+        throw new Error(`Not Implemented.`);
     }
     buildInterfaceDefinition(optional = true, forInternalInterfaces = true) {
         const column = this.sColumn;

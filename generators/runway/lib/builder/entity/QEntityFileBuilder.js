@@ -151,8 +151,8 @@ ${addEntityCommand}`;
             let existingSourceName = fileImportMap[asName];
             if (existingSourceName) {
                 if (existingSourceName !== sourceName) {
-                    throw `Cannot import '${sourceName}' as '${asName}' from ${filePath}.
-					'${existingSourceName}' is already imported as '${asName}' from this path.`;
+                    throw new Error(`Cannot import '${sourceName}' as '${asName}' from ${filePath}.
+					'${existingSourceName}' is already imported as '${asName}' from this path.`);
                 }
                 return;
             }

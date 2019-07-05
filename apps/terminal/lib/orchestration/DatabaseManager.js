@@ -32,7 +32,7 @@ class DatabaseManager {
             defaultStoreType: StoreType
         ): Promise<void> {
             AIR_DB
-            throw `Implement!`
+            throw new Error(`Implement!`)
                     const db = TQ.db(dbConst.DEFAULT_DB);
                     if (!TQ.isInitialized(dbConst.DEFAULT_DB)) {
                         await TQ.addDataStore(defaultStoreType, dbConst.DEFAULT_DB);
@@ -111,7 +111,7 @@ class DatabaseManager {
         }
         await (await di_1.DI.get(check_in_1.SEQUENCE_GENERATOR)).init();
         /*
-                throw `Implement!`
+                throw new Error(`Implement!`)
                 let dbFacade: IDatabaseFacade = this.databaseMap[terminalName]
                 if (!dbFacade) {
                     dbFacade                       = new DatabaseFacade(terminalName)
@@ -120,7 +120,8 @@ class DatabaseManager {
                     this.dbNameSet[terminalName] = true
                 }
                 if (this.isInitialized(terminalName)) {
-                    throw `Database '${terminalName}' is already initialized`
+                    throw new Error(
+                    `Database '${terminalName}' is already initialized`)
                 }
                 this.allDbsEntityData.forEach(
                     entityData => {

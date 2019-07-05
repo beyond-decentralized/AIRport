@@ -117,7 +117,7 @@ export function getSQLAdaptor(
 			let WebSqlQueryAdaptorClass: typeof WebSqlQueryAdaptor = require('./WebSqlQueryAdaptor').WebSqlQueryAdaptor
 			return new WebSqlQueryAdaptorClass(sqlValueProvider)
 		default:
-			throw `Unknown SQL Dialect ${sqlDialect}`
+			throw new Error(`Unknown SQL Dialect ${sqlDialect}`)
 	}
 
 }

@@ -35,7 +35,7 @@ function convertMappedEntitySelect(customEntity, queryDefinition, view, selectPr
                 selectProxy[value] = convertMappedEntitySelect(value, queryDefinition, view, {}, `${alias}_`);
             }
             else {
-                throw `All SELECT clause entries of a Mapped query must be Fields or Functions`;
+                throw new Error(`All SELECT clause entries of a Mapped query must be Fields or Functions`);
             }
         }
     }
@@ -64,7 +64,7 @@ class JoinFields {
     constructor(joinTo) {
         this.joinTo = joinTo;
         if (!(this.joinTo instanceof Entity_1.QEntity)) {
-            throw `Right value in join must be a View or an Entity`;
+            throw new Error(`Right value in join must be a View or an Entity`);
         }
     }
     on(joinOperation) {

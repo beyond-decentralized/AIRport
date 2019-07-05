@@ -14,7 +14,7 @@ class NonEntityFind extends Lookup_1.Lookup {
     }
     sheet(rawSheetQuery, cursorSize, callback) {
         if (cursorSize || callback) {
-            throw `Implement!`;
+            throw new Error(`Implement!`);
         }
         return this.find(rawSheetQuery, ground_control_1.QueryResultType.SHEET, SheetQuery_1.SheetQuery);
     }

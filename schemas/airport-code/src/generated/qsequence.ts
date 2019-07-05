@@ -40,6 +40,7 @@ export interface ISequence {
 
 	// Non-Id Properties
 	incrementBy?: number;
+	currentValue?: number;
 
 	// Non-Id Relations
 
@@ -60,6 +61,7 @@ export interface SequenceESelect
     extends IEntitySelectProperties, SequenceEOptionalId {
 	// Non-Id Properties
 	incrementBy?: number | IQNumberField;
+	currentValue?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
 
@@ -101,6 +103,7 @@ export interface SequenceEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	incrementBy?: number | IQNumberField;
+	currentValue?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -113,6 +116,7 @@ export interface SequenceEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	SEQUENCE_INCREMENT_BY?: number | IQNumberField;
+	CURRENT_VALUE?: number | IQNumberField;
 
 }
 
@@ -151,6 +155,7 @@ export interface QSequence extends IQEntity
 
 	// Non-Id Fields
 	incrementBy: IQNumberField;
+	currentValue: IQNumberField;
 
 	// Non-Id Relations
 

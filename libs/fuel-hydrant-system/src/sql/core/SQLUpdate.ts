@@ -36,7 +36,7 @@ export class SQLUpdate
 		metadataUtils: IQMetadataUtils
 	): string {
 		if (!this.jsonUpdate.U) {
-			throw `Expecting exactly one table in UPDATE clause`
+			throw new Error(`Expecting exactly one table in UPDATE clause`)
 		}
 		let updateFragment = this.getTableFragment(
 			this.jsonUpdate.U, airDb, schemaUtils)
@@ -46,7 +46,7 @@ export class SQLUpdate
 		let jsonQuery      = this.jsonUpdate
 		if (jsonQuery.W) {
 			whereFragment  = this.getWHEREFragment(jsonQuery.W, '',
-				airDb, schemaUtils, metadataUtils);
+				airDb, schemaUtils, metadataUtils)
 			whereFragment  = `WHERE
 ${whereFragment}`
 			// Always replace the root entity alias reference with the table name

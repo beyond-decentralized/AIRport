@@ -67,7 +67,7 @@ class EntityAliases extends AliasMap {
     }
     getExistingAlias(entity) {
         if (!this.hasAliasFor(entity)) {
-            throw `No alias found for entity ${entity.__driver__.dbEntity.name}`;
+            throw new Error(`No alias found for entity ${entity.__driver__.dbEntity.name}`);
         }
         return this.aliasMap.get(entity);
     }
@@ -98,7 +98,7 @@ class ParameterAliases extends AliasMap {
     }
     getExistingAlias(field) {
         if (!this.hasAliasFor(field)) {
-            throw `No alias found for a parameter`;
+            throw new Error(`No alias found for a parameter`);
         }
         return this.aliasMap.get(field);
     }
@@ -124,7 +124,7 @@ class FieldColumnAliases extends AliasMap {
     getExistingAlias(field) {
         if (!this.hasAliasFor(field)) {
             const qField = field;
-            throw `No alias found for property ${qField.dbProperty.entity.name}.${qField.dbProperty.name}`;
+            throw new Error(`No alias found for property ${qField.dbProperty.entity.name}.${qField.dbProperty.name}`);
         }
         return this.aliasMap.get(field);
     }

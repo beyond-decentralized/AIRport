@@ -59,7 +59,7 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
                 case ground_control_1.EntityRelationType.MANY_TO_ONE:
                     continue;
                 default:
-                    throw `Unknown EntityRelationType: ${dbRelation.relationType}`;
+                    throw new Error(`Unknown EntityRelationType: ${dbRelation.relationType}`);
             }
             if (dbRelation.oneToManyElems && dbRelation.oneToManyElems.mappedBy) {
                 otmEntityField = dbRelation.property.name;
@@ -99,7 +99,8 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
     }
     flushEntity(entityAlias, dbEntity, selectClauseFragment, entityIdValue, resultObject, schemaUtils) {
         if (!entityIdValue) {
-            throw `No Id provided for entity '${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'`;
+            throw new Error(`No Id provided for entity 
+			'${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'`);
         }
         let currentEntity = this.getEntityToFlush(dbEntity, selectClauseFragment, entityIdValue, resultObject, schemaUtils);
         this.flushRelationStubBuffers(entityIdValue, currentEntity, dbEntity, schemaUtils);
@@ -107,7 +108,8 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
     }
     getEntityToFlush(dbEntity, selectClauseFragment, idValue, resultObject, schemaUtils) {
         if (!idValue) {
-            throw `Entity ID not specified for entity '${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'.`;
+            throw new Error(`Entity ID not specified for entity 
+			'${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'.`);
         }
         let entityMapForName = ground_control_1.ensureChildMap(ground_control_1.ensureChildArray(this.entityMapBySchemaAndTableIndexes, dbEntity.schemaVersion.schema.index), dbEntity.index);
         let existingEntity = entityMapForName[idValue];
@@ -186,7 +188,8 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
                                 if ((!sourceArray && targetArray)
                                     || (!targetArray && sourceArray)
                                     || sourceArray.length != targetArray.length) {
-                                    throw `One-to-Many child arrays don't match for '${dbEntity.name}.${dbProperty.name}', Id: ${id}`;
+                                    throw new Error(`One-to-Many child arrays don't match for 
+									'${dbEntity.name}.${dbProperty.name}', Id: ${id}`);
                                 }
                             }
                             const sourceSet = {};
@@ -204,7 +207,8 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
                                 targetArray.forEach((targetChild) => {
                                     const targetChildIdValue = schemaUtils.getIdKey(targetChild, childDbEntity);
                                     if (this.config && this.config.strict && !sourceSet[targetChildIdValue]) {
-                                        throw `One-to-Many child arrays don't match for '${dbEntity.name}.${dbProperty.name}', Id: ${id}`;
+                                        throw new Error(`One-to-Many child arrays don't match for 
+										'${dbEntity.name}.${dbProperty.name}', Id: ${id}`);
                                     }
                                     // If target child array has a value that source doesn't
                                     if (!sourceSet[targetChildIdValue]) {
@@ -217,7 +221,8 @@ class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResult
                             // sourceArray.putAll(targetArray);
                             break;
                         default:
-                            throw `Unknown relation type '${dbRelation.relationType}' for '${dbEntity.name}.${dbProperty.name}'`;
+                            throw new Error(`Unknown relation type '${dbRelation.relationType}' for 
+							'${dbEntity.name}.${dbProperty.name}'`);
                     }
                 }
             }

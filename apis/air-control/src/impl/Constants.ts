@@ -21,5 +21,5 @@ export function getDbIndex(
 	if (dbName === dbConst.CURRENT_DB) {
 		return -1;
 	}
-	throw `Not implemented`;
+	throw new Error(`Not implemented`);
 }

@@ -1,1 +1,1 @@
-{"version":3,"file":"DataProcessor.js","sourceRoot":"","sources":["../../../../src/server/archive/read/DataProcessor.ts"],"names":[],"mappings":";;AAWA,MAAa,aAAa;IAEzB,oBAAoB,CACnB,MAAc,EACd,UAAkB,EAClB,YAAoB,EACpB,IAAY;QAEZ,MAAM,YAAY,CAAC;IACpB,CAAC;CAED;AAXD,sCAWC"}
+{"version":3,"file":"DataProcessor.js","sourceRoot":"","sources":["../../../../src/server/archive/read/DataProcessor.ts"],"names":[],"mappings":";;AAWA,MAAa,aAAa;IAGzB,oBAAoB,CACnB,MAAc,EACd,UAAkB,EAClB,YAAoB,EACpB,IAAY;QAEZ,MAAM,IAAI,KAAK,CAAC,YAAY,CAAC,CAAA;IAC9B,CAAC;CAED;AAZD,sCAYC"}

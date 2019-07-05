@@ -18,7 +18,7 @@ QRelation.getAlias = function (jsonRelation) {
 QRelation.getParentAlias = function (jsonRelation) {
     let fromClausePosition = jsonRelation.fcp;
     if (fromClausePosition.length === 0) {
-        throw `Cannot find alias of a parent entity for the root entity`;
+        throw new Error(`Cannot find alias of a parent entity for the root entity`);
     }
     return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1));
 };

@@ -45,7 +45,7 @@ export class InMemoryChangeList implements SharedChangeList {
 				return new ArrayChangeRecordIterator(allCurrentChangeRecords, i + 1);
 			}
 		}
-		throw `Change record not found. ID: ${changeRecord[id]}.`;
+		throw new Error(`Change record not found. ID: ${changeRecord[id]}.`);
 	}
 
 	async addChanges(changeRecords: ChangeRecord[]): Promise<void> {

@@ -53,10 +53,11 @@ export class MetadataUtils {
             case CRUDOperation.DELETE:
                 return cascade === CascadeType.ALL || cascade === CascadeType.REMOVE;
             default:
-                throw `Unsupported CRUDOperation '${crudOperation}' for cascade check.`
+                throw new Error(
+                `Unsupported CRUDOperation '${crudOperation}' for cascade check.`)
         }
     }
 
 }
-*/ 
+*/
 //# sourceMappingURL=MetadataUtils.js.map

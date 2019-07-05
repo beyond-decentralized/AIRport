@@ -99,7 +99,9 @@ export class EntityCandidateRegistry {
 					return
 				}
 				if (matchingInterfaces.length > 1) {
-					throw `Found multiple definitions of interface '${interfaceName}' implemented by entity '${className}'.  Interfaces implemented by entity classes must have globally unique names.`
+					throw new Error(`Found multiple definitions of interface '${interfaceName}' 
+					implemented by entity '${className}'.  Interfaces implemented by entity 
+					classes must have globally unique names.`)
 				}
 				let anInterface = matchingInterfaces[0]
 				anInterface.implementedBySet.add(entityCandidate)
@@ -191,19 +193,20 @@ export class EntityCandidateRegistry {
 				}
 				if (property.primitive) {
 					if (property.isArray) {
-						throw `Arrays are currently not supported outside of @OneToMany.
+						throw new Error(`Arrays are currently not supported outside of @OneToMany.
 						Please use any.
 						
 						File:     ${property.ownerEntity.path}
 						Property: ${property.name}
-						`
+						`)
 					}
 					return
 				}
 				const objectMapFragments = type.split(':')
 				if (objectMapFragments.length > 1) {
 					if (!property.isTransient) {
-						throw `Non @Transient properties cannot be object maps.`
+						throw new Error(
+							`Non @Transient properties cannot be object maps.`)
 					}
 					property.isMap                 = true
 					const objectMapValueFragment   = objectMapFragments[objectMapFragments.length - 1]
@@ -226,8 +229,9 @@ export class EntityCandidateRegistry {
 				if (!property.mapValueIsPrimitive
 					&& !fileImports.importMapByObjectAsName[type]
 					&& candidateType !== type) {
-					throw `Type '${type}' is not an import in ${candidate.path}.` +
-					`  All type references in entities must must be imported (needed for DDL hiding).`
+					throw new Error(`Type '${type}' is not an import in ${candidate.path}.` +
+					`  All type references in entities must must be imported 
+					(needed for DDL hiding).`)
 				}
 				// Do not check transient properties
 				if (property.isTransient) {
@@ -259,12 +263,12 @@ export class EntityCandidateRegistry {
 								this.registerInterface(externalInterface, property)
 								property.entity = verifiedEntity
 							} else {
-								throw `Did not find project-local Entity type: '${entityType}' (from interface ${type}).
-								Did you forget to decorate it with @Entity()?`
+								throw new Error(`Did not find project-local Entity type: '${entityType}' (from interface ${type}).
+								Did you forget to decorate it with @Entity()?`)
 							}
 						} else {
-							throw `Did not find project-local Entity type: '${type}'.
-							Did you forget to decorate it with @Entity()?`
+							throw new Error(`Did not find project-local Entity type: '${type}'.
+							Did you forget to decorate it with @Entity()?`)
 						}
 					}
 				}
@@ -297,13 +301,13 @@ export class EntityCandidateRegistry {
 		// relatedSchemaProject = require(process.cwd() + '/node_modules/' + projectName) }
 		const relatedSchemaJson: any = fs.readFileSync(process.cwd() + '/node_modules/' + projectName + '/src/generated/schema.json')
 		// if (!relatedSchemaProject) {
-		// 	throw `Could not find related schema project '${projectName}'`
+		// 	throw new Error(`Could not find related schema project '${projectName}'`)
 		// }
 		// if (!relatedSchemaProject.SCHEMA) {
-		// 	throw `Could not find related schema in project '${projectName}'`
+		// 	throw new Error(`Could not find related schema in project '${projectName}'`)
 		// }
 		if (!relatedSchemaJson) {
-			throw `Could not find related schema in project '${projectName}'`
+			throw new Error(`Could not find related schema in project '${projectName}'`)
 		}
 		const relatedSchema          = JSON.parse(relatedSchemaJson)
 		const dbSchema               = this.dbSchemaBuilder.buildDbSchemaWithoutReferences(
@@ -343,10 +347,11 @@ export class EntityCandidateRegistry {
 		relatedMappedSuperclassesProject = require(process.cwd() + '/node_modules/' + projectName)
 		// }
 		if (!relatedMappedSuperclassesProject) {
-			throw `Could not find related schema project '${projectName}'`
+			throw new Error(`Could not find related schema project '${projectName}'`)
 		}
 		if (!relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
-			throw `Could not find related Mapped Superclasses in project '${projectName}'`
+			throw new Error(
+				`Could not find related Mapped Superclasses in project '${projectName}'`)
 		}
 		const mappedSuperClassMapForProject: { [mappedSuperclasName: string]: EntityCandidate } = {}
 		for (const mappedSuperclass of relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
@@ -385,11 +390,12 @@ export class EntityCandidateRegistry {
 				const relatedImplementationName = getImplNameFromInterfaceName(type)
 				otherSchemaDbEntity             = dbSchema.currentVersion.entityMapByName[relatedImplementationName]
 				if (!otherSchemaDbEntity) {
-					throw `Could not find entity '${relatedImplementationName}' 
-					(from interface ${type}) in project '${projectName}'`
+					throw new Error(`Could not find entity '${relatedImplementationName}' 
+					(from interface ${type}) in project '${projectName}'`)
 				}
 			} else {
-				throw `Could not find entity '${type}' in project '${projectName}'`
+				throw new Error(
+					`Could not find entity '${type}' in project '${projectName}'`)
 			}
 		}
 
@@ -405,7 +411,9 @@ export class EntityCandidateRegistry {
 			for (let entity of anInterface.implementedBySet) {
 				implementations.push(entity.type)
 			}
-			throw `Interface ${anInterface.name}, is implemented by more than one entity (${implementations.join(', ')}).  Interfaces used in relations can only be implemented by one entity.`
+			throw new Error(`Interface ${anInterface.name}, is implemented by more than one 
+			entity (${implementations.join(', ')}).  Interfaces used in relations can only be 
+			implemented by one entity.`)
 		}
 		let implementedEntity = anInterface.implementedBySet.values().next().value
 		property.entity       = implementedEntity

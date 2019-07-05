@@ -13,13 +13,13 @@ class CommonLocalStoreConfig {
 exports.CommonLocalStoreConfig = CommonLocalStoreConfig;
 function createLocalStoreConfig(localStoreName, config) {
     if (!config.type && config.type !== 0) {
-        throw `Local Store Type is not specified`;
+        throw new Error(`Local Store Type is not specified`);
     }
     if (!config.idGeneration && config.idGeneration !== 0) {
-        throw `Id Generation startegy is not specified`;
+        throw new Error(`Id Generation startegy is not specified`);
     }
     let type;
-    if (typeof config.type === "string") {
+    if (typeof config.type === 'string') {
         type = storeInfo_1.store.type.getValue(config.type);
     }
     else {
@@ -33,7 +33,7 @@ function createLocalStoreConfig(localStoreName, config) {
         case storeInfo_1.StoreType.SQLJS:
             return new SqlJsCordovaLocalStoreConfig(localStoreName, config.type, config.idGeneration);
         default:
-            throw `Unsupported LocalStoreType: ${type}`;
+            throw new Error(`Unsupported LocalStoreType: ${type}`);
     }
 }
 exports.createLocalStoreConfig = createLocalStoreConfig;

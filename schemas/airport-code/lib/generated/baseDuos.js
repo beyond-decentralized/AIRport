@@ -18,15 +18,6 @@ class BaseSequenceDuo extends SQDIDuo {
     }
 }
 exports.BaseSequenceDuo = BaseSequenceDuo;
-class BaseSequenceBlockDuo extends SQDIDuo {
-    static diSet() {
-        return qSchema_1.duoDiSet(2);
-    }
-    constructor() {
-        super(2);
-    }
-}
-exports.BaseSequenceBlockDuo = BaseSequenceBlockDuo;
 class BaseTerminalRunDuo extends SQDIDuo {
     static diSet() {
         return qSchema_1.duoDiSet(1);

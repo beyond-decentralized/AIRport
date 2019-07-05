@@ -17,7 +17,7 @@ var deltaStore;
                 case ground_control_1.PlatformType.STUB:
                     return platform.STUB;
                 default:
-                    throw `Unsupported Platform Type: ${deltaStore.distributionStrategy}`;
+                    throw new Error(`Unsupported Platform Type: ${deltaStore.distributionStrategy}`);
             }
         }
         platform.getName = getName;
@@ -30,7 +30,7 @@ var deltaStore;
                 case platform.STUB:
                     return ground_control_1.PlatformType.STUB;
                 default:
-                    throw `Unsupported Platform Type name: ${platformTypeName}`;
+                    throw new Error(`Unsupported Platform Type name: ${platformTypeName}`);
             }
         }
         platform.getValue = getValue;
@@ -48,7 +48,7 @@ var deltaStore;
                 case ground_control_1.DistributionStrategy.S3_SECURE_POLL:
                     return distributionStrategy_1.S3_SECURE_POLL;
                 default:
-                    throw `Unsupported Distribution Strategy: ${distributionStrategy}`;
+                    throw new Error(`Unsupported Distribution Strategy: ${distributionStrategy}`);
             }
         }
         distributionStrategy_1.getName = getName;
@@ -59,7 +59,7 @@ var deltaStore;
                 case distributionStrategy_1.S3_SECURE_POLL:
                     return ground_control_1.DistributionStrategy.S3_SECURE_POLL;
                 default:
-                    throw `Unsupported Distribution Strategy name: ${distributionStrategyName}`;
+                    throw new Error(`Unsupported Distribution Strategy name: ${distributionStrategyName}`);
             }
         }
         distributionStrategy_1.getValue = getValue;

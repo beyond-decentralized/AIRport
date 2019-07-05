@@ -48,7 +48,7 @@ class GoogleDriveAdaptor {
             files.forEach((file) => {
                 if (file.mimeType.indexOf(GoogleDriveModel_1.MimeTypes.REALTIME) === 0) {
                     if (changeListInfo.realtimeFileId) {
-                        throw `Multiple Realtime files found for Change List: ${changeListInfo.name}`;
+                        throw new Error(`Multiple Realtime files found for Change List: ${changeListInfo.name}`);
                     }
                     changeListInfo.realtimeFileId = file.id;
                 }

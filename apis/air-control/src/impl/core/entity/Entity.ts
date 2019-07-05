@@ -224,7 +224,7 @@ export class QEntityDriver
 		// 		mtoQEntity = this.parentJoinEntity;
 		// 		break;
 		// 	default:
-		// 		throw `Unknown EntityRelationType: ${this.dbRelation.relationType}`;
+		// 		throw new Error(`Unknown EntityRelationType: ${this.dbRelation.relationType}`);
 		// }
 		//
 		// let joinWhereClause = this.dbRelation.whereJoinTable.addToJoinFunction(otmQEntity,
@@ -347,7 +347,7 @@ export class QTreeDriver
 	}
 
 	// getRelationPropertyName(): string {
-	// 	throw `not imlemented`;
+	// 	throw new Error(`not implemented`);
 	// }
 
 	getJoinRelationJson(

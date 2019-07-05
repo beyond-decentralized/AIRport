@@ -24,5 +24,5 @@ export function combineLatest<V, R>(
 	context: any,
 	callback: { (...args: unknown[]): R }
 ): R {
-	throw `Please use Observable.from(o1, o2, ...)`
+	throw new Error(`Please use Observable.from(o1, o2, ...)`)
 }

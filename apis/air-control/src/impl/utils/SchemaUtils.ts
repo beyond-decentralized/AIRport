@@ -82,7 +82,7 @@ export class SchemaUtils
 			case CRUDOperation.DELETE:
 				return cascade === CascadeType.ALL || cascade === CascadeType.REMOVE
 			default:
-				throw `Unsupported CRUDOperation '${crudOperation}' for cascade check.`
+				throw new Error(`Unsupported CRUDOperation '${crudOperation}' for cascade check.`)
 		}
 	}
 
@@ -175,7 +175,7 @@ export class SchemaUtils
 	): IdKeysByIdColumnIndex {
 		if (!dbEntity.idColumns.length) {
 			if (failOnNoId) {
-				throw `@Id is not defined on entity '${dbEntity.name}'.`
+				throw new Error(`@Id is not defined on entity '${dbEntity.name}'.`)
 			}
 			return null
 		}
@@ -214,9 +214,9 @@ export class SchemaUtils
 			current
 		) => {
 			if (!valuesEqual(last.value, current.value, true)) {
-				throw `Values differ for ${dbEntity.name}.${dbColumn.name}:
+				throw new Error(`Values differ for ${dbEntity.name}.${dbColumn.name}:
 						'${last.path.join('.')}' = ${last.value}
-						'${current.path.join('.')}' = ${current.value}`
+						'${current.path.join('.')}' = ${current.value}`)
 			}
 			propertyNameChains.push(current.path)
 
@@ -253,7 +253,7 @@ export class SchemaUtils
 					// && this.handleNoId(dbColumn, dbProperty, relationBreadCrumb, value,
 					// noIdValueCallback)
 					) {
-						throw `Cannot retrieve composite Id value, value chain '${relationBreadCrumb.join('.')}' is : ${value}.`
+						throw new Error(`Cannot retrieve composite Id value, value chain '${relationBreadCrumb.join('.')}' is : ${value}.`)
 						// return null;
 					}
 					columnValuesAndPaths.push({
@@ -282,7 +282,7 @@ export class SchemaUtils
 				} else {
 					// if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value,
 					// noValueCallback)) { return null; }
-					throw `Cannot retrieve composite Id value, value chain '${propertyBreadCrumb.join('.')}' is : ${value}.`
+					throw new Error(`Cannot retrieve composite Id value, value chain '${propertyBreadCrumb.join('.')}' is : ${value}.`)
 				}
 			}
 			return [{
@@ -347,27 +347,27 @@ export class SchemaUtils
 					} else {
 						if (index < firstPropertyNameChain.length - 1) {
 							if (!(propertyObject instanceof Object) || propertyObject instanceof Date) {
-								throw `Invalid entry: 
+								throw new Error(`Invalid entry:
 								...
 								{
 									...
 									${propertyNameLink}: ${propertyObject}
 								}
 								in '${dbRelation.property.entity.name}.${dbRelation.property.name}',
-								Property must be an Object.`
+								Property must be an Object.`)
 							}
 						} else {
 							if (!allowDefaults && !isY(propertyObject)) {
 								const reason = dbRelation.property.isId
 									? `'${dbRelation.property.entity.name}.${dbRelation.property.name}' is an @Id property`
 									: `'${dbRelation.property.entity.name}' has no @Id - all properties are treated as @Ids`
-								throw `Defaults are not allowed in: 
+								throw new Error(`Defaults are not allowed in:
 								...
 								{
 									...
 									${propertyNameLink}: ${propertyObject}
 								}
-								${reason}.`
+								${reason}.`)
 							}
 							convertTo = false
 						}
@@ -438,7 +438,7 @@ export class SchemaUtils
 				})
 			if (isIdColumn) {
 				if (setClause[dbColumn.name]) {
-					throw `Cannot update @Id column '${dbColumn.name}' of property '${dbEntity.name}.${dbProperty.name}'.`
+					throw new Error(`Cannot update @Id column '${dbColumn.name}' of property '${dbEntity.name}.${dbProperty.name}'.`)
 				}
 				this.addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause)
 			} else if (setClause[dbColumn.name]) {
@@ -527,7 +527,7 @@ export class SchemaUtils
 				return true
 			}
 		} else {
-			throw `Cannot retrieve composite Id value, value chain '${propertyNameChains.join('.')}' is : ${value}.`
+			throw new Error(`Cannot retrieve composite Id value, value chain '${propertyNameChains.join('.')}' is : ${value}.`)
 		}
 		return false
 	}

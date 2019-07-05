@@ -25,7 +25,7 @@ function getObjectResultParser(queryResultType, config, rootDbEntity) {
             let EntityTreeResultParserClass = require('./EntityTreeResultParser').EntityTreeResultParser;
             return new EntityTreeResultParserClass();
         default:
-            throw `ObjectQueryParser not supported for QueryResultType: ${queryResultType}`;
+            throw new Error(`ObjectQueryParser not supported for QueryResultType: ${queryResultType}`);
     }
 }
 exports.getObjectResultParser = getObjectResultParser;

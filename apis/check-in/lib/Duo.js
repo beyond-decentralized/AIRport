@@ -16,39 +16,39 @@ class Duo {
         }
     }
     getIdStub(ids) {
-        throw `Not Implemented.`;
+        throw new Error(`Not Implemented.`);
     }
     getIdStubs(ids) {
-        throw `Not Implemented.`;
+        throw new Error(`Not Implemented.`);
     }
     getAllFieldsSelect() {
-        throw `Not Implemented.`;
+        throw new Error(`Not Implemented.`);
     }
     getIdFieldsSelect() {
-        throw `Not Implemented.`;
+        throw new Error(`Not Implemented.`);
     }
     getNonIdFieldsSelect() {
-        throw `Not Implemented.`;
+        throw new Error(`Not Implemented.`);
     }
     getMaxIdsSelectPerRepository() {
-        throw `Not implemented`;
+        throw new Error(`Not implemented`);
     }
     getMaxIdSelect() {
-        throw `Not implemented`;
+        throw new Error(`Not implemented`);
     }
     getAllManyToOnesSelect() {
-        throw `Not implemented`;
+        throw new Error(`Not implemented`);
     }
     getAllManyToOneIdStubsSelect() {
-        throw `Not implemented`;
+        throw new Error(`Not implemented`);
     }
     getAllOneToManysSelect() {
-        throw `Not implemented`;
+        throw new Error(`Not implemented`);
     }
 }
 exports.Duo = Duo;
 function getAllFieldsSelect(dbEntity) {
-    throw `Not implemented`;
+    throw new Error(`Not implemented`);
 }
 exports.getAllFieldsSelect = getAllFieldsSelect;
 exports.DUO = {

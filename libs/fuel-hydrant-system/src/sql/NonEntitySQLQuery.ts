@@ -168,7 +168,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		// For entity queries it is possible to have a query with no from clause, in this case
 		// make the query entity the root tree node
 		if (joinRelations.length < 1) {
-			throw `FROM clause must have entries for non-Entity queries`
+			throw new Error(
+				`FROM clause must have entries for non-Entity queries`)
 		}
 
 		let firstRelation = joinRelations[0]
@@ -177,7 +178,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			case JSONRelationType.ENTITY_ROOT:
 				break
 			default:
-				throw `First table in FROM clause cannot be joined`
+				throw new Error(`First table in FROM clause cannot be joined`)
 		}
 
 		let alias = QRelation.getAlias(firstRelation)
@@ -193,7 +194,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			let rightEntity
 			let joinRelation = joinRelations[i]
 			if (!joinRelation.jt) {
-				throw `Table ${i + 1} in FROM clause is missing joinType`
+				throw new Error(`Table ${i + 1} in FROM clause is missing joinType`)
 			}
 			this.validator.validateReadFromEntity(joinRelation)
 			alias = QRelation.getAlias(joinRelation)
@@ -210,14 +211,16 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					this.qEntityMapByAlias[alias] = nonJoinedEntity
 					let anotherTree               = new JoinTreeNode(joinRelation, [], null)
 					if (joinNodeMap[alias]) {
-						throw `Alias '${alias}' used more than once in the FROM clause.`
+						throw new Error(
+							`Alias '${alias}' used more than once in the FROM clause.`)
 					}
 					jsonTrees.push(anotherTree)
 					joinNodeMap[alias] = anotherTree
 					continue
 				case JSONRelationType.ENTITY_SCHEMA_RELATION:
 					if (!(<JSONEntityRelation>joinRelation).ri) {
-						throw `Table ${i + 1} in FROM clause is missing relationPropertyName`
+						throw new Error(
+							`Table ${i + 1} in FROM clause is missing relationPropertyName`)
 					}
 					rightEntity = QRelation.createRelatedQEntity(
 						joinRelation, airDb, schemaUtils)
@@ -237,11 +240,13 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 						joinRelation, airDb, schemaUtils)
 					break
 				default:
-					throw `Unknown JSONRelationType ${joinRelation.rt}`
+					throw new Error(`Unknown JSONRelationType ${joinRelation.rt}`)
 			}
 			let parentAlias = QRelation.getParentAlias(joinRelation)
 			if (!joinNodeMap[parentAlias]) {
-				throw `Missing parent entity for alias ${parentAlias}, on table ${i + 1} in FROM clause. NOTE: sub-queries in FROM clause cannot reference parent FROM tables.`
+				throw new Error(
+					`Missing parent entity for alias ${parentAlias}, on table ${i + 1} in FROM clause. 
+					NOTE: sub-queries in FROM clause cannot reference parent FROM tables.`)
 			}
 			let leftNode  = joinNodeMap[parentAlias]
 			let rightNode = new JoinTreeNode(joinRelation, [], leftNode)
@@ -250,10 +255,11 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			this.validator.validateReadFromEntity(joinRelation)
 			this.qEntityMapByAlias[alias] = rightEntity
 			if (!rightEntity) {
-				throw `Could not find entity ${joinRelation.ti} for table ${i + 1} in FROM clause`
+				throw new Error(
+					`Could not find entity ${joinRelation.ti} for table ${i + 1} in FROM clause`)
 			}
 			if (joinNodeMap[alias]) {
-				throw `Alias '${alias}' used more than once in the FROM clause.`
+				throw new Error(`Alias '${alias}' used more than once in the FROM clause.`)
 			}
 			joinNodeMap[alias] = rightNode
 		}
@@ -308,10 +314,12 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		}
 		if (fieldIndex > 1) {
 			if (hasDistinctClause) {
-				throw `DISTINCT clause must be the only property at its level`
+				throw new Error(
+					`DISTINCT clause must be the only property at its level`)
 			}
 			if (forFieldQueryAlias) {
-				throw `Field queries can have only one field in SELECT clause`
+				throw new Error(
+					`Field queries can have only one field in SELECT clause`)
 			}
 		}
 	}
@@ -333,9 +341,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		switch (fieldJson.ot) {
 			case JSONClauseObjectType.FIELD_FUNCTION:
 				view[alias] = new SqlFunctionField(fieldJson)
-				throw 'Not implemented'
+				throw new Error('Not implemented')
 			case JSONClauseObjectType.EXISTS_FUNCTION:
-				throw `Exists function cannot be used in SELECT clause.`
+				throw new Error(`Exists function cannot be used in SELECT clause.`)
 			case JSONClauseObjectType.FIELD:
 				dbEntity   = airDb.schemas[fieldJson.si].currentVersion.entities[fieldJson.ti]
 				dbProperty = dbEntity.properties[fieldJson.pi]
@@ -362,7 +370,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 							view as IQEntityInternal)
 						break
 					default:
-						throw `Unknown SQLDataType: ${fieldJson.dt}.`
+						throw new Error(`Unknown SQLDataType: ${fieldJson.dt}.`)
 				}
 				break
 			case JSONClauseObjectType.FIELD_QUERY:
@@ -376,12 +384,15 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 				hasDistinctClause = true
 				break
 			case JSONClauseObjectType.MANY_TO_ONE_RELATION:
-				throw `@ManyToOne fields cannot be directly in a select clause. Please select a non-relational field within the relation.`
+				throw new Error(
+					`@ManyToOne fields cannot be directly in a select clause.
+					Please select a non-relational field within the relation.`)
 			// let relation =
 			// <QField<any>><any>QMetadataUtils.getRelationByColumnIndex(this.dbFacade.getQEntityByIndex(fieldJson.ti),
 			// fieldJson.ci); view[alias] = relation.getInstance(view); break;
 			default:
-				throw `Unexpected type property on JSONClauseField: ${fieldJson.ot}.`
+				throw new Error(
+					`Unexpected type property on JSONClauseField: ${fieldJson.ot}.`)
 		}
 
 		return hasDistinctClause
@@ -425,7 +436,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					fromFragment += `(${subQuerySql}) ${currentAlias}`
 					break
 				default:
-					throw `Top level FROM entries must be Entity or Sub-Query root`
+					throw new Error(
+						`Top level FROM entries must be Entity or Sub-Query root`)
 			}
 		} else {
 			let parentRelation = parentTree.jsonRelation
@@ -448,7 +460,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 				case JoinType.RIGHT_JOIN:
 					joinTypeString = 'RIGHT JOIN'
 				default:
-					throw `Unsupported join type: ${currentRelation.jt}`
+					throw new Error(`Unsupported join type: ${currentRelation.jt}`)
 			}
 
 			let errorPrefix = 'Error building FROM: '
@@ -480,7 +492,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					fromFragment += `${joinTypeString} (${mappedSql}) ${currentAlias} ON\n${joinOnClause}`
 					break
 				default:
-					throw `Nested FROM entries must be Entity JOIN ON or Schema Relation, or Sub-Query JOIN ON`
+					throw new Error(`Nested FROM entries must be Entity JOIN ON
+					or Schema Relation, or Sub-Query JOIN ON`)
 
 			}
 		}

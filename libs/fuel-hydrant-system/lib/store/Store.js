@@ -17,7 +17,7 @@ async function setStoreDriver(storeType) {
             StoreDriver = sqlJsDriverFile.SqlJsDriver;
             break;
         default:
-            throw `Unsupported StoreType: ${storeType}`;
+            throw new Error(`Unsupported StoreType: ${storeType}`);
     }
     di_1.DI.set(ground_control_1.STORE_DRIVER, StoreDriver);
 }

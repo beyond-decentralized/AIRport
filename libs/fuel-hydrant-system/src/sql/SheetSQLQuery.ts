@@ -40,7 +40,7 @@ export class SheetSQLQuery
 		metadataUtils: IQMetadataUtils
 	): string {
 		if (!selectClauseFragment) {
-			throw `SELECT clause is not defined for a Flat Query`
+			throw new Error(`SELECT clause is not defined for a Flat Query`)
 		}
 		{
 			let distinctClause = <JSONClauseField>selectClauseFragment
@@ -52,7 +52,7 @@ export class SheetSQLQuery
 			}
 		}
 		if (!(selectClauseFragment instanceof Array)) {
-			throw `SELECT clause for a Flat Query must be an Array`
+			throw new Error(`SELECT clause for a Flat Query must be an Array`)
 		}
 
 		let fieldIndex        = 0

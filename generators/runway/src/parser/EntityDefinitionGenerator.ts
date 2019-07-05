@@ -113,10 +113,10 @@ export function generateEntityDefinitions(
 
 		if (node.kind === ts.SyntaxKind.ClassDeclaration) {
 			if (file.hasEntityCandidate) {
-				throw `Cannot declare more than one entity per file.`
+				throw new Error(`Cannot declare more than one entity per file.`)
 			}
 			if (file.hasEnums || file.hasInterfaces) {
-				throw onlyClassInFileError
+				throw new Error(onlyClassInFileError)
 			}
 			file.hasEntityCandidate = true
 
@@ -137,7 +137,7 @@ export function generateEntityDefinitions(
 			// cannot be exported
 		} else if (node.kind === ts.SyntaxKind.InterfaceDeclaration) {
 			if (file.hasEntityCandidate) {
-				throw onlyClassInFileError
+				throw new Error(onlyClassInFileError)
 			}
 			file.hasInterfaces = true
 			// This is a top level interface, get its symbol
@@ -146,10 +146,10 @@ export function generateEntityDefinitions(
 		} else if (node.kind === ts.SyntaxKind.ModuleDeclaration) {
 			// This is a namespace, visit its children
 			// ts.forEachChild(node, visit);
-			throw `Namespaces are not supported in DDL.`
+			throw new Error(`Namespaces are not supported in DDL.`)
 		} else if (node.kind === ts.SyntaxKind.EnumDeclaration) {
 			if (file.hasEntityCandidate) {
-				throw onlyClassInFileError
+				throw new Error(onlyClassInFileError)
 			}
 			file.hasEnums = true
 			let symbol    = checker.getSymbolAtLocation((<ts.EnumDeclaration>node).name)
@@ -222,7 +222,7 @@ export function generateEntityDefinitions(
 					&& declaration.type.kind === ts.SyntaxKind.AnyKeyword) {
 					// Just the any keyword
 				} else {
-					throw `Unsupported type: ${type}`
+					throw new Error(`Unsupported type: ${type}`)
 				}
 			} else if (type.match(/^\s*any\[\]\s*$/)) {
 				if (declaration.type
@@ -230,7 +230,7 @@ export function generateEntityDefinitions(
 					&& declaration.type.elementType.typeName) {
 					type = declaration.type.elementType.typeName.escapedText + '[]'
 				} else {
-					throw `Unsupported array type: ${type}`
+					throw new Error(`Unsupported array type: ${type}`)
 				}
 			} else if (type.match(/\]\s*:\s*any\s*;*\s*\}\s*$/)) {
 				if (declaration.type
@@ -240,10 +240,10 @@ export function generateEntityDefinitions(
 					&& declaration.type.members[0].type.typeName) {
 					type = type.replace(/any\s*;*\s*\}\s*$/, declaration.type.members[0].type.typeName.escapedText + '}')
 				} else {
-					throw `Unsupported map type: ${type}`
+					throw new Error(`Unsupported map type: ${type}`)
 				}
 			} else if (type.match(/^\s*any\s*$/)) {
-				throw `Unsupported type: ${type}`
+				throw new Error(`Unsupported type: ${type}`)
 			}
 		}
 
@@ -331,7 +331,8 @@ export function generateEntityDefinitions(
 				type = <string>typeName.escapedText
 				return {...typeInfo, type, genericParams}
 			default:
-				throw `Unsupported Syntax kind for method parameter/type: ${tsType.kind}`
+				throw new Error(
+					`Unsupported Syntax kind for method parameter/type: ${tsType.kind}`)
 		}
 	}
 
@@ -460,9 +461,10 @@ export function generateEntityDefinitions(
 				value = convertPropertyAccessExpressionToString(<ts.PropertyAccessExpression>initializer)
 				break
 			case ts.SyntaxKind.CallExpression:
-				throw `Function calls are not allowed as parameter values.`
+				throw new Error(
+					`Function calls are not allowed as parameter values.`)
 			case ts.SyntaxKind.BinaryExpression:
-				throw `Expression are not allowed as parameter values.`
+				throw new Error(`Expression are not allowed as parameter values.`)
 			case ts.SyntaxKind.ArrowFunction:
 				if (objectType == TsObjectType.DECORATOR && objectName === 'WhereJoinTable') {
 					const printer = ts.createPrinter({
@@ -537,7 +539,8 @@ export default WhereJoinTableFunction`;
 						break
 
 				}
-				throw `Unsupported property initializer.kind: ${initializer.kind} for ${objectTypeDescription}: ${objectName}`
+				throw new Error(`Unsupported property initializer.kind: ${initializer.kind}
+				 for ${objectTypeDescription}: ${objectName}`)
 		}
 
 		return value
@@ -630,18 +633,18 @@ export default WhereJoinTableFunction`;
 						}
 						break
 					default:
-						throw `Not implemented`
+						throw new Error(`Not implemented`)
 				}
 			} else if (member.declarations) {
 				// declaration (constructor, method)
 				if (member.declarations.length === 1 && member.declarations[0].kind === ts.SyntaxKind.Constructor) {
 					// do not record the constructor
 				} else {
-					throw 'Not implemented'
+					throw new Error('Not implemented')
 				}
 			} else {
 				// value declaration (properity)
-				throw 'Not implemented'
+				throw new Error('Not implemented')
 			}
 		})
 		details.properties       = properties
@@ -661,7 +664,8 @@ export default WhereJoinTableFunction`;
 
 		let classInheritanceEntry = globalCandidateInheritanceMap[details.name]
 		if (classInheritanceEntry != undefined) {
-			throw `Found duplicate entity '${details.name}'. Non-unique class names are not supported`
+			throw new Error(`Found duplicate entity '${details.name}'. 
+			Non-unique class names are not supported`)
 		}
 
 		if (entityDecorator) {

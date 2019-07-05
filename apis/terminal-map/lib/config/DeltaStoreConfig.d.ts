@@ -1,8 +1,8 @@
-import { IChangeListConfig, JsonChangeListConfig } from "./ChangeListConfig";
-import { IOfflineDeltaStoreConfig, JsonOfflineDeltaStoreConfig } from "./OfflineDeltaStoreConfig";
-import { PlatformType } from "./PlatformType";
-import { SharingPlatformSetupInfo } from "../SharingAdaptor";
-import { GoogleSetupInfo } from "./GoogleSharingModel";
+import { SharingPlatformSetupInfo } from '../SharingAdaptor';
+import { IChangeListConfig, JsonChangeListConfig } from './ChangeListConfig';
+import { GoogleSetupInfo } from './GoogleSharingModel';
+import { IOfflineDeltaStoreConfig, JsonOfflineDeltaStoreConfig } from './OfflineDeltaStoreConfig';
+import { PlatformType } from './PlatformType';
 /**
  * Created by Papa on 5/31/2016.
  */

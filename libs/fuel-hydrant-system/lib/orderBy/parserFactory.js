@@ -12,9 +12,9 @@ function getOrderByParser(queryResultType, selectClauseFragment, validator, orde
         //			return new ExactOrderByParser(rootQEntity, selectClauseFragment,
         // qEntityMapByName, entitiesRelationPropertyMap, entitiesPropertyTypeMap, orderBy);
         case ground_control_1.QueryResultType.RAW:
-            throw `Query parsing not supported for raw queries`;
+            throw new Error(`Query parsing not supported for raw queries`);
         default:
-            throw `Unexpected queryResultType for an Entity ORDER BY parser: ${queryResultType}`;
+            throw new Error(`Unexpected queryResultType for an Entity ORDER BY parser: ${queryResultType}`);
     }
 }
 exports.getOrderByParser = getOrderByParser;

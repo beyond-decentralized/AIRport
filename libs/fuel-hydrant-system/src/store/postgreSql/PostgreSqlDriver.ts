@@ -13,7 +13,7 @@ export abstract class PostgreSqlDriver
 	async doesTableExist(
 		tableName: string
 	): Promise<boolean> {
-		throw `Not implemented`
+		throw new Error(`Not implemented`)
 	}
 
 	async findNative(
@@ -49,10 +49,10 @@ export abstract class PostgreSqlDriver
 				} else if (value instanceof Date) {
 					return value.getTime()
 				} else {
-					throw `Unexpected non-date object ${value}`
+					throw new Error(`Unexpected non-date object ${value}`)
 				}
 			default:
-				throw `Unexpected typeof value: ${typeof value}`
+				throw new Error(`Unexpected typeof value: ${typeof value}`)
 		}
 	}
 

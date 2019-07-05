@@ -48,7 +48,7 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 		fieldUtils: IFieldUtils
 	): any {
 		if (!(this.rawQuery.select instanceof QField)) {
-			throw NON_ENTITY_SELECT_ERROR_MESSAGE
+			throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE)
 		}
 		this.columnAliases.entityAliases.getNextAlias(this.rawQuery.select.q.__driver__.getRootJoinEntity())
 		return (<QField<any>><any>this.rawQuery.select).toJSON(
@@ -91,7 +91,7 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 		} else if (selectField instanceof QUntypedField) {
 			return SQLDataType.ANY
 		} else {
-			throw `Unsupported type of select field in Field Query`
+			throw new Error(`Unsupported type of select field in Field Query`)
 		}
 	}
 

@@ -113,7 +113,7 @@ export class SSchemaBuilder {
 					tableConfig = {
 						...decorator.values[0]
 					}
-					if(!tableConfig.indexes) {
+					if (!tableConfig.indexes) {
 						tableConfig.indexes = []
 					}
 					break
@@ -125,7 +125,7 @@ export class SSchemaBuilder {
 			return null
 		}
 
-		if(!tableConfig) {
+		if (!tableConfig) {
 			tableConfig = {
 				indexes: []
 			}
@@ -162,7 +162,8 @@ export class SSchemaBuilder {
 
 		if (entity.isRepositoryEntity) {
 			if (entity.numIdColumns !== 3) {
-				throw `Repository entity '${entity.name}' must have 3 id columns and has ${entity.numIdColumns}.`
+				throw new Error(`Repository entity '${entity.name}' must have 3 id columns 
+				and has ${entity.numIdColumns}.`)
 			}
 		}
 
@@ -284,12 +285,13 @@ export class SSchemaBuilder {
 					break
 				// case property.R_JOIN_COLUMN:
 				// 	if (!entity.isRepositoryEntity) {
-				// 		throw `${entity.name}.${aProperty.name} cannot be @RJoinColumn `
+				// 		throw new Error(`${entity.name}.${aProperty.name} cannot be @RJoinColumn `
 				// 		+ `- ${entity.name} does not extend RepositoryEntity or
-				// LocalRepositoryEntity.`; } repositoryJoin = true;
+				// LocalRepositoryEntity.`); } repositoryJoin = true;
 				case property.JOIN_COLUMN:
 					if (columnsDefined) {
-						throw `Columns are defined more than once for ${entity.name}.${aProperty.name}`
+						throw new Error(`Columns are defined more than once 
+						for ${entity.name}.${aProperty.name}`)
 					}
 					columnsDefined = true
 					foreignKey     = decorator.values[0].foreignKey
@@ -297,37 +299,42 @@ export class SSchemaBuilder {
 					break
 				// case property.R_JOIN_COLUMNS:
 				// 	if (!entity.isRepositoryEntity) {
-				// 		throw `${entity.name}.${aProperty.name} cannot be @RJoinColumns `
+				// 		throw new Error(`${entity.name}.${aProperty.name} cannot be @RJoinColumns `
 				// 		+ `- ${entity.name} does not extend RepositoryEntity or
-				// LocalRepositoryEntity.`; } repositoryJoin = true;
+				// LocalRepositoryEntity.`); } repositoryJoin = true;
 				case property.JOIN_COLUMNS:
 					if (columnsDefined) {
-						throw `Columns are defined more than once for ${entity.name}.${aProperty.name}`
+						throw new Error(`Columns are defined more than once 
+						for ${entity.name}.${aProperty.name}`)
 					}
 					columnsDefined = true
 					if (decorator.values[0] instanceof Array) {
 						columnRelationDefs = columnRelationDefs.concat(decorator.values[0].slice())
 					} else {
-						throw `"${entity.name}.${aProperty.name} " is decorated with @JoinColumns decorator
+						throw new Error(
+							`"${entity.name}.${aProperty.name} " is decorated with @JoinColumns decorator
 						which must be provided an array of column join definitions (and currently is provided
-						something other than an Array).`
+						something other than an Array).`)
 						// columnRelationDefs = columnRelationDefs.concat(decorator.values[0].value);
 						// foreignKey = decorator.values[0].foreignKey;
 					}
 					break
 				case property.MANY_TO_ONE:
 					if (relationType) {
-						throw `Cardinality (@ManyToOne,@OneToMany) is defined more than once for ${entity.name}.${aProperty.name}`
+						throw new Error(
+							`Cardinality (@ManyToOne,@OneToMany) is defined more than once 
+							for ${entity.name}.${aProperty.name}`)
 					}
 					manyToOne    = decorator.values[0]
 					relationType = EntityRelationType.MANY_TO_ONE
 					break
 				case property.ONE_TO_MANY:
 					if (isId) {
-						throw `A property cannot be be both @OneToMany and @Id`
+						throw new Error(`A property cannot be be both @OneToMany and @Id`)
 					}
 					if (relationType) {
-						throw `Cardinality (@ManyToOne,@OneToMany) is defined more than once for ${entity.name}.${aProperty.name}`
+						throw new Error(`Cardinality (@ManyToOne,@OneToMany) is defined more than once 
+						for ${entity.name}.${aProperty.name}`)
 					}
 					oneToMany    = decorator.values[0]
 					relationType = EntityRelationType.ONE_TO_MANY
@@ -341,16 +348,19 @@ export class SSchemaBuilder {
 				// 			case 'var or':
 				// 				joinFunctionWithOperator = SqlOperator.OR;
 				// 			default:
-				// 				throw `Unsupported 'joinFunctionWithOperator' ${decorator.values[1]}`;
+				// 				throw new Error(
+				// 				`Unsupported 'joinFunctionWithOperator' ${decorator.values[1]}`);
 				// 		}
 				// 	}
 				// 	break;
 				default:
-					throw `Unsupported cardinality decorator ${decorator.name}`
+					throw new Error(`Unsupported cardinality decorator ${decorator.name}`)
 			}
 		}
 		if (!relationType && relationType !== 0) {
-			throw `Cardinality (@ManyToOne,@OneToMany) is not defined for ${entity.name}.${aProperty.name}`
+			throw new Error(
+				`Cardinality (@ManyToOne,@OneToMany) is not defined 
+				for ${entity.name}.${aProperty.name}`)
 		}
 		const columns: SColumn[]                  = []
 		const sRelationColumns: SRelationColumn[] = []
@@ -363,7 +373,8 @@ export class SSchemaBuilder {
 				if (name) {
 					name = name.toUpperCase()
 				} else {
-					throw `"name" is not defined in for a JoinColumn(s) configuration of ${entity.name}.${aProperty.name}`
+					throw new Error(`"name" is not defined in for a JoinColumn(s) configuration 
+					of ${entity.name}.${aProperty.name}`)
 				}
 				if (columnRelationDef.nullable === false) {
 					notNull = true
@@ -388,7 +399,7 @@ export class SSchemaBuilder {
 						relationColumnReference = name
 						break
 					default:
-						throw `Uknown EntityRelationType: ${relationType}.`
+						throw new Error(`Uknown EntityRelationType: ${relationType}.`)
 				}
 				const [sRelationColumn, sColumn] = this.processRelationColumn(
 					ownColumnReference, relationColumnReference, isManyToOne,
@@ -439,14 +450,15 @@ export class SSchemaBuilder {
 					// Nothing to do
 					break
 				default:
-					throw `Uknown EntityRelationType: ${relationType}.`
+					throw new Error(`Uknown EntityRelationType: ${relationType}.`)
 			}
 		}
 		let entityName
 		let referencedSchemaIndex
 		if (!aProperty.entity) {
 			if (!aProperty.fromProject) {
-				throw `Neither entity nor source project was specified for for ${entity.name}.${aProperty.name}`
+				throw new Error(`Neither entity nor source project was specified 
+				for ${entity.name}.${aProperty.name}`)
 			}
 
 			let schemaReference = referencedSchemasByProjectName[aProperty.fromProject]
@@ -454,7 +466,8 @@ export class SSchemaBuilder {
 			if (!schemaReference) {
 				const dbSchema = globalCandidateRegistry.getReferencedSchema(aProperty.fromProject, aProperty)
 				if (!dbSchema) {
-					throw `Could not find related project '${aProperty.fromProject}' for ${entity.name}.${aProperty.name}`
+					throw new Error(`Could not find related project '${aProperty.fromProject}' 
+					for ${entity.name}.${aProperty.name}`)
 				}
 
 				schemaReference                                       = {
@@ -472,15 +485,15 @@ export class SSchemaBuilder {
 					const entityType = getImplNameFromInterfaceName(propertyType)
 					relatedEntity    = schemaReference.dbSchema.currentVersion.entityMapByName[entityType]
 					if (!relatedEntity) {
-						throw `Could not find related entity '${entityType}' 
+						throw new Error(`Could not find related entity '${entityType}' 
 						(from interface ${propertyType}) 
 						in project '${aProperty.fromProject}' 
-						for ${entity.name}.${aProperty.name}`
+						for ${entity.name}.${aProperty.name}`)
 					}
 				} else {
-					throw `Could not find related entity '${propertyType}' 
+					throw new Error(`Could not find related entity '${propertyType}' 
 					in project '${aProperty.fromProject}' 
-					for ${entity.name}.${aProperty.name}`
+					for ${entity.name}.${aProperty.name}`)
 				}
 			}
 			entityName = relatedEntity.name
@@ -590,7 +603,8 @@ export class SSchemaBuilder {
 			switch (decorator.name) {
 				case property.COLUMN:
 					if (columnDefined) {
-						throw `@Column is defined more than once for ${entity.name}.${aProperty.name}`
+						throw new Error(`@Column is defined more than once
+						 for ${entity.name}.${aProperty.name}`)
 					}
 					columnDefined = true
 					if (decorator.values.length) {
@@ -610,18 +624,19 @@ export class SSchemaBuilder {
 		columnName = columnName.toUpperCase()
 
 		if (!columnName) {
-			throw `Could not find a columnName in "${entity.name}"`
+			throw new Error(`Could not find a columnName in "${entity.name}"`)
 		}
 
 		const existingColumn = primitiveColumnMapByName[columnName]
 		if (existingColumn) {
-			throw `More than one @Column({name: "${columnName}"}) defined in "${entity.name}"`
+			throw new Error(`More than one @Column({name: "${columnName}"}) 
+			defined in "${entity.name}"`)
 		}
 		if (aProperty.isGenerated
 			&& aProperty.primitive !== 'number'
 			&& aProperty.primitive !== 'string') {
-			throw `Column '${columnName}' defined in "${entity.name}" is a @GeneratedValue()
-			but isn't of type "number" or "string"`
+			throw new Error(`Column '${columnName}' defined in "${entity.name}" is a @GeneratedValue()
+			but isn't of type "number" or "string"`)
 		}
 
 		let idIndex = undefined
@@ -687,19 +702,19 @@ export class SSchemaBuilder {
 		}
 		// if (ownColumnIdIndex) {
 		// 	if (isIdProperty) {
-		// 		throw `ManyToOne/OneToMany relation cannot be @Id and reference Id columns at
-		// the same time.` }  return [ sRelationColumn, null ] }
+		// 		throw new Error(`ManyToOne/OneToMany relation cannot be @Id and reference Id
+		// columns at the same time.`) }  return [ sRelationColumn, null ] }
 
 		const existingPrimitiveColumn = primitiveColumnMapByName[ownColumnReference]
 		if (existingPrimitiveColumn) {
 			if (manyToOne && isIdProperty) {
 				// if (entityCannotReferenceOtherColumns) {
-				// throw `ManyToOne relation without (R)JoinColumn(s) cannot be named as other
-				// columns.`;
-				throw `@Id & @ManyToOne relation columns cannot be named as other non-relational columns.
+				// throw new Error(`ManyToOne relation without (R)JoinColumn(s) cannot be named
+				// as other columns.`);
+				throw new Error(`@Id & @ManyToOne relation columns cannot be named as other non-relational columns.
 			A column can either be defined as a non-relational column
 			OR as a relation.
-			Column: '${entity.name}.${ownColumnReference}'`
+			Column: '${entity.name}.${ownColumnReference}'`)
 			}
 			if ((existingPrimitiveColumn.notNull && !notNull)
 				|| (!existingPrimitiveColumn.notNull && notNull)) {
@@ -715,14 +730,15 @@ export class SSchemaBuilder {
 		if (existingRelationColumn) {
 			if (manyToOne && isIdProperty) {
 				// if (entityCannotReferenceOtherColumns) {
-				// throw `ManyToOne relation without (R)JoinColumn(s) cannot be named as other
-				// columns.`;
-				throw `@Id & @ManyToOne relation columns cannot be named in multiple relations.
+				// throw new Error(`ManyToOne relation without (R)JoinColumn(s) cannot be named
+				// as other columns.`);
+				throw new Error(`@Id & @ManyToOne relation columns cannot be named in multiple relations.
 			A @Id column can be defined in only one relation.
-			Column: '${entity.name}.${ownColumnReference}'`
+			Column: '${entity.name}.${ownColumnReference}'`)
 			}
 			if (entityCannotReferenceOtherColumns) {
-				throw `ManyToOne relation without JoinColumn(s) cannot be named as other columns.`
+				throw new Error(`ManyToOne relation without JoinColumn(s) 
+				cannot be named as other columns.`)
 			}
 			if ((existingRelationColumn.notNull && !notNull)
 				|| (!existingRelationColumn.notNull && notNull)) {
@@ -773,7 +789,8 @@ export class SSchemaBuilder {
 			case 'ACTOR_RECORD_ID':
 				return 2
 			default:
-				throw `Repository Entity @Id columns must be 'REPOSITORY_ID', 'ACTOR_ID' and 'ACTOR_RECORD_ID'`
+				throw new Error(`Repository Entity @Id columns must be 
+				'REPOSITORY_ID', 'ACTOR_ID' and 'ACTOR_RECORD_ID'`)
 		}
 
 	}
@@ -826,7 +843,7 @@ export class SSchemaBuilder {
 					break
 				default:
 					if (throwIfNotFound) {
-						throw throwIfNotFound
+						throw new Error(throwIfNotFound)
 					}
 			}
 

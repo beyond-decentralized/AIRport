@@ -35,7 +35,7 @@ export class SQLInsertValues
 		metadataUtils: IQMetadataUtils
 	): string {
 		if (!this.jsonInsertValues.II) {
-			throw `Expecting exactly one table in INSERT INTO clause`
+			throw new Error(`Expecting exactly one table in INSERT INTO clause`)
 		}
 		this.validator.validateInsertQEntity(this.dbEntity)
 		let tableFragment   = this.getTableFragment(

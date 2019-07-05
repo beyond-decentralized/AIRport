@@ -11,13 +11,13 @@ const Utils_1 = require("../Utils");
 class EntityUtils {
     getObjectClassName(object) {
         if (typeof object != 'object' || object === null) {
-            throw `Not an object instance`;
+            throw new Error(`Not an object instance`);
         }
         return this.getClassName(object.constructor);
     }
     getClassName(clazz) {
         if (typeof clazz != 'function') {
-            throw `Not a constructor function`;
+            throw new Error(`Not a constructor function`);
         }
         let className = clazz['name'];
         // let className = /(\w+)\(/.exec(clazz.toString())[1];

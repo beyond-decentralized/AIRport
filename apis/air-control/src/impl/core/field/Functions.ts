@@ -99,7 +99,7 @@ function getSqlFunctionCall(
 				case 'string':
 					return str(parameter)
 				case 'undefined':
-					throw `'undefined' cannot be used as a function parameter`
+					throw new Error(`'undefined' cannot be used as a function parameter`)
 			}
 			if (parameter instanceof Date) {
 				return date(parameter)
@@ -160,7 +160,7 @@ export function getFunctionObject<T extends boolean | Date | number | string>(
 	} else if (selectClause instanceof QStringField) {
 		return new QStringFunction(<any>value)
 	}
-	throw `Function rValue must be a primitive, Date, Field or Field query`
+	throw new Error(`Function rValue must be a primitive, Date, Field or Field query`)
 }
 
 export const count: countFunction = function <T extends boolean | Date | number | string,
@@ -432,10 +432,10 @@ export class QDistinctFunction<ISelect>
 		parsedSelectClause?: any
 	): JSONClauseField {
 		if (this.__appliedFunctions__.length != 1) {
-			throw `Not expecting and parent or child functions on "distinct"`
+			throw new Error(`Not expecting and parent or child functions on "distinct"`)
 		}
 		if (!this.selectClause) {
-			throw `SELECT clause is missing in "distinct" function.`
+			throw new Error(`SELECT clause is missing in "distinct" function.`)
 		}
 		let appliedFunctions = [
 			getSqlFunctionCall(SqlFunction.DISTINCT)
@@ -455,7 +455,7 @@ export const exists: existsFunction = function <IME extends ITreeEntity>(
 ): IQExistsFunction {
 	let selectClause = rawQuery.select
 	if (!selectClause) {
-		throw `Sub-Query must have SELECT clause defined to be used in EXITS function`
+		throw new Error(`Sub-Query must have SELECT clause defined to be used in EXITS function`)
 	}
 	let existsFunction = new QExistsFunction(rawQuery)
 	return existsFunction.applySqlFunction(getSqlFunctionCall(SqlFunction.EXISTS))
@@ -494,10 +494,10 @@ export class QExistsFunction<IME extends ITreeEntity>
 		parsedQuery?: JsonTreeQuery
 	): JSONFunctionOperation {
 		if (this.__appliedFunctions__.length != 1) {
-			throw `Not expecting and parent or child functions on "exists"`
+			throw new Error(`Not expecting and parent or child functions on "exists"`)
 		}
 		if (!this.subQuery) {
-			throw `Subquery is not defined in "exists" function.`
+			throw new Error(`Subquery is not defined in "exists" function.`)
 		}
 		let appliedFunctions = [
 			getSqlFunctionCall(SqlFunction.EXISTS)
@@ -586,7 +586,7 @@ export const concat: concatenateFunction = function ( //
 		| string
 		| RawFieldQuery<IQOperableField<any, any, any, any>>)[]): IQStringField {
 	if (fragments.length > 2) {
-		throw `Less than two operands passed to 'concat' function.`
+		throw new Error(`Less than two operands passed to 'concat' function.`)
 	}
 	let firstFragment   = fragments[0]
 	let restOfFragments = fragments.slice(1)
@@ -606,7 +606,7 @@ export const concat: concatenateFunction = function ( //
 export const union: unionFunction = function (
 	...rawQueries: RawNonEntityQuery[]
 ): RawNonEntityQuery {
-	throw 'not implemented'
+	throw new Error('not implemented')
 }
 
 
@@ -618,7 +618,7 @@ export const union: unionFunction = function (
 export const unionAll: unionAllFunction = function (
 	...rawQueries: RawNonEntityQuery[]
 ): RawNonEntityQuery {
-	throw 'not implemented'
+	throw new Error('not implemented')
 
 }
 
@@ -631,7 +631,7 @@ export const unionAll: unionAllFunction = function (
 export const intersect: intersectFunction = function (
 	...rawQueries: RawNonEntityQuery[]
 ): RawNonEntityQuery {
-	throw 'not implemented'
+	throw new Error('not implemented')
 }
 
 
@@ -643,7 +643,7 @@ export const intersect: intersectFunction = function (
 export const except: exceptFunction = function (
 	...rawQueries: RawNonEntityQuery[]
 ): RawNonEntityQuery {
-	throw 'not implemented'
+	throw new Error('not implemented')
 }
 
 

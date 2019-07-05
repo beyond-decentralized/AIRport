@@ -10,7 +10,7 @@ class FieldInOrderBy {
     }
     toJSON(columnAliases) {
         if (!columnAliases.hasAliasFor(this.field)) {
-            throw `Field used in order by clause is not present in select clause`;
+            throw new Error(`Field used in order by clause is not present in select clause`);
         }
         return {
             fa: columnAliases.getExistingAlias(this.field),

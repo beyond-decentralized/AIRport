@@ -114,7 +114,7 @@ export class EntityAliases
 		entity: IQEntityInternal
 	): string {
 		if (!this.hasAliasFor(entity)) {
-			throw `No alias found for entity ${entity.__driver__.dbEntity.name}`;
+			throw new Error(`No alias found for entity ${entity.__driver__.dbEntity.name}`);
 		}
 		return this.aliasMap.get(entity);
 	}
@@ -159,7 +159,7 @@ export class ParameterAliases
 		field: IQFunction<any>
 	): Parameter {
 		if (!this.hasAliasFor(field)) {
-			throw `No alias found for a parameter`;
+			throw new Error(`No alias found for a parameter`);
 		}
 		return this.aliasMap.get(field);
 	}
@@ -200,7 +200,7 @@ export class FieldColumnAliases
 	): string {
 		if (!this.hasAliasFor(field)) {
 			const qField = <IQFieldInternal<any>>field;
-			throw `No alias found for property ${qField.dbProperty.entity.name}.${qField.dbProperty.name}`;
+			throw new Error(`No alias found for property ${qField.dbProperty.entity.name}.${qField.dbProperty.name}`);
 		}
 		return this.aliasMap.get(field);
 	}

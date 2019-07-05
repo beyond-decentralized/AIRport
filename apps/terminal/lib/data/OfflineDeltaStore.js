@@ -7,22 +7,22 @@ function getOfflineDeltaStore(localStore) {
     switch (localStore.type) {
         case terminal_map_1.StoreType.SQLITE_CORDOVA:
         case terminal_map_1.StoreType.SQLJS:
-            throw `Implement!`;
+            throw new Error(`Implement!`);
         // return new OfflineSqlDeltaStore(localStore);
         default:
-            throw `Unsupported LocalStoreType: ${localStore.type}`;
+            throw new Error(`Unsupported LocalStoreType: ${localStore.type}`);
     }
 }
 exports.getOfflineDeltaStore = getOfflineDeltaStore;
 class OfflineDeltaStore {
     addRemoteChanges(repository, transactions) {
-        throw `Implement!`;
+        throw new Error(`Implement!`);
     }
     addChange(transaction) {
-        throw `Implement!`;
+        throw new Error(`Implement!`);
     }
     markChangesAsSynced(repository, transactions) {
-        throw `Implement!`;
+        throw new Error(`Implement!`);
     }
 }
 exports.OfflineDeltaStore = OfflineDeltaStore;

@@ -268,7 +268,7 @@ export class SyncInRepositoryTransactionBlockCreator
 	createSharingNodeRepoTransBlocks(
 		allDataToTM: IDataToTM[]
 	): Promise<void> {
-		throw `Not Implemented`
+		throw new Error(`Not Implemented`)
 	}
 
 

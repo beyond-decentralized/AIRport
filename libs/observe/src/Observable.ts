@@ -76,7 +76,7 @@ export class Observable<T>
 		...sourceObservables: (IObservable<any> | Promise<IObservable<any>>)[]
 	): IObservable<any> {
 		// if (!(sourceObservable instanceof Observable)) {
-		// 	throw 'only @airport/observer/Observable is supported'
+		// 	throw new Error('only @airport/observer/Observable is supported')
 		// }
 		const targetObservable: IObservable<any> = new Observable<any>()
 		sourceObservables.forEach(
@@ -143,7 +143,7 @@ export class Observable<T>
 		...operators: IOperator<any, any>[]
 	): IObservable<any> {
 		// if (!(sourceObservable instanceof Observable)) {
-		// 	throw 'only @airport/observer/Observable is supported'
+		// 	throw new Error('only @airport/observer/Observable is supported')
 		// }
 		const targetObservable: Observable<any>
 			                         = Observable.from(this) as any
@@ -203,7 +203,7 @@ export class Observable<T>
 	// ): ISubscription
 	{
 		// if (!(observer instanceof Function)) {
-		// 	throw 'Subjects can only be subscribed to with functions'
+		// 	throw new Error('Subjects can only be subscribed to with functions')
 		// }
 
 		const subscription = new Subscription(

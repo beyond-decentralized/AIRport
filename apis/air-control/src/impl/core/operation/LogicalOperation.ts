@@ -45,7 +45,7 @@ export class LogicalOperation extends Operation implements ILogicalOperation {
 		ops: IOperation[]
 	): void {
 		if (!ops || !ops.length) {
-			throw `No child operations provided`;
+			throw new Error(`No child operations provided`)
 		}
 	}
 

@@ -45,10 +45,10 @@ export class JsonSchemaBuilder {
 			// 	 where "}" marks the end of the schema definition.`
 			//
 			// if (indexOfAssignment < 0) {
-			// 	throw errorMessage
+			// 	throw new Error(errorMessage)
 			// }
 			// if (existingSchemaString.indexOf('};') !== existingSchemaString.length - 2) {
-			// 	throw errorMessage
+			// 	throw new Error(errorMessage)
 			// }
 			//
 			// existingSchemaString = existingSchemaString.substring(indexOfAssignment + 9, existingSchemaString.length - 1)
@@ -250,7 +250,7 @@ export class JsonSchemaBuilder {
 				// Currently only need to build manyRelationColumnRefs for ManyToOne relations.
 				return
 			default:
-				throw `Unknown relation type: ${sRelation.relationType}.`
+				throw new Error(`Unknown relation type: ${sRelation.relationType}.`)
 		}
 		sRelation.sRelationColumns.map(
 			sRelationColumn => {
@@ -311,7 +311,7 @@ export class JsonSchemaBuilder {
 			case 'CascadeType.REMOVE':
 				return CascadeType.REMOVE
 			default:
-				throw `Unknown CascadeType: ${cascadeType}.`
+				throw new Error(`Unknown CascadeType: ${cascadeType}.`)
 		}
 	}
 

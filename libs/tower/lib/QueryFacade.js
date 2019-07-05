@@ -24,16 +24,20 @@ class QueryFacade {
         };
     }
     async search(dbEntity, query, queryResultType, fieldUtils, queryUtils, schemaUtils, transConnector, updateCache, cacheForUpdate = air_control_1.UpdateCacheType.NONE) {
-        return transConnector.search(this.getPortableQuery(dbEntity, query, queryResultType, queryUtils, fieldUtils)).then(observable => observable.pipe(observe_1.map(results => {
+        let observable = await transConnector.search(this.getPortableQuery(dbEntity, query, queryResultType, queryUtils, fieldUtils));
+        observable = observable.pipe(observe_1.map(results => {
             updateCache.addToCache(schemaUtils, cacheForUpdate, dbEntity, ...results);
             return results;
-        })));
+        }));
+        return observable;
     }
     async searchOne(dbEntity, query, queryResultType, fieldUtils, queryUtils, schemaUtils, transConnector, updateCache, cacheForUpdate = air_control_1.UpdateCacheType.NONE) {
-        return transConnector.searchOne(this.getPortableQuery(dbEntity, query, queryResultType, queryUtils, fieldUtils)).then(observable => observable.pipe(observe_1.map(result => {
+        let observable = await transConnector.searchOne(this.getPortableQuery(dbEntity, query, queryResultType, queryUtils, fieldUtils));
+        observable = observable.pipe(observe_1.map(result => {
             updateCache.addToCache(schemaUtils, cacheForUpdate, dbEntity, result);
             return result;
-        })));
+        }));
+        return observable;
     }
 }
 exports.QueryFacade = QueryFacade;

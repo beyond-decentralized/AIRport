@@ -25,16 +25,6 @@ import {
 	QSequence
 } from './qsequence'
 import {
-	ISequenceBlock,
-	SequenceBlockESelect,
-	SequenceBlockECreateColumns,
-	SequenceBlockECreateProperties,
-	SequenceBlockEUpdateColumns,
-	SequenceBlockEUpdateProperties,
-	SequenceBlockEId,
-	QSequenceBlock
-} from './qsequenceblock'
-import {
 	ITerminalRun,
 	TerminalRunESelect,
 	TerminalRunECreateColumns,
@@ -82,24 +72,6 @@ export class BaseSequenceDuo
 	
 	constructor() {
 		super(0)
-	}
-}
-
-
-export interface IBaseSequenceBlockDuo
-  extends IDuo<ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock> {
-}
-
-export class BaseSequenceBlockDuo
-  extends SQDIDuo<ISequenceBlock, SequenceBlockESelect, SequenceBlockECreateProperties, SequenceBlockEUpdateProperties, SequenceBlockEId, QSequenceBlock>
-	implements IBaseSequenceBlockDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(2)
-	}
-	
-	constructor() {
-		super(2)
 	}
 }
 

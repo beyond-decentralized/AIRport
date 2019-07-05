@@ -23,7 +23,7 @@ var store;
                 case StoreType.SQLJS:
                     return type.SQL_JS;
                 default:
-                    throw `Unsupported Local Store Type: ${localStoreType}`;
+                    throw new Error(`Unsupported Local Store Type: ${localStoreType}`);
             }
         }
         type.getName = getName;
@@ -34,7 +34,7 @@ var store;
                 case type.SQL_JS:
                     return StoreType.SQLJS;
                 default:
-                    throw `Unsupported Local Store Type name: ${localStoreTypeName}`;
+                    throw new Error(`Unsupported Local Store Type name: ${localStoreTypeName}`);
             }
         }
         type.getValue = getValue;

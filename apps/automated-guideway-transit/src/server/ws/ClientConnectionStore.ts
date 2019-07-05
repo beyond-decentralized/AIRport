@@ -87,16 +87,19 @@ export class ClientConnectionStore implements IClientConnectionStore {
 	): void {
 		const connection: IClientSyncConnection = this._pendingConnectionMap[clientConnection.connectionId];
 		if (!clientConnection) {
-			throw `Cannot verify connection w/ id ${clientConnection.connectionId}.  It is not found in unverified connections.`;
+			throw new Error(
+			`Cannot verify connection w/ id ${clientConnection.connectionId}.  It is not found in unverified connections.`);
 		}
 		delete this._pendingConnectionMap[clientConnection.connectionId];
 
 		if (this._unverifiedConnectionMap[terminalId]) {
-			throw `Cannot queue for verification a connection from terminal ${terminalId}, because it is already queued.`;
+			throw new Error(
+			`Cannot queue for verification a connection from terminal ${terminalId}, because it is already queued.`);
 		}
 
 		if (this._activeConnectionMap[terminalId]) {
-			throw `Cannot queue for verification a connection from terminal ${terminalId}, because it is already active.`;
+			throw new Error(
+			`Cannot queue for verification a connection from terminal ${terminalId}, because it is already active.`);
 		}
 
 		connection.connectionId = terminalId;
@@ -110,12 +113,14 @@ export class ClientConnectionStore implements IClientConnectionStore {
 	): void {
 		const connection: IClientSyncConnection = this._unverifiedConnectionMap[terminalId];
 		if (!connection) {
-			throw `Cannot activate connection from terminal id ${terminalId}.  It is not found in unverified connections.`;
+			throw new Error(
+			`Cannot activate connection from terminal id ${terminalId}.  It is not found in unverified connections.`);
 		}
 		delete this._unverifiedConnectionMap[terminalId];
 
 		if (this._activeConnectionMap[terminalId]) {
-			throw `Cannot activate a connection from terminal ${terminalId}, because it already exists.`;
+			throw new Error(
+			`Cannot activate a connection from terminal ${terminalId}, because it already exists.`);
 		}
 
 		connection.userId = userId;
@@ -142,7 +147,8 @@ export class ClientConnectionStore implements IClientConnectionStore {
 			return;
 		}
 
-		throw `Cannot drop connection from terminal ${terminalId}. It is not in any maps.`;
+		throw new Error(
+		`Cannot drop connection from terminal ${terminalId}. It is not in any maps.`);
 	}
 
 	private dropConnectionFromCollection(

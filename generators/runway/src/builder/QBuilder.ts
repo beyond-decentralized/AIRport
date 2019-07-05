@@ -1,11 +1,11 @@
-import {PropertyDocEntry}   from "../parser/DocEntry";
-import {EntityCandidate}    from "../parser/EntityCandidate";
-import {QColumnBuilder}     from "./entity/QColumnBuilder";
-import {QEntityFileBuilder} from "./entity/QEntityFileBuilder";
-import {QPropertyBuilder}   from "./entity/QPropertyBuilder";
-import {QRelationBuilder}   from "./entity/QRelationBuilder";
-import {QTransientBuilder}  from "./entity/QTransientBuilder";
-import {SColumn}            from "./schema/SProperty";
+import {PropertyDocEntry}   from '../parser/DocEntry'
+import {EntityCandidate}    from '../parser/EntityCandidate'
+import {QColumnBuilder}     from './entity/QColumnBuilder'
+import {QEntityFileBuilder} from './entity/QEntityFileBuilder'
+import {QPropertyBuilder}   from './entity/QPropertyBuilder'
+import {QRelationBuilder}   from './entity/QRelationBuilder'
+import {QTransientBuilder}  from './entity/QTransientBuilder'
+import {SColumn}            from './schema/SProperty'
 
 /**
  * Created by Papa on 4/25/2016.
@@ -23,7 +23,8 @@ export interface MemberData {
 	definitions: string;
 }
 
-export interface IQCoreEntityBuilder extends IQBuilder {
+export interface IQCoreEntityBuilder
+	extends IQBuilder {
 
 	constructorFields: { [name: string]: boolean };
 	entity: EntityCandidate;
@@ -36,9 +37,10 @@ export interface IQCoreEntityBuilder extends IQBuilder {
 
 }
 
-export abstract class QCoreEntityBuilder implements IQCoreEntityBuilder {
+export abstract class QCoreEntityBuilder
+	implements IQCoreEntityBuilder {
 
-	constructorFields: { [name: string]: boolean } = {};
+	constructorFields: { [name: string]: boolean } = {}
 
 	constructor(
 		public entity: EntityCandidate,
@@ -56,7 +58,7 @@ export abstract class QCoreEntityBuilder implements IQCoreEntityBuilder {
 		filePath: string,
 		toLowerCase?: boolean,
 	): void {
-		this.fileBuilder.addImport(classNames, filePath, toLowerCase);
+		this.fileBuilder.addImport(classNames, filePath, toLowerCase)
 	}
 
 	protected getColumnBuilders(
@@ -64,7 +66,7 @@ export abstract class QCoreEntityBuilder implements IQCoreEntityBuilder {
 	): QColumnBuilder[] {
 		return columns.map(
 			column => new QColumnBuilder(this, column)
-		);
+		)
 	}
 
 	protected getPropertyBuilders(
@@ -73,7 +75,7 @@ export abstract class QCoreEntityBuilder implements IQCoreEntityBuilder {
 		return properties.map(
 			property => this.addPropertyBuilder(property)
 		).filter(
-			builder => builder != null);
+			builder => builder != null)
 	}
 
 	protected getTransientPropertyBuilders(
@@ -81,7 +83,7 @@ export abstract class QCoreEntityBuilder implements IQCoreEntityBuilder {
 	): QTransientBuilder[] {
 		return properties.map(
 			property => new QTransientBuilder(this, property)
-		);
+		)
 	}
 
 	protected getRelationBuilders(
@@ -91,7 +93,7 @@ export abstract class QCoreEntityBuilder implements IQCoreEntityBuilder {
 		return properties.map(
 			property => this.addRelationBuilder(property, buildRelationInstance)
 		).filter(
-			builder => builder != null);
+			builder => builder != null)
 	}
 
 	protected buildPropertyData(
@@ -99,15 +101,15 @@ export abstract class QCoreEntityBuilder implements IQCoreEntityBuilder {
 	): MemberData {
 		const propertyData: MemberData = {
 			definitions: ``,
-		};
+		}
 
 		propertyBuilders.forEach((
 			builder: QPropertyBuilder
 		) => {
-			propertyData.definitions += `	${builder.buildDefinition()}\n`;
-		});
+			propertyData.definitions += `	${builder.buildDefinition()}\n`
+		})
 
-		return propertyData;
+		return propertyData
 	}
 
 	protected buildRelationData(
@@ -115,37 +117,37 @@ export abstract class QCoreEntityBuilder implements IQCoreEntityBuilder {
 	): MemberData {
 		const relationData: MemberData = {
 			definitions: ``,
-		};
+		}
 
 		relationBuilders.forEach((
 			builder: QRelationBuilder
 		) => {
-			relationData.definitions += `	${builder.buildDefinition()}\n`;
-		});
+			relationData.definitions += `	${builder.buildDefinition()}\n`
+		})
 
-		return relationData;
+		return relationData
 	}
 
 	private addPropertyBuilder(
 		property: PropertyDocEntry
 	): QPropertyBuilder {
-		let propertyBuilder = null;
+		let propertyBuilder = null
 		if (property.primitive) {
-			propertyBuilder = new QPropertyBuilder(this, property);
+			propertyBuilder = new QPropertyBuilder(this, property)
 		}
 
-		return propertyBuilder;
+		return propertyBuilder
 	}
 
 	private addRelationBuilder(
 		property: PropertyDocEntry,
 		buildRelationInstance: boolean
 	): QRelationBuilder {
-		let relationBuilder = null;
+		let relationBuilder = null
 		if (property.entity || property.fromProject) {
-			relationBuilder = new QRelationBuilder(this, property, this.entityMapByName, buildRelationInstance);
+			relationBuilder = new QRelationBuilder(this, property, this.entityMapByName, buildRelationInstance)
 		}
-		return relationBuilder;
+		return relationBuilder
 	}
 
 }
@@ -155,18 +157,18 @@ export function getPropertyFieldType( //
 ): string {
 	switch (propertyDocEntry.primitive) {
 		case 'boolean':
-			return 'BOOLEAN';
+			return 'BOOLEAN'
 		case 'Date':
-			return 'DATE';
+			return 'DATE'
 		case 'number':
-			return 'NUMBER';
+			return 'NUMBER'
 		case 'string':
 		case 'Json':
-			return 'STRING';
+			return 'STRING'
 		case 'any':
-			return 'ANY';
+			return 'ANY'
 		default:
-			throw `Unexpected primitive ${propertyDocEntry.primitive}`;
+			throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`)
 	}
 }
 
@@ -175,18 +177,18 @@ export function getPropertyJSONOperationInterface( //
 ): string {
 	switch (propertyDocEntry.primitive) {
 		case 'boolean':
-			return 'JSONRawBooleanOperation';
+			return 'JSONRawBooleanOperation'
 		case 'Date':
-			return 'JSONRawDateOperation';
+			return 'JSONRawDateOperation'
 		case 'number':
-			return 'JSONRawNumberOperation';
+			return 'JSONRawNumberOperation'
 		case 'string':
 		case 'Json':
-			return 'JSONRawStringOperation';
+			return 'JSONRawStringOperation'
 		case 'any':
-			return 'JSONRawUntypedOperation';
+			return 'JSONRawUntypedOperation'
 		default:
-			throw `Unexpected primitive ${propertyDocEntry.primitive}`;
+			throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`)
 	}
 }
 
@@ -195,31 +197,31 @@ export function getPropertyTypedOperationInterface( //
 ): string {
 	switch (propertyDocEntry.primitive) {
 		case 'boolean':
-			return 'IBooleanOperation';
+			return 'IBooleanOperation'
 		case 'Date':
-			return 'IDateOperation';
+			return 'IDateOperation'
 		case 'number':
-			return 'INumberOperation';
+			return 'INumberOperation'
 		case 'string':
 		case 'Json':
-			return 'IStringOperation';
+			return 'IStringOperation'
 		case 'any':
-			return 'IUntypedOperation';
+			return 'IUntypedOperation'
 		default:
-			throw `Unexpected primitive ${propertyDocEntry.primitive}`;
+			throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`)
 	}
 }
 
 export function getPropertyFieldInterface( //
 	propertyDocEntry: PropertyDocEntry //
 ): string {
-	return getPrimitiveFieldInterface(propertyDocEntry.primitive);
+	return getPrimitiveFieldInterface(propertyDocEntry.primitive)
 }
 
 export function getColumnFieldInterface( //
 	sColumn: SColumn //
 ): string {
-	return getPrimitiveFieldInterface(sColumn.type);
+	return getPrimitiveFieldInterface(sColumn.type)
 }
 
 export function getPrimitiveFieldInterface( //
@@ -227,18 +229,18 @@ export function getPrimitiveFieldInterface( //
 ): string {
 	switch (primitive) {
 		case 'boolean':
-			return 'IQBooleanField';
+			return 'IQBooleanField'
 		case 'Date':
-			return 'IQDateField';
+			return 'IQDateField'
 		case 'number':
-			return 'IQNumberField';
+			return 'IQNumberField'
 		case 'string':
 		case 'Json':
-			return 'IQStringField';
+			return 'IQStringField'
 		case 'any':
-			return 'IQUntypedField';
+			return 'IQUntypedField'
 		default:
-			throw `Unexpected primitive ${primitive}`;
+			throw new Error(`Unexpected primitive ${primitive}`)
 	}
 }
 
@@ -247,18 +249,18 @@ export function getPropertyFieldClass( //
 ): string {
 	switch (propertyDocEntry.primitive) {
 		case 'boolean':
-			return 'QBooleanField';
+			return 'QBooleanField'
 		case 'Date':
-			return 'QDateField';
+			return 'QDateField'
 		case 'number':
-			return 'QNumberField';
+			return 'QNumberField'
 		case 'string':
 		case 'Json':
-			return 'QStringField';
+			return 'QStringField'
 		case 'any':
-			return 'QUntypedField';
+			return 'QUntypedField'
 		default:
-			throw `Unexpected primitive ${propertyDocEntry.primitive}`;
+			throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`)
 	}
 }
 
@@ -266,8 +268,8 @@ export function getRelationFieldType( //
 	entityProperty: PropertyDocEntry //
 ): string {
 	if (entityProperty.isArray) {
-		return 'ONE_TO_MANY';
+		return 'ONE_TO_MANY'
 	} else {
-		return 'MANY_TO_ONE';
+		return 'MANY_TO_ONE'
 	}
 }

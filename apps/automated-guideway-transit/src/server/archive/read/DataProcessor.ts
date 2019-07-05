@@ -9,7 +9,8 @@ export interface IDataProcessor {
 
 }
 
-export class DataProcessor implements IDataProcessor {
+export class DataProcessor
+	implements IDataProcessor {
 
 	addDataForProcessing(
 		userId: number,
@@ -17,7 +18,7 @@ export class DataProcessor implements IDataProcessor {
 		repositoryId: number,
 		data: string
 	): boolean {
-		throw `Implement!`;
+		throw new Error(`Implement!`)
 	}
 
 }

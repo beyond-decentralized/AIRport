@@ -4,12 +4,14 @@ export interface ISequence {
     tableIndex?: number;
     columnIndex?: number;
     incrementBy?: number;
+    currentValue?: number;
 }
 /**
  * SELECT - All fields and relations (optional).
  */
 export interface SequenceESelect extends IEntitySelectProperties, SequenceEOptionalId {
     incrementBy?: number | IQNumberField;
+    currentValue?: number | IQNumberField;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -32,12 +34,14 @@ export interface SequenceEOptionalId {
  */
 export interface SequenceEUpdateProperties extends IEntityUpdateProperties {
     incrementBy?: number | IQNumberField;
+    currentValue?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
 export interface SequenceEUpdateColumns extends IEntityUpdateColumns {
     SEQUENCE_INCREMENT_BY?: number | IQNumberField;
+    CURRENT_VALUE?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -57,6 +61,7 @@ export interface QSequence extends IQEntity {
     tableIndex: IQNumberField;
     columnIndex: IQNumberField;
     incrementBy: IQNumberField;
+    currentValue: IQNumberField;
 }
 export interface QSequenceQId {
     schemaIndex: IQNumberField;

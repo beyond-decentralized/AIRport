@@ -13,7 +13,7 @@ class SQLInsertValues extends SQLNoJoinQuery_1.SQLNoJoinQuery {
     }
     toSQL(airDb, schemaUtils, metadataUtils) {
         if (!this.jsonInsertValues.II) {
-            throw `Expecting exactly one table in INSERT INTO clause`;
+            throw new Error(`Expecting exactly one table in INSERT INTO clause`);
         }
         this.validator.validateInsertQEntity(this.dbEntity);
         let tableFragment = this.getTableFragment(this.jsonInsertValues.II, airDb, schemaUtils);

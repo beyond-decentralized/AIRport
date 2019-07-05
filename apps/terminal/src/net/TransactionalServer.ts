@@ -226,7 +226,7 @@ export class TransactionalServer
 			return this.tempActor
 		}
 
-		throw `Not Implemented`
+		throw new Error(`Not Implemented`)
 	}
 
 	private async wrapInTransaction<T>(
@@ -239,8 +239,8 @@ export class TransactionalServer
 		let transact = false
 		if (transManager.transactionInProgress) {
 			if (credentials.domainAndPort !== transManager.transactionInProgress) {
-				throw `${operationName}: domain: ${credentials.domainAndPort} 
-				does not have an active transaction.`
+				throw new Error(`${operationName}: domain: ${credentials.domainAndPort} 
+				does not have an active transaction.`)
 			}
 		} else {
 			await this.transact(credentials)

@@ -17,7 +17,7 @@ class SheetSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
     }
     getSELECTFragment(nested, selectClauseFragment, airDb, schemaUtils, metadataUtils) {
         if (!selectClauseFragment) {
-            throw `SELECT clause is not defined for a Flat Query`;
+            throw new Error(`SELECT clause is not defined for a Flat Query`);
         }
         {
             let distinctClause = selectClauseFragment;
@@ -27,7 +27,7 @@ class SheetSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
             }
         }
         if (!(selectClauseFragment instanceof Array)) {
-            throw `SELECT clause for a Flat Query must be an Array`;
+            throw new Error(`SELECT clause for a Flat Query must be an Array`);
         }
         let fieldIndex = 0;
         let selectSqlFragment = selectClauseFragment.map((field) => {

@@ -124,8 +124,8 @@ class DatabaseFacade extends OperationManager_1.OperationManager {
             return 0;
         }
         if (!dbEntity.idColumns.length) {
-            throw `@Id is not defined for entity: '${dbEntity.name}'.
-			Cannot call save(entity) on entities with no ids.`;
+            throw new Error(`@Id is not defined for entity: '${dbEntity.name}'.
+			Cannot call save(entity) on entities with no ids.`);
         }
         const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.FIELD_UTILS, air_control_1.Q_METADATA_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, air_control_1.SCHEMA_UTILS, ground_control_1.TRANS_CONNECTOR, air_control_1.UPDATE_CACHE);
         let emptyIdCount = 0;
@@ -136,10 +136,10 @@ class DatabaseFacade extends OperationManager_1.OperationManager {
         }
         return await transactional_1.transactional(async () => {
             if (emptyIdCount && nonEmptyIdCount) {
-                throw `Cannot call save(entity) for instance of '${dbEntity.name}' which has
+                throw new Error(`Cannot call save(entity) for instance of '${dbEntity.name}' which has
 			${nonEmptyIdCount} @Id values specified and ${emptyIdCount} @Id values not specified.
 			Please make sure that the entity instance either has all @Id values specified (to be
-			updated) or non of @Id values specified (to be created).`;
+			updated) or non of @Id values specified (to be created).`);
             }
             else if (emptyIdCount) {
                 return await this.performCreate(dbEntity, entity, [], airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache);
@@ -185,14 +185,14 @@ class DatabaseFacade extends OperationManager_1.OperationManager {
         return await transactional_1.transactional(async () => await this.internalUpdateWhere(dbEntity, update, fieldUtils, queryFacade, queryUtils, transConnector));
     }
     ensureId(entity) {
-        throw `Not Implemented`;
+        throw new Error(`Not Implemented`);
     }
     async getOriginalRecord(dbEntity, entity, updateCache) {
         const originalRecord = updateCache.getEntityUpdateCache(entity);
         if (!originalRecord) {
-            throw `Cannot update '${dbEntity.name}' - entity has no update cache.
+            throw new Error(`Cannot update '${dbEntity.name}' - entity has no update cache.
 			Did you forget to add .cache() to the query you used to retrieve the 
-			original record?`;
+			original record?`);
         }
         return originalRecord;
     }

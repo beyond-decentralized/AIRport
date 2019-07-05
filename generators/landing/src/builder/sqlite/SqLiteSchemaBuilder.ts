@@ -112,7 +112,8 @@ export class SqLiteSchemaBuilder
 				schemaIndex: dbSchema.index,
 				tableIndex: jsonEntity.index,
 				columnIndex: jsonColumn.index,
-				incrementBy
+				incrementBy,
+				currentValue: 0
 			})
 		}
 

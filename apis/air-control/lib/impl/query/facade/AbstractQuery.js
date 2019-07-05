@@ -35,16 +35,16 @@ class AbstractQuery {
                 return [];
             }
             else {
-                throw 'From clause must be present in a non-Entity based query.';
+                throw new Error('From clause must be present in a non-Entity based query.');
             }
         }
         return fromClause.map((fromEntity) => {
             if (!(fromEntity instanceof Entity_1.QEntity)) {
-                throw `FROM clause can contain only Views or Entities.`;
+                throw new Error(`FROM clause can contain only Views or Entities.`);
             }
             if (this.isEntityQuery) {
                 if (fromEntity instanceof Entity_1.QTree) {
-                    throw `Entity FROM clauses can contain only Entities.`;
+                    throw new Error(`Entity FROM clauses can contain only Entities.`);
                 }
             }
             return fromEntity.__driver__
@@ -57,7 +57,7 @@ class AbstractQuery {
         }
         return groupBy.map((field) => {
             if (!this.columnAliases.hasAliasFor(field)) {
-                throw `Field used in group by clause is not present in select clause`;
+                throw new Error(`Field used in group by clause is not present in select clause`);
             }
             return {
                 fa: this.columnAliases.getExistingAlias(field)

@@ -1,4 +1,4 @@
-import { ChangeRecord, ChangeRecordIterator } from "./ChangeModel";
+import { ChangeRecord, ChangeRecordIterator } from './ChangeModel';
 export declare class ArrayChangeRecordIterator implements ChangeRecordIterator {
     private changeRecords;
     private nextIndex;

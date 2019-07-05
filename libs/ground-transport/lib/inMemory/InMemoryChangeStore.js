@@ -11,7 +11,7 @@ class InMemoryChangeStore {
     }
     addChangeList(changeListName) {
         if (this.changeListMap[changeListName]) {
-            throw `Change List '${changeListName}' already exists`;
+            throw new Error(`Change List '${changeListName}' already exists`);
         }
         this.changeListMap[changeListName] = [];
     }

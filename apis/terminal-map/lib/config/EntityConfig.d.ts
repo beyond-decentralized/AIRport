@@ -1,7 +1,7 @@
-import { ILocalStoreConfig } from "./LocalStoreConfig";
-import { IChangeListConfig } from "./ChangeListConfig";
-import { IPersistenceConfig } from "./PersistenceConfig";
-import { IRemoteStoreConfig } from "./RemoveStoreConfig";
+import { IChangeListConfig } from './ChangeListConfig';
+import { ILocalStoreConfig } from './LocalStoreConfig';
+import { IPersistenceConfig } from './PersistenceConfig';
+import { IRemoteStoreConfig } from './RemoveStoreConfig';
 /**
  * Created by Papa on 5/28/2016.
  */

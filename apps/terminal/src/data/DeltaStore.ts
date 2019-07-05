@@ -166,7 +166,7 @@ export function getSharingAdaptor(
 		case PlatformType.STUB:
 			return new StubSharingAdaptor()
 		default:
-			throw `Unsupported PlatformType: ${platformType}`
+			throw new Error(`Unsupported PlatformType: ${platformType}`)
 	}
 }
 

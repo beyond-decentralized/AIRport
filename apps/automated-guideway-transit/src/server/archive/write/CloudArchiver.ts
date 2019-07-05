@@ -1,10 +1,10 @@
-import {AgtRepositoryId,}   from "@airport/arrivals-n-departures";
+import {AgtRepositoryId,}   from '@airport/arrivals-n-departures'
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtRepositoryTransactionBlockId,
 	DailyArchiveLogValues
-}                           from "@airport/guideway";
-import {DailyArchiveValues} from "@airport/point-of-destination";
+}                           from '@airport/guideway'
+import {DailyArchiveValues} from '@airport/point-of-destination'
 
 export interface ICloudArchiver {
 	archive(
@@ -23,7 +23,7 @@ export class CloudArchiver
 		dailyArchiveLogValues: DailyArchiveLogValues[],
 		onDate: AgtRepositoryTransactionBlockAddDatetime,
 	): Promise<[AgtRepositoryTransactionBlockId[], DailyArchiveLogValues[], AgtRepositoryId[]]> {
-		throw `Not implemented`;
+		throw new Error(`Not implemented`)
 	}
 
 

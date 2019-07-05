@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class DataArchiver {
     async writeData(archiveInfo, data) {
-        throw `Implement`;
+        throw new Error(`Implement`);
     }
 }
 exports.DataArchiver = DataArchiver;

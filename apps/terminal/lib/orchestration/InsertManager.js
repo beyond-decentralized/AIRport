@@ -76,7 +76,7 @@ class InsertManager {
                 const idValues = allIds[i];
                 let idValue = entityValues[insertIdColumnIndex[1]];
                 if (!idValue && idValue !== 0) {
-                    throw `No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`;
+                    throw new Error(`No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`);
                 }
                 idValues[columnIndex] = idValue;
             }
@@ -87,11 +87,8 @@ class InsertManager {
         // 	for (const entityValues of values) {
         // 		const repositoryId = entityValues[repositoryIdIndex]
         // 		if (!repositoryId && repositoryId !== 0) {
-        // 			throw `@Column({ name: 'REPOSITORY_ID'}) value is not specified on insert for
-        // 			'${dbEntity0.name}.${repositoryColumn.name}'.`
-        // 		}
-        // 	}
-        // }
+        // 			throw new Error(`@Column({ name: 'REPOSITORY_ID'}) value is not specified on
+        // insert for '${dbEntity0.name}.${repositoryColumn.name}'.`) } } }
         const generatedColumns = dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
         const generatedColumnIndexes = [];
         let numAddedColumns = 0;
@@ -112,9 +109,9 @@ class InsertManager {
                     // Allowing negative integers for temporary identification
                     // within the circular dependency management lookup
                     if (generatedValue >= 0) {
-                        throw `Already provided value '${entityValues[generatedColumn.index]}'
+                        throw new Error(`Already provided value '${entityValues[generatedColumn.index]}'
 					on insert for @GeneratedValue '${dbEntity.name}.${generatedColumn.name}'.
-					You cannot explicitly provide values for @GeneratedValue columns'.`;
+					You cannot explicitly provide values for @GeneratedValue columns'.`);
                     }
                 }
             }
@@ -162,20 +159,21 @@ class InsertManager {
         const repositoryIdColumn = dbEntity.idColumnMap['REPOSITORY_ID'];
         for (const entityValues of jsonInsertValues.V) {
             if (entityValues[actorIdColumn.index] || entityValues[actorIdColumn.index] === 0) {
-                throw `Already provided value '${entityValues[actorIdColumn.index]}'
+                throw new Error(`Already provided value '${entityValues[actorIdColumn.index]}'
 				on insert for @Id '${dbEntity.name}.${actorIdColumn.name}'.
-				You cannot explicitly provide a value for ACTOR_ID on Repository row inserts.`;
+				You cannot explicitly provide a value for ACTOR_ID on Repository row inserts.`);
             }
             // if (entityValues[actorRecordIdColumn.index] ||
-            // entityValues[actorRecordIdColumn.index] === 0) { throw `Already provided value
+            // entityValues[actorRecordIdColumn.index] === 0) {
+            //   throw new Error(`Already provided value
             // '${entityValues[actorRecordIdColumn.index]}' on insert for @Id @GeneratedValue
             // '${dbEntity.name}.${actorRecordIdColumn.name}'. You cannot explicitly provide
-            // values for generated ids.` }
+            // values for generated ids.`) }
             if (!entityValues[repositoryIdColumn.index]) {
-                throw `Did not provide a positive integer value 
+                throw new Error(`Did not provide a positive integer value 
 				(instead provided '${entityValues[repositoryIdColumn.index]}')
 				 on insert for @Id '${dbEntity.name}.${repositoryIdColumn.name}'.
-				 You must explicitly provide a value for REPOSITORY_ID on Repository row inserts.`;
+				 You must explicitly provide a value for REPOSITORY_ID on Repository row inserts.`);
             }
             entityValues[actorIdColumn.index] = actor.id;
             // const actorRecordId               = this.idGenerator.generateEntityId(dbEntity)

@@ -7,8 +7,8 @@ class OperationManager {
     // higherOrderOpsYieldLength: number = 100
     // transactionInProgress: boolean    = false
     throwUnexpectedProperty(dbProperty, dbColumn, value) {
-        throw `Unexpected property value '${value.toString()}' in property '${dbProperty.entity.name}.${dbProperty.name}'
-		(column: '${dbColumn.name}').`;
+        throw new Error(`Unexpected property value '${value.toString()}' in property '${dbProperty.entity.name}.${dbProperty.name}'
+		(column: '${dbColumn.name}').`);
     }
     warn(message) {
         console.log(message);
@@ -64,12 +64,13 @@ class OperationManager {
                             schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, propertyNameChains) => {
                                 if (dbProperty.isId) {
                                     if (schemaUtils.isIdEmpty(columnValue)) {
-                                        throw `non-@GeneratedValue() @Id() ${dbEntity.name}.${dbProperty.name} must have a value for 'create' operations.`;
+                                        throw new Error(`non-@GeneratedValue() @Id() ${dbEntity.name}.${dbProperty.name} 
+											must have a value for 'create' operations.`);
                                     }
                                 }
                                 if (schemaUtils.isRepositoryId(dbColumn.name)) {
                                     if (schemaUtils.isEmpty(columnValue)) {
-                                        throw `Repository Id must be specified on an insert`;
+                                        throw new Error(`Repository Id must be specified on an insert`);
                                     }
                                 }
                                 this.columnProcessed(dbProperty, foundValues, dbColumn, columnValue);
@@ -101,18 +102,20 @@ class OperationManager {
                     this.ensureNonRelationalValue(dbProperty, column, newValue);
                     if (schemaUtils.isRepositoryId(column.name)
                         && schemaUtils.isEmpty(newValue)) {
-                        throw `Repository Id must be specified on an insert`;
+                        throw new Error(`Repository Id must be specified on an insert`);
                     }
                     if (column.isGenerated && (newValue !== undefined && newValue !== null)) {
                         // Allowing negative integers for temporary identification
                         // within the circular dependency management lookup
                         if (!dbProperty.isId || newValue >= 0) {
-                            throw `@GeneratedValue() "${dbEntity.name}.${dbProperty.name}" cannot have a value for 'create' operations.`;
+                            throw new Error(`@GeneratedValue() "${dbEntity.name}.${dbProperty.name}" 
+							cannot have a value for 'create' operations.`);
                         }
                     }
                     if (dbProperty.isId) {
                         if (!column.isGenerated && schemaUtils.isIdEmpty(newValue)) {
-                            throw `non-@GeneratedValue() @Id() "${dbEntity.name}.${dbProperty.name}" must have a value for 'create' operations.`;
+                            throw new Error(`non-@GeneratedValue() @Id() "${dbEntity.name}.${dbProperty.name}" 
+							must have a value for 'create' operations.`);
                         }
                     }
                     this.columnProcessed(dbProperty, foundValues, column, newValue);
@@ -152,15 +155,15 @@ class OperationManager {
      */
     columnProcessed(dbProperty, foundValues, dbColumn, value) {
         // if (value === undefined) {
-        // 	throw `Values cannot be undefined, please use null.`;
+        // 	throw new Error(`Values cannot be undefined, please use null.`);
         // }
         if (foundValues[dbColumn.index] === undefined) {
             foundValues[dbColumn.index] = value;
             return false;
         }
         if (!air_control_1.valuesEqual(foundValues[dbColumn.index], value)) {
-            throw `Found value mismatch in '${dbProperty.entity.name}.${dbProperty.name}'
-			(column: '${dbColumn.name}'): ${foundValues[dbColumn.index]} !== ${value}`;
+            throw new Error(`Found value mismatch in '${dbProperty.entity.name}.${dbProperty.name}'
+			(column: '${dbColumn.name}'): ${foundValues[dbColumn.index]} !== ${value}`);
         }
         return true;
     }
@@ -195,11 +198,11 @@ class OperationManager {
                 return 0;
             }
             if (!entityIdData.idKey) {
-                throw `Cannot update ${dbEntity.name}, not all @Id(s) are set.`;
+                throw new Error(`Cannot update ${dbEntity.name}, not all @Id(s) are set.`);
             }
             originalValue = await this.getOriginalRecord(dbEntity, entityIdData.idKey, updateCache);
             // if (!originalValue) {
-            // 	throw `Cannot update ${dbEntity.name}, entity not found.`
+            // 	throw new Error(`Cannot update ${dbEntity.name}, entity not found.`)
             // }
         }
         let result = await this.internalUpdate(dbEntity, entity, originalValue, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite);
@@ -459,19 +462,20 @@ class OperationManager {
     assertRelationValueIsAnObject(relationValue, dbProperty) {
         if (relationValue !== null && relationValue !== undefined &&
             (typeof relationValue != 'object' || relationValue instanceof Date)) {
-            throw `Unexpected value in relation property: ${dbProperty.name}, of entity ${dbProperty.entity.name}`;
+            throw new Error(`Unexpected value in relation property: ${dbProperty.name}, 
+				of entity ${dbProperty.entity.name}`);
         }
     }
     assertManyToOneNotArray(relationValue) {
         if (relationValue instanceof Array) {
-            throw `@ManyToOne relation cannot be an array`;
+            throw new Error(`@ManyToOne relation cannot be an array`);
         }
     }
     assertOneToManyIsArray(relationValue) {
         if (relationValue !== null
             && relationValue !== undefined
             && !(relationValue instanceof Array)) {
-            throw `@OneToMany relation must be an array`;
+            throw new Error(`@OneToMany relation must be an array`);
         }
     }
     async internalUpdateColumnsWhere(dbEntity, updateColumns, fieldUtils, queryFacade, queryUtils, transConnector) {
@@ -497,8 +501,8 @@ class OperationManager {
             return [true, null];
         }
         if (!dbEntity.idColumns.length) {
-            throw `Cannot run 'create'|'bulkCreate'|'update' for entity '${dbEntity.name}' with no @Id(s).
-			Please use 'insert'|'updateWhere' instead.`;
+            throw new Error(`Cannot run 'create'|'bulkCreate'|'update' for entity '${dbEntity.name}' with no @Id(s).
+			Please use 'insert'|'updateWhere' instead.`);
         }
         const entityIdData = {
             idColumnValueData: [],
@@ -539,7 +543,8 @@ class OperationManager {
         }
         // If there is at least one non-id property set, then it's not an id-stub
         if (hasNonIdProperties) {
-            throw `More than one non-id-stub instance of '${dbEntity.name}' with @Id(s) value '${entityIdData.idKey}' during mutation operation`;
+            throw new Error(`More than one non-id-stub instance of '${dbEntity.name}' 
+				with @Id(s) value '${entityIdData.idKey}' during mutation operation`);
         }
         // The Update operation for this entity was already recorded, nothing to do
         return [true, null];
@@ -587,8 +592,8 @@ class OperationManager {
                     schemaUtils.forEachColumnOfRelation(dbRelation, dbEntity, (dbColumn, value, propertyNameChains) => {
                         if (dbProperty.isId && valuesMapByColumn[dbColumn.index] === undefined) {
                             if (schemaUtils.isIdEmpty(value)) {
-                                throw `Required Id value is missing in:
-								'${dbEntity.name}.${propertyNameChains.join('.')}'`;
+                                throw new Error(`Required Id value is missing in:
+								'${dbEntity.name}.${propertyNameChains.join('.')}'`);
                             }
                             let idQProperty = qEntity;
                             for (const propertyNameLink of propertyNameChains[0]) {
@@ -607,7 +612,8 @@ class OperationManager {
                     // One-to-Manys do not contain values for the object being deleted
                     break;
                 default:
-                    throw `Unknown relationType '${dbRelation.relationType}' for '${dbEntity.name}.${dbProperty.name}'.`;
+                    throw new Error(`Unknown relationType '${dbRelation.relationType}' 
+						for '${dbEntity.name}.${dbProperty.name}'.`);
             }
         }
         let idWhereClause;

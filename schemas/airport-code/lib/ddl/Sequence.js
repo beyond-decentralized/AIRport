@@ -27,9 +27,12 @@ __decorate([
 __decorate([
     air_control_1.Column({ name: 'SEQUENCE_INCREMENT_BY', nullable: false })
 ], Sequence.prototype, "incrementBy", void 0);
+__decorate([
+    air_control_1.Column({ name: 'CURRENT_VALUE', nullable: false })
+], Sequence.prototype, "currentValue", void 0);
 Sequence = __decorate([
     air_control_1.Entity(),
     air_control_1.Table({ name: 'SEQUENCES' })
 ], Sequence);
 exports.Sequence = Sequence;
-//# sourceMappingURL=Sequence.js.map
+//# sourceMappingURL=sequence.js.map

@@ -73,7 +73,8 @@ export interface JSONClauseField extends JSONClauseObject {
     ci?: number;
     /**
      * Field Sub Query
-     * A reference pointer from a field to a sub-query, as defined in SELECT clause via the field function
+     * A reference pointer from a field to a sub-query, as defined in SELECT clause via the
+     * field function
      */
     fsq?: JsonFieldQuery;
     /**

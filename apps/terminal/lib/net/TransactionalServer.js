@@ -111,15 +111,15 @@ class TransactionalServer {
         if (this.tempActor) {
             return this.tempActor;
         }
-        throw `Not Implemented`;
+        throw new Error(`Not Implemented`);
     }
     async wrapInTransaction(callback, operationName, credentials) {
         const transManager = await di_1.DI.get(terminal_map_1.TRANSACTION_MANAGER);
         let transact = false;
         if (transManager.transactionInProgress) {
             if (credentials.domainAndPort !== transManager.transactionInProgress) {
-                throw `${operationName}: domain: ${credentials.domainAndPort} 
-				does not have an active transaction.`;
+                throw new Error(`${operationName}: domain: ${credentials.domainAndPort} 
+				does not have an active transaction.`);
             }
         }
         else {

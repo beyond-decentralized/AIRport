@@ -16,14 +16,14 @@ export class EntityUtils
 
 	getObjectClassName(object: any): string {
 		if (typeof object != 'object' || object === null) {
-			throw `Not an object instance`
+			throw new Error(`Not an object instance`)
 		}
 		return this.getClassName(object.constructor)
 	}
 
 	getClassName(clazz: Function): string {
 		if (typeof clazz != 'function') {
-			throw `Not a constructor function`
+			throw new Error(`Not a constructor function`)
 		}
 
 		let className = clazz['name']

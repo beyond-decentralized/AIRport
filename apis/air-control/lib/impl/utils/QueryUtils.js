@@ -28,7 +28,7 @@ class QueryUtils {
                         jsonLogicalOperation.v = logicalOperation.v.map((value) => this.whereClauseToJSON(value, columnAliases, fieldUtils));
                         break;
                     default:
-                        throw `Unsupported logical operation '${operation.o}'`;
+                        throw new Error(`Unsupported logical operation '${operation.o}'`);
                 }
                 break;
             case ground_control_1.OperationCategory.FUNCTION:
@@ -66,7 +66,7 @@ class QueryUtils {
         value = WrapperFunctions_1.wrapPrimitive(value);
         switch (typeof value) {
             case 'undefined':
-                throw `'undefined' is not a valid L or R value`;
+                throw new Error(`'undefined' is not a valid L or R value`);
             default:
                 if (value instanceof OperableField_1.QOperableField) {
                     return value.toJSON(columnAliases, false, this, fieldUtils);
