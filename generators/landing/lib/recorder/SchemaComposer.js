@@ -20,7 +20,7 @@ class SchemaComposer {
         const { newProperties, newPropertiesMap } = this.composeSchemaProperties(jsonSchemaMapByName, newEntitiesMapBySchemaName, ddlObjectRetriever);
         const { newRelations, newRelationsMap } = this.composeSchemaRelations(jsonSchemaMapByName, newEntitiesMapBySchemaName, newPropertiesMap, newSchemaReferenceMap, ddlObjectRetriever);
         const { newColumns, newColumnsMap, newPropertyColumns } = this.composeSchemaColumns(jsonSchemaMapByName, newEntitiesMapBySchemaName, newPropertiesMap, ddlObjectRetriever);
-        const newRelationColumns = this.composeSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, newSchemaReferenceMap, newRelationsMap, newColumnsMap);
+        const newRelationColumns = this.composeSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, newSchemaReferenceMap, newRelationsMap, newColumnsMap, ddlObjectRetriever);
         return {
             allDomains,
             allSchemas,
@@ -349,7 +349,7 @@ class SchemaComposer {
             newPropertyColumns
         };
     }
-    composeSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, newSchemaReferenceMap, newRelationsMap, newColumnsMap) {
+    composeSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, newSchemaReferenceMap, newRelationsMap, newColumnsMap, ddlObjectRetriever) {
         const newRelationColumns = [];
         for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
             const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
@@ -390,6 +390,7 @@ class SchemaComposer {
                         // 	oneRelation.oneRelationColumns = []
                         // }
                         const relationColumn = {
+                            id: ++ddlObjectRetriever.lastIds.relationColumns,
                             manyColumn,
                             manyRelation,
                             oneColumn,

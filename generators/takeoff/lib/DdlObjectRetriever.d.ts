@@ -9,6 +9,7 @@ export interface LastIds {
     entities: number;
     properties: number;
     propertyColumns: number;
+    relationColumns: number;
     relations: number;
     schemas: number;
     schemaVersions: number;

@@ -12,6 +12,7 @@ class DdlObjectRetriever {
             properties: 0,
             propertyColumns: 0,
             relations: 0,
+            relationColumns: 0,
             schemas: 0,
             schemaVersions: 0
         };
@@ -67,6 +68,7 @@ class DdlObjectRetriever {
             entities: entities.length,
             properties: properties.length,
             propertyColumns: propertyColumns.length,
+            relationColumns: relationColumns.length,
             relations: relations.length,
             schemas: schemas.length,
             schemaVersions: schemaVersions.length,

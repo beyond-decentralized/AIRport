@@ -747,7 +747,7 @@ exports.SCHEMA = {
                         },
                         {
                             "index": 3,
-                            "isGenerated": true,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
                             "notNull": false,

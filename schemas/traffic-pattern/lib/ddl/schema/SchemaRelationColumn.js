@@ -17,7 +17,6 @@ let SchemaRelationColumn = class SchemaRelationColumn extends VersionedSchemaObj
 };
 __decorate([
     air_control_1.Id(),
-    air_control_1.GeneratedValue(),
     __metadata("design:type", Number)
 ], SchemaRelationColumn.prototype, "id", void 0);
 __decorate([

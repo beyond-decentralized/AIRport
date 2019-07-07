@@ -35,6 +35,7 @@ export interface LastIds {
 	entities: number
 	properties: number
 	propertyColumns: number
+	relationColumns: number
 	relations: number
 	schemas: number
 	schemaVersions: number
@@ -51,6 +52,7 @@ export class DdlObjectRetriever
 		properties: 0,
 		propertyColumns: 0,
 		relations: 0,
+		relationColumns: 0,
 		schemas: 0,
 		schemaVersions: 0
 	}
@@ -135,6 +137,7 @@ export class DdlObjectRetriever
 			entities: entities.length,
 			properties: properties.length,
 			propertyColumns: propertyColumns.length,
+			relationColumns: relationColumns.length,
 			relations: relations.length,
 			schemas: schemas.length,
 			schemaVersions: schemaVersions.length,

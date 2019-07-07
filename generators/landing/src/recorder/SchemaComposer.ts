@@ -108,7 +108,7 @@ export class SchemaComposer
 		const newRelationColumns = this.composeSchemaRelationColumns(
 			jsonSchemaMapByName, newSchemaVersionMapBySchemaName,
 			newSchemaReferenceMap, newRelationsMap,
-			newColumnsMap)
+			newColumnsMap, ddlObjectRetriever)
 
 		return {
 			allDomains,
@@ -590,7 +590,8 @@ export class SchemaComposer
 		newSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion>,
 		newSchemaReferenceMap: Map<SchemaName, ISchemaReference[]>,
 		newRelationsMap: Map<SchemaName, ISchemaRelation[][]>,
-		newColumnsMap: Map<SchemaName, ISchemaColumn[][]>
+		newColumnsMap: Map<SchemaName, ISchemaColumn[][]>,
+		ddlObjectRetriever: IDdlObjectRetriever
 	): ISchemaRelationColumn[] {
 		const newRelationColumns: ISchemaRelationColumn[] = []
 
@@ -645,6 +646,7 @@ export class SchemaComposer
 						// }
 
 						const relationColumn: ISchemaRelationColumn = {
+							id: ++ddlObjectRetriever.lastIds.relationColumns,
 							manyColumn,
 							manyRelation,
 							oneColumn,

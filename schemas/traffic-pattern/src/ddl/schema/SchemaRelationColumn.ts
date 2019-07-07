@@ -20,7 +20,6 @@ export class SchemaRelationColumn
 	extends VersionedSchemaObject {
 
 	@Id()
-	@GeneratedValue()
 	id: SchemaRelationColumnId
 
 	@ManyToOne()
