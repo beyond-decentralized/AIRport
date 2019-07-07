@@ -143,7 +143,7 @@ export class WebSqlDriver
 	}
 
 	private keepTransactionAlive(tx): void {
-		tx.executeSql('SELECT count(*) FROM github_com___airport__territory__Package', [], (
+		tx.executeSql('SELECT count(*) FROM npmjs_org___airport__territory__Package', [], (
 			tx,
 		) => {
 			this.executePendingStatements(tx)

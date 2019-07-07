@@ -9,17 +9,13 @@ import {
 	JsonUpdate
 }                       from '@airport/ground-control'
 import {
-	IFieldUtils
-}                       from '../../../lingo/utils/FieldUtils'
-import {
-	IQueryUtils
-}                       from '../../../lingo/utils/QueryUtils'
-import {
 	IEntityUpdateProperties,
 	IQEntity,
 	IQEntityInternal
 }                       from '../../../lingo/core/entity/Entity'
 import {RawUpdate}      from '../../../lingo/query/facade/Update'
+import {IFieldUtils}    from '../../../lingo/utils/FieldUtils'
+import {IQueryUtils}    from '../../../lingo/utils/QueryUtils'
 import {wrapPrimitive}  from '../../core/field/WrapperFunctions'
 import {AbstractUpdate} from './AbstractUpdate'
 
@@ -45,20 +41,23 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.update)
 				.__driver__.getRelationJson(
 					this.columnAliases, queryUtils, fieldUtils),
-			S: this.setToJSON(this.rawUpdate.set),
+			S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils),
 			W: queryUtils.whereClauseToJSON(
 				this.rawUpdate.where, this.columnAliases, fieldUtils)
 		}
 	}
 
 	protected setToJSON(
-		rawSet: IEUP
+		rawSet: IEUP,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): JsonEntityUpdateColumns {
 		const jsonSetClause: { [columnName: string]: JSONBaseOperation } = {}
 		const dbEntity                                                   = (<IQEntityInternal><any>this.rawUpdate.update).__driver__.dbEntity
 		const dbPropertyMap                                              = dbEntity.propertyMap
 
-		this.setEntityFragmentsToJSON(rawSet, jsonSetClause, [], dbPropertyMap, [])
+		this.setEntityFragmentsToJSON(rawSet, jsonSetClause, [],
+			dbPropertyMap, [], queryUtils, fieldUtils)
 
 		return jsonSetClause
 	}
@@ -69,9 +68,11 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 		dbPropertyChain: DbProperty[],
 		dbPropertyMap: { [name: string]: DbProperty },
 		childDbRelationChain: DbRelation[],
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): void {
 		const isTopLevelFragment = !dbPropertyMap.length
-		for (const propertyName in jsonSetClause) {
+		for (const propertyName in rawSetFragment) {
 			const dbProperty = dbPropertyMap[propertyName]
 			const dbEntity   = dbProperty.entity
 			if (!dbProperty) {
@@ -105,7 +106,8 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 			childDbPropertyChain.push(dbProperty)
 
 			this.setFragmentToJSON(rawSetFragment, jsonSetClause,
-				childDbPropertyChain, propertyName, childDbRelationChain)
+				childDbPropertyChain, propertyName, childDbRelationChain,
+				queryUtils, fieldUtils)
 		}
 
 	}
@@ -116,6 +118,8 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 		dbPropertyChain: DbProperty[],
 		propertyName: string,
 		dbRelationChain: DbRelation[],
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils
 	): void {
 		const dbProperty: DbProperty = dbPropertyChain[dbPropertyChain.length - 1]
 		const dbEntity               = dbProperty.entity
@@ -168,7 +172,8 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 		which has already been set in this update statement (above).
 				`)
 				}
-				jsonSetClause[dbColumn.name] = value
+				jsonSetClause[dbColumn.name] = value.toJSON(
+					this.columnAliases, false, queryUtils, fieldUtils)
 				return
 			}
 		}
@@ -187,7 +192,9 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 							jsonSetClause,
 							dbPropertyChain,
 							dbRelation.relationEntity.propertyMap,
-							childDbRelationChain
+							childDbRelationChain,
+							queryUtils,
+							fieldUtils
 						)
 						break
 					}

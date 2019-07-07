@@ -12,7 +12,7 @@ const __constructors__ = {
 };
 exports.Q_SCHEMA = {
     __constructors__,
-    domain: 'github.com',
+    domain: 'npmjs.org',
     name: '@airport/airport-code'
 };
 exports.Q = exports.Q_SCHEMA;

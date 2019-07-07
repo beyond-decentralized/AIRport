@@ -1,8 +1,9 @@
-import {DI} from '@airport/di'
+import {SEQUENCE_GENERATOR} from '@airport/check-in'
+import {DI}                 from '@airport/di'
 import {
 	STORE_DRIVER,
 	StoreType
-}           from '@airport/ground-control'
+}                           from '@airport/ground-control'
 
 declare function require(moduleName: string): any;
 
@@ -27,6 +28,9 @@ export async function setStoreDriver(
 			throw new Error(`Unsupported StoreType: ${storeType}`)
 	}
 
+	const sqLiteSequenceGeneratorFile = await import('./sqLite/SqLiteSequenceGenerator')
+	const SqLiteSequenceGenerator = sqLiteSequenceGeneratorFile.SqLiteSequenceGenerator
 
 	DI.set(STORE_DRIVER, StoreDriver)
+	DI.set(SEQUENCE_GENERATOR, SqLiteSequenceGenerator)
 }

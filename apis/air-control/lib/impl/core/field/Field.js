@@ -107,6 +107,9 @@ class QField {
         if (!functionObject) {
             throw new Error(`Function object must be provided to valueToJSON function.`);
         }
+        if (functionObject instanceof QField) {
+            return functionObject.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils);
+        }
         let value = functionObject.value;
         switch (typeof value) {
             case 'boolean':

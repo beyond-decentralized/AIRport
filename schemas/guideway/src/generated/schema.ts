@@ -1,5 +1,5 @@
 export const SCHEMA = {
-	"domain": "github.com",
+	"domain": "npmjs.org",
 	"index": null,
 	"name": "@airport/guideway",
 	"sinceVersion": 1,

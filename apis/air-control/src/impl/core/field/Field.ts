@@ -177,7 +177,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 	}
 
 	private valueToJSON(
-		functionObject: IQFunction<any>,
+		functionObject: IQFunction<any> | QField<any>,
 		columnAliases: IFieldColumnAliases<IQF>,
 		forSelectClause: boolean,
 		queryUtils: IQueryUtils,
@@ -186,6 +186,11 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		if (!functionObject) {
 			throw new Error(`Function object must be provided to valueToJSON function.`)
 		}
+		if (functionObject instanceof QField) {
+			return functionObject.toJSON(
+				columnAliases, forSelectClause, queryUtils, fieldUtils)
+		}
+
 		let value = functionObject.value
 		switch (typeof value) {
 			case 'boolean':

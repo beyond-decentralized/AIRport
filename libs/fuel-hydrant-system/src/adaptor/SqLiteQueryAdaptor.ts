@@ -129,6 +129,7 @@ export class SqlLiteFunctionAdaptor
 		schemaUtils: ISchemaUtils,
 		metadataUtils: IQMetadataUtils
 	): string {
+		let param2
 		switch (jsonFunctionCall.ft) {
 			case SqlFunction.ABS:
 				return `ABS(${value})`
@@ -173,7 +174,7 @@ export class SqlLiteFunctionAdaptor
 			case SqlFunction.REPLACE:
 				let param1 = this.sqlValueProvider.getFunctionCallValue(
 					jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils)
-				let param2 = this.sqlValueProvider.getFunctionCallValue(
+				param2 = this.sqlValueProvider.getFunctionCallValue(
 					jsonFunctionCall.p[1], airDb, schemaUtils, metadataUtils)
 				return `REPLACE('${value}', ${param1}, ${param2})`
 			case SqlFunction.TRIM:

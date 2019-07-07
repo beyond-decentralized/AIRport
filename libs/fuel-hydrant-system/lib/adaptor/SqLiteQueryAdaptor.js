@@ -74,6 +74,7 @@ class SqlLiteFunctionAdaptor extends SQLQueryAdaptor_1.AbstractFunctionAdaptor {
         this.sqlValueProvider = sqlValueProvider;
     }
     getFunctionCall(jsonFunctionCall, value, qEntityMapByAlias, airDb, schemaUtils, metadataUtils) {
+        let param2;
         switch (jsonFunctionCall.ft) {
             case ground_control_1.SqlFunction.ABS:
                 return `ABS(${value})`;
@@ -113,7 +114,7 @@ class SqlLiteFunctionAdaptor extends SQLQueryAdaptor_1.AbstractFunctionAdaptor {
                 return formatCall;
             case ground_control_1.SqlFunction.REPLACE:
                 let param1 = this.sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
-                let param2 = this.sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[1], airDb, schemaUtils, metadataUtils);
+                param2 = this.sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[1], airDb, schemaUtils, metadataUtils);
                 return `REPLACE('${value}', ${param1}, ${param2})`;
             case ground_control_1.SqlFunction.TRIM:
                 return `TRIM(${value})`;

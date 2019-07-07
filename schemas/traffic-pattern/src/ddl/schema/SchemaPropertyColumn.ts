@@ -15,7 +15,7 @@ import {VersionedSchemaObject} from './VersionedSchemaObject'
 @Entity()
 // TODO: rename table name to SCHEMA_PROPERTY_COLUMNS
 @Table({
-	name: 'SCHEMA_COLUMN_PROPERTIES'
+	name: 'SCHEMA_PROPERTY_COLUMNS'
 })
 export class SchemaPropertyColumn
 	extends VersionedSchemaObject {

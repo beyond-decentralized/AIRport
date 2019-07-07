@@ -1,5 +1,5 @@
 export const SCHEMA = {
-	"domain": "github.com",
+	"domain": "npmjs.org",
 	"index": null,
 	"name": "@airport/runway-edge-lighting",
 	"sinceVersion": 1,
@@ -665,7 +665,7 @@ export const SCHEMA = {
 			"integerVersion": 1,
 			"referencedSchemas": [
 				{
-					"domain": "github.com",
+					"domain": "npmjs.org",
 					"index": 0,
 					"name": "@airport/territory",
 					"sinceVersion": 1,

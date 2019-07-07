@@ -33,7 +33,7 @@ SchemaPropertyColumn = __decorate([
     // TODO: rename table name to SCHEMA_PROPERTY_COLUMNS
     ,
     air_control_1.Table({
-        name: 'SCHEMA_COLUMN_PROPERTIES'
+        name: 'SCHEMA_PROPERTY_COLUMNS'
     })
 ], SchemaPropertyColumn);
 exports.SchemaPropertyColumn = SchemaPropertyColumn;

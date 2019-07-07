@@ -1,5 +1,5 @@
 export const SCHEMA = {
-	"domain": "github.com",
+	"domain": "npmjs.org",
 	"index": null,
 	"name": "@airport/moving-walkway",
 	"sinceVersion": 1,
@@ -2780,7 +2780,7 @@ export const SCHEMA = {
 			"integerVersion": 1,
 			"referencedSchemas": [
 				{
-					"domain": "github.com",
+					"domain": "npmjs.org",
 					"index": 0,
 					"name": "@airport/holding-pattern",
 					"sinceVersion": 1,
@@ -2794,7 +2794,7 @@ export const SCHEMA = {
 					]
 				},
 				{
-					"domain": "github.com",
+					"domain": "npmjs.org",
 					"index": 1,
 					"name": "@airport/traffic-pattern",
 					"sinceVersion": 1,
@@ -2808,7 +2808,7 @@ export const SCHEMA = {
 					]
 				},
 				{
-					"domain": "github.com",
+					"domain": "npmjs.org",
 					"index": 2,
 					"name": "@airport/travel-document-checkpoint",
 					"sinceVersion": 1,

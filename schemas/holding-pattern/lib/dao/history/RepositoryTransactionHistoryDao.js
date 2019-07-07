@@ -77,7 +77,7 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
         const repoTransHistoryMapByRepositoryId = new Map();
         /*
                 const trafficPatternQSchema = this.airDb.QM[
-                    getSchemaName('github.com','@airport/traffic-pattern')
+                    getSchemaName('npmjs.org','@airport/traffic-pattern')
                     ]
         */
         const rth = generated_1.Q.RepositoryTransactionHistory;

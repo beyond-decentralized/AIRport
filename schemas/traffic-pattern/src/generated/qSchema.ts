@@ -65,7 +65,7 @@ const __constructors__ = {
 
 export const Q_SCHEMA: LocalQSchema = <any>{
 	__constructors__,
-  domain: 'github.com',
+  domain: 'npmjs.org',
   name: '@airport/traffic-pattern'
 };
 export const Q: LocalQSchema = Q_SCHEMA

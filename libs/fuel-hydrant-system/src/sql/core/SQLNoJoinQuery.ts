@@ -53,8 +53,9 @@ export abstract class SQLNoJoinQuery
 
 		const tableAlias                   = QRelation.getAlias(fromRelation)
 		this.qEntityMapByAlias[tableAlias] = firstQEntity as IQEntityInternal
-		const fromFragment                 = `\t${tableName}`
+		const fromFragment                 = `\t${tableName} AS ${tableAlias}`
 
 		return fromFragment
 	}
+
 }

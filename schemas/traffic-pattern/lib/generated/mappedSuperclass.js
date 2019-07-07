@@ -2057,7 +2057,7 @@ exports.MAPPED_SUPERCLASS = [
                                                                                     "name": "Table",
                                                                                     "values": [
                                                                                         {
-                                                                                            "name": "SCHEMA_COLUMN_PROPERTIES"
+                                                                                            "name": "SCHEMA_PROPERTY_COLUMNS"
                                                                                         }
                                                                                     ]
                                                                                 }

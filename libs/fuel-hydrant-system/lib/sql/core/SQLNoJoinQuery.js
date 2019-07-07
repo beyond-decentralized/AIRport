@@ -28,7 +28,7 @@ class SQLNoJoinQuery extends SQLWhereBase_1.SQLWhereBase {
         const firstQEntity = new air_control_1.QEntity(firstDbEntity);
         const tableAlias = air_control_1.QRelation.getAlias(fromRelation);
         this.qEntityMapByAlias[tableAlias] = firstQEntity;
-        const fromFragment = `\t${tableName}`;
+        const fromFragment = `\t${tableName} AS ${tableAlias}`;
         return fromFragment;
     }
 }

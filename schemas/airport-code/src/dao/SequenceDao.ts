@@ -1,6 +1,5 @@
 import {plus}         from '@airport/air-control'
 import {DI}           from '@airport/di'
-import {DbSequence}   from '@airport/ground-control/lib/src'
 import {SEQUENCE_DAO} from '../diTokens'
 import {
 	BaseSequenceDao,
@@ -35,11 +34,6 @@ export class SequenceDao
 			}
 		})
 	}
-
-	async updateCurrentValue(
-		sequence: DbSequence,
-		numNewSequencesNeeded: number
-	): Promise<void>
 
 }
 
