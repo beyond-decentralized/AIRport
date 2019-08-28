@@ -1,5 +1,5 @@
 import { IAirportDatabase, IQEntityInternal, IQMetadataUtils, IQTree, ISchemaUtils, JoinTreeNode } from '@airport/air-control';
-import { JSONClauseField, JSONFieldInGroupBy, JSONFieldInOrderBy, JsonNonEntityQuery, JSONRelation, JSONViewJoinRelation, QueryResultType } from '@airport/ground-control';
+import { IStoreDriver, JSONClauseField, JSONFieldInGroupBy, JSONFieldInOrderBy, JsonNonEntityQuery, JSONRelation, JSONViewJoinRelation, QueryResultType } from '@airport/ground-control';
 import { INonEntityOrderByParser } from '../orderBy/AbstractEntityOrderByParser';
 import { SQLDialect, SQLQuery } from './core/SQLQuery';
 import { ClauseType } from './core/SQLWhereBase';
@@ -9,7 +9,7 @@ import { ClauseType } from './core/SQLWhereBase';
 export declare abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery> extends SQLQuery<JNEQ> {
     protected joinTrees: JoinTreeNode[];
     protected orderByParser: INonEntityOrderByParser;
-    constructor(jsonQuery: JNEQ, dialect: SQLDialect, queryResultType: QueryResultType);
+    constructor(jsonQuery: JNEQ, dialect: SQLDialect, queryResultType: QueryResultType, storeDriver: IStoreDriver);
     addQEntityMapByAlias(sourceMap: {
         [entityAlias: string]: IQEntityInternal;
     }): void;

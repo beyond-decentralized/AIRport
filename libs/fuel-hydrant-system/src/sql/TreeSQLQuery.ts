@@ -5,6 +5,7 @@ import {
 	ISchemaUtils
 }                              from '@airport/air-control'
 import {
+	IStoreDriver,
 	JSONClauseField,
 	JSONClauseObjectType,
 	JsonTreeQuery,
@@ -27,9 +28,10 @@ export class TreeSQLQuery
 
 	constructor(
 		jsonQuery: JsonTreeQuery,
-		dialect: SQLDialect
+		dialect: SQLDialect,
+		storeDriver: IStoreDriver
 	) {
-		super(jsonQuery, dialect, QueryResultType.TREE)
+		super(jsonQuery, dialect, QueryResultType.TREE, storeDriver)
 		this.queryParser   = new TreeQueryResultParser()
 		this.orderByParser = new MappedOrderByParser(this.validator)
 	}

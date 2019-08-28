@@ -5,19 +5,37 @@ const ground_control_1 = require("@airport/ground-control");
 /**
  * Created by Papa on 4/3/2019.
  */
+var transactionInProgress = false;
 async function transact() {
     const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
     await transConnector.transact();
+    transactionInProgress = true;
 }
 exports.transact = transact;
 async function commit() {
-    const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
-    await transConnector.commit();
+    if (!transactionInProgress) {
+        throw new Error('Cannot commit - no transaction in progress');
+    }
+    try {
+        const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
+        await transConnector.commit();
+    }
+    finally {
+        transactionInProgress = false;
+    }
 }
 exports.commit = commit;
 async function rollback() {
-    const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
-    await transConnector.rollback();
+    if (!transactionInProgress) {
+        throw new Error('Cannot rollback - no transaction in progress');
+    }
+    try {
+        const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
+        await transConnector.rollback();
+    }
+    finally {
+        transactionInProgress = false;
+    }
 }
 exports.rollback = rollback;
 /**
@@ -26,28 +44,34 @@ exports.rollback = rollback;
  * that.
  */
 async function transactional(callback, keepAlive) {
+    if (transactionInProgress) {
+        await callback();
+        return;
+    }
     const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
-    let transactionStarted = false;
     try {
         await transConnector.transact();
-        transactionStarted = true;
+        transactionInProgress = true;
         const returnValue = await callback();
         await transConnector.commit();
         return returnValue;
     }
     catch (e) {
         try {
-            if (transactionStarted) {
+            if (transactionInProgress) {
                 await transConnector.rollback();
             }
         }
-        catch (e) {
+        catch (rollbackError) {
             // do nothing - no need to report the rollback error, since it was the
             // error that causes a rollback
         }
         finally {
             throw e;
         }
+    }
+    finally {
+        transactionInProgress = false;
     }
 }
 exports.transactional = transactional;

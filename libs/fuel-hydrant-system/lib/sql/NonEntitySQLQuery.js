@@ -8,8 +8,8 @@ const SqlFunctionField_1 = require("./SqlFunctionField");
  * Created by Papa on 10/28/2016.
  */
 class NonEntitySQLQuery extends SQLQuery_1.SQLQuery {
-    constructor(jsonQuery, dialect, queryResultType) {
-        super(jsonQuery, null, dialect, queryResultType);
+    constructor(jsonQuery, dialect, queryResultType, storeDriver) {
+        super(jsonQuery, null, dialect, queryResultType, storeDriver);
     }
     addQEntityMapByAlias(sourceMap) {
         for (let alias in sourceMap) {
@@ -265,7 +265,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                 case ground_control_1.JSONRelationType.SUB_QUERY_ROOT:
                     let viewRelation = currentRelation;
                     let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
-                    let subQuery = new TreeSQLQueryClass(viewRelation.sq, this.dialect);
+                    let subQuery = new TreeSQLQueryClass(viewRelation.sq, this.dialect, this.storeDriver);
                     const subQuerySql = subQuery.toSQL(airDb, schemaUtils, metadataUtils);
                     fromFragment += `(${subQuerySql}) ${currentAlias}`;
                     break;
@@ -308,7 +308,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                 case ground_control_1.JSONRelationType.SUB_QUERY_JOIN_ON:
                     let viewJoinRelation = currentRelation;
                     let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
-                    let mappedSqlQuery = new TreeSQLQueryClass(viewJoinRelation.sq, this.dialect);
+                    let mappedSqlQuery = new TreeSQLQueryClass(viewJoinRelation.sq, this.dialect, this.storeDriver);
                     joinOnClause = this.getWHEREFragment(viewJoinRelation.jwc, '\t', airDb, schemaUtils, metadataUtils);
                     const mappedSql = mappedSqlQuery.toSQL(airDb, schemaUtils, metadataUtils);
                     fromFragment += `${joinTypeString} (${mappedSql}) ${currentAlias} ON\n${joinOnClause}`;

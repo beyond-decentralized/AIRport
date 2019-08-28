@@ -5,19 +5,36 @@ import {TRANS_CONNECTOR} from '@airport/ground-control'
  * Created by Papa on 4/3/2019.
  */
 
+var transactionInProgress = false
+
 export async function transact(): Promise<void> {
 	const transConnector = await DI.get(TRANS_CONNECTOR)
 	await transConnector.transact()
+	transactionInProgress = true
 }
 
 export async function commit(): Promise<void> {
-	const transConnector = await DI.get(TRANS_CONNECTOR)
-	await transConnector.commit()
+	if (!transactionInProgress) {
+		throw new Error('Cannot commit - no transaction in progress')
+	}
+	try {
+		const transConnector = await DI.get(TRANS_CONNECTOR)
+		await transConnector.commit()
+	} finally {
+		transactionInProgress = false
+	}
 }
 
 export async function rollback(): Promise<void> {
-	const transConnector = await DI.get(TRANS_CONNECTOR)
-	await transConnector.rollback()
+	if (!transactionInProgress) {
+		throw new Error('Cannot rollback - no transaction in progress')
+	}
+	try {
+		const transConnector = await DI.get(TRANS_CONNECTOR)
+		await transConnector.rollback()
+	} finally {
+		transactionInProgress = false
+	}
 }
 
 /**
@@ -29,11 +46,15 @@ export async function transactional<T>(
 	callback: () => Promise<T>,
 	keepAlive?: boolean
 ): Promise<T> {
-	const transConnector   = await DI.get(TRANS_CONNECTOR)
-	let transactionStarted = false
+	if (transactionInProgress) {
+		await callback()
+		return
+	}
+	const transConnector = await DI.get(TRANS_CONNECTOR)
 	try {
+
 		await transConnector.transact()
-		transactionStarted = true
+		transactionInProgress = true
 
 		const returnValue = await callback()
 
@@ -42,15 +63,17 @@ export async function transactional<T>(
 		return returnValue
 	} catch (e) {
 		try {
-			if (transactionStarted) {
+			if (transactionInProgress) {
 				await transConnector.rollback()
 			}
-		} catch (e) {
+		} catch (rollbackError) {
 			// do nothing - no need to report the rollback error, since it was the
 			// error that causes a rollback
 		} finally {
 			throw e
 		}
+	} finally {
+		transactionInProgress = false
 	}
 
 }

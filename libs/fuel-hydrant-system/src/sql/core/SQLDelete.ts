@@ -1,12 +1,13 @@
 import {
 	IAirportDatabase,
+	IQMetadataUtils,
+	ISchemaUtils,
 	QRelation
 }                       from '@airport/air-control'
 import {
-	IQMetadataUtils,
-	ISchemaUtils
-} from '@airport/air-control'
-import {JsonDelete}     from '@airport/ground-control'
+	IStoreDriver,
+	JsonDelete
+}                       from '@airport/ground-control'
 import {SQLNoJoinQuery} from './SQLNoJoinQuery'
 import {SQLDialect}     from './SQLQuery'
 
@@ -21,9 +22,11 @@ export class SQLDelete
 		airportDb: IAirportDatabase,
 		public jsonDelete: JsonDelete,
 		dialect: SQLDialect,
+		storeDriver: IStoreDriver
 	) {
 		super(airportDb.schemas[jsonDelete.DF.si]
-			.currentVersion.entities[jsonDelete.DF.ti], dialect)
+				.currentVersion.entities[jsonDelete.DF.ti], dialect,
+			storeDriver)
 	}
 
 	toSQL(
@@ -36,7 +39,7 @@ export class SQLDelete
 		let whereFragment = ''
 		let jsonQuery     = this.jsonDelete
 		if (jsonQuery.W) {
-			whereFragment = this.getWHEREFragment(
+			whereFragment  = this.getWHEREFragment(
 				jsonQuery.W, '',
 				airDb, schemaUtils, metadataUtils)
 			whereFragment  = `

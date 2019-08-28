@@ -10,6 +10,7 @@ import {
 	ColumnIndex,
 	DbColumn,
 	DbEntity,
+	IStoreDriver,
 	JSONBaseOperation,
 	JSONClauseField,
 	JSONClauseObject,
@@ -64,6 +65,7 @@ export abstract class SQLWhereBase
 	constructor(
 		protected dbEntity: DbEntity,
 		protected dialect: SQLDialect,
+		protected storeDriver: IStoreDriver
 	) {
 		this.sqlAdaptor = getSQLAdaptor(this, dialect)
 		this.validator  = getValidator(dbEntity)
@@ -288,7 +290,7 @@ export abstract class SQLWhereBase
 				}
 				let TreeSQLQueryClass: typeof TreeSQLQuery = require('../TreeSQLQuery').TreeSQLQuery
 				let mappedSqlQuery                         = new TreeSQLQueryClass(
-					<JsonTreeQuery>aField.v, this.dialect)
+					<JsonTreeQuery>aField.v, this.dialect, this.storeDriver)
 				return `EXISTS(${mappedSqlQuery.toSQL(airDb, schemaUtils, metadataUtils)})`
 			case <any>JSONClauseObjectType.FIELD:
 				qEntity = this.qEntityMapByAlias[aField.ta]
@@ -306,7 +308,7 @@ export abstract class SQLWhereBase
 				}
 				let FieldSQLQueryClass: typeof FieldSQLQuery = require('../FieldSQLQuery').FieldSQLQuery
 				let fieldSqlQuery                            = new FieldSQLQueryClass(
-					jsonFieldSqlSubQuery, this.dialect)
+					jsonFieldSqlSubQuery, this.dialect, this.storeDriver)
 				fieldSqlQuery.addQEntityMapByAlias(this.qEntityMapByAlias)
 				this.validator.addSubQueryAlias(aField.fa)
 				return `(${fieldSqlQuery.toSQL(airDb, schemaUtils, metadataUtils)})`

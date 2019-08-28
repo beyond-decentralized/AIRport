@@ -17,6 +17,7 @@ import {
 	DbColumn,
 	DbEntity,
 	DbProperty,
+	IStoreDriver,
 	JoinType,
 	JSONClauseField,
 	JSONClauseObjectType,
@@ -58,9 +59,10 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 	constructor(
 		jsonQuery: JNEQ,
 		dialect: SQLDialect,
-		queryResultType: QueryResultType
+		queryResultType: QueryResultType,
+		storeDriver: IStoreDriver
 	) {
-		super(jsonQuery, null, dialect, queryResultType)
+		super(jsonQuery, null, dialect, queryResultType, storeDriver)
 	}
 
 	addQEntityMapByAlias(
@@ -431,8 +433,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					let viewRelation                           = <JSONViewJoinRelation>currentRelation
 					let TreeSQLQueryClass: typeof TreeSQLQuery = require('./TreeSQLQuery').TreeSQLQuery
 					let subQuery                               = new TreeSQLQueryClass(
-						viewRelation.sq, this.dialect)
-					const subQuerySql = subQuery.toSQL(airDb, schemaUtils, metadataUtils)
+						viewRelation.sq, this.dialect, this.storeDriver)
+					const subQuerySql                          = subQuery.toSQL(airDb, schemaUtils, metadataUtils)
 					fromFragment += `(${subQuerySql}) ${currentAlias}`
 					break
 				default:
@@ -483,7 +485,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					let viewJoinRelation                       = <JSONViewJoinRelation>currentRelation
 					let TreeSQLQueryClass: typeof TreeSQLQuery = require('./TreeSQLQuery').TreeSQLQuery
 					let mappedSqlQuery                         = new TreeSQLQueryClass(
-						viewJoinRelation.sq, this.dialect)
+						viewJoinRelation.sq, this.dialect, this.storeDriver)
 					joinOnClause                               = this.getWHEREFragment(
 						viewJoinRelation.jwc, '\t',
 						airDb, schemaUtils, metadataUtils)

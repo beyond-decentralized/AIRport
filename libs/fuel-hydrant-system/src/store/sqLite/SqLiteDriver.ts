@@ -1,4 +1,7 @@
-import {QueryType} from '@airport/ground-control'
+import {
+	QueryType,
+	SQLDataType
+}                  from '@airport/ground-control'
 import {SqlDriver} from '../SqlDriver'
 
 /**
@@ -74,6 +77,17 @@ export abstract class SqLiteDriver
 			default:
 				throw new Error(`Unexpected typeof value: ${typeof value}`)
 		}
+	}
+
+	isValueValid(
+		value: any,
+		sqlDataType: SQLDataType
+	): boolean {
+		switch (sqlDataType) {
+			case SQLDataType.DATE:
+			case SQLDataType.NUMBER:
+		}
+		return false
 	}
 
 	abstract async query(

@@ -17,6 +17,7 @@ import {
 	PortableQuery,
 	QueryResultType,
 	QueryType,
+	SQLDataType,
 	StoreType,
 	SyncSchemaMap
 }                            from '@airport/ground-control'
@@ -85,7 +86,7 @@ export abstract class SqlDriver
 				<JsonInsertValues>{
 					...portableQuery.jsonQuery,
 					V
-				}, this.getDialect())
+				}, this.getDialect(), this)
 			let sql             = sqlInsertValues.toSQL(airDb, schemaUtils, metadataUtils)
 			let parameters      = sqlInsertValues.getParameters(portableQuery.parameterMap)
 
@@ -123,7 +124,8 @@ export abstract class SqlDriver
 			      await DI.get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS, ACTIVE_QUERIES)
 
 		let fieldMap                = new SyncSchemaMap()
-		let sqlDelete               = new SQLDelete(airDb, <JsonDelete>portableQuery.jsonQuery, this.getDialect())
+		let sqlDelete               = new SQLDelete(airDb,
+			<JsonDelete>portableQuery.jsonQuery, this.getDialect(), this)
 		let sql                     = sqlDelete.toSQL(airDb, schemaUtils, metadataUtils)
 		let parameters              = sqlDelete.getParameters(portableQuery.parameterMap)
 		let numberOfAffectedRecords = await this.executeNative(sql, parameters)
@@ -139,7 +141,7 @@ export abstract class SqlDriver
 			      await DI.get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
 
 		let sqlUpdate  = new SQLUpdate(airDb,
-			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect())
+			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(), this)
 		let sql        = sqlUpdate.toSQL(airDb, schemaUtils, metadataUtils)
 		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap)
 
@@ -187,20 +189,23 @@ export abstract class SqlDriver
 				const dbEntity = airDb.schemas[portableQuery.schemaIndex]
 					.currentVersion.entities[portableQuery.tableIndex]
 				return new EntitySQLQuery(<JsonEntityQuery<any>>jsonQuery,
-					dbEntity, dialect, resultType, schemaUtils)
+					dbEntity, dialect, resultType, schemaUtils, this)
 			case QueryResType.FIELD:
-				return new FieldSQLQuery(<JsonFieldQuery>jsonQuery, dialect)
+				return new FieldSQLQuery(<JsonFieldQuery>jsonQuery, dialect, this)
 			case QueryResType.SHEET:
-				return new SheetSQLQuery(<JsonSheetQuery>jsonQuery, dialect)
+				return new SheetSQLQuery(<JsonSheetQuery>jsonQuery, dialect, this)
 			case QueryResType.TREE:
-				return new TreeSQLQuery(<JsonSheetQuery>jsonQuery, dialect)
+				return new TreeSQLQuery(<JsonSheetQuery>jsonQuery, dialect, this)
 			case QueryResType.RAW:
 			default:
 				throw new Error(`Unknown QueryResultType: ${resultType}`)
 		}
 	}
 
-	protected abstract getDialect(): SQLDialect;
+	abstract isValueValid(
+		value: any,
+		sqlDataType: SQLDataType
+	): boolean
 
 	abstract async findNative(
 		sqlQuery: string,
@@ -221,7 +226,6 @@ export abstract class SqlDriver
 		}
 		return null
 	}
-
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
@@ -296,5 +300,7 @@ export abstract class SqlDriver
 		params: any,
 		saveTransaction?: boolean
 	): Promise<any>;
+
+	protected abstract getDialect(): SQLDialect;
 
 }

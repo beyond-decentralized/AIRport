@@ -1,5 +1,5 @@
 import { IAirportDatabase, IEntitySelectProperties, IQMetadataUtils, ISchemaUtils, JoinTreeNode } from '@airport/air-control';
-import { DbEntity, JsonEntityQuery, JSONEntityRelation, QueryResultType } from '@airport/ground-control';
+import { DbEntity, IStoreDriver, JsonEntityQuery, JSONEntityRelation, QueryResultType } from '@airport/ground-control';
 import { IEntityOrderByParser } from '../orderBy/AbstractEntityOrderByParser';
 import { GraphQueryConfiguration } from '../result/entity/IEntityResultParser';
 import { SQLDialect, SQLQuery } from './core/SQLQuery';
@@ -16,7 +16,7 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
     protected joinTree: JoinTreeNode;
     private queryParser;
     private columnAliases;
-    constructor(jsonQuery: JsonEntityQuery<IEP>, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, schemaUtils: ISchemaUtils, graphQueryConfiguration?: GraphQueryConfiguration);
+    constructor(jsonQuery: JsonEntityQuery<IEP>, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, schemaUtils: ISchemaUtils, storeDriver: IStoreDriver, graphQueryConfiguration?: GraphQueryConfiguration);
     toSQL(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     /**
      * If bridging is not applied:

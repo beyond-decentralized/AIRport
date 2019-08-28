@@ -1,6 +1,3 @@
-/**
- * Created by Papa on 4/3/2019.
- */
 export declare function transact(): Promise<void>;
 export declare function commit(): Promise<void>;
 export declare function rollback(): Promise<void>;

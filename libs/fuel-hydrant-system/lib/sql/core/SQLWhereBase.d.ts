@@ -1,5 +1,5 @@
 import { IAirportDatabase, IQEntityInternal, IQMetadataUtils, ISchemaUtils, Parameter } from '@airport/air-control';
-import { ColumnIndex, DbColumn, DbEntity, JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONEntityRelation, JsonFieldQuery, SchemaMap, SchemaVersionId, SqlOperator, TableIndex } from '@airport/ground-control';
+import { ColumnIndex, DbColumn, DbEntity, IStoreDriver, JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONEntityRelation, JsonFieldQuery, SchemaMap, SchemaVersionId, SqlOperator, TableIndex } from '@airport/ground-control';
 import { ISQLQueryAdaptor, ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor';
 import { IValidator } from '../../validation/Validator';
 import { SQLDialect } from './SQLQuery';
@@ -15,6 +15,7 @@ export declare enum ClauseType {
 export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected dbEntity: DbEntity;
     protected dialect: SQLDialect;
+    protected storeDriver: IStoreDriver;
     protected fieldMap: SchemaMap;
     protected qEntityMapByAlias: {
         [entityAlias: string]: IQEntityInternal;
@@ -25,7 +26,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected sqlAdaptor: ISQLQueryAdaptor;
     protected validator: IValidator;
     protected parameterReferences: (string | number)[];
-    constructor(dbEntity: DbEntity, dialect: SQLDialect);
+    constructor(dbEntity: DbEntity, dialect: SQLDialect, storeDriver: IStoreDriver);
     getParameters(parameterMap: {
         [alias: string]: Parameter;
     }): any[];

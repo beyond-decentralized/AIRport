@@ -11,8 +11,8 @@ const NonEntitySQLQuery_1 = require("./NonEntitySQLQuery");
  * Represents SQL String query with flat (aka traditional) Select clause.
  */
 class SheetSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
-    constructor(jsonQuery, dialect) {
-        super(jsonQuery, dialect, ground_control_1.QueryResultType.SHEET);
+    constructor(jsonQuery, dialect, storeDriver) {
+        super(jsonQuery, dialect, ground_control_1.QueryResultType.SHEET, storeDriver);
         this.orderByParser = new ExactOrderByParser_1.ExactOrderByParser(this.validator);
     }
     getSELECTFragment(nested, selectClauseFragment, airDb, schemaUtils, metadataUtils) {

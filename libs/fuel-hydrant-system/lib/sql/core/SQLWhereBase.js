@@ -14,9 +14,10 @@ var ClauseType;
     ClauseType[ClauseType["FUNCTION_CALL"] = 3] = "FUNCTION_CALL";
 })(ClauseType = exports.ClauseType || (exports.ClauseType = {}));
 class SQLWhereBase {
-    constructor(dbEntity, dialect) {
+    constructor(dbEntity, dialect, storeDriver) {
         this.dbEntity = dbEntity;
         this.dialect = dialect;
+        this.storeDriver = storeDriver;
         this.fieldMap = new ground_control_1.SchemaMap();
         this.qEntityMapByAlias = {};
         this.jsonRelationMapByAlias = {};
@@ -163,7 +164,7 @@ class SQLWhereBase {
                     throw new Error(`Exists can only be used as a top function in a WHERE clause.`);
                 }
                 let TreeSQLQueryClass = require('../TreeSQLQuery').TreeSQLQuery;
-                let mappedSqlQuery = new TreeSQLQueryClass(aField.v, this.dialect);
+                let mappedSqlQuery = new TreeSQLQueryClass(aField.v, this.dialect, this.storeDriver);
                 return `EXISTS(${mappedSqlQuery.toSQL(airDb, schemaUtils, metadataUtils)})`;
             case ground_control_1.JSONClauseObjectType.FIELD:
                 qEntity = this.qEntityMapByAlias[aField.ta];
@@ -177,7 +178,7 @@ class SQLWhereBase {
                     jsonFieldSqlSubQuery = aField;
                 }
                 let FieldSQLQueryClass = require('../FieldSQLQuery').FieldSQLQuery;
-                let fieldSqlQuery = new FieldSQLQueryClass(jsonFieldSqlSubQuery, this.dialect);
+                let fieldSqlQuery = new FieldSQLQueryClass(jsonFieldSqlSubQuery, this.dialect, this.storeDriver);
                 fieldSqlQuery.addQEntityMapByAlias(this.qEntityMapByAlias);
                 this.validator.addSubQueryAlias(aField.fa);
                 return `(${fieldSqlQuery.toSQL(airDb, schemaUtils, metadataUtils)})`;

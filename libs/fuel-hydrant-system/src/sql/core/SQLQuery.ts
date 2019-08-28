@@ -9,6 +9,7 @@ import {
 	DbEntity,
 	DbRelationColumn,
 	EntityRelationType,
+	IStoreDriver,
 	JSONEntityRelation,
 	JsonQuery,
 	JSONRelation,
@@ -58,9 +59,10 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		protected jsonQuery: JQ,
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
-		protected queryResultType: QueryResultType
+		protected queryResultType: QueryResultType,
+		storeDriver: IStoreDriver
 	) {
-		super(dbEntity, dialect)
+		super(dbEntity, dialect, storeDriver)
 	}
 
 	getFieldMap(): SchemaMap {

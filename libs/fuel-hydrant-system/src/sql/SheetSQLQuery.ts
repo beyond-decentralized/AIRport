@@ -4,6 +4,7 @@ import {
 	ISchemaUtils
 }                           from '@airport/air-control'
 import {
+	IStoreDriver,
 	JSONClauseField,
 	JSONClauseObjectType,
 	JsonSheetQuery,
@@ -26,9 +27,10 @@ export class SheetSQLQuery
 
 	constructor(
 		jsonQuery: JsonSheetQuery,
-		dialect: SQLDialect
+		dialect: SQLDialect,
+		storeDriver: IStoreDriver
 	) {
-		super(jsonQuery, dialect, QueryResultType.SHEET)
+		super(jsonQuery, dialect, QueryResultType.SHEET, storeDriver)
 		this.orderByParser = new ExactOrderByParser(this.validator)
 	}
 

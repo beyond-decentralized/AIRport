@@ -18,4 +18,15 @@ function isN(object) {
     return object && object.airportSelectField === false;
 }
 exports.isN = isN;
+exports.ID = {
+    airportSelectField: 'ID'
+};
+function convertToID(object) {
+    object.airportSelectField = 'ID';
+}
+exports.convertToID = convertToID;
+function isID(object) {
+    return object && object.airportSelectField === 'ID';
+}
+exports.isID = isID;
 //# sourceMappingURL=Query.js.map

@@ -6,9 +6,11 @@ const SQLWhereBase_1 = require("./SQLWhereBase");
  * Created by Papa on 11/17/2016.
  */
 class SQLInsertValues extends SQLNoJoinQuery_1.SQLNoJoinQuery {
-    constructor(airportDb, jsonInsertValues, dialect) {
+    constructor(airportDb, jsonInsertValues, dialect, storeDriver
+    // repository?: IRepository
+    ) {
         super(airportDb.schemas[jsonInsertValues.II.si]
-            .currentVersion.entities[jsonInsertValues.II.ti], dialect);
+            .currentVersion.entities[jsonInsertValues.II.ti], dialect, storeDriver);
         this.jsonInsertValues = jsonInsertValues;
     }
     toSQL(airDb, schemaUtils, metadataUtils) {

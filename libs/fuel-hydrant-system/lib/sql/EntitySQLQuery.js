@@ -12,8 +12,8 @@ const SQLQuery_1 = require("./core/SQLQuery");
  * Represents SQL String query with Entity tree Select clause.
  */
 class EntitySQLQuery extends SQLQuery_1.SQLQuery {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType, schemaUtils, graphQueryConfiguration) {
-        super(jsonQuery, dbEntity, dialect, queryResultType);
+    constructor(jsonQuery, dbEntity, dialect, queryResultType, schemaUtils, storeDriver, graphQueryConfiguration) {
+        super(jsonQuery, dbEntity, dialect, queryResultType, storeDriver);
         this.graphQueryConfiguration = graphQueryConfiguration;
         this.columnAliases = new air_control_1.AliasCache();
         if (graphQueryConfiguration && this.graphQueryConfiguration.strict !== undefined) {
@@ -70,7 +70,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             let result = results[i];
             let entityAlias = air_control_1.QRelation.getAlias(this.joinTree.jsonRelation);
             this.columnAliases.reset();
-            let parsedResult = this.parseQueryResult(this.jsonQuery.S, entityAlias, this.joinTree, result, [0], airDb, schemaUtils);
+            let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, [0], airDb, schemaUtils);
             if (!lastResult) {
                 parsedResults.push(parsedResult);
             }
@@ -215,11 +215,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         let numNonNullColumns = 0;
         let qEntity = this.qEntityMapByAlias[entityAlias];
         const dbEntity = qEntity.__driver__.dbEntity;
-        let resultObject = this.queryParser.addEntity(entityAlias, qEntity.__driver__.dbEntity, airDb, schemaUtils);
+        let resultObject = this.queryParser.addEntity(entityAlias, dbEntity, airDb, schemaUtils);
         for (let propertyName in selectClauseFragment) {
-            if (selectClauseFragment[propertyName] === undefined) {
-                continue;
-            }
             const dbProperty = dbEntity.propertyMap[propertyName];
             if (!dbProperty.relation || !dbProperty.relation.length) {
                 const columnAlias = this.columnAliases.getFollowingAlias();
@@ -243,11 +240,6 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                             schemaUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
                                 const columnAlias = this.columnAliases.getFollowingAlias();
                                 let value = this.sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextFieldIndex[0], dbColumn.type, null);
-                                const relationInfo = {
-                                    propertyNameChains: propertyNameChains,
-                                    sqlDataType: dbColumn.type,
-                                    value
-                                };
                                 relationInfos.push({
                                     propertyNameChains: propertyNameChains,
                                     sqlDataType: dbColumn.type,
@@ -330,34 +322,40 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
      * @returns {any}
      */
     setupSelectFields(selectClauseFragment, dbEntity, schemaUtils, parentDbProperty) {
+        let retrieveAllOwnFields = true;
         let selectFragment;
-        if (selectClauseFragment instanceof Array) {
+        if (!selectClauseFragment || selectClauseFragment instanceof Array) {
             let ofProperty = '';
             if (parentDbProperty) {
                 ofProperty = `(of '${parentDbProperty.entity.name}.${parentDbProperty.name}') `;
             }
             throw new Error(`'${dbEntity.name}' Entity SELECT clause ${ofProperty}must be specified as an Object.`);
         }
+        else if (air_control_1.isID(selectFragment)) {
+            selectFragment = {};
+            retrieveAllOwnFields = false;
+        }
         else {
             selectFragment = { ...selectClauseFragment };
         }
-        const hasIds = !!dbEntity.idColumns.length;
-        let retrieveAllOwnFields = true;
+        const entityDefinitionHasIds = !!dbEntity.idColumns.length;
         for (const propertyName in selectFragment) {
+            retrieveAllOwnFields = false;
+            const dbProperty = dbEntity.propertyMap[propertyName];
+            if (!dbProperty) {
+                throw new Error(`Entity property '${dbEntity.name}.${propertyName}' does not exist.`);
+            }
             const value = selectFragment[propertyName];
-            if (value === undefined || air_control_1.isN(value)) {
-                if (dbEntity.propertyMap[propertyName].isId) {
+            if (value === undefined || value === null || air_control_1.isN(value)) {
+                if (dbProperty.isId) {
                     throw new Error(`@Id properties cannot be excluded from entity queries.`);
                 }
-                if (!hasIds) {
+                if (!entityDefinitionHasIds) {
                     throw new Error(`Cannot exclude property '${propertyName}' from select clause 
 					for '${dbEntity.name}' Entity - entity has no @Id so all properties must be included.`);
                 }
                 delete selectFragment[propertyName];
-            }
-            const dbProperty = dbEntity.propertyMap[propertyName];
-            if (!dbProperty) {
-                throw new Error(`Entity property '${dbEntity.name}.${propertyName}' does not exist.`);
+                continue;
             }
             // Need to differentiate between properties that contain only
             // foreign key ids and properties
@@ -367,15 +365,17 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 // 	//  At least one non-relational field is in the original select clause
                 // 	retrieveAllOwnFields = false
             }
-            retrieveAllOwnFields = false;
+            else if (!air_control_1.isY(value)) {
+                selectFragment[propertyName] = air_control_1.Y;
+            }
         }
         //  For {} select causes, entities with no @Id, retrieve the entire object.
         // Otherwise make sure all @Id columns are specified.
         for (const dbProperty of dbEntity.properties) {
-            if (hasIds && !dbProperty.isId && !retrieveAllOwnFields) {
+            if (entityDefinitionHasIds && !dbProperty.isId && !retrieveAllOwnFields) {
                 continue;
             }
-            const allowDefaults = hasIds && !dbProperty.isId;
+            const allowDefaults = entityDefinitionHasIds && !dbProperty.isId;
             if (dbProperty.relation && dbProperty.relation.length) {
                 const dbRelation = dbProperty.relation[0];
                 switch (dbRelation.relationType) {
@@ -395,9 +395,9 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             }
             else {
                 const value = selectFragment[dbProperty.name];
-                if (value !== undefined) {
+                if (value !== undefined && value !== null) {
                     if (!allowDefaults && !air_control_1.isY(value)) {
-                        throw new Error(`${hasIds ? '@Id properties' : 'Entities without @Id'} 
+                        throw new Error(`${entityDefinitionHasIds ? '@Id properties' : 'Entities without @Id'} 
 						cannot have default SELECT values.`);
                     }
                 }

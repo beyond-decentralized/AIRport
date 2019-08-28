@@ -6,8 +6,8 @@ const SQLWhereBase_1 = require("./SQLWhereBase");
  * Created by Papa on 10/2/2016.
  */
 class SQLNoJoinQuery extends SQLWhereBase_1.SQLWhereBase {
-    constructor(dbEntity, dialect) {
-        super(dbEntity, dialect);
+    constructor(dbEntity, dialect, storeDriver) {
+        super(dbEntity, dialect, storeDriver);
     }
     getTableFragment(fromRelation, airDb, schemaUtils) {
         if (!fromRelation) {

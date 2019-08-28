@@ -30,7 +30,7 @@ class SqlDriver {
             let sqlInsertValues = new SQLInsertValues_1.SQLInsertValues(airDb, {
                 ...portableQuery.jsonQuery,
                 V
-            }, this.getDialect());
+            }, this.getDialect(), this);
             let sql = sqlInsertValues.toSQL(airDb, schemaUtils, metadataUtils);
             let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap);
             numVals += await this.executeNative(sql, parameters);
@@ -54,7 +54,7 @@ class SqlDriver {
     async deleteWhere(portableQuery) {
         const [airDb, schemaUtils, metadataUtils, activeQueries] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.SCHEMA_UTILS, air_control_1.Q_METADATA_UTILS, diTokens_1.ACTIVE_QUERIES);
         let fieldMap = new ground_control_1.SyncSchemaMap();
-        let sqlDelete = new SQLDelete_1.SQLDelete(airDb, portableQuery.jsonQuery, this.getDialect());
+        let sqlDelete = new SQLDelete_1.SQLDelete(airDb, portableQuery.jsonQuery, this.getDialect(), this);
         let sql = sqlDelete.toSQL(airDb, schemaUtils, metadataUtils);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters);
@@ -63,7 +63,7 @@ class SqlDriver {
     }
     async updateWhere(portableQuery) {
         const [airDb, schemaUtils, metadataUtils] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.SCHEMA_UTILS, air_control_1.Q_METADATA_UTILS);
-        let sqlUpdate = new SQLUpdate_1.SQLUpdate(airDb, portableQuery.jsonQuery, this.getDialect());
+        let sqlUpdate = new SQLUpdate_1.SQLUpdate(airDb, portableQuery.jsonQuery, this.getDialect(), this);
         let sql = sqlUpdate.toSQL(airDb, schemaUtils, metadataUtils);
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap);
         return await this.executeNative(sql, parameters);
@@ -90,13 +90,13 @@ class SqlDriver {
             case QueryResType.MAPPED_ENTITY_TREE:
                 const dbEntity = airDb.schemas[portableQuery.schemaIndex]
                     .currentVersion.entities[portableQuery.tableIndex];
-                return new EntitySQLQuery_1.EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, schemaUtils);
+                return new EntitySQLQuery_1.EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, schemaUtils, this);
             case QueryResType.FIELD:
-                return new FieldSQLQuery_1.FieldSQLQuery(jsonQuery, dialect);
+                return new FieldSQLQuery_1.FieldSQLQuery(jsonQuery, dialect, this);
             case QueryResType.SHEET:
-                return new SheetSQLQuery_1.SheetSQLQuery(jsonQuery, dialect);
+                return new SheetSQLQuery_1.SheetSQLQuery(jsonQuery, dialect, this);
             case QueryResType.TREE:
-                return new TreeSQLQuery_1.TreeSQLQuery(jsonQuery, dialect);
+                return new TreeSQLQuery_1.TreeSQLQuery(jsonQuery, dialect, this);
             case QueryResType.RAW:
             default:
                 throw new Error(`Unknown QueryResultType: ${resultType}`);

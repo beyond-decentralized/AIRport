@@ -1,6 +1,5 @@
-import { IAirportDatabase } from '@airport/air-control';
-import { IQMetadataUtils, ISchemaUtils } from '@airport/air-control';
-import { JsonDelete } from '@airport/ground-control';
+import { IAirportDatabase, IQMetadataUtils, ISchemaUtils } from '@airport/air-control';
+import { IStoreDriver, JsonDelete } from '@airport/ground-control';
 import { SQLNoJoinQuery } from './SQLNoJoinQuery';
 import { SQLDialect } from './SQLQuery';
 /**
@@ -8,6 +7,6 @@ import { SQLDialect } from './SQLQuery';
  */
 export declare class SQLDelete extends SQLNoJoinQuery {
     jsonDelete: JsonDelete;
-    constructor(airportDb: IAirportDatabase, jsonDelete: JsonDelete, dialect: SQLDialect);
+    constructor(airportDb: IAirportDatabase, jsonDelete: JsonDelete, dialect: SQLDialect, storeDriver: IStoreDriver);
     toSQL(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
 }

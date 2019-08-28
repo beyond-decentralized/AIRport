@@ -1,5 +1,5 @@
 import { IAirportDatabase, IQMetadataUtils, ISchemaUtils } from '@airport/air-control';
-import { JsonSheetQuery } from '@airport/ground-control';
+import { IStoreDriver, JsonSheetQuery } from '@airport/ground-control';
 import { SQLDialect } from './core/SQLQuery';
 import { NonEntitySQLQuery } from './NonEntitySQLQuery';
 /**
@@ -9,7 +9,7 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery';
  * Represents SQL String query with flat (aka traditional) Select clause.
  */
 export declare class SheetSQLQuery extends NonEntitySQLQuery<JsonSheetQuery> {
-    constructor(jsonQuery: JsonSheetQuery, dialect: SQLDialect);
+    constructor(jsonQuery: JsonSheetQuery, dialect: SQLDialect, storeDriver: IStoreDriver);
     protected getSELECTFragment(nested: boolean, selectClauseFragment: any, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): any[];
     protected parseQueryResult(selectClauseFragment: any, resultRow: any, nextFieldIndex: number[]): any;

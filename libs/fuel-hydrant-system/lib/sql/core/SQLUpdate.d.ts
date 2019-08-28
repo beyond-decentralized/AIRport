@@ -1,5 +1,5 @@
 import { IAirportDatabase, IEntityUpdateProperties, IQMetadataUtils, ISchemaUtils } from '@airport/air-control';
-import { JsonUpdate } from '@airport/ground-control';
+import { IStoreDriver, JsonUpdate } from '@airport/ground-control';
 import { SQLNoJoinQuery } from './SQLNoJoinQuery';
 import { SQLDialect } from './SQLQuery';
 /**
@@ -7,7 +7,7 @@ import { SQLDialect } from './SQLQuery';
  */
 export declare class SQLUpdate extends SQLNoJoinQuery {
     jsonUpdate: JsonUpdate<IEntityUpdateProperties>;
-    constructor(airportDb: IAirportDatabase, jsonUpdate: JsonUpdate<IEntityUpdateProperties>, dialect: SQLDialect);
+    constructor(airportDb: IAirportDatabase, jsonUpdate: JsonUpdate<IEntityUpdateProperties>, dialect: SQLDialect, storeDriver: IStoreDriver);
     toSQL(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     protected getSetFragment(setClauseFragment: IEntityUpdateProperties, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     private addSetFragment;

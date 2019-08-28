@@ -7,6 +7,7 @@ import {
 	QRelation
 }                       from '@airport/air-control'
 import {
+	IStoreDriver,
 	JSONClauseObjectType,
 	JsonUpdate
 }                       from '@airport/ground-control'
@@ -24,10 +25,11 @@ export class SQLUpdate
 	constructor(
 		airportDb: IAirportDatabase,
 		public jsonUpdate: JsonUpdate<IEntityUpdateProperties>,
-		dialect: SQLDialect
+		dialect: SQLDialect,
+		storeDriver: IStoreDriver
 	) {
 		super(airportDb.schemas[jsonUpdate.U.si]
-			.currentVersion.entities[jsonUpdate.U.ti], dialect)
+			.currentVersion.entities[jsonUpdate.U.ti], dialect, storeDriver)
 	}
 
 	toSQL(

@@ -6,9 +6,9 @@ const SQLNoJoinQuery_1 = require("./SQLNoJoinQuery");
  * Created by Papa on 10/2/2016.
  */
 class SQLDelete extends SQLNoJoinQuery_1.SQLNoJoinQuery {
-    constructor(airportDb, jsonDelete, dialect) {
+    constructor(airportDb, jsonDelete, dialect, storeDriver) {
         super(airportDb.schemas[jsonDelete.DF.si]
-            .currentVersion.entities[jsonDelete.DF.ti], dialect);
+            .currentVersion.entities[jsonDelete.DF.ti], dialect, storeDriver);
         this.jsonDelete = jsonDelete;
     }
     toSQL(airDb, schemaUtils, metadataUtils) {

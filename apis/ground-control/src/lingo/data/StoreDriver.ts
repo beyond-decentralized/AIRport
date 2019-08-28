@@ -1,4 +1,5 @@
 import {IObservable}   from '@airport/observe'
+import {SQLDataType}   from '../core/field/JSONClause'
 import {PortableQuery} from '../query/PortableQuery'
 import {StoreType}     from './storeInfo'
 
@@ -90,5 +91,10 @@ export interface IStoreDriver {
 	commit(): Promise<void>;
 
 	rollback(): Promise<void>;
+
+	isValueValid(
+		value: any,
+		sqlDataType: SQLDataType
+	): boolean
 
 }

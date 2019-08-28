@@ -29,8 +29,8 @@ exports.EntityDefaults = EntityDefaults;
  * String based SQL query.
  */
 class SQLQuery extends SQLWhereBase_1.SQLWhereBase {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType) {
-        super(dbEntity, dialect);
+    constructor(jsonQuery, dbEntity, dialect, queryResultType, storeDriver) {
+        super(dbEntity, dialect, storeDriver);
         this.jsonQuery = jsonQuery;
         this.queryResultType = queryResultType;
         this.entityDefaults = new EntityDefaults();

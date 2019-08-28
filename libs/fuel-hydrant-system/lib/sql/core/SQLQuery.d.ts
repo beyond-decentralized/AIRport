@@ -1,5 +1,5 @@
 import { IAirportDatabase, IQEntityInternal, IQMetadataUtils, ISchemaUtils, JoinTreeNode } from '@airport/air-control';
-import { DbEntity, JSONEntityRelation, JsonQuery, JSONRelation, QueryResultType, SchemaMap } from '@airport/ground-control';
+import { DbEntity, IStoreDriver, JSONEntityRelation, JsonQuery, JSONRelation, QueryResultType, SchemaMap } from '@airport/ground-control';
 import { SQLWhereBase } from './SQLWhereBase';
 /**
  * Created by Papa on 8/20/2016.
@@ -26,7 +26,7 @@ export declare abstract class SQLQuery<JQ extends JsonQuery> extends SQLWhereBas
     protected jsonQuery: JQ;
     protected queryResultType: QueryResultType;
     protected entityDefaults: EntityDefaults;
-    constructor(jsonQuery: JQ, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType);
+    constructor(jsonQuery: JQ, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, storeDriver: IStoreDriver);
     getFieldMap(): SchemaMap;
     abstract toSQL(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     /**

@@ -56,3 +56,19 @@ export function isN(
 ): boolean {
 	return object && object.airportSelectField === false;
 }
+
+export const ID: any = {
+	airportSelectField: 'ID'
+}
+
+export function convertToID(
+	object: any
+): void {
+	object.airportSelectField = 'ID';
+}
+
+export function isID(
+	object: any
+): boolean {
+	return object && object.airportSelectField === 'ID';
+}

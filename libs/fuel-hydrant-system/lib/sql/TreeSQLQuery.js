@@ -11,8 +11,8 @@ const SqlFunctionField_1 = require("./SqlFunctionField");
  * Created by Papa on 10/28/2016.
  */
 class TreeSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
-    constructor(jsonQuery, dialect) {
-        super(jsonQuery, dialect, ground_control_1.QueryResultType.TREE);
+    constructor(jsonQuery, dialect, storeDriver) {
+        super(jsonQuery, dialect, ground_control_1.QueryResultType.TREE, storeDriver);
         this.queryParser = new TreeQueryResultParser_1.TreeQueryResultParser();
         this.orderByParser = new MappedOrderByParser_1.MappedOrderByParser(this.validator);
     }

@@ -50,6 +50,13 @@ class SqLiteDriver extends SqlDriver_1.SqlDriver {
                 throw new Error(`Unexpected typeof value: ${typeof value}`);
         }
     }
+    isValueValid(value, sqlDataType) {
+        switch (sqlDataType) {
+            case ground_control_1.SQLDataType.DATE:
+            case ground_control_1.SQLDataType.NUMBER:
+        }
+        return false;
+    }
     async initTables(createQueries) {
         for (let i = 0; i < createQueries.length; i++) {
             let currentQuery = createQueries[i];

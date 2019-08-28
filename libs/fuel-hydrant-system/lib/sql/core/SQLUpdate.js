@@ -8,9 +8,9 @@ const SQLWhereBase_1 = require("./SQLWhereBase");
  * Created by Papa on 10/2/2016.
  */
 class SQLUpdate extends SQLNoJoinQuery_1.SQLNoJoinQuery {
-    constructor(airportDb, jsonUpdate, dialect) {
+    constructor(airportDb, jsonUpdate, dialect, storeDriver) {
         super(airportDb.schemas[jsonUpdate.U.si]
-            .currentVersion.entities[jsonUpdate.U.ti], dialect);
+            .currentVersion.entities[jsonUpdate.U.ti], dialect, storeDriver);
         this.jsonUpdate = jsonUpdate;
     }
     toSQL(airDb, schemaUtils, metadataUtils) {

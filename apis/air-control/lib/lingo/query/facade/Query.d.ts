@@ -26,3 +26,6 @@ export declare function convertToY(object: any): void;
 export declare function isY(object: any): boolean;
 export declare const N: any;
 export declare function isN(object: any): boolean;
+export declare const ID: any;
+export declare function convertToID(object: any): void;
+export declare function isID(object: any): boolean;

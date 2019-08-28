@@ -8,6 +8,7 @@ import {
 }                     from '@airport/air-control'
 import {
 	DbEntity,
+	IStoreDriver,
 	JSONEntityRelation
 }                     from '@airport/ground-control'
 import {SQLDialect}   from './SQLQuery'
@@ -23,8 +24,9 @@ export abstract class SQLNoJoinQuery
 	constructor(
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
+		storeDriver: IStoreDriver
 	) {
-		super(dbEntity, dialect)
+		super(dbEntity, dialect, storeDriver)
 	}
 
 	protected getTableFragment(

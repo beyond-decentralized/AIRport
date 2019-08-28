@@ -8,8 +8,8 @@ const NonEntitySQLQuery_1 = require("./NonEntitySQLQuery");
  * Created by Papa on 10/29/2016.
  */
 class FieldSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
-    constructor(jsonQuery, dialect) {
-        super(jsonQuery, dialect, ground_control_1.QueryResultType.FIELD);
+    constructor(jsonQuery, dialect, storeDriver) {
+        super(jsonQuery, dialect, ground_control_1.QueryResultType.FIELD, storeDriver);
         this.orderByParser = new ExactOrderByParser_1.ExactOrderByParser(this.validator);
     }
     getSELECTFragment(nested, selectClauseFragment, airDb, schemaUtils, metadataUtils) {

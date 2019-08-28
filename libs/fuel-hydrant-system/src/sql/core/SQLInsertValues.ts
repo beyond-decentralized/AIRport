@@ -5,6 +5,7 @@ import {
 }                       from '@airport/air-control'
 import {
 	DbEntity,
+	IStoreDriver,
 	JsonInsertValues
 }                       from '@airport/ground-control'
 import {SQLNoJoinQuery} from './SQLNoJoinQuery'
@@ -23,10 +24,12 @@ export class SQLInsertValues
 		airportDb: IAirportDatabase,
 		public jsonInsertValues: JsonInsertValues,
 		dialect: SQLDialect,
+		storeDriver: IStoreDriver
 		// repository?: IRepository
 	) {
 		super(airportDb.schemas[jsonInsertValues.II.si]
-			.currentVersion.entities[jsonInsertValues.II.ti], dialect)
+				.currentVersion.entities[jsonInsertValues.II.ti], dialect,
+			storeDriver)
 	}
 
 	toSQL(
