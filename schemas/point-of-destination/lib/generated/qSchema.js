@@ -4,9 +4,9 @@ const air_control_1 = require("@airport/air-control");
 const check_in_1 = require("@airport/check-in");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
-const dailyarchive_1 = require("../ddl/dailyarchive");
+const DailyArchive_1 = require("../ddl/DailyArchive");
 const __constructors__ = {
-    DailyArchive: dailyarchive_1.DailyArchive
+    DailyArchive: DailyArchive_1.DailyArchive
 };
 exports.Q_SCHEMA = {
     __constructors__,

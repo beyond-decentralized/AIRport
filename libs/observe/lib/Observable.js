@@ -38,18 +38,30 @@ class Observable {
         return targetObservable;
     }
     exec(value, callbackName, upstreamObservable) {
-        if (!this.subscriptions.length
-            && !this.numDownstreamSubscriptions
-            || value === undefined) {
+        this.clear();
+        if (!this.subscriptions.length && !this.numDownstreamSubscriptions || value === undefined) {
             return;
         }
-        // this.lastValue = this.currentValue
-        const theValue = this.currentValue;
-        this.currentValue = undefined;
-        this.valueFromUpstream();
-        if (this.currentValue === undefined) {
-            this.currentValue = theValue;
+        this.forceExec(value, callbackName, upstreamObservable, true);
+    }
+    forceExec(value, callbackName, upstreamObservable, cleared) {
+        if (!cleared) {
+            this.clear();
         }
+        // this.lastValue = this.currentValue
+        /*
+        const theValue    = this.currentValue
+        this.currentValue = undefined
+        this.valueFromUpstream()
+
+        if (this.currentValue === undefined) {
+            this.currentValue = theValue
+        }
+        */
+        if (this.upstream.length) {
+            throw new Error('Cannot set value on a derived Observable');
+        }
+        this.currentValue = value;
         this.subscriptions.forEach(subscription => {
             subscription[callbackName](this.currentValue);
             // if (this.currentValue instanceof Array) {
@@ -80,6 +92,10 @@ class Observable {
             up.numDownstreamSubscriptions--;
             up.unsubscribeUpstream();
         }
+    }
+    clear() {
+        this.currentValue = undefined;
+        this.downstream.forEach(observable => observable.clear());
     }
     valueFromUpstream() {
         if (this.currentValue !== undefined) {

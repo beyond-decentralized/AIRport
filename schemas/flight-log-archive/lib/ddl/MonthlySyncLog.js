@@ -36,4 +36,4 @@ MonthlySyncLog = __decorate([
     // TODO: split between nodes by databaseId
 ], MonthlySyncLog);
 exports.MonthlySyncLog = MonthlySyncLog;
-//# sourceMappingURL=monthlysynclog.js.map
+//# sourceMappingURL=MonthlySyncLog.js.map

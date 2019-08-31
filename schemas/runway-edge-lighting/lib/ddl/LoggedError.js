@@ -23,4 +23,4 @@ LoggedError = __decorate([
     air_control_1.Table({ name: "LOGGED_ERROR" })
 ], LoggedError);
 exports.LoggedError = LoggedError;
-//# sourceMappingURL=loggederror.js.map
+//# sourceMappingURL=LoggedError.js.map

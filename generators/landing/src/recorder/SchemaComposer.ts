@@ -96,7 +96,7 @@ export class SchemaComposer
 			      newRelationsMap
 		      } = this.composeSchemaRelations(
 			jsonSchemaMapByName, newEntitiesMapBySchemaName, newPropertiesMap,
-			newSchemaReferenceMap, ddlObjectRetriever)
+			newSchemaReferenceMap, ddlObjectRetriever, terminalStore)
 		const {
 			      newColumns,
 			      newColumnsMap,
@@ -108,7 +108,7 @@ export class SchemaComposer
 		const newRelationColumns = this.composeSchemaRelationColumns(
 			jsonSchemaMapByName, newSchemaVersionMapBySchemaName,
 			newSchemaReferenceMap, newRelationsMap,
-			newColumnsMap, ddlObjectRetriever)
+			newColumnsMap, ddlObjectRetriever, terminalStore)
 
 		return {
 			allDomains,
@@ -248,7 +248,8 @@ export class SchemaComposer
 					// referencesMapByName: {},
 					// referencedByMapByName: {},
 				}
-				// schema.currentVersion                  = newSchemaVersion
+				// needed for normalOperation only
+				schema.currentVersion                  = newSchemaVersion
 				// schema.versions                        = [newSchemaVersion]
 				newSchemaVersions.push(newSchemaVersion)
 			}
@@ -417,7 +418,8 @@ export class SchemaComposer
 		newEntitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]>,
 		newPropertiesMap: Map<SchemaName, ISchemaProperty[][]>,
 		newSchemaReferenceMap: Map<SchemaName, ISchemaReference[]>,
-		ddlObjectRetriever: IDdlObjectRetriever
+		ddlObjectRetriever: IDdlObjectRetriever,
+		terminalStore: ITerminalStore
 	): {
 		newRelations: ISchemaRelation[],
 		newRelationsMap: Map<SchemaName, ISchemaRelation[][]>
@@ -459,7 +461,14 @@ export class SchemaComposer
 						referencedSchemaName  = schemaReference.referencedSchemaVersion.schema.name
 					}
 
-					const relationEntity = newEntitiesMapBySchemaName.get(referencedSchemaName)[jsonRelation.relationTableIndex]
+					let entitiesArray = newEntitiesMapBySchemaName.get(referencedSchemaName)
+
+					if(!entitiesArray) {
+						entitiesArray = this.getExistingLatestSchemaVersion(
+							referencedSchemaName, terminalStore).entities
+					}
+
+					const relationEntity = entitiesArray[jsonRelation.relationTableIndex]
 
 					const relation: ISchemaRelation = {
 						entity,
@@ -591,7 +600,8 @@ export class SchemaComposer
 		newSchemaReferenceMap: Map<SchemaName, ISchemaReference[]>,
 		newRelationsMap: Map<SchemaName, ISchemaRelation[][]>,
 		newColumnsMap: Map<SchemaName, ISchemaColumn[][]>,
-		ddlObjectRetriever: IDdlObjectRetriever
+		ddlObjectRetriever: IDdlObjectRetriever,
+		terminalStore: ITerminalStore
 	): ISchemaRelationColumn[] {
 		const newRelationColumns: ISchemaRelationColumn[] = []
 
@@ -632,13 +642,29 @@ export class SchemaComposer
 						} else {
 							oneRelationSchemaVersion = newSchemaVersionMapBySchemaName.get(schemaName)
 						}
-						let oneTableColumns = newColumnsMap.get(oneRelationSchemaVersion.schema.name)[jsonRelationColumn.oneTableIndex]
+						const referencedSchemaName = oneRelationSchemaVersion.schema.name
+						const oneTableColumnsMapForSchema =
+							      newColumnsMap.get(referencedSchemaName)
+
+						let oneTableColumns
+						let oneTableRelations
+						if(oneTableColumnsMapForSchema) {
+							oneTableColumns = oneTableColumnsMapForSchema[jsonRelationColumn.oneTableIndex]
+							oneTableRelations = newRelationsMap.get(oneRelationSchemaVersion.schema.name)
+								[jsonRelationColumn.oneTableIndex]
+						} else {
+							const entitiesArray = this.getExistingLatestSchemaVersion(
+								referencedSchemaName, terminalStore).entities
+							const entity = entitiesArray[jsonRelationColumn.oneTableIndex]
+							oneTableColumns = entity.columns
+							oneTableRelations = entity.relations
+						}
+
 						const oneColumn     = oneTableColumns[jsonRelationColumn.oneColumnIndex]
 						// if (!jsonRelationColumn.oneSchemaIndex
 						// 	&& !oneColumn.oneRelationColumns) {
 						// 	oneColumn.oneRelationColumns = []
 						// }
-						let oneTableRelations = newRelationsMap.get(oneRelationSchemaVersion.schema.name)[jsonRelationColumn.oneTableIndex]
 						const oneRelation     = oneTableRelations[jsonRelationColumn.oneRelationIndex]
 						// if (!jsonRelationColumn.oneSchemaIndex
 						// 	&& !oneRelation.oneRelationColumns) {
@@ -668,6 +694,19 @@ export class SchemaComposer
 		}
 
 		return newRelationColumns
+	}
+
+	getExistingLatestSchemaVersion(
+		referencedSchemaName: SchemaName,
+		terminalStore: ITerminalStore
+	): ISchemaVersion {
+		const referencedSchemaVersion = terminalStore
+			.getLatestSchemaVersionMapBySchemaName().get(referencedSchemaName)
+		if(!referencedSchemaVersion) {
+			throw new Error(`Cannot find schema "${referencedSchemaName}".`);
+		}
+
+		return referencedSchemaVersion
 	}
 
 

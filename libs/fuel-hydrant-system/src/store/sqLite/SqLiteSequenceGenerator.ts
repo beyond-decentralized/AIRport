@@ -80,6 +80,14 @@ export class SqLiteSequenceGenerator
 		setSeqGen(this)
 	}
 
+	async tempInit(
+		sequences?: ISequence[]
+	): Promise<void> {
+		this.addSequences(sequences)
+
+		setSeqGen(this)
+	}
+
 	async generateSequenceNumbers(
 		dbColumns: DbColumn[],
 		numSequencesNeeded: number[]

@@ -52,6 +52,10 @@ class SqLiteSequenceGenerator {
         await sequenceDao.incrementCurrentValues();
         check_in_1.setSeqGen(this);
     }
+    async tempInit(sequences) {
+        this.addSequences(sequences);
+        check_in_1.setSeqGen(this);
+    }
     async generateSequenceNumbers(dbColumns, numSequencesNeeded) {
         if (!dbColumns.length) {
             return [];

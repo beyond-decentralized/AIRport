@@ -1,8 +1,8 @@
 import { IMemoizedSelector } from '@airport/check-in';
 import { DomainName, JsonSchemaName, SchemaName } from '@airport/ground-control';
-import { BehaviorSubject } from '@airport/observe';
+import { BehaviorSubject, Store } from '@airport/observe';
 import { IDomain } from '@airport/territory';
-import { ISchema, ISchemaVersion } from '@airport/traffic-pattern';
+import { ISchema, ISchemaColumn, ISchemaEntity, ISchemaRelation, ISchemaVersion } from '@airport/traffic-pattern';
 import { ITerminalState } from './TerminalState';
 export interface ITerminalStore {
     state: BehaviorSubject<ITerminalState>;
@@ -13,10 +13,13 @@ export interface ITerminalStore {
     getLatestSchemaVersionsBySchemaIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
     getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
     getSchemas: IMemoizedSelector<ISchema[], ITerminalState>;
+    getAllColumns: IMemoizedSelector<ISchemaColumn[], ITerminalState>;
+    getAllEntities: IMemoizedSelector<ISchemaEntity[], ITerminalState>;
+    getAllRelations: IMemoizedSelector<ISchemaRelation[], ITerminalState>;
     tearDown(): any;
 }
 export declare class TerminalStore implements ITerminalStore {
-    state: BehaviorSubject<ITerminalState>;
+    state: Store<ITerminalState>;
     getTerminalState: IMemoizedSelector<any, any>;
     getDomains: IMemoizedSelector<any, any>;
     getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<string, Map<string, ISchemaVersion>>, any>;
@@ -25,4 +28,7 @@ export declare class TerminalStore implements ITerminalStore {
     getLatestSchemaVersionsBySchemaIndexes: IMemoizedSelector<ISchemaVersion[], any>;
     getSchemas: IMemoizedSelector<any, any>;
     tearDown(): void;
+    getAllEntities: IMemoizedSelector<ISchemaEntity[], any>;
+    getAllColumns: IMemoizedSelector<ISchemaColumn[], any>;
+    getAllRelations: IMemoizedSelector<ISchemaRelation[], any>;
 }

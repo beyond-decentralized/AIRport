@@ -189,7 +189,7 @@ function setQSchemaEntities(schema, qSchema, allQSchemas) {
 					${entity.name}.${oneColumn.name}
 					`);
                 }
-                const manyColumn = idColumn.manyRelationColumns[0].manyColumn;
+                // const manyColumn = idColumn.manyRelationColumns[0].manyColumn
                 // if (relatedEntity.id === manyColumn.entity.id
                 // 	&& relatedEntity.schemaVersion.schema.index
                 // 	=== manyColumn.entity.schemaVersion.schema.index) {

@@ -58,6 +58,17 @@ class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
         await sequenceDao.bulkCreate(allSequences);
         return allSequences;
     }
+    stageSequences(jsonSchemas, airDb) {
+        console.log('stageSequences');
+        let stagedSequences = [];
+        for (const jsonSchema of jsonSchemas) {
+            const qSchema = airDb.QM[ground_control_1.getSchemaName(jsonSchema)];
+            for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
+                stagedSequences = stagedSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity));
+            }
+        }
+        return stagedSequences;
+    }
     buildSequences(dbSchema, jsonEntity) {
         const sequences = [];
         for (const jsonColumn of jsonEntity.columns) {

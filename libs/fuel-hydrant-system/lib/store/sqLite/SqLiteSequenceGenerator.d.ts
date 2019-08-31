@@ -25,6 +25,7 @@ export declare class SqLiteSequenceGenerator implements ISequenceGenerator {
     private generatingSequenceNumbers;
     exists(dbEntity: DbEntity): boolean;
     init(sequences?: ISequence[]): Promise<void>;
+    tempInit(sequences?: ISequence[]): Promise<void>;
     generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
     /**
      * Keeping return value as number[][] in case we ever revert back

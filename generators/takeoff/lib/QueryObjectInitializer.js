@@ -8,14 +8,22 @@ class QueryObjectInitializer {
         const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, terminalStore] = await di_1.DI.get(diTokens_1.DDL_OBJECT_LINKER, diTokens_1.DDL_OBJECT_RETRIEVER, diTokens_1.QUERY_ENTITY_CLASS_CREATOR, terminal_map_1.TERMINAL_STORE);
         const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects();
         this.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
+        return ddlObjects;
     }
     generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore) {
-        ddlObjectLinker.link(ddlObjects);
+        ddlObjectLinker.link(ddlObjects, terminalStore);
         queryEntityClassCreator.createAll(ddlObjects.schemas, airDb);
+        const lastTerminalState = terminalStore.getTerminalState();
         terminalStore.state.next({
-            ...terminalStore.getTerminalState(),
-            domains: ddlObjects.domains,
-            schemas: ddlObjects.schemas
+            ...lastTerminalState,
+            domains: [
+                ...lastTerminalState.domains,
+                ...ddlObjects.domains
+            ],
+            schemas: [
+                ...lastTerminalState.schemas,
+                ...ddlObjects.schemas
+            ]
         });
     }
 }

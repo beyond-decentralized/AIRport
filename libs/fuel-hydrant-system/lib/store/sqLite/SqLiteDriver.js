@@ -13,7 +13,7 @@ class SqLiteDriver extends SqlDriver_1.SqlDriver {
     async doesTableExist(tableName) {
         const matchingTableNames = await this.findNative(
         // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
-        `SELECT tbl_name from sqlite_master WHERE type = '${tableName}'`, []);
+        `SELECT tbl_name from sqlite_master WHERE type = 'table' AND tbl_name = '${tableName}'`, []);
         return matchingTableNames.length === 1;
     }
     async dropTable(tableName) {

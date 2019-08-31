@@ -21,7 +21,7 @@ export abstract class SqLiteDriver
 	): Promise<boolean> {
 		const matchingTableNames = await this.findNative(
 			// ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
-			`SELECT tbl_name from sqlite_master WHERE type = '${tableName}'`,
+			`SELECT tbl_name from sqlite_master WHERE type = 'table' AND tbl_name = '${tableName}'`,
 			[]
 		)
 

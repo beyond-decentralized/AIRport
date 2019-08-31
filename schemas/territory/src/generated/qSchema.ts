@@ -12,15 +12,15 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { Application } from '../ddl/application';
+import { Application } from '../ddl/Application';
 import { QApplication } from './qapplication';
-import { ApplicationPackage } from '../ddl/applicationpackage';
+import { ApplicationPackage } from '../ddl/ApplicationPackage';
 import { QApplicationPackage } from './qapplicationpackage';
-import { Domain } from '../ddl/domain';
+import { Domain } from '../ddl/Domain';
 import { QDomain } from './qdomain';
-import { Package } from '../ddl/package';
+import { Package } from '../ddl/Package';
 import { QPackage } from './qpackage';
-import { PackagedUnit } from '../ddl/packagedunit';
+import { PackagedUnit } from '../ddl/PackagedUnit';
 import { QPackagedUnit } from './qpackagedunit';
 
 export interface LocalQSchema extends AirportQSchema {

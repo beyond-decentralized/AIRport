@@ -29,7 +29,7 @@ export interface IQueryObjectInitializer {
 
 	initialize(
 		airDb: IAirportDatabase
-	): Promise<void>
+	): Promise<DdlObjects>
 
 	generateQObjectsAndPopulateStore(
 		ddlObjects: DdlObjects,
@@ -65,7 +65,7 @@ export class QueryObjectInitializer
 
 	async initialize(
 		airDb: IAirportDatabase
-	): Promise<void> {
+	): Promise<DdlObjects> {
 		const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			      terminalStore] = await DI.get(
 			DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
@@ -75,6 +75,8 @@ export class QueryObjectInitializer
 
 		this.generateQObjectsAndPopulateStore(ddlObjects, airDb,
 			ddlObjectLinker, queryEntityClassCreator, terminalStore)
+
+		return ddlObjects
 	}
 
 	generateQObjectsAndPopulateStore(
@@ -84,14 +86,22 @@ export class QueryObjectInitializer
 		queryEntityClassCreator: IQueryEntityClassCreator,
 		terminalStore: ITerminalStore
 	): void {
-		ddlObjectLinker.link(ddlObjects)
+		ddlObjectLinker.link(ddlObjects, terminalStore)
 
 		queryEntityClassCreator.createAll(ddlObjects.schemas, airDb)
 
+		const lastTerminalState = terminalStore.getTerminalState()
+
 		terminalStore.state.next({
-			...terminalStore.getTerminalState(),
-			domains: ddlObjects.domains,
-			schemas: ddlObjects.schemas
+			...lastTerminalState,
+			domains: [
+				...lastTerminalState.domains,
+				...ddlObjects.domains
+			],
+			schemas: [
+				...lastTerminalState.schemas,
+				...ddlObjects.schemas
+			]
 		})
 	}
 

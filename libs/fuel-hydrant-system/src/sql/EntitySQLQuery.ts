@@ -1,5 +1,6 @@
 import {
 	AliasCache,
+	EntityState,
 	IAirportDatabase,
 	IEntitySelectProperties,
 	IQMetadataUtils,
@@ -80,20 +81,16 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 	): string {
 		let joinNodeMap: { [alias: string]: JoinTreeNode } = {}
 
-		this.joinTree = this.buildFromJoinTree(
-			this.jsonQuery.F, joinNodeMap, airDb, schemaUtils)
+		this.joinTree = this.buildFromJoinTree(this.jsonQuery.F, joinNodeMap, airDb, schemaUtils)
 
 		let selectFragment = this.getSELECTFragment(this.dbEntity, this.finalSelectTree, this.joinTree)
-		let fromFragment   = this.getFROMFragment(
-			null, this.joinTree,
-			airDb, schemaUtils, metadataUtils)
+		let fromFragment   = this.getFROMFragment(null, this.joinTree, airDb, schemaUtils, metadataUtils)
 		let whereFragment  = ''
 		let jsonQuery      = this.jsonQuery
 		if (jsonQuery.W) {
 			whereFragment = `
 WHERE
-${this.getWHEREFragment(jsonQuery.W, '',
-				airDb, schemaUtils, metadataUtils)}`
+${this.getWHEREFragment(jsonQuery.W, '', airDb, schemaUtils, metadataUtils)}`
 		}
 		let orderByFragment = ''
 		if (jsonQuery.OB && jsonQuery.OB.length) {
@@ -125,8 +122,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		schemaUtils: ISchemaUtils,
 		results: any[]
 	): any[] {
-		this.queryParser         = getObjectResultParser(
-			this.queryResultType, this.graphQueryConfiguration, this.dbEntity)
+		this.queryParser         = getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity)
 		let parsedResults: any[] = []
 		if (!results || !results.length) {
 			return parsedResults
@@ -137,9 +133,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			let result      = results[i]
 			let entityAlias = QRelation.getAlias(this.joinTree.jsonRelation)
 			this.columnAliases.reset()
-			let parsedResult = this.parseQueryResult(
-				this.finalSelectTree, entityAlias, this.joinTree, result,
-				[0], airDb, schemaUtils)
+			let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, [0], airDb, schemaUtils)
 			if (!lastResult) {
 				parsedResults.push(parsedResult)
 			} else if (lastResult !== parsedResult) {
@@ -149,8 +143,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			this.queryParser.flushRow()
 		}
 
-		return this.queryParser.bridge(
-			parsedResults, this.jsonQuery.S, schemaUtils)
+		return this.queryParser.bridge(parsedResults, this.jsonQuery.S, schemaUtils)
 	}
 
 	protected buildFromJoinTree(
@@ -183,8 +176,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				break
 			case JSONRelationType.SUB_QUERY_ROOT:
 			case JSONRelationType.SUB_QUERY_JOIN_ON:
-				throw new Error(
-					`Entity queries FROM clause cannot contain sub-queries`)
+				throw new Error(`Entity queries FROM clause cannot contain sub-queries`)
 			case JSONRelationType.ENTITY_JOIN_ON:
 				throw new Error(`Entity queries cannot use JOIN ON`)
 			default:
@@ -196,15 +188,13 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		}
 
 		let alias                          = QRelation.getAlias(firstRelation)
-		let firstEntity                    = QRelation.createRelatedQEntity(
-			firstRelation, airDb, schemaUtils)
+		let firstEntity                    = QRelation.createRelatedQEntity(firstRelation, airDb, schemaUtils)
 		this.qEntityMapByAlias[alias]      = firstEntity
 		this.jsonRelationMapByAlias[alias] = firstRelation
 		// In entity queries the first entity must always be the same as the query entity
 		const firstDbEntity                = firstEntity.__driver__.dbEntity
 		// if (firstEntity.constructor != this.rootQEntity.constructor) {
-		if (firstDbEntity.schemaVersion.schema.index !== this.dbEntity.schemaVersion.schema.index
-			|| firstDbEntity.index !== this.dbEntity.index) {
+		if (firstDbEntity.schemaVersion.schema.index !== this.dbEntity.schemaVersion.schema.index || firstDbEntity.index !== this.dbEntity.index) {
 			throw new Error(`ERROR: Unexpected first table in FROM clause: 
 			'${firstDbEntity.schemaVersion.schema.name}.${firstDbEntity.name}',
 			expecting:
@@ -241,8 +231,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			leftNode.addChildNode(rightNode)
 
 			alias                              = QRelation.getAlias(joinRelation)
-			let rightEntity                    = QRelation.createRelatedQEntity(
-				joinRelation, airDb, schemaUtils)
+			let rightEntity                    = QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils)
 			this.qEntityMapByAlias[alias]      = rightEntity
 			this.jsonRelationMapByAlias[alias] = firstRelation
 			if (!rightEntity) {
@@ -250,8 +239,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				table ${i + 1} in FROM clause`)
 			}
 			if (joinNodeMap[alias]) {
-				throw new Error(
-					`Alias '${alias}' used more than once in the FROM clause.`)
+				throw new Error(`Alias '${alias}' used more than once in the FROM clause.`)
 			}
 			joinNodeMap[alias] = rightNode
 		}
@@ -290,11 +278,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 						selectSqlFragments.push(`${columnSelect} ${this.columnAliases.getFollowingAlias()}`)
 					}
 				} else {
-					const subSelectFragments = this.getSELECTFragment(
-						dbRelation.relationEntity,
-						selectClauseFragment[propertyName],
-						joinTree.getEntityRelationChildNode(dbRelation),
-						dbProperty)
+					const subSelectFragments = this.getSELECTFragment(dbRelation.relationEntity, selectClauseFragment[propertyName], joinTree.getEntityRelationChildNode(dbRelation), dbProperty)
 					selectSqlFragments       = selectSqlFragments.concat(subSelectFragments)
 				}
 			} else {
@@ -327,8 +311,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		let qEntity    = this.qEntityMapByAlias[entityAlias]
 		const dbEntity = qEntity.__driver__.dbEntity
 
-		let resultObject = this.queryParser.addEntity(
-			entityAlias, dbEntity, airDb, schemaUtils)
+		let resultObject = this.queryParser.addEntity(entityAlias, dbEntity, airDb, schemaUtils)
 
 		for (let propertyName in selectClauseFragment) {
 			const dbProperty = dbEntity.propertyMap[propertyName]
@@ -337,8 +320,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				const defaultValue = this.entityDefaults.getForAlias(entityAlias)[propertyName]
 
 				const dbColumn      = dbProperty.propertyColumns[0].column
-				const propertyValue = this.sqlAdaptor.getResultCellValue(
-					resultRow, columnAlias, nextFieldIndex[0], dbColumn.type, defaultValue)
+				const propertyValue = this.sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextFieldIndex[0], dbColumn.type, defaultValue)
 				if (this.queryParser.addProperty(entityAlias, resultObject, dbColumn.type, propertyName, propertyValue)) {
 					numNonNullColumns++
 				}
@@ -348,18 +330,17 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				const dbRelation                = dbProperty.relation[0]
 				const childDbEntity             = dbRelation.relationEntity
 
-				if (childSelectClauseFragment === null) {
+				if (childSelectClauseFragment === null || childSelectClauseFragment.__state__ === EntityState.STUB) {
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
 							let haveRelationValues = true
-							let relationInfos: ReferencedColumnData[]
+							let relationInfos: ReferencedColumnData[] = []
 							schemaUtils.forEachColumnTypeOfRelation(dbRelation, (
 								dbColumn: DbColumn,
 								propertyNameChains: string[][],
 							) => {
 								const columnAlias = this.columnAliases.getFollowingAlias()
-								let value         = this.sqlAdaptor.getResultCellValue(
-									resultRow, columnAlias, nextFieldIndex[0], dbColumn.type, null)
+								let value         = this.sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextFieldIndex[0], dbColumn.type, null)
 								relationInfos.push({
 									propertyNameChains: propertyNameChains,
 									sqlDataType: dbColumn.type,
@@ -371,9 +352,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 								}
 							})
 							if (haveRelationValues) {
-								this.queryParser.bufferManyToOneStub(
-									entityAlias, dbEntity, resultObject, propertyName, childDbEntity,
-									relationInfos, schemaUtils)
+								this.queryParser.bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, childDbEntity, relationInfos, schemaUtils)
 							} else {
 								this.queryParser.bufferBlankManyToOneStub(entityAlias, resultObject, propertyName, relationInfos)
 							}
@@ -382,8 +361,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 							this.queryParser.bufferOneToManyStub(dbEntity, propertyName)
 							break
 						default:
-							throw new Error(
-								`Unknown relation type '${dbRelation.relationType}' for 
+							throw new Error(`Unknown relation type '${dbRelation.relationType}' for 
 								'${dbEntity.name}.${dbProperty.name}'`)
 					}
 					nextFieldIndex[0]++
@@ -393,39 +371,24 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 					const relationQEntity  = this.qEntityMapByAlias[childEntityAlias]
 					const relationDbEntity = relationQEntity.__driver__.dbEntity
 
-					let childResultObject = this.parseQueryResult(
-						childSelectClauseFragment,
-						childEntityAlias,
-						childJoinNode,
-						resultRow,
-						nextFieldIndex,
-						airDb,
-						schemaUtils
-					)
+					let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextFieldIndex, airDb, schemaUtils)
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
 							if (childResultObject) {
-								this.queryParser.bufferManyToOneObject(entityAlias, dbEntity,
-									resultObject, propertyName, relationDbEntity,
-									childResultObject, schemaUtils)
+								this.queryParser.bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, schemaUtils)
 							} else {
 								this.queryParser.bufferBlankManyToOneObject(entityAlias, resultObject, propertyName)
 							}
 							break
 						case EntityRelationType.ONE_TO_MANY:
 							if (childResultObject) {
-								this.queryParser.bufferOneToManyCollection(
-									entityAlias, resultObject, dbEntity, propertyName,
-									relationDbEntity, childResultObject, schemaUtils)
+								this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, dbEntity, propertyName, relationDbEntity, childResultObject, schemaUtils)
 							} else {
-								this.queryParser.bufferBlankOneToMany(
-									entityAlias, resultObject, dbEntity.name, propertyName,
-									relationDbEntity, schemaUtils)
+								this.queryParser.bufferBlankOneToMany(entityAlias, resultObject, dbEntity.name, propertyName, relationDbEntity, schemaUtils)
 							}
 							break
 						default:
-							throw new Error(
-								`Unknown relation type '${dbRelation.relationType}' for 
+							throw new Error(`Unknown relation type '${dbRelation.relationType}' for 
 								'${dbEntity.name}.${dbProperty.name}'`)
 					}
 				}
@@ -438,14 +401,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 
 		let idValue = schemaUtils.getIdKey(resultObject, dbEntity)
 
-		return this.queryParser.flushEntity(
-			entityAlias,
-			dbEntity,
-			selectClauseFragment,
-			idValue,
-			resultObject,
-			schemaUtils
-		)
+		return this.queryParser.flushEntity(entityAlias, dbEntity, selectClauseFragment, idValue, resultObject, schemaUtils)
 	}
 
 	/**
@@ -480,8 +436,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			if (parentDbProperty) {
 				ofProperty = `(of '${parentDbProperty.entity.name}.${parentDbProperty.name}') `
 			}
-			throw new Error(
-				`'${dbEntity.name}' Entity SELECT clause ${ofProperty}must be specified as an Object.`)
+			throw new Error(`'${dbEntity.name}' Entity SELECT clause ${ofProperty}must be specified as an Object.`)
 		} else if (isID(selectFragment)) {
 			selectFragment       = {}
 			retrieveAllOwnFields = false
@@ -495,19 +450,16 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 
 			const dbProperty = dbEntity.propertyMap[propertyName]
 			if (!dbProperty) {
-				throw new Error(
-					`Entity property '${dbEntity.name}.${propertyName}' does not exist.`)
+				throw new Error(`Entity property '${dbEntity.name}.${propertyName}' does not exist.`)
 			}
 
 			const value = selectFragment[propertyName]
 			if (value === undefined || value === null || isN(value)) {
 				if (dbProperty.isId) {
-					throw new Error(
-						`@Id properties cannot be excluded from entity queries.`)
+					throw new Error(`@Id properties cannot be excluded from entity queries.`)
 				}
 				if (!entityDefinitionHasIds) {
-					throw new Error(
-						`Cannot exclude property '${propertyName}' from select clause 
+					throw new Error(`Cannot exclude property '${propertyName}' from select clause 
 					for '${dbEntity.name}' Entity - entity has no @Id so all properties must be included.`)
 				}
 				delete selectFragment[propertyName]
@@ -516,8 +468,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			// Need to differentiate between properties that contain only
 			// foreign key ids and properties
 			if (dbProperty.relation && dbProperty.relation.length) {
-				selectFragment[propertyName] = this.setupSelectFields(value,
-					dbProperty.relation[0].relationEntity, schemaUtils, dbProperty)
+				selectFragment[propertyName] = this.setupSelectFields(value, dbProperty.relation[0].relationEntity, schemaUtils, dbProperty)
 				// } else {
 				// 	//  At least one non-relational field is in the original select clause
 				// 	retrieveAllOwnFields = false
@@ -607,19 +558,15 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			let errorPrefix = 'Error building FROM: '
 			switch (currentRelation.rt) {
 				case JSONRelationType.ENTITY_SCHEMA_RELATION:
-					fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity,
-						<JSONEntityRelation>currentRelation, parentRelation, currentAlias, parentAlias,
-						joinTypeString, errorPrefix, airDb, schemaUtils, metadataUtils)
+					fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, <JSONEntityRelation>currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, airDb, schemaUtils, metadataUtils)
 					break
 				default:
-					throw new Error(
-						`Only Entity schema relations are allowed in Entity query FROM clause.`)
+					throw new Error(`Only Entity schema relations are allowed in Entity query FROM clause.`)
 			}
 		}
 		for (let i = 0; i < currentTree.childNodes.length; i++) {
 			let childTreeNode = currentTree.childNodes[i]
-			fromFragment += this.getFROMFragment(
-				currentTree, childTreeNode, airDb, schemaUtils, metadataUtils)
+			fromFragment += this.getFROMFragment(currentTree, childTreeNode, airDb, schemaUtils, metadataUtils)
 		}
 
 		return fromFragment

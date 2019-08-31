@@ -45,10 +45,10 @@ class SchemaChecker {
         for (const jsonSchema of jsonSchemas) {
             const referencedSchemaMapForSchema = referencedSchemaMapBySchema.get(jsonSchema.domain).get(jsonSchema.name);
             if (this.hasReferences(referencedSchemaMapForSchema)) {
-                schemasWithValidDependencies.push(jsonSchema);
+                schemasInNeedOfAdditionalDependencies.push(jsonSchema);
             }
             else {
-                schemasInNeedOfAdditionalDependencies.push(jsonSchema);
+                schemasWithValidDependencies.push(jsonSchema);
             }
         }
         return {
@@ -107,7 +107,7 @@ class SchemaChecker {
             }
         }
         let existingSchemaMapByName;
-        if (schemaNames.length) {
+        if (!schemaNames.length) {
             existingSchemaMapByName = new Map();
         }
         else {

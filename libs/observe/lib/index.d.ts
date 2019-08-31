@@ -5,6 +5,7 @@ export * from './operators/withLatestFrom';
 export * from './BehaviorSubject';
 export * from './Observable';
 export * from './Observer';
+export * from './Store';
 export * from './Subject';
 export * from './SubscriberFunction';
 export * from './Subscription';

@@ -1,5 +1,6 @@
-import {ISequence}      from '@airport/airport-code'
-import {DI}             from '@airport/di'
+import {IAirportDatabase} from '@airport/air-control'
+import {ISequence}        from '@airport/airport-code'
+import {DI}               from '@airport/di'
 import {
 	getTableName,
 	IStoreDriver,
@@ -9,8 +10,8 @@ import {
 	PropertyReference,
 	QueryType,
 	STORE_DRIVER,
-}                       from '@airport/ground-control'
-import {ISchemaBuilder} from './ISchemaBuilder'
+}                         from '@airport/ground-control'
+import {ISchemaBuilder}   from './ISchemaBuilder'
 
 export abstract class SqlSchemaBuilder
 	implements ISchemaBuilder {
@@ -85,6 +86,11 @@ export abstract class SqlSchemaBuilder
 	async abstract buildAllSequences(
 		jsonSchemas: JsonSchema[]
 	): Promise<ISequence[]>
+
+	abstract stageSequences(
+		jsonSchemas: JsonSchema[],
+		airDb: IAirportDatabase
+	): ISequence[]
 
 	abstract getColumnSuffix(
 		jsonSchema: JsonSchema,

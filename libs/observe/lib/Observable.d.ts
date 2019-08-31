@@ -37,12 +37,14 @@ export declare class Observable<T> implements IObservable<T> {
     pipe<T2, R>(operator1: IOperator<T, T2>, operator2: IOperator<T2, R>): IObservable<R>;
     pipe<R>(operator: IOperator<T, R>): IObservable<R>;
     exec(value: T, callbackName: 'onError' | 'onNext', upstreamObservable?: Observable<any>): void;
+    forceExec(value: T, callbackName: 'onError' | 'onNext', upstreamObservable?: Observable<any>, cleared?: boolean): void;
     subscribe(onNext: {
         (value: any): void;
     }, onError?: {
         (value: any): void;
     }, onComplete?: Function): ISubscription;
     unsubscribeUpstream(): void;
+    private clear;
     private valueFromUpstream;
     private subscribeUpstream;
 }

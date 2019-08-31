@@ -40,7 +40,7 @@ class SchemaUtils {
     }
     getNewEntity(dbEntity, airDb) {
         const entityConstructor = this.getEntityConstructor(dbEntity, airDb);
-        return entityConstructor;
+        return new entityConstructor();
     }
     isIdEmpty(idValue) {
         return !idValue && idValue !== 0;

@@ -1,5 +1,6 @@
 import {
 	AIR_DB,
+	IAirportDatabase,
 	QSchemaInternal
 }                         from '@airport/air-control'
 import {
@@ -92,6 +93,23 @@ export class SqLiteSchemaBuilder
 		await sequenceDao.bulkCreate(allSequences)
 
 		return allSequences
+	}
+
+	stageSequences(
+		jsonSchemas: JsonSchema[],
+		airDb: IAirportDatabase
+	): ISequence[] {
+		console.log('stageSequences')
+
+		let stagedSequences: ISequence[] = []
+		for (const jsonSchema of jsonSchemas) {
+			const qSchema = airDb.QM[getSchemaName(jsonSchema)] as QSchemaInternal
+			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
+				stagedSequences = stagedSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity))
+			}
+		}
+
+		return stagedSequences
 	}
 
 	buildSequences(

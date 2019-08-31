@@ -11,28 +11,28 @@ class SQDIDao extends check_in_1.Dao {
 exports.SQDIDao = SQDIDao;
 class BaseLogEntryDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.diSet(1);
-    }
-    constructor() {
-        super(1);
-    }
-}
-exports.BaseLogEntryDao = BaseLogEntryDao;
-class BaseLogEntryTypeDao extends SQDIDao {
-    static diSet() {
         return qSchema_1.diSet(2);
     }
     constructor() {
         super(2);
     }
 }
-exports.BaseLogEntryTypeDao = BaseLogEntryTypeDao;
-class BaseLogEntryValueDao extends SQDIDao {
+exports.BaseLogEntryDao = BaseLogEntryDao;
+class BaseLogEntryTypeDao extends SQDIDao {
     static diSet() {
         return qSchema_1.diSet(0);
     }
     constructor() {
         super(0);
+    }
+}
+exports.BaseLogEntryTypeDao = BaseLogEntryTypeDao;
+class BaseLogEntryValueDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(1);
+    }
+    constructor() {
+        super(1);
     }
 }
 exports.BaseLogEntryValueDao = BaseLogEntryValueDao;

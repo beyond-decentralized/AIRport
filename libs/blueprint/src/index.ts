@@ -5,9 +5,9 @@ import {SCHEMA as TRAFFIC_PATTERN} from '@airport/traffic-pattern/lib/generated/
 import {SCHEMA as TRAVEL_DOCUMENT_CHECKPOINT} from '@airport/travel-document-checkpoint/lib/generated/schema'
 
 // TODO: remove once used
-import {TERMINAL_DAO} from '@airport/travel-document-checkpoint'
+// import {TERMINAL_DAO} from '@airport/travel-document-checkpoint'
 
-var temp = TERMINAL_DAO
+// var temp = TERMINAL_DAO
 
 export const BLUEPRINT = [
 	TERRITORY,

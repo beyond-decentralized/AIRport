@@ -27,4 +27,4 @@ TerminalRun = __decorate([
     air_control_1.Table({ name: 'TERMINAL_RUNS' })
 ], TerminalRun);
 exports.TerminalRun = TerminalRun;
-//# sourceMappingURL=terminalrun.js.map
+//# sourceMappingURL=TerminalRun.js.map

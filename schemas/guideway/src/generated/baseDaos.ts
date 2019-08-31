@@ -241,11 +241,11 @@ export class BaseAgtRepositoryTransactionBlockDao
 	implements IBaseAgtRepositoryTransactionBlockDao {
 
 	static diSet(): boolean {
-		return diSet(16)
+		return diSet(8)
 	}
 	
 	constructor() {
-		super(16)
+		super(8)
 	}
 }
 
@@ -259,11 +259,11 @@ export class BaseAgtSharingMessageDao
 	implements IBaseAgtSharingMessageDao {
 
 	static diSet(): boolean {
-		return diSet(14)
+		return diSet(1)
 	}
 	
 	constructor() {
-		super(14)
+		super(1)
 	}
 }
 
@@ -277,11 +277,11 @@ export class BaseArchiveDao
 	implements IBaseArchiveDao {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return diSet(14)
 	}
 	
 	constructor() {
-		super(0)
+		super(14)
 	}
 }
 
@@ -295,11 +295,11 @@ export class BaseDailyArchiveLogDao
 	implements IBaseDailyArchiveLogDao {
 
 	static diSet(): boolean {
-		return diSet(18)
+		return diSet(10)
 	}
 	
 	constructor() {
-		super(18)
+		super(10)
 	}
 }
 
@@ -313,11 +313,11 @@ export class BaseDailyTerminalSyncLogDao
 	implements IBaseDailyTerminalSyncLogDao {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return diSet(11)
 	}
 	
 	constructor() {
-		super(1)
+		super(11)
 	}
 }
 
@@ -331,11 +331,11 @@ export class BaseMonthlyArchiveLogDao
 	implements IBaseMonthlyArchiveLogDao {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return diSet(12)
 	}
 	
 	constructor() {
-		super(2)
+		super(12)
 	}
 }
 
@@ -349,11 +349,11 @@ export class BaseMonthlyTerminalSyncLogDao
 	implements IBaseMonthlyTerminalSyncLogDao {
 
 	static diSet(): boolean {
-		return diSet(3)
+		return diSet(13)
 	}
 	
 	constructor() {
-		super(3)
+		super(13)
 	}
 }
 
@@ -367,11 +367,11 @@ export class BaseRepositoryDao
 	implements IBaseRepositoryDao {
 
 	static diSet(): boolean {
-		return diSet(17)
+		return diSet(9)
 	}
 	
 	constructor() {
-		super(17)
+		super(9)
 	}
 }
 
@@ -385,11 +385,11 @@ export class BaseRepositoryArchiveDao
 	implements IBaseRepositoryArchiveDao {
 
 	static diSet(): boolean {
-		return diSet(4)
+		return diSet(15)
 	}
 	
 	constructor() {
-		super(4)
+		super(15)
 	}
 }
 
@@ -403,11 +403,11 @@ export class BaseSecurityAnswerDao
 	implements IBaseSecurityAnswerDao {
 
 	static diSet(): boolean {
-		return diSet(8)
+		return diSet(3)
 	}
 	
 	constructor() {
-		super(8)
+		super(3)
 	}
 }
 
@@ -421,11 +421,11 @@ export class BaseSecurityQuestionDao
 	implements IBaseSecurityQuestionDao {
 
 	static diSet(): boolean {
-		return diSet(7)
+		return diSet(2)
 	}
 	
 	constructor() {
-		super(7)
+		super(2)
 	}
 }
 
@@ -439,11 +439,11 @@ export class BaseServerDao
 	implements IBaseServerDao {
 
 	static diSet(): boolean {
-		return diSet(10)
+		return diSet(17)
 	}
 	
 	constructor() {
-		super(10)
+		super(17)
 	}
 }
 
@@ -457,11 +457,11 @@ export class BaseServerSyncLogDao
 	implements IBaseServerSyncLogDao {
 
 	static diSet(): boolean {
-		return diSet(9)
+		return diSet(16)
 	}
 	
 	constructor() {
-		super(9)
+		super(16)
 	}
 }
 
@@ -475,11 +475,11 @@ export class BaseSyncLogDao
 	implements IBaseSyncLogDao {
 
 	static diSet(): boolean {
-		return diSet(11)
+		return diSet(0)
 	}
 	
 	constructor() {
-		super(11)
+		super(0)
 	}
 }
 
@@ -493,11 +493,11 @@ export class BaseTerminalDao
 	implements IBaseTerminalDao {
 
 	static diSet(): boolean {
-		return diSet(15)
+		return diSet(7)
 	}
 	
 	constructor() {
-		super(15)
+		super(7)
 	}
 }
 
@@ -511,11 +511,11 @@ export class BaseTerminalRepositoryDao
 	implements IBaseTerminalRepositoryDao {
 
 	static diSet(): boolean {
-		return diSet(12)
+		return diSet(6)
 	}
 	
 	constructor() {
-		super(12)
+		super(6)
 	}
 }
 
@@ -529,11 +529,11 @@ export class BaseTuningParametersDao
 	implements IBaseTuningParametersDao {
 
 	static diSet(): boolean {
-		return diSet(13)
+		return diSet(18)
 	}
 	
 	constructor() {
-		super(13)
+		super(18)
 	}
 }
 
@@ -547,11 +547,11 @@ export class BaseUserDao
 	implements IBaseUserDao {
 
 	static diSet(): boolean {
-		return diSet(6)
+		return diSet(5)
 	}
 	
 	constructor() {
-		super(6)
+		super(5)
 	}
 }
 
@@ -565,10 +565,10 @@ export class BaseUserRepositoryDao
 	implements IBaseUserRepositoryDao {
 
 	static diSet(): boolean {
-		return diSet(5)
+		return diSet(4)
 	}
 	
 	constructor() {
-		super(5)
+		super(4)
 	}
 }

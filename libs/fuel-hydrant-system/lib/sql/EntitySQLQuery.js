@@ -121,8 +121,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         // In entity queries the first entity must always be the same as the query entity
         const firstDbEntity = firstEntity.__driver__.dbEntity;
         // if (firstEntity.constructor != this.rootQEntity.constructor) {
-        if (firstDbEntity.schemaVersion.schema.index !== this.dbEntity.schemaVersion.schema.index
-            || firstDbEntity.index !== this.dbEntity.index) {
+        if (firstDbEntity.schemaVersion.schema.index !== this.dbEntity.schemaVersion.schema.index || firstDbEntity.index !== this.dbEntity.index) {
             throw new Error(`ERROR: Unexpected first table in FROM clause: 
 			'${firstDbEntity.schemaVersion.schema.name}.${firstDbEntity.name}',
 			expecting:
@@ -232,11 +231,11 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 const childSelectClauseFragment = selectClauseFragment[propertyName];
                 const dbRelation = dbProperty.relation[0];
                 const childDbEntity = dbRelation.relationEntity;
-                if (childSelectClauseFragment === null) {
+                if (childSelectClauseFragment === null || childSelectClauseFragment.__state__ === air_control_1.EntityState.STUB) {
                     switch (dbRelation.relationType) {
                         case ground_control_1.EntityRelationType.MANY_TO_ONE:
                             let haveRelationValues = true;
-                            let relationInfos;
+                            let relationInfos = [];
                             schemaUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
                                 const columnAlias = this.columnAliases.getFollowingAlias();
                                 let value = this.sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextFieldIndex[0], dbColumn.type, null);

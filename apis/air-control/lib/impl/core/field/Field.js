@@ -76,7 +76,7 @@ class QField {
             fa: alias,
             ot: this.objectType,
             dt: this.dbColumn.type,
-            v: this.valueToJSON(functionObject, columnAliases, false, queryUtils, fieldUtils)
+            v: this.valueToJSON(functionObject, columnAliases, false, true, queryUtils, fieldUtils)
         };
     }
     copyFunctions(field) {
@@ -95,7 +95,7 @@ class QField {
         let parameters;
         if (functionCall.p) {
             parameters = functionCall.p.map((parameter) => {
-                return this.valueToJSON(parameter, columnAliases, false, queryUtils, fieldUtils);
+                return this.valueToJSON(parameter, columnAliases, false, false, queryUtils, fieldUtils);
             });
         }
         return {
@@ -103,11 +103,11 @@ class QField {
             p: parameters
         };
     }
-    valueToJSON(functionObject, columnAliases, forSelectClause, queryUtils, fieldUtils) {
+    valueToJSON(functionObject, columnAliases, forSelectClause, fromFunctionObject, queryUtils, fieldUtils) {
         if (!functionObject) {
             throw new Error(`Function object must be provided to valueToJSON function.`);
         }
-        if (functionObject instanceof QField) {
+        if (!fromFunctionObject && functionObject instanceof QField) {
             return functionObject.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils);
         }
         let value = functionObject.value;
@@ -115,15 +115,18 @@ class QField {
             case 'boolean':
             case 'number':
             case 'string':
-                return columnAliases.entityAliases.getParams().getNextAlias(functionObject);
+                return columnAliases.entityAliases.getParams()
+                    .getNextAlias(functionObject);
             case 'undefined':
                 throw new Error(`Undefined is not allowed as a query parameter`);
         }
         if (value === null) {
-            return columnAliases.entityAliases.getParams().getNextAlias(functionObject);
+            return columnAliases.entityAliases.getParams()
+                .getNextAlias(functionObject);
         }
         if (value instanceof Date) {
-            return columnAliases.entityAliases.getParams().getNextAlias(functionObject);
+            return columnAliases.entityAliases.getParams()
+                .getNextAlias(functionObject);
         }
         if (value instanceof QField) {
             return value.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils);

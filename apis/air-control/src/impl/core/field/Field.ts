@@ -133,7 +133,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			ot: this.objectType,
 			dt: this.dbColumn.type,
 			v: this.valueToJSON(functionObject, columnAliases, false,
-				queryUtils, fieldUtils)
+				true, queryUtils, fieldUtils)
 		}
 	}
 
@@ -167,7 +167,8 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		if (functionCall.p) {
 			parameters = functionCall.p.map((parameter) => {
 				return this.valueToJSON(
-					parameter, columnAliases, false, queryUtils, fieldUtils)
+					parameter, columnAliases, false, false,
+					queryUtils, fieldUtils)
 			})
 		}
 		return {
@@ -180,31 +181,35 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		functionObject: IQFunction<any> | QField<any>,
 		columnAliases: IFieldColumnAliases<IQF>,
 		forSelectClause: boolean,
+		fromFunctionObject: boolean,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): string | JSONClauseField | JsonFieldQuery {
 		if (!functionObject) {
 			throw new Error(`Function object must be provided to valueToJSON function.`)
 		}
-		if (functionObject instanceof QField) {
+		if (!fromFunctionObject && functionObject instanceof QField) {
 			return functionObject.toJSON(
 				columnAliases, forSelectClause, queryUtils, fieldUtils)
 		}
 
-		let value = functionObject.value
+		let value = (functionObject as IQFunction<any>).value
 		switch (typeof value) {
 			case 'boolean':
 			case 'number':
 			case 'string':
-				return columnAliases.entityAliases.getParams().getNextAlias(functionObject)
+				return columnAliases.entityAliases.getParams()
+					.getNextAlias(functionObject as IQFunction<any>)
 			case 'undefined':
 				throw new Error(`Undefined is not allowed as a query parameter`)
 		}
 		if (value === null) {
-			return columnAliases.entityAliases.getParams().getNextAlias(functionObject)
+			return columnAliases.entityAliases.getParams()
+				.getNextAlias(functionObject as IQFunction<any>)
 		}
 		if (value instanceof Date) {
-			return columnAliases.entityAliases.getParams().getNextAlias(functionObject)
+			return columnAliases.entityAliases.getParams()
+				.getNextAlias(functionObject as IQFunction<any>)
 		}
 		if (value instanceof QField) {
 			return value.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils)

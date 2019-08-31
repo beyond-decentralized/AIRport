@@ -1,33 +1,35 @@
 import {
 	AIR_DB,
 	IAirportDatabase,
-}                                 from '@airport/air-control'
-import {SEQUENCE_GENERATOR}       from '@airport/check-in'
-import {DI}                       from '@airport/di'
-import {setStoreDriver}           from '@airport/fuel-hydrant-system'
+}                           from '@airport/air-control'
+import {DI}                 from '@airport/di'
+import {setStoreDriver}     from '@airport/fuel-hydrant-system'
 import {
 	DomainName,
+	getSchemaName,
+	JsonSchema,
+	SchemaName,
 	STORE_DRIVER,
 	TRANS_CONNECTOR
-}                                 from '@airport/ground-control'
+}                           from '@airport/ground-control'
 import {
 	Actor,
 	ACTOR_DAO
-}                                 from '@airport/holding-pattern'
-import {SCHEMA_INITIALIZER}       from '@airport/landing'
-import {QUERY_OBJECT_INITIALIZER} from '@airport/takeoff'
-import {StoreType}                from '@airport/terminal-map'
+}                           from '@airport/holding-pattern'
+import {SCHEMA_INITIALIZER} from '@airport/landing'
+import {StoreType}          from '@airport/terminal-map'
 import {
 	TRANS_SERVER,
 	transactional
-}                                 from '@airport/tower'
+}                           from '@airport/tower'
+import {SCHEMA_DAO}         from '@airport/traffic-pattern'
 import {
 	Terminal,
 	TERMINAL_DAO,
 	User,
 	USER_DAO
-}                                 from '@airport/travel-document-checkpoint'
-import {DATABASE_MANAGER}         from '../diTokens'
+}                           from '@airport/travel-document-checkpoint'
+import {DATABASE_MANAGER}   from '../diTokens'
 
 export interface IDatabaseManager {
 
@@ -99,7 +101,8 @@ export class DatabaseManager
 
 	async init(
 		domainName: string,
-		storeType: StoreType
+		storeType: StoreType,
+		...schemas: JsonSchema[]
 	): Promise<void> {
 		await setStoreDriver(storeType)
 		const airDb = await DI.get(AIR_DB)
@@ -109,57 +112,108 @@ export class DatabaseManager
 		await connector.init()
 
 		const storeDriver = await DI.get(STORE_DRIVER)
+		/*
+				await storeDriver.dropTable('npmjs_org___airport__airport_code__SEQUENCES')
+				await storeDriver.dropTable('npmjs_org___airport__airport_code__TERMINAL_RUNS')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__ACTOR_APPLICATION')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__Actor')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__Application')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_ACTORS')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_APPLICATION')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_OPERATION_HISTORY')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_RECORD_HISTORY')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_RECORD_HISTORY_NEW_VALUES')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_RECORD_HISTORY_OLD_VALUES')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_SCHEMAS')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_TRANSACTION_HISTORY')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPO_TRANS_HISTORY_CHANGED_REPOSITORY_ACTORS')
+				await storeDriver.dropTable('npmjs_org___airport__holding_pattern__TRANSACTION_HISTORY')
+				await storeDriver.dropTable('npmjs_org___airport__territory__APPLICATIONS')
+				await storeDriver.dropTable('npmjs_org___airport__territory__APPLICATION_PACKAGES')
+				await storeDriver.dropTable('npmjs_org___airport__territory__DOMAINS')
+				await storeDriver.dropTable('npmjs_org___airport__territory__PACKAGED_UNITS')
+				await storeDriver.dropTable('npmjs_org___airport__territory__PACKAGES')
+				await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMAS')
+				await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_COLUMNS')
+				await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_ENTITIES')
+				await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_PROPERTIES')
+				await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_PROPERTY_COLUMNS')
+				await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_REFERENCES')
+				await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_RELATIONS')
+				await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_RELATION_COLUMNS')
+				await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_VERSIONS')
+				await storeDriver.dropTable('npmjs_org___airport__travel_document_checkpoint__Agt')
+				await storeDriver.dropTable('npmjs_org___airport__travel_document_checkpoint__TERMINAL_AGTS')
+				await storeDriver.dropTable('npmjs_org___airport__travel_document_checkpoint__Terminal')
+				await storeDriver.dropTable('npmjs_org___airport__travel_document_checkpoint__USER_TERMINAL')
+				await storeDriver.dropTable('npmjs_org___airport__travel_document_checkpoint__USER_TERMINAL_AGT')
+				await storeDriver.dropTable('npmjs_org___airport__travel_document_checkpoint__User')
+				*/
+		/*
+				await storeDriver.dropTable('public___votecube__public_db__CONTINENTS')
+				await storeDriver.dropTable('public___votecube__public_db__COUNTIES')
+				await storeDriver.dropTable('public___votecube__public_db__COUNTRIES')
+				await storeDriver.dropTable('public___votecube__public_db__FACTORS')
+				await storeDriver.dropTable('public___votecube__public_db__FACTOR_POSITIONS')
+				await storeDriver.dropTable('public___votecube__public_db__LABELS')
+				await storeDriver.dropTable('public___votecube__public_db__POLLS')
+				await storeDriver.dropTable('public___votecube__public_db__POLL_CONTINENTS')
+				await storeDriver.dropTable('public___votecube__public_db__POLL_COUNTIES')
+				await storeDriver.dropTable('public___votecube__public_db__POLL_COUNTRIES')
+				await storeDriver.dropTable('public___votecube__public_db__POLL_FACTOR_POSITIONS')
+				await storeDriver.dropTable('public___votecube__public_db__POLL_LABELS')
+				await storeDriver.dropTable('public___votecube__public_db__POLL_STATES')
+				await storeDriver.dropTable('public___votecube__public_db__POLL_TOWNS')
+				await storeDriver.dropTable('public___votecube__public_db__POLL_TYPES')
+				await storeDriver.dropTable('public___votecube__public_db__POSITIONS')
+				await storeDriver.dropTable('public___votecube__public_db__STATES')
+				await storeDriver.dropTable('public___votecube__public_db__THEMES')
+				await storeDriver.dropTable('public___votecube__public_db__TOWNS')
+				await storeDriver.dropTable('public___votecube__public_db__VOTES')
+				await storeDriver.dropTable('public___votecube__public_db__VOTE_FACTORS')
+				await storeDriver.dropTable('public___votecube__public_db__VOTE_FACTOR_TYPES')
+		*/
 
-		await storeDriver.dropTable('npmjs_org___airport__airport_code__SEQUENCES')
-		await storeDriver.dropTable('npmjs_org___airport__airport_code__TERMINAL_RUNS')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__ACTOR_APPLICATION')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__Actor')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__Application')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_ACTORS')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_APPLICATION')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_OPERATION_HISTORY')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_RECORD_HISTORY')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_RECORD_HISTORY_NEW_VALUES')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_RECORD_HISTORY_OLD_VALUES')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_SCHEMAS')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPOSITORY_TRANSACTION_HISTORY')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__REPO_TRANS_HISTORY_CHANGED_REPOSITORY_ACTORS')
-		await storeDriver.dropTable('npmjs_org___airport__holding_pattern__TRANSACTION_HISTORY')
-		await storeDriver.dropTable('npmjs_org___airport__territory__APPLICATIONS')
-		await storeDriver.dropTable('npmjs_org___airport__territory__APPLICATION_PACKAGES')
-		await storeDriver.dropTable('npmjs_org___airport__territory__DOMAINS')
-		await storeDriver.dropTable('npmjs_org___airport__territory__PACKAGED_UNITS')
-		await storeDriver.dropTable('npmjs_org___airport__territory__PACKAGES')
-		await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMAS')
-		await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_COLUMNS')
-		await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_ENTITIES')
-		await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_PROPERTIES')
-		await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_PROPERTY_COLUMNS')
-		await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_REFERENCES')
-		await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_RELATIONS')
-		await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_RELATION_COLUMNS')
-		await storeDriver.dropTable('npmjs_org___airport__traffic_pattern__SCHEMA_VERSIONS')
-		await storeDriver.dropTable('npmjs_org___airport__travel_document_checkpoint__Agt')
-		await storeDriver.dropTable('npmjs_org___airport__travel_document_checkpoint__TERMINAL_AGTS')
-		await storeDriver.dropTable('npmjs_org___airport__travel_document_checkpoint__Terminal')
-		await storeDriver.dropTable('npmjs_org___airport__travel_document_checkpoint__USER_TERMINAL')
-		await storeDriver.dropTable('npmjs_org___airport__travel_document_checkpoint__USER_TERMINAL_AGT')
-		await storeDriver.dropTable('npmjs_org___airport__travel_document_checkpoint__User')
+		const server              = await DI.get(TRANS_SERVER);
+		(server as any).tempActor = new Actor()
 
-		if (await storeDriver.doesTableExist('npmjs_org___airport_territory__PACKAGES')) {
-			const queryObjectInitializer = await DI.get(QUERY_OBJECT_INITIALIZER)
-			await queryObjectInitializer.initialize(airDb)
-		} else {
-			const server              = await DI.get(TRANS_SERVER);
-			(server as any).tempActor = new Actor()
+		const hydrate = await storeDriver.doesTableExist('npmjs_org___airport__territory__PACKAGES')
 
-			await this.installAirportSchema()
-			await this.initTerminal(domainName);
+		await this.installAirportSchema(hydrate)
 
-			(server as any).tempActor = null
+		if (!hydrate) {
+			await this.initTerminal(domainName)
 		}
-		await (await DI.get(SEQUENCE_GENERATOR)).init()
+
+		if (schemas && schemas.length) {
+
+			const schemaDao = await DI.get(SCHEMA_DAO)
+
+			const schemaNames: SchemaName[] = []
+			for (const jsonSchema of schemas) {
+				const schemaName = getSchemaName(jsonSchema)
+				schemaNames.push(schemaName)
+			}
+
+			const existingSchemaMap = await schemaDao.findMapByNames(schemaNames)
+
+			const schemasToInitialize: JsonSchema[] = []
+			for (const jsonSchema of schemas) {
+				const schemaName = getSchemaName(jsonSchema)
+				if (!existingSchemaMap.has(schemaName)) {
+					schemasToInitialize.push(jsonSchema)
+				}
+			}
+
+			if (schemasToInitialize.length) {
+				const schemaInitializer = await DI.get(SCHEMA_INITIALIZER)
+				await schemaInitializer.initialize(schemas)
+			}
+		}
+
+		(server as any).tempActor = null
+
 		/*
 				throw new Error(`Implement!`)
 				let dbFacade: IDatabaseFacade = this.databaseMap[terminalName]
@@ -185,9 +239,7 @@ export class DatabaseManager
 				*/
 	}
 
-	private async initTerminal(
-		domainName: DomainName
-	): Promise<void> {
+	private async initTerminal(domainName: DomainName): Promise<void> {
 		await transactional(async () => {
 			const user    = new User()
 			user.uniqueId = domainName
@@ -209,11 +261,14 @@ export class DatabaseManager
 		})
 	}
 
-	private async installAirportSchema() {
+	private async installAirportSchema(hydrate: boolean) {
 		const blueprintFile     = await import('@airport/blueprint')
 		const schemaInitializer = await DI.get(SCHEMA_INITIALIZER)
-		await schemaInitializer.initialize(
-			blueprintFile.BLUEPRINT as any, false)
+		if (hydrate) {
+			await schemaInitializer.hydrate(blueprintFile.BLUEPRINT as any)
+		} else {
+			await schemaInitializer.initialize(blueprintFile.BLUEPRINT as any, false)
+		}
 	}
 
 	/*

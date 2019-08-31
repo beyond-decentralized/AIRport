@@ -25,6 +25,10 @@ export interface ISequenceGenerator {
 		sequences?: DbSequence[]
 	): Promise<void>
 
+	tempInit(
+		sequences?: DbSequence[]
+	): Promise<void>
+
 }
 
 export function setSeqGen(

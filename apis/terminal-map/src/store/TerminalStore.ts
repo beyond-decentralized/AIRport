@@ -2,22 +2,28 @@ import {
 	createRootSelector,
 	createSelector,
 	IMemoizedSelector
-}                        from '@airport/check-in'
-import {DI}              from '@airport/di'
+}                       from '@airport/check-in'
+import {DI}             from '@airport/di'
 import {
 	DomainName,
 	ensureChildJsMap,
 	JsonSchemaName,
 	SchemaName
-}                        from '@airport/ground-control'
-import {BehaviorSubject} from '@airport/observe'
-import {IDomain}         from '@airport/territory'
+}                       from '@airport/ground-control'
+import {
+	BehaviorSubject,
+	Store
+}                       from '@airport/observe'
+import {IDomain}        from '@airport/territory'
 import {
 	ISchema,
+	ISchemaColumn,
+	ISchemaEntity,
+	ISchemaRelation,
 	ISchemaVersion
-}                        from '@airport/traffic-pattern'
-import {TERMINAL_STORE}  from '../diTokens'
-import {ITerminalState}  from './TerminalState'
+}                       from '@airport/traffic-pattern'
+import {TERMINAL_STORE} from '../diTokens'
+import {ITerminalState} from './TerminalState'
 
 export interface ITerminalStore {
 
@@ -25,11 +31,9 @@ export interface ITerminalStore {
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>
 
-	getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName,
-		Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>
+	getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>
 
-	getLatestSchemaVersionMapBySchemaName:
-		IMemoizedSelector<Map<SchemaName, ISchemaVersion>, ITerminalState>
+	getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<SchemaName, ISchemaVersion>, ITerminalState>
 
 	getAllSchemaVersionsByIds: IMemoizedSelector<ISchemaVersion[], ITerminalState>
 
@@ -39,6 +43,12 @@ export interface ITerminalStore {
 
 	getSchemas: IMemoizedSelector<ISchema[], ITerminalState>
 
+	getAllColumns: IMemoizedSelector<ISchemaColumn[], ITerminalState>
+
+	getAllEntities: IMemoizedSelector<ISchemaEntity[], ITerminalState>
+
+	getAllRelations: IMemoizedSelector<ISchemaRelation[], ITerminalState>
+
 	tearDown()
 }
 
@@ -46,11 +56,8 @@ export interface ITerminalStore {
 export class TerminalStore
 	implements ITerminalStore {
 
-	state = new BehaviorSubject<ITerminalState>({
-		domains: [],
-		nodesBySyncFrequency: new Map(),
-		schemas: [],
-		terminal: null,
+	state = new Store<ITerminalState>({
+		domains: [], nodesBySyncFrequency: new Map(), schemas: [], terminal: null,
 	})
 
 
@@ -64,12 +71,10 @@ export class TerminalStore
 
 	getLatestSchemaVersionMapByNames = createSelector(this.getDomains,
 		domains => {
-			const latestSchemaVersionMapByNames:
-				      Map<DomainName, Map<SchemaName, ISchemaVersion>> = new Map()
+			const latestSchemaVersionMapByNames: Map<DomainName, Map<SchemaName, ISchemaVersion>> = new Map()
 
 			for (const domain of domains) {
-				const mapForDomain = ensureChildJsMap(
-					latestSchemaVersionMapByNames, domain.name)
+				const mapForDomain = ensureChildJsMap(latestSchemaVersionMapByNames, domain.name)
 				for (const schema of domain.schemas) {
 					mapForDomain.set(schema.name, schema.currentVersion)
 				}
@@ -78,17 +83,12 @@ export class TerminalStore
 			return latestSchemaVersionMapByNames
 		})
 
-	getLatestSchemaVersionMapBySchemaName = createSelector(this.getLatestSchemaVersionMapByNames, (
-		latestSchemaVersionMapByNames:
-			Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>
-	) => {
+	getLatestSchemaVersionMapBySchemaName = createSelector(this.getLatestSchemaVersionMapByNames, (latestSchemaVersionMapByNames: Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>) => {
 		const latestSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion> = new Map()
 
 		for (const schemaVersionsForDomainName of latestSchemaVersionMapByNames.values()) {
 			for (const schemaVersion of schemaVersionsForDomainName.values()) {
-				latestSchemaVersionMapBySchemaName.set(
-					schemaVersion.schema.name, schemaVersion
-				)
+				latestSchemaVersionMapBySchemaName.set(schemaVersion.schema.name, schemaVersion)
 			}
 		}
 
@@ -112,8 +112,7 @@ export class TerminalStore
 
 	getLatestSchemaVersionsBySchemaIndexes = createSelector(this.getDomains,
 		domains => {
-			const latestSchemaVersionsBySchemaIndexes:
-				      ISchemaVersion[] = []
+			const latestSchemaVersionsBySchemaIndexes: ISchemaVersion[] = []
 
 			for (const domain of domains) {
 				for (const schema of domain.schemas) {
@@ -130,6 +129,52 @@ export class TerminalStore
 	tearDown() {
 	}
 
+	getAllEntities = createSelector(this.getLatestSchemaVersionsBySchemaIndexes,
+		latestSchemaVersionsBySchemaIndexes => {
+			const allEntities: ISchemaEntity[] = []
+			for (const latestSchemaVersion of latestSchemaVersionsBySchemaIndexes) {
+				if(!latestSchemaVersion) {
+					continue
+				}
+				for (const entity of latestSchemaVersion.entities) {
+					allEntities[entity.id] = entity
+				}
+			}
+
+			return allEntities
+		})
+
+	getAllColumns = createSelector(this.getAllEntities,
+		allEntities => {
+			const allColumns: ISchemaColumn[] = []
+
+			for (const entity of allEntities) {
+				if(!entity) {
+					continue
+				}
+				for (const column of entity.columns) {
+					allColumns[column.id] = column
+				}
+			}
+
+			return allColumns
+		})
+
+	getAllRelations = createSelector(this.getAllEntities,
+		allEntities => {
+			const allRelations: ISchemaRelation[] = []
+
+			for (const entity of allEntities) {
+				if(!entity) {
+					continue
+				}
+				for (const relation of entity.relations) {
+					allRelations[relation.id] = relation
+				}
+			}
+
+			return allRelations
+		})
 }
 
 DI.set(TERMINAL_STORE, TerminalStore)

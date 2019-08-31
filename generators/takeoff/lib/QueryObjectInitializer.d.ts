@@ -5,7 +5,7 @@ import { ISchema, ISchemaColumn, ISchemaEntity, ISchemaProperty, ISchemaProperty
 import { IDdlObjectLinker } from './DdlObjectLinker';
 import { IQueryEntityClassCreator } from './QueryEntityClassCreator';
 export interface IQueryObjectInitializer {
-    initialize(airDb: IAirportDatabase): Promise<void>;
+    initialize(airDb: IAirportDatabase): Promise<DdlObjects>;
     generateQObjectsAndPopulateStore(ddlObjects: DdlObjects, airDb: IAirportDatabase, ddlObjectLinker: IDdlObjectLinker, queryEntityClassCreator: IQueryEntityClassCreator, terminalStore: ITerminalStore): void;
 }
 export interface DdlObjects {
@@ -25,6 +25,6 @@ export interface DdlObjects {
     schemaVersions: ISchemaVersion[];
 }
 export declare class QueryObjectInitializer implements IQueryObjectInitializer {
-    initialize(airDb: IAirportDatabase): Promise<void>;
+    initialize(airDb: IAirportDatabase): Promise<DdlObjects>;
     generateQObjectsAndPopulateStore(ddlObjects: DdlObjects, airDb: IAirportDatabase, ddlObjectLinker: IDdlObjectLinker, queryEntityClassCreator: IQueryEntityClassCreator, terminalStore: ITerminalStore): void;
 }

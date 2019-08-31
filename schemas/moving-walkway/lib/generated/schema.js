@@ -12,803 +12,6 @@ exports.SCHEMA = {
                     "columns": [
                         {
                             "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "COLUMNINDEX",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 1,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SYNCHRONIZATION_CONFLICT_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        }
-                    ],
-                    "index": 0,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "SynchronizationConflictValues",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "synchronizationConflict",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 1,
-                            "isId": true,
-                            "name": "columnIndex",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 1,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SYNCHRONIZATION_CONFLICT_VALUES",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "TYPE",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": 0,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 0,
-                                    "oneTableIndex": 1,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "OVERWRITTEN_RECORD_HISTORY_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneSchemaIndex": 0,
-                                    "oneTableIndex": 1,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "OVERWRITING_RECORD_HISTORY_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 1,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "SynchronizationConflict",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "id",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "name": "overwrittenRecordHistory",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "overwritingRecordHistory",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "values",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 5,
-                            "isId": false,
-                            "name": "type",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableSchemaIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 1,
-                            "relationTableSchemaIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 1,
-                            "relationTableSchemaIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "cascade": 1,
-                                "mappedBy": "SYNCHRONIZATION_CONFLICT_ID"
-                            },
-                            "relationType": 0,
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 0,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SYNCHRONIZATION_CONFLICT",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACKNOWLEDGED",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 1
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 1,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SYNC_CONFLICT_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 0,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 1
-                        },
-                        {
-                            "index": 2
-                        }
-                    ],
-                    "index": 2,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "SynchronizationConflictPendingNotification",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "synchronizationConflict",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "name": "actor",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "acknowledged",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 7,
-                            "relationTableSchemaIndex": 0,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SYNC_CONFLICT_PENDING_NOTIFICATION",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACTOR_RECORD_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "STATUS",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": 1,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SCHEMA_VERSION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 1,
-                                    "oneTableIndex": 5,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SCHEMA_ENTITY_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneSchemaIndex": 0,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneSchemaIndex": 0,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 3,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "MissingRecord",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "id",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "name": "schemaVersion",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "name": "entity",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "actor",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 5,
-                            "isId": false,
-                            "name": "actorRecordId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 6,
-                            "isId": false,
-                            "name": "status",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 7,
-                            "relationTableSchemaIndex": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 5,
-                            "relationTableSchemaIndex": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableSchemaIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 7,
-                            "relationTableSchemaIndex": 0,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "MISSING_RECORDS",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "MISSING_RECORD_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 16,
-                                    "oneRelationIndex": 5,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_TRANSACTION_BLOCK_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [],
-                    "index": 4,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "MissingRecordRepoTransBlock",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "name": "missingRecord",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "name": "repositoryTransactionBlock",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 3,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 16,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "MISSING_RECORD_REPO_TRANS_BLOCKS",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
@@ -855,7 +58,7 @@ exports.SCHEMA = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneSchemaIndex": 1,
+                                    "oneSchemaIndex": 0,
                                     "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -877,7 +80,7 @@ exports.SCHEMA = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 1,
+                                    "oneSchemaIndex": 0,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -899,7 +102,7 @@ exports.SCHEMA = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneSchemaIndex": 0,
+                                    "oneSchemaIndex": 1,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -921,7 +124,7 @@ exports.SCHEMA = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneSchemaIndex": 0,
+                                    "oneSchemaIndex": 1,
                                     "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -943,7 +146,7 @@ exports.SCHEMA = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneSchemaIndex": 1,
+                                    "oneSchemaIndex": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -965,7 +168,7 @@ exports.SCHEMA = {
                             "index": 0
                         }
                     ],
-                    "index": 5,
+                    "index": 0,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "RecordUpdateStage",
@@ -1052,7 +255,7 @@ exports.SCHEMA = {
                                 "index": 1
                             },
                             "relationTableIndex": 7,
-                            "relationTableSchemaIndex": 1,
+                            "relationTableSchemaIndex": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -1063,7 +266,7 @@ exports.SCHEMA = {
                                 "index": 2
                             },
                             "relationTableIndex": 5,
-                            "relationTableSchemaIndex": 1,
+                            "relationTableSchemaIndex": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -1074,7 +277,7 @@ exports.SCHEMA = {
                                 "index": 3
                             },
                             "relationTableIndex": 10,
-                            "relationTableSchemaIndex": 0,
+                            "relationTableSchemaIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -1085,7 +288,7 @@ exports.SCHEMA = {
                                 "index": 4
                             },
                             "relationTableIndex": 7,
-                            "relationTableSchemaIndex": 0,
+                            "relationTableSchemaIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -1096,13 +299,450 @@ exports.SCHEMA = {
                                 "index": 6
                             },
                             "relationTableIndex": 0,
-                            "relationTableSchemaIndex": 1,
+                            "relationTableSchemaIndex": 0,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "RECORD_UPDATE_STAGE",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "COLUMNINDEX",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 2,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SYNCHRONIZATION_CONFLICT_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 1,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SynchronizationConflictValues",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "synchronizationConflict",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 1,
+                            "isId": true,
+                            "name": "columnIndex",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SYNCHRONIZATION_CONFLICT_VALUES",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "TYPE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": 1,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": 1,
+                                    "oneTableIndex": 1,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "OVERWRITTEN_RECORD_HISTORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneSchemaIndex": 1,
+                                    "oneTableIndex": 1,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "OVERWRITING_RECORD_HISTORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 2,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SynchronizationConflict",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "id",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "overwrittenRecordHistory",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "overwritingRecordHistory",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "values",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 5,
+                            "isId": false,
+                            "name": "type",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 10,
+                            "relationTableSchemaIndex": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 1,
+                            "relationTableSchemaIndex": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 1,
+                            "relationTableSchemaIndex": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "cascade": 1,
+                                "mappedBy": "SYNCHRONIZATION_CONFLICT_ID"
+                            },
+                            "relationType": 0,
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SYNCHRONIZATION_CONFLICT",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ACKNOWLEDGED",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 1
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 2,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SYNC_CONFLICT_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": 1,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ACTOR_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 1
+                        },
+                        {
+                            "index": 2
+                        }
+                    ],
+                    "index": 3,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SynchronizationConflictPendingNotification",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "synchronizationConflict",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "actor",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "acknowledged",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 7,
+                            "relationTableSchemaIndex": 1,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SYNC_CONFLICT_PENDING_NOTIFICATION",
                         "indexes": []
                     }
                 },
@@ -1126,11 +766,113 @@ exports.SCHEMA = {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "SYNC_OUTCOME_TYPE",
+                            "name": "ACTOR_RECORD_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "STATUS",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": 0,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SCHEMA_VERSION_ID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": 0,
+                                    "oneTableIndex": 5,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SCHEMA_ENTITY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneSchemaIndex": 1,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 3,
+                                    "oneSchemaIndex": 1,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ACTOR_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
                                 }
                             ],
                             "sinceVersion": 1,
@@ -1142,10 +884,10 @@ exports.SCHEMA = {
                             "index": 0
                         }
                     ],
-                    "index": 6,
+                    "index": 4,
                     "isLocal": true,
                     "isRepositoryEntity": false,
-                    "name": "RepoTransBlockResponseStage",
+                    "name": "MissingRecord",
                     "properties": [
                         {
                             "columnRef": {
@@ -1157,19 +899,109 @@ exports.SCHEMA = {
                             "sinceVersion": 1
                         },
                         {
+                            "index": 1,
+                            "isId": false,
+                            "name": "schemaVersion",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "entity",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "actor",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
                             "columnRef": {
                                 "index": 1
                             },
-                            "index": 1,
+                            "index": 5,
                             "isId": false,
-                            "name": "syncOutcomeType",
+                            "name": "actorRecordId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 6,
+                            "isId": false,
+                            "name": "status",
                             "sinceVersion": 1
                         }
                     ],
-                    "relations": [],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 7,
+                            "relationTableSchemaIndex": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 5,
+                            "relationTableSchemaIndex": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 10,
+                            "relationTableSchemaIndex": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 7,
+                            "relationTableSchemaIndex": 1,
+                            "sinceVersion": 1
+                        }
+                    ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "REPO_TRANS_BLOCK_RESPONSE_STAGE",
+                        "name": "MISSING_RECORDS",
                         "indexes": []
                     }
                 },
@@ -1178,31 +1010,16 @@ exports.SCHEMA = {
                         {
                             "index": 0,
                             "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "STATUS",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 16,
-                                    "oneRelationIndex": 6,
+                                    "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "SHARING_MESSAGE_ID",
+                            "name": "MISSING_RECORD_ID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -1213,63 +1030,48 @@ exports.SCHEMA = {
                             "type": 4
                         },
                         {
-                            "index": 2,
+                            "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 1,
-                                    "oneTableIndex": 8,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 11,
+                                    "oneRelationIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "SCHEMA_INDEX",
+                            "name": "REPOSITORY_TRANSACTION_BLOCK_ID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 2
+                                    "index": 1
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": 4
                         }
                     ],
-                    "idColumnRefs": [
-                        {
-                            "index": 1
-                        },
-                        {
-                            "index": 2
-                        }
-                    ],
-                    "index": 7,
+                    "idColumnRefs": [],
+                    "index": 5,
                     "isLocal": true,
                     "isRepositoryEntity": false,
-                    "name": "RepoTransBlockSchemaToChange",
+                    "name": "MissingRecordRepoTransBlock",
                     "properties": [
                         {
                             "index": 0,
-                            "isId": true,
-                            "name": "repositoryTransactionBlock",
+                            "isId": false,
+                            "name": "missingRecord",
                             "relationRef": {
                                 "index": 0
                             },
                             "sinceVersion": 1
                         },
                         {
-                            "columnRef": {
-                                "index": 0
-                            },
                             "index": 1,
                             "isId": false,
-                            "name": "status",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": true,
-                            "name": "schema",
+                            "name": "repositoryTransactionBlock",
                             "relationRef": {
                                 "index": 1
                             },
@@ -1279,96 +1081,28 @@ exports.SCHEMA = {
                     "relations": [
                         {
                             "index": 0,
-                            "isId": true,
+                            "isId": false,
                             "relationType": 1,
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 16,
+                            "relationTableIndex": 4,
                             "sinceVersion": 1
                         },
                         {
-                            "index": 1,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 8,
-                            "relationTableSchemaIndex": 1,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "REPO_TRANS_BLOCK_SCHEMAS_TO_CHANGE",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_TRANSACTION_HISTORY_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "BLOCK_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 8,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "RepositoryTransactionHistoryUpdateStage",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "repositoryTransactionHistoryId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
                             "index": 1,
                             "isId": false,
-                            "name": "blockId",
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         }
                     ],
-                    "relations": [],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "REPOSITORY_TRANSACTION_HISTORY_UPDATE_STAGE",
+                        "name": "MISSING_RECORD_REPO_TRANS_BLOCKS",
                         "indexes": []
                     }
                 },
@@ -1395,7 +1129,7 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 10,
+                                    "oneTableIndex": 7,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -1418,7 +1152,7 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 16,
+                                    "oneTableIndex": 11,
                                     "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -1443,7 +1177,7 @@ exports.SCHEMA = {
                             "index": 2
                         }
                     ],
-                    "index": 9,
+                    "index": 6,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "SharingNodeRepoTransBlock",
@@ -1484,7 +1218,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -1494,7 +1228,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 16,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         }
                     ],
@@ -1596,7 +1330,7 @@ exports.SCHEMA = {
                             "index": 0
                         }
                     ],
-                    "index": 10,
+                    "index": 7,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "SharingNode",
@@ -1685,7 +1419,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 14,
+                            "relationTableIndex": 8,
                             "sinceVersion": 1
                         },
                         {
@@ -1698,464 +1432,13 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 6,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "SHARING_NODES",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "SHARING_NODE_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_TRANSACTION_BLOCK_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "SYNC_STATUS",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        }
-                    ],
-                    "index": 11,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "SharingNodeRepoTransBlockStage",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "sharingNodeId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": true,
-                            "name": "repositoryTransactionBlockId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "syncStatus",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SHARING_NODE_REPO_TRANS_BLOCK_STAGE",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "AGT_REPOSITORY_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ADVISED_SYNC_PRIORITY",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_SYNC_STATUS",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SHARING_NODE_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 0,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 3
-                        },
-                        {
-                            "index": 4
-                        }
-                    ],
-                    "index": 12,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "SharingNodeRepository",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "sharingNode",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "agtRepositoryId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 3,
-                            "isId": false,
-                            "name": "advisedSyncPriority",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "repositorySyncStatus",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 10,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableSchemaIndex": 0,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SHARING_NODE_REPOSITORIES",
-                        "primaryKey": [
-                            "SHARING_NODE_ID",
-                            "REPOSITORY_ID"
-                        ],
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "AGT_TERMINAL_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "TERMINAL_PASSWORD",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 5
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "TERMINAL_SYNC_STATUS",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SHARING_NODE_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 2,
-                                    "oneTableIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "TERMINAL_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 3
-                        },
-                        {
-                            "index": 4
-                        }
-                    ],
-                    "index": 13,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "SharingNodeTerminal",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "sharingNode",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "name": "terminal",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "agtTerminalId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 3,
-                            "isId": false,
-                            "name": "agtTerminalPassword",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "terminalSyncStatus",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 10,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 3,
-                            "relationTableSchemaIndex": 2,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SHARING_NODE_TERMINAL",
                         "indexes": []
                     }
                 },
@@ -2224,7 +1507,7 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 10,
+                                    "oneTableIndex": 7,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -2249,7 +1532,7 @@ exports.SCHEMA = {
                             "index": 4
                         }
                     ],
-                    "index": 14,
+                    "index": 8,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "SharingMessage",
@@ -2317,7 +1600,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -2330,7 +1613,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 15,
+                            "relationTableIndex": 9,
                             "sinceVersion": 1
                         }
                     ],
@@ -2349,7 +1632,7 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 14,
+                                    "oneTableIndex": 8,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -2372,7 +1655,7 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 16,
+                                    "oneTableIndex": 11,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -2397,7 +1680,7 @@ exports.SCHEMA = {
                             "index": 1
                         }
                     ],
-                    "index": 15,
+                    "index": 9,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "SharingMessageRepoTransBlock",
@@ -2429,7 +1712,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 14,
+                            "relationTableIndex": 8,
                             "sinceVersion": 1
                         },
                         {
@@ -2439,13 +1722,145 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 16,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "SHARING_MESSAGE_REPO_TRANS_BLOCKS",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "STATUS",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 11,
+                                    "oneRelationIndex": 6,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SHARING_MESSAGE_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": 0,
+                                    "oneTableIndex": 8,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SCHEMA_INDEX",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 1
+                        },
+                        {
+                            "index": 2
+                        }
+                    ],
+                    "index": 10,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "RepoTransBlockSchemaToChange",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "repositoryTransactionBlock",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "status",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": true,
+                            "name": "schema",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 11,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 8,
+                            "relationTableSchemaIndex": 0,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPO_TRANS_BLOCK_SCHEMAS_TO_CHANGE",
                         "indexes": []
                     }
                 },
@@ -2549,7 +1964,7 @@ exports.SCHEMA = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 0,
+                                    "oneSchemaIndex": 1,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -2571,7 +1986,7 @@ exports.SCHEMA = {
                             "index": 0
                         }
                     ],
-                    "index": 16,
+                    "index": 11,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "RepositoryTransactionBlock",
@@ -2705,7 +2120,7 @@ exports.SCHEMA = {
                                 "index": 4
                             },
                             "relationTableIndex": 10,
-                            "relationTableSchemaIndex": 0,
+                            "relationTableSchemaIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -2716,7 +2131,7 @@ exports.SCHEMA = {
                                 "index": 7
                             },
                             "relationTableIndex": 5,
-                            "relationTableSchemaIndex": 0,
+                            "relationTableSchemaIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -2729,7 +2144,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 8
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 6,
                             "sinceVersion": 1
                         },
                         {
@@ -2742,7 +2157,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 9
                             },
-                            "relationTableIndex": 15,
+                            "relationTableIndex": 9,
                             "sinceVersion": 1
                         },
                         {
@@ -2755,7 +2170,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 10
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -2768,13 +2183,598 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 11
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 10,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "REPOSITORY_TRANSACTION_BLOCKS",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "REPOSITORY_TRANSACTION_HISTORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "BLOCK_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 12,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "RepositoryTransactionHistoryUpdateStage",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "repositoryTransactionHistoryId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "blockId",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_TRANSACTION_HISTORY_UPDATE_STAGE",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "SYNC_OUTCOME_TYPE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 13,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "RepoTransBlockResponseStage",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "id",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "syncOutcomeType",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPO_TRANS_BLOCK_RESPONSE_STAGE",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "AGT_TERMINAL_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "TERMINAL_PASSWORD",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 5
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "TERMINAL_SYNC_STATUS",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SHARING_NODE_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": 2,
+                                    "oneTableIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "TERMINAL_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 3
+                        },
+                        {
+                            "index": 4
+                        }
+                    ],
+                    "index": 14,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SharingNodeTerminal",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "sharingNode",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "terminal",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "agtTerminalId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 3,
+                            "isId": false,
+                            "name": "agtTerminalPassword",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 4,
+                            "isId": false,
+                            "name": "terminalSyncStatus",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 3,
+                            "relationTableSchemaIndex": 2,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SHARING_NODE_TERMINAL",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "AGT_REPOSITORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ADVISED_SYNC_PRIORITY",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "REPOSITORY_SYNC_STATUS",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SHARING_NODE_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": 1,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 3
+                        },
+                        {
+                            "index": 4
+                        }
+                    ],
+                    "index": 15,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SharingNodeRepository",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "sharingNode",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "agtRepositoryId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 3,
+                            "isId": false,
+                            "name": "advisedSyncPriority",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 4,
+                            "isId": false,
+                            "name": "repositorySyncStatus",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 10,
+                            "relationTableSchemaIndex": 1,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SHARING_NODE_REPOSITORIES",
+                        "primaryKey": [
+                            "SHARING_NODE_ID",
+                            "REPOSITORY_ID"
+                        ],
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "SHARING_NODE_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "REPOSITORY_TRANSACTION_BLOCK_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "SYNC_STATUS",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 16,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SharingNodeRepoTransBlockStage",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "sharingNodeId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": true,
+                            "name": "repositoryTransactionBlockId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "syncStatus",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SHARING_NODE_REPO_TRANS_BLOCK_STAGE",
                         "indexes": []
                     }
                 }
@@ -2784,7 +2784,7 @@ exports.SCHEMA = {
                 {
                     "domain": "npmjs.org",
                     "index": 0,
-                    "name": "@airport/holding-pattern",
+                    "name": "@airport/traffic-pattern",
                     "sinceVersion": 1,
                     "versions": [
                         {
@@ -2798,7 +2798,7 @@ exports.SCHEMA = {
                 {
                     "domain": "npmjs.org",
                     "index": 1,
-                    "name": "@airport/traffic-pattern",
+                    "name": "@airport/holding-pattern",
                     "sinceVersion": 1,
                     "versions": [
                         {

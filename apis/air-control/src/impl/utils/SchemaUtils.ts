@@ -108,7 +108,7 @@ export class SchemaUtils
 		airDb: IAirportDatabase
 	): any {
 		const entityConstructor = this.getEntityConstructor(dbEntity, airDb)
-		return entityConstructor
+		return new entityConstructor()
 	}
 
 	isIdEmpty(idValue: any): boolean {

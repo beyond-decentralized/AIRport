@@ -7,11 +7,8 @@ const observe_1 = require("@airport/observe");
 const diTokens_1 = require("../diTokens");
 class TerminalStore {
     constructor() {
-        this.state = new observe_1.BehaviorSubject({
-            domains: [],
-            nodesBySyncFrequency: new Map(),
-            schemas: [],
-            terminal: null,
+        this.state = new observe_1.Store({
+            domains: [], nodesBySyncFrequency: new Map(), schemas: [], terminal: null,
         });
         this.getTerminalState = check_in_1.createRootSelector(this.state);
         this.getDomains = check_in_1.createSelector(this.getTerminalState, terminal => terminal.domains);
@@ -57,6 +54,42 @@ class TerminalStore {
             return latestSchemaVersionsBySchemaIndexes;
         });
         this.getSchemas = check_in_1.createSelector(this.getTerminalState, terminal => terminal.schemas);
+        this.getAllEntities = check_in_1.createSelector(this.getLatestSchemaVersionsBySchemaIndexes, latestSchemaVersionsBySchemaIndexes => {
+            const allEntities = [];
+            for (const latestSchemaVersion of latestSchemaVersionsBySchemaIndexes) {
+                if (!latestSchemaVersion) {
+                    continue;
+                }
+                for (const entity of latestSchemaVersion.entities) {
+                    allEntities[entity.id] = entity;
+                }
+            }
+            return allEntities;
+        });
+        this.getAllColumns = check_in_1.createSelector(this.getAllEntities, allEntities => {
+            const allColumns = [];
+            for (const entity of allEntities) {
+                if (!entity) {
+                    continue;
+                }
+                for (const column of entity.columns) {
+                    allColumns[column.id] = column;
+                }
+            }
+            return allColumns;
+        });
+        this.getAllRelations = check_in_1.createSelector(this.getAllEntities, allEntities => {
+            const allRelations = [];
+            for (const entity of allEntities) {
+                if (!entity) {
+                    continue;
+                }
+                for (const relation of entity.relations) {
+                    allRelations[relation.id] = relation;
+                }
+            }
+            return allRelations;
+        });
     }
     tearDown() {
     }

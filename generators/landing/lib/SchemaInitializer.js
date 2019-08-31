@@ -42,14 +42,7 @@ class SchemaInitializer {
         }
         this.addNewSchemaVersionsToAll(ddlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
-        if (!normalOperation) {
-            const schemas = [];
-            for (let schema of ddlObjects.allSchemas) {
-                schemas[schema.index] = schema;
-            }
-            airDb.schemas = schemas;
-            airDb.S = schemas;
-        }
+        this.setAirDbSchemas(airDb, ddlObjects);
         const newSequences = await schemaBuilder.buildAllSequences(schemasWithValidDependencies);
         await sequenceGenerator.init(newSequences);
         if (!normalOperation) {
@@ -59,6 +52,26 @@ class SchemaInitializer {
     addNewSchemaVersionsToAll(ddlObjects) {
         for (const schemaVersion of ddlObjects.schemaVersions) {
             ddlObjects.allSchemaVersionsByIds[schemaVersion.id] = schemaVersion;
+        }
+    }
+    async hydrate(jsonSchemas) {
+        const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaBuilder, schemaChecker, schemaComposer, schemaLocator, schemaRecorder, sequenceGenerator, terminalStore] = await di_1.DI.get(air_control_1.AIR_DB, takeoff_1.DDL_OBJECT_LINKER, takeoff_1.DDL_OBJECT_RETRIEVER, takeoff_1.QUERY_ENTITY_CLASS_CREATOR, takeoff_1.QUERY_OBJECT_INITIALIZER, diTokens_1.SCHEMA_BUILDER, diTokens_1.SCHEMA_CHECKER, diTokens_1.SCHEMA_COMPOSER, diTokens_1.SCHEMA_LOCATOR, diTokens_1.SCHEMA_RECORDER, check_in_1.SEQUENCE_GENERATOR, terminal_map_1.TERMINAL_STORE);
+        // Temporarily Initialize schema DDL objects and Sequences to allow for normal hydration
+        const tempDdlObjects = schemaComposer.compose(jsonSchemas, ddlObjectRetriever, schemaLocator, terminalStore);
+        this.addNewSchemaVersionsToAll(tempDdlObjects);
+        queryObjectInitializer.generateQObjectsAndPopulateStore(tempDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
+        this.setAirDbSchemas(airDb, tempDdlObjects);
+        const newSequences = await schemaBuilder.stageSequences(jsonSchemas, airDb);
+        await sequenceGenerator.tempInit(newSequences);
+        // Hydrate all DDL objects and Sequences
+        const ddlObjects = await queryObjectInitializer.initialize(airDb);
+        this.addNewSchemaVersionsToAll(ddlObjects);
+        this.setAirDbSchemas(airDb, ddlObjects);
+        await sequenceGenerator.init();
+    }
+    setAirDbSchemas(airDb, ddlObjects) {
+        for (let schema of ddlObjects.allSchemas) {
+            airDb.schemas[schema.index] = schema;
         }
     }
 }

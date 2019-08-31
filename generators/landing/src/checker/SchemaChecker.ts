@@ -116,9 +116,9 @@ export class SchemaChecker
 				      = referencedSchemaMapBySchema.get(jsonSchema.domain).get(jsonSchema.name)
 
 			if (this.hasReferences(referencedSchemaMapForSchema)) {
-				schemasWithValidDependencies.push(jsonSchema)
-			} else {
 				schemasInNeedOfAdditionalDependencies.push(jsonSchema)
+			} else {
+				schemasWithValidDependencies.push(jsonSchema)
 			}
 		}
 
@@ -201,7 +201,7 @@ export class SchemaChecker
 		}
 
 		let existingSchemaMapByName: Map<string, ISchema>
-		if (schemaNames.length) {
+		if (!schemaNames.length) {
 			existingSchemaMapByName = new Map()
 		} else {
 			const schemaDao         = await DI.get(SCHEMA_DAO)

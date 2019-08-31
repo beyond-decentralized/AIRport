@@ -35,13 +35,9 @@ export interface IObservable<T> {
 		operator2: IOperator<T2, R>
 	): IObservable<R>
 
-	pipe<R>(
-		operator: IOperator<T, R>
-	): IObservable<R>
+	pipe<R>(operator: IOperator<T, R>): IObservable<R>
 
-	pipe<R>(
-		...operators: IOperator<any, any>[]
-	): IObservable<R>
+	pipe<R>(...operators: IOperator<any, any>[]): IObservable<R>
 
 	// Subscribes to the sequence with an observer
 	// subscribe(observer: IObserver<V>): ISubscription
@@ -72,9 +68,7 @@ export interface IObservable<T> {
 export class Observable<T>
 	implements IObservable<T> {
 
-	static from(
-		...sourceObservables: (IObservable<any> | Promise<IObservable<any>>)[]
-	): IObservable<any> {
+	static from(...sourceObservables: (IObservable<any> | Promise<IObservable<any>>)[]): IObservable<any> {
 		// if (!(sourceObservable instanceof Observable)) {
 		// 	throw new Error('only @airport/observer/Observable is supported')
 		// }
@@ -96,9 +90,7 @@ export class Observable<T>
 		return targetObservable
 	}
 
-	constructor(
-		private onUnsubscribe?: () => void
-	) {
+	constructor(private onUnsubscribe?: () => void) {
 	}
 
 	operators: IOperator<any, any>[] = []
@@ -136,18 +128,13 @@ export class Observable<T>
 		operator1: IOperator<T, T2>,
 		operator2: IOperator<T2, R>
 	): IObservable<R>
-	pipe<R>(
-		operator: IOperator<T, R>
-	): IObservable<R>
-	pipe<V>(
-		...operators: IOperator<any, any>[]
-	): IObservable<any> {
+	pipe<R>(operator: IOperator<T, R>): IObservable<R>
+	pipe<V>(...operators: IOperator<any, any>[]): IObservable<any> {
 		// if (!(sourceObservable instanceof Observable)) {
 		// 	throw new Error('only @airport/observer/Observable is supported')
 		// }
-		const targetObservable: Observable<any>
-			                         = Observable.from(this) as any
-		targetObservable.operators = operators
+		const targetObservable: Observable<any> = Observable.from(this) as any
+		targetObservable.operators              = operators
 
 		return targetObservable
 	}
@@ -158,19 +145,41 @@ export class Observable<T>
 		callbackName: 'onError' | 'onNext',
 		upstreamObservable?: Observable<any>
 	): void {
-		if (!this.subscriptions.length
-			&& !this.numDownstreamSubscriptions
-			|| value === undefined) {
+		this.clear()
+
+		if (!this.subscriptions.length && !this.numDownstreamSubscriptions || value === undefined) {
 			return
 		}
 
+		this.forceExec(value, callbackName, upstreamObservable, true)
+	}
+
+	forceExec(
+		value: T,
+		callbackName: 'onError' | 'onNext',
+		upstreamObservable?: Observable<any>,
+		cleared?: boolean
+	): void {
+		if (!cleared) {
+			this.clear()
+		}
+
 		// this.lastValue = this.currentValue
+		/*
 		const theValue    = this.currentValue
 		this.currentValue = undefined
 		this.valueFromUpstream()
+
 		if (this.currentValue === undefined) {
 			this.currentValue = theValue
 		}
+		*/
+
+		if (this.upstream.length) {
+			throw new Error('Cannot set value on a derived Observable')
+		}
+
+		this.currentValue = value
 
 		this.subscriptions.forEach(
 			subscription => {
@@ -206,13 +215,7 @@ export class Observable<T>
 		// 	throw new Error('Subjects can only be subscribed to with functions')
 		// }
 
-		const subscription = new Subscription(
-			this,
-			onNext,
-			onError,
-			onComplete,
-			this.onUnsubscribe
-		)
+		const subscription = new Subscription(this, onNext, onError, onComplete, this.onUnsubscribe)
 
 		this.subscriptions.push(subscription)
 		this.subscribeUpstream()
@@ -230,14 +233,19 @@ export class Observable<T>
 		}
 	}
 
+	private clear(): void {
+		this.currentValue = undefined
+
+		this.downstream.forEach(
+			observable => observable.clear())
+	}
+
 	private valueFromUpstream(): T {
 		if (this.currentValue !== undefined) {
 			return this.currentValue
 		}
 		this.currentValue = this.upstream.map(
-			upstreamObservable =>
-				upstreamObservable.valueFromUpstream()
-		) as any
+			upstreamObservable => upstreamObservable.valueFromUpstream()) as any
 
 		for (const operator of this.operators) {
 			this.currentValue = operator.exec(this)

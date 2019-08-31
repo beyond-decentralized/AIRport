@@ -6,8 +6,8 @@ const schema_3 = require("@airport/territory/lib/generated/schema");
 const schema_4 = require("@airport/traffic-pattern/lib/generated/schema");
 const schema_5 = require("@airport/travel-document-checkpoint/lib/generated/schema");
 // TODO: remove once used
-const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
-var temp = travel_document_checkpoint_1.TERMINAL_DAO;
+// import {TERMINAL_DAO} from '@airport/travel-document-checkpoint'
+// var temp = TERMINAL_DAO
 exports.BLUEPRINT = [
     schema_3.SCHEMA,
     schema_1.SCHEMA,

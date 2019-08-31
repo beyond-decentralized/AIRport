@@ -3,12 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
 const diTokens_1 = require("./diTokens");
 class DdlObjectLinker {
-    link(ddlObjects) {
+    link(ddlObjects, terminalStore) {
         const { allSchemaVersionsByIds, columns, domains, entities, latestSchemaVersions, properties, propertyColumns, relationColumns, relations, schemaReferences, schemas } = ddlObjects;
         this.linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, domains, schemas, latestSchemaVersions, schemaReferences);
-        const entityMapById = this.linkEntities(allSchemaVersionsByIds, entities);
+        this.linkEntities(allSchemaVersionsByIds, entities);
         const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(properties, relations);
-        this.linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns);
+        this.linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns, terminalStore);
     }
     linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, domains, schemas, latestSchemaVersions, schemaReferences) {
         const domainMapById = new Map();
@@ -38,11 +38,9 @@ class DdlObjectLinker {
             const ownSchemaVersion = allSchemaVersionsByIds[schemaReference.ownSchemaVersion.id];
             const referencedSchemaVersion = allSchemaVersionsByIds[schemaReference.referencedSchemaVersion.id];
             ownSchemaVersion.references[schemaReference.index] = schemaReference;
-            ownSchemaVersion.referencesMapByName[referencedSchemaVersion.schema.name]
-                = schemaReference;
+            ownSchemaVersion.referencesMapByName[referencedSchemaVersion.schema.name] = schemaReference;
             referencedSchemaVersion.referencedBy.push(schemaReference);
-            referencedSchemaVersion.referencedByMapByName[ownSchemaVersion.schema.name]
-                = schemaReference;
+            referencedSchemaVersion.referencedByMapByName[ownSchemaVersion.schema.name] = schemaReference;
             schemaReference.ownSchemaVersion = ownSchemaVersion;
             schemaReference.referencedSchemaVersion = referencedSchemaVersion;
         });
@@ -92,11 +90,10 @@ class DdlObjectLinker {
             relationMapById.set(relation.id, relation);
         });
         return {
-            propertyMapById,
-            relationMapById
+            propertyMapById, relationMapById
         };
     }
-    linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns) {
+    linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns, terminalStore) {
         const columnMapById = new Map();
         columns.forEach((column) => {
             columnMapById.set(column.id, column);
@@ -118,18 +115,30 @@ class DdlObjectLinker {
             propertyColumn.property = property;
         });
         relationColumns.forEach((relationColumn) => {
-            const manyColumn = columnMapById.get(relationColumn.manyColumn.id);
+            let manyColumn = columnMapById.get(relationColumn.manyColumn.id);
+            if (!manyColumn) {
+                manyColumn = terminalStore.getAllColumns()[relationColumn.manyColumn.id];
+            }
             manyColumn.manyRelationColumns.push(relationColumn);
-            const oneColumn = columnMapById.get(relationColumn.oneColumn.id);
+            let oneColumn = columnMapById.get(relationColumn.oneColumn.id);
+            if (!oneColumn) {
+                oneColumn = terminalStore.getAllColumns()[relationColumn.oneColumn.id];
+            }
             oneColumn.oneRelationColumns.push(relationColumn);
             let manyRelation;
             if (relationColumn.manyRelation) {
                 manyRelation = relationMapById.get(relationColumn.manyRelation.id);
+                if (!manyRelation) {
+                    manyRelation = terminalStore.getAllRelations()[relationColumn.manyRelation.id];
+                }
                 manyRelation.manyRelationColumns.push(relationColumn);
             }
             let oneRelation;
             if (relationColumn.oneRelation) {
                 oneRelation = relationMapById.get(relationColumn.oneRelation.id);
+                if (!oneRelation) {
+                    oneRelation = terminalStore.getAllRelations()[relationColumn.oneRelation.id];
+                }
                 oneRelation.oneRelationColumns.push(relationColumn);
             }
             relationColumn.manyColumn = manyColumn;

@@ -1,5 +1,6 @@
-import {ISequence}  from '@airport/airport-code'
-import {JsonSchema} from '@airport/ground-control'
+import {IAirportDatabase} from '@airport/air-control'
+import {ISequence}        from '@airport/airport-code'
+import {JsonSchema}       from '@airport/ground-control'
 
 export interface ISchemaBuilder {
 
@@ -10,5 +11,10 @@ export interface ISchemaBuilder {
 	buildAllSequences(
 		jsonSchemas: JsonSchema[]
 	): Promise<ISequence[]>
+
+	stageSequences(
+		jsonSchemas: JsonSchema[],
+		airDb: IAirportDatabase
+	): ISequence[]
 
 }

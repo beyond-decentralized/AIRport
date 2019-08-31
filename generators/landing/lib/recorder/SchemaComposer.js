@@ -18,9 +18,9 @@ class SchemaComposer {
         const { newSchemaReferenceMap, newSchemaReferences } = this.composeSchemaReferences(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, schemaLocator, terminalStore);
         const { newEntitiesMapBySchemaName, newEntities } = this.composeSchemaEntities(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, ddlObjectRetriever);
         const { newProperties, newPropertiesMap } = this.composeSchemaProperties(jsonSchemaMapByName, newEntitiesMapBySchemaName, ddlObjectRetriever);
-        const { newRelations, newRelationsMap } = this.composeSchemaRelations(jsonSchemaMapByName, newEntitiesMapBySchemaName, newPropertiesMap, newSchemaReferenceMap, ddlObjectRetriever);
+        const { newRelations, newRelationsMap } = this.composeSchemaRelations(jsonSchemaMapByName, newEntitiesMapBySchemaName, newPropertiesMap, newSchemaReferenceMap, ddlObjectRetriever, terminalStore);
         const { newColumns, newColumnsMap, newPropertyColumns } = this.composeSchemaColumns(jsonSchemaMapByName, newEntitiesMapBySchemaName, newPropertiesMap, ddlObjectRetriever);
-        const newRelationColumns = this.composeSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, newSchemaReferenceMap, newRelationsMap, newColumnsMap, ddlObjectRetriever);
+        const newRelationColumns = this.composeSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, newSchemaReferenceMap, newRelationsMap, newColumnsMap, ddlObjectRetriever, terminalStore);
         return {
             allDomains,
             allSchemas,
@@ -120,7 +120,8 @@ class SchemaComposer {
                     patchVersion: parseInt(versionParts[2]),
                     schema,
                 };
-                // schema.currentVersion                  = newSchemaVersion
+                // needed for normalOperation only
+                schema.currentVersion = newSchemaVersion;
                 // schema.versions                        = [newSchemaVersion]
                 newSchemaVersions.push(newSchemaVersion);
             }
@@ -233,7 +234,7 @@ class SchemaComposer {
             newPropertiesMap
         };
     }
-    composeSchemaRelations(jsonSchemaMapByName, newEntitiesMapBySchemaName, newPropertiesMap, newSchemaReferenceMap, ddlObjectRetriever) {
+    composeSchemaRelations(jsonSchemaMapByName, newEntitiesMapBySchemaName, newPropertiesMap, newSchemaReferenceMap, ddlObjectRetriever, terminalStore) {
         const newRelations = [];
         const newRelationsMap = new Map();
         for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
@@ -259,7 +260,11 @@ class SchemaComposer {
                         const schemaReference = referencesForSchema[jsonRelation.relationTableSchemaIndex];
                         referencedSchemaName = schemaReference.referencedSchemaVersion.schema.name;
                     }
-                    const relationEntity = newEntitiesMapBySchemaName.get(referencedSchemaName)[jsonRelation.relationTableIndex];
+                    let entitiesArray = newEntitiesMapBySchemaName.get(referencedSchemaName);
+                    if (!entitiesArray) {
+                        entitiesArray = this.getExistingLatestSchemaVersion(referencedSchemaName, terminalStore).entities;
+                    }
+                    const relationEntity = entitiesArray[jsonRelation.relationTableIndex];
                     const relation = {
                         entity,
                         id: ++ddlObjectRetriever.lastIds.relations,
@@ -349,7 +354,7 @@ class SchemaComposer {
             newPropertyColumns
         };
     }
-    composeSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, newSchemaReferenceMap, newRelationsMap, newColumnsMap, ddlObjectRetriever) {
+    composeSchemaRelationColumns(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, newSchemaReferenceMap, newRelationsMap, newColumnsMap, ddlObjectRetriever, terminalStore) {
         const newRelationColumns = [];
         for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
             const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
@@ -377,13 +382,25 @@ class SchemaComposer {
                         else {
                             oneRelationSchemaVersion = newSchemaVersionMapBySchemaName.get(schemaName);
                         }
-                        let oneTableColumns = newColumnsMap.get(oneRelationSchemaVersion.schema.name)[jsonRelationColumn.oneTableIndex];
+                        const referencedSchemaName = oneRelationSchemaVersion.schema.name;
+                        const oneTableColumnsMapForSchema = newColumnsMap.get(referencedSchemaName);
+                        let oneTableColumns;
+                        let oneTableRelations;
+                        if (oneTableColumnsMapForSchema) {
+                            oneTableColumns = oneTableColumnsMapForSchema[jsonRelationColumn.oneTableIndex];
+                            oneTableRelations = newRelationsMap.get(oneRelationSchemaVersion.schema.name)[jsonRelationColumn.oneTableIndex];
+                        }
+                        else {
+                            const entitiesArray = this.getExistingLatestSchemaVersion(referencedSchemaName, terminalStore).entities;
+                            const entity = entitiesArray[jsonRelationColumn.oneTableIndex];
+                            oneTableColumns = entity.columns;
+                            oneTableRelations = entity.relations;
+                        }
                         const oneColumn = oneTableColumns[jsonRelationColumn.oneColumnIndex];
                         // if (!jsonRelationColumn.oneSchemaIndex
                         // 	&& !oneColumn.oneRelationColumns) {
                         // 	oneColumn.oneRelationColumns = []
                         // }
-                        let oneTableRelations = newRelationsMap.get(oneRelationSchemaVersion.schema.name)[jsonRelationColumn.oneTableIndex];
                         const oneRelation = oneTableRelations[jsonRelationColumn.oneRelationIndex];
                         // if (!jsonRelationColumn.oneSchemaIndex
                         // 	&& !oneRelation.oneRelationColumns) {
@@ -411,6 +428,14 @@ class SchemaComposer {
             });
         }
         return newRelationColumns;
+    }
+    getExistingLatestSchemaVersion(referencedSchemaName, terminalStore) {
+        const referencedSchemaVersion = terminalStore
+            .getLatestSchemaVersionMapBySchemaName().get(referencedSchemaName);
+        if (!referencedSchemaVersion) {
+            throw new Error(`Cannot find schema "${referencedSchemaName}".`);
+        }
+        return referencedSchemaVersion;
     }
 }
 exports.SchemaComposer = SchemaComposer;

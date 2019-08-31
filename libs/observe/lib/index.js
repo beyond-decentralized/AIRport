@@ -9,6 +9,7 @@ __export(require("./operators/map"));
 __export(require("./operators/withLatestFrom"));
 __export(require("./BehaviorSubject"));
 __export(require("./Observable"));
+__export(require("./Store"));
 __export(require("./Subject"));
 __export(require("./Subscription"));
 //# sourceMappingURL=index.js.map

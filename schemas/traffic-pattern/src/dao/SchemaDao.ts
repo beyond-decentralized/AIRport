@@ -237,7 +237,9 @@ export class SchemaDao
 
 		const records = await this.db.find.tree({
 			select: {},
-			from: [s],
+			from: [
+				s = Q.Schema
+			],
 			where: s.name.in(schemaNames)
 		})
 

@@ -12,7 +12,7 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { DailyArchive } from '../ddl/dailyarchive';
+import { DailyArchive } from '../ddl/DailyArchive';
 import { QDailyArchive } from './qdailyarchive';
 
 export interface LocalQSchema extends AirportQSchema {
