@@ -15,7 +15,6 @@ export interface LastIds {
     schemaVersions: number;
 }
 export declare class DdlObjectRetriever implements IDdlObjectRetriever {
-    private domainDao;
     lastIds: LastIds;
     retrieveDdlObjects(): Promise<DdlObjects>;
 }

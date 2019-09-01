@@ -46,7 +46,7 @@ export class Schema {
 	status: SchemaStatus
 
 	@OneToMany({mappedBy: 'schema'})
-	versions: SchemaVersion[]
+	versions: SchemaVersion[] = []
 
 	@ManyToOne()
 	@JoinColumn({name: 'CURRENT_VERSION_ID', referencedColumnName: 'ID', nullable: false})

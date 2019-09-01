@@ -54,7 +54,7 @@ function getTableName(schema, table) {
         schemaName = schema.name;
     }
     else {
-        schemaName = this.getSchemaName(schema);
+        schemaName = getSchemaName(schema);
     }
     return `${schemaName}__${theTableName}`;
 }

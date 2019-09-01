@@ -5,6 +5,7 @@ import {
 	DbRelation,
 	DbSchema,
 	EntityRelationType,
+	JoinType,
 	SchemaIndex,
 	SQLDataType,
 	TableIndex
@@ -107,9 +108,13 @@ export function getQEntityConstructor(
 
 	// ChildQEntity refers to the constructor
 	var ChildQEntity = function (
-		entity
+		entity: DbEntity,
+		nextChildJoinPosition: number[],
+		dbRelation: DbRelation,
+		joinType: JoinType
 	) {
-		(<any>ChildQEntity).base.constructor.call(this, entity)
+		(<any>ChildQEntity).base.constructor.call(
+			this, entity, nextChildJoinPosition, dbRelation, joinType)
 
 		entity.properties.forEach((
 			property: DbProperty
@@ -127,7 +132,7 @@ export function getQEntityConstructor(
 			}
 			this[property.name] = qFieldOrRelation
 		})
-		entity.__qConstructor__ = ChildQEntity
+		// entity.__qConstructor__ = ChildQEntity
 	}
 
 	extend(QEntity, ChildQEntity, {})
@@ -221,7 +226,7 @@ export function getQEntityIdFields(
 
 		// If it's a relation property (and therefore has backing columns)
 		if (property.relation && property.relation.length) {
-			const relation  = property.relation[0]
+			const relation        = property.relation[0]
 			const relationColumns = relation.manyRelationColumns
 			for (const relationColumn of relationColumns) {
 				const originalColumn = relationColumnMap.get(relationColumn.manyColumn)
@@ -237,7 +242,7 @@ export function getQEntityIdFields(
 				parentProperty, relationColumnMap)
 		} else {
 			const originalColumn = relationColumnMap.get(property.propertyColumns[0].column)
-			qFieldOrRelation = getColumnQField(relationEntity,
+			qFieldOrRelation     = getColumnQField(relationEntity,
 				parentProperty, qEntity as IQEntityInternal, originalColumn)
 		}
 		addToObject[property.name] = qFieldOrRelation
@@ -303,11 +308,16 @@ export function setQSchemaEntities(
 
 		const qConstructor                      = <any>getQEntityConstructor(allQSchemas)
 		qSchema.__qConstructors__[entity.index] = qConstructor
-		Object.defineProperty(qSchema, entity.name, {
-			get: function () {
-				return new this.__qConstructors__[entity.index](entity)
-			}
-		})
+
+		if (!Object.getOwnPropertyNames(qSchema)
+			.filter(
+				propertyName => propertyName === entity.name).length) {
+			Object.defineProperty(qSchema, entity.name, {
+				get: function () {
+					return new this.__qConstructors__[entity.index](entity)
+				}
+			})
+		}
 	})
 	// } while (haveMissingDependencies)
 

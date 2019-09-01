@@ -46,9 +46,9 @@ export class SchemaProperty
 	isId: PropertyIsId
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'property'})
-	propertyColumns: SchemaPropertyColumn[]
+	propertyColumns: SchemaPropertyColumn[] = []
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'property'})
-	relation: SchemaRelation[]
+	relation: SchemaRelation[] = []
 
 }

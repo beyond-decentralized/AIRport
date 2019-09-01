@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@airport/di");
+const territory_1 = require("@airport/territory");
 const traffic_pattern_1 = require("@airport/traffic-pattern");
 const diTokens_1 = require("./diTokens");
 class DdlObjectRetriever {
@@ -18,7 +19,7 @@ class DdlObjectRetriever {
         };
     }
     async retrieveDdlObjects() {
-        const [schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao] = await di_1.DI.get(traffic_pattern_1.SCHEMA_DAO, traffic_pattern_1.SCHEMA_VERSION_DAO, traffic_pattern_1.SCHEMA_REFERENCE_DAO, traffic_pattern_1.SCHEMA_ENTITY_DAO, traffic_pattern_1.SCHEMA_PROPERTY_DAO, traffic_pattern_1.SCHEMA_RELATION_DAO, traffic_pattern_1.SCHEMA_COLUMN_DAO, traffic_pattern_1.SCHEMA_PROPERTY_COLUMN_DAO, traffic_pattern_1.SCHEMA_RELATION_COLUMN_DAO);
+        const [domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao] = await di_1.DI.get(territory_1.DOMAIN_DAO, traffic_pattern_1.SCHEMA_DAO, traffic_pattern_1.SCHEMA_VERSION_DAO, traffic_pattern_1.SCHEMA_REFERENCE_DAO, traffic_pattern_1.SCHEMA_ENTITY_DAO, traffic_pattern_1.SCHEMA_PROPERTY_DAO, traffic_pattern_1.SCHEMA_RELATION_DAO, traffic_pattern_1.SCHEMA_COLUMN_DAO, traffic_pattern_1.SCHEMA_PROPERTY_COLUMN_DAO, traffic_pattern_1.SCHEMA_RELATION_COLUMN_DAO);
         const schemas = await schemaDao.findAllActive();
         const schemaIndexes = [];
         const domainIdSet = new Set();
@@ -29,7 +30,7 @@ class DdlObjectRetriever {
         schemas.sort((schema1, schema2) => {
             return schema1.index - schema2.index;
         });
-        const domains = await (await this.domainDao()).findByIdIn(Array.from(domainIdSet));
+        const domains = await domainDao.findByIdIn(Array.from(domainIdSet));
         const allSchemaVersions = await schemaVersionDao
             .findAllActiveOrderBySchemaIndexAndId();
         let lastSchemaIndex;
@@ -50,6 +51,15 @@ class DdlObjectRetriever {
         const entities = await schemaEntityDao
             .findAllForSchemaVersions(latestSchemaVersionIds);
         const entityIds = entities.map(entity => entity.id);
+        /*
+        const entityIds = entities.map(
+    entity => {
+        if (entity.tableConfig) {
+            entity.tableConfig = JSON.parse(entity.tableConfig as any)
+        }
+        return entity.id
+    })
+         */
         const properties = await schemaPropertyDao
             .findAllForEntities(entityIds);
         const propertyIds = properties.map(property => property.id);

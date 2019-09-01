@@ -8,6 +8,7 @@ export declare class DatabaseManager implements IDatabaseManager {
     private airDb;
     isInitialized(): boolean;
     init(domainName: string, storeType: StoreType, ...schemas: JsonSchema[]): Promise<void>;
+    private initFeatureSchemas;
     private initTerminal;
     private installAirportSchema;
 }

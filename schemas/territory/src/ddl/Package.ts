@@ -23,6 +23,6 @@ export class Package {
 	name: PackageName
 
 	@OneToMany({mappedBy: "package"})
-	applicationPackages: ApplicationPackage[]
+	applicationPackages: ApplicationPackage[] = []
 
 }

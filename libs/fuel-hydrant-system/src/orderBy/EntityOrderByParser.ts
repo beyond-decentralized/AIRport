@@ -84,7 +84,8 @@ export class EntityOrderByParser
 					return true
 				}
 
-				const orderByDbEntity: DbEntity = airDb.schemas[orderByField.si][orderByField.ti]
+				const orderByDbEntity: DbEntity = airDb.schemas[orderByField.si]
+					.currentVersion.entities[orderByField.ti]
 				const dbColumn                  = orderByDbEntity.columns[orderByField.ci]
 				if (this.isForParentNode(currentJoinNode, orderByField)) {
 					throw new Error(`Found out of order entry in Order By 
@@ -115,7 +116,24 @@ export class EntityOrderByParser
 							idColumnsToSortBy.push(dbColumn.name)
 						}
 					}
+
+					if(!currentJoinNode.childNodes.length) {
+						continue
+					}
+
 					const dbRelation = dbProperty.relation[0]
+					const dbEntity = dbRelation.relationEntity
+
+					const matchingNodes = currentJoinNode.childNodes.filter(childNode => {
+						const jsonRelation = childNode.jsonRelation
+						 return jsonRelation.si === dbEntity.schemaVersion.id
+							 && jsonRelation.ti === dbEntity.index
+					})
+
+					if(!matchingNodes.length) {
+						return;
+					}
+
 					selectFragmentQueue.push(this.rootSelectClauseFragment[propertyName])
 					const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation)
 					joinNodeQueue.push(childJoinNode)

@@ -9,6 +9,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const VersionedSchemaObject_1 = require("./VersionedSchemaObject");
 let SchemaColumn = class SchemaColumn extends VersionedSchemaObject_1.VersionedSchemaObject {
+    constructor() {
+        super(...arguments);
+        this.propertyColumns = [];
+        this.manyRelationColumns = [];
+        this.oneRelationColumns = [];
+    }
 };
 __decorate([
     air_control_1.Id()

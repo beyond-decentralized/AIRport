@@ -6,9 +6,9 @@ class DdlObjectLinker {
     link(ddlObjects, terminalStore) {
         const { allSchemaVersionsByIds, columns, domains, entities, latestSchemaVersions, properties, propertyColumns, relationColumns, relations, schemaReferences, schemas } = ddlObjects;
         this.linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, domains, schemas, latestSchemaVersions, schemaReferences);
-        this.linkEntities(allSchemaVersionsByIds, entities);
-        const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(properties, relations);
-        this.linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns, terminalStore);
+        const entityArrayById = this.linkEntities(allSchemaVersionsByIds, entities);
+        const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(properties, relations, entityArrayById, terminalStore);
+        this.linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns, entityArrayById, terminalStore);
     }
     linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, domains, schemas, latestSchemaVersions, schemaReferences) {
         const domainMapById = new Map();
@@ -48,11 +48,13 @@ class DdlObjectLinker {
     linkEntities(allSchemaVersionsByIds, entities // All of the entities of newly created schemas
     // from the latest available versions
     ) {
+        const entityArrayById = [];
         entities.forEach((entity) => {
             const schemaVersion = allSchemaVersionsByIds[entity.schemaVersion.id];
             entity.schemaVersion = schemaVersion;
             schemaVersion.entities[entity.index] = entity;
             schemaVersion.entityMapByName[entity.name] = entity;
+            entityArrayById[entity.id] = entity;
             entity.columns = [];
             entity.properties = [];
             entity.relations = [];
@@ -62,12 +64,13 @@ class DdlObjectLinker {
             entity.idColumnMap = {};
             entity.propertyMap = {};
         });
+        return entityArrayById;
     }
-    linkPropertiesAndRelations(properties, relations) {
+    linkPropertiesAndRelations(properties, relations, entityArrayById, terminalStore) {
         const propertyMapById = new Map();
         properties.forEach((property) => {
             // Entity is already property wired in
-            const entity = property.entity;
+            const entity = entityArrayById[property.entity.id];
             entity.properties[property.index] = property;
             entity.propertyMap[property.name] = property;
             property.entity = entity;
@@ -76,9 +79,12 @@ class DdlObjectLinker {
         });
         const relationMapById = new Map();
         relations.forEach((relation) => {
-            const entity = relation.entity;
+            const entity = entityArrayById[relation.entity.id];
             entity.relations[relation.index] = relation;
-            const relationEntity = relation.relationEntity;
+            let relationEntity = entityArrayById[relation.relationEntity.id];
+            if (!relationEntity) {
+                relationEntity = terminalStore.getAllEntities()[relation.relationEntity.id];
+            }
             relationEntity.relationReferences.push(relation);
             const property = propertyMapById.get(relation.property.id);
             relation.property = property;
@@ -93,11 +99,11 @@ class DdlObjectLinker {
             propertyMapById, relationMapById
         };
     }
-    linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns, terminalStore) {
+    linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns, entityArrayById, terminalStore) {
         const columnMapById = new Map();
         columns.forEach((column) => {
             columnMapById.set(column.id, column);
-            const entity = column.entity;
+            const entity = entityArrayById[column.entity.id];
             entity.columns[column.index] = column;
             entity.columnMap[column.name] = column;
             if (column.idIndex || column.idIndex === 0) {
@@ -126,7 +132,7 @@ class DdlObjectLinker {
             }
             oneColumn.oneRelationColumns.push(relationColumn);
             let manyRelation;
-            if (relationColumn.manyRelation) {
+            if (relationColumn.manyRelation && relationColumn.manyRelation.id) {
                 manyRelation = relationMapById.get(relationColumn.manyRelation.id);
                 if (!manyRelation) {
                     manyRelation = terminalStore.getAllRelations()[relationColumn.manyRelation.id];
@@ -134,7 +140,7 @@ class DdlObjectLinker {
                 manyRelation.manyRelationColumns.push(relationColumn);
             }
             let oneRelation;
-            if (relationColumn.oneRelation) {
+            if (relationColumn.oneRelation && relationColumn.oneRelation.id) {
                 oneRelation = relationMapById.get(relationColumn.oneRelation.id);
                 if (!oneRelation) {
                     oneRelation = terminalStore.getAllRelations()[relationColumn.oneRelation.id];

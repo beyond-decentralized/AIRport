@@ -84,7 +84,7 @@ export function getTableName(
 	if (schema.status || schema.status === 0) {
 		schemaName = schema.name
 	} else {
-		schemaName = this.getSchemaName(schema)
+		schemaName = getSchemaName(schema)
 	}
 	return `${schemaName}__${theTableName}`
 }

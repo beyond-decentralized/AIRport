@@ -78,7 +78,7 @@ export class SchemaEntity
 	//
 
 	@OneToMany({mappedBy: 'entity'})
-	columns: SchemaColumn[]
+	columns: SchemaColumn[] = []
 
 	// TODO: implement if needed
 	// @OneToMany()
@@ -93,24 +93,24 @@ export class SchemaEntity
 	// idColumns: ISchemaColumn[];
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entity'})
-	properties: SchemaProperty[]
+	properties: SchemaProperty[] = []
 
 	@OneToMany({mappedBy: 'entity'})
-	relations: SchemaRelation[]
+	relations: SchemaRelation[] = []
 
 	@OneToMany({mappedBy: 'relationEntity'})
-	relationReferences: SchemaRelation[]
+	relationReferences: SchemaRelation[] = []
 
 	@Transient()
-	columnMap?: { [name: string]: ISchemaColumn }
+	columnMap?: { [name: string]: ISchemaColumn } = {}
 
 	@Transient()
-	idColumns: ISchemaColumn[]
+	idColumns: ISchemaColumn[] = []
 
 	@Transient()
-	idColumnMap?: { [name: string]: ISchemaColumn }
+	idColumnMap?: { [name: string]: ISchemaColumn } = {}
 
 	@Transient()
-	propertyMap: { [name: string]: ISchemaProperty }
+	propertyMap: { [name: string]: ISchemaProperty } = {}
 
 }

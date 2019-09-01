@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
+const diTokens_1 = require("../../../diTokens");
 /**
  * Created by Papa on 4/26/2016.
  */
@@ -40,8 +42,7 @@ QRelation.prototype.leftJoin = function () {
 };
 QRelation.prototype.getNewQEntity = function (joinType) {
     const dbEntity = this.dbRelation.property.entity;
-    const utils = this.parentQ.__driver__.utils;
-    const qEntityConstructor = utils.Schema.getQEntityConstructor(this.dbRelation.relationEntity);
+    const qEntityConstructor = di_1.DI.getSync(diTokens_1.SCHEMA_UTILS).getQEntityConstructor(this.dbRelation.relationEntity, di_1.DI.getSync(diTokens_1.AIR_DB));
     let newQEntity = new qEntityConstructor(dbEntity, QRelation.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType);
     newQEntity.__driver__.parentJoinEntity = this.parentQ;
     return newQEntity;

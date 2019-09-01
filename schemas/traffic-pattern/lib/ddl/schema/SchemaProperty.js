@@ -10,6 +10,11 @@ const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const VersionedSchemaObject_1 = require("./VersionedSchemaObject");
 let SchemaProperty = class SchemaProperty extends VersionedSchemaObject_1.VersionedSchemaObject {
+    constructor() {
+        super(...arguments);
+        this.propertyColumns = [];
+        this.relation = [];
+    }
 };
 __decorate([
     air_control_1.Id()

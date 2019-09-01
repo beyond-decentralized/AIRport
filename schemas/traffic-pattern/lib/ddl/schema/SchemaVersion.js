@@ -8,6 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 let SchemaVersion = class SchemaVersion {
+    constructor() {
+        this.entities = [];
+        this.references = [];
+        this.referencedBy = [];
+        this.entityMapByName = {};
+        this.referencesMapByName = {};
+        this.referencedByMapByName = {};
+    }
 };
 __decorate([
     air_control_1.Id(),

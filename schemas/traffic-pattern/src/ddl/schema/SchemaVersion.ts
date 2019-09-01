@@ -62,21 +62,21 @@ export class SchemaVersion {
 	schema: Schema
 
 	@OneToMany({mappedBy: 'schemaVersion'})
-	entities: SchemaEntity[]
+	entities: SchemaEntity[] = []
 
 	@OneToMany({mappedBy: 'ownSchemaVersion'})
-	references: SchemaReference[]
+	references: SchemaReference[] = []
 
 	@OneToMany({mappedBy: 'referencedSchemaVersion'})
-	referencedBy: SchemaReference[]
+	referencedBy: SchemaReference[] = []
 
 	@Transient()
-	entityMapByName?: { [entityName: string]: ISchemaEntity };
+	entityMapByName?: { [entityName: string]: ISchemaEntity } = {};
 
 	@Transient()
-	referencesMapByName?: { [schemaName: string]: ISchemaReference };
+	referencesMapByName?: { [schemaName: string]: ISchemaReference } = {};
 
 	@Transient()
-	referencedByMapByName?: { [schemaName: string]: ISchemaReference };
+	referencedByMapByName?: { [schemaName: string]: ISchemaReference } = {};
 
 }

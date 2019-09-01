@@ -67,10 +67,17 @@ export abstract class SqLiteQueryAdaptor
 				if (value !== null) {
 					return !!value
 				}
+				break;
 			case SQLDataType.DATE:
 				if (value !== null) {
 					return new Date(value)
 				}
+				break;
+			case SQLDataType.JSON:
+				if (value !== null) {
+					return JSON.parse(value)
+				}
+				break;
 		}
 		return value
 	}

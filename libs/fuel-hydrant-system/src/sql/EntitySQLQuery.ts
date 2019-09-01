@@ -176,16 +176,16 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				break
 			case JSONRelationType.SUB_QUERY_ROOT:
 			case JSONRelationType.SUB_QUERY_JOIN_ON:
-				throw new Error(`Entity queries FROM clause cannot contain sub-queries`)
+				throw new Error(`Entity query's FROM clause cannot contain sub-queries`)
 			case JSONRelationType.ENTITY_JOIN_ON:
 				throw new Error(`Entity queries cannot use JOIN ON`)
 			default:
 				throw new Error(`First table in FROM clause cannot be joined`)
 		}
 
-		if (firstRelation.rt !== JSONRelationType.ENTITY_ROOT) {
-			throw new Error(`First table in FROM clause cannot be joined`)
-		}
+		// if (firstRelation.rt !== JSONRelationType.ENTITY_ROOT) {
+		// 	throw new Error(`First table in FROM clause cannot be joined`)
+		// }
 
 		let alias                          = QRelation.getAlias(firstRelation)
 		let firstEntity                    = QRelation.createRelatedQEntity(firstRelation, airDb, schemaUtils)
@@ -217,7 +217,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				default:
 					break
 			}
-			if (!joinRelation.ri) {
+			if (!joinRelation.ri && joinRelation.ri !== 0) {
 				throw new Error(`Table ${i + 1} in FROM clause is missing 
 				relationPropertyName`)
 			}

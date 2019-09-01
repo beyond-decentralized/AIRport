@@ -24,11 +24,10 @@ class SchemaVersionDao extends generated_1.BaseSchemaVersionDao {
     */
     async findAllActiveOrderBySchemaIndexAndId() {
         let sv;
-        let s;
+        // let s: QSchema
         return await this.db.find.tree({
             from: [
                 sv = generated_1.Q.SchemaVersion,
-                s = sv.schema.innerJoin()
             ],
             select: {},
             orderBy: [

@@ -187,29 +187,7 @@ export class DatabaseManager
 		}
 
 		if (schemas && schemas.length) {
-
-			const schemaDao = await DI.get(SCHEMA_DAO)
-
-			const schemaNames: SchemaName[] = []
-			for (const jsonSchema of schemas) {
-				const schemaName = getSchemaName(jsonSchema)
-				schemaNames.push(schemaName)
-			}
-
-			const existingSchemaMap = await schemaDao.findMapByNames(schemaNames)
-
-			const schemasToInitialize: JsonSchema[] = []
-			for (const jsonSchema of schemas) {
-				const schemaName = getSchemaName(jsonSchema)
-				if (!existingSchemaMap.has(schemaName)) {
-					schemasToInitialize.push(jsonSchema)
-				}
-			}
-
-			if (schemasToInitialize.length) {
-				const schemaInitializer = await DI.get(SCHEMA_INITIALIZER)
-				await schemaInitializer.initialize(schemas)
-			}
+			await this.initFeatureSchemas(schemas)
 		}
 
 		(server as any).tempActor = null
@@ -237,6 +215,33 @@ export class DatabaseManager
 					})
 				await dbFacade.init(storeType)
 				*/
+	}
+
+	private async initFeatureSchemas(
+		schemas: JsonSchema[]
+	) {
+		const schemaDao = await DI.get(SCHEMA_DAO)
+
+		const schemaNames: SchemaName[] = []
+		for (const jsonSchema of schemas) {
+			const schemaName = getSchemaName(jsonSchema)
+			schemaNames.push(schemaName)
+		}
+
+		const existingSchemaMap = await schemaDao.findMapByNames(schemaNames)
+
+		const schemasToInitialize: JsonSchema[] = []
+		for (const jsonSchema of schemas) {
+			const schemaName = getSchemaName(jsonSchema)
+			if (!existingSchemaMap.has(schemaName)) {
+				schemasToInitialize.push(jsonSchema)
+			}
+		}
+
+		if (schemasToInitialize.length) {
+			const schemaInitializer = await DI.get(SCHEMA_INITIALIZER)
+			await schemaInitializer.initialize(schemas)
+		}
 	}
 
 	private async initTerminal(domainName: DomainName): Promise<void> {

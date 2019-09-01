@@ -42,7 +42,7 @@ class AbstractObjectResultParser {
             }
             let lastObject;
             let currentObject = manyToOneStub;
-            let currentIndex = 0;
+            let currentIndex = 1;
             const propertyNameChain = relationInfo.propertyNameChains[0];
             while (currentIndex < propertyNameChain.length) {
                 // If there is no object in context, create one

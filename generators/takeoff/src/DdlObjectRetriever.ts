@@ -3,7 +3,7 @@ import {
 	DomainId,
 	SchemaIndex,
 }                             from '@airport/ground-control'
-import {IDomainDao}           from '@airport/territory'
+import {DOMAIN_DAO}           from '@airport/territory'
 import {
 	ISchema,
 	ISchemaVersion,
@@ -44,7 +44,6 @@ export interface LastIds {
 export class DdlObjectRetriever
 	implements IDdlObjectRetriever {
 
-	private domainDao: () => Promise<IDomainDao>
 	lastIds: LastIds = {
 		columns: 0,
 		domains: 0,
@@ -58,11 +57,11 @@ export class DdlObjectRetriever
 	}
 
 	async retrieveDdlObjects(): Promise<DdlObjects> {
-		const [schemaDao, schemaVersionDao, schemaReferenceDao,
+		const [domainDao, schemaDao, schemaVersionDao, schemaReferenceDao,
 			      schemaEntityDao, schemaPropertyDao, schemaRelationDao,
 			      schemaColumnDao, schemaPropertyColumnDao,
 			      schemaRelationColumnDao
-		      ]                            = await DI.get(
+		      ]                            = await DI.get(DOMAIN_DAO,
 			SCHEMA_DAO, SCHEMA_VERSION_DAO, SCHEMA_REFERENCE_DAO,
 			SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_RELATION_DAO,
 			SCHEMA_COLUMN_DAO, SCHEMA_PROPERTY_COLUMN_DAO,
@@ -82,7 +81,7 @@ export class DdlObjectRetriever
 			return schema1.index - schema2.index
 		})
 
-		const domains = await (await this.domainDao()).findByIdIn(Array.from(domainIdSet))
+		const domains = await domainDao.findByIdIn(Array.from(domainIdSet))
 
 		const allSchemaVersions = await schemaVersionDao
 			.findAllActiveOrderBySchemaIndexAndId()
@@ -103,7 +102,6 @@ export class DdlObjectRetriever
 		const latestSchemaVersionIds = latestSchemaVersions.map(
 			schemaVersion => schemaVersion.id)
 
-
 		const schemaReferences = await schemaReferenceDao
 			.findAllForSchemaVersions(latestSchemaVersionIds)
 
@@ -111,6 +109,15 @@ export class DdlObjectRetriever
 			.findAllForSchemaVersions(latestSchemaVersionIds)
 		const entityIds = entities.map(
 			entity => entity.id)
+		/*
+		const entityIds = entities.map(
+	entity => {
+		if (entity.tableConfig) {
+			entity.tableConfig = JSON.parse(entity.tableConfig as any)
+		}
+		return entity.id
+	})
+		 */
 
 		const properties  = await schemaPropertyDao
 			.findAllForEntities(entityIds)

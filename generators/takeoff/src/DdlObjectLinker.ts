@@ -47,14 +47,16 @@ export class DdlObjectLinker
 		this.linkDomainsAndSchemasAndVersions(
 			allSchemaVersionsByIds, domains, schemas, latestSchemaVersions, schemaReferences)
 
-		this.linkEntities(allSchemaVersionsByIds, entities)
+		const entityArrayById: ISchemaEntity[]  =
+			      this.linkEntities(allSchemaVersionsByIds, entities)
 
 		const {
 			      propertyMapById, relationMapById
-		      } = this.linkPropertiesAndRelations(properties, relations)
+		      } = this.linkPropertiesAndRelations(properties, relations,
+			entityArrayById, terminalStore)
 
 		this.linkColumns(propertyMapById, relationMapById, columns,
-			propertyColumns, relationColumns, terminalStore)
+			propertyColumns, relationColumns, entityArrayById, terminalStore)
 
 	}
 
@@ -111,12 +113,16 @@ export class DdlObjectLinker
 		allSchemaVersionsByIds: ISchemaVersion[],
 		entities: ISchemaEntity[] // All of the entities of newly created schemas
 		// from the latest available versions
-	): void {
+	): ISchemaEntity[] {
+		const entityArrayById: ISchemaEntity[]  = []
+
 		entities.forEach((entity: ISchemaEntity) => {
 			const schemaVersion                        = allSchemaVersionsByIds[entity.schemaVersion.id]
 			entity.schemaVersion                       = schemaVersion
 			schemaVersion.entities[entity.index]       = entity
 			schemaVersion.entityMapByName[entity.name] = entity
+
+			entityArrayById[entity.id] = entity
 
 			entity.columns            = []
 			entity.properties         = []
@@ -127,11 +133,15 @@ export class DdlObjectLinker
 			entity.idColumnMap        = {}
 			entity.propertyMap        = {}
 		})
+
+		return entityArrayById
 	}
 
 	private linkPropertiesAndRelations(
 		properties: ISchemaProperty[],
-		relations: ISchemaRelation[]
+		relations: ISchemaRelation[],
+		entityArrayById: ISchemaEntity[],
+		terminalStore: ITerminalStore
 	): {
 		propertyMapById: Map<PropertyId, ISchemaProperty>, relationMapById: Map<RelationId, ISchemaRelation>
 	} {
@@ -139,7 +149,7 @@ export class DdlObjectLinker
 
 		properties.forEach((property: ISchemaProperty) => {
 			// Entity is already property wired in
-			const entity                      = property.entity
+			const entity                      = entityArrayById[property.entity.id]
 			entity.properties[property.index] = property
 			entity.propertyMap[property.name] = property
 
@@ -152,10 +162,14 @@ export class DdlObjectLinker
 
 		const relationMapById: Map<RelationId, ISchemaRelation> = new Map()
 		relations.forEach((relation: ISchemaRelation) => {
-			const entity                     = relation.entity
+			const entity                     = entityArrayById[relation.entity.id]
 			entity.relations[relation.index] = relation
 
-			const relationEntity = relation.relationEntity
+			let relationEntity = entityArrayById[relation.relationEntity.id]
+
+			if (!relationEntity) {
+				relationEntity = terminalStore.getAllEntities()[relation.relationEntity.id]
+			}
 			relationEntity.relationReferences.push(relation)
 
 			const property    = propertyMapById.get(relation.property.id)
@@ -180,13 +194,14 @@ export class DdlObjectLinker
 		columns: ISchemaColumn[],
 		propertyColumns: ISchemaPropertyColumn[],
 		relationColumns: ISchemaRelationColumn[],
+		entityArrayById: ISchemaEntity[],
 		terminalStore: ITerminalStore
 	) {
 		const columnMapById: Map<ColumnId, ISchemaColumn> = new Map()
 		columns.forEach((column: ISchemaColumn) => {
 			columnMapById.set(column.id, column)
 
-			const entity                  = column.entity
+			const entity                  = entityArrayById[column.entity.id]
 			entity.columns[column.index]  = column
 			entity.columnMap[column.name] = column
 
@@ -224,7 +239,7 @@ export class DdlObjectLinker
 			oneColumn.oneRelationColumns.push(relationColumn)
 
 			let manyRelation
-			if (relationColumn.manyRelation) {
+			if (relationColumn.manyRelation && relationColumn.manyRelation.id) {
 				manyRelation = relationMapById.get(relationColumn.manyRelation.id)
 				if (!manyRelation) {
 					manyRelation = terminalStore.getAllRelations()[relationColumn.manyRelation.id]
@@ -233,7 +248,7 @@ export class DdlObjectLinker
 			}
 
 			let oneRelation
-			if (relationColumn.oneRelation) {
+			if (relationColumn.oneRelation && relationColumn.oneRelation.id) {
 				oneRelation = relationMapById.get(relationColumn.oneRelation.id)
 				if (!oneRelation) {
 					oneRelation = terminalStore.getAllRelations()[relationColumn.oneRelation.id]

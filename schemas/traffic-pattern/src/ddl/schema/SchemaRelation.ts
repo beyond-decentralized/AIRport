@@ -79,9 +79,9 @@ export class SchemaRelation
 	relationEntity: SchemaEntity
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'manyRelation'})
-	manyRelationColumns: SchemaRelationColumn[]
+	manyRelationColumns: SchemaRelationColumn[] = []
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'oneRelation'})
-	oneRelationColumns: SchemaRelationColumn[]
+	oneRelationColumns: SchemaRelationColumn[] = []
 
 }

@@ -127,24 +127,7 @@ class DatabaseManager {
             await this.initTerminal(domainName);
         }
         if (schemas && schemas.length) {
-            const schemaDao = await di_1.DI.get(traffic_pattern_1.SCHEMA_DAO);
-            const schemaNames = [];
-            for (const jsonSchema of schemas) {
-                const schemaName = ground_control_1.getSchemaName(jsonSchema);
-                schemaNames.push(schemaName);
-            }
-            const existingSchemaMap = await schemaDao.findMapByNames(schemaNames);
-            const schemasToInitialize = [];
-            for (const jsonSchema of schemas) {
-                const schemaName = ground_control_1.getSchemaName(jsonSchema);
-                if (!existingSchemaMap.has(schemaName)) {
-                    schemasToInitialize.push(jsonSchema);
-                }
-            }
-            if (schemasToInitialize.length) {
-                const schemaInitializer = await di_1.DI.get(landing_1.SCHEMA_INITIALIZER);
-                await schemaInitializer.initialize(schemas);
-            }
+            await this.initFeatureSchemas(schemas);
         }
         server.tempActor = null;
         /*
@@ -170,6 +153,26 @@ class DatabaseManager {
                     })
                 await dbFacade.init(storeType)
                 */
+    }
+    async initFeatureSchemas(schemas) {
+        const schemaDao = await di_1.DI.get(traffic_pattern_1.SCHEMA_DAO);
+        const schemaNames = [];
+        for (const jsonSchema of schemas) {
+            const schemaName = ground_control_1.getSchemaName(jsonSchema);
+            schemaNames.push(schemaName);
+        }
+        const existingSchemaMap = await schemaDao.findMapByNames(schemaNames);
+        const schemasToInitialize = [];
+        for (const jsonSchema of schemas) {
+            const schemaName = ground_control_1.getSchemaName(jsonSchema);
+            if (!existingSchemaMap.has(schemaName)) {
+                schemasToInitialize.push(jsonSchema);
+            }
+        }
+        if (schemasToInitialize.length) {
+            const schemaInitializer = await di_1.DI.get(landing_1.SCHEMA_INITIALIZER);
+            await schemaInitializer.initialize(schemas);
+        }
     }
     async initTerminal(domainName) {
         await tower_1.transactional(async () => {

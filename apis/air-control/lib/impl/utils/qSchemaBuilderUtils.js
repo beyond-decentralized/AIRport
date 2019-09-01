@@ -62,8 +62,8 @@ function getQRelation(entity, property, q, allQSchemas) {
 exports.getQRelation = getQRelation;
 function getQEntityConstructor(allQSchemas) {
     // ChildQEntity refers to the constructor
-    var ChildQEntity = function (entity) {
-        ChildQEntity.base.constructor.call(this, entity);
+    var ChildQEntity = function (entity, nextChildJoinPosition, dbRelation, joinType) {
+        ChildQEntity.base.constructor.call(this, entity, nextChildJoinPosition, dbRelation, joinType);
         entity.properties.forEach((property) => {
             let qFieldOrRelation;
             if (property.relation && property.relation.length) {
@@ -77,7 +77,7 @@ function getQEntityConstructor(allQSchemas) {
             }
             this[property.name] = qFieldOrRelation;
         });
-        entity.__qConstructor__ = ChildQEntity;
+        // entity.__qConstructor__ = ChildQEntity
     };
     extend(Entity_1.QEntity, ChildQEntity, {});
     return ChildQEntity;
@@ -206,11 +206,14 @@ function setQSchemaEntities(schema, qSchema, allQSchemas) {
         // TODO: compute many-to-many relations
         const qConstructor = getQEntityConstructor(allQSchemas);
         qSchema.__qConstructors__[entity.index] = qConstructor;
-        Object.defineProperty(qSchema, entity.name, {
-            get: function () {
-                return new this.__qConstructors__[entity.index](entity);
-            }
-        });
+        if (!Object.getOwnPropertyNames(qSchema)
+            .filter(propertyName => propertyName === entity.name).length) {
+            Object.defineProperty(qSchema, entity.name, {
+                get: function () {
+                    return new this.__qConstructors__[entity.index](entity);
+                }
+            });
+        }
     });
     // } while (haveMissingDependencies)
 }

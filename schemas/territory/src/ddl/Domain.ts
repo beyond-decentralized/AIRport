@@ -29,9 +29,9 @@ export class Domain
 	name: DomainName
 
 	@OneToMany({mappedBy: 'domain'})
-	applications: Application[]
+	applications: Application[] = []
 
 	@Transient()
-	schemas: DbSchema[]
+	schemas: DbSchema[] = []
 
 }

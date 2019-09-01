@@ -68,12 +68,12 @@ export class SchemaColumn
 	type: SQLDataType
 
 	@OneToMany({mappedBy: 'column'})
-	propertyColumns: ISchemaPropertyColumn[]
+	propertyColumns: ISchemaPropertyColumn[] = []
 
 	@OneToMany({mappedBy: 'manyColumn'})
-	manyRelationColumns: ISchemaRelationColumn[]
+	manyRelationColumns: ISchemaRelationColumn[] = []
 
 	@OneToMany({mappedBy: 'oneColumn'})
-	oneRelationColumns: ISchemaRelationColumn[]
+	oneRelationColumns: ISchemaRelationColumn[] = []
 
 }

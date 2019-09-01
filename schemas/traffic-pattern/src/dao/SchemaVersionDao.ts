@@ -45,12 +45,12 @@ export class SchemaVersionDao
 
 	async findAllActiveOrderBySchemaIndexAndId(): Promise<ISchemaVersion[]> {
 		let sv: QSchemaVersion
-		let s: QSchema
+		// let s: QSchema
 
 		return await this.db.find.tree({
 			from: [
 				sv = Q.SchemaVersion,
-				s = sv.schema.innerJoin()
+				// s = sv.schema.innerJoin()
 			],
 			select: {},
 			orderBy: [

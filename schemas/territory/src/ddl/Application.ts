@@ -30,6 +30,6 @@ export class Application {
 	domain: Domain
 
 	@OneToMany({mappedBy: "application"})
-	applicationPackages: ApplicationPackage[]
+	applicationPackages: ApplicationPackage[] = []
 
 }

@@ -27,10 +27,17 @@ class SqLiteQueryAdaptor {
                 if (value !== null) {
                     return !!value;
                 }
+                break;
             case ground_control_1.SQLDataType.DATE:
                 if (value !== null) {
                     return new Date(value);
                 }
+                break;
+            case ground_control_1.SQLDataType.JSON:
+                if (value !== null) {
+                    return JSON.parse(value);
+                }
+                break;
         }
         return value;
     }

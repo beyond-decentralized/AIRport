@@ -16,6 +16,22 @@ export interface IContainer {
     get<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N]>;
     get<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>, tokenO: DiToken<O>): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]>;
     get(...tokens: DiToken<any>[]): Promise<any[]>;
+    getSync<A>(tokenA: DiToken<A>): A;
+    getSync<A, B>(tokenA: DiToken<A>, tokenB: DiToken<B>): [A, B];
+    getSync<A, B, C>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>): [A, B, C];
+    getSync<A, B, C, D>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>): [A, B, C, D];
+    getSync<A, B, C, D, E>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>): [A, B, C, D, E];
+    getSync<A, B, C, D, E, F>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>): [A, B, C, D, E, F];
+    getSync<A, B, C, D, E, F, G>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>): [A, B, C, D, E, F, G];
+    getSync<A, B, C, D, E, F, G, H>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>): [A, B, C, D, E, F, G, H];
+    getSync<A, B, C, D, E, F, G, H, I>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>): [A, B, C, D, E, F, G, H, I];
+    getSync<A, B, C, D, E, F, G, H, I, J>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>): [A, B, C, D, E, F, G, H, I, J];
+    getSync<A, B, C, D, E, F, G, H, I, J, K>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>): [A, B, C, D, E, F, G, H, I, J, K];
+    getSync<A, B, C, D, E, F, G, H, I, J, K, L>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>): [A, B, C, D, E, F, G, H, I, J, K, L];
+    getSync<A, B, C, D, E, F, G, H, I, J, K, L, M>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>): [A, B, C, D, E, F, G, H, I, J, K, L, M];
+    getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N];
+    getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>, tokenO: DiToken<O>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O];
+    getSync(...tokens: DiToken<any>[]): any;
     set<I>(token: DiToken<I>, clazz: new () => I): void;
 }
 export declare class Container implements IContainer {
@@ -38,6 +54,22 @@ export declare class Container implements IContainer {
     get<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N]>;
     get<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>, tokenO: DiToken<O>): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]>;
     set<I>(token: DiToken<I>, clazz: new () => I): void;
-    private getSync;
+    getSync<A>(tokenA: DiToken<A>): A;
+    getSync<A, B>(tokenA: DiToken<A>, tokenB: DiToken<B>): [A, B];
+    getSync<A, B, C>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>): [A, B, C];
+    getSync<A, B, C, D>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>): [A, B, C, D];
+    getSync<A, B, C, D, E>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>): [A, B, C, D, E];
+    getSync<A, B, C, D, E, F>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>): [A, B, C, D, E, F];
+    getSync<A, B, C, D, E, F, G>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>): [A, B, C, D, E, F, G];
+    getSync<A, B, C, D, E, F, G, H>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>): [A, B, C, D, E, F, G, H];
+    getSync<A, B, C, D, E, F, G, H, I>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>): [A, B, C, D, E, F, G, H, I];
+    getSync<A, B, C, D, E, F, G, H, I, J>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>): [A, B, C, D, E, F, G, H, I, J];
+    getSync<A, B, C, D, E, F, G, H, I, J, K>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>): [A, B, C, D, E, F, G, H, I, J, K];
+    getSync<A, B, C, D, E, F, G, H, I, J, K, L>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>): [A, B, C, D, E, F, G, H, I, J, K, L];
+    getSync<A, B, C, D, E, F, G, H, I, J, K, L, M>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>): [A, B, C, D, E, F, G, H, I, J, K, L, M];
+    getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N];
+    getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>, tokenD: DiToken<D>, tokenE: DiToken<E>, tokenF: DiToken<F>, tokenG: DiToken<G>, tokenH: DiToken<H>, tokenI: DiToken<I>, tokenJ: DiToken<J>, tokenK: DiToken<K>, tokenL: DiToken<L>, tokenM: DiToken<M>, tokenN: DiToken<N>, tokenO: DiToken<O>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O];
+    private doGet;
+    private doGetCore;
 }
 export declare const DI: IContainer;

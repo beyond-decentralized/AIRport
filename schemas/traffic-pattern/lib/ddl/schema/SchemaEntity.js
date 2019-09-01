@@ -11,6 +11,31 @@ const air_control_2 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const VersionedSchemaObject_1 = require("./VersionedSchemaObject");
 let SchemaEntity = class SchemaEntity extends VersionedSchemaObject_1.VersionedSchemaObject {
+    constructor() {
+        super(...arguments);
+        //
+        // One-to-Many's
+        //
+        this.columns = [];
+        // TODO: implement if needed
+        // @OneToMany()
+        // @JoinColumns([
+        // 	{name: "SCHEMA_VERSION_ID"},
+        // 	{name: "TABLE_INDEX", referencedColumnName: "INDEX"}
+        // ])
+        // @WhereJoinTable((
+        // 	otm: QSchemaEntity,
+        // 	mto: QSchemaColumn
+        // ) => mto.idIndex.isNotNull())
+        // idColumns: ISchemaColumn[];
+        this.properties = [];
+        this.relations = [];
+        this.relationReferences = [];
+        this.columnMap = {};
+        this.idColumns = [];
+        this.idColumnMap = {};
+        this.propertyMap = {};
+    }
 };
 __decorate([
     air_control_1.Id()
