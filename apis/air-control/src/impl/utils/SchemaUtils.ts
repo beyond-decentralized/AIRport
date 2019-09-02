@@ -12,6 +12,7 @@ import {
 	SchemaIndex,
 	TableIndex
 }                           from '@airport/ground-control'
+import {IQFieldInternal}    from '../..'
 import {SCHEMA_UTILS}       from '../../diTokens'
 import {
 	IAirportDatabase,
@@ -419,11 +420,11 @@ export class SchemaUtils
 		qEntity: IQEntity,
 		setClause: any
 	): GetSheetSelectFromSetClauseResult {
-		const selectClause     = []
+		const selectClause: IQFieldInternal<any>[] = []
 		let actorIdColumnIndex
 		let actorRecordIdColumnIndex
 		let draftColumnIndex
-		let draftColumnUpdated = false
+		let draftColumnUpdated                     = false
 		let repositoryIdColumnIndex
 
 		for (const columnIndex in dbEntity.columns) {
@@ -496,7 +497,7 @@ export class SchemaUtils
 	private addColumnToSheetSelect(
 		dbColumn: DbColumn,
 		qEntity: IQEntity,
-		entitySelectClause: any,
+		entitySelectClause: IQFieldInternal<any>[],
 	) {
 		if (this.isManyRelationColumn(dbColumn)) {
 			const columnPaths     = this.getColumnPaths(dbColumn, [])
