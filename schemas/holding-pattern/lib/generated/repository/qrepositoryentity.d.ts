@@ -6,11 +6,13 @@ export interface IRepositoryEntity extends IStageable {
     actorRecordId?: number;
     repository?: IRepository;
     actor?: IActor;
+    systemWideOperationId?: number;
 }
 /**
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryEntityESelect extends StageableESelect, RepositoryEntityEOptionalId {
+    systemWideOperationId?: number | IQNumberField;
     repository?: RepositoryESelect;
     actor?: ActorESelect;
 }
@@ -34,6 +36,7 @@ export interface RepositoryEntityEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RepositoryEntityEUpdateProperties extends StageableEUpdateProperties {
+    systemWideOperationId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -57,6 +60,7 @@ export interface QRepositoryEntity extends QStageable {
     actorRecordId: IQNumberField;
     repository: QRepositoryQRelation;
     actor: QActorQRelation;
+    systemWideOperationId: IQNumberField;
 }
 export interface QRepositoryEntityQId extends QStageableQId {
     actorRecordId: IQNumberField;

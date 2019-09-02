@@ -91,10 +91,13 @@ export declare namespace table {
  * @type {string}
  */
 export declare namespace repositoryEntity {
-    const ENTITY_NAME = "RepositoryEntity";
-    const FOREIGN_KEY = "REPOSITORY_ID";
-    const REPOSITORY_ID = "REPOSITORY_ID";
     const ACTOR_ID = "ACTOR_ID";
     const ACTOR_RECORD_ID = "ACTOR_RECORD_ID";
+    const ENTITY_NAME = "RepositoryEntity";
+    const FOREIGN_KEY = "REPOSITORY_ID";
+    const IS_DRAFT = "IS_DRAFT";
     const LOCAL_ENTITY_NAME = "LocalRepositoryEntity";
+    const REPOSITORY_ID = "REPOSITORY_ID";
+    const SYSTEM_WIDE_OPERATION_ID = "SYSTEM_WIDE_OPERATION_ID";
+    const systemWideOperationId = "systemWideOperationId";
 }

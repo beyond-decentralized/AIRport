@@ -75,8 +75,8 @@ class SqlStorage {
         });
     }
 }
+exports.SqlStorage = SqlStorage;
 SqlStorage.BACKUP_LOCAL = 2;
 SqlStorage.BACKUP_LIBRARY = 1;
 SqlStorage.BACKUP_DOCUMENTS = 0;
-exports.SqlStorage = SqlStorage;
 //# sourceMappingURL=SqlStorage.js.map

@@ -2,6 +2,7 @@ import { ChangeType, CRUDOperation, DbColumn, DbEntity, DbRelation, SchemaIndex,
 import { QEntityConstructor } from '../../impl/core/entity/Entity';
 import { IAirportDatabase } from '../AirportDatabase';
 import { IEntityIdProperties, IQEntity } from '../core/entity/Entity';
+import { IQFieldInternal } from '../core/field/Field';
 export interface ManyToOneColumnMapping {
     tableIndex: number;
     propertyChain: string[];
@@ -27,6 +28,14 @@ export interface IdKeysByIdColumnIndex {
         [columnName: string]: (number | string);
     };
 }
+export interface GetSheetSelectFromSetClauseResult {
+    actorIdColumnIndex: number;
+    actorRecordIdColumnIndex: number;
+    draftColumnIndex: number;
+    draftColumnUpdated: boolean;
+    repositoryIdColumnIndex: number;
+    selectClause: IQFieldInternal<any>[];
+}
 export interface ISchemaUtils {
     getDbEntity(schemaIndex: SchemaIndex, tableIndex: TableIndex, airDb: IAirportDatabase): DbEntity;
     getQEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): QEntityConstructor;
@@ -50,6 +59,6 @@ export interface ISchemaUtils {
     forEachColumnTypeOfRelation(dbRelation: DbRelation, callback: {
         (dbColumn: DbColumn, propertyNameChains: string[][]): void | boolean;
     }): void;
-    getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity, setClause: any): any[];
+    getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity, setClause: any): GetSheetSelectFromSetClauseResult;
     getTableName(dbEntity: DbEntity): string;
 }

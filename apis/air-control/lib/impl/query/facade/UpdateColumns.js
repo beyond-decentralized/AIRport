@@ -8,7 +8,8 @@ class UpdateColumns extends AbstractUpdate_1.AbstractUpdate {
     }
     setToJSON(set, queryUtils, fieldUtils) {
         const setClause = {};
-        const dbEntity = this.rawUpdate.update.__driver__.dbEntity;
+        const dbEntity = this.rawUpdate.update
+            .__driver__.dbEntity;
         const dbColumnMap = dbEntity.columnMap;
         const idDbColumnMap = dbEntity.idColumnMap;
         for (const columnName in set) {

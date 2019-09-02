@@ -18,12 +18,21 @@ class BaseSequenceDao extends SQDIDao {
     }
 }
 exports.BaseSequenceDao = BaseSequenceDao;
-class BaseTerminalRunDao extends SQDIDao {
+class BaseSystemWideOperationIdDao extends SQDIDao {
     static diSet() {
         return qSchema_1.diSet(1);
     }
     constructor() {
         super(1);
+    }
+}
+exports.BaseSystemWideOperationIdDao = BaseSystemWideOperationIdDao;
+class BaseTerminalRunDao extends SQDIDao {
+    static diSet() {
+        return qSchema_1.diSet(2);
+    }
+    constructor() {
+        super(2);
     }
 }
 exports.BaseTerminalRunDao = BaseTerminalRunDao;

@@ -61,10 +61,10 @@ class SqlDriver {
         activeQueries.markQueriesToRerun(fieldMap);
         return numberOfAffectedRecords;
     }
-    async updateWhere(portableQuery) {
+    async updateWhere(portableQuery, internalFragments) {
         const [airDb, schemaUtils, metadataUtils] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.SCHEMA_UTILS, air_control_1.Q_METADATA_UTILS);
         let sqlUpdate = new SQLUpdate_1.SQLUpdate(airDb, portableQuery.jsonQuery, this.getDialect(), this);
-        let sql = sqlUpdate.toSQL(airDb, schemaUtils, metadataUtils);
+        let sql = sqlUpdate.toSQL(internalFragments, airDb, schemaUtils, metadataUtils);
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap);
         return await this.executeNative(sql, parameters);
     }

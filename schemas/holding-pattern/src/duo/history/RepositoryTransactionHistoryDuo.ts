@@ -1,29 +1,28 @@
-import {DI}                   from '@airport/di'
+import {DI}                     from '@airport/di'
 import {
 	ChangeType,
 	DbEntity
-}                             from '@airport/ground-control'
+}                               from '@airport/ground-control'
 import {
 	ActorId,
+	Repository,
+	RepositoryId,
 	RepositoryTransactionHistory
-}                             from '../../ddl/ddl'
-import {
-	OPER_HISTORY_DUO,
-	REPO_TRANS_HISTORY_DUO
-}                             from '../../diTokens'
+} from '../../ddl/ddl'
+import {REPO_TRANS_HISTORY_DUO} from '../../diTokens'
 import {
 	BaseRepositoryTransactionHistoryDuo,
 	IActor,
 	IOperationHistory,
 	IRepository,
 	IRepositoryTransactionHistory,
-}                             from '../../generated/generated'
-import {IOperationHistoryDuo} from './OperationHistoryDuo'
+}                               from '../../generated/generated'
+import {IOperationHistoryDuo}   from './OperationHistoryDuo'
 
 export interface IRepositoryTransactionHistoryDuo {
 
 	getNewRecord(
-		repository: IRepository,
+		repositoryId: RepositoryId,
 		actor: IActor
 	): IRepositoryTransactionHistory;
 
@@ -50,7 +49,7 @@ export class RepositoryTransactionHistoryDuo
 	implements IRepositoryTransactionHistoryDuo {
 
 	getNewRecord(
-		repository: IRepository,
+		repositoryId: RepositoryId,
 		actor: IActor
 	): IRepositoryTransactionHistory {
 		let transaction = new RepositoryTransactionHistory()
@@ -58,7 +57,8 @@ export class RepositoryTransactionHistoryDuo
 		let saveTimestamp = new Date()
 
 		transaction.saveTimestamp = saveTimestamp
-		transaction.repository    = repository
+		transaction.repository    = new Repository()
+		transaction.repository.id = repositoryId
 		transaction.actor         = actor
 		// transaction.syncStatus = SyncStatus.SYNC_PENDING;
 

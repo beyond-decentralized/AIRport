@@ -5,9 +5,11 @@ const check_in_1 = require("@airport/check-in");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const Sequence_1 = require("../ddl/Sequence");
+const SystemWideOperationId_1 = require("../ddl/SystemWideOperationId");
 const TerminalRun_1 = require("../ddl/TerminalRun");
 const __constructors__ = {
     Sequence: Sequence_1.Sequence,
+    SystemWideOperationId: SystemWideOperationId_1.SystemWideOperationId,
     TerminalRun: TerminalRun_1.TerminalRun
 };
 exports.Q_SCHEMA = {

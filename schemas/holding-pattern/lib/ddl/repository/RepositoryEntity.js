@@ -31,6 +31,9 @@ __decorate([
     air_control_1.Column({ name: 'ACTOR_RECORD_ID', nullable: false }),
     air_control_1.GeneratedValue()
 ], RepositoryEntity.prototype, "actorRecordId", void 0);
+__decorate([
+    air_control_1.Column({ name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false })
+], RepositoryEntity.prototype, "systemWideOperationId", void 0);
 RepositoryEntity = __decorate([
     air_control_1.MappedSuperclass()
 ], RepositoryEntity);

@@ -18,12 +18,21 @@ class BaseSequenceDuo extends SQDIDuo {
     }
 }
 exports.BaseSequenceDuo = BaseSequenceDuo;
-class BaseTerminalRunDuo extends SQDIDuo {
+class BaseSystemWideOperationIdDuo extends SQDIDuo {
     static diSet() {
         return qSchema_1.duoDiSet(1);
     }
     constructor() {
         super(1);
+    }
+}
+exports.BaseSystemWideOperationIdDuo = BaseSystemWideOperationIdDuo;
+class BaseTerminalRunDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.duoDiSet(2);
+    }
+    constructor() {
+        super(2);
     }
 }
 exports.BaseTerminalRunDuo = BaseTerminalRunDuo;

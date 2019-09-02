@@ -1,10 +1,10 @@
 import {DI}                               from '@airport/di'
 import {TransactionType}                  from '@airport/ground-control'
-import {TransactionHistory}               from '../../ddl/ddl'
 import {
-	REPO_TRANS_HISTORY_DUO,
-	TRANS_HISTORY_DUO
-}                                         from '../../diTokens'
+	RepositoryId,
+	TransactionHistory
+}                                         from '../../ddl/ddl'
+import {TRANS_HISTORY_DUO}                from '../../diTokens'
 import {
 	BaseTransactionHistoryDuo,
 	IActor,
@@ -22,7 +22,7 @@ export interface ITransactionHistoryDuo {
 
 	getRepositoryTransaction(
 		transactionHistory: ITransactionHistory,
-		repository: IRepository,
+		repositoryId: RepositoryId,
 		actor: IActor,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo
 	): IRepositoryTransactionHistory
@@ -45,18 +45,18 @@ export class TransactionHistoryDuo
 
 	getRepositoryTransaction(
 		transactionHistory: ITransactionHistory,
-		repository: IRepository,
+		repositoryId: RepositoryId,
 		actor: IActor,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo
 	): IRepositoryTransactionHistory {
-		let repoTransHistory = transactionHistory.repoTransHistoryMap[repository.id]
+		let repoTransHistory = transactionHistory.repoTransHistoryMap[repositoryId]
 
 		if (!repoTransHistory) {
 			repoTransHistory = repoTransHistoryDuo.getNewRecord(
-				repository, actor)
+				repositoryId, actor)
 
 			transactionHistory.repositoryTransactionHistories.push(repoTransHistory)
-			transactionHistory.repoTransHistoryMap[repository.id] = repoTransHistory
+			transactionHistory.repoTransHistoryMap[repositoryId] = repoTransHistory
 		}
 
 		return repoTransHistory

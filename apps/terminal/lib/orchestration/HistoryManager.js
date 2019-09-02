@@ -12,9 +12,9 @@ class HistoryManager {
         const transHistoryDuo = await di_1.DI.get(holding_pattern_1.TRANS_HISTORY_DUO);
         return await transHistoryDuo.getNewRecord(transactionType);
     }
-    async getNewRepoTransHistory(transactionHistory, repository, actor) {
+    async getNewRepoTransHistory(transactionHistory, repositoryId, actor) {
         const [repoTransHistoryDuo, transHistoryDuo] = await di_1.DI.get(holding_pattern_1.REPO_TRANS_HISTORY_DUO, holding_pattern_1.TRANS_HISTORY_DUO);
-        return await transHistoryDuo.getRepositoryTransaction(transactionHistory, repository, actor, repoTransHistoryDuo);
+        return await transHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryId, actor, repoTransHistoryDuo);
     }
 }
 exports.HistoryManager = HistoryManager;

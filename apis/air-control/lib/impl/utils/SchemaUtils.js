@@ -264,7 +264,12 @@ class SchemaUtils {
         }
     }
     getSheetSelectFromSetClause(dbEntity, qEntity, setClause) {
-        const entitySelectClause = [];
+        const selectClause = [];
+        let actorIdColumnIndex;
+        let actorRecordIdColumnIndex;
+        let draftColumnIndex;
+        let draftColumnUpdated = false;
+        let repositoryIdColumnIndex;
         for (const columnIndex in dbEntity.columns) {
             const dbColumn = dbEntity.columns[columnIndex];
             let dbProperty;
@@ -272,19 +277,54 @@ class SchemaUtils {
                 dbProperty = propertyColumn.property;
                 return dbProperty.isId;
             });
+            let nonIdColumnSet = false;
             if (isIdColumn) {
                 if (setClause[dbColumn.name]) {
                     throw new Error(`Cannot update @Id column '${dbColumn.name}' of property '${dbEntity.name}.${dbProperty.name}'.`);
                 }
-                this.addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause);
+                this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
             }
             else if (setClause[dbColumn.name]) {
-                this.addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause);
+                nonIdColumnSet = true;
+                this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
                 // } else {
                 // entitySelectClause[dbColumn.index] = null;
             }
+            const inQueryColumnIndex = selectClause.length - 1;
+            switch (dbColumn.name) {
+                case ground_control_1.repositoryEntity.ACTOR_ID:
+                    actorIdColumnIndex = inQueryColumnIndex;
+                    break;
+                case ground_control_1.repositoryEntity.ACTOR_RECORD_ID:
+                    actorRecordIdColumnIndex = inQueryColumnIndex;
+                    break;
+                case ground_control_1.repositoryEntity.IS_DRAFT:
+                    if (!nonIdColumnSet) {
+                        this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
+                    }
+                    else {
+                        draftColumnUpdated = true;
+                    }
+                    draftColumnIndex = inQueryColumnIndex;
+                    break;
+                case ground_control_1.repositoryEntity.REPOSITORY_ID:
+                    repositoryIdColumnIndex = inQueryColumnIndex;
+                    break;
+                case ground_control_1.repositoryEntity.SYSTEM_WIDE_OPERATION_ID:
+                    if (nonIdColumnSet) {
+                        throw new Error(`Cannot update 'systemWideOperationId' of Repository Entities.`);
+                    }
+                    break;
+            }
         }
-        return entitySelectClause;
+        return {
+            actorIdColumnIndex,
+            actorRecordIdColumnIndex,
+            draftColumnIndex,
+            draftColumnUpdated,
+            repositoryIdColumnIndex,
+            selectClause
+        };
     }
     getTableName(dbEntity) {
         return ground_control_1.getTableName(dbEntity.schemaVersion.schema, dbEntity);
@@ -298,10 +338,10 @@ class SchemaUtils {
                 relationColumn = relationColumn[current];
                 return current;
             });
-            entitySelectClause[dbColumn.index] = relationColumn;
+            entitySelectClause.push(relationColumn);
         }
         else {
-            entitySelectClause[dbColumn.index] = qEntity[dbColumn.propertyColumns[0].property.name];
+            entitySelectClause.push(qEntity[dbColumn.propertyColumns[0].property.name]);
         }
     }
     /*
@@ -346,7 +386,7 @@ class SchemaUtils {
         return false;
     }
 }
-SchemaUtils.TEMP_ID = 0;
 exports.SchemaUtils = SchemaUtils;
+SchemaUtils.TEMP_ID = 0;
 di_1.DI.set(diTokens_1.SCHEMA_UTILS, SchemaUtils);
 //# sourceMappingURL=SchemaUtils.js.map

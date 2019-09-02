@@ -120,20 +120,20 @@ class QField {
             case 'undefined':
                 throw new Error(`Undefined is not allowed as a query parameter`);
         }
-        if (value === null) {
+        // TODO: this never gets called, is this needed?
+        /*
+        if (value === null || value instanceof Date) {
             return columnAliases.entityAliases.getParams()
-                .getNextAlias(functionObject);
-        }
-        if (value instanceof Date) {
-            return columnAliases.entityAliases.getParams()
-                .getNextAlias(functionObject);
+                .getNextAlias(functionObject as IQFunction<any>)
         }
         if (value instanceof QField) {
-            return value.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils);
+            return value.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils)
         }
         // must be a field sub-query
-        let rawFieldQuery = value;
-        return fieldUtils.getFieldQueryJson(rawFieldQuery, columnAliases.entityAliases, queryUtils);
+        let rawFieldQuery: RawFieldQuery<any> = value
+        return fieldUtils.getFieldQueryJson(
+            rawFieldQuery, columnAliases.entityAliases, queryUtils)
+         */
     }
 }
 exports.QField = QField;

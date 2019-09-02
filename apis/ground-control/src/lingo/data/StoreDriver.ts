@@ -17,6 +17,15 @@ export interface ATransactionHistory {
 
 }
 
+export interface InternalSetFragment {
+	column: string;
+	value: string;
+}
+
+export interface InternalFragments {
+	SET: InternalSetFragment[];
+}
+
 export const INVALID_TABLE_NAME = 'A0ZA2vKHIAeI9506rYzCSFKYcSbSuLy5sRieHPnd2NevufFEx9CxuZsAdXieZBbRj5mPYypr3TGYwb6limMcTTWHOnsk7F6991890'
 
 export interface IStoreDriver {
@@ -82,6 +91,7 @@ export interface IStoreDriver {
 
 	updateWhere(
 		portableQuery: PortableQuery,
+		internalFragments: InternalFragments
 	): Promise<number>;
 
 	transact(

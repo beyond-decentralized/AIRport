@@ -15,6 +15,7 @@ import {Stageable}   from '../infrastructure/Stageable'
  */
 
 export type RepositoryEntityActorRecordId = number;
+export type RepositoryEntitySystemWideOperationId = number;
 
 @MappedSuperclass()
 export abstract class RepositoryEntity
@@ -40,6 +41,9 @@ export abstract class RepositoryEntity
 	@Column({name: 'ACTOR_RECORD_ID', nullable: false})
 	@GeneratedValue()
 	actorRecordId: RepositoryEntityActorRecordId
+
+	@Column({name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false})
+	systemWideOperationId: RepositoryEntitySystemWideOperationId
 
 	/*
 		@OneToMany()

@@ -69,6 +69,7 @@ export interface IRepositoryEntity extends IStageable {
 	actor?: IActor;
 
 	// Non-Id Properties
+	systemWideOperationId?: number;
 
 	// Non-Id Relations
 
@@ -88,6 +89,7 @@ export interface IRepositoryEntity extends IStageable {
 export interface RepositoryEntityESelect
     extends StageableESelect, RepositoryEntityEOptionalId {
 	// Non-Id Properties
+	systemWideOperationId?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
 	repository?: RepositoryESelect;
@@ -130,6 +132,7 @@ export interface RepositoryEntityEOptionalId {
 export interface RepositoryEntityEUpdateProperties
 	extends StageableEUpdateProperties {
 	// Non-Id Properties
+	systemWideOperationId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -178,6 +181,7 @@ export interface QRepositoryEntity extends QStageable
 	actor: QActorQRelation;
 
 	// Non-Id Fields
+	systemWideOperationId: IQNumberField;
 
 	// Non-Id Relations
 

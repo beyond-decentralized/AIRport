@@ -11,12 +11,12 @@ class TransactionHistoryDuo extends generated_1.BaseTransactionHistoryDuo {
         transaction.transactionType = ground_control_1.TransactionType.LOCAL;
         return transaction;
     }
-    getRepositoryTransaction(transactionHistory, repository, actor, repoTransHistoryDuo) {
-        let repoTransHistory = transactionHistory.repoTransHistoryMap[repository.id];
+    getRepositoryTransaction(transactionHistory, repositoryId, actor, repoTransHistoryDuo) {
+        let repoTransHistory = transactionHistory.repoTransHistoryMap[repositoryId];
         if (!repoTransHistory) {
-            repoTransHistory = repoTransHistoryDuo.getNewRecord(repository, actor);
+            repoTransHistory = repoTransHistoryDuo.getNewRecord(repositoryId, actor);
             transactionHistory.repositoryTransactionHistories.push(repoTransHistory);
-            transactionHistory.repoTransHistoryMap[repository.id] = repoTransHistory;
+            transactionHistory.repoTransHistoryMap[repositoryId] = repoTransHistory;
         }
         return repoTransHistory;
     }

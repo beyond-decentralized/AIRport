@@ -25,6 +25,16 @@ import {
 	QSequence
 } from './qsequence'
 import {
+	ISystemWideOperationId,
+	SystemWideOperationIdESelect,
+	SystemWideOperationIdECreateColumns,
+	SystemWideOperationIdECreateProperties,
+	SystemWideOperationIdEUpdateColumns,
+	SystemWideOperationIdEUpdateProperties,
+	SystemWideOperationIdEId,
+	QSystemWideOperationId
+} from './qsystemwideoperationid'
+import {
 	ITerminalRun,
 	TerminalRunESelect,
 	TerminalRunECreateColumns,
@@ -76,6 +86,24 @@ export class BaseSequenceDuo
 }
 
 
+export interface IBaseSystemWideOperationIdDuo
+  extends IDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, QSystemWideOperationId> {
+}
+
+export class BaseSystemWideOperationIdDuo
+  extends SQDIDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, QSystemWideOperationId>
+	implements IBaseSystemWideOperationIdDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(1)
+	}
+	
+	constructor() {
+		super(1)
+	}
+}
+
+
 export interface IBaseTerminalRunDuo
   extends IDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateProperties, TerminalRunEId, QTerminalRun> {
 }
@@ -85,10 +113,10 @@ export class BaseTerminalRunDuo
 	implements IBaseTerminalRunDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }

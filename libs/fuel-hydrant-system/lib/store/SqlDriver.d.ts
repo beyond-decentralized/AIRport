@@ -1,5 +1,6 @@
 import { IAirportDatabase, ISchemaUtils } from '@airport/air-control';
 import { IStoreDriver, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
+import { InternalFragments } from '@airport/ground-control/lib/src';
 import { ITransactionHistory } from '@airport/holding-pattern';
 import { IObservable } from '@airport/observe';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
@@ -18,7 +19,7 @@ export declare abstract class SqlDriver implements IStoreDriver {
     insertValues(portableQuery: PortableQuery): Promise<number>;
     private splitValues;
     deleteWhere(portableQuery: PortableQuery): Promise<number>;
-    updateWhere(portableQuery: PortableQuery): Promise<number>;
+    updateWhere(portableQuery: PortableQuery, internalFragments: InternalFragments): Promise<number>;
     protected abstract executeNative(sql: string, parameters: any[]): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<EntityArray>;
     getSQLQuery(portableQuery: PortableQuery, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): SQLQuery<any>;

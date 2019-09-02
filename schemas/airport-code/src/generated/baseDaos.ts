@@ -28,6 +28,16 @@ import {
 	QSequence
 } from './qsequence'
 import {
+	ISystemWideOperationId,
+	SystemWideOperationIdESelect,
+	SystemWideOperationIdECreateColumns,
+	SystemWideOperationIdECreateProperties,
+	SystemWideOperationIdEUpdateColumns,
+	SystemWideOperationIdEUpdateProperties,
+	SystemWideOperationIdEId,
+	QSystemWideOperationId
+} from './qsystemwideoperationid'
+import {
 	ITerminalRun,
 	TerminalRunESelect,
 	TerminalRunECreateColumns,
@@ -80,6 +90,24 @@ export class BaseSequenceDao
 }
 
 
+export interface IBaseSystemWideOperationIdDao
+  extends IDao<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, QSystemWideOperationId> {
+}
+
+export class BaseSystemWideOperationIdDao
+  extends SQDIDao<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, QSystemWideOperationId>
+	implements IBaseSystemWideOperationIdDao {
+
+	static diSet(): boolean {
+		return diSet(1)
+	}
+	
+	constructor() {
+		super(1)
+	}
+}
+
+
 export interface IBaseTerminalRunDao
   extends IDao<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, QTerminalRun> {
 }
@@ -89,10 +117,10 @@ export class BaseTerminalRunDao
 	implements IBaseTerminalRunDao {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return diSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }

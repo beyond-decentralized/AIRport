@@ -46,7 +46,6 @@ export class SheetQuery
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): JsonSheetQuery {
-
 		let select = this.selectClauseToJSON(
 			this.rawQuery.select, queryUtils, fieldUtils)
 

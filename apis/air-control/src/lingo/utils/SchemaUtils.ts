@@ -14,6 +14,7 @@ import {
 	IEntityIdProperties,
 	IQEntity
 }                           from '../core/entity/Entity'
+import {IQFieldInternal}    from '../core/field/Field'
 
 export interface ManyToOneColumnMapping {
 	tableIndex: number;
@@ -40,6 +41,15 @@ export interface EntityIdData {
 export interface IdKeysByIdColumnIndex {
 	arrayByIdColumnIndex: (number | string)[],
 	mapByIdColumnName: { [columnName: string]: (number | string) }
+}
+
+export interface GetSheetSelectFromSetClauseResult {
+	actorIdColumnIndex: number;
+	actorRecordIdColumnIndex: number;
+	draftColumnIndex: number;
+	draftColumnUpdated: boolean;
+	repositoryIdColumnIndex: number;
+	selectClause: IQFieldInternal<any>[];
 }
 
 export interface ISchemaUtils {
@@ -122,13 +132,13 @@ export interface ISchemaUtils {
 		forIdKey?: boolean,
 	): [string[][], any];
 
-/*
-	addRelationToEntitySelectClause(
-		dbRelation: DbRelation,
-		selectClause: any,
-		allowDefaults?: boolean
-	): void;
- */
+	/*
+		addRelationToEntitySelectClause(
+			dbRelation: DbRelation,
+			selectClause: any,
+			allowDefaults?: boolean
+		): void;
+	 */
 
 	forEachColumnOfRelation(
 		dbRelation: DbRelation,
@@ -157,7 +167,7 @@ export interface ISchemaUtils {
 		dbEntity: DbEntity,
 		qEntity: IQEntity,
 		setClause: any
-	): any[];
+	): GetSheetSelectFromSetClauseResult;
 
 	getTableName(
 		dbEntity: DbEntity

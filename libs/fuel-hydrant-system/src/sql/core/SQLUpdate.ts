@@ -7,6 +7,7 @@ import {
 	QRelation
 }                       from '@airport/air-control'
 import {
+	InternalFragments,
 	IStoreDriver,
 	JSONClauseObjectType,
 	JsonUpdate
@@ -33,6 +34,7 @@ export class SQLUpdate
 	}
 
 	toSQL(
+		internalFragments: InternalFragments,
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		metadataUtils: IQMetadataUtils
@@ -44,8 +46,13 @@ export class SQLUpdate
 			this.jsonUpdate.U, airDb, schemaUtils)
 		let setFragment    = this.getSetFragment(this.jsonUpdate.S,
 			airDb, schemaUtils, metadataUtils)
-		let whereFragment  = ''
-		let jsonQuery      = this.jsonUpdate
+		if (internalFragments.SET.length) {
+			setFragment += internalFragments.SET.map(
+				internalSetFragment => `
+	${internalSetFragment.column} = ${internalSetFragment.value}`).join('')
+		}
+		let whereFragment = ''
+		let jsonQuery     = this.jsonUpdate
 		if (jsonQuery.W) {
 			whereFragment  = this.getWHEREFragment(jsonQuery.W, '',
 				airDb, schemaUtils, metadataUtils)

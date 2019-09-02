@@ -627,7 +627,8 @@ export abstract class OperationManager
 		updateCache: IUpdateCache,
 		cascadeOverwrite: CascadeOverwrite
 	): Promise<ResultWithCascade> {
-		const qEntity                                = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
+		const qEntity                                =
+			      airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
 		const cascadeRecords: CascadeRecord[]        = []
 		const setFragment: any                       = {}
 		const idWhereFragments: JSONValueOperation[] = []

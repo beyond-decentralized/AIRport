@@ -378,6 +378,28 @@ export const MAPPED_SUPERCLASS = [
 					"nonArrayType": "number",
 					"primitive": "number",
 					"index": 2
+				},
+				{
+					"decorators": [
+						{
+							"name": "Column",
+							"values": [
+								{
+									"name": "SYSTEM_WIDE_OPERATION_ID"
+								}
+							]
+						}
+					],
+					"isGenerated": false,
+					"isId": false,
+					"isMappedSuperclass": false,
+					"isTransient": false,
+					"name": "systemWideOperationId",
+					"type": "number",
+					"ownerEntity": null,
+					"nonArrayType": "number",
+					"primitive": "number",
+					"index": 3
 				}
 			],
 			"methodSignatures": [],
@@ -832,6 +854,28 @@ export const MAPPED_SUPERCLASS = [
 						"nonArrayType": "number",
 						"primitive": "number",
 						"index": 2
+					},
+					{
+						"decorators": [
+							{
+								"name": "Column",
+								"values": [
+									{
+										"name": "SYSTEM_WIDE_OPERATION_ID"
+									}
+								]
+							}
+						],
+						"isGenerated": false,
+						"isId": false,
+						"isMappedSuperclass": false,
+						"isTransient": false,
+						"name": "systemWideOperationId",
+						"type": "number",
+						"ownerEntity": null,
+						"nonArrayType": "number",
+						"primitive": "number",
+						"index": 3
 					}
 				],
 				"methodSignatures": [],
@@ -1486,6 +1530,28 @@ export const MAPPED_SUPERCLASS = [
 						"nonArrayType": "number",
 						"primitive": "number",
 						"index": 2
+					},
+					{
+						"decorators": [
+							{
+								"name": "Column",
+								"values": [
+									{
+										"name": "SYSTEM_WIDE_OPERATION_ID"
+									}
+								]
+							}
+						],
+						"isGenerated": false,
+						"isId": false,
+						"isMappedSuperclass": false,
+						"isTransient": false,
+						"name": "systemWideOperationId",
+						"type": "number",
+						"ownerEntity": null,
+						"nonArrayType": "number",
+						"primitive": "number",
+						"index": 3
 					}
 				],
 				"methodSignatures": [],
@@ -2606,6 +2672,28 @@ export const MAPPED_SUPERCLASS = [
 							"nonArrayType": "number",
 							"primitive": "number",
 							"index": 2
+						},
+						{
+							"decorators": [
+								{
+									"name": "Column",
+									"values": [
+										{
+											"name": "SYSTEM_WIDE_OPERATION_ID"
+										}
+									]
+								}
+							],
+							"isGenerated": false,
+							"isId": false,
+							"isMappedSuperclass": false,
+							"isTransient": false,
+							"name": "systemWideOperationId",
+							"type": "number",
+							"ownerEntity": null,
+							"nonArrayType": "number",
+							"primitive": "number",
+							"index": 3
 						}
 					],
 					"methodSignatures": [],

@@ -1,4 +1,4 @@
-import {DI}     from '@airport/di'
+import {DI}                 from '@airport/di'
 import {
 	CascadeType,
 	CRUDOperation,
@@ -11,11 +11,8 @@ import {
 	repositoryEntity,
 	SchemaIndex,
 	TableIndex
-}               from '@airport/ground-control'
-import {
-	AIR_DB,
-	SCHEMA_UTILS
-}                           from '../../diTokens'
+}                           from '@airport/ground-control'
+import {SCHEMA_UTILS}       from '../../diTokens'
 import {
 	IAirportDatabase,
 	QSchemaInternal
@@ -25,15 +22,11 @@ import {
 	IQEntity
 }                           from '../../lingo/core/entity/Entity'
 import {
-	convertToY,
-	isY
-}                           from '../../lingo/query/facade/Query'
-import {
+	GetSheetSelectFromSetClauseResult,
 	IdKeysByIdColumnIndex,
 	ISchemaUtils
 }                           from '../../lingo/utils/SchemaUtils'
 import {QEntityConstructor} from '../core/entity/Entity'
-import {markAsStub}         from '../core/entity/EntityState'
 import {valuesEqual}        from '../Utils'
 
 
@@ -425,8 +418,13 @@ export class SchemaUtils
 		dbEntity: DbEntity,
 		qEntity: IQEntity,
 		setClause: any
-	): any[] {
-		const entitySelectClause = []
+	): GetSheetSelectFromSetClauseResult {
+		const selectClause     = []
+		let actorIdColumnIndex
+		let actorRecordIdColumnIndex
+		let draftColumnIndex
+		let draftColumnUpdated = false
+		let repositoryIdColumnIndex
 
 		for (const columnIndex in dbEntity.columns) {
 			const dbColumn   = dbEntity.columns[columnIndex]
@@ -436,19 +434,57 @@ export class SchemaUtils
 					dbProperty = propertyColumn.property
 					return dbProperty.isId
 				})
+
+			let nonIdColumnSet = false
 			if (isIdColumn) {
 				if (setClause[dbColumn.name]) {
 					throw new Error(`Cannot update @Id column '${dbColumn.name}' of property '${dbEntity.name}.${dbProperty.name}'.`)
 				}
-				this.addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause)
+				this.addColumnToSheetSelect(dbColumn, qEntity, selectClause)
 			} else if (setClause[dbColumn.name]) {
-				this.addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause)
+				nonIdColumnSet = true
+				this.addColumnToSheetSelect(dbColumn, qEntity, selectClause)
 				// } else {
 				// entitySelectClause[dbColumn.index] = null;
 			}
+
+			const inQueryColumnIndex = selectClause.length - 1
+
+			switch (dbColumn.name) {
+				case repositoryEntity.ACTOR_ID:
+					actorIdColumnIndex = inQueryColumnIndex
+					break
+				case repositoryEntity.ACTOR_RECORD_ID:
+					actorRecordIdColumnIndex = inQueryColumnIndex
+					break
+				case repositoryEntity.IS_DRAFT:
+					if (!nonIdColumnSet) {
+						this.addColumnToSheetSelect(dbColumn, qEntity, selectClause)
+					} else {
+						draftColumnUpdated = true
+					}
+					draftColumnIndex = inQueryColumnIndex
+					break
+				case repositoryEntity.REPOSITORY_ID:
+					repositoryIdColumnIndex = inQueryColumnIndex
+					break
+				case repositoryEntity.SYSTEM_WIDE_OPERATION_ID:
+					if (nonIdColumnSet) {
+						throw new Error(
+							`Cannot update 'systemWideOperationId' of Repository Entities.`)
+					}
+					break
+			}
 		}
 
-		return entitySelectClause
+		return {
+			actorIdColumnIndex,
+			actorRecordIdColumnIndex,
+			draftColumnIndex,
+			draftColumnUpdated,
+			repositoryIdColumnIndex,
+			selectClause
+		}
 	}
 
 	getTableName(
@@ -473,9 +509,9 @@ export class SchemaUtils
 				relationColumn = relationColumn[current]
 				return current
 			})
-			entitySelectClause[dbColumn.index] = relationColumn
+			entitySelectClause.push(relationColumn)
 		} else {
-			entitySelectClause[dbColumn.index] = qEntity[dbColumn.propertyColumns[0].property.name]
+			entitySelectClause.push(qEntity[dbColumn.propertyColumns[0].property.name])
 		}
 	}
 
@@ -533,4 +569,5 @@ export class SchemaUtils
 	}
 
 }
+
 DI.set(SCHEMA_UTILS, SchemaUtils)

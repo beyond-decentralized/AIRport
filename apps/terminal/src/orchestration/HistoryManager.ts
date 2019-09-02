@@ -6,6 +6,7 @@ import {
 	IRepositoryTransactionHistory,
 	ITransactionHistory,
 	REPO_TRANS_HISTORY_DUO,
+	RepositoryId,
 	TRANS_HISTORY_DUO
 }                        from '@airport/holding-pattern'
 import {HISTORY_MANAGER} from '../diTokens'
@@ -18,7 +19,7 @@ export interface IHistoryManager {
 
 	getNewRepoTransHistory(
 		transactionHistory: ITransactionHistory,
-		repository: IRepository,
+		repositoryId: RepositoryId,
 		actor: IActor
 	): Promise<IRepositoryTransactionHistory>;
 
@@ -41,14 +42,14 @@ export class HistoryManager
 
 	async getNewRepoTransHistory(
 		transactionHistory: ITransactionHistory,
-		repository: IRepository,
+		repositoryId: RepositoryId,
 		actor: IActor,
 	): Promise<IRepositoryTransactionHistory> {
 		const [repoTransHistoryDuo, transHistoryDuo] = await DI.get(
 			REPO_TRANS_HISTORY_DUO, TRANS_HISTORY_DUO)
 
 		return await transHistoryDuo.getRepositoryTransaction(
-				transactionHistory, repository, actor, repoTransHistoryDuo)
+			transactionHistory, repositoryId, actor, repoTransHistoryDuo)
 	}
 
 }

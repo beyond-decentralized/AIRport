@@ -283,6 +283,24 @@ export declare const MAPPED_SUPERCLASS: ({
             "primitive": string;
             "index": number;
             "entity"?: undefined;
+        } | {
+            "decorators": {
+                "name": string;
+                "values": {
+                    "name": string;
+                }[];
+            }[];
+            "isGenerated": boolean;
+            "isId": boolean;
+            "isMappedSuperclass": boolean;
+            "isTransient": boolean;
+            "name": string;
+            "type": string;
+            "ownerEntity": any;
+            "nonArrayType": string;
+            "primitive": string;
+            "index": number;
+            "entity"?: undefined;
         })[];
         "methodSignatures": any[];
         "constructors": {
@@ -632,6 +650,24 @@ export declare const MAPPED_SUPERCLASS: ({
                     "values": {
                         "name": string;
                         "nullable": boolean;
+                    }[];
+                }[];
+                "isGenerated": boolean;
+                "isId": boolean;
+                "isMappedSuperclass": boolean;
+                "isTransient": boolean;
+                "name": string;
+                "type": string;
+                "ownerEntity": any;
+                "nonArrayType": string;
+                "primitive": string;
+                "index": number;
+                "entity"?: undefined;
+            } | {
+                "decorators": {
+                    "name": string;
+                    "values": {
+                        "name": string;
                     }[];
                 }[];
                 "isGenerated": boolean;
@@ -1203,6 +1239,24 @@ export declare const MAPPED_SUPERCLASS: ({
                     "values": {
                         "name": string;
                         "nullable": boolean;
+                    }[];
+                }[];
+                "isGenerated": boolean;
+                "isId": boolean;
+                "isMappedSuperclass": boolean;
+                "isTransient": boolean;
+                "name": string;
+                "type": string;
+                "ownerEntity": any;
+                "nonArrayType": string;
+                "primitive": string;
+                "index": number;
+                "entity"?: undefined;
+            } | {
+                "decorators": {
+                    "name": string;
+                    "values": {
+                        "name": string;
                     }[];
                 }[];
                 "isGenerated": boolean;
@@ -2034,6 +2088,24 @@ export declare const MAPPED_SUPERCLASS: ({
                         "values": {
                             "name": string;
                             "nullable": boolean;
+                        }[];
+                    }[];
+                    "isGenerated": boolean;
+                    "isId": boolean;
+                    "isMappedSuperclass": boolean;
+                    "isTransient": boolean;
+                    "name": string;
+                    "type": string;
+                    "ownerEntity": any;
+                    "nonArrayType": string;
+                    "primitive": string;
+                    "index": number;
+                    "entity"?: undefined;
+                } | {
+                    "decorators": {
+                        "name": string;
+                        "values": {
+                            "name": string;
                         }[];
                     }[];
                     "isGenerated": boolean;

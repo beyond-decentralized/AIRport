@@ -5,11 +5,12 @@ const ddl_1 = require("../../ddl/ddl");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
 class RepositoryTransactionHistoryDuo extends generated_1.BaseRepositoryTransactionHistoryDuo {
-    getNewRecord(repository, actor) {
+    getNewRecord(repositoryId, actor) {
         let transaction = new ddl_1.RepositoryTransactionHistory();
         let saveTimestamp = new Date();
         transaction.saveTimestamp = saveTimestamp;
-        transaction.repository = repository;
+        transaction.repository = new ddl_1.Repository();
+        transaction.repository.id = repositoryId;
         transaction.actor = actor;
         // transaction.syncStatus = SyncStatus.SYNC_PENDING;
         return transaction;

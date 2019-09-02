@@ -25,7 +25,8 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 		fieldUtils: IFieldUtils
 	): IEUC {
 		const setClause: IEUC = <IEUC>{}
-		const dbEntity        = (<IQEntityInternal><any>this.rawUpdate.update).__driver__.dbEntity
+		const dbEntity        = (<IQEntityInternal><any>this.rawUpdate.update)
+			.__driver__.dbEntity
 		const dbColumnMap     = dbEntity.columnMap
 		const idDbColumnMap   = dbEntity.idColumnMap
 		for (const columnName in set) {

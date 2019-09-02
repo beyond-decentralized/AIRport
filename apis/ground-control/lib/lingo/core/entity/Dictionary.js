@@ -108,11 +108,14 @@ var table;
  */
 var repositoryEntity;
 (function (repositoryEntity) {
-    repositoryEntity.ENTITY_NAME = 'RepositoryEntity';
-    repositoryEntity.FOREIGN_KEY = 'REPOSITORY_ID';
-    repositoryEntity.REPOSITORY_ID = 'REPOSITORY_ID';
     repositoryEntity.ACTOR_ID = 'ACTOR_ID';
     repositoryEntity.ACTOR_RECORD_ID = 'ACTOR_RECORD_ID';
+    repositoryEntity.ENTITY_NAME = 'RepositoryEntity';
+    repositoryEntity.FOREIGN_KEY = 'REPOSITORY_ID';
+    repositoryEntity.IS_DRAFT = 'IS_DRAFT';
     repositoryEntity.LOCAL_ENTITY_NAME = 'LocalRepositoryEntity';
+    repositoryEntity.REPOSITORY_ID = 'REPOSITORY_ID';
+    repositoryEntity.SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID';
+    repositoryEntity.systemWideOperationId = 'systemWideOperationId';
 })(repositoryEntity = exports.repositoryEntity || (exports.repositoryEntity = {}));
 //# sourceMappingURL=Dictionary.js.map

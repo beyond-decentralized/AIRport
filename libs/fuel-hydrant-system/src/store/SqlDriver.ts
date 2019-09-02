@@ -21,6 +21,7 @@ import {
 	StoreType,
 	SyncSchemaMap
 }                            from '@airport/ground-control'
+import {InternalFragments}   from '@airport/ground-control/lib/src'
 import {ITransactionHistory} from '@airport/holding-pattern'
 import {
 	IObservable,
@@ -136,13 +137,14 @@ export abstract class SqlDriver
 
 	async updateWhere(
 		portableQuery: PortableQuery,
+		internalFragments: InternalFragments
 	): Promise<number> {
 		const [airDb, schemaUtils, metadataUtils] =
 			      await DI.get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
 
 		let sqlUpdate  = new SQLUpdate(airDb,
 			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(), this)
-		let sql        = sqlUpdate.toSQL(airDb, schemaUtils, metadataUtils)
+		let sql        = sqlUpdate.toSQL(internalFragments, airDb, schemaUtils, metadataUtils)
 		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap)
 
 		return await this.executeNative(sql, parameters)

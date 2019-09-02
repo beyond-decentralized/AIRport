@@ -203,11 +203,9 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			case 'undefined':
 				throw new Error(`Undefined is not allowed as a query parameter`)
 		}
-		if (value === null) {
-			return columnAliases.entityAliases.getParams()
-				.getNextAlias(functionObject as IQFunction<any>)
-		}
-		if (value instanceof Date) {
+		// TODO: this never gets called, is this needed?
+		/*
+		if (value === null || value instanceof Date) {
 			return columnAliases.entityAliases.getParams()
 				.getNextAlias(functionObject as IQFunction<any>)
 		}
@@ -218,5 +216,6 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		let rawFieldQuery: RawFieldQuery<any> = value
 		return fieldUtils.getFieldQueryJson(
 			rawFieldQuery, columnAliases.entityAliases, queryUtils)
+		 */
 	}
 }

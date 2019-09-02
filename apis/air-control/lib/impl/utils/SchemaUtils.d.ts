@@ -1,7 +1,7 @@
 import { CRUDOperation, DbColumn, DbEntity, DbRelation, SchemaIndex, TableIndex } from '@airport/ground-control';
 import { IAirportDatabase } from '../../lingo/AirportDatabase';
 import { IEntityIdProperties, IQEntity } from '../../lingo/core/entity/Entity';
-import { IdKeysByIdColumnIndex, ISchemaUtils } from '../../lingo/utils/SchemaUtils';
+import { GetSheetSelectFromSetClauseResult, IdKeysByIdColumnIndex, ISchemaUtils } from '../../lingo/utils/SchemaUtils';
 import { QEntityConstructor } from '../core/entity/Entity';
 export declare class SchemaUtils implements ISchemaUtils {
     static TEMP_ID: number;
@@ -31,7 +31,7 @@ export declare class SchemaUtils implements ISchemaUtils {
     forEachColumnTypeOfRelation(dbRelation: DbRelation, callback: {
         (dbColumn: DbColumn, propertyNameChains: string[][]): void | boolean;
     }): void;
-    getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity, setClause: any): any[];
+    getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity, setClause: any): GetSheetSelectFromSetClauseResult;
     getTableName(dbEntity: DbEntity): string;
     private addColumnToSheetSelect;
     private handleNoId;

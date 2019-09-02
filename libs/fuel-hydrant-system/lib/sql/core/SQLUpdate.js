@@ -13,12 +13,16 @@ class SQLUpdate extends SQLNoJoinQuery_1.SQLNoJoinQuery {
             .currentVersion.entities[jsonUpdate.U.ti], dialect, storeDriver);
         this.jsonUpdate = jsonUpdate;
     }
-    toSQL(airDb, schemaUtils, metadataUtils) {
+    toSQL(internalFragments, airDb, schemaUtils, metadataUtils) {
         if (!this.jsonUpdate.U) {
             throw new Error(`Expecting exactly one table in UPDATE clause`);
         }
         let updateFragment = this.getTableFragment(this.jsonUpdate.U, airDb, schemaUtils);
         let setFragment = this.getSetFragment(this.jsonUpdate.S, airDb, schemaUtils, metadataUtils);
+        if (internalFragments.SET.length) {
+            setFragment += internalFragments.SET.map(internalSetFragment => `
+	${internalSetFragment.column} = ${internalSetFragment.value}`).join('');
+        }
         let whereFragment = '';
         let jsonQuery = this.jsonUpdate;
         if (jsonQuery.W) {

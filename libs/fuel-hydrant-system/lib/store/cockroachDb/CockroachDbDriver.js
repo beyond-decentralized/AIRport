@@ -201,10 +201,10 @@ class CockroachdbDriver extends SqLiteDriver_1.SqLiteDriver {
         throw error;
     }
 }
+exports.CockroachdbDriver = CockroachdbDriver;
 CockroachdbDriver.BACKUP_LOCAL = 2;
 CockroachdbDriver.BACKUP_LIBRARY = 1;
 CockroachdbDriver.BACKUP_DOCUMENTS = 0;
-exports.CockroachdbDriver = CockroachdbDriver;
 function runSqlSeries(tx, sqls, parameterss, fnum, callback) {
     if (typeof sqls === 'string') {
         sqls = [sqls];
