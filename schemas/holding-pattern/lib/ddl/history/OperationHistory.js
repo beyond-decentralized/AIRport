@@ -37,6 +37,9 @@ __decorate([
     air_control_1.DbNumber()
 ], OperationHistory.prototype, "changeType", void 0);
 __decorate([
+    air_control_1.Column({ name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false })
+], OperationHistory.prototype, "systemWideOperationId", void 0);
+__decorate([
     air_control_1.ManyToOne(),
     air_control_1.JoinColumn({ name: 'ENTITY_ID', referencedColumnName: 'ID', nullable: false })
 ], OperationHistory.prototype, "entity", void 0);

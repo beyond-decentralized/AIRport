@@ -7,6 +7,7 @@ import {
 }                            from '@airport/air-control'
 import {DI}                  from '@airport/di'
 import {
+	InternalFragments,
 	IStoreDriver,
 	JsonDelete,
 	JsonEntityQuery,
@@ -21,7 +22,6 @@ import {
 	StoreType,
 	SyncSchemaMap
 }                            from '@airport/ground-control'
-import {InternalFragments}   from '@airport/ground-control/lib/src'
 import {ITransactionHistory} from '@airport/holding-pattern'
 import {
 	IObservable,
@@ -157,18 +157,19 @@ export abstract class SqlDriver
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
+		internalFragments: InternalFragments,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
 		const [airDb, schemaUtils, metadataUtils] =
 			      await DI.get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
 
 		const sqlQuery   = this.getSQLQuery(portableQuery, airDb, schemaUtils)
-		const sql        = sqlQuery.toSQL(airDb, schemaUtils, metadataUtils)
+		const sql        = sqlQuery.toSQL(internalFragments, airDb, schemaUtils, metadataUtils)
 		const parameters = sqlQuery.getParameters(portableQuery.parameterMap)
 
 		let results = await this.findNative(sql, parameters)
 		results     = sqlQuery.parseQueryResults(
-			airDb, schemaUtils, results, portableQuery.queryResultType)
+			airDb, schemaUtils, results, internalFragments, portableQuery.queryResultType)
 
 		// FIXME: convert to MappedEntityArray if needed
 		return <EntityArray>results
@@ -216,9 +217,10 @@ export abstract class SqlDriver
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
+		internalFragments: InternalFragments,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		let results = await this.find(portableQuery)
+		let results = await this.find(portableQuery, internalFragments)
 
 		if (results.length > 1) {
 			throw new Error(`Expecting a single result, got ${results.length}`)
@@ -231,6 +233,7 @@ export abstract class SqlDriver
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
+		internalFragments: InternalFragments,
 		cachedSqlQueryId?: number,
 	): IObservable<EntityArray> {
 		let resultsSubject                 = new Subject<EntityArray>(() => {
@@ -246,7 +249,7 @@ export abstract class SqlDriver
 		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any>{
 			resultsSubject: resultsSubject,
 			runQuery: () => {
-				this.find(portableQuery).then((results: E[]) => {
+				this.find(portableQuery, internalFragments).then((results: E[]) => {
 					// FIXME: convert to MappedEntityArray if needed
 					resultsSubject.next(<EntityArray>results)
 				})
@@ -260,6 +263,7 @@ export abstract class SqlDriver
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
+		internalFragments: InternalFragments,
 		cachedSqlQueryId?: number,
 	): IObservable<E> {
 		let resultsSubject                 = new Subject<E>(() => {
@@ -275,7 +279,7 @@ export abstract class SqlDriver
 		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any>{
 			resultsSubject: resultsSubject,
 			runQuery: () => {
-				this.findOne(portableQuery).then((result: E) => {
+				this.findOne(portableQuery, internalFragments).then((result: E) => {
 					resultsSubject.next(result)
 				})
 			}

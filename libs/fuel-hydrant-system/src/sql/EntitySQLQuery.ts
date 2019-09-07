@@ -21,6 +21,7 @@ import {
 	DbEntity,
 	DbProperty,
 	EntityRelationType,
+	InternalFragments,
 	IStoreDriver,
 	JoinType,
 	JsonEntityQuery,
@@ -75,6 +76,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 	}
 
 	toSQL(
+		internalFragments: InternalFragments,
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		metadataUtils: IQMetadataUtils
@@ -333,7 +335,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				if (childSelectClauseFragment === null || childSelectClauseFragment.__state__ === EntityState.STUB) {
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
-							let haveRelationValues = true
+							let haveRelationValues                    = true
 							let relationInfos: ReferencedColumnData[] = []
 							schemaUtils.forEachColumnTypeOfRelation(dbRelation, (
 								dbColumn: DbColumn,

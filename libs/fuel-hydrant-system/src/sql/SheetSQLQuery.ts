@@ -4,6 +4,7 @@ import {
 	ISchemaUtils
 }                           from '@airport/air-control'
 import {
+	InternalFragments,
 	IStoreDriver,
 	JSONClauseField,
 	JSONClauseObjectType,
@@ -37,6 +38,7 @@ export class SheetSQLQuery
 	protected getSELECTFragment(
 		nested: boolean,
 		selectClauseFragment: any,
+		internalFragments: InternalFragments,
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		metadataUtils: IQMetadataUtils
@@ -48,7 +50,7 @@ export class SheetSQLQuery
 			let distinctClause = <JSONClauseField>selectClauseFragment
 			if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
 				let distinctSelect = this.getSELECTFragment(
-					nested, distinctClause.af[0].p[0],
+					nested, distinctClause.af[0].p[0], internalFragments,
 					airDb, schemaUtils, metadataUtils)
 				return `DISTINCT ${distinctSelect}`
 			}
@@ -63,6 +65,16 @@ export class SheetSQLQuery
 				null, fieldIndex++, airDb, schemaUtils, metadataUtils)
 		}).join('')
 
+		const selectClause = internalFragments.SELECT
+		if(selectClause && selectClause.length) {
+			if(fieldIndex) {
+				selectSqlFragment += '\n\t,'
+			}
+			selectSqlFragment += selectClause
+				.map(dbColumn => `${dbColumn.name}`)
+				.join('\n\t,')
+		}
+
 
 		return selectSqlFragment
 	}
@@ -70,7 +82,8 @@ export class SheetSQLQuery
 	parseQueryResults(
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
-		results: any[]
+		results: any[],
+		internalFragments: InternalFragments
 	): any[] {
 		let parsedResults: any[] = []
 		if (!results || !results.length) {
@@ -79,7 +92,8 @@ export class SheetSQLQuery
 		parsedResults = []
 		let lastResult
 		results.forEach((result) => {
-			let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0])
+			let parsedResult = this.parseQueryResult(
+				this.jsonQuery.S, result, [0], internalFragments)
 			parsedResults.push(parsedResult)
 		})
 
@@ -90,12 +104,26 @@ export class SheetSQLQuery
 		selectClauseFragment: any,
 		resultRow: any,
 		nextFieldIndex: number[],
+		internalFragments: InternalFragments
 	): any {
-		return selectClauseFragment.map((field: JSONClauseField) => {
-			let propertyValue = this.sqlAdaptor.getResultCellValue(resultRow, field.fa, nextFieldIndex[0], field.dt, null)
+		const resultsFromSelect = selectClauseFragment.map((field: JSONClauseField) => {
+			let propertyValue = this.sqlAdaptor.getResultCellValue(
+				resultRow, field.fa, nextFieldIndex[0], field.dt, null)
 			nextFieldIndex[0]++
 			return propertyValue
 		})
+		const selectClause = internalFragments.SELECT
+
+		if(selectClause && selectClause.length) {
+			for(const dbColumn of selectClause) {
+				let propertyValue = this.sqlAdaptor.getResultCellValue(
+					resultRow, dbColumn.name, nextFieldIndex[0], dbColumn.type, null)
+				resultsFromSelect.push(propertyValue)
+				nextFieldIndex[0]++
+			}
+		}
+
+		return resultsFromSelect
 	}
 
 }

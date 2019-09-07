@@ -5,7 +5,6 @@ import {
 	GeneratedValue,
 	Id,
 	JoinColumn,
-	JoinColumns,
 	ManyToOne,
 	OneToMany,
 	SequenceGenerator,
@@ -16,9 +15,11 @@ import {
 	ChangeType
 }                                      from '@airport/ground-control'
 import {
-	ISchemaEntity,
-	ISchemaVersion
+	ISchemaEntity
 }                                      from '@airport/traffic-pattern'
+import {
+	SystemWideOperationId
+} from '../common'
 import {IOperationHistory,}            from '../../generated/history/qoperationhistory'
 import {IRecordHistory,}               from '../../generated/history/qrecordhistory'
 import {IRepositoryTransactionHistory} from '../../generated/history/qrepositorytransactionhistory'
@@ -29,6 +30,7 @@ import {IRepositoryTransactionHistory} from '../../generated/history/qrepository
 
 export type OperationHistoryId = number;
 export type OperationHistoryOrderNumber = number;
+export type OperationHistorySystemWideOperationId = SystemWideOperationId;
 
 /**
  * Marks a group of mutation history changes.
@@ -57,6 +59,10 @@ export class OperationHistory
 	@Column({name: 'CHANGE_TYPE', nullable: false})
 	@DbNumber()
 	changeType: ChangeType
+
+	// This field is local to the device only, when copied to new device this value is re-created
+	@Column({name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false})
+	systemWideOperationId: OperationHistorySystemWideOperationId
 
 	@ManyToOne()
 	@JoinColumn({name: 'ENTITY_ID', referencedColumnName: 'ID', nullable: false})

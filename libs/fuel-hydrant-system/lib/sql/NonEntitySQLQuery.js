@@ -16,11 +16,11 @@ class NonEntitySQLQuery extends SQLQuery_1.SQLQuery {
             this.qEntityMapByAlias[alias] = sourceMap[alias];
         }
     }
-    toSQL(airDb, schemaUtils, metadataUtils) {
+    toSQL(internalFragments, airDb, schemaUtils, metadataUtils) {
         let jsonQuery = this.jsonQuery;
         let joinNodeMap = {};
         this.joinTrees = this.buildFromJoinTree(jsonQuery.F, joinNodeMap, airDb, schemaUtils);
-        let selectFragment = this.getSELECTFragment(false, jsonQuery.S, airDb, schemaUtils, metadataUtils);
+        let selectFragment = this.getSELECTFragment(false, jsonQuery.S, internalFragments, airDb, schemaUtils, metadataUtils);
         let fromFragment = this.getFROMFragments(this.joinTrees, airDb, schemaUtils, metadataUtils);
         let whereFragment = '';
         if (jsonQuery.W) {

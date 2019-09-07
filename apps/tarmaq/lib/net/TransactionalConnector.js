@@ -77,7 +77,7 @@ class TransactionalConnector {
     }
     async deleteWhere(portableQuery, transactionIndex) {
         const transServer = await di_1.DI.get(tower_1.TRANS_SERVER);
-        return await transServer.updateValues(portableQuery, {
+        return await transServer.deleteWhere(portableQuery, {
             domainAndPort: 'test'
         }, transactionIndex);
     }

@@ -1,6 +1,5 @@
 import { IAirportDatabase, ISchemaUtils } from '@airport/air-control';
-import { IStoreDriver, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
-import { InternalFragments } from '@airport/ground-control/lib/src';
+import { InternalFragments, IStoreDriver, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { ITransactionHistory } from '@airport/holding-pattern';
 import { IObservable } from '@airport/observe';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
@@ -21,13 +20,13 @@ export declare abstract class SqlDriver implements IStoreDriver {
     deleteWhere(portableQuery: PortableQuery): Promise<number>;
     updateWhere(portableQuery: PortableQuery, internalFragments: InternalFragments): Promise<number>;
     protected abstract executeNative(sql: string, parameters: any[]): Promise<number>;
-    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<EntityArray>;
+    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, cachedSqlQueryId?: number): Promise<EntityArray>;
     getSQLQuery(portableQuery: PortableQuery, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): SQLQuery<any>;
     abstract isValueValid(value: any, sqlDataType: SQLDataType): boolean;
     abstract findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
-    findOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<E>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<E>;
+    findOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, cachedSqlQueryId?: number): Promise<E>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, cachedSqlQueryId?: number): IObservable<EntityArray>;
+    searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, cachedSqlQueryId?: number): IObservable<E>;
     warn(message: string): void;
     abstract doesTableExist(tableName: string): Promise<boolean>;
     abstract dropTable(tableName: string): Promise<boolean>;

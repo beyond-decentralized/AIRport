@@ -56,6 +56,20 @@ exports.SCHEMA = {
                         {
                             "index": 3,
                             "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "SYSTEM_WIDE_OPERATION_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -77,7 +91,7 @@ exports.SCHEMA = {
                             "type": 4
                         },
                         {
-                            "index": 4,
+                            "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -92,7 +106,7 @@ exports.SCHEMA = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 4
+                                    "index": 5
                                 }
                             ],
                             "sinceVersion": 1,
@@ -104,7 +118,7 @@ exports.SCHEMA = {
                             "index": 0
                         },
                         {
-                            "index": 3
+                            "index": 4
                         }
                     ],
                     "index": 0,
@@ -149,7 +163,16 @@ exports.SCHEMA = {
                             "sinceVersion": 1
                         },
                         {
+                            "columnRef": {
+                                "index": 3
+                            },
                             "index": 4,
+                            "isId": false,
+                            "name": "systemWideOperationId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
                             "isId": false,
                             "name": "entity",
                             "relationRef": {
@@ -158,7 +181,7 @@ exports.SCHEMA = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 5,
+                            "index": 6,
                             "isId": false,
                             "name": "recordHistory",
                             "relationRef": {
@@ -183,7 +206,7 @@ exports.SCHEMA = {
                             "isId": false,
                             "relationType": 1,
                             "propertyRef": {
-                                "index": 4
+                                "index": 5
                             },
                             "relationTableIndex": 5,
                             "relationTableSchemaIndex": 0,
@@ -198,7 +221,7 @@ exports.SCHEMA = {
                             },
                             "relationType": 0,
                             "propertyRef": {
-                                "index": 5
+                                "index": 6
                             },
                             "relationTableIndex": 1,
                             "sinceVersion": 1

@@ -263,13 +263,14 @@ class SchemaUtils {
             }
         }
     }
-    getSheetSelectFromSetClause(dbEntity, qEntity, setClause) {
+    getSheetSelectFromSetClause(dbEntity, qEntity, setClause, errorPrefix) {
         const selectClause = [];
         let actorIdColumnIndex;
         let actorRecordIdColumnIndex;
         let draftColumnIndex;
         let draftColumnUpdated = false;
         let repositoryIdColumnIndex;
+        let systemWideOperationIdColumn;
         for (const columnIndex in dbEntity.columns) {
             const dbColumn = dbEntity.columns[columnIndex];
             let dbProperty;
@@ -280,7 +281,8 @@ class SchemaUtils {
             let nonIdColumnSet = false;
             if (isIdColumn) {
                 if (setClause[dbColumn.name]) {
-                    throw new Error(`Cannot update @Id column '${dbColumn.name}' of property '${dbEntity.name}.${dbProperty.name}'.`);
+                    throw new Error(errorPrefix + `Cannot update @Id column '${dbColumn.name}' 
+of property '${dbEntity.name}.${dbProperty.name}'.`);
                 }
                 this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
             }
@@ -312,8 +314,10 @@ class SchemaUtils {
                     break;
                 case ground_control_1.repositoryEntity.SYSTEM_WIDE_OPERATION_ID:
                     if (nonIdColumnSet) {
-                        throw new Error(`Cannot update 'systemWideOperationId' of Repository Entities.`);
+                        throw new Error(errorPrefix +
+                            `Cannot update 'systemWideOperationId' of Repository Entities.`);
                     }
+                    systemWideOperationIdColumn = dbColumn;
                     break;
             }
         }
@@ -323,7 +327,8 @@ class SchemaUtils {
             draftColumnIndex,
             draftColumnUpdated,
             repositoryIdColumnIndex,
-            selectClause
+            selectClause,
+            systemWideOperationIdColumn
         };
     }
     getTableName(dbEntity) {

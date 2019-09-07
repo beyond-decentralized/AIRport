@@ -16,13 +16,13 @@ class TreeSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         this.queryParser = new TreeQueryResultParser_1.TreeQueryResultParser();
         this.orderByParser = new MappedOrderByParser_1.MappedOrderByParser(this.validator);
     }
-    getSELECTFragment(nested, selectClauseFragment, airDb, schemaUtils, metadataUtils) {
+    getSELECTFragment(nested, selectClauseFragment, internalFragments, airDb, schemaUtils, metadataUtils) {
         const distinctClause = selectClauseFragment;
         if (distinctClause.ot == ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION) {
             if (nested) {
                 throw new Error(`Cannot have DISTINCT specified in a nested select clause`);
             }
-            const distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0], airDb, schemaUtils, metadataUtils);
+            const distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0], internalFragments, airDb, schemaUtils, metadataUtils);
             return `DISTINCT ${distinctSelect}`;
         }
         let numProperties = 0;
@@ -53,7 +53,7 @@ class TreeSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
                 continue;
             }
             selectSqlFragment += this.getFieldSelectFragment(value, SQLWhereBase_1.ClauseType.MAPPED_SELECT_CLAUSE, () => {
-                return this.getSELECTFragment(true, value, airDb, schemaUtils, metadataUtils);
+                return this.getSELECTFragment(true, value, internalFragments, airDb, schemaUtils, metadataUtils);
             }, fieldIndex++, airDb, schemaUtils, metadataUtils);
         }
         return selectSqlFragment;

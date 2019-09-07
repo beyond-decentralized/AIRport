@@ -98,6 +98,8 @@ export declare namespace repositoryEntity {
     const IS_DRAFT = "IS_DRAFT";
     const LOCAL_ENTITY_NAME = "LocalRepositoryEntity";
     const REPOSITORY_ID = "REPOSITORY_ID";
-    const SYSTEM_WIDE_OPERATION_ID = "SYSTEM_WIDE_OPERATION_ID";
+    const SYS_WIDE_OP_ID_SCHEMA = "npmjs_org___airport__airport_code";
+    const SYS_WIDE_OP_ID_ENTITY = "SystemWideOperationId";
     const systemWideOperationId = "systemWideOperationId";
+    const SYSTEM_WIDE_OPERATION_ID = "SYSTEM_WIDE_OPERATION_ID";
 }

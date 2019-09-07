@@ -49,8 +49,8 @@ class RepositoryTransactionHistoryDuo extends generated_1.BaseRepositoryTransact
             return actorRandomIdComparison;
         });
     }
-    startOperation(repositoryTransactionHistory, entityChangeType, dbEntity, operHistoryDuo) {
-        let operationHistory = operHistoryDuo.getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory);
+    startOperation(repositoryTransactionHistory, systemWideOperationId, entityChangeType, dbEntity, operHistoryDuo) {
+        let operationHistory = operHistoryDuo.getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory, systemWideOperationId);
         repositoryTransactionHistory.operationHistory.push(operationHistory);
         repositoryTransactionHistory
             .transactionHistory.allOperationHistory.push(operationHistory);

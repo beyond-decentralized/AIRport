@@ -1,8 +1,13 @@
 import {
+	IAirportDatabase,
+	QSchemaInternal
+} from '@airport/air-control'
+import {
 	DbColumn,
 	DbEntity,
 	DbSchema,
-	DbSequence
+	DbSequence,
+	repositoryEntity
 } from '@airport/ground-control'
 
 /**
@@ -58,4 +63,21 @@ export function duoDiSet(
 	dbEntityId: number
 ): boolean {
 	return dbSchema && dbSchema.currentVersion.entities[dbEntityId] as any as boolean
+}
+
+
+export async function getSysWideOpId(
+	airDb: IAirportDatabase,
+	sequenceGenerator: ISequenceGenerator
+): Promise<number> {
+	const sysWideOpIdGeneratedColumn
+		      = (airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA] as QSchemaInternal)
+		.__dbSchema__.currentVersion
+		.entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID']
+
+	const generatedNumWrapper = await sequenceGenerator
+		.generateSequenceNumbers(
+			[sysWideOpIdGeneratedColumn], [1])
+
+	return generatedNumWrapper[0][0]
 }

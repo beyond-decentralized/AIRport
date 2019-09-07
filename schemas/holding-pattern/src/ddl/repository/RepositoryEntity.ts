@@ -5,17 +5,18 @@ import {
 	JoinColumn,
 	ManyToOne,
 	MappedSuperclass
-}                    from '@airport/air-control'
-import {IActor}      from '../../generated/infrastructure/qactor'
-import {IRepository} from '../../generated/repository/qrepository'
-import {Stageable}   from '../infrastructure/Stageable'
+}                              from '@airport/air-control'
+import {IActor}                from '../../generated/infrastructure/qactor'
+import {IRepository}           from '../../generated/repository/qrepository'
+import {SystemWideOperationId} from '../common'
+import {Stageable}             from '../infrastructure/Stageable'
 
 /**
  * Created by Papa on 2/17/2017.
  */
 
-export type RepositoryEntityActorRecordId = number;
-export type RepositoryEntitySystemWideOperationId = number;
+export type RepositoryEntityActorRecordId = number
+export type RepositoryEntitySystemWideOperationId = SystemWideOperationId
 
 @MappedSuperclass()
 export abstract class RepositoryEntity
@@ -42,6 +43,7 @@ export abstract class RepositoryEntity
 	@GeneratedValue()
 	actorRecordId: RepositoryEntityActorRecordId
 
+	// This field is local to the device only, when copied to new device this value is re-created
 	@Column({name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false})
 	systemWideOperationId: RepositoryEntitySystemWideOperationId
 

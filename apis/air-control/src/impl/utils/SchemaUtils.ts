@@ -12,7 +12,6 @@ import {
 	SchemaIndex,
 	TableIndex
 }                           from '@airport/ground-control'
-import {IQFieldInternal}    from '../..'
 import {SCHEMA_UTILS}       from '../../diTokens'
 import {
 	IAirportDatabase,
@@ -22,11 +21,12 @@ import {
 	IEntityIdProperties,
 	IQEntity
 }                           from '../../lingo/core/entity/Entity'
+import {IQFieldInternal}    from '../../lingo/core/field/Field'
 import {
-	GetSheetSelectFromSetClauseResult,
+	RepositorySheetSelectInfo,
 	IdKeysByIdColumnIndex,
 	ISchemaUtils
-}                           from '../../lingo/utils/SchemaUtils'
+} from '../../lingo/utils/SchemaUtils'
 import {QEntityConstructor} from '../core/entity/Entity'
 import {valuesEqual}        from '../Utils'
 
@@ -418,14 +418,16 @@ export class SchemaUtils
 	getSheetSelectFromSetClause(
 		dbEntity: DbEntity,
 		qEntity: IQEntity,
-		setClause: any
-	): GetSheetSelectFromSetClauseResult {
+		setClause: any,
+		errorPrefix: string
+	): RepositorySheetSelectInfo {
 		const selectClause: IQFieldInternal<any>[] = []
-		let actorIdColumnIndex
-		let actorRecordIdColumnIndex
-		let draftColumnIndex
+		let actorIdColumnIndex: number
+		let actorRecordIdColumnIndex: number
+		let draftColumnIndex: number
 		let draftColumnUpdated                     = false
-		let repositoryIdColumnIndex
+		let repositoryIdColumnIndex: number
+		let systemWideOperationIdColumn: DbColumn
 
 		for (const columnIndex in dbEntity.columns) {
 			const dbColumn   = dbEntity.columns[columnIndex]
@@ -439,7 +441,8 @@ export class SchemaUtils
 			let nonIdColumnSet = false
 			if (isIdColumn) {
 				if (setClause[dbColumn.name]) {
-					throw new Error(`Cannot update @Id column '${dbColumn.name}' of property '${dbEntity.name}.${dbProperty.name}'.`)
+					throw new Error(errorPrefix + `Cannot update @Id column '${dbColumn.name}' 
+of property '${dbEntity.name}.${dbProperty.name}'.`)
 				}
 				this.addColumnToSheetSelect(dbColumn, qEntity, selectClause)
 			} else if (setClause[dbColumn.name]) {
@@ -471,9 +474,10 @@ export class SchemaUtils
 					break
 				case repositoryEntity.SYSTEM_WIDE_OPERATION_ID:
 					if (nonIdColumnSet) {
-						throw new Error(
+						throw new Error(errorPrefix +
 							`Cannot update 'systemWideOperationId' of Repository Entities.`)
 					}
+					systemWideOperationIdColumn = dbColumn
 					break
 			}
 		}
@@ -484,7 +488,8 @@ export class SchemaUtils
 			draftColumnIndex,
 			draftColumnUpdated,
 			repositoryIdColumnIndex,
-			selectClause
+			selectClause,
+			systemWideOperationIdColumn
 		}
 	}
 

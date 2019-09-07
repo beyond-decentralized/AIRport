@@ -9,6 +9,7 @@ import {
 	DbEntity,
 	DbRelationColumn,
 	EntityRelationType,
+	InternalFragments,
 	IStoreDriver,
 	JSONEntityRelation,
 	JsonQuery,
@@ -70,6 +71,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	}
 
 	abstract toSQL(
+		internalFragments: InternalFragments,
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		metadataUtils: IQMetadataUtils
@@ -91,6 +93,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		results: any[],
+		internalFragments: InternalFragments,
 		queryResultType: QueryResultType,
 		bridgedQueryConfiguration?: any
 	): any[];

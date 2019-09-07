@@ -7,7 +7,8 @@ import {
 	ActorId,
 	Repository,
 	RepositoryId,
-	RepositoryTransactionHistory
+	RepositoryTransactionHistory,
+	SystemWideOperationId
 } from '../../ddl/ddl'
 import {REPO_TRANS_HISTORY_DUO} from '../../diTokens'
 import {
@@ -37,6 +38,7 @@ export interface IRepositoryTransactionHistoryDuo {
 
 	startOperation(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
+		systemWideOperationId: SystemWideOperationId,
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
 		operHistoryDuo: IOperationHistoryDuo
@@ -122,12 +124,14 @@ export class RepositoryTransactionHistoryDuo
 
 	startOperation(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
+		systemWideOperationId: SystemWideOperationId,
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
 		operHistoryDuo: IOperationHistoryDuo
 	): IOperationHistory {
 		let operationHistory = operHistoryDuo.getNewRecord(
-			entityChangeType, dbEntity, repositoryTransactionHistory)
+			entityChangeType, dbEntity, repositoryTransactionHistory,
+			systemWideOperationId)
 		repositoryTransactionHistory.operationHistory.push(operationHistory)
 
 		repositoryTransactionHistory

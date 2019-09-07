@@ -23,7 +23,7 @@ class EntitySQLQuery extends SQLQuery_1.SQLQuery {
         this.finalSelectTree = this.setupSelectFields(this.jsonQuery.S, dbEntity, schemaUtils);
         this.orderByParser = new EntityOrderByParser_1.EntityOrderByParser(this.finalSelectTree, this.validator, jsonQuery.OB);
     }
-    toSQL(airDb, schemaUtils, metadataUtils) {
+    toSQL(internalFragments, airDb, schemaUtils, metadataUtils) {
         let joinNodeMap = {};
         this.joinTree = this.buildFromJoinTree(this.jsonQuery.F, joinNodeMap, airDb, schemaUtils);
         let selectFragment = this.getSELECTFragment(this.dbEntity, this.finalSelectTree, this.joinTree);

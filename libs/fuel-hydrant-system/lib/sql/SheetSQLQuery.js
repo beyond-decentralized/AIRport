@@ -15,14 +15,14 @@ class SheetSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         super(jsonQuery, dialect, ground_control_1.QueryResultType.SHEET, storeDriver);
         this.orderByParser = new ExactOrderByParser_1.ExactOrderByParser(this.validator);
     }
-    getSELECTFragment(nested, selectClauseFragment, airDb, schemaUtils, metadataUtils) {
+    getSELECTFragment(nested, selectClauseFragment, internalFragments, airDb, schemaUtils, metadataUtils) {
         if (!selectClauseFragment) {
             throw new Error(`SELECT clause is not defined for a Flat Query`);
         }
         {
             let distinctClause = selectClauseFragment;
             if (distinctClause.ot == ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION) {
-                let distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0], airDb, schemaUtils, metadataUtils);
+                let distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0], internalFragments, airDb, schemaUtils, metadataUtils);
                 return `DISTINCT ${distinctSelect}`;
             }
         }
@@ -33,9 +33,18 @@ class SheetSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         let selectSqlFragment = selectClauseFragment.map((field) => {
             return this.getFieldSelectFragment(field, SQLWhereBase_1.ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++, airDb, schemaUtils, metadataUtils);
         }).join('');
+        const selectClause = internalFragments.SELECT;
+        if (selectClause && selectClause.length) {
+            if (fieldIndex) {
+                selectSqlFragment += '\n\t,';
+            }
+            selectSqlFragment += selectClause
+                .map(dbColumn => `${dbColumn.name}`)
+                .join('\n\t,');
+        }
         return selectSqlFragment;
     }
-    parseQueryResults(airDb, schemaUtils, results) {
+    parseQueryResults(airDb, schemaUtils, results, internalFragments) {
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;
@@ -43,17 +52,26 @@ class SheetSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         parsedResults = [];
         let lastResult;
         results.forEach((result) => {
-            let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0]);
+            let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0], internalFragments);
             parsedResults.push(parsedResult);
         });
         return parsedResults;
     }
-    parseQueryResult(selectClauseFragment, resultRow, nextFieldIndex) {
-        return selectClauseFragment.map((field) => {
+    parseQueryResult(selectClauseFragment, resultRow, nextFieldIndex, internalFragments) {
+        const resultsFromSelect = selectClauseFragment.map((field) => {
             let propertyValue = this.sqlAdaptor.getResultCellValue(resultRow, field.fa, nextFieldIndex[0], field.dt, null);
             nextFieldIndex[0]++;
             return propertyValue;
         });
+        const selectClause = internalFragments.SELECT;
+        if (selectClause && selectClause.length) {
+            for (const dbColumn of selectClause) {
+                let propertyValue = this.sqlAdaptor.getResultCellValue(resultRow, dbColumn.name, nextFieldIndex[0], dbColumn.type, null);
+                resultsFromSelect.push(propertyValue);
+                nextFieldIndex[0]++;
+            }
+        }
+        return resultsFromSelect;
     }
 }
 exports.SheetSQLQuery = SheetSQLQuery;

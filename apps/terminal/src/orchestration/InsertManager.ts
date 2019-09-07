@@ -1,11 +1,13 @@
 import {AIR_DB}             from '@airport/air-control'
 import {
+	getSysWideOpId,
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
 }                           from '@airport/check-in'
 import {DI}                 from '@airport/di'
 import {
 	ChangeType,
+	DbColumn,
 	DbEntity,
 	JsonInsertValues,
 	PortableQuery,
@@ -23,7 +25,8 @@ import {
 	OPER_HISTORY_DUO,
 	REC_HIST_NEW_VALUE_DUO,
 	REC_HISTORY_DUO,
-	REPO_TRANS_HISTORY_DUO
+	REPO_TRANS_HISTORY_DUO,
+	SystemWideOperationId
 }                           from '@airport/holding-pattern'
 import {
 	DistributionStrategy,
@@ -63,6 +66,11 @@ export interface IInsertManager {
 		distributionStrategy: DistributionStrategy,
 	): Promise<number>;
 
+}
+
+interface ColumnsToPopulate {
+	actorIdColumn: DbColumn
+	sysWideOperationIdColumn: DbColumn
 }
 
 export class InsertManager
@@ -117,34 +125,56 @@ export class InsertManager
 		const dbEntity = airDb.schemas[portableQuery.schemaIndex]
 			.currentVersion.entities[portableQuery.tableIndex]
 
+		const errorPrefix = `Error inserting into '${dbEntity.name}'.'
+`
+
 		const jsonInsertValues = portableQuery.jsonQuery as JsonInsertValues
 
 		const columnIndexSet = {}
 		for (const columnIndex of jsonInsertValues.C) {
 			if (columnIndex < 0 || columnIndex >= dbEntity.columns.length) {
-				throw new Error(`Invalid column index: ${columnIndex}`)
+				throw new Error(errorPrefix +
+					`Invalid column index: ${columnIndex}`)
 			}
 			if (columnIndexSet[columnIndex]) {
-				throw new Error(`Column ${dbEntity.name}.${dbEntity.columns[columnIndex].name} 
-				appears more than once in the Columns clause`)
+				throw new Error(errorPrefix +
+					`Column ${dbEntity.name}.${dbEntity.columns[columnIndex].name} 
+appears more than once in the Columns clause`)
 			}
 			columnIndexSet[columnIndex] = true
 		}
 
+		let columnsToPopulate: ColumnsToPopulate
+
+		const insertValues = <JsonInsertValues>portableQuery.jsonQuery
+
 		if (dbEntity.isRepositoryEntity) {
-			this.ensureRepositoryEntityIdValues(actor, dbEntity,
-				<JsonInsertValues>portableQuery.jsonQuery)
+			columnsToPopulate = this.ensureRepositoryEntityIdValues(actor, dbEntity,
+				insertValues, errorPrefix)
 		}
 
+		let generatedColumns = this.verifyNoGeneratedColumns(dbEntity,
+			<JsonInsertValues>portableQuery.jsonQuery, errorPrefix)
+
 		let ids
+
+		let systemWideOperationId: SystemWideOperationId
+		if (!dbEntity.isLocal) {
+			systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator)
+		}
+
 		if (ensureGeneratedValues) {
-			ids = await this.ensureGeneratedValues(dbEntity,
-				<JsonInsertValues>portableQuery.jsonQuery, sequenceGenerator)
+			ids = await this.ensureGeneratedValues(
+				dbEntity, insertValues, actor,
+				columnsToPopulate, generatedColumns,
+				systemWideOperationId, errorPrefix,
+				sequenceGenerator)
 		}
 
 
 		if (!dbEntity.isLocal) {
-			await this.addInsertHistory(dbEntity, portableQuery, actor,
+			await this.addInsertHistory(
+				dbEntity, portableQuery, actor, systemWideOperationId,
 				historyManager, operHistoryDuo, recHistoryDuo,
 				recHistoryNewValueDuo, repositoryManager,
 				repoTransHistoryDuo, transactionManager)
@@ -175,7 +205,12 @@ export class InsertManager
 	private async ensureGeneratedValues(
 		dbEntity: DbEntity,
 		jsonInsertValues: JsonInsertValues,
-		seqGenerator: ISequenceGenerator
+		actor: IActor,
+		columnsToPopulate: ColumnsToPopulate,
+		generatedColumns: DbColumn[],
+		systemWideOperationId: SystemWideOperationId,
+		errorPrefix: string,
+		sequenceGenerator: ISequenceGenerator
 	): Promise<RecordId[] | RecordId[][]> {
 		const values    = jsonInsertValues.V
 		const idColumns = dbEntity.idColumns
@@ -185,34 +220,59 @@ export class InsertManager
 			allIds.push([])
 		}
 
+		let actorIdColumn: DbColumn
+		let sysWideOperationIdColumn: DbColumn
+
+		if (!dbEntity.isLocal) {
+			actorIdColumn = columnsToPopulate.actorIdColumn
+			sysWideOperationIdColumn = columnsToPopulate.sysWideOperationIdColumn
+		}
+
 		for (const idColumn of idColumns) {
 			if (idColumn.isGenerated) {
 				continue
 			}
 
-			const matchingColumns = jsonInsertValues.C.map((
-				columnIndex,
-				index
-			) => [columnIndex, index]).filter(
-				([columnIndex, index]) => columnIndex === idColumn.index)
+			let isActorIdColumn   = false
+			let inStatementColumnIndex: number
+			const matchingColumns = jsonInsertValues.C.filter(
+				(
+					columnIndex,
+					index
+				) => {
+					if (columnIndex === idColumn.index) {
+						inStatementColumnIndex = index
+						return true
+					}
+				})
 			if (matchingColumns.length < 1) {
-				throw new Error(`Could not find @Id column ${dbEntity.name}.${idColumn.name} in
+				// Actor Id cannot be in the insert statement
+				if (idColumn.id === actorIdColumn.id) {
+					isActorIdColumn = true
+					inStatementColumnIndex = jsonInsertValues.C.length
+					jsonInsertValues.C.push(actorIdColumn.index)
+				} else {
+					throw new Error(errorPrefix +
+						`Could not find @Id column ${dbEntity.name}.${idColumn.name} in
 					the insert statement.  Non-generated @Id columns must be present in the Insert
-					statement.`)
+					statement (with exception of Actor ID).`)
+				}
 			}
-
-			const insertIdColumnIndex = matchingColumns[0]
-			const columnIndex         = idColumn.index
 
 			for (let i = 0; i < values.length; i++) {
 				const entityValues = values[i]
 				const idValues     = allIds[i]
-				let idValue        = entityValues[insertIdColumnIndex[1]]
-				if (!idValue && idValue !== 0) {
-					throw new Error(
-						`No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`)
+				let idValue
+				if (isActorIdColumn) {
+					idValue = actor.id
+				} else {
+					idValue = entityValues[inStatementColumnIndex]
+					if (!idValue && idValue !== 0) {
+						throw new Error(errorPrefix +
+							`No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`)
+					}
 				}
-				idValues[columnIndex] = idValue
+				idValues[idColumn.idIndex] = idValue
 			}
 		}
 
@@ -225,31 +285,29 @@ export class InsertManager
 		// 			throw new Error(`@Column({ name: 'REPOSITORY_ID'}) value is not specified on
 		// insert for '${dbEntity0.name}.${repositoryColumn.name}'.`) } } }
 
-		const generatedColumns = dbEntity.columns.filter(
-			dbColumn => dbColumn.isGenerated
-		)
-
 		const generatedColumnIndexes: number[] = []
-		let numAddedColumns                    = 0
+		// let numAddedColumns                    = 0
 		for (const generatedColumn of generatedColumns) {
-			const matchingColumns = jsonInsertValues.C.filter(
-				columnIndex => columnIndex === generatedColumn.index)
-			if (!matchingColumns.length) {
-				// TODO: verify that it is OK to mutate the JsonInsertValues query
-				jsonInsertValues.C.push(generatedColumn.index)
-				generatedColumnIndexes.push(jsonInsertValues.C.length + numAddedColumns)
-				numAddedColumns++
-				continue
-			}
-			const generatedIdColumnIndex = matchingColumns[0]
-			generatedColumnIndexes.push(generatedIdColumnIndex)
+			// const matchingColumns = jsonInsertValues.C.filter(
+			// 	columnIndex => columnIndex === generatedColumn.index)
+			// if (!matchingColumns.length) {
+			// TODO: verify that it is OK to mutate the JsonInsertValues query
+			const generatedIdColumnIndex = jsonInsertValues.C.length
+			generatedColumnIndexes.push(jsonInsertValues.C.length)
+			jsonInsertValues.C.push(generatedColumn.index)
+			// numAddedColumns++
+			continue
+			// }
+			// const generatedIdColumnIndex = matchingColumns[0]
+			// generatedColumnIndexes.push(generatedIdColumnIndex)
 			for (const entityValues of values) {
 				const generatedValue = entityValues[generatedIdColumnIndex]
 				if (generatedValue || generatedValue === 0) {
 					// Allowing negative integers for temporary identification
 					// within the circular dependency management lookup
 					if (generatedValue >= 0) {
-						throw new Error(`Already provided value '${entityValues[generatedColumn.index]}'
+						throw new Error(errorPrefix +
+							`Already provided value '${entityValues[generatedColumn.index]}'
 					on insert for @GeneratedValue '${dbEntity.name}.${generatedColumn.name}'.
 					You cannot explicitly provide values for @GeneratedValue columns'.`)
 					}
@@ -257,9 +315,12 @@ export class InsertManager
 			}
 		}
 
+		// Populating generated values AFTER the checks
+		// to not waste sequence numbers on invalid input
+		// (thus reducing storage requirements in SqLite)
 		const numSequencesNeeded      = generatedColumns.map(
 			_ => values.length)
-		const generatedSequenceValues = await seqGenerator.generateSequenceNumbers(
+		const generatedSequenceValues = await sequenceGenerator.generateSequenceNumbers(
 			generatedColumns, numSequencesNeeded)
 
 		generatedColumns.forEach((
@@ -268,16 +329,24 @@ export class InsertManager
 		) => {
 			const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex]
 			const insertColumnIndex             = generatedColumnIndexes[generatedColumnIndex]
-			const columnIndex                   = dbColumn.index
+			// const columnIndex                   = dbColumn.index
 			values.forEach((
 				entityValues,
 				index
 			) => {
-				const generatedValue            = generatedColumnSequenceValues[index]
-				entityValues[insertColumnIndex] = generatedValue
-				allIds[index][columnIndex]      = generatedValue
+				const generatedValue                = generatedColumnSequenceValues[index]
+				entityValues[insertColumnIndex]     = generatedValue
+				allIds[index][generatedColumnIndex] = generatedValue
 			})
 		})
+
+		if (!dbEntity.isLocal) {
+			jsonInsertValues.C.push(sysWideOperationIdColumn.index)
+			values.forEach(
+				entityValues => {
+					entityValues.push(systemWideOperationId)
+				})
+		}
 
 		if (!idColumns.length && !generatedColumns.length) {
 			return values.length as any
@@ -285,6 +354,7 @@ export class InsertManager
 
 		switch (idColumns.length) {
 			case 0: {
+				// If there is just one @Generated column and no @Id columns
 				if (generatedColumns.length == 1) {
 					const columnIndex = generatedColumns[0].index
 					return allIds.map(
@@ -293,6 +363,8 @@ export class InsertManager
 				break
 			}
 			case 1: {
+				// If there is exactly 1 @Id column and no @Generated columns
+				// or it is the @Generated column
 				if (!generatedColumns.length
 					|| (generatedColumns.length === 1
 						&& idColumns[0].index === generatedColumns[0].index)) {
@@ -310,40 +382,127 @@ export class InsertManager
 	private ensureRepositoryEntityIdValues(
 		actor: IActor,
 		dbEntity: DbEntity,
-		jsonInsertValues: JsonInsertValues
-	): void {
-		// const actorRecordIds: RepositoryEntityActorRecordId[] = []
-		const actorIdColumn = dbEntity.idColumnMap['ACTOR_ID']
-		// const actorRecordIdColumn                             =
-		// dbEntity.idColumnMap['ACTOR_RECORD_ID']
-		const repositoryIdColumn = dbEntity.idColumnMap['REPOSITORY_ID']
+		jsonInsertValues: JsonInsertValues,
+		errorPrefix: string
+	): ColumnsToPopulate {
+		const actorIdColumn            = dbEntity.idColumnMap[repositoryEntity.ACTOR_ID]
+		const actorRecordIdColumn      = dbEntity.idColumnMap[repositoryEntity.ACTOR_RECORD_ID]
+		const repositoryIdColumn       = dbEntity.idColumnMap[repositoryEntity.REPOSITORY_ID]
+		const isDraftIdColumn          = dbEntity.columnMap[repositoryEntity.IS_DRAFT]
+		const sysWideOperationIdColumn = dbEntity.columnMap[repositoryEntity.SYSTEM_WIDE_OPERATION_ID]
+
+		let repositoryIdColumnQueryIndex
+		let isDraftColumnQueryIndex
+
+		for (let i = 0; i < jsonInsertValues.C.length; i++) {
+			const columnIndex = jsonInsertValues.C[i]
+
+			switch (columnIndex) {
+				case actorIdColumn.index:
+					throw new Error(errorPrefix +
+						`You cannot explicitly provide an ACTOR_ID value for Repository entities.`)
+				case actorRecordIdColumn.index:
+					throw new Error(errorPrefix +
+						`You cannot explicitly provide an ACTOR_RECORD_ID value for Repository entities.`)
+				case sysWideOperationIdColumn.index:
+					throw new Error(`Error inserting into '${dbEntity.name}'.
+You cannot explicitly provide a SYSTEM_WIDE_OPERATION_ID value for Repository entities.`)
+				case repositoryIdColumn.index:
+					repositoryIdColumnQueryIndex = i
+					break
+				case isDraftIdColumn.index:
+					isDraftColumnQueryIndex = i
+					break
+			}
+		}
+
+		const missingRepositoryIdErrorMsg = errorPrefix +
+			`Error inserting into '${dbEntity.name}'.
+You must provide a valid REPOSITORY_ID value for Repository entities.`
+
+		const missingIsDraftErrorMsg = errorPrefix +
+			`Error inserting into '${dbEntity.name}'.
+You must provide a valid IS_DRAFT value for Repository entities.`
+
+		if (repositoryIdColumnQueryIndex === undefined) {
+			throw new Error(missingRepositoryIdErrorMsg)
+		}
+
+		if (isDraftColumnQueryIndex === undefined) {
+			throw new Error(missingIsDraftErrorMsg)
+		}
 
 		for (const entityValues of jsonInsertValues.V) {
-			if (entityValues[actorIdColumn.index] || entityValues[actorIdColumn.index] === 0) {
-				throw new Error(`Already provided value '${entityValues[actorIdColumn.index]}'
-				on insert for @Id '${dbEntity.name}.${actorIdColumn.name}'.
-				You cannot explicitly provide a value for ACTOR_ID on Repository row inserts.`)
+			if (entityValues.length !== jsonInsertValues.C.length) {
+				throw new Error(errorPrefix +
+					`Number of columns (${jsonInsertValues.C.length}) does not match number of values (${entityValues.length}).
+				`)
 			}
-			// if (entityValues[actorRecordIdColumn.index] ||
-			// entityValues[actorRecordIdColumn.index] === 0) {
-			//   throw new Error(`Already provided value
-			// '${entityValues[actorRecordIdColumn.index]}' on insert for @Id @GeneratedValue
-			// '${dbEntity.name}.${actorRecordIdColumn.name}'. You cannot explicitly provide
-			// values for generated ids.`) }
-			if (!entityValues[repositoryIdColumn.index]) {
-				throw new Error(`Did not provide a positive integer value 
-				(instead provided '${entityValues[repositoryIdColumn.index]}')
-				 on insert for @Id '${dbEntity.name}.${repositoryIdColumn.name}'.
-				 You must explicitly provide a value for REPOSITORY_ID on Repository row inserts.`)
+
+			let isDraft = entityValues[isDraftColumnQueryIndex]
+			if (isDraft !== true && isDraft !== false) {
+				throw new Error(missingIsDraftErrorMsg)
+			}
+
+			let repositoryId = entityValues[repositoryIdColumnQueryIndex]
+			if (typeof repositoryId !== 'number'
+				|| !Number.isInteger(repositoryId)
+				|| repositoryId < 1) {
+				throw new Error(missingRepositoryIdErrorMsg)
+			}
+
+			for (let i = 0; i < entityValues.length; i++) {
+				switch (i) {
+					case isDraftColumnQueryIndex:
+					case repositoryIdColumnQueryIndex:
+						continue
+				}
+				const value = entityValues[i]
+
+				const columnIndex = jsonInsertValues.C[i]
+				const dbColumn    = dbEntity.columns[columnIndex]
+
+				if (dbColumn.notNull && value === null && !isDraft) {
+					throw new Error(errorPrefix +
+						`Column '${dbColumn.name}' is NOT NULL
+and cannot have NULL values for non-draft records.`)
+				}
 			}
 
 			entityValues[actorIdColumn.index] = actor.id
 			// const actorRecordId               = this.idGenerator.generateEntityId(dbEntity)
 			// actorRecordIds.push(actorRecordId)
 			// entityValues[actorRecordIdColumn.index] = actorRecordId
+
+			if (!entityValues[actorRecordIdColumn.index]) {
+
+			}
 		}
 
-		// return actorRecordIds
+		return {
+			actorIdColumn,
+			sysWideOperationIdColumn
+		}
+	}
+
+	verifyNoGeneratedColumns(
+		dbEntity: DbEntity,
+		jsonInsertValues: JsonInsertValues,
+		errorPrefix: string
+	): DbColumn[] {
+		for (let i = 0; i < jsonInsertValues.C.length; i++) {
+			const columnIndex = jsonInsertValues.C[i]
+
+			const dbColumn = dbEntity.columns[columnIndex]
+
+			if (dbColumn.isGenerated) {
+				throw new Error(errorPrefix +
+					`You cannot explicitly insert into a @GeneratedValue column '${dbColumn.name}'`)
+			}
+		}
+
+		return dbEntity.columns.filter(
+			dbColumn => dbColumn.isGenerated)
 	}
 
 	/**
@@ -361,6 +520,7 @@ export class InsertManager
 		dbEntity: DbEntity,
 		portableQuery: PortableQuery,
 		actor: IActor,
+		systemWideOperationId: SystemWideOperationId,
 		histManager: IHistoryManager,
 		operHistoryDuo: IOperationHistoryDuo,
 		recHistoryDuo: IRecordHistoryDuo,
@@ -399,18 +559,18 @@ export class InsertManager
 		// Rows may belong to different repositories
 		for (const row of jsonInsertValues.V) {
 			const repositoryId   = row[repositoryIdColumnNumber]
-			const repo           = await repoManager.getRepository(repositoryId)
+			// const repo           = await repoManager.getRepository(repositoryId)
 			let repoTransHistory = repoTransHistories[repositoryId]
 			if (!repoTransHistory) {
 				repoTransHistory = await histManager
-					.getNewRepoTransHistory(transManager.currentTransHistory, repo, actor)
+					.getNewRepoTransHistory(transManager.currentTransHistory, repositoryId, actor)
 			}
 
 			let operationHistory = operationsByRepo[repositoryId]
 			if (!operationHistory) {
 				operationHistory               = repoTransHistoryDuo.startOperation(
-					repoTransHistory, ChangeType.INSERT_VALUES, dbEntity,
-					operHistoryDuo)
+					repoTransHistory, systemWideOperationId, ChangeType.INSERT_VALUES,
+					dbEntity, operHistoryDuo)
 				operationsByRepo[repositoryId] = operationHistory
 			}
 

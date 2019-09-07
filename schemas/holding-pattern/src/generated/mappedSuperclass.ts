@@ -263,6 +263,18 @@ export const MAPPED_SUPERCLASS = [
 						},
 						"path": "../../generated/repository/qrepository"
 					},
+					"SystemWideOperationId": {
+						"fileImports": null,
+						"isLocal": true,
+						"objectMapByAsName": {
+							"SystemWideOperationId": {
+								"asName": "SystemWideOperationId",
+								"moduleImport": null,
+								"sourceName": "SystemWideOperationId"
+							}
+						},
+						"path": "../common"
+					},
 					"Stageable": {
 						"fileImports": null,
 						"isLocal": true,
@@ -280,6 +292,7 @@ export const MAPPED_SUPERCLASS = [
 					"@airport/air-control": null,
 					"../../generated/infrastructure/qactor": null,
 					"../../generated/repository/qrepository": null,
+					"../common": null,
 					"../infrastructure/Stageable": null
 				}
 			},
@@ -385,7 +398,8 @@ export const MAPPED_SUPERCLASS = [
 							"name": "Column",
 							"values": [
 								{
-									"name": "SYSTEM_WIDE_OPERATION_ID"
+									"name": "SYSTEM_WIDE_OPERATION_ID",
+									"nullable": false
 								}
 							]
 						}
@@ -739,6 +753,18 @@ export const MAPPED_SUPERCLASS = [
 							},
 							"path": "../../generated/repository/qrepository"
 						},
+						"SystemWideOperationId": {
+							"fileImports": null,
+							"isLocal": true,
+							"objectMapByAsName": {
+								"SystemWideOperationId": {
+									"asName": "SystemWideOperationId",
+									"moduleImport": null,
+									"sourceName": "SystemWideOperationId"
+								}
+							},
+							"path": "../common"
+						},
 						"Stageable": {
 							"fileImports": null,
 							"isLocal": true,
@@ -756,6 +782,7 @@ export const MAPPED_SUPERCLASS = [
 						"@airport/air-control": null,
 						"../../generated/infrastructure/qactor": null,
 						"../../generated/repository/qrepository": null,
+						"../common": null,
 						"../infrastructure/Stageable": null
 					}
 				},
@@ -861,7 +888,8 @@ export const MAPPED_SUPERCLASS = [
 								"name": "Column",
 								"values": [
 									{
-										"name": "SYSTEM_WIDE_OPERATION_ID"
+										"name": "SYSTEM_WIDE_OPERATION_ID",
+										"nullable": false
 									}
 								]
 							}
@@ -1415,6 +1443,18 @@ export const MAPPED_SUPERCLASS = [
 							},
 							"path": "../../generated/repository/qrepository"
 						},
+						"SystemWideOperationId": {
+							"fileImports": null,
+							"isLocal": true,
+							"objectMapByAsName": {
+								"SystemWideOperationId": {
+									"asName": "SystemWideOperationId",
+									"moduleImport": null,
+									"sourceName": "SystemWideOperationId"
+								}
+							},
+							"path": "../common"
+						},
 						"Stageable": {
 							"fileImports": null,
 							"isLocal": true,
@@ -1432,6 +1472,7 @@ export const MAPPED_SUPERCLASS = [
 						"@airport/air-control": null,
 						"../../generated/infrastructure/qactor": null,
 						"../../generated/repository/qrepository": null,
+						"../common": null,
 						"../infrastructure/Stageable": null
 					}
 				},
@@ -1537,7 +1578,8 @@ export const MAPPED_SUPERCLASS = [
 								"name": "Column",
 								"values": [
 									{
-										"name": "SYSTEM_WIDE_OPERATION_ID"
+										"name": "SYSTEM_WIDE_OPERATION_ID",
+										"nullable": false
 									}
 								]
 							}
@@ -2557,6 +2599,18 @@ export const MAPPED_SUPERCLASS = [
 								},
 								"path": "../../generated/repository/qrepository"
 							},
+							"SystemWideOperationId": {
+								"fileImports": null,
+								"isLocal": true,
+								"objectMapByAsName": {
+									"SystemWideOperationId": {
+										"asName": "SystemWideOperationId",
+										"moduleImport": null,
+										"sourceName": "SystemWideOperationId"
+									}
+								},
+								"path": "../common"
+							},
 							"Stageable": {
 								"fileImports": null,
 								"isLocal": true,
@@ -2574,6 +2628,7 @@ export const MAPPED_SUPERCLASS = [
 							"@airport/air-control": null,
 							"../../generated/infrastructure/qactor": null,
 							"../../generated/repository/qrepository": null,
+							"../common": null,
 							"../infrastructure/Stageable": null
 						}
 					},
@@ -2679,7 +2734,8 @@ export const MAPPED_SUPERCLASS = [
 									"name": "Column",
 									"values": [
 										{
-											"name": "SYSTEM_WIDE_OPERATION_ID"
+											"name": "SYSTEM_WIDE_OPERATION_ID",
+											"nullable": false
 										}
 									]
 								}

@@ -177,7 +177,7 @@ export class TransactionalConnector
 	): Promise<number> {
 		const transServer = await DI.get(TRANS_SERVER)
 
-		return await transServer.updateValues(
+		return await transServer.deleteWhere(
 			portableQuery,
 			{
 				domainAndPort: 'test'

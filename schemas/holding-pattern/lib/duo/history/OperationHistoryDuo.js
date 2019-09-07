@@ -4,12 +4,13 @@ const di_1 = require("@airport/di");
 const diTokens_1 = require("../../diTokens");
 const generated_1 = require("../../generated/generated");
 class OperationHistoryDuo extends generated_1.BaseOperationHistoryDuo {
-    getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory) {
+    getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory, systemWideOperationId) {
         let operationHistory = {
-            repositoryTransactionHistory: repositoryTransactionHistory,
             changeType: entityChangeType,
+            entity: dbEntity,
             orderNumber: ++repositoryTransactionHistory.transactionHistory.numberOfOperations,
-            entity: dbEntity
+            repositoryTransactionHistory: repositoryTransactionHistory,
+            systemWideOperationId
         };
         return operationHistory;
     }

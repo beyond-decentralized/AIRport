@@ -17,6 +17,7 @@ import {
 	DbColumn,
 	DbEntity,
 	DbProperty,
+	InternalFragments,
 	IStoreDriver,
 	JoinType,
 	JSONClauseField,
@@ -74,6 +75,7 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 	}
 
 	toSQL(
+		internalFragments: InternalFragments,
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		metadataUtils: IQMetadataUtils
@@ -84,7 +86,7 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		this.joinTrees     = this.buildFromJoinTree(
 			jsonQuery.F, joinNodeMap, airDb, schemaUtils)
 		let selectFragment = this.getSELECTFragment(
-			false, jsonQuery.S,
+			false, jsonQuery.S, internalFragments,
 			airDb, schemaUtils, metadataUtils)
 		let fromFragment   = this.getFROMFragments(
 			this.joinTrees, airDb, schemaUtils, metadataUtils)
@@ -131,6 +133,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 	protected abstract getSELECTFragment(
 		nested: boolean,
 		selectClauseFragment: any,
+		internalFragments: InternalFragments,
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		metadataUtils: IQMetadataUtils

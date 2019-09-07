@@ -7,6 +7,7 @@ export interface IOperationHistory {
     repositoryTransactionHistory?: IRepositoryTransactionHistory;
     orderNumber?: number;
     changeType?: number;
+    systemWideOperationId?: number;
     entity?: ISchemaEntity;
     recordHistory?: IRecordHistory[];
 }
@@ -16,6 +17,7 @@ export interface IOperationHistory {
 export interface OperationHistoryESelect extends IEntitySelectProperties, OperationHistoryEOptionalId {
     orderNumber?: number | IQNumberField;
     changeType?: number | IQNumberField;
+    systemWideOperationId?: number | IQNumberField;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
     entity?: SchemaEntityESelect;
     recordHistory?: RecordHistoryESelect;
@@ -40,6 +42,7 @@ export interface OperationHistoryEOptionalId {
 export interface OperationHistoryEUpdateProperties extends IEntityUpdateProperties {
     orderNumber?: number | IQNumberField;
     changeType?: number | IQNumberField;
+    systemWideOperationId?: number | IQNumberField;
     entity?: SchemaEntityEOptionalId;
 }
 /**
@@ -48,6 +51,7 @@ export interface OperationHistoryEUpdateProperties extends IEntityUpdateProperti
 export interface OperationHistoryEUpdateColumns extends IEntityUpdateColumns {
     ORDER_NUMBER?: number | IQNumberField;
     CHANGE_TYPE?: number | IQNumberField;
+    SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
     ENTITY_ID?: number | IQNumberField;
 }
 /**
@@ -68,6 +72,7 @@ export interface QOperationHistory extends IQEntity {
     repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
     orderNumber: IQNumberField;
     changeType: IQNumberField;
+    systemWideOperationId: IQNumberField;
     entity: QSchemaEntityQRelation;
     recordHistory: IQOneToManyRelation<QRecordHistory>;
 }

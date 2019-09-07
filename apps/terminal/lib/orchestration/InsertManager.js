@@ -22,27 +22,38 @@ class InsertManager {
         const [airDb, storeDriver, sequenceGenerator, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transactionManager] = await di_1.DI.get(air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, check_in_1.SEQUENCE_GENERATOR, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DUO, holding_pattern_1.REC_HISTORY_DUO, holding_pattern_1.REC_HIST_NEW_VALUE_DUO, diTokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DUO, terminal_map_1.TRANSACTION_MANAGER);
         const dbEntity = airDb.schemas[portableQuery.schemaIndex]
             .currentVersion.entities[portableQuery.tableIndex];
+        const errorPrefix = `Error inserting into '${dbEntity.name}'.'
+`;
         const jsonInsertValues = portableQuery.jsonQuery;
         const columnIndexSet = {};
         for (const columnIndex of jsonInsertValues.C) {
             if (columnIndex < 0 || columnIndex >= dbEntity.columns.length) {
-                throw new Error(`Invalid column index: ${columnIndex}`);
+                throw new Error(errorPrefix +
+                    `Invalid column index: ${columnIndex}`);
             }
             if (columnIndexSet[columnIndex]) {
-                throw new Error(`Column ${dbEntity.name}.${dbEntity.columns[columnIndex].name} 
-				appears more than once in the Columns clause`);
+                throw new Error(errorPrefix +
+                    `Column ${dbEntity.name}.${dbEntity.columns[columnIndex].name} 
+appears more than once in the Columns clause`);
             }
             columnIndexSet[columnIndex] = true;
         }
+        let columnsToPopulate;
+        const insertValues = portableQuery.jsonQuery;
         if (dbEntity.isRepositoryEntity) {
-            this.ensureRepositoryEntityIdValues(actor, dbEntity, portableQuery.jsonQuery);
+            columnsToPopulate = this.ensureRepositoryEntityIdValues(actor, dbEntity, insertValues, errorPrefix);
         }
+        let generatedColumns = this.verifyNoGeneratedColumns(dbEntity, portableQuery.jsonQuery, errorPrefix);
         let ids;
+        let systemWideOperationId;
+        if (!dbEntity.isLocal) {
+            systemWideOperationId = await check_in_1.getSysWideOpId(airDb, sequenceGenerator);
+        }
         if (ensureGeneratedValues) {
-            ids = await this.ensureGeneratedValues(dbEntity, portableQuery.jsonQuery, sequenceGenerator);
+            ids = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator);
         }
         if (!dbEntity.isLocal) {
-            await this.addInsertHistory(dbEntity, portableQuery, actor, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transactionManager);
+            await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transactionManager);
         }
         const numberOfInsertedRecords = await storeDriver.insertValues(portableQuery);
         return getIds ? ids : numberOfInsertedRecords;
@@ -52,33 +63,60 @@ class InsertManager {
         const repository = await repoManager.createRepository(name, distributionStrategy, transManager.storeType, platform, platformConfig, 'id');
         return repository.id;
     }
-    async ensureGeneratedValues(dbEntity, jsonInsertValues, seqGenerator) {
+    async ensureGeneratedValues(dbEntity, jsonInsertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator) {
         const values = jsonInsertValues.V;
         const idColumns = dbEntity.idColumns;
         const allIds = [];
         for (const entityValues of values) {
             allIds.push([]);
         }
+        let actorIdColumn;
+        let sysWideOperationIdColumn;
+        if (!dbEntity.isLocal) {
+            actorIdColumn = columnsToPopulate.actorIdColumn;
+            sysWideOperationIdColumn = columnsToPopulate.sysWideOperationIdColumn;
+        }
         for (const idColumn of idColumns) {
             if (idColumn.isGenerated) {
                 continue;
             }
-            const matchingColumns = jsonInsertValues.C.map((columnIndex, index) => [columnIndex, index]).filter(([columnIndex, index]) => columnIndex === idColumn.index);
+            let isActorIdColumn = false;
+            let inStatementColumnIndex;
+            const matchingColumns = jsonInsertValues.C.filter((columnIndex, index) => {
+                if (columnIndex === idColumn.index) {
+                    inStatementColumnIndex = index;
+                    return true;
+                }
+            });
             if (matchingColumns.length < 1) {
-                throw new Error(`Could not find @Id column ${dbEntity.name}.${idColumn.name} in
+                // Actor Id cannot be in the insert statement
+                if (idColumn.id === actorIdColumn.id) {
+                    isActorIdColumn = true;
+                    inStatementColumnIndex = jsonInsertValues.C.length;
+                    jsonInsertValues.C.push(actorIdColumn.index);
+                }
+                else {
+                    throw new Error(errorPrefix +
+                        `Could not find @Id column ${dbEntity.name}.${idColumn.name} in
 					the insert statement.  Non-generated @Id columns must be present in the Insert
-					statement.`);
+					statement (with exception of Actor ID).`);
+                }
             }
-            const insertIdColumnIndex = matchingColumns[0];
-            const columnIndex = idColumn.index;
             for (let i = 0; i < values.length; i++) {
                 const entityValues = values[i];
                 const idValues = allIds[i];
-                let idValue = entityValues[insertIdColumnIndex[1]];
-                if (!idValue && idValue !== 0) {
-                    throw new Error(`No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`);
+                let idValue;
+                if (isActorIdColumn) {
+                    idValue = actor.id;
                 }
-                idValues[columnIndex] = idValue;
+                else {
+                    idValue = entityValues[inStatementColumnIndex];
+                    if (!idValue && idValue !== 0) {
+                        throw new Error(errorPrefix +
+                            `No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`);
+                    }
+                }
+                idValues[idColumn.idIndex] = idValue;
             }
         }
         // if (dbEntity.isRepositoryEntity) {
@@ -89,50 +127,62 @@ class InsertManager {
         // 		if (!repositoryId && repositoryId !== 0) {
         // 			throw new Error(`@Column({ name: 'REPOSITORY_ID'}) value is not specified on
         // insert for '${dbEntity0.name}.${repositoryColumn.name}'.`) } } }
-        const generatedColumns = dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
         const generatedColumnIndexes = [];
-        let numAddedColumns = 0;
+        // let numAddedColumns                    = 0
         for (const generatedColumn of generatedColumns) {
-            const matchingColumns = jsonInsertValues.C.filter(columnIndex => columnIndex === generatedColumn.index);
-            if (!matchingColumns.length) {
-                // TODO: verify that it is OK to mutate the JsonInsertValues query
-                jsonInsertValues.C.push(generatedColumn.index);
-                generatedColumnIndexes.push(jsonInsertValues.C.length + numAddedColumns);
-                numAddedColumns++;
-                continue;
-            }
-            const generatedIdColumnIndex = matchingColumns[0];
-            generatedColumnIndexes.push(generatedIdColumnIndex);
+            // const matchingColumns = jsonInsertValues.C.filter(
+            // 	columnIndex => columnIndex === generatedColumn.index)
+            // if (!matchingColumns.length) {
+            // TODO: verify that it is OK to mutate the JsonInsertValues query
+            const generatedIdColumnIndex = jsonInsertValues.C.length;
+            generatedColumnIndexes.push(jsonInsertValues.C.length);
+            jsonInsertValues.C.push(generatedColumn.index);
+            // numAddedColumns++
+            continue;
+            // }
+            // const generatedIdColumnIndex = matchingColumns[0]
+            // generatedColumnIndexes.push(generatedIdColumnIndex)
             for (const entityValues of values) {
                 const generatedValue = entityValues[generatedIdColumnIndex];
                 if (generatedValue || generatedValue === 0) {
                     // Allowing negative integers for temporary identification
                     // within the circular dependency management lookup
                     if (generatedValue >= 0) {
-                        throw new Error(`Already provided value '${entityValues[generatedColumn.index]}'
+                        throw new Error(errorPrefix +
+                            `Already provided value '${entityValues[generatedColumn.index]}'
 					on insert for @GeneratedValue '${dbEntity.name}.${generatedColumn.name}'.
 					You cannot explicitly provide values for @GeneratedValue columns'.`);
                     }
                 }
             }
         }
+        // Populating generated values AFTER the checks
+        // to not waste sequence numbers on invalid input
+        // (thus reducing storage requirements in SqLite)
         const numSequencesNeeded = generatedColumns.map(_ => values.length);
-        const generatedSequenceValues = await seqGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
+        const generatedSequenceValues = await sequenceGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
         generatedColumns.forEach((dbColumn, generatedColumnIndex) => {
             const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex];
             const insertColumnIndex = generatedColumnIndexes[generatedColumnIndex];
-            const columnIndex = dbColumn.index;
+            // const columnIndex                   = dbColumn.index
             values.forEach((entityValues, index) => {
                 const generatedValue = generatedColumnSequenceValues[index];
                 entityValues[insertColumnIndex] = generatedValue;
-                allIds[index][columnIndex] = generatedValue;
+                allIds[index][generatedColumnIndex] = generatedValue;
             });
         });
+        if (!dbEntity.isLocal) {
+            jsonInsertValues.C.push(sysWideOperationIdColumn.index);
+            values.forEach(entityValues => {
+                entityValues.push(systemWideOperationId);
+            });
+        }
         if (!idColumns.length && !generatedColumns.length) {
             return values.length;
         }
         switch (idColumns.length) {
             case 0: {
+                // If there is just one @Generated column and no @Id columns
                 if (generatedColumns.length == 1) {
                     const columnIndex = generatedColumns[0].index;
                     return allIds.map(rowIds => rowIds[columnIndex]);
@@ -140,6 +190,8 @@ class InsertManager {
                 break;
             }
             case 1: {
+                // If there is exactly 1 @Id column and no @Generated columns
+                // or it is the @Generated column
                 if (!generatedColumns.length
                     || (generatedColumns.length === 1
                         && idColumns[0].index === generatedColumns[0].index)) {
@@ -151,36 +203,99 @@ class InsertManager {
         }
         return allIds;
     }
-    ensureRepositoryEntityIdValues(actor, dbEntity, jsonInsertValues) {
-        // const actorRecordIds: RepositoryEntityActorRecordId[] = []
-        const actorIdColumn = dbEntity.idColumnMap['ACTOR_ID'];
-        // const actorRecordIdColumn                             =
-        // dbEntity.idColumnMap['ACTOR_RECORD_ID']
-        const repositoryIdColumn = dbEntity.idColumnMap['REPOSITORY_ID'];
-        for (const entityValues of jsonInsertValues.V) {
-            if (entityValues[actorIdColumn.index] || entityValues[actorIdColumn.index] === 0) {
-                throw new Error(`Already provided value '${entityValues[actorIdColumn.index]}'
-				on insert for @Id '${dbEntity.name}.${actorIdColumn.name}'.
-				You cannot explicitly provide a value for ACTOR_ID on Repository row inserts.`);
+    ensureRepositoryEntityIdValues(actor, dbEntity, jsonInsertValues, errorPrefix) {
+        const actorIdColumn = dbEntity.idColumnMap[ground_control_1.repositoryEntity.ACTOR_ID];
+        const actorRecordIdColumn = dbEntity.idColumnMap[ground_control_1.repositoryEntity.ACTOR_RECORD_ID];
+        const repositoryIdColumn = dbEntity.idColumnMap[ground_control_1.repositoryEntity.REPOSITORY_ID];
+        const isDraftIdColumn = dbEntity.columnMap[ground_control_1.repositoryEntity.IS_DRAFT];
+        const sysWideOperationIdColumn = dbEntity.columnMap[ground_control_1.repositoryEntity.SYSTEM_WIDE_OPERATION_ID];
+        let repositoryIdColumnQueryIndex;
+        let isDraftColumnQueryIndex;
+        for (let i = 0; i < jsonInsertValues.C.length; i++) {
+            const columnIndex = jsonInsertValues.C[i];
+            switch (columnIndex) {
+                case actorIdColumn.index:
+                    throw new Error(errorPrefix +
+                        `You cannot explicitly provide an ACTOR_ID value for Repository entities.`);
+                case actorRecordIdColumn.index:
+                    throw new Error(errorPrefix +
+                        `You cannot explicitly provide an ACTOR_RECORD_ID value for Repository entities.`);
+                case sysWideOperationIdColumn.index:
+                    throw new Error(`Error inserting into '${dbEntity.name}'.
+You cannot explicitly provide a SYSTEM_WIDE_OPERATION_ID value for Repository entities.`);
+                case repositoryIdColumn.index:
+                    repositoryIdColumnQueryIndex = i;
+                    break;
+                case isDraftIdColumn.index:
+                    isDraftColumnQueryIndex = i;
+                    break;
             }
-            // if (entityValues[actorRecordIdColumn.index] ||
-            // entityValues[actorRecordIdColumn.index] === 0) {
-            //   throw new Error(`Already provided value
-            // '${entityValues[actorRecordIdColumn.index]}' on insert for @Id @GeneratedValue
-            // '${dbEntity.name}.${actorRecordIdColumn.name}'. You cannot explicitly provide
-            // values for generated ids.`) }
-            if (!entityValues[repositoryIdColumn.index]) {
-                throw new Error(`Did not provide a positive integer value 
-				(instead provided '${entityValues[repositoryIdColumn.index]}')
-				 on insert for @Id '${dbEntity.name}.${repositoryIdColumn.name}'.
-				 You must explicitly provide a value for REPOSITORY_ID on Repository row inserts.`);
+        }
+        const missingRepositoryIdErrorMsg = errorPrefix +
+            `Error inserting into '${dbEntity.name}'.
+You must provide a valid REPOSITORY_ID value for Repository entities.`;
+        const missingIsDraftErrorMsg = errorPrefix +
+            `Error inserting into '${dbEntity.name}'.
+You must provide a valid IS_DRAFT value for Repository entities.`;
+        if (repositoryIdColumnQueryIndex === undefined) {
+            throw new Error(missingRepositoryIdErrorMsg);
+        }
+        if (isDraftColumnQueryIndex === undefined) {
+            throw new Error(missingIsDraftErrorMsg);
+        }
+        for (const entityValues of jsonInsertValues.V) {
+            if (entityValues.length !== jsonInsertValues.C.length) {
+                throw new Error(errorPrefix +
+                    `Number of columns (${jsonInsertValues.C.length}) does not match number of values (${entityValues.length}).
+				`);
+            }
+            let isDraft = entityValues[isDraftColumnQueryIndex];
+            if (isDraft !== true && isDraft !== false) {
+                throw new Error(missingIsDraftErrorMsg);
+            }
+            let repositoryId = entityValues[repositoryIdColumnQueryIndex];
+            if (typeof repositoryId !== 'number'
+                || !Number.isInteger(repositoryId)
+                || repositoryId < 1) {
+                throw new Error(missingRepositoryIdErrorMsg);
+            }
+            for (let i = 0; i < entityValues.length; i++) {
+                switch (i) {
+                    case isDraftColumnQueryIndex:
+                    case repositoryIdColumnQueryIndex:
+                        continue;
+                }
+                const value = entityValues[i];
+                const columnIndex = jsonInsertValues.C[i];
+                const dbColumn = dbEntity.columns[columnIndex];
+                if (dbColumn.notNull && value === null && !isDraft) {
+                    throw new Error(errorPrefix +
+                        `Column '${dbColumn.name}' is NOT NULL
+and cannot have NULL values for non-draft records.`);
+                }
             }
             entityValues[actorIdColumn.index] = actor.id;
             // const actorRecordId               = this.idGenerator.generateEntityId(dbEntity)
             // actorRecordIds.push(actorRecordId)
             // entityValues[actorRecordIdColumn.index] = actorRecordId
+            if (!entityValues[actorRecordIdColumn.index]) {
+            }
         }
-        // return actorRecordIds
+        return {
+            actorIdColumn,
+            sysWideOperationIdColumn
+        };
+    }
+    verifyNoGeneratedColumns(dbEntity, jsonInsertValues, errorPrefix) {
+        for (let i = 0; i < jsonInsertValues.C.length; i++) {
+            const columnIndex = jsonInsertValues.C[i];
+            const dbColumn = dbEntity.columns[columnIndex];
+            if (dbColumn.isGenerated) {
+                throw new Error(errorPrefix +
+                    `You cannot explicitly insert into a @GeneratedValue column '${dbColumn.name}'`);
+            }
+        }
+        return dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
     }
     /**
      *
@@ -193,7 +308,7 @@ class InsertManager {
      * @param {PortableQuery} portableQuery
      * @returns {Promise<void>}
      */
-    async addInsertHistory(dbEntity, portableQuery, actor, histManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoManager, repoTransHistoryDuo, transManager) {
+    async addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, histManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoManager, repoTransHistoryDuo, transManager) {
         const jsonInsertValues = portableQuery.jsonQuery;
         let operationsByRepo = [];
         let repoTransHistories = [];
@@ -220,15 +335,15 @@ class InsertManager {
         // Rows may belong to different repositories
         for (const row of jsonInsertValues.V) {
             const repositoryId = row[repositoryIdColumnNumber];
-            const repo = await repoManager.getRepository(repositoryId);
+            // const repo           = await repoManager.getRepository(repositoryId)
             let repoTransHistory = repoTransHistories[repositoryId];
             if (!repoTransHistory) {
                 repoTransHistory = await histManager
-                    .getNewRepoTransHistory(transManager.currentTransHistory, repo, actor);
+                    .getNewRepoTransHistory(transManager.currentTransHistory, repositoryId, actor);
             }
             let operationHistory = operationsByRepo[repositoryId];
             if (!operationHistory) {
-                operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, ground_control_1.ChangeType.INSERT_VALUES, dbEntity, operHistoryDuo);
+                operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ground_control_1.ChangeType.INSERT_VALUES, dbEntity, operHistoryDuo);
                 operationsByRepo[repositoryId] = operationHistory;
             }
             const actorRecordId = row[actorRecordIdColumnNumber];

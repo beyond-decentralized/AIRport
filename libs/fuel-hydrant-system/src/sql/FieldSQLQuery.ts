@@ -4,6 +4,7 @@ import {
 	ISchemaUtils
 }                           from '@airport/air-control'
 import {
+	InternalFragments,
 	IStoreDriver,
 	JSONClauseField,
 	JSONClauseObjectType,
@@ -34,6 +35,7 @@ export class FieldSQLQuery
 	protected getSELECTFragment(
 		nested: boolean,
 		selectClauseFragment: any,
+		internalFragments: InternalFragments,
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		metadataUtils: IQMetadataUtils
@@ -45,7 +47,7 @@ export class FieldSQLQuery
 			let distinctClause = <JSONClauseField>selectClauseFragment
 			if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
 				let distinctSelect = this.getSELECTFragment(
-					nested, distinctClause.af[0].p[0],
+					nested, distinctClause.af[0].p[0], internalFragments,
 					airDb, schemaUtils, metadataUtils)
 				return `DISTINCT ${distinctSelect}`
 			}

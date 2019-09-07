@@ -1,4 +1,4 @@
-import { PortableQuery } from '@airport/ground-control';
+import { DbColumn, DbEntity, JsonInsertValues, PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 export declare type RecordId = number;
@@ -14,6 +14,7 @@ export declare class InsertManager implements IInsertManager {
     addRepository(name: string, url?: string, platform?: PlatformType, platformConfig?: string, distributionStrategy?: DistributionStrategy): Promise<number>;
     private ensureGeneratedValues;
     private ensureRepositoryEntityIdValues;
+    verifyNoGeneratedColumns(dbEntity: DbEntity, jsonInsertValues: JsonInsertValues, errorPrefix: string): DbColumn[];
     /**
      *
      * All repository records must have ids when inserted.  Currently AP doesn't support

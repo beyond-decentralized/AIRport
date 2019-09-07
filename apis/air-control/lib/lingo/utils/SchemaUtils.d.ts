@@ -28,13 +28,15 @@ export interface IdKeysByIdColumnIndex {
         [columnName: string]: (number | string);
     };
 }
-export interface GetSheetSelectFromSetClauseResult {
+export interface RepositorySheetSelectInfo {
     actorIdColumnIndex: number;
     actorRecordIdColumnIndex: number;
     draftColumnIndex: number;
     draftColumnUpdated: boolean;
     repositoryIdColumnIndex: number;
-    selectClause: IQFieldInternal<any>[];
+    systemWideOperationIdColumn: DbColumn;
+    selectClause?: IQFieldInternal<any>[];
+    selectClauseColumns?: DbColumn[];
 }
 export interface ISchemaUtils {
     getDbEntity(schemaIndex: SchemaIndex, tableIndex: TableIndex, airDb: IAirportDatabase): DbEntity;
@@ -59,6 +61,6 @@ export interface ISchemaUtils {
     forEachColumnTypeOfRelation(dbRelation: DbRelation, callback: {
         (dbColumn: DbColumn, propertyNameChains: string[][]): void | boolean;
     }): void;
-    getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity, setClause: any): GetSheetSelectFromSetClauseResult;
+    getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity, setClause: any, errorPrefix: string): RepositorySheetSelectInfo;
     getTableName(dbEntity: DbEntity): string;
 }

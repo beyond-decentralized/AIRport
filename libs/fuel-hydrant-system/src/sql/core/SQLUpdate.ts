@@ -46,10 +46,10 @@ export class SQLUpdate
 			this.jsonUpdate.U, airDb, schemaUtils)
 		let setFragment    = this.getSetFragment(this.jsonUpdate.S,
 			airDb, schemaUtils, metadataUtils)
-		if (internalFragments.SET.length) {
+		if (internalFragments.SET) {
 			setFragment += internalFragments.SET.map(
 				internalSetFragment => `
-	${internalSetFragment.column} = ${internalSetFragment.value}`).join('')
+	${internalSetFragment.column.name} = ${internalSetFragment.value}`).join('')
 		}
 		let whereFragment = ''
 		let jsonQuery     = this.jsonUpdate

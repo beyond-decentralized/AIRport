@@ -1,3 +1,4 @@
+import { IAirportDatabase } from '@airport/air-control';
 import { DbColumn, DbEntity, DbSchema, DbSequence } from '@airport/ground-control';
 /**
  * Sequence generator is needed at Airport initialization time. A Dao
@@ -13,3 +14,4 @@ export interface ISequenceGenerator {
 export declare function setSeqGen(sequenceGenerator: ISequenceGenerator): void;
 export declare function diSet(dbSchema: DbSchema, dbEntityId: number): boolean;
 export declare function duoDiSet(dbSchema: DbSchema, dbEntityId: number): boolean;
+export declare function getSysWideOpId(airDb: IAirportDatabase, sequenceGenerator: ISequenceGenerator): Promise<number>;

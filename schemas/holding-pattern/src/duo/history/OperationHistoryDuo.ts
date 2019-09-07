@@ -3,7 +3,10 @@ import {
 	ChangeType,
 	DbEntity
 }                                      from '@airport/ground-control'
-import {IBaseOperationHistoryDuo}      from '../../'
+import {
+	IBaseOperationHistoryDuo,
+	SystemWideOperationId
+}                                      from '../../'
 import {RepositoryEntityActorRecordId} from '../../ddl/ddl'
 import {OPER_HISTORY_DUO}              from '../../diTokens'
 import {
@@ -21,6 +24,7 @@ export interface IOperationHistoryDuo
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
+		systemWideOperationId: SystemWideOperationId
 	): IOperationHistory;
 
 	sort(
@@ -44,12 +48,14 @@ export class OperationHistoryDuo
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
+		systemWideOperationId: SystemWideOperationId
 	): IOperationHistory {
 		let operationHistory: IOperationHistory = {
-			repositoryTransactionHistory: repositoryTransactionHistory,
 			changeType: entityChangeType,
+			entity: dbEntity,
 			orderNumber: ++repositoryTransactionHistory.transactionHistory.numberOfOperations,
-			entity: dbEntity
+			repositoryTransactionHistory: repositoryTransactionHistory,
+			systemWideOperationId
 		}
 		return operationHistory
 	}

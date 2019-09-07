@@ -68,13 +68,13 @@ class SqlDriver {
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap);
         return await this.executeNative(sql, parameters);
     }
-    async find(portableQuery, cachedSqlQueryId) {
+    async find(portableQuery, internalFragments, cachedSqlQueryId) {
         const [airDb, schemaUtils, metadataUtils] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.SCHEMA_UTILS, air_control_1.Q_METADATA_UTILS);
         const sqlQuery = this.getSQLQuery(portableQuery, airDb, schemaUtils);
-        const sql = sqlQuery.toSQL(airDb, schemaUtils, metadataUtils);
+        const sql = sqlQuery.toSQL(internalFragments, airDb, schemaUtils, metadataUtils);
         const parameters = sqlQuery.getParameters(portableQuery.parameterMap);
         let results = await this.findNative(sql, parameters);
-        results = sqlQuery.parseQueryResults(airDb, schemaUtils, results, portableQuery.queryResultType);
+        results = sqlQuery.parseQueryResults(airDb, schemaUtils, results, internalFragments, portableQuery.queryResultType);
         // FIXME: convert to MappedEntityArray if needed
         return results;
     }
@@ -102,8 +102,8 @@ class SqlDriver {
                 throw new Error(`Unknown QueryResultType: ${resultType}`);
         }
     }
-    async findOne(portableQuery, cachedSqlQueryId) {
-        let results = await this.find(portableQuery);
+    async findOne(portableQuery, internalFragments, cachedSqlQueryId) {
+        let results = await this.find(portableQuery, internalFragments);
         if (results.length > 1) {
             throw new Error(`Expecting a single result, got ${results.length}`);
         }
@@ -112,7 +112,7 @@ class SqlDriver {
         }
         return null;
     }
-    search(portableQuery, cachedSqlQueryId) {
+    search(portableQuery, internalFragments, cachedSqlQueryId) {
         let resultsSubject = new observe_1.Subject(() => {
             if (resultsSubject.subscriptions.length < 1) {
                 di_1.DI.get(diTokens_1.ACTIVE_QUERIES).then(activeQueries => 
@@ -124,7 +124,7 @@ class SqlDriver {
         let cachedSqlQuery = {
             resultsSubject: resultsSubject,
             runQuery: () => {
-                this.find(portableQuery).then((results) => {
+                this.find(portableQuery, internalFragments).then((results) => {
                     // FIXME: convert to MappedEntityArray if needed
                     resultsSubject.next(results);
                 });
@@ -134,7 +134,7 @@ class SqlDriver {
         cachedSqlQuery.runQuery();
         return resultsSubject;
     }
-    searchOne(portableQuery, cachedSqlQueryId) {
+    searchOne(portableQuery, internalFragments, cachedSqlQueryId) {
         let resultsSubject = new observe_1.Subject(() => {
             if (resultsSubject.subscriptions.length < 1) {
                 di_1.DI.get(diTokens_1.ACTIVE_QUERIES).then(activeQueries => 
@@ -146,7 +146,7 @@ class SqlDriver {
         let cachedSqlQuery = {
             resultsSubject: resultsSubject,
             runQuery: () => {
-                this.findOne(portableQuery).then((result) => {
+                this.findOne(portableQuery, internalFragments).then((result) => {
                     resultsSubject.next(result);
                 });
             }

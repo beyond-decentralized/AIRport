@@ -1,5 +1,5 @@
 import { IAirportDatabase, IQMetadataUtils, ISchemaUtils } from '@airport/air-control';
-import { IStoreDriver, JsonSheetQuery } from '@airport/ground-control';
+import { InternalFragments, IStoreDriver, JsonSheetQuery } from '@airport/ground-control';
 import { SQLDialect } from './core/SQLQuery';
 import { NonEntitySQLQuery } from './NonEntitySQLQuery';
 /**
@@ -10,7 +10,7 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery';
  */
 export declare class SheetSQLQuery extends NonEntitySQLQuery<JsonSheetQuery> {
     constructor(jsonQuery: JsonSheetQuery, dialect: SQLDialect, storeDriver: IStoreDriver);
-    protected getSELECTFragment(nested: boolean, selectClauseFragment: any, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
-    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): any[];
-    protected parseQueryResult(selectClauseFragment: any, resultRow: any, nextFieldIndex: number[]): any;
+    protected getSELECTFragment(nested: boolean, selectClauseFragment: any, internalFragments: InternalFragments, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
+    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[], internalFragments: InternalFragments): any[];
+    protected parseQueryResult(selectClauseFragment: any, resultRow: any, nextFieldIndex: number[], internalFragments: InternalFragments): any;
 }

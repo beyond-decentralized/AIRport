@@ -117,6 +117,8 @@ export namespace repositoryEntity {
 	export const IS_DRAFT                 = 'IS_DRAFT'
 	export const LOCAL_ENTITY_NAME        = 'LocalRepositoryEntity'
 	export const REPOSITORY_ID            = 'REPOSITORY_ID'
-	export const SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID'
+	export const SYS_WIDE_OP_ID_SCHEMA = 'npmjs_org___airport__airport_code'
+	export const SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId'
 	export const systemWideOperationId    = 'systemWideOperationId'
+	export const SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID'
 }

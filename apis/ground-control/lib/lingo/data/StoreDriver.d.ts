@@ -1,4 +1,5 @@
 import { IObservable } from '@airport/observe';
+import { DbColumn } from '../..';
 import { SQLDataType } from '../core/field/JSONClause';
 import { PortableQuery } from '../query/PortableQuery';
 import { StoreType } from './storeInfo';
@@ -13,11 +14,12 @@ export declare enum QueryType {
 export interface ATransactionHistory {
 }
 export interface InternalSetFragment {
-    column: string;
-    value: string;
+    column: DbColumn;
+    value: any;
 }
 export interface InternalFragments {
-    SET: InternalSetFragment[];
+    SELECT?: DbColumn[];
+    SET?: InternalSetFragment[];
 }
 export declare const INVALID_TABLE_NAME = "A0ZA2vKHIAeI9506rYzCSFKYcSbSuLy5sRieHPnd2NevufFEx9CxuZsAdXieZBbRj5mPYypr3TGYwb6limMcTTWHOnsk7F6991890";
 export interface IStoreDriver {
@@ -25,15 +27,15 @@ export interface IStoreDriver {
     deleteWhere(portableQuery: PortableQuery): Promise<number>;
     doesTableExist(tableName: string): Promise<boolean>;
     dropTable(tableName: string): Promise<boolean>;
-    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<EntityArray>;
-    findOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<E>;
+    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, cachedSqlQueryId?: number): Promise<EntityArray>;
+    findOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, cachedSqlQueryId?: number): Promise<E>;
     findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
     initialize(dbName: string): Promise<any>;
     insertValues(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<number>;
     query(queryType: QueryType, query: string, params: any, saveTransaction?: boolean): Promise<any>;
     saveTransaction(transaction: ATransactionHistory): Promise<any>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): IObservable<E>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, cachedSqlQueryId?: number): IObservable<EntityArray>;
+    searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, cachedSqlQueryId?: number): IObservable<E>;
     updateWhere(portableQuery: PortableQuery, internalFragments: InternalFragments): Promise<number>;
     transact(keepAlive?: boolean): Promise<void>;
     commit(): Promise<void>;

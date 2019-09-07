@@ -1,4 +1,5 @@
 import {IObservable}   from '@airport/observe'
+import {DbColumn}      from '../..'
 import {SQLDataType}   from '../core/field/JSONClause'
 import {PortableQuery} from '../query/PortableQuery'
 import {StoreType}     from './storeInfo'
@@ -18,12 +19,13 @@ export interface ATransactionHistory {
 }
 
 export interface InternalSetFragment {
-	column: string;
-	value: string;
+	column: DbColumn;
+	value: any;
 }
 
 export interface InternalFragments {
-	SET: InternalSetFragment[];
+	SELECT?: DbColumn[];
+	SET?: InternalSetFragment[];
 }
 
 export const INVALID_TABLE_NAME = 'A0ZA2vKHIAeI9506rYzCSFKYcSbSuLy5sRieHPnd2NevufFEx9CxuZsAdXieZBbRj5mPYypr3TGYwb6limMcTTWHOnsk7F6991890'
@@ -46,11 +48,13 @@ export interface IStoreDriver {
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
+		internalFragments: InternalFragments,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray>;
 
 	findOne<E>(
 		portableQuery: PortableQuery,
+		internalFragments: InternalFragments,
 		cachedSqlQueryId?: number,
 	): Promise<E>;
 
@@ -81,11 +85,13 @@ export interface IStoreDriver {
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
+		internalFragments: InternalFragments,
 		cachedSqlQueryId?: number,
 	): IObservable<EntityArray>;
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
+		internalFragments: InternalFragments,
 		cachedSqlQueryId?: number,
 	): IObservable<E>;
 

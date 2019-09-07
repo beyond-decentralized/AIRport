@@ -43,13 +43,15 @@ export interface IdKeysByIdColumnIndex {
 	mapByIdColumnName: { [columnName: string]: (number | string) }
 }
 
-export interface GetSheetSelectFromSetClauseResult {
+export interface RepositorySheetSelectInfo {
 	actorIdColumnIndex: number;
 	actorRecordIdColumnIndex: number;
 	draftColumnIndex: number;
 	draftColumnUpdated: boolean;
 	repositoryIdColumnIndex: number;
-	selectClause: IQFieldInternal<any>[];
+	systemWideOperationIdColumn: DbColumn;
+	selectClause?: IQFieldInternal<any>[];
+	selectClauseColumns?: DbColumn[];
 }
 
 export interface ISchemaUtils {
@@ -166,8 +168,9 @@ export interface ISchemaUtils {
 	getSheetSelectFromSetClause(
 		dbEntity: DbEntity,
 		qEntity: IQEntity,
-		setClause: any
-	): GetSheetSelectFromSetClauseResult;
+		setClause: any,
+		errorPrefix: string
+	): RepositorySheetSelectInfo;
 
 	getTableName(
 		dbEntity: DbEntity

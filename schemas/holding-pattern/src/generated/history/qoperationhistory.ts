@@ -70,6 +70,7 @@ export interface IOperationHistory {
 	// Non-Id Properties
 	orderNumber?: number;
 	changeType?: number;
+	systemWideOperationId?: number;
 
 	// Non-Id Relations
 	entity?: ISchemaEntity;
@@ -93,6 +94,7 @@ export interface OperationHistoryESelect
 	// Non-Id Properties
 	orderNumber?: number | IQNumberField;
 	changeType?: number | IQNumberField;
+	systemWideOperationId?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
 	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
@@ -136,6 +138,7 @@ export interface OperationHistoryEUpdateProperties
 	// Non-Id Properties
 	orderNumber?: number | IQNumberField;
 	changeType?: number | IQNumberField;
+	systemWideOperationId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	entity?: SchemaEntityEOptionalId;
@@ -150,6 +153,7 @@ export interface OperationHistoryEUpdateColumns
 	// Non-Id Columns
 	ORDER_NUMBER?: number | IQNumberField;
 	CHANGE_TYPE?: number | IQNumberField;
+	SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
 	ENTITY_ID?: number | IQNumberField;
 
 }
@@ -189,6 +193,7 @@ export interface QOperationHistory extends IQEntity
 	// Non-Id Fields
 	orderNumber: IQNumberField;
 	changeType: IQNumberField;
+	systemWideOperationId: IQNumberField;
 
 	// Non-Id Relations
 	entity: QSchemaEntityQRelation;
