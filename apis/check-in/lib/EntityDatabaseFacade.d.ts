@@ -13,8 +13,8 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     searchOne: IEntitySearchOne<Entity, EntitySelect>;
     constructor(dbEntity: DbEntity, Q: QSchema);
     readonly from: IQ;
-    create(entity: EntityCreate): Promise<number>;
-    bulkCreate(entities: EntityCreate[], cascadeOverwrite?: CascadeOverwrite, checkIfProcessed?: boolean): Promise<number>;
+    create(entity: EntityCreate, cascadeGraph?: EntitySelect): Promise<number>;
+    bulkCreate(entities: EntityCreate[], cascadeOverwrite?: CascadeOverwrite | EntitySelect, checkIfProcessed?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }): Promise<number>;
@@ -27,16 +27,16 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }): Promise<number[] | string[] | number[][] | string[][]>;
-    update(entity: EntityCreate): Promise<number>;
+    update(entity: EntityCreate, cascadeGraph?: EntitySelect): Promise<number>;
     updateColumnsWhere(rawUpdateColumns: RawUpdate<EntityUpdateColumns, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateColumns, IQ>;
     }): Promise<number>;
     updateWhere(rawUpdate: RawUpdate<EntityUpdateProperties, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateProperties, IQ>;
     }): Promise<number>;
-    delete(entity: EntityId): Promise<number>;
+    delete(entity: EntityId, cascadeGraph?: EntitySelect): Promise<number>;
     deleteWhere(rawDelete: RawDelete<IQ> | {
         (...args: any[]): RawDelete<IQ>;
     }): Promise<number>;
-    save(entity: EntityCreate): Promise<number>;
+    save(entity: EntityCreate, cascadeGraph?: EntitySelect): Promise<number>;
 }

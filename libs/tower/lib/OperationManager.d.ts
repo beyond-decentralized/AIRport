@@ -24,18 +24,18 @@ export declare abstract class OperationManager implements IOperationManager {
      * @param qEntity
      * @param entity
      */
-    protected performCreate<E>(dbEntity: DbEntity, entity: E, createdEntityMap: {
+    protected performCreate<E, EntitySelect>(dbEntity: DbEntity, entity: E, createdEntityMap: {
         [entityId: string]: any;
-    }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, idData?: EntityIdData, cascadeOverwrite?: CascadeOverwrite): Promise<number>;
+    }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, idData?: EntityIdData, cascadeOverwrite?: CascadeOverwrite | EntitySelect): Promise<number>;
     /**
      * Transactional context must have been started by the time this method is called.
      *
      * @param qEntity
      * @param entity
      */
-    protected performBulkCreate<E>(dbEntity: DbEntity, entities: E[], createdEntityMap: {
+    protected performBulkCreate<E, EntitySelect>(dbEntity: DbEntity, entities: E[], createdEntityMap: {
         [entityId: string]: any;
-    }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, checkIfProcessed?: boolean, cascadeOverwrite?: CascadeOverwrite, ensureGeneratedValues?: boolean): Promise<number>;
+    }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, checkIfProcessed?: boolean, cascadeOverwrite?: CascadeOverwrite | EntitySelect, ensureGeneratedValues?: boolean): Promise<number>;
     private internalCreate;
     private columnProcessed;
     protected internalInsertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): Promise<number>;
@@ -47,9 +47,9 @@ export declare abstract class OperationManager implements IOperationManager {
      * @param qEntity
      * @param entity
      */
-    protected performUpdate<E>(dbEntity: DbEntity, entity: E, updatedEntityMap: {
+    protected performUpdate<E, EntitySelect>(dbEntity: DbEntity, entity: E, updatedEntityMap: {
         [entityId: string]: any;
-    }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, originalValue?: E, cascadeOverwrite?: CascadeOverwrite): Promise<number>;
+    }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, originalValue?: E, cascadeOverwrite?: CascadeOverwrite | EntitySelect): Promise<number>;
     protected internalInsertValuesGetIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number[] | string[] | number[][] | string[][]>;
     private cascadeOnPersist;
     protected abstract getOriginalRecord(dbEntity: DbEntity, idKey: string, updateCache: IUpdateCache): Promise<any>;

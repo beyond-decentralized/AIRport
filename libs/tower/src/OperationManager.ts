@@ -97,7 +97,7 @@ export abstract class OperationManager
 	 * @param qEntity
 	 * @param entity
 	 */
-	protected async performCreate<E>(
+	protected async performCreate<E, EntitySelect>(
 		dbEntity: DbEntity,
 		entity: E,
 		createdEntityMap: { [entityId: string]: any }[][],
@@ -110,7 +110,7 @@ export abstract class OperationManager
 		transConnector: ITransactionalConnector,
 		updateCache: IUpdateCache,
 		idData?: EntityIdData,
-		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT
+		cascadeOverwrite: CascadeOverwrite | EntitySelect = CascadeOverwrite.DEFAULT
 	): Promise<number> {
 		let result = await this.internalCreate(dbEntity, [entity],
 			createdEntityMap, !idData,
@@ -131,7 +131,7 @@ export abstract class OperationManager
 	 * @param qEntity
 	 * @param entity
 	 */
-	protected async performBulkCreate<E>(
+	protected async performBulkCreate<E, EntitySelect>(
 		dbEntity: DbEntity,
 		entities: E[],
 		createdEntityMap: { [entityId: string]: any }[][],
@@ -144,7 +144,7 @@ export abstract class OperationManager
 		transConnector: ITransactionalConnector,
 		updateCache: IUpdateCache,
 		checkIfProcessed: boolean          = true,
-		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT,
+		cascadeOverwrite: CascadeOverwrite | EntitySelect = CascadeOverwrite.DEFAULT,
 		ensureGeneratedValues: boolean     = true // For internal use only
 	): Promise<number> {
 		let result = await this.internalCreate(dbEntity, entities,
@@ -159,7 +159,7 @@ export abstract class OperationManager
 		return result.numberOfAffectedRecords
 	}
 
-	private async internalCreate<E>(
+	private async internalCreate<E, EntitySelect>(
 		dbEntity: DbEntity,
 		entities: E[],
 		createdEntityMap: { [entityId: string]: any }[][],
@@ -171,7 +171,7 @@ export abstract class OperationManager
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
 		transConnector: ITransactionalConnector,
-		cascadeOverwrite: CascadeOverwrite,
+		cascadeOverwrite: CascadeOverwrite | EntitySelect,
 		ensureGeneratedValues?: boolean
 	): Promise<ResultWithCascade> {
 		const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
@@ -385,7 +385,7 @@ export abstract class OperationManager
 	 * @param qEntity
 	 * @param entity
 	 */
-	protected async performUpdate<E>(
+	protected async performUpdate<E, EntitySelect>(
 		dbEntity: DbEntity,
 		entity: E,
 		updatedEntityMap: { [entityId: string]: any } [][],
@@ -398,7 +398,7 @@ export abstract class OperationManager
 		transConnector: ITransactionalConnector,
 		updateCache: IUpdateCache,
 		originalValue ?: E,
-		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT
+		cascadeOverwrite: CascadeOverwrite | EntitySelect = CascadeOverwrite.DEFAULT
 	): Promise<number> {
 		if (!originalValue) {
 			let [isProcessed, entityIdData] = this.isProcessed(
@@ -445,7 +445,7 @@ export abstract class OperationManager
 		return await transConnector.insertValuesGetIds(portableQuery)
 	}
 
-	private async cascadeOnPersist(
+	private async cascadeOnPersist<EntitySelect>(
 		cascadeRecords: CascadeRecord[],
 		parentDbEntity: DbEntity,
 		alreadyModifiedEntityMap: { [idKey: string]: any }[][],
@@ -457,7 +457,7 @@ export abstract class OperationManager
 		schemaUtils: ISchemaUtils,
 		transConnector: ITransactionalConnector,
 		updateCache: IUpdateCache,
-		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT
+		cascadeOverwrite: CascadeOverwrite | EntitySelect = CascadeOverwrite.DEFAULT
 	): Promise<void> {
 		if (!cascadeRecords.length
 			|| cascadeOverwrite === CascadeOverwrite.NEVER) {
@@ -614,7 +614,7 @@ export abstract class OperationManager
 	 *  ManyToOne:
 	 *    Cascades do not travel across ManyToOne
 	 */
-	private async internalUpdate<E>(
+	private async internalUpdate<E, EntitySelect>(
 		dbEntity: DbEntity,
 		entity: E,
 		originalEntity: E,
@@ -625,7 +625,7 @@ export abstract class OperationManager
 		schemaUtils: ISchemaUtils,
 		transConnector: ITransactionalConnector,
 		updateCache: IUpdateCache,
-		cascadeOverwrite: CascadeOverwrite
+		cascadeOverwrite: CascadeOverwrite | EntitySelect
 	): Promise<ResultWithCascade> {
 		const qEntity                                =
 			      airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]

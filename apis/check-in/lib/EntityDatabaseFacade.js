@@ -28,7 +28,7 @@ class EntityDatabaseFacade {
     // 	const dbFacade = await DI.get(DB_FACADE)
     // 	return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity,
     // ...entities) }
-    async create(entity) {
+    async create(entity, cascadeGraph) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
         return await dbFacade.create(this.dbEntity, entity);
     }
@@ -52,7 +52,7 @@ class EntityDatabaseFacade {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
         return await dbFacade.insertValuesGenerateIds(this.dbEntity, rawInsertValues);
     }
-    async update(entity) {
+    async update(entity, cascadeGraph) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
         return await dbFacade.update(this.dbEntity, entity);
     }
@@ -64,7 +64,7 @@ class EntityDatabaseFacade {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
         return await dbFacade.updateWhere(this.dbEntity, rawUpdate);
     }
-    async delete(entity) {
+    async delete(entity, cascadeGraph) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
         return await dbFacade.delete(this.dbEntity, entity);
     }
@@ -72,7 +72,7 @@ class EntityDatabaseFacade {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
         return await dbFacade.deleteWhere(this.dbEntity, rawDelete);
     }
-    async save(entity) {
+    async save(entity, cascadeGraph) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
         return await dbFacade.save(this.dbEntity, entity);
     }

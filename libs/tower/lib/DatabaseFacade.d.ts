@@ -8,8 +8,8 @@ import { OperationManager } from './OperationManager';
 export declare class DatabaseFacade extends OperationManager implements IDatabaseFacade {
     name: string;
     addRepository(name: string, url?: string, platform?: PlatformType, platformConfig?: string, distributionStrategy?: DistributionStrategy): Promise<number>;
-    create<E>(dbEntity: DbEntity, entity: E): Promise<number>;
-    bulkCreate<E>(dbEntity: DbEntity, entities: E[], checkIfProcessed?: boolean, cascadeOverwrite?: CascadeOverwrite): Promise<number>;
+    create<E, EntitySelect>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntitySelect): Promise<number>;
+    bulkCreate<E, EntitySelect>(dbEntity: DbEntity, entities: E[], checkIfProcessed?: boolean, cascadeOverwrite?: CascadeOverwrite | EntitySelect): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }): Promise<number>;
@@ -22,12 +22,12 @@ export declare class DatabaseFacade extends OperationManager implements IDatabas
     insertValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }): Promise<number[] | string[] | number[][] | string[][]>;
-    delete<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    delete<E, EntitySelect>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntitySelect): Promise<number>;
     deleteWhere<IQE extends IQEntity>(dbEntity: DbEntity, rawDelete: RawDelete<IQE> | {
         (...args: any[]): RawDelete<IQE>;
     }): Promise<number>;
-    save<E>(dbEntity: DbEntity, entity: E): Promise<number>;
-    update<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    save<E, EntitySelect>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntitySelect): Promise<number>;
+    update<E, EntitySelect>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntitySelect): Promise<number>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.

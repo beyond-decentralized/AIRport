@@ -87,9 +87,10 @@ export interface IDatabaseFacade {
 	 *
 	 * @return Number of records created (1 or 0)
 	 */
-	create<E>(
+	create<E, EntitySelect>(
 		dbEntity: DbEntity,
 		entity: E,
+		cascadeGraph?: EntitySelect
 	): Promise<number>;
 
 	/**
@@ -98,11 +99,11 @@ export interface IDatabaseFacade {
 	 *
 	 * @return Number of records created
 	 */
-	bulkCreate<E>(
+	bulkCreate<E, EntitySelect>(
 		dbEntity: DbEntity,
 		entities: E[],
 		checkIfProcessed: boolean, // defaults to true
-		cascadeOverwrite: CascadeOverwrite, // defaults to false
+		cascadeOverwrite: CascadeOverwrite | EntitySelect, // defaults to false
 		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
 	                                  // creation
 	): Promise<number>;
@@ -141,9 +142,10 @@ export interface IDatabaseFacade {
 	 *
 	 * @return Number of records deleted (1 or 0)
 	 */
-	delete<E>(
+	delete<E, EntitySelect>(
 		dbEntity: DbEntity,
 		entity: E,
+		cascadeGraph?: EntitySelect
 	): Promise<number>;
 
 	/**
@@ -165,9 +167,10 @@ export interface IDatabaseFacade {
 	 *
 	 * @return Number of records saved (1 or 0)
 	 */
-	save<E>(
+	save<E, EntitySelect>(
 		dbEntity: DbEntity,
 		entity: E,
+		cascadeGraph?: EntitySelect
 	): Promise<number>;
 
 	/**
@@ -176,9 +179,10 @@ export interface IDatabaseFacade {
 	 *
 	 * @return Number of records updated (1 or 0)
 	 */
-	update<E>(
+	update<E, EntitySelect>(
 		dbEntity: DbEntity,
 		entity: E,
+		cascadeGraph?: EntitySelect
 	): Promise<number>;
 
 	/**

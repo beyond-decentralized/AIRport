@@ -46,7 +46,7 @@ class DatabaseFacade extends OperationManager_1.OperationManager {
         const transConnector = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR);
         return await transConnector.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
-    async create(dbEntity, entity) {
+    async create(dbEntity, entity, cascadeGraph) {
         if (!entity) {
             return 0;
         }
@@ -101,7 +101,7 @@ class DatabaseFacade extends OperationManager_1.OperationManager {
         const [fieldUtils, queryFacade, queryUtils, transConnector] = await di_1.DI.get(air_control_1.FIELD_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, ground_control_1.TRANS_CONNECTOR);
         return await transactional_1.transactional(async () => await this.internalInsertValuesGetIds(dbEntity, rawInsertValues, fieldUtils, queryFacade, queryUtils, transConnector));
     }
-    async delete(dbEntity, entity) {
+    async delete(dbEntity, entity, cascadeGraph) {
         if (!entity) {
             return 0;
         }
@@ -119,7 +119,7 @@ class DatabaseFacade extends OperationManager_1.OperationManager {
         const [fieldUtils, queryFacade, queryUtils, transConnector] = await di_1.DI.get(air_control_1.FIELD_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, ground_control_1.TRANS_CONNECTOR);
         return await transactional_1.transactional(async () => await this.internalDeleteWhere(dbEntity, deleteWhere, fieldUtils, queryFacade, queryUtils, transConnector));
     }
-    async save(dbEntity, entity) {
+    async save(dbEntity, entity, cascadeGraph) {
         if (!entity) {
             return 0;
         }
@@ -149,7 +149,7 @@ class DatabaseFacade extends OperationManager_1.OperationManager {
             }
         });
     }
-    async update(dbEntity, entity) {
+    async update(dbEntity, entity, cascadeGraph) {
         if (!entity) {
             return 0;
         }

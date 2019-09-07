@@ -81,7 +81,8 @@ export class EntityDatabaseFacade<Entity,
 	// ...entities) }
 
 	async create(
-		entity: EntityCreate
+		entity: EntityCreate,
+		cascadeGraph?: EntitySelect
 	): Promise<number> {
 		const dbFacade = await DI.get(DB_FACADE)
 		return await dbFacade.create(this.dbEntity, entity)
@@ -89,7 +90,7 @@ export class EntityDatabaseFacade<Entity,
 
 	async bulkCreate(
 		entities: EntityCreate[],
-		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT,
+		cascadeOverwrite: CascadeOverwrite | EntitySelect = CascadeOverwrite.DEFAULT,
 		checkIfProcessed: boolean          = true
 	): Promise<number> {
 		const dbFacade = await DI.get(DB_FACADE)
@@ -130,7 +131,8 @@ export class EntityDatabaseFacade<Entity,
 	}
 
 	async update(
-		entity: EntityCreate
+		entity: EntityCreate,
+		cascadeGraph?: EntitySelect
 	): Promise<number> {
 		const dbFacade = await DI.get(DB_FACADE)
 		return await dbFacade.update(this.dbEntity, entity)
@@ -157,7 +159,8 @@ export class EntityDatabaseFacade<Entity,
 	}
 
 	async delete(
-		entity: EntityId
+		entity: EntityId,
+		cascadeGraph?: EntitySelect
 	): Promise<number> {
 		const dbFacade = await DI.get(DB_FACADE)
 		return await dbFacade.delete(this.dbEntity, entity)
@@ -171,7 +174,8 @@ export class EntityDatabaseFacade<Entity,
 	}
 
 	async save(
-		entity: EntityCreate
+		entity: EntityCreate,
+		cascadeGraph?: EntitySelect
 	): Promise<number> {
 		const dbFacade = await DI.get(DB_FACADE)
 		return await dbFacade.save(this.dbEntity, entity)

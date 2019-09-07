@@ -46,13 +46,13 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records created (1 or 0)
      */
-    create(entity: EntityCreateProperties): Promise<number>;
+    create(entity: EntityCreateProperties, cascadeGraph?: EntitySelect): Promise<number>;
     /**
      * Creates the provided entities in the db.
      *
      * @return Number of records created
      */
-    bulkCreate(entities: EntityCreateProperties[], cascadeOverwrite: CascadeOverwrite, // defaults to false
+    bulkCreate(entities: EntityCreateProperties[], cascadeOverwrite: CascadeOverwrite | EntitySelect, // defaults to false
     checkIfProcessed: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
@@ -72,7 +72,8 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records updated (1 or 0)
      */
-    update(entity: EntityCreateProperties): Promise<number>;
+    update(entity: EntityCreateProperties, // @Id fields must be populated
+    cascadeGraph?: EntitySelect): Promise<number>;
     /**
      * Updates this entity type based on an UPDATE WHERE Query,
      * with a column based set clause.
@@ -96,7 +97,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records deleted (1 or 0)
      */
-    delete(entity: EntityId): Promise<number>;
+    delete(entity: EntityId, cascadeGraph?: EntitySelect): Promise<number>;
     /**
      * Deletes this entity type based on an DELETE WHERE Query.
      *
@@ -112,5 +113,5 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records saved (1 or 0)
      */
-    save(entity: EntityCreateProperties): Promise<number>;
+    save(entity: EntityCreateProperties, cascadeGraph?: EntitySelect): Promise<number>;
 }

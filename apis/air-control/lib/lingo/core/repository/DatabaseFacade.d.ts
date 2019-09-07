@@ -42,15 +42,15 @@ export interface IDatabaseFacade {
      *
      * @return Number of records created (1 or 0)
      */
-    create<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    create<E, EntitySelect>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntitySelect): Promise<number>;
     /**
      * Creates an entity - internal API.  Use the API provided by the
      * IEntityDatabaseFacade.
      *
      * @return Number of records created
      */
-    bulkCreate<E>(dbEntity: DbEntity, entities: E[], checkIfProcessed: boolean, // defaults to true
-    cascadeOverwrite: CascadeOverwrite, // defaults to false
+    bulkCreate<E, EntitySelect>(dbEntity: DbEntity, entities: E[], checkIfProcessed: boolean, // defaults to true
+    cascadeOverwrite: CascadeOverwrite | EntitySelect, // defaults to false
     ensureGeneratedValues?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
@@ -70,7 +70,7 @@ export interface IDatabaseFacade {
      *
      * @return Number of records deleted (1 or 0)
      */
-    delete<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    delete<E, EntitySelect>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntitySelect): Promise<number>;
     /**
      * Creates an entity with a where clause - internal API.  Use the
      *  API provided by the IEntityDatabaseFacade.
@@ -86,14 +86,14 @@ export interface IDatabaseFacade {
      *
      * @return Number of records saved (1 or 0)
      */
-    save<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    save<E, EntitySelect>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntitySelect): Promise<number>;
     /**
      * Updates an entity - internal API.  Use the API provided by the
      * IEntityDatabaseFacade.
      *
      * @return Number of records updated (1 or 0)
      */
-    update<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    update<E, EntitySelect>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntitySelect): Promise<number>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.

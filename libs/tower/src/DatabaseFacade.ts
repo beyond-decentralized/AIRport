@@ -102,9 +102,10 @@ export class DatabaseFacade
 			name, url, platform, platformConfig, distributionStrategy)
 	}
 
-	async create<E>(
+	async create<E, EntitySelect>(
 		dbEntity: DbEntity,
-		entity: E
+		entity: E,
+		cascadeGraph?: EntitySelect
 	): Promise<number> {
 		if (!entity) {
 			return 0
@@ -124,11 +125,11 @@ export class DatabaseFacade
 		)
 	}
 
-	async bulkCreate<E>(
+	async bulkCreate<E, EntitySelect>(
 		dbEntity: DbEntity,
 		entities: E[],
 		checkIfProcessed: boolean          = true,
-		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT
+		cascadeOverwrite: CascadeOverwrite | EntitySelect  = CascadeOverwrite.DEFAULT,
 	): Promise<number> {
 		if (!entities || !entities.length) {
 			return 0
@@ -236,9 +237,10 @@ export class DatabaseFacade
 
 	}
 
-	async delete<E>(
+	async delete<E, EntitySelect>(
 		dbEntity: DbEntity,
-		entity: E
+		entity: E,
+		cascadeGraph?: EntitySelect
 	): Promise<number> {
 		if (!entity) {
 			return 0
@@ -280,9 +282,10 @@ export class DatabaseFacade
 		)
 	}
 
-	async save<E>(
+	async save<E, EntitySelect>(
 		dbEntity: DbEntity,
-		entity: E
+		entity: E,
+		cascadeGraph?: EntitySelect
 	): Promise<number> {
 		if (!entity) {
 			return 0
@@ -326,9 +329,10 @@ export class DatabaseFacade
 		})
 	}
 
-	async update<E>(
+	async update<E, EntitySelect>(
 		dbEntity: DbEntity,
-		entity: E
+		entity: E,
+		cascadeGraph?: EntitySelect
 	): Promise<number> {
 		if (!entity) {
 			return 0

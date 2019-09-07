@@ -86,7 +86,8 @@ export interface IEntityDatabaseFacade<Entity,
 	 * @return Number of records created (1 or 0)
 	 */
 	create(
-		entity: EntityCreateProperties
+		entity: EntityCreateProperties,
+		cascadeGraph?: EntitySelect
 	): Promise<number>;
 
 	/**
@@ -96,7 +97,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	bulkCreate(
 		entities: EntityCreateProperties[],
-		cascadeOverwrite: CascadeOverwrite, // defaults to false
+		cascadeOverwrite: CascadeOverwrite | EntitySelect, // defaults to false
 		checkIfProcessed: boolean // defaults to true
 	): Promise<number>;
 
@@ -127,7 +128,8 @@ export interface IEntityDatabaseFacade<Entity,
 	 * @return Number of records updated (1 or 0)
 	 */
 	update(
-		entity: EntityCreateProperties // @Id fields must be populated
+		entity: EntityCreateProperties, // @Id fields must be populated
+		cascadeGraph?: EntitySelect
 	): Promise<number>;
 
 	/**
@@ -157,7 +159,8 @@ export interface IEntityDatabaseFacade<Entity,
 	 * @return Number of records deleted (1 or 0)
 	 */
 	delete(
-		entity: EntityId
+		entity: EntityId,
+		cascadeGraph?: EntitySelect
 	): Promise<number>;
 
 	/**
@@ -177,7 +180,8 @@ export interface IEntityDatabaseFacade<Entity,
 	 * @return Number of records saved (1 or 0)
 	 */
 	save(
-		entity: EntityCreateProperties
+		entity: EntityCreateProperties,
+		cascadeGraph?: EntitySelect
 	): Promise<number>;
 
 }
