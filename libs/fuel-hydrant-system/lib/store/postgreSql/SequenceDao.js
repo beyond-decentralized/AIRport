@@ -3,9 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const airport_code_1 = require("@airport/airport-code");
 const di_1 = require("@airport/di");
 const terminal_map_1 = require("@airport/terminal-map");
-class SequenceDao extends airport_code_1.BaseSequenceDao {
+class SequenceDao {
+    constructor() {
+        di_1.DI.get((terminalStore) => {
+            this.terminalStore = terminalStore;
+        }, terminal_map_1.TERMINAL_STORE);
+    }
     async findAll(entityIds) {
-        const latestSchemaVersionMapByNames = (await di_1.DI.get(terminal_map_1.TERMINAL_STORE)).getLatestSchemaVersionMapByNames();
+        const latestSchemaVersionMapByNames = this.terminalStore.getLatestSchemaVersionMapByNames();
         const sequences = [];
         for (const [domainName, schemaMapByName] of latestSchemaVersionMapByNames) {
             for (const [schemaName, schemaVersion] of schemaMapByName) {

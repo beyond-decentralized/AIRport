@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation, ISchemaColumn, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQRelation } from '@airport/traffic-pattern';
 import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
 export interface IRecordUpdateStage {
-    id?: number;
+    id: number;
     actorRecordId?: number;
     updatedValue?: any;
     schemaVersion?: ISchemaVersion;

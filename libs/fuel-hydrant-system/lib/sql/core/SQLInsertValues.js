@@ -6,21 +6,19 @@ const SQLWhereBase_1 = require("./SQLWhereBase");
  * Created by Papa on 11/17/2016.
  */
 class SQLInsertValues extends SQLNoJoinQuery_1.SQLNoJoinQuery {
-    constructor(airportDb, jsonInsertValues, dialect, storeDriver
-    // repository?: IRepository
-    ) {
-        super(airportDb.schemas[jsonInsertValues.II.si]
-            .currentVersion.entities[jsonInsertValues.II.ti], dialect, storeDriver);
+    constructor(airportDb, utils, jsonInsertValues, dialect) {
+        super(airportDb, utils, airportDb.schemas[jsonInsertValues.II.si]
+            .currentVersion.entities[jsonInsertValues.II.ti], dialect);
         this.jsonInsertValues = jsonInsertValues;
     }
-    toSQL(airDb, schemaUtils, metadataUtils) {
+    toSQL() {
         if (!this.jsonInsertValues.II) {
-            throw new Error(`Expecting exactly one table in INSERT INTO clause`);
+            throw `Expecting exactly one table in INSERT INTO clause`;
         }
         this.validator.validateInsertQEntity(this.dbEntity);
-        let tableFragment = this.getTableFragment(this.jsonInsertValues.II, airDb, schemaUtils);
+        let tableFragment = this.getTableFragment(this.jsonInsertValues.II);
         let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C);
-        let valuesFragment = this.getValuesFragment(this.jsonInsertValues.V, airDb, schemaUtils, metadataUtils);
+        let valuesFragment = this.getValuesFragment(this.jsonInsertValues.V);
         return `INSERT INTO
 ${tableFragment} ${columnsFragment}
 VALUES
@@ -34,7 +32,7 @@ ${valuesFragment}
         const columnNames = columns.map(columnIndex => dbEntity.columns[columnIndex].name);
         return `( ${columnNames.join(', \n')} )`;
     }
-    getValuesFragment(valuesClauseFragment, airDb, schemaUtils, metadataUtils) {
+    getValuesFragment(valuesClauseFragment) {
         let allValuesFragment = valuesClauseFragment.map((valuesArray) => {
             let valuesFragment = valuesArray.map((value) => {
                 if (value === null || ['number', 'string'].indexOf(typeof value) > -1) {
@@ -42,8 +40,7 @@ ${valuesFragment}
                     return this.sqlAdaptor.getParameterReference(this.parameterReferences, value);
                 }
                 else {
-                    const fieldValue = this.getFieldValue(value, SQLWhereBase_1.ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
-                    return `\n${fieldValue}\n`;
+                    return `\n${this.getFieldValue(value, SQLWhereBase_1.ClauseType.WHERE_CLAUSE)}\n`;
                 }
             });
             return `(${valuesFragment.join(',')})`;

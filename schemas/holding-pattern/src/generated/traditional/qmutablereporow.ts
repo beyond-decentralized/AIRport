@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IImmutableRepoRow,
+	ImmutableRepoRowECascadeGraph,
 	ImmutableRepoRowEId,
 	ImmutableRepoRowEUpdateColumns,
 	ImmutableRepoRowEUpdateProperties,
@@ -104,6 +106,15 @@ export interface MutableRepoRowEUpdateProperties
 	updatedAt?: Date | IQDateField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface MutableRepoRowECascadeGraph
+	extends ImmutableRepoRowECascadeGraph {
+	// Cascading Relations
 
 }
 

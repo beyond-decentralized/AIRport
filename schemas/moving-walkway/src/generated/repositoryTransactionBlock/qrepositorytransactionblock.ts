@@ -57,7 +57,7 @@ import {
 	QSharingNodeRepoTransBlock,
 	QSharingNodeRepoTransBlockQId,
 	QSharingNodeRepoTransBlockQRelation,
-} from '../sharingNode/qsharingnoderepotransblock';
+} from '../sharingnode/qsharingnoderepotransblock';
 import {
 	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockEId,
@@ -67,7 +67,7 @@ import {
 	QSharingMessageRepoTransBlock,
 	QSharingMessageRepoTransBlockQId,
 	QSharingMessageRepoTransBlockQRelation,
-} from '../sharingMessage/qsharingmessagerepotransblock';
+} from '../sharingmessage/qsharingmessagerepotransblock';
 import {
 	IMissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockEId,
@@ -77,7 +77,7 @@ import {
 	QMissingRecordRepoTransBlock,
 	QMissingRecordRepoTransBlockQId,
 	QMissingRecordRepoTransBlockQRelation,
-} from '../missingRecord/qmissingrecordrepotransblock';
+} from '../missingrecord/qmissingrecordrepotransblock';
 import {
 	IRepoTransBlockSchemaToChange,
 	RepoTransBlockSchemaToChangeEId,
@@ -100,7 +100,7 @@ declare function require(moduleName: string): any;
 export interface IRepositoryTransactionBlock {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
 

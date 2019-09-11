@@ -42,10 +42,10 @@ declare function require(moduleName: string): any;
 export interface ISynchronizationConflictValues {
 	
 	// Id Properties
-	columnIndex?: number;
+	columnIndex: number;
 
 	// Id Relations
-	synchronizationConflict?: ISynchronizationConflict;
+	synchronizationConflict: ISynchronizationConflict;
 
 	// Non-Id Properties
 

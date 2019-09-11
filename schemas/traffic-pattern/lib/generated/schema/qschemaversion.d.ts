@@ -1,9 +1,9 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { ISchemaEntity, SchemaEntityESelect, QSchemaEntity } from './qschemaentity';
-import { ISchemaReference, SchemaReferenceESelect, QSchemaReference } from './qschemareference';
-import { ISchema, SchemaEOptionalId, SchemaESelect, QSchemaQRelation } from './qschema';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { ISchemaEntity, SchemaEntityECascadeGraph, SchemaEntityESelect, QSchemaEntity } from './qschemaentity';
+import { ISchemaReference, SchemaReferenceECascadeGraph, SchemaReferenceESelect, QSchemaReference } from './qschemareference';
+import { ISchema, SchemaECascadeGraph, SchemaEOptionalId, SchemaESelect, QSchemaQRelation } from './qschema';
 export interface ISchemaVersion {
-    id?: number;
+    id: number;
     integerVersion?: number;
     versionString?: string;
     majorVersion?: number;
@@ -59,6 +59,15 @@ export interface SchemaVersionEUpdateProperties extends IEntityUpdateProperties 
     minorVersion?: number | IQNumberField;
     patchVersion?: number | IQNumberField;
     schema?: SchemaEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SchemaVersionECascadeGraph extends IEntityCascadeGraph {
+    schema?: SchemaECascadeGraph;
+    entities?: SchemaEntityECascadeGraph;
+    references?: SchemaReferenceECascadeGraph;
+    referencedBy?: SchemaReferenceECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

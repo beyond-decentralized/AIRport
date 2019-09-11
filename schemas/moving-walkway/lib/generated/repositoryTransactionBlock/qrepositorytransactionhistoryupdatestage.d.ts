@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 export interface IRepositoryTransactionHistoryUpdateStage {
-    repositoryTransactionHistoryId?: number;
+    repositoryTransactionHistoryId: number;
     blockId?: number;
 }
 /**

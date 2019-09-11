@@ -13,7 +13,7 @@ class SqLiteDriver extends SqlDriver_1.SqlDriver {
     async doesTableExist(tableName) {
         const matchingTableNames = await this.findNative(
         // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
-        `SELECT tbl_name from sqlite_master WHERE type = 'table' AND tbl_name = '${tableName}'`, []);
+        `SELECT tbl_name from sqlite_master WHERE type = '${tableName}'`, []);
         return matchingTableNames.length === 1;
     }
     async dropTable(tableName) {
@@ -44,18 +44,11 @@ class SqLiteDriver extends SqlDriver_1.SqlDriver {
                     return value.getTime();
                 }
                 else {
-                    throw new Error(`Unexpected non-date object ${value}`);
+                    throw `Unexpected non-date object ${value}`;
                 }
             default:
-                throw new Error(`Unexpected typeof value: ${typeof value}`);
+                throw `Unexpected typeof value: ${typeof value}`;
         }
-    }
-    isValueValid(value, sqlDataType) {
-        switch (sqlDataType) {
-            case ground_control_1.SQLDataType.DATE:
-            case ground_control_1.SQLDataType.NUMBER:
-        }
-        return false;
     }
     async initTables(createQueries) {
         for (let i = 0; i < createQueries.length; i++) {

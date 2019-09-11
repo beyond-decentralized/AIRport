@@ -1,12 +1,13 @@
-import {TypeOrParamDocEntry} from '../../parser/DocEntry'
-import {EntityCandidate}     from '../../parser/EntityCandidate'
-import {addImportForType}    from '../../resolve/pathResolver'
-import {IQBuilder}           from './../QBuilder'
-import {QColumnBuilder}      from './QColumnBuilder'
-import {QEntityBuilder}      from './QEntityBuilder'
-import {QPropertyBuilder}    from './QPropertyBuilder'
-import {QRelationBuilder}    from './QRelationBuilder'
-import {QTransientBuilder}   from './QTransientBuilder'
+import {TypeOrParamDocEntry}           from '../../parser/DocEntry'
+import {EntityCandidate}               from '../../parser/EntityCandidate'
+import {addImportForType}              from '../../resolve/pathResolver'
+import {entityExtendsRepositoryEntity} from '../schema/SSchemaBuilder'
+import {IQBuilder}                     from './../QBuilder'
+import {QColumnBuilder}                from './QColumnBuilder'
+import {QEntityBuilder}                from './QEntityBuilder'
+import {QPropertyBuilder}              from './QPropertyBuilder'
+import {QRelationBuilder}              from './QRelationBuilder'
+import {QTransientBuilder}             from './QTransientBuilder'
 
 /**
  * Created by Papa on 5/20/2016.
@@ -40,7 +41,7 @@ export class IQEntityInterfaceBuilder
 		this.idPropertyBuilders.forEach((
 			builder: QPropertyBuilder
 		) => {
-			idProperties += `\t${builder.buildInterfaceDefinition(true, false)}\n`
+			idProperties += `\t${builder.buildInterfaceDefinition(false, false)}\n`
 		})
 
 		let idEProperties = ``
@@ -62,7 +63,7 @@ export class IQEntityInterfaceBuilder
 		this.idRelationBuilders.forEach((
 			builder: QRelationBuilder
 		) => {
-			const idRelation = builder.buildInterfaceDefinition(true, true, false)
+			const idRelation = builder.buildInterfaceDefinition(true, false, false)
 			if (idRelation) {
 				idRelations += `\t${idRelation}\n`
 			}
@@ -143,6 +144,24 @@ export class IQEntityInterfaceBuilder
 			nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`
 		})
 
+		const isRepositoryEntity     = entityExtendsRepositoryEntity(this.entity)
+		let relationsForCascadeGraph = ``
+		if (!isRepositoryEntity) {
+			this.idRelationBuilders.forEach((
+				builder: QRelationBuilder
+			) => {
+				relationsForCascadeGraph += `\t${builder.buildInterfaceDefinition(
+					false, true, true, true)}\n`
+			})
+		}
+
+		this.nonIdRelationBuilders.forEach((
+			builder: QRelationBuilder
+		) => {
+			relationsForCascadeGraph += `\t${builder.buildInterfaceDefinition(
+				false, true, true, true)}\n`
+		})
+
 		let transientProperties = ``
 		this.transientPropertyBuilders.forEach((
 			builder: QTransientBuilder
@@ -153,12 +172,14 @@ export class IQEntityInterfaceBuilder
 		let entityExtendsClause                = ''
 		let extendedQInterface                 = `IEntitySelectProperties`
 		let extendedQUpdatePropertiesInterface = `IEntityUpdateProperties`
+		let extendedQCascadeGraphInterface     = `IEntityCascadeGraph`
 		let extendedQUpdateColumnsInterface    = `IEntityUpdateColumns`
 		let extendedQIdInterface               = 'IEntityIdProperties'
 		if (this.entity.parentEntity) {
 			const parentType                   = this.entity.parentEntity.type
 			extendedQInterface                 = `${parentType}ESelect`
 			extendedQUpdatePropertiesInterface = `${parentType}EUpdateProperties`
+			extendedQCascadeGraphInterface     = `${parentType}ECascadeGraph`
 			extendedQUpdateColumnsInterface    = `${parentType}EUpdateColumns`
 			extendedQIdInterface               = `${parentType}EId`
 			entityExtendsClause                = ` extends I${parentType}`
@@ -245,6 +266,15 @@ export interface ${entityName}EUpdateProperties
 ${nonIdEProperties}
 	// Non-Id Relations - ids only & no OneToMany's
 ${nonIdRelationsForUpdateEProperties}
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface ${entityName}ECascadeGraph
+	extends ${extendedQCascadeGraphInterface} {
+	// Cascading Relations
+${relationsForCascadeGraph}
 }
 
 /**

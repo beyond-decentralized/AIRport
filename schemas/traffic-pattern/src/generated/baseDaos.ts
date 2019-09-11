@@ -1,5 +1,6 @@
 import {
 	IDao,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -20,6 +21,7 @@ import {
 import {
 	ISchema,
 	SchemaESelect,
+	SchemaECascadeGraph,
 	SchemaECreateColumns,
 	SchemaECreateProperties,
 	SchemaEUpdateColumns,
@@ -30,6 +32,7 @@ import {
 import {
 	ISchemaColumn,
 	SchemaColumnESelect,
+	SchemaColumnECascadeGraph,
 	SchemaColumnECreateColumns,
 	SchemaColumnECreateProperties,
 	SchemaColumnEUpdateColumns,
@@ -40,6 +43,7 @@ import {
 import {
 	ISchemaEntity,
 	SchemaEntityESelect,
+	SchemaEntityECascadeGraph,
 	SchemaEntityECreateColumns,
 	SchemaEntityECreateProperties,
 	SchemaEntityEUpdateColumns,
@@ -50,6 +54,7 @@ import {
 import {
 	ISchemaProperty,
 	SchemaPropertyESelect,
+	SchemaPropertyECascadeGraph,
 	SchemaPropertyECreateColumns,
 	SchemaPropertyECreateProperties,
 	SchemaPropertyEUpdateColumns,
@@ -60,6 +65,7 @@ import {
 import {
 	ISchemaPropertyColumn,
 	SchemaPropertyColumnESelect,
+	SchemaPropertyColumnECascadeGraph,
 	SchemaPropertyColumnECreateColumns,
 	SchemaPropertyColumnECreateProperties,
 	SchemaPropertyColumnEUpdateColumns,
@@ -70,6 +76,7 @@ import {
 import {
 	ISchemaReference,
 	SchemaReferenceESelect,
+	SchemaReferenceECascadeGraph,
 	SchemaReferenceECreateColumns,
 	SchemaReferenceECreateProperties,
 	SchemaReferenceEUpdateColumns,
@@ -80,6 +87,7 @@ import {
 import {
 	ISchemaRelation,
 	SchemaRelationESelect,
+	SchemaRelationECascadeGraph,
 	SchemaRelationECreateColumns,
 	SchemaRelationECreateProperties,
 	SchemaRelationEUpdateColumns,
@@ -90,6 +98,7 @@ import {
 import {
 	ISchemaRelationColumn,
 	SchemaRelationColumnESelect,
+	SchemaRelationColumnECascadeGraph,
 	SchemaRelationColumnECreateColumns,
 	SchemaRelationColumnECreateProperties,
 	SchemaRelationColumnEUpdateColumns,
@@ -100,6 +109,7 @@ import {
 import {
 	ISchemaVersion,
 	SchemaVersionESelect,
+	SchemaVersionECascadeGraph,
 	SchemaVersionECreateColumns,
 	SchemaVersionECreateProperties,
 	SchemaVersionEUpdateColumns,
@@ -115,6 +125,7 @@ export class SQDIDao<Entity,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Dao<Entity,
 		EntitySelect,
@@ -122,6 +133,7 @@ export class SQDIDao<Entity,
 		EntityUpdateColumns,
 		EntityUpdateProperties,
 		EntityId,
+		EntityCascadeGraph,
 		IQE> {
 
 	constructor(
@@ -133,11 +145,11 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseSchemaDao
-  extends IDao<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, QSchema> {
+  extends IDao<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, SchemaECascadeGraph, QSchema> {
 }
 
 export class BaseSchemaDao
-  extends SQDIDao<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, QSchema>
+  extends SQDIDao<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, SchemaECascadeGraph, QSchema>
 	implements IBaseSchemaDao {
 
 	static diSet(): boolean {
@@ -151,11 +163,11 @@ export class BaseSchemaDao
 
 
 export interface IBaseSchemaColumnDao
-  extends IDao<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, QSchemaColumn> {
+  extends IDao<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, SchemaColumnECascadeGraph, QSchemaColumn> {
 }
 
 export class BaseSchemaColumnDao
-  extends SQDIDao<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, QSchemaColumn>
+  extends SQDIDao<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, SchemaColumnECascadeGraph, QSchemaColumn>
 	implements IBaseSchemaColumnDao {
 
 	static diSet(): boolean {
@@ -169,11 +181,11 @@ export class BaseSchemaColumnDao
 
 
 export interface IBaseSchemaEntityDao
-  extends IDao<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, QSchemaEntity> {
+  extends IDao<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityECascadeGraph, QSchemaEntity> {
 }
 
 export class BaseSchemaEntityDao
-  extends SQDIDao<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, QSchemaEntity>
+  extends SQDIDao<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityECascadeGraph, QSchemaEntity>
 	implements IBaseSchemaEntityDao {
 
 	static diSet(): boolean {
@@ -187,11 +199,11 @@ export class BaseSchemaEntityDao
 
 
 export interface IBaseSchemaPropertyDao
-  extends IDao<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, QSchemaProperty> {
+  extends IDao<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, SchemaPropertyECascadeGraph, QSchemaProperty> {
 }
 
 export class BaseSchemaPropertyDao
-  extends SQDIDao<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, QSchemaProperty>
+  extends SQDIDao<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, SchemaPropertyECascadeGraph, QSchemaProperty>
 	implements IBaseSchemaPropertyDao {
 
 	static diSet(): boolean {
@@ -205,11 +217,11 @@ export class BaseSchemaPropertyDao
 
 
 export interface IBaseSchemaPropertyColumnDao
-  extends IDao<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, QSchemaPropertyColumn> {
+  extends IDao<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, SchemaPropertyColumnECascadeGraph, QSchemaPropertyColumn> {
 }
 
 export class BaseSchemaPropertyColumnDao
-  extends SQDIDao<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, QSchemaPropertyColumn>
+  extends SQDIDao<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, SchemaPropertyColumnECascadeGraph, QSchemaPropertyColumn>
 	implements IBaseSchemaPropertyColumnDao {
 
 	static diSet(): boolean {
@@ -223,11 +235,11 @@ export class BaseSchemaPropertyColumnDao
 
 
 export interface IBaseSchemaReferenceDao
-  extends IDao<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, QSchemaReference> {
+  extends IDao<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, SchemaReferenceECascadeGraph, QSchemaReference> {
 }
 
 export class BaseSchemaReferenceDao
-  extends SQDIDao<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, QSchemaReference>
+  extends SQDIDao<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, SchemaReferenceECascadeGraph, QSchemaReference>
 	implements IBaseSchemaReferenceDao {
 
 	static diSet(): boolean {
@@ -241,11 +253,11 @@ export class BaseSchemaReferenceDao
 
 
 export interface IBaseSchemaRelationDao
-  extends IDao<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, QSchemaRelation> {
+  extends IDao<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, SchemaRelationECascadeGraph, QSchemaRelation> {
 }
 
 export class BaseSchemaRelationDao
-  extends SQDIDao<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, QSchemaRelation>
+  extends SQDIDao<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, SchemaRelationECascadeGraph, QSchemaRelation>
 	implements IBaseSchemaRelationDao {
 
 	static diSet(): boolean {
@@ -259,11 +271,11 @@ export class BaseSchemaRelationDao
 
 
 export interface IBaseSchemaRelationColumnDao
-  extends IDao<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, QSchemaRelationColumn> {
+  extends IDao<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, SchemaRelationColumnECascadeGraph, QSchemaRelationColumn> {
 }
 
 export class BaseSchemaRelationColumnDao
-  extends SQDIDao<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, QSchemaRelationColumn>
+  extends SQDIDao<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, SchemaRelationColumnECascadeGraph, QSchemaRelationColumn>
 	implements IBaseSchemaRelationColumnDao {
 
 	static diSet(): boolean {
@@ -277,11 +289,11 @@ export class BaseSchemaRelationColumnDao
 
 
 export interface IBaseSchemaVersionDao
-  extends IDao<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion> {
+  extends IDao<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, SchemaVersionECascadeGraph, QSchemaVersion> {
 }
 
 export class BaseSchemaVersionDao
-  extends SQDIDao<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion>
+  extends SQDIDao<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, SchemaVersionECascadeGraph, QSchemaVersion>
 	implements IBaseSchemaVersionDao {
 
 	static diSet(): boolean {

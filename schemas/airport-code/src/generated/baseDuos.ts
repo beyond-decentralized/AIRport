@@ -95,11 +95,11 @@ export class BaseSystemWideOperationIdDuo
 	implements IBaseSystemWideOperationIdDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }
 
@@ -113,10 +113,10 @@ export class BaseTerminalRunDuo
 	implements IBaseTerminalRunDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(2)
+		super(1)
 	}
 }

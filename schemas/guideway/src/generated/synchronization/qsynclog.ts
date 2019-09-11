@@ -54,8 +54,8 @@ export interface ISyncLog {
 	// Id Properties
 
 	// Id Relations
-	sharingMessage?: IAgtSharingMessage;
-	repositoryTransactionBlock?: IAgtRepositoryTransactionBlock;
+	sharingMessage: IAgtSharingMessage;
+	repositoryTransactionBlock: IAgtRepositoryTransactionBlock;
 
 	// Non-Id Properties
 

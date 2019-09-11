@@ -42,10 +42,10 @@ declare function require(moduleName: string): any;
 export interface IMonthlyArchiveLog {
 	
 	// Id Properties
-	monthNumber?: number;
+	monthNumber: number;
 
 	// Id Relations
-	repository?: IRepository;
+	repository: IRepository;
 
 	// Non-Id Properties
 	numberOfChanges?: number;

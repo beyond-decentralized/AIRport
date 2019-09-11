@@ -18,7 +18,6 @@ export declare class SSchemaBuilder {
     private processRelationProperty;
     private getTableNameFromEntity;
     private isManyToOnePropertyNotNull;
-    private entityExtendsRepositoryEntity;
     private processPrimitiveColumns;
     private processPrimitiveColumn;
     /**
@@ -43,3 +42,5 @@ export declare class SSchemaBuilder {
     getIdColumnIndex(entity: SEntity, columnName: string): number;
     getColumnIndex(entity: SEntity, idIndex: number | undefined): number;
 }
+export declare function entityExtendsRepositoryEntity(//
+entityCandidate: EntityCandidate): [boolean, boolean];

@@ -1,5 +1,6 @@
 import {
 	IDao,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -20,6 +21,7 @@ import {
 import {
 	IActor,
 	ActorESelect,
+	ActorECascadeGraph,
 	ActorECreateColumns,
 	ActorECreateProperties,
 	ActorEUpdateColumns,
@@ -30,6 +32,7 @@ import {
 import {
 	IActorApplication,
 	ActorApplicationESelect,
+	ActorApplicationECascadeGraph,
 	ActorApplicationECreateColumns,
 	ActorApplicationECreateProperties,
 	ActorApplicationEUpdateColumns,
@@ -40,6 +43,7 @@ import {
 import {
 	IApplication,
 	ApplicationESelect,
+	ApplicationECascadeGraph,
 	ApplicationECreateColumns,
 	ApplicationECreateProperties,
 	ApplicationEUpdateColumns,
@@ -50,6 +54,7 @@ import {
 import {
 	IOperationHistory,
 	OperationHistoryESelect,
+	OperationHistoryECascadeGraph,
 	OperationHistoryECreateColumns,
 	OperationHistoryECreateProperties,
 	OperationHistoryEUpdateColumns,
@@ -60,6 +65,7 @@ import {
 import {
 	IRecordHistory,
 	RecordHistoryESelect,
+	RecordHistoryECascadeGraph,
 	RecordHistoryECreateColumns,
 	RecordHistoryECreateProperties,
 	RecordHistoryEUpdateColumns,
@@ -70,6 +76,7 @@ import {
 import {
 	IRecordHistoryNewValue,
 	RecordHistoryNewValueESelect,
+	RecordHistoryNewValueECascadeGraph,
 	RecordHistoryNewValueECreateColumns,
 	RecordHistoryNewValueECreateProperties,
 	RecordHistoryNewValueEUpdateColumns,
@@ -80,6 +87,7 @@ import {
 import {
 	IRecordHistoryOldValue,
 	RecordHistoryOldValueESelect,
+	RecordHistoryOldValueECascadeGraph,
 	RecordHistoryOldValueECreateColumns,
 	RecordHistoryOldValueECreateProperties,
 	RecordHistoryOldValueEUpdateColumns,
@@ -90,6 +98,7 @@ import {
 import {
 	IRepoTransHistoryChangedRepositoryActor,
 	RepoTransHistoryChangedRepositoryActorESelect,
+	RepoTransHistoryChangedRepositoryActorECascadeGraph,
 	RepoTransHistoryChangedRepositoryActorECreateColumns,
 	RepoTransHistoryChangedRepositoryActorECreateProperties,
 	RepoTransHistoryChangedRepositoryActorEUpdateColumns,
@@ -100,6 +109,7 @@ import {
 import {
 	IRepository,
 	RepositoryESelect,
+	RepositoryECascadeGraph,
 	RepositoryECreateColumns,
 	RepositoryECreateProperties,
 	RepositoryEUpdateColumns,
@@ -110,6 +120,7 @@ import {
 import {
 	IRepositoryActor,
 	RepositoryActorESelect,
+	RepositoryActorECascadeGraph,
 	RepositoryActorECreateColumns,
 	RepositoryActorECreateProperties,
 	RepositoryActorEUpdateColumns,
@@ -120,6 +131,7 @@ import {
 import {
 	IRepositoryApplication,
 	RepositoryApplicationESelect,
+	RepositoryApplicationECascadeGraph,
 	RepositoryApplicationECreateColumns,
 	RepositoryApplicationECreateProperties,
 	RepositoryApplicationEUpdateColumns,
@@ -130,6 +142,7 @@ import {
 import {
 	IRepositorySchema,
 	RepositorySchemaESelect,
+	RepositorySchemaECascadeGraph,
 	RepositorySchemaECreateColumns,
 	RepositorySchemaECreateProperties,
 	RepositorySchemaEUpdateColumns,
@@ -140,6 +153,7 @@ import {
 import {
 	IRepositoryTransactionHistory,
 	RepositoryTransactionHistoryESelect,
+	RepositoryTransactionHistoryECascadeGraph,
 	RepositoryTransactionHistoryECreateColumns,
 	RepositoryTransactionHistoryECreateProperties,
 	RepositoryTransactionHistoryEUpdateColumns,
@@ -150,6 +164,7 @@ import {
 import {
 	ITransactionHistory,
 	TransactionHistoryESelect,
+	TransactionHistoryECascadeGraph,
 	TransactionHistoryECreateColumns,
 	TransactionHistoryECreateProperties,
 	TransactionHistoryEUpdateColumns,
@@ -165,6 +180,7 @@ export class SQDIDao<Entity,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Dao<Entity,
 		EntitySelect,
@@ -172,6 +188,7 @@ export class SQDIDao<Entity,
 		EntityUpdateColumns,
 		EntityUpdateProperties,
 		EntityId,
+		EntityCascadeGraph,
 		IQE> {
 
 	constructor(
@@ -183,11 +200,11 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseActorDao
-  extends IDao<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateColumns, ActorEUpdateProperties, ActorEId, QActor> {
+  extends IDao<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateColumns, ActorEUpdateProperties, ActorEId, ActorECascadeGraph, QActor> {
 }
 
 export class BaseActorDao
-  extends SQDIDao<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateColumns, ActorEUpdateProperties, ActorEId, QActor>
+  extends SQDIDao<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateColumns, ActorEUpdateProperties, ActorEId, ActorECascadeGraph, QActor>
 	implements IBaseActorDao {
 
 	static diSet(): boolean {
@@ -201,11 +218,11 @@ export class BaseActorDao
 
 
 export interface IBaseActorApplicationDao
-  extends IDao<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateColumns, ActorApplicationEUpdateProperties, ActorApplicationEId, QActorApplication> {
+  extends IDao<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateColumns, ActorApplicationEUpdateProperties, ActorApplicationEId, ActorApplicationECascadeGraph, QActorApplication> {
 }
 
 export class BaseActorApplicationDao
-  extends SQDIDao<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateColumns, ActorApplicationEUpdateProperties, ActorApplicationEId, QActorApplication>
+  extends SQDIDao<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateColumns, ActorApplicationEUpdateProperties, ActorApplicationEId, ActorApplicationECascadeGraph, QActorApplication>
 	implements IBaseActorApplicationDao {
 
 	static diSet(): boolean {
@@ -219,11 +236,11 @@ export class BaseActorApplicationDao
 
 
 export interface IBaseApplicationDao
-  extends IDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, QApplication> {
+  extends IDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationECascadeGraph, QApplication> {
 }
 
 export class BaseApplicationDao
-  extends SQDIDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, QApplication>
+  extends SQDIDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationECascadeGraph, QApplication>
 	implements IBaseApplicationDao {
 
 	static diSet(): boolean {
@@ -237,11 +254,11 @@ export class BaseApplicationDao
 
 
 export interface IBaseOperationHistoryDao
-  extends IDao<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateColumns, OperationHistoryEUpdateProperties, OperationHistoryEId, QOperationHistory> {
+  extends IDao<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateColumns, OperationHistoryEUpdateProperties, OperationHistoryEId, OperationHistoryECascadeGraph, QOperationHistory> {
 }
 
 export class BaseOperationHistoryDao
-  extends SQDIDao<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateColumns, OperationHistoryEUpdateProperties, OperationHistoryEId, QOperationHistory>
+  extends SQDIDao<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateColumns, OperationHistoryEUpdateProperties, OperationHistoryEId, OperationHistoryECascadeGraph, QOperationHistory>
 	implements IBaseOperationHistoryDao {
 
 	static diSet(): boolean {
@@ -255,11 +272,11 @@ export class BaseOperationHistoryDao
 
 
 export interface IBaseRecordHistoryDao
-  extends IDao<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateColumns, RecordHistoryEUpdateProperties, RecordHistoryEId, QRecordHistory> {
+  extends IDao<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateColumns, RecordHistoryEUpdateProperties, RecordHistoryEId, RecordHistoryECascadeGraph, QRecordHistory> {
 }
 
 export class BaseRecordHistoryDao
-  extends SQDIDao<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateColumns, RecordHistoryEUpdateProperties, RecordHistoryEId, QRecordHistory>
+  extends SQDIDao<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateColumns, RecordHistoryEUpdateProperties, RecordHistoryEId, RecordHistoryECascadeGraph, QRecordHistory>
 	implements IBaseRecordHistoryDao {
 
 	static diSet(): boolean {
@@ -273,11 +290,11 @@ export class BaseRecordHistoryDao
 
 
 export interface IBaseRecordHistoryNewValueDao
-  extends IDao<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateColumns, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, QRecordHistoryNewValue> {
+  extends IDao<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateColumns, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, RecordHistoryNewValueECascadeGraph, QRecordHistoryNewValue> {
 }
 
 export class BaseRecordHistoryNewValueDao
-  extends SQDIDao<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateColumns, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, QRecordHistoryNewValue>
+  extends SQDIDao<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateColumns, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, RecordHistoryNewValueECascadeGraph, QRecordHistoryNewValue>
 	implements IBaseRecordHistoryNewValueDao {
 
 	static diSet(): boolean {
@@ -291,11 +308,11 @@ export class BaseRecordHistoryNewValueDao
 
 
 export interface IBaseRecordHistoryOldValueDao
-  extends IDao<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, QRecordHistoryOldValue> {
+  extends IDao<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, RecordHistoryOldValueECascadeGraph, QRecordHistoryOldValue> {
 }
 
 export class BaseRecordHistoryOldValueDao
-  extends SQDIDao<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, QRecordHistoryOldValue>
+  extends SQDIDao<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, RecordHistoryOldValueECascadeGraph, QRecordHistoryOldValue>
 	implements IBaseRecordHistoryOldValueDao {
 
 	static diSet(): boolean {
@@ -309,11 +326,11 @@ export class BaseRecordHistoryOldValueDao
 
 
 export interface IBaseRepoTransHistoryChangedRepositoryActorDao
-  extends IDao<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateColumns, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, QRepoTransHistoryChangedRepositoryActor> {
+  extends IDao<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateColumns, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, RepoTransHistoryChangedRepositoryActorECascadeGraph, QRepoTransHistoryChangedRepositoryActor> {
 }
 
 export class BaseRepoTransHistoryChangedRepositoryActorDao
-  extends SQDIDao<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateColumns, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, QRepoTransHistoryChangedRepositoryActor>
+  extends SQDIDao<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateColumns, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, RepoTransHistoryChangedRepositoryActorECascadeGraph, QRepoTransHistoryChangedRepositoryActor>
 	implements IBaseRepoTransHistoryChangedRepositoryActorDao {
 
 	static diSet(): boolean {
@@ -327,11 +344,11 @@ export class BaseRepoTransHistoryChangedRepositoryActorDao
 
 
 export interface IBaseRepositoryDao
-  extends IDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, QRepository> {
+  extends IDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryECascadeGraph, QRepository> {
 }
 
 export class BaseRepositoryDao
-  extends SQDIDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, QRepository>
+  extends SQDIDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryECascadeGraph, QRepository>
 	implements IBaseRepositoryDao {
 
 	static diSet(): boolean {
@@ -345,11 +362,11 @@ export class BaseRepositoryDao
 
 
 export interface IBaseRepositoryActorDao
-  extends IDao<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, QRepositoryActor> {
+  extends IDao<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, RepositoryActorECascadeGraph, QRepositoryActor> {
 }
 
 export class BaseRepositoryActorDao
-  extends SQDIDao<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, QRepositoryActor>
+  extends SQDIDao<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, RepositoryActorECascadeGraph, QRepositoryActor>
 	implements IBaseRepositoryActorDao {
 
 	static diSet(): boolean {
@@ -363,11 +380,11 @@ export class BaseRepositoryActorDao
 
 
 export interface IBaseRepositoryApplicationDao
-  extends IDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, QRepositoryApplication> {
+  extends IDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationECascadeGraph, QRepositoryApplication> {
 }
 
 export class BaseRepositoryApplicationDao
-  extends SQDIDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, QRepositoryApplication>
+  extends SQDIDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationECascadeGraph, QRepositoryApplication>
 	implements IBaseRepositoryApplicationDao {
 
 	static diSet(): boolean {
@@ -381,11 +398,11 @@ export class BaseRepositoryApplicationDao
 
 
 export interface IBaseRepositorySchemaDao
-  extends IDao<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, QRepositorySchema> {
+  extends IDao<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaECascadeGraph, QRepositorySchema> {
 }
 
 export class BaseRepositorySchemaDao
-  extends SQDIDao<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, QRepositorySchema>
+  extends SQDIDao<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaECascadeGraph, QRepositorySchema>
 	implements IBaseRepositorySchemaDao {
 
 	static diSet(): boolean {
@@ -399,11 +416,11 @@ export class BaseRepositorySchemaDao
 
 
 export interface IBaseRepositoryTransactionHistoryDao
-  extends IDao<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, QRepositoryTransactionHistory> {
+  extends IDao<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryECascadeGraph, QRepositoryTransactionHistory> {
 }
 
 export class BaseRepositoryTransactionHistoryDao
-  extends SQDIDao<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, QRepositoryTransactionHistory>
+  extends SQDIDao<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryECascadeGraph, QRepositoryTransactionHistory>
 	implements IBaseRepositoryTransactionHistoryDao {
 
 	static diSet(): boolean {
@@ -417,11 +434,11 @@ export class BaseRepositoryTransactionHistoryDao
 
 
 export interface IBaseTransactionHistoryDao
-  extends IDao<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, QTransactionHistory> {
+  extends IDao<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, TransactionHistoryECascadeGraph, QTransactionHistory> {
 }
 
 export class BaseTransactionHistoryDao
-  extends SQDIDao<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, QTransactionHistory>
+  extends SQDIDao<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, TransactionHistoryECascadeGraph, QTransactionHistory>
 	implements IBaseTransactionHistoryDao {
 
 	static diSet(): boolean {

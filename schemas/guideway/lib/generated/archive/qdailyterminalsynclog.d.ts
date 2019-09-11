@@ -2,8 +2,8 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { IDailyArchiveLog, DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation } from './qdailyarchivelog';
 import { ITerminal, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '../terminal/qterminal';
 export interface IDailyTerminalSyncLog {
-    dailyArchiveLog?: IDailyArchiveLog;
-    terminal?: ITerminal;
+    dailyArchiveLog: IDailyArchiveLog;
+    terminal: ITerminal;
     acknowledged?: number;
 }
 /**

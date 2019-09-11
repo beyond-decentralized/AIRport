@@ -54,8 +54,8 @@ export interface IUserRepository {
 	// Id Properties
 
 	// Id Relations
-	repository?: IRepository;
-	user?: IUser;
+	repository: IRepository;
+	user: IUser;
 
 	// Non-Id Properties
 	permission?: number;

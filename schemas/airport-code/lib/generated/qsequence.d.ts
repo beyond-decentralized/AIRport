@@ -1,8 +1,8 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 export interface ISequence {
-    schemaIndex?: number;
-    tableIndex?: number;
-    columnIndex?: number;
+    schemaIndex: number;
+    tableIndex: number;
+    columnIndex: number;
     incrementBy?: number;
     currentValue?: number;
 }

@@ -1,5 +1,6 @@
 import {
 	IDuo,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 	ActorEUpdateColumns,
 	ActorEUpdateProperties,
 	ActorEId,
+	ActorECascadeGraph,
 	QActor
 } from './infrastructure/qactor'
 import {
@@ -32,6 +34,7 @@ import {
 	ActorApplicationEUpdateColumns,
 	ActorApplicationEUpdateProperties,
 	ActorApplicationEId,
+	ActorApplicationECascadeGraph,
 	QActorApplication
 } from './infrastructure/qactorapplication'
 import {
@@ -42,6 +45,7 @@ import {
 	ApplicationEUpdateColumns,
 	ApplicationEUpdateProperties,
 	ApplicationEId,
+	ApplicationECascadeGraph,
 	QApplication
 } from './infrastructure/qapplication'
 import {
@@ -52,6 +56,7 @@ import {
 	OperationHistoryEUpdateColumns,
 	OperationHistoryEUpdateProperties,
 	OperationHistoryEId,
+	OperationHistoryECascadeGraph,
 	QOperationHistory
 } from './history/qoperationhistory'
 import {
@@ -62,6 +67,7 @@ import {
 	RecordHistoryEUpdateColumns,
 	RecordHistoryEUpdateProperties,
 	RecordHistoryEId,
+	RecordHistoryECascadeGraph,
 	QRecordHistory
 } from './history/qrecordhistory'
 import {
@@ -72,6 +78,7 @@ import {
 	RecordHistoryNewValueEUpdateColumns,
 	RecordHistoryNewValueEUpdateProperties,
 	RecordHistoryNewValueEId,
+	RecordHistoryNewValueECascadeGraph,
 	QRecordHistoryNewValue
 } from './history/qrecordhistorynewvalue'
 import {
@@ -82,6 +89,7 @@ import {
 	RecordHistoryOldValueEUpdateColumns,
 	RecordHistoryOldValueEUpdateProperties,
 	RecordHistoryOldValueEId,
+	RecordHistoryOldValueECascadeGraph,
 	QRecordHistoryOldValue
 } from './history/qrecordhistoryoldvalue'
 import {
@@ -92,6 +100,7 @@ import {
 	RepoTransHistoryChangedRepositoryActorEUpdateColumns,
 	RepoTransHistoryChangedRepositoryActorEUpdateProperties,
 	RepoTransHistoryChangedRepositoryActorEId,
+	RepoTransHistoryChangedRepositoryActorECascadeGraph,
 	QRepoTransHistoryChangedRepositoryActor
 } from './history/qrepotranshistorychangedrepositoryactor'
 import {
@@ -102,6 +111,7 @@ import {
 	RepositoryEUpdateColumns,
 	RepositoryEUpdateProperties,
 	RepositoryEId,
+	RepositoryECascadeGraph,
 	QRepository
 } from './repository/qrepository'
 import {
@@ -112,6 +122,7 @@ import {
 	RepositoryActorEUpdateColumns,
 	RepositoryActorEUpdateProperties,
 	RepositoryActorEId,
+	RepositoryActorECascadeGraph,
 	QRepositoryActor
 } from './repository/qrepositoryactor'
 import {
@@ -122,6 +133,7 @@ import {
 	RepositoryApplicationEUpdateColumns,
 	RepositoryApplicationEUpdateProperties,
 	RepositoryApplicationEId,
+	RepositoryApplicationECascadeGraph,
 	QRepositoryApplication
 } from './repository/qrepositoryapplication'
 import {
@@ -132,6 +144,7 @@ import {
 	RepositorySchemaEUpdateColumns,
 	RepositorySchemaEUpdateProperties,
 	RepositorySchemaEId,
+	RepositorySchemaECascadeGraph,
 	QRepositorySchema
 } from './repository/qrepositoryschema'
 import {
@@ -142,6 +155,7 @@ import {
 	RepositoryTransactionHistoryEUpdateColumns,
 	RepositoryTransactionHistoryEUpdateProperties,
 	RepositoryTransactionHistoryEId,
+	RepositoryTransactionHistoryECascadeGraph,
 	QRepositoryTransactionHistory
 } from './history/qrepositorytransactionhistory'
 import {
@@ -152,6 +166,7 @@ import {
 	TransactionHistoryEUpdateColumns,
 	TransactionHistoryEUpdateProperties,
 	TransactionHistoryEId,
+	TransactionHistoryECascadeGraph,
 	QTransactionHistory
 } from './history/qtransactionhistory'
 
@@ -162,12 +177,14 @@ export class SQDIDuo<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,
 		EntityUpdateProperties,
 		EntityId,
+		EntityCascadeGraph,
 		IQE> {
 
 	constructor(
@@ -179,11 +196,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseActorDuo
-  extends IDuo<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateProperties, ActorEId, QActor> {
+  extends IDuo<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateProperties, ActorEId, ActorECascadeGraph, QActor> {
 }
 
 export class BaseActorDuo
-  extends SQDIDuo<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateProperties, ActorEId, QActor>
+  extends SQDIDuo<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateProperties, ActorEId, ActorECascadeGraph, QActor>
 	implements IBaseActorDuo {
 
 	static diSet(): boolean {
@@ -197,11 +214,11 @@ export class BaseActorDuo
 
 
 export interface IBaseActorApplicationDuo
-  extends IDuo<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateProperties, ActorApplicationEId, QActorApplication> {
+  extends IDuo<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateProperties, ActorApplicationEId, ActorApplicationECascadeGraph, QActorApplication> {
 }
 
 export class BaseActorApplicationDuo
-  extends SQDIDuo<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateProperties, ActorApplicationEId, QActorApplication>
+  extends SQDIDuo<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateProperties, ActorApplicationEId, ActorApplicationECascadeGraph, QActorApplication>
 	implements IBaseActorApplicationDuo {
 
 	static diSet(): boolean {
@@ -215,11 +232,11 @@ export class BaseActorApplicationDuo
 
 
 export interface IBaseApplicationDuo
-  extends IDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateProperties, ApplicationEId, QApplication> {
+  extends IDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateProperties, ApplicationEId, ApplicationECascadeGraph, QApplication> {
 }
 
 export class BaseApplicationDuo
-  extends SQDIDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateProperties, ApplicationEId, QApplication>
+  extends SQDIDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateProperties, ApplicationEId, ApplicationECascadeGraph, QApplication>
 	implements IBaseApplicationDuo {
 
 	static diSet(): boolean {
@@ -233,11 +250,11 @@ export class BaseApplicationDuo
 
 
 export interface IBaseOperationHistoryDuo
-  extends IDuo<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateProperties, OperationHistoryEId, QOperationHistory> {
+  extends IDuo<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateProperties, OperationHistoryEId, OperationHistoryECascadeGraph, QOperationHistory> {
 }
 
 export class BaseOperationHistoryDuo
-  extends SQDIDuo<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateProperties, OperationHistoryEId, QOperationHistory>
+  extends SQDIDuo<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateProperties, OperationHistoryEId, OperationHistoryECascadeGraph, QOperationHistory>
 	implements IBaseOperationHistoryDuo {
 
 	static diSet(): boolean {
@@ -251,11 +268,11 @@ export class BaseOperationHistoryDuo
 
 
 export interface IBaseRecordHistoryDuo
-  extends IDuo<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateProperties, RecordHistoryEId, QRecordHistory> {
+  extends IDuo<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateProperties, RecordHistoryEId, RecordHistoryECascadeGraph, QRecordHistory> {
 }
 
 export class BaseRecordHistoryDuo
-  extends SQDIDuo<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateProperties, RecordHistoryEId, QRecordHistory>
+  extends SQDIDuo<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateProperties, RecordHistoryEId, RecordHistoryECascadeGraph, QRecordHistory>
 	implements IBaseRecordHistoryDuo {
 
 	static diSet(): boolean {
@@ -269,11 +286,11 @@ export class BaseRecordHistoryDuo
 
 
 export interface IBaseRecordHistoryNewValueDuo
-  extends IDuo<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, QRecordHistoryNewValue> {
+  extends IDuo<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, RecordHistoryNewValueECascadeGraph, QRecordHistoryNewValue> {
 }
 
 export class BaseRecordHistoryNewValueDuo
-  extends SQDIDuo<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, QRecordHistoryNewValue>
+  extends SQDIDuo<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, RecordHistoryNewValueECascadeGraph, QRecordHistoryNewValue>
 	implements IBaseRecordHistoryNewValueDuo {
 
 	static diSet(): boolean {
@@ -287,11 +304,11 @@ export class BaseRecordHistoryNewValueDuo
 
 
 export interface IBaseRecordHistoryOldValueDuo
-  extends IDuo<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, QRecordHistoryOldValue> {
+  extends IDuo<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, RecordHistoryOldValueECascadeGraph, QRecordHistoryOldValue> {
 }
 
 export class BaseRecordHistoryOldValueDuo
-  extends SQDIDuo<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, QRecordHistoryOldValue>
+  extends SQDIDuo<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, RecordHistoryOldValueECascadeGraph, QRecordHistoryOldValue>
 	implements IBaseRecordHistoryOldValueDuo {
 
 	static diSet(): boolean {
@@ -305,11 +322,11 @@ export class BaseRecordHistoryOldValueDuo
 
 
 export interface IBaseRepoTransHistoryChangedRepositoryActorDuo
-  extends IDuo<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, QRepoTransHistoryChangedRepositoryActor> {
+  extends IDuo<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, RepoTransHistoryChangedRepositoryActorECascadeGraph, QRepoTransHistoryChangedRepositoryActor> {
 }
 
 export class BaseRepoTransHistoryChangedRepositoryActorDuo
-  extends SQDIDuo<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, QRepoTransHistoryChangedRepositoryActor>
+  extends SQDIDuo<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, RepoTransHistoryChangedRepositoryActorECascadeGraph, QRepoTransHistoryChangedRepositoryActor>
 	implements IBaseRepoTransHistoryChangedRepositoryActorDuo {
 
 	static diSet(): boolean {
@@ -323,11 +340,11 @@ export class BaseRepoTransHistoryChangedRepositoryActorDuo
 
 
 export interface IBaseRepositoryDuo
-  extends IDuo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, QRepository> {
+  extends IDuo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, RepositoryECascadeGraph, QRepository> {
 }
 
 export class BaseRepositoryDuo
-  extends SQDIDuo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, QRepository>
+  extends SQDIDuo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, RepositoryECascadeGraph, QRepository>
 	implements IBaseRepositoryDuo {
 
 	static diSet(): boolean {
@@ -341,11 +358,11 @@ export class BaseRepositoryDuo
 
 
 export interface IBaseRepositoryActorDuo
-  extends IDuo<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateProperties, RepositoryActorEId, QRepositoryActor> {
+  extends IDuo<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateProperties, RepositoryActorEId, RepositoryActorECascadeGraph, QRepositoryActor> {
 }
 
 export class BaseRepositoryActorDuo
-  extends SQDIDuo<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateProperties, RepositoryActorEId, QRepositoryActor>
+  extends SQDIDuo<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateProperties, RepositoryActorEId, RepositoryActorECascadeGraph, QRepositoryActor>
 	implements IBaseRepositoryActorDuo {
 
 	static diSet(): boolean {
@@ -359,11 +376,11 @@ export class BaseRepositoryActorDuo
 
 
 export interface IBaseRepositoryApplicationDuo
-  extends IDuo<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, QRepositoryApplication> {
+  extends IDuo<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationECascadeGraph, QRepositoryApplication> {
 }
 
 export class BaseRepositoryApplicationDuo
-  extends SQDIDuo<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, QRepositoryApplication>
+  extends SQDIDuo<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationECascadeGraph, QRepositoryApplication>
 	implements IBaseRepositoryApplicationDuo {
 
 	static diSet(): boolean {
@@ -377,11 +394,11 @@ export class BaseRepositoryApplicationDuo
 
 
 export interface IBaseRepositorySchemaDuo
-  extends IDuo<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateProperties, RepositorySchemaEId, QRepositorySchema> {
+  extends IDuo<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaECascadeGraph, QRepositorySchema> {
 }
 
 export class BaseRepositorySchemaDuo
-  extends SQDIDuo<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateProperties, RepositorySchemaEId, QRepositorySchema>
+  extends SQDIDuo<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaECascadeGraph, QRepositorySchema>
 	implements IBaseRepositorySchemaDuo {
 
 	static diSet(): boolean {
@@ -395,11 +412,11 @@ export class BaseRepositorySchemaDuo
 
 
 export interface IBaseRepositoryTransactionHistoryDuo
-  extends IDuo<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, QRepositoryTransactionHistory> {
+  extends IDuo<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryECascadeGraph, QRepositoryTransactionHistory> {
 }
 
 export class BaseRepositoryTransactionHistoryDuo
-  extends SQDIDuo<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, QRepositoryTransactionHistory>
+  extends SQDIDuo<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryECascadeGraph, QRepositoryTransactionHistory>
 	implements IBaseRepositoryTransactionHistoryDuo {
 
 	static diSet(): boolean {
@@ -413,11 +430,11 @@ export class BaseRepositoryTransactionHistoryDuo
 
 
 export interface IBaseTransactionHistoryDuo
-  extends IDuo<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateProperties, TransactionHistoryEId, QTransactionHistory> {
+  extends IDuo<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateProperties, TransactionHistoryEId, TransactionHistoryECascadeGraph, QTransactionHistory> {
 }
 
 export class BaseTransactionHistoryDuo
-  extends SQDIDuo<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateProperties, TransactionHistoryEId, QTransactionHistory>
+  extends SQDIDuo<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateProperties, TransactionHistoryEId, TransactionHistoryECascadeGraph, QTransactionHistory>
 	implements IBaseTransactionHistoryDuo {
 
 	static diSet(): boolean {

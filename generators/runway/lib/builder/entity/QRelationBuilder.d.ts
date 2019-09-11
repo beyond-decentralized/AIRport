@@ -29,5 +29,5 @@ export declare class QRelationBuilder implements IQBuilder {
     }, buildRelationInstance: boolean);
     buildDefinition(): string;
     build(): string;
-    buildInterfaceDefinition(idOnly: boolean, optional?: boolean, forInternalInterfaces?: boolean): string;
+    buildInterfaceDefinition(idOnly: boolean, optional?: boolean, forInternalInterfaces?: boolean, forCascadeGraph?: boolean): string;
 }

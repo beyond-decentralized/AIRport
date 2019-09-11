@@ -22,4 +22,4 @@ PackagedUnit = __decorate([
     air_control_1.Table({ name: "PACKAGED_UNITS" })
 ], PackagedUnit);
 exports.PackagedUnit = PackagedUnit;
-//# sourceMappingURL=PackagedUnit.js.map
+//# sourceMappingURL=packagedunit.js.map

@@ -8,7 +8,7 @@ class OracleQueryAdaptor {
         this.sqlValueProvider = sqlValueProvider;
     }
     getParameterReference(parameterReferences, newReference) {
-        throw new Error(`Not implemented`);
+        throw `Not implemented`;
     }
     dateToDbQuery(date) {
         let dateString = date.toJSON();
@@ -16,25 +16,25 @@ class OracleQueryAdaptor {
         return `trunc(to_timestamp_tz('${dateString}.GMT','YYYY-MM-DD"T"HH24:MI:SS.FF3.TZR'))`;
     }
     getResultArray(rawResponse) {
-        throw new Error(`Not implemented - getResultArray`);
+        throw `Not implemented - getResultArray`;
     }
     getResultCellValue(resultRow, columnName, index, dataType, defaultValue) {
-        throw new Error(`Not implemented - getResultCellValue`);
+        throw `Not implemented - getResultCellValue`;
     }
     getFunctionAdaptor() {
-        throw new Error(`Not implemented getFunctionAdaptor`);
+        throw `Not implemented getFunctionAdaptor`;
     }
     getOffsetFragment(offset) {
-        throw new Error(`Not implemented`);
+        throw `Not implemented`;
     }
     getLimitFragment(limit) {
-        throw new Error(`Not implemented`);
+        throw `Not implemented`;
     }
     getParameterValue(parameter) {
-        throw new Error(`Not implemented`);
+        throw `Not implemented`;
     }
     getValue(value) {
-        throw new Error(`Not implemented`);
+        throw `Not implemented`;
     }
 }
 exports.OracleQueryAdaptor = OracleQueryAdaptor;

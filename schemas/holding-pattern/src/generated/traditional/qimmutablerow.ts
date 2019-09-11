@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IStageable,
+	StageableECascadeGraph,
 	StageableEId,
 	StageableEUpdateColumns,
 	StageableEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from '../infrastructure/qstageable';
 import {
 	IUser,
+	UserECascadeGraph,
 	UserEId,
 	UserEOptionalId,
 	UserEUpdateProperties,
@@ -117,6 +120,16 @@ export interface ImmutableRowEUpdateProperties
 
 	// Non-Id Relations - ids only & no OneToMany's
 	user?: UserEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface ImmutableRowECascadeGraph
+	extends StageableECascadeGraph {
+	// Cascading Relations
+	user?: UserECascadeGraph;
 
 }
 

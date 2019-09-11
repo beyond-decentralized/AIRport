@@ -1,8 +1,8 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { ISharingMessage, SharingMessageESelect, QSharingMessage } from '../sharingMessage/qsharingmessage';
+import { ISharingMessage, SharingMessageESelect, QSharingMessage } from '../sharingmessage/qsharingmessage';
 import { ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from './qsharingnoderepotransblock';
 export interface ISharingNode {
-    id?: number;
+    id: number;
     sharingMechanism?: number;
     isActive?: boolean;
     syncFrequency?: number;

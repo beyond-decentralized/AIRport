@@ -32,8 +32,8 @@ declare function require(moduleName: string): any;
 export interface ISharingNodeRepoTransBlockStage {
 	
 	// Id Properties
-	sharingNodeId?: number;
-	repositoryTransactionBlockId?: number;
+	sharingNodeId: number;
+	repositoryTransactionBlockId: number;
 
 	// Id Relations
 

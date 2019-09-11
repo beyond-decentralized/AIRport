@@ -32,9 +32,9 @@ declare function require(moduleName: string): any;
 export interface ITuningParameters {
 	
 	// Id Properties
-	serverType?: string;
-	parameterGroup?: string;
-	parameterName?: string;
+	serverType: string;
+	parameterGroup: string;
+	parameterName: string;
 
 	// Id Relations
 

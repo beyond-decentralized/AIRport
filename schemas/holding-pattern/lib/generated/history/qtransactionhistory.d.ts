@@ -1,12 +1,12 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from './qrepositorytransactionhistory';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
+import { IRepositoryTransactionHistory, RepositoryTransactionHistoryECascadeGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from './qrepositorytransactionhistory';
 import { SyncSchemaMap } from '@airport/ground-control';
 import { IOperationHistory } from './qoperationhistory';
 import { IRecordHistory } from './qrecordhistory';
 import { IRecordHistoryNewValue } from './qrecordhistorynewvalue';
 import { IRecordHistoryOldValue } from './qrecordhistoryoldvalue';
 export interface ITransactionHistory {
-    id?: number;
+    id: number;
     transactionType?: number;
     repositoryTransactionHistories?: IRepositoryTransactionHistory[];
     repoTransHistoryMap?: {
@@ -43,6 +43,12 @@ export interface TransactionHistoryEOptionalId {
  */
 export interface TransactionHistoryEUpdateProperties extends IEntityUpdateProperties {
     transactionType?: number | IQNumberField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface TransactionHistoryECascadeGraph extends IEntityCascadeGraph {
+    repositoryTransactionHistories?: RepositoryTransactionHistoryECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

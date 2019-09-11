@@ -12,17 +12,17 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { Agt } from '../ddl/Agt';
+import { Agt } from '../ddl/agt';
 import { QAgt } from './qagt';
-import { Terminal } from '../ddl/Terminal';
+import { Terminal } from '../ddl/terminal';
 import { QTerminal } from './qterminal';
-import { TerminalAgt } from '../ddl/TerminalAgt';
+import { TerminalAgt } from '../ddl/terminalagt';
 import { QTerminalAgt } from './qterminalagt';
-import { User } from '../ddl/User';
+import { User } from '../ddl/user';
 import { QUser } from './quser';
-import { UserTerminal } from '../ddl/UserTerminal';
+import { UserTerminal } from '../ddl/userterminal';
 import { QUserTerminal } from './quserterminal';
-import { UserTerminalAgt } from '../ddl/UserTerminalAgt';
+import { UserTerminalAgt } from '../ddl/userterminalagt';
 import { QUserTerminalAgt } from './quserterminalagt';
 
 export interface LocalQSchema extends AirportQSchema {

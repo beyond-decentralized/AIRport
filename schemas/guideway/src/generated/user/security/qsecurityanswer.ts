@@ -54,8 +54,8 @@ export interface ISecurityAnswer {
 	// Id Properties
 
 	// Id Relations
-	user?: IUser;
-	securityQuestion?: ISecurityQuestion;
+	user: IUser;
+	securityQuestion: ISecurityQuestion;
 
 	// Non-Id Properties
 	answer?: string;

@@ -26,7 +26,7 @@ import {
 	MissingRecordEUpdateProperties,
 	MissingRecordEId,
 	QMissingRecord
-} from './missingRecord/qmissingrecord'
+} from './missingrecord/qmissingrecord'
 import {
 	IMissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockESelect,
@@ -36,7 +36,7 @@ import {
 	MissingRecordRepoTransBlockEUpdateProperties,
 	MissingRecordRepoTransBlockEId,
 	QMissingRecordRepoTransBlock
-} from './missingRecord/qmissingrecordrepotransblock'
+} from './missingrecord/qmissingrecordrepotransblock'
 import {
 	IRecordUpdateStage,
 	RecordUpdateStageESelect,
@@ -56,7 +56,7 @@ import {
 	RepoTransBlockResponseStageEUpdateProperties,
 	RepoTransBlockResponseStageEId,
 	QRepoTransBlockResponseStage
-} from './repositoryTransactionBlock/qrepotransblockresponsestage'
+} from './repositorytransactionblock/qrepotransblockresponsestage'
 import {
 	IRepoTransBlockSchemaToChange,
 	RepoTransBlockSchemaToChangeESelect,
@@ -66,7 +66,7 @@ import {
 	RepoTransBlockSchemaToChangeEUpdateProperties,
 	RepoTransBlockSchemaToChangeEId,
 	QRepoTransBlockSchemaToChange
-} from './repositoryTransactionBlock/qrepotransblockschematochange'
+} from './repositorytransactionblock/qrepotransblockschematochange'
 import {
 	IRepositoryTransactionBlock,
 	RepositoryTransactionBlockESelect,
@@ -76,7 +76,7 @@ import {
 	RepositoryTransactionBlockEUpdateProperties,
 	RepositoryTransactionBlockEId,
 	QRepositoryTransactionBlock
-} from './repositoryTransactionBlock/qrepositorytransactionblock'
+} from './repositorytransactionblock/qrepositorytransactionblock'
 import {
 	IRepositoryTransactionHistoryUpdateStage,
 	RepositoryTransactionHistoryUpdateStageESelect,
@@ -86,7 +86,7 @@ import {
 	RepositoryTransactionHistoryUpdateStageEUpdateProperties,
 	RepositoryTransactionHistoryUpdateStageEId,
 	QRepositoryTransactionHistoryUpdateStage
-} from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage'
+} from './repositorytransactionblock/qrepositorytransactionhistoryupdatestage'
 import {
 	ISharingMessage,
 	SharingMessageESelect,
@@ -96,7 +96,7 @@ import {
 	SharingMessageEUpdateProperties,
 	SharingMessageEId,
 	QSharingMessage
-} from './sharingMessage/qsharingmessage'
+} from './sharingmessage/qsharingmessage'
 import {
 	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockESelect,
@@ -106,7 +106,7 @@ import {
 	SharingMessageRepoTransBlockEUpdateProperties,
 	SharingMessageRepoTransBlockEId,
 	QSharingMessageRepoTransBlock
-} from './sharingMessage/qsharingmessagerepotransblock'
+} from './sharingmessage/qsharingmessagerepotransblock'
 import {
 	ISharingNode,
 	SharingNodeESelect,
@@ -116,7 +116,7 @@ import {
 	SharingNodeEUpdateProperties,
 	SharingNodeEId,
 	QSharingNode
-} from './sharingNode/qsharingnode'
+} from './sharingnode/qsharingnode'
 import {
 	ISharingNodeRepoTransBlock,
 	SharingNodeRepoTransBlockESelect,
@@ -126,7 +126,7 @@ import {
 	SharingNodeRepoTransBlockEUpdateProperties,
 	SharingNodeRepoTransBlockEId,
 	QSharingNodeRepoTransBlock
-} from './sharingNode/qsharingnoderepotransblock'
+} from './sharingnode/qsharingnoderepotransblock'
 import {
 	ISharingNodeRepoTransBlockStage,
 	SharingNodeRepoTransBlockStageESelect,
@@ -136,7 +136,7 @@ import {
 	SharingNodeRepoTransBlockStageEUpdateProperties,
 	SharingNodeRepoTransBlockStageEId,
 	QSharingNodeRepoTransBlockStage
-} from './sharingNode/qsharingnoderepotransblockstage'
+} from './sharingnode/qsharingnoderepotransblockstage'
 import {
 	ISharingNodeRepository,
 	SharingNodeRepositoryESelect,
@@ -146,7 +146,7 @@ import {
 	SharingNodeRepositoryEUpdateProperties,
 	SharingNodeRepositoryEId,
 	QSharingNodeRepository
-} from './sharingNode/qsharingnoderepository'
+} from './sharingnode/qsharingnoderepository'
 import {
 	ISharingNodeTerminal,
 	SharingNodeTerminalESelect,
@@ -156,7 +156,7 @@ import {
 	SharingNodeTerminalEUpdateProperties,
 	SharingNodeTerminalEId,
 	QSharingNodeTerminal
-} from './sharingNode/qsharingnodeterminal'
+} from './sharingnode/qsharingnodeterminal'
 import {
 	ISynchronizationConflict,
 	SynchronizationConflictESelect,
@@ -221,11 +221,11 @@ export class BaseMissingRecordDao
 	implements IBaseMissingRecordDao {
 
 	static diSet(): boolean {
-		return diSet(4)
+		return diSet(3)
 	}
 	
 	constructor() {
-		super(4)
+		super(3)
 	}
 }
 
@@ -239,11 +239,11 @@ export class BaseMissingRecordRepoTransBlockDao
 	implements IBaseMissingRecordRepoTransBlockDao {
 
 	static diSet(): boolean {
-		return diSet(5)
+		return diSet(4)
 	}
 	
 	constructor() {
-		super(5)
+		super(4)
 	}
 }
 
@@ -257,11 +257,11 @@ export class BaseRecordUpdateStageDao
 	implements IBaseRecordUpdateStageDao {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return diSet(5)
 	}
 	
 	constructor() {
-		super(0)
+		super(5)
 	}
 }
 
@@ -275,11 +275,11 @@ export class BaseRepoTransBlockResponseStageDao
 	implements IBaseRepoTransBlockResponseStageDao {
 
 	static diSet(): boolean {
-		return diSet(13)
+		return diSet(6)
 	}
 	
 	constructor() {
-		super(13)
+		super(6)
 	}
 }
 
@@ -293,11 +293,11 @@ export class BaseRepoTransBlockSchemaToChangeDao
 	implements IBaseRepoTransBlockSchemaToChangeDao {
 
 	static diSet(): boolean {
-		return diSet(10)
+		return diSet(7)
 	}
 	
 	constructor() {
-		super(10)
+		super(7)
 	}
 }
 
@@ -311,11 +311,11 @@ export class BaseRepositoryTransactionBlockDao
 	implements IBaseRepositoryTransactionBlockDao {
 
 	static diSet(): boolean {
-		return diSet(11)
+		return diSet(16)
 	}
 	
 	constructor() {
-		super(11)
+		super(16)
 	}
 }
 
@@ -329,11 +329,11 @@ export class BaseRepositoryTransactionHistoryUpdateStageDao
 	implements IBaseRepositoryTransactionHistoryUpdateStageDao {
 
 	static diSet(): boolean {
-		return diSet(12)
+		return diSet(8)
 	}
 	
 	constructor() {
-		super(12)
+		super(8)
 	}
 }
 
@@ -347,11 +347,11 @@ export class BaseSharingMessageDao
 	implements IBaseSharingMessageDao {
 
 	static diSet(): boolean {
-		return diSet(8)
+		return diSet(14)
 	}
 	
 	constructor() {
-		super(8)
+		super(14)
 	}
 }
 
@@ -365,11 +365,11 @@ export class BaseSharingMessageRepoTransBlockDao
 	implements IBaseSharingMessageRepoTransBlockDao {
 
 	static diSet(): boolean {
-		return diSet(9)
+		return diSet(15)
 	}
 	
 	constructor() {
-		super(9)
+		super(15)
 	}
 }
 
@@ -383,11 +383,11 @@ export class BaseSharingNodeDao
 	implements IBaseSharingNodeDao {
 
 	static diSet(): boolean {
-		return diSet(7)
+		return diSet(10)
 	}
 	
 	constructor() {
-		super(7)
+		super(10)
 	}
 }
 
@@ -401,11 +401,11 @@ export class BaseSharingNodeRepoTransBlockDao
 	implements IBaseSharingNodeRepoTransBlockDao {
 
 	static diSet(): boolean {
-		return diSet(6)
+		return diSet(9)
 	}
 	
 	constructor() {
-		super(6)
+		super(9)
 	}
 }
 
@@ -419,11 +419,11 @@ export class BaseSharingNodeRepoTransBlockStageDao
 	implements IBaseSharingNodeRepoTransBlockStageDao {
 
 	static diSet(): boolean {
-		return diSet(16)
+		return diSet(11)
 	}
 	
 	constructor() {
-		super(16)
+		super(11)
 	}
 }
 
@@ -437,11 +437,11 @@ export class BaseSharingNodeRepositoryDao
 	implements IBaseSharingNodeRepositoryDao {
 
 	static diSet(): boolean {
-		return diSet(15)
+		return diSet(12)
 	}
 	
 	constructor() {
-		super(15)
+		super(12)
 	}
 }
 
@@ -455,11 +455,11 @@ export class BaseSharingNodeTerminalDao
 	implements IBaseSharingNodeTerminalDao {
 
 	static diSet(): boolean {
-		return diSet(14)
+		return diSet(13)
 	}
 	
 	constructor() {
-		super(14)
+		super(13)
 	}
 }
 
@@ -473,11 +473,11 @@ export class BaseSynchronizationConflictDao
 	implements IBaseSynchronizationConflictDao {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return diSet(1)
 	}
 	
 	constructor() {
-		super(2)
+		super(1)
 	}
 }
 
@@ -491,11 +491,11 @@ export class BaseSynchronizationConflictPendingNotificationDao
 	implements IBaseSynchronizationConflictPendingNotificationDao {
 
 	static diSet(): boolean {
-		return diSet(3)
+		return diSet(2)
 	}
 	
 	constructor() {
-		super(3)
+		super(2)
 	}
 }
 
@@ -509,10 +509,10 @@ export class BaseSynchronizationConflictValuesDao
 	implements IBaseSynchronizationConflictValuesDao {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return diSet(0)
 	}
 	
 	constructor() {
-		super(1)
+		super(0)
 	}
 }

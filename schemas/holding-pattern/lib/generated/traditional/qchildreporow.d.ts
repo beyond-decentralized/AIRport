@@ -1,5 +1,5 @@
 import { IQEntity } from '@airport/air-control';
-import { IRepositoryEntity, RepositoryEntityEId, RepositoryEntityEUpdateColumns, RepositoryEntityEUpdateProperties, RepositoryEntityESelect, QRepositoryEntityQId, QRepositoryEntityQRelation, QRepositoryEntity } from '../repository/qrepositoryentity';
+import { IRepositoryEntity, RepositoryEntityECascadeGraph, RepositoryEntityEId, RepositoryEntityEUpdateColumns, RepositoryEntityEUpdateProperties, RepositoryEntityESelect, QRepositoryEntityQId, QRepositoryEntityQRelation, QRepositoryEntity } from '../repository/qrepositoryentity';
 export interface IChildRepoRow extends IRepositoryEntity {
 }
 /**
@@ -21,6 +21,11 @@ export interface ChildRepoRowEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface ChildRepoRowEUpdateProperties extends RepositoryEntityEUpdateProperties {
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface ChildRepoRowECascadeGraph extends RepositoryEntityECascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

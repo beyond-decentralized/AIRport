@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 export interface ILoggedErrorStackTrace {
-    id?: number;
+    id: number;
     stackHash?: string;
     stack?: string;
 }

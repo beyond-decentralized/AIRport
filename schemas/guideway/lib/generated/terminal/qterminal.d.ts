@@ -3,7 +3,7 @@ import { IUser, UserEOptionalId, UserESelect, QUserQRelation } from '../user/qus
 import { ITerminalRepository, TerminalRepositoryESelect, QTerminalRepository } from './qterminalrepository';
 import { IAgtSharingMessage, AgtSharingMessageESelect, QAgtSharingMessage } from '../synchronization/qagtsharingmessage';
 export interface ITerminal {
-    id?: number;
+    id: number;
     name?: string;
     secondId?: number;
     password?: string;

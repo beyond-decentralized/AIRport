@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -25,6 +26,7 @@ import {
 } from '@airport/ground-control';
 import {
 	IActor,
+	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -35,6 +37,7 @@ import {
 } from '../infrastructure/qactor';
 import {
 	IOperationHistory,
+	OperationHistoryECascadeGraph,
 	OperationHistoryEId,
 	OperationHistoryEOptionalId,
 	OperationHistoryEUpdateProperties,
@@ -45,6 +48,7 @@ import {
 } from './qoperationhistory';
 import {
 	IRecordHistoryNewValue,
+	RecordHistoryNewValueECascadeGraph,
 	RecordHistoryNewValueEId,
 	RecordHistoryNewValueEOptionalId,
 	RecordHistoryNewValueEUpdateProperties,
@@ -55,6 +59,7 @@ import {
 } from './qrecordhistorynewvalue';
 import {
 	IRecordHistoryOldValue,
+	RecordHistoryOldValueECascadeGraph,
 	RecordHistoryOldValueEId,
 	RecordHistoryOldValueEOptionalId,
 	RecordHistoryOldValueEUpdateProperties,
@@ -75,7 +80,7 @@ declare function require(moduleName: string): any;
 export interface IRecordHistory {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
 
@@ -151,6 +156,19 @@ export interface RecordHistoryEUpdateProperties
 	// Non-Id Relations - ids only & no OneToMany's
 	actor?: ActorEOptionalId;
 	operationHistory?: OperationHistoryEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RecordHistoryECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	actor?: ActorECascadeGraph;
+	operationHistory?: OperationHistoryECascadeGraph;
+	newValues?: RecordHistoryNewValueECascadeGraph;
+	oldValues?: RecordHistoryOldValueECascadeGraph;
 
 }
 

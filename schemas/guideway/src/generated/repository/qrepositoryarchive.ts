@@ -54,8 +54,8 @@ export interface IRepositoryArchive {
 	// Id Properties
 
 	// Id Relations
-	repository?: IRepository;
-	archive?: IArchive;
+	repository: IRepository;
+	archive: IArchive;
 
 	// Non-Id Properties
 

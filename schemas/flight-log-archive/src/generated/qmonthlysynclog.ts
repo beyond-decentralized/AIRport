@@ -32,9 +32,9 @@ declare function require(moduleName: string): any;
 export interface IMonthlySyncLog {
 	
 	// Id Properties
-	databaseId?: number;
-	month?: Date;
-	repositoryId?: number;
+	databaseId: number;
+	month: Date;
+	repositoryId: number;
 
 	// Id Relations
 

@@ -54,8 +54,8 @@ export interface IDailyTerminalSyncLog {
 	// Id Properties
 
 	// Id Relations
-	dailyArchiveLog?: IDailyArchiveLog;
-	terminal?: ITerminal;
+	dailyArchiveLog: IDailyArchiveLog;
+	terminal: ITerminal;
 
 	// Non-Id Properties
 	acknowledged?: number;

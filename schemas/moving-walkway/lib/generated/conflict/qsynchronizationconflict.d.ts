@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IRecordHistory, RecordHistoryEOptionalId, RecordHistoryESelect, QRecordHistoryQRelation } from '@airport/holding-pattern';
 import { ISynchronizationConflictValues, SynchronizationConflictValuesESelect, QSynchronizationConflictValues } from './qsynchronizationconflictvalues';
 export interface ISynchronizationConflict {
-    id?: number;
+    id: number;
     type?: number;
     repository?: IRepository;
     overwrittenRecordHistory?: IRecordHistory;

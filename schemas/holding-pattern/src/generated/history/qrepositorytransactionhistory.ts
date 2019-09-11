@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	ITransactionHistory,
+	TransactionHistoryECascadeGraph,
 	TransactionHistoryEId,
 	TransactionHistoryEOptionalId,
 	TransactionHistoryEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './qtransactionhistory';
 import {
 	IRepository,
+	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -42,6 +45,7 @@ import {
 } from '../repository/qrepository';
 import {
 	IRepoTransHistoryChangedRepositoryActor,
+	RepoTransHistoryChangedRepositoryActorECascadeGraph,
 	RepoTransHistoryChangedRepositoryActorEId,
 	RepoTransHistoryChangedRepositoryActorEOptionalId,
 	RepoTransHistoryChangedRepositoryActorEUpdateProperties,
@@ -52,6 +56,7 @@ import {
 } from './qrepotranshistorychangedrepositoryactor';
 import {
 	IActor,
+	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -62,6 +67,7 @@ import {
 } from '../infrastructure/qactor';
 import {
 	IOperationHistory,
+	OperationHistoryECascadeGraph,
 	OperationHistoryEId,
 	OperationHistoryEOptionalId,
 	OperationHistoryEUpdateProperties,
@@ -82,7 +88,7 @@ declare function require(moduleName: string): any;
 export interface IRepositoryTransactionHistory {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
 
@@ -169,6 +175,20 @@ export interface RepositoryTransactionHistoryEUpdateProperties
 	transactionHistory?: TransactionHistoryEOptionalId;
 	repository?: RepositoryEOptionalId;
 	actor?: ActorEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RepositoryTransactionHistoryECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	transactionHistory?: TransactionHistoryECascadeGraph;
+	repository?: RepositoryECascadeGraph;
+	changedRepositoryActors?: RepoTransHistoryChangedRepositoryActorECascadeGraph;
+	actor?: ActorECascadeGraph;
+	operationHistory?: OperationHistoryECascadeGraph;
 
 }
 

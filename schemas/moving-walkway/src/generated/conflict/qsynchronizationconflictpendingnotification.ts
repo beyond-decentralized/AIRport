@@ -54,8 +54,8 @@ export interface ISynchronizationConflictPendingNotification {
 	// Id Properties
 
 	// Id Relations
-	synchronizationConflict?: ISynchronizationConflict;
-	actor?: IActor;
+	synchronizationConflict: ISynchronizationConflict;
+	actor: IActor;
 
 	// Non-Id Properties
 	acknowledged?: boolean;

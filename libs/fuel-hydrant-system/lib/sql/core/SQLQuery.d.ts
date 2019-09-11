@@ -1,5 +1,5 @@
-import { IAirportDatabase, IQEntityInternal, IQMetadataUtils, ISchemaUtils, JoinTreeNode } from '@airport/air-control';
-import { DbEntity, InternalFragments, IStoreDriver, JSONEntityRelation, JsonQuery, JSONRelation, QueryResultType, SchemaMap } from '@airport/ground-control';
+import { IAirportDatabase, IQEntityInternal, ISchemaUtils, JoinTreeNode } from '@airport/air-control';
+import { DbEntity, JSONEntityRelation, JsonQuery, JSONRelation, QueryResultType, SchemaMap } from '@airport/ground-control';
 import { SQLWhereBase } from './SQLWhereBase';
 /**
  * Created by Papa on 8/20/2016.
@@ -26,9 +26,9 @@ export declare abstract class SQLQuery<JQ extends JsonQuery> extends SQLWhereBas
     protected jsonQuery: JQ;
     protected queryResultType: QueryResultType;
     protected entityDefaults: EntityDefaults;
-    constructor(jsonQuery: JQ, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, storeDriver: IStoreDriver);
+    constructor(jsonQuery: JQ, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType);
     getFieldMap(): SchemaMap;
-    abstract toSQL(internalFragments: InternalFragments, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
+    abstract toSQL(airDb: IAirportDatabase, schemaUtils: ISchemaUtils): string;
     /**
      * If bridging is not applied:
      *
@@ -41,9 +41,9 @@ export declare abstract class SQLQuery<JQ extends JsonQuery> extends SQLWhereBas
      * @param results
      * @returns {any[]}
      */
-    abstract parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[], internalFragments: InternalFragments, queryResultType: QueryResultType, bridgedQueryConfiguration?: any): any[];
+    abstract parseQueryResults(schemaUtils: ISchemaUtils, results: any[], queryResultType: QueryResultType, bridgedQueryConfiguration?: any): any[];
     protected abstract buildFromJoinTree(joinRelations: (JSONEntityRelation | JSONRelation)[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
     }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, schemaIndex?: number, tableIndex?: number): JoinTreeNode | JoinTreeNode[];
-    protected getEntitySchemaRelationFromJoin(leftQEntity: IQEntityInternal, rightQEntity: IQEntityInternal, entityRelation: JSONEntityRelation, parentRelation: JSONRelation, currentAlias: string, parentAlias: string, joinTypeString: string, errorPrefix: string, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
+    protected getEntitySchemaRelationFromJoin(leftQEntity: IQEntityInternal, rightQEntity: IQEntityInternal, entityRelation: JSONEntityRelation, parentRelation: JSONRelation, currentAlias: string, parentAlias: string, joinTypeString: string, errorPrefix: string, schemaUtils: ISchemaUtils): string;
 }

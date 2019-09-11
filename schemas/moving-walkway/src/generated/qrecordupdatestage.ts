@@ -76,7 +76,7 @@ declare function require(moduleName: string): any;
 export interface IRecordUpdateStage {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
 

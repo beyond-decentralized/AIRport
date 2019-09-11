@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const pathResolver_1 = require("../../resolve/pathResolver");
+const SSchemaBuilder_1 = require("../schema/SSchemaBuilder");
 /**
  * Created by Papa on 5/20/2016.
  */
@@ -19,7 +20,7 @@ class IQEntityInterfaceBuilder {
         let entityName = `${this.entity.docEntry.name}`;
         let idProperties = ``;
         this.idPropertyBuilders.forEach((builder) => {
-            idProperties += `\t${builder.buildInterfaceDefinition(true, false)}\n`;
+            idProperties += `\t${builder.buildInterfaceDefinition(false, false)}\n`;
         });
         let idEProperties = ``;
         this.idPropertyBuilders.forEach((builder) => {
@@ -31,7 +32,7 @@ class IQEntityInterfaceBuilder {
         });
         let idRelations = ``;
         this.idRelationBuilders.forEach((builder) => {
-            const idRelation = builder.buildInterfaceDefinition(true, true, false);
+            const idRelation = builder.buildInterfaceDefinition(true, false, false);
             if (idRelation) {
                 idRelations += `\t${idRelation}\n`;
             }
@@ -84,6 +85,16 @@ class IQEntityInterfaceBuilder {
         this.nonIdRelationBuilders.forEach((builder) => {
             nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`;
         });
+        const isRepositoryEntity = SSchemaBuilder_1.entityExtendsRepositoryEntity(this.entity);
+        let relationsForCascadeGraph = ``;
+        if (!isRepositoryEntity) {
+            this.idRelationBuilders.forEach((builder) => {
+                relationsForCascadeGraph += `\t${builder.buildInterfaceDefinition(false, true, true, true)}\n`;
+            });
+        }
+        this.nonIdRelationBuilders.forEach((builder) => {
+            relationsForCascadeGraph += `\t${builder.buildInterfaceDefinition(false, true, true, true)}\n`;
+        });
         let transientProperties = ``;
         this.transientPropertyBuilders.forEach((builder) => {
             transientProperties += `\t${builder.buildInterfaceDefinition()}\n`;
@@ -91,12 +102,14 @@ class IQEntityInterfaceBuilder {
         let entityExtendsClause = '';
         let extendedQInterface = `IEntitySelectProperties`;
         let extendedQUpdatePropertiesInterface = `IEntityUpdateProperties`;
+        let extendedQCascadeGraphInterface = `IEntityCascadeGraph`;
         let extendedQUpdateColumnsInterface = `IEntityUpdateColumns`;
         let extendedQIdInterface = 'IEntityIdProperties';
         if (this.entity.parentEntity) {
             const parentType = this.entity.parentEntity.type;
             extendedQInterface = `${parentType}ESelect`;
             extendedQUpdatePropertiesInterface = `${parentType}EUpdateProperties`;
+            extendedQCascadeGraphInterface = `${parentType}ECascadeGraph`;
             extendedQUpdateColumnsInterface = `${parentType}EUpdateColumns`;
             extendedQIdInterface = `${parentType}EId`;
             entityExtendsClause = ` extends I${parentType}`;
@@ -178,6 +191,15 @@ export interface ${entityName}EUpdateProperties
 ${nonIdEProperties}
 	// Non-Id Relations - ids only & no OneToMany's
 ${nonIdRelationsForUpdateEProperties}
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface ${entityName}ECascadeGraph
+	extends ${extendedQCascadeGraphInterface} {
+	// Cascading Relations
+${relationsForCascadeGraph}
 }
 
 /**

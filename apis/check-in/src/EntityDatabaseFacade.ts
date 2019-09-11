@@ -5,6 +5,7 @@ import {
 	EntitySearch,
 	EntitySearchOne,
 	IDuo,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityDatabaseFacade,
 	IEntityFind,
@@ -40,10 +41,16 @@ export class EntityDatabaseFacade<Entity,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQ extends IQEntity>
-	implements IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, IQ> {
+	implements IEntityDatabaseFacade<Entity, EntitySelect,
+		EntityCreate, EntityUpdateColumns,
+		EntityUpdateProperties, EntityId,
+		EntityCascadeGraph, IQ> {
 
-	duo: IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateProperties, EntityId, IQ>
+	duo: IDuo<Entity, EntitySelect, EntityCreate,
+		EntityUpdateProperties, EntityId,
+		EntityCascadeGraph, IQ>
 
 	find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>
 
@@ -82,7 +89,7 @@ export class EntityDatabaseFacade<Entity,
 
 	async create(
 		entity: EntityCreate,
-		cascadeGraph?: EntitySelect
+		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
 	): Promise<number> {
 		const dbFacade = await DI.get(DB_FACADE)
 		return await dbFacade.create(this.dbEntity, entity)
@@ -90,8 +97,8 @@ export class EntityDatabaseFacade<Entity,
 
 	async bulkCreate(
 		entities: EntityCreate[],
-		cascadeOverwrite: CascadeOverwrite | EntitySelect = CascadeOverwrite.DEFAULT,
-		checkIfProcessed: boolean          = true
+		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT,
+		checkIfProcessed: boolean                         = true
 	): Promise<number> {
 		const dbFacade = await DI.get(DB_FACADE)
 		return await dbFacade.bulkCreate(this.dbEntity, entities,
@@ -132,7 +139,7 @@ export class EntityDatabaseFacade<Entity,
 
 	async update(
 		entity: EntityCreate,
-		cascadeGraph?: EntitySelect
+		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
 	): Promise<number> {
 		const dbFacade = await DI.get(DB_FACADE)
 		return await dbFacade.update(this.dbEntity, entity)
@@ -160,7 +167,7 @@ export class EntityDatabaseFacade<Entity,
 
 	async delete(
 		entity: EntityId,
-		cascadeGraph?: EntitySelect
+		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
 	): Promise<number> {
 		const dbFacade = await DI.get(DB_FACADE)
 		return await dbFacade.delete(this.dbEntity, entity)
@@ -175,7 +182,7 @@ export class EntityDatabaseFacade<Entity,
 
 	async save(
 		entity: EntityCreate,
-		cascadeGraph?: EntitySelect
+		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
 	): Promise<number> {
 		const dbFacade = await DI.get(DB_FACADE)
 		return await dbFacade.save(this.dbEntity, entity)

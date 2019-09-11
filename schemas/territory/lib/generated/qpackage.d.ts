@@ -1,7 +1,7 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { IApplicationPackage, ApplicationPackageESelect, QApplicationPackage } from './qapplicationpackage';
 export interface IPackage {
-    id?: number;
+    id: number;
     name?: string;
     applicationPackages?: IApplicationPackage[];
 }

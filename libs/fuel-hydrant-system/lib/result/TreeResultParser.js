@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const IEntityResultParser_1 = require("./entity/IEntityResultParser");
 /**
@@ -8,8 +7,7 @@ const IEntityResultParser_1 = require("./entity/IEntityResultParser");
  */
 /**
  * The goal of this Parser is to determine which objects in the current row are the same
- * as they were in the previous row.  If the objects are the same this parser will merge
- * them.
+ * as they were in the previous row.  If the objects are the same this parser will merge them.
  */
 class TreeResultParser extends IEntityResultParser_1.AbstractObjectResultParser {
     constructor() {
@@ -22,7 +20,7 @@ class TreeResultParser extends IEntityResultParser_1.AbstractObjectResultParser 
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject[propertyName] = propertyValue;
         if (this.isDifferentOrDoesntExist(entityAlias, resultObject, propertyName)) {
-            return air_control_1.objectExists(propertyValue);
+            return this.utils.objectExists(propertyValue);
         }
         // Both last and current objects must exist here
         let lastObject = this.lastRowObjectMap[entityAlias];
@@ -73,8 +71,7 @@ class TreeResultParser extends IEntityResultParser_1.AbstractObjectResultParser 
         let lastOtmCollection = lastObject[propertyName];
         // Now both arrays are guaranteed to exist
         // TODO: verify assumption below:
-        // For @OneToMany collections, if existence of last child facade changes it must be a
-        // new facade
+        // For @OneToMany collections, if existence of last child facade changes it must be a new facade
         if (!lastOtmCollection.length) {
             if (currentOtmCollection.length) {
                 this.objectEqualityMap[entityAlias] = false;
@@ -99,16 +96,14 @@ class TreeResultParser extends IEntityResultParser_1.AbstractObjectResultParser 
         // All equality checks have passed - this is the same exact facade as last time
         resultObject = this.lastRowObjectMap[entityAlias];
         this.currentRowObjectMap[entityAlias] = resultObject;
-        // All @ManyToOnes have been merged automatically (because they are entities
-        // themselves)
+        // All @ManyToOnes have been merged automatically (because they are entities themselves)
         // For @OneToManys:
-        // If the current one it the same as the last one of the ones in the last entity then
-        // it's the same otherwise its new and should be added to the collection
+        // If the current one it the same as the last one of the ones in the last entity then it's the same
+        // otherwise its new and should be added to the collection
         for (let oneToManyProperty in oneToManys) {
             let currentOneToMany = oneToManys[oneToManyProperty];
             if (currentOneToMany && currentOneToMany.length) {
-                // There will always be only one current record, since this is done per result
-                // set row
+                // There will always be only one current record, since this is done per result set row
                 let currentMto = currentOneToMany[0];
                 let existingOneToMany = resultObject[oneToManyProperty];
                 if (!existingOneToMany || !existingOneToMany.length) {

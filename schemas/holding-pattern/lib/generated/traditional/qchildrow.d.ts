@@ -1,5 +1,5 @@
 import { IQEntity } from '@airport/air-control';
-import { IStageable, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
+import { IStageable, StageableECascadeGraph, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
 export interface IChildRow extends IStageable {
 }
 /**
@@ -21,6 +21,11 @@ export interface ChildRowEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface ChildRowEUpdateProperties extends StageableEUpdateProperties {
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface ChildRowECascadeGraph extends StageableECascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

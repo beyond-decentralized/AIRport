@@ -79,7 +79,7 @@ class SSchemaBuilder {
                 indexes: []
             };
         }
-        const [isRepositoryEntity, isLocal] = this.entityExtendsRepositoryEntity(entityCandidate);
+        const [isRepositoryEntity, isLocal] = entityExtendsRepositoryEntity(entityCandidate);
         let entity = {
             isLocal,
             isRepositoryEntity,
@@ -288,7 +288,7 @@ class SSchemaBuilder {
         else {
             switch (relationType) {
                 case ground_control_1.EntityRelationType.MANY_TO_ONE: {
-                    if (!this.entityExtendsRepositoryEntity(aProperty.entity)) {
+                    if (!entityExtendsRepositoryEntity(aProperty.entity)) {
                         throw new Error(`@JoinColumn(s) must be specified for @ManyToOne
 					in ${entity.name}.${aProperty.name} (if the related entity does not extend RepositoryEntity).`);
                     }
@@ -399,21 +399,6 @@ class SSchemaBuilder {
             return false;
         }
         return manyToOneDecoratorValues[0].optional === false;
-    }
-    entityExtendsRepositoryEntity(//
-    entityCandidate //
-    ) {
-        const parentEntity = entityCandidate.parentEntity;
-        if (!parentEntity) {
-            return [false, true];
-        }
-        if (parentEntity.docEntry.name === ground_control_1.repositoryEntity.ENTITY_NAME) {
-            return [true, false];
-        }
-        if (parentEntity.docEntry.name === ground_control_1.repositoryEntity.LOCAL_ENTITY_NAME) {
-            return [true, true];
-        }
-        return this.entityExtendsRepositoryEntity(entityCandidate.parentEntity);
     }
     processPrimitiveColumns(properties, isIdProperty, entity, primitiveColumnMapByName, numParentProperties) {
         for (const aProperty of properties) {
@@ -614,4 +599,20 @@ class SSchemaBuilder {
     }
 }
 exports.SSchemaBuilder = SSchemaBuilder;
+function entityExtendsRepositoryEntity(//
+entityCandidate //
+) {
+    const parentEntity = entityCandidate.parentEntity;
+    if (!parentEntity) {
+        return [false, true];
+    }
+    if (parentEntity.docEntry.name === ground_control_1.repositoryEntity.ENTITY_NAME) {
+        return [true, false];
+    }
+    if (parentEntity.docEntry.name === ground_control_1.repositoryEntity.LOCAL_ENTITY_NAME) {
+        return [true, true];
+    }
+    return entityExtendsRepositoryEntity(entityCandidate.parentEntity);
+}
+exports.entityExtendsRepositoryEntity = entityExtendsRepositoryEntity;
 //# sourceMappingURL=SSchemaBuilder.js.map

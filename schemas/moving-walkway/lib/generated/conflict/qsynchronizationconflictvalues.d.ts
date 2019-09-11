@@ -1,8 +1,8 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISynchronizationConflict, SynchronizationConflictEId, SynchronizationConflictEOptionalId, SynchronizationConflictESelect, QSynchronizationConflictQId, QSynchronizationConflictQRelation } from './qsynchronizationconflict';
 export interface ISynchronizationConflictValues {
-    columnIndex?: number;
-    synchronizationConflict?: ISynchronizationConflict;
+    columnIndex: number;
+    synchronizationConflict: ISynchronizationConflict;
 }
 /**
  * SELECT - All fields and relations (optional).

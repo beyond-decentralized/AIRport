@@ -54,8 +54,8 @@ export interface IMonthlyTerminalSyncLog {
 	// Id Properties
 
 	// Id Relations
-	monthlyArchiveLog?: IMonthlyArchiveLog;
-	terminal?: ITerminal;
+	monthlyArchiveLog: IMonthlyArchiveLog;
+	terminal: ITerminal;
 
 	// Non-Id Properties
 	allAcknowledged?: boolean;

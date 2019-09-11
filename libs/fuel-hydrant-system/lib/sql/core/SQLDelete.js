@@ -6,23 +6,22 @@ const SQLNoJoinQuery_1 = require("./SQLNoJoinQuery");
  * Created by Papa on 10/2/2016.
  */
 class SQLDelete extends SQLNoJoinQuery_1.SQLNoJoinQuery {
-    constructor(airportDb, jsonDelete, dialect, storeDriver) {
-        super(airportDb.schemas[jsonDelete.DF.si]
-            .currentVersion.entities[jsonDelete.DF.ti], dialect, storeDriver);
+    constructor(airportDb, utils, jsonDelete, dialect) {
+        super(airportDb, utils, airportDb.schemas[jsonDelete.DF.si]
+            .currentVersion.entities[jsonDelete.DF.ti], dialect);
         this.jsonDelete = jsonDelete;
     }
-    toSQL(airDb, schemaUtils, metadataUtils) {
-        let fromFragment = this.getTableFragment(this.jsonDelete.DF, airDb, schemaUtils);
+    toSQL() {
+        let fromFragment = this.getTableFragment(this.jsonDelete.DF);
         let whereFragment = '';
         let jsonQuery = this.jsonDelete;
         if (jsonQuery.W) {
-            whereFragment = this.getWHEREFragment(jsonQuery.W, '', airDb, schemaUtils, metadataUtils);
             whereFragment = `
 WHERE
-${whereFragment}`;
+${this.getWHEREFragment(jsonQuery.W, '')}`;
             // Always replace the root entity alias reference with the table name
             let tableAlias = air_control_1.QRelation.getAlias(this.jsonDelete.DF);
-            let tableName = schemaUtils.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
+            let tableName = this.utils.Schema.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
             whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName);
         }
         return `DELETE

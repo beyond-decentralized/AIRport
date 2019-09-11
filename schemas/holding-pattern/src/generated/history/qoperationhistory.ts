@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IRepositoryTransactionHistory,
+	RepositoryTransactionHistoryECascadeGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
 	RepositoryTransactionHistoryEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './qrepositorytransactionhistory';
 import {
 	ISchemaEntity,
+	SchemaEntityECascadeGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
 	SchemaEntityEUpdateProperties,
@@ -42,6 +45,7 @@ import {
 } from '@airport/traffic-pattern';
 import {
 	IRecordHistory,
+	RecordHistoryECascadeGraph,
 	RecordHistoryEId,
 	RecordHistoryEOptionalId,
 	RecordHistoryEUpdateProperties,
@@ -62,10 +66,10 @@ declare function require(moduleName: string): any;
 export interface IOperationHistory {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
-	repositoryTransactionHistory?: IRepositoryTransactionHistory;
+	repositoryTransactionHistory: IRepositoryTransactionHistory;
 
 	// Non-Id Properties
 	orderNumber?: number;
@@ -142,6 +146,17 @@ export interface OperationHistoryEUpdateProperties
 
 	// Non-Id Relations - ids only & no OneToMany's
 	entity?: SchemaEntityEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface OperationHistoryECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	entity?: SchemaEntityECascadeGraph;
+	recordHistory?: RecordHistoryECascadeGraph;
 
 }
 

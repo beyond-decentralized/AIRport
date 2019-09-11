@@ -1,12 +1,11 @@
-import { SQLDataType } from '@airport/ground-control';
-import { AbstractObjectResultParser } from './entity/IEntityResultParser';
+import { SQLDataType } from "@airport/ground-control";
+import { AbstractObjectResultParser } from "./entity/IEntityResultParser";
 /**
  * Created by Papa on 10/16/2016.
  */
 /**
  * The goal of this Parser is to determine which objects in the current row are the same
- * as they were in the previous row.  If the objects are the same this parser will merge
- * them.
+ * as they were in the previous row.  If the objects are the same this parser will merge them.
  */
 export declare class TreeResultParser extends AbstractObjectResultParser {
     protected currentRowObjectMap: {

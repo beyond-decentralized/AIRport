@@ -1,10 +1,11 @@
 import {
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity
-} from "../core/entity/Entity";
+} from '../core/entity/Entity'
 
 /**
  * Data Utility Object.
@@ -14,6 +15,7 @@ export interface IDuo<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdate extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity> {
 
 	getIdStub(

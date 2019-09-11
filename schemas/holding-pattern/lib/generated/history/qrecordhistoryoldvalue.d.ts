@@ -1,8 +1,8 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
 import { IRecordHistory, RecordHistoryEId, RecordHistoryEOptionalId, RecordHistoryESelect, QRecordHistoryQId, QRecordHistoryQRelation } from './qrecordhistory';
 export interface IRecordHistoryOldValue {
-    columnIndex?: number;
-    recordHistory?: IRecordHistory;
+    columnIndex: number;
+    recordHistory: IRecordHistory;
     oldValue?: any;
 }
 /**
@@ -31,6 +31,11 @@ export interface RecordHistoryOldValueEOptionalId {
  */
 export interface RecordHistoryOldValueEUpdateProperties extends IEntityUpdateProperties {
     oldValue?: any | IQUntypedField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RecordHistoryOldValueECascadeGraph extends IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

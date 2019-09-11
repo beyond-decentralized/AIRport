@@ -42,7 +42,7 @@ declare function require(moduleName: string): any;
 export interface ILogEntryValue {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
 

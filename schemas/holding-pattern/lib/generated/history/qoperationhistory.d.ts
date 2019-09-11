@@ -1,10 +1,10 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { IRepositoryTransactionHistory, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEOptionalId, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistoryQId, QRepositoryTransactionHistoryQRelation } from './qrepositorytransactionhistory';
-import { ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
-import { IRecordHistory, RecordHistoryESelect, QRecordHistory } from './qrecordhistory';
+import { ISchemaEntity, SchemaEntityECascadeGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
+import { IRecordHistory, RecordHistoryECascadeGraph, RecordHistoryESelect, QRecordHistory } from './qrecordhistory';
 export interface IOperationHistory {
-    id?: number;
-    repositoryTransactionHistory?: IRepositoryTransactionHistory;
+    id: number;
+    repositoryTransactionHistory: IRepositoryTransactionHistory;
     orderNumber?: number;
     changeType?: number;
     systemWideOperationId?: number;
@@ -44,6 +44,13 @@ export interface OperationHistoryEUpdateProperties extends IEntityUpdateProperti
     changeType?: number | IQNumberField;
     systemWideOperationId?: number | IQNumberField;
     entity?: SchemaEntityEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface OperationHistoryECascadeGraph extends IEntityCascadeGraph {
+    entity?: SchemaEntityECascadeGraph;
+    recordHistory?: RecordHistoryECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

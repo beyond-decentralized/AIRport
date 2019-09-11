@@ -32,9 +32,9 @@ declare function require(moduleName: string): any;
 export interface IDailySyncLog {
 	
 	// Id Properties
-	databaseId?: number;
-	date?: number;
-	repositoryId?: number;
+	databaseId: number;
+	date: number;
+	repositoryId: number;
 
 	// Id Relations
 

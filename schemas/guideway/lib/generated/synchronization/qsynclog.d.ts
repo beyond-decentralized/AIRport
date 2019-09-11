@@ -2,8 +2,8 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { IAgtSharingMessage, AgtSharingMessageEId, AgtSharingMessageEOptionalId, AgtSharingMessageESelect, QAgtSharingMessageQId, QAgtSharingMessageQRelation } from './qagtsharingmessage';
 import { IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockEOptionalId, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlockQId, QAgtRepositoryTransactionBlockQRelation } from './qagtrepositorytransactionblock';
 export interface ISyncLog {
-    sharingMessage?: IAgtSharingMessage;
-    repositoryTransactionBlock?: IAgtRepositoryTransactionBlock;
+    sharingMessage: IAgtSharingMessage;
+    repositoryTransactionBlock: IAgtRepositoryTransactionBlock;
 }
 /**
  * SELECT - All fields and relations (optional).

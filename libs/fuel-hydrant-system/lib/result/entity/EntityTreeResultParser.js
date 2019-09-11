@@ -58,7 +58,7 @@ class EntityTreeResultParser extends TreeResultParser_1.TreeResultParser {
         this.addManyToOneReference(entityAlias, null, propertyName);
     }
     bufferOneToManyStub(otmDbEntity, otmPropertyName) {
-        throw new Error(`@OneToMany stubs not allowed in QueryResultType.HIERARCHICAL`);
+        throw `@OneToMany stubs not allowed in QueryResultType.HIERARCHICAL`;
     }
     bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject) {
         resultObject[propertyName] = [childResultObject];

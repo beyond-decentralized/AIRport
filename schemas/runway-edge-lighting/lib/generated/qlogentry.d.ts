@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { ILogEntryType, LogEntryTypeEOptionalId, LogEntryTypeESelect, QLogEntryTypeQRelation } from './qlogentrytype';
 import { ILogEntryValue, LogEntryValueESelect, QLogEntryValue } from './qlogentryvalue';
 export interface ILogEntry {
-    id?: number;
+    id: number;
     timestamp?: Date;
     type?: ILogEntryType;
     values?: ILogEntryValue[];

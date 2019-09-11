@@ -72,8 +72,8 @@ declare function require(moduleName: string): any;
 export interface IUserTerminalAgt {
 	
 	// Id Properties
-	id?: number;
-	agtId?: number;
+	id: number;
+	agtId: number;
 
 	// Id Relations
 

@@ -3,8 +3,8 @@ import { ITerminal, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminal
 import { IAgt, AgtEId, AgtEOptionalId, AgtESelect, QAgtQId, QAgtQRelation } from './qagt';
 import { IUserTerminalAgt, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
 export interface ITerminalAgt {
-    terminal?: ITerminal;
-    agt?: IAgt;
+    terminal: ITerminal;
+    agt: IAgt;
     password?: string;
     userTerminalAgts?: IUserTerminalAgt[];
 }

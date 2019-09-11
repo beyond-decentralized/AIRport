@@ -32,7 +32,7 @@ declare function require(moduleName: string): any;
 export interface IArchive {
 	
 	// Id Properties
-	id?: string;
+	id: string;
 
 	// Id Relations
 

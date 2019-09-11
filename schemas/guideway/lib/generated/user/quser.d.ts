@@ -4,7 +4,7 @@ import { IUserRepository, UserRepositoryESelect, QUserRepository } from './quser
 import { ITerminal, TerminalESelect, QTerminal } from '../terminal/qterminal';
 import { IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
 export interface IUser {
-    id?: number;
+    id: number;
     hash?: string;
     email?: string;
     isInvitation?: boolean;

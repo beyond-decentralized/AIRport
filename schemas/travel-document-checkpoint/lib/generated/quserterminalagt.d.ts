@@ -4,8 +4,8 @@ import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } f
 import { IAgt, AgtEOptionalId, AgtESelect, QAgtQRelation } from './qagt';
 import { ITerminalAgt, TerminalAgtEOptionalId, TerminalAgtESelect, QTerminalAgtQRelation } from './qterminalagt';
 export interface IUserTerminalAgt {
-    id?: number;
-    agtId?: number;
+    id: number;
+    agtId: number;
     password?: number;
     user?: IUser;
     terminal?: ITerminal;

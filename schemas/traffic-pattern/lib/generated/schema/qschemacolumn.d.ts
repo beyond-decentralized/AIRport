@@ -1,10 +1,10 @@
 import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField } from '@airport/air-control';
-import { IVersionedSchemaObject, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
-import { ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
-import { ISchemaPropertyColumn, SchemaPropertyColumnESelect, QSchemaPropertyColumn } from './qschemapropertycolumn';
-import { ISchemaRelationColumn, SchemaRelationColumnESelect, QSchemaRelationColumn } from './qschemarelationcolumn';
+import { IVersionedSchemaObject, VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
+import { ISchemaEntity, SchemaEntityECascadeGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
+import { ISchemaPropertyColumn, SchemaPropertyColumnECascadeGraph, SchemaPropertyColumnESelect, QSchemaPropertyColumn } from './qschemapropertycolumn';
+import { ISchemaRelationColumn, SchemaRelationColumnECascadeGraph, SchemaRelationColumnESelect, QSchemaRelationColumn } from './qschemarelationcolumn';
 export interface ISchemaColumn extends IVersionedSchemaObject {
-    id?: number;
+    id: number;
     index?: number;
     idIndex?: number;
     isGenerated?: boolean;
@@ -57,6 +57,15 @@ export interface SchemaColumnEUpdateProperties extends VersionedSchemaObjectEUpd
     notNull?: boolean | IQBooleanField;
     type?: number | IQNumberField;
     entity?: SchemaEntityEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SchemaColumnECascadeGraph extends VersionedSchemaObjectECascadeGraph {
+    entity?: SchemaEntityECascadeGraph;
+    propertyColumns?: SchemaPropertyColumnECascadeGraph;
+    manyRelationColumns?: SchemaRelationColumnECascadeGraph;
+    oneRelationColumns?: SchemaRelationColumnECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

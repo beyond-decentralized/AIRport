@@ -1,8 +1,8 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
 import { IRepository, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '../repository/qrepository';
 export interface IMonthlyArchiveLog {
-    monthNumber?: number;
-    repository?: IRepository;
+    monthNumber: number;
+    repository: IRepository;
     numberOfChanges?: number;
     daysWithChanges?: any;
 }

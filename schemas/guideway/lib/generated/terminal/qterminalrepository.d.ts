@@ -2,8 +2,8 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { ITerminal, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from './qterminal';
 import { IRepository, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '../repository/qrepository';
 export interface ITerminalRepository {
-    terminal?: ITerminal;
-    repository?: IRepository;
+    terminal: ITerminal;
+    repository: IRepository;
     permission?: number;
 }
 /**

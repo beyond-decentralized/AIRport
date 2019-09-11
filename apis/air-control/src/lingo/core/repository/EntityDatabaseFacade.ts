@@ -18,13 +18,14 @@ import {
 }                          from '../../query/facade/Update'
 import {MappedEntityArray} from '../../query/MappedEntityArray'
 import {
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-}                          from '../entity/Entity'
+} from '../entity/Entity'
 
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -35,11 +36,14 @@ export interface IEntityDatabaseFacade<Entity,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQ extends IQEntity> {
 
 	dbEntity: DbEntity;
 
-	duo: IDuo<Entity, EntitySelect, EntityCreateProperties, EntityUpdateProperties, EntityId, IQ>;
+	duo: IDuo<Entity, EntitySelect, EntityCreateProperties,
+		EntityUpdateProperties, EntityId,
+		EntityCascadeGraph, IQ>;
 
 	/**
 	 * The Promise based API for all Entity 'find' (find many) queries.
@@ -87,7 +91,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	create(
 		entity: EntityCreateProperties,
-		cascadeGraph?: EntitySelect
+		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
 	): Promise<number>;
 
 	/**
@@ -97,7 +101,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	bulkCreate(
 		entities: EntityCreateProperties[],
-		cascadeOverwrite: CascadeOverwrite | EntitySelect, // defaults to false
+		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph, // defaults to false
 		checkIfProcessed: boolean // defaults to true
 	): Promise<number>;
 
@@ -129,7 +133,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	update(
 		entity: EntityCreateProperties, // @Id fields must be populated
-		cascadeGraph?: EntitySelect
+		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
 	): Promise<number>;
 
 	/**
@@ -160,7 +164,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	delete(
 		entity: EntityId,
-		cascadeGraph?: EntitySelect
+		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
 	): Promise<number>;
 
 	/**
@@ -181,7 +185,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	save(
 		entity: EntityCreateProperties,
-		cascadeGraph?: EntitySelect
+		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
 	): Promise<number>;
 
 }

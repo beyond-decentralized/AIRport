@@ -54,8 +54,8 @@ export interface ISharingNodeRepository {
 	// Id Properties
 
 	// Id Relations
-	sharingNode?: ISharingNode;
-	repository?: IRepository;
+	sharingNode: ISharingNode;
+	repository: IRepository;
 
 	// Non-Id Properties
 	agtRepositoryId?: number;

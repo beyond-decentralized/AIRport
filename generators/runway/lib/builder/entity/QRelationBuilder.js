@@ -26,13 +26,14 @@ class QRelationBuilder {
     build() {
         throw new Error(`Not implemented`);
     }
-    buildInterfaceDefinition(idOnly, optional = true, forInternalInterfaces = true) {
+    buildInterfaceDefinition(idOnly, optional = true, forInternalInterfaces = true, forCascadeGraph = false) {
         if (idOnly && this.entityProperty.decorators.filter(decorator => decorator.name === 'OneToMany').length) {
             return null;
         }
         let typeSuffix = '';
         if (forInternalInterfaces) {
-            typeSuffix = idOnly ? (optional ? 'EOptionalId' : 'EId') : 'ESelect';
+            typeSuffix = idOnly ? (optional ? 'EOptionalId' : 'EId') :
+                (forCascadeGraph ? 'ECascadeGraph' : 'ESelect');
         }
         let type = this.entityProperty.type;
         if (this.entityProperty.entity) {

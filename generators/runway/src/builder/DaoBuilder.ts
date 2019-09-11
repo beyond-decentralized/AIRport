@@ -16,11 +16,11 @@ export class DaoBuilder
 		const daoDefinitions = this.entityNames.map(
 			entityName => `
 export interface IBase${entityName}Dao
-  extends IDao<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, Q${entityName}> {
+  extends IDao<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}ECascadeGraph, Q${entityName}> {
 }
 
 export class Base${entityName}Dao
-  extends SQDIDao<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, Q${entityName}>
+  extends SQDIDao<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}ECascadeGraph, Q${entityName}>
 	implements IBase${entityName}Dao {
 
 	static diSet(): boolean {
@@ -37,6 +37,7 @@ export class Base${entityName}Dao
 				`import {
 	I${entityName},
 	${entityName}ESelect,
+	${entityName}ECascadeGraph,
 	${entityName}ECreateColumns,
 	${entityName}ECreateProperties,
 	${entityName}EUpdateColumns,
@@ -48,6 +49,7 @@ export class Base${entityName}Dao
 
 		return `import {
 	IDao,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -74,6 +76,7 @@ export class SQDIDao<Entity,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Dao<Entity,
 		EntitySelect,
@@ -81,6 +84,7 @@ export class SQDIDao<Entity,
 		EntityUpdateColumns,
 		EntityUpdateProperties,
 		EntityId,
+		EntityCascadeGraph,
 		IQE> {
 
 	constructor(

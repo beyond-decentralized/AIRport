@@ -11,30 +11,30 @@ const SqlFunctionField_1 = require("./SqlFunctionField");
  * Created by Papa on 10/28/2016.
  */
 class TreeSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
-    constructor(jsonQuery, dialect, storeDriver) {
-        super(jsonQuery, dialect, ground_control_1.QueryResultType.TREE, storeDriver);
-        this.queryParser = new TreeQueryResultParser_1.TreeQueryResultParser();
+    constructor(airportDb, utils, jsonQuery, dialect) {
+        super(airportDb, utils, jsonQuery, dialect, ground_control_1.QueryResultType.TREE);
+        this.queryParser = new TreeQueryResultParser_1.TreeQueryResultParser(utils);
         this.orderByParser = new MappedOrderByParser_1.MappedOrderByParser(this.validator);
     }
-    getSELECTFragment(nested, selectClauseFragment, internalFragments, airDb, schemaUtils, metadataUtils) {
+    getSELECTFragment(nested, selectClauseFragment) {
         const distinctClause = selectClauseFragment;
         if (distinctClause.ot == ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION) {
             if (nested) {
-                throw new Error(`Cannot have DISTINCT specified in a nested select clause`);
+                throw `Cannot have DISTINCT specified in a nested select clause`;
             }
-            const distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0], internalFragments, airDb, schemaUtils, metadataUtils);
+            const distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0]);
             return `DISTINCT ${distinctSelect}`;
         }
         let numProperties = 0;
         for (let propertyName in selectClauseFragment) {
             if (propertyName === '*') {
-                throw new Error(`'*' operator isn't yet implemented in mapped queries`);
+                throw `'*' operator isn't yet implemented in mapped queries`;
             }
             numProperties++;
         }
         if (numProperties === 0) {
             if (nested) {
-                throw new Error(`Mapped query must have fields in a nested-select clause`);
+                throw `Mapped query must have fields in a nested-select clause`;
             }
             else {
                 return '*';
@@ -49,12 +49,12 @@ class TreeSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
                 continue;
             }
             if (value instanceof SqlFunctionField_1.SqlFunctionField) {
-                selectSqlFragment += value.getValue(this, airDb, schemaUtils, metadataUtils);
+                selectSqlFragment += value.getValue(this);
                 continue;
             }
             selectSqlFragment += this.getFieldSelectFragment(value, SQLWhereBase_1.ClauseType.MAPPED_SELECT_CLAUSE, () => {
-                return this.getSELECTFragment(true, value, internalFragments, airDb, schemaUtils, metadataUtils);
-            }, fieldIndex++, airDb, schemaUtils, metadataUtils);
+                return this.getSELECTFragment(true, value);
+            }, fieldIndex++);
         }
         return selectSqlFragment;
     }
@@ -65,7 +65,7 @@ class TreeSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(airDb, schemaUtils, results) {
+    parseQueryResults(schemaUtils, results) {
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;

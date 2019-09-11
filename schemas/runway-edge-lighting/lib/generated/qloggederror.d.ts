@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { ILogEntry, LogEntryEId, LogEntryEOptionalId, LogEntryESelect, QLogEntryQId, QLogEntryQRelation } from './qlogentry';
 import { ILoggedErrorStackTrace, LoggedErrorStackTraceEOptionalId, LoggedErrorStackTraceESelect, QLoggedErrorStackTraceQRelation } from './qloggederrorstacktrace';
 export interface ILoggedError {
-    logEntry?: ILogEntry;
+    logEntry: ILogEntry;
     stackTrace?: ILoggedErrorStackTrace;
 }
 /**

@@ -1,9 +1,9 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { IRepository, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from './qrepository';
-import { IApplication, ApplicationEOptionalId, ApplicationESelect, QApplicationQRelation } from '../infrastructure/qapplication';
+import { IApplication, ApplicationECascadeGraph, ApplicationEOptionalId, ApplicationESelect, QApplicationQRelation } from '../infrastructure/qapplication';
 export interface IRepositoryApplication {
-    id?: number;
-    repository?: IRepository;
+    id: number;
+    repository: IRepository;
     application?: IApplication;
 }
 /**
@@ -32,6 +32,12 @@ export interface RepositoryApplicationEOptionalId {
  */
 export interface RepositoryApplicationEUpdateProperties extends IEntityUpdateProperties {
     application?: ApplicationEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RepositoryApplicationECascadeGraph extends IEntityCascadeGraph {
+    application?: ApplicationECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

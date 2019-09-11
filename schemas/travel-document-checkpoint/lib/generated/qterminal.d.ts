@@ -4,7 +4,7 @@ import { ITerminalAgt, TerminalAgtESelect, QTerminalAgt } from './qterminalagt';
 import { IUserTerminal, UserTerminalESelect, QUserTerminal } from './quserterminal';
 import { IUserTerminalAgt, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
 export interface ITerminal {
-    id?: number;
+    id: number;
     name?: string;
     secondId?: number;
     isLocal?: boolean;

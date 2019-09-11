@@ -11,40 +11,31 @@ const NonEntitySQLQuery_1 = require("./NonEntitySQLQuery");
  * Represents SQL String query with flat (aka traditional) Select clause.
  */
 class SheetSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
-    constructor(jsonQuery, dialect, storeDriver) {
-        super(jsonQuery, dialect, ground_control_1.QueryResultType.SHEET, storeDriver);
+    constructor(airportDb, utils, jsonQuery, dialect) {
+        super(airportDb, utils, jsonQuery, dialect, ground_control_1.QueryResultType.SHEET);
         this.orderByParser = new ExactOrderByParser_1.ExactOrderByParser(this.validator);
     }
-    getSELECTFragment(nested, selectClauseFragment, internalFragments, airDb, schemaUtils, metadataUtils) {
+    getSELECTFragment(nested, selectClauseFragment) {
         if (!selectClauseFragment) {
-            throw new Error(`SELECT clause is not defined for a Flat Query`);
+            throw `SELECT clause is not defined for a Flat Query`;
         }
         {
             let distinctClause = selectClauseFragment;
             if (distinctClause.ot == ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION) {
-                let distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0], internalFragments, airDb, schemaUtils, metadataUtils);
+                let distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0]);
                 return `DISTINCT ${distinctSelect}`;
             }
         }
         if (!(selectClauseFragment instanceof Array)) {
-            throw new Error(`SELECT clause for a Flat Query must be an Array`);
+            throw `SELECT clause for a Flat Query must be an Array`;
         }
         let fieldIndex = 0;
         let selectSqlFragment = selectClauseFragment.map((field) => {
-            return this.getFieldSelectFragment(field, SQLWhereBase_1.ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++, airDb, schemaUtils, metadataUtils);
+            return this.getFieldSelectFragment(field, SQLWhereBase_1.ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++);
         }).join('');
-        const selectClause = internalFragments.SELECT;
-        if (selectClause && selectClause.length) {
-            if (fieldIndex) {
-                selectSqlFragment += '\n\t,';
-            }
-            selectSqlFragment += selectClause
-                .map(dbColumn => `${dbColumn.name}`)
-                .join('\n\t,');
-        }
         return selectSqlFragment;
     }
-    parseQueryResults(airDb, schemaUtils, results, internalFragments) {
+    parseQueryResults(schemaUtils, results) {
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;
@@ -52,26 +43,17 @@ class SheetSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         parsedResults = [];
         let lastResult;
         results.forEach((result) => {
-            let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0], internalFragments);
+            let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0]);
             parsedResults.push(parsedResult);
         });
         return parsedResults;
     }
-    parseQueryResult(selectClauseFragment, resultRow, nextFieldIndex, internalFragments) {
-        const resultsFromSelect = selectClauseFragment.map((field) => {
+    parseQueryResult(selectClauseFragment, resultRow, nextFieldIndex) {
+        return selectClauseFragment.map((field) => {
             let propertyValue = this.sqlAdaptor.getResultCellValue(resultRow, field.fa, nextFieldIndex[0], field.dt, null);
             nextFieldIndex[0]++;
             return propertyValue;
         });
-        const selectClause = internalFragments.SELECT;
-        if (selectClause && selectClause.length) {
-            for (const dbColumn of selectClause) {
-                let propertyValue = this.sqlAdaptor.getResultCellValue(resultRow, dbColumn.name, nextFieldIndex[0], dbColumn.type, null);
-                resultsFromSelect.push(propertyValue);
-                nextFieldIndex[0]++;
-            }
-        }
-        return resultsFromSelect;
     }
 }
 exports.SheetSQLQuery = SheetSQLQuery;

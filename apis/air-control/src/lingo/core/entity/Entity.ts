@@ -67,6 +67,14 @@ export interface IEntityUpdateColumns {
  */
 export interface IEntityUpdateProperties {
 }
+/**
+ * Marker interface for CASCADE GRAPH Statement definitions (by properties).
+ * Every child entity must provide an extension of this interface.
+ * The extension must list all relations for entity (excluding @Id relations
+ * of Repository Entities).
+ */
+export interface IEntityCascadeGraph {
+}
 
 export interface EntityConstructor {
 

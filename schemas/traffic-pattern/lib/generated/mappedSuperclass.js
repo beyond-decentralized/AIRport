@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MAPPED_SUPERCLASS = [
     {
         "type": "VersionedSchemaObject",
-        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/VersionedSchemaObject.ts",
+        "path": "c:/users/papa/dac/airport/schemas/traffic-pattern/src/ddl/schema/versionedschemaobject.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
@@ -91,7 +91,7 @@ exports.MAPPED_SUPERCLASS = [
                     "nonArrayType": "SchemaVersion",
                     "entity": {
                         "type": "SchemaVersion",
-                        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/SchemaVersion.ts",
+                        "path": "c:/users/papa/dac/airport/schemas/traffic-pattern/src/ddl/schema/schemaversion.ts",
                         "parentClassName": null,
                         "isSuperclass": false,
                         "ids": [
@@ -520,7 +520,7 @@ exports.MAPPED_SUPERCLASS = [
                                     "nonArrayType": "Schema",
                                     "entity": {
                                         "type": "Schema",
-                                        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/Schema.ts",
+                                        "path": "c:/users/papa/dac/airport/schemas/traffic-pattern/src/ddl/schema/schema.ts",
                                         "parentClassName": null,
                                         "isSuperclass": false,
                                         "ids": [
@@ -1064,7 +1064,7 @@ exports.MAPPED_SUPERCLASS = [
                                     "nonArrayType": "SchemaEntity",
                                     "entity": {
                                         "type": "SchemaEntity",
-                                        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts",
+                                        "path": "c:/users/papa/dac/airport/schemas/traffic-pattern/src/ddl/schema/schemaentity.ts",
                                         "parentClassName": "VersionedSchemaObject",
                                         "location": "./VersionedSchemaObject",
                                         "isSuperclass": false,
@@ -1526,7 +1526,7 @@ exports.MAPPED_SUPERCLASS = [
                                                     "nonArrayType": "SchemaColumn",
                                                     "entity": {
                                                         "type": "SchemaColumn",
-                                                        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts",
+                                                        "path": "c:/users/papa/dac/airport/schemas/traffic-pattern/src/ddl/schema/schemacolumn.ts",
                                                         "parentClassName": "VersionedSchemaObject",
                                                         "location": "./VersionedSchemaObject",
                                                         "isSuperclass": false,
@@ -1977,7 +1977,7 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "nonArrayType": "ISchemaPropertyColumn",
                                                                     "entity": {
                                                                         "type": "SchemaPropertyColumn",
-                                                                        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/SchemaPropertyColumn.ts",
+                                                                        "path": "c:/users/papa/dac/airport/schemas/traffic-pattern/src/ddl/schema/schemapropertycolumn.ts",
                                                                         "parentClassName": "VersionedSchemaObject",
                                                                         "location": "./VersionedSchemaObject",
                                                                         "isSuperclass": false,
@@ -2475,7 +2475,7 @@ exports.MAPPED_SUPERCLASS = [
                                     "nonArrayType": "SchemaReference",
                                     "entity": {
                                         "type": "SchemaReference",
-                                        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/SchemaReference.ts",
+                                        "path": "c:/users/papa/dac/airport/schemas/traffic-pattern/src/ddl/schema/schemareference.ts",
                                         "parentClassName": "VersionedSchemaObject",
                                         "location": "./VersionedSchemaObject",
                                         "isSuperclass": false,

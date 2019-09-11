@@ -12,11 +12,11 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { DailySyncLog } from '../ddl/DailySyncLog';
+import { DailySyncLog } from '../ddl/dailysynclog';
 import { QDailySyncLog } from './qdailysynclog';
-import { Log } from '../ddl/log/Log';
+import { Log } from '../ddl/log/log';
 import { QLog } from './log/qlog';
-import { MonthlySyncLog } from '../ddl/MonthlySyncLog';
+import { MonthlySyncLog } from '../ddl/monthlysynclog';
 import { QMonthlySyncLog } from './qmonthlysynclog';
 
 export interface LocalQSchema extends AirportQSchema {

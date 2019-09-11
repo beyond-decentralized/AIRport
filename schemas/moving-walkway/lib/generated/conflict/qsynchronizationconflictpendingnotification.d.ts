@@ -2,8 +2,8 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { ISynchronizationConflict, SynchronizationConflictEId, SynchronizationConflictEOptionalId, SynchronizationConflictESelect, QSynchronizationConflictQId, QSynchronizationConflictQRelation } from './qsynchronizationconflict';
 import { IActor, ActorEId, ActorEOptionalId, ActorESelect, QActorQId, QActorQRelation } from '@airport/holding-pattern';
 export interface ISynchronizationConflictPendingNotification {
-    synchronizationConflict?: ISynchronizationConflict;
-    actor?: IActor;
+    synchronizationConflict: ISynchronizationConflict;
+    actor: IActor;
     acknowledged?: boolean;
 }
 /**

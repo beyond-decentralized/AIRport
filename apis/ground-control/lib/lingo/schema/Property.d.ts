@@ -188,6 +188,7 @@ export interface JsonSchemaRelationColumn extends JsonDatabaseObject {
     oneColumnIndex: ColumnIndex;
 }
 export interface DbRelationColumn extends DatabaseObject {
+    id: number;
     manyColumn: DbColumn;
     /**
      * Only present if @ManyToOne side of the relationship is defined.

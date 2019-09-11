@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IStageable,
+	StageableECascadeGraph,
 	StageableEId,
 	StageableEUpdateColumns,
 	StageableEUpdateProperties,
@@ -101,6 +103,15 @@ export interface ChildRowEUpdateProperties
 	// Non-Id Properties
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface ChildRowECascadeGraph
+	extends StageableECascadeGraph {
+	// Cascading Relations
 
 }
 

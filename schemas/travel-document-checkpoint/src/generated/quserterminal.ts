@@ -54,8 +54,8 @@ export interface IUserTerminal {
 	// Id Properties
 
 	// Id Relations
-	user?: IUser;
-	terminal?: ITerminal;
+	user: IUser;
+	terminal: ITerminal;
 
 	// Non-Id Properties
 

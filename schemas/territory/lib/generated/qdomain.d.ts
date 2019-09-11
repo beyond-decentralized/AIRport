@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { DbSchema } from '@airport/ground-control';
 import { IApplication, ApplicationESelect, QApplication } from './qapplication';
 export interface IDomain {
-    id?: number;
+    id: number;
     name?: string;
     applications?: IApplication[];
     schemas?: DbSchema[];

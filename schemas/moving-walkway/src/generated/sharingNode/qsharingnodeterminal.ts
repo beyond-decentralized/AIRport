@@ -54,8 +54,8 @@ export interface ISharingNodeTerminal {
 	// Id Properties
 
 	// Id Relations
-	sharingNode?: ISharingNode;
-	terminal?: ITerminal;
+	sharingNode: ISharingNode;
+	terminal: ITerminal;
 
 	// Non-Id Properties
 	agtTerminalId?: number;

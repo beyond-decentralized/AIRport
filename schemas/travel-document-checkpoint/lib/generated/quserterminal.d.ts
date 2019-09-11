@@ -2,8 +2,8 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { IUser, UserEId, UserEOptionalId, UserESelect, QUserQId, QUserQRelation } from './quser';
 import { ITerminal, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from './qterminal';
 export interface IUserTerminal {
-    user?: IUser;
-    terminal?: ITerminal;
+    user: IUser;
+    terminal: ITerminal;
 }
 /**
  * SELECT - All fields and relations (optional).

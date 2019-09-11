@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IRepository,
+	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -42,10 +44,10 @@ declare function require(moduleName: string): any;
 export interface IRepositorySchema {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
-	repository?: IRepository;
+	repository: IRepository;
 
 	// Non-Id Properties
 	schemaIndex?: number;
@@ -111,6 +113,15 @@ export interface RepositorySchemaEUpdateProperties
 	schemaIndex?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RepositorySchemaECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

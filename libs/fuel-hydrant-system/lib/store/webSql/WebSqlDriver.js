@@ -95,7 +95,7 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
         });
     }
     keepTransactionAlive(tx) {
-        tx.executeSql('SELECT count(*) FROM npmjs_org___airport__territory__Package', [], (tx) => {
+        tx.executeSql('SELECT count(*) FROM github_com___airport__territory__Package', [], (tx) => {
             this.executePendingStatements(tx);
         }, (tx) => {
             this.executePendingStatements(tx);
@@ -137,10 +137,10 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
         }
     }
 }
-exports.WebSqlDriver = WebSqlDriver;
 WebSqlDriver.BACKUP_LOCAL = 2;
 WebSqlDriver.BACKUP_LIBRARY = 1;
 WebSqlDriver.BACKUP_DOCUMENTS = 0;
+exports.WebSqlDriver = WebSqlDriver;
 /*
 function runSqlSeries(
     tx,

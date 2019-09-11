@@ -82,7 +82,7 @@ declare function require(moduleName: string): any;
 export interface IAgtRepositoryTransactionBlock {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
 

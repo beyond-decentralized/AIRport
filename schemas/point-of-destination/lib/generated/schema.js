@@ -31,14 +31,14 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneSchemaIndex": 0,
-                                    "oneTableIndex": 9,
+                                    "oneTableIndex": 17,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 },
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": 0,
-                                    "oneTableIndex": 10,
+                                    "oneTableIndex": 18,
                                     "oneColumnIndex": 2,
                                     "sinceVersion": 1
                                 }
@@ -63,7 +63,7 @@ exports.SCHEMA = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": 0,
-                                    "oneTableIndex": 10,
+                                    "oneTableIndex": 18,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -128,7 +128,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 18,
                             "relationTableSchemaIndex": 0,
                             "sinceVersion": 1
                         },
@@ -139,7 +139,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 17,
                             "relationTableSchemaIndex": 0,
                             "sinceVersion": 1
                         }

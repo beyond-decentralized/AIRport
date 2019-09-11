@@ -1,11 +1,11 @@
 import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, TableConfiguration } from '@airport/air-control';
-import { IVersionedSchemaObject, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
-import { ISchemaColumn, SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
-import { ISchemaProperty, SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';
-import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
-import { ISchemaRelation, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
+import { IVersionedSchemaObject, VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
+import { ISchemaColumn, SchemaColumnECascadeGraph, SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
+import { ISchemaProperty, SchemaPropertyECascadeGraph, SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';
+import { ISchemaVersion, SchemaVersionECascadeGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
+import { ISchemaRelation, SchemaRelationECascadeGraph, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
 export interface ISchemaEntity extends IVersionedSchemaObject {
-    id?: number;
+    id: number;
     index?: number;
     isLocal?: boolean;
     isRepositoryEntity?: boolean;
@@ -64,6 +64,16 @@ export interface SchemaEntityEUpdateProperties extends VersionedSchemaObjectEUpd
     name?: string | IQStringField;
     tableConfig?: TableConfiguration | IQStringField;
     schemaVersion?: SchemaVersionEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SchemaEntityECascadeGraph extends VersionedSchemaObjectECascadeGraph {
+    schemaVersion?: SchemaVersionECascadeGraph;
+    columns?: SchemaColumnECascadeGraph;
+    properties?: SchemaPropertyECascadeGraph;
+    relations?: SchemaRelationECascadeGraph;
+    relationReferences?: SchemaRelationECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

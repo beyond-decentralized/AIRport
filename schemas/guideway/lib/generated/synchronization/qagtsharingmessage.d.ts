@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
 import { ISyncLog, SyncLogESelect, QSyncLog } from './qsynclog';
 export interface IAgtSharingMessage {
-    id?: number;
+    id: number;
     tmSharingMessageId?: number;
     acknowledged?: number;
     terminal?: ITerminal;

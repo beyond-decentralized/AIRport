@@ -52,7 +52,7 @@ export interface IDailyArchive {
 	// Id Properties
 
 	// Id Relations
-	dailyArchiveLog?: IDailyArchiveLog;
+	dailyArchiveLog: IDailyArchiveLog;
 
 	// Non-Id Properties
 	repositoryData?: string;

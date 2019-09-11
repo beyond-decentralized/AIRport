@@ -54,7 +54,7 @@ class CockroachdbDriver extends SqLiteDriver_1.SqLiteDriver {
                 let completed = false;
                 let retunValue;
                 if (this.currentTransaction) {
-                    throw new Error(`Another transaction is already in progress.`);
+                    throw `Another transaction is already in progress.`;
                 }
                 this._db.transaction((tx) => {
                     this.currentTransaction = tx;
@@ -201,10 +201,10 @@ class CockroachdbDriver extends SqLiteDriver_1.SqLiteDriver {
         throw error;
     }
 }
-exports.CockroachdbDriver = CockroachdbDriver;
 CockroachdbDriver.BACKUP_LOCAL = 2;
 CockroachdbDriver.BACKUP_LIBRARY = 1;
 CockroachdbDriver.BACKUP_DOCUMENTS = 0;
+exports.CockroachdbDriver = CockroachdbDriver;
 function runSqlSeries(tx, sqls, parameterss, fnum, callback) {
     if (typeof sqls === 'string') {
         sqls = [sqls];

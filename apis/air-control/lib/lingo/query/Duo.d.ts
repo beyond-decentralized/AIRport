@@ -1,8 +1,8 @@
-import { IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateProperties, IQEntity } from "../core/entity/Entity";
+import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateProperties, IQEntity } from '../core/entity/Entity';
 /**
  * Data Utility Object.
  */
-export interface IDuo<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdate extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, IQE extends IQEntity> {
+export interface IDuo<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdate extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> {
     getIdStub(ids: number | string | number[] | string[]): EntityId;
     getIdStubs(ids: number[] | string[] | number[][] | string[][]): EntityId[];
     getAllFieldsSelect(): EntitySelect;

@@ -4,8 +4,14 @@ const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const terminal_map_1 = require("@airport/terminal-map");
 class SequenceBlockDao {
+    constructor() {
+        di_1.DI.get((storeDriver, terminalStore) => {
+            this.storeDriver = storeDriver;
+            this.terminalStore = terminalStore;
+        }, ground_control_1.STORE_DRIVER, terminal_map_1.TERMINAL_STORE);
+    }
     async createNewBlocks(sequenceBlocks) {
-        const latestSchemaVersionsBySchemaIndexes = (await di_1.DI.get(terminal_map_1.TERMINAL_STORE)).getLatestSchemaVersionsBySchemaIndexes();
+        const latestSchemaVersionsBySchemaIndexes = this.terminalStore.getLatestSchemaVersionsBySchemaIndexes();
         const reservationMillis = new Date().getTime();
         const allNewBlocks = [];
         for (const sequenceBlock of sequenceBlocks) {
@@ -19,10 +25,11 @@ class SequenceBlockDao {
             const numSequencesBlocksToCreate = Math.ceil(sequenceBlock.size / sequence.incrementBy);
             const blocksForSequence = [];
             for (let i = 0; i < numSequencesBlocksToCreate; i++) {
-                const result = await (await di_1.DI.get(ground_control_1.STORE_DRIVER)).findNative(`SELECT NEXTVAL('"${schemaName}".${tableName}_${columnName}_SEQUENCE')`, []);
+                const result = await this.storeDriver.findNative(`SELECT NEXTVAL('"${schemaName}".${tableName}_${columnName}_SEQUENCE')`, []);
                 const nextval = result[0];
                 const newSequenceBlock = {
                     sequence,
+                    sequenceConsumer: sequenceBlock.sequenceConsumer,
                     currentNumber: nextval - sequence.incrementBy,
                     lastReservedId: nextval,
                     size: sequence.incrementBy,

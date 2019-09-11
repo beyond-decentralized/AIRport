@@ -54,7 +54,7 @@ export interface ILoggedError {
 	// Id Properties
 
 	// Id Relations
-	logEntry?: ILogEntry;
+	logEntry: ILogEntry;
 
 	// Non-Id Properties
 

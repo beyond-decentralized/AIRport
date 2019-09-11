@@ -4,41 +4,41 @@ const air_control_1 = require("@airport/air-control");
 const check_in_1 = require("@airport/check-in");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
-const MissingRecord_1 = require("../ddl/missingRecord/MissingRecord");
-const MissingRecordRepoTransBlock_1 = require("../ddl/missingRecord/MissingRecordRepoTransBlock");
-const RecordUpdateStage_1 = require("../ddl/RecordUpdateStage");
-const RepoTransBlockResponseStage_1 = require("../ddl/repositoryTransactionBlock/RepoTransBlockResponseStage");
-const RepoTransBlockSchemaToChange_1 = require("../ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange");
-const RepositoryTransactionBlock_1 = require("../ddl/repositoryTransactionBlock/RepositoryTransactionBlock");
-const RepositoryTransactionHistoryUpdateStage_1 = require("../ddl/repositoryTransactionBlock/RepositoryTransactionHistoryUpdateStage");
-const SharingMessage_1 = require("../ddl/sharingMessage/SharingMessage");
-const SharingMessageRepoTransBlock_1 = require("../ddl/sharingMessage/SharingMessageRepoTransBlock");
-const SharingNode_1 = require("../ddl/sharingNode/SharingNode");
-const SharingNodeRepoTransBlock_1 = require("../ddl/sharingNode/SharingNodeRepoTransBlock");
-const SharingNodeRepoTransBlockStage_1 = require("../ddl/sharingNode/SharingNodeRepoTransBlockStage");
-const SharingNodeRepository_1 = require("../ddl/sharingNode/SharingNodeRepository");
-const SharingNodeTerminal_1 = require("../ddl/sharingNode/SharingNodeTerminal");
-const SynchronizationConflict_1 = require("../ddl/conflict/SynchronizationConflict");
-const SynchronizationConflictPendingNotification_1 = require("../ddl/conflict/SynchronizationConflictPendingNotification");
-const SynchronizationConflictValues_1 = require("../ddl/conflict/SynchronizationConflictValues");
+const missingrecord_1 = require("../ddl/missingrecord/missingrecord");
+const missingrecordrepotransblock_1 = require("../ddl/missingrecord/missingrecordrepotransblock");
+const recordupdatestage_1 = require("../ddl/recordupdatestage");
+const repotransblockresponsestage_1 = require("../ddl/repositorytransactionblock/repotransblockresponsestage");
+const repotransblockschematochange_1 = require("../ddl/repositorytransactionblock/repotransblockschematochange");
+const repositorytransactionblock_1 = require("../ddl/repositorytransactionblock/repositorytransactionblock");
+const repositorytransactionhistoryupdatestage_1 = require("../ddl/repositorytransactionblock/repositorytransactionhistoryupdatestage");
+const sharingmessage_1 = require("../ddl/sharingmessage/sharingmessage");
+const sharingmessagerepotransblock_1 = require("../ddl/sharingmessage/sharingmessagerepotransblock");
+const sharingnode_1 = require("../ddl/sharingnode/sharingnode");
+const sharingnoderepotransblock_1 = require("../ddl/sharingnode/sharingnoderepotransblock");
+const sharingnoderepotransblockstage_1 = require("../ddl/sharingnode/sharingnoderepotransblockstage");
+const sharingnoderepository_1 = require("../ddl/sharingnode/sharingnoderepository");
+const sharingnodeterminal_1 = require("../ddl/sharingnode/sharingnodeterminal");
+const synchronizationconflict_1 = require("../ddl/conflict/synchronizationconflict");
+const synchronizationconflictpendingnotification_1 = require("../ddl/conflict/synchronizationconflictpendingnotification");
+const synchronizationconflictvalues_1 = require("../ddl/conflict/synchronizationconflictvalues");
 const __constructors__ = {
-    MissingRecord: MissingRecord_1.MissingRecord,
-    MissingRecordRepoTransBlock: MissingRecordRepoTransBlock_1.MissingRecordRepoTransBlock,
-    RecordUpdateStage: RecordUpdateStage_1.RecordUpdateStage,
-    RepoTransBlockResponseStage: RepoTransBlockResponseStage_1.RepoTransBlockResponseStage,
-    RepoTransBlockSchemaToChange: RepoTransBlockSchemaToChange_1.RepoTransBlockSchemaToChange,
-    RepositoryTransactionBlock: RepositoryTransactionBlock_1.RepositoryTransactionBlock,
-    RepositoryTransactionHistoryUpdateStage: RepositoryTransactionHistoryUpdateStage_1.RepositoryTransactionHistoryUpdateStage,
-    SharingMessage: SharingMessage_1.SharingMessage,
-    SharingMessageRepoTransBlock: SharingMessageRepoTransBlock_1.SharingMessageRepoTransBlock,
-    SharingNode: SharingNode_1.SharingNode,
-    SharingNodeRepoTransBlock: SharingNodeRepoTransBlock_1.SharingNodeRepoTransBlock,
-    SharingNodeRepoTransBlockStage: SharingNodeRepoTransBlockStage_1.SharingNodeRepoTransBlockStage,
-    SharingNodeRepository: SharingNodeRepository_1.SharingNodeRepository,
-    SharingNodeTerminal: SharingNodeTerminal_1.SharingNodeTerminal,
-    SynchronizationConflict: SynchronizationConflict_1.SynchronizationConflict,
-    SynchronizationConflictPendingNotification: SynchronizationConflictPendingNotification_1.SynchronizationConflictPendingNotification,
-    SynchronizationConflictValues: SynchronizationConflictValues_1.SynchronizationConflictValues
+    MissingRecord: missingrecord_1.MissingRecord,
+    MissingRecordRepoTransBlock: missingrecordrepotransblock_1.MissingRecordRepoTransBlock,
+    RecordUpdateStage: recordupdatestage_1.RecordUpdateStage,
+    RepoTransBlockResponseStage: repotransblockresponsestage_1.RepoTransBlockResponseStage,
+    RepoTransBlockSchemaToChange: repotransblockschematochange_1.RepoTransBlockSchemaToChange,
+    RepositoryTransactionBlock: repositorytransactionblock_1.RepositoryTransactionBlock,
+    RepositoryTransactionHistoryUpdateStage: repositorytransactionhistoryupdatestage_1.RepositoryTransactionHistoryUpdateStage,
+    SharingMessage: sharingmessage_1.SharingMessage,
+    SharingMessageRepoTransBlock: sharingmessagerepotransblock_1.SharingMessageRepoTransBlock,
+    SharingNode: sharingnode_1.SharingNode,
+    SharingNodeRepoTransBlock: sharingnoderepotransblock_1.SharingNodeRepoTransBlock,
+    SharingNodeRepoTransBlockStage: sharingnoderepotransblockstage_1.SharingNodeRepoTransBlockStage,
+    SharingNodeRepository: sharingnoderepository_1.SharingNodeRepository,
+    SharingNodeTerminal: sharingnodeterminal_1.SharingNodeTerminal,
+    SynchronizationConflict: synchronizationconflict_1.SynchronizationConflict,
+    SynchronizationConflictPendingNotification: synchronizationconflictpendingnotification_1.SynchronizationConflictPendingNotification,
+    SynchronizationConflictValues: synchronizationconflictvalues_1.SynchronizationConflictValues
 };
 exports.Q_SCHEMA = {
     __constructors__,

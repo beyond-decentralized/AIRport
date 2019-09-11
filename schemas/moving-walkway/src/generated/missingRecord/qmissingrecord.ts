@@ -68,7 +68,7 @@ declare function require(moduleName: string): any;
 export interface IMissingRecord {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
 

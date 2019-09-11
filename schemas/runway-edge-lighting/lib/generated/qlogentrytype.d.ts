@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { IApplicationPackage, ApplicationPackageEOptionalId, ApplicationPackageESelect, QApplicationPackageQRelation, IPackagedUnit, PackagedUnitEOptionalId, PackagedUnitESelect, QPackagedUnitQRelation } from '@airport/territory';
 import { ILogEntry, LogEntryESelect, QLogEntry } from './qlogentry';
 export interface ILogEntryType {
-    id?: number;
+    id: number;
     level?: number;
     text?: string;
     applicationPackage?: IApplicationPackage;

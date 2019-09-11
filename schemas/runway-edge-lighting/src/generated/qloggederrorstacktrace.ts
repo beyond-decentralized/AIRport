@@ -32,7 +32,7 @@ declare function require(moduleName: string): any;
 export interface ILoggedErrorStackTrace {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
 

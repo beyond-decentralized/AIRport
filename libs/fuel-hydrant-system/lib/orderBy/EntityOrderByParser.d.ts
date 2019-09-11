@@ -1,4 +1,5 @@
-import { IAirportDatabase, IQEntityInternal, JoinTreeNode } from '@airport/air-control';
+import { IQEntityInternal, JoinTreeNode } from '@airport/air-control';
+import { IAirportDatabase } from '@airport/air-control/lib/src';
 import { JSONEntityFieldInOrderBy } from '@airport/ground-control';
 import { AbstractEntityOrderByParser, IEntityOrderByParser } from './AbstractEntityOrderByParser';
 /**

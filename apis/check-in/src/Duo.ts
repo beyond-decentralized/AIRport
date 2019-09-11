@@ -6,8 +6,12 @@ import {
 	IEntityUpdateProperties,
 	IQEntity,
 	QSchema
-}                 from '@airport/air-control'
-import {DbEntity, EntityId as DbEntityId} from '@airport/ground-control'
+}                            from '@airport/air-control'
+import {IEntityCascadeGraph} from '@airport/air-control/lib/src'
+import {
+	DbEntity,
+	EntityId as DbEntityId
+}                            from '@airport/ground-control'
 
 /**
  * Created by Papa on 8/26/2017.
@@ -22,8 +26,11 @@ export class Duo<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdate extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
-	implements IDuo<Entity, EntitySelect, EntityCreate, EntityUpdate, EntityId, IQE> {
+	implements IDuo<Entity, EntitySelect, EntityCreate,
+		EntityUpdate, EntityId,
+		EntityCascadeGraph, IQE> {
 
 	private dbEntity: DbEntity
 

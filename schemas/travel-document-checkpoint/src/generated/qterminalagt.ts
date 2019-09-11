@@ -64,8 +64,8 @@ export interface ITerminalAgt {
 	// Id Properties
 
 	// Id Relations
-	terminal?: ITerminal;
-	agt?: IAgt;
+	terminal: ITerminal;
+	agt: IAgt;
 
 	// Non-Id Properties
 	password?: string;

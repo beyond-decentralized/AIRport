@@ -65,6 +65,7 @@ export class QRelationBuilder
 		idOnly: boolean,
 		optional: boolean              = true,
 		forInternalInterfaces: boolean = true,
+		forCascadeGraph: boolean       = false
 	): string {
 		if (idOnly && this.entityProperty.decorators.filter(
 			decorator => decorator.name === 'OneToMany').length) {
@@ -72,7 +73,8 @@ export class QRelationBuilder
 		}
 		let typeSuffix = ''
 		if (forInternalInterfaces) {
-			typeSuffix = idOnly ? (optional ? 'EOptionalId' : 'EId') : 'ESelect'
+			typeSuffix = idOnly ? (optional ? 'EOptionalId' : 'EId') :
+				(forCascadeGraph ? 'ECascadeGraph' : 'ESelect')
 		}
 		let type = this.entityProperty.type
 		if (this.entityProperty.entity) {

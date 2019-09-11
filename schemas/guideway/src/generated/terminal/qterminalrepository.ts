@@ -54,8 +54,8 @@ export interface ITerminalRepository {
 	// Id Properties
 
 	// Id Relations
-	terminal?: ITerminal;
-	repository?: IRepository;
+	terminal: ITerminal;
+	repository: IRepository;
 
 	// Non-Id Properties
 	permission?: number;

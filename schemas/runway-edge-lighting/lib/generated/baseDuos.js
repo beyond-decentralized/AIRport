@@ -11,28 +11,28 @@ class SQDIDuo extends check_in_1.Duo {
 exports.SQDIDuo = SQDIDuo;
 class BaseLogEntryDuo extends SQDIDuo {
     static diSet() {
+        return qSchema_1.duoDiSet(1);
+    }
+    constructor() {
+        super(1);
+    }
+}
+exports.BaseLogEntryDuo = BaseLogEntryDuo;
+class BaseLogEntryTypeDuo extends SQDIDuo {
+    static diSet() {
         return qSchema_1.duoDiSet(2);
     }
     constructor() {
         super(2);
     }
 }
-exports.BaseLogEntryDuo = BaseLogEntryDuo;
-class BaseLogEntryTypeDuo extends SQDIDuo {
+exports.BaseLogEntryTypeDuo = BaseLogEntryTypeDuo;
+class BaseLogEntryValueDuo extends SQDIDuo {
     static diSet() {
         return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
-    }
-}
-exports.BaseLogEntryTypeDuo = BaseLogEntryTypeDuo;
-class BaseLogEntryValueDuo extends SQDIDuo {
-    static diSet() {
-        return qSchema_1.duoDiSet(1);
-    }
-    constructor() {
-        super(1);
     }
 }
 exports.BaseLogEntryValueDuo = BaseLogEntryValueDuo;

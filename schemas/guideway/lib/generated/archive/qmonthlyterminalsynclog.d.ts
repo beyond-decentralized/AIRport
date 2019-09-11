@@ -2,8 +2,8 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { IMonthlyArchiveLog, MonthlyArchiveLogEId, MonthlyArchiveLogEOptionalId, MonthlyArchiveLogESelect, QMonthlyArchiveLogQId, QMonthlyArchiveLogQRelation } from './qmonthlyarchivelog';
 import { ITerminal, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '../terminal/qterminal';
 export interface IMonthlyTerminalSyncLog {
-    monthlyArchiveLog?: IMonthlyArchiveLog;
-    terminal?: ITerminal;
+    monthlyArchiveLog: IMonthlyArchiveLog;
+    terminal: ITerminal;
     allAcknowledged?: boolean;
     dailySyncStatuses?: string;
 }

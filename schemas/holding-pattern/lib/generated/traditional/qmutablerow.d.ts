@@ -1,5 +1,5 @@
 import { IQDateField, IQEntity } from '@airport/air-control';
-import { IImmutableRow, ImmutableRowEId, ImmutableRowEUpdateColumns, ImmutableRowEUpdateProperties, ImmutableRowESelect, QImmutableRowQId, QImmutableRowQRelation, QImmutableRow } from './qimmutablerow';
+import { IImmutableRow, ImmutableRowECascadeGraph, ImmutableRowEId, ImmutableRowEUpdateColumns, ImmutableRowEUpdateProperties, ImmutableRowESelect, QImmutableRowQId, QImmutableRowQRelation, QImmutableRow } from './qimmutablerow';
 export interface IMutableRow extends IImmutableRow {
     updatedAt?: Date;
 }
@@ -24,6 +24,11 @@ export interface MutableRowEOptionalId {
  */
 export interface MutableRowEUpdateProperties extends ImmutableRowEUpdateProperties {
     updatedAt?: Date | IQDateField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface MutableRowECascadeGraph extends ImmutableRowECascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

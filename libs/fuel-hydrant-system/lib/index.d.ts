@@ -32,6 +32,7 @@ export * from './sql/TreeSQLQuery';
 export * from './store/ActiveQueries';
 export * from './store/IdGenerator';
 export * from './store/RecordState';
+export * from './store/SequenceGenerator';
 export * from './store/SqlDriver';
 export * from './store/Store';
 export * from './validation/Validator';

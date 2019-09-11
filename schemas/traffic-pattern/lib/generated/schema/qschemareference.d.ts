@@ -1,9 +1,9 @@
 import { IQNumberField } from '@airport/air-control';
-import { IVersionedSchemaObject, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
+import { IVersionedSchemaObject, VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { ISchemaVersion, SchemaVersionEId, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQId, QSchemaVersionQRelation } from './qschemaversion';
 export interface ISchemaReference extends IVersionedSchemaObject {
-    ownSchemaVersion?: ISchemaVersion;
-    referencedSchemaVersion?: ISchemaVersion;
+    ownSchemaVersion: ISchemaVersion;
+    referencedSchemaVersion: ISchemaVersion;
     index?: number;
 }
 /**
@@ -33,6 +33,11 @@ export interface SchemaReferenceEOptionalId {
  */
 export interface SchemaReferenceEUpdateProperties extends VersionedSchemaObjectEUpdateProperties {
     index?: number | IQNumberField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SchemaReferenceECascadeGraph extends VersionedSchemaObjectECascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

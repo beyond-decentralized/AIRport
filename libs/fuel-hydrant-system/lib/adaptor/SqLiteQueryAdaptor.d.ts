@@ -1,4 +1,4 @@
-import { IAirportDatabase, IQEntityInternal, IQMetadataUtils, ISchemaUtils, Parameter } from '@airport/air-control';
+import { IQEntityInternal, Parameter } from '@airport/air-control';
 import { JSONSqlFunctionCall, SQLDataType } from '@airport/ground-control';
 import { AbstractFunctionAdaptor, ISQLFunctionAdaptor, ISQLQueryAdaptor, ISqlValueProvider } from './SQLQueryAdaptor';
 /**
@@ -24,6 +24,6 @@ export declare class SqlLiteFunctionAdaptor extends AbstractFunctionAdaptor {
     constructor(sqlValueProvider: ISqlValueProvider);
     getFunctionCall(jsonFunctionCall: JSONSqlFunctionCall, value: string, qEntityMapByAlias: {
         [entityName: string]: IQEntityInternal;
-    }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
+    }): string;
     toString(val: any): string;
 }

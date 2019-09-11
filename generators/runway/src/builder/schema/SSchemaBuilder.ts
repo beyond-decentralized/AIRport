@@ -132,7 +132,7 @@ export class SSchemaBuilder {
 		}
 
 		const [isRepositoryEntity, isLocal]
-			      = this.entityExtendsRepositoryEntity(entityCandidate)
+			      = entityExtendsRepositoryEntity(entityCandidate)
 
 		let entity: SEntity = {
 			isLocal,
@@ -413,7 +413,7 @@ export class SSchemaBuilder {
 		} else {
 			switch (relationType) {
 				case EntityRelationType.MANY_TO_ONE: {
-					if (!this.entityExtendsRepositoryEntity(aProperty.entity)) {
+					if (!entityExtendsRepositoryEntity(aProperty.entity)) {
 						throw new Error(`@JoinColumn(s) must be specified for @ManyToOne
 					in ${entity.name}.${aProperty.name} (if the related entity does not extend RepositoryEntity).`)
 					}
@@ -551,22 +551,6 @@ export class SSchemaBuilder {
 		}
 
 		return manyToOneDecoratorValues[0].optional === false
-	}
-
-	private entityExtendsRepositoryEntity( //
-		entityCandidate: EntityCandidate //
-	): [boolean, boolean] {
-		const parentEntity = entityCandidate.parentEntity
-		if (!parentEntity) {
-			return [false, true]
-		}
-		if (parentEntity.docEntry.name === repositoryEntity.ENTITY_NAME) {
-			return [true, false]
-		}
-		if (parentEntity.docEntry.name === repositoryEntity.LOCAL_ENTITY_NAME) {
-			return [true, true]
-		}
-		return this.entityExtendsRepositoryEntity(entityCandidate.parentEntity)
 	}
 
 	private processPrimitiveColumns(
@@ -851,4 +835,20 @@ export class SSchemaBuilder {
 		}
 	*/
 
+}
+
+export function entityExtendsRepositoryEntity( //
+	entityCandidate: EntityCandidate //
+): [boolean, boolean] {
+	const parentEntity = entityCandidate.parentEntity
+	if (!parentEntity) {
+		return [false, true]
+	}
+	if (parentEntity.docEntry.name === repositoryEntity.ENTITY_NAME) {
+		return [true, false]
+	}
+	if (parentEntity.docEntry.name === repositoryEntity.LOCAL_ENTITY_NAME) {
+		return [true, true]
+	}
+	return entityExtendsRepositoryEntity(entityCandidate.parentEntity)
 }

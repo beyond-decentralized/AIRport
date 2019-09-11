@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 export interface ISystemWideOperationId {
-    id?: number;
+    id: number;
 }
 /**
  * SELECT - All fields and relations (optional).

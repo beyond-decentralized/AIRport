@@ -1,11 +1,11 @@
 import { IQNumberField, IQEntity } from '@airport/air-control';
-import { IStageable, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
+import { IStageable, StageableECascadeGraph, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
 import { IRepository, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from './qrepository';
 import { IActor, ActorEId, ActorEOptionalId, ActorESelect, QActorQId, QActorQRelation } from '../infrastructure/qactor';
 export interface IRepositoryEntity extends IStageable {
-    actorRecordId?: number;
-    repository?: IRepository;
-    actor?: IActor;
+    actorRecordId: number;
+    repository: IRepository;
+    actor: IActor;
     systemWideOperationId?: number;
 }
 /**
@@ -37,6 +37,11 @@ export interface RepositoryEntityEOptionalId {
  */
 export interface RepositoryEntityEUpdateProperties extends StageableEUpdateProperties {
     systemWideOperationId?: number | IQNumberField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RepositoryEntityECascadeGraph extends StageableECascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

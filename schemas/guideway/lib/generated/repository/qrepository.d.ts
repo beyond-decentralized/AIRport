@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { ITerminalRepository, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
 import { IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
 export interface IRepository {
-    id?: number;
+    id: number;
     lastUpdateTime?: Date;
     name?: string;
     status?: number;

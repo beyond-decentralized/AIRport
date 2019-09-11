@@ -1,10 +1,10 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
-import { IRepositoryActor, RepositoryActorESelect, QRepositoryActor } from './qrepositoryactor';
-import { IRepositoryApplication, RepositoryApplicationESelect, QRepositoryApplication } from './qrepositoryapplication';
-import { IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IActor, ActorECascadeGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
+import { IRepositoryActor, RepositoryActorECascadeGraph, RepositoryActorESelect, QRepositoryActor } from './qrepositoryactor';
+import { IRepositoryApplication, RepositoryApplicationECascadeGraph, RepositoryApplicationESelect, QRepositoryApplication } from './qrepositoryapplication';
+import { IRepositoryTransactionHistory, RepositoryTransactionHistoryECascadeGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
 export interface IRepository {
-    id?: number;
+    id: number;
     orderedId?: number;
     randomId?: number;
     name?: string;
@@ -54,6 +54,15 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     platformConfig?: string | IQStringField;
     syncPriority?: number | IQNumberField;
     ownerActor?: ActorEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RepositoryECascadeGraph extends IEntityCascadeGraph {
+    ownerActor?: ActorECascadeGraph;
+    repositoryActors?: RepositoryActorECascadeGraph;
+    repositoryApplications?: RepositoryApplicationECascadeGraph;
+    repositoryTransactionHistory?: RepositoryTransactionHistoryECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

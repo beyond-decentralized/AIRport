@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IUser,
+	UserECascadeGraph,
 	UserEId,
 	UserEOptionalId,
 	UserEUpdateProperties,
@@ -30,6 +32,7 @@ import {
 	QUserQId,
 	QUserQRelation,
 	ITerminal,
+	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -40,6 +43,7 @@ import {
 } from '@airport/travel-document-checkpoint';
 import {
 	IActorApplication,
+	ActorApplicationECascadeGraph,
 	ActorApplicationEId,
 	ActorApplicationEOptionalId,
 	ActorApplicationEUpdateProperties,
@@ -50,6 +54,7 @@ import {
 } from './qactorapplication';
 import {
 	IRepositoryActor,
+	RepositoryActorECascadeGraph,
 	RepositoryActorEId,
 	RepositoryActorEOptionalId,
 	RepositoryActorEUpdateProperties,
@@ -70,7 +75,7 @@ declare function require(moduleName: string): any;
 export interface IActor {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
 
@@ -145,6 +150,19 @@ export interface ActorEUpdateProperties
 	// Non-Id Relations - ids only & no OneToMany's
 	user?: UserEOptionalId;
 	terminal?: TerminalEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface ActorECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	user?: UserECascadeGraph;
+	terminal?: TerminalECascadeGraph;
+	actorApplications?: ActorApplicationECascadeGraph;
+	repositoryActor?: RepositoryActorECascadeGraph;
 
 }
 

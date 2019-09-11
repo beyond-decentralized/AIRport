@@ -2,8 +2,8 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { IUser, UserEId, UserEOptionalId, UserESelect, QUserQId, QUserQRelation } from '../quser';
 import { ISecurityQuestion, SecurityQuestionEId, SecurityQuestionEOptionalId, SecurityQuestionESelect, QSecurityQuestionQId, QSecurityQuestionQRelation } from './qsecurityquestion';
 export interface ISecurityAnswer {
-    user?: IUser;
-    securityQuestion?: ISecurityQuestion;
+    user: IUser;
+    securityQuestion: ISecurityQuestion;
     answer?: string;
 }
 /**

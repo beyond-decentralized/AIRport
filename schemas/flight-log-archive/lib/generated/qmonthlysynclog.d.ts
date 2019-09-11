@@ -1,8 +1,8 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 export interface IMonthlySyncLog {
-    databaseId?: number;
-    month?: Date;
-    repositoryId?: number;
+    databaseId: number;
+    month: Date;
+    repositoryId: number;
     synced?: boolean;
 }
 /**

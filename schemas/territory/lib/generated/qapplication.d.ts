@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { IDomain, DomainEOptionalId, DomainESelect, QDomainQRelation } from './qdomain';
 import { IApplicationPackage, ApplicationPackageESelect, QApplicationPackage } from './qapplicationpackage';
 export interface IApplication {
-    id?: number;
+    id: number;
     name?: string;
     domain?: IDomain;
     applicationPackages?: IApplicationPackage[];

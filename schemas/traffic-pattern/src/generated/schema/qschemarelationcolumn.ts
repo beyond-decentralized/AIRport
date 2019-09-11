@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IVersionedSchemaObject,
+	VersionedSchemaObjectECascadeGraph,
 	VersionedSchemaObjectEId,
 	VersionedSchemaObjectEUpdateColumns,
 	VersionedSchemaObjectEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './qversionedschemaobject';
 import {
 	ISchemaColumn,
+	SchemaColumnECascadeGraph,
 	SchemaColumnEId,
 	SchemaColumnEOptionalId,
 	SchemaColumnEUpdateProperties,
@@ -42,6 +45,7 @@ import {
 } from './qschemacolumn';
 import {
 	ISchemaRelation,
+	SchemaRelationECascadeGraph,
 	SchemaRelationEId,
 	SchemaRelationEOptionalId,
 	SchemaRelationEUpdateProperties,
@@ -62,7 +66,7 @@ declare function require(moduleName: string): any;
 export interface ISchemaRelationColumn extends IVersionedSchemaObject {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
 
@@ -139,6 +143,20 @@ export interface SchemaRelationColumnEUpdateProperties
 	manyRelation?: SchemaRelationEOptionalId;
 	oneRelation?: SchemaRelationEOptionalId;
 	parentRelation?: SchemaRelationEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SchemaRelationColumnECascadeGraph
+	extends VersionedSchemaObjectECascadeGraph {
+	// Cascading Relations
+	manyColumn?: SchemaColumnECascadeGraph;
+	oneColumn?: SchemaColumnECascadeGraph;
+	manyRelation?: SchemaRelationECascadeGraph;
+	oneRelation?: SchemaRelationECascadeGraph;
+	parentRelation?: SchemaRelationECascadeGraph;
 
 }
 

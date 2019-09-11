@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IStageable,
+	StageableECascadeGraph,
 	StageableEId,
 	StageableEUpdateColumns,
 	StageableEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from '../infrastructure/qstageable';
 import {
 	IRepository,
+	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -42,6 +45,7 @@ import {
 } from './qrepository';
 import {
 	IActor,
+	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -62,11 +66,11 @@ declare function require(moduleName: string): any;
 export interface IRepositoryEntity extends IStageable {
 	
 	// Id Properties
-	actorRecordId?: number;
+	actorRecordId: number;
 
 	// Id Relations
-	repository?: IRepository;
-	actor?: IActor;
+	repository: IRepository;
+	actor: IActor;
 
 	// Non-Id Properties
 	systemWideOperationId?: number;
@@ -135,6 +139,15 @@ export interface RepositoryEntityEUpdateProperties
 	systemWideOperationId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RepositoryEntityECascadeGraph
+	extends StageableECascadeGraph {
+	// Cascading Relations
 
 }
 

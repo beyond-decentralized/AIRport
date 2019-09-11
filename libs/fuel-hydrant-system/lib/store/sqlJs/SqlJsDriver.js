@@ -21,7 +21,7 @@ class SqlJsDriver extends SqLiteDriver_1.SqLiteDriver {
             // FIXME: add support, in future, if needed
             // let sql  = require('sql.js')
             // this._db = new sql.Database()
-            throw new Error('Not implemented');
+            throw 'Not implemented';
         }
     }
     async transact() {

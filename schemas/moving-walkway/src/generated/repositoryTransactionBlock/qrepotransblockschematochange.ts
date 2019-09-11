@@ -54,8 +54,8 @@ export interface IRepoTransBlockSchemaToChange {
 	// Id Properties
 
 	// Id Relations
-	repositoryTransactionBlock?: IRepositoryTransactionBlock;
-	schema?: ISchema;
+	repositoryTransactionBlock: IRepositoryTransactionBlock;
+	schema: ISchema;
 
 	// Non-Id Properties
 	status?: number;

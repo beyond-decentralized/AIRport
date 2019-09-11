@@ -32,9 +32,9 @@ declare function require(moduleName: string): any;
 export interface ISequence {
 	
 	// Id Properties
-	schemaIndex?: number;
-	tableIndex?: number;
-	columnIndex?: number;
+	schemaIndex: number;
+	tableIndex: number;
+	columnIndex: number;
 
 	// Id Relations
 

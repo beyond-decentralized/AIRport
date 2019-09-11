@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQEntity, IQRelation } from '@airport/air-control';
 export interface IStageable {
     draft?: boolean;
 }
@@ -23,6 +23,11 @@ export interface StageableEOptionalId {
  */
 export interface StageableEUpdateProperties extends IEntityUpdateProperties {
     draft?: boolean | IQBooleanField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface StageableECascadeGraph extends IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

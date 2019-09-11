@@ -1,5 +1,6 @@
 import {
 	IDuo,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 	SchemaEUpdateColumns,
 	SchemaEUpdateProperties,
 	SchemaEId,
+	SchemaECascadeGraph,
 	QSchema
 } from './schema/qschema'
 import {
@@ -32,6 +34,7 @@ import {
 	SchemaColumnEUpdateColumns,
 	SchemaColumnEUpdateProperties,
 	SchemaColumnEId,
+	SchemaColumnECascadeGraph,
 	QSchemaColumn
 } from './schema/qschemacolumn'
 import {
@@ -42,6 +45,7 @@ import {
 	SchemaEntityEUpdateColumns,
 	SchemaEntityEUpdateProperties,
 	SchemaEntityEId,
+	SchemaEntityECascadeGraph,
 	QSchemaEntity
 } from './schema/qschemaentity'
 import {
@@ -52,6 +56,7 @@ import {
 	SchemaPropertyEUpdateColumns,
 	SchemaPropertyEUpdateProperties,
 	SchemaPropertyEId,
+	SchemaPropertyECascadeGraph,
 	QSchemaProperty
 } from './schema/qschemaproperty'
 import {
@@ -62,6 +67,7 @@ import {
 	SchemaPropertyColumnEUpdateColumns,
 	SchemaPropertyColumnEUpdateProperties,
 	SchemaPropertyColumnEId,
+	SchemaPropertyColumnECascadeGraph,
 	QSchemaPropertyColumn
 } from './schema/qschemapropertycolumn'
 import {
@@ -72,6 +78,7 @@ import {
 	SchemaReferenceEUpdateColumns,
 	SchemaReferenceEUpdateProperties,
 	SchemaReferenceEId,
+	SchemaReferenceECascadeGraph,
 	QSchemaReference
 } from './schema/qschemareference'
 import {
@@ -82,6 +89,7 @@ import {
 	SchemaRelationEUpdateColumns,
 	SchemaRelationEUpdateProperties,
 	SchemaRelationEId,
+	SchemaRelationECascadeGraph,
 	QSchemaRelation
 } from './schema/qschemarelation'
 import {
@@ -92,6 +100,7 @@ import {
 	SchemaRelationColumnEUpdateColumns,
 	SchemaRelationColumnEUpdateProperties,
 	SchemaRelationColumnEId,
+	SchemaRelationColumnECascadeGraph,
 	QSchemaRelationColumn
 } from './schema/qschemarelationcolumn'
 import {
@@ -102,6 +111,7 @@ import {
 	SchemaVersionEUpdateColumns,
 	SchemaVersionEUpdateProperties,
 	SchemaVersionEId,
+	SchemaVersionECascadeGraph,
 	QSchemaVersion
 } from './schema/qschemaversion'
 
@@ -112,12 +122,14 @@ export class SQDIDuo<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,
 		EntityUpdateProperties,
 		EntityId,
+		EntityCascadeGraph,
 		IQE> {
 
 	constructor(
@@ -129,11 +141,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseSchemaDuo
-  extends IDuo<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateProperties, SchemaEId, QSchema> {
+  extends IDuo<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateProperties, SchemaEId, SchemaECascadeGraph, QSchema> {
 }
 
 export class BaseSchemaDuo
-  extends SQDIDuo<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateProperties, SchemaEId, QSchema>
+  extends SQDIDuo<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateProperties, SchemaEId, SchemaECascadeGraph, QSchema>
 	implements IBaseSchemaDuo {
 
 	static diSet(): boolean {
@@ -147,11 +159,11 @@ export class BaseSchemaDuo
 
 
 export interface IBaseSchemaColumnDuo
-  extends IDuo<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateProperties, SchemaColumnEId, QSchemaColumn> {
+  extends IDuo<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateProperties, SchemaColumnEId, SchemaColumnECascadeGraph, QSchemaColumn> {
 }
 
 export class BaseSchemaColumnDuo
-  extends SQDIDuo<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateProperties, SchemaColumnEId, QSchemaColumn>
+  extends SQDIDuo<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateProperties, SchemaColumnEId, SchemaColumnECascadeGraph, QSchemaColumn>
 	implements IBaseSchemaColumnDuo {
 
 	static diSet(): boolean {
@@ -165,11 +177,11 @@ export class BaseSchemaColumnDuo
 
 
 export interface IBaseSchemaEntityDuo
-  extends IDuo<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateProperties, SchemaEntityEId, QSchemaEntity> {
+  extends IDuo<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityECascadeGraph, QSchemaEntity> {
 }
 
 export class BaseSchemaEntityDuo
-  extends SQDIDuo<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateProperties, SchemaEntityEId, QSchemaEntity>
+  extends SQDIDuo<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityECascadeGraph, QSchemaEntity>
 	implements IBaseSchemaEntityDuo {
 
 	static diSet(): boolean {
@@ -183,11 +195,11 @@ export class BaseSchemaEntityDuo
 
 
 export interface IBaseSchemaPropertyDuo
-  extends IDuo<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateProperties, SchemaPropertyEId, QSchemaProperty> {
+  extends IDuo<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateProperties, SchemaPropertyEId, SchemaPropertyECascadeGraph, QSchemaProperty> {
 }
 
 export class BaseSchemaPropertyDuo
-  extends SQDIDuo<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateProperties, SchemaPropertyEId, QSchemaProperty>
+  extends SQDIDuo<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateProperties, SchemaPropertyEId, SchemaPropertyECascadeGraph, QSchemaProperty>
 	implements IBaseSchemaPropertyDuo {
 
 	static diSet(): boolean {
@@ -201,11 +213,11 @@ export class BaseSchemaPropertyDuo
 
 
 export interface IBaseSchemaPropertyColumnDuo
-  extends IDuo<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, QSchemaPropertyColumn> {
+  extends IDuo<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, SchemaPropertyColumnECascadeGraph, QSchemaPropertyColumn> {
 }
 
 export class BaseSchemaPropertyColumnDuo
-  extends SQDIDuo<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, QSchemaPropertyColumn>
+  extends SQDIDuo<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, SchemaPropertyColumnECascadeGraph, QSchemaPropertyColumn>
 	implements IBaseSchemaPropertyColumnDuo {
 
 	static diSet(): boolean {
@@ -219,11 +231,11 @@ export class BaseSchemaPropertyColumnDuo
 
 
 export interface IBaseSchemaReferenceDuo
-  extends IDuo<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateProperties, SchemaReferenceEId, QSchemaReference> {
+  extends IDuo<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateProperties, SchemaReferenceEId, SchemaReferenceECascadeGraph, QSchemaReference> {
 }
 
 export class BaseSchemaReferenceDuo
-  extends SQDIDuo<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateProperties, SchemaReferenceEId, QSchemaReference>
+  extends SQDIDuo<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateProperties, SchemaReferenceEId, SchemaReferenceECascadeGraph, QSchemaReference>
 	implements IBaseSchemaReferenceDuo {
 
 	static diSet(): boolean {
@@ -237,11 +249,11 @@ export class BaseSchemaReferenceDuo
 
 
 export interface IBaseSchemaRelationDuo
-  extends IDuo<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateProperties, SchemaRelationEId, QSchemaRelation> {
+  extends IDuo<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateProperties, SchemaRelationEId, SchemaRelationECascadeGraph, QSchemaRelation> {
 }
 
 export class BaseSchemaRelationDuo
-  extends SQDIDuo<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateProperties, SchemaRelationEId, QSchemaRelation>
+  extends SQDIDuo<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateProperties, SchemaRelationEId, SchemaRelationECascadeGraph, QSchemaRelation>
 	implements IBaseSchemaRelationDuo {
 
 	static diSet(): boolean {
@@ -255,11 +267,11 @@ export class BaseSchemaRelationDuo
 
 
 export interface IBaseSchemaRelationColumnDuo
-  extends IDuo<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, QSchemaRelationColumn> {
+  extends IDuo<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, SchemaRelationColumnECascadeGraph, QSchemaRelationColumn> {
 }
 
 export class BaseSchemaRelationColumnDuo
-  extends SQDIDuo<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, QSchemaRelationColumn>
+  extends SQDIDuo<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, SchemaRelationColumnECascadeGraph, QSchemaRelationColumn>
 	implements IBaseSchemaRelationColumnDuo {
 
 	static diSet(): boolean {
@@ -273,11 +285,11 @@ export class BaseSchemaRelationColumnDuo
 
 
 export interface IBaseSchemaVersionDuo
-  extends IDuo<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion> {
+  extends IDuo<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateProperties, SchemaVersionEId, SchemaVersionECascadeGraph, QSchemaVersion> {
 }
 
 export class BaseSchemaVersionDuo
-  extends SQDIDuo<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateProperties, SchemaVersionEId, QSchemaVersion>
+  extends SQDIDuo<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateProperties, SchemaVersionEId, SchemaVersionECascadeGraph, QSchemaVersion>
 	implements IBaseSchemaVersionDuo {
 
 	static diSet(): boolean {

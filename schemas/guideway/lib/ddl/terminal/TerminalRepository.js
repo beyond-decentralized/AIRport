@@ -31,4 +31,4 @@ TerminalRepository = __decorate([
     air_control_1.Table({ name: "AGT_TERMINAL_REPOSITORIES" })
 ], TerminalRepository);
 exports.TerminalRepository = TerminalRepository;
-//# sourceMappingURL=TerminalRepository.js.map
+//# sourceMappingURL=terminalrepository.js.map

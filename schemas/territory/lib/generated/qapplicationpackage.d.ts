@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { IApplication, ApplicationEOptionalId, ApplicationESelect, QApplicationQRelation } from './qapplication';
 import { IPackage, PackageEOptionalId, PackageESelect, QPackageQRelation } from './qpackage';
 export interface IApplicationPackage {
-    id?: number;
+    id: number;
     application?: IApplication;
     package?: IPackage;
 }

@@ -5,7 +5,7 @@ import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } f
 import { IServer, ServerEOptionalId, ServerESelect, QServerQRelation } from '../server/qserver';
 import { ISyncLog, SyncLogESelect, QSyncLog } from './qsynclog';
 export interface IAgtRepositoryTransactionBlock {
-    id?: number;
+    id: number;
     archivingStatus?: number;
     addDatetime?: number;
     tmRepositoryTransactionBlockId?: number;

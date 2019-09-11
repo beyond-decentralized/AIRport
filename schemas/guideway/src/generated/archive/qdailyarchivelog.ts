@@ -42,10 +42,10 @@ declare function require(moduleName: string): any;
 export interface IDailyArchiveLog {
 	
 	// Id Properties
-	dateNumber?: number;
+	dateNumber: number;
 
 	// Id Relations
-	repository?: IRepository;
+	repository: IRepository;
 
 	// Non-Id Properties
 	numberOfChanges?: number;

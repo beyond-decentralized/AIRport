@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { IUserTerminal, UserTerminalESelect, QUserTerminal } from './quserterminal';
 import { IUserTerminalAgt, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
 export interface IUser {
-    id?: number;
+    id: number;
     uniqueId?: string;
     firstName?: string;
     lastName?: string;

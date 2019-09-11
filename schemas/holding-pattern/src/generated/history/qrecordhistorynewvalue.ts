@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IRecordHistory,
+	RecordHistoryECascadeGraph,
 	RecordHistoryEId,
 	RecordHistoryEOptionalId,
 	RecordHistoryEUpdateProperties,
@@ -42,10 +44,10 @@ declare function require(moduleName: string): any;
 export interface IRecordHistoryNewValue {
 	
 	// Id Properties
-	columnIndex?: number;
+	columnIndex: number;
 
 	// Id Relations
-	recordHistory?: IRecordHistory;
+	recordHistory: IRecordHistory;
 
 	// Non-Id Properties
 	newValue?: any;
@@ -111,6 +113,15 @@ export interface RecordHistoryNewValueEUpdateProperties
 	newValue?: any | IQUntypedField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RecordHistoryNewValueECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

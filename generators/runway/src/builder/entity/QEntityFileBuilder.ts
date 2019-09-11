@@ -43,6 +43,7 @@ export class QEntityFileBuilder
 		this.addImport([
 				'IQEntityInternal',
 				'IEntityIdProperties',
+				'IEntityCascadeGraph',
 				'IEntityUpdateColumns',
 				'IEntityUpdateProperties',
 				'IEntitySelectProperties',
@@ -71,6 +72,7 @@ export class QEntityFileBuilder
 			let parentEntityType = entity.parentEntity.type
 			this.addImport([
 					`I${parentEntityType}`,
+					`${parentEntityType}ECascadeGraph`,
 					`${parentEntityType}EId`,
 					`${parentEntityType}EUpdateColumns`,
 					`${parentEntityType}EUpdateProperties`,
@@ -140,6 +142,7 @@ ${addEntityCommand}`
 			let qType = 'Q' + type
 			this.addImport([
 					'I' + type,
+					type + 'ECascadeGraph',
 					type + 'EId',
 					type + 'EOptionalId',
 					type + 'EUpdateProperties',

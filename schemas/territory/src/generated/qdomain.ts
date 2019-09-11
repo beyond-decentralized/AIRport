@@ -45,7 +45,7 @@ declare function require(moduleName: string): any;
 export interface IDomain {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
 

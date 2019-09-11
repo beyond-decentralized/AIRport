@@ -29,7 +29,7 @@ import {
 	QSharingNode,
 	QSharingNodeQId,
 	QSharingNodeQRelation,
-} from '../sharingNode/qsharingnode';
+} from '../sharingnode/qsharingnode';
 import {
 	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockEId,
@@ -52,10 +52,10 @@ declare function require(moduleName: string): any;
 export interface ISharingMessage {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
-	sharingNode?: ISharingNode;
+	sharingNode: ISharingNode;
 
 	// Non-Id Properties
 	origin?: number;

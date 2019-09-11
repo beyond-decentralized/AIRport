@@ -8,30 +8,25 @@ const SQLWhereBase_1 = require("./SQLWhereBase");
  * Created by Papa on 10/2/2016.
  */
 class SQLUpdate extends SQLNoJoinQuery_1.SQLNoJoinQuery {
-    constructor(airportDb, jsonUpdate, dialect, storeDriver) {
-        super(airportDb.schemas[jsonUpdate.U.si]
-            .currentVersion.entities[jsonUpdate.U.ti], dialect, storeDriver);
+    constructor(airportDb, utils, jsonUpdate, dialect) {
+        super(airportDb, utils, airportDb.schemas[jsonUpdate.U.si]
+            .currentVersion.entities[jsonUpdate.U.ti], dialect);
         this.jsonUpdate = jsonUpdate;
     }
-    toSQL(internalFragments, airDb, schemaUtils, metadataUtils) {
+    toSQL() {
         if (!this.jsonUpdate.U) {
-            throw new Error(`Expecting exactly one table in UPDATE clause`);
+            throw `Expecting exactly one table in UPDATE clause`;
         }
-        let updateFragment = this.getTableFragment(this.jsonUpdate.U, airDb, schemaUtils);
-        let setFragment = this.getSetFragment(this.jsonUpdate.S, airDb, schemaUtils, metadataUtils);
-        if (internalFragments.SET) {
-            setFragment += internalFragments.SET.map(internalSetFragment => `
-	${internalSetFragment.column.name} = ${internalSetFragment.value}`).join('');
-        }
+        let updateFragment = this.getTableFragment(this.jsonUpdate.U);
+        let setFragment = this.getSetFragment(this.jsonUpdate.S);
         let whereFragment = '';
         let jsonQuery = this.jsonUpdate;
         if (jsonQuery.W) {
-            whereFragment = this.getWHEREFragment(jsonQuery.W, '', airDb, schemaUtils, metadataUtils);
             whereFragment = `WHERE
-${whereFragment}`;
+${this.getWHEREFragment(jsonQuery.W, '')}`;
             // Always replace the root entity alias reference with the table name
             let tableAlias = air_control_1.QRelation.getAlias(this.jsonUpdate.U);
-            let tableName = schemaUtils.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
+            let tableName = this.utils.Schema.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
             whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName);
         }
         return `UPDATE
@@ -40,7 +35,7 @@ SET
 ${setFragment}
 ${whereFragment}`;
     }
-    getSetFragment(setClauseFragment, airDb, schemaUtils, metadataUtils) {
+    getSetFragment(setClauseFragment) {
         let setFragments = [];
         for (let columnName in setClauseFragment) {
             let value = setClauseFragment[columnName];
@@ -49,18 +44,18 @@ ${whereFragment}`;
                 continue;
             }
             this.validator.validateUpdateColumn(this.dbEntity.columnMap[columnName]);
-            this.addSetFragment(columnName, value, setFragments, airDb, schemaUtils, metadataUtils);
+            this.addSetFragment(columnName, value, setFragments);
         }
         return setFragments.join(', \n');
     }
-    addSetFragment(columnName, value, setFragments, airDb, schemaUtils, metadataUtils) {
+    addSetFragment(columnName, value, setFragments) {
         let fieldValue;
         if (typeof value === 'number') {
             this.parameterReferences.push(value);
             fieldValue = this.sqlAdaptor.getParameterReference(this.parameterReferences, value);
         }
         else {
-            fieldValue = this.getFieldValue(value, SQLWhereBase_1.ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
+            fieldValue = this.getFieldValue(value, SQLWhereBase_1.ClauseType.WHERE_CLAUSE);
         }
         setFragments.push(`\t${columnName} = ${fieldValue}`);
     }

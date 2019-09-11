@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IRepositoryTransactionHistory,
+	RepositoryTransactionHistoryECascadeGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
 	RepositoryTransactionHistoryEUpdateProperties,
@@ -57,7 +59,7 @@ declare function require(moduleName: string): any;
 export interface ITransactionHistory {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
 
@@ -131,6 +133,16 @@ export interface TransactionHistoryEUpdateProperties
 	transactionType?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface TransactionHistoryECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	repositoryTransactionHistories?: RepositoryTransactionHistoryECascadeGraph;
 
 }
 

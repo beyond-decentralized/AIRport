@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IActor,
+	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './qactor';
 import {
 	IApplication,
+	ApplicationECascadeGraph,
 	ApplicationEId,
 	ApplicationEOptionalId,
 	ApplicationEUpdateProperties,
@@ -52,10 +55,10 @@ declare function require(moduleName: string): any;
 export interface IActorApplication {
 	
 	// Id Properties
-	id?: number;
+	id: number;
 
 	// Id Relations
-	actor?: IActor;
+	actor: IActor;
 
 	// Non-Id Properties
 
@@ -121,6 +124,16 @@ export interface ActorApplicationEUpdateProperties
 
 	// Non-Id Relations - ids only & no OneToMany's
 	application?: ApplicationEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface ActorApplicationECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	application?: ApplicationECascadeGraph;
 
 }
 

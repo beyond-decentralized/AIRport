@@ -17,7 +17,7 @@ class Dao {
     async count() {
         throw new Error(`Not Implemented`);
     }
-    async create(entityInfo) {
+    async create(entityInfo, cascadeGraph = ground_control_1.CascadeOverwrite.DEFAULT) {
         if (entityInfo instanceof Array) {
             return await this.db.bulkCreate(entityInfo, ground_control_1.CascadeOverwrite.DEFAULT, true);
         }
@@ -25,7 +25,7 @@ class Dao {
             return await this.db.create(entityInfo);
         }
     }
-    async delete(entityIdInfo) {
+    async delete(entityIdInfo, cascadeGraph = ground_control_1.CascadeOverwrite.DEFAULT) {
         if (entityIdInfo instanceof Array) {
             throw new Error(`Not Implemented`);
         }
@@ -60,15 +60,15 @@ class Dao {
     findById(entityId, cacheForUpdate = false) {
         throw new Error(`Not implemented`);
     }
-    async save(entity) {
+    async save(entity, cascadeGraph = ground_control_1.CascadeOverwrite.DEFAULT) {
         if (entity instanceof Array) {
             throw new Error(`Not Implemented`);
         }
         else {
-            return await this.db.save(entity);
+            return await this.db.save(entity, cascadeGraph);
         }
     }
-    async stage(entity) {
+    async stage(entity, cascadeGraph = ground_control_1.CascadeOverwrite.DEFAULT) {
         if (entity instanceof Array) {
             throw new Error(`Not Implemented`);
         }
@@ -76,12 +76,12 @@ class Dao {
             throw new Error(`Not Implemented`);
         }
     }
-    async update(entityInfo) {
+    async update(entityInfo, cascadeGraph = ground_control_1.CascadeOverwrite.DEFAULT) {
         if (entityInfo instanceof Array) {
             throw new Error(`Not Implemented`);
         }
         else {
-            return await this.db.update(entityInfo);
+            return await this.db.update(entityInfo, cascadeGraph);
         }
     }
 }

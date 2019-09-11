@@ -32,7 +32,7 @@ declare function require(moduleName: string): any;
 export interface IRepositoryTransactionHistoryUpdateStage {
 	
 	// Id Properties
-	repositoryTransactionHistoryId?: number;
+	repositoryTransactionHistoryId: number;
 
 	// Id Relations
 

@@ -32,7 +32,7 @@ class FlattenedResultParser extends IEntityResultParser_1.AbstractObjectResultPa
         // Nothing to do, we are working with a flat result array
     }
     bufferOneToManyStub(otmDbEntity, otmPropertyName) {
-        throw new Error(`@OneToMany stubs not allowed in QueryResultType.PLAIN`);
+        throw `@OneToMany stubs not allowed in QueryResultType.PLAIN`;
     }
     bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject) {
         // Nothing to do, we are working with a flat result array

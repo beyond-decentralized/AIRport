@@ -1,7 +1,7 @@
 import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { IServerSyncLog, ServerSyncLogESelect, QServerSyncLog } from './qserversynclog';
 export interface IServer {
-    id?: number;
+    id: number;
     serverType?: number;
     serverSyncLogs?: IServerSyncLog[];
 }

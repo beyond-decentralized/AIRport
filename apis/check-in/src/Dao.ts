@@ -1,5 +1,6 @@
 import {
 	IDao,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityDatabaseFacade,
 	IEntityIdProperties,
@@ -24,12 +25,15 @@ export abstract class Dao<Entity,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	QE extends IQEntity>
 	implements IDao<Entity, EntitySelect, EntityCreate,
-		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE> {
+		EntityUpdateColumns, EntityUpdateProperties, EntityId,
+		EntityCascadeGraph, QE> {
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
-		EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>
+		EntityUpdateColumns, EntityUpdateProperties, EntityId,
+		EntityCascadeGraph, QE>
 
 	constructor(
 		dbEntityId: DbEntityId,
@@ -39,13 +43,14 @@ export abstract class Dao<Entity,
 		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
 		this.db        = new EntityDatabaseFacade<Entity,
 			EntitySelect, EntityCreate,
-			EntityUpdateColumns, EntityUpdateProperties, EntityId, QE>(
+			EntityUpdateColumns, EntityUpdateProperties, EntityId,
+			EntityCascadeGraph, QE>(
 			dbEntity, Q)
 	}
 
 	async bulkCreate(
 		entities: EntityCreate[],
-		cascadeOverwrite: CascadeOverwrite = CascadeOverwrite.DEFAULT,
+		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT,
 		checkIfProcessed: boolean          = true
 	): Promise<number> {
 		return await this.db.bulkCreate(entities,
@@ -57,7 +62,8 @@ export abstract class Dao<Entity,
 	}
 
 	async create<EntityInfo extends EntityCreate | EntityCreate[]>(
-		entityInfo: EntityInfo
+		entityInfo: EntityInfo,
+		cascadeGraph: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
 	): Promise<number> {
 		if (entityInfo instanceof Array) {
 			return await this.db.bulkCreate(entityInfo,
@@ -69,6 +75,7 @@ export abstract class Dao<Entity,
 
 	async delete(
 		entityIdInfo: EntityId | EntityId[],
+		cascadeGraph: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
 	): Promise<number> {
 		if (entityIdInfo instanceof Array) {
 			throw new Error(`Not Implemented`)
@@ -120,16 +127,18 @@ export abstract class Dao<Entity,
 
 	async save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entity: EntityInfo,
+		cascadeGraph: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
 	): Promise<number> {
 		if (entity instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
-			return await this.db.save(<EntityCreate>entity)
+			return await this.db.save(<EntityCreate>entity, cascadeGraph)
 		}
 	}
 
 	async stage<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entity: EntityInfo,
+		cascadeGraph: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
 	): Promise<number> {
 		if (entity instanceof Array) {
 			throw new Error(`Not Implemented`)
@@ -139,12 +148,13 @@ export abstract class Dao<Entity,
 	}
 
 	async update(
-		entityInfo: EntityCreate | EntityCreate[]
+		entityInfo: EntityCreate | EntityCreate[],
+		cascadeGraph: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
 	): Promise<number> {
 		if (entityInfo instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
-			return await this.db.update(entityInfo)
+			return await this.db.update(entityInfo, cascadeGraph)
 		}
 	}
 

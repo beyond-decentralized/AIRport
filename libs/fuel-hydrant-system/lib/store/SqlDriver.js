@@ -16,22 +16,28 @@ const TreeSQLQuery_1 = require("../sql/TreeSQLQuery");
  * Created by Papa on 9/9/2016.
  */
 class SqlDriver {
+    constructor() {
+        di_1.DI.get((airportDatabase, activeQueries, utils) => {
+            this.airDb = airportDatabase;
+            this.queries = activeQueries;
+            this.utils = utils;
+        }, air_control_1.AIR_DB, diTokens_1.ACTIVE_QUERIES, air_control_1.UTILS);
+    }
     supportsLocalTransactions() {
         return true;
     }
     async saveTransaction(transaction) {
-        (await di_1.DI.get(diTokens_1.ACTIVE_QUERIES)).markQueriesToRerun(transaction.schemaMap);
+        this.queries.markQueriesToRerun(transaction.schemaMap);
     }
     async insertValues(portableQuery) {
         const splitValues = this.splitValues(portableQuery.jsonQuery.V);
-        const [airDb, schemaUtils, metadataUtils] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.SCHEMA_UTILS, air_control_1.Q_METADATA_UTILS);
         let numVals = 0;
         for (const V of splitValues) {
-            let sqlInsertValues = new SQLInsertValues_1.SQLInsertValues(airDb, {
+            let sqlInsertValues = new SQLInsertValues_1.SQLInsertValues(this.airDb, this.utils, {
                 ...portableQuery.jsonQuery,
                 V
-            }, this.getDialect(), this);
-            let sql = sqlInsertValues.toSQL(airDb, schemaUtils, metadataUtils);
+            }, this.getDialect());
+            let sql = sqlInsertValues.toSQL();
             let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap);
             numVals += await this.executeNative(sql, parameters);
         }
@@ -52,33 +58,30 @@ class SqlDriver {
         return splitValues;
     }
     async deleteWhere(portableQuery) {
-        const [airDb, schemaUtils, metadataUtils, activeQueries] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.SCHEMA_UTILS, air_control_1.Q_METADATA_UTILS, diTokens_1.ACTIVE_QUERIES);
         let fieldMap = new ground_control_1.SyncSchemaMap();
-        let sqlDelete = new SQLDelete_1.SQLDelete(airDb, portableQuery.jsonQuery, this.getDialect(), this);
-        let sql = sqlDelete.toSQL(airDb, schemaUtils, metadataUtils);
+        let sqlDelete = new SQLDelete_1.SQLDelete(this.airDb, this.utils, portableQuery.jsonQuery, this.getDialect());
+        let sql = sqlDelete.toSQL();
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters);
-        activeQueries.markQueriesToRerun(fieldMap);
+        this.queries.markQueriesToRerun(fieldMap);
         return numberOfAffectedRecords;
     }
-    async updateWhere(portableQuery, internalFragments) {
-        const [airDb, schemaUtils, metadataUtils] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.SCHEMA_UTILS, air_control_1.Q_METADATA_UTILS);
-        let sqlUpdate = new SQLUpdate_1.SQLUpdate(airDb, portableQuery.jsonQuery, this.getDialect(), this);
-        let sql = sqlUpdate.toSQL(internalFragments, airDb, schemaUtils, metadataUtils);
+    async updateWhere(portableQuery) {
+        let sqlUpdate = new SQLUpdate_1.SQLUpdate(this.airDb, this.utils, portableQuery.jsonQuery, this.getDialect());
+        let sql = sqlUpdate.toSQL();
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap);
         return await this.executeNative(sql, parameters);
     }
-    async find(portableQuery, internalFragments, cachedSqlQueryId) {
-        const [airDb, schemaUtils, metadataUtils] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.SCHEMA_UTILS, air_control_1.Q_METADATA_UTILS);
-        const sqlQuery = this.getSQLQuery(portableQuery, airDb, schemaUtils);
-        const sql = sqlQuery.toSQL(internalFragments, airDb, schemaUtils, metadataUtils);
+    async find(portableQuery, cachedSqlQueryId) {
+        const sqlQuery = this.getSQLQuery(portableQuery);
+        const sql = sqlQuery.toSQL();
         const parameters = sqlQuery.getParameters(portableQuery.parameterMap);
         let results = await this.findNative(sql, parameters);
-        results = sqlQuery.parseQueryResults(airDb, schemaUtils, results, internalFragments, portableQuery.queryResultType);
+        results = sqlQuery.parseQueryResults(results, portableQuery.queryResultType);
         // FIXME: convert to MappedEntityArray if needed
         return results;
     }
-    getSQLQuery(portableQuery, airDb, schemaUtils) {
+    getSQLQuery(portableQuery) {
         let jsonQuery = portableQuery.jsonQuery;
         let dialect = this.getDialect();
         let resultType = portableQuery.queryResultType;
@@ -88,43 +91,42 @@ class SqlDriver {
             case QueryResType.ENTITY_TREE:
             case QueryResType.MAPPED_ENTITY_GRAPH:
             case QueryResType.MAPPED_ENTITY_TREE:
-                const dbEntity = airDb.schemas[portableQuery.schemaIndex]
+                const dbEntity = this.airDb.schemas[portableQuery.schemaIndex]
                     .currentVersion.entities[portableQuery.tableIndex];
-                return new EntitySQLQuery_1.EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, schemaUtils, this);
+                return new EntitySQLQuery_1.EntitySQLQuery(this.airDb, this.utils, jsonQuery, dbEntity, dialect, resultType);
             case QueryResType.FIELD:
-                return new FieldSQLQuery_1.FieldSQLQuery(jsonQuery, dialect, this);
+                return new FieldSQLQuery_1.FieldSQLQuery(this.airDb, this.utils, jsonQuery, dialect);
             case QueryResType.SHEET:
-                return new SheetSQLQuery_1.SheetSQLQuery(jsonQuery, dialect, this);
+                return new SheetSQLQuery_1.SheetSQLQuery(this.airDb, this.utils, jsonQuery, dialect);
             case QueryResType.TREE:
-                return new TreeSQLQuery_1.TreeSQLQuery(jsonQuery, dialect, this);
+                return new TreeSQLQuery_1.TreeSQLQuery(this.airDb, this.utils, jsonQuery, dialect);
             case QueryResType.RAW:
             default:
-                throw new Error(`Unknown QueryResultType: ${resultType}`);
+                throw `Unknown QueryResultType: ${resultType}`;
         }
     }
-    async findOne(portableQuery, internalFragments, cachedSqlQueryId) {
-        let results = await this.find(portableQuery, internalFragments);
+    async findOne(portableQuery, cachedSqlQueryId) {
+        let results = await this.find(portableQuery);
         if (results.length > 1) {
-            throw new Error(`Expecting a single result, got ${results.length}`);
+            throw `Expecting a single result, got ${results.length}`;
         }
         if (results.length == 1) {
             return results[0];
         }
         return null;
     }
-    search(portableQuery, internalFragments, cachedSqlQueryId) {
+    search(portableQuery, cachedSqlQueryId) {
         let resultsSubject = new observe_1.Subject(() => {
             if (resultsSubject.subscriptions.length < 1) {
-                di_1.DI.get(diTokens_1.ACTIVE_QUERIES).then(activeQueries => 
-                // Remove the query for the list of cached queries, that are checked every
-                // time a mutation operation is run
-                activeQueries.remove(portableQuery));
+                // Remove the query for the list of cached queries, that are checked every time a
+                // mutation operation is run
+                this.queries.remove(portableQuery);
             }
         });
         let cachedSqlQuery = {
             resultsSubject: resultsSubject,
             runQuery: () => {
-                this.find(portableQuery, internalFragments).then((results) => {
+                this.find(portableQuery).then((results) => {
                     // FIXME: convert to MappedEntityArray if needed
                     resultsSubject.next(results);
                 });
@@ -134,19 +136,18 @@ class SqlDriver {
         cachedSqlQuery.runQuery();
         return resultsSubject;
     }
-    searchOne(portableQuery, internalFragments, cachedSqlQueryId) {
+    searchOne(portableQuery, cachedSqlQueryId) {
         let resultsSubject = new observe_1.Subject(() => {
             if (resultsSubject.subscriptions.length < 1) {
-                di_1.DI.get(diTokens_1.ACTIVE_QUERIES).then(activeQueries => 
-                // Remove the query for the list of cached queries, that are checked every
-                // time a mutation operation is run
-                activeQueries.remove(portableQuery));
+                // Remove the query for the list of cached queries, that are checked every time a
+                // mutation operation is run
+                this.queries.remove(portableQuery);
             }
         });
         let cachedSqlQuery = {
             resultsSubject: resultsSubject,
             runQuery: () => {
-                this.findOne(portableQuery, internalFragments).then((result) => {
+                this.findOne(portableQuery).then((result) => {
                     resultsSubject.next(result);
                 });
             }

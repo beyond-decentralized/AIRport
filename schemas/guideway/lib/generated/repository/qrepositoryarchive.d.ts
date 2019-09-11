@@ -2,8 +2,8 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { IRepository, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from './qrepository';
 import { IArchive, ArchiveEId, ArchiveEOptionalId, ArchiveESelect, QArchiveQId, QArchiveQRelation } from './qarchive';
 export interface IRepositoryArchive {
-    repository?: IRepository;
-    archive?: IArchive;
+    repository: IRepository;
+    archive: IArchive;
 }
 /**
  * SELECT - All fields and relations (optional).

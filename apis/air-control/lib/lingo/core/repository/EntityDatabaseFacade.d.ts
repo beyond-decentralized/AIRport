@@ -8,13 +8,13 @@ import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
 import { RawUpdate, RawUpdateColumns } from '../../query/facade/Update';
 import { MappedEntityArray } from '../../query/MappedEntityArray';
-import { IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../entity/Entity';
+import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../entity/Entity';
 /**
  * Facade for all DB operations related to a particular Entity.
  */
-export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelectProperties, EntityCreateProperties extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, IQ extends IQEntity> {
+export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelectProperties, EntityCreateProperties extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQ extends IQEntity> {
     dbEntity: DbEntity;
-    duo: IDuo<Entity, EntitySelect, EntityCreateProperties, EntityUpdateProperties, EntityId, IQ>;
+    duo: IDuo<Entity, EntitySelect, EntityCreateProperties, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>;
     /**
      * The Promise based API for all Entity 'find' (find many) queries.
      */
@@ -46,13 +46,13 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records created (1 or 0)
      */
-    create(entity: EntityCreateProperties, cascadeGraph?: EntitySelect): Promise<number>;
+    create(entity: EntityCreateProperties, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
     /**
      * Creates the provided entities in the db.
      *
      * @return Number of records created
      */
-    bulkCreate(entities: EntityCreateProperties[], cascadeOverwrite: CascadeOverwrite | EntitySelect, // defaults to false
+    bulkCreate(entities: EntityCreateProperties[], cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph, // defaults to false
     checkIfProcessed: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
@@ -73,7 +73,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      * @return Number of records updated (1 or 0)
      */
     update(entity: EntityCreateProperties, // @Id fields must be populated
-    cascadeGraph?: EntitySelect): Promise<number>;
+    cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
     /**
      * Updates this entity type based on an UPDATE WHERE Query,
      * with a column based set clause.
@@ -97,7 +97,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records deleted (1 or 0)
      */
-    delete(entity: EntityId, cascadeGraph?: EntitySelect): Promise<number>;
+    delete(entity: EntityId, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
     /**
      * Deletes this entity type based on an DELETE WHERE Query.
      *
@@ -113,5 +113,5 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records saved (1 or 0)
      */
-    save(entity: EntityCreateProperties, cascadeGraph?: EntitySelect): Promise<number>;
+    save(entity: EntityCreateProperties, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
 }

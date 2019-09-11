@@ -9,11 +9,11 @@ class DuoBuilder extends ImplementationFileBuilder_1.ImplementationFileBuilder {
         this.entityNames.sort();
         const daoDefinitions = this.entityNames.map(entityName => `
 export interface IBase${entityName}Duo
-  extends IDuo<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateProperties, ${entityName}EId, Q${entityName}> {
+  extends IDuo<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}ECascadeGraph, Q${entityName}> {
 }
 
 export class Base${entityName}Duo
-  extends SQDIDuo<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateProperties, ${entityName}EId, Q${entityName}>
+  extends SQDIDuo<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}ECascadeGraph, Q${entityName}>
 	implements IBase${entityName}Duo {
 
 	static diSet(): boolean {
@@ -33,10 +33,12 @@ export class Base${entityName}Duo
 	${entityName}EUpdateColumns,
 	${entityName}EUpdateProperties,
 	${entityName}EId,
+	${entityName}ECascadeGraph,
 	Q${entityName}
 } from '${this.generatedPathMapByEntityName[entityName]}'`).join('\n');
         return `import {
 	IDuo,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -60,12 +62,14 @@ export class SQDIDuo<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,
 		EntityUpdateProperties,
 		EntityId,
+		EntityCascadeGraph,
 		IQE> {
 
 	constructor(

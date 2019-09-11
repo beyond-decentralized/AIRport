@@ -23,7 +23,7 @@ import {
 	MissingRecordEUpdateProperties,
 	MissingRecordEId,
 	QMissingRecord
-} from './missingRecord/qmissingrecord'
+} from './missingrecord/qmissingrecord'
 import {
 	IMissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockESelect,
@@ -33,7 +33,7 @@ import {
 	MissingRecordRepoTransBlockEUpdateProperties,
 	MissingRecordRepoTransBlockEId,
 	QMissingRecordRepoTransBlock
-} from './missingRecord/qmissingrecordrepotransblock'
+} from './missingrecord/qmissingrecordrepotransblock'
 import {
 	IRecordUpdateStage,
 	RecordUpdateStageESelect,
@@ -53,7 +53,7 @@ import {
 	RepoTransBlockResponseStageEUpdateProperties,
 	RepoTransBlockResponseStageEId,
 	QRepoTransBlockResponseStage
-} from './repositoryTransactionBlock/qrepotransblockresponsestage'
+} from './repositorytransactionblock/qrepotransblockresponsestage'
 import {
 	IRepoTransBlockSchemaToChange,
 	RepoTransBlockSchemaToChangeESelect,
@@ -63,7 +63,7 @@ import {
 	RepoTransBlockSchemaToChangeEUpdateProperties,
 	RepoTransBlockSchemaToChangeEId,
 	QRepoTransBlockSchemaToChange
-} from './repositoryTransactionBlock/qrepotransblockschematochange'
+} from './repositorytransactionblock/qrepotransblockschematochange'
 import {
 	IRepositoryTransactionBlock,
 	RepositoryTransactionBlockESelect,
@@ -73,7 +73,7 @@ import {
 	RepositoryTransactionBlockEUpdateProperties,
 	RepositoryTransactionBlockEId,
 	QRepositoryTransactionBlock
-} from './repositoryTransactionBlock/qrepositorytransactionblock'
+} from './repositorytransactionblock/qrepositorytransactionblock'
 import {
 	IRepositoryTransactionHistoryUpdateStage,
 	RepositoryTransactionHistoryUpdateStageESelect,
@@ -83,7 +83,7 @@ import {
 	RepositoryTransactionHistoryUpdateStageEUpdateProperties,
 	RepositoryTransactionHistoryUpdateStageEId,
 	QRepositoryTransactionHistoryUpdateStage
-} from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage'
+} from './repositorytransactionblock/qrepositorytransactionhistoryupdatestage'
 import {
 	ISharingMessage,
 	SharingMessageESelect,
@@ -93,7 +93,7 @@ import {
 	SharingMessageEUpdateProperties,
 	SharingMessageEId,
 	QSharingMessage
-} from './sharingMessage/qsharingmessage'
+} from './sharingmessage/qsharingmessage'
 import {
 	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockESelect,
@@ -103,7 +103,7 @@ import {
 	SharingMessageRepoTransBlockEUpdateProperties,
 	SharingMessageRepoTransBlockEId,
 	QSharingMessageRepoTransBlock
-} from './sharingMessage/qsharingmessagerepotransblock'
+} from './sharingmessage/qsharingmessagerepotransblock'
 import {
 	ISharingNode,
 	SharingNodeESelect,
@@ -113,7 +113,7 @@ import {
 	SharingNodeEUpdateProperties,
 	SharingNodeEId,
 	QSharingNode
-} from './sharingNode/qsharingnode'
+} from './sharingnode/qsharingnode'
 import {
 	ISharingNodeRepoTransBlock,
 	SharingNodeRepoTransBlockESelect,
@@ -123,7 +123,7 @@ import {
 	SharingNodeRepoTransBlockEUpdateProperties,
 	SharingNodeRepoTransBlockEId,
 	QSharingNodeRepoTransBlock
-} from './sharingNode/qsharingnoderepotransblock'
+} from './sharingnode/qsharingnoderepotransblock'
 import {
 	ISharingNodeRepoTransBlockStage,
 	SharingNodeRepoTransBlockStageESelect,
@@ -133,7 +133,7 @@ import {
 	SharingNodeRepoTransBlockStageEUpdateProperties,
 	SharingNodeRepoTransBlockStageEId,
 	QSharingNodeRepoTransBlockStage
-} from './sharingNode/qsharingnoderepotransblockstage'
+} from './sharingnode/qsharingnoderepotransblockstage'
 import {
 	ISharingNodeRepository,
 	SharingNodeRepositoryESelect,
@@ -143,7 +143,7 @@ import {
 	SharingNodeRepositoryEUpdateProperties,
 	SharingNodeRepositoryEId,
 	QSharingNodeRepository
-} from './sharingNode/qsharingnoderepository'
+} from './sharingnode/qsharingnoderepository'
 import {
 	ISharingNodeTerminal,
 	SharingNodeTerminalESelect,
@@ -153,7 +153,7 @@ import {
 	SharingNodeTerminalEUpdateProperties,
 	SharingNodeTerminalEId,
 	QSharingNodeTerminal
-} from './sharingNode/qsharingnodeterminal'
+} from './sharingnode/qsharingnodeterminal'
 import {
 	ISynchronizationConflict,
 	SynchronizationConflictESelect,
@@ -217,11 +217,11 @@ export class BaseMissingRecordDuo
 	implements IBaseMissingRecordDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(4)
+		super(3)
 	}
 }
 
@@ -235,11 +235,11 @@ export class BaseMissingRecordRepoTransBlockDuo
 	implements IBaseMissingRecordRepoTransBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(5)
+		super(4)
 	}
 }
 
@@ -253,11 +253,11 @@ export class BaseRecordUpdateStageDuo
 	implements IBaseRecordUpdateStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(0)
+		super(5)
 	}
 }
 
@@ -271,11 +271,11 @@ export class BaseRepoTransBlockResponseStageDuo
 	implements IBaseRepoTransBlockResponseStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(13)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(13)
+		super(6)
 	}
 }
 
@@ -289,11 +289,11 @@ export class BaseRepoTransBlockSchemaToChangeDuo
 	implements IBaseRepoTransBlockSchemaToChangeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(10)
+		super(7)
 	}
 }
 
@@ -307,11 +307,11 @@ export class BaseRepositoryTransactionBlockDuo
 	implements IBaseRepositoryTransactionBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(11)
+		return duoDiSet(16)
 	}
 	
 	constructor() {
-		super(11)
+		super(16)
 	}
 }
 
@@ -325,11 +325,11 @@ export class BaseRepositoryTransactionHistoryUpdateStageDuo
 	implements IBaseRepositoryTransactionHistoryUpdateStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(12)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(12)
+		super(8)
 	}
 }
 
@@ -343,11 +343,11 @@ export class BaseSharingMessageDuo
 	implements IBaseSharingMessageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(14)
 	}
 	
 	constructor() {
-		super(8)
+		super(14)
 	}
 }
 
@@ -361,11 +361,11 @@ export class BaseSharingMessageRepoTransBlockDuo
 	implements IBaseSharingMessageRepoTransBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(15)
 	}
 	
 	constructor() {
-		super(9)
+		super(15)
 	}
 }
 
@@ -379,11 +379,11 @@ export class BaseSharingNodeDuo
 	implements IBaseSharingNodeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(7)
+		super(10)
 	}
 }
 
@@ -397,11 +397,11 @@ export class BaseSharingNodeRepoTransBlockDuo
 	implements IBaseSharingNodeRepoTransBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(6)
+		super(9)
 	}
 }
 
@@ -415,11 +415,11 @@ export class BaseSharingNodeRepoTransBlockStageDuo
 	implements IBaseSharingNodeRepoTransBlockStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(16)
+		return duoDiSet(11)
 	}
 	
 	constructor() {
-		super(16)
+		super(11)
 	}
 }
 
@@ -433,11 +433,11 @@ export class BaseSharingNodeRepositoryDuo
 	implements IBaseSharingNodeRepositoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(15)
+		return duoDiSet(12)
 	}
 	
 	constructor() {
-		super(15)
+		super(12)
 	}
 }
 
@@ -451,11 +451,11 @@ export class BaseSharingNodeTerminalDuo
 	implements IBaseSharingNodeTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(14)
+		return duoDiSet(13)
 	}
 	
 	constructor() {
-		super(14)
+		super(13)
 	}
 }
 
@@ -469,11 +469,11 @@ export class BaseSynchronizationConflictDuo
 	implements IBaseSynchronizationConflictDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(2)
+		super(1)
 	}
 }
 
@@ -487,11 +487,11 @@ export class BaseSynchronizationConflictPendingNotificationDuo
 	implements IBaseSynchronizationConflictPendingNotificationDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(3)
+		super(2)
 	}
 }
 
@@ -505,10 +505,10 @@ export class BaseSynchronizationConflictValuesDuo
 	implements IBaseSynchronizationConflictValuesDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(1)
+		super(0)
 	}
 }

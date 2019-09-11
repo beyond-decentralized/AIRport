@@ -303,6 +303,8 @@ export interface JsonSchemaRelationColumn
 export interface DbRelationColumn
 	extends DatabaseObject {
 
+	id: number;
+
 	manyColumn: DbColumn;
 
 	/**

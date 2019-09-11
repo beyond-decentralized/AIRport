@@ -2,7 +2,7 @@ import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEn
 import { ITerminalAgt, TerminalAgtESelect, QTerminalAgt } from './qterminalagt';
 import { IUserTerminalAgt, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
 export interface IAgt {
-    id?: number;
+    id: number;
     address?: string;
     terminalAgts?: ITerminalAgt[];
     userTerminalAgts?: IUserTerminalAgt[];
