@@ -1,17 +1,17 @@
 import {
 	IDuo,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
 	IQEntity,
 	QSchema
-}                            from '@airport/air-control'
-import {IEntityCascadeGraph} from '@airport/air-control/lib/src'
+} from '@airport/air-control'
 import {
 	DbEntity,
 	EntityId as DbEntityId
-}                            from '@airport/ground-control'
+} from '@airport/ground-control'
 
 /**
  * Created by Papa on 8/26/2017.
