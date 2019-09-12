@@ -1,7 +1,7 @@
 import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONEntityRelation, JSONJoinRelation, JSONRelation, JSONViewJoinRelation } from '@airport/ground-control';
 import { IAirportDatabase } from '../../../lingo/AirportDatabase';
 import { IFieldColumnAliases } from '../../../lingo/core/entity/Aliases';
-import { IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IFrom, IQEntity, IQEntityDriver, IQEntityInternal } from '../../../lingo/core/entity/Entity';
+import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IFrom, IQEntity, IQEntityDriver, IQEntityInternal } from '../../../lingo/core/entity/Entity';
 import { IJoinFields } from '../../../lingo/core/entity/Joins';
 import { IQInternalRelation } from '../../../lingo/core/entity/Relation';
 import { IQOperableFieldInternal } from '../../../lingo/core/field/OperableField';
@@ -23,7 +23,7 @@ export interface IQEntityInternalConstructor {
     new <IQE extends IQEntityInternal>(...args: any[]): IQE;
 }
 export declare namespace QEntity {
-    function db<IEntity>(databaseName?: string): IEntityDatabaseFacade<IEntity, IEntitySelectProperties, IEntityCreateProperties, IEntityUpdateProperties, IEntityUpdateColumns, IEntityIdProperties, IQEntity>;
+    function db<IEntity>(databaseName?: string): IEntityDatabaseFacade<IEntity, IEntitySelectProperties, IEntityCreateProperties, IEntityUpdateProperties, IEntityUpdateColumns, IEntityIdProperties, IEntityCascadeGraph, IQEntity>;
 }
 export interface QEntityConstructor {
     new <IQE extends IQEntityInternal>(dbEntity: DbEntity, fromClausePosition?: number[], dbRelation?: DbRelation, joinType?: JoinType, QDriver?: {

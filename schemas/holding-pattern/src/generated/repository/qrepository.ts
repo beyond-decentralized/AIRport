@@ -175,7 +175,6 @@ export interface RepositoryEUpdateProperties
 export interface RepositoryECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	ownerActor?: ActorECascadeGraph;
 	repositoryActors?: RepositoryActorECascadeGraph;
 	repositoryApplications?: RepositoryApplicationECascadeGraph;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryECascadeGraph;

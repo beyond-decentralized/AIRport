@@ -1,6 +1,6 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { ITerminalRepository, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
-import { IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { ITerminalRepository, TerminalRepositoryECascadeGraph, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
+import { IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockECascadeGraph, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
 export interface IRepository {
     id: number;
     lastUpdateTime?: Date;
@@ -38,6 +38,13 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     lastUpdateTime?: Date | IQDateField;
     name?: string | IQStringField;
     status?: number | IQNumberField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RepositoryECascadeGraph extends IEntityCascadeGraph {
+    terminalRepositories?: TerminalRepositoryECascadeGraph;
+    repositoryTransactionBlocks?: AgtRepositoryTransactionBlockECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

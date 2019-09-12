@@ -12,6 +12,7 @@ import {
 import {IAirportDatabase}        from '../../../lingo/AirportDatabase'
 import {IFieldColumnAliases}     from '../../../lingo/core/entity/Aliases'
 import {
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -56,7 +57,9 @@ export declare namespace QEntity {
 	function db<IEntity>(
 		databaseName?: string
 	): IEntityDatabaseFacade<IEntity, IEntitySelectProperties,
-		IEntityCreateProperties, IEntityUpdateProperties, IEntityUpdateColumns, IEntityIdProperties, IQEntity>;
+		IEntityCreateProperties, IEntityUpdateProperties,
+		IEntityUpdateColumns, IEntityIdProperties,
+		IEntityCascadeGraph, IQEntity>;
 
 }
 

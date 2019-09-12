@@ -1,5 +1,6 @@
 import {
 	IDuo,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 	AgtRepositoryTransactionBlockEUpdateColumns,
 	AgtRepositoryTransactionBlockEUpdateProperties,
 	AgtRepositoryTransactionBlockEId,
+	AgtRepositoryTransactionBlockECascadeGraph,
 	QAgtRepositoryTransactionBlock
 } from './synchronization/qagtrepositorytransactionblock'
 import {
@@ -32,6 +34,7 @@ import {
 	AgtSharingMessageEUpdateColumns,
 	AgtSharingMessageEUpdateProperties,
 	AgtSharingMessageEId,
+	AgtSharingMessageECascadeGraph,
 	QAgtSharingMessage
 } from './synchronization/qagtsharingmessage'
 import {
@@ -42,6 +45,7 @@ import {
 	ArchiveEUpdateColumns,
 	ArchiveEUpdateProperties,
 	ArchiveEId,
+	ArchiveECascadeGraph,
 	QArchive
 } from './repository/qarchive'
 import {
@@ -52,6 +56,7 @@ import {
 	DailyArchiveLogEUpdateColumns,
 	DailyArchiveLogEUpdateProperties,
 	DailyArchiveLogEId,
+	DailyArchiveLogECascadeGraph,
 	QDailyArchiveLog
 } from './archive/qdailyarchivelog'
 import {
@@ -62,6 +67,7 @@ import {
 	DailyTerminalSyncLogEUpdateColumns,
 	DailyTerminalSyncLogEUpdateProperties,
 	DailyTerminalSyncLogEId,
+	DailyTerminalSyncLogECascadeGraph,
 	QDailyTerminalSyncLog
 } from './archive/qdailyterminalsynclog'
 import {
@@ -72,6 +78,7 @@ import {
 	MonthlyArchiveLogEUpdateColumns,
 	MonthlyArchiveLogEUpdateProperties,
 	MonthlyArchiveLogEId,
+	MonthlyArchiveLogECascadeGraph,
 	QMonthlyArchiveLog
 } from './archive/qmonthlyarchivelog'
 import {
@@ -82,6 +89,7 @@ import {
 	MonthlyTerminalSyncLogEUpdateColumns,
 	MonthlyTerminalSyncLogEUpdateProperties,
 	MonthlyTerminalSyncLogEId,
+	MonthlyTerminalSyncLogECascadeGraph,
 	QMonthlyTerminalSyncLog
 } from './archive/qmonthlyterminalsynclog'
 import {
@@ -92,6 +100,7 @@ import {
 	RepositoryEUpdateColumns,
 	RepositoryEUpdateProperties,
 	RepositoryEId,
+	RepositoryECascadeGraph,
 	QRepository
 } from './repository/qrepository'
 import {
@@ -102,6 +111,7 @@ import {
 	RepositoryArchiveEUpdateColumns,
 	RepositoryArchiveEUpdateProperties,
 	RepositoryArchiveEId,
+	RepositoryArchiveECascadeGraph,
 	QRepositoryArchive
 } from './repository/qrepositoryarchive'
 import {
@@ -112,6 +122,7 @@ import {
 	SecurityAnswerEUpdateColumns,
 	SecurityAnswerEUpdateProperties,
 	SecurityAnswerEId,
+	SecurityAnswerECascadeGraph,
 	QSecurityAnswer
 } from './user/security/qsecurityanswer'
 import {
@@ -122,6 +133,7 @@ import {
 	SecurityQuestionEUpdateColumns,
 	SecurityQuestionEUpdateProperties,
 	SecurityQuestionEId,
+	SecurityQuestionECascadeGraph,
 	QSecurityQuestion
 } from './user/security/qsecurityquestion'
 import {
@@ -132,6 +144,7 @@ import {
 	ServerEUpdateColumns,
 	ServerEUpdateProperties,
 	ServerEId,
+	ServerECascadeGraph,
 	QServer
 } from './server/qserver'
 import {
@@ -142,6 +155,7 @@ import {
 	ServerSyncLogEUpdateColumns,
 	ServerSyncLogEUpdateProperties,
 	ServerSyncLogEId,
+	ServerSyncLogECascadeGraph,
 	QServerSyncLog
 } from './server/qserversynclog'
 import {
@@ -152,6 +166,7 @@ import {
 	SyncLogEUpdateColumns,
 	SyncLogEUpdateProperties,
 	SyncLogEId,
+	SyncLogECascadeGraph,
 	QSyncLog
 } from './synchronization/qsynclog'
 import {
@@ -162,6 +177,7 @@ import {
 	TerminalEUpdateColumns,
 	TerminalEUpdateProperties,
 	TerminalEId,
+	TerminalECascadeGraph,
 	QTerminal
 } from './terminal/qterminal'
 import {
@@ -172,6 +188,7 @@ import {
 	TerminalRepositoryEUpdateColumns,
 	TerminalRepositoryEUpdateProperties,
 	TerminalRepositoryEId,
+	TerminalRepositoryECascadeGraph,
 	QTerminalRepository
 } from './terminal/qterminalrepository'
 import {
@@ -182,6 +199,7 @@ import {
 	TuningParametersEUpdateColumns,
 	TuningParametersEUpdateProperties,
 	TuningParametersEId,
+	TuningParametersECascadeGraph,
 	QTuningParameters
 } from './tuning/qtuningparameters'
 import {
@@ -192,6 +210,7 @@ import {
 	UserEUpdateColumns,
 	UserEUpdateProperties,
 	UserEId,
+	UserECascadeGraph,
 	QUser
 } from './user/quser'
 import {
@@ -202,6 +221,7 @@ import {
 	UserRepositoryEUpdateColumns,
 	UserRepositoryEUpdateProperties,
 	UserRepositoryEId,
+	UserRepositoryECascadeGraph,
 	QUserRepository
 } from './user/quserrepository'
 
@@ -212,12 +232,14 @@ export class SQDIDuo<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,
 		EntityUpdateProperties,
 		EntityId,
+		EntityCascadeGraph,
 		IQE> {
 
 	constructor(
@@ -229,174 +251,12 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseAgtRepositoryTransactionBlockDuo
-  extends IDuo<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, QAgtRepositoryTransactionBlock> {
+  extends IDuo<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockECascadeGraph, QAgtRepositoryTransactionBlock> {
 }
 
 export class BaseAgtRepositoryTransactionBlockDuo
-  extends SQDIDuo<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, QAgtRepositoryTransactionBlock>
+  extends SQDIDuo<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockECascadeGraph, QAgtRepositoryTransactionBlock>
 	implements IBaseAgtRepositoryTransactionBlockDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(16)
-	}
-	
-	constructor() {
-		super(16)
-	}
-}
-
-
-export interface IBaseAgtSharingMessageDuo
-  extends IDuo<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, QAgtSharingMessage> {
-}
-
-export class BaseAgtSharingMessageDuo
-  extends SQDIDuo<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, QAgtSharingMessage>
-	implements IBaseAgtSharingMessageDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(14)
-	}
-	
-	constructor() {
-		super(14)
-	}
-}
-
-
-export interface IBaseArchiveDuo
-  extends IDuo<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateProperties, ArchiveEId, QArchive> {
-}
-
-export class BaseArchiveDuo
-  extends SQDIDuo<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateProperties, ArchiveEId, QArchive>
-	implements IBaseArchiveDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(0)
-	}
-	
-	constructor() {
-		super(0)
-	}
-}
-
-
-export interface IBaseDailyArchiveLogDuo
-  extends IDuo<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, QDailyArchiveLog> {
-}
-
-export class BaseDailyArchiveLogDuo
-  extends SQDIDuo<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, QDailyArchiveLog>
-	implements IBaseDailyArchiveLogDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(18)
-	}
-	
-	constructor() {
-		super(18)
-	}
-}
-
-
-export interface IBaseDailyTerminalSyncLogDuo
-  extends IDuo<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, QDailyTerminalSyncLog> {
-}
-
-export class BaseDailyTerminalSyncLogDuo
-  extends SQDIDuo<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, QDailyTerminalSyncLog>
-	implements IBaseDailyTerminalSyncLogDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(1)
-	}
-	
-	constructor() {
-		super(1)
-	}
-}
-
-
-export interface IBaseMonthlyArchiveLogDuo
-  extends IDuo<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, QMonthlyArchiveLog> {
-}
-
-export class BaseMonthlyArchiveLogDuo
-  extends SQDIDuo<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, QMonthlyArchiveLog>
-	implements IBaseMonthlyArchiveLogDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(2)
-	}
-	
-	constructor() {
-		super(2)
-	}
-}
-
-
-export interface IBaseMonthlyTerminalSyncLogDuo
-  extends IDuo<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, QMonthlyTerminalSyncLog> {
-}
-
-export class BaseMonthlyTerminalSyncLogDuo
-  extends SQDIDuo<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, QMonthlyTerminalSyncLog>
-	implements IBaseMonthlyTerminalSyncLogDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(3)
-	}
-	
-	constructor() {
-		super(3)
-	}
-}
-
-
-export interface IBaseRepositoryDuo
-  extends IDuo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, QRepository> {
-}
-
-export class BaseRepositoryDuo
-  extends SQDIDuo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, QRepository>
-	implements IBaseRepositoryDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(17)
-	}
-	
-	constructor() {
-		super(17)
-	}
-}
-
-
-export interface IBaseRepositoryArchiveDuo
-  extends IDuo<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, QRepositoryArchive> {
-}
-
-export class BaseRepositoryArchiveDuo
-  extends SQDIDuo<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, QRepositoryArchive>
-	implements IBaseRepositoryArchiveDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(4)
-	}
-	
-	constructor() {
-		super(4)
-	}
-}
-
-
-export interface IBaseSecurityAnswerDuo
-  extends IDuo<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateProperties, SecurityAnswerEId, QSecurityAnswer> {
-}
-
-export class BaseSecurityAnswerDuo
-  extends SQDIDuo<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateProperties, SecurityAnswerEId, QSecurityAnswer>
-	implements IBaseSecurityAnswerDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(8)
@@ -408,31 +268,49 @@ export class BaseSecurityAnswerDuo
 }
 
 
-export interface IBaseSecurityQuestionDuo
-  extends IDuo<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateProperties, SecurityQuestionEId, QSecurityQuestion> {
+export interface IBaseAgtSharingMessageDuo
+  extends IDuo<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, AgtSharingMessageECascadeGraph, QAgtSharingMessage> {
 }
 
-export class BaseSecurityQuestionDuo
-  extends SQDIDuo<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateProperties, SecurityQuestionEId, QSecurityQuestion>
-	implements IBaseSecurityQuestionDuo {
+export class BaseAgtSharingMessageDuo
+  extends SQDIDuo<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, AgtSharingMessageECascadeGraph, QAgtSharingMessage>
+	implements IBaseAgtSharingMessageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(7)
+		super(1)
 	}
 }
 
 
-export interface IBaseServerDuo
-  extends IDuo<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateProperties, ServerEId, QServer> {
+export interface IBaseArchiveDuo
+  extends IDuo<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateProperties, ArchiveEId, ArchiveECascadeGraph, QArchive> {
 }
 
-export class BaseServerDuo
-  extends SQDIDuo<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateProperties, ServerEId, QServer>
-	implements IBaseServerDuo {
+export class BaseArchiveDuo
+  extends SQDIDuo<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateProperties, ArchiveEId, ArchiveECascadeGraph, QArchive>
+	implements IBaseArchiveDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(14)
+	}
+	
+	constructor() {
+		super(14)
+	}
+}
+
+
+export interface IBaseDailyArchiveLogDuo
+  extends IDuo<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, DailyArchiveLogECascadeGraph, QDailyArchiveLog> {
+}
+
+export class BaseDailyArchiveLogDuo
+  extends SQDIDuo<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, DailyArchiveLogECascadeGraph, QDailyArchiveLog>
+	implements IBaseDailyArchiveLogDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(10)
@@ -444,31 +322,13 @@ export class BaseServerDuo
 }
 
 
-export interface IBaseServerSyncLogDuo
-  extends IDuo<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateProperties, ServerSyncLogEId, QServerSyncLog> {
+export interface IBaseDailyTerminalSyncLogDuo
+  extends IDuo<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, DailyTerminalSyncLogECascadeGraph, QDailyTerminalSyncLog> {
 }
 
-export class BaseServerSyncLogDuo
-  extends SQDIDuo<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateProperties, ServerSyncLogEId, QServerSyncLog>
-	implements IBaseServerSyncLogDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(9)
-	}
-	
-	constructor() {
-		super(9)
-	}
-}
-
-
-export interface IBaseSyncLogDuo
-  extends IDuo<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateProperties, SyncLogEId, QSyncLog> {
-}
-
-export class BaseSyncLogDuo
-  extends SQDIDuo<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateProperties, SyncLogEId, QSyncLog>
-	implements IBaseSyncLogDuo {
+export class BaseDailyTerminalSyncLogDuo
+  extends SQDIDuo<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, DailyTerminalSyncLogECascadeGraph, QDailyTerminalSyncLog>
+	implements IBaseDailyTerminalSyncLogDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(11)
@@ -480,31 +340,13 @@ export class BaseSyncLogDuo
 }
 
 
-export interface IBaseTerminalDuo
-  extends IDuo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, QTerminal> {
+export interface IBaseMonthlyArchiveLogDuo
+  extends IDuo<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, MonthlyArchiveLogECascadeGraph, QMonthlyArchiveLog> {
 }
 
-export class BaseTerminalDuo
-  extends SQDIDuo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, QTerminal>
-	implements IBaseTerminalDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(15)
-	}
-	
-	constructor() {
-		super(15)
-	}
-}
-
-
-export interface IBaseTerminalRepositoryDuo
-  extends IDuo<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, QTerminalRepository> {
-}
-
-export class BaseTerminalRepositoryDuo
-  extends SQDIDuo<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, QTerminalRepository>
-	implements IBaseTerminalRepositoryDuo {
+export class BaseMonthlyArchiveLogDuo
+  extends SQDIDuo<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, MonthlyArchiveLogECascadeGraph, QMonthlyArchiveLog>
+	implements IBaseMonthlyArchiveLogDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(12)
@@ -516,13 +358,13 @@ export class BaseTerminalRepositoryDuo
 }
 
 
-export interface IBaseTuningParametersDuo
-  extends IDuo<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateProperties, TuningParametersEId, QTuningParameters> {
+export interface IBaseMonthlyTerminalSyncLogDuo
+  extends IDuo<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, MonthlyTerminalSyncLogECascadeGraph, QMonthlyTerminalSyncLog> {
 }
 
-export class BaseTuningParametersDuo
-  extends SQDIDuo<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateProperties, TuningParametersEId, QTuningParameters>
-	implements IBaseTuningParametersDuo {
+export class BaseMonthlyTerminalSyncLogDuo
+  extends SQDIDuo<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, MonthlyTerminalSyncLogECascadeGraph, QMonthlyTerminalSyncLog>
+	implements IBaseMonthlyTerminalSyncLogDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(13)
@@ -534,13 +376,157 @@ export class BaseTuningParametersDuo
 }
 
 
-export interface IBaseUserDuo
-  extends IDuo<IUser, UserESelect, UserECreateProperties, UserEUpdateProperties, UserEId, QUser> {
+export interface IBaseRepositoryDuo
+  extends IDuo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, RepositoryECascadeGraph, QRepository> {
 }
 
-export class BaseUserDuo
-  extends SQDIDuo<IUser, UserESelect, UserECreateProperties, UserEUpdateProperties, UserEId, QUser>
-	implements IBaseUserDuo {
+export class BaseRepositoryDuo
+  extends SQDIDuo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateProperties, RepositoryEId, RepositoryECascadeGraph, QRepository>
+	implements IBaseRepositoryDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(9)
+	}
+	
+	constructor() {
+		super(9)
+	}
+}
+
+
+export interface IBaseRepositoryArchiveDuo
+  extends IDuo<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, RepositoryArchiveECascadeGraph, QRepositoryArchive> {
+}
+
+export class BaseRepositoryArchiveDuo
+  extends SQDIDuo<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, RepositoryArchiveECascadeGraph, QRepositoryArchive>
+	implements IBaseRepositoryArchiveDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(15)
+	}
+	
+	constructor() {
+		super(15)
+	}
+}
+
+
+export interface IBaseSecurityAnswerDuo
+  extends IDuo<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateProperties, SecurityAnswerEId, SecurityAnswerECascadeGraph, QSecurityAnswer> {
+}
+
+export class BaseSecurityAnswerDuo
+  extends SQDIDuo<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateProperties, SecurityAnswerEId, SecurityAnswerECascadeGraph, QSecurityAnswer>
+	implements IBaseSecurityAnswerDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(3)
+	}
+	
+	constructor() {
+		super(3)
+	}
+}
+
+
+export interface IBaseSecurityQuestionDuo
+  extends IDuo<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateProperties, SecurityQuestionEId, SecurityQuestionECascadeGraph, QSecurityQuestion> {
+}
+
+export class BaseSecurityQuestionDuo
+  extends SQDIDuo<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateProperties, SecurityQuestionEId, SecurityQuestionECascadeGraph, QSecurityQuestion>
+	implements IBaseSecurityQuestionDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(2)
+	}
+	
+	constructor() {
+		super(2)
+	}
+}
+
+
+export interface IBaseServerDuo
+  extends IDuo<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateProperties, ServerEId, ServerECascadeGraph, QServer> {
+}
+
+export class BaseServerDuo
+  extends SQDIDuo<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateProperties, ServerEId, ServerECascadeGraph, QServer>
+	implements IBaseServerDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(17)
+	}
+	
+	constructor() {
+		super(17)
+	}
+}
+
+
+export interface IBaseServerSyncLogDuo
+  extends IDuo<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateProperties, ServerSyncLogEId, ServerSyncLogECascadeGraph, QServerSyncLog> {
+}
+
+export class BaseServerSyncLogDuo
+  extends SQDIDuo<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateProperties, ServerSyncLogEId, ServerSyncLogECascadeGraph, QServerSyncLog>
+	implements IBaseServerSyncLogDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(16)
+	}
+	
+	constructor() {
+		super(16)
+	}
+}
+
+
+export interface IBaseSyncLogDuo
+  extends IDuo<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateProperties, SyncLogEId, SyncLogECascadeGraph, QSyncLog> {
+}
+
+export class BaseSyncLogDuo
+  extends SQDIDuo<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateProperties, SyncLogEId, SyncLogECascadeGraph, QSyncLog>
+	implements IBaseSyncLogDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(0)
+	}
+	
+	constructor() {
+		super(0)
+	}
+}
+
+
+export interface IBaseTerminalDuo
+  extends IDuo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, TerminalECascadeGraph, QTerminal> {
+}
+
+export class BaseTerminalDuo
+  extends SQDIDuo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateProperties, TerminalEId, TerminalECascadeGraph, QTerminal>
+	implements IBaseTerminalDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(7)
+	}
+	
+	constructor() {
+		super(7)
+	}
+}
+
+
+export interface IBaseTerminalRepositoryDuo
+  extends IDuo<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, TerminalRepositoryECascadeGraph, QTerminalRepository> {
+}
+
+export class BaseTerminalRepositoryDuo
+  extends SQDIDuo<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, TerminalRepositoryECascadeGraph, QTerminalRepository>
+	implements IBaseTerminalRepositoryDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(6)
@@ -552,13 +538,31 @@ export class BaseUserDuo
 }
 
 
-export interface IBaseUserRepositoryDuo
-  extends IDuo<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateProperties, UserRepositoryEId, QUserRepository> {
+export interface IBaseTuningParametersDuo
+  extends IDuo<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateProperties, TuningParametersEId, TuningParametersECascadeGraph, QTuningParameters> {
 }
 
-export class BaseUserRepositoryDuo
-  extends SQDIDuo<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateProperties, UserRepositoryEId, QUserRepository>
-	implements IBaseUserRepositoryDuo {
+export class BaseTuningParametersDuo
+  extends SQDIDuo<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateProperties, TuningParametersEId, TuningParametersECascadeGraph, QTuningParameters>
+	implements IBaseTuningParametersDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(18)
+	}
+	
+	constructor() {
+		super(18)
+	}
+}
+
+
+export interface IBaseUserDuo
+  extends IDuo<IUser, UserESelect, UserECreateProperties, UserEUpdateProperties, UserEId, UserECascadeGraph, QUser> {
+}
+
+export class BaseUserDuo
+  extends SQDIDuo<IUser, UserESelect, UserECreateProperties, UserEUpdateProperties, UserEId, UserECascadeGraph, QUser>
+	implements IBaseUserDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(5)
@@ -566,5 +570,23 @@ export class BaseUserRepositoryDuo
 	
 	constructor() {
 		super(5)
+	}
+}
+
+
+export interface IBaseUserRepositoryDuo
+  extends IDuo<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateProperties, UserRepositoryEId, UserRepositoryECascadeGraph, QUserRepository> {
+}
+
+export class BaseUserRepositoryDuo
+  extends SQDIDuo<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateProperties, UserRepositoryEId, UserRepositoryECascadeGraph, QUserRepository>
+	implements IBaseUserRepositoryDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(4)
+	}
+	
+	constructor() {
+		super(4)
 	}
 }

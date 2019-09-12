@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IUser,
+	UserECascadeGraph,
 	UserEId,
 	UserEOptionalId,
 	UserEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from '../quser';
 import {
 	ISecurityQuestion,
+	SecurityQuestionECascadeGraph,
 	SecurityQuestionEId,
 	SecurityQuestionEOptionalId,
 	SecurityQuestionEUpdateProperties,
@@ -122,6 +125,15 @@ export interface SecurityAnswerEUpdateProperties
 	answer?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SecurityAnswerECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

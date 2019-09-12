@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -103,6 +104,15 @@ export interface MonthlySyncLogEUpdateProperties
 	synced?: boolean | IQBooleanField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface MonthlySyncLogECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

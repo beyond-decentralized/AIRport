@@ -133,7 +133,6 @@ export interface RepositoryActorEUpdateProperties
 export interface RepositoryActorECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	actor?: ActorECascadeGraph;
 
 }
 

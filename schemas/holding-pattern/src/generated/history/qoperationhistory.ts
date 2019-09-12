@@ -155,7 +155,6 @@ export interface OperationHistoryEUpdateProperties
 export interface OperationHistoryECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	entity?: SchemaEntityECascadeGraph;
 	recordHistory?: RecordHistoryECascadeGraph;
 
 }

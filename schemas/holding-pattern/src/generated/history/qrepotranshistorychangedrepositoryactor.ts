@@ -149,9 +149,6 @@ export interface RepoTransHistoryChangedRepositoryActorEUpdateProperties
 export interface RepoTransHistoryChangedRepositoryActorECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	repositoryTransactionHistory?: RepositoryTransactionHistoryECascadeGraph;
-	repository?: RepositoryECascadeGraph;
-	actor?: ActorECascadeGraph;
 
 }
 

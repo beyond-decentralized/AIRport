@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { IRepositoryTransactionHistory, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEOptionalId, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistoryQId, QRepositoryTransactionHistoryQRelation } from './qrepositorytransactionhistory';
-import { ISchemaEntity, SchemaEntityECascadeGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
+import { ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
 import { IRecordHistory, RecordHistoryECascadeGraph, RecordHistoryESelect, QRecordHistory } from './qrecordhistory';
 export interface IOperationHistory {
     id: number;
@@ -49,7 +49,6 @@ export interface OperationHistoryEUpdateProperties extends IEntityUpdateProperti
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface OperationHistoryECascadeGraph extends IEntityCascadeGraph {
-    entity?: SchemaEntityECascadeGraph;
     recordHistory?: RecordHistoryECascadeGraph;
 }
 /**

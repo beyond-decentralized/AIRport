@@ -1,5 +1,6 @@
 import { DbSchema } from '@airport/ground-control';
 import { Configuration } from '../../options/Options';
+import { Decorator, PropertyDocEntry } from '../../parser/DocEntry';
 import { EntityCandidate } from '../../parser/EntityCandidate';
 import { SEntity } from './SEntity';
 import { SIndexedSchema } from './SSchema';
@@ -44,3 +45,5 @@ export declare class SSchemaBuilder {
 }
 export declare function entityExtendsRepositoryEntity(//
 entityCandidate: EntityCandidate): [boolean, boolean];
+export declare function isManyToOnePropertyNotNull(aProperty: PropertyDocEntry): boolean;
+export declare function getManyToOneDecorator(aProperty: PropertyDocEntry): Decorator;

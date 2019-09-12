@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IServerSyncLog,
+	ServerSyncLogECascadeGraph,
 	ServerSyncLogEId,
 	ServerSyncLogEOptionalId,
 	ServerSyncLogEUpdateProperties,
@@ -109,6 +111,16 @@ export interface ServerEUpdateProperties
 	serverType?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface ServerECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	serverSyncLogs?: ServerSyncLogECascadeGraph;
 
 }
 

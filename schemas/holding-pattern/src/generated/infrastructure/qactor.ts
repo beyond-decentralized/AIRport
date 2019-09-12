@@ -159,8 +159,6 @@ export interface ActorEUpdateProperties
 export interface ActorECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	user?: UserECascadeGraph;
-	terminal?: TerminalECascadeGraph;
 	actorApplications?: ActorApplicationECascadeGraph;
 	repositoryActor?: RepositoryActorECascadeGraph;
 

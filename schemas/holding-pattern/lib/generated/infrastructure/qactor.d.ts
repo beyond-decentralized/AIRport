@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { IUser, UserECascadeGraph, UserEOptionalId, UserESelect, QUserQRelation, ITerminal, TerminalECascadeGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
+import { IUser, UserEOptionalId, UserESelect, QUserQRelation, ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
 import { IActorApplication, ActorApplicationECascadeGraph, ActorApplicationESelect, QActorApplication } from './qactorapplication';
 import { IRepositoryActor, RepositoryActorECascadeGraph, RepositoryActorESelect, QRepositoryActor } from '../repository/qrepositoryactor';
 export interface IActor {
@@ -44,8 +44,6 @@ export interface ActorEUpdateProperties extends IEntityUpdateProperties {
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ActorECascadeGraph extends IEntityCascadeGraph {
-    user?: UserECascadeGraph;
-    terminal?: TerminalECascadeGraph;
     actorApplications?: ActorApplicationECascadeGraph;
     repositoryActor?: RepositoryActorECascadeGraph;
 }

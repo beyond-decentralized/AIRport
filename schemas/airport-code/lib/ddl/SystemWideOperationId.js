@@ -22,4 +22,4 @@ SystemWideOperationId = __decorate([
     air_control_1.Table({ name: 'SYSTEM_WIDE_OPERATION_IDS' })
 ], SystemWideOperationId);
 exports.SystemWideOperationId = SystemWideOperationId;
-//# sourceMappingURL=systemwideoperationid.js.map
+//# sourceMappingURL=SystemWideOperationId.js.map

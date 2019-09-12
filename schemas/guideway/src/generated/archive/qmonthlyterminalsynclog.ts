@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IMonthlyArchiveLog,
+	MonthlyArchiveLogECascadeGraph,
 	MonthlyArchiveLogEId,
 	MonthlyArchiveLogEOptionalId,
 	MonthlyArchiveLogEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './qmonthlyarchivelog';
 import {
 	ITerminal,
+	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -125,6 +128,15 @@ export interface MonthlyTerminalSyncLogEUpdateProperties
 	dailySyncStatuses?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface MonthlyTerminalSyncLogECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

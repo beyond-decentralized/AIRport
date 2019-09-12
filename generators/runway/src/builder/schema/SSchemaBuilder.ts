@@ -9,7 +9,10 @@ import {
 	repositoryEntity,
 }                                from '@airport/ground-control'
 import {Configuration}           from '../../options/Options'
-import {PropertyDocEntry}        from '../../parser/DocEntry'
+import {
+	Decorator,
+	PropertyDocEntry
+}                                from '../../parser/DocEntry'
 import {EntityCandidate}         from '../../parser/EntityCandidate'
 import {globalCandidateRegistry} from '../../parser/EntityDefinitionGenerator'
 import {
@@ -419,7 +422,7 @@ export class SSchemaBuilder {
 					}
 					const relatedTableName = this.getTableNameFromEntity(aProperty.entity)
 
-					const notNull = this.isManyToOnePropertyNotNull(aProperty)
+					const notNull = isManyToOnePropertyNotNull(aProperty)
 
 					const relationColumnReferences = ['REPOSITORY_ID', 'ACTOR_ID', 'ACTOR_RECORD_ID'];
 
@@ -851,4 +854,35 @@ export function entityExtendsRepositoryEntity( //
 		return [true, true]
 	}
 	return entityExtendsRepositoryEntity(entityCandidate.parentEntity)
+}
+
+export function isManyToOnePropertyNotNull(
+	aProperty: PropertyDocEntry
+): boolean {
+	const manyToOneProperty = getManyToOneDecorator(aProperty)
+	if (!manyToOneProperty) {
+		throw `Not a @ManyToOne property.`
+	}
+	const manyToOneDecoratorValues = manyToOneProperty.values
+
+	if (!manyToOneDecoratorValues.length) {
+		return false
+	}
+
+	return manyToOneDecoratorValues[0].optional === false
+}
+
+export function getManyToOneDecorator(
+	aProperty: PropertyDocEntry
+): Decorator {
+	const manyToOneDecorators = aProperty.decorators.filter(
+		decorator =>
+			decorator.name === 'ManyToOne'
+	)
+
+	if (manyToOneDecorators.length) {
+		return manyToOneDecorators[0]
+	}
+
+	return null
 }

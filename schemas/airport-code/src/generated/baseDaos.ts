@@ -1,5 +1,6 @@
 import {
 	IDao,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -20,6 +21,7 @@ import {
 import {
 	ISequence,
 	SequenceESelect,
+	SequenceECascadeGraph,
 	SequenceECreateColumns,
 	SequenceECreateProperties,
 	SequenceEUpdateColumns,
@@ -30,6 +32,7 @@ import {
 import {
 	ISystemWideOperationId,
 	SystemWideOperationIdESelect,
+	SystemWideOperationIdECascadeGraph,
 	SystemWideOperationIdECreateColumns,
 	SystemWideOperationIdECreateProperties,
 	SystemWideOperationIdEUpdateColumns,
@@ -40,6 +43,7 @@ import {
 import {
 	ITerminalRun,
 	TerminalRunESelect,
+	TerminalRunECascadeGraph,
 	TerminalRunECreateColumns,
 	TerminalRunECreateProperties,
 	TerminalRunEUpdateColumns,
@@ -55,6 +59,7 @@ export class SQDIDao<Entity,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Dao<Entity,
 		EntitySelect,
@@ -62,6 +67,7 @@ export class SQDIDao<Entity,
 		EntityUpdateColumns,
 		EntityUpdateProperties,
 		EntityId,
+		EntityCascadeGraph,
 		IQE> {
 
 	constructor(
@@ -73,11 +79,11 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseSequenceDao
-  extends IDao<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, QSequence> {
+  extends IDao<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceECascadeGraph, QSequence> {
 }
 
 export class BaseSequenceDao
-  extends SQDIDao<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, QSequence>
+  extends SQDIDao<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceECascadeGraph, QSequence>
 	implements IBaseSequenceDao {
 
 	static diSet(): boolean {
@@ -91,30 +97,12 @@ export class BaseSequenceDao
 
 
 export interface IBaseSystemWideOperationIdDao
-  extends IDao<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, QSystemWideOperationId> {
+  extends IDao<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdECascadeGraph, QSystemWideOperationId> {
 }
 
 export class BaseSystemWideOperationIdDao
-  extends SQDIDao<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, QSystemWideOperationId>
+  extends SQDIDao<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdECascadeGraph, QSystemWideOperationId>
 	implements IBaseSystemWideOperationIdDao {
-
-	static diSet(): boolean {
-		return diSet(2)
-	}
-	
-	constructor() {
-		super(2)
-	}
-}
-
-
-export interface IBaseTerminalRunDao
-  extends IDao<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, QTerminalRun> {
-}
-
-export class BaseTerminalRunDao
-  extends SQDIDao<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, QTerminalRun>
-	implements IBaseTerminalRunDao {
 
 	static diSet(): boolean {
 		return diSet(1)
@@ -122,5 +110,23 @@ export class BaseTerminalRunDao
 	
 	constructor() {
 		super(1)
+	}
+}
+
+
+export interface IBaseTerminalRunDao
+  extends IDao<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunECascadeGraph, QTerminalRun> {
+}
+
+export class BaseTerminalRunDao
+  extends SQDIDao<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunECascadeGraph, QTerminalRun>
+	implements IBaseTerminalRunDao {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
+	constructor() {
+		super(2)
 	}
 }

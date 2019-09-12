@@ -120,7 +120,7 @@ export class SchemaRelationResolver {
 					// Many-To-One relations are not cascaded, so no cascade check is needed
 					break
 				default:
-					throw new Error(`Unknown EntityRelationType: ${aRelation.relationType}.`
+					throw new Error(`Unknown EntityRelationType: ${aRelation.relationType}.`)
 			}
 
 			let oneSideRelationIndex

@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IAgtSharingMessage,
+	AgtSharingMessageECascadeGraph,
 	AgtSharingMessageEId,
 	AgtSharingMessageEOptionalId,
 	AgtSharingMessageEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './qagtsharingmessage';
 import {
 	IAgtRepositoryTransactionBlock,
+	AgtRepositoryTransactionBlockECascadeGraph,
 	AgtRepositoryTransactionBlockEId,
 	AgtRepositoryTransactionBlockEOptionalId,
 	AgtRepositoryTransactionBlockEUpdateProperties,
@@ -119,6 +122,15 @@ export interface SyncLogEUpdateProperties
 	// Non-Id Properties
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SyncLogECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

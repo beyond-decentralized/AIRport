@@ -133,7 +133,6 @@ export interface ActorApplicationEUpdateProperties
 export interface ActorApplicationECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	application?: ApplicationECascadeGraph;
 
 }
 

@@ -1,6 +1,6 @@
 import { IMemoizedSelector } from '@airport/check-in';
 import { DomainName, JsonSchemaName, SchemaName } from '@airport/ground-control';
-import { BehaviorSubject } from '@airport/observe';
+import { BehaviorSubject, Store } from '@airport/observe';
 import { IDomain } from '@airport/territory';
 import { ISchema, ISchemaColumn, ISchemaEntity, ISchemaRelation, ISchemaVersion } from '@airport/traffic-pattern';
 import { ITerminalState } from './TerminalState';
@@ -19,16 +19,16 @@ export interface ITerminalStore {
     tearDown(): any;
 }
 export declare class TerminalStore implements ITerminalStore {
-    state: any;
-    getTerminalState: IMemoizedSelector<{}, {}>;
-    getDomains: IMemoizedSelector<any, {}>;
-    getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<string, Map<string, ISchemaVersion>>, {}>;
-    getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<string, ISchemaVersion>, {}>;
-    getAllSchemaVersionsByIds: IMemoizedSelector<ISchemaVersion[], {}>;
-    getLatestSchemaVersionsBySchemaIndexes: IMemoizedSelector<ISchemaVersion[], {}>;
-    getSchemas: IMemoizedSelector<any, {}>;
+    state: Store<ITerminalState>;
+    getTerminalState: IMemoizedSelector<any, any>;
+    getDomains: IMemoizedSelector<any, any>;
+    getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<string, Map<string, ISchemaVersion>>, any>;
+    getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<string, ISchemaVersion>, any>;
+    getAllSchemaVersionsByIds: IMemoizedSelector<ISchemaVersion[], any>;
+    getLatestSchemaVersionsBySchemaIndexes: IMemoizedSelector<ISchemaVersion[], any>;
+    getSchemas: IMemoizedSelector<any, any>;
     tearDown(): void;
-    getAllEntities: IMemoizedSelector<ISchemaEntity[], {}>;
-    getAllColumns: IMemoizedSelector<ISchemaColumn[], {}>;
-    getAllRelations: IMemoizedSelector<ISchemaRelation[], {}>;
+    getAllEntities: IMemoizedSelector<ISchemaEntity[], any>;
+    getAllColumns: IMemoizedSelector<ISchemaColumn[], any>;
+    getAllRelations: IMemoizedSelector<ISchemaRelation[], any>;
 }

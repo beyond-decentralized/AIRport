@@ -293,7 +293,7 @@ class SSchemaBuilder {
 					in ${entity.name}.${aProperty.name} (if the related entity does not extend RepositoryEntity).`);
                     }
                     const relatedTableName = this.getTableNameFromEntity(aProperty.entity);
-                    const notNull = this.isManyToOnePropertyNotNull(aProperty);
+                    const notNull = isManyToOnePropertyNotNull(aProperty);
                     const relationColumnReferences = ['REPOSITORY_ID', 'ACTOR_ID', 'ACTOR_RECORD_ID'];
                     ['_RID', '_AID', '_ARID'].forEach((suffix, index) => {
                         const [sRelationColumn, sColumn] = this.processRelationColumn(relatedTableName + suffix, relationColumnReferences[index], true, isIdProperty, propertyIndex, entity, relationColumnMapByName, primitiveColumnMapByName, notNull);
@@ -615,4 +615,24 @@ entityCandidate //
     return entityExtendsRepositoryEntity(entityCandidate.parentEntity);
 }
 exports.entityExtendsRepositoryEntity = entityExtendsRepositoryEntity;
+function isManyToOnePropertyNotNull(aProperty) {
+    const manyToOneProperty = getManyToOneDecorator(aProperty);
+    if (!manyToOneProperty) {
+        throw `Not a @ManyToOne property.`;
+    }
+    const manyToOneDecoratorValues = manyToOneProperty.values;
+    if (!manyToOneDecoratorValues.length) {
+        return false;
+    }
+    return manyToOneDecoratorValues[0].optional === false;
+}
+exports.isManyToOnePropertyNotNull = isManyToOnePropertyNotNull;
+function getManyToOneDecorator(aProperty) {
+    const manyToOneDecorators = aProperty.decorators.filter(decorator => decorator.name === 'ManyToOne');
+    if (manyToOneDecorators.length) {
+        return manyToOneDecorators[0];
+    }
+    return null;
+}
+exports.getManyToOneDecorator = getManyToOneDecorator;
 //# sourceMappingURL=SSchemaBuilder.js.map

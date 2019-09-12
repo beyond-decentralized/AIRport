@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	ISecurityAnswer,
+	SecurityAnswerECascadeGraph,
 	SecurityAnswerEId,
 	SecurityAnswerEOptionalId,
 	SecurityAnswerEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './security/qsecurityanswer';
 import {
 	IUserRepository,
+	UserRepositoryECascadeGraph,
 	UserRepositoryEId,
 	UserRepositoryEOptionalId,
 	UserRepositoryEUpdateProperties,
@@ -42,6 +45,7 @@ import {
 } from './quserrepository';
 import {
 	ITerminal,
+	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -52,6 +56,7 @@ import {
 } from '../terminal/qterminal';
 import {
 	IAgtRepositoryTransactionBlock,
+	AgtRepositoryTransactionBlockECascadeGraph,
 	AgtRepositoryTransactionBlockEId,
 	AgtRepositoryTransactionBlockEOptionalId,
 	AgtRepositoryTransactionBlockEUpdateProperties,
@@ -151,6 +156,19 @@ export interface UserEUpdateProperties
 	isInvitation?: boolean | IQBooleanField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface UserECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	securityAnswers?: SecurityAnswerECascadeGraph;
+	userRepositories?: UserRepositoryECascadeGraph;
+	terminals?: TerminalECascadeGraph;
+	repositoryTransactionBlocks?: AgtRepositoryTransactionBlockECascadeGraph;
 
 }
 

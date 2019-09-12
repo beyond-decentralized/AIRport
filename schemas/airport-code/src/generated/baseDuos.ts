@@ -1,5 +1,6 @@
 import {
 	IDuo,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 	SequenceEUpdateColumns,
 	SequenceEUpdateProperties,
 	SequenceEId,
+	SequenceECascadeGraph,
 	QSequence
 } from './qsequence'
 import {
@@ -32,6 +34,7 @@ import {
 	SystemWideOperationIdEUpdateColumns,
 	SystemWideOperationIdEUpdateProperties,
 	SystemWideOperationIdEId,
+	SystemWideOperationIdECascadeGraph,
 	QSystemWideOperationId
 } from './qsystemwideoperationid'
 import {
@@ -42,6 +45,7 @@ import {
 	TerminalRunEUpdateColumns,
 	TerminalRunEUpdateProperties,
 	TerminalRunEId,
+	TerminalRunECascadeGraph,
 	QTerminalRun
 } from './qterminalrun'
 
@@ -52,12 +56,14 @@ export class SQDIDuo<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,
 		EntityUpdateProperties,
 		EntityId,
+		EntityCascadeGraph,
 		IQE> {
 
 	constructor(
@@ -69,11 +75,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseSequenceDuo
-  extends IDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, QSequence> {
+  extends IDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, SequenceECascadeGraph, QSequence> {
 }
 
 export class BaseSequenceDuo
-  extends SQDIDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, QSequence>
+  extends SQDIDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, SequenceECascadeGraph, QSequence>
 	implements IBaseSequenceDuo {
 
 	static diSet(): boolean {
@@ -87,30 +93,12 @@ export class BaseSequenceDuo
 
 
 export interface IBaseSystemWideOperationIdDuo
-  extends IDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, QSystemWideOperationId> {
+  extends IDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdECascadeGraph, QSystemWideOperationId> {
 }
 
 export class BaseSystemWideOperationIdDuo
-  extends SQDIDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, QSystemWideOperationId>
+  extends SQDIDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdECascadeGraph, QSystemWideOperationId>
 	implements IBaseSystemWideOperationIdDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(2)
-	}
-	
-	constructor() {
-		super(2)
-	}
-}
-
-
-export interface IBaseTerminalRunDuo
-  extends IDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateProperties, TerminalRunEId, QTerminalRun> {
-}
-
-export class BaseTerminalRunDuo
-  extends SQDIDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateProperties, TerminalRunEId, QTerminalRun>
-	implements IBaseTerminalRunDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(1)
@@ -118,5 +106,23 @@ export class BaseTerminalRunDuo
 	
 	constructor() {
 		super(1)
+	}
+}
+
+
+export interface IBaseTerminalRunDuo
+  extends IDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunECascadeGraph, QTerminalRun> {
+}
+
+export class BaseTerminalRunDuo
+  extends SQDIDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunECascadeGraph, QTerminalRun>
+	implements IBaseTerminalRunDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(2)
+	}
+	
+	constructor() {
+		super(2)
 	}
 }

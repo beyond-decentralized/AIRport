@@ -129,7 +129,6 @@ export interface ImmutableRowEUpdateProperties
 export interface ImmutableRowECascadeGraph
 	extends StageableECascadeGraph {
 	// Cascading Relations
-	user?: UserECascadeGraph;
 
 }
 

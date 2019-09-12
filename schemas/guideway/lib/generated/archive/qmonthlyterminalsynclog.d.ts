@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { IMonthlyArchiveLog, MonthlyArchiveLogEId, MonthlyArchiveLogEOptionalId, MonthlyArchiveLogESelect, QMonthlyArchiveLogQId, QMonthlyArchiveLogQRelation } from './qmonthlyarchivelog';
 import { ITerminal, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '../terminal/qterminal';
 export interface IMonthlyTerminalSyncLog {
@@ -36,6 +36,11 @@ export interface MonthlyTerminalSyncLogEOptionalId {
 export interface MonthlyTerminalSyncLogEUpdateProperties extends IEntityUpdateProperties {
     allAcknowledged?: boolean | IQBooleanField;
     dailySyncStatuses?: string | IQStringField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface MonthlyTerminalSyncLogECascadeGraph extends IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 export interface IMonthlySyncLog {
     databaseId: number;
     month: Date;
@@ -32,6 +32,11 @@ export interface MonthlySyncLogEOptionalId {
  */
 export interface MonthlySyncLogEUpdateProperties extends IEntityUpdateProperties {
     synced?: boolean | IQBooleanField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface MonthlySyncLogECascadeGraph extends IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

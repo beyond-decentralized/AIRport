@@ -459,7 +459,7 @@ export class DbSchemaBuilder
 							const oneEntity = manySchema.entities[relationColumnReference.entityIndex]
 							if (!oneEntity) {
 								throw new Error(
-									`Table '${relationColumnReference.schemaName}.${relationColumnReference.entityIndex}' is not defined.)`
+									`Table '${relationColumnReference.schemaName}.${relationColumnReference.entityIndex}' is not defined.`)
 							}
 							const oneRelation = manyEntity.relations[relationColumnReference.relationIndex]
 							if (!oneRelation) {

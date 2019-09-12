@@ -165,8 +165,6 @@ export interface RecordHistoryEUpdateProperties
 export interface RecordHistoryECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	actor?: ActorECascadeGraph;
-	operationHistory?: OperationHistoryECascadeGraph;
 	newValues?: RecordHistoryNewValueECascadeGraph;
 	oldValues?: RecordHistoryOldValueECascadeGraph;
 

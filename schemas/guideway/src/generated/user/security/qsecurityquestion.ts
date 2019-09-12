@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -97,6 +98,15 @@ export interface SecurityQuestionEUpdateProperties
 	question?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SecurityQuestionECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

@@ -1,8 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { ITransactionHistory, TransactionHistoryECascadeGraph, TransactionHistoryEOptionalId, TransactionHistoryESelect, QTransactionHistoryQRelation } from './qtransactionhistory';
-import { IRepository, RepositoryECascadeGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
+import { ITransactionHistory, TransactionHistoryEOptionalId, TransactionHistoryESelect, QTransactionHistoryQRelation } from './qtransactionhistory';
+import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
 import { IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorECascadeGraph, RepoTransHistoryChangedRepositoryActorESelect, QRepoTransHistoryChangedRepositoryActor } from './qrepotranshistorychangedrepositoryactor';
-import { IActor, ActorECascadeGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
+import { IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
 import { IOperationHistory, OperationHistoryECascadeGraph, OperationHistoryESelect, QOperationHistory } from './qoperationhistory';
 export interface IRepositoryTransactionHistory {
     id: number;
@@ -58,10 +58,7 @@ export interface RepositoryTransactionHistoryEUpdateProperties extends IEntityUp
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepositoryTransactionHistoryECascadeGraph extends IEntityCascadeGraph {
-    transactionHistory?: TransactionHistoryECascadeGraph;
-    repository?: RepositoryECascadeGraph;
     changedRepositoryActors?: RepoTransHistoryChangedRepositoryActorECascadeGraph;
-    actor?: ActorECascadeGraph;
     operationHistory?: OperationHistoryECascadeGraph;
 }
 /**

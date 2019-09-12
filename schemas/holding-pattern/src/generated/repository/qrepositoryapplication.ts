@@ -133,7 +133,6 @@ export interface RepositoryApplicationEUpdateProperties
 export interface RepositoryApplicationECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	application?: ApplicationECascadeGraph;
 
 }
 

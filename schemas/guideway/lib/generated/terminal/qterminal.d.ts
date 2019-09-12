@@ -1,7 +1,7 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IUser, UserEOptionalId, UserESelect, QUserQRelation } from '../user/quser';
-import { ITerminalRepository, TerminalRepositoryESelect, QTerminalRepository } from './qterminalrepository';
-import { IAgtSharingMessage, AgtSharingMessageESelect, QAgtSharingMessage } from '../synchronization/qagtsharingmessage';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IUser, UserECascadeGraph, UserEOptionalId, UserESelect, QUserQRelation } from '../user/quser';
+import { ITerminalRepository, TerminalRepositoryECascadeGraph, TerminalRepositoryESelect, QTerminalRepository } from './qterminalrepository';
+import { IAgtSharingMessage, AgtSharingMessageECascadeGraph, AgtSharingMessageESelect, QAgtSharingMessage } from '../synchronization/qagtsharingmessage';
 export interface ITerminal {
     id: number;
     name?: string;
@@ -48,6 +48,14 @@ export interface TerminalEUpdateProperties extends IEntityUpdateProperties {
     lastPollConnectionDatetime?: number | IQNumberField;
     lastSseConnectionDatetime?: number | IQNumberField;
     user?: UserEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface TerminalECascadeGraph extends IEntityCascadeGraph {
+    user?: UserECascadeGraph;
+    terminalRepositories?: TerminalRepositoryECascadeGraph;
+    sharingMessages?: AgtSharingMessageECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

@@ -85,14 +85,22 @@ class IQEntityInterfaceBuilder {
         this.nonIdRelationBuilders.forEach((builder) => {
             nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`;
         });
-        const isRepositoryEntity = SSchemaBuilder_1.entityExtendsRepositoryEntity(this.entity);
+        const [isRepositoryEntity, isLocal] = SSchemaBuilder_1.entityExtendsRepositoryEntity(this.entity);
         let relationsForCascadeGraph = ``;
         if (!isRepositoryEntity) {
             this.idRelationBuilders.forEach((builder) => {
+                if (SSchemaBuilder_1.getManyToOneDecorator(builder.entityProperty)) {
+                    // Do NOT cascade @ManyToOne's
+                    return;
+                }
                 relationsForCascadeGraph += `\t${builder.buildInterfaceDefinition(false, true, true, true)}\n`;
             });
         }
         this.nonIdRelationBuilders.forEach((builder) => {
+            if (SSchemaBuilder_1.getManyToOneDecorator(builder.entityProperty)) {
+                // Do NOT cascade @ManyToOne's
+                return;
+            }
             relationsForCascadeGraph += `\t${builder.buildInterfaceDefinition(false, true, true, true)}\n`;
         });
         let transientProperties = ``;

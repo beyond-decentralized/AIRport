@@ -1,6 +1,6 @@
 import { IQDateField, IQEntity } from '@airport/air-control';
 import { IStageable, StageableECascadeGraph, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
-import { IUser, UserECascadeGraph, UserEOptionalId, UserESelect, QUserQRelation } from '@airport/travel-document-checkpoint';
+import { IUser, UserEOptionalId, UserESelect, QUserQRelation } from '@airport/travel-document-checkpoint';
 export interface IImmutableRow extends IStageable {
     createdAt?: Date;
     user?: IUser;
@@ -33,7 +33,6 @@ export interface ImmutableRowEUpdateProperties extends StageableEUpdatePropertie
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ImmutableRowECascadeGraph extends StageableECascadeGraph {
-    user?: UserECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

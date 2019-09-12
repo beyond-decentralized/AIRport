@@ -1,5 +1,6 @@
 import {
 	IDao,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -20,6 +21,7 @@ import {
 import {
 	IAgtRepositoryTransactionBlock,
 	AgtRepositoryTransactionBlockESelect,
+	AgtRepositoryTransactionBlockECascadeGraph,
 	AgtRepositoryTransactionBlockECreateColumns,
 	AgtRepositoryTransactionBlockECreateProperties,
 	AgtRepositoryTransactionBlockEUpdateColumns,
@@ -30,6 +32,7 @@ import {
 import {
 	IAgtSharingMessage,
 	AgtSharingMessageESelect,
+	AgtSharingMessageECascadeGraph,
 	AgtSharingMessageECreateColumns,
 	AgtSharingMessageECreateProperties,
 	AgtSharingMessageEUpdateColumns,
@@ -40,6 +43,7 @@ import {
 import {
 	IArchive,
 	ArchiveESelect,
+	ArchiveECascadeGraph,
 	ArchiveECreateColumns,
 	ArchiveECreateProperties,
 	ArchiveEUpdateColumns,
@@ -50,6 +54,7 @@ import {
 import {
 	IDailyArchiveLog,
 	DailyArchiveLogESelect,
+	DailyArchiveLogECascadeGraph,
 	DailyArchiveLogECreateColumns,
 	DailyArchiveLogECreateProperties,
 	DailyArchiveLogEUpdateColumns,
@@ -60,6 +65,7 @@ import {
 import {
 	IDailyTerminalSyncLog,
 	DailyTerminalSyncLogESelect,
+	DailyTerminalSyncLogECascadeGraph,
 	DailyTerminalSyncLogECreateColumns,
 	DailyTerminalSyncLogECreateProperties,
 	DailyTerminalSyncLogEUpdateColumns,
@@ -70,6 +76,7 @@ import {
 import {
 	IMonthlyArchiveLog,
 	MonthlyArchiveLogESelect,
+	MonthlyArchiveLogECascadeGraph,
 	MonthlyArchiveLogECreateColumns,
 	MonthlyArchiveLogECreateProperties,
 	MonthlyArchiveLogEUpdateColumns,
@@ -80,6 +87,7 @@ import {
 import {
 	IMonthlyTerminalSyncLog,
 	MonthlyTerminalSyncLogESelect,
+	MonthlyTerminalSyncLogECascadeGraph,
 	MonthlyTerminalSyncLogECreateColumns,
 	MonthlyTerminalSyncLogECreateProperties,
 	MonthlyTerminalSyncLogEUpdateColumns,
@@ -90,6 +98,7 @@ import {
 import {
 	IRepository,
 	RepositoryESelect,
+	RepositoryECascadeGraph,
 	RepositoryECreateColumns,
 	RepositoryECreateProperties,
 	RepositoryEUpdateColumns,
@@ -100,6 +109,7 @@ import {
 import {
 	IRepositoryArchive,
 	RepositoryArchiveESelect,
+	RepositoryArchiveECascadeGraph,
 	RepositoryArchiveECreateColumns,
 	RepositoryArchiveECreateProperties,
 	RepositoryArchiveEUpdateColumns,
@@ -110,6 +120,7 @@ import {
 import {
 	ISecurityAnswer,
 	SecurityAnswerESelect,
+	SecurityAnswerECascadeGraph,
 	SecurityAnswerECreateColumns,
 	SecurityAnswerECreateProperties,
 	SecurityAnswerEUpdateColumns,
@@ -120,6 +131,7 @@ import {
 import {
 	ISecurityQuestion,
 	SecurityQuestionESelect,
+	SecurityQuestionECascadeGraph,
 	SecurityQuestionECreateColumns,
 	SecurityQuestionECreateProperties,
 	SecurityQuestionEUpdateColumns,
@@ -130,6 +142,7 @@ import {
 import {
 	IServer,
 	ServerESelect,
+	ServerECascadeGraph,
 	ServerECreateColumns,
 	ServerECreateProperties,
 	ServerEUpdateColumns,
@@ -140,6 +153,7 @@ import {
 import {
 	IServerSyncLog,
 	ServerSyncLogESelect,
+	ServerSyncLogECascadeGraph,
 	ServerSyncLogECreateColumns,
 	ServerSyncLogECreateProperties,
 	ServerSyncLogEUpdateColumns,
@@ -150,6 +164,7 @@ import {
 import {
 	ISyncLog,
 	SyncLogESelect,
+	SyncLogECascadeGraph,
 	SyncLogECreateColumns,
 	SyncLogECreateProperties,
 	SyncLogEUpdateColumns,
@@ -160,6 +175,7 @@ import {
 import {
 	ITerminal,
 	TerminalESelect,
+	TerminalECascadeGraph,
 	TerminalECreateColumns,
 	TerminalECreateProperties,
 	TerminalEUpdateColumns,
@@ -170,6 +186,7 @@ import {
 import {
 	ITerminalRepository,
 	TerminalRepositoryESelect,
+	TerminalRepositoryECascadeGraph,
 	TerminalRepositoryECreateColumns,
 	TerminalRepositoryECreateProperties,
 	TerminalRepositoryEUpdateColumns,
@@ -180,6 +197,7 @@ import {
 import {
 	ITuningParameters,
 	TuningParametersESelect,
+	TuningParametersECascadeGraph,
 	TuningParametersECreateColumns,
 	TuningParametersECreateProperties,
 	TuningParametersEUpdateColumns,
@@ -190,6 +208,7 @@ import {
 import {
 	IUser,
 	UserESelect,
+	UserECascadeGraph,
 	UserECreateColumns,
 	UserECreateProperties,
 	UserEUpdateColumns,
@@ -200,6 +219,7 @@ import {
 import {
 	IUserRepository,
 	UserRepositoryESelect,
+	UserRepositoryECascadeGraph,
 	UserRepositoryECreateColumns,
 	UserRepositoryECreateProperties,
 	UserRepositoryEUpdateColumns,
@@ -215,6 +235,7 @@ export class SQDIDao<Entity,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Dao<Entity,
 		EntitySelect,
@@ -222,6 +243,7 @@ export class SQDIDao<Entity,
 		EntityUpdateColumns,
 		EntityUpdateProperties,
 		EntityId,
+		EntityCascadeGraph,
 		IQE> {
 
 	constructor(
@@ -233,174 +255,12 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseAgtRepositoryTransactionBlockDao
-  extends IDao<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateColumns, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, QAgtRepositoryTransactionBlock> {
+  extends IDao<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateColumns, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockECascadeGraph, QAgtRepositoryTransactionBlock> {
 }
 
 export class BaseAgtRepositoryTransactionBlockDao
-  extends SQDIDao<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateColumns, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, QAgtRepositoryTransactionBlock>
+  extends SQDIDao<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateColumns, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockECascadeGraph, QAgtRepositoryTransactionBlock>
 	implements IBaseAgtRepositoryTransactionBlockDao {
-
-	static diSet(): boolean {
-		return diSet(16)
-	}
-	
-	constructor() {
-		super(16)
-	}
-}
-
-
-export interface IBaseAgtSharingMessageDao
-  extends IDao<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateColumns, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, QAgtSharingMessage> {
-}
-
-export class BaseAgtSharingMessageDao
-  extends SQDIDao<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateColumns, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, QAgtSharingMessage>
-	implements IBaseAgtSharingMessageDao {
-
-	static diSet(): boolean {
-		return diSet(14)
-	}
-	
-	constructor() {
-		super(14)
-	}
-}
-
-
-export interface IBaseArchiveDao
-  extends IDao<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateColumns, ArchiveEUpdateProperties, ArchiveEId, QArchive> {
-}
-
-export class BaseArchiveDao
-  extends SQDIDao<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateColumns, ArchiveEUpdateProperties, ArchiveEId, QArchive>
-	implements IBaseArchiveDao {
-
-	static diSet(): boolean {
-		return diSet(0)
-	}
-	
-	constructor() {
-		super(0)
-	}
-}
-
-
-export interface IBaseDailyArchiveLogDao
-  extends IDao<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateColumns, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, QDailyArchiveLog> {
-}
-
-export class BaseDailyArchiveLogDao
-  extends SQDIDao<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateColumns, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, QDailyArchiveLog>
-	implements IBaseDailyArchiveLogDao {
-
-	static diSet(): boolean {
-		return diSet(18)
-	}
-	
-	constructor() {
-		super(18)
-	}
-}
-
-
-export interface IBaseDailyTerminalSyncLogDao
-  extends IDao<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateColumns, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, QDailyTerminalSyncLog> {
-}
-
-export class BaseDailyTerminalSyncLogDao
-  extends SQDIDao<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateColumns, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, QDailyTerminalSyncLog>
-	implements IBaseDailyTerminalSyncLogDao {
-
-	static diSet(): boolean {
-		return diSet(1)
-	}
-	
-	constructor() {
-		super(1)
-	}
-}
-
-
-export interface IBaseMonthlyArchiveLogDao
-  extends IDao<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateColumns, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, QMonthlyArchiveLog> {
-}
-
-export class BaseMonthlyArchiveLogDao
-  extends SQDIDao<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateColumns, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, QMonthlyArchiveLog>
-	implements IBaseMonthlyArchiveLogDao {
-
-	static diSet(): boolean {
-		return diSet(2)
-	}
-	
-	constructor() {
-		super(2)
-	}
-}
-
-
-export interface IBaseMonthlyTerminalSyncLogDao
-  extends IDao<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateColumns, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, QMonthlyTerminalSyncLog> {
-}
-
-export class BaseMonthlyTerminalSyncLogDao
-  extends SQDIDao<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateColumns, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, QMonthlyTerminalSyncLog>
-	implements IBaseMonthlyTerminalSyncLogDao {
-
-	static diSet(): boolean {
-		return diSet(3)
-	}
-	
-	constructor() {
-		super(3)
-	}
-}
-
-
-export interface IBaseRepositoryDao
-  extends IDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, QRepository> {
-}
-
-export class BaseRepositoryDao
-  extends SQDIDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, QRepository>
-	implements IBaseRepositoryDao {
-
-	static diSet(): boolean {
-		return diSet(17)
-	}
-	
-	constructor() {
-		super(17)
-	}
-}
-
-
-export interface IBaseRepositoryArchiveDao
-  extends IDao<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateColumns, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, QRepositoryArchive> {
-}
-
-export class BaseRepositoryArchiveDao
-  extends SQDIDao<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateColumns, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, QRepositoryArchive>
-	implements IBaseRepositoryArchiveDao {
-
-	static diSet(): boolean {
-		return diSet(4)
-	}
-	
-	constructor() {
-		super(4)
-	}
-}
-
-
-export interface IBaseSecurityAnswerDao
-  extends IDao<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateColumns, SecurityAnswerEUpdateProperties, SecurityAnswerEId, QSecurityAnswer> {
-}
-
-export class BaseSecurityAnswerDao
-  extends SQDIDao<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateColumns, SecurityAnswerEUpdateProperties, SecurityAnswerEId, QSecurityAnswer>
-	implements IBaseSecurityAnswerDao {
 
 	static diSet(): boolean {
 		return diSet(8)
@@ -412,31 +272,49 @@ export class BaseSecurityAnswerDao
 }
 
 
-export interface IBaseSecurityQuestionDao
-  extends IDao<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateColumns, SecurityQuestionEUpdateProperties, SecurityQuestionEId, QSecurityQuestion> {
+export interface IBaseAgtSharingMessageDao
+  extends IDao<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateColumns, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, AgtSharingMessageECascadeGraph, QAgtSharingMessage> {
 }
 
-export class BaseSecurityQuestionDao
-  extends SQDIDao<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateColumns, SecurityQuestionEUpdateProperties, SecurityQuestionEId, QSecurityQuestion>
-	implements IBaseSecurityQuestionDao {
+export class BaseAgtSharingMessageDao
+  extends SQDIDao<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateColumns, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, AgtSharingMessageECascadeGraph, QAgtSharingMessage>
+	implements IBaseAgtSharingMessageDao {
 
 	static diSet(): boolean {
-		return diSet(7)
+		return diSet(1)
 	}
 	
 	constructor() {
-		super(7)
+		super(1)
 	}
 }
 
 
-export interface IBaseServerDao
-  extends IDao<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateColumns, ServerEUpdateProperties, ServerEId, QServer> {
+export interface IBaseArchiveDao
+  extends IDao<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateColumns, ArchiveEUpdateProperties, ArchiveEId, ArchiveECascadeGraph, QArchive> {
 }
 
-export class BaseServerDao
-  extends SQDIDao<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateColumns, ServerEUpdateProperties, ServerEId, QServer>
-	implements IBaseServerDao {
+export class BaseArchiveDao
+  extends SQDIDao<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateColumns, ArchiveEUpdateProperties, ArchiveEId, ArchiveECascadeGraph, QArchive>
+	implements IBaseArchiveDao {
+
+	static diSet(): boolean {
+		return diSet(14)
+	}
+	
+	constructor() {
+		super(14)
+	}
+}
+
+
+export interface IBaseDailyArchiveLogDao
+  extends IDao<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateColumns, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, DailyArchiveLogECascadeGraph, QDailyArchiveLog> {
+}
+
+export class BaseDailyArchiveLogDao
+  extends SQDIDao<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateColumns, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, DailyArchiveLogECascadeGraph, QDailyArchiveLog>
+	implements IBaseDailyArchiveLogDao {
 
 	static diSet(): boolean {
 		return diSet(10)
@@ -448,31 +326,13 @@ export class BaseServerDao
 }
 
 
-export interface IBaseServerSyncLogDao
-  extends IDao<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateColumns, ServerSyncLogEUpdateProperties, ServerSyncLogEId, QServerSyncLog> {
+export interface IBaseDailyTerminalSyncLogDao
+  extends IDao<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateColumns, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, DailyTerminalSyncLogECascadeGraph, QDailyTerminalSyncLog> {
 }
 
-export class BaseServerSyncLogDao
-  extends SQDIDao<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateColumns, ServerSyncLogEUpdateProperties, ServerSyncLogEId, QServerSyncLog>
-	implements IBaseServerSyncLogDao {
-
-	static diSet(): boolean {
-		return diSet(9)
-	}
-	
-	constructor() {
-		super(9)
-	}
-}
-
-
-export interface IBaseSyncLogDao
-  extends IDao<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateColumns, SyncLogEUpdateProperties, SyncLogEId, QSyncLog> {
-}
-
-export class BaseSyncLogDao
-  extends SQDIDao<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateColumns, SyncLogEUpdateProperties, SyncLogEId, QSyncLog>
-	implements IBaseSyncLogDao {
+export class BaseDailyTerminalSyncLogDao
+  extends SQDIDao<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateColumns, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, DailyTerminalSyncLogECascadeGraph, QDailyTerminalSyncLog>
+	implements IBaseDailyTerminalSyncLogDao {
 
 	static diSet(): boolean {
 		return diSet(11)
@@ -484,31 +344,13 @@ export class BaseSyncLogDao
 }
 
 
-export interface IBaseTerminalDao
-  extends IDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, QTerminal> {
+export interface IBaseMonthlyArchiveLogDao
+  extends IDao<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateColumns, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, MonthlyArchiveLogECascadeGraph, QMonthlyArchiveLog> {
 }
 
-export class BaseTerminalDao
-  extends SQDIDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, QTerminal>
-	implements IBaseTerminalDao {
-
-	static diSet(): boolean {
-		return diSet(15)
-	}
-	
-	constructor() {
-		super(15)
-	}
-}
-
-
-export interface IBaseTerminalRepositoryDao
-  extends IDao<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateColumns, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, QTerminalRepository> {
-}
-
-export class BaseTerminalRepositoryDao
-  extends SQDIDao<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateColumns, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, QTerminalRepository>
-	implements IBaseTerminalRepositoryDao {
+export class BaseMonthlyArchiveLogDao
+  extends SQDIDao<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateColumns, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, MonthlyArchiveLogECascadeGraph, QMonthlyArchiveLog>
+	implements IBaseMonthlyArchiveLogDao {
 
 	static diSet(): boolean {
 		return diSet(12)
@@ -520,13 +362,13 @@ export class BaseTerminalRepositoryDao
 }
 
 
-export interface IBaseTuningParametersDao
-  extends IDao<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateColumns, TuningParametersEUpdateProperties, TuningParametersEId, QTuningParameters> {
+export interface IBaseMonthlyTerminalSyncLogDao
+  extends IDao<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateColumns, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, MonthlyTerminalSyncLogECascadeGraph, QMonthlyTerminalSyncLog> {
 }
 
-export class BaseTuningParametersDao
-  extends SQDIDao<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateColumns, TuningParametersEUpdateProperties, TuningParametersEId, QTuningParameters>
-	implements IBaseTuningParametersDao {
+export class BaseMonthlyTerminalSyncLogDao
+  extends SQDIDao<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateColumns, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, MonthlyTerminalSyncLogECascadeGraph, QMonthlyTerminalSyncLog>
+	implements IBaseMonthlyTerminalSyncLogDao {
 
 	static diSet(): boolean {
 		return diSet(13)
@@ -538,13 +380,157 @@ export class BaseTuningParametersDao
 }
 
 
-export interface IBaseUserDao
-  extends IDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, QUser> {
+export interface IBaseRepositoryDao
+  extends IDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryECascadeGraph, QRepository> {
 }
 
-export class BaseUserDao
-  extends SQDIDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, QUser>
-	implements IBaseUserDao {
+export class BaseRepositoryDao
+  extends SQDIDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryECascadeGraph, QRepository>
+	implements IBaseRepositoryDao {
+
+	static diSet(): boolean {
+		return diSet(9)
+	}
+	
+	constructor() {
+		super(9)
+	}
+}
+
+
+export interface IBaseRepositoryArchiveDao
+  extends IDao<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateColumns, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, RepositoryArchiveECascadeGraph, QRepositoryArchive> {
+}
+
+export class BaseRepositoryArchiveDao
+  extends SQDIDao<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateColumns, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, RepositoryArchiveECascadeGraph, QRepositoryArchive>
+	implements IBaseRepositoryArchiveDao {
+
+	static diSet(): boolean {
+		return diSet(15)
+	}
+	
+	constructor() {
+		super(15)
+	}
+}
+
+
+export interface IBaseSecurityAnswerDao
+  extends IDao<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateColumns, SecurityAnswerEUpdateProperties, SecurityAnswerEId, SecurityAnswerECascadeGraph, QSecurityAnswer> {
+}
+
+export class BaseSecurityAnswerDao
+  extends SQDIDao<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateColumns, SecurityAnswerEUpdateProperties, SecurityAnswerEId, SecurityAnswerECascadeGraph, QSecurityAnswer>
+	implements IBaseSecurityAnswerDao {
+
+	static diSet(): boolean {
+		return diSet(3)
+	}
+	
+	constructor() {
+		super(3)
+	}
+}
+
+
+export interface IBaseSecurityQuestionDao
+  extends IDao<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateColumns, SecurityQuestionEUpdateProperties, SecurityQuestionEId, SecurityQuestionECascadeGraph, QSecurityQuestion> {
+}
+
+export class BaseSecurityQuestionDao
+  extends SQDIDao<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateColumns, SecurityQuestionEUpdateProperties, SecurityQuestionEId, SecurityQuestionECascadeGraph, QSecurityQuestion>
+	implements IBaseSecurityQuestionDao {
+
+	static diSet(): boolean {
+		return diSet(2)
+	}
+	
+	constructor() {
+		super(2)
+	}
+}
+
+
+export interface IBaseServerDao
+  extends IDao<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateColumns, ServerEUpdateProperties, ServerEId, ServerECascadeGraph, QServer> {
+}
+
+export class BaseServerDao
+  extends SQDIDao<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateColumns, ServerEUpdateProperties, ServerEId, ServerECascadeGraph, QServer>
+	implements IBaseServerDao {
+
+	static diSet(): boolean {
+		return diSet(17)
+	}
+	
+	constructor() {
+		super(17)
+	}
+}
+
+
+export interface IBaseServerSyncLogDao
+  extends IDao<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateColumns, ServerSyncLogEUpdateProperties, ServerSyncLogEId, ServerSyncLogECascadeGraph, QServerSyncLog> {
+}
+
+export class BaseServerSyncLogDao
+  extends SQDIDao<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateColumns, ServerSyncLogEUpdateProperties, ServerSyncLogEId, ServerSyncLogECascadeGraph, QServerSyncLog>
+	implements IBaseServerSyncLogDao {
+
+	static diSet(): boolean {
+		return diSet(16)
+	}
+	
+	constructor() {
+		super(16)
+	}
+}
+
+
+export interface IBaseSyncLogDao
+  extends IDao<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateColumns, SyncLogEUpdateProperties, SyncLogEId, SyncLogECascadeGraph, QSyncLog> {
+}
+
+export class BaseSyncLogDao
+  extends SQDIDao<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateColumns, SyncLogEUpdateProperties, SyncLogEId, SyncLogECascadeGraph, QSyncLog>
+	implements IBaseSyncLogDao {
+
+	static diSet(): boolean {
+		return diSet(0)
+	}
+	
+	constructor() {
+		super(0)
+	}
+}
+
+
+export interface IBaseTerminalDao
+  extends IDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalECascadeGraph, QTerminal> {
+}
+
+export class BaseTerminalDao
+  extends SQDIDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalECascadeGraph, QTerminal>
+	implements IBaseTerminalDao {
+
+	static diSet(): boolean {
+		return diSet(7)
+	}
+	
+	constructor() {
+		super(7)
+	}
+}
+
+
+export interface IBaseTerminalRepositoryDao
+  extends IDao<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateColumns, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, TerminalRepositoryECascadeGraph, QTerminalRepository> {
+}
+
+export class BaseTerminalRepositoryDao
+  extends SQDIDao<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateColumns, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, TerminalRepositoryECascadeGraph, QTerminalRepository>
+	implements IBaseTerminalRepositoryDao {
 
 	static diSet(): boolean {
 		return diSet(6)
@@ -556,13 +542,31 @@ export class BaseUserDao
 }
 
 
-export interface IBaseUserRepositoryDao
-  extends IDao<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateColumns, UserRepositoryEUpdateProperties, UserRepositoryEId, QUserRepository> {
+export interface IBaseTuningParametersDao
+  extends IDao<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateColumns, TuningParametersEUpdateProperties, TuningParametersEId, TuningParametersECascadeGraph, QTuningParameters> {
 }
 
-export class BaseUserRepositoryDao
-  extends SQDIDao<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateColumns, UserRepositoryEUpdateProperties, UserRepositoryEId, QUserRepository>
-	implements IBaseUserRepositoryDao {
+export class BaseTuningParametersDao
+  extends SQDIDao<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateColumns, TuningParametersEUpdateProperties, TuningParametersEId, TuningParametersECascadeGraph, QTuningParameters>
+	implements IBaseTuningParametersDao {
+
+	static diSet(): boolean {
+		return diSet(18)
+	}
+	
+	constructor() {
+		super(18)
+	}
+}
+
+
+export interface IBaseUserDao
+  extends IDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserECascadeGraph, QUser> {
+}
+
+export class BaseUserDao
+  extends SQDIDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserECascadeGraph, QUser>
+	implements IBaseUserDao {
 
 	static diSet(): boolean {
 		return diSet(5)
@@ -570,5 +574,23 @@ export class BaseUserRepositoryDao
 	
 	constructor() {
 		super(5)
+	}
+}
+
+
+export interface IBaseUserRepositoryDao
+  extends IDao<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateColumns, UserRepositoryEUpdateProperties, UserRepositoryEId, UserRepositoryECascadeGraph, QUserRepository> {
+}
+
+export class BaseUserRepositoryDao
+  extends SQDIDao<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateColumns, UserRepositoryEUpdateProperties, UserRepositoryEId, UserRepositoryECascadeGraph, QUserRepository>
+	implements IBaseUserRepositoryDao {
+
+	static diSet(): boolean {
+		return diSet(4)
+	}
+	
+	constructor() {
+		super(4)
 	}
 }

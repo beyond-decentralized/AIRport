@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -103,6 +104,15 @@ export interface TuningParametersEUpdateProperties
 	parameterValue?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface TuningParametersECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

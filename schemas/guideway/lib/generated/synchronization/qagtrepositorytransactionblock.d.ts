@@ -1,9 +1,9 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
-import { ITerminalRepository, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
-import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
-import { IServer, ServerEOptionalId, ServerESelect, QServerQRelation } from '../server/qserver';
-import { ISyncLog, SyncLogESelect, QSyncLog } from './qsynclog';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IRepository, RepositoryECascadeGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
+import { ITerminalRepository, TerminalRepositoryECascadeGraph, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
+import { ITerminal, TerminalECascadeGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
+import { IServer, ServerECascadeGraph, ServerEOptionalId, ServerESelect, QServerQRelation } from '../server/qserver';
+import { ISyncLog, SyncLogECascadeGraph, SyncLogESelect, QSyncLog } from './qsynclog';
 export interface IAgtRepositoryTransactionBlock {
     id: number;
     archivingStatus?: number;
@@ -53,6 +53,16 @@ export interface AgtRepositoryTransactionBlockEUpdateProperties extends IEntityU
     repository?: RepositoryEOptionalId;
     terminal?: TerminalEOptionalId;
     archivingServer?: ServerEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface AgtRepositoryTransactionBlockECascadeGraph extends IEntityCascadeGraph {
+    repository?: RepositoryECascadeGraph;
+    terminalRepositories?: TerminalRepositoryECascadeGraph;
+    terminal?: TerminalECascadeGraph;
+    archivingServer?: ServerECascadeGraph;
+    syncLogs?: SyncLogECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

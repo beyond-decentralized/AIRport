@@ -33,4 +33,4 @@ TuningParameters = __decorate([
     air_control_1.Table({ name: "AGT_TUNING_PARAMETERS" })
 ], TuningParameters);
 exports.TuningParameters = TuningParameters;
-//# sourceMappingURL=tuningparameters.js.map
+//# sourceMappingURL=TuningParameters.js.map

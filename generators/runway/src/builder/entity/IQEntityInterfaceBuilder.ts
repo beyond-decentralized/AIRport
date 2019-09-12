@@ -1,13 +1,16 @@
-import {TypeOrParamDocEntry}           from '../../parser/DocEntry'
-import {EntityCandidate}               from '../../parser/EntityCandidate'
-import {addImportForType}              from '../../resolve/pathResolver'
-import {entityExtendsRepositoryEntity} from '../schema/SSchemaBuilder'
-import {IQBuilder}                     from './../QBuilder'
-import {QColumnBuilder}                from './QColumnBuilder'
-import {QEntityBuilder}                from './QEntityBuilder'
-import {QPropertyBuilder}              from './QPropertyBuilder'
-import {QRelationBuilder}              from './QRelationBuilder'
-import {QTransientBuilder}             from './QTransientBuilder'
+import {TypeOrParamDocEntry} from '../../parser/DocEntry'
+import {EntityCandidate}     from '../../parser/EntityCandidate'
+import {addImportForType}    from '../../resolve/pathResolver'
+import {
+	entityExtendsRepositoryEntity,
+	getManyToOneDecorator
+}                            from '../schema/SSchemaBuilder'
+import {IQBuilder}           from './../QBuilder'
+import {QColumnBuilder}      from './QColumnBuilder'
+import {QEntityBuilder}      from './QEntityBuilder'
+import {QPropertyBuilder}    from './QPropertyBuilder'
+import {QRelationBuilder}    from './QRelationBuilder'
+import {QTransientBuilder}   from './QTransientBuilder'
 
 /**
  * Created by Papa on 5/20/2016.
@@ -144,12 +147,17 @@ export class IQEntityInterfaceBuilder
 			nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`
 		})
 
-		const isRepositoryEntity     = entityExtendsRepositoryEntity(this.entity)
+		const [isRepositoryEntity, isLocal]
+			                           = entityExtendsRepositoryEntity(this.entity)
 		let relationsForCascadeGraph = ``
 		if (!isRepositoryEntity) {
 			this.idRelationBuilders.forEach((
 				builder: QRelationBuilder
 			) => {
+				if (getManyToOneDecorator(builder.entityProperty)) {
+					// Do NOT cascade @ManyToOne's
+					return
+				}
 				relationsForCascadeGraph += `\t${builder.buildInterfaceDefinition(
 					false, true, true, true)}\n`
 			})
@@ -158,6 +166,10 @@ export class IQEntityInterfaceBuilder
 		this.nonIdRelationBuilders.forEach((
 			builder: QRelationBuilder
 		) => {
+			if (getManyToOneDecorator(builder.entityProperty)) {
+				// Do NOT cascade @ManyToOne's
+				return
+			}
 			relationsForCascadeGraph += `\t${builder.buildInterfaceDefinition(
 				false, true, true, true)}\n`
 		})
