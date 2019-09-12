@@ -24,9 +24,9 @@ export declare abstract class OperationManager implements IOperationManager {
      * @param qEntity
      * @param entity
      */
-    protected performCreate<E, EntitySelect>(dbEntity: DbEntity, entity: E, createdEntityMap: {
+    protected performCreate<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, createdEntityMap: {
         [entityId: string]: any;
-    }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, idData?: EntityIdData, cascadeOverwrite?: CascadeOverwrite | EntitySelect): Promise<number>;
+    }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, idData?: EntityIdData, cascadeOverwrite?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
     /**
      * Transactional context must have been started by the time this method is called.
      *

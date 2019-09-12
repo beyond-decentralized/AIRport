@@ -51,7 +51,7 @@ class DatabaseFacade extends OperationManager_1.OperationManager {
             return 0;
         }
         const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.FIELD_UTILS, air_control_1.Q_METADATA_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, air_control_1.SCHEMA_UTILS, ground_control_1.TRANS_CONNECTOR, air_control_1.UPDATE_CACHE);
-        return await transactional_1.transactional(async () => await this.performCreate(dbEntity, entity, [], airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache));
+        return await transactional_1.transactional(async () => await this.performCreate(dbEntity, entity, [], airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, null, cascadeGraph));
     }
     async bulkCreate(dbEntity, entities, checkIfProcessed = true, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT) {
         if (!entities || !entities.length) {

@@ -102,10 +102,10 @@ export class DatabaseFacade
 			name, url, platform, platformConfig, distributionStrategy)
 	}
 
-	async create<E, EntitySelect>(
+	async create<E, EntityCascadeGraph>(
 		dbEntity: DbEntity,
 		entity: E,
-		cascadeGraph?: EntitySelect
+		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
 	): Promise<number> {
 		if (!entity) {
 			return 0
@@ -121,15 +121,16 @@ export class DatabaseFacade
 		return await transactional(async () =>
 			await this.performCreate(dbEntity, entity, [],
 				airDb, fieldUtils, metadataUtils, queryFacade,
-				queryUtils, schemaUtils, transConnector, updateCache)
+				queryUtils, schemaUtils, transConnector, updateCache,
+				null, cascadeGraph)
 		)
 	}
 
-	async bulkCreate<E, EntitySelect>(
+	async bulkCreate<E, EntityCascadeGraph>(
 		dbEntity: DbEntity,
 		entities: E[],
 		checkIfProcessed: boolean          = true,
-		cascadeOverwrite: CascadeOverwrite | EntitySelect  = CascadeOverwrite.DEFAULT,
+		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph  = CascadeOverwrite.DEFAULT,
 	): Promise<number> {
 		if (!entities || !entities.length) {
 			return 0

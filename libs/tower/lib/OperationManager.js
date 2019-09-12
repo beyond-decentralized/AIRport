@@ -81,6 +81,9 @@ class OperationManager {
                             continue;
                         case ground_control_1.EntityRelationType.ONE_TO_MANY:
                             this.assertOneToManyIsArray(newValue);
+                            WORK;
+                            HERE;
+                            NEXT;
                             switch (cascadeOverwrite) {
                                 case ground_control_1.CascadeOverwrite.NEVER:
                                     continue;

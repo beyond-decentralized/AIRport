@@ -8,8 +8,8 @@ import { OperationManager } from './OperationManager';
 export declare class DatabaseFacade extends OperationManager implements IDatabaseFacade {
     name: string;
     addRepository(name: string, url?: string, platform?: PlatformType, platformConfig?: string, distributionStrategy?: DistributionStrategy): Promise<number>;
-    create<E, EntitySelect>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntitySelect): Promise<number>;
-    bulkCreate<E, EntitySelect>(dbEntity: DbEntity, entities: E[], checkIfProcessed?: boolean, cascadeOverwrite?: CascadeOverwrite | EntitySelect): Promise<number>;
+    create<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    bulkCreate<E, EntityCascadeGraph>(dbEntity: DbEntity, entities: E[], checkIfProcessed?: boolean, cascadeOverwrite?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }): Promise<number>;

@@ -30,7 +30,7 @@ class EntityDatabaseFacade {
     // ...entities) }
     async create(entity, cascadeGraph) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
-        return await dbFacade.create(this.dbEntity, entity);
+        return await dbFacade.create(this.dbEntity, entity, cascadeGraph);
     }
     async bulkCreate(entities, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT, checkIfProcessed = true) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
@@ -54,7 +54,7 @@ class EntityDatabaseFacade {
     }
     async update(entity, cascadeGraph) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
-        return await dbFacade.update(this.dbEntity, entity);
+        return await dbFacade.update(this.dbEntity, entity, cascadeGraph);
     }
     async updateColumnsWhere(rawUpdateColumns) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
@@ -66,7 +66,7 @@ class EntityDatabaseFacade {
     }
     async delete(entity, cascadeGraph) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
-        return await dbFacade.delete(this.dbEntity, entity);
+        return await dbFacade.delete(this.dbEntity, entity, cascadeGraph);
     }
     async deleteWhere(rawDelete) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
@@ -74,7 +74,7 @@ class EntityDatabaseFacade {
     }
     async save(entity, cascadeGraph) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
-        return await dbFacade.save(this.dbEntity, entity);
+        return await dbFacade.save(this.dbEntity, entity, cascadeGraph);
     }
 }
 exports.EntityDatabaseFacade = EntityDatabaseFacade;

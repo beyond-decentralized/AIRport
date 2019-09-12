@@ -97,7 +97,7 @@ export abstract class OperationManager
 	 * @param qEntity
 	 * @param entity
 	 */
-	protected async performCreate<E, EntitySelect>(
+	protected async performCreate<E, EntityCascadeGraph>(
 		dbEntity: DbEntity,
 		entity: E,
 		createdEntityMap: { [entityId: string]: any }[][],
@@ -110,7 +110,7 @@ export abstract class OperationManager
 		transConnector: ITransactionalConnector,
 		updateCache: IUpdateCache,
 		idData?: EntityIdData,
-		cascadeOverwrite: CascadeOverwrite | EntitySelect = CascadeOverwrite.DEFAULT
+		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
 	): Promise<number> {
 		let result = await this.internalCreate(dbEntity, [entity],
 			createdEntityMap, !idData,
@@ -159,7 +159,7 @@ export abstract class OperationManager
 		return result.numberOfAffectedRecords
 	}
 
-	private async internalCreate<E, EntitySelect>(
+	private async internalCreate<E, EntityCascadeGraph>(
 		dbEntity: DbEntity,
 		entities: E[],
 		createdEntityMap: { [entityId: string]: any }[][],
@@ -171,7 +171,7 @@ export abstract class OperationManager
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
 		transConnector: ITransactionalConnector,
-		cascadeOverwrite: CascadeOverwrite | EntitySelect,
+		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph,
 		ensureGeneratedValues?: boolean
 	): Promise<ResultWithCascade> {
 		const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
@@ -227,6 +227,7 @@ export abstract class OperationManager
 							continue
 						case EntityRelationType.ONE_TO_MANY:
 							this.assertOneToManyIsArray(newValue)
+							WORK HERE NEXT
 							switch (cascadeOverwrite) {
 								case CascadeOverwrite.NEVER:
 									continue
