@@ -1,5 +1,6 @@
 import {
 	IDao,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -20,6 +21,7 @@ import {
 import {
 	IApplication,
 	ApplicationESelect,
+	ApplicationECascadeGraph,
 	ApplicationECreateColumns,
 	ApplicationECreateProperties,
 	ApplicationEUpdateColumns,
@@ -30,6 +32,7 @@ import {
 import {
 	IApplicationPackage,
 	ApplicationPackageESelect,
+	ApplicationPackageECascadeGraph,
 	ApplicationPackageECreateColumns,
 	ApplicationPackageECreateProperties,
 	ApplicationPackageEUpdateColumns,
@@ -40,6 +43,7 @@ import {
 import {
 	IDomain,
 	DomainESelect,
+	DomainECascadeGraph,
 	DomainECreateColumns,
 	DomainECreateProperties,
 	DomainEUpdateColumns,
@@ -50,6 +54,7 @@ import {
 import {
 	IPackage,
 	PackageESelect,
+	PackageECascadeGraph,
 	PackageECreateColumns,
 	PackageECreateProperties,
 	PackageEUpdateColumns,
@@ -60,6 +65,7 @@ import {
 import {
 	IPackagedUnit,
 	PackagedUnitESelect,
+	PackagedUnitECascadeGraph,
 	PackagedUnitECreateColumns,
 	PackagedUnitECreateProperties,
 	PackagedUnitEUpdateColumns,
@@ -75,6 +81,7 @@ export class SQDIDao<Entity,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Dao<Entity,
 		EntitySelect,
@@ -82,6 +89,7 @@ export class SQDIDao<Entity,
 		EntityUpdateColumns,
 		EntityUpdateProperties,
 		EntityId,
+		EntityCascadeGraph,
 		IQE> {
 
 	constructor(
@@ -93,11 +101,11 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseApplicationDao
-  extends IDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, QApplication> {
+  extends IDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationECascadeGraph, QApplication> {
 }
 
 export class BaseApplicationDao
-  extends SQDIDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, QApplication>
+  extends SQDIDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationECascadeGraph, QApplication>
 	implements IBaseApplicationDao {
 
 	static diSet(): boolean {
@@ -111,11 +119,11 @@ export class BaseApplicationDao
 
 
 export interface IBaseApplicationPackageDao
-  extends IDao<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateColumns, ApplicationPackageEUpdateProperties, ApplicationPackageEId, QApplicationPackage> {
+  extends IDao<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateColumns, ApplicationPackageEUpdateProperties, ApplicationPackageEId, ApplicationPackageECascadeGraph, QApplicationPackage> {
 }
 
 export class BaseApplicationPackageDao
-  extends SQDIDao<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateColumns, ApplicationPackageEUpdateProperties, ApplicationPackageEId, QApplicationPackage>
+  extends SQDIDao<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateColumns, ApplicationPackageEUpdateProperties, ApplicationPackageEId, ApplicationPackageECascadeGraph, QApplicationPackage>
 	implements IBaseApplicationPackageDao {
 
 	static diSet(): boolean {
@@ -129,11 +137,11 @@ export class BaseApplicationPackageDao
 
 
 export interface IBaseDomainDao
-  extends IDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, QDomain> {
+  extends IDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainECascadeGraph, QDomain> {
 }
 
 export class BaseDomainDao
-  extends SQDIDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, QDomain>
+  extends SQDIDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainECascadeGraph, QDomain>
 	implements IBaseDomainDao {
 
 	static diSet(): boolean {
@@ -147,11 +155,11 @@ export class BaseDomainDao
 
 
 export interface IBasePackageDao
-  extends IDao<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateColumns, PackageEUpdateProperties, PackageEId, QPackage> {
+  extends IDao<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateColumns, PackageEUpdateProperties, PackageEId, PackageECascadeGraph, QPackage> {
 }
 
 export class BasePackageDao
-  extends SQDIDao<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateColumns, PackageEUpdateProperties, PackageEId, QPackage>
+  extends SQDIDao<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateColumns, PackageEUpdateProperties, PackageEId, PackageECascadeGraph, QPackage>
 	implements IBasePackageDao {
 
 	static diSet(): boolean {
@@ -165,11 +173,11 @@ export class BasePackageDao
 
 
 export interface IBasePackagedUnitDao
-  extends IDao<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateColumns, PackagedUnitEUpdateProperties, PackagedUnitEId, QPackagedUnit> {
+  extends IDao<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateColumns, PackagedUnitEUpdateProperties, PackagedUnitEId, PackagedUnitECascadeGraph, QPackagedUnit> {
 }
 
 export class BasePackagedUnitDao
-  extends SQDIDao<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateColumns, PackagedUnitEUpdateProperties, PackagedUnitEId, QPackagedUnit>
+  extends SQDIDao<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateColumns, PackagedUnitEUpdateProperties, PackagedUnitEId, PackagedUnitECascadeGraph, QPackagedUnit>
 	implements IBasePackagedUnitDao {
 
 	static diSet(): boolean {

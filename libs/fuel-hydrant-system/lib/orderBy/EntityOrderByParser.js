@@ -57,12 +57,13 @@ class EntityOrderByParser extends AbstractEntityOrderByParser_1.AbstractEntityOr
                 if (parentNodeFound) {
                     return true;
                 }
-                const orderByDbEntity = airDb.schemas[orderByField.si][orderByField.ti];
+                const orderByDbEntity = airDb.schemas[orderByField.si]
+                    .currentVersion.entities[orderByField.ti];
                 const dbColumn = orderByDbEntity.columns[orderByField.ci];
                 if (this.isForParentNode(currentJoinNode, orderByField)) {
-                    throw `Found out of order entry in Order By 
+                    throw new Error(`Found out of order entry in Order By 
 					[${orderByDbEntity.schemaVersion.schema.name} - ${orderByDbEntity.name}.${dbColumn.name}].
-					Entries must be ordered hierarchically, in breadth-first order.`;
+					Entries must be ordered hierarchically, in breadth-first order.`);
                 }
                 if (orderByField.si !== dbEntity.schemaVersion.schema.index || orderByField.ti !== dbEntity.index) {
                     return true;
@@ -87,7 +88,19 @@ class EntityOrderByParser extends AbstractEntityOrderByParser_1.AbstractEntityOr
                             idColumnsToSortBy.push(dbColumn.name);
                         }
                     }
+                    if (!currentJoinNode.childNodes.length) {
+                        continue;
+                    }
                     const dbRelation = dbProperty.relation[0];
+                    const dbEntity = dbRelation.relationEntity;
+                    const matchingNodes = currentJoinNode.childNodes.filter(childNode => {
+                        const jsonRelation = childNode.jsonRelation;
+                        return jsonRelation.si === dbEntity.schemaVersion.id
+                            && jsonRelation.ti === dbEntity.index;
+                    });
+                    if (!matchingNodes.length) {
+                        return;
+                    }
                     selectFragmentQueue.push(this.rootSelectClauseFragment[propertyName]);
                     const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation);
                     joinNodeQueue.push(childJoinNode);
@@ -105,7 +118,9 @@ class EntityOrderByParser extends AbstractEntityOrderByParser_1.AbstractEntityOr
             orderByFragments = orderByFragments.concat(entityOrderByFragments);
         }
         if (orderBy.length) {
-            throw `Found entries in Order By for tables not found in select clause.  Entries must be ordered hierarchically, in breadth-first order.`;
+            throw new Error(`
+			Found entries in Order By for tables not found in select clause.  
+			Entries must be ordered hierarchically, in breadth-first order.`);
         }
         return orderByFragments.join(', ');
     }

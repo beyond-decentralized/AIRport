@@ -37,7 +37,6 @@ __export(require("./sql/TreeSQLQuery"));
 __export(require("./store/ActiveQueries"));
 __export(require("./store/IdGenerator"));
 __export(require("./store/RecordState"));
-__export(require("./store/SequenceGenerator"));
 __export(require("./store/SqlDriver"));
 __export(require("./store/Store"));
 __export(require("./validation/Validator"));

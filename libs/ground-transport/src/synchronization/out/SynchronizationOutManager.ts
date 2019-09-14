@@ -198,13 +198,12 @@ export class SynchronizationOutManager
 			const inactiveSharingNodeIds: SharingNodeId[] = Array.from(
 				syncStatusRepoTransBlockIdsBySharingNodeId.keys())
 			// Keep the RTB Sync Status in Requesting and update the SharingNode status
-			await (await sharingNodeDao.updateIsActive(inactiveSharingNodeIds, false)
+			await sharingNodeDao.updateIsActive(inactiveSharingNodeIds, false)
 
-				// TODO: add keep alive requests
+			// TODO: add keep alive requests
 
-				// Remove inactive Sharing Nodes from further message processing
-				for (const inactiveSharingNodeId of inactiveSharingNodeIds)
-			{
+			// Remove inactive Sharing Nodes from further message processing
+			for (const inactiveSharingNodeId of inactiveSharingNodeIds) {
 				sharingNodeMap.delete(inactiveSharingNodeId)
 			}
 		}

@@ -1,6 +1,6 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IUserTerminal, UserTerminalESelect, QUserTerminal } from './quserterminal';
-import { IUserTerminalAgt, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IUserTerminal, UserTerminalECascadeGraph, UserTerminalESelect, QUserTerminal } from './quserterminal';
+import { IUserTerminalAgt, UserTerminalAgtECascadeGraph, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
 export interface IUser {
     id: number;
     uniqueId?: string;
@@ -44,6 +44,13 @@ export interface UserEUpdateProperties extends IEntityUpdateProperties {
     lastName?: string | IQStringField;
     middleName?: string | IQStringField;
     phone?: string | IQStringField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface UserECascadeGraph extends IEntityCascadeGraph {
+    userTerminal?: UserTerminalECascadeGraph;
+    userTerminalAgts?: UserTerminalAgtECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

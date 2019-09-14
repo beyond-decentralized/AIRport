@@ -20,19 +20,19 @@ class BaseSequenceDao extends SQDIDao {
 exports.BaseSequenceDao = BaseSequenceDao;
 class BaseSystemWideOperationIdDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.diSet(1);
+        return qSchema_1.diSet(2);
     }
     constructor() {
-        super(1);
+        super(2);
     }
 }
 exports.BaseSystemWideOperationIdDao = BaseSystemWideOperationIdDao;
 class BaseTerminalRunDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.diSet(2);
+        return qSchema_1.diSet(1);
     }
     constructor() {
-        super(2);
+        super(1);
     }
 }
 exports.BaseTerminalRunDao = BaseTerminalRunDao;

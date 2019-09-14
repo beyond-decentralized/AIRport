@@ -136,7 +136,6 @@ export interface ServerSyncLogEUpdateProperties
 export interface ServerSyncLogECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	server?: ServerECascadeGraph;
 
 }
 

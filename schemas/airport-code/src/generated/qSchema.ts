@@ -12,11 +12,11 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { Sequence } from '../ddl/Sequence';
+import { Sequence } from '../ddl/sequence';
 import { QSequence } from './qsequence';
-import { SystemWideOperationId } from '../ddl/SystemWideOperationId';
+import { SystemWideOperationId } from '../ddl/systemwideoperationid';
 import { QSystemWideOperationId } from './qsystemwideoperationid';
-import { TerminalRun } from '../ddl/TerminalRun';
+import { TerminalRun } from '../ddl/terminalrun';
 import { QTerminalRun } from './qterminalrun';
 
 export interface LocalQSchema extends AirportQSchema {

@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISynchronizationConflict, SynchronizationConflictEId, SynchronizationConflictEOptionalId, SynchronizationConflictESelect, QSynchronizationConflictQId, QSynchronizationConflictQRelation } from './qsynchronizationconflict';
 export interface ISynchronizationConflictValues {
     columnIndex: number;
@@ -28,6 +28,11 @@ export interface SynchronizationConflictValuesEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SynchronizationConflictValuesEUpdateProperties extends IEntityUpdateProperties {
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SynchronizationConflictValuesECascadeGraph extends IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

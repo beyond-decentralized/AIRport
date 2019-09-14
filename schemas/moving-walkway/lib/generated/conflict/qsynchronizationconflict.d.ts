@@ -1,6 +1,6 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IRecordHistory, RecordHistoryEOptionalId, RecordHistoryESelect, QRecordHistoryQRelation } from '@airport/holding-pattern';
-import { ISynchronizationConflictValues, SynchronizationConflictValuesESelect, QSynchronizationConflictValues } from './qsynchronizationconflictvalues';
+import { ISynchronizationConflictValues, SynchronizationConflictValuesECascadeGraph, SynchronizationConflictValuesESelect, QSynchronizationConflictValues } from './qsynchronizationconflictvalues';
 export interface ISynchronizationConflict {
     id: number;
     type?: number;
@@ -39,6 +39,12 @@ export interface SynchronizationConflictEUpdateProperties extends IEntityUpdateP
     repository?: RepositoryEOptionalId;
     overwrittenRecordHistory?: RecordHistoryEOptionalId;
     overwritingRecordHistory?: RecordHistoryEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SynchronizationConflictECascadeGraph extends IEntityCascadeGraph {
+    values?: SynchronizationConflictValuesECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

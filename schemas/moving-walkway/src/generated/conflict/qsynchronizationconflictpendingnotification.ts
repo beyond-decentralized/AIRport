@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	ISynchronizationConflict,
+	SynchronizationConflictECascadeGraph,
 	SynchronizationConflictEId,
 	SynchronizationConflictEOptionalId,
 	SynchronizationConflictEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './qsynchronizationconflict';
 import {
 	IActor,
+	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -122,6 +125,15 @@ export interface SynchronizationConflictPendingNotificationEUpdateProperties
 	acknowledged?: boolean | IQBooleanField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SynchronizationConflictPendingNotificationECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

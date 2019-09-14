@@ -1,5 +1,6 @@
 import {
 	IDao,
+	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
@@ -20,6 +21,7 @@ import {
 import {
 	ILogEntry,
 	LogEntryESelect,
+	LogEntryECascadeGraph,
 	LogEntryECreateColumns,
 	LogEntryECreateProperties,
 	LogEntryEUpdateColumns,
@@ -30,6 +32,7 @@ import {
 import {
 	ILogEntryType,
 	LogEntryTypeESelect,
+	LogEntryTypeECascadeGraph,
 	LogEntryTypeECreateColumns,
 	LogEntryTypeECreateProperties,
 	LogEntryTypeEUpdateColumns,
@@ -40,6 +43,7 @@ import {
 import {
 	ILogEntryValue,
 	LogEntryValueESelect,
+	LogEntryValueECascadeGraph,
 	LogEntryValueECreateColumns,
 	LogEntryValueECreateProperties,
 	LogEntryValueEUpdateColumns,
@@ -50,6 +54,7 @@ import {
 import {
 	ILoggedError,
 	LoggedErrorESelect,
+	LoggedErrorECascadeGraph,
 	LoggedErrorECreateColumns,
 	LoggedErrorECreateProperties,
 	LoggedErrorEUpdateColumns,
@@ -60,6 +65,7 @@ import {
 import {
 	ILoggedErrorStackTrace,
 	LoggedErrorStackTraceESelect,
+	LoggedErrorStackTraceECascadeGraph,
 	LoggedErrorStackTraceECreateColumns,
 	LoggedErrorStackTraceECreateProperties,
 	LoggedErrorStackTraceEUpdateColumns,
@@ -75,6 +81,7 @@ export class SQDIDao<Entity,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
+	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Dao<Entity,
 		EntitySelect,
@@ -82,6 +89,7 @@ export class SQDIDao<Entity,
 		EntityUpdateColumns,
 		EntityUpdateProperties,
 		EntityId,
+		EntityCascadeGraph,
 		IQE> {
 
 	constructor(
@@ -93,11 +101,11 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseLogEntryDao
-  extends IDao<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateColumns, LogEntryEUpdateProperties, LogEntryEId, QLogEntry> {
+  extends IDao<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateColumns, LogEntryEUpdateProperties, LogEntryEId, LogEntryECascadeGraph, QLogEntry> {
 }
 
 export class BaseLogEntryDao
-  extends SQDIDao<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateColumns, LogEntryEUpdateProperties, LogEntryEId, QLogEntry>
+  extends SQDIDao<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateColumns, LogEntryEUpdateProperties, LogEntryEId, LogEntryECascadeGraph, QLogEntry>
 	implements IBaseLogEntryDao {
 
 	static diSet(): boolean {
@@ -111,11 +119,11 @@ export class BaseLogEntryDao
 
 
 export interface IBaseLogEntryTypeDao
-  extends IDao<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateColumns, LogEntryTypeEUpdateProperties, LogEntryTypeEId, QLogEntryType> {
+  extends IDao<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateColumns, LogEntryTypeEUpdateProperties, LogEntryTypeEId, LogEntryTypeECascadeGraph, QLogEntryType> {
 }
 
 export class BaseLogEntryTypeDao
-  extends SQDIDao<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateColumns, LogEntryTypeEUpdateProperties, LogEntryTypeEId, QLogEntryType>
+  extends SQDIDao<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateColumns, LogEntryTypeEUpdateProperties, LogEntryTypeEId, LogEntryTypeECascadeGraph, QLogEntryType>
 	implements IBaseLogEntryTypeDao {
 
 	static diSet(): boolean {
@@ -129,11 +137,11 @@ export class BaseLogEntryTypeDao
 
 
 export interface IBaseLogEntryValueDao
-  extends IDao<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateColumns, LogEntryValueEUpdateProperties, LogEntryValueEId, QLogEntryValue> {
+  extends IDao<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateColumns, LogEntryValueEUpdateProperties, LogEntryValueEId, LogEntryValueECascadeGraph, QLogEntryValue> {
 }
 
 export class BaseLogEntryValueDao
-  extends SQDIDao<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateColumns, LogEntryValueEUpdateProperties, LogEntryValueEId, QLogEntryValue>
+  extends SQDIDao<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateColumns, LogEntryValueEUpdateProperties, LogEntryValueEId, LogEntryValueECascadeGraph, QLogEntryValue>
 	implements IBaseLogEntryValueDao {
 
 	static diSet(): boolean {
@@ -147,11 +155,11 @@ export class BaseLogEntryValueDao
 
 
 export interface IBaseLoggedErrorDao
-  extends IDao<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateColumns, LoggedErrorEUpdateProperties, LoggedErrorEId, QLoggedError> {
+  extends IDao<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateColumns, LoggedErrorEUpdateProperties, LoggedErrorEId, LoggedErrorECascadeGraph, QLoggedError> {
 }
 
 export class BaseLoggedErrorDao
-  extends SQDIDao<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateColumns, LoggedErrorEUpdateProperties, LoggedErrorEId, QLoggedError>
+  extends SQDIDao<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateColumns, LoggedErrorEUpdateProperties, LoggedErrorEId, LoggedErrorECascadeGraph, QLoggedError>
 	implements IBaseLoggedErrorDao {
 
 	static diSet(): boolean {
@@ -165,11 +173,11 @@ export class BaseLoggedErrorDao
 
 
 export interface IBaseLoggedErrorStackTraceDao
-  extends IDao<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateColumns, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, QLoggedErrorStackTrace> {
+  extends IDao<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateColumns, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, LoggedErrorStackTraceECascadeGraph, QLoggedErrorStackTrace> {
 }
 
 export class BaseLoggedErrorStackTraceDao
-  extends SQDIDao<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateColumns, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, QLoggedErrorStackTrace>
+  extends SQDIDao<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateColumns, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, LoggedErrorStackTraceECascadeGraph, QLoggedErrorStackTrace>
 	implements IBaseLoggedErrorStackTraceDao {
 
 	static diSet(): boolean {

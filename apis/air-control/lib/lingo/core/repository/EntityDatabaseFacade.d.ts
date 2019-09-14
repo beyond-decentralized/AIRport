@@ -95,9 +95,11 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
     /**
      * Deletes the provided entity in the db.
      *
+     * NOTE: Delete cascading is done on the server, no input is needed
+     *
      * @return Number of records deleted (1 or 0)
      */
-    delete(entity: EntityId, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    delete(entity: EntityId): Promise<number>;
     /**
      * Deletes this entity type based on an DELETE WHERE Query.
      *

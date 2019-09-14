@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IUser,
+	UserECascadeGraph,
 	UserEId,
 	UserEOptionalId,
 	UserEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './quser';
 import {
 	ITerminal,
+	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -42,6 +45,7 @@ import {
 } from './qterminal';
 import {
 	IAgt,
+	AgtECascadeGraph,
 	AgtEId,
 	AgtEOptionalId,
 	AgtEUpdateProperties,
@@ -52,6 +56,7 @@ import {
 } from './qagt';
 import {
 	ITerminalAgt,
+	TerminalAgtECascadeGraph,
 	TerminalAgtEId,
 	TerminalAgtEOptionalId,
 	TerminalAgtEUpdateProperties,
@@ -152,6 +157,15 @@ export interface UserTerminalAgtEUpdateProperties
 	terminal?: TerminalEOptionalId;
 	agt?: AgtEOptionalId;
 	terminalAgt?: TerminalAgtEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface UserTerminalAgtECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	ISharingNode,
+	SharingNodeECascadeGraph,
 	SharingNodeEId,
 	SharingNodeEOptionalId,
 	SharingNodeEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './qsharingnode';
 import {
 	IRepository,
+	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -128,6 +131,15 @@ export interface SharingNodeRepositoryEUpdateProperties
 	repositorySyncStatus?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SharingNodeRepositoryECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

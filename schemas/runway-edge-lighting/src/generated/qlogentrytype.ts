@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IApplicationPackage,
+	ApplicationPackageECascadeGraph,
 	ApplicationPackageEId,
 	ApplicationPackageEOptionalId,
 	ApplicationPackageEUpdateProperties,
@@ -30,6 +32,7 @@ import {
 	QApplicationPackageQId,
 	QApplicationPackageQRelation,
 	IPackagedUnit,
+	PackagedUnitECascadeGraph,
 	PackagedUnitEId,
 	PackagedUnitEOptionalId,
 	PackagedUnitEUpdateProperties,
@@ -40,6 +43,7 @@ import {
 } from '@airport/territory';
 import {
 	ILogEntry,
+	LogEntryECascadeGraph,
 	LogEntryEId,
 	LogEntryEOptionalId,
 	LogEntryEUpdateProperties,
@@ -136,6 +140,16 @@ export interface LogEntryTypeEUpdateProperties
 	// Non-Id Relations - ids only & no OneToMany's
 	applicationPackage?: ApplicationPackageEOptionalId;
 	packagedUnit?: PackagedUnitEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface LogEntryTypeECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	logEntries?: LogEntryECascadeGraph;
 
 }
 

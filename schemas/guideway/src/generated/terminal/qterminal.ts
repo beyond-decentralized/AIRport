@@ -159,7 +159,6 @@ export interface TerminalEUpdateProperties
 export interface TerminalECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	user?: UserECascadeGraph;
 	terminalRepositories?: TerminalRepositoryECascadeGraph;
 	sharingMessages?: AgtSharingMessageECascadeGraph;
 

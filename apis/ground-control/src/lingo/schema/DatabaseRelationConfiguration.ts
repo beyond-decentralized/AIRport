@@ -56,10 +56,12 @@ export enum CascadeType {
 	// DETACH,
 	// Cascade merge is not implemented because there is no session
 	// MERGE,
+	CREATE, // New to Airport
 	PERSIST, // Cascade on create and update operations
 	// Cascade refresh is not implemented because there is no session
 	// REFRESH,
-	REMOVE // Cascade on remove operation
+	REMOVE, // Cascade on remove operation - implemented in software for Repo Entities
+	UPDATE // New to Airport
 }
 
 export enum CascadeOverwrite {

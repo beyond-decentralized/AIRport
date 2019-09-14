@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	ISynchronizationConflict,
+	SynchronizationConflictECascadeGraph,
 	SynchronizationConflictEId,
 	SynchronizationConflictEOptionalId,
 	SynchronizationConflictEUpdateProperties,
@@ -108,6 +110,15 @@ export interface SynchronizationConflictValuesEUpdateProperties
 	// Non-Id Properties
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SynchronizationConflictValuesECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

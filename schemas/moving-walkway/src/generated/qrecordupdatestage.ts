@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	ISchemaVersion,
+	SchemaVersionECascadeGraph,
 	SchemaVersionEId,
 	SchemaVersionEOptionalId,
 	SchemaVersionEUpdateProperties,
@@ -30,6 +32,7 @@ import {
 	QSchemaVersionQId,
 	QSchemaVersionQRelation,
 	ISchemaEntity,
+	SchemaEntityECascadeGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
 	SchemaEntityEUpdateProperties,
@@ -38,6 +41,7 @@ import {
 	QSchemaEntityQId,
 	QSchemaEntityQRelation,
 	ISchemaColumn,
+	SchemaColumnECascadeGraph,
 	SchemaColumnEId,
 	SchemaColumnEOptionalId,
 	SchemaColumnEUpdateProperties,
@@ -48,6 +52,7 @@ import {
 } from '@airport/traffic-pattern';
 import {
 	IRepository,
+	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -56,6 +61,7 @@ import {
 	QRepositoryQId,
 	QRepositoryQRelation,
 	IActor,
+	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -159,6 +165,15 @@ export interface RecordUpdateStageEUpdateProperties
 	repository?: RepositoryEOptionalId;
 	actor?: ActorEOptionalId;
 	column?: SchemaColumnEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RecordUpdateStageECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

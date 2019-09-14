@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
 import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
 export interface IMissingRecord {
@@ -43,6 +43,11 @@ export interface MissingRecordEUpdateProperties extends IEntityUpdateProperties 
     entity?: SchemaEntityEOptionalId;
     repository?: RepositoryEOptionalId;
     actor?: ActorEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface MissingRecordECascadeGraph extends IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

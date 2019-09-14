@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 export interface IRepoTransBlockResponseStage {
     id: number;
     syncOutcomeType?: number;
@@ -26,6 +26,11 @@ export interface RepoTransBlockResponseStageEOptionalId {
  */
 export interface RepoTransBlockResponseStageEUpdateProperties extends IEntityUpdateProperties {
     syncOutcomeType?: number | IQNumberField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RepoTransBlockResponseStageECascadeGraph extends IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

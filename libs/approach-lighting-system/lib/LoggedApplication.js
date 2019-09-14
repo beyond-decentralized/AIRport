@@ -7,6 +7,7 @@ class LoggedApplication extends Logged_1.Logged {
         super(level);
         this.packageMap = new Map();
         this.application = {
+            id: null,
             name: applicationName
         };
     }
@@ -18,7 +19,8 @@ class LoggedApplication extends Logged_1.Logged {
     }
     addPackage(loggedPackage) {
         loggedPackage.applicationPackage = {
-            application: this.application
+            application: this.application,
+            id: null
         };
         this.packageMap.set(loggedPackage.applicationPackage.package.name, loggedPackage);
         // loggedPackage.level = this.level;

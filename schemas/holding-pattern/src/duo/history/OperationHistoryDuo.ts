@@ -53,6 +53,7 @@ export class OperationHistoryDuo
 		let operationHistory: IOperationHistory = {
 			changeType: entityChangeType,
 			entity: dbEntity,
+			id: undefined,
 			orderNumber: ++repositoryTransactionHistory.transactionHistory.numberOfOperations,
 			repositoryTransactionHistory: repositoryTransactionHistory,
 			systemWideOperationId

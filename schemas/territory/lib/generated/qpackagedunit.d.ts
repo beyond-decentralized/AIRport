@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { IPackage, PackageEOptionalId, PackageESelect, QPackageQRelation } from './qpackage';
 export interface IPackagedUnit {
     id: number;
@@ -30,6 +30,11 @@ export interface PackagedUnitEOptionalId {
 export interface PackagedUnitEUpdateProperties extends IEntityUpdateProperties {
     name?: string | IQStringField;
     package?: PackageEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface PackagedUnitECascadeGraph extends IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

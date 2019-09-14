@@ -165,7 +165,7 @@ class SQLWhereBase {
                 }
                 let TreeSQLQueryClass = require('../TreeSQLQuery').TreeSQLQuery;
                 let mappedSqlQuery = new TreeSQLQueryClass(aField.v, this.dialect, this.storeDriver);
-                return `EXISTS(${mappedSqlQuery.toSQL(airDb, schemaUtils, metadataUtils)})`;
+                return `EXISTS(${mappedSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`;
             case ground_control_1.JSONClauseObjectType.FIELD:
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 this.validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
@@ -181,7 +181,7 @@ class SQLWhereBase {
                 let fieldSqlQuery = new FieldSQLQueryClass(jsonFieldSqlSubQuery, this.dialect, this.storeDriver);
                 fieldSqlQuery.addQEntityMapByAlias(this.qEntityMapByAlias);
                 this.validator.addSubQueryAlias(aField.fa);
-                return `(${fieldSqlQuery.toSQL(airDb, schemaUtils, metadataUtils)})`;
+                return `(${fieldSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`;
             case ground_control_1.JSONClauseObjectType.MANY_TO_ONE_RELATION:
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 this.validator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);

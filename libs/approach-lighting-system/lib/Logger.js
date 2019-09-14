@@ -23,6 +23,7 @@ class Logger extends Logged_1.Logged {
         super(level);
         this.loggedPackage = loggedPackage;
         this.unit = {
+            id: null,
             name,
             package: loggedPackage.applicationPackage.package
         };

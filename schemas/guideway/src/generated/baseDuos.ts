@@ -259,11 +259,11 @@ export class BaseAgtRepositoryTransactionBlockDuo
 	implements IBaseAgtRepositoryTransactionBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(16)
 	}
 	
 	constructor() {
-		super(8)
+		super(16)
 	}
 }
 
@@ -277,11 +277,11 @@ export class BaseAgtSharingMessageDuo
 	implements IBaseAgtSharingMessageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(14)
 	}
 	
 	constructor() {
-		super(1)
+		super(14)
 	}
 }
 
@@ -295,11 +295,11 @@ export class BaseArchiveDuo
 	implements IBaseArchiveDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(14)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(14)
+		super(0)
 	}
 }
 
@@ -313,11 +313,11 @@ export class BaseDailyArchiveLogDuo
 	implements IBaseDailyArchiveLogDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(18)
 	}
 	
 	constructor() {
-		super(10)
+		super(18)
 	}
 }
 
@@ -331,11 +331,11 @@ export class BaseDailyTerminalSyncLogDuo
 	implements IBaseDailyTerminalSyncLogDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(11)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(11)
+		super(1)
 	}
 }
 
@@ -349,11 +349,11 @@ export class BaseMonthlyArchiveLogDuo
 	implements IBaseMonthlyArchiveLogDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(12)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(12)
+		super(2)
 	}
 }
 
@@ -367,11 +367,11 @@ export class BaseMonthlyTerminalSyncLogDuo
 	implements IBaseMonthlyTerminalSyncLogDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(13)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(13)
+		super(3)
 	}
 }
 
@@ -385,11 +385,11 @@ export class BaseRepositoryDuo
 	implements IBaseRepositoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(17)
 	}
 	
 	constructor() {
-		super(9)
+		super(17)
 	}
 }
 
@@ -403,11 +403,11 @@ export class BaseRepositoryArchiveDuo
 	implements IBaseRepositoryArchiveDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(15)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(15)
+		super(4)
 	}
 }
 
@@ -421,11 +421,11 @@ export class BaseSecurityAnswerDuo
 	implements IBaseSecurityAnswerDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(3)
+		super(8)
 	}
 }
 
@@ -439,11 +439,11 @@ export class BaseSecurityQuestionDuo
 	implements IBaseSecurityQuestionDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(2)
+		super(7)
 	}
 }
 
@@ -457,11 +457,11 @@ export class BaseServerDuo
 	implements IBaseServerDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(17)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(17)
+		super(10)
 	}
 }
 
@@ -475,11 +475,11 @@ export class BaseServerSyncLogDuo
 	implements IBaseServerSyncLogDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(16)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(16)
+		super(9)
 	}
 }
 
@@ -493,11 +493,11 @@ export class BaseSyncLogDuo
 	implements IBaseSyncLogDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(11)
 	}
 	
 	constructor() {
-		super(0)
+		super(11)
 	}
 }
 
@@ -511,11 +511,11 @@ export class BaseTerminalDuo
 	implements IBaseTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(15)
 	}
 	
 	constructor() {
-		super(7)
+		super(15)
 	}
 }
 
@@ -529,11 +529,11 @@ export class BaseTerminalRepositoryDuo
 	implements IBaseTerminalRepositoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(12)
 	}
 	
 	constructor() {
-		super(6)
+		super(12)
 	}
 }
 
@@ -547,11 +547,11 @@ export class BaseTuningParametersDuo
 	implements IBaseTuningParametersDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(18)
+		return duoDiSet(13)
 	}
 	
 	constructor() {
-		super(18)
+		super(13)
 	}
 }
 
@@ -565,11 +565,11 @@ export class BaseUserDuo
 	implements IBaseUserDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(5)
+		super(6)
 	}
 }
 
@@ -583,10 +583,10 @@ export class BaseUserRepositoryDuo
 	implements IBaseUserRepositoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(4)
+		super(5)
 	}
 }

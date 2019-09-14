@@ -123,6 +123,7 @@ export class Logger
 	) {
 		super(level)
 		this.unit = {
+			id: null,
 			name,
 			package: loggedPackage.applicationPackage.package
 		}

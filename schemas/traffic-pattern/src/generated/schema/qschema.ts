@@ -143,9 +143,7 @@ export interface SchemaEUpdateProperties
 export interface SchemaECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	domain?: DomainECascadeGraph;
 	versions?: SchemaVersionECascadeGraph;
-	currentVersion?: SchemaVersionECascadeGraph;
 
 }
 

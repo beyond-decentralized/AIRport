@@ -184,10 +184,7 @@ export interface AgtRepositoryTransactionBlockEUpdateProperties
 export interface AgtRepositoryTransactionBlockECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	repository?: RepositoryECascadeGraph;
 	terminalRepositories?: TerminalRepositoryECascadeGraph;
-	terminal?: TerminalECascadeGraph;
-	archivingServer?: ServerECascadeGraph;
 	syncLogs?: SyncLogECascadeGraph;
 
 }

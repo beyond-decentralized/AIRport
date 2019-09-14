@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 export interface ILoggedErrorStackTrace {
     id: number;
     stackHash?: string;
@@ -29,6 +29,11 @@ export interface LoggedErrorStackTraceEOptionalId {
 export interface LoggedErrorStackTraceEUpdateProperties extends IEntityUpdateProperties {
     stackHash?: string | IQStringField;
     stack?: string | IQStringField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface LoggedErrorStackTraceECascadeGraph extends IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

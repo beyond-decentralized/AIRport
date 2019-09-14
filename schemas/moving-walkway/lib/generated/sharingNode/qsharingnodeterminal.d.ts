@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISharingNode, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from './qsharingnode';
 import { ITerminal, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '@airport/travel-document-checkpoint';
 export interface ISharingNodeTerminal {
@@ -39,6 +39,11 @@ export interface SharingNodeTerminalEUpdateProperties extends IEntityUpdatePrope
     agtTerminalId?: number | IQNumberField;
     agtTerminalPassword?: string | IQStringField;
     terminalSyncStatus?: number | IQNumberField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SharingNodeTerminalECascadeGraph extends IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

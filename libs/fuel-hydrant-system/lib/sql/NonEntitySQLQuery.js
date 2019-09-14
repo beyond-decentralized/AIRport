@@ -266,7 +266,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     let viewRelation = currentRelation;
                     let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
                     let subQuery = new TreeSQLQueryClass(viewRelation.sq, this.dialect, this.storeDriver);
-                    const subQuerySql = subQuery.toSQL(airDb, schemaUtils, metadataUtils);
+                    const subQuerySql = subQuery.toSQL({}, airDb, schemaUtils, metadataUtils);
                     fromFragment += `(${subQuerySql}) ${currentAlias}`;
                     break;
                 default:
@@ -310,7 +310,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
                     let mappedSqlQuery = new TreeSQLQueryClass(viewJoinRelation.sq, this.dialect, this.storeDriver);
                     joinOnClause = this.getWHEREFragment(viewJoinRelation.jwc, '\t', airDb, schemaUtils, metadataUtils);
-                    const mappedSql = mappedSqlQuery.toSQL(airDb, schemaUtils, metadataUtils);
+                    const mappedSql = mappedSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils);
                     fromFragment += `${joinTypeString} (${mappedSql}) ${currentAlias} ON\n${joinOnClause}`;
                     break;
                 default:

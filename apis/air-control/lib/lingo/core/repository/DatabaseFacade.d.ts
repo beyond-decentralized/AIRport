@@ -70,7 +70,7 @@ export interface IDatabaseFacade {
      *
      * @return Number of records deleted (1 or 0)
      */
-    delete<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    delete<E>(dbEntity: DbEntity, entity: E): Promise<number>;
     /**
      * Creates an entity with a where clause - internal API.  Use the
      *  API provided by the IEntityDatabaseFacade.

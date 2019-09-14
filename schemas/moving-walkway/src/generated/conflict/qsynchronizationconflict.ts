@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IRepository,
+	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -30,6 +32,7 @@ import {
 	QRepositoryQId,
 	QRepositoryQRelation,
 	IRecordHistory,
+	RecordHistoryECascadeGraph,
 	RecordHistoryEId,
 	RecordHistoryEOptionalId,
 	RecordHistoryEUpdateProperties,
@@ -40,6 +43,7 @@ import {
 } from '@airport/holding-pattern';
 import {
 	ISynchronizationConflictValues,
+	SynchronizationConflictValuesECascadeGraph,
 	SynchronizationConflictValuesEId,
 	SynchronizationConflictValuesEOptionalId,
 	SynchronizationConflictValuesEUpdateProperties,
@@ -136,6 +140,16 @@ export interface SynchronizationConflictEUpdateProperties
 	repository?: RepositoryEOptionalId;
 	overwrittenRecordHistory?: RecordHistoryEOptionalId;
 	overwritingRecordHistory?: RecordHistoryEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SynchronizationConflictECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	values?: SynchronizationConflictValuesECascadeGraph;
 
 }
 

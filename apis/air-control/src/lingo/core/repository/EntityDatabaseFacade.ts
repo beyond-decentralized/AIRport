@@ -160,11 +160,12 @@ export interface IEntityDatabaseFacade<Entity,
 	/**
 	 * Deletes the provided entity in the db.
 	 *
+	 * NOTE: Delete cascading is done on the server, no input is needed
+	 *
 	 * @return Number of records deleted (1 or 0)
 	 */
 	delete(
-		entity: EntityId,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		entity: EntityId
 	): Promise<number>;
 
 	/**

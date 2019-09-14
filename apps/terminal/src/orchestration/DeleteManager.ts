@@ -2,11 +2,15 @@ import {
 	AIR_DB,
 	IAirportDatabase,
 	ISchemaUtils,
-	MappedEntityArray,
 	SCHEMA_UTILS,
 	valuesEqual,
 	Y
 }                        from '@airport/air-control'
+import {
+	getSysWideOpId,
+	ISequenceGenerator,
+	SEQUENCE_GENERATOR
+}                        from '@airport/check-in'
 import {DI}              from '@airport/di'
 import {
 	CascadeType,
@@ -30,7 +34,6 @@ import {
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
 	IRecordHistoryOldValueDuo,
-	IRepository,
 	IRepositoryTransactionHistoryDuo,
 	OPER_HISTORY_DUO,
 	REC_HIST_OLD_VALUE_DUO,
@@ -81,13 +84,14 @@ export class DeleteManager
 			      repositoryManager,
 			      repoTransHistoryDuo,
 			      schemaUtils,
+			      sequenceGenerator,
 			      storeDriver,
 			      transManager
 		      ] = await DI.get(AIR_DB, HISTORY_MANAGER,
 			OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
 			REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER,
 			REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO,
-			SCHEMA_UTILS, STORE_DRIVER,
+			SCHEMA_UTILS, SEQUENCE_GENERATOR, STORE_DRIVER,
 			TRANSACTION_MANAGER)
 
 		const dbEntity = airDb
@@ -114,23 +118,20 @@ export class DeleteManager
 			parameterMap: portableQuery.parameterMap,
 			// values: portableQuery.values,
 		}
-		const treesToDelete                    = await storeDriver.find<any, Array<any>>(portableSelect)
+		const treesToDelete                    = await storeDriver
+			.find<any, Array<any>>(portableSelect, {})
 
 		const recordsToDelete: RecordsToDelete = new Map()
 		const repositoryIdSet                  = new Set<number>()
 		for (const treeToDelete of treesToDelete) {
-			await this.recordRepositoryIds(treeToDelete, dbEntity,
+			this.recordRepositoryIds(treeToDelete, dbEntity,
 				recordsToDelete, repositoryIdSet, schemaUtils)
 		}
 
-		const repositoryIds                                = Array.from(repositoryIdSet)
-		const repositories: MappedEntityArray<IRepository> =
-			      await repoManager.findReposWithDetailsByIds(...repositoryIds)
-
-		await this.recordTreeToDelete(recordsToDelete, repositories, actor,
+		await this.recordTreeToDelete(recordsToDelete, actor,
 			airDb, historyManager, operHistoryDuo, recHistoryDuo,
 			recHistoryOldValueDuo, repoTransHistoryDuo, schemaUtils,
-			transManager)
+			sequenceGenerator, transManager)
 
 		return await deleteCommand
 	}
@@ -239,7 +240,6 @@ export class DeleteManager
 
 	private async recordTreeToDelete(
 		recordsToDelete: RecordsToDelete,
-		repositories: MappedEntityArray<IRepository>,
 		actor: IActor,
 		airDb: IAirportDatabase,
 		historyManager: IHistoryManager,
@@ -248,20 +248,26 @@ export class DeleteManager
 		recHistoryOldValueDuo: IRecordHistoryOldValueDuo,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
 		schemaUtils: ISchemaUtils,
+		sequenceGenerator: ISequenceGenerator,
 		transManager: ITransactionManager
 	): Promise<void> {
+		let systemWideOperationId
 		for (const [schemaIndex, schemaRecordsToDelete] of recordsToDelete) {
 			for (const [entityIndex, entityRecordsToDelete] of schemaRecordsToDelete) {
 				const dbEntity = airDb.schemas[schemaIndex].currentVersion.entities[entityIndex]
-				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
-					const repository = repositories.get(repositoryId)
 
+				if (!systemWideOperationId) {
+					systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator)
+				}
+
+				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
 					const repoTransHistory = await historyManager.getNewRepoTransHistory(
-						transManager.currentTransHistory, repository, actor
+						transManager.currentTransHistory, repositoryId, actor
 					)
 
 					const operationHistory = repoTransHistoryDuo.startOperation(
-						repoTransHistory, ChangeType.DELETE_ROWS, dbEntity,
+						repoTransHistory, systemWideOperationId,
+						ChangeType.DELETE_ROWS, dbEntity,
 						operHistoryDuo)
 
 

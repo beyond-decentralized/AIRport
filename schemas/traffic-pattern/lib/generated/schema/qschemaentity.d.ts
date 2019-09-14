@@ -2,7 +2,7 @@ import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, Tabl
 import { IVersionedSchemaObject, VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { ISchemaColumn, SchemaColumnECascadeGraph, SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
 import { ISchemaProperty, SchemaPropertyECascadeGraph, SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';
-import { ISchemaVersion, SchemaVersionECascadeGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
+import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
 import { ISchemaRelation, SchemaRelationECascadeGraph, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
 export interface ISchemaEntity extends IVersionedSchemaObject {
     id: number;
@@ -69,7 +69,6 @@ export interface SchemaEntityEUpdateProperties extends VersionedSchemaObjectEUpd
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SchemaEntityECascadeGraph extends VersionedSchemaObjectECascadeGraph {
-    schemaVersion?: SchemaVersionECascadeGraph;
     columns?: SchemaColumnECascadeGraph;
     properties?: SchemaPropertyECascadeGraph;
     relations?: SchemaRelationECascadeGraph;

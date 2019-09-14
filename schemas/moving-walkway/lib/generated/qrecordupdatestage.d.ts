@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation, ISchemaColumn, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQRelation } from '@airport/traffic-pattern';
 import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
 export interface IRecordUpdateStage {
@@ -46,6 +46,11 @@ export interface RecordUpdateStageEUpdateProperties extends IEntityUpdatePropert
     repository?: RepositoryEOptionalId;
     actor?: ActorEOptionalId;
     column?: SchemaColumnEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RecordUpdateStageECascadeGraph extends IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

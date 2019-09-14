@@ -12,6 +12,11 @@ import {
 	SchemaIndex,
 	TableIndex
 }                           from '@airport/ground-control'
+import {
+	convertToY,
+	isY,
+	markAsStub
+} from '../..'
 import {SCHEMA_UTILS}       from '../../diTokens'
 import {
 	IAirportDatabase,
@@ -26,7 +31,7 @@ import {
 	RepositorySheetSelectInfo,
 	IdKeysByIdColumnIndex,
 	ISchemaUtils
-} from '../../lingo/utils/SchemaUtils'
+}                           from '../../lingo/utils/SchemaUtils'
 import {QEntityConstructor} from '../core/entity/Entity'
 import {valuesEqual}        from '../Utils'
 
@@ -71,8 +76,13 @@ export class SchemaUtils
 
 		switch (crudOperation) {
 			case CRUDOperation.CREATE:
+				return cascade === CascadeType.ALL
+					|| cascade === CascadeType.PERSIST
+					|| cascade === CascadeType.CREATE
 			case CRUDOperation.UPDATE:
-				return cascade === CascadeType.ALL || cascade === CascadeType.PERSIST
+				return cascade === CascadeType.ALL
+					|| cascade === CascadeType.PERSIST
+					|| cascade === CascadeType.UPDATE
 			case CRUDOperation.DELETE:
 				return cascade === CascadeType.ALL || cascade === CascadeType.REMOVE
 			default:
@@ -314,7 +324,6 @@ export class SchemaUtils
 		return columnValuesAndPaths
 	}
 
-	/*
 	addRelationToEntitySelectClause(
 		dbRelation: DbRelation,
 		selectClause: any,
@@ -373,7 +382,6 @@ export class SchemaUtils
 				}
 			})
 	}
-	 */
 
 	forEachColumnOfRelation(
 		dbRelation: DbRelation,

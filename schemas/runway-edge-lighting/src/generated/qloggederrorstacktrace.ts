@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -100,6 +101,15 @@ export interface LoggedErrorStackTraceEUpdateProperties
 	stack?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface LoggedErrorStackTraceECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

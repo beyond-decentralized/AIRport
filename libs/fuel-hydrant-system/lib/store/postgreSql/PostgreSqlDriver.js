@@ -9,7 +9,7 @@ const DDLManager_1 = require("./DDLManager");
  */
 class PostgreSqlDriver extends SqlDriver_1.SqlDriver {
     async doesTableExist(tableName) {
-        throw `Not implemented`;
+        throw new Error(`Not implemented`);
     }
     async findNative(sqlQuery, parameters) {
         let nativeParameters = parameters.map((value) => this.convertValueIn(value));
@@ -35,10 +35,10 @@ class PostgreSqlDriver extends SqlDriver_1.SqlDriver {
                     return value.getTime();
                 }
                 else {
-                    throw `Unexpected non-date object ${value}`;
+                    throw new Error(`Unexpected non-date object ${value}`);
                 }
             default:
-                throw `Unexpected typeof value: ${typeof value}`;
+                throw new Error(`Unexpected typeof value: ${typeof value}`);
         }
     }
     async initAllTables() {

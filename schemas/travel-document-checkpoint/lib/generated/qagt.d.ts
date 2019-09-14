@@ -1,6 +1,6 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { ITerminalAgt, TerminalAgtESelect, QTerminalAgt } from './qterminalagt';
-import { IUserTerminalAgt, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { ITerminalAgt, TerminalAgtECascadeGraph, TerminalAgtESelect, QTerminalAgt } from './qterminalagt';
+import { IUserTerminalAgt, UserTerminalAgtECascadeGraph, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
 export interface IAgt {
     id: number;
     address?: string;
@@ -32,6 +32,13 @@ export interface AgtEOptionalId {
  */
 export interface AgtEUpdateProperties extends IEntityUpdateProperties {
     address?: string | IQStringField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface AgtECascadeGraph extends IEntityCascadeGraph {
+    terminalAgts?: TerminalAgtECascadeGraph;
+    userTerminalAgts?: UserTerminalAgtECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

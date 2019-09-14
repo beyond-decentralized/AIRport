@@ -238,10 +238,9 @@ export class DatabaseFacade
 
 	}
 
-	async delete<E, EntitySelect>(
+	async delete<E>(
 		dbEntity: DbEntity,
-		entity: E,
-		cascadeGraph?: EntitySelect
+		entity: E
 	): Promise<number> {
 		if (!entity) {
 			return 0
@@ -283,10 +282,10 @@ export class DatabaseFacade
 		)
 	}
 
-	async save<E, EntitySelect>(
+	async save<E, EntityCascadeGraph>(
 		dbEntity: DbEntity,
 		entity: E,
-		cascadeGraph?: EntitySelect
+		cascadeGraph?: EntityCascadeGraph
 	): Promise<number> {
 		if (!entity) {
 			return 0
@@ -330,10 +329,10 @@ export class DatabaseFacade
 		})
 	}
 
-	async update<E, EntitySelect>(
+	async update<E, EntityCascadeGraph>(
 		dbEntity: DbEntity,
 		entity: E,
-		cascadeGraph?: EntitySelect
+		cascadeGraph?: EntityCascadeGraph
 	): Promise<number> {
 		if (!entity) {
 			return 0
@@ -427,6 +426,7 @@ export class DatabaseFacade
 		return originalRecord
 	}
 
+	/*
 	async getOriginalValues(
 		entitiesToUpdate: UpdateRecord[],
 		dbEntity: DbEntity,
@@ -450,6 +450,7 @@ export class DatabaseFacade
 			dbEntity, entityQuery, QueryResultType.MAPPED_ENTITY_TREE,
 			fieldUtils, queryUtils, schemaUtils, transConnector, updateCache)
 	}
+*/
 
 	prepare<QF extends Function>(
 		queryFunction: QF

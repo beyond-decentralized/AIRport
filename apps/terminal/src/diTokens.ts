@@ -6,7 +6,6 @@ import {IDatabaseManager}   from './orchestration/DatabaseManager'
 import {IDeleteManager}     from './orchestration/DeleteManager'
 import {IHistoryManager}    from './orchestration/HistoryManager'
 import {IInsertManager}     from './orchestration/InsertManager'
-import {INonNullValidator}  from './validators/NonNullValidator'
 import {IQueryManager}      from './orchestration/QueryManager'
 import {IUpdateManager}     from './orchestration/UpdateManager'
 

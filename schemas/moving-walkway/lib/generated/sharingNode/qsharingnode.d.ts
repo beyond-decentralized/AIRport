@@ -1,6 +1,6 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { ISharingMessage, SharingMessageESelect, QSharingMessage } from '../sharingmessage/qsharingmessage';
-import { ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from './qsharingnoderepotransblock';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { ISharingMessage, SharingMessageECascadeGraph, SharingMessageESelect, QSharingMessage } from '../sharingmessage/qsharingmessage';
+import { ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockECascadeGraph, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from './qsharingnoderepotransblock';
 export interface ISharingNode {
     id: number;
     sharingMechanism?: number;
@@ -44,6 +44,13 @@ export interface SharingNodeEUpdateProperties extends IEntityUpdateProperties {
     syncFrequency?: number | IQNumberField;
     connectionProtocol?: number | IQNumberField;
     connectionUrl?: string | IQStringField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SharingNodeECascadeGraph extends IEntityCascadeGraph {
+    messages?: SharingMessageECascadeGraph;
+    sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

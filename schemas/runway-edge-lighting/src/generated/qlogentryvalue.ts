@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	ILogEntry,
+	LogEntryECascadeGraph,
 	LogEntryEId,
 	LogEntryEOptionalId,
 	LogEntryEUpdateProperties,
@@ -113,6 +115,15 @@ export interface LogEntryValueEUpdateProperties
 
 	// Non-Id Relations - ids only & no OneToMany's
 	logEntry?: LogEntryEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface LogEntryValueECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

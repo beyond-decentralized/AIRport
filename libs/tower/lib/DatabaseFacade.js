@@ -101,7 +101,7 @@ class DatabaseFacade extends OperationManager_1.OperationManager {
         const [fieldUtils, queryFacade, queryUtils, transConnector] = await di_1.DI.get(air_control_1.FIELD_UTILS, air_control_1.QUERY_FACADE, air_control_1.QUERY_UTILS, ground_control_1.TRANS_CONNECTOR);
         return await transactional_1.transactional(async () => await this.internalInsertValuesGetIds(dbEntity, rawInsertValues, fieldUtils, queryFacade, queryUtils, transConnector));
     }
-    async delete(dbEntity, entity, cascadeGraph) {
+    async delete(dbEntity, entity) {
         if (!entity) {
             return 0;
         }
@@ -196,16 +196,31 @@ class DatabaseFacade extends OperationManager_1.OperationManager {
         }
         return originalRecord;
     }
-    async getOriginalValues(entitiesToUpdate, dbEntity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache) {
-        const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
-        let rawTreeQuery = {
+    /*
+    async getOriginalValues(
+        entitiesToUpdate: UpdateRecord[],
+        dbEntity: DbEntity,
+        airDb: IAirportDatabase,
+        fieldUtils: IFieldUtils,
+        queryFacade: IQueryFacade,
+        queryUtils: IQueryUtils,
+        schemaUtils: ISchemaUtils,
+        transConnector: ITransactionalConnector,
+        updateCache: IUpdateCache
+    ): Promise<MappedEntityArray<any>> {
+        const qEntity                         = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
+        let rawTreeQuery: RawEntityQuery<any> = {
             select: {},
             from: [qEntity],
             where: this.getIdsWhereClause(entitiesToUpdate, qEntity)
-        };
-        let entityQuery = new air_control_1.EntityQuery(rawTreeQuery);
-        return await queryFacade.find(dbEntity, entityQuery, ground_control_1.QueryResultType.MAPPED_ENTITY_TREE, fieldUtils, queryUtils, schemaUtils, transConnector, updateCache);
+        }
+        let entityQuery: EntityQuery<any>     = new EntityQuery(rawTreeQuery)
+
+        return await queryFacade.find<any, MappedEntityArray<any>>(
+            dbEntity, entityQuery, QueryResultType.MAPPED_ENTITY_TREE,
+            fieldUtils, queryUtils, schemaUtils, transConnector, updateCache)
     }
+*/
     prepare(queryFunction) {
         return new FunctionWrapper(queryFunction);
     }

@@ -14,16 +14,18 @@ class GraphQueryConfiguration {
     }
 }
 exports.GraphQueryConfiguration = GraphQueryConfiguration;
-function getObjectResultParser(utils, queryResultType, config, rootDbEntity) {
+function getObjectResultParser(queryResultType, config, rootDbEntity) {
     switch (queryResultType) {
         case ground_control_1.QueryResultType.ENTITY_GRAPH:
+        case ground_control_1.QueryResultType.MAPPED_ENTITY_GRAPH:
             let EntityGraphResultParserClass = require('./EntityGraphResultParser').EntityGraphResultParser;
             return new EntityGraphResultParserClass(config, rootDbEntity);
         case ground_control_1.QueryResultType.ENTITY_TREE:
+        case ground_control_1.QueryResultType.MAPPED_ENTITY_TREE:
             let EntityTreeResultParserClass = require('./EntityTreeResultParser').EntityTreeResultParser;
             return new EntityTreeResultParserClass();
         default:
-            throw `ObjectQueryParser not supported for QueryResultType: ${queryResultType}`;
+            throw new Error(`ObjectQueryParser not supported for QueryResultType: ${queryResultType}`);
     }
 }
 exports.getObjectResultParser = getObjectResultParser;
@@ -40,7 +42,7 @@ class AbstractObjectResultParser {
             }
             let lastObject;
             let currentObject = manyToOneStub;
-            let currentIndex = 0;
+            let currentIndex = 1;
             const propertyNameChain = relationInfo.propertyNameChains[0];
             while (currentIndex < propertyNameChain.length) {
                 // If there is no object in context, create one

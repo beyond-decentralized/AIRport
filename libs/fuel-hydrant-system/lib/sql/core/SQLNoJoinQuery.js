@@ -6,29 +6,29 @@ const SQLWhereBase_1 = require("./SQLWhereBase");
  * Created by Papa on 10/2/2016.
  */
 class SQLNoJoinQuery extends SQLWhereBase_1.SQLWhereBase {
-    constructor(airportDb, utils, dbEntity, dialect) {
-        super(airportDb, utils, dbEntity, dialect);
+    constructor(dbEntity, dialect, storeDriver) {
+        super(dbEntity, dialect, storeDriver);
     }
-    getTableFragment(fromRelation) {
+    getTableFragment(fromRelation, airDb, schemaUtils) {
         if (!fromRelation) {
-            throw `Expecting exactly one table in UPDATE/DELETE clause`;
+            throw new Error(`Expecting exactly one table in UPDATE/DELETE clause`);
         }
         if (fromRelation.ri || fromRelation.jt) {
-            throw `Table in UPDATE/DELETE clause cannot be joined`;
+            throw new Error(`Table in UPDATE/DELETE clause cannot be joined`);
         }
-        const firstDbEntity = this.airportDb.schemas[fromRelation.si]
+        const firstDbEntity = airDb.schemas[fromRelation.si]
             .currentVersion.entities[fromRelation.ti];
-        let tableName = this.utils.Schema.getTableName(firstDbEntity);
+        let tableName = schemaUtils.getTableName(firstDbEntity);
         if (fromRelation.si !== this.dbEntity.schemaVersion.schema.index
             || fromRelation.ti !== this.dbEntity.index) {
-            throw `Unexpected table in UPDATE/DELETE clause: 
+            throw new Error(`Unexpected table in UPDATE/DELETE clause: 
 			'${tableName}',
-			expecting: '${this.dbEntity.schemaVersion.schema.name}.${this.dbEntity.name}'`;
+			expecting: '${this.dbEntity.schemaVersion.schema.name}.${this.dbEntity.name}'`);
         }
         const firstQEntity = new air_control_1.QEntity(firstDbEntity);
         const tableAlias = air_control_1.QRelation.getAlias(fromRelation);
         this.qEntityMapByAlias[tableAlias] = firstQEntity;
-        const fromFragment = `\t${tableName}`;
+        const fromFragment = `\t${tableName} AS ${tableAlias}`;
         return fromFragment;
     }
 }

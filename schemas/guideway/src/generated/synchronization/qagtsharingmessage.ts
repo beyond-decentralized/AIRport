@@ -137,7 +137,6 @@ export interface AgtSharingMessageEUpdateProperties
 export interface AgtSharingMessageECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	terminal?: TerminalECascadeGraph;
 	syncLogs?: SyncLogECascadeGraph;
 
 }

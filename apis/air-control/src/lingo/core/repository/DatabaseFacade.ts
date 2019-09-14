@@ -142,10 +142,9 @@ export interface IDatabaseFacade {
 	 *
 	 * @return Number of records deleted (1 or 0)
 	 */
-	delete<E, EntityCascadeGraph>(
+	delete<E>(
 		dbEntity: DbEntity,
-		entity: E,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		entity: E
 	): Promise<number>;
 
 	/**

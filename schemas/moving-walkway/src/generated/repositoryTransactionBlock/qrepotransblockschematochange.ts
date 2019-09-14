@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IRepositoryTransactionBlock,
+	RepositoryTransactionBlockECascadeGraph,
 	RepositoryTransactionBlockEId,
 	RepositoryTransactionBlockEOptionalId,
 	RepositoryTransactionBlockEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './qrepositorytransactionblock';
 import {
 	ISchema,
+	SchemaECascadeGraph,
 	SchemaEId,
 	SchemaEOptionalId,
 	SchemaEUpdateProperties,
@@ -122,6 +125,15 @@ export interface RepoTransBlockSchemaToChangeEUpdateProperties
 	status?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RepoTransBlockSchemaToChangeECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

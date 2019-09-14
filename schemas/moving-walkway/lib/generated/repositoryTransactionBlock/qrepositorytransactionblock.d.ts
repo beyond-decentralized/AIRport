@@ -1,10 +1,10 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
-import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '@airport/holding-pattern';
-import { ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from '../sharingnode/qsharingnoderepotransblock';
-import { ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, QSharingMessageRepoTransBlock } from '../sharingmessage/qsharingmessagerepotransblock';
-import { IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, QMissingRecordRepoTransBlock } from '../missingrecord/qmissingrecordrepotransblock';
-import { IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, QRepoTransBlockSchemaToChange } from './qrepotransblockschematochange';
+import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IRepositoryTransactionHistory, RepositoryTransactionHistoryECascadeGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '@airport/holding-pattern';
+import { ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockECascadeGraph, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from '../sharingnode/qsharingnoderepotransblock';
+import { ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockECascadeGraph, SharingMessageRepoTransBlockESelect, QSharingMessageRepoTransBlock } from '../sharingmessage/qsharingmessagerepotransblock';
+import { IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockECascadeGraph, MissingRecordRepoTransBlockESelect, QMissingRecordRepoTransBlock } from '../missingrecord/qmissingrecordrepotransblock';
+import { IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeECascadeGraph, RepoTransBlockSchemaToChangeESelect, QRepoTransBlockSchemaToChange } from './qrepotransblockschematochange';
 export interface IRepositoryTransactionBlock {
     id: number;
     sourceId?: number;
@@ -57,6 +57,16 @@ export interface RepositoryTransactionBlockEUpdateProperties extends IEntityUpda
     contents?: string | IQStringField;
     source?: TerminalEOptionalId;
     repository?: RepositoryEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RepositoryTransactionBlockECascadeGraph extends IEntityCascadeGraph {
+    repositoryTransactionHistory?: RepositoryTransactionHistoryECascadeGraph;
+    sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockECascadeGraph;
+    sharingMessageRepoTransBlocks?: SharingMessageRepoTransBlockECascadeGraph;
+    missingRecordRepoTransBlocks?: MissingRecordRepoTransBlockECascadeGraph;
+    repoTransBlockSchemasToChange?: RepoTransBlockSchemaToChangeECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

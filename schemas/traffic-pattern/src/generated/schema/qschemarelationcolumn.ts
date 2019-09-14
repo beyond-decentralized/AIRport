@@ -152,11 +152,6 @@ export interface SchemaRelationColumnEUpdateProperties
 export interface SchemaRelationColumnECascadeGraph
 	extends VersionedSchemaObjectECascadeGraph {
 	// Cascading Relations
-	manyColumn?: SchemaColumnECascadeGraph;
-	oneColumn?: SchemaColumnECascadeGraph;
-	manyRelation?: SchemaRelationECascadeGraph;
-	oneRelation?: SchemaRelationECascadeGraph;
-	parentRelation?: SchemaRelationECascadeGraph;
 
 }
 

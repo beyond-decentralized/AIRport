@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	ISharingNode,
+	SharingNodeECascadeGraph,
 	SharingNodeEId,
 	SharingNodeEOptionalId,
 	SharingNodeEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from '../sharingnode/qsharingnode';
 import {
 	ISharingMessageRepoTransBlock,
+	SharingMessageRepoTransBlockECascadeGraph,
 	SharingMessageRepoTransBlockEId,
 	SharingMessageRepoTransBlockEOptionalId,
 	SharingMessageRepoTransBlockEUpdateProperties,
@@ -129,6 +132,16 @@ export interface SharingMessageEUpdateProperties
 	syncTimestamp?: Date | IQDateField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SharingMessageECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	sharingMessageRepoTransBlocks?: SharingMessageRepoTransBlockECascadeGraph;
 
 }
 

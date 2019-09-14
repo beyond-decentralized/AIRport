@@ -2,7 +2,6 @@ import {IQEntityInternal}        from '@airport/air-control'
 import {DI}                      from '@airport/di'
 import {
 	ACTIVE_QUERIES,
-	ActiveQueries,
 	ID_GENERATOR,
 	IIdGenerator
 }                                from '@airport/fuel-hydrant-system'
@@ -13,7 +12,6 @@ import {
 }                                from '@airport/ground-control'
 import {
 	ITransactionHistory,
-	ITransactionHistoryDuo,
 	Q,
 	TRANS_HISTORY_DUO
 }                                from '@airport/holding-pattern'
@@ -22,12 +20,6 @@ import {
 	ITransactionManager,
 	TRANSACTION_MANAGER
 }                                from '@airport/terminal-map'
-import {IOfflineDeltaStore}      from '../data/OfflineDeltaStore'
-import {
-	OFFLINE_DELTA_STORE,
-	ONLINE_MANAGER,
-}                                from '../diTokens'
-import {IOnlineManager}          from '../net/OnlineManager'
 import {AbstractMutationManager} from './AbstractMutationManager'
 
 export class TransactionManager

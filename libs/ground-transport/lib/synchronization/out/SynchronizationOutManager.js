@@ -98,10 +98,7 @@ class SynchronizationOutManager {
             // scale down to keep-alive request
             const inactiveSharingNodeIds = Array.from(syncStatusRepoTransBlockIdsBySharingNodeId.keys());
             // Keep the RTB Sync Status in Requesting and update the SharingNode status
-            await (await sharingNodeDao.updateIsActive(inactiveSharingNodeIds, false)
-            // TODO: add keep alive requests
-            // Remove inactive Sharing Nodes from further message processing
-            );
+            await sharingNodeDao.updateIsActive(inactiveSharingNodeIds, false);
             // TODO: add keep alive requests
             // Remove inactive Sharing Nodes from further message processing
             for (const inactiveSharingNodeId of inactiveSharingNodeIds) {

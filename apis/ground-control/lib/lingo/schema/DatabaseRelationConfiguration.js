@@ -16,10 +16,12 @@ var CascadeType;
     // DETACH,
     // Cascade merge is not implemented because there is no session
     // MERGE,
-    CascadeType[CascadeType["PERSIST"] = 2] = "PERSIST";
+    CascadeType[CascadeType["CREATE"] = 2] = "CREATE";
+    CascadeType[CascadeType["PERSIST"] = 3] = "PERSIST";
     // Cascade refresh is not implemented because there is no session
     // REFRESH,
-    CascadeType[CascadeType["REMOVE"] = 3] = "REMOVE"; // Cascade on remove operation
+    CascadeType[CascadeType["REMOVE"] = 4] = "REMOVE";
+    CascadeType[CascadeType["UPDATE"] = 5] = "UPDATE"; // New to Airport
 })(CascadeType = exports.CascadeType || (exports.CascadeType = {}));
 var CascadeOverwrite;
 (function (CascadeOverwrite) {

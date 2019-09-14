@@ -32,7 +32,7 @@ class PlainResultParser extends IEntityResultParser_1.AbstractObjectResultParser
         // Nothing to do the facade simply doesn't have anything in it
     }
     bufferOneToManyStub(otmDbEntity, otmPropertyName) {
-        throw `@OneToMany stubs not allowed in QueryResultType.PLAIN`;
+        throw new Error(`@OneToMany stubs not allowed in QueryResultType.PLAIN`);
     }
     bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject) {
         resultObject[propertyName] = [childResultObject];

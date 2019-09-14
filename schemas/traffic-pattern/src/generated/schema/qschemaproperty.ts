@@ -164,7 +164,6 @@ export interface SchemaPropertyEUpdateProperties
 export interface SchemaPropertyECascadeGraph
 	extends VersionedSchemaObjectECascadeGraph {
 	// Cascading Relations
-	entity?: SchemaEntityECascadeGraph;
 	propertyColumns?: SchemaPropertyColumnECascadeGraph;
 	relation?: SchemaRelationECascadeGraph;
 

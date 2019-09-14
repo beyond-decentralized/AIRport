@@ -29,8 +29,8 @@ exports.EntityDefaults = EntityDefaults;
  * String based SQL query.
  */
 class SQLQuery extends SQLWhereBase_1.SQLWhereBase {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType) {
-        super(dbEntity, dialect);
+    constructor(jsonQuery, dbEntity, dialect, queryResultType, storeDriver) {
+        super(dbEntity, dialect, storeDriver);
         this.jsonQuery = jsonQuery;
         this.queryResultType = queryResultType;
         this.entityDefaults = new EntityDefaults();
@@ -38,7 +38,7 @@ class SQLQuery extends SQLWhereBase_1.SQLWhereBase {
     getFieldMap() {
         return this.fieldMap;
     }
-    getEntitySchemaRelationFromJoin(leftQEntity, rightQEntity, entityRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, schemaUtils) {
+    getEntitySchemaRelationFromJoin(leftQEntity, rightQEntity, entityRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, airDb, schemaUtils, metadataUtils) {
         const allJoinOnColumns = [];
         const leftDbEntity = leftQEntity.__driver__.dbEntity;
         const rightDbEntity = rightQEntity.__driver__.dbEntity;
@@ -52,8 +52,8 @@ class SQLQuery extends SQLWhereBase_1.SQLWhereBase {
                 relationColumns = dbRelation.oneRelationColumns;
                 break;
             default:
-                throw `Unknown relation type ${dbRelation.relationType} 
-on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`;
+                throw new Error(`Unknown relation type ${dbRelation.relationType} 
+on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`);
         }
         for (const relationColumn of relationColumns) {
             let ownColumnName;
@@ -68,8 +68,8 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
                     referencedColumnName = relationColumn.manyColumn.name;
                     break;
                 default:
-                    throw `Unknown relation type ${dbRelation.relationType} 
-on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`;
+                    throw new Error(`Unknown relation type ${dbRelation.relationType} 
+on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`);
             }
             allJoinOnColumns.push({
                 leftColumn: ownColumnName,
@@ -78,7 +78,7 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
         }
         let onClause = allJoinOnColumns.map(joinOnColumn => ` ${parentAlias}.${joinOnColumn.leftColumn} = ${currentAlias}.${joinOnColumn.rightColumn}`).join('\n\t\t\tAND');
         if (entityRelation.jwc) {
-            const whereClause = this.getWHEREFragment(entityRelation.jwc, '\t\t');
+            const whereClause = this.getWHEREFragment(entityRelation.jwc, '\t\t', airDb, schemaUtils, metadataUtils);
             const joinWhereOperator = entityRelation.wjto === ground_control_1.SqlOperator.AND ? 'AND' : 'OR';
             onClause = `${onClause}
 			${joinWhereOperator} ${whereClause}`;

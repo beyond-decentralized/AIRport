@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { ITerminal, TerminalECascadeGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
+import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
 import { ISyncLog, SyncLogECascadeGraph, SyncLogESelect, QSyncLog } from './qsynclog';
 export interface IAgtSharingMessage {
     id: number;
@@ -41,7 +41,6 @@ export interface AgtSharingMessageEUpdateProperties extends IEntityUpdatePropert
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface AgtSharingMessageECascadeGraph extends IEntityCascadeGraph {
-    terminal?: TerminalECascadeGraph;
     syncLogs?: SyncLogECascadeGraph;
 }
 /**

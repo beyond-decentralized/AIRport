@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IUser,
+	UserECascadeGraph,
 	UserEId,
 	UserEOptionalId,
 	UserEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './quser';
 import {
 	ITerminal,
+	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -119,6 +122,15 @@ export interface UserTerminalEUpdateProperties
 	// Non-Id Properties
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface UserTerminalECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

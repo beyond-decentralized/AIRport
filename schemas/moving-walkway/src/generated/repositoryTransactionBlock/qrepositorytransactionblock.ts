@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	ITerminal,
+	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from '@airport/travel-document-checkpoint';
 import {
 	IRepository,
+	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -40,6 +43,7 @@ import {
 	QRepositoryQId,
 	QRepositoryQRelation,
 	IRepositoryTransactionHistory,
+	RepositoryTransactionHistoryECascadeGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
 	RepositoryTransactionHistoryEUpdateProperties,
@@ -50,6 +54,7 @@ import {
 } from '@airport/holding-pattern';
 import {
 	ISharingNodeRepoTransBlock,
+	SharingNodeRepoTransBlockECascadeGraph,
 	SharingNodeRepoTransBlockEId,
 	SharingNodeRepoTransBlockEOptionalId,
 	SharingNodeRepoTransBlockEUpdateProperties,
@@ -60,6 +65,7 @@ import {
 } from '../sharingnode/qsharingnoderepotransblock';
 import {
 	ISharingMessageRepoTransBlock,
+	SharingMessageRepoTransBlockECascadeGraph,
 	SharingMessageRepoTransBlockEId,
 	SharingMessageRepoTransBlockEOptionalId,
 	SharingMessageRepoTransBlockEUpdateProperties,
@@ -70,6 +76,7 @@ import {
 } from '../sharingmessage/qsharingmessagerepotransblock';
 import {
 	IMissingRecordRepoTransBlock,
+	MissingRecordRepoTransBlockECascadeGraph,
 	MissingRecordRepoTransBlockEId,
 	MissingRecordRepoTransBlockEOptionalId,
 	MissingRecordRepoTransBlockEUpdateProperties,
@@ -80,6 +87,7 @@ import {
 } from '../missingrecord/qmissingrecordrepotransblock';
 import {
 	IRepoTransBlockSchemaToChange,
+	RepoTransBlockSchemaToChangeECascadeGraph,
 	RepoTransBlockSchemaToChangeEId,
 	RepoTransBlockSchemaToChangeEOptionalId,
 	RepoTransBlockSchemaToChangeEUpdateProperties,
@@ -190,6 +198,20 @@ export interface RepositoryTransactionBlockEUpdateProperties
 	// Non-Id Relations - ids only & no OneToMany's
 	source?: TerminalEOptionalId;
 	repository?: RepositoryEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface RepositoryTransactionBlockECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	repositoryTransactionHistory?: RepositoryTransactionHistoryECascadeGraph;
+	sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockECascadeGraph;
+	sharingMessageRepoTransBlocks?: SharingMessageRepoTransBlockECascadeGraph;
+	missingRecordRepoTransBlocks?: MissingRecordRepoTransBlockECascadeGraph;
+	repoTransBlockSchemasToChange?: RepoTransBlockSchemaToChangeECascadeGraph;
 
 }
 

@@ -1,6 +1,6 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
-import { IApplication, ApplicationESelect, QApplication } from './qapplication';
+import { IApplication, ApplicationECascadeGraph, ApplicationESelect, QApplication } from './qapplication';
 export interface IDomain {
     id: number;
     name?: string;
@@ -31,6 +31,12 @@ export interface DomainEOptionalId {
  */
 export interface DomainEUpdateProperties extends IEntityUpdateProperties {
     name?: string | IQStringField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface DomainECascadeGraph extends IEntityCascadeGraph {
+    applications?: ApplicationECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

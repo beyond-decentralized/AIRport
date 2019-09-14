@@ -34,7 +34,7 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     updateWhere(rawUpdate: RawUpdate<EntityUpdateProperties, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateProperties, IQ>;
     }): Promise<number>;
-    delete(entity: EntityId, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    delete(entity: EntityId): Promise<number>;
     deleteWhere(rawDelete: RawDelete<IQ> | {
         (...args: any[]): RawDelete<IQ>;
     }): Promise<number>;

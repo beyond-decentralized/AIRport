@@ -38,6 +38,7 @@ export class LoggedApplication
 	) {
 		super(level)
 		this.application = {
+			id: null,
 			name: applicationName
 		}
 	}
@@ -55,7 +56,8 @@ export class LoggedApplication
 		loggedPackage: ILoggedPackage
 	): void {
 		loggedPackage.applicationPackage = {
-			application: this.application
+			application: this.application,
+			id: null
 		}
 		this.packageMap.set(loggedPackage.applicationPackage.package.name, loggedPackage)
 		// loggedPackage.level = this.level;

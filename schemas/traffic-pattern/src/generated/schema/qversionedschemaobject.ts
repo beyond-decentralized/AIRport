@@ -121,9 +121,6 @@ export interface VersionedSchemaObjectEUpdateProperties
 export interface VersionedSchemaObjectECascadeGraph
 	extends IEntityCascadeGraph {
 	// Cascading Relations
-	deprecatedSinceVersion?: SchemaVersionECascadeGraph;
-	removedInVersion?: SchemaVersionECascadeGraph;
-	sinceVersion?: SchemaVersionECascadeGraph;
 
 }
 

@@ -291,7 +291,7 @@ export abstract class SQLWhereBase
 				let TreeSQLQueryClass: typeof TreeSQLQuery = require('../TreeSQLQuery').TreeSQLQuery
 				let mappedSqlQuery                         = new TreeSQLQueryClass(
 					<JsonTreeQuery>aField.v, this.dialect, this.storeDriver)
-				return `EXISTS(${mappedSqlQuery.toSQL(airDb, schemaUtils, metadataUtils)})`
+				return `EXISTS(${mappedSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`
 			case <any>JSONClauseObjectType.FIELD:
 				qEntity = this.qEntityMapByAlias[aField.ta]
 				this.validator.validateReadQEntityProperty(
@@ -311,7 +311,7 @@ export abstract class SQLWhereBase
 					jsonFieldSqlSubQuery, this.dialect, this.storeDriver)
 				fieldSqlQuery.addQEntityMapByAlias(this.qEntityMapByAlias)
 				this.validator.addSubQueryAlias(aField.fa)
-				return `(${fieldSqlQuery.toSQL(airDb, schemaUtils, metadataUtils)})`
+				return `(${fieldSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`
 			case JSONClauseObjectType.MANY_TO_ONE_RELATION:
 				qEntity = this.qEntityMapByAlias[aField.ta]
 				this.validator.validateReadQEntityManyToOneRelation(

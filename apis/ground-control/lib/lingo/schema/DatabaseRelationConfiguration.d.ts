@@ -23,8 +23,10 @@ export interface DatabaseForeignKey {
 export declare enum CascadeType {
     NONE = 0,
     ALL = 1,
-    PERSIST = 2,
-    REMOVE = 3
+    CREATE = 2,
+    PERSIST = 3,
+    REMOVE = 4,
+    UPDATE = 5
 }
 export declare enum CascadeOverwrite {
     ALWAYS = 0,

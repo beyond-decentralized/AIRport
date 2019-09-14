@@ -95,7 +95,7 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
         });
     }
     keepTransactionAlive(tx) {
-        tx.executeSql('SELECT count(*) FROM github_com___airport__territory__Package', [], (tx) => {
+        tx.executeSql('SELECT count(*) FROM npmjs_org___airport__territory__Package', [], (tx) => {
             this.executePendingStatements(tx);
         }, (tx) => {
             this.executePendingStatements(tx);

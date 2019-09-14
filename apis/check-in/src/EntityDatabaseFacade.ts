@@ -165,12 +165,12 @@ export class EntityDatabaseFacade<Entity,
 		return await dbFacade.updateWhere(this.dbEntity, rawUpdate)
 	}
 
+	// NOTE: Delete cascading is done on the server, no input is needed
 	async delete(
-		entity: EntityId,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		entity: EntityId
 	): Promise<number> {
 		const dbFacade = await DI.get(DB_FACADE)
-		return await dbFacade.delete(this.dbEntity, entity, cascadeGraph)
+		return await dbFacade.delete(this.dbEntity, entity)
 	}
 
 	async deleteWhere(

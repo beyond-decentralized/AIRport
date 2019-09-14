@@ -64,9 +64,10 @@ class EntityDatabaseFacade {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
         return await dbFacade.updateWhere(this.dbEntity, rawUpdate);
     }
-    async delete(entity, cascadeGraph) {
+    // NOTE: Delete cascading is done on the server, no input is needed
+    async delete(entity) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
-        return await dbFacade.delete(this.dbEntity, entity, cascadeGraph);
+        return await dbFacade.delete(this.dbEntity, entity);
     }
     async deleteWhere(rawDelete) {
         const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);

@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	ITerminal,
+	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -32,6 +34,7 @@ import {
 } from './qterminal';
 import {
 	IAgt,
+	AgtECascadeGraph,
 	AgtEId,
 	AgtEOptionalId,
 	AgtEUpdateProperties,
@@ -42,6 +45,7 @@ import {
 } from './qagt';
 import {
 	IUserTerminalAgt,
+	UserTerminalAgtECascadeGraph,
 	UserTerminalAgtEId,
 	UserTerminalAgtEOptionalId,
 	UserTerminalAgtEUpdateProperties,
@@ -134,6 +138,16 @@ export interface TerminalAgtEUpdateProperties
 	password?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface TerminalAgtECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
+	userTerminalAgts?: UserTerminalAgtECascadeGraph;
 
 }
 

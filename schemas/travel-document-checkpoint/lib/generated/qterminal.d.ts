@@ -1,8 +1,8 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { IUser, UserEOptionalId, UserESelect, QUserQRelation } from './quser';
-import { ITerminalAgt, TerminalAgtESelect, QTerminalAgt } from './qterminalagt';
-import { IUserTerminal, UserTerminalESelect, QUserTerminal } from './quserterminal';
-import { IUserTerminalAgt, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
+import { ITerminalAgt, TerminalAgtECascadeGraph, TerminalAgtESelect, QTerminalAgt } from './qterminalagt';
+import { IUserTerminal, UserTerminalECascadeGraph, UserTerminalESelect, QUserTerminal } from './quserterminal';
+import { IUserTerminalAgt, UserTerminalAgtECascadeGraph, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
 export interface ITerminal {
     id: number;
     name?: string;
@@ -45,6 +45,14 @@ export interface TerminalEUpdateProperties extends IEntityUpdateProperties {
     secondId?: number | IQNumberField;
     isLocal?: boolean | IQBooleanField;
     owner?: UserEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface TerminalECascadeGraph extends IEntityCascadeGraph {
+    terminalAgts?: TerminalAgtECascadeGraph;
+    userTerminal?: UserTerminalECascadeGraph;
+    userTerminalAgt?: UserTerminalAgtECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

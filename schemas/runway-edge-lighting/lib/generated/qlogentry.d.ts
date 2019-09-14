@@ -1,6 +1,6 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { ILogEntryType, LogEntryTypeEOptionalId, LogEntryTypeESelect, QLogEntryTypeQRelation } from './qlogentrytype';
-import { ILogEntryValue, LogEntryValueESelect, QLogEntryValue } from './qlogentryvalue';
+import { ILogEntryValue, LogEntryValueECascadeGraph, LogEntryValueESelect, QLogEntryValue } from './qlogentryvalue';
 export interface ILogEntry {
     id: number;
     timestamp?: Date;
@@ -33,6 +33,12 @@ export interface LogEntryEOptionalId {
 export interface LogEntryEUpdateProperties extends IEntityUpdateProperties {
     timestamp?: Date | IQDateField;
     type?: LogEntryTypeEOptionalId;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface LogEntryECascadeGraph extends IEntityCascadeGraph {
+    values?: LogEntryValueECascadeGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

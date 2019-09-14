@@ -1,6 +1,7 @@
 import {
 	IQEntityInternal,
 	IEntityIdProperties,
+	IEntityCascadeGraph,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
@@ -22,6 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	IDailyArchiveLog,
+	DailyArchiveLogECascadeGraph,
 	DailyArchiveLogEId,
 	DailyArchiveLogEOptionalId,
 	DailyArchiveLogEUpdateProperties,
@@ -30,6 +32,7 @@ import {
 	QDailyArchiveLogQId,
 	QDailyArchiveLogQRelation,
 	IRepository,
+	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -119,6 +122,15 @@ export interface DailyArchiveEUpdateProperties
 
 	// Non-Id Relations - ids only & no OneToMany's
 	repository?: RepositoryEOptionalId;
+
+}
+
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface DailyArchiveECascadeGraph
+	extends IEntityCascadeGraph {
+	// Cascading Relations
 
 }
 

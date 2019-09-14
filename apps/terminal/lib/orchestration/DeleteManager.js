@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
+const check_in_1 = require("@airport/check-in");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
@@ -8,7 +9,7 @@ const terminal_map_1 = require("@airport/terminal-map");
 const diTokens_1 = require("../diTokens");
 class DeleteManager {
     async deleteWhere(portableQuery, actor) {
-        const [airDb, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoManager, repositoryManager, repoTransHistoryDuo, schemaUtils, storeDriver, transManager] = await di_1.DI.get(air_control_1.AIR_DB, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DUO, holding_pattern_1.REC_HISTORY_DUO, holding_pattern_1.REC_HIST_OLD_VALUE_DUO, diTokens_1.REPOSITORY_MANAGER, diTokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DUO, air_control_1.SCHEMA_UTILS, ground_control_1.STORE_DRIVER, terminal_map_1.TRANSACTION_MANAGER);
+        const [airDb, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoManager, repositoryManager, repoTransHistoryDuo, schemaUtils, sequenceGenerator, storeDriver, transManager] = await di_1.DI.get(air_control_1.AIR_DB, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DUO, holding_pattern_1.REC_HISTORY_DUO, holding_pattern_1.REC_HIST_OLD_VALUE_DUO, diTokens_1.REPOSITORY_MANAGER, diTokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DUO, air_control_1.SCHEMA_UTILS, check_in_1.SEQUENCE_GENERATOR, ground_control_1.STORE_DRIVER, terminal_map_1.TRANSACTION_MANAGER);
         const dbEntity = airDb
             .schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex];
         const deleteCommand = storeDriver.deleteWhere(portableQuery);
@@ -29,15 +30,14 @@ class DeleteManager {
             queryResultType: ground_control_1.QueryResultType.ENTITY_TREE,
             parameterMap: portableQuery.parameterMap,
         };
-        const treesToDelete = await storeDriver.find(portableSelect);
+        const treesToDelete = await storeDriver
+            .find(portableSelect, {});
         const recordsToDelete = new Map();
         const repositoryIdSet = new Set();
         for (const treeToDelete of treesToDelete) {
-            await this.recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet, schemaUtils);
+            this.recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet, schemaUtils);
         }
-        const repositoryIds = Array.from(repositoryIdSet);
-        const repositories = await repoManager.findReposWithDetailsByIds(...repositoryIds);
-        await this.recordTreeToDelete(recordsToDelete, repositories, actor, airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, schemaUtils, transManager);
+        await this.recordTreeToDelete(recordsToDelete, actor, airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, schemaUtils, sequenceGenerator, transManager);
         return await deleteCommand;
     }
     recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet, schemaUtils) {
@@ -112,14 +112,17 @@ class DeleteManager {
         }
         return true;
     }
-    async recordTreeToDelete(recordsToDelete, repositories, actor, airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, schemaUtils, transManager) {
+    async recordTreeToDelete(recordsToDelete, actor, airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, schemaUtils, sequenceGenerator, transManager) {
+        let systemWideOperationId;
         for (const [schemaIndex, schemaRecordsToDelete] of recordsToDelete) {
             for (const [entityIndex, entityRecordsToDelete] of schemaRecordsToDelete) {
                 const dbEntity = airDb.schemas[schemaIndex].currentVersion.entities[entityIndex];
+                if (!systemWideOperationId) {
+                    systemWideOperationId = await check_in_1.getSysWideOpId(airDb, sequenceGenerator);
+                }
                 for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
-                    const repository = repositories.get(repositoryId);
-                    const repoTransHistory = await historyManager.getNewRepoTransHistory(transManager.currentTransHistory, repository, actor);
-                    const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, ground_control_1.ChangeType.DELETE_ROWS, dbEntity, operHistoryDuo);
+                    const repoTransHistory = await historyManager.getNewRepoTransHistory(transManager.currentTransHistory, repositoryId, actor);
+                    const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ground_control_1.ChangeType.DELETE_ROWS, dbEntity, operHistoryDuo);
                     for (const recordToDelete of entityRecordsToDeleteForRepo) {
                         const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, recordToDelete.actorRecordId, recHistoryDuo);
                         for (const dbProperty of dbEntity.properties) {

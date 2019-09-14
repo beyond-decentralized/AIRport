@@ -55,6 +55,7 @@ export interface ISchemaUtils {
         (idColumn: DbColumn, value: number | string, propertyNameChains: string[][]): void;
     }): IdKeysByIdColumnIndex;
     getColumnPropertyNameChainsAndValue(dbEntity: DbEntity, dbColumn: DbColumn, entityObject: any, forIdKey?: boolean): [string[][], any];
+    addRelationToEntitySelectClause(dbRelation: DbRelation, selectClause: any, allowDefaults?: boolean): void;
     forEachColumnOfRelation(dbRelation: DbRelation, entity: any, callback: {
         (dbColumn: DbColumn, value: any, propertyNameChains: string[][]): void | boolean;
     }, failOnNoValue?: boolean): void;

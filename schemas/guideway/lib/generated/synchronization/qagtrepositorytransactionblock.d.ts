@@ -1,8 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IRepository, RepositoryECascadeGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
+import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
 import { ITerminalRepository, TerminalRepositoryECascadeGraph, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
-import { ITerminal, TerminalECascadeGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
-import { IServer, ServerECascadeGraph, ServerEOptionalId, ServerESelect, QServerQRelation } from '../server/qserver';
+import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
+import { IServer, ServerEOptionalId, ServerESelect, QServerQRelation } from '../server/qserver';
 import { ISyncLog, SyncLogECascadeGraph, SyncLogESelect, QSyncLog } from './qsynclog';
 export interface IAgtRepositoryTransactionBlock {
     id: number;
@@ -58,10 +58,7 @@ export interface AgtRepositoryTransactionBlockEUpdateProperties extends IEntityU
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface AgtRepositoryTransactionBlockECascadeGraph extends IEntityCascadeGraph {
-    repository?: RepositoryECascadeGraph;
     terminalRepositories?: TerminalRepositoryECascadeGraph;
-    terminal?: TerminalECascadeGraph;
-    archivingServer?: ServerECascadeGraph;
     syncLogs?: SyncLogECascadeGraph;
 }
 /**

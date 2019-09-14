@@ -1,5 +1,5 @@
-import { IAirportDatabase, IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFieldUtils, IFunctionWrapper, IQEntity, IQueryFacade, IQueryUtils, ISchemaUtils, IUpdateCache, MappedEntityArray, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, UpdateRecord } from '@airport/air-control';
-import { CascadeOverwrite, DbEntity, ITransactionalConnector } from '@airport/ground-control';
+import { IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, IUpdateCache, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
+import { CascadeOverwrite, DbEntity } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 import { OperationManager } from './OperationManager';
 /**
@@ -22,12 +22,12 @@ export declare class DatabaseFacade extends OperationManager implements IDatabas
     insertValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }): Promise<number[] | string[] | number[][] | string[][]>;
-    delete<E, EntitySelect>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntitySelect): Promise<number>;
+    delete<E>(dbEntity: DbEntity, entity: E): Promise<number>;
     deleteWhere<IQE extends IQEntity>(dbEntity: DbEntity, rawDelete: RawDelete<IQE> | {
         (...args: any[]): RawDelete<IQE>;
     }): Promise<number>;
-    save<E, EntitySelect>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntitySelect): Promise<number>;
-    update<E, EntitySelect>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntitySelect): Promise<number>;
+    save<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntityCascadeGraph): Promise<number>;
+    update<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, cascadeGraph?: EntityCascadeGraph): Promise<number>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.
@@ -42,7 +42,6 @@ export declare class DatabaseFacade extends OperationManager implements IDatabas
     }): Promise<number>;
     private ensureId;
     getOriginalRecord(dbEntity: DbEntity, entity: any, updateCache: IUpdateCache): Promise<any>;
-    getOriginalValues(entitiesToUpdate: UpdateRecord[], dbEntity: DbEntity, airDb: IAirportDatabase, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache): Promise<MappedEntityArray<any>>;
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;
 }
 export declare class FunctionWrapper<QF extends Function> implements IFunctionWrapper<any> {

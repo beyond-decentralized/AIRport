@@ -38,7 +38,7 @@ export class QueryManager
 	): Promise<EntityArray> {
 		const storeDriver = await DI.get(STORE_DRIVER)
 
-		return await storeDriver.find<E, EntityArray>(portableQuery, cachedSqlQueryId)
+		return await storeDriver.find<E, EntityArray>(portableQuery, {}, cachedSqlQueryId)
 	}
 
 	async findOne<E>(
@@ -47,7 +47,7 @@ export class QueryManager
 	): Promise<E> {
 		const storeDriver = await DI.get(STORE_DRIVER)
 
-		return await storeDriver.findOne<E>(portableQuery, cachedSqlQueryId)
+		return await storeDriver.findOne<E>(portableQuery, {}, cachedSqlQueryId)
 	}
 
 	async search<E, EntityArray extends Array<E>>(
@@ -56,7 +56,7 @@ export class QueryManager
 	): Promise<IObservable<EntityArray>> {
 		const storeDriver = await DI.get(STORE_DRIVER)
 
-		return await storeDriver.search<E, EntityArray>(portableQuery, cachedSqlQueryId)
+		return await storeDriver.search<E, EntityArray>(portableQuery, {}, cachedSqlQueryId)
 	}
 
 	async searchOne<E>(
@@ -65,7 +65,7 @@ export class QueryManager
 	): Promise<IObservable<E>> {
 		const storeDriver = await DI.get(STORE_DRIVER)
 
-		return await storeDriver.searchOne<E>(portableQuery, cachedSqlQueryId)
+		return await storeDriver.searchOne<E>(portableQuery, {}, cachedSqlQueryId)
 	}
 
 }

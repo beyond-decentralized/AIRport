@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQEntity, IQRelation } from '@airport/air-control';
 import { ISynchronizationConflict, SynchronizationConflictEId, SynchronizationConflictEOptionalId, SynchronizationConflictESelect, QSynchronizationConflictQId, QSynchronizationConflictQRelation } from './qsynchronizationconflict';
 import { IActor, ActorEId, ActorEOptionalId, ActorESelect, QActorQId, QActorQRelation } from '@airport/holding-pattern';
 export interface ISynchronizationConflictPendingNotification {
@@ -33,6 +33,11 @@ export interface SynchronizationConflictPendingNotificationEOptionalId {
  */
 export interface SynchronizationConflictPendingNotificationEUpdateProperties extends IEntityUpdateProperties {
     acknowledged?: boolean | IQBooleanField;
+}
+/**
+ * PERSIST CASCADE - non-id relations (optional).
+ */
+export interface SynchronizationConflictPendingNotificationECascadeGraph extends IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

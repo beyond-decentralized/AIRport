@@ -54,7 +54,7 @@ class CockroachdbDriver extends SqLiteDriver_1.SqLiteDriver {
                 let completed = false;
                 let retunValue;
                 if (this.currentTransaction) {
-                    throw `Another transaction is already in progress.`;
+                    throw new Error(`Another transaction is already in progress.`);
                 }
                 this._db.transaction((tx) => {
                     this.currentTransaction = tx;

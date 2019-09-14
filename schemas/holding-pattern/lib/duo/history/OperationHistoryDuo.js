@@ -8,6 +8,7 @@ class OperationHistoryDuo extends generated_1.BaseOperationHistoryDuo {
         let operationHistory = {
             changeType: entityChangeType,
             entity: dbEntity,
+            id: undefined,
             orderNumber: ++repositoryTransactionHistory.transactionHistory.numberOfOperations,
             repositoryTransactionHistory: repositoryTransactionHistory,
             systemWideOperationId
