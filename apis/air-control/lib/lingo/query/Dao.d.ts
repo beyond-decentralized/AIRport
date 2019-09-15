@@ -6,6 +6,7 @@ import { IEntityDatabaseFacade } from '../core/repository/EntityDatabaseFacade';
  */
 export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> {
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>;
+    staged: Set<Entity>;
     bulkCreate(entities: EntityCreate[], cascadeOverwrite?: CascadeOverwrite | EntityCascadeGraph, checkIfProcessed?: boolean): Promise<number>;
     count(): Promise<number>;
     /**
@@ -35,7 +36,7 @@ export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, Enti
      * @param cascadeGraph
      * @returns {Promise<number>}
      */
-    stage<EntityInfo extends EntityCreate | EntityCreate[]>(entityInfo: EntityInfo, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    stage<EntityInfo extends Entity | Entity[]>(entityInfo: EntityInfo): Promise<void>;
     /**
      * Stages/caches the entity for later modifications (modifications
      * are not saved and are just stored in memory).

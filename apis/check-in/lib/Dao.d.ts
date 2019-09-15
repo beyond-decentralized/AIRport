@@ -5,6 +5,7 @@ import { CascadeOverwrite, EntityId as DbEntityId } from '@airport/ground-contro
  */
 export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, QE extends IQEntity> implements IDao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE> {
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE>;
+    staged: Set<Entity>;
     constructor(dbEntityId: DbEntityId, Q: QSchema);
     bulkCreate(entities: EntityCreate[], cascadeOverwrite?: CascadeOverwrite | EntityCascadeGraph, checkIfProcessed?: boolean): Promise<number>;
     count(): Promise<number>;
@@ -16,6 +17,6 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     findAllAsTrees(entityIds?: EntityId[], cacheForUpdate?: boolean): Promise<Entity[]>;
     findById(entityId: EntityId, cacheForUpdate?: boolean): Promise<Entity>;
     save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
-    stage<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    stage<EntityInfo extends Entity | Entity[]>(entity: EntityInfo): Promise<void>;
     update(entityInfo: EntityCreate | EntityCreate[], cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
 }

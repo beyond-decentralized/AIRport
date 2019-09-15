@@ -35,6 +35,8 @@ export abstract class Dao<Entity,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId,
 		EntityCascadeGraph, QE>
 
+	staged: Set<Entity> = new Set()
+
 	constructor(
 		dbEntityId: DbEntityId,
 		Q: QSchema
@@ -53,8 +55,14 @@ export abstract class Dao<Entity,
 		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT,
 		checkIfProcessed: boolean          = true
 	): Promise<number> {
-		return await this.db.bulkCreate(entities,
+		const result = await this.db.bulkCreate(entities,
 			cascadeOverwrite, checkIfProcessed)
+
+		for(const entity of entities) {
+			this.staged.delete(entity as any)
+		}
+
+		return result
 	}
 
 	async count(): Promise<number> {
@@ -69,7 +77,10 @@ export abstract class Dao<Entity,
 			return await this.db.bulkCreate(entityInfo,
 				CascadeOverwrite.DEFAULT, true)
 		} else {
-			return await this.db.create(<EntityCreate>entityInfo)
+			const result = await this.db.create(<EntityCreate>entityInfo, cascadeGraph)
+			this.staged.delete(entityInfo as any)
+
+			return result
 		}
 	}
 
@@ -132,18 +143,22 @@ export abstract class Dao<Entity,
 		if (entity instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
-			return await this.db.save(<EntityCreate>entity, cascadeGraph)
+			const result = await this.db.save(<EntityCreate>entity, cascadeGraph)
+			this.staged.delete(entity as any)
+
+			return result
 		}
 	}
 
-	async stage<EntityInfo extends EntityCreate | EntityCreate[]>(
-		entity: EntityInfo,
-		cascadeGraph: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
-	): Promise<number> {
+	async stage<EntityInfo extends Entity | Entity[]>(
+		entity: EntityInfo
+	): Promise<void> {
 		if (entity instanceof Array) {
-			throw new Error(`Not Implemented`)
+			for(const anEntity of entity){
+				this.staged.add(anEntity)
+			}
 		} else {
-			throw new Error(`Not Implemented`)
+				this.staged.add(entity as Entity)
 		}
 	}
 

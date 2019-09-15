@@ -7,12 +7,17 @@ const EntityDatabaseFacade_1 = require("./EntityDatabaseFacade");
  */
 class Dao {
     constructor(dbEntityId, Q) {
+        this.staged = new Set();
         const dbEntity = Q.__dbSchema__.currentVersion.entities[dbEntityId];
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
         this.db = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q);
     }
     async bulkCreate(entities, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT, checkIfProcessed = true) {
-        return await this.db.bulkCreate(entities, cascadeOverwrite, checkIfProcessed);
+        const result = await this.db.bulkCreate(entities, cascadeOverwrite, checkIfProcessed);
+        for (const entity of entities) {
+            this.staged.delete(entity);
+        }
+        return result;
     }
     async count() {
         throw new Error(`Not Implemented`);
@@ -22,7 +27,9 @@ class Dao {
             return await this.db.bulkCreate(entityInfo, ground_control_1.CascadeOverwrite.DEFAULT, true);
         }
         else {
-            return await this.db.create(entityInfo);
+            const result = await this.db.create(entityInfo, cascadeGraph);
+            this.staged.delete(entityInfo);
+            return result;
         }
     }
     async delete(entityIdInfo, cascadeGraph = ground_control_1.CascadeOverwrite.DEFAULT) {
@@ -65,15 +72,19 @@ class Dao {
             throw new Error(`Not Implemented`);
         }
         else {
-            return await this.db.save(entity, cascadeGraph);
+            const result = await this.db.save(entity, cascadeGraph);
+            this.staged.delete(entity);
+            return result;
         }
     }
-    async stage(entity, cascadeGraph = ground_control_1.CascadeOverwrite.DEFAULT) {
+    async stage(entity) {
         if (entity instanceof Array) {
-            throw new Error(`Not Implemented`);
+            for (const anEntity of entity) {
+                this.staged.add(anEntity);
+            }
         }
         else {
-            throw new Error(`Not Implemented`);
+            this.staged.add(entity);
         }
     }
     async update(entityInfo, cascadeGraph = ground_control_1.CascadeOverwrite.DEFAULT) {

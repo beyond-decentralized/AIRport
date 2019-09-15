@@ -25,6 +25,8 @@ export interface IDao<Entity,
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>
 
+	staged: Set<Entity>
+
 	// releaseCachedForUpdate(
 	// 	updateCacheType: UpdateCacheType,
 	// 	...entities: Entity[]
@@ -88,10 +90,9 @@ export interface IDao<Entity,
 	 * @param cascadeGraph
 	 * @returns {Promise<number>}
 	 */
-	stage<EntityInfo extends EntityCreate | EntityCreate[]>(
-		entityInfo: EntityInfo,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
-	): Promise<number>;
+	stage<EntityInfo extends Entity | Entity[]>(
+		entityInfo: EntityInfo
+	): Promise<void>;
 
 	/**
 	 * Stages/caches the entity for later modifications (modifications
