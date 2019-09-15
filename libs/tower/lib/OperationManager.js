@@ -170,6 +170,10 @@ class OperationManager {
             columns: metadataUtils.getAllNonGeneratedColumns(qEntity),
             values: []
         };
+        let columnIndexesInValues = [];
+        rawInsert.columns.forEach((qField, index) => {
+            columnIndexesInValues[qField.dbColumn.index] = index;
+        });
         let cascadeRecords = [];
         for (const entity of entities) {
             if (checkIfProcessed && this.isProcessed(entity, createdEntityMap, dbEntity, schemaUtils)[0] === true) {
@@ -206,7 +210,8 @@ class OperationManager {
                                     // within the circular dependency management lookup
                                     return;
                                 }
-                                valuesFragment[dbColumn.index] = columnValue === undefined ? null : columnValue;
+                                valuesFragment[columnIndexesInValues[dbColumn.index]]
+                                    = columnValue === undefined ? null : columnValue;
                             }, false);
                             // Cascading on manyToOne is not currently implemented, nothing else needs
                             // to be done
@@ -241,7 +246,7 @@ class OperationManager {
                     }
                     if (addValue) {
                         this.columnProcessed(dbProperty, foundValues, column, newValue);
-                        valuesFragment[column.index] = newValue;
+                        valuesFragment[columnIndexesInValues[column.index]] = newValue;
                     }
                 }
             }

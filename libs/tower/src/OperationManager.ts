@@ -10,6 +10,7 @@ import {
 	InsertValues,
 	IQEntity,
 	IQMetadataUtils,
+	IQOperableFieldInternal,
 	IQueryFacade,
 	IQueryUtils,
 	ISchemaUtils,
@@ -426,6 +427,15 @@ export abstract class OperationManager
 			columns: metadataUtils.getAllNonGeneratedColumns(qEntity),
 			values: []
 		}
+		let columnIndexesInValues           = []
+
+		rawInsert.columns.forEach((
+			qField: IQOperableFieldInternal<any, any, any, any>,
+			index
+		) => {
+			columnIndexesInValues[qField.dbColumn.index] = index
+		})
+
 		let cascadeRecords: CascadeRecord[] = []
 
 		for (const entity of entities) {
@@ -470,7 +480,8 @@ export abstract class OperationManager
 									// within the circular dependency management lookup
 									return
 								}
-								valuesFragment[dbColumn.index] = columnValue === undefined ? null : columnValue
+								valuesFragment[columnIndexesInValues[dbColumn.index]]
+									= columnValue === undefined ? null : columnValue
 							}, false)
 							// Cascading on manyToOne is not currently implemented, nothing else needs
 							// to be done
@@ -506,7 +517,7 @@ export abstract class OperationManager
 					}
 					if (addValue) {
 						this.columnProcessed(dbProperty, foundValues, column, newValue)
-						valuesFragment[column.index] = newValue
+						valuesFragment[columnIndexesInValues[column.index]] = newValue
 					}
 				}
 			}

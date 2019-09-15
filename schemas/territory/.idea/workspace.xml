@@ -1,31 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="refactoring cascading rules">
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/EntityLookup.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/EntityLookup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/EntityLookup.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/EntityLookup.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/QMetadataUtils.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/QMetadataUtils.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/QMetadataUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/QMetadataUtils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/QMetadataUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/QMetadataUtils.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/utils/QMetadataUtils.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/utils/QMetadataUtils.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/impl/utils/QMetadataUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/impl/utils/QMetadataUtils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/lingo/utils/QMetadataUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/lingo/utils/QMetadataUtils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/lib/orchestration/InsertManager.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apps/terminal/src/orchestration/InsertManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apps/terminal/src/orchestration/InsertManager.ts" afterDir="false" />
+    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="debugging">
       <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/OperationManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/OperationManager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/tower/lib/OperationManager.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/lib/OperationManager.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/tower/src/OperationManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/tower/src/OperationManager.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/Schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/Schema.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaProperty.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaProperty.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelation.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelation.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaVersion.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaVersion.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../travel-document-checkpoint/lib/ddl/Terminal.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../travel-document-checkpoint/lib/ddl/Terminal.js.map" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -234,7 +214,7 @@
       <workItem from="1568232458925" duration="7825000" />
       <workItem from="1568245304499" duration="2194000" />
       <workItem from="1568259102771" duration="2998000" />
-      <workItem from="1568344974109" duration="23313000" />
+      <workItem from="1568344974109" duration="26113000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1567257384008</created>
@@ -285,7 +265,14 @@
       <option name="project" value="LOCAL" />
       <updated>1568421470400</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="debugging">
+      <created>1568507867355</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1568507867355</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView">
@@ -339,12 +326,12 @@
     <MESSAGE value="refactoring DI" />
     <MESSAGE value="loaded AirportDatabase to populate in DI, for loading external schema dependencies" />
     <MESSAGE value="refactored bulkCreate API for new CascadeOverwrite values (ALWAYS, DEFAULT, NEVER).  May want to later add on per relation type options (ONE_TO_MANY_ONLY, etc.)" />
-    <MESSAGE value="debugging" />
     <MESSAGE value="wrapped throw 'string' with &quot;new Error('string').  Started refactoring Sequence Generator." />
     <MESSAGE value="Finished refactoring Sequence Generator." />
     <MESSAGE value="Bug fixes" />
     <MESSAGE value="refactoring cascading rules" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactoring cascading rules" />
+    <MESSAGE value="debugging" />
+    <option name="LAST_COMMIT_MESSAGE" value="debugging" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
