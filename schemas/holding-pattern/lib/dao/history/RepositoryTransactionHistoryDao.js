@@ -17,12 +17,12 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
                 id
             },
             operationHistory: {
-                ...operHistoryDuo.getAllFieldsSelect(),
+                ...operHistoryDuo.select.fields,
                 entity: {
                     id: air_control_1.Y
                 },
                 recordHistory: {
-                    ...recHistoryDuo.getAllFieldsSelect()
+                    ...recHistoryDuo.select.fields
                 }
             },
         };
@@ -48,15 +48,15 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
         let rth, a, r;
         return await this.db.find.graph({
             select: {
-                ...this.db.duo.getAllFieldsSelect(),
+                ...this.db.duo.select.fields,
                 actor: {
-                    user: {},
-                    database: {},
+                    randomId: air_control_1.Y,
+                    user: {}
                 },
                 repository: {
                     orderedId: air_control_1.Y,
                     randomId: air_control_1.Y,
-                    actor: {}
+                    ownerActor: {}
                 },
                 transactionHistory: {
                     id: air_control_1.Y

@@ -5,18 +5,85 @@ import {
 	IEntityIdProperties,
 	IEntitySelectProperties,
 	IEntityUpdateProperties,
+	IFieldsSelect,
 	IQEntity,
-	QSchema
+	QSchema,
+	Y
 } from '@airport/air-control'
 import {
 	DbEntity,
-	EntityId as DbEntityId
+	EntityId as DbEntityId,
+	EntityRelationType
 } from '@airport/ground-control'
 
 /**
  * Created by Papa on 8/26/2017.
  */
 
+class FieldsSelect<EntitySelect extends IEntitySelectProperties>
+	implements IFieldsSelect<EntitySelect> {
+
+	constructor(
+		public dbEntity: DbEntity
+	) {
+	}
+
+	get ids(): EntitySelect {
+		const propertyNames = this.dbEntity.properties
+			.filter(
+				property => property.isId)
+			.map(
+				property => property.name)
+
+		return this.getSelect(propertyNames, false)
+	}
+
+	get fields(): EntitySelect {
+		const propertyNames = this.dbEntity.properties
+			.filter(
+				property => !property.relation || !property.relation.length)
+			.map(
+				property => property.name)
+
+		return this.getSelect(propertyNames, false)
+	}
+
+	get manyToOnes(): EntitySelect {
+		return this.getRelationSelect(EntityRelationType.MANY_TO_ONE)
+	}
+
+	get oneToManys(): EntitySelect {
+		return this.getRelationSelect(EntityRelationType.ONE_TO_MANY)
+	}
+
+	private getRelationSelect(
+		relationType: EntityRelationType
+	): EntitySelect {
+		const propertyNames = this.dbEntity.properties
+			.filter(
+				property => property.relation
+					&& property.relation.length
+					&& property.relation[0].relationType === relationType)
+			.map(
+				property => property.name)
+
+		return this.getSelect(propertyNames, true)
+	}
+
+	private getSelect(
+		propertyNames: string[],
+		forRelations: boolean
+	): EntitySelect {
+		const selectFragment = {}
+
+		for (const propertyName of propertyNames) {
+			selectFragment[propertyName] = forRelations ? {} : Y
+		}
+
+		return selectFragment as any
+	}
+
+}
 
 /**
  * Data Manipulation object.
@@ -32,6 +99,8 @@ export class Duo<Entity,
 		EntityUpdate, EntityId,
 		EntityCascadeGraph, IQE> {
 
+	select: IFieldsSelect<EntitySelect>
+
 	private dbEntity: DbEntity
 
 	constructor(
@@ -43,6 +112,7 @@ export class Duo<Entity,
 		} else {
 			this.dbEntity = dbEntityId
 		}
+		this.select = new FieldsSelect(this.dbEntity)
 	}
 
 	getIdStub(
@@ -57,6 +127,7 @@ export class Duo<Entity,
 		throw new Error(`Not Implemented.`)
 	}
 
+	/*
 	getAllFieldsSelect(): EntitySelect {
 		throw new Error(`Not Implemented.`)
 	}
@@ -88,6 +159,7 @@ export class Duo<Entity,
 	getAllOneToManysSelect(): EntitySelect {
 		throw new Error(`Not implemented`)
 	}
+	 */
 
 }
 

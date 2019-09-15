@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="debugging">
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/query/Dao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/query/Dao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/Dao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/Dao.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/Dao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/Dao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/Dao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/Dao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/Dao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/Dao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/check-in/src/Dao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/src/Dao.ts" afterDir="false" />
+    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="added support for simple staging">
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/query/Duo.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/lingo/query/Duo.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/Duo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/src/lingo/query/Duo.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/Duo.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/Duo.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/Duo.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/Duo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/Duo.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/Duo.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/check-in/src/Duo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/src/Duo.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/dao/history/RepositoryTransactionHistoryDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/OperationHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/OperationHistory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/OperationHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/OperationHistory.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/RecordHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/RecordHistory.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/TransactionHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/TransactionHistory.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Actor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Actor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Application.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Application.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/repository/Repository.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/repository/Repository.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/src/dao/history/RepositoryTransactionHistoryDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/src/dao/history/RepositoryTransactionHistoryDao.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -217,7 +227,9 @@
       <workItem from="1568232458925" duration="7825000" />
       <workItem from="1568245304499" duration="2194000" />
       <workItem from="1568259102771" duration="2998000" />
-      <workItem from="1568344974109" duration="27926000" />
+      <workItem from="1568344974109" duration="29716000" />
+      <workItem from="1568560003168" duration="557000" />
+      <workItem from="1568560592618" duration="11000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1567257384008</created>
@@ -282,7 +294,14 @@
       <option name="project" value="LOCAL" />
       <updated>1568517152375</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="added support for simple staging">
+      <created>1568524469175</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1568524469175</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TodoView">
@@ -316,7 +335,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="adjusted transactionality, schema generation and fixed bugs" />
     <MESSAGE value="removed setup for browser-side logging to db, and general bug fixes" />
     <MESSAGE value="dependency injection fixes" />
     <MESSAGE value="more dependency injection and other fixes" />
@@ -341,7 +359,8 @@
     <MESSAGE value="Bug fixes" />
     <MESSAGE value="refactoring cascading rules" />
     <MESSAGE value="debugging" />
-    <option name="LAST_COMMIT_MESSAGE" value="debugging" />
+    <MESSAGE value="added support for simple staging" />
+    <option name="LAST_COMMIT_MESSAGE" value="added support for simple staging" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

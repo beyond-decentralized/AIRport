@@ -8,6 +8,21 @@ import {
 } from '../core/entity/Entity'
 
 /**
+ * Select property creation utility
+ */
+export interface IFieldsSelect<EntitySelect extends IEntitySelectProperties> {
+
+	ids: EntitySelect
+
+	fields: EntitySelect
+
+	manyToOnes: EntitySelect
+
+	oneToManys: EntitySelect
+
+}
+
+/**
  * Data Utility Object.
  */
 export interface IDuo<Entity,
@@ -18,6 +33,8 @@ export interface IDuo<Entity,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity> {
 
+	select: IFieldsSelect<EntitySelect>
+
 	getIdStub(
 		ids: number | string | number[] | string[]
 	): EntityId;
@@ -26,6 +43,7 @@ export interface IDuo<Entity,
 		ids: number[] | string[] | number[][] | string[][]
 	): EntityId[];
 
+	/*
 	getAllFieldsSelect(): EntitySelect;
 
 	getIdFieldsSelect(): EntityId;
@@ -37,5 +55,6 @@ export interface IDuo<Entity,
 	getAllManyToOneIdStubsSelect(): EntitySelect;
 
 	getAllOneToManysSelect(): EntitySelect;
+	 */
 
 }

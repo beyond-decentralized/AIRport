@@ -124,12 +124,12 @@ export class RepositoryTransactionHistoryDao
 				id
 			},
 			operationHistory: {
-				...operHistoryDuo.getAllFieldsSelect(),
+				...operHistoryDuo.select.fields,
 				entity: {
 					id: Y
 				},
 				recordHistory: {
-					...recHistoryDuo.getAllFieldsSelect()
+					...recHistoryDuo.select.fields
 				}
 			},
 		}
@@ -192,15 +192,15 @@ export class RepositoryTransactionHistoryDao
 		    r: QRepository
 		return await this.db.find.graph({
 			select: {
-				...this.db.duo.getAllFieldsSelect(),
+				...this.db.duo.select.fields,
 				actor: {
-					user: {},
-					database: {},
+					randomId: Y,
+					user: {}
 				},
 				repository: {
 					orderedId: Y,
 					randomId: Y,
-					actor: {}
+					ownerActor: {}
 				},
 				transactionHistory: {
 					id: Y
