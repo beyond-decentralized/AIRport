@@ -105,11 +105,11 @@ export class BaseSystemWideOperationIdDao
 	implements IBaseSystemWideOperationIdDao {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return diSet(1)
 	}
 	
 	constructor() {
-		super(2)
+		super(1)
 	}
 }
 
@@ -123,10 +123,10 @@ export class BaseTerminalRunDao
 	implements IBaseTerminalRunDao {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return diSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }

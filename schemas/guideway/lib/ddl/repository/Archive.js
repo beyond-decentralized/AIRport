@@ -20,4 +20,4 @@ Archive = __decorate([
     air_control_1.Table({ name: "ARCHIVES" })
 ], Archive);
 exports.Archive = Archive;
-//# sourceMappingURL=archive.js.map
+//# sourceMappingURL=Archive.js.map

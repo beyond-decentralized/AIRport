@@ -28,4 +28,4 @@ Application = __decorate([
     air_control_1.Table({ name: "APPLICATIONS" })
 ], Application);
 exports.Application = Application;
-//# sourceMappingURL=application.js.map
+//# sourceMappingURL=Application.js.map

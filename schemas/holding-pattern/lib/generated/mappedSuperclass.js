@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MAPPED_SUPERCLASS = [
     {
         "type": "Stageable",
-        "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
+        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
@@ -83,7 +83,7 @@ exports.MAPPED_SUPERCLASS = [
     },
     {
         "type": "RepositoryEntity",
-        "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/repository/repositoryentity.ts",
+        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
         "parentClassName": "Stageable",
         "location": "../infrastructure/Stageable",
         "isSuperclass": true,
@@ -429,7 +429,7 @@ exports.MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "Stageable",
-            "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
+            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [],
@@ -511,7 +511,7 @@ exports.MAPPED_SUPERCLASS = [
     },
     {
         "type": "ChildRepoRow",
-        "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/traditional/childreporow.ts",
+        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ChildRepoRow.ts",
         "parentClassName": "RepositoryEntity",
         "location": "../repository/RepositoryEntity",
         "isSuperclass": true,
@@ -573,7 +573,7 @@ exports.MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "RepositoryEntity",
-            "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/repository/repositoryentity.ts",
+            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
             "parentClassName": "Stageable",
             "location": "../infrastructure/Stageable",
             "isSuperclass": true,
@@ -919,7 +919,7 @@ exports.MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "Stageable",
-                "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
+                "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
                 "parentClassName": null,
                 "isSuperclass": true,
                 "ids": [],
@@ -1003,7 +1003,7 @@ exports.MAPPED_SUPERCLASS = [
     },
     {
         "type": "ChildRow",
-        "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/traditional/childrow.ts",
+        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ChildRow.ts",
         "parentClassName": "Stageable",
         "location": "../infrastructure/Stageable",
         "isSuperclass": true,
@@ -1065,7 +1065,7 @@ exports.MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "Stageable",
-            "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
+            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [],
@@ -1147,7 +1147,7 @@ exports.MAPPED_SUPERCLASS = [
     },
     {
         "type": "ImmutableRepoRow",
-        "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/traditional/immutablereporow.ts",
+        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ImmutableRepoRow.ts",
         "parentClassName": "RepositoryEntity",
         "location": "../repository/RepositoryEntity",
         "isSuperclass": true,
@@ -1263,7 +1263,7 @@ exports.MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "RepositoryEntity",
-            "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/repository/repositoryentity.ts",
+            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
             "parentClassName": "Stageable",
             "location": "../infrastructure/Stageable",
             "isSuperclass": true,
@@ -1609,7 +1609,7 @@ exports.MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "Stageable",
-                "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
+                "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
                 "parentClassName": null,
                 "isSuperclass": true,
                 "ids": [],
@@ -1693,7 +1693,7 @@ exports.MAPPED_SUPERCLASS = [
     },
     {
         "type": "ImmutableRow",
-        "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/traditional/immutablerow.ts",
+        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ImmutableRow.ts",
         "parentClassName": "Stageable",
         "location": "../infrastructure/Stageable",
         "isSuperclass": true,
@@ -2130,7 +2130,7 @@ exports.MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "Stageable",
-            "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
+            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [],
@@ -2212,7 +2212,7 @@ exports.MAPPED_SUPERCLASS = [
     },
     {
         "type": "MutableRepoRow",
-        "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/traditional/mutablereporow.ts",
+        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/MutableRepoRow.ts",
         "parentClassName": "ImmutableRepoRow",
         "location": "./ImmutableRepoRow",
         "isSuperclass": true,
@@ -2303,7 +2303,7 @@ exports.MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "ImmutableRepoRow",
-            "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/traditional/immutablereporow.ts",
+            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ImmutableRepoRow.ts",
             "parentClassName": "RepositoryEntity",
             "location": "../repository/RepositoryEntity",
             "isSuperclass": true,
@@ -2419,7 +2419,7 @@ exports.MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "RepositoryEntity",
-                "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/repository/repositoryentity.ts",
+                "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
                 "parentClassName": "Stageable",
                 "location": "../infrastructure/Stageable",
                 "isSuperclass": true,
@@ -2765,7 +2765,7 @@ exports.MAPPED_SUPERCLASS = [
                 "implementedInterfaceNames": [],
                 "parentEntity": {
                     "type": "Stageable",
-                    "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
+                    "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
                     "parentClassName": null,
                     "isSuperclass": true,
                     "ids": [],
@@ -2851,7 +2851,7 @@ exports.MAPPED_SUPERCLASS = [
     },
     {
         "type": "MutableRow",
-        "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/traditional/mutablerow.ts",
+        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/MutableRow.ts",
         "parentClassName": "ImmutableRow",
         "location": "./ImmutableRow",
         "isSuperclass": true,
@@ -2942,7 +2942,7 @@ exports.MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "ImmutableRow",
-            "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/traditional/immutablerow.ts",
+            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ImmutableRow.ts",
             "parentClassName": "Stageable",
             "location": "../infrastructure/Stageable",
             "isSuperclass": true,
@@ -3379,7 +3379,7 @@ exports.MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "Stageable",
-                "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
+                "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
                 "parentClassName": null,
                 "isSuperclass": true,
                 "ids": [],
@@ -3463,7 +3463,7 @@ exports.MAPPED_SUPERCLASS = [
     },
     {
         "type": "ReferenceRow",
-        "path": "c:/users/papa/dac/airport/schemas/holding-pattern/src/ddl/traditional/referencerow.ts",
+        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ReferenceRow.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],

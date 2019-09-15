@@ -24,4 +24,4 @@ Server = __decorate([
     air_control_1.Table({ name: "AGT_SERVERS" })
 ], Server);
 exports.Server = Server;
-//# sourceMappingURL=server.js.map
+//# sourceMappingURL=Server.js.map

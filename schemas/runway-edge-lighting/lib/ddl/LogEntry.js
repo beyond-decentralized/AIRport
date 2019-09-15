@@ -25,4 +25,4 @@ LogEntry = __decorate([
     air_control_1.Table({ name: "LOG_ENTRY" })
 ], LogEntry);
 exports.LogEntry = LogEntry;
-//# sourceMappingURL=logentry.js.map
+//# sourceMappingURL=LogEntry.js.map

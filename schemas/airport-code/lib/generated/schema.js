@@ -154,6 +154,50 @@ exports.SCHEMA = {
                     "columns": [
                         {
                             "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 1,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SystemWideOperationId",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "id",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SYSTEM_WIDE_OPERATION_IDS",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
@@ -200,7 +244,7 @@ exports.SCHEMA = {
                             "index": 0
                         }
                     ],
-                    "index": 1,
+                    "index": 2,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "TerminalRun",
@@ -237,50 +281,6 @@ exports.SCHEMA = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "TERMINAL_RUNS",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 2,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "SystemWideOperationId",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "id",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SYSTEM_WIDE_OPERATION_IDS",
                         "indexes": []
                     }
                 }

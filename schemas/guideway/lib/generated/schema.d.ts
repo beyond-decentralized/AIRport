@@ -31,15 +31,6 @@ export declare const SCHEMA: {
             "isRepositoryEntity": boolean;
             "name": string;
             "properties": ({
-                "index": number;
-                "isId": boolean;
-                "name": string;
-                "relationRef": {
-                    "index": number;
-                };
-                "sinceVersion": number;
-                "columnRef"?: undefined;
-            } | {
                 "columnRef": {
                     "index": number;
                 };
@@ -48,6 +39,15 @@ export declare const SCHEMA: {
                 "name": string;
                 "sinceVersion": number;
                 "relationRef"?: undefined;
+            } | {
+                "index": number;
+                "isId": boolean;
+                "name": string;
+                "relationRef": {
+                    "index": number;
+                };
+                "sinceVersion": number;
+                "columnRef"?: undefined;
             })[];
             "relations": {
                 "index": number;

@@ -62,7 +62,7 @@ import {
 	QSharingNodeRepoTransBlock,
 	QSharingNodeRepoTransBlockQId,
 	QSharingNodeRepoTransBlockQRelation,
-} from '../sharingnode/qsharingnoderepotransblock';
+} from '../sharingNode/qsharingnoderepotransblock';
 import {
 	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockECascadeGraph,
@@ -73,7 +73,7 @@ import {
 	QSharingMessageRepoTransBlock,
 	QSharingMessageRepoTransBlockQId,
 	QSharingMessageRepoTransBlockQRelation,
-} from '../sharingmessage/qsharingmessagerepotransblock';
+} from '../sharingMessage/qsharingmessagerepotransblock';
 import {
 	IMissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockECascadeGraph,
@@ -84,7 +84,7 @@ import {
 	QMissingRecordRepoTransBlock,
 	QMissingRecordRepoTransBlockQId,
 	QMissingRecordRepoTransBlockQRelation,
-} from '../missingrecord/qmissingrecordrepotransblock';
+} from '../missingRecord/qmissingrecordrepotransblock';
 import {
 	IRepoTransBlockSchemaToChange,
 	RepoTransBlockSchemaToChangeECascadeGraph,

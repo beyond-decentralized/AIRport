@@ -65,7 +65,7 @@ class RepositoryDao extends generated_1.BaseRepositoryDao {
         let id = air_control_1.Y;
         return await this.db.find.map().tree({
             select: {
-                ...this.db.duo.getAllFieldsSelect(),
+                ...this.db.duo.select.fields,
                 repositoryActors: {
                     actor: {
                         user: {

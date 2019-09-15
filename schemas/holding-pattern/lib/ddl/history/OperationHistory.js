@@ -12,6 +12,9 @@ const ground_control_1 = require("@airport/ground-control");
  * Marks a group of mutation history changes.
  */
 let OperationHistory = class OperationHistory {
+    /**
+     * Marks a group of mutation history changes.
+     */
     constructor() {
         this.recordHistory = [];
     }

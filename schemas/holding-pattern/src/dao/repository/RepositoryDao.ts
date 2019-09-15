@@ -149,7 +149,7 @@ export class RepositoryDao
 		let id = Y
 		return await this.db.find.map().tree({
 				select: {
-					...this.db.duo.getAllFieldsSelect(),
+					...this.db.duo.select.fields,
 					repositoryActors: {
 						actor: {
 							user: {
