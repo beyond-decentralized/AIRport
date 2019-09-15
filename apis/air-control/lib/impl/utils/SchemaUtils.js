@@ -385,7 +385,7 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
         return false;
     }
 }
-SchemaUtils.TEMP_ID = 0;
 exports.SchemaUtils = SchemaUtils;
+SchemaUtils.TEMP_ID = 0;
 di_1.DI.set(diTokens_1.SCHEMA_UTILS, SchemaUtils);
 //# sourceMappingURL=SchemaUtils.js.map

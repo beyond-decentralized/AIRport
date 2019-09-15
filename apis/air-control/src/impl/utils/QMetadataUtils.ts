@@ -18,6 +18,12 @@ export class QMetadataUtils
 		return qEntity.__driver__.allColumns
 	}
 
+	getAllNonGeneratedColumns(
+		qEntity: IQEntityInternal
+	): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[] {
+		return this.getAllColumns(qEntity).filter(qField => !qField.dbColumn.isGenerated)
+	}
+
 	getDbEntity<IQE extends IQEntityInternal>(
 		qEntity: IQE
 	): DbEntity {

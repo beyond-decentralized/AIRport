@@ -15,8 +15,6 @@ import {
 	ISchemaUtils,
 	isStub,
 	IUpdateCache,
-	MappedEntityArray,
-	or,
 	QUERY_FACADE,
 	RawDelete,
 	RawInsertColumnValues,
@@ -39,7 +37,6 @@ import {
 	ensureChildMap,
 	EntityRelationType,
 	ITransactionalConnector,
-	JSONBaseOperation,
 	JSONValueOperation,
 	PortableQuery,
 	SQLDataType,
@@ -426,7 +423,7 @@ export abstract class OperationManager
 
 		let rawInsert: RawInsertValues<any> = {
 			insertInto: qEntity,
-			columns: metadataUtils.getAllColumns(qEntity),
+			columns: metadataUtils.getAllNonGeneratedColumns(qEntity),
 			values: []
 		}
 		let cascadeRecords: CascadeRecord[] = []
@@ -468,6 +465,11 @@ export abstract class OperationManager
 									}
 								}
 								this.columnProcessed(dbProperty, foundValues, dbColumn, columnValue)
+								if (dbColumn.isGenerated && dbProperty.isId && columnValue < 0) {
+									// Do not insert negative integers for temporary identification
+									// within the circular dependency management lookup
+									return
+								}
 								valuesFragment[dbColumn.index] = columnValue === undefined ? null : columnValue
 							}, false)
 							// Cascading on manyToOne is not currently implemented, nothing else needs
@@ -485,6 +487,7 @@ export abstract class OperationManager
 						&& schemaUtils.isEmpty(newValue)) {
 						throw new Error(`Repository Id must be specified on an insert`)
 					}
+					let addValue = true
 					if (column.isGenerated && (newValue !== undefined && newValue !== null)) {
 						// Allowing negative integers for temporary identification
 						// within the circular dependency management lookup
@@ -492,6 +495,7 @@ export abstract class OperationManager
 							throw new Error(`@GeneratedValue() "${dbEntity.name}.${dbProperty.name}" 
 							cannot have a value for 'create' operations.`)
 						}
+						addValue = false
 					}
 					if (dbProperty.isId) {
 						if (!column.isGenerated && schemaUtils.isIdEmpty(newValue)) {
@@ -500,8 +504,10 @@ export abstract class OperationManager
 							must have a value for 'create' operations.`)
 						}
 					}
-					this.columnProcessed(dbProperty, foundValues, column, newValue)
-					valuesFragment[column.index] = newValue
+					if (addValue) {
+						this.columnProcessed(dbProperty, foundValues, column, newValue)
+						valuesFragment[column.index] = newValue
+					}
 				}
 			}
 			rawInsert.values.push(valuesFragment)
@@ -632,10 +638,10 @@ export abstract class OperationManager
 				default:
 					continue
 			}
-			const entitiesWithIds: UpdateRecord[]                      = []
+			const entitiesWithIds: UpdateRecord[] = []
 			// const entitiesWithIdMap: { [idKey: string]: UpdateRecord } = {}
-			const entitiesWithoutIds: any[]                            = []
-			const dbEntity                                             = cascadeRecord.relation.relationEntity
+			const entitiesWithoutIds: any[]       = []
+			const dbEntity                        = cascadeRecord.relation.relationEntity
 			if (cascadeRecord.manyEntities) {
 				for (const manyEntity of cascadeRecord.manyEntities) {
 					const [isProcessed, entityIdData] = this.isProcessed(manyEntity,

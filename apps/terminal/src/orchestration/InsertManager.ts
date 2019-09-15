@@ -474,9 +474,9 @@ and cannot have NULL values for non-draft records.`)
 			// actorRecordIds.push(actorRecordId)
 			// entityValues[actorRecordIdColumn.index] = actorRecordId
 
-			if (!entityValues[actorRecordIdColumn.index]) {
-
-			}
+			// if (!entityValues[actorRecordIdColumn.index]) {
+			//
+			// }
 		}
 
 		return {

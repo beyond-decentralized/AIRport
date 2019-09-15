@@ -167,7 +167,7 @@ class OperationManager {
         const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         let rawInsert = {
             insertInto: qEntity,
-            columns: metadataUtils.getAllColumns(qEntity),
+            columns: metadataUtils.getAllNonGeneratedColumns(qEntity),
             values: []
         };
         let cascadeRecords = [];
@@ -201,6 +201,11 @@ class OperationManager {
                                     }
                                 }
                                 this.columnProcessed(dbProperty, foundValues, dbColumn, columnValue);
+                                if (dbColumn.isGenerated && dbProperty.isId && columnValue < 0) {
+                                    // Do not insert negative integers for temporary identification
+                                    // within the circular dependency management lookup
+                                    return;
+                                }
                                 valuesFragment[dbColumn.index] = columnValue === undefined ? null : columnValue;
                             }, false);
                             // Cascading on manyToOne is not currently implemented, nothing else needs
@@ -218,6 +223,7 @@ class OperationManager {
                         && schemaUtils.isEmpty(newValue)) {
                         throw new Error(`Repository Id must be specified on an insert`);
                     }
+                    let addValue = true;
                     if (column.isGenerated && (newValue !== undefined && newValue !== null)) {
                         // Allowing negative integers for temporary identification
                         // within the circular dependency management lookup
@@ -225,6 +231,7 @@ class OperationManager {
                             throw new Error(`@GeneratedValue() "${dbEntity.name}.${dbProperty.name}" 
 							cannot have a value for 'create' operations.`);
                         }
+                        addValue = false;
                     }
                     if (dbProperty.isId) {
                         if (!column.isGenerated && schemaUtils.isIdEmpty(newValue)) {
@@ -232,8 +239,10 @@ class OperationManager {
 							must have a value for 'create' operations.`);
                         }
                     }
-                    this.columnProcessed(dbProperty, foundValues, column, newValue);
-                    valuesFragment[column.index] = newValue;
+                    if (addValue) {
+                        this.columnProcessed(dbProperty, foundValues, column, newValue);
+                        valuesFragment[column.index] = newValue;
+                    }
                 }
             }
             rawInsert.values.push(valuesFragment);

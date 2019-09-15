@@ -278,8 +278,9 @@ and cannot have NULL values for non-draft records.`);
             // const actorRecordId               = this.idGenerator.generateEntityId(dbEntity)
             // actorRecordIds.push(actorRecordId)
             // entityValues[actorRecordIdColumn.index] = actorRecordId
-            if (!entityValues[actorRecordIdColumn.index]) {
-            }
+            // if (!entityValues[actorRecordIdColumn.index]) {
+            //
+            // }
         }
         return {
             actorIdColumn,

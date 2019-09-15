@@ -6,6 +6,9 @@ class QMetadataUtils {
     getAllColumns(qEntity) {
         return qEntity.__driver__.allColumns;
     }
+    getAllNonGeneratedColumns(qEntity) {
+        return this.getAllColumns(qEntity).filter(qField => !qField.dbColumn.isGenerated);
+    }
     getDbEntity(qEntity) {
         return qEntity.__driver__.dbEntity;
     }
