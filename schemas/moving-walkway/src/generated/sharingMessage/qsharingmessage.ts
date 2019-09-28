@@ -30,7 +30,7 @@ import {
 	QSharingNode,
 	QSharingNodeQId,
 	QSharingNodeQRelation,
-} from '../sharingnode/qsharingnode';
+} from '../sharingNode/qsharingnode';
 import {
 	SharingMessageRepoTransBlockECascadeGraph,
 	SharingMessageRepoTransBlockEId,

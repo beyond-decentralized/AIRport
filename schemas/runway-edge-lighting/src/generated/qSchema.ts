@@ -12,15 +12,15 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { LogEntry } from '../ddl/logentry';
+import { LogEntry } from '../ddl/LogEntry';
 import { QLogEntry } from './qlogentry';
-import { LogEntryType } from '../ddl/logentrytype';
+import { LogEntryType } from '../ddl/LogEntryType';
 import { QLogEntryType } from './qlogentrytype';
-import { LogEntryValue } from '../ddl/logentryvalue';
+import { LogEntryValue } from '../ddl/LogEntryValue';
 import { QLogEntryValue } from './qlogentryvalue';
-import { LoggedError } from '../ddl/loggederror';
+import { LoggedError } from '../ddl/LoggedError';
 import { QLoggedError } from './qloggederror';
-import { LoggedErrorStackTrace } from '../ddl/loggederrorstacktrace';
+import { LoggedErrorStackTrace } from '../ddl/LoggedErrorStackTrace';
 import { QLoggedErrorStackTrace } from './qloggederrorstacktrace';
 
 export interface LocalQSchema extends AirportQSchema {

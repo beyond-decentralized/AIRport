@@ -35,4 +35,4 @@ Sequence = __decorate([
     air_control_1.Table({ name: 'SEQUENCES' })
 ], Sequence);
 exports.Sequence = Sequence;
-//# sourceMappingURL=sequence.js.map
+//# sourceMappingURL=Sequence.js.map

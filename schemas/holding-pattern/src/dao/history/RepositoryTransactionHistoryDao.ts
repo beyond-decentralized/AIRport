@@ -281,11 +281,14 @@ export class RepositoryTransactionHistoryDao
 				operationHistory: {
 					orderNumber: Y,
 					changeType: Y,
-					schema: {
-						index: Y
-					},
 					entity: {
-						index: Y
+						index: Y,
+						schemaVersion: {
+							integerVersion: Y,
+							schema: {
+								index: Y
+							}
+						}
 					},
 					recordHistory: {
 						newValues: {

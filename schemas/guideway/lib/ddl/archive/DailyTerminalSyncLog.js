@@ -35,4 +35,4 @@ DailyTerminalSyncLog = __decorate([
     // TODO: partition on each node by date
 ], DailyTerminalSyncLog);
 exports.DailyTerminalSyncLog = DailyTerminalSyncLog;
-//# sourceMappingURL=dailyterminalsynclog.js.map
+//# sourceMappingURL=DailyTerminalSyncLog.js.map

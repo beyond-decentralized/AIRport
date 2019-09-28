@@ -40,7 +40,7 @@ import {
 	QRepositoryTransactionBlock,
 	QRepositoryTransactionBlockQId,
 	QRepositoryTransactionBlockQRelation,
-} from '../repositorytransactionblock/qrepositorytransactionblock';
+} from '../repositoryTransactionBlock/qrepositorytransactionblock';
 
 
 declare function require(moduleName: string): any;

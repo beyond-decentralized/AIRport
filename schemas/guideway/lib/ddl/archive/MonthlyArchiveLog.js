@@ -34,4 +34,4 @@ MonthlyArchiveLog = __decorate([
     // TODO: partition on each node by date
 ], MonthlyArchiveLog);
 exports.MonthlyArchiveLog = MonthlyArchiveLog;
-//# sourceMappingURL=monthlyarchivelog.js.map
+//# sourceMappingURL=MonthlyArchiveLog.js.map

@@ -111,11 +111,14 @@ class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransact
                 operationHistory: {
                     orderNumber: air_control_1.Y,
                     changeType: air_control_1.Y,
-                    schema: {
-                        index: air_control_1.Y
-                    },
                     entity: {
-                        index: air_control_1.Y
+                        index: air_control_1.Y,
+                        schemaVersion: {
+                            integerVersion: air_control_1.Y,
+                            schema: {
+                                index: air_control_1.Y
+                            }
+                        }
                     },
                     recordHistory: {
                         newValues: {

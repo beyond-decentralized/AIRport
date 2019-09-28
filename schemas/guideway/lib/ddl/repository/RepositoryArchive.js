@@ -24,4 +24,4 @@ RepositoryArchive = __decorate([
     air_control_1.Table({ name: "REPOSITORY_ARCHIVE" })
 ], RepositoryArchive);
 exports.RepositoryArchive = RepositoryArchive;
-//# sourceMappingURL=repositoryarchive.js.map
+//# sourceMappingURL=RepositoryArchive.js.map

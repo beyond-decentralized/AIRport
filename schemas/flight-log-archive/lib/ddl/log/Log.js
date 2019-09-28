@@ -13,4 +13,4 @@ Log = __decorate([
     air_control_1.Entity()
 ], Log);
 exports.Log = Log;
-//# sourceMappingURL=log.js.map
+//# sourceMappingURL=Log.js.map
