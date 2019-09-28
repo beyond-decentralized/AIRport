@@ -1,10 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
-import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
-export interface IVersionedSchemaObject {
-    deprecatedSinceVersion?: ISchemaVersion;
-    removedInVersion?: ISchemaVersion;
-    sinceVersion?: ISchemaVersion;
-}
+import { SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
 /**
  * SELECT - All fields and relations (optional).
  */

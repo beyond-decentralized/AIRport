@@ -185,4 +185,4 @@ entityProperty //
     }
 }
 exports.getRelationFieldType = getRelationFieldType;
-//# sourceMappingURL=QBuilder.js.map
+//# sourceMappingURL=Builder.js.map

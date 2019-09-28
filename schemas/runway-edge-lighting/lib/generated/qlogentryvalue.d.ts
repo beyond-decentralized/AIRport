@@ -1,11 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
-import { ILogEntry, LogEntryEOptionalId, LogEntryESelect, QLogEntryQRelation } from './qlogentry';
-export interface ILogEntryValue {
-    id: number;
-    position?: number;
-    value?: any;
-    logEntry?: ILogEntry;
-}
+import { LogEntryEOptionalId, LogEntryESelect, QLogEntryQRelation } from './qlogentry';
 /**
  * SELECT - All fields and relations (optional).
  */

@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISynchronizationConflict,
 	SynchronizationConflictECascadeGraph,
 	SynchronizationConflictEId,
 	SynchronizationConflictEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QSynchronizationConflictQRelation,
 } from './qsynchronizationconflict';
 import {
-	IActor,
 	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -48,29 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISynchronizationConflictPendingNotification {
-	
-	// Id Properties
-
-	// Id Relations
-	synchronizationConflict: ISynchronizationConflict;
-	actor: IActor;
-
-	// Non-Id Properties
-	acknowledged?: boolean;
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

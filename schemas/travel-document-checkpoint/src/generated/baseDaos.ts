@@ -8,88 +8,99 @@ import {
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control'
-import {
-	Dao
-} from '@airport/check-in'
+import { Dao } from '@airport/check-in'
 import {
 	EntityId as DbEntityId
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
-	IAgt,
+	IAgt
+} from './agt'
+import {
 	AgtESelect,
-	AgtECascadeGraph,
 	AgtECreateColumns,
 	AgtECreateProperties,
 	AgtEUpdateColumns,
 	AgtEUpdateProperties,
 	AgtEId,
+	AgtECascadeGraph,
 	QAgt
 } from './qagt'
 import {
-	ITerminal,
+	ITerminal
+} from './terminal'
+import {
 	TerminalESelect,
-	TerminalECascadeGraph,
 	TerminalECreateColumns,
 	TerminalECreateProperties,
 	TerminalEUpdateColumns,
 	TerminalEUpdateProperties,
 	TerminalEId,
+	TerminalECascadeGraph,
 	QTerminal
 } from './qterminal'
 import {
-	ITerminalAgt,
+	ITerminalAgt
+} from './terminalagt'
+import {
 	TerminalAgtESelect,
-	TerminalAgtECascadeGraph,
 	TerminalAgtECreateColumns,
 	TerminalAgtECreateProperties,
 	TerminalAgtEUpdateColumns,
 	TerminalAgtEUpdateProperties,
 	TerminalAgtEId,
+	TerminalAgtECascadeGraph,
 	QTerminalAgt
 } from './qterminalagt'
 import {
-	IUser,
+	IUser
+} from './user'
+import {
 	UserESelect,
-	UserECascadeGraph,
 	UserECreateColumns,
 	UserECreateProperties,
 	UserEUpdateColumns,
 	UserEUpdateProperties,
 	UserEId,
+	UserECascadeGraph,
 	QUser
 } from './quser'
 import {
-	IUserTerminal,
+	IUserTerminal
+} from './userterminal'
+import {
 	UserTerminalESelect,
-	UserTerminalECascadeGraph,
 	UserTerminalECreateColumns,
 	UserTerminalECreateProperties,
 	UserTerminalEUpdateColumns,
 	UserTerminalEUpdateProperties,
 	UserTerminalEId,
+	UserTerminalECascadeGraph,
 	QUserTerminal
 } from './quserterminal'
 import {
-	IUserTerminalAgt,
+	IUserTerminalAgt
+} from './userterminalagt'
+import {
 	UserTerminalAgtESelect,
-	UserTerminalAgtECascadeGraph,
 	UserTerminalAgtECreateColumns,
 	UserTerminalAgtECreateProperties,
 	UserTerminalAgtEUpdateColumns,
 	UserTerminalAgtEUpdateProperties,
 	UserTerminalAgtEId,
+	UserTerminalAgtECascadeGraph,
 	QUserTerminalAgt
 } from './quserterminalagt'
 
-// Schema Q object Dependency Injection readiness detection DAO
+
+// Schema Q object Dependency Injection readiness detection Dao
 export class SQDIDao<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
-	EntityUpdateColumns extends IEntityUpdateColumns,
+  EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
@@ -120,7 +131,7 @@ export class BaseAgtDao
 	implements IBaseAgtDao {
 
 	static diSet(): boolean {
-		return diSet(5)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
@@ -138,7 +149,7 @@ export class BaseTerminalDao
 	implements IBaseTerminalDao {
 
 	static diSet(): boolean {
-		return diSet(3)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
@@ -156,7 +167,7 @@ export class BaseTerminalAgtDao
 	implements IBaseTerminalAgtDao {
 
 	static diSet(): boolean {
-		return diSet(4)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
@@ -174,7 +185,7 @@ export class BaseUserDao
 	implements IBaseUserDao {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
@@ -192,7 +203,7 @@ export class BaseUserTerminalDao
 	implements IBaseUserTerminalDao {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
@@ -210,7 +221,7 @@ export class BaseUserTerminalAgtDao
 	implements IBaseUserTerminalAgtDao {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return duoDiSet(1)
 	}
 	
 	constructor() {

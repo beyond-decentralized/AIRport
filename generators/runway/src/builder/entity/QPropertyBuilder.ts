@@ -7,16 +7,16 @@ import {
 import {
 	getPropertyFieldClass,
 	getPropertyFieldInterface,
-	IQBuilder,
+	IBuilder,
 	IQCoreEntityBuilder
-}                         from '../QBuilder'
+}                         from '../Builder'
 
 /**
  * Created by Papa on 4/25/2016.
  */
 
 export class QPropertyBuilder
-	implements IQBuilder {
+	implements IBuilder {
 
 	constructor(
 		private parentBuilder: IQCoreEntityBuilder,

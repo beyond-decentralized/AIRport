@@ -1,21 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
-import { IRepositoryActor, RepositoryActorECascadeGraph, RepositoryActorESelect, QRepositoryActor } from './qrepositoryactor';
-import { IRepositoryApplication, RepositoryApplicationECascadeGraph, RepositoryApplicationESelect, QRepositoryApplication } from './qrepositoryapplication';
-import { IRepositoryTransactionHistory, RepositoryTransactionHistoryECascadeGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
-export interface IRepository {
-    id: number;
-    orderedId?: number;
-    randomId?: number;
-    name?: string;
-    url?: string;
-    platformConfig?: string;
-    syncPriority?: number;
-    ownerActor?: IActor;
-    repositoryActors?: IRepositoryActor[];
-    repositoryApplications?: IRepositoryApplication[];
-    repositoryTransactionHistory?: IRepositoryTransactionHistory[];
-}
+import { ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
+import { RepositoryActorECascadeGraph, RepositoryActorESelect, QRepositoryActor } from './qrepositoryactor';
+import { RepositoryApplicationECascadeGraph, RepositoryApplicationESelect, QRepositoryApplication } from './qrepositoryapplication';
+import { RepositoryTransactionHistoryECascadeGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
 /**
  * SELECT - All fields and relations (optional).
  */

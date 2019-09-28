@@ -1,18 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IUser, UserEOptionalId, UserESelect, QUserQRelation } from '../user/quser';
-import { ITerminalRepository, TerminalRepositoryECascadeGraph, TerminalRepositoryESelect, QTerminalRepository } from './qterminalrepository';
-import { IAgtSharingMessage, AgtSharingMessageECascadeGraph, AgtSharingMessageESelect, QAgtSharingMessage } from '../synchronization/qagtsharingmessage';
-export interface ITerminal {
-    id: number;
-    name?: string;
-    secondId?: number;
-    password?: string;
-    lastPollConnectionDatetime?: number;
-    lastSseConnectionDatetime?: number;
-    user?: IUser;
-    terminalRepositories?: ITerminalRepository[];
-    sharingMessages?: IAgtSharingMessage[];
-}
+import { UserEOptionalId, UserESelect, QUserQRelation } from '../user/quser';
+import { TerminalRepositoryECascadeGraph, TerminalRepositoryESelect, QTerminalRepository } from './qterminalrepository';
+import { AgtSharingMessageECascadeGraph, AgtSharingMessageESelect, QAgtSharingMessage } from '../synchronization/qagtsharingmessage';
 /**
  * SELECT - All fields and relations (optional).
  */

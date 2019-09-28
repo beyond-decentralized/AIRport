@@ -16,23 +16,25 @@ const air_control_1 = require("@airport/air-control");
 let ActorApplication = class ActorApplication {
 };
 __decorate([
-    air_control_1.Column({ name: "ID" }),
+    air_control_1.Column({ name: 'ID' }),
     air_control_1.GeneratedValue(),
     air_control_1.Id()
 ], ActorApplication.prototype, "id", void 0);
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "ACTOR_ID", referencedColumnName: "ID" })
+    air_control_1.JoinColumn({ name: 'ACTOR_ID', referencedColumnName: 'ID' })
 ], ActorApplication.prototype, "actor", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "APPLICATION_ID", referencedColumnName: "ID",
-        nullable: false })
+    air_control_1.JoinColumn({
+        name: 'APPLICATION_ID', referencedColumnName: 'ID',
+        nullable: false
+    })
 ], ActorApplication.prototype, "application", void 0);
 ActorApplication = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: "ACTOR_APPLICATION" })
+    air_control_1.Table({ name: 'ACTOR_APPLICATION' })
 ], ActorApplication);
 exports.ActorApplication = ActorApplication;
 //# sourceMappingURL=ActorApplication.js.map

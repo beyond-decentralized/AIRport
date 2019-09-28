@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
-const air_control_2 = require("@airport/air-control");
 const ground_control_1 = require("@airport/ground-control");
 const VersionedSchemaObject_1 = require("./VersionedSchemaObject");
 let SchemaEntity = class SchemaEntity extends VersionedSchemaObject_1.VersionedSchemaObject {
@@ -42,7 +41,7 @@ __decorate([
 ], SchemaEntity.prototype, "id", void 0);
 __decorate([
     air_control_1.Column({ name: 'TABLE_INDEX', nullable: false }),
-    air_control_2.DbNumber()
+    air_control_1.DbNumber()
 ], SchemaEntity.prototype, "index", void 0);
 __decorate([
     air_control_1.Column({ name: 'IS_LOCAL', nullable: false })

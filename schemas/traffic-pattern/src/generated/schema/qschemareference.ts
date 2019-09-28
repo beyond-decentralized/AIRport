@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IVersionedSchemaObject,
 	VersionedSchemaObjectECascadeGraph,
 	VersionedSchemaObjectEId,
 	VersionedSchemaObjectEUpdateColumns,
@@ -33,7 +32,6 @@ import {
 	QVersionedSchemaObject,
 } from './qversionedschemaobject';
 import {
-	ISchemaVersion,
 	SchemaVersionECascadeGraph,
 	SchemaVersionEId,
 	SchemaVersionEOptionalId,
@@ -48,29 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISchemaReference extends IVersionedSchemaObject {
-	
-	// Id Properties
-
-	// Id Relations
-	ownSchemaVersion: ISchemaVersion;
-	referencedSchemaVersion: ISchemaVersion;
-
-	// Non-Id Properties
-	index?: number;
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

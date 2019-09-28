@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISchemaVersion,
 	SchemaVersionECascadeGraph,
 	SchemaVersionEId,
 	SchemaVersionEOptionalId,
@@ -37,29 +36,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IVersionedSchemaObject {
-	
-	// Id Properties
-
-	// Id Relations
-
-	// Non-Id Properties
-
-	// Non-Id Relations
-	deprecatedSinceVersion?: ISchemaVersion;
-	removedInVersion?: ISchemaVersion;
-	sinceVersion?: ISchemaVersion;
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

@@ -1,12 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { ILogEntryType, LogEntryTypeEOptionalId, LogEntryTypeESelect, QLogEntryTypeQRelation } from './qlogentrytype';
-import { ILogEntryValue, LogEntryValueECascadeGraph, LogEntryValueESelect, QLogEntryValue } from './qlogentryvalue';
-export interface ILogEntry {
-    id: number;
-    timestamp?: Date;
-    type?: ILogEntryType;
-    values?: ILogEntryValue[];
-}
+import { LogEntryTypeEOptionalId, LogEntryTypeESelect, QLogEntryTypeQRelation } from './qlogentrytype';
+import { LogEntryValueECascadeGraph, LogEntryValueESelect, QLogEntryValue } from './qlogentryvalue';
 /**
  * SELECT - All fields and relations (optional).
  */

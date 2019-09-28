@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ITerminal,
 	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QTerminalQRelation,
 } from './qterminal';
 import {
-	IRepository,
 	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -48,29 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ITerminalRepository {
-	
-	// Id Properties
-
-	// Id Relations
-	terminal: ITerminal;
-	repository: IRepository;
-
-	// Non-Id Properties
-	permission?: number;
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

@@ -28,6 +28,7 @@ import {SSchemaBuilder}  from './SSchemaBuilder'
 export class JsonSchemaBuilder {
 
 	existingSchema: JsonSchema
+
 	// schemaVarName = 'SCHEMA'
 
 	constructor(
@@ -51,7 +52,8 @@ export class JsonSchemaBuilder {
 			// 	throw new Error(errorMessage)
 			// }
 			//
-			// existingSchemaString = existingSchemaString.substring(indexOfAssignment + 9, existingSchemaString.length - 1)
+			// existingSchemaString = existingSchemaString.substring(indexOfAssignment + 9,
+			// existingSchemaString.length - 1)
 
 			this.existingSchema = JSON.parse(existingSchemaString)
 		}
@@ -261,14 +263,14 @@ export class JsonSchemaBuilder {
 				// if (sRelationColumn.ownColumnIdIndex) {
 				// 	ownColumnIndex = sIndexedEntity.idColumns[sRelationColumn.ownColumnIdIndex].index
 				// } else {
-					ownColumnIndex = sIndexedEntity.columnMap[sRelationColumn.ownColumnReference].index
+				ownColumnIndex = sIndexedEntity.columnMap[sRelationColumn.ownColumnReference].index
 				// }
 				let relationColumnIndex
 				// if (sRelationColumn.relationColumnIdIndex
 				// 	|| sRelationColumn.relationColumnIdIndex == 0) {
-				// 	relationColumnIndex = relatedIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex].index
-				// } else {
-					relationColumnIndex = relatedIndexedEntity.columnMap[sRelationColumn.relationColumnReference].index
+				// 	relationColumnIndex =
+				// relatedIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex].index } else {
+				relationColumnIndex = relatedIndexedEntity.columnMap[sRelationColumn.relationColumnReference].index
 				// }
 
 				const column = columns[ownColumnIndex]
@@ -304,6 +306,8 @@ export class JsonSchemaBuilder {
 			return cascadeType
 		}
 		switch (cascadeType) {
+			case 'CascadeType.NONE':
+				return CascadeType.NONE
 			case 'CascadeType.ALL':
 				return CascadeType.ALL
 			case 'CascadeType.PERSIST':

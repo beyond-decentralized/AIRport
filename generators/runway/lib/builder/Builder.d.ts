@@ -1,7 +1,7 @@
 import { PropertyDocEntry } from '../parser/DocEntry';
 import { EntityCandidate } from '../parser/EntityCandidate';
+import { FileBuilder } from './entity/FileBuilder';
 import { QColumnBuilder } from './entity/QColumnBuilder';
-import { QEntityFileBuilder } from './entity/QEntityFileBuilder';
 import { QPropertyBuilder } from './entity/QPropertyBuilder';
 import { QRelationBuilder } from './entity/QRelationBuilder';
 import { QTransientBuilder } from './entity/QTransientBuilder';
@@ -9,18 +9,18 @@ import { SColumn } from './schema/SProperty';
 /**
  * Created by Papa on 4/25/2016.
  */
-export interface IQBuilder {
+export interface IBuilder {
     build(...args: any[]): string;
 }
 export interface MemberData {
     definitions: string;
 }
-export interface IQCoreEntityBuilder extends IQBuilder {
+export interface IQCoreEntityBuilder extends IBuilder {
     constructorFields: {
         [name: string]: boolean;
     };
     entity: EntityCandidate;
-    fileBuilder: QEntityFileBuilder;
+    fileBuilder: FileBuilder;
     addImport(classNames: (string | {
         asName: string;
         sourceName: string;
@@ -30,14 +30,14 @@ export declare abstract class QCoreEntityBuilder implements IQCoreEntityBuilder 
     entity: EntityCandidate;
     protected fullGenerationPath: string;
     protected workingDirPath: string;
-    fileBuilder: QEntityFileBuilder;
+    fileBuilder: FileBuilder;
     protected entityMapByName: {
         [entityName: string]: EntityCandidate;
     };
     constructorFields: {
         [name: string]: boolean;
     };
-    constructor(entity: EntityCandidate, fullGenerationPath: string, workingDirPath: string, fileBuilder: QEntityFileBuilder, entityMapByName: {
+    constructor(entity: EntityCandidate, fullGenerationPath: string, workingDirPath: string, fileBuilder: FileBuilder, entityMapByName: {
         [entityName: string]: EntityCandidate;
     });
     abstract build(...args: any[]): string;

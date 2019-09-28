@@ -1,7 +1,7 @@
 import { EntityId } from '@airport/ground-control';
 import { PathBuilder } from './PathBuilder';
-import { IQBuilder } from './QBuilder';
-export declare abstract class ImplementationFileBuilder implements IQBuilder {
+import { IBuilder } from './Builder';
+export declare abstract class ImplementationFileBuilder implements IBuilder {
     protected pathBuilder: PathBuilder;
     daoListingFilePath: any;
     protected entityIdMapByName: {

@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IUser,
 	UserECascadeGraph,
 	UserEId,
 	UserEOptionalId,
@@ -31,7 +30,6 @@ import {
 	QUser,
 	QUserQId,
 	QUserQRelation,
-	ITerminal,
 	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -42,7 +40,6 @@ import {
 	QTerminalQRelation,
 } from '@airport/travel-document-checkpoint';
 import {
-	IActorApplication,
 	ActorApplicationECascadeGraph,
 	ActorApplicationEId,
 	ActorApplicationEOptionalId,
@@ -53,7 +50,6 @@ import {
 	QActorApplicationQRelation,
 } from './qactorapplication';
 import {
-	IRepositoryActor,
 	RepositoryActorECascadeGraph,
 	RepositoryActorEId,
 	RepositoryActorEOptionalId,
@@ -68,32 +64,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IActor {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	randomId?: number;
-
-	// Non-Id Relations
-	user?: IUser;
-	terminal?: ITerminal;
-	actorApplications?: IActorApplication[];
-	repositoryActor?: IRepositoryActor[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

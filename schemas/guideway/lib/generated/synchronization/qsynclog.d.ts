@@ -1,10 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
-import { IAgtSharingMessage, AgtSharingMessageEId, AgtSharingMessageEOptionalId, AgtSharingMessageESelect, QAgtSharingMessageQId, QAgtSharingMessageQRelation } from './qagtsharingmessage';
-import { IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockEOptionalId, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlockQId, QAgtRepositoryTransactionBlockQRelation } from './qagtrepositorytransactionblock';
-export interface ISyncLog {
-    sharingMessage: IAgtSharingMessage;
-    repositoryTransactionBlock: IAgtRepositoryTransactionBlock;
-}
+import { AgtSharingMessageEId, AgtSharingMessageEOptionalId, AgtSharingMessageESelect, QAgtSharingMessageQId, QAgtSharingMessageQRelation } from './qagtsharingmessage';
+import { AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockEOptionalId, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlockQId, QAgtRepositoryTransactionBlockQRelation } from './qagtrepositorytransactionblock';
 /**
  * SELECT - All fields and relations (optional).
  */

@@ -2,9 +2,10 @@ import {EntityCandidate}    from "../../parser/EntityCandidate";
 import {
 	MemberData,
 	QCoreEntityBuilder
-}                           from "../QBuilder";
+}                           from "../Builder";
 import {SIndexedEntity}     from "../schema/SEntity";
 import {SColumn}            from "../schema/SProperty";
+import {FileBuilder}        from './FileBuilder'
 import {QColumnBuilder}     from "./QColumnBuilder";
 import {QEntityFileBuilder} from "./QEntityFileBuilder";
 import {QPropertyBuilder}   from "./QPropertyBuilder";
@@ -28,7 +29,7 @@ export class QEntityBuilder extends QCoreEntityBuilder {
 		entity: EntityCandidate,
 		fullGenerationPath: string,
 		workingDirPath: string,
-		fileBuilder: QEntityFileBuilder,
+		fileBuilder: FileBuilder,
 		entityMapByName: { [entityName: string]: EntityCandidate },
 		public sIndexedEntity: SIndexedEntity
 	) {

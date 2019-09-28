@@ -14,4 +14,4 @@ ChildRepoRow = __decorate([
     air_control_1.MappedSuperclass()
 ], ChildRepoRow);
 exports.ChildRepoRow = ChildRepoRow;
-//# sourceMappingURL=ChildRepoRow.js.map
+//# sourceMappingURL=childreporow.js.map

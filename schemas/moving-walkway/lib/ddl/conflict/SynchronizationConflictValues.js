@@ -12,7 +12,7 @@ let SynchronizationConflictValues = class SynchronizationConflictValues {
 __decorate([
     air_control_1.Id(),
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "SYNCHRONIZATION_CONFLICT_ID", referencedColumnName: "ID" })
+    air_control_1.JoinColumn({ name: 'SYNCHRONIZATION_CONFLICT_ID', referencedColumnName: 'ID' })
 ], SynchronizationConflictValues.prototype, "synchronizationConflict", void 0);
 __decorate([
     air_control_1.Id(),
@@ -20,7 +20,7 @@ __decorate([
 ], SynchronizationConflictValues.prototype, "columnIndex", void 0);
 SynchronizationConflictValues = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: "SYNCHRONIZATION_CONFLICT_VALUES" })
+    air_control_1.Table({ name: 'SYNCHRONIZATION_CONFLICT_VALUES' })
 ], SynchronizationConflictValues);
 exports.SynchronizationConflictValues = SynchronizationConflictValues;
 //# sourceMappingURL=SynchronizationConflictValues.js.map

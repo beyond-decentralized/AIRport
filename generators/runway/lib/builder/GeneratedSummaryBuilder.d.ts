@@ -1,10 +1,8 @@
 import { PathBuilder } from './PathBuilder';
-import { IQBuilder } from './QBuilder';
-export declare class GeneratedSummaryBuilder implements IQBuilder {
+import { IBuilder } from './Builder';
+export declare class GeneratedSummaryBuilder implements IBuilder {
     private pathBuilder;
     generatedListingFilePath: any;
-    private generatedFilePaths;
     constructor(pathBuilder: PathBuilder);
-    addFileNameAndPaths(entityName: string, fullDdlPath: string, fullGenerationPath: string): void;
     build(): string;
 }

@@ -22,7 +22,16 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISchemaEntity,
+	SchemaECascadeGraph,
+	SchemaEId,
+	SchemaEOptionalId,
+	SchemaEUpdateProperties,
+	SchemaESelect,
+	QSchema,
+	QSchemaQId,
+	QSchemaQRelation,
+} from './qschema';
+import {
 	SchemaEntityECascadeGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
@@ -33,7 +42,6 @@ import {
 	QSchemaEntityQRelation,
 } from './qschemaentity';
 import {
-	ISchemaReference,
 	SchemaReferenceECascadeGraph,
 	SchemaReferenceEId,
 	SchemaReferenceEOptionalId,
@@ -43,55 +51,11 @@ import {
 	QSchemaReferenceQId,
 	QSchemaReferenceQRelation,
 } from './qschemareference';
-import {
-	ISchema,
-	SchemaECascadeGraph,
-	SchemaEId,
-	SchemaEOptionalId,
-	SchemaEUpdateProperties,
-	SchemaESelect,
-	QSchema,
-	QSchemaQId,
-	QSchemaQRelation,
-} from './qschema';
 
 
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISchemaVersion {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	integerVersion?: number;
-	versionString?: string;
-	majorVersion?: number;
-	minorVersion?: number;
-	patchVersion?: number;
-
-	// Non-Id Relations
-	schema?: ISchema;
-	entities?: ISchemaEntity[];
-	references?: ISchemaReference[];
-	referencedBy?: ISchemaReference[];
-
-	// Transient Properties
-	entityMapByName?: { [entityName: string]: ISchemaEntity; };
-	referencesMapByName?: { [schemaName: string]: ISchemaReference; };
-	referencedByMapByName?: { [schemaName: string]: ISchemaReference; };
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

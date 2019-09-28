@@ -1,10 +1,10 @@
-import { RepositoryTransactionBlockContents, TmRepositoryTransactionBlockId } from "@airport/arrivals-n-departures";
-import { IServer } from "../../generated/server/qserver";
-import { Terminal } from "../terminal/Terminal";
-import { TerminalRepository } from "../terminal/TerminalRepository";
-import { Repository } from "../repository/Repository";
-import { ArchivingStatus } from "./ArchivingStatus";
-import { SyncLog } from "./SyncLog";
+import { RepositoryTransactionBlockContents, TmRepositoryTransactionBlockId } from '@airport/arrivals-n-departures';
+import { Server } from '../..';
+import { Repository } from '../repository/Repository';
+import { Terminal } from '../terminal/Terminal';
+import { TerminalRepository } from '../terminal/TerminalRepository';
+import { ArchivingStatus } from './ArchivingStatus';
+import { SyncLog } from './SyncLog';
 export declare type AgtRepositoryTransactionBlockId = number;
 export declare type AgtRepositoryTransactionBlockAddDatetime = number;
 export declare type AgtRepositoryTransactionBlockArchivingStatus = ArchivingStatus;
@@ -14,7 +14,7 @@ export declare class AgtRepositoryTransactionBlock {
     repository: Repository;
     terminalRepositories: TerminalRepository[];
     terminal: Terminal;
-    archivingServer: IServer;
+    archivingServer: Server;
     archivingStatus: AgtRepositoryTransactionBlockArchivingStatus;
     addDatetime: AgtRepositoryTransactionBlockAddDatetime;
     tmRepositoryTransactionBlockId: TmRepositoryTransactionBlockId;

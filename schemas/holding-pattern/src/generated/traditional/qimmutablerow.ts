@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IStageable,
 	StageableECascadeGraph,
 	StageableEId,
 	StageableEUpdateColumns,
@@ -33,7 +32,6 @@ import {
 	QStageable,
 } from '../infrastructure/qstageable';
 import {
-	IUser,
 	UserECascadeGraph,
 	UserEId,
 	UserEOptionalId,
@@ -48,28 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IImmutableRow extends IStageable {
-	
-	// Id Properties
-
-	// Id Relations
-
-	// Non-Id Properties
-	createdAt?: Date;
-
-	// Non-Id Relations
-	user?: IUser;
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

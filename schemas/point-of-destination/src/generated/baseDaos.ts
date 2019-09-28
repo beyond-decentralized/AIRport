@@ -8,33 +8,34 @@ import {
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control'
-import {
-	Dao
-} from '@airport/check-in'
+import { Dao } from '@airport/check-in'
 import {
 	EntityId as DbEntityId
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
-	IDailyArchive,
+	IDailyArchive
+} from './dailyarchive'
+import {
 	DailyArchiveESelect,
-	DailyArchiveECascadeGraph,
 	DailyArchiveECreateColumns,
 	DailyArchiveECreateProperties,
 	DailyArchiveEUpdateColumns,
 	DailyArchiveEUpdateProperties,
 	DailyArchiveEId,
+	DailyArchiveECascadeGraph,
 	QDailyArchive
 } from './qdailyarchive'
 
-// Schema Q object Dependency Injection readiness detection DAO
+
+// Schema Q object Dependency Injection readiness detection Dao
 export class SQDIDao<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
-	EntityUpdateColumns extends IEntityUpdateColumns,
+  EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
@@ -65,7 +66,7 @@ export class BaseDailyArchiveDao
 	implements IBaseDailyArchiveDao {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(0)
 	}
 	
 	constructor() {

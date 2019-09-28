@@ -1,5 +1,4 @@
-import { IRecordHistory } from "../../generated/history/qrecordhistory";
-import { IRecordHistoryOldValue } from "../../generated/history/qrecordhistoryoldvalue";
+import { RecordHistory } from './RecordHistory';
 /**
  * Created by Papa on 9/15/2016.
  */
@@ -13,8 +12,8 @@ export declare type RecordHistoryOldValueOldValue = any;
  * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
  * also be required.
  */
-export declare class RecordHistoryOldValue implements IRecordHistoryOldValue {
-    recordHistory: IRecordHistory;
+export declare class RecordHistoryOldValue {
+    recordHistory: RecordHistory;
     columnIndex: RecordHistoryOldValueColumnIndex;
     oldValue: RecordHistoryOldValueOldValue;
 }

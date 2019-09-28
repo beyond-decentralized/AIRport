@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IRepository,
 	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QRepositoryQRelation,
 } from '../repository/qrepository';
 import {
-	ITerminalRepository,
 	TerminalRepositoryECascadeGraph,
 	TerminalRepositoryEId,
 	TerminalRepositoryEOptionalId,
@@ -44,7 +42,6 @@ import {
 	QTerminalRepositoryQRelation,
 } from '../terminal/qterminalrepository';
 import {
-	ITerminal,
 	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -55,7 +52,6 @@ import {
 	QTerminalQRelation,
 } from '../terminal/qterminal';
 import {
-	IServer,
 	ServerECascadeGraph,
 	ServerEId,
 	ServerEOptionalId,
@@ -66,7 +62,6 @@ import {
 	QServerQRelation,
 } from '../server/qserver';
 import {
-	ISyncLog,
 	SyncLogECascadeGraph,
 	SyncLogEId,
 	SyncLogEOptionalId,
@@ -81,36 +76,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IAgtRepositoryTransactionBlock {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	archivingStatus?: number;
-	addDatetime?: number;
-	tmRepositoryTransactionBlockId?: number;
-	contents?: string;
-
-	// Non-Id Relations
-	repository?: IRepository;
-	terminalRepositories?: ITerminalRepository[];
-	terminal?: ITerminal;
-	archivingServer?: IServer;
-	syncLogs?: ISyncLog[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

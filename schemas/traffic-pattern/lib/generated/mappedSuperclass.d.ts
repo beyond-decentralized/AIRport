@@ -133,11 +133,6 @@ export declare const MAPPED_SUPERCLASS: {
                                         "moduleImport": any;
                                         "sourceName": string;
                                     };
-                                    "GeneratedValue": {
-                                        "asName": string;
-                                        "moduleImport": any;
-                                        "sourceName": string;
-                                    };
                                     "Id": {
                                         "asName": string;
                                         "moduleImport": any;
@@ -178,7 +173,6 @@ export declare const MAPPED_SUPERCLASS: {
                             };
                             "DbNumber": any;
                             "Entity": any;
-                            "GeneratedValue": any;
                             "Id": any;
                             "JoinColumn": any;
                             "ManyToOne": any;
@@ -228,30 +222,6 @@ export declare const MAPPED_SUPERCLASS: {
                             "SchemaVersionMinor": any;
                             "SchemaVersionPatch": any;
                             "SchemaVersionString": any;
-                            "ISchemaEntity": {
-                                "fileImports": any;
-                                "isLocal": boolean;
-                                "objectMapByAsName": {
-                                    "ISchemaEntity": {
-                                        "asName": string;
-                                        "moduleImport": any;
-                                        "sourceName": string;
-                                    };
-                                };
-                                "path": string;
-                            };
-                            "ISchemaReference": {
-                                "fileImports": any;
-                                "isLocal": boolean;
-                                "objectMapByAsName": {
-                                    "ISchemaReference": {
-                                        "asName": string;
-                                        "moduleImport": any;
-                                        "sourceName": string;
-                                    };
-                                };
-                                "path": string;
-                            };
                             "Schema": {
                                 "fileImports": any;
                                 "isLocal": boolean;
@@ -292,8 +262,6 @@ export declare const MAPPED_SUPERCLASS: {
                         "importMapByModulePath": {
                             "@airport/air-control": any;
                             "@airport/ground-control": any;
-                            "../../generated/schema/qschemaentity": any;
-                            "../../generated/schema/qschemareference": any;
                             "./Schema": any;
                             "./SchemaEntity": any;
                             "./SchemaReference": any;
@@ -454,7 +422,6 @@ export declare const MAPPED_SUPERCLASS: {
                                                     "moduleImport": any;
                                                     "sourceName": string;
                                                 };
-                                                "GeneratedValue"?: undefined;
                                                 "Json"?: undefined;
                                                 "TableConfiguration"?: undefined;
                                                 "Transient"?: undefined;
@@ -523,7 +490,6 @@ export declare const MAPPED_SUPERCLASS: {
                                             };
                                             "path": string;
                                         };
-                                        "GeneratedValue"?: undefined;
                                         "Json"?: undefined;
                                         "TableConfiguration"?: undefined;
                                         "Transient"?: undefined;
@@ -533,8 +499,6 @@ export declare const MAPPED_SUPERCLASS: {
                                         "EntityIsRepositoryEntity"?: undefined;
                                         "EntityName"?: undefined;
                                         "TableIndex"?: undefined;
-                                        "ISchemaColumn"?: undefined;
-                                        "ISchemaProperty"?: undefined;
                                         "SchemaColumn"?: undefined;
                                         "SchemaProperty"?: undefined;
                                         "SchemaRelation"?: undefined;
@@ -546,8 +510,6 @@ export declare const MAPPED_SUPERCLASS: {
                                         "@airport/ground-control": any;
                                         "@airport/territory": any;
                                         "./SchemaVersion": any;
-                                        "../../generated/schema/qschemacolumn"?: undefined;
-                                        "../../generated/schema/qschemaproperty"?: undefined;
                                         "./SchemaColumn"?: undefined;
                                         "./SchemaProperty"?: undefined;
                                         "./SchemaRelation"?: undefined;
@@ -826,12 +788,12 @@ export declare const MAPPED_SUPERCLASS: {
                                                     "moduleImport": any;
                                                     "sourceName": string;
                                                 };
-                                                "Entity": {
+                                                "DbNumber": {
                                                     "asName": string;
                                                     "moduleImport": any;
                                                     "sourceName": string;
                                                 };
-                                                "GeneratedValue": {
+                                                "Entity": {
                                                     "asName": string;
                                                     "moduleImport": any;
                                                     "sourceName": string;
@@ -876,13 +838,12 @@ export declare const MAPPED_SUPERCLASS: {
                                                     "moduleImport": any;
                                                     "sourceName": string;
                                                 };
-                                                "DbNumber"?: undefined;
                                                 "DbString"?: undefined;
                                             };
                                             "path": string;
                                         };
+                                        "DbNumber": any;
                                         "Entity": any;
-                                        "GeneratedValue": any;
                                         "Id": any;
                                         "JoinColumn": any;
                                         "Json": any;
@@ -891,18 +852,6 @@ export declare const MAPPED_SUPERCLASS: {
                                         "Table": any;
                                         "TableConfiguration": any;
                                         "Transient": any;
-                                        "DbNumber": {
-                                            "fileImports": any;
-                                            "isLocal": boolean;
-                                            "objectMapByAsName": {
-                                                "DbNumber": {
-                                                    "asName": string;
-                                                    "moduleImport": any;
-                                                    "sourceName": string;
-                                                };
-                                            };
-                                            "path": string;
-                                        };
                                         "CascadeType": {
                                             "fileImports": any;
                                             "isLocal": boolean;
@@ -945,30 +894,6 @@ export declare const MAPPED_SUPERCLASS: {
                                         "EntityIsRepositoryEntity": any;
                                         "EntityName": any;
                                         "TableIndex": any;
-                                        "ISchemaColumn": {
-                                            "fileImports": any;
-                                            "isLocal": boolean;
-                                            "objectMapByAsName": {
-                                                "ISchemaColumn": {
-                                                    "asName": string;
-                                                    "moduleImport": any;
-                                                    "sourceName": string;
-                                                };
-                                            };
-                                            "path": string;
-                                        };
-                                        "ISchemaProperty": {
-                                            "fileImports": any;
-                                            "isLocal": boolean;
-                                            "objectMapByAsName": {
-                                                "ISchemaProperty": {
-                                                    "asName": string;
-                                                    "moduleImport": any;
-                                                    "sourceName": string;
-                                                };
-                                            };
-                                            "path": string;
-                                        };
                                         "SchemaColumn": {
                                             "fileImports": any;
                                             "isLocal": boolean;
@@ -1040,8 +965,6 @@ export declare const MAPPED_SUPERCLASS: {
                                     "importMapByModulePath": {
                                         "@airport/air-control": any;
                                         "@airport/ground-control": any;
-                                        "../../generated/schema/qschemacolumn": any;
-                                        "../../generated/schema/qschemaproperty": any;
                                         "./SchemaColumn": any;
                                         "./SchemaProperty": any;
                                         "./SchemaRelation": any;
@@ -1173,11 +1096,6 @@ export declare const MAPPED_SUPERCLASS: {
                                                                 "moduleImport": any;
                                                                 "sourceName": string;
                                                             };
-                                                            "GeneratedValue": {
-                                                                "asName": string;
-                                                                "moduleImport": any;
-                                                                "sourceName": string;
-                                                            };
                                                             "Id": {
                                                                 "asName": string;
                                                                 "moduleImport": any;
@@ -1208,7 +1126,6 @@ export declare const MAPPED_SUPERCLASS: {
                                                     };
                                                     "DbNumber": any;
                                                     "Entity": any;
-                                                    "GeneratedValue": any;
                                                     "Id": any;
                                                     "JoinColumn": any;
                                                     "ManyToOne": any;
@@ -1268,35 +1185,35 @@ export declare const MAPPED_SUPERCLASS: {
                                                     "SchemaColumnAllocationSize": any;
                                                     "SchemaColumnIsGenerated": any;
                                                     "SQLDataType": any;
-                                                    "ISchemaPropertyColumn": {
-                                                        "fileImports": any;
-                                                        "isLocal": boolean;
-                                                        "objectMapByAsName": {
-                                                            "ISchemaPropertyColumn": {
-                                                                "asName": string;
-                                                                "moduleImport": any;
-                                                                "sourceName": string;
-                                                            };
-                                                        };
-                                                        "path": string;
-                                                    };
-                                                    "ISchemaRelationColumn": {
-                                                        "fileImports": any;
-                                                        "isLocal": boolean;
-                                                        "objectMapByAsName": {
-                                                            "ISchemaRelationColumn": {
-                                                                "asName": string;
-                                                                "moduleImport": any;
-                                                                "sourceName": string;
-                                                            };
-                                                        };
-                                                        "path": string;
-                                                    };
                                                     "SchemaEntity": {
                                                         "fileImports": any;
                                                         "isLocal": boolean;
                                                         "objectMapByAsName": {
                                                             "SchemaEntity": {
+                                                                "asName": string;
+                                                                "moduleImport": any;
+                                                                "sourceName": string;
+                                                            };
+                                                        };
+                                                        "path": string;
+                                                    };
+                                                    "SchemaPropertyColumn": {
+                                                        "fileImports": any;
+                                                        "isLocal": boolean;
+                                                        "objectMapByAsName": {
+                                                            "SchemaPropertyColumn": {
+                                                                "asName": string;
+                                                                "moduleImport": any;
+                                                                "sourceName": string;
+                                                            };
+                                                        };
+                                                        "path": string;
+                                                    };
+                                                    "SchemaRelationColumn": {
+                                                        "fileImports": any;
+                                                        "isLocal": boolean;
+                                                        "objectMapByAsName": {
+                                                            "SchemaRelationColumn": {
                                                                 "asName": string;
                                                                 "moduleImport": any;
                                                                 "sourceName": string;
@@ -1320,9 +1237,9 @@ export declare const MAPPED_SUPERCLASS: {
                                                 "importMapByModulePath": {
                                                     "@airport/air-control": any;
                                                     "@airport/ground-control": any;
-                                                    "../../generated/schema/qschemapropertycolumn": any;
-                                                    "../../generated/schema/qschemarelationcolumn": any;
                                                     "./SchemaEntity": any;
+                                                    "./SchemaPropertyColumn": any;
+                                                    "./SchemaRelationColumn": any;
                                                     "./VersionedSchemaObject": any;
                                                 };
                                             };
@@ -1479,11 +1396,11 @@ export declare const MAPPED_SUPERCLASS: {
                                                                 "JoinColumn": any;
                                                                 "ManyToOne": any;
                                                                 "Table": any;
-                                                                "ISchemaColumn": {
+                                                                "SchemaColumn": {
                                                                     "fileImports": any;
                                                                     "isLocal": boolean;
                                                                     "objectMapByAsName": {
-                                                                        "ISchemaColumn": {
+                                                                        "SchemaColumn": {
                                                                             "asName": string;
                                                                             "moduleImport": any;
                                                                             "sourceName": string;
@@ -1491,11 +1408,11 @@ export declare const MAPPED_SUPERCLASS: {
                                                                     };
                                                                     "path": string;
                                                                 };
-                                                                "ISchemaProperty": {
+                                                                "SchemaProperty": {
                                                                     "fileImports": any;
                                                                     "isLocal": boolean;
                                                                     "objectMapByAsName": {
-                                                                        "ISchemaProperty": {
+                                                                        "SchemaProperty": {
                                                                             "asName": string;
                                                                             "moduleImport": any;
                                                                             "sourceName": string;
@@ -1518,8 +1435,8 @@ export declare const MAPPED_SUPERCLASS: {
                                                             };
                                                             "importMapByModulePath": {
                                                                 "@airport/air-control": any;
-                                                                "../../generated/schema/qschemacolumn": any;
-                                                                "../../generated/schema/qschemaproperty": any;
+                                                                "./SchemaColumn": any;
+                                                                "./SchemaProperty": any;
                                                                 "./VersionedSchemaObject": any;
                                                             };
                                                         };
@@ -1752,7 +1669,6 @@ export declare const MAPPED_SUPERCLASS: {
                                                 "DbNumber"?: undefined;
                                                 "DbString"?: undefined;
                                                 "OneToMany"?: undefined;
-                                                "GeneratedValue"?: undefined;
                                                 "Json"?: undefined;
                                                 "TableConfiguration"?: undefined;
                                                 "Transient"?: undefined;
@@ -1808,7 +1724,6 @@ export declare const MAPPED_SUPERCLASS: {
                                         "SchemaScope"?: undefined;
                                         "SchemaStatus"?: undefined;
                                         "Domain"?: undefined;
-                                        "GeneratedValue"?: undefined;
                                         "Json"?: undefined;
                                         "TableConfiguration"?: undefined;
                                         "Transient"?: undefined;
@@ -1818,8 +1733,6 @@ export declare const MAPPED_SUPERCLASS: {
                                         "EntityIsRepositoryEntity"?: undefined;
                                         "EntityName"?: undefined;
                                         "TableIndex"?: undefined;
-                                        "ISchemaColumn"?: undefined;
-                                        "ISchemaProperty"?: undefined;
                                         "SchemaColumn"?: undefined;
                                         "SchemaProperty"?: undefined;
                                         "SchemaRelation"?: undefined;
@@ -1830,8 +1743,6 @@ export declare const MAPPED_SUPERCLASS: {
                                         "./SchemaVersion": any;
                                         "./VersionedSchemaObject": any;
                                         "@airport/territory"?: undefined;
-                                        "../../generated/schema/qschemacolumn"?: undefined;
-                                        "../../generated/schema/qschemaproperty"?: undefined;
                                         "./SchemaColumn"?: undefined;
                                         "./SchemaProperty"?: undefined;
                                         "./SchemaRelation"?: undefined;

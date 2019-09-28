@@ -9,17 +9,14 @@ import {
 	OneToMany,
 	SequenceGenerator,
 	Table,
-} from '@airport/air-control'
-import {
-	CascadeType,
-}                                               from "@airport/ground-control";
-import {IOperationHistory}                     from "../../generated/history/qoperationhistory";
-import {IRepositoryTransactionHistory}         from "../../generated/history/qrepositorytransactionhistory";
-import {ITransactionHistory}                    from "../../generated/history/qtransactionhistory";
-import {IActor}                                from "../../generated/infrastructure/qactor";
-import {IRepository}                           from "../../generated/repository/qrepository";
-import {RepositoryTransactionType}              from "./RepositoryTransactionType";
-import {RepoTransHistoryChangedRepositoryActor} from "./RepoTransHistoryChangedRepositoryActor";
+}                                               from '@airport/air-control'
+import {CascadeType,}                           from '@airport/ground-control'
+import {Actor}                                  from '../infrastructure/Actor'
+import {Repository}                             from '../repository/Repository'
+import {OperationHistory}                       from './OperationHistory'
+import {RepositoryTransactionType}              from './RepositoryTransactionType'
+import {RepoTransHistoryChangedRepositoryActor} from './RepoTransHistoryChangedRepositoryActor'
+import {TransactionHistory}                     from './TransactionHistory'
 
 /**
  * Created by Papa on 9/15/2016.
@@ -31,64 +28,71 @@ export type RepositoryTransactionHistorySaveTimestamp = Date;
 export type RepositoryTransactionHistoryBlockId = number;
 
 @Entity()
-@Table({name: "REPOSITORY_TRANSACTION_HISTORY"})
-export class RepositoryTransactionHistory
-	implements IRepositoryTransactionHistory {
+@Table({name: 'REPOSITORY_TRANSACTION_HISTORY'})
+export class RepositoryTransactionHistory {
 
 	@GeneratedValue()
 	@Id()
 	@SequenceGenerator({allocationSize: 200})
-	id: RepositoryTransactionHistoryId;
+	id: RepositoryTransactionHistoryId
 
-	@Column({name: "REMOTE_ID", nullable: false})
-	remoteId: RepositoryTransactionHistoryRemoteId;
-
-	@ManyToOne()
-	@JoinColumn({name: "TRANSACTION_HISTORY_ID",
-		referencedColumnName: "ID", nullable: false})
-	transactionHistory: ITransactionHistory;
+	@Column({name: 'REMOTE_ID', nullable: false})
+	remoteId: RepositoryTransactionHistoryRemoteId
 
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_ID",
-		referencedColumnName: "ID", nullable: false})
-	repository: IRepository;
-
-	@OneToMany({mappedBy: "repositoryTransactionHistory"})
-	changedRepositoryActors: RepoTransHistoryChangedRepositoryActor[];
+	@JoinColumn({
+		name: 'TRANSACTION_HISTORY_ID',
+		referencedColumnName: 'ID', nullable: false
+	})
+	transactionHistory: TransactionHistory
 
 	@ManyToOne()
-	@JoinColumn({name: "ACTOR_ID", referencedColumnName: "ID",
-		nullable: false})
-	actor: IActor;
+	@JoinColumn({
+		name: 'REPOSITORY_ID',
+		referencedColumnName: 'ID', nullable: false
+	})
+	repository: Repository
 
-	@Column({name: "SAVE_TIMESTAMP", nullable: false})
-	saveTimestamp: RepositoryTransactionHistorySaveTimestamp;
+	@OneToMany({mappedBy: 'repositoryTransactionHistory'})
+	changedRepositoryActors: RepoTransHistoryChangedRepositoryActor[]
 
-	@Column({name: "REPOSITORY_TRANSACTION_TYPE", nullable: false})
+	@ManyToOne()
+	@JoinColumn({
+		name: 'ACTOR_ID', referencedColumnName: 'ID',
+		nullable: false
+	})
+	actor: Actor
+
+	@Column({name: 'SAVE_TIMESTAMP', nullable: false})
+	saveTimestamp: RepositoryTransactionHistorySaveTimestamp
+
+	@Column({name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false})
 	@DbNumber()
-	repositoryTransactionType: RepositoryTransactionType = RepositoryTransactionType.LOCAL;
+	repositoryTransactionType: RepositoryTransactionType = RepositoryTransactionType.LOCAL
 
-	@Column({name: "REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID",
-		nullable: false})
-	blockId: RepositoryTransactionHistoryBlockId;
+	@Column({
+		name: 'REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID',
+		nullable: false
+	})
+	blockId: RepositoryTransactionHistoryBlockId
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'repositoryTransactionHistory'})
-	operationHistory: IOperationHistory[] = [];
+	operationHistory: OperationHistory[] = []
 
 
 	constructor(
-		data?: IRepositoryTransactionHistory
+		data?: RepositoryTransactionHistory
 	) {
 		if (!data) {
-			return;
+			return
 		}
 
-		this.id = data.id;
-		this.transactionHistory = data.transactionHistory;
-		this.repository = data.repository;
-		this.actor = data.actor;
-		this.saveTimestamp = data.saveTimestamp;
-		this.operationHistory = data.operationHistory;
+		this.id                 = data.id
+		this.transactionHistory = data.transactionHistory
+		this.repository         = data.repository
+		this.actor              = data.actor
+		this.saveTimestamp      = data.saveTimestamp
+		this.operationHistory   = data.operationHistory
 	}
 
 

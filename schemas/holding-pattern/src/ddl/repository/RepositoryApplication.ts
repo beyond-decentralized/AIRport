@@ -6,9 +6,9 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-}                      from "@airport/air-control";
-import {IApplication,} from "../../generated/infrastructure/qapplication";
-import {IRepository,}  from "../../generated/repository/qrepository";
+}                    from "@airport/air-control";
+import {Application} from '../infrastructure/Application'
+import {Repository}  from './Repository'
 
 /**
  * Created by Papa on 12/18/2016.
@@ -29,12 +29,12 @@ export class RepositoryApplication {
 	@ManyToOne()
 	@JoinColumn({name: "APPLICATION_ID", referencedColumnName: "ID",
 		nullable: false})
-	application: IApplication;
+	application: Application;
 
 	@Id()
 	@ManyToOne()
 	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID",
 		nullable: false})
-	repository: IRepository;
+	repository: Repository;
 
 }

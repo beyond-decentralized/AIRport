@@ -4,10 +4,11 @@ import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
+	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control'
-import { Duo } from "@airport/check-in"
+import { Duo } from '@airport/check-in'
 import {
 	EntityId as DbEntityId
 } from '@airport/ground-control'
@@ -16,7 +17,9 @@ import {
 	duoDiSet
 } from './qSchema'
 import {
-	IMissingRecord,
+	IMissingRecord
+} from './missingrecord/missingrecord'
+import {
 	MissingRecordESelect,
 	MissingRecordECreateColumns,
 	MissingRecordECreateProperties,
@@ -27,7 +30,9 @@ import {
 	QMissingRecord
 } from './missingrecord/qmissingrecord'
 import {
-	IMissingRecordRepoTransBlock,
+	IMissingRecordRepoTransBlock
+} from './missingrecord/missingrecordrepotransblock'
+import {
 	MissingRecordRepoTransBlockESelect,
 	MissingRecordRepoTransBlockECreateColumns,
 	MissingRecordRepoTransBlockECreateProperties,
@@ -38,7 +43,9 @@ import {
 	QMissingRecordRepoTransBlock
 } from './missingrecord/qmissingrecordrepotransblock'
 import {
-	IRecordUpdateStage,
+	IRecordUpdateStage
+} from './recordupdatestage'
+import {
 	RecordUpdateStageESelect,
 	RecordUpdateStageECreateColumns,
 	RecordUpdateStageECreateProperties,
@@ -49,7 +56,9 @@ import {
 	QRecordUpdateStage
 } from './qrecordupdatestage'
 import {
-	IRepoTransBlockResponseStage,
+	IRepoTransBlockResponseStage
+} from './repositorytransactionblock/repotransblockresponsestage'
+import {
 	RepoTransBlockResponseStageESelect,
 	RepoTransBlockResponseStageECreateColumns,
 	RepoTransBlockResponseStageECreateProperties,
@@ -60,7 +69,9 @@ import {
 	QRepoTransBlockResponseStage
 } from './repositorytransactionblock/qrepotransblockresponsestage'
 import {
-	IRepoTransBlockSchemaToChange,
+	IRepoTransBlockSchemaToChange
+} from './repositorytransactionblock/repotransblockschematochange'
+import {
 	RepoTransBlockSchemaToChangeESelect,
 	RepoTransBlockSchemaToChangeECreateColumns,
 	RepoTransBlockSchemaToChangeECreateProperties,
@@ -71,7 +82,9 @@ import {
 	QRepoTransBlockSchemaToChange
 } from './repositorytransactionblock/qrepotransblockschematochange'
 import {
-	IRepositoryTransactionBlock,
+	IRepositoryTransactionBlock
+} from './repositorytransactionblock/repositorytransactionblock'
+import {
 	RepositoryTransactionBlockESelect,
 	RepositoryTransactionBlockECreateColumns,
 	RepositoryTransactionBlockECreateProperties,
@@ -82,7 +95,9 @@ import {
 	QRepositoryTransactionBlock
 } from './repositorytransactionblock/qrepositorytransactionblock'
 import {
-	IRepositoryTransactionHistoryUpdateStage,
+	IRepositoryTransactionHistoryUpdateStage
+} from './repositorytransactionblock/repositorytransactionhistoryupdatestage'
+import {
 	RepositoryTransactionHistoryUpdateStageESelect,
 	RepositoryTransactionHistoryUpdateStageECreateColumns,
 	RepositoryTransactionHistoryUpdateStageECreateProperties,
@@ -93,7 +108,9 @@ import {
 	QRepositoryTransactionHistoryUpdateStage
 } from './repositorytransactionblock/qrepositorytransactionhistoryupdatestage'
 import {
-	ISharingMessage,
+	ISharingMessage
+} from './sharingmessage/sharingmessage'
+import {
 	SharingMessageESelect,
 	SharingMessageECreateColumns,
 	SharingMessageECreateProperties,
@@ -104,7 +121,9 @@ import {
 	QSharingMessage
 } from './sharingmessage/qsharingmessage'
 import {
-	ISharingMessageRepoTransBlock,
+	ISharingMessageRepoTransBlock
+} from './sharingmessage/sharingmessagerepotransblock'
+import {
 	SharingMessageRepoTransBlockESelect,
 	SharingMessageRepoTransBlockECreateColumns,
 	SharingMessageRepoTransBlockECreateProperties,
@@ -115,7 +134,9 @@ import {
 	QSharingMessageRepoTransBlock
 } from './sharingmessage/qsharingmessagerepotransblock'
 import {
-	ISharingNode,
+	ISharingNode
+} from './sharingnode/sharingnode'
+import {
 	SharingNodeESelect,
 	SharingNodeECreateColumns,
 	SharingNodeECreateProperties,
@@ -126,7 +147,9 @@ import {
 	QSharingNode
 } from './sharingnode/qsharingnode'
 import {
-	ISharingNodeRepoTransBlock,
+	ISharingNodeRepoTransBlock
+} from './sharingnode/sharingnoderepotransblock'
+import {
 	SharingNodeRepoTransBlockESelect,
 	SharingNodeRepoTransBlockECreateColumns,
 	SharingNodeRepoTransBlockECreateProperties,
@@ -137,7 +160,9 @@ import {
 	QSharingNodeRepoTransBlock
 } from './sharingnode/qsharingnoderepotransblock'
 import {
-	ISharingNodeRepoTransBlockStage,
+	ISharingNodeRepoTransBlockStage
+} from './sharingnode/sharingnoderepotransblockstage'
+import {
 	SharingNodeRepoTransBlockStageESelect,
 	SharingNodeRepoTransBlockStageECreateColumns,
 	SharingNodeRepoTransBlockStageECreateProperties,
@@ -148,7 +173,9 @@ import {
 	QSharingNodeRepoTransBlockStage
 } from './sharingnode/qsharingnoderepotransblockstage'
 import {
-	ISharingNodeRepository,
+	ISharingNodeRepository
+} from './sharingnode/sharingnoderepository'
+import {
 	SharingNodeRepositoryESelect,
 	SharingNodeRepositoryECreateColumns,
 	SharingNodeRepositoryECreateProperties,
@@ -159,7 +186,9 @@ import {
 	QSharingNodeRepository
 } from './sharingnode/qsharingnoderepository'
 import {
-	ISharingNodeTerminal,
+	ISharingNodeTerminal
+} from './sharingnode/sharingnodeterminal'
+import {
 	SharingNodeTerminalESelect,
 	SharingNodeTerminalECreateColumns,
 	SharingNodeTerminalECreateProperties,
@@ -170,7 +199,9 @@ import {
 	QSharingNodeTerminal
 } from './sharingnode/qsharingnodeterminal'
 import {
-	ISynchronizationConflict,
+	ISynchronizationConflict
+} from './conflict/synchronizationconflict'
+import {
 	SynchronizationConflictESelect,
 	SynchronizationConflictECreateColumns,
 	SynchronizationConflictECreateProperties,
@@ -181,7 +212,9 @@ import {
 	QSynchronizationConflict
 } from './conflict/qsynchronizationconflict'
 import {
-	ISynchronizationConflictPendingNotification,
+	ISynchronizationConflictPendingNotification
+} from './conflict/synchronizationconflictpendingnotification'
+import {
 	SynchronizationConflictPendingNotificationESelect,
 	SynchronizationConflictPendingNotificationECreateColumns,
 	SynchronizationConflictPendingNotificationECreateProperties,
@@ -192,7 +225,9 @@ import {
 	QSynchronizationConflictPendingNotification
 } from './conflict/qsynchronizationconflictpendingnotification'
 import {
-	ISynchronizationConflictValues,
+	ISynchronizationConflictValues
+} from './conflict/synchronizationconflictvalues'
+import {
 	SynchronizationConflictValuesESelect,
 	SynchronizationConflictValuesECreateColumns,
 	SynchronizationConflictValuesECreateProperties,
@@ -204,10 +239,11 @@ import {
 } from './conflict/qsynchronizationconflictvalues'
 
 
-// Schema Q object Dependency Injection readiness detection DAO
+// Schema Q object Dependency Injection readiness detection Duo
 export class SQDIDuo<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
+  EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
@@ -215,6 +251,7 @@ export class SQDIDuo<Entity,
 	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,
+		EntityUpdateColumns,
 		EntityUpdateProperties,
 		EntityId,
 		EntityCascadeGraph,
@@ -229,11 +266,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseMissingRecordDuo
-  extends IDuo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateProperties, MissingRecordEId, MissingRecordECascadeGraph, QMissingRecord> {
+  extends IDuo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateColumns, MissingRecordEUpdateProperties, MissingRecordEId, MissingRecordECascadeGraph, QMissingRecord> {
 }
 
 export class BaseMissingRecordDuo
-  extends SQDIDuo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateProperties, MissingRecordEId, MissingRecordECascadeGraph, QMissingRecord>
+  extends SQDIDuo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateColumns, MissingRecordEUpdateProperties, MissingRecordEId, MissingRecordECascadeGraph, QMissingRecord>
 	implements IBaseMissingRecordDuo {
 
 	static diSet(): boolean {
@@ -247,84 +284,12 @@ export class BaseMissingRecordDuo
 
 
 export interface IBaseMissingRecordRepoTransBlockDuo
-  extends IDuo<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, MissingRecordRepoTransBlockECascadeGraph, QMissingRecordRepoTransBlock> {
+  extends IDuo<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateColumns, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, MissingRecordRepoTransBlockECascadeGraph, QMissingRecordRepoTransBlock> {
 }
 
 export class BaseMissingRecordRepoTransBlockDuo
-  extends SQDIDuo<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, MissingRecordRepoTransBlockECascadeGraph, QMissingRecordRepoTransBlock>
+  extends SQDIDuo<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateColumns, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, MissingRecordRepoTransBlockECascadeGraph, QMissingRecordRepoTransBlock>
 	implements IBaseMissingRecordRepoTransBlockDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(4)
-	}
-	
-	constructor() {
-		super(4)
-	}
-}
-
-
-export interface IBaseRecordUpdateStageDuo
-  extends IDuo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageECascadeGraph, QRecordUpdateStage> {
-}
-
-export class BaseRecordUpdateStageDuo
-  extends SQDIDuo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageECascadeGraph, QRecordUpdateStage>
-	implements IBaseRecordUpdateStageDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(5)
-	}
-	
-	constructor() {
-		super(5)
-	}
-}
-
-
-export interface IBaseRepoTransBlockResponseStageDuo
-  extends IDuo<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, RepoTransBlockResponseStageECascadeGraph, QRepoTransBlockResponseStage> {
-}
-
-export class BaseRepoTransBlockResponseStageDuo
-  extends SQDIDuo<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, RepoTransBlockResponseStageECascadeGraph, QRepoTransBlockResponseStage>
-	implements IBaseRepoTransBlockResponseStageDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(6)
-	}
-	
-	constructor() {
-		super(6)
-	}
-}
-
-
-export interface IBaseRepoTransBlockSchemaToChangeDuo
-  extends IDuo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeECascadeGraph, QRepoTransBlockSchemaToChange> {
-}
-
-export class BaseRepoTransBlockSchemaToChangeDuo
-  extends SQDIDuo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeECascadeGraph, QRepoTransBlockSchemaToChange>
-	implements IBaseRepoTransBlockSchemaToChangeDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(7)
-	}
-	
-	constructor() {
-		super(7)
-	}
-}
-
-
-export interface IBaseRepositoryTransactionBlockDuo
-  extends IDuo<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, RepositoryTransactionBlockECascadeGraph, QRepositoryTransactionBlock> {
-}
-
-export class BaseRepositoryTransactionBlockDuo
-  extends SQDIDuo<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, RepositoryTransactionBlockECascadeGraph, QRepositoryTransactionBlock>
-	implements IBaseRepositoryTransactionBlockDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(16)
@@ -336,49 +301,67 @@ export class BaseRepositoryTransactionBlockDuo
 }
 
 
-export interface IBaseRepositoryTransactionHistoryUpdateStageDuo
-  extends IDuo<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, RepositoryTransactionHistoryUpdateStageECascadeGraph, QRepositoryTransactionHistoryUpdateStage> {
+export interface IBaseRecordUpdateStageDuo
+  extends IDuo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageECascadeGraph, QRecordUpdateStage> {
 }
 
-export class BaseRepositoryTransactionHistoryUpdateStageDuo
-  extends SQDIDuo<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, RepositoryTransactionHistoryUpdateStageECascadeGraph, QRepositoryTransactionHistoryUpdateStage>
-	implements IBaseRepositoryTransactionHistoryUpdateStageDuo {
+export class BaseRecordUpdateStageDuo
+  extends SQDIDuo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageECascadeGraph, QRecordUpdateStage>
+	implements IBaseRecordUpdateStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(8)
+		super(4)
 	}
 }
 
 
-export interface IBaseSharingMessageDuo
-  extends IDuo<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateProperties, SharingMessageEId, SharingMessageECascadeGraph, QSharingMessage> {
+export interface IBaseRepoTransBlockResponseStageDuo
+  extends IDuo<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateColumns, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, RepoTransBlockResponseStageECascadeGraph, QRepoTransBlockResponseStage> {
 }
 
-export class BaseSharingMessageDuo
-  extends SQDIDuo<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateProperties, SharingMessageEId, SharingMessageECascadeGraph, QSharingMessage>
-	implements IBaseSharingMessageDuo {
+export class BaseRepoTransBlockResponseStageDuo
+  extends SQDIDuo<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateColumns, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, RepoTransBlockResponseStageECascadeGraph, QRepoTransBlockResponseStage>
+	implements IBaseRepoTransBlockResponseStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(14)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(14)
+		super(5)
 	}
 }
 
 
-export interface IBaseSharingMessageRepoTransBlockDuo
-  extends IDuo<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, SharingMessageRepoTransBlockECascadeGraph, QSharingMessageRepoTransBlock> {
+export interface IBaseRepoTransBlockSchemaToChangeDuo
+  extends IDuo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateColumns, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeECascadeGraph, QRepoTransBlockSchemaToChange> {
 }
 
-export class BaseSharingMessageRepoTransBlockDuo
-  extends SQDIDuo<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, SharingMessageRepoTransBlockECascadeGraph, QSharingMessageRepoTransBlock>
-	implements IBaseSharingMessageRepoTransBlockDuo {
+export class BaseRepoTransBlockSchemaToChangeDuo
+  extends SQDIDuo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateColumns, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeECascadeGraph, QRepoTransBlockSchemaToChange>
+	implements IBaseRepoTransBlockSchemaToChangeDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(6)
+	}
+	
+	constructor() {
+		super(6)
+	}
+}
+
+
+export interface IBaseRepositoryTransactionBlockDuo
+  extends IDuo<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateColumns, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, RepositoryTransactionBlockECascadeGraph, QRepositoryTransactionBlock> {
+}
+
+export class BaseRepositoryTransactionBlockDuo
+  extends SQDIDuo<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateColumns, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, RepositoryTransactionBlockECascadeGraph, QRepositoryTransactionBlock>
+	implements IBaseRepositoryTransactionBlockDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(15)
@@ -390,85 +373,31 @@ export class BaseSharingMessageRepoTransBlockDuo
 }
 
 
-export interface IBaseSharingNodeDuo
-  extends IDuo<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateProperties, SharingNodeEId, SharingNodeECascadeGraph, QSharingNode> {
+export interface IBaseRepositoryTransactionHistoryUpdateStageDuo
+  extends IDuo<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateColumns, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, RepositoryTransactionHistoryUpdateStageECascadeGraph, QRepositoryTransactionHistoryUpdateStage> {
 }
 
-export class BaseSharingNodeDuo
-  extends SQDIDuo<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateProperties, SharingNodeEId, SharingNodeECascadeGraph, QSharingNode>
-	implements IBaseSharingNodeDuo {
+export class BaseRepositoryTransactionHistoryUpdateStageDuo
+  extends SQDIDuo<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateColumns, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, RepositoryTransactionHistoryUpdateStageECascadeGraph, QRepositoryTransactionHistoryUpdateStage>
+	implements IBaseRepositoryTransactionHistoryUpdateStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(10)
+		super(7)
 	}
 }
 
 
-export interface IBaseSharingNodeRepoTransBlockDuo
-  extends IDuo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, SharingNodeRepoTransBlockECascadeGraph, QSharingNodeRepoTransBlock> {
+export interface IBaseSharingMessageDuo
+  extends IDuo<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateColumns, SharingMessageEUpdateProperties, SharingMessageEId, SharingMessageECascadeGraph, QSharingMessage> {
 }
 
-export class BaseSharingNodeRepoTransBlockDuo
-  extends SQDIDuo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, SharingNodeRepoTransBlockECascadeGraph, QSharingNodeRepoTransBlock>
-	implements IBaseSharingNodeRepoTransBlockDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(9)
-	}
-	
-	constructor() {
-		super(9)
-	}
-}
-
-
-export interface IBaseSharingNodeRepoTransBlockStageDuo
-  extends IDuo<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, SharingNodeRepoTransBlockStageECascadeGraph, QSharingNodeRepoTransBlockStage> {
-}
-
-export class BaseSharingNodeRepoTransBlockStageDuo
-  extends SQDIDuo<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, SharingNodeRepoTransBlockStageECascadeGraph, QSharingNodeRepoTransBlockStage>
-	implements IBaseSharingNodeRepoTransBlockStageDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(11)
-	}
-	
-	constructor() {
-		super(11)
-	}
-}
-
-
-export interface IBaseSharingNodeRepositoryDuo
-  extends IDuo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, SharingNodeRepositoryECascadeGraph, QSharingNodeRepository> {
-}
-
-export class BaseSharingNodeRepositoryDuo
-  extends SQDIDuo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, SharingNodeRepositoryECascadeGraph, QSharingNodeRepository>
-	implements IBaseSharingNodeRepositoryDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(12)
-	}
-	
-	constructor() {
-		super(12)
-	}
-}
-
-
-export interface IBaseSharingNodeTerminalDuo
-  extends IDuo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, SharingNodeTerminalECascadeGraph, QSharingNodeTerminal> {
-}
-
-export class BaseSharingNodeTerminalDuo
-  extends SQDIDuo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, SharingNodeTerminalECascadeGraph, QSharingNodeTerminal>
-	implements IBaseSharingNodeTerminalDuo {
+export class BaseSharingMessageDuo
+  extends SQDIDuo<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateColumns, SharingMessageEUpdateProperties, SharingMessageEId, SharingMessageECascadeGraph, QSharingMessage>
+	implements IBaseSharingMessageDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(13)
@@ -480,12 +409,120 @@ export class BaseSharingNodeTerminalDuo
 }
 
 
+export interface IBaseSharingMessageRepoTransBlockDuo
+  extends IDuo<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateColumns, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, SharingMessageRepoTransBlockECascadeGraph, QSharingMessageRepoTransBlock> {
+}
+
+export class BaseSharingMessageRepoTransBlockDuo
+  extends SQDIDuo<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateColumns, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, SharingMessageRepoTransBlockECascadeGraph, QSharingMessageRepoTransBlock>
+	implements IBaseSharingMessageRepoTransBlockDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(14)
+	}
+	
+	constructor() {
+		super(14)
+	}
+}
+
+
+export interface IBaseSharingNodeDuo
+  extends IDuo<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateColumns, SharingNodeEUpdateProperties, SharingNodeEId, SharingNodeECascadeGraph, QSharingNode> {
+}
+
+export class BaseSharingNodeDuo
+  extends SQDIDuo<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateColumns, SharingNodeEUpdateProperties, SharingNodeEId, SharingNodeECascadeGraph, QSharingNode>
+	implements IBaseSharingNodeDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(9)
+	}
+	
+	constructor() {
+		super(9)
+	}
+}
+
+
+export interface IBaseSharingNodeRepoTransBlockDuo
+  extends IDuo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateColumns, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, SharingNodeRepoTransBlockECascadeGraph, QSharingNodeRepoTransBlock> {
+}
+
+export class BaseSharingNodeRepoTransBlockDuo
+  extends SQDIDuo<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateColumns, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, SharingNodeRepoTransBlockECascadeGraph, QSharingNodeRepoTransBlock>
+	implements IBaseSharingNodeRepoTransBlockDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(8)
+	}
+	
+	constructor() {
+		super(8)
+	}
+}
+
+
+export interface IBaseSharingNodeRepoTransBlockStageDuo
+  extends IDuo<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateColumns, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, SharingNodeRepoTransBlockStageECascadeGraph, QSharingNodeRepoTransBlockStage> {
+}
+
+export class BaseSharingNodeRepoTransBlockStageDuo
+  extends SQDIDuo<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateColumns, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, SharingNodeRepoTransBlockStageECascadeGraph, QSharingNodeRepoTransBlockStage>
+	implements IBaseSharingNodeRepoTransBlockStageDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(10)
+	}
+	
+	constructor() {
+		super(10)
+	}
+}
+
+
+export interface IBaseSharingNodeRepositoryDuo
+  extends IDuo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateColumns, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, SharingNodeRepositoryECascadeGraph, QSharingNodeRepository> {
+}
+
+export class BaseSharingNodeRepositoryDuo
+  extends SQDIDuo<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateColumns, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, SharingNodeRepositoryECascadeGraph, QSharingNodeRepository>
+	implements IBaseSharingNodeRepositoryDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(11)
+	}
+	
+	constructor() {
+		super(11)
+	}
+}
+
+
+export interface IBaseSharingNodeTerminalDuo
+  extends IDuo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateColumns, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, SharingNodeTerminalECascadeGraph, QSharingNodeTerminal> {
+}
+
+export class BaseSharingNodeTerminalDuo
+  extends SQDIDuo<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateColumns, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, SharingNodeTerminalECascadeGraph, QSharingNodeTerminal>
+	implements IBaseSharingNodeTerminalDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(12)
+	}
+	
+	constructor() {
+		super(12)
+	}
+}
+
+
 export interface IBaseSynchronizationConflictDuo
-  extends IDuo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictECascadeGraph, QSynchronizationConflict> {
+  extends IDuo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictECascadeGraph, QSynchronizationConflict> {
 }
 
 export class BaseSynchronizationConflictDuo
-  extends SQDIDuo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictECascadeGraph, QSynchronizationConflict>
+  extends SQDIDuo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictECascadeGraph, QSynchronizationConflict>
 	implements IBaseSynchronizationConflictDuo {
 
 	static diSet(): boolean {
@@ -499,11 +536,11 @@ export class BaseSynchronizationConflictDuo
 
 
 export interface IBaseSynchronizationConflictPendingNotificationDuo
-  extends IDuo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationECascadeGraph, QSynchronizationConflictPendingNotification> {
+  extends IDuo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationECascadeGraph, QSynchronizationConflictPendingNotification> {
 }
 
 export class BaseSynchronizationConflictPendingNotificationDuo
-  extends SQDIDuo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationECascadeGraph, QSynchronizationConflictPendingNotification>
+  extends SQDIDuo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationECascadeGraph, QSynchronizationConflictPendingNotification>
 	implements IBaseSynchronizationConflictPendingNotificationDuo {
 
 	static diSet(): boolean {
@@ -517,11 +554,11 @@ export class BaseSynchronizationConflictPendingNotificationDuo
 
 
 export interface IBaseSynchronizationConflictValuesDuo
-  extends IDuo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesECascadeGraph, QSynchronizationConflictValues> {
+  extends IDuo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesECascadeGraph, QSynchronizationConflictValues> {
 }
 
 export class BaseSynchronizationConflictValuesDuo
-  extends SQDIDuo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesECascadeGraph, QSynchronizationConflictValues>
+  extends SQDIDuo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesECascadeGraph, QSynchronizationConflictValues>
 	implements IBaseSynchronizationConflictValuesDuo {
 
 	static diSet(): boolean {

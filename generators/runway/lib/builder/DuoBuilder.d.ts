@@ -1,6 +1,5 @@
-import { ImplementationFileBuilder } from './ImplementationFileBuilder';
 import { PathBuilder } from './PathBuilder';
-export declare class DuoBuilder extends ImplementationFileBuilder {
+import { UtilityBuilder } from './UtilityBuilder';
+export declare class DuoBuilder extends UtilityBuilder {
     constructor(pathBuilder: PathBuilder);
-    build(): string;
 }

@@ -25,7 +25,6 @@ import {
 	OneToManyElements,
 } from '@airport/air-control';
 import {
-	IVersionedSchemaObject,
 	VersionedSchemaObjectECascadeGraph,
 	VersionedSchemaObjectEId,
 	VersionedSchemaObjectEUpdateColumns,
@@ -36,7 +35,6 @@ import {
 	QVersionedSchemaObject,
 } from './qversionedschemaobject';
 import {
-	ISchemaProperty,
 	SchemaPropertyECascadeGraph,
 	SchemaPropertyEId,
 	SchemaPropertyEOptionalId,
@@ -47,7 +45,6 @@ import {
 	QSchemaPropertyQRelation,
 } from './qschemaproperty';
 import {
-	ISchemaEntity,
 	SchemaEntityECascadeGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
@@ -58,7 +55,6 @@ import {
 	QSchemaEntityQRelation,
 } from './qschemaentity';
 import {
-	ISchemaRelationColumn,
 	SchemaRelationColumnECascadeGraph,
 	SchemaRelationColumnEId,
 	SchemaRelationColumnEOptionalId,
@@ -73,38 +69,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISchemaRelation extends IVersionedSchemaObject {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	index?: number;
-	foreignKey?: ForeignKey;
-	manyToOneElems?: ManyToOneElements;
-	oneToManyElems?: OneToManyElements;
-	relationType?: number;
-	isId?: boolean;
-
-	// Non-Id Relations
-	property?: ISchemaProperty;
-	entity?: ISchemaEntity;
-	relationEntity?: ISchemaEntity;
-	manyRelationColumns?: ISchemaRelationColumn[];
-	oneRelationColumns?: ISchemaRelationColumn[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

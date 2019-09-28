@@ -1,4 +1,4 @@
-import { QEntityFileBuilder } from '../builder/entity/QEntityFileBuilder';
+import { FileBuilder } from '../builder/entity/FileBuilder';
 import { EntityCandidate } from '../parser/EntityCandidate';
 /**
  * Created by Papa on 4/27/2016.
@@ -16,7 +16,7 @@ export declare function getFullPathFromRelativePath(relativePath: string, //
 relativeToPath: string): string;
 export declare function resolveRelativePath(fromPath: string, //
 toPath: string): string;
-export declare function addImportForType(entity: EntityCandidate, type: string, fileBuilder: QEntityFileBuilder): void;
+export declare function addImportForType(entity: EntityCandidate, type: string, fileBuilder: FileBuilder): void;
 export declare function normalizePath(path: string): string;
 export declare function canBeInterface(type: string): boolean;
 export declare function getImplNameFromInterfaceName(interfaceName: string): string;

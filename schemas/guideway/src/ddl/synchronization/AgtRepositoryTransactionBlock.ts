@@ -8,17 +8,17 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-}                           from "@airport/air-control";
+}                           from '@airport/air-control'
 import {
 	RepositoryTransactionBlockContents,
 	TmRepositoryTransactionBlockId
-}                           from "@airport/arrivals-n-departures";
-import {IServer}            from "../../generated/server/qserver";
-import {Terminal}           from "../terminal/Terminal";
-import {TerminalRepository} from "../terminal/TerminalRepository";
-import {Repository}         from "../repository/Repository";
-import {ArchivingStatus}    from "./ArchivingStatus";
-import {SyncLog}            from "./SyncLog";
+}                           from '@airport/arrivals-n-departures'
+import {Server}             from '../..'
+import {Repository}         from '../repository/Repository'
+import {Terminal}           from '../terminal/Terminal'
+import {TerminalRepository} from '../terminal/TerminalRepository'
+import {ArchivingStatus}    from './ArchivingStatus'
+import {SyncLog}            from './SyncLog'
 
 export type AgtRepositoryTransactionBlockId = number;
 export type AgtRepositoryTransactionBlockAddDatetime = number;
@@ -26,45 +26,45 @@ export type AgtRepositoryTransactionBlockArchivingStatus = ArchivingStatus;
 export type AgtRepositoryTransactionBlockIsRecent = boolean;
 
 @Entity()
-@Table({name: "AGT_REPOSITORY_TRANSACTION_BLOCKS"})
+@Table({name: 'AGT_REPOSITORY_TRANSACTION_BLOCKS'})
 // TODO: partition by add date for efficient dropping of records
 export class AgtRepositoryTransactionBlock {
 
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	id: AgtRepositoryTransactionBlockId;
+	id: AgtRepositoryTransactionBlockId
 
 	@ManyToOne()
 	@JoinColumn(
-		{name: "REPOSITORY_ID", referencedColumnName: 'ID', nullable: false}
+		{name: 'REPOSITORY_ID', referencedColumnName: 'ID', nullable: false}
 	)
-	repository: Repository;
+	repository: Repository
 
 	@OneToMany()
 	@JoinColumn(
-		{name: "REPOSITORY_ID", nullable: false}
+		{name: 'REPOSITORY_ID', nullable: false}
 	)
-	terminalRepositories: TerminalRepository[];
+	terminalRepositories: TerminalRepository[]
 
 	@ManyToOne()
 	@JoinColumn(
-		{name: "TERMINAL_ID", referencedColumnName: 'ID', nullable: false}
+		{name: 'TERMINAL_ID', referencedColumnName: 'ID', nullable: false}
 	)
-	terminal: Terminal;
+	terminal: Terminal
 
 	@ManyToOne()
 	@JoinColumn(
-		{name: "ARCHIVING_SERVER_ID", referencedColumnName: "ID"}
+		{name: 'ARCHIVING_SERVER_ID', referencedColumnName: 'ID'}
 	)
-	archivingServer: IServer;
+	archivingServer: Server
 
-	@Column({name: "ARCHIVING_STATUS", nullable: false})
+	@Column({name: 'ARCHIVING_STATUS', nullable: false})
 	@DbNumber()
-	archivingStatus: AgtRepositoryTransactionBlockArchivingStatus;
+	archivingStatus: AgtRepositoryTransactionBlockArchivingStatus
 
-	@Column({name: "ADD_DATETIME", nullable: false})
-	addDatetime: AgtRepositoryTransactionBlockAddDatetime;
+	@Column({name: 'ADD_DATETIME', nullable: false})
+	addDatetime: AgtRepositoryTransactionBlockAddDatetime
 
 	/*
 	Recent status is removed - now all sync records are considered for "recent" syncing purposes.
@@ -77,9 +77,9 @@ export class AgtRepositoryTransactionBlock {
 	isRecent: AgtRepositoryTransactionBlockIsRecent;
 */
 
-	@Column({name: "TM_REPOSITORY_TRANSACTION_BLOCK_ID", nullable: false})
+	@Column({name: 'TM_REPOSITORY_TRANSACTION_BLOCK_ID', nullable: false})
 	@DbNumber()
-	tmRepositoryTransactionBlockId: TmRepositoryTransactionBlockId;
+	tmRepositoryTransactionBlockId: TmRepositoryTransactionBlockId
 
 	/**
 	 * In transaction data multiple transaction logs may be present and we don't want
@@ -115,10 +115,10 @@ export class AgtRepositoryTransactionBlock {
 	 * no known const
 	 *
 	 */
-	@Column({name: "REPOSITORY_TRANSACTION_BLOCK", nullable: false})
-	contents: RepositoryTransactionBlockContents;
+	@Column({name: 'REPOSITORY_TRANSACTION_BLOCK', nullable: false})
+	contents: RepositoryTransactionBlockContents
 
 	@OneToMany()
-	syncLogs: SyncLog[];
+	syncLogs: SyncLog[]
 
 }

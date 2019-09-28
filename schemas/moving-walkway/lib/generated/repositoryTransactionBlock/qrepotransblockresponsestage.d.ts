@@ -1,8 +1,4 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-export interface IRepoTransBlockResponseStage {
-    id: number;
-    syncOutcomeType?: number;
-}
 /**
  * SELECT - All fields and relations (optional).
  */

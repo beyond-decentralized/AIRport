@@ -1,32 +1,9 @@
 import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, TableConfiguration } from '@airport/air-control';
-import { IVersionedSchemaObject, VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
-import { ISchemaColumn, SchemaColumnECascadeGraph, SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
-import { ISchemaProperty, SchemaPropertyECascadeGraph, SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';
-import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
-import { ISchemaRelation, SchemaRelationECascadeGraph, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
-export interface ISchemaEntity extends IVersionedSchemaObject {
-    id: number;
-    index?: number;
-    isLocal?: boolean;
-    isRepositoryEntity?: boolean;
-    name?: string;
-    tableConfig?: TableConfiguration;
-    schemaVersion?: ISchemaVersion;
-    columns?: ISchemaColumn[];
-    properties?: ISchemaProperty[];
-    relations?: ISchemaRelation[];
-    relationReferences?: ISchemaRelation[];
-    columnMap?: {
-        [name: string]: ISchemaColumn;
-    };
-    idColumns?: ISchemaColumn[];
-    idColumnMap?: {
-        [name: string]: ISchemaColumn;
-    };
-    propertyMap?: {
-        [name: string]: ISchemaProperty;
-    };
-}
+import { VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
+import { SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
+import { SchemaColumnECascadeGraph, SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
+import { SchemaPropertyECascadeGraph, SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';
+import { SchemaRelationECascadeGraph, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
 /**
  * SELECT - All fields and relations (optional).
  */

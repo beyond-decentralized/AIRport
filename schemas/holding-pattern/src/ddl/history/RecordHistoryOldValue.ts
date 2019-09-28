@@ -7,9 +7,8 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-}                               from "@airport/air-control";
-import {IRecordHistory,}        from "../../generated/history/qrecordhistory";
-import {IRecordHistoryOldValue} from "../../generated/history/qrecordhistoryoldvalue";
+}                      from "@airport/air-control";
+import {RecordHistory} from './RecordHistory'
 
 /**
  * Created by Papa on 9/15/2016.
@@ -35,14 +34,13 @@ export type RecordHistoryOldValueOldValue = any;
 		"COLUMN_INDEX"
 	]
 })
-export class RecordHistoryOldValue
-	implements IRecordHistoryOldValue {
+export class RecordHistoryOldValue {
 
 	@Id()
 	@ManyToOne()
 	@JoinColumn({name: "REPOSITORY_RECORD_HISTORY_ID",
 		referencedColumnName: "ID", nullable: false})
-	recordHistory: IRecordHistory;
+	recordHistory: RecordHistory;
 
 	@Id()
 	@Column({name: "COLUMN_INDEX", nullable: false})

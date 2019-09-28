@@ -51,4 +51,5 @@ export class Terminal {
 
 	@OneToMany({mappedBy: 'terminal'})
 	userTerminalAgt: UserTerminalAgt[]
+
 }

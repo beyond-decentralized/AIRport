@@ -23,7 +23,6 @@ import {
 	TableConfiguration,
 } from '@airport/air-control';
 import {
-	IVersionedSchemaObject,
 	VersionedSchemaObjectECascadeGraph,
 	VersionedSchemaObjectEId,
 	VersionedSchemaObjectEUpdateColumns,
@@ -34,29 +33,6 @@ import {
 	QVersionedSchemaObject,
 } from './qversionedschemaobject';
 import {
-	ISchemaColumn,
-	SchemaColumnECascadeGraph,
-	SchemaColumnEId,
-	SchemaColumnEOptionalId,
-	SchemaColumnEUpdateProperties,
-	SchemaColumnESelect,
-	QSchemaColumn,
-	QSchemaColumnQId,
-	QSchemaColumnQRelation,
-} from './qschemacolumn';
-import {
-	ISchemaProperty,
-	SchemaPropertyECascadeGraph,
-	SchemaPropertyEId,
-	SchemaPropertyEOptionalId,
-	SchemaPropertyEUpdateProperties,
-	SchemaPropertyESelect,
-	QSchemaProperty,
-	QSchemaPropertyQId,
-	QSchemaPropertyQRelation,
-} from './qschemaproperty';
-import {
-	ISchemaVersion,
 	SchemaVersionECascadeGraph,
 	SchemaVersionEId,
 	SchemaVersionEOptionalId,
@@ -67,7 +43,26 @@ import {
 	QSchemaVersionQRelation,
 } from './qschemaversion';
 import {
-	ISchemaRelation,
+	SchemaColumnECascadeGraph,
+	SchemaColumnEId,
+	SchemaColumnEOptionalId,
+	SchemaColumnEUpdateProperties,
+	SchemaColumnESelect,
+	QSchemaColumn,
+	QSchemaColumnQId,
+	QSchemaColumnQRelation,
+} from './qschemacolumn';
+import {
+	SchemaPropertyECascadeGraph,
+	SchemaPropertyEId,
+	SchemaPropertyEOptionalId,
+	SchemaPropertyEUpdateProperties,
+	SchemaPropertyESelect,
+	QSchemaProperty,
+	QSchemaPropertyQId,
+	QSchemaPropertyQRelation,
+} from './qschemaproperty';
+import {
 	SchemaRelationECascadeGraph,
 	SchemaRelationEId,
 	SchemaRelationEOptionalId,
@@ -82,41 +77,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISchemaEntity extends IVersionedSchemaObject {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	index?: number;
-	isLocal?: boolean;
-	isRepositoryEntity?: boolean;
-	name?: string;
-	tableConfig?: TableConfiguration;
-
-	// Non-Id Relations
-	schemaVersion?: ISchemaVersion;
-	columns?: ISchemaColumn[];
-	properties?: ISchemaProperty[];
-	relations?: ISchemaRelation[];
-	relationReferences?: ISchemaRelation[];
-
-	// Transient Properties
-	columnMap?: { [name: string]: ISchemaColumn; };
-	idColumns?: ISchemaColumn[];
-	idColumnMap?: { [name: string]: ISchemaColumn; };
-	propertyMap?: { [name: string]: ISchemaProperty; };
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

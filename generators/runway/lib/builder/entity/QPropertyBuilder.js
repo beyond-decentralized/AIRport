@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const pathResolver_1 = require("../../resolve/pathResolver");
-const QBuilder_1 = require("../QBuilder");
+const Builder_1 = require("../Builder");
 /**
  * Created by Papa on 4/25/2016.
  */
@@ -13,7 +13,7 @@ class QPropertyBuilder {
     buildDefinition() {
         let prop = this.propertyDocEntry;
         let name = prop.name;
-        let fieldClass = QBuilder_1.getPropertyFieldClass(prop);
+        let fieldClass = Builder_1.getPropertyFieldClass(prop);
         return `${name}: I${fieldClass};`;
     }
     build() {
@@ -35,7 +35,7 @@ class QPropertyBuilder {
         }
         let operableFieldSuffix = '';
         if (forInternalInterfaces) {
-            operableFieldSuffix = ' | ' + QBuilder_1.getPropertyFieldInterface(prop);
+            operableFieldSuffix = ' | ' + Builder_1.getPropertyFieldInterface(prop);
         }
         else {
             if (!prop.primitive) {

@@ -9,20 +9,19 @@ import {
 	OneToMany,
 	SequenceGenerator,
 	Table
-}                                      from '@airport/air-control'
+}                                     from '@airport/air-control'
 import {
 	CascadeType,
 	ChangeType
-}                                      from '@airport/ground-control'
+}                                     from '@airport/ground-control'
 import {
 	ISchemaEntity
-}                                      from '@airport/traffic-pattern'
+}                                     from '@airport/traffic-pattern'
 import {
 	SystemWideOperationId
-} from '../common'
-import {IOperationHistory,}            from '../../generated/history/qoperationhistory'
-import {IRecordHistory,}               from '../../generated/history/qrecordhistory'
-import {IRepositoryTransactionHistory} from '../../generated/history/qrepositorytransactionhistory'
+}                                     from '../common'
+import {RecordHistory}                from './RecordHistory'
+import {RepositoryTransactionHistory} from './RepositoryTransactionHistory'
 
 /**
  * Created by Papa on 4/17/2017.
@@ -37,8 +36,7 @@ export type OperationHistorySystemWideOperationId = SystemWideOperationId;
  */
 @Entity()
 @Table({name: 'REPOSITORY_OPERATION_HISTORY'})
-export class OperationHistory
-	implements IOperationHistory {
+export class OperationHistory {
 
 	@GeneratedValue()
 	@SequenceGenerator({allocationSize: 600})
@@ -51,7 +49,7 @@ export class OperationHistory
 		name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID',
 		nullable: false
 	})
-	repositoryTransactionHistory: IRepositoryTransactionHistory
+	repositoryTransactionHistory: RepositoryTransactionHistory
 
 	@Column({name: 'ORDER_NUMBER', nullable: false})
 	orderNumber: OperationHistoryOrderNumber
@@ -69,6 +67,6 @@ export class OperationHistory
 	entity: ISchemaEntity
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'operationHistory'})
-	recordHistory: IRecordHistory[] = []
+	recordHistory: RecordHistory[] = []
 
 }

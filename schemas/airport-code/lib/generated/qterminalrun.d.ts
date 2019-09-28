@@ -1,9 +1,4 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-export interface ITerminalRun {
-    id: number;
-    createTimestamp?: number;
-    randomNumber?: number;
-}
 /**
  * SELECT - All fields and relations (optional).
  */

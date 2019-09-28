@@ -1,14 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IApplicationPackage, ApplicationPackageEOptionalId, ApplicationPackageESelect, QApplicationPackageQRelation, IPackagedUnit, PackagedUnitEOptionalId, PackagedUnitESelect, QPackagedUnitQRelation } from '@airport/territory';
-import { ILogEntry, LogEntryECascadeGraph, LogEntryESelect, QLogEntry } from './qlogentry';
-export interface ILogEntryType {
-    id: number;
-    level?: number;
-    text?: string;
-    applicationPackage?: IApplicationPackage;
-    packagedUnit?: IPackagedUnit;
-    logEntries?: ILogEntry[];
-}
+import { ApplicationPackageEOptionalId, ApplicationPackageESelect, QApplicationPackageQRelation, PackagedUnitEOptionalId, PackagedUnitESelect, QPackagedUnitQRelation } from '@airport/territory';
+import { LogEntryECascadeGraph, LogEntryESelect, QLogEntry } from './qlogentry';
 /**
  * SELECT - All fields and relations (optional).
  */

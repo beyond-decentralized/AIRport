@@ -4,10 +4,11 @@ import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
+	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control'
-import { Duo } from "@airport/check-in"
+import { Duo } from '@airport/check-in'
 import {
 	EntityId as DbEntityId
 } from '@airport/ground-control'
@@ -16,7 +17,9 @@ import {
 	duoDiSet
 } from './qSchema'
 import {
-	IDailyArchive,
+	IDailyArchive
+} from './dailyarchive'
+import {
 	DailyArchiveESelect,
 	DailyArchiveECreateColumns,
 	DailyArchiveECreateProperties,
@@ -28,10 +31,11 @@ import {
 } from './qdailyarchive'
 
 
-// Schema Q object Dependency Injection readiness detection DAO
+// Schema Q object Dependency Injection readiness detection Duo
 export class SQDIDuo<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
+  EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
@@ -39,6 +43,7 @@ export class SQDIDuo<Entity,
 	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,
+		EntityUpdateColumns,
 		EntityUpdateProperties,
 		EntityId,
 		EntityCascadeGraph,
@@ -53,11 +58,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseDailyArchiveDuo
-  extends IDuo<IDailyArchive, DailyArchiveESelect, DailyArchiveECreateProperties, DailyArchiveEUpdateProperties, DailyArchiveEId, DailyArchiveECascadeGraph, QDailyArchive> {
+  extends IDuo<IDailyArchive, DailyArchiveESelect, DailyArchiveECreateProperties, DailyArchiveEUpdateColumns, DailyArchiveEUpdateProperties, DailyArchiveEId, DailyArchiveECascadeGraph, QDailyArchive> {
 }
 
 export class BaseDailyArchiveDuo
-  extends SQDIDuo<IDailyArchive, DailyArchiveESelect, DailyArchiveECreateProperties, DailyArchiveEUpdateProperties, DailyArchiveEId, DailyArchiveECascadeGraph, QDailyArchive>
+  extends SQDIDuo<IDailyArchive, DailyArchiveESelect, DailyArchiveECreateProperties, DailyArchiveEUpdateColumns, DailyArchiveEUpdateProperties, DailyArchiveEId, DailyArchiveECascadeGraph, QDailyArchive>
 	implements IBaseDailyArchiveDuo {
 
 	static diSet(): boolean {

@@ -1,6 +1,6 @@
-import { PropertyDocEntry } from "../../parser/DocEntry";
-import { addImportForType } from "../../resolve/pathResolver";
-import { IQCoreEntityBuilder } from "../QBuilder";
+import { PropertyDocEntry }    from "../../parser/DocEntry";
+import { addImportForType }    from "../../resolve/pathResolver";
+import { IQCoreEntityBuilder } from "../Builder";
 
 export class QTransientBuilder {
 

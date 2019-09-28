@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISchemaVersion,
 	SchemaVersionECascadeGraph,
 	SchemaVersionEId,
 	SchemaVersionEOptionalId,
@@ -31,7 +30,6 @@ import {
 	QSchemaVersion,
 	QSchemaVersionQId,
 	QSchemaVersionQRelation,
-	ISchemaEntity,
 	SchemaEntityECascadeGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
@@ -42,7 +40,6 @@ import {
 	QSchemaEntityQRelation,
 } from '@airport/traffic-pattern';
 import {
-	IRepository,
 	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -51,7 +48,6 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
-	IActor,
 	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -66,33 +62,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IMissingRecord {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	actorRecordId?: number;
-	status?: number;
-
-	// Non-Id Relations
-	schemaVersion?: ISchemaVersion;
-	entity?: ISchemaEntity;
-	repository?: IRepository;
-	actor?: IActor;
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

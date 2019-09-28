@@ -1,9 +1,9 @@
 import {resolveRelativePath} from '../resolve/pathResolver'
 import {PathBuilder}         from './PathBuilder'
-import {IQBuilder}           from './QBuilder'
+import {IBuilder}            from './Builder'
 
 export class QSchemaBuilder
-	implements IQBuilder {
+	implements IBuilder {
 
 	public qSchemaFilePath
 

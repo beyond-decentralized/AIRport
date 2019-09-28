@@ -1,15 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IDomain, DomainEOptionalId, DomainESelect, QDomainQRelation } from '@airport/territory';
-import { ISchemaVersion, SchemaVersionECascadeGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersion, QSchemaVersionQRelation } from './qschemaversion';
-export interface ISchema {
-    index: number;
-    scope?: string;
-    name?: string;
-    status?: number;
-    domain?: IDomain;
-    versions?: ISchemaVersion[];
-    currentVersion?: ISchemaVersion;
-}
+import { DomainEOptionalId, DomainESelect, QDomainQRelation } from '@airport/territory';
+import { SchemaVersionECascadeGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersion, QSchemaVersionQRelation } from './qschemaversion';
 /**
  * SELECT - All fields and relations (optional).
  */

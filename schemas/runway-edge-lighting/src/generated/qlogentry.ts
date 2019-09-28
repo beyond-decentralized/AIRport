@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ILogEntryType,
 	LogEntryTypeECascadeGraph,
 	LogEntryTypeEId,
 	LogEntryTypeEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QLogEntryTypeQRelation,
 } from './qlogentrytype';
 import {
-	ILogEntryValue,
 	LogEntryValueECascadeGraph,
 	LogEntryValueEId,
 	LogEntryValueEOptionalId,
@@ -48,30 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ILogEntry {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	timestamp?: Date;
-
-	// Non-Id Relations
-	type?: ILogEntryType;
-	values?: ILogEntryValue[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

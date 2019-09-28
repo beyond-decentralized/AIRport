@@ -8,231 +8,268 @@ import {
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control'
-import {
-	Dao
-} from '@airport/check-in'
+import { Dao } from '@airport/check-in'
 import {
 	EntityId as DbEntityId
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
-	IAgtRepositoryTransactionBlock,
+	IAgtRepositoryTransactionBlock
+} from './synchronization/agtrepositorytransactionblock'
+import {
 	AgtRepositoryTransactionBlockESelect,
-	AgtRepositoryTransactionBlockECascadeGraph,
 	AgtRepositoryTransactionBlockECreateColumns,
 	AgtRepositoryTransactionBlockECreateProperties,
 	AgtRepositoryTransactionBlockEUpdateColumns,
 	AgtRepositoryTransactionBlockEUpdateProperties,
 	AgtRepositoryTransactionBlockEId,
+	AgtRepositoryTransactionBlockECascadeGraph,
 	QAgtRepositoryTransactionBlock
 } from './synchronization/qagtrepositorytransactionblock'
 import {
-	IAgtSharingMessage,
+	IAgtSharingMessage
+} from './synchronization/agtsharingmessage'
+import {
 	AgtSharingMessageESelect,
-	AgtSharingMessageECascadeGraph,
 	AgtSharingMessageECreateColumns,
 	AgtSharingMessageECreateProperties,
 	AgtSharingMessageEUpdateColumns,
 	AgtSharingMessageEUpdateProperties,
 	AgtSharingMessageEId,
+	AgtSharingMessageECascadeGraph,
 	QAgtSharingMessage
 } from './synchronization/qagtsharingmessage'
 import {
-	IArchive,
+	IArchive
+} from './repository/archive'
+import {
 	ArchiveESelect,
-	ArchiveECascadeGraph,
 	ArchiveECreateColumns,
 	ArchiveECreateProperties,
 	ArchiveEUpdateColumns,
 	ArchiveEUpdateProperties,
 	ArchiveEId,
+	ArchiveECascadeGraph,
 	QArchive
 } from './repository/qarchive'
 import {
-	IDailyArchiveLog,
+	IDailyArchiveLog
+} from './archive/dailyarchivelog'
+import {
 	DailyArchiveLogESelect,
-	DailyArchiveLogECascadeGraph,
 	DailyArchiveLogECreateColumns,
 	DailyArchiveLogECreateProperties,
 	DailyArchiveLogEUpdateColumns,
 	DailyArchiveLogEUpdateProperties,
 	DailyArchiveLogEId,
+	DailyArchiveLogECascadeGraph,
 	QDailyArchiveLog
 } from './archive/qdailyarchivelog'
 import {
-	IDailyTerminalSyncLog,
+	IDailyTerminalSyncLog
+} from './archive/dailyterminalsynclog'
+import {
 	DailyTerminalSyncLogESelect,
-	DailyTerminalSyncLogECascadeGraph,
 	DailyTerminalSyncLogECreateColumns,
 	DailyTerminalSyncLogECreateProperties,
 	DailyTerminalSyncLogEUpdateColumns,
 	DailyTerminalSyncLogEUpdateProperties,
 	DailyTerminalSyncLogEId,
+	DailyTerminalSyncLogECascadeGraph,
 	QDailyTerminalSyncLog
 } from './archive/qdailyterminalsynclog'
 import {
-	IMonthlyArchiveLog,
+	IMonthlyArchiveLog
+} from './archive/monthlyarchivelog'
+import {
 	MonthlyArchiveLogESelect,
-	MonthlyArchiveLogECascadeGraph,
 	MonthlyArchiveLogECreateColumns,
 	MonthlyArchiveLogECreateProperties,
 	MonthlyArchiveLogEUpdateColumns,
 	MonthlyArchiveLogEUpdateProperties,
 	MonthlyArchiveLogEId,
+	MonthlyArchiveLogECascadeGraph,
 	QMonthlyArchiveLog
 } from './archive/qmonthlyarchivelog'
 import {
-	IMonthlyTerminalSyncLog,
+	IMonthlyTerminalSyncLog
+} from './archive/monthlyterminalsynclog'
+import {
 	MonthlyTerminalSyncLogESelect,
-	MonthlyTerminalSyncLogECascadeGraph,
 	MonthlyTerminalSyncLogECreateColumns,
 	MonthlyTerminalSyncLogECreateProperties,
 	MonthlyTerminalSyncLogEUpdateColumns,
 	MonthlyTerminalSyncLogEUpdateProperties,
 	MonthlyTerminalSyncLogEId,
+	MonthlyTerminalSyncLogECascadeGraph,
 	QMonthlyTerminalSyncLog
 } from './archive/qmonthlyterminalsynclog'
 import {
-	IRepository,
+	IRepository
+} from './repository/repository'
+import {
 	RepositoryESelect,
-	RepositoryECascadeGraph,
 	RepositoryECreateColumns,
 	RepositoryECreateProperties,
 	RepositoryEUpdateColumns,
 	RepositoryEUpdateProperties,
 	RepositoryEId,
+	RepositoryECascadeGraph,
 	QRepository
 } from './repository/qrepository'
 import {
-	IRepositoryArchive,
+	IRepositoryArchive
+} from './repository/repositoryarchive'
+import {
 	RepositoryArchiveESelect,
-	RepositoryArchiveECascadeGraph,
 	RepositoryArchiveECreateColumns,
 	RepositoryArchiveECreateProperties,
 	RepositoryArchiveEUpdateColumns,
 	RepositoryArchiveEUpdateProperties,
 	RepositoryArchiveEId,
+	RepositoryArchiveECascadeGraph,
 	QRepositoryArchive
 } from './repository/qrepositoryarchive'
 import {
-	ISecurityAnswer,
+	ISecurityAnswer
+} from './user/security/securityanswer'
+import {
 	SecurityAnswerESelect,
-	SecurityAnswerECascadeGraph,
 	SecurityAnswerECreateColumns,
 	SecurityAnswerECreateProperties,
 	SecurityAnswerEUpdateColumns,
 	SecurityAnswerEUpdateProperties,
 	SecurityAnswerEId,
+	SecurityAnswerECascadeGraph,
 	QSecurityAnswer
 } from './user/security/qsecurityanswer'
 import {
-	ISecurityQuestion,
+	ISecurityQuestion
+} from './user/security/securityquestion'
+import {
 	SecurityQuestionESelect,
-	SecurityQuestionECascadeGraph,
 	SecurityQuestionECreateColumns,
 	SecurityQuestionECreateProperties,
 	SecurityQuestionEUpdateColumns,
 	SecurityQuestionEUpdateProperties,
 	SecurityQuestionEId,
+	SecurityQuestionECascadeGraph,
 	QSecurityQuestion
 } from './user/security/qsecurityquestion'
 import {
-	IServer,
+	IServer
+} from './server/server'
+import {
 	ServerESelect,
-	ServerECascadeGraph,
 	ServerECreateColumns,
 	ServerECreateProperties,
 	ServerEUpdateColumns,
 	ServerEUpdateProperties,
 	ServerEId,
+	ServerECascadeGraph,
 	QServer
 } from './server/qserver'
 import {
-	IServerSyncLog,
+	IServerSyncLog
+} from './server/serversynclog'
+import {
 	ServerSyncLogESelect,
-	ServerSyncLogECascadeGraph,
 	ServerSyncLogECreateColumns,
 	ServerSyncLogECreateProperties,
 	ServerSyncLogEUpdateColumns,
 	ServerSyncLogEUpdateProperties,
 	ServerSyncLogEId,
+	ServerSyncLogECascadeGraph,
 	QServerSyncLog
 } from './server/qserversynclog'
 import {
-	ISyncLog,
+	ISyncLog
+} from './synchronization/synclog'
+import {
 	SyncLogESelect,
-	SyncLogECascadeGraph,
 	SyncLogECreateColumns,
 	SyncLogECreateProperties,
 	SyncLogEUpdateColumns,
 	SyncLogEUpdateProperties,
 	SyncLogEId,
+	SyncLogECascadeGraph,
 	QSyncLog
 } from './synchronization/qsynclog'
 import {
-	ITerminal,
+	ITerminal
+} from './terminal/terminal'
+import {
 	TerminalESelect,
-	TerminalECascadeGraph,
 	TerminalECreateColumns,
 	TerminalECreateProperties,
 	TerminalEUpdateColumns,
 	TerminalEUpdateProperties,
 	TerminalEId,
+	TerminalECascadeGraph,
 	QTerminal
 } from './terminal/qterminal'
 import {
-	ITerminalRepository,
+	ITerminalRepository
+} from './terminal/terminalrepository'
+import {
 	TerminalRepositoryESelect,
-	TerminalRepositoryECascadeGraph,
 	TerminalRepositoryECreateColumns,
 	TerminalRepositoryECreateProperties,
 	TerminalRepositoryEUpdateColumns,
 	TerminalRepositoryEUpdateProperties,
 	TerminalRepositoryEId,
+	TerminalRepositoryECascadeGraph,
 	QTerminalRepository
 } from './terminal/qterminalrepository'
 import {
-	ITuningParameters,
+	ITuningParameters
+} from './tuning/tuningparameters'
+import {
 	TuningParametersESelect,
-	TuningParametersECascadeGraph,
 	TuningParametersECreateColumns,
 	TuningParametersECreateProperties,
 	TuningParametersEUpdateColumns,
 	TuningParametersEUpdateProperties,
 	TuningParametersEId,
+	TuningParametersECascadeGraph,
 	QTuningParameters
 } from './tuning/qtuningparameters'
 import {
-	IUser,
+	IUser
+} from './user/user'
+import {
 	UserESelect,
-	UserECascadeGraph,
 	UserECreateColumns,
 	UserECreateProperties,
 	UserEUpdateColumns,
 	UserEUpdateProperties,
 	UserEId,
+	UserECascadeGraph,
 	QUser
 } from './user/quser'
 import {
-	IUserRepository,
+	IUserRepository
+} from './user/userrepository'
+import {
 	UserRepositoryESelect,
-	UserRepositoryECascadeGraph,
 	UserRepositoryECreateColumns,
 	UserRepositoryECreateProperties,
 	UserRepositoryEUpdateColumns,
 	UserRepositoryEUpdateProperties,
 	UserRepositoryEId,
+	UserRepositoryECascadeGraph,
 	QUserRepository
 } from './user/quserrepository'
 
-// Schema Q object Dependency Injection readiness detection DAO
+
+// Schema Q object Dependency Injection readiness detection Dao
 export class SQDIDao<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
-	EntityUpdateColumns extends IEntityUpdateColumns,
+  EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
@@ -263,7 +300,7 @@ export class BaseAgtRepositoryTransactionBlockDao
 	implements IBaseAgtRepositoryTransactionBlockDao {
 
 	static diSet(): boolean {
-		return diSet(16)
+		return duoDiSet(16)
 	}
 	
 	constructor() {
@@ -281,7 +318,7 @@ export class BaseAgtSharingMessageDao
 	implements IBaseAgtSharingMessageDao {
 
 	static diSet(): boolean {
-		return diSet(14)
+		return duoDiSet(14)
 	}
 	
 	constructor() {
@@ -299,7 +336,7 @@ export class BaseArchiveDao
 	implements IBaseArchiveDao {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
@@ -317,7 +354,7 @@ export class BaseDailyArchiveLogDao
 	implements IBaseDailyArchiveLogDao {
 
 	static diSet(): boolean {
-		return diSet(18)
+		return duoDiSet(18)
 	}
 	
 	constructor() {
@@ -335,7 +372,7 @@ export class BaseDailyTerminalSyncLogDao
 	implements IBaseDailyTerminalSyncLogDao {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
@@ -353,7 +390,7 @@ export class BaseMonthlyArchiveLogDao
 	implements IBaseMonthlyArchiveLogDao {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
@@ -371,7 +408,7 @@ export class BaseMonthlyTerminalSyncLogDao
 	implements IBaseMonthlyTerminalSyncLogDao {
 
 	static diSet(): boolean {
-		return diSet(3)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
@@ -389,7 +426,7 @@ export class BaseRepositoryDao
 	implements IBaseRepositoryDao {
 
 	static diSet(): boolean {
-		return diSet(17)
+		return duoDiSet(17)
 	}
 	
 	constructor() {
@@ -407,7 +444,7 @@ export class BaseRepositoryArchiveDao
 	implements IBaseRepositoryArchiveDao {
 
 	static diSet(): boolean {
-		return diSet(4)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
@@ -425,7 +462,7 @@ export class BaseSecurityAnswerDao
 	implements IBaseSecurityAnswerDao {
 
 	static diSet(): boolean {
-		return diSet(8)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
@@ -443,7 +480,7 @@ export class BaseSecurityQuestionDao
 	implements IBaseSecurityQuestionDao {
 
 	static diSet(): boolean {
-		return diSet(7)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
@@ -461,7 +498,7 @@ export class BaseServerDao
 	implements IBaseServerDao {
 
 	static diSet(): boolean {
-		return diSet(10)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
@@ -479,7 +516,7 @@ export class BaseServerSyncLogDao
 	implements IBaseServerSyncLogDao {
 
 	static diSet(): boolean {
-		return diSet(9)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
@@ -497,7 +534,7 @@ export class BaseSyncLogDao
 	implements IBaseSyncLogDao {
 
 	static diSet(): boolean {
-		return diSet(11)
+		return duoDiSet(11)
 	}
 	
 	constructor() {
@@ -515,7 +552,7 @@ export class BaseTerminalDao
 	implements IBaseTerminalDao {
 
 	static diSet(): boolean {
-		return diSet(15)
+		return duoDiSet(15)
 	}
 	
 	constructor() {
@@ -533,7 +570,7 @@ export class BaseTerminalRepositoryDao
 	implements IBaseTerminalRepositoryDao {
 
 	static diSet(): boolean {
-		return diSet(12)
+		return duoDiSet(12)
 	}
 	
 	constructor() {
@@ -551,7 +588,7 @@ export class BaseTuningParametersDao
 	implements IBaseTuningParametersDao {
 
 	static diSet(): boolean {
-		return diSet(13)
+		return duoDiSet(13)
 	}
 	
 	constructor() {
@@ -569,7 +606,7 @@ export class BaseUserDao
 	implements IBaseUserDao {
 
 	static diSet(): boolean {
-		return diSet(6)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
@@ -587,7 +624,7 @@ export class BaseUserRepositoryDao
 	implements IBaseUserRepositoryDao {
 
 	static diSet(): boolean {
-		return diSet(5)
+		return duoDiSet(5)
 	}
 	
 	constructor() {

@@ -1,28 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { ISchemaEntity, SchemaEntityECascadeGraph, SchemaEntityESelect, QSchemaEntity } from './qschemaentity';
-import { ISchemaReference, SchemaReferenceECascadeGraph, SchemaReferenceESelect, QSchemaReference } from './qschemareference';
-import { ISchema, SchemaEOptionalId, SchemaESelect, QSchemaQRelation } from './qschema';
-export interface ISchemaVersion {
-    id: number;
-    integerVersion?: number;
-    versionString?: string;
-    majorVersion?: number;
-    minorVersion?: number;
-    patchVersion?: number;
-    schema?: ISchema;
-    entities?: ISchemaEntity[];
-    references?: ISchemaReference[];
-    referencedBy?: ISchemaReference[];
-    entityMapByName?: {
-        [entityName: string]: ISchemaEntity;
-    };
-    referencesMapByName?: {
-        [schemaName: string]: ISchemaReference;
-    };
-    referencedByMapByName?: {
-        [schemaName: string]: ISchemaReference;
-    };
-}
+import { SchemaEOptionalId, SchemaESelect, QSchemaQRelation } from './qschema';
+import { SchemaEntityECascadeGraph, SchemaEntityESelect, QSchemaEntity } from './qschemaentity';
+import { SchemaReferenceECascadeGraph, SchemaReferenceESelect, QSchemaReference } from './qschemareference';
 /**
  * SELECT - All fields and relations (optional).
  */

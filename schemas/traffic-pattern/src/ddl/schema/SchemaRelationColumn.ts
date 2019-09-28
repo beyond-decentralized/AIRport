@@ -36,11 +36,11 @@ export class SchemaRelationColumn
 
 	@ManyToOne()
 	@JoinColumn({name: 'MANY_SCHEMA_RELATION_ID', referencedColumnName: 'ID'})
-	manyRelation: SchemaRelation
+	manyRelation?: SchemaRelation
 
 	@ManyToOne()
 	@JoinColumn({name: 'ONE_SCHEMA_RELATION_ID', referencedColumnName: 'ID'})
-	oneRelation: SchemaRelation
+	oneRelation?: SchemaRelation
 
 	@ManyToOne()
 	@JoinColumn({name: 'PARENT_RELATION_ID', referencedColumnName: 'ID'})

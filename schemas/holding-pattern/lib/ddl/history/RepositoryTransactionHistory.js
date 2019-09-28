@@ -30,43 +30,51 @@ __decorate([
     air_control_1.SequenceGenerator({ allocationSize: 200 })
 ], RepositoryTransactionHistory.prototype, "id", void 0);
 __decorate([
-    air_control_1.Column({ name: "REMOTE_ID", nullable: false })
+    air_control_1.Column({ name: 'REMOTE_ID', nullable: false })
 ], RepositoryTransactionHistory.prototype, "remoteId", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "TRANSACTION_HISTORY_ID",
-        referencedColumnName: "ID", nullable: false })
+    air_control_1.JoinColumn({
+        name: 'TRANSACTION_HISTORY_ID',
+        referencedColumnName: 'ID', nullable: false
+    })
 ], RepositoryTransactionHistory.prototype, "transactionHistory", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_ID",
-        referencedColumnName: "ID", nullable: false })
+    air_control_1.JoinColumn({
+        name: 'REPOSITORY_ID',
+        referencedColumnName: 'ID', nullable: false
+    })
 ], RepositoryTransactionHistory.prototype, "repository", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "repositoryTransactionHistory" })
+    air_control_1.OneToMany({ mappedBy: 'repositoryTransactionHistory' })
 ], RepositoryTransactionHistory.prototype, "changedRepositoryActors", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "ACTOR_ID", referencedColumnName: "ID",
-        nullable: false })
+    air_control_1.JoinColumn({
+        name: 'ACTOR_ID', referencedColumnName: 'ID',
+        nullable: false
+    })
 ], RepositoryTransactionHistory.prototype, "actor", void 0);
 __decorate([
-    air_control_1.Column({ name: "SAVE_TIMESTAMP", nullable: false })
+    air_control_1.Column({ name: 'SAVE_TIMESTAMP', nullable: false })
 ], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
 __decorate([
-    air_control_1.Column({ name: "REPOSITORY_TRANSACTION_TYPE", nullable: false }),
+    air_control_1.Column({ name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false }),
     air_control_1.DbNumber()
 ], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
 __decorate([
-    air_control_1.Column({ name: "REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID",
-        nullable: false })
+    air_control_1.Column({
+        name: 'REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID',
+        nullable: false
+    })
 ], RepositoryTransactionHistory.prototype, "blockId", void 0);
 __decorate([
     air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repositoryTransactionHistory' })
 ], RepositoryTransactionHistory.prototype, "operationHistory", void 0);
 RepositoryTransactionHistory = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: "REPOSITORY_TRANSACTION_HISTORY" })
+    air_control_1.Table({ name: 'REPOSITORY_TRANSACTION_HISTORY' })
 ], RepositoryTransactionHistory);
 exports.RepositoryTransactionHistory = RepositoryTransactionHistory;
 //# sourceMappingURL=RepositoryTransactionHistory.js.map

@@ -114,9 +114,9 @@ exports.MAPPED_SUPERCLASS = [
                 "isMappedSuperclass": false,
                 "isTransient": false,
                 "name": "repository",
-                "type": "IRepository",
+                "type": "Repository",
                 "ownerEntity": null,
-                "nonArrayType": "IRepository",
+                "nonArrayType": "Repository",
                 "entity": null,
                 "index": 0
             },
@@ -146,9 +146,9 @@ exports.MAPPED_SUPERCLASS = [
                 "isMappedSuperclass": false,
                 "isTransient": false,
                 "name": "actor",
-                "type": "IActor",
+                "type": "Actor",
                 "ownerEntity": null,
-                "nonArrayType": "IActor",
+                "nonArrayType": "Actor",
                 "entity": null,
                 "index": 1
             },
@@ -241,29 +241,17 @@ exports.MAPPED_SUPERCLASS = [
                     "JoinColumn": null,
                     "ManyToOne": null,
                     "MappedSuperclass": null,
-                    "IActor": {
+                    "Actor": {
                         "fileImports": null,
                         "isLocal": true,
                         "objectMapByAsName": {
-                            "IActor": {
-                                "asName": "IActor",
+                            "Actor": {
+                                "asName": "Actor",
                                 "moduleImport": null,
-                                "sourceName": "IActor"
+                                "sourceName": "Actor"
                             }
                         },
-                        "path": "../../generated/infrastructure/qactor"
-                    },
-                    "IRepository": {
-                        "fileImports": null,
-                        "isLocal": true,
-                        "objectMapByAsName": {
-                            "IRepository": {
-                                "asName": "IRepository",
-                                "moduleImport": null,
-                                "sourceName": "IRepository"
-                            }
-                        },
-                        "path": "../../generated/repository/qrepository"
+                        "path": "../infrastructure/Actor"
                     },
                     "SystemWideOperationId": {
                         "fileImports": null,
@@ -288,14 +276,26 @@ exports.MAPPED_SUPERCLASS = [
                             }
                         },
                         "path": "../infrastructure/Stageable"
+                    },
+                    "Repository": {
+                        "fileImports": null,
+                        "isLocal": true,
+                        "objectMapByAsName": {
+                            "Repository": {
+                                "asName": "Repository",
+                                "moduleImport": null,
+                                "sourceName": "Repository"
+                            }
+                        },
+                        "path": "./Repository"
                     }
                 },
                 "importMapByModulePath": {
                     "@airport/air-control": null,
-                    "../../generated/infrastructure/qactor": null,
-                    "../../generated/repository/qrepository": null,
+                    "../infrastructure/Actor": null,
                     "../common": null,
-                    "../infrastructure/Stageable": null
+                    "../infrastructure/Stageable": null,
+                    "./Repository": null
                 }
             },
             "properties": [
@@ -325,9 +325,9 @@ exports.MAPPED_SUPERCLASS = [
                     "isMappedSuperclass": false,
                     "isTransient": false,
                     "name": "repository",
-                    "type": "IRepository",
+                    "type": "Repository",
                     "ownerEntity": null,
-                    "nonArrayType": "IRepository",
+                    "nonArrayType": "Repository",
                     "entity": null,
                     "index": 0
                 },
@@ -357,9 +357,9 @@ exports.MAPPED_SUPERCLASS = [
                     "isMappedSuperclass": false,
                     "isTransient": false,
                     "name": "actor",
-                    "type": "IActor",
+                    "type": "Actor",
                     "ownerEntity": null,
-                    "nonArrayType": "IActor",
+                    "nonArrayType": "Actor",
                     "entity": null,
                     "index": 1
                 },
@@ -604,9 +604,9 @@ exports.MAPPED_SUPERCLASS = [
                     "isMappedSuperclass": false,
                     "isTransient": false,
                     "name": "repository",
-                    "type": "IRepository",
+                    "type": "Repository",
                     "ownerEntity": null,
-                    "nonArrayType": "IRepository",
+                    "nonArrayType": "Repository",
                     "entity": null,
                     "index": 0
                 },
@@ -636,9 +636,9 @@ exports.MAPPED_SUPERCLASS = [
                     "isMappedSuperclass": false,
                     "isTransient": false,
                     "name": "actor",
-                    "type": "IActor",
+                    "type": "Actor",
                     "ownerEntity": null,
-                    "nonArrayType": "IActor",
+                    "nonArrayType": "Actor",
                     "entity": null,
                     "index": 1
                 },
@@ -731,29 +731,17 @@ exports.MAPPED_SUPERCLASS = [
                         "JoinColumn": null,
                         "ManyToOne": null,
                         "MappedSuperclass": null,
-                        "IActor": {
+                        "Actor": {
                             "fileImports": null,
                             "isLocal": true,
                             "objectMapByAsName": {
-                                "IActor": {
-                                    "asName": "IActor",
+                                "Actor": {
+                                    "asName": "Actor",
                                     "moduleImport": null,
-                                    "sourceName": "IActor"
+                                    "sourceName": "Actor"
                                 }
                             },
-                            "path": "../../generated/infrastructure/qactor"
-                        },
-                        "IRepository": {
-                            "fileImports": null,
-                            "isLocal": true,
-                            "objectMapByAsName": {
-                                "IRepository": {
-                                    "asName": "IRepository",
-                                    "moduleImport": null,
-                                    "sourceName": "IRepository"
-                                }
-                            },
-                            "path": "../../generated/repository/qrepository"
+                            "path": "../infrastructure/Actor"
                         },
                         "SystemWideOperationId": {
                             "fileImports": null,
@@ -778,14 +766,26 @@ exports.MAPPED_SUPERCLASS = [
                                 }
                             },
                             "path": "../infrastructure/Stageable"
+                        },
+                        "Repository": {
+                            "fileImports": null,
+                            "isLocal": true,
+                            "objectMapByAsName": {
+                                "Repository": {
+                                    "asName": "Repository",
+                                    "moduleImport": null,
+                                    "sourceName": "Repository"
+                                }
+                            },
+                            "path": "./Repository"
                         }
                     },
                     "importMapByModulePath": {
                         "@airport/air-control": null,
-                        "../../generated/infrastructure/qactor": null,
-                        "../../generated/repository/qrepository": null,
+                        "../infrastructure/Actor": null,
                         "../common": null,
-                        "../infrastructure/Stageable": null
+                        "../infrastructure/Stageable": null,
+                        "./Repository": null
                     }
                 },
                 "properties": [
@@ -815,9 +815,9 @@ exports.MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "repository",
-                        "type": "IRepository",
+                        "type": "Repository",
                         "ownerEntity": null,
-                        "nonArrayType": "IRepository",
+                        "nonArrayType": "Repository",
                         "entity": null,
                         "index": 0
                     },
@@ -847,9 +847,9 @@ exports.MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "actor",
-                        "type": "IActor",
+                        "type": "Actor",
                         "ownerEntity": null,
-                        "nonArrayType": "IActor",
+                        "nonArrayType": "Actor",
                         "entity": null,
                         "index": 1
                     },
@@ -1294,9 +1294,9 @@ exports.MAPPED_SUPERCLASS = [
                     "isMappedSuperclass": false,
                     "isTransient": false,
                     "name": "repository",
-                    "type": "IRepository",
+                    "type": "Repository",
                     "ownerEntity": null,
-                    "nonArrayType": "IRepository",
+                    "nonArrayType": "Repository",
                     "entity": null,
                     "index": 0
                 },
@@ -1326,9 +1326,9 @@ exports.MAPPED_SUPERCLASS = [
                     "isMappedSuperclass": false,
                     "isTransient": false,
                     "name": "actor",
-                    "type": "IActor",
+                    "type": "Actor",
                     "ownerEntity": null,
-                    "nonArrayType": "IActor",
+                    "nonArrayType": "Actor",
                     "entity": null,
                     "index": 1
                 },
@@ -1421,29 +1421,17 @@ exports.MAPPED_SUPERCLASS = [
                         "JoinColumn": null,
                         "ManyToOne": null,
                         "MappedSuperclass": null,
-                        "IActor": {
+                        "Actor": {
                             "fileImports": null,
                             "isLocal": true,
                             "objectMapByAsName": {
-                                "IActor": {
-                                    "asName": "IActor",
+                                "Actor": {
+                                    "asName": "Actor",
                                     "moduleImport": null,
-                                    "sourceName": "IActor"
+                                    "sourceName": "Actor"
                                 }
                             },
-                            "path": "../../generated/infrastructure/qactor"
-                        },
-                        "IRepository": {
-                            "fileImports": null,
-                            "isLocal": true,
-                            "objectMapByAsName": {
-                                "IRepository": {
-                                    "asName": "IRepository",
-                                    "moduleImport": null,
-                                    "sourceName": "IRepository"
-                                }
-                            },
-                            "path": "../../generated/repository/qrepository"
+                            "path": "../infrastructure/Actor"
                         },
                         "SystemWideOperationId": {
                             "fileImports": null,
@@ -1468,14 +1456,26 @@ exports.MAPPED_SUPERCLASS = [
                                 }
                             },
                             "path": "../infrastructure/Stageable"
+                        },
+                        "Repository": {
+                            "fileImports": null,
+                            "isLocal": true,
+                            "objectMapByAsName": {
+                                "Repository": {
+                                    "asName": "Repository",
+                                    "moduleImport": null,
+                                    "sourceName": "Repository"
+                                }
+                            },
+                            "path": "./Repository"
                         }
                     },
                     "importMapByModulePath": {
                         "@airport/air-control": null,
-                        "../../generated/infrastructure/qactor": null,
-                        "../../generated/repository/qrepository": null,
+                        "../infrastructure/Actor": null,
                         "../common": null,
-                        "../infrastructure/Stageable": null
+                        "../infrastructure/Stageable": null,
+                        "./Repository": null
                     }
                 },
                 "properties": [
@@ -1505,9 +1505,9 @@ exports.MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "repository",
-                        "type": "IRepository",
+                        "type": "Repository",
                         "ownerEntity": null,
-                        "nonArrayType": "IRepository",
+                        "nonArrayType": "Repository",
                         "entity": null,
                         "index": 0
                     },
@@ -1537,9 +1537,9 @@ exports.MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "actor",
-                        "type": "IActor",
+                        "type": "Actor",
                         "ownerEntity": null,
-                        "nonArrayType": "IActor",
+                        "nonArrayType": "Actor",
                         "entity": null,
                         "index": 1
                     },
@@ -2450,9 +2450,9 @@ exports.MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "repository",
-                        "type": "IRepository",
+                        "type": "Repository",
                         "ownerEntity": null,
-                        "nonArrayType": "IRepository",
+                        "nonArrayType": "Repository",
                         "entity": null,
                         "index": 0
                     },
@@ -2482,9 +2482,9 @@ exports.MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "actor",
-                        "type": "IActor",
+                        "type": "Actor",
                         "ownerEntity": null,
-                        "nonArrayType": "IActor",
+                        "nonArrayType": "Actor",
                         "entity": null,
                         "index": 1
                     },
@@ -2577,29 +2577,17 @@ exports.MAPPED_SUPERCLASS = [
                             "JoinColumn": null,
                             "ManyToOne": null,
                             "MappedSuperclass": null,
-                            "IActor": {
+                            "Actor": {
                                 "fileImports": null,
                                 "isLocal": true,
                                 "objectMapByAsName": {
-                                    "IActor": {
-                                        "asName": "IActor",
+                                    "Actor": {
+                                        "asName": "Actor",
                                         "moduleImport": null,
-                                        "sourceName": "IActor"
+                                        "sourceName": "Actor"
                                     }
                                 },
-                                "path": "../../generated/infrastructure/qactor"
-                            },
-                            "IRepository": {
-                                "fileImports": null,
-                                "isLocal": true,
-                                "objectMapByAsName": {
-                                    "IRepository": {
-                                        "asName": "IRepository",
-                                        "moduleImport": null,
-                                        "sourceName": "IRepository"
-                                    }
-                                },
-                                "path": "../../generated/repository/qrepository"
+                                "path": "../infrastructure/Actor"
                             },
                             "SystemWideOperationId": {
                                 "fileImports": null,
@@ -2624,14 +2612,26 @@ exports.MAPPED_SUPERCLASS = [
                                     }
                                 },
                                 "path": "../infrastructure/Stageable"
+                            },
+                            "Repository": {
+                                "fileImports": null,
+                                "isLocal": true,
+                                "objectMapByAsName": {
+                                    "Repository": {
+                                        "asName": "Repository",
+                                        "moduleImport": null,
+                                        "sourceName": "Repository"
+                                    }
+                                },
+                                "path": "./Repository"
                             }
                         },
                         "importMapByModulePath": {
                             "@airport/air-control": null,
-                            "../../generated/infrastructure/qactor": null,
-                            "../../generated/repository/qrepository": null,
+                            "../infrastructure/Actor": null,
                             "../common": null,
-                            "../infrastructure/Stageable": null
+                            "../infrastructure/Stageable": null,
+                            "./Repository": null
                         }
                     },
                     "properties": [
@@ -2661,9 +2661,9 @@ exports.MAPPED_SUPERCLASS = [
                             "isMappedSuperclass": false,
                             "isTransient": false,
                             "name": "repository",
-                            "type": "IRepository",
+                            "type": "Repository",
                             "ownerEntity": null,
-                            "nonArrayType": "IRepository",
+                            "nonArrayType": "Repository",
                             "entity": null,
                             "index": 0
                         },
@@ -2693,9 +2693,9 @@ exports.MAPPED_SUPERCLASS = [
                             "isMappedSuperclass": false,
                             "isTransient": false,
                             "name": "actor",
-                            "type": "IActor",
+                            "type": "Actor",
                             "ownerEntity": null,
-                            "nonArrayType": "IActor",
+                            "nonArrayType": "Actor",
                             "entity": null,
                             "index": 1
                         },

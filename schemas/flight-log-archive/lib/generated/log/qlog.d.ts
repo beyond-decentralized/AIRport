@@ -1,6 +1,4 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
-export interface ILog {
-}
 /**
  * SELECT - All fields and relations (optional).
  */

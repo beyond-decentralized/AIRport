@@ -1,17 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { IUser, UserEOptionalId, UserESelect, QUserQRelation } from './quser';
-import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from './qterminal';
-import { IAgt, AgtEOptionalId, AgtESelect, QAgtQRelation } from './qagt';
-import { ITerminalAgt, TerminalAgtEOptionalId, TerminalAgtESelect, QTerminalAgtQRelation } from './qterminalagt';
-export interface IUserTerminalAgt {
-    id: number;
-    agtId: number;
-    password?: number;
-    user?: IUser;
-    terminal?: ITerminal;
-    agt?: IAgt;
-    terminalAgt?: ITerminalAgt;
-}
+import { UserEOptionalId, UserESelect, QUserQRelation } from './quser';
+import { TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from './qterminal';
+import { AgtEOptionalId, AgtESelect, QAgtQRelation } from './qagt';
+import { TerminalAgtEOptionalId, TerminalAgtESelect, QTerminalAgtQRelation } from './qterminalagt';
 /**
  * SELECT - All fields and relations (optional).
  */

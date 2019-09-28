@@ -10,7 +10,7 @@ class SharingNodeDao extends generated_1.BaseSharingNodeDao {
         let sn;
         const sharingNodes = await this.db.find.tree({
             select: {
-                ...this.db.duo.getAllFieldsSelect()
+                ...this.db.duo.select.fields
             },
             from: [
                 sn = generated_1.Q.SharingNode

@@ -30,4 +30,4 @@ SyncLog = __decorate([
     // TODO: partition by add RepositoryTransactionBlockAddDatetime
 ], SyncLog);
 exports.SyncLog = SyncLog;
-//# sourceMappingURL=synclog.js.map
+//# sourceMappingURL=SyncLog.js.map

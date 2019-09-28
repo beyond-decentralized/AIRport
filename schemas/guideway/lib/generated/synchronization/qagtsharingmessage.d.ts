@@ -1,13 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
-import { ISyncLog, SyncLogECascadeGraph, SyncLogESelect, QSyncLog } from './qsynclog';
-export interface IAgtSharingMessage {
-    id: number;
-    tmSharingMessageId?: number;
-    acknowledged?: number;
-    terminal?: ITerminal;
-    syncLogs?: ISyncLog[];
-}
+import { TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
+import { SyncLogECascadeGraph, SyncLogESelect, QSyncLog } from './qsynclog';
 /**
  * SELECT - All fields and relations (optional).
  */

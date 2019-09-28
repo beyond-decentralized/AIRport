@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IStageable,
 	StageableECascadeGraph,
 	StageableEId,
 	StageableEUpdateColumns,
@@ -33,7 +32,6 @@ import {
 	QStageable,
 } from '../infrastructure/qstageable';
 import {
-	IRepository,
 	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -44,7 +42,6 @@ import {
 	QRepositoryQRelation,
 } from './qrepository';
 import {
-	IActor,
 	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -59,30 +56,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IRepositoryEntity extends IStageable {
-	
-	// Id Properties
-	actorRecordId: number;
-
-	// Id Relations
-	repository: IRepository;
-	actor: IActor;
-
-	// Non-Id Properties
-	systemWideOperationId?: number;
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

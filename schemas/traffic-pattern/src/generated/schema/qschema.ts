@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IDomain,
 	DomainECascadeGraph,
 	DomainEId,
 	DomainEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QDomainQRelation,
 } from '@airport/territory';
 import {
-	ISchemaVersion,
 	SchemaVersionECascadeGraph,
 	SchemaVersionEId,
 	SchemaVersionEOptionalId,
@@ -48,33 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISchema {
-	
-	// Id Properties
-	index: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	scope?: string;
-	name?: string;
-	status?: number;
-
-	// Non-Id Relations
-	domain?: IDomain;
-	versions?: ISchemaVersion[];
-	currentVersion?: ISchemaVersion;
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

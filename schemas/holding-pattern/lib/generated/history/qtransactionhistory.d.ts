@@ -1,24 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { IRepositoryTransactionHistory, RepositoryTransactionHistoryECascadeGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from './qrepositorytransactionhistory';
-import { SyncSchemaMap } from '@airport/ground-control';
-import { IOperationHistory } from './qoperationhistory';
-import { IRecordHistory } from './qrecordhistory';
-import { IRecordHistoryNewValue } from './qrecordhistorynewvalue';
-import { IRecordHistoryOldValue } from './qrecordhistoryoldvalue';
-export interface ITransactionHistory {
-    id: number;
-    transactionType?: number;
-    repositoryTransactionHistories?: IRepositoryTransactionHistory[];
-    repoTransHistoryMap?: {
-        [repositoryId: number]: IRepositoryTransactionHistory;
-    };
-    schemaMap?: SyncSchemaMap;
-    allOperationHistory?: IOperationHistory[];
-    allRecordHistory?: IRecordHistory[];
-    allRecordHistoryNewValues?: IRecordHistoryNewValue[];
-    allRecordHistoryOldValues?: IRecordHistoryOldValue[];
-    numberOfOperations?: number;
-}
+import { RepositoryTransactionHistoryECascadeGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from './qrepositorytransactionhistory';
 /**
  * SELECT - All fields and relations (optional).
  */

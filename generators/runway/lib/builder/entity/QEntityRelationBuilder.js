@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const QBuilder_1 = require("../QBuilder");
-class QEntityRelationBuilder extends QBuilder_1.QCoreEntityBuilder {
+const Builder_1 = require("../Builder");
+class QEntityRelationBuilder extends Builder_1.QCoreEntityBuilder {
     constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName) {
         super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName);
     }

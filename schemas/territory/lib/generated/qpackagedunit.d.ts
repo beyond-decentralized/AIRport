@@ -1,10 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IPackage, PackageEOptionalId, PackageESelect, QPackageQRelation } from './qpackage';
-export interface IPackagedUnit {
-    id: number;
-    name?: string;
-    package?: IPackage;
-}
+import { PackageEOptionalId, PackageESelect, QPackageQRelation } from './qpackage';
 /**
  * SELECT - All fields and relations (optional).
  */

@@ -1,4 +1,4 @@
-import { QCoreEntityBuilder } from "../QBuilder";
+import { QCoreEntityBuilder } from "../Builder";
 import { EntityCandidate } from "../../parser/EntityCandidate";
 import { QEntityFileBuilder } from "./QEntityFileBuilder";
 import { QRelationBuilder } from "./QRelationBuilder";

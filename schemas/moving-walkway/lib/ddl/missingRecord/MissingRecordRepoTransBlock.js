@@ -11,15 +11,15 @@ let MissingRecordRepoTransBlock = class MissingRecordRepoTransBlock {
 };
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "MISSING_RECORD_ID", referencedColumnName: "ID" })
+    air_control_1.JoinColumn({ name: 'MISSING_RECORD_ID', referencedColumnName: 'ID' })
 ], MissingRecordRepoTransBlock.prototype, "missingRecord", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_TRANSACTION_BLOCK_ID", referencedColumnName: "ID" })
+    air_control_1.JoinColumn({ name: 'REPOSITORY_TRANSACTION_BLOCK_ID', referencedColumnName: 'ID' })
 ], MissingRecordRepoTransBlock.prototype, "repositoryTransactionBlock", void 0);
 MissingRecordRepoTransBlock = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: "MISSING_RECORD_REPO_TRANS_BLOCKS" })
+    air_control_1.Table({ name: 'MISSING_RECORD_REPO_TRANS_BLOCKS' })
 ], MissingRecordRepoTransBlock);
 exports.MissingRecordRepoTransBlock = MissingRecordRepoTransBlock;
 //# sourceMappingURL=missingrecordrepotransblock.js.map

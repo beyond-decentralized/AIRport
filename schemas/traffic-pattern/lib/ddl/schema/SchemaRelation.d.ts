@@ -16,5 +16,5 @@ export declare class SchemaRelation extends VersionedSchemaObject {
     entity: SchemaEntity;
     relationEntity: SchemaEntity;
     manyRelationColumns: SchemaRelationColumn[];
-    oneRelationColumns: SchemaRelationColumn[];
+    oneRelationColumns?: SchemaRelationColumn[];
 }

@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IUser,
 	UserECascadeGraph,
 	UserEId,
 	UserEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QUserQRelation,
 } from '../user/quser';
 import {
-	ITerminalRepository,
 	TerminalRepositoryECascadeGraph,
 	TerminalRepositoryEId,
 	TerminalRepositoryEOptionalId,
@@ -44,7 +42,6 @@ import {
 	QTerminalRepositoryQRelation,
 } from './qterminalrepository';
 import {
-	IAgtSharingMessage,
 	AgtSharingMessageECascadeGraph,
 	AgtSharingMessageEId,
 	AgtSharingMessageEOptionalId,
@@ -59,35 +56,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ITerminal {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	name?: string;
-	secondId?: number;
-	password?: string;
-	lastPollConnectionDatetime?: number;
-	lastSseConnectionDatetime?: number;
-
-	// Non-Id Relations
-	user?: IUser;
-	terminalRepositories?: ITerminalRepository[];
-	sharingMessages?: IAgtSharingMessage[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

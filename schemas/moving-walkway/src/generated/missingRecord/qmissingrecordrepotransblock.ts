@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IMissingRecord,
 	MissingRecordECascadeGraph,
 	MissingRecordEId,
 	MissingRecordEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QMissingRecordQRelation,
 } from './qmissingrecord';
 import {
-	IRepositoryTransactionBlock,
 	RepositoryTransactionBlockECascadeGraph,
 	RepositoryTransactionBlockEId,
 	RepositoryTransactionBlockEOptionalId,
@@ -48,28 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IMissingRecordRepoTransBlock {
-	
-	// Id Properties
-
-	// Id Relations
-
-	// Non-Id Properties
-
-	// Non-Id Relations
-	missingRecord?: IMissingRecord;
-	repositoryTransactionBlock?: IRepositoryTransactionBlock;
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

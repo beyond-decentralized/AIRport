@@ -1,18 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { SyncColumnMap } from '@airport/ground-control';
-import { IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
-import { IOperationHistory, OperationHistoryEOptionalId, OperationHistoryESelect, QOperationHistoryQRelation } from './qoperationhistory';
-import { IRecordHistoryNewValue, RecordHistoryNewValueECascadeGraph, RecordHistoryNewValueESelect, QRecordHistoryNewValue } from './qrecordhistorynewvalue';
-import { IRecordHistoryOldValue, RecordHistoryOldValueECascadeGraph, RecordHistoryOldValueESelect, QRecordHistoryOldValue } from './qrecordhistoryoldvalue';
-export interface IRecordHistory {
-    id: number;
-    actorRecordId?: number;
-    actor?: IActor;
-    operationHistory?: IOperationHistory;
-    newValues?: IRecordHistoryNewValue[];
-    oldValues?: IRecordHistoryOldValue[];
-    tableColumnMap?: SyncColumnMap;
-}
+import { ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
+import { OperationHistoryEOptionalId, OperationHistoryESelect, QOperationHistoryQRelation } from './qoperationhistory';
+import { RecordHistoryNewValueECascadeGraph, RecordHistoryNewValueESelect, QRecordHistoryNewValue } from './qrecordhistorynewvalue';
+import { RecordHistoryOldValueECascadeGraph, RecordHistoryOldValueESelect, QRecordHistoryOldValue } from './qrecordhistoryoldvalue';
 /**
  * SELECT - All fields and relations (optional).
  */

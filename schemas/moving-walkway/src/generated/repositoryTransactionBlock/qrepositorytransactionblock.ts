@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ITerminal,
 	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QTerminalQRelation,
 } from '@airport/travel-document-checkpoint';
 import {
-	IRepository,
 	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -42,7 +40,6 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
-	IRepositoryTransactionHistory,
 	RepositoryTransactionHistoryECascadeGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
@@ -53,7 +50,6 @@ import {
 	QRepositoryTransactionHistoryQRelation,
 } from '@airport/holding-pattern';
 import {
-	ISharingNodeRepoTransBlock,
 	SharingNodeRepoTransBlockECascadeGraph,
 	SharingNodeRepoTransBlockEId,
 	SharingNodeRepoTransBlockEOptionalId,
@@ -64,7 +60,6 @@ import {
 	QSharingNodeRepoTransBlockQRelation,
 } from '../sharingnode/qsharingnoderepotransblock';
 import {
-	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockECascadeGraph,
 	SharingMessageRepoTransBlockEId,
 	SharingMessageRepoTransBlockEOptionalId,
@@ -75,7 +70,6 @@ import {
 	QSharingMessageRepoTransBlockQRelation,
 } from '../sharingmessage/qsharingmessagerepotransblock';
 import {
-	IMissingRecordRepoTransBlock,
 	MissingRecordRepoTransBlockECascadeGraph,
 	MissingRecordRepoTransBlockEId,
 	MissingRecordRepoTransBlockEOptionalId,
@@ -86,7 +80,6 @@ import {
 	QMissingRecordRepoTransBlockQRelation,
 } from '../missingrecord/qmissingrecordrepotransblock';
 import {
-	IRepoTransBlockSchemaToChange,
 	RepoTransBlockSchemaToChangeECascadeGraph,
 	RepoTransBlockSchemaToChangeEId,
 	RepoTransBlockSchemaToChangeEOptionalId,
@@ -101,38 +94,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IRepositoryTransactionBlock {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	sourceId?: number;
-	hash?: string;
-	syncOutcomeType?: number;
-	contents?: string;
-
-	// Non-Id Relations
-	source?: ITerminal;
-	repository?: IRepository;
-	repositoryTransactionHistory?: IRepositoryTransactionHistory;
-	sharingNodeRepoTransBlocks?: ISharingNodeRepoTransBlock[];
-	sharingMessageRepoTransBlocks?: ISharingMessageRepoTransBlock[];
-	missingRecordRepoTransBlocks?: IMissingRecordRepoTransBlock[];
-	repoTransBlockSchemasToChange?: IRepoTransBlockSchemaToChange[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

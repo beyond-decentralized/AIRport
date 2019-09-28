@@ -23,7 +23,8 @@ class JsonSchemaBuilder {
             // 	throw new Error(errorMessage)
             // }
             //
-            // existingSchemaString = existingSchemaString.substring(indexOfAssignment + 9, existingSchemaString.length - 1)
+            // existingSchemaString = existingSchemaString.substring(indexOfAssignment + 9,
+            // existingSchemaString.length - 1)
             this.existingSchema = JSON.parse(existingSchemaString);
         }
     }
@@ -184,8 +185,8 @@ class JsonSchemaBuilder {
             let relationColumnIndex;
             // if (sRelationColumn.relationColumnIdIndex
             // 	|| sRelationColumn.relationColumnIdIndex == 0) {
-            // 	relationColumnIndex = relatedIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex].index
-            // } else {
+            // 	relationColumnIndex =
+            // relatedIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex].index } else {
             relationColumnIndex = relatedIndexedEntity.columnMap[sRelationColumn.relationColumnReference].index;
             // }
             const column = columns[ownColumnIndex];
@@ -213,6 +214,8 @@ class JsonSchemaBuilder {
             return cascadeType;
         }
         switch (cascadeType) {
+            case 'CascadeType.NONE':
+                return ground_control_1.CascadeType.NONE;
             case 'CascadeType.ALL':
                 return ground_control_1.CascadeType.ALL;
             case 'CascadeType.PERSIST':

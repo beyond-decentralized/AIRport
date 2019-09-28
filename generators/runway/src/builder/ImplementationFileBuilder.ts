@@ -1,10 +1,10 @@
 import {EntityId}            from '@airport/ground-control'
 import {resolveRelativePath} from '../resolve/pathResolver'
 import {PathBuilder}         from './PathBuilder'
-import {IQBuilder}           from './QBuilder'
+import {IBuilder}            from './Builder'
 
 export abstract class ImplementationFileBuilder
-	implements IQBuilder {
+	implements IBuilder {
 
 	public daoListingFilePath
 

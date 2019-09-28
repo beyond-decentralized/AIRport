@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISharingNode,
 	SharingNodeECascadeGraph,
 	SharingNodeEId,
 	SharingNodeEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QSharingNodeQRelation,
 } from '../sharingnode/qsharingnode';
 import {
-	ISharingMessageRepoTransBlock,
 	SharingMessageRepoTransBlockECascadeGraph,
 	SharingMessageRepoTransBlockEId,
 	SharingMessageRepoTransBlockEOptionalId,
@@ -48,32 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISharingMessage {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-	sharingNode: ISharingNode;
-
-	// Non-Id Properties
-	origin?: number;
-	agtSharingMessageId?: number;
-	syncTimestamp?: Date;
-
-	// Non-Id Relations
-	sharingMessageRepoTransBlocks?: ISharingMessageRepoTransBlock[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

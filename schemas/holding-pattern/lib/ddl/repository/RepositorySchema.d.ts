@@ -1,9 +1,8 @@
 import { SchemaIndex } from "@airport/ground-control";
-import { IRepository } from "../../generated/repository/qrepository";
-import { IRepositorySchema } from "../../generated/repository/qrepositoryschema";
+import { Repository } from './Repository';
 export declare type RepositorySchemaId = number;
-export declare class RepositorySchema implements IRepositorySchema {
+export declare class RepositorySchema {
     id: RepositorySchemaId;
-    repository: IRepository;
+    repository: Repository;
     schemaIndex: SchemaIndex;
 }

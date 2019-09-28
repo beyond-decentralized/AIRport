@@ -17,27 +17,35 @@ __decorate([
 ], RepoTransHistoryChangedRepositoryActor.prototype, "id", void 0);
 __decorate([
     ColumnDecorators_1.ManyToOne(),
-    ColumnDecorators_1.JoinColumn({ name: "REPOSITORY_TRANSACTION_HISTORY_ID",
-        referencedColumnName: "ID", nullable: false })
+    ColumnDecorators_1.JoinColumn({
+        name: 'REPOSITORY_TRANSACTION_HISTORY_ID',
+        referencedColumnName: 'ID', nullable: false
+    })
 ], RepoTransHistoryChangedRepositoryActor.prototype, "repositoryTransactionHistory", void 0);
 __decorate([
     ColumnDecorators_1.ManyToOne(),
-    ColumnDecorators_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID",
-        nullable: false })
+    ColumnDecorators_1.JoinColumn({
+        name: 'REPOSITORY_ID', referencedColumnName: 'ID',
+        nullable: false
+    })
 ], RepoTransHistoryChangedRepositoryActor.prototype, "repository", void 0);
 __decorate([
     ColumnDecorators_1.ManyToOne(),
-    ColumnDecorators_1.JoinColumn({ name: "ACTOR_ID", referencedColumnName: "ID",
-        nullable: false })
+    ColumnDecorators_1.JoinColumn({
+        name: 'ACTOR_ID', referencedColumnName: 'ID',
+        nullable: false
+    })
 ], RepoTransHistoryChangedRepositoryActor.prototype, "actor", void 0);
 __decorate([
-    ColumnDecorators_1.Column({ name: "REFERENCE_TYPE",
-        nullable: false }),
+    ColumnDecorators_1.Column({
+        name: 'REFERENCE_TYPE',
+        nullable: false
+    }),
     ColumnDecorators_1.DbNumber()
 ], RepoTransHistoryChangedRepositoryActor.prototype, "referenceType", void 0);
 RepoTransHistoryChangedRepositoryActor = __decorate([
     air_control_1.Entity(),
-    EntityDecorators_1.Table({ name: "REPO_TRANS_HISTORY_CHANGED_REPOSITORY_ACTORS" })
+    EntityDecorators_1.Table({ name: 'REPO_TRANS_HISTORY_CHANGED_REPOSITORY_ACTORS' })
 ], RepoTransHistoryChangedRepositoryActor);
 exports.RepoTransHistoryChangedRepositoryActor = RepoTransHistoryChangedRepositoryActor;
 //# sourceMappingURL=RepoTransHistoryChangedRepositoryActor.js.map

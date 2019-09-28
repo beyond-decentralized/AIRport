@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IActor,
 	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QActorQRelation,
 } from '../infrastructure/qactor';
 import {
-	IRepositoryActor,
 	RepositoryActorECascadeGraph,
 	RepositoryActorEId,
 	RepositoryActorEOptionalId,
@@ -44,7 +42,6 @@ import {
 	QRepositoryActorQRelation,
 } from './qrepositoryactor';
 import {
-	IRepositoryApplication,
 	RepositoryApplicationECascadeGraph,
 	RepositoryApplicationEId,
 	RepositoryApplicationEOptionalId,
@@ -55,7 +52,6 @@ import {
 	QRepositoryApplicationQRelation,
 } from './qrepositoryapplication';
 import {
-	IRepositoryTransactionHistory,
 	RepositoryTransactionHistoryECascadeGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
@@ -70,37 +66,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IRepository {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	orderedId?: number;
-	randomId?: number;
-	name?: string;
-	url?: string;
-	platformConfig?: string;
-	syncPriority?: number;
-
-	// Non-Id Relations
-	ownerActor?: IActor;
-	repositoryActors?: IRepositoryActor[];
-	repositoryApplications?: IRepositoryApplication[];
-	repositoryTransactionHistory?: IRepositoryTransactionHistory[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

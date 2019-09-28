@@ -1,24 +1,10 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
-import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IRepositoryTransactionHistory, RepositoryTransactionHistoryECascadeGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '@airport/holding-pattern';
-import { ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockECascadeGraph, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from '../sharingnode/qsharingnoderepotransblock';
-import { ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockECascadeGraph, SharingMessageRepoTransBlockESelect, QSharingMessageRepoTransBlock } from '../sharingmessage/qsharingmessagerepotransblock';
-import { IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockECascadeGraph, MissingRecordRepoTransBlockESelect, QMissingRecordRepoTransBlock } from '../missingrecord/qmissingrecordrepotransblock';
-import { IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeECascadeGraph, RepoTransBlockSchemaToChangeESelect, QRepoTransBlockSchemaToChange } from './qrepotransblockschematochange';
-export interface IRepositoryTransactionBlock {
-    id: number;
-    sourceId?: number;
-    hash?: string;
-    syncOutcomeType?: number;
-    contents?: string;
-    source?: ITerminal;
-    repository?: IRepository;
-    repositoryTransactionHistory?: IRepositoryTransactionHistory;
-    sharingNodeRepoTransBlocks?: ISharingNodeRepoTransBlock[];
-    sharingMessageRepoTransBlocks?: ISharingMessageRepoTransBlock[];
-    missingRecordRepoTransBlocks?: IMissingRecordRepoTransBlock[];
-    repoTransBlockSchemasToChange?: IRepoTransBlockSchemaToChange[];
-}
+import { TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
+import { RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, RepositoryTransactionHistoryECascadeGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '@airport/holding-pattern';
+import { SharingNodeRepoTransBlockECascadeGraph, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from '../sharingnode/qsharingnoderepotransblock';
+import { SharingMessageRepoTransBlockECascadeGraph, SharingMessageRepoTransBlockESelect, QSharingMessageRepoTransBlock } from '../sharingmessage/qsharingmessagerepotransblock';
+import { MissingRecordRepoTransBlockECascadeGraph, MissingRecordRepoTransBlockESelect, QMissingRecordRepoTransBlock } from '../missingrecord/qmissingrecordrepotransblock';
+import { RepoTransBlockSchemaToChangeECascadeGraph, RepoTransBlockSchemaToChangeESelect, QRepoTransBlockSchemaToChange } from './qrepotransblockschematochange';
 /**
  * SELECT - All fields and relations (optional).
  */

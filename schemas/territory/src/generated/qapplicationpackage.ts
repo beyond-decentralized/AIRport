@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IApplication,
 	ApplicationECascadeGraph,
 	ApplicationEId,
 	ApplicationEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QApplicationQRelation,
 } from './qapplication';
 import {
-	IPackage,
 	PackageECascadeGraph,
 	PackageEId,
 	PackageEOptionalId,
@@ -48,29 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IApplicationPackage {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-
-	// Non-Id Relations
-	application?: IApplication;
-	package?: IPackage;
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

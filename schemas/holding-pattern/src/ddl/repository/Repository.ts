@@ -9,16 +9,23 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-}                                      from "@airport/air-control";
+}                     from "@airport/air-control";
 import {
 	CascadeType
-}                                      from "@airport/ground-control";
-import {IRepositoryTransactionHistory} from "../../generated/history/qrepositorytransactionhistory";
-import {IActor,}                       from "../../generated/infrastructure/qactor";
-import {IRepository,}                  from "../../generated/repository/qrepository";
-import {IRepositoryActor,}             from "../../generated/repository/qrepositoryactor";
-import {IRepositoryApplication,}       from "../../generated/repository/qrepositoryapplication";
-import {SyncPriority}                  from "./SyncPrority";
+}                     from "@airport/ground-control";
+import {
+	Actor
+} from '../infrastructure/Actor'
+import {
+	RepositoryActor
+} from '../repository/RepositoryActor'
+import {
+	RepositoryApplication
+} from '../repository/RepositoryApplication'
+import {
+	RepositoryTransactionHistory
+} from '../history/RepositoryTransactionHistory'
+import {SyncPriority} from "./SyncPrority";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -34,8 +41,7 @@ export type RepositoryUrl = string;
 @Table({
 	name: "REPOSITORY"
 })
-export class Repository
-	implements IRepository {
+export class Repository {
 
 	@Column({name: "ID"})
 	@GeneratedValue()
@@ -46,7 +52,7 @@ export class Repository
 	@ManyToOne()
 	@JoinColumn({name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
 		nullable: false})
-	ownerActor: IActor;
+	ownerActor: Actor;
 
 	@Column({name: "ORDERED_ID", nullable: false})
 	@DbNumber()
@@ -86,13 +92,13 @@ export class Repository
 */
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'repository'})
-	repositoryActors: IRepositoryActor[] = [];
+	repositoryActors: RepositoryActor[] = [];
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'repository'})
-	repositoryApplications: IRepositoryApplication[] = [];
+	repositoryApplications: RepositoryApplication[] = [];
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'repository'})
-	repositoryTransactionHistory: IRepositoryTransactionHistory[] = [];
+	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];
 
 	@Column({name: "SYNC_PRIORITY", nullable: false})
 	@DbNumber()

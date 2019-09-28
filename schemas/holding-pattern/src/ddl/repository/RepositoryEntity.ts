@@ -6,10 +6,10 @@ import {
 	ManyToOne,
 	MappedSuperclass
 }                              from '@airport/air-control'
-import {IActor}                from '../../generated/infrastructure/qactor'
-import {IRepository}           from '../../generated/repository/qrepository'
+import {Actor}                 from '../infrastructure/Actor'
 import {SystemWideOperationId} from '../common'
 import {Stageable}             from '../infrastructure/Stageable'
+import {Repository}            from './Repository'
 
 /**
  * Created by Papa on 2/17/2017.
@@ -28,7 +28,7 @@ export abstract class RepositoryEntity
 		name: 'REPOSITORY_ID', referencedColumnName: 'ID',
 		nullable: false
 	})
-	repository: IRepository
+	repository: Repository
 
 	@Id()
 	@ManyToOne()
@@ -36,7 +36,7 @@ export abstract class RepositoryEntity
 		name: 'ACTOR_ID', referencedColumnName: 'ID',
 		nullable: false
 	})
-	actor: IActor
+	actor: Actor
 
 	@Id()
 	@Column({name: 'ACTOR_RECORD_ID', nullable: false})

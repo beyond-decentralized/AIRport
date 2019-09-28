@@ -50,9 +50,10 @@ export class PathBuilder {
 	}
 
 	getFullPathToGeneratedSource( //
-		sourcePath: string //
+		sourcePath: string,
+		prefixQ = true
 	): string {
-		let generatedPath = this.getGenerationPathForFile(sourcePath)
+		let generatedPath = this.getGenerationPathForFile(sourcePath, prefixQ)
 
 		return this.workingDirPath + '/' + generatedPath
 	}

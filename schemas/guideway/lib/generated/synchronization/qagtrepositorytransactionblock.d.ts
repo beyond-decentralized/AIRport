@@ -1,21 +1,9 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
-import { ITerminalRepository, TerminalRepositoryECascadeGraph, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
-import { ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
-import { IServer, ServerEOptionalId, ServerESelect, QServerQRelation } from '../server/qserver';
-import { ISyncLog, SyncLogECascadeGraph, SyncLogESelect, QSyncLog } from './qsynclog';
-export interface IAgtRepositoryTransactionBlock {
-    id: number;
-    archivingStatus?: number;
-    addDatetime?: number;
-    tmRepositoryTransactionBlockId?: number;
-    contents?: string;
-    repository?: IRepository;
-    terminalRepositories?: ITerminalRepository[];
-    terminal?: ITerminal;
-    archivingServer?: IServer;
-    syncLogs?: ISyncLog[];
-}
+import { RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
+import { TerminalRepositoryECascadeGraph, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
+import { TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
+import { ServerEOptionalId, ServerESelect, QServerQRelation } from '../server/qserver';
+import { SyncLogECascadeGraph, SyncLogESelect, QSyncLog } from './qsynclog';
 /**
  * SELECT - All fields and relations (optional).
  */

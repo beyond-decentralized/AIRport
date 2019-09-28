@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IDailyArchiveLog,
 	DailyArchiveLogECascadeGraph,
 	DailyArchiveLogEId,
 	DailyArchiveLogEOptionalId,
@@ -31,7 +30,6 @@ import {
 	QDailyArchiveLog,
 	QDailyArchiveLogQId,
 	QDailyArchiveLogQRelation,
-	IRepository,
 	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -46,29 +44,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IDailyArchive {
-	
-	// Id Properties
-
-	// Id Relations
-	dailyArchiveLog: IDailyArchiveLog;
-
-	// Non-Id Properties
-	repositoryData?: string;
-
-	// Non-Id Relations
-	repository?: IRepository;
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

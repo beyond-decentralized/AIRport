@@ -3,15 +3,16 @@ import {
 	DatabaseManyToOneElements,
 	DatabaseObject,
 	DatabaseOneToManyElements,
+	DbSchemaVersion,
 	EntityRelationType,
 	JsonDatabaseObject,
 	SQLDataType
-}                     from '../../index'
+}                    from '../../index'
 import {
 	DbEntity,
 	TableIndex
-}                     from './Entity'
-import {SchemaIndex}  from './Schema'
+}                    from './Entity'
+import {SchemaIndex} from './Schema'
 
 export type ColumnId = number;
 export type ColumnIndex = number;
@@ -75,6 +76,7 @@ export class DbPropertyColumn {
 
 	column: DbColumn
 	property: DbProperty
+	sinceVersion: DbSchemaVersion
 
 }
 
@@ -147,12 +149,12 @@ export interface DbColumn
 	 */
 	idIndex?: ColumnIndex
 
-	isGenerated?: SchemaColumnIsGenerated
+	isGenerated: SchemaColumnIsGenerated
 
 	/**
 	 * In which ManyToOne relations is this column present.
 	 */
-	manyRelationColumns?: DbRelationColumn[]
+	manyRelationColumns: DbRelationColumn[]
 
 	name: ColumnName
 
@@ -161,14 +163,14 @@ export interface DbColumn
 	/**
 	 * In which OneToMany relations is this column present.
 	 */
-	oneRelationColumns?: DbRelationColumn[]
+	oneRelationColumns: DbRelationColumn[]
 
 	/**
 	 * In which properties is this column present.
 	 */
 	propertyColumns: DbPropertyColumn[]
 
-	propertyColumnMap?: { [propertyIndex: number]: DbPropertyColumn }
+	propertyColumnMap: { [propertyIndex: number]: DbPropertyColumn }
 
 	type: SQLDataType
 
@@ -318,5 +320,7 @@ export interface DbRelationColumn
 	 * Only present if @OneToMany side of the relationship is defined.
 	 */
 	oneRelation?: DbRelation;
+
+	parentRelation: DbRelation;
 
 }

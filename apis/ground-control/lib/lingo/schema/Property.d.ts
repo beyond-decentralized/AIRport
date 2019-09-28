@@ -1,4 +1,4 @@
-import { DatabaseForeignKey, DatabaseManyToOneElements, DatabaseObject, DatabaseOneToManyElements, EntityRelationType, JsonDatabaseObject, SQLDataType } from '../../index';
+import { DatabaseForeignKey, DatabaseManyToOneElements, DatabaseObject, DatabaseOneToManyElements, DbSchemaVersion, EntityRelationType, JsonDatabaseObject, SQLDataType } from '../../index';
 import { DbEntity, TableIndex } from './Entity';
 import { SchemaIndex } from './Schema';
 export declare type ColumnId = number;
@@ -47,6 +47,7 @@ export interface DbProperty extends SchemaReferenceByIndex<PropertyIndex>, Datab
 export declare class DbPropertyColumn {
     column: DbColumn;
     property: DbProperty;
+    sinceVersion: DbSchemaVersion;
 }
 /**
  * A column in a schema table.
@@ -93,22 +94,22 @@ export interface DbColumn extends SchemaReferenceByIndex<ColumnIndex>, DatabaseO
      * Id index of this column (if it's an ID column).
      */
     idIndex?: ColumnIndex;
-    isGenerated?: SchemaColumnIsGenerated;
+    isGenerated: SchemaColumnIsGenerated;
     /**
      * In which ManyToOne relations is this column present.
      */
-    manyRelationColumns?: DbRelationColumn[];
+    manyRelationColumns: DbRelationColumn[];
     name: ColumnName;
     notNull: ColumnNotNull;
     /**
      * In which OneToMany relations is this column present.
      */
-    oneRelationColumns?: DbRelationColumn[];
+    oneRelationColumns: DbRelationColumn[];
     /**
      * In which properties is this column present.
      */
     propertyColumns: DbPropertyColumn[];
-    propertyColumnMap?: {
+    propertyColumnMap: {
         [propertyIndex: number]: DbPropertyColumn;
     };
     type: SQLDataType;
@@ -199,4 +200,5 @@ export interface DbRelationColumn extends DatabaseObject {
      * Only present if @OneToMany side of the relationship is defined.
      */
     oneRelation?: DbRelation;
+    parentRelation: DbRelation;
 }

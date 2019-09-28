@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISharingNode,
 	SharingNodeECascadeGraph,
 	SharingNodeEId,
 	SharingNodeEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QSharingNodeQRelation,
 } from './qsharingnode';
 import {
-	ITerminal,
 	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -48,31 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISharingNodeTerminal {
-	
-	// Id Properties
-
-	// Id Relations
-	sharingNode: ISharingNode;
-	terminal: ITerminal;
-
-	// Non-Id Properties
-	agtTerminalId?: number;
-	agtTerminalPassword?: string;
-	terminalSyncStatus?: number;
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

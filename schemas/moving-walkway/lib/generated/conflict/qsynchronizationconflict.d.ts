@@ -1,14 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IRecordHistory, RecordHistoryEOptionalId, RecordHistoryESelect, QRecordHistoryQRelation } from '@airport/holding-pattern';
-import { ISynchronizationConflictValues, SynchronizationConflictValuesECascadeGraph, SynchronizationConflictValuesESelect, QSynchronizationConflictValues } from './qsynchronizationconflictvalues';
-export interface ISynchronizationConflict {
-    id: number;
-    type?: number;
-    repository?: IRepository;
-    overwrittenRecordHistory?: IRecordHistory;
-    overwritingRecordHistory?: IRecordHistory;
-    values?: ISynchronizationConflictValues[];
-}
+import { RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, RecordHistoryEOptionalId, RecordHistoryESelect, QRecordHistoryQRelation } from '@airport/holding-pattern';
+import { SynchronizationConflictValuesECascadeGraph, SynchronizationConflictValuesESelect, QSynchronizationConflictValues } from './qsynchronizationconflictvalues';
 /**
  * SELECT - All fields and relations (optional).
  */

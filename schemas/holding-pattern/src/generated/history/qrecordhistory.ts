@@ -22,10 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	SyncColumnMap,
-} from '@airport/ground-control';
-import {
-	IActor,
 	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -36,7 +32,6 @@ import {
 	QActorQRelation,
 } from '../infrastructure/qactor';
 import {
-	IOperationHistory,
 	OperationHistoryECascadeGraph,
 	OperationHistoryEId,
 	OperationHistoryEOptionalId,
@@ -47,7 +42,6 @@ import {
 	QOperationHistoryQRelation,
 } from './qoperationhistory';
 import {
-	IRecordHistoryNewValue,
 	RecordHistoryNewValueECascadeGraph,
 	RecordHistoryNewValueEId,
 	RecordHistoryNewValueEOptionalId,
@@ -58,7 +52,6 @@ import {
 	QRecordHistoryNewValueQRelation,
 } from './qrecordhistorynewvalue';
 import {
-	IRecordHistoryOldValue,
 	RecordHistoryOldValueECascadeGraph,
 	RecordHistoryOldValueEId,
 	RecordHistoryOldValueEOptionalId,
@@ -73,33 +66,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IRecordHistory {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	actorRecordId?: number;
-
-	// Non-Id Relations
-	actor?: IActor;
-	operationHistory?: IOperationHistory;
-	newValues?: IRecordHistoryNewValue[];
-	oldValues?: IRecordHistoryOldValue[];
-
-	// Transient Properties
-	tableColumnMap?: SyncColumnMap;
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

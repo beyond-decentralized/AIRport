@@ -1,10 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IDailyArchiveLog, DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation, IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '@airport/guideway';
-export interface IDailyArchive {
-    dailyArchiveLog: IDailyArchiveLog;
-    repositoryData?: string;
-    repository?: IRepository;
-}
+import { DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '@airport/guideway';
 /**
  * SELECT - All fields and relations (optional).
  */

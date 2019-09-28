@@ -1,20 +1,16 @@
 import { SyncColumnMap } from '@airport/ground-control';
-import { IOperationHistory } from '../../generated/history/qoperationhistory';
-import { IRecordHistory } from '../../generated/history/qrecordhistory';
-import { IRecordHistoryNewValue } from '../../generated/history/qrecordhistorynewvalue';
-import { IRecordHistoryOldValue } from '../../generated/history/qrecordhistoryoldvalue';
-import { IActor } from '../../generated/infrastructure/qactor';
+import { Actor, OperationHistory, RecordHistoryNewValue, RecordHistoryOldValue } from '../..';
 /**
  * Entity Changes are always local-only, so a sequence for id will do.
  */
 export declare type RecordHistoryId = number;
 export declare type RecordHistoryActorRecordId = number;
-export declare class RecordHistory implements IRecordHistory {
+export declare class RecordHistory {
     id: RecordHistoryId;
-    actor: IActor;
+    actor: Actor;
     actorRecordId: RecordHistoryActorRecordId;
-    operationHistory: IOperationHistory;
-    newValues: IRecordHistoryNewValue[];
-    oldValues: IRecordHistoryOldValue[];
+    operationHistory: OperationHistory;
+    newValues: RecordHistoryNewValue[];
+    oldValues: RecordHistoryOldValue[];
     tableColumnMap: SyncColumnMap;
 }

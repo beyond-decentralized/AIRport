@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IMonthlyArchiveLog,
 	MonthlyArchiveLogECascadeGraph,
 	MonthlyArchiveLogEId,
 	MonthlyArchiveLogEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QMonthlyArchiveLogQRelation,
 } from './qmonthlyarchivelog';
 import {
-	ITerminal,
 	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -48,30 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IMonthlyTerminalSyncLog {
-	
-	// Id Properties
-
-	// Id Relations
-	monthlyArchiveLog: IMonthlyArchiveLog;
-	terminal: ITerminal;
-
-	// Non-Id Properties
-	allAcknowledged?: boolean;
-	dailySyncStatuses?: string;
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

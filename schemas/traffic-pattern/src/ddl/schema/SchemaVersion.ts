@@ -2,7 +2,6 @@ import {
 	Column,
 	DbNumber,
 	Entity,
-	GeneratedValue,
 	Id,
 	JoinColumn,
 	ManyToOne,
@@ -19,12 +18,6 @@ import {
 	SchemaVersionPatch,
 	SchemaVersionString
 }                        from '@airport/ground-control'
-import {
-	ISchemaEntity
-}                        from '../../generated/schema/qschemaentity'
-import {
-	ISchemaReference
-}                        from '../../generated/schema/qschemareference'
 import {Schema}          from './Schema'
 import {SchemaEntity}    from './SchemaEntity'
 import {SchemaReference} from './SchemaReference'
@@ -71,12 +64,12 @@ export class SchemaVersion {
 	referencedBy: SchemaReference[] = []
 
 	@Transient()
-	entityMapByName?: { [entityName: string]: ISchemaEntity } = {};
+	entityMapByName?: { [entityName: string]: SchemaEntity } = {}
 
 	@Transient()
-	referencesMapByName?: { [schemaName: string]: ISchemaReference } = {};
+	referencesMapByName?: { [schemaName: string]: SchemaReference } = {}
 
 	@Transient()
-	referencedByMapByName?: { [schemaName: string]: ISchemaReference } = {};
+	referencedByMapByName?: { [schemaName: string]: SchemaReference } = {}
 
 }

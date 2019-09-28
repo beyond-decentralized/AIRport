@@ -1,14 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { ITerminalRepository, TerminalRepositoryECascadeGraph, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
-import { IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockECascadeGraph, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
-export interface IRepository {
-    id: number;
-    lastUpdateTime?: Date;
-    name?: string;
-    status?: number;
-    terminalRepositories?: ITerminalRepository[];
-    repositoryTransactionBlocks?: IAgtRepositoryTransactionBlock[];
-}
+import { TerminalRepositoryECascadeGraph, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
+import { AgtRepositoryTransactionBlockECascadeGraph, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
 /**
  * SELECT - All fields and relations (optional).
  */

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const pathResolver_1 = require("../../resolve/pathResolver");
+const FileBuilder_1 = require("./FileBuilder");
 const IQEntityInterfaceBuilder_1 = require("./IQEntityInterfaceBuilder");
 const QEntityBuilder_1 = require("./QEntityBuilder");
 const QEntityIdBuilder_1 = require("./QEntityIdBuilder");
@@ -8,12 +9,9 @@ const QEntityRelationBuilder_1 = require("./QEntityRelationBuilder");
 /**
  * Created by Papa on 4/26/2016.
  */
-class QEntityFileBuilder {
+class QEntityFileBuilder extends FileBuilder_1.FileBuilder {
     constructor(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, sIndexedEntity) {
-        this.entity = entity;
-        this.fullGenerationPath = fullGenerationPath;
-        this.pathBuilder = pathBuilder;
-        this.configuration = configuration;
+        super(entity, fullGenerationPath, pathBuilder, configuration);
         this.importMap = {};
         this.qEntityBuilder = new QEntityBuilder_1.QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName, sIndexedEntity);
         this.qEntityIdBuilder = new QEntityIdBuilder_1.QEntityIdBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName);
@@ -51,7 +49,7 @@ class QEntityFileBuilder {
             }
             let parentEntityType = entity.parentEntity.type;
             this.addImport([
-                `I${parentEntityType}`,
+                // `I${parentEntityType}`,
                 `${parentEntityType}ECascadeGraph`,
                 `${parentEntityType}EId`,
                 `${parentEntityType}EUpdateColumns`,
@@ -111,7 +109,7 @@ ${addEntityCommand}`;
             type = type.replace('[]', '');
             let qType = 'Q' + type;
             this.addImport([
-                'I' + type,
+                // 'I' + type,
                 type + 'ECascadeGraph',
                 type + 'EId',
                 type + 'EOptionalId',
@@ -123,66 +121,9 @@ ${addEntityCommand}`;
             ], qEntityRelativePath);
         });
     }
-    addImport(classNames, filePath, toLowerCase = true) {
-        filePath = filePath.replace('.ts', '');
-        if (toLowerCase) {
-            const filePathFragments = filePath.split('/');
-            if (filePathFragments.length) {
-                let lastFragment = filePathFragments[filePathFragments.length - 1];
-                lastFragment = lastFragment.toLowerCase();
-                filePathFragments[filePathFragments.length - 1] = lastFragment;
-            }
-            filePath = filePathFragments.join('/');
-        }
-        let fileImportMap = this.importMap[filePath];
-        if (!fileImportMap) {
-            fileImportMap = {};
-            this.importMap[filePath] = fileImportMap;
-        }
-        classNames.forEach(className => {
-            let existingImport;
-            let asName;
-            let sourceName;
-            if (typeof className === 'string') {
-                asName = className;
-                sourceName = className;
-            }
-            else {
-                asName = className.asName;
-                sourceName = className.sourceName;
-            }
-            let existingSourceName = fileImportMap[asName];
-            if (existingSourceName) {
-                if (existingSourceName !== sourceName) {
-                    throw new Error(`Cannot import '${sourceName}' as '${asName}' from ${filePath}.
-					'${existingSourceName}' is already imported as '${asName}' from this path.`);
-                }
-                return;
-            }
-            else {
-                fileImportMap[asName] = sourceName;
-            }
-        });
-    }
-    buildImports() {
+    addImports() {
         this.addRelationImports(this.qEntityBuilder.idRelationBuilders);
         this.addRelationImports(this.qEntityBuilder.nonIdRelationBuilders);
-        let imports = ``;
-        for (let filePath in this.importMap) {
-            const fileImportMap = this.importMap[filePath];
-            let importedObjects = [];
-            for (let asName in fileImportMap) {
-                let sourceName = fileImportMap[asName];
-                if (sourceName === asName) {
-                    importedObjects.push(sourceName);
-                }
-                else {
-                    importedObjects.push(`${sourceName} as ${asName}`);
-                }
-            }
-            imports += `import {\n\t${importedObjects.join(',\n\t')},\n} from '${filePath}';\n`;
-        }
-        return imports;
     }
 }
 exports.QEntityFileBuilder = QEntityFileBuilder;

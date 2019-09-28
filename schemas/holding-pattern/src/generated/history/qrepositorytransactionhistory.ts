@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ITransactionHistory,
 	TransactionHistoryECascadeGraph,
 	TransactionHistoryEId,
 	TransactionHistoryEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QTransactionHistoryQRelation,
 } from './qtransactionhistory';
 import {
-	IRepository,
 	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -44,7 +42,6 @@ import {
 	QRepositoryQRelation,
 } from '../repository/qrepository';
 import {
-	IRepoTransHistoryChangedRepositoryActor,
 	RepoTransHistoryChangedRepositoryActorECascadeGraph,
 	RepoTransHistoryChangedRepositoryActorEId,
 	RepoTransHistoryChangedRepositoryActorEOptionalId,
@@ -55,7 +52,6 @@ import {
 	QRepoTransHistoryChangedRepositoryActorQRelation,
 } from './qrepotranshistorychangedrepositoryactor';
 import {
-	IActor,
 	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -66,7 +62,6 @@ import {
 	QActorQRelation,
 } from '../infrastructure/qactor';
 import {
-	IOperationHistory,
 	OperationHistoryECascadeGraph,
 	OperationHistoryEId,
 	OperationHistoryEOptionalId,
@@ -81,36 +76,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IRepositoryTransactionHistory {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	remoteId?: number;
-	saveTimestamp?: Date;
-	repositoryTransactionType?: number;
-	blockId?: number;
-
-	// Non-Id Relations
-	transactionHistory?: ITransactionHistory;
-	repository?: IRepository;
-	changedRepositoryActors?: IRepoTransHistoryChangedRepositoryActor[];
-	actor?: IActor;
-	operationHistory?: IOperationHistory[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

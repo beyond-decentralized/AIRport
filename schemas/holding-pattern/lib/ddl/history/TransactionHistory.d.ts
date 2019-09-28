@@ -1,26 +1,25 @@
 import { ATransactionHistory, SyncSchemaMap, TransactionType } from '@airport/ground-control';
-import { IOperationHistory } from '../../generated/history/qoperationhistory';
-import { IRecordHistory } from '../../generated/history/qrecordhistory';
-import { IRecordHistoryNewValue } from '../../generated/history/qrecordhistorynewvalue';
-import { IRecordHistoryOldValue } from '../../generated/history/qrecordhistoryoldvalue';
-import { IRepositoryTransactionHistory } from '../../generated/history/qrepositorytransactionhistory';
-import { ITransactionHistory } from '../../generated/history/qtransactionhistory';
+import { OperationHistory } from './OperationHistory';
+import { RecordHistory } from './RecordHistory';
+import { RecordHistoryNewValue } from './RecordHistoryNewValue';
+import { RecordHistoryOldValue } from './RecordHistoryOldValue';
+import { RepositoryTransactionHistory } from './RepositoryTransactionHistory';
 export declare type TransactionHistoryNumberOfOperations = number;
 /**
  * Created by Papa on 5/1/2017.
  */
 export declare type TransactionHistoryId = number;
-export declare class TransactionHistory implements ITransactionHistory, ATransactionHistory {
+export declare class TransactionHistory implements ATransactionHistory {
     id: TransactionHistoryId;
     transactionType: TransactionType;
-    repositoryTransactionHistories: IRepositoryTransactionHistory[];
+    repositoryTransactionHistories: RepositoryTransactionHistory[];
     repoTransHistoryMap: {
-        [repositoryId: number]: IRepositoryTransactionHistory;
+        [repositoryId: number]: RepositoryTransactionHistory;
     };
     schemaMap: SyncSchemaMap;
-    allOperationHistory: IOperationHistory[];
-    allRecordHistory: IRecordHistory[];
-    allRecordHistoryNewValues: IRecordHistoryNewValue[];
-    allRecordHistoryOldValues: IRecordHistoryOldValue[];
+    allOperationHistory: OperationHistory[];
+    allRecordHistory: RecordHistory[];
+    allRecordHistoryNewValues: RecordHistoryNewValue[];
+    allRecordHistoryOldValues: RecordHistoryOldValue[];
     numberOfOperations: TransactionHistoryNumberOfOperations;
 }

@@ -1,14 +1,13 @@
 import { Terminal, User } from '@airport/travel-document-checkpoint';
-import { IActor } from '../../generated/infrastructure/qactor';
-import { IActorApplication } from '../../generated/infrastructure/qactorapplication';
-import { IRepositoryActor } from '../../generated/repository/qrepositoryactor';
+import { RepositoryActor } from '../repository/RepositoryActor';
+import { ActorApplication } from './ActorApplication';
 export declare type ActorId = number;
 export declare type ActorRandomId = number;
-export declare class Actor implements IActor {
+export declare class Actor {
     id: ActorId;
     user: User;
     terminal: Terminal;
     randomId: ActorRandomId;
-    actorApplications: IActorApplication[];
-    repositoryActor: IRepositoryActor[];
+    actorApplications: ActorApplication[];
+    repositoryActor: RepositoryActor[];
 }

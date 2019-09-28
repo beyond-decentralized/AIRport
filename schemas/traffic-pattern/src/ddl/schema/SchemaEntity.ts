@@ -1,7 +1,7 @@
 import {
 	Column,
+	DbNumber,
 	Entity,
-	GeneratedValue,
 	Id,
 	JoinColumn,
 	Json,
@@ -11,7 +11,6 @@ import {
 	TableConfiguration,
 	Transient
 }                              from '@airport/air-control'
-import {DbNumber}              from '@airport/air-control'
 import {
 	CascadeType,
 	EntityId,
@@ -20,12 +19,6 @@ import {
 	EntityName,
 	TableIndex
 }                              from '@airport/ground-control'
-import {
-	ISchemaColumn
-}                              from '../../generated/schema/qschemacolumn'
-import {
-	ISchemaProperty
-}                              from '../../generated/schema/qschemaproperty'
 import {SchemaColumn}          from './SchemaColumn'
 import {SchemaProperty}        from './SchemaProperty'
 import {SchemaRelation}        from './SchemaRelation'
@@ -102,15 +95,15 @@ export class SchemaEntity
 	relationReferences: SchemaRelation[] = []
 
 	@Transient()
-	columnMap?: { [name: string]: ISchemaColumn } = {}
+	columnMap?: { [name: string]: SchemaColumn } = {}
 
 	@Transient()
-	idColumns: ISchemaColumn[] = []
+	idColumns: SchemaColumn[] = []
 
 	@Transient()
-	idColumnMap?: { [name: string]: ISchemaColumn } = {}
+	idColumnMap?: { [name: string]: SchemaColumn } = {}
 
 	@Transient()
-	propertyMap: { [name: string]: ISchemaProperty } = {}
+	propertyMap: { [name: string]: SchemaProperty } = {}
 
 }

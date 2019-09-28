@@ -18,40 +18,40 @@ __decorate([
 ], AgtRepositoryTransactionBlock.prototype, "id", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: 'ID', nullable: false })
+    air_control_1.JoinColumn({ name: 'REPOSITORY_ID', referencedColumnName: 'ID', nullable: false })
 ], AgtRepositoryTransactionBlock.prototype, "repository", void 0);
 __decorate([
     air_control_1.OneToMany(),
-    air_control_1.JoinColumn({ name: "REPOSITORY_ID", nullable: false })
+    air_control_1.JoinColumn({ name: 'REPOSITORY_ID', nullable: false })
 ], AgtRepositoryTransactionBlock.prototype, "terminalRepositories", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "TERMINAL_ID", referencedColumnName: 'ID', nullable: false })
+    air_control_1.JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID', nullable: false })
 ], AgtRepositoryTransactionBlock.prototype, "terminal", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "ARCHIVING_SERVER_ID", referencedColumnName: "ID" })
+    air_control_1.JoinColumn({ name: 'ARCHIVING_SERVER_ID', referencedColumnName: 'ID' })
 ], AgtRepositoryTransactionBlock.prototype, "archivingServer", void 0);
 __decorate([
-    air_control_1.Column({ name: "ARCHIVING_STATUS", nullable: false }),
+    air_control_1.Column({ name: 'ARCHIVING_STATUS', nullable: false }),
     air_control_1.DbNumber()
 ], AgtRepositoryTransactionBlock.prototype, "archivingStatus", void 0);
 __decorate([
-    air_control_1.Column({ name: "ADD_DATETIME", nullable: false })
+    air_control_1.Column({ name: 'ADD_DATETIME', nullable: false })
 ], AgtRepositoryTransactionBlock.prototype, "addDatetime", void 0);
 __decorate([
-    air_control_1.Column({ name: "TM_REPOSITORY_TRANSACTION_BLOCK_ID", nullable: false }),
+    air_control_1.Column({ name: 'TM_REPOSITORY_TRANSACTION_BLOCK_ID', nullable: false }),
     air_control_1.DbNumber()
 ], AgtRepositoryTransactionBlock.prototype, "tmRepositoryTransactionBlockId", void 0);
 __decorate([
-    air_control_1.Column({ name: "REPOSITORY_TRANSACTION_BLOCK", nullable: false })
+    air_control_1.Column({ name: 'REPOSITORY_TRANSACTION_BLOCK', nullable: false })
 ], AgtRepositoryTransactionBlock.prototype, "contents", void 0);
 __decorate([
     air_control_1.OneToMany()
 ], AgtRepositoryTransactionBlock.prototype, "syncLogs", void 0);
 AgtRepositoryTransactionBlock = __decorate([
     air_control_1.Entity(),
-    air_control_1.Table({ name: "AGT_REPOSITORY_TRANSACTION_BLOCKS" })
+    air_control_1.Table({ name: 'AGT_REPOSITORY_TRANSACTION_BLOCKS' })
     // TODO: partition by add date for efficient dropping of records
 ], AgtRepositoryTransactionBlock);
 exports.AgtRepositoryTransactionBlock = AgtRepositoryTransactionBlock;

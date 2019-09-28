@@ -1,8 +1,9 @@
 import { Configuration } from '../../options/Options';
 import { EntityCandidate } from '../../parser/EntityCandidate';
 import { PathBuilder } from '../PathBuilder';
-import { IQBuilder } from '../QBuilder';
+import { IBuilder } from '../Builder';
 import { SIndexedEntity } from '../schema/SEntity';
+import { FileBuilder } from './FileBuilder';
 import { IQEntityInterfaceBuilder } from './IQEntityInterfaceBuilder';
 import { QEntityBuilder } from './QEntityBuilder';
 import { QEntityIdBuilder } from './QEntityIdBuilder';
@@ -11,11 +12,7 @@ import { QRelationBuilder } from './QRelationBuilder';
 /**
  * Created by Papa on 4/26/2016.
  */
-export declare class QEntityFileBuilder implements IQBuilder {
-    private entity;
-    fullGenerationPath: string;
-    private pathBuilder;
-    configuration: Configuration;
+export declare class QEntityFileBuilder extends FileBuilder implements IBuilder {
     qEntityBuilder: QEntityBuilder;
     qEntityIdBuilder: QEntityIdBuilder;
     qEntityRelationBuilder: QEntityRelationBuilder;
@@ -30,9 +27,5 @@ export declare class QEntityFileBuilder implements IQBuilder {
     }, configuration: Configuration, sIndexedEntity: SIndexedEntity);
     build(): string;
     addRelationImports(relationBuilders: QRelationBuilder[]): void;
-    addImport(classNames: (string | {
-        asName: string;
-        sourceName: string;
-    })[], filePath: string, toLowerCase?: boolean): void;
-    private buildImports;
+    protected addImports(): void;
 }

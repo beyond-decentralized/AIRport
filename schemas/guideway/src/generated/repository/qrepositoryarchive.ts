@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IRepository,
 	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QRepositoryQRelation,
 } from './qrepository';
 import {
-	IArchive,
 	ArchiveECascadeGraph,
 	ArchiveEId,
 	ArchiveEOptionalId,
@@ -48,28 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IRepositoryArchive {
-	
-	// Id Properties
-
-	// Id Relations
-	repository: IRepository;
-	archive: IArchive;
-
-	// Non-Id Properties
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

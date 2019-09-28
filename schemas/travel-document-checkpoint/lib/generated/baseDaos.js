@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-// Schema Q object Dependency Injection readiness detection DAO
+// Schema Q object Dependency Injection readiness detection Dao
 class SQDIDao extends check_in_1.Dao {
     constructor(dbEntityId) {
         super(dbEntityId, qSchema_1.Q);
@@ -11,7 +11,7 @@ class SQDIDao extends check_in_1.Dao {
 exports.SQDIDao = SQDIDao;
 class BaseAgtDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.diSet(5);
+        return qSchema_1.duoDiSet(5);
     }
     constructor() {
         super(5);
@@ -20,7 +20,7 @@ class BaseAgtDao extends SQDIDao {
 exports.BaseAgtDao = BaseAgtDao;
 class BaseTerminalDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.diSet(3);
+        return qSchema_1.duoDiSet(3);
     }
     constructor() {
         super(3);
@@ -29,7 +29,7 @@ class BaseTerminalDao extends SQDIDao {
 exports.BaseTerminalDao = BaseTerminalDao;
 class BaseTerminalAgtDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.diSet(4);
+        return qSchema_1.duoDiSet(4);
     }
     constructor() {
         super(4);
@@ -38,7 +38,7 @@ class BaseTerminalAgtDao extends SQDIDao {
 exports.BaseTerminalAgtDao = BaseTerminalAgtDao;
 class BaseUserDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.diSet(2);
+        return qSchema_1.duoDiSet(2);
     }
     constructor() {
         super(2);
@@ -47,7 +47,7 @@ class BaseUserDao extends SQDIDao {
 exports.BaseUserDao = BaseUserDao;
 class BaseUserTerminalDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.diSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
@@ -56,7 +56,7 @@ class BaseUserTerminalDao extends SQDIDao {
 exports.BaseUserTerminalDao = BaseUserTerminalDao;
 class BaseUserTerminalAgtDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.diSet(1);
+        return qSchema_1.duoDiSet(1);
     }
     constructor() {
         super(1);

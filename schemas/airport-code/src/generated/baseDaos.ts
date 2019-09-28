@@ -8,55 +8,60 @@ import {
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control'
-import {
-	Dao
-} from '@airport/check-in'
+import { Dao } from '@airport/check-in'
 import {
 	EntityId as DbEntityId
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
-	ISequence,
+	ISequence
+} from './sequence'
+import {
 	SequenceESelect,
-	SequenceECascadeGraph,
 	SequenceECreateColumns,
 	SequenceECreateProperties,
 	SequenceEUpdateColumns,
 	SequenceEUpdateProperties,
 	SequenceEId,
+	SequenceECascadeGraph,
 	QSequence
 } from './qsequence'
 import {
-	ISystemWideOperationId,
+	ISystemWideOperationId
+} from './systemwideoperationid'
+import {
 	SystemWideOperationIdESelect,
-	SystemWideOperationIdECascadeGraph,
 	SystemWideOperationIdECreateColumns,
 	SystemWideOperationIdECreateProperties,
 	SystemWideOperationIdEUpdateColumns,
 	SystemWideOperationIdEUpdateProperties,
 	SystemWideOperationIdEId,
+	SystemWideOperationIdECascadeGraph,
 	QSystemWideOperationId
 } from './qsystemwideoperationid'
 import {
-	ITerminalRun,
+	ITerminalRun
+} from './terminalrun'
+import {
 	TerminalRunESelect,
-	TerminalRunECascadeGraph,
 	TerminalRunECreateColumns,
 	TerminalRunECreateProperties,
 	TerminalRunEUpdateColumns,
 	TerminalRunEUpdateProperties,
 	TerminalRunEId,
+	TerminalRunECascadeGraph,
 	QTerminalRun
 } from './qterminalrun'
 
-// Schema Q object Dependency Injection readiness detection DAO
+
+// Schema Q object Dependency Injection readiness detection Dao
 export class SQDIDao<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
-	EntityUpdateColumns extends IEntityUpdateColumns,
+  EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
@@ -87,7 +92,7 @@ export class BaseSequenceDao
 	implements IBaseSequenceDao {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
@@ -105,7 +110,7 @@ export class BaseSystemWideOperationIdDao
 	implements IBaseSystemWideOperationIdDao {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
@@ -123,7 +128,7 @@ export class BaseTerminalRunDao
 	implements IBaseTerminalRunDao {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return duoDiSet(1)
 	}
 	
 	constructor() {

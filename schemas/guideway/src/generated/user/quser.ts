@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISecurityAnswer,
 	SecurityAnswerECascadeGraph,
 	SecurityAnswerEId,
 	SecurityAnswerEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QSecurityAnswerQRelation,
 } from './security/qsecurityanswer';
 import {
-	IUserRepository,
 	UserRepositoryECascadeGraph,
 	UserRepositoryEId,
 	UserRepositoryEOptionalId,
@@ -44,7 +42,6 @@ import {
 	QUserRepositoryQRelation,
 } from './quserrepository';
 import {
-	ITerminal,
 	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -55,7 +52,6 @@ import {
 	QTerminalQRelation,
 } from '../terminal/qterminal';
 import {
-	IAgtRepositoryTransactionBlock,
 	AgtRepositoryTransactionBlockECascadeGraph,
 	AgtRepositoryTransactionBlockEId,
 	AgtRepositoryTransactionBlockEOptionalId,
@@ -70,34 +66,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IUser {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	hash?: string;
-	email?: string;
-	isInvitation?: boolean;
-
-	// Non-Id Relations
-	securityAnswers?: ISecurityAnswer[];
-	userRepositories?: IUserRepository[];
-	terminals?: ITerminal[];
-	repositoryTransactionBlocks?: IAgtRepositoryTransactionBlock[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

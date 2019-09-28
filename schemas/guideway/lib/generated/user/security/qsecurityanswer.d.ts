@@ -1,11 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IUser, UserEId, UserEOptionalId, UserESelect, QUserQId, QUserQRelation } from '../quser';
-import { ISecurityQuestion, SecurityQuestionEId, SecurityQuestionEOptionalId, SecurityQuestionESelect, QSecurityQuestionQId, QSecurityQuestionQRelation } from './qsecurityquestion';
-export interface ISecurityAnswer {
-    user: IUser;
-    securityQuestion: ISecurityQuestion;
-    answer?: string;
-}
+import { UserEId, UserEOptionalId, UserESelect, QUserQId, QUserQRelation } from '../quser';
+import { SecurityQuestionEId, SecurityQuestionEOptionalId, SecurityQuestionESelect, QSecurityQuestionQId, QSecurityQuestionQRelation } from './qsecurityquestion';
 /**
  * SELECT - All fields and relations (optional).
  */

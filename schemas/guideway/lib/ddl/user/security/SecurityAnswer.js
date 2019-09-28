@@ -27,4 +27,4 @@ SecurityAnswer = __decorate([
     air_control_1.Table({ name: "AGT_SECURITY_ANSWERS" })
 ], SecurityAnswer);
 exports.SecurityAnswer = SecurityAnswer;
-//# sourceMappingURL=securityanswer.js.map
+//# sourceMappingURL=SecurityAnswer.js.map

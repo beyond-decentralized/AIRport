@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IUser,
 	UserECascadeGraph,
 	UserEId,
 	UserEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QUserQRelation,
 } from './quser';
 import {
-	ITerminal,
 	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -44,7 +42,6 @@ import {
 	QTerminalQRelation,
 } from './qterminal';
 import {
-	IAgt,
 	AgtECascadeGraph,
 	AgtEId,
 	AgtEOptionalId,
@@ -55,7 +52,6 @@ import {
 	QAgtQRelation,
 } from './qagt';
 import {
-	ITerminalAgt,
 	TerminalAgtECascadeGraph,
 	TerminalAgtEId,
 	TerminalAgtEOptionalId,
@@ -70,33 +66,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IUserTerminalAgt {
-	
-	// Id Properties
-	id: number;
-	agtId: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	password?: number;
-
-	// Non-Id Relations
-	user?: IUser;
-	terminal?: ITerminal;
-	agt?: IAgt;
-	terminalAgt?: ITerminalAgt;
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

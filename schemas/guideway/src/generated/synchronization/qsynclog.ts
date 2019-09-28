@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IAgtSharingMessage,
 	AgtSharingMessageECascadeGraph,
 	AgtSharingMessageEId,
 	AgtSharingMessageEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QAgtSharingMessageQRelation,
 } from './qagtsharingmessage';
 import {
-	IAgtRepositoryTransactionBlock,
 	AgtRepositoryTransactionBlockECascadeGraph,
 	AgtRepositoryTransactionBlockEId,
 	AgtRepositoryTransactionBlockEOptionalId,
@@ -48,28 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISyncLog {
-	
-	// Id Properties
-
-	// Id Relations
-	sharingMessage: IAgtSharingMessage;
-	repositoryTransactionBlock: IAgtRepositoryTransactionBlock;
-
-	// Non-Id Properties
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

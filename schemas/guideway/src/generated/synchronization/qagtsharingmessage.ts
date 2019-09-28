@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ITerminal,
 	TerminalECascadeGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QTerminalQRelation,
 } from '../terminal/qterminal';
 import {
-	ISyncLog,
 	SyncLogECascadeGraph,
 	SyncLogEId,
 	SyncLogEOptionalId,
@@ -48,31 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IAgtSharingMessage {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	tmSharingMessageId?: number;
-	acknowledged?: number;
-
-	// Non-Id Relations
-	terminal?: ITerminal;
-	syncLogs?: ISyncLog[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

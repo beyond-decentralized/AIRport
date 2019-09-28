@@ -1,7 +1,4 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQEntity, IQRelation } from '@airport/air-control';
-export interface IStageable {
-    draft?: boolean;
-}
 /**
  * SELECT - All fields and relations (optional).
  */

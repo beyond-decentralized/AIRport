@@ -1,7 +1,7 @@
 import { AgtRepositoryId, TerminalId, TerminalPassword } from '@airport/arrivals-n-departures';
+import { ITerminal } from '../../generated/interfaces';
 import { TerminalLastPollConnectionDatetime } from '../../ddl/ddl';
 import { BaseTerminalDao, IBaseTerminalDao } from '../../generated/baseDaos';
-import { ITerminal } from '../../generated/terminal/qterminal';
 export declare type TerminalKey = string;
 export interface ITerminalDao extends IBaseTerminalDao {
     findTerminalVerificationRecords(terminalIds: TerminalId[]): Promise<Map<TerminalId, [TerminalPassword, TerminalLastPollConnectionDatetime, TerminalId]>>;

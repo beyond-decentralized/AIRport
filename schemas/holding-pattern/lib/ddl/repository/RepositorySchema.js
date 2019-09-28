@@ -31,4 +31,4 @@ RepositorySchema = __decorate([
     })
 ], RepositorySchema);
 exports.RepositorySchema = RepositorySchema;
-//# sourceMappingURL=RepositorySchema.js.map
+//# sourceMappingURL=repositoryschema.js.map

@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISchemaVersion,
 	SchemaVersionECascadeGraph,
 	SchemaVersionEId,
 	SchemaVersionEOptionalId,
@@ -31,7 +30,6 @@ import {
 	QSchemaVersion,
 	QSchemaVersionQId,
 	QSchemaVersionQRelation,
-	ISchemaEntity,
 	SchemaEntityECascadeGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
@@ -40,7 +38,6 @@ import {
 	QSchemaEntity,
 	QSchemaEntityQId,
 	QSchemaEntityQRelation,
-	ISchemaColumn,
 	SchemaColumnECascadeGraph,
 	SchemaColumnEId,
 	SchemaColumnEOptionalId,
@@ -51,7 +48,6 @@ import {
 	QSchemaColumnQRelation,
 } from '@airport/traffic-pattern';
 import {
-	IRepository,
 	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -60,7 +56,6 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
-	IActor,
 	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -75,34 +70,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IRecordUpdateStage {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	actorRecordId?: number;
-	updatedValue?: any;
-
-	// Non-Id Relations
-	schemaVersion?: ISchemaVersion;
-	entity?: ISchemaEntity;
-	repository?: IRepository;
-	actor?: IActor;
-	column?: ISchemaColumn;
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

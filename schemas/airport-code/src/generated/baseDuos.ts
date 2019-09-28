@@ -4,10 +4,11 @@ import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
+	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control'
-import { Duo } from "@airport/check-in"
+import { Duo } from '@airport/check-in'
 import {
 	EntityId as DbEntityId
 } from '@airport/ground-control'
@@ -16,7 +17,9 @@ import {
 	duoDiSet
 } from './qSchema'
 import {
-	ISequence,
+	ISequence
+} from './sequence'
+import {
 	SequenceESelect,
 	SequenceECreateColumns,
 	SequenceECreateProperties,
@@ -27,7 +30,9 @@ import {
 	QSequence
 } from './qsequence'
 import {
-	ISystemWideOperationId,
+	ISystemWideOperationId
+} from './systemwideoperationid'
+import {
 	SystemWideOperationIdESelect,
 	SystemWideOperationIdECreateColumns,
 	SystemWideOperationIdECreateProperties,
@@ -38,7 +43,9 @@ import {
 	QSystemWideOperationId
 } from './qsystemwideoperationid'
 import {
-	ITerminalRun,
+	ITerminalRun
+} from './terminalrun'
+import {
 	TerminalRunESelect,
 	TerminalRunECreateColumns,
 	TerminalRunECreateProperties,
@@ -50,10 +57,11 @@ import {
 } from './qterminalrun'
 
 
-// Schema Q object Dependency Injection readiness detection DAO
+// Schema Q object Dependency Injection readiness detection Duo
 export class SQDIDuo<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
+  EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
@@ -61,6 +69,7 @@ export class SQDIDuo<Entity,
 	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,
+		EntityUpdateColumns,
 		EntityUpdateProperties,
 		EntityId,
 		EntityCascadeGraph,
@@ -75,11 +84,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseSequenceDuo
-  extends IDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, SequenceECascadeGraph, QSequence> {
+  extends IDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceECascadeGraph, QSequence> {
 }
 
 export class BaseSequenceDuo
-  extends SQDIDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateProperties, SequenceEId, SequenceECascadeGraph, QSequence>
+  extends SQDIDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceECascadeGraph, QSequence>
 	implements IBaseSequenceDuo {
 
 	static diSet(): boolean {
@@ -93,11 +102,11 @@ export class BaseSequenceDuo
 
 
 export interface IBaseSystemWideOperationIdDuo
-  extends IDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdECascadeGraph, QSystemWideOperationId> {
+  extends IDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdECascadeGraph, QSystemWideOperationId> {
 }
 
 export class BaseSystemWideOperationIdDuo
-  extends SQDIDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdECascadeGraph, QSystemWideOperationId>
+  extends SQDIDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdECascadeGraph, QSystemWideOperationId>
 	implements IBaseSystemWideOperationIdDuo {
 
 	static diSet(): boolean {
@@ -111,11 +120,11 @@ export class BaseSystemWideOperationIdDuo
 
 
 export interface IBaseTerminalRunDuo
-  extends IDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunECascadeGraph, QTerminalRun> {
+  extends IDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunECascadeGraph, QTerminalRun> {
 }
 
 export class BaseTerminalRunDuo
-  extends SQDIDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunECascadeGraph, QTerminalRun>
+  extends SQDIDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunECascadeGraph, QTerminalRun>
 	implements IBaseTerminalRunDuo {
 
 	static diSet(): boolean {

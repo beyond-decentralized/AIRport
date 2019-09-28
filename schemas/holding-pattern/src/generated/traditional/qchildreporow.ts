@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IRepositoryEntity,
 	RepositoryEntityECascadeGraph,
 	RepositoryEntityEId,
 	RepositoryEntityEUpdateColumns,
@@ -37,26 +36,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IChildRepoRow extends IRepositoryEntity {
-	
-	// Id Properties
-
-	// Id Relations
-
-	// Non-Id Properties
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

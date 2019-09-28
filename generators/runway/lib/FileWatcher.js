@@ -4,7 +4,9 @@ const fs = require("fs");
 const ts = require("typescript");
 const DaoBuilder_1 = require("./builder/DaoBuilder");
 const DuoBuilder_1 = require("./builder/DuoBuilder");
+const EntityInterfaceFileBuilder_1 = require("./builder/entity/EntityInterfaceFileBuilder");
 const QEntityFileBuilder_1 = require("./builder/entity/QEntityFileBuilder");
+const GeneratedFileListingBuilder_1 = require("./builder/GeneratedFileListingBuilder");
 const GeneratedSummaryBuilder_1 = require("./builder/GeneratedSummaryBuilder");
 const PathBuilder_1 = require("./builder/PathBuilder");
 const QSchemaBuilder_1 = require("./builder/QSchemaBuilder");
@@ -80,18 +82,23 @@ function watchFiles(configuration, options, rootFileNames) {
         fs.writeFileSync(schemaSourcePath, schemaSourceString);
         const entityFileReference = {};
         const generatedSummaryBuilder = new GeneratedSummaryBuilder_1.GeneratedSummaryBuilder(pathBuilder);
+        const entityInterfaceListingBuilder = new GeneratedFileListingBuilder_1.GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
+        const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder_1.GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
         const qSchemaBuilder = new QSchemaBuilder_1.QSchemaBuilder(pathBuilder);
         const daoBuilder = new DaoBuilder_1.DaoBuilder(pathBuilder);
         const duoBuilder = new DuoBuilder_1.DuoBuilder(pathBuilder);
         for (const entityName in entityMapByName) {
             const entity = entityMapByName[entityName];
-            const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
-            const entityFileBuilder = new QEntityFileBuilder_1.QEntityFileBuilder(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
+            const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, false);
+            const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
+            const qEntityFileBuilder = new QEntityFileBuilder_1.QEntityFileBuilder(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
+            const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder_1.EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
             if (!entity.isSuperclass) {
                 entityFileReference[entity.docEntry.name] = fullGenerationPath;
             }
-            generatedSummaryBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
-            qSchemaBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
+            entityInterfaceListingBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
+            entityQInterfaceListingBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath);
+            qSchemaBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath);
             const sIndexedEntity = indexedSchema.entityMapByName[entityName];
             let tableIndex;
             if (sIndexedEntity) {
@@ -99,13 +106,18 @@ function watchFiles(configuration, options, rootFileNames) {
             }
             daoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
             duoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
-            const generationPath = pathBuilder.setupFileForGeneration(entity.path);
-            const entitySourceString = entityFileBuilder.build();
-            fs.writeFileSync(generationPath, entitySourceString);
+            const qGenerationPath = pathBuilder.setupFileForGeneration(entity.path);
+            const generationPath = pathBuilder.setupFileForGeneration(entity.path, false);
+            const qEntitySourceString = qEntityFileBuilder.build();
+            fs.writeFileSync(qGenerationPath, qEntitySourceString);
+            const entityInterfaceSourceString = entityInterfaceFileBuilder.build();
+            fs.writeFileSync(generationPath, entityInterfaceSourceString);
         }
         fs.writeFileSync(daoBuilder.daoListingFilePath, daoBuilder.build());
         fs.writeFileSync(duoBuilder.daoListingFilePath, duoBuilder.build());
         fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build(configuration.airport.domain, indexedSchema.schema.name));
+        fs.writeFileSync(entityInterfaceListingBuilder.generatedListingFilePath, entityInterfaceListingBuilder.build());
+        fs.writeFileSync(entityQInterfaceListingBuilder.generatedListingFilePath, entityQInterfaceListingBuilder.build());
         fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
         const mappedSuperclassBuilder = new MappedSuperclassBuilder_1.MappedSuperclassBuilder(configuration, entityMapByName);
         const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';

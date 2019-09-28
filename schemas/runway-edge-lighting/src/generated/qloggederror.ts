@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ILogEntry,
 	LogEntryECascadeGraph,
 	LogEntryEId,
 	LogEntryEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QLogEntryQRelation,
 } from './qlogentry';
 import {
-	ILoggedErrorStackTrace,
 	LoggedErrorStackTraceECascadeGraph,
 	LoggedErrorStackTraceEId,
 	LoggedErrorStackTraceEOptionalId,
@@ -48,28 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ILoggedError {
-	
-	// Id Properties
-
-	// Id Relations
-	logEntry: ILogEntry;
-
-	// Non-Id Properties
-
-	// Non-Id Relations
-	stackTrace?: ILoggedErrorStackTrace;
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

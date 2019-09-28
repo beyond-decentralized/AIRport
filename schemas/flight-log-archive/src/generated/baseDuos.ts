@@ -4,10 +4,11 @@ import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
+	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control'
-import { Duo } from "@airport/check-in"
+import { Duo } from '@airport/check-in'
 import {
 	EntityId as DbEntityId
 } from '@airport/ground-control'
@@ -16,7 +17,9 @@ import {
 	duoDiSet
 } from './qSchema'
 import {
-	IDailySyncLog,
+	IDailySyncLog
+} from './dailysynclog'
+import {
 	DailySyncLogESelect,
 	DailySyncLogECreateColumns,
 	DailySyncLogECreateProperties,
@@ -27,7 +30,9 @@ import {
 	QDailySyncLog
 } from './qdailysynclog'
 import {
-	ILog,
+	ILog
+} from './log/log'
+import {
 	LogESelect,
 	LogECreateColumns,
 	LogECreateProperties,
@@ -38,7 +43,9 @@ import {
 	QLog
 } from './log/qlog'
 import {
-	IMonthlySyncLog,
+	IMonthlySyncLog
+} from './monthlysynclog'
+import {
 	MonthlySyncLogESelect,
 	MonthlySyncLogECreateColumns,
 	MonthlySyncLogECreateProperties,
@@ -50,10 +57,11 @@ import {
 } from './qmonthlysynclog'
 
 
-// Schema Q object Dependency Injection readiness detection DAO
+// Schema Q object Dependency Injection readiness detection Duo
 export class SQDIDuo<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
+  EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
@@ -61,6 +69,7 @@ export class SQDIDuo<Entity,
 	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,
+		EntityUpdateColumns,
 		EntityUpdateProperties,
 		EntityId,
 		EntityCascadeGraph,
@@ -75,11 +84,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseDailySyncLogDuo
-  extends IDuo<IDailySyncLog, DailySyncLogESelect, DailySyncLogECreateProperties, DailySyncLogEUpdateProperties, DailySyncLogEId, DailySyncLogECascadeGraph, QDailySyncLog> {
+  extends IDuo<IDailySyncLog, DailySyncLogESelect, DailySyncLogECreateProperties, DailySyncLogEUpdateColumns, DailySyncLogEUpdateProperties, DailySyncLogEId, DailySyncLogECascadeGraph, QDailySyncLog> {
 }
 
 export class BaseDailySyncLogDuo
-  extends SQDIDuo<IDailySyncLog, DailySyncLogESelect, DailySyncLogECreateProperties, DailySyncLogEUpdateProperties, DailySyncLogEId, DailySyncLogECascadeGraph, QDailySyncLog>
+  extends SQDIDuo<IDailySyncLog, DailySyncLogESelect, DailySyncLogECreateProperties, DailySyncLogEUpdateColumns, DailySyncLogEUpdateProperties, DailySyncLogEId, DailySyncLogECascadeGraph, QDailySyncLog>
 	implements IBaseDailySyncLogDuo {
 
 	static diSet(): boolean {
@@ -93,11 +102,11 @@ export class BaseDailySyncLogDuo
 
 
 export interface IBaseLogDuo
-  extends IDuo<ILog, LogESelect, LogECreateProperties, LogEUpdateProperties, LogEId, LogECascadeGraph, QLog> {
+  extends IDuo<ILog, LogESelect, LogECreateProperties, LogEUpdateColumns, LogEUpdateProperties, LogEId, LogECascadeGraph, QLog> {
 }
 
 export class BaseLogDuo
-  extends SQDIDuo<ILog, LogESelect, LogECreateProperties, LogEUpdateProperties, LogEId, LogECascadeGraph, QLog>
+  extends SQDIDuo<ILog, LogESelect, LogECreateProperties, LogEUpdateColumns, LogEUpdateProperties, LogEId, LogECascadeGraph, QLog>
 	implements IBaseLogDuo {
 
 	static diSet(): boolean {
@@ -111,11 +120,11 @@ export class BaseLogDuo
 
 
 export interface IBaseMonthlySyncLogDuo
-  extends IDuo<IMonthlySyncLog, MonthlySyncLogESelect, MonthlySyncLogECreateProperties, MonthlySyncLogEUpdateProperties, MonthlySyncLogEId, MonthlySyncLogECascadeGraph, QMonthlySyncLog> {
+  extends IDuo<IMonthlySyncLog, MonthlySyncLogESelect, MonthlySyncLogECreateProperties, MonthlySyncLogEUpdateColumns, MonthlySyncLogEUpdateProperties, MonthlySyncLogEId, MonthlySyncLogECascadeGraph, QMonthlySyncLog> {
 }
 
 export class BaseMonthlySyncLogDuo
-  extends SQDIDuo<IMonthlySyncLog, MonthlySyncLogESelect, MonthlySyncLogECreateProperties, MonthlySyncLogEUpdateProperties, MonthlySyncLogEId, MonthlySyncLogECascadeGraph, QMonthlySyncLog>
+  extends SQDIDuo<IMonthlySyncLog, MonthlySyncLogESelect, MonthlySyncLogECreateProperties, MonthlySyncLogEUpdateColumns, MonthlySyncLogEUpdateProperties, MonthlySyncLogEId, MonthlySyncLogECascadeGraph, QMonthlySyncLog>
 	implements IBaseMonthlySyncLogDuo {
 
 	static diSet(): boolean {

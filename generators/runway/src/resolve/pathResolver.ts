@@ -1,3 +1,4 @@
+import {FileBuilder}        from '../builder/entity/FileBuilder'
 import {QEntityFileBuilder} from '../builder/entity/QEntityFileBuilder'
 import {EntityCandidate}    from '../parser/EntityCandidate'
 
@@ -103,7 +104,7 @@ export function resolveRelativePath(
 export function addImportForType(
 	entity: EntityCandidate,
 	type: string,
-	fileBuilder: QEntityFileBuilder
+	fileBuilder: FileBuilder
 ) {
 	const moduleImport = entity.docEntry.fileImports.importMapByObjectAsName[type]
 	if (!moduleImport) {

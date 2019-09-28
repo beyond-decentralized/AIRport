@@ -1,11 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { IApplication, ApplicationEOptionalId, ApplicationESelect, QApplicationQRelation } from './qapplication';
-import { IPackage, PackageEOptionalId, PackageESelect, QPackageQRelation } from './qpackage';
-export interface IApplicationPackage {
-    id: number;
-    application?: IApplication;
-    package?: IPackage;
-}
+import { ApplicationEOptionalId, ApplicationESelect, QApplicationQRelation } from './qapplication';
+import { PackageEOptionalId, PackageESelect, QPackageQRelation } from './qpackage';
 /**
  * SELECT - All fields and relations (optional).
  */

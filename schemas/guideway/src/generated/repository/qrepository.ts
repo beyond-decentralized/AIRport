@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ITerminalRepository,
 	TerminalRepositoryECascadeGraph,
 	TerminalRepositoryEId,
 	TerminalRepositoryEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QTerminalRepositoryQRelation,
 } from '../terminal/qterminalrepository';
 import {
-	IAgtRepositoryTransactionBlock,
 	AgtRepositoryTransactionBlockECascadeGraph,
 	AgtRepositoryTransactionBlockEId,
 	AgtRepositoryTransactionBlockEOptionalId,
@@ -48,32 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IRepository {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	lastUpdateTime?: Date;
-	name?: string;
-	status?: number;
-
-	// Non-Id Relations
-	terminalRepositories?: ITerminalRepository[];
-	repositoryTransactionBlocks?: IAgtRepositoryTransactionBlock[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

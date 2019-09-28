@@ -93,6 +93,1418 @@ exports.SCHEMA = {
                         {
                             "index": 4,
                             "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 3,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 4,
+                                    "oneRelationIndex": 5,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "MANY_SCHEMA_COLUMN_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 4,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 4,
+                                    "oneRelationIndex": 6,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ONE_SCHEMA_COLUMN_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 5,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 1,
+                                    "oneRelationIndex": 6,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "MANY_SCHEMA_RELATION_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 7,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 6,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 1,
+                                    "oneRelationIndex": 7,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ONE_SCHEMA_RELATION_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 7
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 8,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 7,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 1,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "PARENT_RELATION_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 8
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 3
+                        }
+                    ],
+                    "index": 0,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SchemaRelationColumn",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "name": "deprecatedSinceVersion",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "name": "removedInVersion",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "sinceVersion",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 3,
+                            "isId": true,
+                            "name": "id",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "manyColumn",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "name": "oneColumn",
+                            "relationRef": {
+                                "index": 4
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "name": "manyRelation",
+                            "relationRef": {
+                                "index": 5
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
+                            "isId": false,
+                            "name": "oneRelation",
+                            "relationRef": {
+                                "index": 6
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 8,
+                            "isId": false,
+                            "name": "parentRelation",
+                            "relationRef": {
+                                "index": 7
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 4,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 5
+                            },
+                            "relationTableIndex": 4,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 6
+                            },
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 7
+                            },
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 8
+                            },
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SCHEMA_RELATION_COLUMNS",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REMOVED_IN_SCHEMA_VERSION_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SINCE_SCHEMA_VERSION_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "RELATION_INDEX",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "FOREIGN_KEY",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 3
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "MANY_TO_ONE_ELEMENTS",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 7
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 3
+                        },
+                        {
+                            "index": 7,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ONE_TO_MANY_ELEMENTS",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 8
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 3
+                        },
+                        {
+                            "index": 8,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "RELATION_TYPE",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 9
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 9,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IS_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 10
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 1
+                        },
+                        {
+                            "index": 10,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 3,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 2,
+                                    "oneRelationIndex": 5,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SCHEMA_PROPERTY_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 11,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 4,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 5,
+                                    "oneRelationIndex": 6,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SCHEMA_TABLE_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 11
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 12,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 5,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 5,
+                                    "oneRelationIndex": 7,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "RELATION_SCHEMA_TABLE_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 12
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 3
+                        }
+                    ],
+                    "index": 1,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SchemaRelation",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "name": "deprecatedSinceVersion",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "name": "removedInVersion",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "sinceVersion",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 3,
+                            "isId": true,
+                            "name": "id",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 4
+                            },
+                            "index": 4,
+                            "isId": false,
+                            "name": "index",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "name": "property",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 5
+                            },
+                            "index": 6,
+                            "isId": false,
+                            "name": "foreignKey",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 6
+                            },
+                            "index": 7,
+                            "isId": false,
+                            "name": "manyToOneElems",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 7
+                            },
+                            "index": 8,
+                            "isId": false,
+                            "name": "oneToManyElems",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 8
+                            },
+                            "index": 9,
+                            "isId": false,
+                            "name": "relationType",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 9
+                            },
+                            "index": 10,
+                            "isId": false,
+                            "name": "isId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 11,
+                            "isId": false,
+                            "name": "entity",
+                            "relationRef": {
+                                "index": 4
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 12,
+                            "isId": false,
+                            "name": "relationEntity",
+                            "relationRef": {
+                                "index": 5
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 13,
+                            "isId": false,
+                            "name": "manyRelationColumns",
+                            "relationRef": {
+                                "index": 6
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 14,
+                            "isId": false,
+                            "name": "oneRelationColumns",
+                            "relationRef": {
+                                "index": 7
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 5
+                            },
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 11
+                            },
+                            "relationTableIndex": 5,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 12
+                            },
+                            "relationTableIndex": 5,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "cascade": 1,
+                                "mappedBy": "manyRelation"
+                            },
+                            "relationType": 0,
+                            "propertyRef": {
+                                "index": 13
+                            },
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "cascade": 1,
+                                "mappedBy": "oneRelation"
+                            },
+                            "relationType": 0,
+                            "propertyRef": {
+                                "index": 14
+                            },
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SCHEMA_RELATIONS",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REMOVED_IN_SCHEMA_VERSION_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SINCE_SCHEMA_VERSION_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "PROPERTY_INDEX",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "NAME",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 5
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IS_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 7
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 1
+                        },
+                        {
+                            "index": 7,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 3,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 5,
+                                    "oneRelationIndex": 5,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SCHEMA_ENTITY_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 3
+                        }
+                    ],
+                    "index": 2,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SchemaProperty",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "name": "deprecatedSinceVersion",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "name": "removedInVersion",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "sinceVersion",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 3,
+                            "isId": true,
+                            "name": "id",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 4
+                            },
+                            "index": 4,
+                            "isId": false,
+                            "name": "index",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "name": "entity",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 5
+                            },
+                            "index": 6,
+                            "isId": false,
+                            "name": "name",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 6
+                            },
+                            "index": 7,
+                            "isId": false,
+                            "name": "isId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 8,
+                            "isId": false,
+                            "name": "propertyColumns",
+                            "relationRef": {
+                                "index": 4
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 9,
+                            "isId": false,
+                            "name": "relation",
+                            "relationRef": {
+                                "index": 5
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 5
+                            },
+                            "relationTableIndex": 5,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "cascade": 1,
+                                "mappedBy": "property"
+                            },
+                            "relationType": 0,
+                            "propertyRef": {
+                                "index": 8
+                            },
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "cascade": 1,
+                                "mappedBy": "property"
+                            },
+                            "relationType": 0,
+                            "propertyRef": {
+                                "index": 9
+                            },
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SCHEMA_PROPERTIES",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REMOVED_IN_SCHEMA_VERSION_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SINCE_SCHEMA_VERSION_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 3,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 4,
+                                    "oneRelationIndex": 4,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SCHEMA_COLUMN_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 4,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 2,
+                                    "oneRelationIndex": 4,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SCHEMA_PROPERTY_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 3
+                        },
+                        {
+                            "index": 4
+                        }
+                    ],
+                    "index": 3,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SchemaPropertyColumn",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "name": "deprecatedSinceVersion",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "name": "removedInVersion",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "sinceVersion",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": true,
+                            "name": "column",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": true,
+                            "name": "property",
+                            "relationRef": {
+                                "index": 4
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 4,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SCHEMA_PROPERTY_COLUMNS",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REMOVED_IN_SCHEMA_VERSION_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SINCE_SCHEMA_VERSION_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "COLUMN_INDEX",
                             "notNull": true,
@@ -217,7 +1629,7 @@ exports.SCHEMA = {
                             "index": 3
                         }
                     ],
-                    "index": 0,
+                    "index": 4,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "SchemaColumn",
@@ -409,7 +1821,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 12
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 3,
                             "sinceVersion": 1
                         },
                         {
@@ -422,7 +1834,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 13
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -435,1425 +1847,13 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 14
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 0,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "SCHEMA_COLUMNS",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REMOVED_IN_SCHEMA_VERSION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SINCE_SCHEMA_VERSION_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 0,
-                                    "oneRelationIndex": 4,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SCHEMA_COLUMN_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 4,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 4,
-                                    "oneRelationIndex": 4,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SCHEMA_PROPERTY_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 3
-                        },
-                        {
-                            "index": 4
-                        }
-                    ],
-                    "index": 1,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "SchemaPropertyColumn",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "name": "deprecatedSinceVersion",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "name": "removedInVersion",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "name": "sinceVersion",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": true,
-                            "name": "column",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": true,
-                            "name": "property",
-                            "relationRef": {
-                                "index": 4
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": true,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 4,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SCHEMA_PROPERTY_COLUMNS",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REMOVED_IN_SCHEMA_VERSION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SINCE_SCHEMA_VERSION_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 0,
-                                    "oneRelationIndex": 5,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "MANY_SCHEMA_COLUMN_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 4,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 0,
-                                    "oneRelationIndex": 6,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ONE_SCHEMA_COLUMN_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 5,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 3,
-                                    "oneRelationIndex": 6,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "MANY_SCHEMA_RELATION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 6,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 3,
-                                    "oneRelationIndex": 7,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ONE_SCHEMA_RELATION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 8,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 7,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 3,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "PARENT_RELATION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 8
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 3
-                        }
-                    ],
-                    "index": 2,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "SchemaRelationColumn",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "name": "deprecatedSinceVersion",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "name": "removedInVersion",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "name": "sinceVersion",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 3,
-                            "isId": true,
-                            "name": "id",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "manyColumn",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "oneColumn",
-                            "relationRef": {
-                                "index": 4
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "name": "manyRelation",
-                            "relationRef": {
-                                "index": 5
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 7,
-                            "isId": false,
-                            "name": "oneRelation",
-                            "relationRef": {
-                                "index": 6
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 8,
-                            "isId": false,
-                            "name": "parentRelation",
-                            "relationRef": {
-                                "index": 7
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 6
-                            },
-                            "relationTableIndex": 3,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 7
-                            },
-                            "relationTableIndex": 3,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 7,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 8
-                            },
-                            "relationTableIndex": 3,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SCHEMA_RELATION_COLUMNS",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REMOVED_IN_SCHEMA_VERSION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SINCE_SCHEMA_VERSION_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "RELATION_INDEX",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "FOREIGN_KEY",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 3
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "MANY_TO_ONE_ELEMENTS",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 3
-                        },
-                        {
-                            "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ONE_TO_MANY_ELEMENTS",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 8
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 3
-                        },
-                        {
-                            "index": 8,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "RELATION_TYPE",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 9
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 9,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "IS_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 10
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 1
-                        },
-                        {
-                            "index": 10,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 4,
-                                    "oneRelationIndex": 5,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SCHEMA_PROPERTY_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 11,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 4,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 5,
-                                    "oneRelationIndex": 6,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SCHEMA_TABLE_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 11
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 12,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 5,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 5,
-                                    "oneRelationIndex": 7,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "RELATION_SCHEMA_TABLE_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 12
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 3
-                        }
-                    ],
-                    "index": 3,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "SchemaRelation",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "name": "deprecatedSinceVersion",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "name": "removedInVersion",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "name": "sinceVersion",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 3,
-                            "isId": true,
-                            "name": "id",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 4
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "index",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "property",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 5
-                            },
-                            "index": 6,
-                            "isId": false,
-                            "name": "foreignKey",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 6
-                            },
-                            "index": 7,
-                            "isId": false,
-                            "name": "manyToOneElems",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 7
-                            },
-                            "index": 8,
-                            "isId": false,
-                            "name": "oneToManyElems",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 8
-                            },
-                            "index": 9,
-                            "isId": false,
-                            "name": "relationType",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 9
-                            },
-                            "index": 10,
-                            "isId": false,
-                            "name": "isId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 11,
-                            "isId": false,
-                            "name": "entity",
-                            "relationRef": {
-                                "index": 4
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 12,
-                            "isId": false,
-                            "name": "relationEntity",
-                            "relationRef": {
-                                "index": 5
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 13,
-                            "isId": false,
-                            "name": "manyRelationColumns",
-                            "relationRef": {
-                                "index": 6
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 14,
-                            "isId": false,
-                            "name": "oneRelationColumns",
-                            "relationRef": {
-                                "index": 7
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 4,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 11
-                            },
-                            "relationTableIndex": 5,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 12
-                            },
-                            "relationTableIndex": 5,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "cascade": 1,
-                                "mappedBy": "manyRelation"
-                            },
-                            "relationType": 0,
-                            "propertyRef": {
-                                "index": 13
-                            },
-                            "relationTableIndex": 2,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 7,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "cascade": 1,
-                                "mappedBy": "oneRelation"
-                            },
-                            "relationType": 0,
-                            "propertyRef": {
-                                "index": 14
-                            },
-                            "relationTableIndex": 2,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SCHEMA_RELATIONS",
-                        "indexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REMOVED_IN_SCHEMA_VERSION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SINCE_SCHEMA_VERSION_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "PROPERTY_INDEX",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "NAME",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 5
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "IS_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 1
-                        },
-                        {
-                            "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 5,
-                                    "oneRelationIndex": 5,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SCHEMA_ENTITY_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 3
-                        }
-                    ],
-                    "index": 4,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "SchemaProperty",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "name": "deprecatedSinceVersion",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "name": "removedInVersion",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "name": "sinceVersion",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 3,
-                            "isId": true,
-                            "name": "id",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 4
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "index",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "entity",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 5
-                            },
-                            "index": 6,
-                            "isId": false,
-                            "name": "name",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 6
-                            },
-                            "index": 7,
-                            "isId": false,
-                            "name": "isId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 8,
-                            "isId": false,
-                            "name": "propertyColumns",
-                            "relationRef": {
-                                "index": 4
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 9,
-                            "isId": false,
-                            "name": "relation",
-                            "relationRef": {
-                                "index": 5
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "relationType": 1,
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 5,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "cascade": 1,
-                                "mappedBy": "property"
-                            },
-                            "relationType": 0,
-                            "propertyRef": {
-                                "index": 8
-                            },
-                            "relationTableIndex": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "cascade": 1,
-                                "mappedBy": "property"
-                            },
-                            "relationType": 0,
-                            "propertyRef": {
-                                "index": 9
-                            },
-                            "relationTableIndex": 3,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SCHEMA_PROPERTIES",
                         "indexes": []
                     }
                 },
@@ -2221,7 +2221,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 10
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 4,
                             "sinceVersion": 1
                         },
                         {
@@ -2235,7 +2235,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 11
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 2,
                             "sinceVersion": 1
                         },
                         {
@@ -2248,7 +2248,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 12
                             },
-                            "relationTableIndex": 3,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -2261,7 +2261,7 @@ exports.SCHEMA = {
                             "propertyRef": {
                                 "index": 13
                             },
-                            "relationTableIndex": 3,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         }
                     ],

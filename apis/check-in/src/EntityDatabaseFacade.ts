@@ -49,7 +49,7 @@ export class EntityDatabaseFacade<Entity,
 		EntityCascadeGraph, IQ> {
 
 	duo: IDuo<Entity, EntitySelect, EntityCreate,
-		EntityUpdateProperties, EntityId,
+		EntityUpdateColumns, EntityUpdateProperties, EntityId,
 		EntityCascadeGraph, IQ>
 
 	find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>

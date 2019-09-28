@@ -1,9 +1,4 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-export interface IDailySyncLog {
-    databaseId: number;
-    date: number;
-    repositoryId: number;
-}
 /**
  * SELECT - All fields and relations (optional).
  */

@@ -1,14 +1,13 @@
-import { IActor } from "../../generated/infrastructure/qactor";
-import { IRepository } from "../../generated/repository/qrepository";
-import { IRepositoryActor } from "../../generated/repository/qrepositoryactor";
+import { Actor } from '../infrastructure/Actor';
+import { Repository } from '../repository/Repository';
 /**
  * Created by Papa on 12/18/2016.
  */
 /**
  * A record of device+datatabase that adds to a repository
  */
-export declare class RepositoryActor implements IRepositoryActor {
+export declare class RepositoryActor {
     id: number;
-    actor: IActor;
-    repository: IRepository;
+    actor: Actor;
+    repository: Repository;
 }

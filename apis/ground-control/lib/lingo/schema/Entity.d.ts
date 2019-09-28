@@ -50,7 +50,7 @@ export interface DbEntity extends SchemaReferenceByIndex<TableIndex>, DatabaseOb
     /**
      * Map of all columns in the entity by name.
      */
-    columnMap?: {
+    columnMap: {
         [name: string]: DbColumn;
     };
     /**
@@ -60,7 +60,7 @@ export interface DbEntity extends SchemaReferenceByIndex<TableIndex>, DatabaseOb
     /**
      * Map of all columns in the entity by name.
      */
-    idColumnMap?: {
+    idColumnMap: {
         [name: string]: DbColumn;
     };
     /**
@@ -79,7 +79,7 @@ export interface DbEntity extends SchemaReferenceByIndex<TableIndex>, DatabaseOb
     /**
      * Map of all properties in the entity by name.
      */
-    propertyMap?: {
+    propertyMap: {
         [name: string]: DbProperty;
     };
     /**

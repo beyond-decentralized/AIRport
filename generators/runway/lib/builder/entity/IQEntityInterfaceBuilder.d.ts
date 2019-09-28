@@ -1,15 +1,13 @@
-import { TypeOrParamDocEntry } from '../../parser/DocEntry';
 import { EntityCandidate } from '../../parser/EntityCandidate';
-import { IQBuilder } from './../QBuilder';
+import { IBuilder } from '../Builder';
 import { QColumnBuilder } from './QColumnBuilder';
 import { QEntityBuilder } from './QEntityBuilder';
 import { QPropertyBuilder } from './QPropertyBuilder';
 import { QRelationBuilder } from './QRelationBuilder';
-import { QTransientBuilder } from './QTransientBuilder';
 /**
  * Created by Papa on 5/20/2016.
  */
-export declare class IQEntityInterfaceBuilder implements IQBuilder {
+export declare class IQEntityInterfaceBuilder implements IBuilder {
     entity: EntityCandidate;
     private qEntityBuilder;
     idPropertyBuilders: QPropertyBuilder[];
@@ -17,8 +15,6 @@ export declare class IQEntityInterfaceBuilder implements IQBuilder {
     nonIdColumnBuilders: QColumnBuilder[];
     nonIdPropertyBuilders: QPropertyBuilder[];
     nonIdRelationBuilders: QRelationBuilder[];
-    transientPropertyBuilders: QTransientBuilder[];
     constructor(entity: EntityCandidate, qEntityBuilder: QEntityBuilder);
     build(): string;
-    getTypeString(docEntry: TypeOrParamDocEntry): string;
 }

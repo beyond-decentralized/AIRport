@@ -1,10 +1,4 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-export interface ITuningParameters {
-    serverType: string;
-    parameterGroup: string;
-    parameterName: string;
-    parameterValue?: string;
-}
 /**
  * SELECT - All fields and relations (optional).
  */

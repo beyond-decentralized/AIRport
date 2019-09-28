@@ -1,12 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { DbSchema } from '@airport/ground-control';
-import { IApplication, ApplicationECascadeGraph, ApplicationESelect, QApplication } from './qapplication';
-export interface IDomain {
-    id: number;
-    name?: string;
-    applications?: IApplication[];
-    schemas?: DbSchema[];
-}
+import { ApplicationECascadeGraph, ApplicationESelect, QApplication } from './qapplication';
 /**
  * SELECT - All fields and relations (optional).
  */

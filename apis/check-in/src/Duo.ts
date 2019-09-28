@@ -4,6 +4,7 @@ import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
+	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IFieldsSelect,
 	IQEntity,
@@ -91,12 +92,13 @@ class FieldsSelect<EntitySelect extends IEntitySelectProperties>
 export class Duo<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
+	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdate extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	implements IDuo<Entity, EntitySelect, EntityCreate,
-		EntityUpdate, EntityId,
+		EntityUpdateColumns, EntityUpdate, EntityId,
 		EntityCascadeGraph, IQE> {
 
 	select: IFieldsSelect<EntitySelect>

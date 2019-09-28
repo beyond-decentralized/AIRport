@@ -2,7 +2,6 @@ import {
 	Column,
 	DbNumber,
 	Entity,
-	GeneratedValue,
 	Id,
 	JoinColumn,
 	ManyToOne,
@@ -18,10 +17,10 @@ import {
 	SchemaColumnAllocationSize,
 	SchemaColumnIsGenerated,
 	SQLDataType
-} from '@airport/ground-control'
-import {ISchemaPropertyColumn} from '../../generated/schema/qschemapropertycolumn'
-import {ISchemaRelationColumn} from '../../generated/schema/qschemarelationcolumn'
+}                              from '@airport/ground-control'
 import {SchemaEntity}          from './SchemaEntity'
+import {SchemaPropertyColumn}  from './SchemaPropertyColumn'
+import {SchemaRelationColumn}  from './SchemaRelationColumn'
 import {VersionedSchemaObject} from './VersionedSchemaObject'
 
 @Entity()
@@ -37,7 +36,7 @@ export class SchemaColumn
 	/**
 	 * Overall column index (within the entity).
 	 */
-		// FIXME: disallow SQL keywords in names (for columns, etc.), like 'INDEX', etc.
+	// FIXME: disallow SQL keywords in names (for columns, etc.), like 'INDEX', etc.
 	@Column({name: 'COLUMN_INDEX', nullable: false})
 	index: ColumnIndex
 
@@ -68,12 +67,12 @@ export class SchemaColumn
 	type: SQLDataType
 
 	@OneToMany({mappedBy: 'column'})
-	propertyColumns: ISchemaPropertyColumn[] = []
+	propertyColumns: SchemaPropertyColumn[] = []
 
 	@OneToMany({mappedBy: 'manyColumn'})
-	manyRelationColumns: ISchemaRelationColumn[] = []
+	manyRelationColumns: SchemaRelationColumn[] = []
 
 	@OneToMany({mappedBy: 'oneColumn'})
-	oneRelationColumns: ISchemaRelationColumn[] = []
+	oneRelationColumns: SchemaRelationColumn[] = []
 
 }

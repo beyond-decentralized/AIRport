@@ -1,15 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { IUser, UserEOptionalId, UserESelect, QUserQRelation, ITerminal, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
-import { IActorApplication, ActorApplicationECascadeGraph, ActorApplicationESelect, QActorApplication } from './qactorapplication';
-import { IRepositoryActor, RepositoryActorECascadeGraph, RepositoryActorESelect, QRepositoryActor } from '../repository/qrepositoryactor';
-export interface IActor {
-    id: number;
-    randomId?: number;
-    user?: IUser;
-    terminal?: ITerminal;
-    actorApplications?: IActorApplication[];
-    repositoryActor?: IRepositoryActor[];
-}
+import { UserEOptionalId, UserESelect, QUserQRelation, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
+import { ActorApplicationECascadeGraph, ActorApplicationESelect, QActorApplication } from './qactorapplication';
+import { RepositoryActorECascadeGraph, RepositoryActorESelect, QRepositoryActor } from '../repository/qrepositoryactor';
 /**
  * SELECT - All fields and relations (optional).
  */

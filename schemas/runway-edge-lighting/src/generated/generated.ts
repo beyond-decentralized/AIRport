@@ -2,8 +2,5 @@ export * from './mappedSuperclass'
 export * from './qSchema';
 export * from './baseDaos';
 export * from './baseDuos';
-export * from './qlogentry';
-export * from './qlogentrytype';
-export * from './qlogentryvalue';
-export * from './qloggederror';
-export * from './qloggederrorstacktrace';
+export * from './qInterfaces';
+export * from './interfaces';

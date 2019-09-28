@@ -83,7 +83,7 @@ export interface DbEntity
 	/**
 	 * Map of all columns in the entity by name.
 	 */
-	columnMap?: { [name: string]: DbColumn };
+	columnMap: { [name: string]: DbColumn };
 
 	/**
 	 * Array of all columns in the entity by index.
@@ -93,7 +93,7 @@ export interface DbEntity
 	/**
 	 * Map of all columns in the entity by name.
 	 */
-	idColumnMap?: { [name: string]: DbColumn };
+	idColumnMap: { [name: string]: DbColumn };
 
 	/**
 	 * Array of all @Id() columns in the entity by index.
@@ -118,7 +118,7 @@ export interface DbEntity
 	/**
 	 * Map of all properties in the entity by name.
 	 */
-	propertyMap?: { [name: string]: DbProperty };
+	propertyMap: { [name: string]: DbProperty };
 
 	/**
 	 * Array of all properties in the entity by index.

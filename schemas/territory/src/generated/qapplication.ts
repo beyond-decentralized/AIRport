@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IDomain,
 	DomainECascadeGraph,
 	DomainEId,
 	DomainEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QDomainQRelation,
 } from './qdomain';
 import {
-	IApplicationPackage,
 	ApplicationPackageECascadeGraph,
 	ApplicationPackageEId,
 	ApplicationPackageEOptionalId,
@@ -48,30 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IApplication {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	name?: string;
-
-	// Non-Id Relations
-	domain?: IDomain;
-	applicationPackages?: IApplicationPackage[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

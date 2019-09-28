@@ -4,10 +4,11 @@ import {
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,
+	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control'
-import { Duo } from "@airport/check-in"
+import { Duo } from '@airport/check-in'
 import {
 	EntityId as DbEntityId
 } from '@airport/ground-control'
@@ -16,7 +17,9 @@ import {
 	duoDiSet
 } from './qSchema'
 import {
-	ILogEntry,
+	ILogEntry
+} from './logentry'
+import {
 	LogEntryESelect,
 	LogEntryECreateColumns,
 	LogEntryECreateProperties,
@@ -27,7 +30,9 @@ import {
 	QLogEntry
 } from './qlogentry'
 import {
-	ILogEntryType,
+	ILogEntryType
+} from './logentrytype'
+import {
 	LogEntryTypeESelect,
 	LogEntryTypeECreateColumns,
 	LogEntryTypeECreateProperties,
@@ -38,7 +43,9 @@ import {
 	QLogEntryType
 } from './qlogentrytype'
 import {
-	ILogEntryValue,
+	ILogEntryValue
+} from './logentryvalue'
+import {
 	LogEntryValueESelect,
 	LogEntryValueECreateColumns,
 	LogEntryValueECreateProperties,
@@ -49,7 +56,9 @@ import {
 	QLogEntryValue
 } from './qlogentryvalue'
 import {
-	ILoggedError,
+	ILoggedError
+} from './loggederror'
+import {
 	LoggedErrorESelect,
 	LoggedErrorECreateColumns,
 	LoggedErrorECreateProperties,
@@ -60,7 +69,9 @@ import {
 	QLoggedError
 } from './qloggederror'
 import {
-	ILoggedErrorStackTrace,
+	ILoggedErrorStackTrace
+} from './loggederrorstacktrace'
+import {
 	LoggedErrorStackTraceESelect,
 	LoggedErrorStackTraceECreateColumns,
 	LoggedErrorStackTraceECreateProperties,
@@ -72,10 +83,11 @@ import {
 } from './qloggederrorstacktrace'
 
 
-// Schema Q object Dependency Injection readiness detection DAO
+// Schema Q object Dependency Injection readiness detection Duo
 export class SQDIDuo<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
+  EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
@@ -83,6 +95,7 @@ export class SQDIDuo<Entity,
 	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,
+		EntityUpdateColumns,
 		EntityUpdateProperties,
 		EntityId,
 		EntityCascadeGraph,
@@ -97,11 +110,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseLogEntryDuo
-  extends IDuo<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateProperties, LogEntryEId, LogEntryECascadeGraph, QLogEntry> {
+  extends IDuo<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateColumns, LogEntryEUpdateProperties, LogEntryEId, LogEntryECascadeGraph, QLogEntry> {
 }
 
 export class BaseLogEntryDuo
-  extends SQDIDuo<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateProperties, LogEntryEId, LogEntryECascadeGraph, QLogEntry>
+  extends SQDIDuo<ILogEntry, LogEntryESelect, LogEntryECreateProperties, LogEntryEUpdateColumns, LogEntryEUpdateProperties, LogEntryEId, LogEntryECascadeGraph, QLogEntry>
 	implements IBaseLogEntryDuo {
 
 	static diSet(): boolean {
@@ -115,11 +128,11 @@ export class BaseLogEntryDuo
 
 
 export interface IBaseLogEntryTypeDuo
-  extends IDuo<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateProperties, LogEntryTypeEId, LogEntryTypeECascadeGraph, QLogEntryType> {
+  extends IDuo<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateColumns, LogEntryTypeEUpdateProperties, LogEntryTypeEId, LogEntryTypeECascadeGraph, QLogEntryType> {
 }
 
 export class BaseLogEntryTypeDuo
-  extends SQDIDuo<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateProperties, LogEntryTypeEId, LogEntryTypeECascadeGraph, QLogEntryType>
+  extends SQDIDuo<ILogEntryType, LogEntryTypeESelect, LogEntryTypeECreateProperties, LogEntryTypeEUpdateColumns, LogEntryTypeEUpdateProperties, LogEntryTypeEId, LogEntryTypeECascadeGraph, QLogEntryType>
 	implements IBaseLogEntryTypeDuo {
 
 	static diSet(): boolean {
@@ -133,11 +146,11 @@ export class BaseLogEntryTypeDuo
 
 
 export interface IBaseLogEntryValueDuo
-  extends IDuo<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateProperties, LogEntryValueEId, LogEntryValueECascadeGraph, QLogEntryValue> {
+  extends IDuo<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateColumns, LogEntryValueEUpdateProperties, LogEntryValueEId, LogEntryValueECascadeGraph, QLogEntryValue> {
 }
 
 export class BaseLogEntryValueDuo
-  extends SQDIDuo<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateProperties, LogEntryValueEId, LogEntryValueECascadeGraph, QLogEntryValue>
+  extends SQDIDuo<ILogEntryValue, LogEntryValueESelect, LogEntryValueECreateProperties, LogEntryValueEUpdateColumns, LogEntryValueEUpdateProperties, LogEntryValueEId, LogEntryValueECascadeGraph, QLogEntryValue>
 	implements IBaseLogEntryValueDuo {
 
 	static diSet(): boolean {
@@ -151,11 +164,11 @@ export class BaseLogEntryValueDuo
 
 
 export interface IBaseLoggedErrorDuo
-  extends IDuo<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateProperties, LoggedErrorEId, LoggedErrorECascadeGraph, QLoggedError> {
+  extends IDuo<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateColumns, LoggedErrorEUpdateProperties, LoggedErrorEId, LoggedErrorECascadeGraph, QLoggedError> {
 }
 
 export class BaseLoggedErrorDuo
-  extends SQDIDuo<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateProperties, LoggedErrorEId, LoggedErrorECascadeGraph, QLoggedError>
+  extends SQDIDuo<ILoggedError, LoggedErrorESelect, LoggedErrorECreateProperties, LoggedErrorEUpdateColumns, LoggedErrorEUpdateProperties, LoggedErrorEId, LoggedErrorECascadeGraph, QLoggedError>
 	implements IBaseLoggedErrorDuo {
 
 	static diSet(): boolean {
@@ -169,11 +182,11 @@ export class BaseLoggedErrorDuo
 
 
 export interface IBaseLoggedErrorStackTraceDuo
-  extends IDuo<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, LoggedErrorStackTraceECascadeGraph, QLoggedErrorStackTrace> {
+  extends IDuo<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateColumns, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, LoggedErrorStackTraceECascadeGraph, QLoggedErrorStackTrace> {
 }
 
 export class BaseLoggedErrorStackTraceDuo
-  extends SQDIDuo<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, LoggedErrorStackTraceECascadeGraph, QLoggedErrorStackTrace>
+  extends SQDIDuo<ILoggedErrorStackTrace, LoggedErrorStackTraceESelect, LoggedErrorStackTraceECreateProperties, LoggedErrorStackTraceEUpdateColumns, LoggedErrorStackTraceEUpdateProperties, LoggedErrorStackTraceEId, LoggedErrorStackTraceECascadeGraph, QLoggedErrorStackTrace>
 	implements IBaseLoggedErrorStackTraceDuo {
 
 	static diSet(): boolean {

@@ -6,7 +6,7 @@ export declare class SchemaRelationColumn extends VersionedSchemaObject {
     id: SchemaRelationColumnId;
     manyColumn: SchemaColumn;
     oneColumn: SchemaColumn;
-    manyRelation: SchemaRelation;
-    oneRelation: SchemaRelation;
+    manyRelation?: SchemaRelation;
+    oneRelation?: SchemaRelation;
     parentRelation: SchemaRelation;
 }

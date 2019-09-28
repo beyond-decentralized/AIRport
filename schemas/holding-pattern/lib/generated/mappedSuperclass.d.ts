@@ -43,10 +43,10 @@ export declare const MAPPED_SUPERCLASS: ({
                 "Id"?: undefined;
                 "JoinColumn"?: undefined;
                 "ManyToOne"?: undefined;
-                "IActor"?: undefined;
-                "IRepository"?: undefined;
+                "Actor"?: undefined;
                 "SystemWideOperationId"?: undefined;
                 "Stageable"?: undefined;
+                "Repository"?: undefined;
                 "RepositoryEntity"?: undefined;
                 "IUser"?: undefined;
                 "ImmutableRepoRow"?: undefined;
@@ -54,10 +54,10 @@ export declare const MAPPED_SUPERCLASS: ({
             };
             "importMapByModulePath": {
                 "@airport/air-control": any;
-                "../../generated/infrastructure/qactor"?: undefined;
-                "../../generated/repository/qrepository"?: undefined;
+                "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "../infrastructure/Stageable"?: undefined;
+                "./Repository"?: undefined;
                 "../repository/RepositoryEntity"?: undefined;
                 "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
@@ -194,23 +194,11 @@ export declare const MAPPED_SUPERCLASS: ({
                 "JoinColumn": any;
                 "ManyToOne": any;
                 "MappedSuperclass": any;
-                "IActor": {
+                "Actor": {
                     "fileImports": any;
                     "isLocal": boolean;
                     "objectMapByAsName": {
-                        "IActor": {
-                            "asName": string;
-                            "moduleImport": any;
-                            "sourceName": string;
-                        };
-                    };
-                    "path": string;
-                };
-                "IRepository": {
-                    "fileImports": any;
-                    "isLocal": boolean;
-                    "objectMapByAsName": {
-                        "IRepository": {
+                        "Actor": {
                             "asName": string;
                             "moduleImport": any;
                             "sourceName": string;
@@ -242,6 +230,18 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     "path": string;
                 };
+                "Repository": {
+                    "fileImports": any;
+                    "isLocal": boolean;
+                    "objectMapByAsName": {
+                        "Repository": {
+                            "asName": string;
+                            "moduleImport": any;
+                            "sourceName": string;
+                        };
+                    };
+                    "path": string;
+                };
                 "RepositoryEntity"?: undefined;
                 "IUser"?: undefined;
                 "ImmutableRepoRow"?: undefined;
@@ -249,10 +249,10 @@ export declare const MAPPED_SUPERCLASS: ({
             };
             "importMapByModulePath": {
                 "@airport/air-control": any;
-                "../../generated/infrastructure/qactor": any;
-                "../../generated/repository/qrepository": any;
+                "../infrastructure/Actor": any;
                 "../common": any;
                 "../infrastructure/Stageable": any;
+                "./Repository": any;
                 "../repository/RepositoryEntity"?: undefined;
                 "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
@@ -351,19 +351,19 @@ export declare const MAPPED_SUPERCLASS: ({
                     "Id"?: undefined;
                     "JoinColumn"?: undefined;
                     "ManyToOne"?: undefined;
-                    "IActor"?: undefined;
-                    "IRepository"?: undefined;
+                    "Actor"?: undefined;
                     "SystemWideOperationId"?: undefined;
                     "Stageable"?: undefined;
+                    "Repository"?: undefined;
                     "IUser"?: undefined;
                     "RepositoryEntity"?: undefined;
                 };
                 "importMapByModulePath": {
                     "@airport/air-control": any;
-                    "../../generated/infrastructure/qactor"?: undefined;
-                    "../../generated/repository/qrepository"?: undefined;
+                    "../infrastructure/Actor"?: undefined;
                     "../common"?: undefined;
                     "../infrastructure/Stageable"?: undefined;
+                    "./Repository"?: undefined;
                     "@airport/travel-document-checkpoint"?: undefined;
                     "../repository/RepositoryEntity"?: undefined;
                 };
@@ -448,10 +448,10 @@ export declare const MAPPED_SUPERCLASS: ({
                 "Id"?: undefined;
                 "JoinColumn"?: undefined;
                 "ManyToOne"?: undefined;
-                "IActor"?: undefined;
-                "IRepository"?: undefined;
+                "Actor"?: undefined;
                 "SystemWideOperationId"?: undefined;
                 "Stageable"?: undefined;
+                "Repository"?: undefined;
                 "IUser"?: undefined;
                 "ImmutableRepoRow"?: undefined;
                 "ImmutableRow"?: undefined;
@@ -459,10 +459,10 @@ export declare const MAPPED_SUPERCLASS: ({
             "importMapByModulePath": {
                 "@airport/air-control": any;
                 "../repository/RepositoryEntity": any;
-                "../../generated/infrastructure/qactor"?: undefined;
-                "../../generated/repository/qrepository"?: undefined;
+                "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "../infrastructure/Stageable"?: undefined;
+                "./Repository"?: undefined;
                 "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
                 "./ImmutableRow"?: undefined;
@@ -577,23 +577,11 @@ export declare const MAPPED_SUPERCLASS: ({
                     "JoinColumn": any;
                     "ManyToOne": any;
                     "MappedSuperclass": any;
-                    "IActor": {
+                    "Actor": {
                         "fileImports": any;
                         "isLocal": boolean;
                         "objectMapByAsName": {
-                            "IActor": {
-                                "asName": string;
-                                "moduleImport": any;
-                                "sourceName": string;
-                            };
-                        };
-                        "path": string;
-                    };
-                    "IRepository": {
-                        "fileImports": any;
-                        "isLocal": boolean;
-                        "objectMapByAsName": {
-                            "IRepository": {
+                            "Actor": {
                                 "asName": string;
                                 "moduleImport": any;
                                 "sourceName": string;
@@ -625,15 +613,27 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         "path": string;
                     };
+                    "Repository": {
+                        "fileImports": any;
+                        "isLocal": boolean;
+                        "objectMapByAsName": {
+                            "Repository": {
+                                "asName": string;
+                                "moduleImport": any;
+                                "sourceName": string;
+                            };
+                        };
+                        "path": string;
+                    };
                     "IUser"?: undefined;
                     "RepositoryEntity"?: undefined;
                 };
                 "importMapByModulePath": {
                     "@airport/air-control": any;
-                    "../../generated/infrastructure/qactor": any;
-                    "../../generated/repository/qrepository": any;
+                    "../infrastructure/Actor": any;
                     "../common": any;
                     "../infrastructure/Stageable": any;
+                    "./Repository": any;
                     "@airport/travel-document-checkpoint"?: undefined;
                     "../repository/RepositoryEntity"?: undefined;
                 };
@@ -730,17 +730,17 @@ export declare const MAPPED_SUPERCLASS: ({
                         "Id"?: undefined;
                         "JoinColumn"?: undefined;
                         "ManyToOne"?: undefined;
-                        "IActor"?: undefined;
-                        "IRepository"?: undefined;
+                        "Actor"?: undefined;
                         "SystemWideOperationId"?: undefined;
                         "Stageable"?: undefined;
+                        "Repository"?: undefined;
                     };
                     "importMapByModulePath": {
                         "@airport/air-control": any;
-                        "../../generated/infrastructure/qactor"?: undefined;
-                        "../../generated/repository/qrepository"?: undefined;
+                        "../infrastructure/Actor"?: undefined;
                         "../common"?: undefined;
                         "../infrastructure/Stageable"?: undefined;
+                        "./Repository"?: undefined;
                     };
                 };
                 "properties": {
@@ -825,9 +825,9 @@ export declare const MAPPED_SUPERCLASS: ({
                 "Id"?: undefined;
                 "JoinColumn"?: undefined;
                 "ManyToOne"?: undefined;
-                "IActor"?: undefined;
-                "IRepository"?: undefined;
+                "Actor"?: undefined;
                 "SystemWideOperationId"?: undefined;
+                "Repository"?: undefined;
                 "RepositoryEntity"?: undefined;
                 "IUser"?: undefined;
                 "ImmutableRepoRow"?: undefined;
@@ -836,9 +836,9 @@ export declare const MAPPED_SUPERCLASS: ({
             "importMapByModulePath": {
                 "@airport/air-control": any;
                 "../infrastructure/Stageable": any;
-                "../../generated/infrastructure/qactor"?: undefined;
-                "../../generated/repository/qrepository"?: undefined;
+                "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
+                "./Repository"?: undefined;
                 "../repository/RepositoryEntity"?: undefined;
                 "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
@@ -898,19 +898,19 @@ export declare const MAPPED_SUPERCLASS: ({
                     "Id"?: undefined;
                     "JoinColumn"?: undefined;
                     "ManyToOne"?: undefined;
-                    "IActor"?: undefined;
-                    "IRepository"?: undefined;
+                    "Actor"?: undefined;
                     "SystemWideOperationId"?: undefined;
                     "Stageable"?: undefined;
+                    "Repository"?: undefined;
                     "IUser"?: undefined;
                     "RepositoryEntity"?: undefined;
                 };
                 "importMapByModulePath": {
                     "@airport/air-control": any;
-                    "../../generated/infrastructure/qactor"?: undefined;
-                    "../../generated/repository/qrepository"?: undefined;
+                    "../infrastructure/Actor"?: undefined;
                     "../common"?: undefined;
                     "../infrastructure/Stageable"?: undefined;
+                    "./Repository"?: undefined;
                     "@airport/travel-document-checkpoint"?: undefined;
                     "../repository/RepositoryEntity"?: undefined;
                 };
@@ -1024,10 +1024,10 @@ export declare const MAPPED_SUPERCLASS: ({
                 };
                 "GeneratedValue"?: undefined;
                 "Id"?: undefined;
-                "IActor"?: undefined;
-                "IRepository"?: undefined;
+                "Actor"?: undefined;
                 "SystemWideOperationId"?: undefined;
                 "Stageable"?: undefined;
+                "Repository"?: undefined;
                 "ImmutableRepoRow"?: undefined;
                 "ImmutableRow"?: undefined;
             };
@@ -1035,10 +1035,10 @@ export declare const MAPPED_SUPERCLASS: ({
                 "@airport/air-control": any;
                 "@airport/travel-document-checkpoint": any;
                 "../repository/RepositoryEntity": any;
-                "../../generated/infrastructure/qactor"?: undefined;
-                "../../generated/repository/qrepository"?: undefined;
+                "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "../infrastructure/Stageable"?: undefined;
+                "./Repository"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
                 "./ImmutableRow"?: undefined;
             };
@@ -1169,23 +1169,11 @@ export declare const MAPPED_SUPERCLASS: ({
                     "JoinColumn": any;
                     "ManyToOne": any;
                     "MappedSuperclass": any;
-                    "IActor": {
+                    "Actor": {
                         "fileImports": any;
                         "isLocal": boolean;
                         "objectMapByAsName": {
-                            "IActor": {
-                                "asName": string;
-                                "moduleImport": any;
-                                "sourceName": string;
-                            };
-                        };
-                        "path": string;
-                    };
-                    "IRepository": {
-                        "fileImports": any;
-                        "isLocal": boolean;
-                        "objectMapByAsName": {
-                            "IRepository": {
+                            "Actor": {
                                 "asName": string;
                                 "moduleImport": any;
                                 "sourceName": string;
@@ -1217,15 +1205,27 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         "path": string;
                     };
+                    "Repository": {
+                        "fileImports": any;
+                        "isLocal": boolean;
+                        "objectMapByAsName": {
+                            "Repository": {
+                                "asName": string;
+                                "moduleImport": any;
+                                "sourceName": string;
+                            };
+                        };
+                        "path": string;
+                    };
                     "IUser"?: undefined;
                     "RepositoryEntity"?: undefined;
                 };
                 "importMapByModulePath": {
                     "@airport/air-control": any;
-                    "../../generated/infrastructure/qactor": any;
-                    "../../generated/repository/qrepository": any;
+                    "../infrastructure/Actor": any;
                     "../common": any;
                     "../infrastructure/Stageable": any;
+                    "./Repository": any;
                     "@airport/travel-document-checkpoint"?: undefined;
                     "../repository/RepositoryEntity"?: undefined;
                 };
@@ -1322,17 +1322,17 @@ export declare const MAPPED_SUPERCLASS: ({
                         "Id"?: undefined;
                         "JoinColumn"?: undefined;
                         "ManyToOne"?: undefined;
-                        "IActor"?: undefined;
-                        "IRepository"?: undefined;
+                        "Actor"?: undefined;
                         "SystemWideOperationId"?: undefined;
                         "Stageable"?: undefined;
+                        "Repository"?: undefined;
                     };
                     "importMapByModulePath": {
                         "@airport/air-control": any;
-                        "../../generated/infrastructure/qactor"?: undefined;
-                        "../../generated/repository/qrepository"?: undefined;
+                        "../infrastructure/Actor"?: undefined;
                         "../common"?: undefined;
                         "../infrastructure/Stageable"?: undefined;
+                        "./Repository"?: undefined;
                     };
                 };
                 "properties": {
@@ -1446,9 +1446,9 @@ export declare const MAPPED_SUPERCLASS: ({
                 };
                 "GeneratedValue"?: undefined;
                 "Id"?: undefined;
-                "IActor"?: undefined;
-                "IRepository"?: undefined;
+                "Actor"?: undefined;
                 "SystemWideOperationId"?: undefined;
+                "Repository"?: undefined;
                 "RepositoryEntity"?: undefined;
                 "ImmutableRepoRow"?: undefined;
                 "ImmutableRow"?: undefined;
@@ -1457,9 +1457,9 @@ export declare const MAPPED_SUPERCLASS: ({
                 "@airport/air-control": any;
                 "@airport/travel-document-checkpoint": any;
                 "../infrastructure/Stageable": any;
-                "../../generated/infrastructure/qactor"?: undefined;
-                "../../generated/repository/qrepository"?: undefined;
+                "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
+                "./Repository"?: undefined;
                 "../repository/RepositoryEntity"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
                 "./ImmutableRow"?: undefined;
@@ -1657,19 +1657,19 @@ export declare const MAPPED_SUPERCLASS: ({
                     "Id"?: undefined;
                     "JoinColumn"?: undefined;
                     "ManyToOne"?: undefined;
-                    "IActor"?: undefined;
-                    "IRepository"?: undefined;
+                    "Actor"?: undefined;
                     "SystemWideOperationId"?: undefined;
                     "Stageable"?: undefined;
+                    "Repository"?: undefined;
                     "IUser"?: undefined;
                     "RepositoryEntity"?: undefined;
                 };
                 "importMapByModulePath": {
                     "@airport/air-control": any;
-                    "../../generated/infrastructure/qactor"?: undefined;
-                    "../../generated/repository/qrepository"?: undefined;
+                    "../infrastructure/Actor"?: undefined;
                     "../common"?: undefined;
                     "../infrastructure/Stageable"?: undefined;
+                    "./Repository"?: undefined;
                     "@airport/travel-document-checkpoint"?: undefined;
                     "../repository/RepositoryEntity"?: undefined;
                 };
@@ -1763,10 +1763,10 @@ export declare const MAPPED_SUPERCLASS: ({
                 "Id"?: undefined;
                 "JoinColumn"?: undefined;
                 "ManyToOne"?: undefined;
-                "IActor"?: undefined;
-                "IRepository"?: undefined;
+                "Actor"?: undefined;
                 "SystemWideOperationId"?: undefined;
                 "Stageable"?: undefined;
+                "Repository"?: undefined;
                 "RepositoryEntity"?: undefined;
                 "IUser"?: undefined;
                 "ImmutableRow"?: undefined;
@@ -1774,10 +1774,10 @@ export declare const MAPPED_SUPERCLASS: ({
             "importMapByModulePath": {
                 "@airport/air-control": any;
                 "./ImmutableRepoRow": any;
-                "../../generated/infrastructure/qactor"?: undefined;
-                "../../generated/repository/qrepository"?: undefined;
+                "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "../infrastructure/Stageable"?: undefined;
+                "./Repository"?: undefined;
                 "../repository/RepositoryEntity"?: undefined;
                 "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRow"?: undefined;
@@ -1886,19 +1886,19 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     "GeneratedValue"?: undefined;
                     "Id"?: undefined;
-                    "IActor"?: undefined;
-                    "IRepository"?: undefined;
+                    "Actor"?: undefined;
                     "SystemWideOperationId"?: undefined;
                     "Stageable"?: undefined;
+                    "Repository"?: undefined;
                 };
                 "importMapByModulePath": {
                     "@airport/air-control": any;
                     "@airport/travel-document-checkpoint": any;
                     "../repository/RepositoryEntity": any;
-                    "../../generated/infrastructure/qactor"?: undefined;
-                    "../../generated/repository/qrepository"?: undefined;
+                    "../infrastructure/Actor"?: undefined;
                     "../common"?: undefined;
                     "../infrastructure/Stageable"?: undefined;
+                    "./Repository"?: undefined;
                 };
             };
             "properties": {
@@ -2027,23 +2027,11 @@ export declare const MAPPED_SUPERCLASS: ({
                         "JoinColumn": any;
                         "ManyToOne": any;
                         "MappedSuperclass": any;
-                        "IActor": {
+                        "Actor": {
                             "fileImports": any;
                             "isLocal": boolean;
                             "objectMapByAsName": {
-                                "IActor": {
-                                    "asName": string;
-                                    "moduleImport": any;
-                                    "sourceName": string;
-                                };
-                            };
-                            "path": string;
-                        };
-                        "IRepository": {
-                            "fileImports": any;
-                            "isLocal": boolean;
-                            "objectMapByAsName": {
-                                "IRepository": {
+                                "Actor": {
                                     "asName": string;
                                     "moduleImport": any;
                                     "sourceName": string;
@@ -2075,13 +2063,25 @@ export declare const MAPPED_SUPERCLASS: ({
                             };
                             "path": string;
                         };
+                        "Repository": {
+                            "fileImports": any;
+                            "isLocal": boolean;
+                            "objectMapByAsName": {
+                                "Repository": {
+                                    "asName": string;
+                                    "moduleImport": any;
+                                    "sourceName": string;
+                                };
+                            };
+                            "path": string;
+                        };
                     };
                     "importMapByModulePath": {
                         "@airport/air-control": any;
-                        "../../generated/infrastructure/qactor": any;
-                        "../../generated/repository/qrepository": any;
+                        "../infrastructure/Actor": any;
                         "../common": any;
                         "../infrastructure/Stageable": any;
+                        "./Repository": any;
                     };
                 };
                 "properties": ({
@@ -2264,10 +2264,10 @@ export declare const MAPPED_SUPERCLASS: ({
                 "Id"?: undefined;
                 "JoinColumn"?: undefined;
                 "ManyToOne"?: undefined;
-                "IActor"?: undefined;
-                "IRepository"?: undefined;
+                "Actor"?: undefined;
                 "SystemWideOperationId"?: undefined;
                 "Stageable"?: undefined;
+                "Repository"?: undefined;
                 "RepositoryEntity"?: undefined;
                 "IUser"?: undefined;
                 "ImmutableRepoRow"?: undefined;
@@ -2275,10 +2275,10 @@ export declare const MAPPED_SUPERCLASS: ({
             "importMapByModulePath": {
                 "@airport/air-control": any;
                 "./ImmutableRow": any;
-                "../../generated/infrastructure/qactor"?: undefined;
-                "../../generated/repository/qrepository"?: undefined;
+                "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "../infrastructure/Stageable"?: undefined;
+                "./Repository"?: undefined;
                 "../repository/RepositoryEntity"?: undefined;
                 "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
@@ -2387,18 +2387,18 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     "GeneratedValue"?: undefined;
                     "Id"?: undefined;
-                    "IActor"?: undefined;
-                    "IRepository"?: undefined;
+                    "Actor"?: undefined;
                     "SystemWideOperationId"?: undefined;
+                    "Repository"?: undefined;
                     "RepositoryEntity"?: undefined;
                 };
                 "importMapByModulePath": {
                     "@airport/air-control": any;
                     "@airport/travel-document-checkpoint": any;
                     "../infrastructure/Stageable": any;
-                    "../../generated/infrastructure/qactor"?: undefined;
-                    "../../generated/repository/qrepository"?: undefined;
+                    "../infrastructure/Actor"?: undefined;
                     "../common"?: undefined;
+                    "./Repository"?: undefined;
                     "../repository/RepositoryEntity"?: undefined;
                 };
             };
@@ -2594,17 +2594,17 @@ export declare const MAPPED_SUPERCLASS: ({
                         "Id"?: undefined;
                         "JoinColumn"?: undefined;
                         "ManyToOne"?: undefined;
-                        "IActor"?: undefined;
-                        "IRepository"?: undefined;
+                        "Actor"?: undefined;
                         "SystemWideOperationId"?: undefined;
                         "Stageable"?: undefined;
+                        "Repository"?: undefined;
                     };
                     "importMapByModulePath": {
                         "@airport/air-control": any;
-                        "../../generated/infrastructure/qactor"?: undefined;
-                        "../../generated/repository/qrepository"?: undefined;
+                        "../infrastructure/Actor"?: undefined;
                         "../common"?: undefined;
                         "../infrastructure/Stageable"?: undefined;
+                        "./Repository"?: undefined;
                     };
                 };
                 "properties": {
@@ -2676,10 +2676,10 @@ export declare const MAPPED_SUPERCLASS: ({
                 "Id"?: undefined;
                 "JoinColumn"?: undefined;
                 "ManyToOne"?: undefined;
-                "IActor"?: undefined;
-                "IRepository"?: undefined;
+                "Actor"?: undefined;
                 "SystemWideOperationId"?: undefined;
                 "Stageable"?: undefined;
+                "Repository"?: undefined;
                 "RepositoryEntity"?: undefined;
                 "IUser"?: undefined;
                 "ImmutableRepoRow"?: undefined;
@@ -2687,10 +2687,10 @@ export declare const MAPPED_SUPERCLASS: ({
             };
             "importMapByModulePath": {
                 "@airport/air-control": any;
-                "../../generated/infrastructure/qactor"?: undefined;
-                "../../generated/repository/qrepository"?: undefined;
+                "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "../infrastructure/Stageable"?: undefined;
+                "./Repository"?: undefined;
                 "../repository/RepositoryEntity"?: undefined;
                 "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRepoRow"?: undefined;

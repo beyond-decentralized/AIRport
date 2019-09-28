@@ -1,6 +1,6 @@
-import { ColumnIndex } from "@airport/ground-control";
-import { ISynchronizationConflict } from "../../generated/conflict/qsynchronizationconflict";
+import { ColumnIndex } from '@airport/ground-control';
+import { SynchronizationConflict } from './SynchronizationConflict';
 export declare class SynchronizationConflictValues {
-    synchronizationConflict: ISynchronizationConflict;
+    synchronizationConflict: SynchronizationConflict;
     columnIndex: ColumnIndex;
 }

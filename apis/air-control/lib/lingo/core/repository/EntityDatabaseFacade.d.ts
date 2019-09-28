@@ -14,7 +14,7 @@ import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEnt
  */
 export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelectProperties, EntityCreateProperties extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQ extends IQEntity> {
     dbEntity: DbEntity;
-    duo: IDuo<Entity, EntitySelect, EntityCreateProperties, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>;
+    duo: IDuo<Entity, EntitySelect, EntityCreateProperties, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>;
     /**
      * The Promise based API for all Entity 'find' (find many) queries.
      */

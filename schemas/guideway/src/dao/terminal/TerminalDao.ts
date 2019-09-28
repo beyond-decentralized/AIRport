@@ -9,6 +9,7 @@ import {
 	TerminalPassword,
 }                                            from '@airport/arrivals-n-departures'
 import {DI}                                  from '@airport/di'
+import {ITerminal}                           from '../../generated/interfaces'
 import {TerminalLastPollConnectionDatetime,} from '../../ddl/ddl'
 import {TERMINAL_DAO}                        from '../../diTokens'
 import {
@@ -17,7 +18,6 @@ import {
 }                                            from '../../generated/baseDaos'
 import {Q}                                   from '../../generated/qSchema'
 import {
-	ITerminal,
 	QTerminal
 }                                            from '../../generated/terminal/qterminal'
 import {QTerminalRepository}                 from '../../generated/terminal/qterminalrepository'

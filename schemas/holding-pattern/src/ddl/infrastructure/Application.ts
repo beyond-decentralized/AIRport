@@ -6,12 +6,12 @@ import {
 	GeneratedValue,
 	Id,
 	OneToMany
-} from '@airport/air-control'
+}                              from '@airport/air-control'
 import {
 	CascadeType
-}                               from "@airport/ground-control";
-import {IActorApplication,}     from "../../generated/infrastructure/qactorapplication";
-import {IRepositoryApplication} from "../../generated/repository/qrepositoryapplication";
+}                              from "@airport/ground-control";
+import {RepositoryApplication} from '../..'
+import {ActorApplication}      from './ActorApplication'
 
 export type ApplicationId = number;
 export type ApplicationHost = string;
@@ -33,9 +33,9 @@ export class Application {
 	port: ApplicationPort;
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'application'})
-	actorApplications: IActorApplication[] = [];
+	actorApplications: ActorApplication[] = [];
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'application'})
-	repositoryApplications: IRepositoryApplication[] = [];
+	repositoryApplications: RepositoryApplication[] = [];
 
 }

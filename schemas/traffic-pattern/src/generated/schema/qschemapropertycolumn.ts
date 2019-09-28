@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IVersionedSchemaObject,
 	VersionedSchemaObjectECascadeGraph,
 	VersionedSchemaObjectEId,
 	VersionedSchemaObjectEUpdateColumns,
@@ -33,7 +32,6 @@ import {
 	QVersionedSchemaObject,
 } from './qversionedschemaobject';
 import {
-	ISchemaColumn,
 	SchemaColumnECascadeGraph,
 	SchemaColumnEId,
 	SchemaColumnEOptionalId,
@@ -44,7 +42,6 @@ import {
 	QSchemaColumnQRelation,
 } from './qschemacolumn';
 import {
-	ISchemaProperty,
 	SchemaPropertyECascadeGraph,
 	SchemaPropertyEId,
 	SchemaPropertyEOptionalId,
@@ -59,28 +56,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISchemaPropertyColumn extends IVersionedSchemaObject {
-	
-	// Id Properties
-
-	// Id Relations
-	column: ISchemaColumn;
-	property: ISchemaProperty;
-
-	// Non-Id Properties
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

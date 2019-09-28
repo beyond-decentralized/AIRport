@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IActor,
 	ActorECascadeGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QActorQRelation,
 } from './qactor';
 import {
-	IApplication,
 	ApplicationECascadeGraph,
 	ApplicationEId,
 	ApplicationEOptionalId,
@@ -48,29 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IActorApplication {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-	actor: IActor;
-
-	// Non-Id Properties
-
-	// Non-Id Relations
-	application?: IApplication;
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

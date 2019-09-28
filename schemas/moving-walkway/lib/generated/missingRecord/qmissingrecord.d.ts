@@ -1,15 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { ISchemaVersion, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
-import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
-export interface IMissingRecord {
-    id: number;
-    actorRecordId?: number;
-    status?: number;
-    schemaVersion?: ISchemaVersion;
-    entity?: ISchemaEntity;
-    repository?: IRepository;
-    actor?: IActor;
-}
+import { SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
+import { RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
 /**
  * SELECT - All fields and relations (optional).
  */

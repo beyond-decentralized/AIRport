@@ -8,55 +8,60 @@ import {
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control'
-import {
-	Dao
-} from '@airport/check-in'
+import { Dao } from '@airport/check-in'
 import {
 	EntityId as DbEntityId
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
-	IDailySyncLog,
+	IDailySyncLog
+} from './dailysynclog'
+import {
 	DailySyncLogESelect,
-	DailySyncLogECascadeGraph,
 	DailySyncLogECreateColumns,
 	DailySyncLogECreateProperties,
 	DailySyncLogEUpdateColumns,
 	DailySyncLogEUpdateProperties,
 	DailySyncLogEId,
+	DailySyncLogECascadeGraph,
 	QDailySyncLog
 } from './qdailysynclog'
 import {
-	ILog,
+	ILog
+} from './log/log'
+import {
 	LogESelect,
-	LogECascadeGraph,
 	LogECreateColumns,
 	LogECreateProperties,
 	LogEUpdateColumns,
 	LogEUpdateProperties,
 	LogEId,
+	LogECascadeGraph,
 	QLog
 } from './log/qlog'
 import {
-	IMonthlySyncLog,
+	IMonthlySyncLog
+} from './monthlysynclog'
+import {
 	MonthlySyncLogESelect,
-	MonthlySyncLogECascadeGraph,
 	MonthlySyncLogECreateColumns,
 	MonthlySyncLogECreateProperties,
 	MonthlySyncLogEUpdateColumns,
 	MonthlySyncLogEUpdateProperties,
 	MonthlySyncLogEId,
+	MonthlySyncLogECascadeGraph,
 	QMonthlySyncLog
 } from './qmonthlysynclog'
 
-// Schema Q object Dependency Injection readiness detection DAO
+
+// Schema Q object Dependency Injection readiness detection Dao
 export class SQDIDao<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
-	EntityUpdateColumns extends IEntityUpdateColumns,
+  EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
@@ -87,7 +92,7 @@ export class BaseDailySyncLogDao
 	implements IBaseDailySyncLogDao {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
@@ -105,7 +110,7 @@ export class BaseLogDao
 	implements IBaseLogDao {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
@@ -123,7 +128,7 @@ export class BaseMonthlySyncLogDao
 	implements IBaseMonthlySyncLogDao {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return duoDiSet(1)
 	}
 	
 	constructor() {

@@ -22,7 +22,7 @@ class EntityLookup extends Lookup_1.LookupProxy {
         return this.lookup(rawEntityQuery, queryResultType, search, one, null, this.dbEntity, this.cacheForUpdate, this.mapResults);
     }
 }
-exports.EntityLookup = EntityLookup;
 EntityLookup.cacheForUpdate = UpdateCacheType_1.UpdateCacheType.NONE;
 EntityLookup.mapResults = false;
+exports.EntityLookup = EntityLookup;
 //# sourceMappingURL=EntityLookup.js.map

@@ -1,8 +1,7 @@
-import { IRepositoryTransactionHistory } from "../../generated/history/qrepositorytransactionhistory";
-import { IActor } from "../../generated/infrastructure/qactor";
-import { IRepository } from "../../generated/repository/qrepository";
-import { IRepositoryActor } from "../../generated/repository/qrepositoryactor";
-import { IRepositoryApplication } from "../../generated/repository/qrepositoryapplication";
+import { Actor } from '../infrastructure/Actor';
+import { RepositoryActor } from '../repository/RepositoryActor';
+import { RepositoryApplication } from '../repository/RepositoryApplication';
+import { RepositoryTransactionHistory } from '../history/RepositoryTransactionHistory';
 import { SyncPriority } from "./SyncPrority";
 /**
  * Created by Papa on 2/9/2017.
@@ -12,16 +11,16 @@ export declare type RepositoryOrderedId = number;
 export declare type RepositoryRandomId = number;
 export declare type RepositoryName = string;
 export declare type RepositoryUrl = string;
-export declare class Repository implements IRepository {
+export declare class Repository {
     id: RepositoryId;
-    ownerActor: IActor;
+    ownerActor: Actor;
     orderedId: RepositoryOrderedId;
     randomId: RepositoryRandomId;
     name: RepositoryName;
     url: RepositoryUrl;
     platformConfig: string;
-    repositoryActors: IRepositoryActor[];
-    repositoryApplications: IRepositoryApplication[];
-    repositoryTransactionHistory: IRepositoryTransactionHistory[];
+    repositoryActors: RepositoryActor[];
+    repositoryApplications: RepositoryApplication[];
+    repositoryTransactionHistory: RepositoryTransactionHistory[];
     syncPriority: SyncPriority;
 }

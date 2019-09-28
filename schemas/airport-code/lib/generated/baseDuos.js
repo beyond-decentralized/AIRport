@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-// Schema Q object Dependency Injection readiness detection DAO
+// Schema Q object Dependency Injection readiness detection Duo
 class SQDIDuo extends check_in_1.Duo {
     constructor(dbEntityId) {
         super(dbEntityId, qSchema_1.Q);

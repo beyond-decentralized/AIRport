@@ -29,8 +29,10 @@ __decorate([
 ], RecordHistory.prototype, "actorRecordId", void 0);
 __decorate([
     air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: 'REPOSITORY_OPERATION_HISTORY_ID', referencedColumnName: 'ID',
-        nullable: false })
+    air_control_1.JoinColumn({
+        name: 'REPOSITORY_OPERATION_HISTORY_ID', referencedColumnName: 'ID',
+        nullable: false
+    })
 ], RecordHistory.prototype, "operationHistory", void 0);
 __decorate([
     air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'recordHistory' })

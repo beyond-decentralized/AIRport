@@ -1,18 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { ISecurityAnswer, SecurityAnswerECascadeGraph, SecurityAnswerESelect, QSecurityAnswer } from './security/qsecurityanswer';
-import { IUserRepository, UserRepositoryECascadeGraph, UserRepositoryESelect, QUserRepository } from './quserrepository';
-import { ITerminal, TerminalECascadeGraph, TerminalESelect, QTerminal } from '../terminal/qterminal';
-import { IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockECascadeGraph, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
-export interface IUser {
-    id: number;
-    hash?: string;
-    email?: string;
-    isInvitation?: boolean;
-    securityAnswers?: ISecurityAnswer[];
-    userRepositories?: IUserRepository[];
-    terminals?: ITerminal[];
-    repositoryTransactionBlocks?: IAgtRepositoryTransactionBlock[];
-}
+import { SecurityAnswerECascadeGraph, SecurityAnswerESelect, QSecurityAnswer } from './security/qsecurityanswer';
+import { UserRepositoryECascadeGraph, UserRepositoryESelect, QUserRepository } from './quserrepository';
+import { TerminalECascadeGraph, TerminalESelect, QTerminal } from '../terminal/qterminal';
+import { AgtRepositoryTransactionBlockECascadeGraph, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
 /**
  * SELECT - All fields and relations (optional).
  */

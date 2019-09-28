@@ -1,5 +1,5 @@
-import { IApplication } from "../../generated/infrastructure/qapplication";
-import { IRepository } from "../../generated/repository/qrepository";
+import { Application } from '../infrastructure/Application';
+import { Repository } from './Repository';
 /**
  * Created by Papa on 12/18/2016.
  */
@@ -8,6 +8,6 @@ import { IRepository } from "../../generated/repository/qrepository";
  */
 export declare class RepositoryApplication {
     id: number;
-    application: IApplication;
-    repository: IRepository;
+    application: Application;
+    repository: Repository;
 }

@@ -35,9 +35,8 @@ class PathBuilder {
         return sourceRelativePath;
     }
     getFullPathToGeneratedSource(//
-    sourcePath //
-    ) {
-        let generatedPath = this.getGenerationPathForFile(sourcePath);
+    sourcePath, prefixQ = true) {
+        let generatedPath = this.getGenerationPathForFile(sourcePath, prefixQ);
         return this.workingDirPath + '/' + generatedPath;
     }
     setupFileForGeneration(sourcePath, prefixQ = true) {

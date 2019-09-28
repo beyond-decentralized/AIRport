@@ -1,16 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IUserTerminal, UserTerminalECascadeGraph, UserTerminalESelect, QUserTerminal } from './quserterminal';
-import { IUserTerminalAgt, UserTerminalAgtECascadeGraph, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
-export interface IUser {
-    id: number;
-    uniqueId?: string;
-    firstName?: string;
-    lastName?: string;
-    middleName?: string;
-    phone?: string;
-    userTerminal?: IUserTerminal[];
-    userTerminalAgts?: IUserTerminalAgt[];
-}
+import { UserTerminalECascadeGraph, UserTerminalESelect, QUserTerminal } from './quserterminal';
+import { UserTerminalAgtECascadeGraph, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
 /**
  * SELECT - All fields and relations (optional).
  */

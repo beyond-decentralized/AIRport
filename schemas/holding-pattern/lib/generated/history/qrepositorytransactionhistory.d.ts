@@ -1,21 +1,9 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { ITransactionHistory, TransactionHistoryEOptionalId, TransactionHistoryESelect, QTransactionHistoryQRelation } from './qtransactionhistory';
-import { IRepository, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
-import { IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorECascadeGraph, RepoTransHistoryChangedRepositoryActorESelect, QRepoTransHistoryChangedRepositoryActor } from './qrepotranshistorychangedrepositoryactor';
-import { IActor, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
-import { IOperationHistory, OperationHistoryECascadeGraph, OperationHistoryESelect, QOperationHistory } from './qoperationhistory';
-export interface IRepositoryTransactionHistory {
-    id: number;
-    remoteId?: number;
-    saveTimestamp?: Date;
-    repositoryTransactionType?: number;
-    blockId?: number;
-    transactionHistory?: ITransactionHistory;
-    repository?: IRepository;
-    changedRepositoryActors?: IRepoTransHistoryChangedRepositoryActor[];
-    actor?: IActor;
-    operationHistory?: IOperationHistory[];
-}
+import { TransactionHistoryEOptionalId, TransactionHistoryESelect, QTransactionHistoryQRelation } from './qtransactionhistory';
+import { RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
+import { RepoTransHistoryChangedRepositoryActorECascadeGraph, RepoTransHistoryChangedRepositoryActorESelect, QRepoTransHistoryChangedRepositoryActor } from './qrepotranshistorychangedrepositoryactor';
+import { ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
+import { OperationHistoryECascadeGraph, OperationHistoryESelect, QOperationHistory } from './qoperationhistory';
 /**
  * SELECT - All fields and relations (optional).
  */

@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IServerSyncLog,
 	ServerSyncLogECascadeGraph,
 	ServerSyncLogEId,
 	ServerSyncLogEOptionalId,
@@ -37,29 +36,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IServer {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	serverType?: number;
-
-	// Non-Id Relations
-	serverSyncLogs?: IServerSyncLog[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

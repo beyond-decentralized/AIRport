@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-// Schema Q object Dependency Injection readiness detection DAO
+// Schema Q object Dependency Injection readiness detection Duo
 class SQDIDuo extends check_in_1.Duo {
     constructor(dbEntityId) {
         super(dbEntityId, qSchema_1.Q);
@@ -20,14 +20,23 @@ class BaseMissingRecordDuo extends SQDIDuo {
 exports.BaseMissingRecordDuo = BaseMissingRecordDuo;
 class BaseMissingRecordRepoTransBlockDuo extends SQDIDuo {
     static diSet() {
+        return qSchema_1.duoDiSet(16);
+    }
+    constructor() {
+        super(16);
+    }
+}
+exports.BaseMissingRecordRepoTransBlockDuo = BaseMissingRecordRepoTransBlockDuo;
+class BaseRecordUpdateStageDuo extends SQDIDuo {
+    static diSet() {
         return qSchema_1.duoDiSet(4);
     }
     constructor() {
         super(4);
     }
 }
-exports.BaseMissingRecordRepoTransBlockDuo = BaseMissingRecordRepoTransBlockDuo;
-class BaseRecordUpdateStageDuo extends SQDIDuo {
+exports.BaseRecordUpdateStageDuo = BaseRecordUpdateStageDuo;
+class BaseRepoTransBlockResponseStageDuo extends SQDIDuo {
     static diSet() {
         return qSchema_1.duoDiSet(5);
     }
@@ -35,8 +44,8 @@ class BaseRecordUpdateStageDuo extends SQDIDuo {
         super(5);
     }
 }
-exports.BaseRecordUpdateStageDuo = BaseRecordUpdateStageDuo;
-class BaseRepoTransBlockResponseStageDuo extends SQDIDuo {
+exports.BaseRepoTransBlockResponseStageDuo = BaseRepoTransBlockResponseStageDuo;
+class BaseRepoTransBlockSchemaToChangeDuo extends SQDIDuo {
     static diSet() {
         return qSchema_1.duoDiSet(6);
     }
@@ -44,44 +53,8 @@ class BaseRepoTransBlockResponseStageDuo extends SQDIDuo {
         super(6);
     }
 }
-exports.BaseRepoTransBlockResponseStageDuo = BaseRepoTransBlockResponseStageDuo;
-class BaseRepoTransBlockSchemaToChangeDuo extends SQDIDuo {
-    static diSet() {
-        return qSchema_1.duoDiSet(7);
-    }
-    constructor() {
-        super(7);
-    }
-}
 exports.BaseRepoTransBlockSchemaToChangeDuo = BaseRepoTransBlockSchemaToChangeDuo;
 class BaseRepositoryTransactionBlockDuo extends SQDIDuo {
-    static diSet() {
-        return qSchema_1.duoDiSet(16);
-    }
-    constructor() {
-        super(16);
-    }
-}
-exports.BaseRepositoryTransactionBlockDuo = BaseRepositoryTransactionBlockDuo;
-class BaseRepositoryTransactionHistoryUpdateStageDuo extends SQDIDuo {
-    static diSet() {
-        return qSchema_1.duoDiSet(8);
-    }
-    constructor() {
-        super(8);
-    }
-}
-exports.BaseRepositoryTransactionHistoryUpdateStageDuo = BaseRepositoryTransactionHistoryUpdateStageDuo;
-class BaseSharingMessageDuo extends SQDIDuo {
-    static diSet() {
-        return qSchema_1.duoDiSet(14);
-    }
-    constructor() {
-        super(14);
-    }
-}
-exports.BaseSharingMessageDuo = BaseSharingMessageDuo;
-class BaseSharingMessageRepoTransBlockDuo extends SQDIDuo {
     static diSet() {
         return qSchema_1.duoDiSet(15);
     }
@@ -89,17 +62,35 @@ class BaseSharingMessageRepoTransBlockDuo extends SQDIDuo {
         super(15);
     }
 }
-exports.BaseSharingMessageRepoTransBlockDuo = BaseSharingMessageRepoTransBlockDuo;
-class BaseSharingNodeDuo extends SQDIDuo {
+exports.BaseRepositoryTransactionBlockDuo = BaseRepositoryTransactionBlockDuo;
+class BaseRepositoryTransactionHistoryUpdateStageDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.duoDiSet(10);
+        return qSchema_1.duoDiSet(7);
     }
     constructor() {
-        super(10);
+        super(7);
     }
 }
-exports.BaseSharingNodeDuo = BaseSharingNodeDuo;
-class BaseSharingNodeRepoTransBlockDuo extends SQDIDuo {
+exports.BaseRepositoryTransactionHistoryUpdateStageDuo = BaseRepositoryTransactionHistoryUpdateStageDuo;
+class BaseSharingMessageDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.duoDiSet(13);
+    }
+    constructor() {
+        super(13);
+    }
+}
+exports.BaseSharingMessageDuo = BaseSharingMessageDuo;
+class BaseSharingMessageRepoTransBlockDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.duoDiSet(14);
+    }
+    constructor() {
+        super(14);
+    }
+}
+exports.BaseSharingMessageRepoTransBlockDuo = BaseSharingMessageRepoTransBlockDuo;
+class BaseSharingNodeDuo extends SQDIDuo {
     static diSet() {
         return qSchema_1.duoDiSet(9);
     }
@@ -107,8 +98,26 @@ class BaseSharingNodeRepoTransBlockDuo extends SQDIDuo {
         super(9);
     }
 }
+exports.BaseSharingNodeDuo = BaseSharingNodeDuo;
+class BaseSharingNodeRepoTransBlockDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.duoDiSet(8);
+    }
+    constructor() {
+        super(8);
+    }
+}
 exports.BaseSharingNodeRepoTransBlockDuo = BaseSharingNodeRepoTransBlockDuo;
 class BaseSharingNodeRepoTransBlockStageDuo extends SQDIDuo {
+    static diSet() {
+        return qSchema_1.duoDiSet(10);
+    }
+    constructor() {
+        super(10);
+    }
+}
+exports.BaseSharingNodeRepoTransBlockStageDuo = BaseSharingNodeRepoTransBlockStageDuo;
+class BaseSharingNodeRepositoryDuo extends SQDIDuo {
     static diSet() {
         return qSchema_1.duoDiSet(11);
     }
@@ -116,22 +125,13 @@ class BaseSharingNodeRepoTransBlockStageDuo extends SQDIDuo {
         super(11);
     }
 }
-exports.BaseSharingNodeRepoTransBlockStageDuo = BaseSharingNodeRepoTransBlockStageDuo;
-class BaseSharingNodeRepositoryDuo extends SQDIDuo {
+exports.BaseSharingNodeRepositoryDuo = BaseSharingNodeRepositoryDuo;
+class BaseSharingNodeTerminalDuo extends SQDIDuo {
     static diSet() {
         return qSchema_1.duoDiSet(12);
     }
     constructor() {
         super(12);
-    }
-}
-exports.BaseSharingNodeRepositoryDuo = BaseSharingNodeRepositoryDuo;
-class BaseSharingNodeTerminalDuo extends SQDIDuo {
-    static diSet() {
-        return qSchema_1.duoDiSet(13);
-    }
-    constructor() {
-        super(13);
     }
 }
 exports.BaseSharingNodeTerminalDuo = BaseSharingNodeTerminalDuo;

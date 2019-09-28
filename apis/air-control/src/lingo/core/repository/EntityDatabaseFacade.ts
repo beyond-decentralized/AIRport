@@ -42,7 +42,7 @@ export interface IEntityDatabaseFacade<Entity,
 	dbEntity: DbEntity;
 
 	duo: IDuo<Entity, EntitySelect, EntityCreateProperties,
-		EntityUpdateProperties, EntityId,
+		EntityUpdateColumns, EntityUpdateProperties, EntityId,
 		EntityCascadeGraph, IQ>;
 
 	/**

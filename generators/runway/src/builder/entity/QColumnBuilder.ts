@@ -1,8 +1,8 @@
 import {
 	getColumnFieldInterface,
-	IQBuilder,
+	IBuilder,
 	IQCoreEntityBuilder
-}                from '../QBuilder'
+}                from '../Builder'
 import {SColumn} from '../schema/SProperty'
 
 /**
@@ -10,7 +10,7 @@ import {SColumn} from '../schema/SProperty'
  */
 
 export class QColumnBuilder
-	implements IQBuilder {
+	implements IBuilder {
 
 	constructor(
 		private parentBuilder: IQCoreEntityBuilder,

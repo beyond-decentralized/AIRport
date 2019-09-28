@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IRepositoryTransactionHistory,
 	RepositoryTransactionHistoryECascadeGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
@@ -32,56 +31,11 @@ import {
 	QRepositoryTransactionHistoryQId,
 	QRepositoryTransactionHistoryQRelation,
 } from './qrepositorytransactionhistory';
-import {
-	SyncSchemaMap,
-} from '@airport/ground-control';
-import {
-	IOperationHistory,
-} from './qoperationhistory';
-import {
-	IRecordHistory,
-} from './qrecordhistory';
-import {
-	IRecordHistoryNewValue,
-} from './qrecordhistorynewvalue';
-import {
-	IRecordHistoryOldValue,
-} from './qrecordhistoryoldvalue';
 
 
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ITransactionHistory {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	transactionType?: number;
-
-	// Non-Id Relations
-	repositoryTransactionHistories?: IRepositoryTransactionHistory[];
-
-	// Transient Properties
-	repoTransHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory; };
-	schemaMap?: SyncSchemaMap;
-	allOperationHistory?: IOperationHistory[];
-	allRecordHistory?: IRecordHistory[];
-	allRecordHistoryNewValues?: IRecordHistoryNewValue[];
-	allRecordHistoryOldValues?: IRecordHistoryOldValue[];
-	numberOfOperations?: number;
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

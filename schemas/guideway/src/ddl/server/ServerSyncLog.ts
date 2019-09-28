@@ -10,8 +10,8 @@ import {
 	ManyToOne,
 	Table
 }                 from "@airport/air-control";
-import {IServer}  from "../../generated/server/qserver";
 import {SyncType} from "../synchronization/SyncType";
+import {Server}   from './Server'
 
 export type ServerSyncLogId = number;
 export type ServerSyncLogStartDatetime = Date;
@@ -33,7 +33,7 @@ export class ServerSyncLog {
 	@JoinColumn(
 		{name: "SERVER_ID", referencedColumnName: "ID", nullable: false}
 	)
-	server: IServer;
+	server: Server;
 
 	@Column({name: 'TYPE', nullable: false})
 	@DbNumber()

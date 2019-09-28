@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IUser,
 	UserECascadeGraph,
 	UserEId,
 	UserEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QUserQRelation,
 } from '../quser';
 import {
-	ISecurityQuestion,
 	SecurityQuestionECascadeGraph,
 	SecurityQuestionEId,
 	SecurityQuestionEOptionalId,
@@ -48,29 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISecurityAnswer {
-	
-	// Id Properties
-
-	// Id Relations
-	user: IUser;
-	securityQuestion: ISecurityQuestion;
-
-	// Non-Id Properties
-	answer?: string;
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

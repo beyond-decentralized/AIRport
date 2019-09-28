@@ -5,8 +5,9 @@ import {
 	resolveRelativePath
 }                                 from '../../resolve/pathResolver'
 import {PathBuilder}              from '../PathBuilder'
-import {IQBuilder}                from '../QBuilder'
+import {IBuilder}                 from '../Builder'
 import {SIndexedEntity}           from '../schema/SEntity'
+import {FileBuilder}              from './FileBuilder'
 import {IQEntityInterfaceBuilder} from './IQEntityInterfaceBuilder'
 import {QEntityBuilder}           from './QEntityBuilder'
 import {QEntityIdBuilder}         from './QEntityIdBuilder'
@@ -18,7 +19,8 @@ import {QRelationBuilder}         from './QRelationBuilder'
  */
 
 export class QEntityFileBuilder
-	implements IQBuilder {
+	extends FileBuilder
+	implements IBuilder {
 
 	qEntityBuilder: QEntityBuilder
 	qEntityIdBuilder: QEntityIdBuilder
@@ -28,13 +30,14 @@ export class QEntityFileBuilder
 	importMap: { [fileName: string]: { [asName: string]: string } } = {}
 
 	constructor(
-		private entity: EntityCandidate,
-		public fullGenerationPath: string,
-		private pathBuilder: PathBuilder,
+		entity: EntityCandidate,
+		fullGenerationPath: string,
+		pathBuilder: PathBuilder,
 		entityMapByName: { [entityName: string]: EntityCandidate },
-		public configuration: Configuration,
+		configuration: Configuration,
 		sIndexedEntity: SIndexedEntity
 	) {
+		super(entity, fullGenerationPath, pathBuilder, configuration);
 		this.qEntityBuilder          = new QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName, sIndexedEntity)
 		this.qEntityIdBuilder        = new QEntityIdBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName)
 		this.qEntityRelationBuilder  = new QEntityRelationBuilder(entity, this.fullGenerationPath, this.pathBuilder.workingDirPath, this, entityMapByName)
@@ -71,7 +74,7 @@ export class QEntityFileBuilder
 			}
 			let parentEntityType = entity.parentEntity.type
 			this.addImport([
-					`I${parentEntityType}`,
+					// `I${parentEntityType}`,
 					`${parentEntityType}ECascadeGraph`,
 					`${parentEntityType}EId`,
 					`${parentEntityType}EUpdateColumns`,
@@ -141,7 +144,7 @@ ${addEntityCommand}`
 			type      = type.replace('[]', '')
 			let qType = 'Q' + type
 			this.addImport([
-					'I' + type,
+					// 'I' + type,
 					type + 'ECascadeGraph',
 					type + 'EId',
 					type + 'EOptionalId',
@@ -154,71 +157,9 @@ ${addEntityCommand}`
 		})
 	}
 
-	addImport(
-		classNames: (string | { asName: string, sourceName: string }) [],
-		filePath: string,
-		toLowerCase = true,
-	): void {
-		filePath = filePath.replace('.ts', '')
-		if (toLowerCase) {
-			const filePathFragments = filePath.split('/')
-			if (filePathFragments.length) {
-				let lastFragment                                = filePathFragments[filePathFragments.length - 1]
-				lastFragment                                    = lastFragment.toLowerCase()
-				filePathFragments[filePathFragments.length - 1] = lastFragment
-			}
-			filePath = filePathFragments.join('/')
-		}
-		let fileImportMap = this.importMap[filePath]
-		if (!fileImportMap) {
-			fileImportMap            = {}
-			this.importMap[filePath] = fileImportMap
-		}
-		classNames.forEach(
-			className => {
-				let existingImport
-				let asName
-				let sourceName
-				if (typeof className === 'string') {
-					asName     = className
-					sourceName = className
-				} else {
-					asName     = className.asName
-					sourceName = className.sourceName
-				}
-				let existingSourceName = fileImportMap[asName]
-				if (existingSourceName) {
-					if (existingSourceName !== sourceName) {
-						throw new Error(`Cannot import '${sourceName}' as '${asName}' from ${filePath}.
-					'${existingSourceName}' is already imported as '${asName}' from this path.`)
-					}
-					return
-				} else {
-					fileImportMap[asName] = sourceName
-				}
-			})
-	}
-
-	private buildImports(): string {
+	protected addImports(): void {
 		this.addRelationImports(this.qEntityBuilder.idRelationBuilders)
 		this.addRelationImports(this.qEntityBuilder.nonIdRelationBuilders)
-
-		let imports = ``
-		for (let filePath in this.importMap) {
-			const fileImportMap = this.importMap[filePath]
-			let importedObjects = []
-			for (let asName in fileImportMap) {
-				let sourceName = fileImportMap[asName]
-				if (sourceName === asName) {
-					importedObjects.push(sourceName)
-				} else {
-					importedObjects.push(`${sourceName} as ${asName}`)
-				}
-			}
-			imports += `import {\n\t${importedObjects.join(',\n\t')},\n} from '${filePath}';\n`
-		}
-
-		return imports
 	}
 
 }

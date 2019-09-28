@@ -8,121 +8,138 @@ import {
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control'
-import {
-	Dao
-} from '@airport/check-in'
+import { Dao } from '@airport/check-in'
 import {
 	EntityId as DbEntityId
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
-	ISchema,
+	ISchema
+} from './schema/schema'
+import {
 	SchemaESelect,
-	SchemaECascadeGraph,
 	SchemaECreateColumns,
 	SchemaECreateProperties,
 	SchemaEUpdateColumns,
 	SchemaEUpdateProperties,
 	SchemaEId,
+	SchemaECascadeGraph,
 	QSchema
 } from './schema/qschema'
 import {
-	ISchemaColumn,
+	ISchemaColumn
+} from './schema/schemacolumn'
+import {
 	SchemaColumnESelect,
-	SchemaColumnECascadeGraph,
 	SchemaColumnECreateColumns,
 	SchemaColumnECreateProperties,
 	SchemaColumnEUpdateColumns,
 	SchemaColumnEUpdateProperties,
 	SchemaColumnEId,
+	SchemaColumnECascadeGraph,
 	QSchemaColumn
 } from './schema/qschemacolumn'
 import {
-	ISchemaEntity,
+	ISchemaEntity
+} from './schema/schemaentity'
+import {
 	SchemaEntityESelect,
-	SchemaEntityECascadeGraph,
 	SchemaEntityECreateColumns,
 	SchemaEntityECreateProperties,
 	SchemaEntityEUpdateColumns,
 	SchemaEntityEUpdateProperties,
 	SchemaEntityEId,
+	SchemaEntityECascadeGraph,
 	QSchemaEntity
 } from './schema/qschemaentity'
 import {
-	ISchemaProperty,
+	ISchemaProperty
+} from './schema/schemaproperty'
+import {
 	SchemaPropertyESelect,
-	SchemaPropertyECascadeGraph,
 	SchemaPropertyECreateColumns,
 	SchemaPropertyECreateProperties,
 	SchemaPropertyEUpdateColumns,
 	SchemaPropertyEUpdateProperties,
 	SchemaPropertyEId,
+	SchemaPropertyECascadeGraph,
 	QSchemaProperty
 } from './schema/qschemaproperty'
 import {
-	ISchemaPropertyColumn,
+	ISchemaPropertyColumn
+} from './schema/schemapropertycolumn'
+import {
 	SchemaPropertyColumnESelect,
-	SchemaPropertyColumnECascadeGraph,
 	SchemaPropertyColumnECreateColumns,
 	SchemaPropertyColumnECreateProperties,
 	SchemaPropertyColumnEUpdateColumns,
 	SchemaPropertyColumnEUpdateProperties,
 	SchemaPropertyColumnEId,
+	SchemaPropertyColumnECascadeGraph,
 	QSchemaPropertyColumn
 } from './schema/qschemapropertycolumn'
 import {
-	ISchemaReference,
+	ISchemaReference
+} from './schema/schemareference'
+import {
 	SchemaReferenceESelect,
-	SchemaReferenceECascadeGraph,
 	SchemaReferenceECreateColumns,
 	SchemaReferenceECreateProperties,
 	SchemaReferenceEUpdateColumns,
 	SchemaReferenceEUpdateProperties,
 	SchemaReferenceEId,
+	SchemaReferenceECascadeGraph,
 	QSchemaReference
 } from './schema/qschemareference'
 import {
-	ISchemaRelation,
+	ISchemaRelation
+} from './schema/schemarelation'
+import {
 	SchemaRelationESelect,
-	SchemaRelationECascadeGraph,
 	SchemaRelationECreateColumns,
 	SchemaRelationECreateProperties,
 	SchemaRelationEUpdateColumns,
 	SchemaRelationEUpdateProperties,
 	SchemaRelationEId,
+	SchemaRelationECascadeGraph,
 	QSchemaRelation
 } from './schema/qschemarelation'
 import {
-	ISchemaRelationColumn,
+	ISchemaRelationColumn
+} from './schema/schemarelationcolumn'
+import {
 	SchemaRelationColumnESelect,
-	SchemaRelationColumnECascadeGraph,
 	SchemaRelationColumnECreateColumns,
 	SchemaRelationColumnECreateProperties,
 	SchemaRelationColumnEUpdateColumns,
 	SchemaRelationColumnEUpdateProperties,
 	SchemaRelationColumnEId,
+	SchemaRelationColumnECascadeGraph,
 	QSchemaRelationColumn
 } from './schema/qschemarelationcolumn'
 import {
-	ISchemaVersion,
+	ISchemaVersion
+} from './schema/schemaversion'
+import {
 	SchemaVersionESelect,
-	SchemaVersionECascadeGraph,
 	SchemaVersionECreateColumns,
 	SchemaVersionECreateProperties,
 	SchemaVersionEUpdateColumns,
 	SchemaVersionEUpdateProperties,
 	SchemaVersionEId,
+	SchemaVersionECascadeGraph,
 	QSchemaVersion
 } from './schema/qschemaversion'
 
-// Schema Q object Dependency Injection readiness detection DAO
+
+// Schema Q object Dependency Injection readiness detection Dao
 export class SQDIDao<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
-	EntityUpdateColumns extends IEntityUpdateColumns,
+  EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
@@ -153,7 +170,7 @@ export class BaseSchemaDao
 	implements IBaseSchemaDao {
 
 	static diSet(): boolean {
-		return diSet(8)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
@@ -171,11 +188,11 @@ export class BaseSchemaColumnDao
 	implements IBaseSchemaColumnDao {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(0)
+		super(4)
 	}
 }
 
@@ -189,7 +206,7 @@ export class BaseSchemaEntityDao
 	implements IBaseSchemaEntityDao {
 
 	static diSet(): boolean {
-		return diSet(5)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
@@ -207,11 +224,11 @@ export class BaseSchemaPropertyDao
 	implements IBaseSchemaPropertyDao {
 
 	static diSet(): boolean {
-		return diSet(4)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(4)
+		super(2)
 	}
 }
 
@@ -225,11 +242,11 @@ export class BaseSchemaPropertyColumnDao
 	implements IBaseSchemaPropertyColumnDao {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(1)
+		super(3)
 	}
 }
 
@@ -243,7 +260,7 @@ export class BaseSchemaReferenceDao
 	implements IBaseSchemaReferenceDao {
 
 	static diSet(): boolean {
-		return diSet(6)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
@@ -261,11 +278,11 @@ export class BaseSchemaRelationDao
 	implements IBaseSchemaRelationDao {
 
 	static diSet(): boolean {
-		return diSet(3)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(3)
+		super(1)
 	}
 }
 
@@ -279,11 +296,11 @@ export class BaseSchemaRelationColumnDao
 	implements IBaseSchemaRelationColumnDao {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(2)
+		super(0)
 	}
 }
 
@@ -297,7 +314,7 @@ export class BaseSchemaVersionDao
 	implements IBaseSchemaVersionDao {
 
 	static diSet(): boolean {
-		return diSet(7)
+		return duoDiSet(7)
 	}
 	
 	constructor() {

@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IImmutableRow,
 	ImmutableRowECascadeGraph,
 	ImmutableRowEId,
 	ImmutableRowEUpdateColumns,
@@ -37,27 +36,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IMutableRow extends IImmutableRow {
-	
-	// Id Properties
-
-	// Id Relations
-
-	// Non-Id Properties
-	updatedAt?: Date;
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

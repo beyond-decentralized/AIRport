@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ISynchronizationConflict,
 	SynchronizationConflictECascadeGraph,
 	SynchronizationConflictEId,
 	SynchronizationConflictEOptionalId,
@@ -37,28 +36,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISynchronizationConflictValues {
-	
-	// Id Properties
-	columnIndex: number;
-
-	// Id Relations
-	synchronizationConflict: ISynchronizationConflict;
-
-	// Non-Id Properties
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

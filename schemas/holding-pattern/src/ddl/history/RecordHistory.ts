@@ -10,16 +10,17 @@ import {
 	SequenceGenerator,
 	Table,
 	Transient
-}                                from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	CascadeType,
 	SyncColumnMap
-}                                from '@airport/ground-control'
-import {IOperationHistory,}      from '../../generated/history/qoperationhistory'
-import {IRecordHistory,}         from '../../generated/history/qrecordhistory'
-import {IRecordHistoryNewValue,} from '../../generated/history/qrecordhistorynewvalue'
-import {IRecordHistoryOldValue}  from '../../generated/history/qrecordhistoryoldvalue'
-import {IActor}                  from '../../generated/infrastructure/qactor'
+} from '@airport/ground-control'
+import {
+	Actor,
+	OperationHistory,
+	RecordHistoryNewValue,
+	RecordHistoryOldValue
+} from '../..'
 
 /**
  * Entity Changes are always local-only, so a sequence for id will do.
@@ -39,8 +40,7 @@ export type RecordHistoryActorRecordId = number;
 		unique: false
 	}]
 })
-export class RecordHistory
-	implements IRecordHistory {
+export class RecordHistory {
 
 	@Id()
 	@GeneratedValue()
@@ -49,24 +49,26 @@ export class RecordHistory
 
 	@ManyToOne()
 	@JoinColumn({name: 'ACTOR_ID', referencedColumnName: 'ID', nullable: false})
-	actor: IActor
+	actor: Actor
 
 	@Column({name: 'ACTOR_RECORD_ID', nullable: false})
 	@DbNumber()
 	actorRecordId: RecordHistoryActorRecordId
 
 	@ManyToOne()
-	@JoinColumn({name: 'REPOSITORY_OPERATION_HISTORY_ID', referencedColumnName: 'ID',
-		nullable: false})
-	operationHistory: IOperationHistory
+	@JoinColumn({
+		name: 'REPOSITORY_OPERATION_HISTORY_ID', referencedColumnName: 'ID',
+		nullable: false
+	})
+	operationHistory: OperationHistory
 
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'recordHistory'})
-	newValues: IRecordHistoryNewValue[] = []
+	newValues: RecordHistoryNewValue[] = []
 
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'recordHistory'})
-	oldValues: IRecordHistoryOldValue[] = []
+	oldValues: RecordHistoryOldValue[] = []
 
 	@Transient()
 	tableColumnMap: SyncColumnMap

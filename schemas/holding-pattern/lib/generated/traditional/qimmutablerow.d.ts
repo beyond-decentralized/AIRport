@@ -1,10 +1,6 @@
 import { IQDateField, IQEntity } from '@airport/air-control';
-import { IStageable, StageableECascadeGraph, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
-import { IUser, UserEOptionalId, UserESelect, QUserQRelation } from '@airport/travel-document-checkpoint';
-export interface IImmutableRow extends IStageable {
-    createdAt?: Date;
-    user?: IUser;
-}
+import { StageableECascadeGraph, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
+import { UserEOptionalId, UserESelect, QUserQRelation } from '@airport/travel-document-checkpoint';
 /**
  * SELECT - All fields and relations (optional).
  */

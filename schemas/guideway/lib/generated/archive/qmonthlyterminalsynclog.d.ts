@@ -1,12 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { IMonthlyArchiveLog, MonthlyArchiveLogEId, MonthlyArchiveLogEOptionalId, MonthlyArchiveLogESelect, QMonthlyArchiveLogQId, QMonthlyArchiveLogQRelation } from './qmonthlyarchivelog';
-import { ITerminal, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '../terminal/qterminal';
-export interface IMonthlyTerminalSyncLog {
-    monthlyArchiveLog: IMonthlyArchiveLog;
-    terminal: ITerminal;
-    allAcknowledged?: boolean;
-    dailySyncStatuses?: string;
-}
+import { MonthlyArchiveLogEId, MonthlyArchiveLogEOptionalId, MonthlyArchiveLogESelect, QMonthlyArchiveLogQId, QMonthlyArchiveLogQRelation } from './qmonthlyarchivelog';
+import { TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '../terminal/qterminal';
 /**
  * SELECT - All fields and relations (optional).
  */

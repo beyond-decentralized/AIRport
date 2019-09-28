@@ -1,16 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { IRepositoryTransactionHistory, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEOptionalId, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistoryQId, QRepositoryTransactionHistoryQRelation } from './qrepositorytransactionhistory';
-import { ISchemaEntity, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
-import { IRecordHistory, RecordHistoryECascadeGraph, RecordHistoryESelect, QRecordHistory } from './qrecordhistory';
-export interface IOperationHistory {
-    id: number;
-    repositoryTransactionHistory: IRepositoryTransactionHistory;
-    orderNumber?: number;
-    changeType?: number;
-    systemWideOperationId?: number;
-    entity?: ISchemaEntity;
-    recordHistory?: IRecordHistory[];
-}
+import { RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEOptionalId, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistoryQId, QRepositoryTransactionHistoryQRelation } from './qrepositorytransactionhistory';
+import { SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
+import { RecordHistoryECascadeGraph, RecordHistoryESelect, QRecordHistory } from './qrecordhistory';
 /**
  * SELECT - All fields and relations (optional).
  */

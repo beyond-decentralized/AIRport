@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IApplicationPackage,
 	ApplicationPackageECascadeGraph,
 	ApplicationPackageEId,
 	ApplicationPackageEOptionalId,
@@ -31,7 +30,6 @@ import {
 	QApplicationPackage,
 	QApplicationPackageQId,
 	QApplicationPackageQRelation,
-	IPackagedUnit,
 	PackagedUnitECascadeGraph,
 	PackagedUnitEId,
 	PackagedUnitEOptionalId,
@@ -42,7 +40,6 @@ import {
 	QPackagedUnitQRelation,
 } from '@airport/territory';
 import {
-	ILogEntry,
 	LogEntryECascadeGraph,
 	LogEntryEId,
 	LogEntryEOptionalId,
@@ -57,32 +54,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ILogEntryType {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	level?: number;
-	text?: string;
-
-	// Non-Id Relations
-	applicationPackage?: IApplicationPackage;
-	packagedUnit?: IPackagedUnit;
-	logEntries?: ILogEntry[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

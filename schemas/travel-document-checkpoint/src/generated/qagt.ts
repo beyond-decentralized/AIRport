@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ITerminalAgt,
 	TerminalAgtECascadeGraph,
 	TerminalAgtEId,
 	TerminalAgtEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QTerminalAgtQRelation,
 } from './qterminalagt';
 import {
-	IUserTerminalAgt,
 	UserTerminalAgtECascadeGraph,
 	UserTerminalAgtEId,
 	UserTerminalAgtEOptionalId,
@@ -48,30 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IAgt {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	address?: string;
-
-	// Non-Id Relations
-	terminalAgts?: ITerminalAgt[];
-	userTerminalAgts?: IUserTerminalAgt[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

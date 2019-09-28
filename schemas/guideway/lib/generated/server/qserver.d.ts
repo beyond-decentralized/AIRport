@@ -1,10 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { IServerSyncLog, ServerSyncLogECascadeGraph, ServerSyncLogESelect, QServerSyncLog } from './qserversynclog';
-export interface IServer {
-    id: number;
-    serverType?: number;
-    serverSyncLogs?: IServerSyncLog[];
-}
+import { ServerSyncLogECascadeGraph, ServerSyncLogESelect, QServerSyncLog } from './qserversynclog';
 /**
  * SELECT - All fields and relations (optional).
  */

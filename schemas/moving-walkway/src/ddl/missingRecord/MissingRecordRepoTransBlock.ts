@@ -3,20 +3,20 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-}                                    from "@airport/air-control";
-import {IMissingRecord,}             from "../../generated/missingRecord/qmissingrecord";
-import {IRepositoryTransactionBlock} from "../../generated/repositoryTransactionBlock/qrepositorytransactionblock";
+}                                   from '@airport/air-control'
+import {RepositoryTransactionBlock} from '../repositoryTransactionBlock/RepositoryTransactionBlock'
+import {MissingRecord}              from './MissingRecord'
 
 @Entity()
-@Table({name: "MISSING_RECORD_REPO_TRANS_BLOCKS"})
+@Table({name: 'MISSING_RECORD_REPO_TRANS_BLOCKS'})
 export class MissingRecordRepoTransBlock {
 
 	@ManyToOne()
-	@JoinColumn({name: "MISSING_RECORD_ID", referencedColumnName: "ID"})
-	missingRecord: IMissingRecord;
+	@JoinColumn({name: 'MISSING_RECORD_ID', referencedColumnName: 'ID'})
+	missingRecord: MissingRecord
 
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_TRANSACTION_BLOCK_ID", referencedColumnName: "ID"})
-	repositoryTransactionBlock: IRepositoryTransactionBlock;
+	@JoinColumn({name: 'REPOSITORY_TRANSACTION_BLOCK_ID', referencedColumnName: 'ID'})
+	repositoryTransactionBlock: RepositoryTransactionBlock
 
 }

@@ -8,77 +8,86 @@ import {
 	IEntityUpdateProperties,
 	IQEntity
 } from '@airport/air-control'
-import {
-	Dao
-} from '@airport/check-in'
+import { Dao } from '@airport/check-in'
 import {
 	EntityId as DbEntityId
 } from '@airport/ground-control'
 import {
 	Q,
-	diSet
+	duoDiSet
 } from './qSchema'
 import {
-	IApplication,
+	IApplication
+} from './application'
+import {
 	ApplicationESelect,
-	ApplicationECascadeGraph,
 	ApplicationECreateColumns,
 	ApplicationECreateProperties,
 	ApplicationEUpdateColumns,
 	ApplicationEUpdateProperties,
 	ApplicationEId,
+	ApplicationECascadeGraph,
 	QApplication
 } from './qapplication'
 import {
-	IApplicationPackage,
+	IApplicationPackage
+} from './applicationpackage'
+import {
 	ApplicationPackageESelect,
-	ApplicationPackageECascadeGraph,
 	ApplicationPackageECreateColumns,
 	ApplicationPackageECreateProperties,
 	ApplicationPackageEUpdateColumns,
 	ApplicationPackageEUpdateProperties,
 	ApplicationPackageEId,
+	ApplicationPackageECascadeGraph,
 	QApplicationPackage
 } from './qapplicationpackage'
 import {
-	IDomain,
+	IDomain
+} from './domain'
+import {
 	DomainESelect,
-	DomainECascadeGraph,
 	DomainECreateColumns,
 	DomainECreateProperties,
 	DomainEUpdateColumns,
 	DomainEUpdateProperties,
 	DomainEId,
+	DomainECascadeGraph,
 	QDomain
 } from './qdomain'
 import {
-	IPackage,
+	IPackage
+} from './package'
+import {
 	PackageESelect,
-	PackageECascadeGraph,
 	PackageECreateColumns,
 	PackageECreateProperties,
 	PackageEUpdateColumns,
 	PackageEUpdateProperties,
 	PackageEId,
+	PackageECascadeGraph,
 	QPackage
 } from './qpackage'
 import {
-	IPackagedUnit,
+	IPackagedUnit
+} from './packagedunit'
+import {
 	PackagedUnitESelect,
-	PackagedUnitECascadeGraph,
 	PackagedUnitECreateColumns,
 	PackagedUnitECreateProperties,
 	PackagedUnitEUpdateColumns,
 	PackagedUnitEUpdateProperties,
 	PackagedUnitEId,
+	PackagedUnitECascadeGraph,
 	QPackagedUnit
 } from './qpackagedunit'
 
-// Schema Q object Dependency Injection readiness detection DAO
+
+// Schema Q object Dependency Injection readiness detection Dao
 export class SQDIDao<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
-	EntityUpdateColumns extends IEntityUpdateColumns,
+  EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
@@ -109,7 +118,7 @@ export class BaseApplicationDao
 	implements IBaseApplicationDao {
 
 	static diSet(): boolean {
-		return diSet(3)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
@@ -127,7 +136,7 @@ export class BaseApplicationPackageDao
 	implements IBaseApplicationPackageDao {
 
 	static diSet(): boolean {
-		return diSet(1)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
@@ -145,7 +154,7 @@ export class BaseDomainDao
 	implements IBaseDomainDao {
 
 	static diSet(): boolean {
-		return diSet(2)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
@@ -163,7 +172,7 @@ export class BasePackageDao
 	implements IBasePackageDao {
 
 	static diSet(): boolean {
-		return diSet(0)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
@@ -181,7 +190,7 @@ export class BasePackagedUnitDao
 	implements IBasePackagedUnitDao {
 
 	static diSet(): boolean {
-		return diSet(4)
+		return duoDiSet(4)
 	}
 	
 	constructor() {

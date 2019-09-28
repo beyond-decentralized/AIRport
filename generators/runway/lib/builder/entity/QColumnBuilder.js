@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const QBuilder_1 = require("../QBuilder");
+const Builder_1 = require("../Builder");
 /**
  * Created by Papa on 4/25/2016.
  */
@@ -25,7 +25,7 @@ class QColumnBuilder {
         }
         let operableFieldSuffix = '';
         if (forInternalInterfaces) {
-            operableFieldSuffix = ' | ' + QBuilder_1.getColumnFieldInterface(column);
+            operableFieldSuffix = ' | ' + Builder_1.getColumnFieldInterface(column);
         }
         return `${name}${optional ? '?' : ''}: ${type}${operableFieldSuffix};`;
     }

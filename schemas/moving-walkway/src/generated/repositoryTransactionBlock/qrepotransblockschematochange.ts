@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IRepositoryTransactionBlock,
 	RepositoryTransactionBlockECascadeGraph,
 	RepositoryTransactionBlockEId,
 	RepositoryTransactionBlockEOptionalId,
@@ -33,7 +32,6 @@ import {
 	QRepositoryTransactionBlockQRelation,
 } from './qrepositorytransactionblock';
 import {
-	ISchema,
 	SchemaECascadeGraph,
 	SchemaEId,
 	SchemaEOptionalId,
@@ -48,29 +46,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IRepoTransBlockSchemaToChange {
-	
-	// Id Properties
-
-	// Id Relations
-	repositoryTransactionBlock: IRepositoryTransactionBlock;
-	schema: ISchema;
-
-	// Non-Id Properties
-	status?: number;
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

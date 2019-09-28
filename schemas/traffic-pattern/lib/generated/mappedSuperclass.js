@@ -169,11 +169,6 @@ exports.MAPPED_SUPERCLASS = [
                                                 "moduleImport": null,
                                                 "sourceName": "Entity"
                                             },
-                                            "GeneratedValue": {
-                                                "asName": "GeneratedValue",
-                                                "moduleImport": null,
-                                                "sourceName": "GeneratedValue"
-                                            },
                                             "Id": {
                                                 "asName": "Id",
                                                 "moduleImport": null,
@@ -214,7 +209,6 @@ exports.MAPPED_SUPERCLASS = [
                                     },
                                     "DbNumber": null,
                                     "Entity": null,
-                                    "GeneratedValue": null,
                                     "Id": null,
                                     "JoinColumn": null,
                                     "ManyToOne": null,
@@ -264,30 +258,6 @@ exports.MAPPED_SUPERCLASS = [
                                     "SchemaVersionMinor": null,
                                     "SchemaVersionPatch": null,
                                     "SchemaVersionString": null,
-                                    "ISchemaEntity": {
-                                        "fileImports": null,
-                                        "isLocal": true,
-                                        "objectMapByAsName": {
-                                            "ISchemaEntity": {
-                                                "asName": "ISchemaEntity",
-                                                "moduleImport": null,
-                                                "sourceName": "ISchemaEntity"
-                                            }
-                                        },
-                                        "path": "../../generated/schema/qschemaentity"
-                                    },
-                                    "ISchemaReference": {
-                                        "fileImports": null,
-                                        "isLocal": true,
-                                        "objectMapByAsName": {
-                                            "ISchemaReference": {
-                                                "asName": "ISchemaReference",
-                                                "moduleImport": null,
-                                                "sourceName": "ISchemaReference"
-                                            }
-                                        },
-                                        "path": "../../generated/schema/qschemareference"
-                                    },
                                     "Schema": {
                                         "fileImports": null,
                                         "isLocal": true,
@@ -328,8 +298,6 @@ exports.MAPPED_SUPERCLASS = [
                                 "importMapByModulePath": {
                                     "@airport/air-control": null,
                                     "@airport/ground-control": null,
-                                    "../../generated/schema/qschemaentity": null,
-                                    "../../generated/schema/qschemareference": null,
                                     "./Schema": null,
                                     "./SchemaEntity": null,
                                     "./SchemaReference": null
@@ -1120,15 +1088,15 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "moduleImport": null,
                                                                 "sourceName": "Column"
                                                             },
+                                                            "DbNumber": {
+                                                                "asName": "DbNumber",
+                                                                "moduleImport": null,
+                                                                "sourceName": "DbNumber"
+                                                            },
                                                             "Entity": {
                                                                 "asName": "Entity",
                                                                 "moduleImport": null,
                                                                 "sourceName": "Entity"
-                                                            },
-                                                            "GeneratedValue": {
-                                                                "asName": "GeneratedValue",
-                                                                "moduleImport": null,
-                                                                "sourceName": "GeneratedValue"
                                                             },
                                                             "Id": {
                                                                 "asName": "Id",
@@ -1173,8 +1141,8 @@ exports.MAPPED_SUPERCLASS = [
                                                         },
                                                         "path": "@airport/air-control"
                                                     },
+                                                    "DbNumber": null,
                                                     "Entity": null,
-                                                    "GeneratedValue": null,
                                                     "Id": null,
                                                     "JoinColumn": null,
                                                     "Json": null,
@@ -1183,18 +1151,6 @@ exports.MAPPED_SUPERCLASS = [
                                                     "Table": null,
                                                     "TableConfiguration": null,
                                                     "Transient": null,
-                                                    "DbNumber": {
-                                                        "fileImports": null,
-                                                        "isLocal": false,
-                                                        "objectMapByAsName": {
-                                                            "DbNumber": {
-                                                                "asName": "DbNumber",
-                                                                "moduleImport": null,
-                                                                "sourceName": "DbNumber"
-                                                            }
-                                                        },
-                                                        "path": "@airport/air-control"
-                                                    },
                                                     "CascadeType": {
                                                         "fileImports": null,
                                                         "isLocal": false,
@@ -1237,30 +1193,6 @@ exports.MAPPED_SUPERCLASS = [
                                                     "EntityIsRepositoryEntity": null,
                                                     "EntityName": null,
                                                     "TableIndex": null,
-                                                    "ISchemaColumn": {
-                                                        "fileImports": null,
-                                                        "isLocal": true,
-                                                        "objectMapByAsName": {
-                                                            "ISchemaColumn": {
-                                                                "asName": "ISchemaColumn",
-                                                                "moduleImport": null,
-                                                                "sourceName": "ISchemaColumn"
-                                                            }
-                                                        },
-                                                        "path": "../../generated/schema/qschemacolumn"
-                                                    },
-                                                    "ISchemaProperty": {
-                                                        "fileImports": null,
-                                                        "isLocal": true,
-                                                        "objectMapByAsName": {
-                                                            "ISchemaProperty": {
-                                                                "asName": "ISchemaProperty",
-                                                                "moduleImport": null,
-                                                                "sourceName": "ISchemaProperty"
-                                                            }
-                                                        },
-                                                        "path": "../../generated/schema/qschemaproperty"
-                                                    },
                                                     "SchemaColumn": {
                                                         "fileImports": null,
                                                         "isLocal": true,
@@ -1325,8 +1257,6 @@ exports.MAPPED_SUPERCLASS = [
                                                 "importMapByModulePath": {
                                                     "@airport/air-control": null,
                                                     "@airport/ground-control": null,
-                                                    "../../generated/schema/qschemacolumn": null,
-                                                    "../../generated/schema/qschemaproperty": null,
                                                     "./SchemaColumn": null,
                                                     "./SchemaProperty": null,
                                                     "./SchemaRelation": null,
@@ -1592,11 +1522,6 @@ exports.MAPPED_SUPERCLASS = [
                                                                                 "moduleImport": null,
                                                                                 "sourceName": "Entity"
                                                                             },
-                                                                            "GeneratedValue": {
-                                                                                "asName": "GeneratedValue",
-                                                                                "moduleImport": null,
-                                                                                "sourceName": "GeneratedValue"
-                                                                            },
                                                                             "Id": {
                                                                                 "asName": "Id",
                                                                                 "moduleImport": null,
@@ -1627,7 +1552,6 @@ exports.MAPPED_SUPERCLASS = [
                                                                     },
                                                                     "DbNumber": null,
                                                                     "Entity": null,
-                                                                    "GeneratedValue": null,
                                                                     "Id": null,
                                                                     "JoinColumn": null,
                                                                     "ManyToOne": null,
@@ -1687,30 +1611,6 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "SchemaColumnAllocationSize": null,
                                                                     "SchemaColumnIsGenerated": null,
                                                                     "SQLDataType": null,
-                                                                    "ISchemaPropertyColumn": {
-                                                                        "fileImports": null,
-                                                                        "isLocal": true,
-                                                                        "objectMapByAsName": {
-                                                                            "ISchemaPropertyColumn": {
-                                                                                "asName": "ISchemaPropertyColumn",
-                                                                                "moduleImport": null,
-                                                                                "sourceName": "ISchemaPropertyColumn"
-                                                                            }
-                                                                        },
-                                                                        "path": "../../generated/schema/qschemapropertycolumn"
-                                                                    },
-                                                                    "ISchemaRelationColumn": {
-                                                                        "fileImports": null,
-                                                                        "isLocal": true,
-                                                                        "objectMapByAsName": {
-                                                                            "ISchemaRelationColumn": {
-                                                                                "asName": "ISchemaRelationColumn",
-                                                                                "moduleImport": null,
-                                                                                "sourceName": "ISchemaRelationColumn"
-                                                                            }
-                                                                        },
-                                                                        "path": "../../generated/schema/qschemarelationcolumn"
-                                                                    },
                                                                     "SchemaEntity": {
                                                                         "fileImports": null,
                                                                         "isLocal": true,
@@ -1722,6 +1622,30 @@ exports.MAPPED_SUPERCLASS = [
                                                                             }
                                                                         },
                                                                         "path": "./SchemaEntity"
+                                                                    },
+                                                                    "SchemaPropertyColumn": {
+                                                                        "fileImports": null,
+                                                                        "isLocal": true,
+                                                                        "objectMapByAsName": {
+                                                                            "SchemaPropertyColumn": {
+                                                                                "asName": "SchemaPropertyColumn",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "SchemaPropertyColumn"
+                                                                            }
+                                                                        },
+                                                                        "path": "./SchemaPropertyColumn"
+                                                                    },
+                                                                    "SchemaRelationColumn": {
+                                                                        "fileImports": null,
+                                                                        "isLocal": true,
+                                                                        "objectMapByAsName": {
+                                                                            "SchemaRelationColumn": {
+                                                                                "asName": "SchemaRelationColumn",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "SchemaRelationColumn"
+                                                                            }
+                                                                        },
+                                                                        "path": "./SchemaRelationColumn"
                                                                     },
                                                                     "VersionedSchemaObject": {
                                                                         "fileImports": null,
@@ -1739,9 +1663,9 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "importMapByModulePath": {
                                                                     "@airport/air-control": null,
                                                                     "@airport/ground-control": null,
-                                                                    "../../generated/schema/qschemapropertycolumn": null,
-                                                                    "../../generated/schema/qschemarelationcolumn": null,
                                                                     "./SchemaEntity": null,
+                                                                    "./SchemaPropertyColumn": null,
+                                                                    "./SchemaRelationColumn": null,
                                                                     "./VersionedSchemaObject": null
                                                                 }
                                                             },
@@ -1971,10 +1895,10 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "isMappedSuperclass": false,
                                                                     "isTransient": false,
                                                                     "name": "propertyColumns",
-                                                                    "type": "ISchemaPropertyColumn[]",
+                                                                    "type": "SchemaPropertyColumn[]",
                                                                     "ownerEntity": null,
                                                                     "isArray": true,
-                                                                    "nonArrayType": "ISchemaPropertyColumn",
+                                                                    "nonArrayType": "SchemaPropertyColumn",
                                                                     "entity": {
                                                                         "type": "SchemaPropertyColumn",
                                                                         "path": "c:/users/papa/dac/airport/schemas/traffic-pattern/src/ddl/schema/schemapropertycolumn.ts",
@@ -2008,9 +1932,9 @@ exports.MAPPED_SUPERCLASS = [
                                                                                 "isMappedSuperclass": false,
                                                                                 "isTransient": false,
                                                                                 "name": "column",
-                                                                                "type": "ISchemaColumn",
+                                                                                "type": "SchemaColumn",
                                                                                 "ownerEntity": null,
-                                                                                "nonArrayType": "ISchemaColumn",
+                                                                                "nonArrayType": "SchemaColumn",
                                                                                 "entity": null,
                                                                                 "index": 0
                                                                             },
@@ -2040,9 +1964,9 @@ exports.MAPPED_SUPERCLASS = [
                                                                                 "isMappedSuperclass": false,
                                                                                 "isTransient": false,
                                                                                 "name": "property",
-                                                                                "type": "ISchemaProperty",
+                                                                                "type": "SchemaProperty",
                                                                                 "ownerEntity": null,
-                                                                                "nonArrayType": "ISchemaProperty",
+                                                                                "nonArrayType": "SchemaProperty",
                                                                                 "entity": null,
                                                                                 "index": 1
                                                                             }
@@ -2106,29 +2030,29 @@ exports.MAPPED_SUPERCLASS = [
                                                                                     "JoinColumn": null,
                                                                                     "ManyToOne": null,
                                                                                     "Table": null,
-                                                                                    "ISchemaColumn": {
+                                                                                    "SchemaColumn": {
                                                                                         "fileImports": null,
                                                                                         "isLocal": true,
                                                                                         "objectMapByAsName": {
-                                                                                            "ISchemaColumn": {
-                                                                                                "asName": "ISchemaColumn",
+                                                                                            "SchemaColumn": {
+                                                                                                "asName": "SchemaColumn",
                                                                                                 "moduleImport": null,
-                                                                                                "sourceName": "ISchemaColumn"
+                                                                                                "sourceName": "SchemaColumn"
                                                                                             }
                                                                                         },
-                                                                                        "path": "../../generated/schema/qschemacolumn"
+                                                                                        "path": "./SchemaColumn"
                                                                                     },
-                                                                                    "ISchemaProperty": {
+                                                                                    "SchemaProperty": {
                                                                                         "fileImports": null,
                                                                                         "isLocal": true,
                                                                                         "objectMapByAsName": {
-                                                                                            "ISchemaProperty": {
-                                                                                                "asName": "ISchemaProperty",
+                                                                                            "SchemaProperty": {
+                                                                                                "asName": "SchemaProperty",
                                                                                                 "moduleImport": null,
-                                                                                                "sourceName": "ISchemaProperty"
+                                                                                                "sourceName": "SchemaProperty"
                                                                                             }
                                                                                         },
-                                                                                        "path": "../../generated/schema/qschemaproperty"
+                                                                                        "path": "./SchemaProperty"
                                                                                     },
                                                                                     "VersionedSchemaObject": {
                                                                                         "fileImports": null,
@@ -2145,8 +2069,8 @@ exports.MAPPED_SUPERCLASS = [
                                                                                 },
                                                                                 "importMapByModulePath": {
                                                                                     "@airport/air-control": null,
-                                                                                    "../../generated/schema/qschemacolumn": null,
-                                                                                    "../../generated/schema/qschemaproperty": null,
+                                                                                    "./SchemaColumn": null,
+                                                                                    "./SchemaProperty": null,
                                                                                     "./VersionedSchemaObject": null
                                                                                 }
                                                                             },
@@ -2177,9 +2101,9 @@ exports.MAPPED_SUPERCLASS = [
                                                                                     "isMappedSuperclass": false,
                                                                                     "isTransient": false,
                                                                                     "name": "column",
-                                                                                    "type": "ISchemaColumn",
+                                                                                    "type": "SchemaColumn",
                                                                                     "ownerEntity": null,
-                                                                                    "nonArrayType": "ISchemaColumn",
+                                                                                    "nonArrayType": "SchemaColumn",
                                                                                     "entity": null,
                                                                                     "index": 0
                                                                                 },
@@ -2209,9 +2133,9 @@ exports.MAPPED_SUPERCLASS = [
                                                                                     "isMappedSuperclass": false,
                                                                                     "isTransient": false,
                                                                                     "name": "property",
-                                                                                    "type": "ISchemaProperty",
+                                                                                    "type": "SchemaProperty",
                                                                                     "ownerEntity": null,
-                                                                                    "nonArrayType": "ISchemaProperty",
+                                                                                    "nonArrayType": "SchemaProperty",
                                                                                     "entity": null,
                                                                                     "index": 1
                                                                                 }
@@ -2245,10 +2169,10 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "isMappedSuperclass": false,
                                                                     "isTransient": false,
                                                                     "name": "manyRelationColumns",
-                                                                    "type": "ISchemaRelationColumn[]",
+                                                                    "type": "SchemaRelationColumn[]",
                                                                     "ownerEntity": null,
                                                                     "isArray": true,
-                                                                    "nonArrayType": "ISchemaRelationColumn",
+                                                                    "nonArrayType": "SchemaRelationColumn",
                                                                     "entity": null,
                                                                     "index": 10
                                                                 },
@@ -2268,10 +2192,10 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "isMappedSuperclass": false,
                                                                     "isTransient": false,
                                                                     "name": "oneRelationColumns",
-                                                                    "type": "ISchemaRelationColumn[]",
+                                                                    "type": "SchemaRelationColumn[]",
                                                                     "ownerEntity": null,
                                                                     "isArray": true,
-                                                                    "nonArrayType": "ISchemaRelationColumn",
+                                                                    "nonArrayType": "SchemaRelationColumn",
                                                                     "entity": null,
                                                                     "index": 11
                                                                 }
@@ -2371,11 +2295,11 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isMappedSuperclass": false,
                                                     "isTransient": true,
                                                     "name": "columnMap",
-                                                    "type": "{ [name: string]: ISchemaColumn; }",
+                                                    "type": "{ [name: string]: SchemaColumn; }",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "{ [name: string]: ISchemaColumn; }",
+                                                    "nonArrayType": "{ [name: string]: SchemaColumn; }",
                                                     "isMap": true,
-                                                    "mapValueType": "ISchemaColumn",
+                                                    "mapValueType": "SchemaColumn",
                                                     "mapValueIsPrimitive": false,
                                                     "mapKeyName": "name",
                                                     "mapKeyType": "string"
@@ -2392,10 +2316,10 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isMappedSuperclass": false,
                                                     "isTransient": true,
                                                     "name": "idColumns",
-                                                    "type": "ISchemaColumn[]",
+                                                    "type": "SchemaColumn[]",
                                                     "ownerEntity": null,
                                                     "isArray": true,
-                                                    "nonArrayType": "ISchemaColumn"
+                                                    "nonArrayType": "SchemaColumn"
                                                 },
                                                 {
                                                     "decorators": [
@@ -2409,11 +2333,11 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isMappedSuperclass": false,
                                                     "isTransient": true,
                                                     "name": "idColumnMap",
-                                                    "type": "{ [name: string]: ISchemaColumn; }",
+                                                    "type": "{ [name: string]: SchemaColumn; }",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "{ [name: string]: ISchemaColumn; }",
+                                                    "nonArrayType": "{ [name: string]: SchemaColumn; }",
                                                     "isMap": true,
-                                                    "mapValueType": "ISchemaColumn",
+                                                    "mapValueType": "SchemaColumn",
                                                     "mapValueIsPrimitive": false,
                                                     "mapKeyName": "name",
                                                     "mapKeyType": "string"
@@ -2430,11 +2354,11 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isMappedSuperclass": false,
                                                     "isTransient": true,
                                                     "name": "propertyMap",
-                                                    "type": "{ [name: string]: ISchemaProperty; }",
+                                                    "type": "{ [name: string]: SchemaProperty; }",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "{ [name: string]: ISchemaProperty; }",
+                                                    "nonArrayType": "{ [name: string]: SchemaProperty; }",
                                                     "isMap": true,
-                                                    "mapValueType": "ISchemaProperty",
+                                                    "mapValueType": "SchemaProperty",
                                                     "mapValueIsPrimitive": false,
                                                     "mapKeyName": "name",
                                                     "mapKeyType": "string"
@@ -2791,11 +2715,11 @@ exports.MAPPED_SUPERCLASS = [
                                     "isMappedSuperclass": false,
                                     "isTransient": true,
                                     "name": "entityMapByName",
-                                    "type": "{ [entityName: string]: ISchemaEntity; }",
+                                    "type": "{ [entityName: string]: SchemaEntity; }",
                                     "ownerEntity": null,
-                                    "nonArrayType": "{ [entityName: string]: ISchemaEntity; }",
+                                    "nonArrayType": "{ [entityName: string]: SchemaEntity; }",
                                     "isMap": true,
-                                    "mapValueType": "ISchemaEntity",
+                                    "mapValueType": "SchemaEntity",
                                     "mapValueIsPrimitive": false,
                                     "mapKeyName": "entityName",
                                     "mapKeyType": "string"
@@ -2812,11 +2736,11 @@ exports.MAPPED_SUPERCLASS = [
                                     "isMappedSuperclass": false,
                                     "isTransient": true,
                                     "name": "referencesMapByName",
-                                    "type": "{ [schemaName: string]: ISchemaReference; }",
+                                    "type": "{ [schemaName: string]: SchemaReference; }",
                                     "ownerEntity": null,
-                                    "nonArrayType": "{ [schemaName: string]: ISchemaReference; }",
+                                    "nonArrayType": "{ [schemaName: string]: SchemaReference; }",
                                     "isMap": true,
-                                    "mapValueType": "ISchemaReference",
+                                    "mapValueType": "SchemaReference",
                                     "mapValueIsPrimitive": false,
                                     "mapKeyName": "schemaName",
                                     "mapKeyType": "string"
@@ -2833,11 +2757,11 @@ exports.MAPPED_SUPERCLASS = [
                                     "isMappedSuperclass": false,
                                     "isTransient": true,
                                     "name": "referencedByMapByName",
-                                    "type": "{ [schemaName: string]: ISchemaReference; }",
+                                    "type": "{ [schemaName: string]: SchemaReference; }",
                                     "ownerEntity": null,
-                                    "nonArrayType": "{ [schemaName: string]: ISchemaReference; }",
+                                    "nonArrayType": "{ [schemaName: string]: SchemaReference; }",
                                     "isMap": true,
-                                    "mapValueType": "ISchemaReference",
+                                    "mapValueType": "SchemaReference",
                                     "mapValueIsPrimitive": false,
                                     "mapKeyName": "schemaName",
                                     "mapKeyType": "string"

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const check_in_1 = require("@airport/check-in");
 const qSchema_1 = require("./qSchema");
-// Schema Q object Dependency Injection readiness detection DAO
+// Schema Q object Dependency Injection readiness detection Duo
 class SQDIDuo extends check_in_1.Duo {
     constructor(dbEntityId) {
         super(dbEntityId, qSchema_1.Q);
@@ -20,10 +20,10 @@ class BaseSchemaDuo extends SQDIDuo {
 exports.BaseSchemaDuo = BaseSchemaDuo;
 class BaseSchemaColumnDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.duoDiSet(0);
+        return qSchema_1.duoDiSet(4);
     }
     constructor() {
-        super(0);
+        super(4);
     }
 }
 exports.BaseSchemaColumnDuo = BaseSchemaColumnDuo;
@@ -38,19 +38,19 @@ class BaseSchemaEntityDuo extends SQDIDuo {
 exports.BaseSchemaEntityDuo = BaseSchemaEntityDuo;
 class BaseSchemaPropertyDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.duoDiSet(4);
+        return qSchema_1.duoDiSet(2);
     }
     constructor() {
-        super(4);
+        super(2);
     }
 }
 exports.BaseSchemaPropertyDuo = BaseSchemaPropertyDuo;
 class BaseSchemaPropertyColumnDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.duoDiSet(1);
+        return qSchema_1.duoDiSet(3);
     }
     constructor() {
-        super(1);
+        super(3);
     }
 }
 exports.BaseSchemaPropertyColumnDuo = BaseSchemaPropertyColumnDuo;
@@ -65,19 +65,19 @@ class BaseSchemaReferenceDuo extends SQDIDuo {
 exports.BaseSchemaReferenceDuo = BaseSchemaReferenceDuo;
 class BaseSchemaRelationDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.duoDiSet(3);
+        return qSchema_1.duoDiSet(1);
     }
     constructor() {
-        super(3);
+        super(1);
     }
 }
 exports.BaseSchemaRelationDuo = BaseSchemaRelationDuo;
 class BaseSchemaRelationColumnDuo extends SQDIDuo {
     static diSet() {
-        return qSchema_1.duoDiSet(2);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
-        super(2);
+        super(0);
     }
 }
 exports.BaseSchemaRelationColumnDuo = BaseSchemaRelationColumnDuo;

@@ -1,9 +1,9 @@
-import { IQBuilder, IQCoreEntityBuilder } from '../QBuilder';
+import { IBuilder, IQCoreEntityBuilder } from '../Builder';
 import { SColumn } from '../schema/SProperty';
 /**
  * Created by Papa on 4/25/2016.
  */
-export declare class QColumnBuilder implements IQBuilder {
+export declare class QColumnBuilder implements IBuilder {
     private parentBuilder;
     sColumn: SColumn;
     constructor(parentBuilder: IQCoreEntityBuilder, sColumn: SColumn);

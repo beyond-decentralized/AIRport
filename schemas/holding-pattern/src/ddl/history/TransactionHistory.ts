@@ -8,18 +8,17 @@ import {
 	SequenceGenerator,
 	Table,
 	Transient
-} from '@airport/air-control'
+}                                     from '@airport/air-control'
 import {
 	ATransactionHistory,
 	SyncSchemaMap,
 	TransactionType
-}                                       from '@airport/ground-control'
-import {IOperationHistory,}             from '../../generated/history/qoperationhistory'
-import {IRecordHistory,}                from '../../generated/history/qrecordhistory'
-import {IRecordHistoryNewValue}         from '../../generated/history/qrecordhistorynewvalue'
-import {IRecordHistoryOldValue,}        from '../../generated/history/qrecordhistoryoldvalue'
-import {IRepositoryTransactionHistory,} from '../../generated/history/qrepositorytransactionhistory'
-import {ITransactionHistory}            from '../../generated/history/qtransactionhistory'
+}                                     from '@airport/ground-control'
+import {OperationHistory}             from './OperationHistory'
+import {RecordHistory}                from './RecordHistory'
+import {RecordHistoryNewValue}        from './RecordHistoryNewValue'
+import {RecordHistoryOldValue}        from './RecordHistoryOldValue'
+import {RepositoryTransactionHistory} from './RepositoryTransactionHistory'
 
 export type TransactionHistoryNumberOfOperations = number;
 
@@ -32,8 +31,7 @@ export type TransactionHistoryId = number
 @Entity()
 @Table({name: 'TRANSACTION_HISTORY'})
 export class TransactionHistory
-	implements ITransactionHistory,
-	           ATransactionHistory {
+	implements ATransactionHistory {
 
 	@GeneratedValue()
 	@Id()
@@ -45,25 +43,25 @@ export class TransactionHistory
 	transactionType: TransactionType
 
 	@OneToMany({mappedBy: 'transactionHistory'})
-	repositoryTransactionHistories: IRepositoryTransactionHistory[] = []
+	repositoryTransactionHistories: RepositoryTransactionHistory[] = []
 
 	@Transient()
-	repoTransHistoryMap: { [repositoryId: number]: IRepositoryTransactionHistory } = {}
+	repoTransHistoryMap: { [repositoryId: number]: RepositoryTransactionHistory } = {}
 
 	@Transient()
 	schemaMap: SyncSchemaMap = new SyncSchemaMap()
 
 	@Transient()
-	allOperationHistory: IOperationHistory[] = []
+	allOperationHistory: OperationHistory[] = []
 
 	@Transient()
-	allRecordHistory: IRecordHistory[] = []
+	allRecordHistory: RecordHistory[] = []
 
 	@Transient()
-	allRecordHistoryNewValues: IRecordHistoryNewValue[] = []
+	allRecordHistoryNewValues: RecordHistoryNewValue[] = []
 
 	@Transient()
-	allRecordHistoryOldValues: IRecordHistoryOldValue[] = []
+	allRecordHistoryOldValues: RecordHistoryOldValue[] = []
 
 	@Transient()
 	numberOfOperations: TransactionHistoryNumberOfOperations = 0

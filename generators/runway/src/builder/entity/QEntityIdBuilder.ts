@@ -1,8 +1,8 @@
-import {MemberData, QCoreEntityBuilder} from "../QBuilder";
-import {EntityCandidate} from "../../parser/EntityCandidate";
-import {QEntityFileBuilder} from "./QEntityFileBuilder";
-import {QRelationBuilder} from "./QRelationBuilder";
-import {QPropertyBuilder} from "./QPropertyBuilder";
+import {MemberData, QCoreEntityBuilder} from "../Builder";
+import {EntityCandidate}                from "../../parser/EntityCandidate";
+import {QEntityFileBuilder}             from "./QEntityFileBuilder";
+import {QRelationBuilder}               from "./QRelationBuilder";
+import {QPropertyBuilder}               from "./QPropertyBuilder";
 
 export class QEntityIdBuilder extends QCoreEntityBuilder {
 

@@ -16,7 +16,7 @@ export declare class PathBuilder {
     getOutDirPrefix(fullGenerationPath: string): string;
     prefixQToFileName(sourceRelativePath: string): string;
     getFullPathToGeneratedSource(//
-    sourcePath: string): string;
+    sourcePath: string, prefixQ?: boolean): string;
     setupFileForGeneration(sourcePath: string, prefixQ?: boolean): string;
     convertFileNameToLowerCase(//
     path: string): string;

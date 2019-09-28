@@ -1,5 +1,6 @@
 import {PropertyDocEntry}   from '../parser/DocEntry'
 import {EntityCandidate}    from '../parser/EntityCandidate'
+import {FileBuilder}        from './entity/FileBuilder'
 import {QColumnBuilder}     from './entity/QColumnBuilder'
 import {QEntityFileBuilder} from './entity/QEntityFileBuilder'
 import {QPropertyBuilder}   from './entity/QPropertyBuilder'
@@ -11,7 +12,7 @@ import {SColumn}            from './schema/SProperty'
  * Created by Papa on 4/25/2016.
  */
 
-export interface IQBuilder {
+export interface IBuilder {
 
 	build(
 		...args: any[]
@@ -24,11 +25,11 @@ export interface MemberData {
 }
 
 export interface IQCoreEntityBuilder
-	extends IQBuilder {
+	extends IBuilder {
 
 	constructorFields: { [name: string]: boolean };
 	entity: EntityCandidate;
-	fileBuilder: QEntityFileBuilder;
+	fileBuilder: FileBuilder;
 
 	addImport(
 		classNames: (string | { asName: string, sourceName: string }) [],
@@ -46,7 +47,7 @@ export abstract class QCoreEntityBuilder
 		public entity: EntityCandidate,
 		protected fullGenerationPath: string,
 		protected workingDirPath: string,
-		public fileBuilder: QEntityFileBuilder,
+		public fileBuilder: FileBuilder,
 		protected entityMapByName: { [entityName: string]: EntityCandidate }
 	) {
 	}

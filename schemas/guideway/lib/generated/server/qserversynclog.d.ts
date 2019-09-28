@@ -1,15 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { IServer, ServerEOptionalId, ServerESelect, QServerQRelation } from './qserver';
-export interface IServerSyncLog {
-    id: number;
-    type?: number;
-    startDatetime?: Date;
-    endDatetime?: Date;
-    numberOfConnections?: number;
-    numberOfRecords?: number;
-    dataCharsTotal?: number;
-    server?: IServer;
-}
+import { ServerEOptionalId, ServerESelect, QServerQRelation } from './qserver';
 /**
  * SELECT - All fields and relations (optional).
  */

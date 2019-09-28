@@ -1,9 +1,4 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-export interface ISharingNodeRepoTransBlockStage {
-    sharingNodeId: number;
-    repositoryTransactionBlockId: number;
-    syncStatus?: number;
-}
 /**
  * SELECT - All fields and relations (optional).
  */

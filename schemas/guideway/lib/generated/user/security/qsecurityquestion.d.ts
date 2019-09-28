@@ -1,8 +1,4 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-export interface ISecurityQuestion {
-    id: number;
-    question?: string;
-}
 /**
  * SELECT - All fields and relations (optional).
  */

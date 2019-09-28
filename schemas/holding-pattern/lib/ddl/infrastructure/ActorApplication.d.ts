@@ -1,5 +1,5 @@
-import { IActor } from "../../generated/infrastructure/qactor";
-import { IApplication } from "../../generated/infrastructure/qapplication";
+import { Actor } from './Actor';
+import { Application } from './Application';
 /**
  * Created by Papa on 12/18/2016.
  */
@@ -8,6 +8,6 @@ import { IApplication } from "../../generated/infrastructure/qapplication";
  */
 export declare class ActorApplication {
     id: number;
-    actor: IActor;
-    application: IApplication;
+    actor: Actor;
+    application: Application;
 }

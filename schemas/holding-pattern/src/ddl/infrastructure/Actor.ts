@@ -7,22 +7,20 @@ import {
 	JoinColumn,
 	ManyToOne,
 	OneToMany
-}                           from '@airport/air-control'
-import {CascadeType}        from '@airport/ground-control'
+}                         from '@airport/air-control'
+import {CascadeType}      from '@airport/ground-control'
 import {
 	Terminal,
 	User
-}                           from '@airport/travel-document-checkpoint'
-import {IActor,}            from '../../generated/infrastructure/qactor'
-import {IActorApplication,} from '../../generated/infrastructure/qactorapplication'
-import {IRepositoryActor,}  from '../../generated/repository/qrepositoryactor'
+}                         from '@airport/travel-document-checkpoint'
+import {RepositoryActor}  from '../repository/RepositoryActor'
+import {ActorApplication} from './ActorApplication'
 
 export type ActorId = number;
 export type ActorRandomId = number;
 
 @Entity()
-export class Actor
-	implements IActor {
+export class Actor {
 
 	@Id()
 	@GeneratedValue()
@@ -44,9 +42,9 @@ export class Actor
 	randomId: ActorRandomId
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'actor'})
-	actorApplications: IActorApplication[] = []
+	actorApplications: ActorApplication[] = []
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'ACTOR_ID'})
-	repositoryActor: IRepositoryActor[]
+	repositoryActor: RepositoryActor[]
 
 }

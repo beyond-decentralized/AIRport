@@ -1,8 +1,8 @@
 import { EntityCandidate } from "../../parser/EntityCandidate";
-import { QCoreEntityBuilder } from "../QBuilder";
+import { QCoreEntityBuilder } from "../Builder";
 import { SIndexedEntity } from "../schema/SEntity";
+import { FileBuilder } from './FileBuilder';
 import { QColumnBuilder } from "./QColumnBuilder";
-import { QEntityFileBuilder } from "./QEntityFileBuilder";
 import { QPropertyBuilder } from "./QPropertyBuilder";
 import { QRelationBuilder } from "./QRelationBuilder";
 import { QTransientBuilder } from "./QTransientBuilder";
@@ -18,7 +18,7 @@ export declare class QEntityBuilder extends QCoreEntityBuilder {
     nonIdRelationBuilders: QRelationBuilder[];
     idRelationBuilders: QRelationBuilder[];
     transientPropertyBuilders: QTransientBuilder[];
-    constructor(entity: EntityCandidate, fullGenerationPath: string, workingDirPath: string, fileBuilder: QEntityFileBuilder, entityMapByName: {
+    constructor(entity: EntityCandidate, fullGenerationPath: string, workingDirPath: string, fileBuilder: FileBuilder, entityMapByName: {
         [entityName: string]: EntityCandidate;
     }, sIndexedEntity: SIndexedEntity);
     build(): string;

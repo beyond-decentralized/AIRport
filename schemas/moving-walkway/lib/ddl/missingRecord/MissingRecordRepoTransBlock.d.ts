@@ -1,6 +1,6 @@
-import { IMissingRecord } from "../../generated/missingRecord/qmissingrecord";
-import { IRepositoryTransactionBlock } from "../../generated/repositoryTransactionBlock/qrepositorytransactionblock";
+import { RepositoryTransactionBlock } from '../repositoryTransactionBlock/RepositoryTransactionBlock';
+import { MissingRecord } from './MissingRecord';
 export declare class MissingRecordRepoTransBlock {
-    missingRecord: IMissingRecord;
-    repositoryTransactionBlock: IRepositoryTransactionBlock;
+    missingRecord: MissingRecord;
+    repositoryTransactionBlock: RepositoryTransactionBlock;
 }

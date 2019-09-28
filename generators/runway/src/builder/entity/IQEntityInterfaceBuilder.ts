@@ -1,51 +1,39 @@
-import {TypeOrParamDocEntry} from '../../parser/DocEntry'
-import {EntityCandidate}     from '../../parser/EntityCandidate'
-import {addImportForType}    from '../../resolve/pathResolver'
+import {EntityCandidate}  from '../../parser/EntityCandidate'
 import {
 	entityExtendsRepositoryEntity,
 	getManyToOneDecorator
-}                            from '../schema/SSchemaBuilder'
-import {IQBuilder}           from './../QBuilder'
-import {QColumnBuilder}      from './QColumnBuilder'
-import {QEntityBuilder}      from './QEntityBuilder'
-import {QPropertyBuilder}    from './QPropertyBuilder'
-import {QRelationBuilder}    from './QRelationBuilder'
-import {QTransientBuilder}   from './QTransientBuilder'
+}                         from '../schema/SSchemaBuilder'
+import {IBuilder}         from '../Builder'
+import {QColumnBuilder}   from './QColumnBuilder'
+import {QEntityBuilder}   from './QEntityBuilder'
+import {QPropertyBuilder} from './QPropertyBuilder'
+import {QRelationBuilder} from './QRelationBuilder'
 
 /**
  * Created by Papa on 5/20/2016.
  */
 export class IQEntityInterfaceBuilder
-	implements IQBuilder {
+	implements IBuilder {
 
 	idPropertyBuilders: QPropertyBuilder[]
 	idRelationBuilders: QRelationBuilder[]
 	nonIdColumnBuilders: QColumnBuilder[]
 	nonIdPropertyBuilders: QPropertyBuilder[]
 	nonIdRelationBuilders: QRelationBuilder[]
-	transientPropertyBuilders: QTransientBuilder[]
 
 	constructor(
 		public entity: EntityCandidate,
 		private qEntityBuilder: QEntityBuilder
 	) {
-		this.idPropertyBuilders        = qEntityBuilder.idPropertyBuilders
-		this.idRelationBuilders        = qEntityBuilder.idRelationBuilders
-		this.nonIdColumnBuilders       = qEntityBuilder.nonIdColumnBuilders
-		this.nonIdPropertyBuilders     = qEntityBuilder.nonIdPropertyBuilders
-		this.nonIdRelationBuilders     = qEntityBuilder.nonIdRelationBuilders
-		this.transientPropertyBuilders = qEntityBuilder.transientPropertyBuilders
+		this.idPropertyBuilders    = qEntityBuilder.idPropertyBuilders
+		this.idRelationBuilders    = qEntityBuilder.idRelationBuilders
+		this.nonIdColumnBuilders   = qEntityBuilder.nonIdColumnBuilders
+		this.nonIdPropertyBuilders = qEntityBuilder.nonIdPropertyBuilders
+		this.nonIdRelationBuilders = qEntityBuilder.nonIdRelationBuilders
 	}
 
 	build(): string {
 		let entityName = `${this.entity.docEntry.name}`
-
-		let idProperties = ``
-		this.idPropertyBuilders.forEach((
-			builder: QPropertyBuilder
-		) => {
-			idProperties += `\t${builder.buildInterfaceDefinition(false, false)}\n`
-		})
 
 		let idEProperties = ``
 		this.idPropertyBuilders.forEach((
@@ -59,17 +47,6 @@ export class IQEntityInterfaceBuilder
 			builder: QPropertyBuilder
 		) => {
 			optionalIdEProperties += `\t${builder.buildInterfaceDefinition()}\n`
-		})
-
-
-		let idRelations = ``
-		this.idRelationBuilders.forEach((
-			builder: QRelationBuilder
-		) => {
-			const idRelation = builder.buildInterfaceDefinition(true, false, false)
-			if (idRelation) {
-				idRelations += `\t${idRelation}\n`
-			}
 		})
 
 		let idRelationsEntityIdEProperties = ``
@@ -99,13 +76,6 @@ export class IQEntityInterfaceBuilder
 			idRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`
 		})
 
-		let nonIdProperties = ``
-		this.nonIdPropertyBuilders.forEach((
-			builder: QPropertyBuilder
-		) => {
-			nonIdProperties += `\t${builder.buildInterfaceDefinition(true, false)}\n`
-		})
-
 		let nonIdEProperties = ``
 		this.nonIdPropertyBuilders.forEach((
 			builder: QPropertyBuilder
@@ -118,16 +88,6 @@ export class IQEntityInterfaceBuilder
 			builder: QColumnBuilder
 		) => {
 			nonIdEColumns += `\t${builder.buildInterfaceDefinition()}\n`
-		})
-
-		let nonIdRelations = ``
-		this.nonIdRelationBuilders.forEach((
-			builder: QRelationBuilder
-		) => {
-			const nonIdRelation = builder.buildInterfaceDefinition(false, true, false)
-			if (nonIdRelation) {
-				nonIdRelations += `\t${nonIdRelation}\n`
-			}
 		})
 
 		let nonIdRelationsForUpdateEProperties = ``
@@ -174,14 +134,6 @@ export class IQEntityInterfaceBuilder
 				false, true, true, true)}\n`
 		})
 
-		let transientProperties = ``
-		this.transientPropertyBuilders.forEach((
-			builder: QTransientBuilder
-		) => {
-			transientProperties += `\t${builder.buildInterfaceDefinition()}\n`
-		})
-
-		let entityExtendsClause                = ''
 		let extendedQInterface                 = `IEntitySelectProperties`
 		let extendedQUpdatePropertiesInterface = `IEntityUpdateProperties`
 		let extendedQCascadeGraphInterface     = `IEntityCascadeGraph`
@@ -194,43 +146,9 @@ export class IQEntityInterfaceBuilder
 			extendedQCascadeGraphInterface     = `${parentType}ECascadeGraph`
 			extendedQUpdateColumnsInterface    = `${parentType}EUpdateColumns`
 			extendedQIdInterface               = `${parentType}EId`
-			entityExtendsClause                = ` extends I${parentType}`
 		}
 
-		const publicMethodSignatures = this.entity.docEntry.methodSignatures
-			.map(
-				method => {
-					let methodParams = method.parameters.map(
-						paramDocEntry => {
-							const optional = paramDocEntry.optional ? '?' : ''
-							return `\t\t${paramDocEntry.name}${optional}: ${this.getTypeString(paramDocEntry)}`
-						}).join(',\n')
-					methodParams     = methodParams ? `\n${methodParams}\n\t` : ''
-
-					return `\t${method.name}?(${methodParams}): ${this.getTypeString(method.returnType)};`
-				}).join('\n')
-
 		let interfaceSource = `
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface I${entityName}${entityExtendsClause} {
-	
-	// Id Properties
-${idProperties}
-	// Id Relations
-${idRelations}
-	// Non-Id Properties
-${nonIdProperties}
-	// Non-Id Relations
-${nonIdRelations}
-	// Transient Properties
-${transientProperties}
-	// Public Methods
-${publicMethodSignatures}	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -315,42 +233,6 @@ extends ${entityName}EId, ${entityName}EUpdateColumns {
 `
 
 		return interfaceSource
-	}
-
-	getTypeString(
-		docEntry: TypeOrParamDocEntry
-	): string {
-		let type = docEntry.type
-
-		let suffix = ''
-		if (docEntry.arrayDepth) {
-			for (let i = 0; i < docEntry.arrayDepth; i++) {
-				suffix += '[]'
-			}
-		}
-
-		if (docEntry.primitive) {
-			return type + suffix
-		}
-		if (type === 'void') {
-			return type
-		}
-		if (type === 'Date' || type === 'any') {
-			return type + suffix
-		}
-
-		if (type !== 'Promise') {
-			addImportForType(this.entity, type, this.qEntityBuilder.fileBuilder)
-		}
-
-		if (docEntry.genericParams.length) {
-			suffix = '<' + docEntry.genericParams.map(
-				genericParam =>
-					this.getTypeString(genericParam)
-			).join(', ') + '>' + suffix
-		}
-
-		return type + suffix
 	}
 
 }

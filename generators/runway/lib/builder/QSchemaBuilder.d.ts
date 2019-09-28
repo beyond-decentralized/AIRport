@@ -1,6 +1,6 @@
 import { PathBuilder } from './PathBuilder';
-import { IQBuilder } from './QBuilder';
-export declare class QSchemaBuilder implements IQBuilder {
+import { IBuilder } from './Builder';
+export declare class QSchemaBuilder implements IBuilder {
     private pathBuilder;
     qSchemaFilePath: any;
     private entityNames;

@@ -1,6 +1,4 @@
 import { SchemaVersionId, SchemaVersionInteger, SchemaVersionMajor, SchemaVersionMinor, SchemaVersionPatch, SchemaVersionString } from '@airport/ground-control';
-import { ISchemaEntity } from '../../generated/schema/qschemaentity';
-import { ISchemaReference } from '../../generated/schema/qschemareference';
 import { Schema } from './Schema';
 import { SchemaEntity } from './SchemaEntity';
 import { SchemaReference } from './SchemaReference';
@@ -16,12 +14,12 @@ export declare class SchemaVersion {
     references: SchemaReference[];
     referencedBy: SchemaReference[];
     entityMapByName?: {
-        [entityName: string]: ISchemaEntity;
+        [entityName: string]: SchemaEntity;
     };
     referencesMapByName?: {
-        [schemaName: string]: ISchemaReference;
+        [schemaName: string]: SchemaReference;
     };
     referencedByMapByName?: {
-        [schemaName: string]: ISchemaReference;
+        [schemaName: string]: SchemaReference;
     };
 }

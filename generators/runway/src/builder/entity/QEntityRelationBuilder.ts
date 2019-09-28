@@ -1,5 +1,5 @@
-import { EntityCandidate } from "../../parser/EntityCandidate";
-import { QCoreEntityBuilder } from "../QBuilder";
+import { EntityCandidate }    from "../../parser/EntityCandidate";
+import { QCoreEntityBuilder } from "../Builder";
 import { QEntityFileBuilder } from "./QEntityFileBuilder";
 
 export class QEntityRelationBuilder extends QCoreEntityBuilder {

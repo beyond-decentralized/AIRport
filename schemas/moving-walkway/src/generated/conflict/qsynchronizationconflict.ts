@@ -22,7 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	IRepository,
 	RepositoryECascadeGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -31,7 +30,6 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
-	IRecordHistory,
 	RecordHistoryECascadeGraph,
 	RecordHistoryEId,
 	RecordHistoryEOptionalId,
@@ -42,7 +40,6 @@ import {
 	QRecordHistoryQRelation,
 } from '@airport/holding-pattern';
 import {
-	ISynchronizationConflictValues,
 	SynchronizationConflictValuesECascadeGraph,
 	SynchronizationConflictValuesEId,
 	SynchronizationConflictValuesEOptionalId,
@@ -57,32 +54,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface ISynchronizationConflict {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	type?: number;
-
-	// Non-Id Relations
-	repository?: IRepository;
-	overwrittenRecordHistory?: IRecordHistory;
-	overwritingRecordHistory?: IRecordHistory;
-	values?: ISynchronizationConflictValues[];
-
-	// Transient Properties
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

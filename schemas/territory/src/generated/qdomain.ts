@@ -22,10 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	DbSchema,
-} from '@airport/ground-control';
-import {
-	IApplication,
 	ApplicationECascadeGraph,
 	ApplicationEId,
 	ApplicationEOptionalId,
@@ -40,30 +36,6 @@ import {
 declare function require(moduleName: string): any;
 
 
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-
-export interface IDomain {
-	
-	// Id Properties
-	id: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	name?: string;
-
-	// Non-Id Relations
-	applications?: IApplication[];
-
-	// Transient Properties
-	schemas?: DbSchema[];
-
-	// Public Methods
-	
-}		
-		
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////

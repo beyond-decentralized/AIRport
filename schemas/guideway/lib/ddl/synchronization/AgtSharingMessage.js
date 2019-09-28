@@ -38,4 +38,4 @@ AgtSharingMessage = __decorate([
     air_control_1.Table({ name: "AGT_SHARING_MESSAGES" })
 ], AgtSharingMessage);
 exports.AgtSharingMessage = AgtSharingMessage;
-//# sourceMappingURL=AgtSharingMessage.js.map
+//# sourceMappingURL=agtsharingmessage.js.map
