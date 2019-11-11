@@ -7,6 +7,7 @@ class BehaviorSubject extends Subject_1.Subject {
         this.currentValue = value;
     }
     next(value) {
+        this.currentValue = value;
         this.exec(value, 'onNext');
     }
 }

@@ -11,6 +11,7 @@ export class BehaviorSubject<V>
 	}
 
 	next(value: V): void {
+		this.currentValue = value
 		this.exec(value, 'onNext')
 	}
 }
