@@ -21,4 +21,4 @@ ImmutableRow = __decorate([
     air_control_1.MappedSuperclass()
 ], ImmutableRow);
 exports.ImmutableRow = ImmutableRow;
-//# sourceMappingURL=immutablerow.js.map
+//# sourceMappingURL=ImmutableRow.js.map

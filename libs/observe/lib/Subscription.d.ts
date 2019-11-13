@@ -24,5 +24,5 @@ export declare class Subscription implements ISubscription {
         (value: any): void;
     });
     unsubscribe(onUnsubscribe?: () => void): void;
-    readonly closed: boolean;
+    get closed(): boolean;
 }

@@ -523,8 +523,8 @@ export class Container
 		token: DiToken<I>,
 		clazz: new() => I
 	): void {
-		this.classes[token as any] = clazz
-		this.objects[token as any] = null
+		this.classes[token.sequence] = clazz
+		this.objects[token.sequence] = null
 	}
 
 	getSync<A>(
@@ -750,9 +750,9 @@ export class Container
 				if (firstMissingClassToken || firstDiNotSetClass) {
 					return
 				}
-				let object = this.objects[token as any]
+				let object = this.objects[token.sequence]
 				if (!object) {
-					const clazz = this.classes[token as any]
+					const clazz = this.classes[token.sequence]
 					if (!clazz) {
 						firstMissingClassToken = token
 						return
@@ -762,7 +762,7 @@ export class Container
 						return
 					}
 					object                     = new clazz()
-					this.objects[token as any] = object
+					this.objects[token.sequence] = object
 				}
 
 				return object

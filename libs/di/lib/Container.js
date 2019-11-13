@@ -12,8 +12,8 @@ class Container {
         });
     }
     set(token, clazz) {
-        this.classes[token] = clazz;
-        this.objects[token] = null;
+        this.classes[token.sequence] = clazz;
+        this.objects[token.sequence] = null;
     }
     getSync(...tokens) {
         const { firstDiNotSetClass, firstMissingClassToken, objects } = this.doGetCore(tokens);
@@ -63,9 +63,9 @@ class Container {
             if (firstMissingClassToken || firstDiNotSetClass) {
                 return;
             }
-            let object = this.objects[token];
+            let object = this.objects[token.sequence];
             if (!object) {
-                const clazz = this.classes[token];
+                const clazz = this.classes[token.sequence];
                 if (!clazz) {
                     firstMissingClassToken = token;
                     return;
@@ -75,7 +75,7 @@ class Container {
                     return;
                 }
                 object = new clazz();
-                this.objects[token] = object;
+                this.objects[token.sequence] = object;
             }
             return object;
         });

@@ -12,7 +12,7 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
     searchOne: IEntitySearchOne<Entity, EntitySelect>;
     constructor(dbEntity: DbEntity, Q: QSchema);
-    readonly from: IQ;
+    get from(): IQ;
     create(entity: EntityCreate, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
     bulkCreate(entities: EntityCreate[], cascadeOverwrite?: CascadeOverwrite | EntityCascadeGraph, checkIfProcessed?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {

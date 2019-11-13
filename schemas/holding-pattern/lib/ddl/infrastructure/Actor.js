@@ -42,4 +42,4 @@ Actor = __decorate([
     air_control_1.Entity()
 ], Actor);
 exports.Actor = Actor;
-//# sourceMappingURL=actor.js.map
+//# sourceMappingURL=Actor.js.map

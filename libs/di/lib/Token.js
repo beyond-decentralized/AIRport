@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-let diTokenSeq = -1;
-function diToken() {
-    diTokenSeq++;
-    return diTokenSeq;
+class DiToken {
+    constructor(library, sequence) {
+        this.library = library;
+        this.sequence = sequence;
+    }
 }
-exports.diToken = diToken;
+exports.DiToken = DiToken;
 //# sourceMappingURL=Token.js.map

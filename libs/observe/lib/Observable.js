@@ -74,6 +74,9 @@ class Observable {
             observable.exec(this.currentValue, callbackName, this);
         });
     }
+    // stop(): void {
+    //
+    // }
     // subscribe(
     // 	observer: IObserver<V>
     // ): ISubscription

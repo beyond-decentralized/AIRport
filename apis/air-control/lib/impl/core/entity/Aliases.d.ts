@@ -37,6 +37,6 @@ export declare class ParameterAliases extends AliasMap<IQFunction<any>, Paramete
 export declare class FieldColumnAliases extends AliasMap<IQOrderableField<any>, string> implements IFieldColumnAliases<any> {
     protected _entityAliases: IEntityAliases;
     constructor(_entityAliases: IEntityAliases, aliasCache: AliasCache);
-    readonly entityAliases: IEntityAliases;
+    get entityAliases(): IEntityAliases;
     getExistingAlias(field: IQOrderableField<any>): string;
 }

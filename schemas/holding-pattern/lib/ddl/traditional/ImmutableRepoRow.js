@@ -17,4 +17,4 @@ ImmutableRepoRow = __decorate([
     air_control_1.MappedSuperclass()
 ], ImmutableRepoRow);
 exports.ImmutableRepoRow = ImmutableRepoRow;
-//# sourceMappingURL=immutablereporow.js.map
+//# sourceMappingURL=ImmutableRepoRow.js.map

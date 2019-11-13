@@ -17,4 +17,4 @@ MutableRepoRow = __decorate([
     air_control_1.MappedSuperclass()
 ], MutableRepoRow);
 exports.MutableRepoRow = MutableRepoRow;
-//# sourceMappingURL=mutablereporow.js.map
+//# sourceMappingURL=MutableRepoRow.js.map

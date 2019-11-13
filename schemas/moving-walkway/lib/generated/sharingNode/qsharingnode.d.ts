@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { SharingMessageECascadeGraph, SharingMessageESelect, QSharingMessage } from '../sharingmessage/qsharingmessage';
+import { SharingMessageECascadeGraph, SharingMessageESelect, QSharingMessage } from '../sharingMessage/qsharingmessage';
 import { SharingNodeRepoTransBlockECascadeGraph, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from './qsharingnoderepotransblock';
 /**
  * SELECT - All fields and relations (optional).

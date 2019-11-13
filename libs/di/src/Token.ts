@@ -1,16 +1,23 @@
-export interface DiToken<Injectable> {
+import {ILibrary} from './Library'
+
+export interface IDiToken<Injectable> {
+	library: ILibrary
+	sequence: number
+}
+
+export class DiToken<Injectable>
+	implements IDiToken<Injectable> {
+
+	constructor(
+		public library: ILibrary,
+		public sequence: number
+	) {
+	}
+
 }
 
 export interface GenericDependencyInjectionError {
 
 	DiTokenMustBeGenerisizedWithTypeOfInjectedObject(): void
 
-}
-
-let diTokenSeq = -1
-
-export function diToken<I = GenericDependencyInjectionError>():DiToken<I> {
-	diTokenSeq++;
-
-	return diTokenSeq
 }

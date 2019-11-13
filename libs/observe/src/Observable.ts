@@ -55,6 +55,8 @@ export interface IObservable<T> {
 		context: any
 	): void
 
+	// stop(): void
+
 	upstream: IObservable<any>[]
 	downstream: IObservable<any>[]
 
@@ -196,6 +198,10 @@ export class Observable<T>
 				observable.exec(this.currentValue, callbackName, this)
 			})
 	}
+
+	// stop(): void {
+	//
+	// }
 
 	// subscribe(
 	// 	observer: IObserver<V>

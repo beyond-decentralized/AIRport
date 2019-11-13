@@ -13,4 +13,4 @@ ReferenceRow = __decorate([
     air_control_1.MappedSuperclass()
 ], ReferenceRow);
 exports.ReferenceRow = ReferenceRow;
-//# sourceMappingURL=referencerow.js.map
+//# sourceMappingURL=ReferenceRow.js.map
