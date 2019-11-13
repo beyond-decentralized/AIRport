@@ -1,15 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Context_1 = require("./Context");
+const classes = [];
+let numPendingInits = 0;
+const objects = [];
 class Container {
+    set(token, clazz) {
+        classes[token.sequence] = clazz;
+        objects[token.sequence] = null;
+    }
+}
+exports.Container = Container;
+class ChildContainer extends Container {
+    // TODO: implement continuous upgrading
+    // classes: any[]  = []
+    // numPendingInits = 0
+    // objects: any[]  = []
+    constructor(context) {
+        super();
+        this.context = context;
+    }
     get(...tokens) {
         return new Promise((resolve, reject) => {
             this.doGet(tokens, resolve, reject);
         });
-    }
-    set(token, clazz) {
-        Container.classes[token.sequence] = clazz;
-        Container.objects[token.sequence] = null;
     }
     getSync(...tokens) {
         const { firstDiNotSetClass, firstMissingClassToken, objects } = this.doGetCore(tokens);
@@ -59,9 +73,9 @@ class Container {
             if (firstMissingClassToken || firstDiNotSetClass) {
                 return;
             }
-            let object = Container.objects[token.sequence];
+            let object = objects[token.sequence];
             if (!object) {
-                const clazz = Container.classes[token.sequence];
+                const clazz = classes[token.sequence];
                 if (!clazz) {
                     firstMissingClassToken = token;
                     return;
@@ -70,8 +84,15 @@ class Container {
                     firstDiNotSetClass = clazz;
                     return;
                 }
-                object = new clazz();
-                Container.objects[token.sequence] = object;
+                const container = this;
+                object = new Proxy(new clazz(), {
+                    get: function (obj, prop) {
+                        return prop === 'container' ?
+                            container :
+                            obj[prop];
+                    }
+                });
+                objects[token.sequence] = object;
             }
             return object;
         });
@@ -82,10 +103,7 @@ class Container {
         };
     }
 }
-exports.Container = Container;
-Container.classes = [];
-Container.numPendingInits = 0;
-Container.objects = [];
+exports.ChildContainer = ChildContainer;
 class RootContainer extends Container {
     constructor() {
         super(...arguments);
@@ -109,12 +127,5 @@ class RootContainer extends Container {
     }
 }
 exports.RootContainer = RootContainer;
-class ChildContainer extends Container {
-    constructor(context) {
-        super();
-        this.context = context;
-    }
-}
-exports.ChildContainer = ChildContainer;
 exports.DI = new RootContainer();
 //# sourceMappingURL=Container.js.map

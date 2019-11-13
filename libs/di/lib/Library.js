@@ -8,7 +8,7 @@ class Library {
         this.system = system;
         this.tokens = [];
     }
-    mark() {
+    token() {
         diTokenSeq++;
         const diToken = new Token_1.DiToken(this, diTokenSeq);
         this.tokens.push(diToken);

@@ -11,7 +11,7 @@ export interface ILibrary {
 	system: ISystem
 	tokens: IDiToken<any>[]
 
-	mark<T = GenericDependencyInjectionError>(): IDiToken<T>
+	token<T = GenericDependencyInjectionError>(): IDiToken<T>
 
 }
 
@@ -28,7 +28,7 @@ export class Library
 	) {
 	}
 
-	mark<T = GenericDependencyInjectionError>(): IDiToken<T> {
+	token<T = GenericDependencyInjectionError>(): IDiToken<T> {
 		diTokenSeq++
 
 		const diToken = new DiToken(

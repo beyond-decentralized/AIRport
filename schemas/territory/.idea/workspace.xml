@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="finished refactoring select fields">
-      <change afterPath="$PROJECT_DIR$/../../libs/di/src/Context.ts" afterDir="false" />
+    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="Added support for child Dependency Injection containers.  Needed for run-time swap of code (for bug fixes and new features).  Relevant because:&#10;&#10;   Don't want to shut down Airport just to upgrade.&#10;   Apps can stay resident in memory on mobile devices for a very long time (with browser being open in background).">
+      <change afterPath="$PROJECT_DIR$/../../libs/di/src/Injectable.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Container.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Container.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Container.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Container.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Container.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Container.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Library.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Library.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Library.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Library.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Library.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Library.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/index.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/di/src/Container.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/src/Container.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/di/src/Library.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/src/Library.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/di/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/diTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/diTokens.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../travel-document-checkpoint/lib/ddl/Terminal.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../travel-document-checkpoint/lib/ddl/Terminal.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../travel-document-checkpoint/lib/diTokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../travel-document-checkpoint/lib/diTokens.d.ts" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -227,7 +236,9 @@
       <workItem from="1568687178841" duration="3688000" />
       <workItem from="1569558964644" duration="14924000" />
       <workItem from="1573580104533" duration="750000" />
-      <workItem from="1573660169581" duration="4505000" />
+      <workItem from="1573660169581" duration="4661000" />
+      <workItem from="1573668273091" duration="155000" />
+      <workItem from="1573669137316" duration="3206000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1567257384008</created>
@@ -327,7 +338,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573661846824</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Added support for child Dependency Injection containers.  Needed for run-time swap of code (for bug fixes and new features).  Relevant because:&#10;&#10;   Don't want to shut down Airport just to upgrade.&#10;   Apps can stay resident in memory on mobile devices for a very long time (with browser being open in background).">
+      <created>1573664811040</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1573664811040</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TodoView">
@@ -413,7 +431,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="@airport schema creation related fixes" />
     <MESSAGE value="changed Dmo (Data Manipulation Object) naming convention to Duo (Data Utility Object)." />
     <MESSAGE value="started taking out DI.cache() in favor of plain DI.getP() to avoid stale injected object references (if an object injection has been overwritten)." />
     <MESSAGE value="finished removing DI.cache()" />
@@ -438,7 +455,8 @@
     <MESSAGE value="split out interface generation and fixed bugs" />
     <MESSAGE value="Fixed @airport/observe BehaviorSubject" />
     <MESSAGE value="Added System and Library tracking to Dependency Injection." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added System and Library tracking to Dependency Injection." />
+    <MESSAGE value="Added support for child Dependency Injection containers.  Needed for run-time swap of code (for bug fixes and new features).  Relevant because:&#10;&#10;   Don't want to shut down Airport just to upgrade.&#10;   Apps can stay resident in memory on mobile devices for a very long time (with browser being open in background)." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added support for child Dependency Injection containers.  Needed for run-time swap of code (for bug fixes and new features).  Relevant because:&#10;&#10;   Don't want to shut down Airport just to upgrade.&#10;   Apps can stay resident in memory on mobile devices for a very long time (with browser being open in background)." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
