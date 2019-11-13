@@ -84,14 +84,8 @@ class ChildContainer extends Container {
                     firstDiNotSetClass = clazz;
                     return;
                 }
-                const container = this;
-                object = new Proxy(new clazz(), {
-                    get: function (obj, prop) {
-                        return prop === 'container' ?
-                            container :
-                            obj[prop];
-                    }
-                });
+                object = new clazz();
+                object.container = this;
                 objects[token.sequence] = object;
             }
             return object;

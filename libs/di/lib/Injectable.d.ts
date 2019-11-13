@@ -1,9 +1,5 @@
-import { IContainer } from './Container';
+import { IChildContainer } from './Container';
 export interface IInjectable {
-    container?: IContainer;
-    c: IContainer;
+    container?: IChildContainer;
 }
-export declare class Injectable implements IInjectable {
-    readonly c: IContainer;
-}
-export declare function c(injectable: any): IContainer;
+export declare function container(injectable: any): IChildContainer;

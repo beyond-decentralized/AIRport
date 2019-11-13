@@ -1,28 +1,17 @@
 import {
 	Container,
-	IContainer
+	IChildContainer
 } from './Container'
 
 export interface IInjectable {
 
-	container?: IContainer
-
-	c: IContainer
+	container?: IChildContainer
 
 }
 
-export class Injectable
-	implements IInjectable {
-
-	get c(): IContainer {
-		return c(this)
-	}
-
-}
-
-export function c(
+export function container(
 	injectable: any
-): IContainer {
+): IChildContainer {
 	const container = (injectable as IInjectable).container
 
 	if (!container) {

@@ -1,13 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Container_1 = require("./Container");
-class Injectable {
-    get c() {
-        return c(this);
-    }
-}
-exports.Injectable = Injectable;
-function c(injectable) {
+function container(injectable) {
     const container = injectable.container;
     if (!container) {
         throw new Error('"container" is not set on injectable object.');
@@ -18,5 +12,5 @@ function c(injectable) {
     }
     return container;
 }
-exports.c = c;
+exports.container = container;
 //# sourceMappingURL=Injectable.js.map
