@@ -2,87 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="finished refactoring select fields">
-      <change afterPath="$PROJECT_DIR$/../../libs/di/src/Library.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../libs/di/src/System.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/core/entity/Aliases.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/core/entity/Aliases.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/EntityLookup.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/EntityLookup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/EntityLookup.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/query/api/EntityLookup.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/lib/impl/utils/SchemaUtils.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/EntityDatabaseFacade.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/EntityDatabaseFacade.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../libs/di/src/Context.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Container.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Container.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Container.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Container.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Container.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Container.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Token.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Token.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Token.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Token.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Token.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Token.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/index.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/di/src/Container.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/src/Container.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/src/Token.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/src/Token.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Subscription.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Subscription.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/Observable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/Observable.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../guideway/lib/generated/baseDuos.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../guideway/lib/generated/baseDuos.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/OperationHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/OperationHistory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/OperationHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/OperationHistory.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/RecordHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/RecordHistory.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/TransactionHistory.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/history/TransactionHistory.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Actor.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Actor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Actor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Actor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Application.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Application.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/repository/Repository.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/repository/Repository.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/repository/RepositorySchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/repository/RepositorySchema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/repository/RepositorySchema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/repository/RepositorySchema.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ChildRepoRow.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ChildRepoRow.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ChildRepoRow.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ChildRepoRow.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ChildRow.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ChildRow.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ChildRow.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ChildRow.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ImmutableRepoRow.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ImmutableRepoRow.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ImmutableRepoRow.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ImmutableRepoRow.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ImmutableRow.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ImmutableRow.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ImmutableRow.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ImmutableRow.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/MutableRepoRow.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/MutableRepoRow.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/MutableRepoRow.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/MutableRepoRow.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/MutableRow.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/MutableRow.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/MutableRow.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/MutableRow.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ReferenceRow.js" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ReferenceRow.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ReferenceRow.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/traditional/ReferenceRow.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/generated/mappedSuperclass.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/generated/mappedSuperclass.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecordRepoTransBlock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/ddl/missingRecord/MissingRecordRepoTransBlock.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/interfaces.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/interfaces.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/interfaces.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/interfaces.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/missingRecord/missingrecord.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/missingRecord/missingrecord.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/missingRecord/missingrecordrepotransblock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/missingRecord/missingrecordrepotransblock.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/missingRecord/qmissingrecordrepotransblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/missingRecord/qmissingrecordrepotransblock.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/qInterfaces.js" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/qInterfaces.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/qInterfaces.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/qInterfaces.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/qrepositorytransactionblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/qrepositorytransactionblock.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/repositorytransactionblock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/repositorytransactionblock.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/repositorytransactionhistoryupdatestage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/repositorytransactionhistoryupdatestage.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/repotransblockresponsestage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/repotransblockresponsestage.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/repotransblockschematochange.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/repositoryTransactionBlock/repotransblockschematochange.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/qsharingmessage.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/qsharingmessage.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/qsharingmessagerepotransblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/qsharingmessagerepotransblock.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/sharingmessage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/sharingmessage.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/sharingmessagerepotransblock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingMessage/sharingmessagerepotransblock.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnode.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnode.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnoderepotransblock.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/qsharingnoderepotransblock.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/sharingnode.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/sharingnode.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/sharingnoderepository.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/sharingnoderepository.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/sharingnoderepotransblock.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/sharingnoderepotransblock.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/sharingnoderepotransblockstage.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/sharingnoderepotransblockstage.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/sharingnodeterminal.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../moving-walkway/lib/generated/sharingNode/sharingnodeterminal.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/Schema.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/Schema.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaColumn.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaEntity.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaProperty.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaProperty.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelation.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaRelation.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaVersion.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/ddl/schema/SchemaVersion.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../traffic-pattern/lib/generated/mappedSuperclass.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../traffic-pattern/lib/generated/mappedSuperclass.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../travel-document-checkpoint/lib/ddl/Terminal.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../travel-document-checkpoint/lib/ddl/Terminal.js.map" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -302,7 +227,7 @@
       <workItem from="1568687178841" duration="3688000" />
       <workItem from="1569558964644" duration="14924000" />
       <workItem from="1573580104533" duration="750000" />
-      <workItem from="1573660169581" duration="1477000" />
+      <workItem from="1573660169581" duration="4505000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1567257384008</created>
@@ -395,7 +320,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573503632571</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Added System and Library tracking to Dependency Injection.">
+      <created>1573661846824</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1573661846824</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TodoView">
@@ -481,7 +413,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="@airport/observe refactoring and more dependency injection fixes" />
     <MESSAGE value="@airport schema creation related fixes" />
     <MESSAGE value="changed Dmo (Data Manipulation Object) naming convention to Duo (Data Utility Object)." />
     <MESSAGE value="started taking out DI.cache() in favor of plain DI.getP() to avoid stale injected object references (if an object injection has been overwritten)." />
@@ -506,7 +437,8 @@
     <MESSAGE value="refactoring select field utilities" />
     <MESSAGE value="split out interface generation and fixed bugs" />
     <MESSAGE value="Fixed @airport/observe BehaviorSubject" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed @airport/observe BehaviorSubject" />
+    <MESSAGE value="Added System and Library tracking to Dependency Injection." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added System and Library tracking to Dependency Injection." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

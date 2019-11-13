@@ -1,3 +1,4 @@
+import { IContext } from './Context';
 import { DiToken } from './Token';
 export interface IContainer {
     get<A>(tokenA: DiToken<A>): Promise<A>;
@@ -34,10 +35,15 @@ export interface IContainer {
     getSync(...tokens: DiToken<any>[]): any;
     set<I>(token: DiToken<I>, clazz: new () => I): void;
 }
+export interface IRootContainer extends IContainer {
+    db(): IContainer;
+    ui(componentName: string): IContainer;
+    remove(container: IContainer): void;
+}
 export declare class Container implements IContainer {
-    objects: any[];
-    classes: any[];
-    numPendingInits: number;
+    static classes: any[];
+    static numPendingInits: number;
+    static objects: any[];
     get<A>(tokenA: DiToken<A>): Promise<A>;
     get<A, B>(tokenA: DiToken<A>, tokenB: DiToken<B>): Promise<[A, B]>;
     get<A, B, C>(tokenA: DiToken<A>, tokenB: DiToken<B>, tokenC: DiToken<C>): Promise<[A, B, C]>;
@@ -72,4 +78,15 @@ export declare class Container implements IContainer {
     private doGet;
     private doGetCore;
 }
-export declare const DI: IContainer;
+export declare class RootContainer extends Container implements IRootContainer {
+    childContainers: Set<IContainer>;
+    db(): IContainer;
+    ui(componentName: string): IContainer;
+    remove(container: IContainer): void;
+    private addContainer;
+}
+export declare class ChildContainer extends Container {
+    context: IContext;
+    constructor(context: IContext);
+}
+export declare const DI: IRootContainer;

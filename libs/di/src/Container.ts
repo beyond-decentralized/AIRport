@@ -1,3 +1,8 @@
+import {
+	Context,
+	ContextType,
+	IContext
+}                from './Context'
 import {DiToken} from './Token'
 
 export interface IContainer {
@@ -347,12 +352,27 @@ export interface IContainer {
 
 }
 
+export interface IRootContainer
+	extends IContainer {
+
+	db(): IContainer
+
+	ui(
+		componentName: string
+	): IContainer
+
+	remove(
+		container: IContainer
+	): void
+
+}
+
 export class Container
 	implements IContainer {
 
-	objects: any[]  = []
-	classes: any[]  = []
-	numPendingInits = 0
+	static classes: any[]  = []
+	static numPendingInits = 0
+	static objects: any[]  = []
 
 	get<A>(
 		tokenA: DiToken<A>
@@ -523,8 +543,8 @@ export class Container
 		token: DiToken<I>,
 		clazz: new() => I
 	): void {
-		this.classes[token.sequence] = clazz
-		this.objects[token.sequence] = null
+		Container.classes[token.sequence] = clazz
+		Container.objects[token.sequence] = null
 	}
 
 	getSync<A>(
@@ -750,9 +770,9 @@ export class Container
 				if (firstMissingClassToken || firstDiNotSetClass) {
 					return
 				}
-				let object = this.objects[token.sequence]
+				let object = Container.objects[token.sequence]
 				if (!object) {
-					const clazz = this.classes[token.sequence]
+					const clazz = Container.classes[token.sequence]
 					if (!clazz) {
 						firstMissingClassToken = token
 						return
@@ -761,8 +781,8 @@ export class Container
 						firstDiNotSetClass = clazz
 						return
 					}
-					object                     = new clazz()
-					this.objects[token.sequence] = object
+					object                       = new clazz()
+					Container.objects[token.sequence] = object
 				}
 
 				return object
@@ -777,4 +797,53 @@ export class Container
 
 }
 
-export const DI: IContainer = new Container()
+export class RootContainer
+	extends Container
+	implements IRootContainer {
+
+	childContainers: Set<IContainer> = new Set<IContainer>()
+
+	db(): IContainer {
+		const context = new Context(null, ContextType.DB)
+
+		return this.addContainer(context)
+	}
+
+	ui(
+		componentName: string
+	): IContainer {
+		const context = new Context(componentName, ContextType.UI)
+
+		return this.addContainer(context)
+	}
+
+	remove(
+		container: IContainer
+	): void {
+		this.childContainers.delete(container)
+	}
+
+	private addContainer(
+		context: IContext
+	): IContainer {
+		const childContainer = new ChildContainer(context)
+
+		this.childContainers.add(childContainer)
+
+		return childContainer
+	}
+
+}
+
+export class ChildContainer
+	extends Container {
+
+	constructor(
+		public context: IContext
+	) {
+		super()
+	}
+
+}
+
+export const DI: IRootContainer = new RootContainer()

@@ -1,19 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Context_1 = require("./Context");
 class Container {
-    constructor() {
-        this.objects = [];
-        this.classes = [];
-        this.numPendingInits = 0;
-    }
     get(...tokens) {
         return new Promise((resolve, reject) => {
             this.doGet(tokens, resolve, reject);
         });
     }
     set(token, clazz) {
-        this.classes[token.sequence] = clazz;
-        this.objects[token.sequence] = null;
+        Container.classes[token.sequence] = clazz;
+        Container.objects[token.sequence] = null;
     }
     getSync(...tokens) {
         const { firstDiNotSetClass, firstMissingClassToken, objects } = this.doGetCore(tokens);
@@ -63,9 +59,9 @@ class Container {
             if (firstMissingClassToken || firstDiNotSetClass) {
                 return;
             }
-            let object = this.objects[token.sequence];
+            let object = Container.objects[token.sequence];
             if (!object) {
-                const clazz = this.classes[token.sequence];
+                const clazz = Container.classes[token.sequence];
                 if (!clazz) {
                     firstMissingClassToken = token;
                     return;
@@ -75,7 +71,7 @@ class Container {
                     return;
                 }
                 object = new clazz();
-                this.objects[token.sequence] = object;
+                Container.objects[token.sequence] = object;
             }
             return object;
         });
@@ -87,5 +83,38 @@ class Container {
     }
 }
 exports.Container = Container;
-exports.DI = new Container();
+Container.classes = [];
+Container.numPendingInits = 0;
+Container.objects = [];
+class RootContainer extends Container {
+    constructor() {
+        super(...arguments);
+        this.childContainers = new Set();
+    }
+    db() {
+        const context = new Context_1.Context(null, Context_1.ContextType.DB);
+        return this.addContainer(context);
+    }
+    ui(componentName) {
+        const context = new Context_1.Context(componentName, Context_1.ContextType.UI);
+        return this.addContainer(context);
+    }
+    remove(container) {
+        this.childContainers.delete(container);
+    }
+    addContainer(context) {
+        const childContainer = new ChildContainer(context);
+        this.childContainers.add(childContainer);
+        return childContainer;
+    }
+}
+exports.RootContainer = RootContainer;
+class ChildContainer extends Container {
+    constructor(context) {
+        super();
+        this.context = context;
+    }
+}
+exports.ChildContainer = ChildContainer;
+exports.DI = new RootContainer();
 //# sourceMappingURL=Container.js.map
