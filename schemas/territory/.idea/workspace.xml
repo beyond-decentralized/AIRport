@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="Container fixes.">
+    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="split out interface generation and fixed bugs">
+      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Container.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Container.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Container.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Container.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Container.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Container.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Injectable.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Injectable.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Injectable.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Injectable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Injectable.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Injectable.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../libs/di/src/Container.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/src/Container.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/src/Injectable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/src/Injectable.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Application.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Application.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Application.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Application.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../holding-pattern/src/ddl/infrastructure/Application.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/src/ddl/infrastructure/Application.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -233,6 +235,7 @@
       <workItem from="1573669137316" duration="3307000" />
       <workItem from="1573672530990" duration="106000" />
       <workItem from="1573674232868" duration="196000" />
+      <workItem from="1573708481604" duration="1685000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1567257384008</created>

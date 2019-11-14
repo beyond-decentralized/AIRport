@@ -1,6 +1,7 @@
 import { IContext } from './Context';
 import { IDiToken } from './Token';
 export interface IChildContainer extends IContainer {
+    context: IContext;
     get<A>(tokenA: IDiToken<A>): Promise<A>;
     get<A, B>(tokenA: IDiToken<A>, tokenB: IDiToken<B>): Promise<[A, B]>;
     get<A, B, C>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>): Promise<[A, B, C]>;
@@ -38,9 +39,9 @@ export interface IContainer {
     set<I>(token: IDiToken<I>, clazz: new () => I): void;
 }
 export interface IRootContainer extends IContainer {
-    db(): IContainer;
-    ui(componentName: string): IContainer;
-    remove(container: IContainer): void;
+    db(): IChildContainer;
+    ui(componentName: string): IChildContainer;
+    remove(container: IChildContainer): void;
 }
 export declare class Container implements IContainer {
     set<I>(token: IDiToken<I>, clazz: new () => I): void;
@@ -83,9 +84,10 @@ export declare class ChildContainer extends Container implements IChildContainer
 }
 export declare class RootContainer extends Container implements IRootContainer {
     childContainers: Set<IContainer>;
-    db(): IContainer;
-    ui(componentName: string): IContainer;
-    remove(container: IContainer): void;
+    uiContainerMap: Map<string, Set<IContainer>>;
+    db(): IChildContainer;
+    ui(componentName: string): IChildContainer;
+    remove(container: IChildContainer): void;
     private addContainer;
 }
 export declare const DI: IRootContainer;

@@ -8,6 +8,8 @@ import {IDiToken} from './Token'
 export interface IChildContainer
 	extends IContainer {
 
+	context: IContext
+
 	get<A>(
 		tokenA: IDiToken<A>
 	): Promise<A>
@@ -360,22 +362,22 @@ export interface IContainer {
 export interface IRootContainer
 	extends IContainer {
 
-	db(): IContainer
+	db(): IChildContainer
 
 	ui(
 		componentName: string
-	): IContainer
+	): IChildContainer
 
 	remove(
-		container: IContainer
+		container: IChildContainer
 	): void
 
 }
 
 
-const classes: any[] = []
-let numPendingInits  = 0
-const objects: any[] = []
+const classes: any[]    = []
+let numPendingInits     = 0
+const theObjects: any[] = []
 
 export class Container
 	implements IContainer {
@@ -384,8 +386,8 @@ export class Container
 		token: IDiToken<I>,
 		clazz: new() => I
 	): void {
-		classes[token.sequence] = clazz
-		objects[token.sequence] = null
+		classes[token.sequence]    = clazz
+		theObjects[token.sequence] = null
 	}
 
 }
@@ -396,7 +398,7 @@ export class ChildContainer
 	// TODO: implement continuous upgrading
 	// classes: any[]  = []
 	// numPendingInits = 0
-	// objects: any[]  = []
+	// theObjects: any[]  = []
 
 
 	constructor(
@@ -793,7 +795,7 @@ export class ChildContainer
 				if (firstMissingClassToken || firstDiNotSetClass) {
 					return
 				}
-				let object = objects[token.sequence]
+				let object = theObjects[token.sequence]
 				if (!object) {
 					const clazz = classes[token.sequence]
 					if (!clazz) {
@@ -804,9 +806,9 @@ export class ChildContainer
 						firstDiNotSetClass = clazz
 						return
 					}
-					object                            = new clazz()
-					object.container = this
-					objects[token.sequence] = object
+					object                     = new clazz()
+					object.container           = this
+					theObjects[token.sequence] = object
 				}
 
 				return object
@@ -825,9 +827,10 @@ export class RootContainer
 	extends Container
 	implements IRootContainer {
 
-	childContainers: Set<IContainer> = new Set<IContainer>()
+	childContainers: Set<IContainer>             = new Set<IContainer>()
+	uiContainerMap: Map<string, Set<IContainer>> = new Map<string, Set<IContainer>>()
 
-	db(): IContainer {
+	db(): IChildContainer {
 		const context = new Context(null, ContextType.DB)
 
 		return this.addContainer(context)
@@ -835,21 +838,36 @@ export class RootContainer
 
 	ui(
 		componentName: string
-	): IContainer {
+	): IChildContainer {
 		const context = new Context(componentName, ContextType.UI)
 
-		return this.addContainer(context)
+		const container = this.addContainer(context)
+
+		let matchingUiContainerSet = this.uiContainerMap.get(componentName)
+
+		if (!matchingUiContainerSet) {
+			matchingUiContainerSet = new Set<IContainer>()
+			this.uiContainerMap.set(componentName, matchingUiContainerSet)
+		}
+
+		matchingUiContainerSet.add(container)
+
+		return container
 	}
 
 	remove(
-		container: IContainer
+		container: IChildContainer
 	): void {
 		this.childContainers.delete(container)
+
+		if (container.context.name) {
+			this.uiContainerMap.get(container.context.name).delete(container)
+		}
 	}
 
 	private addContainer(
 		context: IContext
-	): IContainer {
+	): IChildContainer {
 		const childContainer = new ChildContainer(context)
 
 		this.childContainers.add(childContainer)

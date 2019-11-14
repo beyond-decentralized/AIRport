@@ -3,11 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Context_1 = require("./Context");
 const classes = [];
 let numPendingInits = 0;
-const objects = [];
+const theObjects = [];
 class Container {
     set(token, clazz) {
         classes[token.sequence] = clazz;
-        objects[token.sequence] = null;
+        theObjects[token.sequence] = null;
     }
 }
 exports.Container = Container;
@@ -15,7 +15,7 @@ class ChildContainer extends Container {
     // TODO: implement continuous upgrading
     // classes: any[]  = []
     // numPendingInits = 0
-    // objects: any[]  = []
+    // theObjects: any[]  = []
     constructor(context) {
         super();
         this.context = context;
@@ -73,7 +73,7 @@ class ChildContainer extends Container {
             if (firstMissingClassToken || firstDiNotSetClass) {
                 return;
             }
-            let object = objects[token.sequence];
+            let object = theObjects[token.sequence];
             if (!object) {
                 const clazz = classes[token.sequence];
                 if (!clazz) {
@@ -86,7 +86,7 @@ class ChildContainer extends Container {
                 }
                 object = new clazz();
                 object.container = this;
-                objects[token.sequence] = object;
+                theObjects[token.sequence] = object;
             }
             return object;
         });
@@ -102,6 +102,7 @@ class RootContainer extends Container {
     constructor() {
         super(...arguments);
         this.childContainers = new Set();
+        this.uiContainerMap = new Map();
     }
     db() {
         const context = new Context_1.Context(null, Context_1.ContextType.DB);
@@ -109,10 +110,20 @@ class RootContainer extends Container {
     }
     ui(componentName) {
         const context = new Context_1.Context(componentName, Context_1.ContextType.UI);
-        return this.addContainer(context);
+        const container = this.addContainer(context);
+        let matchingUiContainerSet = this.uiContainerMap.get(componentName);
+        if (!matchingUiContainerSet) {
+            matchingUiContainerSet = new Set();
+            this.uiContainerMap.set(componentName, matchingUiContainerSet);
+        }
+        matchingUiContainerSet.add(container);
+        return container;
     }
     remove(container) {
         this.childContainers.delete(container);
+        if (container.context.name) {
+            this.uiContainerMap.get(container.context.name).delete(container);
+        }
     }
     addContainer(context) {
         const childContainer = new ChildContainer(context);

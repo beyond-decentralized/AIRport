@@ -1,4 +1,4 @@
-import { RepositoryApplication } from '../..';
+import { RepositoryApplication } from '../repository/RepositoryApplication';
 import { ActorApplication } from './ActorApplication';
 export declare type ApplicationId = number;
 export declare type ApplicationHost = string;
