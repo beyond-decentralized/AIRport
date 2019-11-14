@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="split out interface generation and fixed bugs">
-      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Container.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Container.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Container.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Container.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/lib/Container.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/lib/Container.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/di/src/Container.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/di/src/Container.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Application.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Application.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Application.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/lib/ddl/infrastructure/Application.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../holding-pattern/src/ddl/infrastructure/Application.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../holding-pattern/src/ddl/infrastructure/Application.ts" afterDir="false" />
+    <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="Bug fixes.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -235,7 +226,7 @@
       <workItem from="1573669137316" duration="3307000" />
       <workItem from="1573672530990" duration="106000" />
       <workItem from="1573674232868" duration="196000" />
-      <workItem from="1573708481604" duration="1685000" />
+      <workItem from="1573708481604" duration="3530000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1567257384008</created>
@@ -349,7 +340,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573672425943</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Bug fixes.">
+      <created>1573710219214</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1573710219214</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TodoView">
@@ -435,7 +433,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="started taking out DI.cache() in favor of plain DI.getP() to avoid stale injected object references (if an object injection has been overwritten)." />
     <MESSAGE value="finished removing DI.cache()" />
     <MESSAGE value="DI container fixes and optimizations" />
     <MESSAGE value="Disabled tying in DAOs and DUOs into QSchemas" />
@@ -460,7 +457,8 @@
     <MESSAGE value="Added System and Library tracking to Dependency Injection." />
     <MESSAGE value="Added support for child Dependency Injection containers.  Needed for run-time swap of code (for bug fixes and new features).  Relevant because:&#10;&#10;   Don't want to shut down Airport just to upgrade.&#10;   Apps can stay resident in memory on mobile devices for a very long time (with browser being open in background)." />
     <MESSAGE value="Container fixes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Container fixes." />
+    <MESSAGE value="Bug fixes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Bug fixes." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
