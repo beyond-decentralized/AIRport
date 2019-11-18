@@ -2,6 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="45f3fee1-cc76-44fb-aef8-052b05a352ac" name="Default" comment="Bug fixes.">
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/BehaviorSubject.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/BehaviorSubject.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/BehaviorSubject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/BehaviorSubject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/BehaviorSubject.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/BehaviorSubject.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/lib/Observable.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/BehaviorSubject.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/BehaviorSubject.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/observe/src/Observable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/observe/src/Observable.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -226,7 +234,7 @@
       <workItem from="1573669137316" duration="3307000" />
       <workItem from="1573672530990" duration="106000" />
       <workItem from="1573674232868" duration="196000" />
-      <workItem from="1573708481604" duration="3530000" />
+      <workItem from="1573708481604" duration="5448000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1567257384008</created>
@@ -347,7 +355,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573710219214</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Bug fixes.">
+      <created>1573752638235</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1573752638235</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TodoView">

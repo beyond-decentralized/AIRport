@@ -239,7 +239,7 @@ export class Observable<T>
 		}
 	}
 
-	private clear(): void {
+	protected clear(): void {
 		this.currentValue = undefined
 
 		this.downstream.forEach(
@@ -251,7 +251,7 @@ export class Observable<T>
 			return this.currentValue
 		}
 		this.currentValue = this.upstream.map(
-			upstreamObservable => upstreamObservable.valueFromUpstream()) as any
+			upstreamObservable => upstreamObservable.valueFromUpstream())[0] as any
 
 		for (const operator of this.operators) {
 			this.currentValue = operator.exec(this)

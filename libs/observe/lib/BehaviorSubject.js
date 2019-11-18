@@ -10,6 +10,8 @@ class BehaviorSubject extends Subject_1.Subject {
         this.currentValue = value;
         this.exec(value, 'onNext');
     }
+    clear() {
+    }
 }
 exports.BehaviorSubject = BehaviorSubject;
 //# sourceMappingURL=BehaviorSubject.js.map

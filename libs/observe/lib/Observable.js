@@ -104,7 +104,7 @@ class Observable {
         if (this.currentValue !== undefined) {
             return this.currentValue;
         }
-        this.currentValue = this.upstream.map(upstreamObservable => upstreamObservable.valueFromUpstream());
+        this.currentValue = this.upstream.map(upstreamObservable => upstreamObservable.valueFromUpstream())[0];
         for (const operator of this.operators) {
             this.currentValue = operator.exec(this);
         }

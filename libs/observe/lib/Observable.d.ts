@@ -44,7 +44,7 @@ export declare class Observable<T> implements IObservable<T> {
         (value: any): void;
     }, onComplete?: Function): ISubscription;
     unsubscribeUpstream(): void;
-    private clear;
+    protected clear(): void;
     private valueFromUpstream;
     private subscribeUpstream;
 }
